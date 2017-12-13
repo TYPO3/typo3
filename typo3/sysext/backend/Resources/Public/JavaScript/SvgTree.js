@@ -37,6 +37,7 @@ define(
         showCheckboxes: false,
         showIcons: false,
         allowRecursiveDelete: false,
+        marginTop: 15,
         nodeHeight: 20,
         indentWidth: 16,
         width: 300,
@@ -283,29 +284,41 @@ define(
           }
 
           var nodes = Array.isArray(json) ? json : [];
-          _this.setParametersNode(nodes);
-          _this.dispatch.call('loadDataAfter', _this);
-          _this.prepareDataForVisibleNodes();
-          _this.nodesContainer.selectAll('.node').remove();
-          _this.nodesBgContainer.selectAll('.node-bg').remove();
-          _this.linksContainer.selectAll('.link').remove();
-          _this.update();
+          _this.replaceData(nodes);
           _this.nodesRemovePlaceholder();
         });
       },
 
       /**
-       * Set parameters like node parents, parentsUid, checked
+       * Delete old tree and create new one
+       *
+       * @param {Node[]} nodes
+       */
+      replaceData: function (nodes) {
+        var _this = this;
+
+        _this.setParametersNode(nodes);
+        _this.dispatch.call('loadDataAfter', _this);
+        _this.prepareDataForVisibleNodes();
+        _this.nodesContainer.selectAll('.node').remove();
+        _this.nodesBgContainer.selectAll('.node-bg').remove();
+        _this.linksContainer.selectAll('.link').remove();
+        _this.update();
+      },
+
+      /**
+       * Set parameters like node parents, parentsStateIdentifier, checked
        *
        * @param {Node[]} nodes
        */
       setParametersNode: function (nodes) {
         var _this = this;
 
+        nodes = nodes || this.nodes;
         nodes = nodes.map(function (node, index) {
-          node.open = (_this.settings.expandUpToLevel !== null) ? node.depth < _this.settings.expandUpToLevel : Boolean(node.expanded);
+          node.expanded = (_this.settings.expandUpToLevel !== null) ? node.depth < _this.settings.expandUpToLevel : Boolean(node.expanded);
           node.parents = [];
-          node.parentsUid = [];
+          node.parentsStateIdentifier = [];
           node._isDragged = false;
           if (node.depth > 0) {
             var currentDepth = node.depth;
@@ -313,12 +326,12 @@ define(
               var currentNode = nodes[i];
               if (currentNode.depth < currentDepth) {
                 node.parents.push(i);
-                node.parentsUid.push(nodes[i].stateIdentifier);
+                node.parentsStateIdentifier.push(nodes[i].stateIdentifier);
                 currentDepth = currentNode.depth;
               }
             }
           } else if (node.hasChildren) {
-            node.open = true;
+            node.expanded = true;
           }
 
           // create stateIdentifier if doesn't exist (for category tree)
@@ -347,7 +360,7 @@ define(
 
       nodesAddPlaceholder: function (node) {
         if (node) {
-          $('.svg-tree').find('.node-loader').css({ top: node.y + 15 }).show();
+          $('.svg-tree').find('.node-loader').css({ top: node.y + this.settings.marginTop }).show();
         } else {
           $('.svg-tree').find('.svg-tree-loader').show();
         }
@@ -363,7 +376,7 @@ define(
 
         var blacklist = {};
         this.nodes.map(function (node, index) {
-          if (!node.open) {
+          if (!node.expanded) {
             blacklist[index] = true;
           }
         });
@@ -424,7 +437,7 @@ define(
             icon: '',
           };
           Icons.getIcon(iconName, Icons.sizes.small, null, null, 'inline').done(function (icon) {
-            _this.data.icons[iconName].icon = icon.match(/<svg.*<\/svg>/im)[0];
+            _this.data.icons[iconName].icon = icon.match(/<svg.*<\/svg>/is)[0];
 
             if (update) {
               _this.update();
@@ -467,7 +480,7 @@ define(
           .attr('class', function (node, i) {
             return _this.getNodeBgClass(node, i, nodeBgClass);
           })
-          .attr('style', function (node, i) {
+          .attr('style', function (node) {
             return node.backgroundColor ? 'fill: ' + node.backgroundColor + ';' : '';
           });
 
@@ -485,6 +498,10 @@ define(
           .attr('transform', this.getChevronTransform)
           .style('fill', this.getChevronColor)
           .attr('class', this.getChevronClass);
+
+        nodes
+          .select('.toggle')
+          .attr('visibility', this.getToggleVisibility);
 
         if (this.settings.showIcons) {
           nodes
@@ -661,7 +678,9 @@ define(
           .attr('class', 'toggle')
           .attr('visibility', this.getToggleVisibility)
           .attr('transform', 'translate(-8, -8)')
-          .on('click', _this.chevronClick.bind(this));
+          .on('click', function (node) {
+            _this.chevronClick(node);
+          });
 
         // improve usability by making the click area a 16px square
         chevron
@@ -864,7 +883,7 @@ define(
        * @returns {String}
        */
       getChevronTransform: function (node) {
-        return node.open ? 'translate(16,0) rotate(90)' : ' rotate(0)';
+        return node.expanded ? 'translate(16,0) rotate(90)' : ' rotate(0)';
       },
 
       /**
@@ -874,7 +893,7 @@ define(
        * @returns {String}
        */
       getChevronColor: function (node) {
-        return node.open ? '#000' : '#8e8e8e';
+        return node.expanded ? '#000' : '#8e8e8e';
       },
 
       /**
@@ -894,7 +913,7 @@ define(
        * @returns {String}
        */
       getChevronClass: function (node) {
-        return 'chevron ' + (node.open ? 'expanded' : 'collapsed');
+        return 'chevron ' + (node.expanded ? 'expanded' : 'collapsed');
       },
 
       /**
@@ -1066,7 +1085,7 @@ define(
        * @param {Node} node
        */
       chevronClick: function (node) {
-        if (node.open) {
+        if (node.expanded) {
           this.hideChildren(node);
         } else {
           this.showChildren(node);
@@ -1082,7 +1101,7 @@ define(
        * @param {Node} node
        */
       hideChildren: function (node) {
-        node.open = false;
+        node.expanded = false;
       },
 
       /**
@@ -1091,7 +1110,7 @@ define(
        * @param {Node} node
        */
       showChildren: function (node) {
-        node.open = true;
+        node.expanded = true;
       },
 
       /**

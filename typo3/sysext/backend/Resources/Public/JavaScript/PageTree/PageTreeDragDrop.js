@@ -173,8 +173,10 @@ define([
 
         tree.settings.nodeDragPosition = false;
 
+        _this.openNodeTimeout();
+
         if (node.isOver
-          || (tree.settings.nodeOver.node && tree.settings.nodeOver.node.parentsUid.indexOf(node.stateIdentifier) !== -1)
+          || (tree.settings.nodeOver.node && tree.settings.nodeOver.node.parentsStateIdentifier.indexOf(node.stateIdentifier) !== -1)
           || !tree.isOverSvg) {
 
           _this.addNodeDdClass({ $nodeDd: $nodeDd, $nodesWrap: $nodesWrap, className: 'nodrop' });
@@ -250,7 +252,7 @@ define([
 
         if (
           !(node.isOver
-            || (tree.settings.nodeOver.node && tree.settings.nodeOver.node.parentsUid.indexOf(node.stateIdentifier) !== -1)
+            || (tree.settings.nodeOver.node && tree.settings.nodeOver.node.parentsStateIdentifier.indexOf(node.stateIdentifier) !== -1)
             || !tree.settings.canNodeDrag
             || !tree.isOverSvg
           )
@@ -332,6 +334,33 @@ define([
         .on('end', self.dragEnd);
     },
 
+    /**
+     * Open node with children while holding the node/element over this node for one second
+     */
+    openNodeTimeout: function () {
+      var _this = this;
+
+      if (!_this.timeout) {
+        _this.timeout = {}
+      }
+
+      if (_this.tree.settings.nodeOver.node.hasChildren && !_this.tree.settings.nodeOver.node.expanded) {
+        if (_this.timeout.node != _this.tree.settings.nodeOver.node) {
+          _this.timeout.node = _this.tree.settings.nodeOver;
+          clearTimeout(_this.timeout.time);
+          _this.timeout.time = setTimeout(function () {
+            if (_this.tree.settings.nodeOver.node) {
+              _this.tree.showChildren(_this.tree.settings.nodeOver.node);
+              _this.tree.prepareDataForVisibleNodes();
+              _this.tree.update();
+            }
+          }, 1000);
+        }
+      } else {
+        clearTimeout(_this.timeout.time);
+      }
+    },
+
     changeNodeClasses: function () {
       var elementNodeBg = this.tree.svg.select('.node-over');
       var $svg = $(this.tree.svg.node());
@@ -340,7 +369,7 @@ define([
       var nodeBgBorder = this.tree.nodesBgContainer.selectAll('.node-bg__border');
 
       if (elementNodeBg.size() && this.tree.isOverSvg) {
-        //line between nodes
+        // line between nodes
         if (nodeBgBorder.empty()) {
           nodeBgBorder = this.tree.nodesBgContainer
             .append('rect')
@@ -382,7 +411,7 @@ define([
           nodeBgBorder
             .style('display', 'none');
 
-          if (this.tree.settings.nodeOver.node.open && this.tree.settings.nodeOver.node.hasChildren) {
+          if (this.tree.settings.nodeOver.node.expanded && this.tree.settings.nodeOver.node.hasChildren) {
             this.addNodeDdClass({
               $nodeDd: $nodeDd,
               $nodesWrap: $nodesWrap,
@@ -550,6 +579,8 @@ define([
           top += d3.event.sourceEvent.pageY;
         }
 
+        _this.openNodeTimeout();
+
         $(document).find('.node-dd').css({
           left: left,
           top: top,
@@ -652,10 +683,10 @@ define([
 
       var data = {
         node: tree.settings.nodeDrag,
-        uid: uid, //dragged node id
-        target: target, //hovered node
-        position: position, //before, in, after
-        command: options.command, //element is copied or moved
+        uid: uid, // dragged node id
+        target: target, // hovered node
+        position: position, // before, in, after
+        command: options.command, // element is copied or moved
       };
 
       $.extend(data, options);
@@ -703,8 +734,16 @@ define([
       var index = _this.tree.nodes.indexOf(target);
       var newNode = {};
       var removeNode = function (newNode) {
-        _this.tree.nodes.splice(_this.tree.nodes.indexOf(newNode), 1);
-        _this.tree.setParametersNode(_this.tree.nodes);
+        var index = _this.tree.nodes.indexOf(newNode);
+
+        // if newNode is only one child
+        if (_this.tree.nodes[index - 1].depth != newNode.depth
+          && (!_this.tree.nodes[index + 1] || _this.tree.nodes[index + 1].depth != newNode.depth)) {
+          _this.tree.nodes[index - 1].hasChildren = false;
+        }
+
+        _this.tree.nodes.splice(index, 1);
+        _this.tree.setParametersNode();
         _this.tree.prepareDataForVisibleNodes();
         _this.tree.update();
         _this.tree.removeEditedText();
@@ -715,15 +754,19 @@ define([
       newNode.identifier = -1;
       newNode.target = target;
       newNode.parents = target.parents;
-      newNode.parentsUid = target.parentsUid;
+      newNode.parentsStateIdentifier = target.parentsStateIdentifier;
       newNode.depth =  target.depth;
       newNode.position =  options.position;
       newNode.name = (typeof options.title !== 'undefined') ? options.title : TYPO3.lang['tree.defaultPageTitle'];
+      newNode.y = newNode.y || newNode.target.y;
+      newNode.x = newNode.x || newNode.target.x;
 
       if (options.position === 'in') {
         newNode.depth++;
-        _this.tree.nodes[index].open = true;
+        newNode.parents.unshift(index);
+        newNode.parentsStateIdentifier.unshift(_this.tree.nodes[index].stateIdentifier);
         _this.tree.nodes[index].hasChildren = true;
+        _this.tree.showChildren(_this.tree.nodes[index]);
       }
 
       if (options.position === 'in' || options.position === 'after') {
@@ -741,21 +784,17 @@ define([
       }
 
       _this.tree.nodes.splice(index, 0, newNode);
-      _this.tree.setParametersNode(_this.tree.nodes);
+      _this.tree.setParametersNode();
       _this.tree.prepareDataForVisibleNodes();
       _this.tree.update();
-
       _this.tree.removeEditedText();
       _this.tree.nodeIsEdit = true;
 
       d3.select(_this.tree.svg.node().parentNode)
         .append('input')
         .attr('class', 'node-edit')
-        .style('top', function () {
-          var top = newNode.y + 15; //svg margin top
-          return top + 'px';
-        })
-        .style('left', (newNode.x + _this.tree.textPosition + 5) + 'px')
+        .style('top', newNode.y + _this.tree.settings.marginTop + 'px')
+        .style('left', newNode.x + _this.tree.textPosition + 5 + 'px')
         .style('width', _this.tree.settings.width - (newNode.x + _this.tree.textPosition + 20) + 'px')
         .style('height', _this.tree.settings.nodeHeight + 'px')
         .attr('text', 'text')
@@ -763,7 +802,7 @@ define([
         .on('keydown', function () {
           var code = d3.event.keyCode;
 
-          if (code === 13 || code === 9) { //enter || tab
+          if (code === 13 || code === 9) { // enter || tab
             _this.tree.nodeIsEdit = false;
             var newName = this.value.trim();
 
@@ -774,7 +813,7 @@ define([
             } else {
               removeNode(newNode);
             }
-          } else if (code === 27) { //esc
+          } else if (code === 27) { // esc
             _this.tree.nodeIsEdit = false;
             removeNode(newNode);
           }

@@ -204,16 +204,16 @@ define(['jquery',
       var _this = this;
       var name = $(input).val();
 
-      this.tree.nodes[0].open = false;
+      this.tree.nodes[0].expanded = false;
       this.tree.nodes.forEach(function (node) {
         var regex = new RegExp(name, 'i');
         if (regex.test(node.name) || regex.test(node.alias)) {
           _this.showParents(node);
-          node.open = true;
+          node.expanded = true;
           node.hidden = false;
         } else if (node.depth !== 0) {
           node.hidden = true;
-          node.open = false;
+          node.expanded = false;
         }
       });
 
@@ -235,11 +235,11 @@ define(['jquery',
         this.tree.nodes.forEach(function (node) {
           if (node.checked) {
             _this.showParents(node);
-            node.open = true;
+            node.expanded = true;
             node.hidden = false;
           } else {
             node.hidden = true;
-            node.open = false;
+            node.expanded = false;
           }
         });
       } else {
@@ -267,7 +267,7 @@ define(['jquery',
       parent.hidden = false;
 
       //expand parent node
-      parent.open = true;
+      parent.expanded = true;
       this.showParents(parent);
     };
 
