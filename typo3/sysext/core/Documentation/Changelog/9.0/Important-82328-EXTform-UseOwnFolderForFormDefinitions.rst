@@ -18,8 +18,7 @@ but not edited.
 Since no migration wizard can be provided for this, a manual migration is
 necessary which can be done
 
-1) ... by moving all form definitions to the new directory via filesystem or
-2) ... by duplicating all form definitions (thus storing them in the new
-location) and removing the old form definitions.
+* by moving all form definitions to the new directory via filesystem or
+* by duplicating all form definitions (thus storing them in the new location) and removing the old form definitions.
 
 .. index:: Backend

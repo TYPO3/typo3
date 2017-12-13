@@ -16,7 +16,7 @@ The following methods have been marked as deprecated and should no longer be use
 
 It has been replaced by the method :php:`PageRenderer->setMetaTag()`.
 
-.. codeblock:: php
+.. code-block:: php
 
    $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
    // has meta tag been set already?

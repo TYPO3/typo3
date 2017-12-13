@@ -22,7 +22,7 @@ since TYPO3 v4.0.
 Impact
 ======
 
-Calling Frontend URLs via `index.php?id=23.13" - adding the typeNum with a dot - will result in a PageNotFound exception.
+Calling Frontend URLs via `index.php?id=23.13` - adding the typeNum with a dot - will result in a PageNotFound exception.
 
 
 Affected Installations

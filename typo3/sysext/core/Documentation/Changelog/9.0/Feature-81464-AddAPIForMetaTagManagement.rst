@@ -61,7 +61,7 @@ Used to remove a meta tag from the stack.
 Example
 -------
 
-.. codeblock:: php
+.. code-block:: php
 
    $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
    // has meta tag been set already?

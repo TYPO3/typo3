@@ -39,13 +39,3 @@ Deprecation
    :glob:
 
    Deprecation-*
-
-Important
-^^^^^^^^^
-
-.. toctree::
-   :maxdepth: 1
-   :titlesonly:
-   :glob:
-
-   Important-*

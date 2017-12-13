@@ -15,21 +15,21 @@ into an array-structured form.
 The following cHash-related configuration entries below have been migrated:
 
 - :php:`$TYPO3_CONF_VARS['FE']['cHashExcludedParameters']` is now an array instead of a
-comma-separated list, and migrated to :php:`$TYPO3_CONF_VARS['FE']['cacheHash']['excludedParameters']`
+  comma-separated list, and migrated to :php:`$TYPO3_CONF_VARS['FE']['cacheHash']['excludedParameters']`
 
 - :php:`$TYPO3_CONF_VARS['FE']['cHashOnlyForParameters']` is now an array instead of a
-comma-separated list, and migrated to :php:`$TYPO3_CONF_VARS['FE']['cacheHash']['cachedParametersWhiteList']`
+  comma-separated list, and migrated to :php:`$TYPO3_CONF_VARS['FE']['cacheHash']['cachedParametersWhiteList']`
 
 - :php:`$TYPO3_CONF_VARS['FE']['cHashRequiredParameters']` is now an array instead of a
-comma-separated list, and migrated to :php:`$TYPO3_CONF_VARS['FE']['cacheHash']['requireCacheHashPresenceParameters']`
+  comma-separated list, and migrated to :php:`$TYPO3_CONF_VARS['FE']['cacheHash']['requireCacheHashPresenceParameters']`
 
 - :php:`$TYPO3_CONF_VARS['FE']['cHashExcludedParametersIfEmpty']`
 
   * If the old value was ``*``, the following parameter is now set to true to the
-  option :php:`$TYPO3_CONF_VARS['FE']['cacheHash']['excludeAllEmptyParameters']`
+    option :php:`$TYPO3_CONF_VARS['FE']['cacheHash']['excludeAllEmptyParameters']`
 
   * If the old values were a comma-separated list, they are now migrated as an array to
-  :php:`$TYPO3_CONF_VARS['FE']['cacheHash']['excludedParametersIfEmpty']`
+    :php:`$TYPO3_CONF_VARS['FE']['cacheHash']['excludedParametersIfEmpty']`
 
 These values are now migrated as a "silent upgrade wizard" via the Install Tool to the format
 that TYPO3 uses internally since several versions.

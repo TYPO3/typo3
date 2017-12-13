@@ -19,6 +19,7 @@ Impact
 Example: 
 
 .. code-block:: typoscript
+
 	page.includeCSS {
 		inline = EXT:test/Resources/Public/Css/inline.css
 		inline {

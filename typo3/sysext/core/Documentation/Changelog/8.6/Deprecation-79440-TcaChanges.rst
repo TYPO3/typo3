@@ -11,7 +11,7 @@ Description
 
 The :code:`TCA` on field level has been changed. Nearly all column types are affected.
 In general, the sub-section :code:`wizards` is gone and replaced by a combination of new
-:code:`renderType`s and a new set of configuration options. Wizards are now divided into
+:code:`renderType's` and a new set of configuration options. Wizards are now divided into
 three different kinds:
 
 * :code:`fieldInformation` - Informational HTML, typically displayed between the element label
@@ -713,6 +713,8 @@ Example after:
 
 
 Disable other parts of type=group:
+
+.. code-block:: php
 
     'group_db_1' => [
         'label' => 'group_db_1',

@@ -18,6 +18,7 @@ Impact
 Setting `enableRichtext` will result in the text field being rendered with a richtext editor. Config example:
 
 .. code-block:: php
+
     'columns' => [
         'content' => [
             'config' => [

@@ -14,6 +14,7 @@ The default size of thumbnails in the file list is 64x64. These values can now b
 Example:
 
 .. code-block:: typoscript
+
    options.file_list.thumbnail.width = 256
    options.file_list.thumbnail.height = 256
 

@@ -41,6 +41,6 @@ Migration
 
 Check the TCA of :sql:`pages_language_overlay` and remove l10n_mode for those fields
 that previously were not defined in :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']`
- and thus should not be overlaid.
+and thus should not be overlaid.
 
 .. index:: Frontend, TCA

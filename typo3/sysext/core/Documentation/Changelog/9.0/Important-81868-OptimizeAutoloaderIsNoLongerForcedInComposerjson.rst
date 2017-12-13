@@ -13,8 +13,11 @@ The option "optimize autoloader" (in config section of TYPO3's own composer.json
 optimized autoloader files.
 
 This improves speed but had three disadvantages:
+
 - creating optimized autoloader may take much longer
+
 - new namespaces (folders) during development require an additional :shell:`composer dump`
+
 - no possibility existing to deactivate optimized autoloader
   from CLI, once it's set in composer.json config section
 
