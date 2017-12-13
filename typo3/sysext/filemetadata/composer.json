@@ -11,7 +11,7 @@
 		}],
 
 	"require": {
-		"typo3/cms-core": "9.1.0"
+		"typo3/cms-core": "9.1.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"

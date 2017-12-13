@@ -11,9 +11,9 @@
 		}],
 
 	"require": {
-		"typo3/cms-core": "9.1.0",
-		"typo3/cms-extbase": "9.1.0",
-		"typo3/cms-fluid": "9.1.0",
+		"typo3/cms-core": "9.1.*@dev",
+		"typo3/cms-extbase": "9.1.*@dev",
+		"typo3/cms-fluid": "9.1.*@dev",
 		"nikic/php-parser": "~3.1",
 		"symfony/finder": "^2.7 || ^3.0 || ^4.0"
 	},
