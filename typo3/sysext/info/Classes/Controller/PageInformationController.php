@@ -33,9 +33,9 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
     {
         return [
             'pages' => [
-                0 => $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:pages_0'),
-                2 => $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:pages_2'),
-                1 => $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:pages_1')
+                0 => $GLOBALS['LANG']->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_0'),
+                2 => $GLOBALS['LANG']->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_2'),
+                1 => $GLOBALS['LANG']->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_1')
             ],
             'depth' => [
                 0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
