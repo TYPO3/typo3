@@ -109,7 +109,7 @@ class Pbkdf2Salt extends AbstractComposedSalt
      */
     public function checkPassword(string $plainPW, string $saltedHashPW): bool
     {
-        return $this->isValidSalt($saltedHashPW) && \hash_equals($this->getHashedPassword($plainPW, $saltedHashPW), $saltedHashPW);
+        return $this->isValidSalt($saltedHashPW) && hash_equals($this->getHashedPassword($plainPW, $saltedHashPW), $saltedHashPW);
     }
 
     /**

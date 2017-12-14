@@ -120,7 +120,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
                 }
                 unset($value);
             }
-            $result = $this->parameters['fieldChangeFuncHash'] === GeneralUtility::hmac(serialize($fieldChangeFunctions));
+            $result = hash_equals(GeneralUtility::hmac(serialize($fieldChangeFunctions)), $this->parameters['fieldChangeFuncHash']);
         }
         return $result;
     }

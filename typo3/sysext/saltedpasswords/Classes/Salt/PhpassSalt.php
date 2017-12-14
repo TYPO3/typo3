@@ -126,7 +126,7 @@ class PhpassSalt extends AbstractComposedSalt
     public function checkPassword(string $plainPW, string $saltedHashPW): bool
     {
         $hash = $this->cryptPassword($plainPW, $saltedHashPW);
-        return $hash && \hash_equals($hash, $saltedHashPW);
+        return $hash && hash_equals($hash, $saltedHashPW);
     }
 
     /**

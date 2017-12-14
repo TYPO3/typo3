@@ -2133,7 +2133,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $GET['id'] = $this->id;
             $this->cHash_array = $this->cacheHash->getRelevantParameters(GeneralUtility::implodeArrayForUrl('', $GET));
             $cHash_calc = $this->cacheHash->calculateCacheHash($this->cHash_array);
-            if ($cHash_calc != $this->cHash) {
+            if (!hash_equals($cHash_calc, $this->cHash)) {
                 if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
                     $this->pageNotFoundAndExit('Request parameters could not be validated (&cHash comparison failed)');
                 } else {

@@ -55,7 +55,7 @@ class FileDumpController
             $parameters['p'] = $p;
         }
 
-        if (GeneralUtility::hmac(implode('|', $parameters), 'resourceStorageDumpFile') === $this->getGetOrPost($request, 'token')) {
+        if (hash_equals(GeneralUtility::hmac(implode('|', $parameters), 'resourceStorageDumpFile'), $this->getGetOrPost($request, 'token'))) {
             if (isset($parameters['f'])) {
                 try {
                     $file = ResourceFactory::getInstance()->getFileObject($parameters['f']);
