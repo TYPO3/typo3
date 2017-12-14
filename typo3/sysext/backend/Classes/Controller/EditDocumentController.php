@@ -689,7 +689,7 @@ class EditDocumentController extends AbstractModule
                 $this->previewData['table'] = $table;
                 $this->previewData['id'] = $id;
             }
-            $tce->printLogErrorMessages(isset($_POST['_saveandclosedok']) || isset($_POST['_translation_savedok']) ? $this->retUrl : $this->R_URL_parts['path'] . '?' . GeneralUtility::implodeArrayForUrl('', $this->R_URL_getvars));
+            $tce->printLogErrorMessages();
         }
         //  || count($tce->substNEWwithIDs)... If any new items has been save, the document is CLOSED
         // because if not, we just get that element re-listed as new. And we don't want that!

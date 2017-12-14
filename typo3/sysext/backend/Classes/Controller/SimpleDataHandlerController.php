@@ -224,7 +224,7 @@ class SimpleDataHandlerController
 
         // Write errors to flash message queue
         if ($this->prErr) {
-            $this->tce->printLogErrorMessages($this->redirect);
+            $this->tce->printLogErrorMessages();
         }
         if ($this->redirect) {
             $response = $response
@@ -259,7 +259,7 @@ class SimpleDataHandlerController
         // Prints errors (= write them to the message queue)
         if ($this->prErr) {
             $content['hasErrors'] = true;
-            $this->tce->printLogErrorMessages($this->redirect);
+            $this->tce->printLogErrorMessages();
         }
 
         $messages = $flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
