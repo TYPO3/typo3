@@ -24,7 +24,7 @@ DRYRUN=""
 
 if [ "$1" = "dryrun" ]
 then
-    DRYRUN="--dry-run"
+    DRYRUN="--dry-run --diff"
 fi
 
 DETECTED_FILES=`git diff-tree --no-commit-id --name-only -r HEAD | grep '.php$' 2>/dev/null`
