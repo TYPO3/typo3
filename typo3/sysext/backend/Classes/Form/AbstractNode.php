@@ -104,7 +104,9 @@ abstract class AbstractNode implements NodeInterface
     }
 
     /**
-     * Merge existing data with a child return array
+     * Merge existing data with a child return array.
+     * The incoming $childReturn array should be initialized
+     * using initializeResultArray() beforehand.
      *
      * @param array $existing Currently merged array
      * @param array $childReturn Array returned by child
@@ -121,27 +123,23 @@ abstract class AbstractNode implements NodeInterface
             GeneralUtility::logDeprecatedFunction();
             $existing['extJSCODE'] .= LF . $childReturn['extJSCODE'];
         }
-        foreach ($childReturn['additionalJavaScriptPost'] as $value) {
+        foreach ($childReturn['additionalJavaScriptPost'] ?? [] as $value) {
             $existing['additionalJavaScriptPost'][] = $value;
         }
-        foreach ($childReturn['additionalJavaScriptSubmit'] as $value) {
+        foreach ($childReturn['additionalJavaScriptSubmit'] ?? [] as $value) {
             $existing['additionalJavaScriptSubmit'][] = $value;
         }
-        foreach ($childReturn['additionalHiddenFields'] as $value) {
+        foreach ($childReturn['additionalHiddenFields'] ?? [] as $value) {
             $existing['additionalHiddenFields'][] = $value;
         }
-        foreach ($childReturn['stylesheetFiles'] as $value) {
+        foreach ($childReturn['stylesheetFiles'] ?? [] as $value) {
             $existing['stylesheetFiles'][] = $value;
         }
-        if (!empty($childReturn['requireJsModules'])) {
-            foreach ($childReturn['requireJsModules'] as $module) {
-                $existing['requireJsModules'][] = $module;
-            }
+        foreach ($childReturn['requireJsModules'] ?? [] as $module) {
+            $existing['requireJsModules'][] = $module;
         }
-        if (!empty($childReturn['additionalInlineLanguageLabelFiles'])) {
-            foreach ($childReturn['additionalInlineLanguageLabelFiles'] as $inlineLanguageLabelFile) {
-                $existing['additionalInlineLanguageLabelFiles'][] = $inlineLanguageLabelFile;
-            }
+        foreach ($childReturn['additionalInlineLanguageLabelFiles'] ?? [] as $inlineLanguageLabelFile) {
+            $existing['additionalInlineLanguageLabelFiles'][] = $inlineLanguageLabelFile;
         }
         if (!empty($childReturn['inlineData'])) {
             $existingInlineData = $existing['inlineData'];
