@@ -19,7 +19,6 @@ The setup check screen
 
 This screen has already been mentioned in the :ref:`Installation chapter <setup-check>`.
 It is mostly useful when setting up the Scheduler, as it indicates
-whether the necessary "\_cli\_scheduler" BE user exist or not and
 whether the CLI script is executable or not. When everything is
 running fine, it contains mostly one useful piece of information: when
 the last run took place, when it ended and whether it was started
@@ -62,17 +61,20 @@ information.
    Main screen of the Scheduler BE module
 
 
-Disabled tasks appear in grayed-out text. A disabled task is a
+Disabled tasks have a gray label sign near the task name. A disabled task is a
 task that will not be run automatically by the command-line script,
 but may still be executed from the BE module.
 
-A late task will appear this way:
+A late task will appear with an orange label sign near the task name:
 
 .. figure:: ../../Images/LateTask.png
    :alt: A late task in the Scheduler main screen
 
    A late task in the main screen of the Scheduler BE module
 
+
+The task list can be sorted by clicking the column label. With every click it
+switches between ascending and descending order of the items of the associated column.
 
 The table at the center of the above screenshot shows the
 following:
@@ -84,38 +86,41 @@ following:
   selected tasks" button. Read more in "Manually executing a task"
   below.
 
-- The second column contains possible actions, mainly editing or
-  deleting a task. The actions will be unavailable for a task that is
-  currently running, as it is unwise to edit or delete it a task in such
-  a case. Instead a running task will display a "stop" button (see
-  "Stopping a task" below).
+- The second column simply displays the id of the task.
 
-- The third column simply displays the id of the task.
-
-- The fourth column contains the name of the task, the extension it is
+- The third column contains the name of the task, the extension it is
   coming from and any additional information specific to the task (for
   example, the e-mail to which the "test" task will send a message or
   the sleep duration of the "sleep" task). It also show a summary of the
   task's status with an icon.
 
-- The fifth column shows whether the task is recurring or will run only
+- The fourth column shows whether the task is recurring or will run only
   a single time.
 
-- The sixth column shows the frequency.
+- The fifth column shows the frequency.
 
-- The seventh columns indicates whether parallel executions are allowed
+- The sixth columns indicates whether parallel executions are allowed
   or not.
 
-- The eighth column shows the last execution time and indicates whether
+- The seventh column shows the last execution time and indicates whether
   the task was launched manually or was run via the command-line script
   (cron).
 
-- The last column shows the planned execution time. If the task is
+- The eighth column shows the planned execution time. If the task is
   overdue, the time will show up in bold, red numbers. A task may have
   no future execution date if it has reached its end date, if it was
   meant to run a single time and that execution is done, or if the task
   is disabled. The next execution time is also hidden for running tasks,
   as this information makes no sense at that point in time.
+
+- The last column contains possible actions, mainly editing, disable or
+  deleting a task. There are also buttons for running the task on the
+  next cron job or run it directly.
+  The actions will be unavailable for a task that is currently running,
+  as it is unwise to edit or delete it a task in such a case. Instead a
+  running task will display a "stop" button (see "Stopping a task" below).
+
+
 
 Note that all dates and times are displayed in the server's time zone.
 The server time appears at the bottom of the screen.

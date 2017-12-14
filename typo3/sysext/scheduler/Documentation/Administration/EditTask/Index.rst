@@ -28,6 +28,12 @@ available by moving the mouse over the field labels):
 - The class selector is available only when adding a new task. The class
   cannot be changed when editing a task, since there's no sense in that.
 
+.. figure:: ../../Images/TaskConfigurationSelectClass.png
+   :alt: Select a class
+
+   Select the class of the scheduled task
+
+
 - A task must have a start date. The end date is not mandatory, though.
   A task without end date will run forever. Dates and times must be
   entered in the server's time zone. The server's time appears at the
@@ -54,7 +60,13 @@ confirmation message.
 .. figure:: ../../Images/InputValidation.png
    :alt: Input validation
 
-   Input validation when adding a new scheduled task or editing an existing one
+   Input validation failed when adding a new scheduled task or editing an existing one
+
+
+.. figure:: ../../Images/InputValidationOk.png
+   :alt: Input validation OK
+
+   Input validation succeeded when adding a new scheduled task or editing an existing one
 
 
 If an error occurs when validating a cron definition, the

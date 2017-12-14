@@ -26,7 +26,7 @@ extension is installed, the following settings are available:
 - **Enable logging** : by default, the Scheduler will write an entry in
   the BE log every time it starts and ends, and also when it skips a
   (denied) parallel execution. This is helpful when setting up a system,
-  but it may end up cluttering the log in the log run. It's possible to
+  but it may end up cluttering the log in the long run. It's possible to
   turn off all logging by unchecking this option.
 
 - **Enable sample tasks** : the Scheduler provides two sample tasks
@@ -35,4 +35,11 @@ extension is installed, the following settings are available:
   little use in real life, so this option makes it possible to turn them
   off. If disabled, they won't appear in the list of available tasks
   anymore.
+
+.. figure:: ../../Images/ExtensionConfiguration.png
+    :alt: Extension configuration
+
+    Configuring the extension settings
+
+
 

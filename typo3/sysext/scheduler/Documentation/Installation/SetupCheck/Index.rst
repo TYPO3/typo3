@@ -20,12 +20,12 @@ installation. It will probably look something like this:
 
    Checking the setup of the Scheduler
 
-The first warning just means that the Scheduler has never run
-yet and can be safely ignored for now. The second message is an error
-and must be addressed. See next section.
+The first message shows a warning that the Scheduler has never run
+yet or an information about the last run.
 
-The third message should normally be okay. If there's an error
+The second message should normally be okay. If there's an error
 instead, it means that permissions to execute TYPO3's command-line
 dispatcher must be checked (this is not strictly related to the
 Scheduler).
 
+The third message shows information about the current server time.

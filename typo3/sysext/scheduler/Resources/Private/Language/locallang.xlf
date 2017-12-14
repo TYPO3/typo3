@@ -271,7 +271,7 @@
 				<source>Please select at least one cache backend.</source>
 			</trans-unit>
 			<trans-unit id="msg.invalidTaskClass">
-				<source>Class %s of the registered task could not be found. You should re-install the extension that provided it or simply delete this task.</source>
+				<source>The class of a registered task could not be found. You should re-install the extension that provided it or simply delete this task.</source>
 			</trans-unit>
 			<trans-unit id="msg.invalidTaskClassEdit">
 				<source>The current class (%s) could not be found. Change it below or consider deleting this task altogether.</source>

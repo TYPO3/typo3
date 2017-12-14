@@ -75,7 +75,7 @@ Follow-up
 ^^^^^^^^^
 
 Whenever a task starts or ends a message is written to TYPO'3 system
-log (viewable in the Admin Tools > Log module). A message is also
+log (viewable in SYSTEM > Log). A message is also
 written when a parallel execution has been blocked. This makes it
 possible to follow what happens, since the main purpose of the
 Scheduler is to run things when nobody is watching.

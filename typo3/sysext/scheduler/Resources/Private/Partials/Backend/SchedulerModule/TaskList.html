@@ -79,7 +79,7 @@
                         <td><span class="t-span">{taskRecord.frequency}</span></td>
                         <td><span class="t-span">{taskRecord.multiple}</span></td>
                         <td><span class="t-span">{taskRecord.lastExecution}</span></td>
-                        <td><span class="t-span">{taskRecord.nextDate}</span></td>
+                        <td><span class="t-span {taskRecord.labels.nextexecution.class}">{taskRecord.nextDate}</span></td>
                         <td class="nowrap"><span class="t-span">
                         <f:if condition="{taskRecord.isRunning}">
                         <f:then>
@@ -139,6 +139,12 @@
 </f:for>
 
 <f:if condition="{missingClasses}">
+    <table class="table table-striped table-hover" style="margin-bottom: -2px;">
+        <tr class="taskGroup" data-task-group-id="0">
+            <td><span><strong><f:translate key="msg.invalidTaskClass" /></strong></span>
+            </td>
+        </tr>
+    </table>
     <table class="table table-striped table-hover">
         <thead>
             <th><span class="t-span"><f:translate key="label.id" /></span></th>
@@ -148,7 +154,7 @@
         <f:for each="{missingClasses}" as="missingClass">
             <tr>
                 <td class="right">{missingClass.uid}</td>
-                <td><span class="label label-danger" style="white-space: normal"><f:translate key="msg.invalidTaskClass" arguments="{0: '{missingClass.class}'}" /></span></td>
+                <td><span class="label label-danger">{missingClass.class}</span></td>
                 <td class="nowrap">
                     <div class="btn-group" role="group">
                         <a data-toggle="tooltip" data-container="body" class="btn btn-default t3js-modal-trigger" href="{moduleUri}&CMD=delete&tx_scheduler[uid]={missingClass.uid}"
