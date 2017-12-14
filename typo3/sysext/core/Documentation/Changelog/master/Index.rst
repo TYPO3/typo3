@@ -1,7 +1,7 @@
 
 .. include:: ../../Includes.txt
 
-master changes
+master Changes
 ==============
 
 **Table of contents**
