@@ -37,7 +37,12 @@ TypoScript through :ts:`config.no_cache = 1` in conjunction with a condition on 
 However, it is better to set a very low cache timeout, or investigate why caching is configured
 wrongly in an extension or plugin.
 
-Also, use the SQL query to quickly check if your installation is even using this option at all.
-If not, it is not necessary to migrate anything.
+Also, use the following SQL query to quickly check if your installation is even using this option at all.
+If not, it is not necessary to migrate anything:
+
+.. code-block:: sql
+
+  SELECT uid,title FROM pages WHERE no_cache = 1
+
 
 .. index:: Database, Frontend, NotScanned
