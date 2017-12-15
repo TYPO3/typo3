@@ -61,6 +61,11 @@ class PageTreeRepository
         't3ver_stage',
         't3ver_tstamp',
         't3ver_move_id',
+        'perms_userid',
+        'perms_user',
+        'perms_groupid',
+        'perms_group',
+        'perms_everybody',
     ];
 
     /**
