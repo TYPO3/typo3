@@ -726,7 +726,7 @@ class AdminPanelView
             $tableArr[] = [$this->extGetLL('info_type'), $tsfe->type];
             $tableArr[] = [$this->extGetLL('info_groupList'), $tsfe->gr_list];
             $tableArr[] = [$this->extGetLL('info_noCache'), $this->extGetLL('info_noCache_' . ($tsfe->no_cache ? 'no' : 'yes'))];
-            $tableArr[] = [$this->extGetLL('info_countUserInt'), count($tsfe->config['INTincScript'])];
+            $tableArr[] = [$this->extGetLL('info_countUserInt'), count($tsfe->config['INTincScript'] ?? [])];
 
             if (!empty($tsfe->fe_user->user['uid'])) {
                 $tableArr[] = [$this->extGetLL('info_feuserName'), htmlspecialchars($tsfe->fe_user->user['username'])];
