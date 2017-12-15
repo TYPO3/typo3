@@ -294,21 +294,21 @@ search.skipExtendToSubpagesChecking
 
 
 
-.. _specconfs-pid:
+.. _specialConfiguration-pid:
 
-specConfs.[pid]
+specialConfiguration.[pid]
 """""""""""""""
 
 .. container:: table-row
 
    Property
-         specConfs.[pid]
+         specialConfiguration.[pid]
 
    Data type
          -
 
    Description
-         "specConfs" is an array of objects with properties that can customize
+         "specialConfiguration" is an array of objects with properties that can customize
          certain behaviours of the display of a result row depending on it's
          position in the rootline. For instance you can define that all results
          which links to pages in a branch from page id 123 should have another
@@ -329,15 +329,15 @@ specConfs.[pid]
 
 
 
-.. _specconfs-pid-pageicon:
+.. _specialConfiguration-pid-pageicon:
 
-specConfs.[pid].pageIcon
+specialConfiguration.[pid].pageIcon
 """"""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         specConfs.[pid].pageIcon
+         specialConfiguration.[pid].pageIcon
 
    Data type
          :ref:`IMAGE cObject <t3tsref:cobj-image>`
@@ -347,15 +347,15 @@ specConfs.[pid].pageIcon
 
 
 
-.. _specconfs-pid-csssuffix:
+.. _specialConfiguration-pid-csssuffix:
 
-specConfs.[pid].CSSsuffix
+specialConfiguration.[pid].CSSsuffix
 """""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         specConfs.[pid].CSSsuffix
+         specialConfiguration.[pid].CSSsuffix
 
    Data type
          string
