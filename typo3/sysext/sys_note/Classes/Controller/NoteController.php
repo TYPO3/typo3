@@ -37,7 +37,6 @@ class NoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      *
      * @param string $pids Single PID or comma separated list of PIDs
      * @return string
-     * @ignorevalidation $pids
      */
     public function listAction($pids)
     {
