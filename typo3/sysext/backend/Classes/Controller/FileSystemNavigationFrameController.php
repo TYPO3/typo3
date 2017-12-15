@@ -102,7 +102,7 @@ class FileSystemNavigationFrameController
         $scopeData = (string)GeneralUtility::_GP('scopeData');
         $scopeHash = (string)GeneralUtility::_GP('scopeHash');
 
-        if (!empty($scopeData) && GeneralUtility::hmac($scopeData) === $scopeHash) {
+        if (!empty($scopeData) && hash_equals(GeneralUtility::hmac($scopeData), $scopeHash)) {
             $this->scopeData = unserialize($scopeData);
         }
 

@@ -103,7 +103,7 @@ abstract class AbstractFormProtection
     public function validateToken($tokenId, $formName, $action = '', $formInstanceName = '')
     {
         $validTokenId = GeneralUtility::hmac(((string)$formName . (string)$action) . (string)$formInstanceName . $this->getSessionToken());
-        if ((string)$tokenId === $validTokenId) {
+        if (hash_equals($validTokenId, (string)$tokenId)) {
             $isValid = true;
         } else {
             $isValid = false;

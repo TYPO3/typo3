@@ -87,6 +87,6 @@ class ImageManipulationWizard
     protected function isSignatureValid(ServerRequestInterface $request)
     {
         $token = GeneralUtility::hmac($request->getQueryParams()['arguments'], 'ajax_wizard_image_manipulation');
-        return $token === $request->getQueryParams()['signature'];
+        return hash_equals($token, $request->getQueryParams()['signature']);
     }
 }

@@ -125,7 +125,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
     public function checkPassword($plainPW, $saltedHashPW)
     {
         $hash = $this->cryptPassword($plainPW, $saltedHashPW);
-        return $hash && \hash_equals($hash, $saltedHashPW);
+        return $hash && hash_equals($hash, $saltedHashPW);
     }
 
     /**

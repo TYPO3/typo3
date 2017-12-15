@@ -65,7 +65,7 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function validateHmac($string, $hmac)
     {
-        return $this->generateHmac($string) === $hmac;
+        return hash_equals($this->generateHmac($string), $hmac);
     }
 
     /**

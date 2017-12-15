@@ -411,7 +411,7 @@ class ColorpickerController extends AbstractWizardController
      */
     protected function areFieldChangeFunctionsValid()
     {
-        return $this->fieldChangeFunc && $this->fieldChangeFuncHash && $this->fieldChangeFuncHash === GeneralUtility::hmac($this->fieldChangeFunc);
+        return $this->fieldChangeFunc && $this->fieldChangeFuncHash && hash_equals(GeneralUtility::hmac($this->fieldChangeFunc), $this->fieldChangeFuncHash);
     }
 
     /**
