@@ -13,7 +13,7 @@ This document describes:
 Client browser support
 ----------------------
 
-The TYPO3 backend is accessed through a web browser. TYPO3 v8
+The TYPO3 backend is accessed through a web browser. TYPO3 v9
 supports the following web browsers:
 
 * Internet Explorer 11 and later
