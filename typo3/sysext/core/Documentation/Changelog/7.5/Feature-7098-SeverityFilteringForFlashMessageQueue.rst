@@ -5,6 +5,8 @@
 Feature: #7098 - Severity-filtering for FlashMessageQueue
 =========================================================
 
+See :issue:`7098`
+
 Description
 ===========
 
