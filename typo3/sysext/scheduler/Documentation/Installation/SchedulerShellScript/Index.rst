@@ -14,12 +14,22 @@ The Scheduler shell script
 
 The Scheduler provides a PHP shell script designed to be run using
 TYPO3's command-line dispatcher. To try and run that script a first
-time, type the following command (adapting the path to PHP and TYPO3
-to match your system):
+time, type the following command (adapting the path to TYPO3
+to match your system and add the full path to the php interpreter
+in front of the command if php is not on the search path):
 
 ::
 
-   /usr/local/bin/php /home/bob/www/typo3/cli_dispatch.phpsh scheduler
+   /home/user/www/typo3/sysext/core/bin/typo3 scheduler:run
+   /usr/local/bin/php /home/user/www/typo3/sysext/core/bin/typo3 scheduler:run
+
+If your installation is a composer based instance you can use this command line
+in your installation directory:
+
+::
+
+   bin/typo3 scheduler:run
+   /usr/local/bin/php bin/typo3 scheduler:run
 
 
 .. _options:
@@ -34,7 +44,7 @@ To run a specific scheduler task you need to provide the uid of the task:
 
 ::
 
-   /usr/local/bin/php /home/bob/www/typo3/cli_dispatch.phpsh scheduler --task=8
+   /home/user/www/typo3/sysext/core/bin/typo3 scheduler:run --task=8
 
 The example will trigger the task with uid 8.
 
@@ -42,6 +52,6 @@ To run a task even if it is disabled, you need to provide the force option
 
 ::
 
-   /usr/local/bin/php /home/bob/www/typo3/cli_dispatch.phpsh scheduler --task=8 -f
+   /home/user/www/typo3/sysext/core/bin/typo3 scheduler:run --task=8 -f
 
 This will also run the task with uid 8 if it is disabled.

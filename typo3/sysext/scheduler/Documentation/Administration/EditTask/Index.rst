@@ -57,7 +57,12 @@ confirmation message.
    Input validation when adding a new scheduled task or editing an existing one
 
 
+.. figure:: ../../Images/InputValidationOk.png
+  :alt: Input validation OK
+
+  Input validation succeeded when adding a new scheduled task or editing an existing one
+
+
 If an error occurs when validating a cron definition, the
 Scheduler's built-in cron parser tries to provide an explanation about
 what's wrong.
-

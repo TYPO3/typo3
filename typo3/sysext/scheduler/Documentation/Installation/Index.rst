@@ -20,8 +20,6 @@ Installation
 
    Installing/Index
    SetupCheck/Index
-   SchedulerUser/Index
    SchedulerShellScript/Index
    CronJob/Index
    BaseTasks/Index
-

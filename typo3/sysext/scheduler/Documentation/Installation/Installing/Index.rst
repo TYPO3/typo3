@@ -36,3 +36,7 @@ extension is installed, the following settings are available:
   off. If disabled, they won't appear in the list of available tasks
   anymore.
 
+.. figure:: ../../Images/ExtensionConfiguration.png
+    :alt: Extension configuration
+
+    Configuring the extension settings
