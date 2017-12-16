@@ -10,24 +10,24 @@ See :issue:`73442`
 Description
 ===========
 
-The method :js:`Modal.getSeverityClass` has been moved to :js:`Severity.getCssClass`. :js:`Modal.getSeverityClass` has been marked as deprecated.
+The method :javascript:`Modal.getSeverityClass` has been moved to :javascript:`Severity.getCssClass`. :javascript:`Modal.getSeverityClass` has been marked as deprecated.
 
 
 Impact
 ======
 
-Calling :js:`Modal.getSeverityClass` will trigger a console warning in the browser.
+Calling :javascript:`Modal.getSeverityClass` will trigger a console warning in the browser.
 
 
 Affected Installations
 ======================
 
-All 3rd party extensions using :js:`Modal.getSeverityClass` are affected.
+All 3rd party extensions using :javascript:`Modal.getSeverityClass` are affected.
 
 
 Migration
 =========
 
-Change the calls to :js:`Severity.getCssClass(severity)`.
+Change the calls to :javascript:`Severity.getCssClass(severity)`.
 
 .. index:: JavaScript, Backend

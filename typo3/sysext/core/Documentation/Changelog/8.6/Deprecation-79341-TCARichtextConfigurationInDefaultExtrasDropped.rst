@@ -14,6 +14,7 @@ Enabling richtext rendering for fields in the Backend record editor has been sim
 In the past, a typical :php:`TCA` configuration of a richtext field looked like:
 
 .. code-block:: php
+
     'columns' => [
         'content' => [
             'config' => [
@@ -26,6 +27,7 @@ In the past, a typical :php:`TCA` configuration of a richtext field looked like:
 The :php:`defaultExtras` is obsolete and substituted with :php:`enableRichtext` within the :php:`config` section:
 
 .. code-block:: php
+
     'columns' => [
         'content' => [
             'config' => [
@@ -39,6 +41,7 @@ The :php:`defaultExtras` is obsolete and substituted with :php:`enableRichtext` 
 If the RTE was enabled for a specific type only, it looked like this:
 
 .. code-block:: php
+
     'columns' => [
         'content' => [
             'config' => [

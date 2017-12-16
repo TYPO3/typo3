@@ -41,7 +41,7 @@ Move the following references to the new location of the language file:
 * lang/locallang_csh_sysfilem.xlf -> lang/Resources/Private/Language/locallang_csh_sysfilem.xlf
 * lang/locallang_csh_syslang.xlf -> lang/Resources/Private/Language/locallang_csh_syslang.xlf
 * lang/locallang_csh_sysnews.xlf -> lang/Resources/Private/Language/locallang_csh_sysnews.xlf
-* lang/locallang_csh_web_func.xlf -> lang/Resources/Private/Language/locallang_csh_web_func.xlf
+* lang/locallang_csh_web_func.xlf -> func/Resources/Private/Language/locallang_csh_web_func.xlf
 * lang/locallang_csh_web_info.xlf -> lang/Resources/Private/Language/locallang_csh_web_info.xlf
 * lang/locallang_general.xlf -> lang/Resources/Private/Language/locallang_general.xlf
 * lang/locallang_login.xlf -> lang/Resources/Private/Language/locallang_login.xlf
@@ -55,7 +55,7 @@ Move the following references to the new location of the language file:
 * lang/locallang_mod_system.xlf -> lang/Resources/Private/Language/locallang_mod_system.xlf
 * lang/locallang_mod_usertools.xlf -> lang/Resources/Private/Language/locallang_mod_usertools.xlf
 * lang/locallang_mod_user_ws.xlf -> lang/Resources/Private/Language/locallang_mod_user_ws.xlf
-* lang/locallang_mod_web_func.xlf -> lang/Resources/Private/Language/locallang_mod_web_func.xlf
+* lang/locallang_mod_web_func.xlf -> func/Resources/Private/Language/locallang_mod_web_func.xlf
 * lang/locallang_mod_web_info.xlf -> lang/Resources/Private/Language/locallang_mod_web_info.xlf
 * lang/locallang_mod_web_list.xlf -> lang/Resources/Private/Language/locallang_mod_web_list.xlf
 * lang/locallang_mod_web.xlf -> lang/Resources/Private/Language/locallang_mod_web.xlf

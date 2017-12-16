@@ -10,13 +10,13 @@ See :issue:`75386`
 Description
 ===========
 
-The callback of :js:`Wizard.addSlide()` now has a new parameter `identifier`.
+The callback of :javascript:`Wizard.addSlide()` now has a new parameter `identifier`.
 
 
 Impact
 ======
 
-The identifier is passed to the callback function of :js:`Wizard.addSlide()`.
+The identifier is passed to the callback function of :javascript:`Wizard.addSlide()`.
 
 Example code:
 

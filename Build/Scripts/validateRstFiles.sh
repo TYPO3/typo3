@@ -15,12 +15,11 @@ COUNT=0
 for i in `find typo3/sysext/core/Documentation/Changelog -name "*.rst" -type f`; do
     if [[ "${i}" != "${i%.${EXT}}" && ! $i =~ 'Index.rst' &&  ! $i =~ 'Howto.rst' ]];then
 
-
         fileContent=$(cat $i);
         outputFileToStream=0;
 
-# This regex needs to allow whitespace and/or newlines before the .. include:: ../../Includes.txt
-# The regex itself is correct, bash doesn't like it
+        # This regex needs to allow whitespace and/or newlines before the .. include:: ../../Includes.txt
+        # The regex itself is correct, bash doesn't like it
         if ! [[ "$fileContent" =~ ^[[:space:]]*'.. include:: ../../Includes.txt' ]]; then
             INCLUDE="no include"
             include_message="insert '.. include:: ../../Includes.txt' in first line of the file"
@@ -29,8 +28,8 @@ for i in `find typo3/sysext/core/Documentation/Changelog -name "*.rst" -type f`;
             INCLUDE=""
         fi
 
-# This regex seems to have problems with the backtick characters.
-# Maybe this is because it somehow interprets them from the variable $fileContent
+        # This regex seems to have problems with the backtick characters.
+        # Maybe this is because it somehow interprets them from the variable $fileContent
         if ! [[ "$fileContent" =~ 'See :issue:'\`([0-9]{4,6})\` ]]; then
             REFERENCE="no reference"
             reference_message="insert 'See :issue:\`<issuenumber>\`' after headline"
@@ -39,15 +38,23 @@ for i in `find typo3/sysext/core/Documentation/Changelog -name "*.rst" -type f`;
             REFERENCE=""
         fi
 
-# This regex needs to check that the ..index:: line a) holds valid content and b) is
-# the last line in the checked file
+        # This regex needs to check that the ..index:: line a) holds valid content and b) is
+        # the last line in the checked file
+        INDEX=""
         if ! [[ "$i" =~ (Changelog\/7\.[0-99]+\/|Changelog\/7\.6\.x\/) ]]; then
-            if ! [[ "$fileContent" =~ '.. index:: '((TypoScript|TSConfig|TCA|FlexForm|LocalConfiguration|Fluid|FAL|Database|JavaScript|PHP-API|Frontend|Backend|CLI|RTE|ext:([a-z|A-Z|_|0-9]*))([,|[:space:]]{2})?)+$ ]]; then
+            if ! [[ "$fileContent" =~ '.. index:: '((FullyScanned|PartiallyScanned|NotScanned|TypoScript|TSConfig|TCA|FlexForm|LocalConfiguration|Fluid|FAL|Database|JavaScript|PHP-API|Frontend|Backend|CLI|RTE|ext:([a-z|A-Z|_|0-9]*))([,|[:space:]]{2})?)+$ ]]; then
                 INDEX="no or wrong index"
                 index_message="insert '.. index:: <at least one valid keyword>' at last line of the file. See Build/Scripts/validateRstFiles.sh for allowed keywords"
                 outputFileToStream=1;
-            else
-                INDEX=""
+            fi
+        fi
+
+        # All Deprecation- / Breaking- files since v9 must have one of the tags FullyScanned|PartiallyScanned|NotScanned
+        if ! [[ "$i" =~ (Changelog\/8\.[0-99]+\/|Changelog\/7\.[0-99]+\/|Changelog\/7\.6\.x\/|Changelog\/master\/Feature-|Changelog\/master\/Important-|Changelog\/[0-99]+\.[0-99]+\/Feature-|Changelog\/[0-99]+\.[0-99]+\/Important-) ]]; then
+            if ! [[ "$fileContent" =~ ('.. index:: '.*(FullyScanned|PartiallyScanned|NotScanned)+.*) ]]; then
+                INDEX="missing FullyScanned / PartiallyScanned / NotScanned tag"
+                index_message="insert '.. index:: <at least one valid keyword and either FullyScanned, PartiallyScanned or NotScanned>' at last line of the file. See Build/Scripts/validateRstFiles.sh for allowed keywords"
+                outputFileToStream=1;
             fi
         fi
 

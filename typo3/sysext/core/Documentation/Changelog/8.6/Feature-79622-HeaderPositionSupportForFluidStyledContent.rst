@@ -28,6 +28,7 @@ Default      (empty)      (No CSS Class added)
 Center       center       ce-headline-center
 Right        right        ce-headline-right
 Left         left         ce-headline-left
+==========   ==========   ====================
 
 
 Implementation Example
