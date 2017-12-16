@@ -75,7 +75,6 @@ return PhpCsFixer\Config::create()
         'lowercase_cast' => true,
         'no_leading_namespace_whitespace' => true,
         'native_function_casing' => true,
-        'self_accessor' => true,
         'no_short_bool_cast' => true,
         'no_unneeded_control_parentheses' => true,
         'phpdoc_no_empty_return' => true,
