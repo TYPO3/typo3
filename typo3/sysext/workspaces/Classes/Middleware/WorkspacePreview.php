@@ -23,8 +23,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Stream;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Workspaces\Authentication\PreviewUserAuthentication;
 
@@ -121,20 +121,22 @@ class WorkspacePreview implements MiddlewareInterface
      */
     protected function getLogoutTemplateMessage(string $returnUrl = ''): string
     {
+        $returnUrl = GeneralUtility::sanitizeLocalUrl($returnUrl);
+        $returnUrl = $this->removePreviewParameterFromUrl($returnUrl);
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate']) {
             $templateFile = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate']);
             if (@is_file($templateFile)) {
                 $message = file_get_contents($templateFile);
             } else {
-                $message = '<strong>ERROR!</strong><br>Template File "'
-                    . $GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate']
-                    . '" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.';
+                $message = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:previewLogoutError');
+                $message = htmlspecialchars($message);
+                $message = sprintf($message, '<strong>', '</strong><br>', $templateFile);
             }
         } else {
-            $message = 'You logged out from Workspace preview mode. Click this link to <a href="%1$s">go back to the website</a>';
+            $message = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:previewLogoutSuccess');
+            $message = htmlspecialchars($message);
+            $message = sprintf($message, '<a href="' . htmlspecialchars($returnUrl) . '">', '</a>');
         }
-        $returnUrl = GeneralUtility::sanitizeLocalUrl($returnUrl);
-        $returnUrl = $this->removePreviewParameterFromUrl($returnUrl);
         return sprintf($message, htmlspecialchars($returnUrl));
     }
 
@@ -154,7 +156,7 @@ class WorkspacePreview implements MiddlewareInterface
      * @return array Preview configuration array from sys_preview record.
      * @throws \Exception
      */
-    protected function getPreviewConfigurationFromRequest(ServerRequestInterface $request, string $inputCode)
+    protected function getPreviewConfigurationFromRequest(ServerRequestInterface $request, string $inputCode): array
     {
         $previewData = $this->getPreviewData($inputCode);
         if (!is_array($previewData)) {
@@ -285,16 +287,15 @@ class WorkspacePreview implements MiddlewareInterface
                     $currentWorkspaceId ?? -99
                 );
             } else {
-                $text = LocalizationUtility::translate(
-                    'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:previewText',
-                    'workspaces',
-                    [$currentWorkspaceTitle, $currentWorkspaceId ?? -99]
-                );
+                $text = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:previewText');
                 $text = htmlspecialchars($text);
+                $text = sprintf($text, $currentWorkspaceTitle, $currentWorkspaceId ?? -99);
+                $stopPreviewText = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stopPreview');
+                $stopPreviewText = htmlspecialchars($stopPreviewText);
                 if ($GLOBALS['BE_USER'] instanceof PreviewUserAuthentication) {
                     $url = $this->removePreviewParameterFromUrl($normalizedParams->getRequestUri());
                     $urlForStoppingPreview = $normalizedParams->getSiteUrl() . 'index.php?returnUrl=' . rawurlencode($url) . '&ADMCMD_prev=LOGOUT';
-                    $text .= '<br><a style="color: #000; pointer-events: visible;" href="' . htmlspecialchars($urlForStoppingPreview) . '">Stop preview</a>';
+                    $text .= '<br><a style="color: #000; pointer-events: visible;" href="' . htmlspecialchars($urlForStoppingPreview) . '">' . $stopPreviewText . '</a>';
                 }
                 $styles = [];
                 $styles[] = 'position: fixed';
@@ -351,5 +352,13 @@ class WorkspacePreview implements MiddlewareInterface
     protected function removePreviewParameterFromUrl(string $url): string
     {
         return (string)preg_replace('/\\&?' . $this->previewKey . '=[[:alnum:]]+/', '', $url);
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'] ?: GeneralUtility::makeInstance(LanguageService::class);
     }
 }

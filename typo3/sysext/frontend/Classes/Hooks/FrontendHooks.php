@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Frontend\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 /**
- * Uses frontend hooks to show preview informations
+ * Uses frontend hooks to show preview information
  */
 class FrontendHooks
 {
@@ -24,7 +27,7 @@ class FrontendHooks
      * in the LIVE workspace
      *
      * @param array $params
-     * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $pObj
+     * @param TypoScriptFrontendController $pObj
      * @return string
      */
     public function hook_previewInfo($params, $pObj)
@@ -35,6 +38,7 @@ class FrontendHooks
         if ($pObj->config['config']['message_preview']) {
             $message = $pObj->config['config']['message_preview'];
         } else {
+            $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tsfe.xlf:preview');
             $styles = [];
             $styles[] = 'position: fixed';
             $styles[] = 'top: 15px';
@@ -48,11 +52,19 @@ class FrontendHooks
             $styles[] = 'color: #856404';
             $styles[] = 'z-index: 20000';
             $styles[] = 'user-select: none';
-            $styles[] = 'pointer-events:none';
+            $styles[] = 'pointer-events: none';
             $styles[] = 'text-align: center';
             $styles[] = 'border-radius: 2px';
-            $message = '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">PREVIEW</div>';
+            $message = '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">' . htmlspecialchars($label) . '</div>';
         }
         return $message;
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

@@ -30,6 +30,15 @@
 			<trans-unit id="previewText">
 				<source>Preview of workspace %s (%s)</source>
 			</trans-unit>
+			<trans-unit id="stopPreview">
+				<source>Stop preview</source>
+			</trans-unit>
+			<trans-unit id="previewLogoutSuccess">
+				<source>You logged out from Workspace preview mode. Click this link to %1$s go back to the website%2$s</source>
+			</trans-unit>
+			<trans-unit id="previewLogoutError">
+				<source>%1$sERROR!%2$sTemplate File "%3$s" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
