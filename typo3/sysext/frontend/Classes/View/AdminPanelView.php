@@ -405,7 +405,7 @@ class AdminPanelView
      *
      * @param string $key Current key
      * @param array $val Current value
-     * @return string Hidden fields
+     * @return string Hidden fields HTML-code
      * @see display()
      */
     protected function getHiddenFields($key, array $val)
@@ -439,21 +439,21 @@ class AdminPanelView
             $output[] = '<div class="typo3-adminPanel-form-group">';
             $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
             $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[preview_showHiddenPages]" value="0" />';
-            $output[] = '    <label for="' . htmlspecialchars('preview_showHiddenPages') . '">';
+            $output[] = '    <label for="preview_showHiddenPages">';
             $output[] = '      <input type="checkbox" id="preview_showHiddenPages" name="TSFE_ADMIN_PANEL[preview_showHiddenPages]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['preview_showHiddenPages'] ? ' checked="checked"' : '') . ' />';
             $output[] = '      ' . $this->extGetLL('preview_showHiddenPages');
             $output[] = '    </label>';
             $output[] = '  </div>';
             $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
             $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]" value="0" />';
-            $output[] = '    <label for="' . htmlspecialchars('preview_showHiddenRecords') . '">';
+            $output[] = '    <label for="preview_showHiddenRecords">';
             $output[] = '      <input type="checkbox" id="preview_showHiddenRecords" name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['preview_showHiddenRecords'] ? ' checked="checked"' : '') . ' />';
             $output[] = '      ' . $this->extGetLL('preview_showHiddenRecords');
             $output[] = '    </label>';
             $output[] = '  </div>';
             $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
             $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[preview_showFluidDebug]" value="0" />';
-            $output[] = '    <label for="' . htmlspecialchars('preview_showFluidDebug') . '">';
+            $output[] = '    <label for="preview_showFluidDebug">';
             $output[] = '      <input type="checkbox" id="preview_showFluidDebug" name="TSFE_ADMIN_PANEL[preview_showFluidDebug]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['preview_showFluidDebug'] ? ' checked="checked"' : '') . ' />';
             $output[] = '      ' . $this->extGetLL('preview_showFluidDebug');
             $output[] = '    </label>';
@@ -462,12 +462,12 @@ class AdminPanelView
 
             // Simulate date
             $output[] = '<div class="typo3-adminPanel-form-group">';
-            $output[] = '  <label for="' . htmlspecialchars('preview_simulateDate') . '">';
+            $output[] = '  <label for="preview_simulateDate">';
             $output[] = '    ' . $this->extGetLL('preview_simulateDate');
             $output[] = '  </label>';
-            $output[] = '  <input type="text" id="preview_simulateDate" name="TSFE_ADMIN_PANEL[preview_simulateDate]_hr" onchange="TSFEtypo3FormFieldGet(\'TSFE_ADMIN_PANEL[preview_simulateDate]\', \'datetime\', \'\', 1,0);" />';
+            $output[] = '  <input type="text" id="preview_simulateDate" name="TSFE_ADMIN_PANEL[preview_simulateDate]_hr" onchange="TSFEtypo3FormFieldGet(' . GeneralUtility::quoteJSvalue('TSFE_ADMIN_PANEL[preview_simulateDate]') . ', "datetime", "", 1,0);" />';
             // the hidden field must be placed after the _hr field to avoid the timestamp being overridden by the date string
-            $output[] = '  <input type="hidden" name="TSFE_ADMIN_PANEL[preview_simulateDate]" value="' . $this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateDate'] . '" />';
+            $output[] = '  <input type="hidden" name="TSFE_ADMIN_PANEL[preview_simulateDate]" value="' . htmlspecialchars($this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateDate']) . '" />';
             $output[] = '</div>';
             $this->extJSCODE .= 'TSFEtypo3FormFieldSet("TSFE_ADMIN_PANEL[preview_simulateDate]", "datetime", "", 0, 0);';
 
@@ -497,7 +497,7 @@ class AdminPanelView
                     ->orderBy('fe_groups.title')
                     ->execute();
                 $output[] = '<div class="typo3-adminPanel-form-group">';
-                $output[] = '  <label for="' . htmlspecialchars('preview_simulateUserGroup') . '">';
+                $output[] = '  <label for="preview_simulateUserGroup">';
                 $output[] = '    ' . $this->extGetLL('preview_simulateUserGroup');
                 $output[] = '  </label>';
                 $output[] = '  <select id="preview_simulateUserGroup" name="TSFE_ADMIN_PANEL[preview_simulateUserGroup]">';
@@ -530,7 +530,7 @@ class AdminPanelView
             $output[] = '<div class="typo3-adminPanel-form-group">';
             $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
             $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[cache_noCache]" value="0" />';
-            $output[] = '    <label for="' . htmlspecialchars('cache_noCache') . '">';
+            $output[] = '    <label for="cache_noCache">';
             $output[] = '      <input type="checkbox" id="cache_noCache" name="TSFE_ADMIN_PANEL[cache_noCache]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['cache_noCache'] ? ' checked="checked"' : '') . ' />';
             $output[] = '      ' . $this->extGetLL('cache_noCache');
             $output[] = '    </label>';
@@ -539,7 +539,7 @@ class AdminPanelView
 
             $levels = $beUser->uc['TSFE_adminConfig']['cache_clearCacheLevels'];
             $output[] = '<div class="typo3-adminPanel-form-group">';
-            $output[] = '  <label for="' . htmlspecialchars('cache_clearCacheLevels') . '">';
+            $output[] = '  <label for="cache_clearCacheLevels">';
             $output[] = '    ' . $this->extGetLL('cache_clearLevels');
             $output[] = '  </label>';
             $output[] = '  <select id="cache_clearCacheLevels" name="TSFE_ADMIN_PANEL[cache_clearCacheLevels]">';
@@ -556,7 +556,7 @@ class AdminPanelView
             $output[] = '</div>';
 
             $output[] = '<div class="typo3-adminPanel-form-group">';
-            $output[] = '  <input type="hidden" name="TSFE_ADMIN_PANEL[cache_clearCacheId]" value="' . $GLOBALS['TSFE']->id . '" />';
+            $output[] = '  <input type="hidden" name="TSFE_ADMIN_PANEL[cache_clearCacheId]" value="' . (int)$GLOBALS['TSFE']->id . '" />';
             $output[] = '  <input class="typo3-adminPanel-btn typo3-adminPanel-btn-default" type="submit" value="' . $this->extGetLL('update') . '" />';
             $output[] = '</div>';
 
@@ -624,14 +624,14 @@ class AdminPanelView
                 $output[] = '<div class="typo3-adminPanel-form-group">';
                 $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
                 $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="0" />';
-                $output[] = '    <label for="' . htmlspecialchars('edit_displayFieldIcons') . '">';
+                $output[] = '    <label for="edit_displayFieldIcons">';
                 $output[] = '      <input type="checkbox" id="edit_displayFieldIcons" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['edit_displayFieldIcons'] ? ' checked="checked"' : '') . ' />';
                 $output[] = '      ' . $this->extGetLL('edit_displayFieldIcons');
                 $output[] = '    </label>';
                 $output[] = '  </div>';
                 $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
                 $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="0" />';
-                $output[] = '    <label for="' . htmlspecialchars('edit_displayIcons') . '">';
+                $output[] = '    <label for="edit_displayIcons">';
                 $output[] = '      <input type="checkbox" id="edit_displayIcons" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['edit_displayIcons'] ? ' checked="checked"' : '') . ' />';
                 $output[] = '      ' . $this->extGetLL('edit_displayIcons');
                 $output[] = '    </label>';
@@ -651,7 +651,7 @@ class AdminPanelView
                         parent.opener.top.goToModule("' . $pageModule . '");
                         parent.opener.top.focus();
                     } else {
-                        vHWin=window.open(' . GeneralUtility::quoteJSvalue(BackendUtility::getBackendScript()) . ',\'' . md5('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '\');
+                        vHWin=window.open(' . GeneralUtility::quoteJSvalue(BackendUtility::getBackendScript()) . ',' . GeneralUtility::quoteJSvalue(md5('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])) . ');
                         vHWin.focus();
                     }
                     return false;
@@ -682,42 +682,42 @@ class AdminPanelView
             $output[] = '<div class="typo3-adminPanel-form-group">';
             $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
             $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="0" />';
-            $output[] = '    <label for="' . htmlspecialchars('tsdebug_tree') . '">';
+            $output[] = '    <label for="tsdebug_tree">';
             $output[] = '      <input type="checkbox" id="tsdebug_tree" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['tsdebug_tree'] ? ' checked="checked"' : '') . ' />';
             $output[] = '      ' . $this->extGetLL('tsdebug_tree');
             $output[] = '    </label>';
             $output[] = '  </div>';
             $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
             $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="0" />';
-            $output[] = '    <label for="' . htmlspecialchars('tsdebug_displayTimes') . '">';
+            $output[] = '    <label for="tsdebug_displayTimes">';
             $output[] = '      <input type="checkbox" id="tsdebug_displayTimes" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['tsdebug_displayTimes'] ? ' checked="checked"' : '') . ' />';
             $output[] = '      ' . $this->extGetLL('tsdebug_displayTimes');
             $output[] = '    </label>';
             $output[] = '  </div>';
             $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
             $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="0" />';
-            $output[] = '    <label for="' . htmlspecialchars('tsdebug_displayMessages') . '">';
+            $output[] = '    <label for="tsdebug_displayMessages">';
             $output[] = '      <input type="checkbox" id="tsdebug_displayMessages" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['tsdebug_displayMessages'] ? ' checked="checked"' : '') . ' />';
             $output[] = '      ' . $this->extGetLL('tsdebug_displayMessages');
             $output[] = '    </label>';
             $output[] = '  </div>';
             $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
             $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="0" />';
-            $output[] = '    <label for="' . htmlspecialchars('tsdebug_LR') . '">';
+            $output[] = '    <label for="tsdebug_LR">';
             $output[] = '      <input type="checkbox" id="tsdebug_LR" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['tsdebug_LR'] ? ' checked="checked"' : '') . ' />';
             $output[] = '      ' . $this->extGetLL('tsdebug_LR');
             $output[] = '    </label>';
             $output[] = '  </div>';
             $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
             $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="0" />';
-            $output[] = '    <label for="' . htmlspecialchars('tsdebug_displayContent') . '">';
+            $output[] = '    <label for="tsdebug_displayContent">';
             $output[] = '      <input type="checkbox" id="tsdebug_displayContent" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['tsdebug_displayContent'] ? ' checked="checked"' : '') . ' />';
             $output[] = '      ' . $this->extGetLL('tsdebug_displayContent');
             $output[] = '    </label>';
             $output[] = '  </div>';
             $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
             $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="0" />';
-            $output[] = '    <label for="' . htmlspecialchars('tsdebug_forceTemplateParsing') . '">';
+            $output[] = '    <label for="tsdebug_forceTemplateParsing">';
             $output[] = '      <input type="checkbox" id="tsdebug_forceTemplateParsing" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['tsdebug_forceTemplateParsing'] ? ' checked="checked"' : '') . ' />';
             $output[] = '      ' . $this->extGetLL('tsdebug_forceTemplateParsing');
             $output[] = '    </label>';
@@ -737,7 +737,7 @@ class AdminPanelView
     /**
      * Creates the content for the "info" section ("module") of the Admin Panel
      *
-     * @return string HTML content for the section. Consists of a string with table-rows with four columns.
+     * @return string HTML content for the section. Consists of a string with table-rows with two columns.
      * @see display()
      */
     protected function getInfoModule()
@@ -745,6 +745,10 @@ class AdminPanelView
         $output = [];
         $tsfe = $this->getTypoScriptFrontendController();
         if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_info']) {
+            // rows stored in tableArr consist of these columns:
+            // 0: label (already html-escaped!)
+            // 1: value (already html-escaped!)
+            // 2: bool (default: false) whether to show column 0 in <strong>-tags
             $tableArr = [];
             if ($this->extGetFeAdminValue('cache', 'noCache')) {
                 $theBytes = 0;
@@ -753,7 +757,7 @@ class AdminPanelView
                     $tableArr[] = [$this->extGetLL('info_imagesOnPage'), count($tsfe->imagesOnPage), true];
                     foreach ($GLOBALS['TSFE']->imagesOnPage as $file) {
                         $fs = @filesize($file);
-                        $tableArr[] = [TAB . $file, GeneralUtility::formatSize($fs)];
+                        $tableArr[] = [TAB . htmlspecialchars($file), GeneralUtility::formatSize($fs)];
                         $theBytes += $fs;
                         $count++;
                     }
@@ -763,9 +767,9 @@ class AdminPanelView
                 $tableArr[] = [$this->extGetLL('info_DocumentSize'), GeneralUtility::formatSize(strlen($tsfe->content)), true];
                 $tableArr[] = ['', ''];
             }
-            $tableArr[] = [$this->extGetLL('info_id'), $tsfe->id];
-            $tableArr[] = [$this->extGetLL('info_type'), $tsfe->type];
-            $tableArr[] = [$this->extGetLL('info_groupList'), $tsfe->gr_list];
+            $tableArr[] = [$this->extGetLL('info_id'), (int)$tsfe->id];
+            $tableArr[] = [$this->extGetLL('info_type'), (int)$tsfe->type];
+            $tableArr[] = [$this->extGetLL('info_groupList'), htmlspecialchars($tsfe->gr_list)];
             $tableArr[] = [$this->extGetLL('info_noCache'), $this->extGetLL('info_noCache_' . ($tsfe->no_cache ? 'no' : 'yes'))];
             $tableArr[] = [$this->extGetLL('info_countUserInt'), count($tsfe->config['INTincScript'] ?? [])];
 
@@ -774,15 +778,18 @@ class AdminPanelView
                 $tableArr[] = [$this->extGetLL('info_feuserId'), htmlspecialchars($tsfe->fe_user->user['uid'])];
             }
 
-            $tableArr[] = [$this->extGetLL('info_totalParsetime'), $this->getTimeTracker()->getParseTime() . ' ms', true];
+            $tableArr[] = [$this->extGetLL('info_totalParsetime'), htmlspecialchars($this->getTimeTracker()->getParseTime() . ' ms'), true];
             $table = '';
             foreach ($tableArr as $key => $arr) {
-                $label = (isset($arr[2]) ? '<strong>' . $arr[0] . '</strong>' : $arr[0]);
+                $label = !empty($arr[2]) ? '<strong>' . $arr[0] . '</strong>' : $arr[0];
                 $value = (string)$arr[1] !== '' ? $arr[1] : '';
+                // the "weird" construct here is intentional.
+                // reasoning: we ALWAYS encode when giving things to the view.
+                // But in this case $label and $value come in encoded, hence the double function call.
                 $table .= '
                     <tr>
-                        <td>' . $label . '</td>
-                        <td>' . htmlspecialchars($value) . '</td>
+                        <td>' . htmlspecialchars(htmlspecialchars_decode($label)) . '</td>
+                        <td>' . htmlspecialchars(htmlspecialchars_decode($value)) . '</td>
                     </tr>';
             }
 
@@ -817,7 +824,7 @@ class AdminPanelView
      * Wraps a string in a link which will open/close a certain part of the Admin Panel
      *
      * @param string $sectionSuffix The code for the display_ label/key
-     * @param string $sectionTitle Title (in HTML-format)
+     * @param string $sectionTitle Title (HTML-escaped)
      * @param string $className The classname for the <a> tag
      * @return string $className Linked input string
      * @see extGetHead()
@@ -831,7 +838,7 @@ class AdminPanelView
         $output[] = '<a href="javascript:void(0)" onclick="' . htmlspecialchars($onclick) . '">';
         $output[] = '  ' . $sectionTitle;
         $output[] = '</a>';
-        $output[] = '<input type="hidden" name="TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']" value="' . $this->isAdminModuleOpen($sectionSuffix) . '" />';
+        $output[] = '<input type="hidden" name="TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']" value="' . (int)$this->isAdminModuleOpen($sectionSuffix) . '" />';
 
         return  implode('', $output);
     }
@@ -843,18 +850,18 @@ class AdminPanelView
      * @param string $title Key to label
      * @param string $content The HTML content for the forth table cell.
      * @param string $checkbox The HTML for a checkbox or hidden fields.
-     * @param string  $innerDivClass The Class attribute for the td element.
-     * @param string  $outerDivClass The Class attribute for the tr element.
+     * @param string $innerDivClass The Class attribute for the td element.
+     * @param string $outerDivClass The Class attribute for the tr element.
      * @return string HTML table row.
      * @see extGetHead()
      */
     public function extGetItem($title, $content = '', $checkbox = '', $outerDivClass = null, $innerDivClass = null)
     {
         $title = $title ? '<label for="' . htmlspecialchars($title) . '">' . $this->extGetLL($title) . '</label>' : '';
-        $outerDivClass === null ? $out = '<div>' : $out = '<div class="' . $outerDivClass . '">';
-        $innerDivClass === null ? $out .= '<div>' : $out .= '<div class="' . $innerDivClass . '">';
-        $out .= $checkbox . $title . $content . '</div>
-				</div>';
+        $out = '';
+        $out .= (string)$outerDivClass ? '<div class="' . htmlspecialchars($outerDivClass) . '">' : '<div>';
+        $out .= (string)$innerDivClass ? '<div class="' . htmlspecialchars($innerDivClass) . '">' : '<div>';
+        $out .= $checkbox . $title . $content . '</div></div>';
         return $out;
     }
 
