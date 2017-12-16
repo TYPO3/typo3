@@ -556,7 +556,7 @@ class RelationHandler
             // Default
             $uidLocal_field = 'uid_local';
             $uidForeign_field = 'uid_foreign';
-            $sorting_field = $tableName === 'sys_file_reference' ? '' : 'sorting';
+            $sorting_field = 'sorting';
         }
         if ($this->MM_table_where) {
             $queryBuilder->andWhere(
@@ -574,9 +574,7 @@ class RelationHandler
                 $queryBuilder->createNamedParameter((int)$uid, \PDO::PARAM_INT)
             )
         );
-        if (!empty($sorting_field)) {
-            $queryBuilder->orderBy($sorting_field);
-        }
+        $queryBuilder->orderBy($sorting_field);
         $statement = $queryBuilder->execute();
         while ($row = $statement->fetch()) {
             // Default
@@ -618,7 +616,7 @@ class RelationHandler
             // default
             $uidLocal_field = 'uid_local';
             $uidForeign_field = 'uid_foreign';
-            $sorting_field = $MM_tableName === 'sys_file_reference' ? '' : 'sorting';
+            $sorting_field = 'sorting';
         }
         // If there are tables...
         $tableC = count($this->tableArray);
@@ -654,10 +652,9 @@ class RelationHandler
                 ->where($queryBuilder->expr()->eq(
                     $uidLocal_field,
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                ));
-            if (!empty($sorting_field)) {
-                $queryBuilder->orderBy($sorting_field);
-            }
+                ))
+                ->orderBy($sorting_field);
+
             if ($prep) {
                 $queryBuilder->addSelect('tablenames');
             }
@@ -754,9 +751,7 @@ class RelationHandler
                     $insertFields = $this->MM_insert_fields;
                     $insertFields[$uidLocal_field] = $uid;
                     $insertFields[$uidForeign_field] = $val['id'];
-                    if (!empty($sorting_field)) {
-                        $insertFields[$sorting_field] = $c;
-                    }
+                    $insertFields[$sorting_field] = $c;
                     if ($tablename) {
                         $insertFields['tablenames'] = $tablename;
                         $insertFields = $this->completeOppositeUsageValues($tablename, $insertFields);
