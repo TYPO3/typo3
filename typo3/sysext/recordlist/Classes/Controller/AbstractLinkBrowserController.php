@@ -171,14 +171,11 @@ abstract class AbstractLinkBrowserController
 
         $options = '';
         foreach ($menuData as $id => $def) {
-            $class = $def['isActive'] ? 'active' : '';
-            $label = $def['label'];
-            $url = htmlspecialchars($def['url']);
-            $params = $def['addParams'];
+            $class = $def['isActive'] ? ' class="active"' : '';
 
-            $options .= '<li class="' . $class . '">' .
-                '<a href="' . $url . '" ' . $params . '>' . $label . '</a>' .
-                '</li>';
+            $options .= '<li' . $class . '>'
+                . '<a href="' . htmlspecialchars($def['url']) . '" ' . $def['addParams'] . '>' . htmlspecialchars($def['label']) . '</a>'
+                . '</li>';
         }
 
         $content .= '<div class="element-browser-panel element-browser-tabs"><ul class="nav nav-tabs" role="tablist">' .
@@ -381,7 +378,7 @@ abstract class AbstractLinkBrowserController
                 $addParams = $configuration['addParams'];
             } else {
                 $parameters = GeneralUtility::implodeArrayForUrl('', $this->getUrlParameters(['act' => $identifier]));
-                $addParams = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?' . ltrim($parameters, '&')) . ');return false;"';
+                $addParams = 'onclick="jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue('?' . ltrim($parameters, '&'))) . ');return false;"';
             }
             $menuDef[$identifier] = [
                 'isActive' => $isActive,

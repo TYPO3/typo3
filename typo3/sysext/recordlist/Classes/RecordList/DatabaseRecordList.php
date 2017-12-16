@@ -1827,8 +1827,8 @@ class DatabaseRecordList
         }
         $pageNumberInput = '
 			<input type="number" min="1" max="' . $totalPages . '" value="' . $currentPage . '" size="3" class="form-control input-sm paginator-input" id="jumpPage-' . $renderPart . '" name="jumpPage-'
-            . $renderPart . '" onkeyup="if (event.keyCode == 13) { document.dblistForm.action=' . GeneralUtility::quoteJSvalue($listURL
-            . '&pointer=') . '+calculatePointer(this.value); document.dblistForm.submit(); } return true;" />
+            . $renderPart . '" onkeyup="if (event.keyCode == 13) { document.dblistForm.action=' . htmlspecialchars(GeneralUtility::quoteJSvalue($listURL . '&pointer='))
+            . '+calculatePointer(this.value); document.dblistForm.submit(); } return true;" />
 			';
         $pageIndicatorText = sprintf(
             $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:pageIndicator'),
@@ -3548,7 +3548,7 @@ class DatabaseRecordList
             case 'info':
                 // "Info": (All records)
                 $code = '<a href="#" onclick="' . htmlspecialchars(
-                        ('top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')
+                        ('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;')
                     ) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
                 break;
             default:
@@ -3556,7 +3556,7 @@ class DatabaseRecordList
                 if ($table === 'pages') {
                     $code = '<a href="' . htmlspecialchars(
                             $this->listURL($uid, '', 'firstElementNumber')
-                        ) . '" onclick="setHighlight(' . $uid . ')">' . $code . '</a>';
+                        ) . '" onclick="setHighlight(' . (int)$uid . ')">' . $code . '</a>';
                 } else {
                     $code = $this->linkUrlMail($code, $origCode);
                 }
