@@ -261,7 +261,7 @@ class DebuggerUtility
         if ($plainText) {
             $dump .= self::ansiEscapeWrap($className, '36', $ansiColors);
         } else {
-            $dump .= '<span class="extbase-debug-type">' . $className . '</span>';
+            $dump .= '<span class="extbase-debug-type">' . htmlspecialchars($className) . '</span>';
         }
         if (! $object instanceof \Closure) {
             if ($object instanceof \TYPO3\CMS\Core\SingletonInterface) {
@@ -464,7 +464,12 @@ class DebuggerUtility
     {
         $dump = '';
         foreach ($collection as $key => $value) {
-            $dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level) . ($plainText ? '' : '<span class="extbase-debug-property">') . self::ansiEscapeWrap($key, '37', $ansiColors) . ($plainText ? '' : '</span>') . ' => ';
+            if ($plainText) {
+                $dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level) . self::ansiEscapeWrap($key, '37', $ansiColors);
+            } else {
+                $dump .= '<span class="extbase-debug-property">' . htmlspecialchars($key) . '</span>';
+            }
+            $dump .= ' => ';
             $dump .= self::renderDump($value, $level, $plainText, $ansiColors);
         }
         if ($collection instanceof \Iterator) {
