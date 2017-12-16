@@ -41,13 +41,16 @@ for i in `find typo3/sysext/core/Documentation/Changelog -name "*.rst" -type f`;
 
 # This regex needs to check that the ..index:: line a) holds valid content and b) is
 # the last line in the checked file
-        if ! [[ "$fileContent" =~ '.. index:: '((TypoScript|TSConfig|TCA|FlexForm|LocalConfiguration|Fluid|FAL|Database|JavaScript|PHP-API|Frontend|Backend|CLI|RTE|ext:([a-z|A-Z|_|0-9]*))([,|[:space:]]{2})?)+$ ]]; then
-            INDEX="no or wrong index"
-            index_message="insert '.. index:: <at least one valid keyword>' at last line of the file. See Build/Scripts/validateRstFiles.sh for allowed keywords"
-            outputFileToStream=1;
-        else
-            INDEX=""
+        if ! [[ "$i" =~ (Changelog\/7\.[0-99]+\/|Changelog\/7\.6\.x\/) ]]; then
+            if ! [[ "$fileContent" =~ '.. index:: '((TypoScript|TSConfig|TCA|FlexForm|LocalConfiguration|Fluid|FAL|Database|JavaScript|PHP-API|Frontend|Backend|CLI|RTE|ext:([a-z|A-Z|_|0-9]*))([,|[:space:]]{2})?)+$ ]]; then
+                INDEX="no or wrong index"
+                index_message="insert '.. index:: <at least one valid keyword>' at last line of the file. See Build/Scripts/validateRstFiles.sh for allowed keywords"
+                outputFileToStream=1;
+            else
+                INDEX=""
+            fi
         fi
+
         # Output filename in case any error was found
         if [ $outputFileToStream == 1 ] ; then
             FILE=${i/#typo3\/sysext\/core\/Documentation\/Changelog\//}
