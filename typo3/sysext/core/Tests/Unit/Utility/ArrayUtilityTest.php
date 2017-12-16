@@ -2665,4 +2665,166 @@ class ArrayUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $this->assertSame($expected, ArrayUtility::convertBooleanStringsToBooleanRecursive($input));
     }
+
+    /**
+     * Data provider for arrayFilterRecursiveFiltersFalseElements
+     * @return array
+     */
+    public function filterRecursiveFiltersFalseElementsDataProvider()
+    {
+        return [
+            'filter all values which will be false when converted to boolean' => [
+                // input
+                [
+                    true,
+                    false,
+                    'foo1' => [
+                        'bar' => [
+                            'baz' => [
+                                '1',
+                                null,
+                                '',
+                            ],
+                            '' => 1,
+                            'bbd' => 0,
+                        ]
+                    ],
+                    'foo2' => 'foo',
+                    'foo3' => '',
+                    'foo4' => [
+                        'z' => 'bar',
+                        'bar' => 0,
+                        'baz' => [
+                            'foo' => [
+                                'bar' => '',
+                                'boo' => [],
+                                'bamboo' => 5,
+                                'fooAndBoo' => [0],
+                            ]
+                        ],
+                    ],
+                ],
+                // expected
+                [
+                    true,
+                    'foo1' => [
+                        'bar' => [
+                            'baz' => [
+                                '1',
+                            ],
+                            '' => 1,
+                        ]
+                    ],
+                    'foo2' => 'foo',
+                    'foo4' => [
+                        'z' => 'bar',
+                        'baz' => [
+                            'foo' => [
+                                'bamboo' => 5,
+                                'fooAndBoo' => [],
+                            ]
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider filterRecursiveFiltersFalseElementsDataProvider
+     * @param array $input
+     * @param array $expectedResult
+     */
+    public function filterRecursiveFiltersFalseElements(array $input, array $expectedResult)
+    {
+        // If no callback is supplied, all entries of array equal to FALSE (see converting to boolean) will be removed.
+        $result = ArrayUtility::filterRecursive($input);
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    /**
+     * Data provider for filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerByCallback
+     * @return array
+     */
+    public function filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerZeroByCallbackDataProvider()
+    {
+        return [
+            'filter empty values, keep zero integers' => [
+                // input
+                [
+                    true,
+                    false,
+                    'foo1' => [
+                        'bar' => [
+                            'baz' => [
+                                '1',
+                                null,
+                                '',
+                            ],
+                            '' => 1,
+                            'bbd' => 0,
+                        ]
+                    ],
+                    'foo2' => 'foo',
+                    'foo3' => '',
+                    'foo4' => [
+                        'z' => 'bar',
+                        'bar' => 0,
+                        'baz' => [
+                            'foo' => [
+                                'bar' => '',
+                                'boo' => [],
+                                'bamboo' => 5,
+                                'fooAndBoo' => [0],
+                            ]
+                        ],
+                    ],
+                ],
+                // expected
+                [
+                    true,
+                    false,
+                    'foo1' => [
+                        'bar' => [
+                            'baz' => [
+                                '1',
+                            ],
+                            '' => 1,
+                            'bbd' => 0,
+                        ]
+                    ],
+                    'foo2' => 'foo',
+                    'foo4' => [
+                        'z' => 'bar',
+                        'bar' => 0,
+                        'baz' => [
+                            'foo' => [
+                                'bamboo' => 5,
+                                'fooAndBoo' => [0],
+                            ]
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerZeroByCallbackDataProvider
+     * @param array $input
+     * @param array $expectedResult
+     */
+    public function filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerByCallback(array $input, array $expectedResult)
+    {
+        // callback filters empty strings, array and null but keeps zero integers
+        $result = ArrayUtility::filterRecursive(
+            $input,
+            function ($item) {
+                return $item !== '' && $item !== [] && $item !== null;
+            }
+        );
+        $this->assertEquals($expectedResult, $result);
+    }
 }

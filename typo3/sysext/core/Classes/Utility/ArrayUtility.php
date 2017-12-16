@@ -830,4 +830,31 @@ class ArrayUtility
         }
         return $result;
     }
+
+    /**
+     * Recursively filter an array
+     *
+     * @param array $array
+     * @param callable|null $callback
+     * @return array the filtered array
+     * @see https://secure.php.net/manual/en/function.array-filter.php
+     */
+    public static function filterRecursive(array $array, callable $callback = null): array
+    {
+        $callback = $callback ?: function ($value) {
+            return (bool)$value;
+        };
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $array[$key] = self::filterRecursive($value, $callback);
+            }
+
+            if (!$callback($value)) {
+                unset($array[$key]);
+            }
+        }
+
+        return $array;
+    }
 }
