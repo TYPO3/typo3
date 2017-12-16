@@ -6,9 +6,14 @@
 .. role:: js(code)
 .. role:: php(code)
 .. role:: typoscript(code)
+.. role:: typescript(code)
+.. role:: shell(code)
+.. role:: sql(code)
 
 .. role:: ts(typoscript)
    :class: typoscript
+.. role:: javascript(js)
+   :class: js
 
 .. default-role:: code
 .. highlight:: php

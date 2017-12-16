@@ -1,14 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-.. role::   typoscript(code)
-.. role::   ts(typoscript)
-
-   :class:  typoscript
-
-============================================================
+=============================================
 Breaking: #42543 - Default TypoScript Removed
-============================================================
+=============================================
 
 See :issue:`42543`
 
@@ -46,5 +41,3 @@ Either remove usage of :code:`styles.insertContent` or add a snippet at an early
         languageField = sys_language_uid
       }
     }
-
-..
