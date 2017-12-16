@@ -27,7 +27,7 @@ configuration of :ref:`stdWrap <t3tsref:stdwrap-htmlparser>`:
 	}
 
 It is also possible to use it in the
-:ref:`HTMLparser_rte or HTMLparser_db <t3api:transformations-tsconfig-processing-htmlparser>`
+:ref:`HTMLparser_rte or HTMLparser_db <t3coreapi:transformations-tsconfig-processing-htmlparser>`
 in Page TSconfig:
 
 .. code-block:: typoscript
