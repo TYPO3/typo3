@@ -155,7 +155,6 @@ class PageLayoutController
     public $pageinfo;
 
     /**
-
      * "Pseudo" Description -table name
      *
      * @var string

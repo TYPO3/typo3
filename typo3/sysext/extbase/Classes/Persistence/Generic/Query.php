@@ -61,7 +61,6 @@ class Query implements QueryInterface
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-
      */
     protected $persistenceManager;
 
