@@ -615,7 +615,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 }
             }
         } else {
-            if (!empty($registeredClasses[$taskInfo['class']]['provider'])) {
+            if ($task !== null && !empty($registeredClasses[$taskInfo['class']]['provider'])) {
                 $providerObject = GeneralUtility::getUserObj($registeredClasses[$taskInfo['class']]['provider']);
                 if ($providerObject instanceof \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface) {
                     $allAdditionalFields[$taskInfo['class']] = $providerObject->getAdditionalFields($taskInfo, $task, $this);
