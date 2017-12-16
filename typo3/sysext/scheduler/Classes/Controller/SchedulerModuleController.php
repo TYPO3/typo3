@@ -592,12 +592,11 @@ class SchedulerModuleController
                     }
                 }
             }
-        } else {
-            if (!empty($registeredClasses[$taskInfo['class']]['provider'])) {
-                $providerObject = GeneralUtility::makeInstance($registeredClasses[$taskInfo['class']]['provider']);
-                if ($providerObject instanceof AdditionalFieldProviderInterface) {
-                    $allAdditionalFields[$taskInfo['class']] = $providerObject->getAdditionalFields($taskInfo, $task, $this);
-                }
+        } elseif ($task !== null && !empty($registeredClasses[$taskInfo['class']]['provider'])) {
+            // only try to fetch additionalFields if the task is valid
+            $providerObject = GeneralUtility::makeInstance($registeredClasses[$taskInfo['class']]['provider']);
+            if ($providerObject instanceof AdditionalFieldProviderInterface) {
+                $allAdditionalFields[$taskInfo['class']] = $providerObject->getAdditionalFields($taskInfo, $task, $this);
             }
         }
 
