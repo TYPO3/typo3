@@ -41,15 +41,16 @@ for i in `find typo3/sysext/core/Documentation/Changelog -name "*.rst" -type f`;
         # This regex needs to check that the ..index:: line a) holds valid content and b) is
         # the last line in the checked file
         INDEX=""
-        if ! [[ "$fileContent" =~ '.. index:: '((FullyScanned|PartiallyScanned|NotScanned|TypoScript|TSConfig|TCA|FlexForm|LocalConfiguration|Fluid|FAL|Database|JavaScript|PHP-API|Frontend|Backend|CLI|RTE|ext:([a-z|A-Z|_|0-9]*))([,|[:space:]]{2})?)+$ ]]; then
-            INDEX="no or wrong index"
-            index_message="insert '.. index:: <at least one valid keyword>' at last line of the file. See Build/Scripts/validateRstFiles.sh for allowed keywords"
-            outputFileToStream=1;
+        if ! [[ "$i" =~ (Changelog\/7\.[0-99]+\/|Changelog\/7\.6\.x\/) ]]; then
+            if ! [[ "$fileContent" =~ '.. index:: '((FullyScanned|PartiallyScanned|NotScanned|TypoScript|TSConfig|TCA|FlexForm|LocalConfiguration|Fluid|FAL|Database|JavaScript|PHP-API|Frontend|Backend|CLI|RTE|ext:([a-z|A-Z|_|0-9]*))([,|[:space:]]{2})?)+$ ]]; then
+                INDEX="no or wrong index"
+                index_message="insert '.. index:: <at least one valid keyword>' at last line of the file. See Build/Scripts/validateRstFiles.sh for allowed keywords"
+                outputFileToStream=1;
+            fi
         fi
 
         # All Deprecation- / Breaking- files since v9 must have one of the tags FullyScanned|PartiallyScanned|NotScanned
-        if ! [[ "$i" =~ (Changelog\/8\.[0-99]+\/|Changelog\/master\/Feature-|Changelog\/master\/Important-|Changelog\/[0-99]+\.[0-99]+\/Feature-|Changelog\/[0-99]+\.[0-99]+\/Important-) ]]; then
-            SCANMATCHES=0
+        if ! [[ "$i" =~ (Changelog\/8\.[0-99]+\/|Changelog\/7\.[0-99]+\/|Changelog\/7\.6\.x\/|Changelog\/master\/Feature-|Changelog\/master\/Important-|Changelog\/[0-99]+\.[0-99]+\/Feature-|Changelog\/[0-99]+\.[0-99]+\/Important-) ]]; then
             if ! [[ "$fileContent" =~ ('.. index:: '.*(FullyScanned|PartiallyScanned|NotScanned)+.*) ]]; then
                 INDEX="missing FullyScanned / PartiallyScanned / NotScanned tag"
                 index_message="insert '.. index:: <at least one valid keyword and either FullyScanned, PartiallyScanned or NotScanned>' at last line of the file. See Build/Scripts/validateRstFiles.sh for allowed keywords"
