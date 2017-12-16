@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -148,7 +149,7 @@ class QueryView
 
         $opt = [];
         foreach ($storeArray as $k => $v) {
-            $opt[] = '<option value="' . $k . '">' . htmlspecialchars($v) . '</option>';
+            $opt[] = '<option value="' . htmlspecialchars($k) . '">' . htmlspecialchars($v) . '</option>';
         }
         // Actions:
         if (ExtensionManagementUtility::isLoaded('sys_action') && $this->backendUserAuthentication->isAdmin()) {
@@ -433,7 +434,7 @@ class QueryView
             $queryGenerator->setFormName($this->formName);
         }
         $tmpCode = $queryGenerator->makeSelectorTable($this->settings);
-        $output .= '<div id="query"></div>' . '<h2>Make query</h2><div>' . $tmpCode . '</div>';
+        $output .= '<div id="query"></div><h2>Make query</h2><div>' . $tmpCode . '</div>';
         $mQ = $this->settings['search_query_makeQuery'];
         // Make form elements:
         if ($queryGenerator->table && is_array($GLOBALS['TCA'][$queryGenerator->table])) {
@@ -444,7 +445,7 @@ class QueryView
                 $selectQueryString = $queryGenerator->getSelectQuery($queryString);
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($queryGenerator->table);
 
-                $isConnectionMysql = (bool)(strpos($connection->getServerVersion(), 'MySQL') === 0);
+                $isConnectionMysql = strpos($connection->getServerVersion(), 'MySQL') === 0;
                 $fullQueryString = '';
                 try {
                     if ($mQ === 'explain' && $isConnectionMysql) {
@@ -459,8 +460,7 @@ class QueryView
                             ->from($queryGenerator->table)
                             ->where(QueryHelper::stripLogicalOperatorPrefix($queryString));
                         $fullQueryString = $queryBuilder->getSQL();
-                        $queryBuilder->execute()->fetchColumn(0);
-                        $dataRows = [$dataRows];
+                        $dataRows = [$queryBuilder->execute()->fetchColumn(0)];
                     } else {
                         $fullQueryString = $selectQueryString;
                         $dataRows = $connection->executeQuery($selectQueryString)->fetchAll();
@@ -490,7 +490,8 @@ class QueryView
      * @param string $type
      * @param array $dataRows Rows to display
      * @param string $table
-     * @return string
+     * @return array HTML-code for "header" and "content"
+     * @throws \TYPO3\CMS\Core\Exception
      */
     public function getQueryResultCode($type, array $dataRows, $table)
     {
@@ -499,7 +500,7 @@ class QueryView
         switch ($type) {
             case 'count':
                 $cPR['header'] = 'Count';
-                $cPR['content'] = '<BR><strong>' . $dataRows[0] . '</strong> records selected.';
+                $cPR['content'] = '<BR><strong>' . (int)$dataRows[0] . '</strong> records selected.';
                 break;
             case 'all':
                 $rowArr = [];
@@ -513,22 +514,14 @@ class QueryView
                     }
                 }
                 if (!empty($rowArr)) {
+                    $cPR['header'] = 'Result';
                     $out .= '<table class="table table-striped table-hover">'
                         . $this->resultRowTitles($dataRow, $GLOBALS['TCA'][$table], $table) . implode(LF, $rowArr)
                         . '</table>';
+                } else {
+                    $this->renderNoResultsFoundMessage();
                 }
-                if (!$out) {
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
-                        'No rows selected!',
-                        '',
-                        FlashMessage::INFO
-                    );
-                    GeneralUtility::makeInstance(FlashMessageRendererResolver::class)
-                        ->resolve()
-                        ->render([$flashMessage]);
-                }
-                $cPR['header'] = 'Result';
+
                 $cPR['content'] = $out;
                 break;
             case 'csv':
@@ -542,13 +535,14 @@ class QueryView
                     $rowArr[] = $this->csvValues($dataRow, ',', '"', $GLOBALS['TCA'][$table], $table);
                 }
                 if (!empty($rowArr)) {
+                    $cPR['header'] = 'Result';
                     $out .= '<textarea name="whatever" rows="20" class="text-monospace" style="width:100%">'
                         . htmlspecialchars(implode(LF, $rowArr))
                         . '</textarea>';
                     if (!$this->noDownloadB) {
                         $out .= '<br><input class="btn btn-default" type="submit" name="download_file" '
-                            . 'value="Click to download file" onClick="window.location.href=\'' . $this->downloadScript
-                            . '\';">';
+                            . 'value="Click to download file" onClick="window.location.href=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->downloadScript))
+                            . ';">';
                     }
                     // Downloads file:
                     // @todo: args. routing anyone?
@@ -560,11 +554,9 @@ class QueryView
                         echo implode(CRLF, $rowArr);
                         die;
                     }
+                } else {
+                    $this->renderNoResultsFoundMessage();
                 }
-                if (!$out) {
-                    $out = '<em>No rows selected!</em>';
-                }
-                $cPR['header'] = 'Result';
                 $cPR['content'] = $out;
                 break;
             case 'explain':
@@ -954,11 +946,10 @@ class QueryView
             natcasesort($fileArray);
             foreach ($fileArray as $fileName) {
                 if (GeneralUtility::inList($fieldValue, $fileName) || $fieldValue == $fileName) {
-                    if (!$out) {
-                        $out = htmlspecialchars($fileName);
-                    } else {
-                        $out .= $splitString . htmlspecialchars($fileName);
+                    if ($out !== '') {
+                        $out .= $splitString;
                     }
+                    $out .= htmlspecialchars($fileName);
                 }
             }
         }
@@ -970,11 +961,10 @@ class QueryView
                     $value = $val[0];
                 }
                 if (GeneralUtility::inList($fieldValue, $val[1]) || $fieldValue == $val[1]) {
-                    if (!$out) {
-                        $out = htmlspecialchars($value);
-                    } else {
-                        $out .= $splitString . htmlspecialchars($value);
+                    if ($out !== '') {
+                        $out .= $splitString;
                     }
+                    $out .= htmlspecialchars($value);
                 }
             }
         }
@@ -985,11 +975,10 @@ class QueryView
                 } else {
                     $value = $val[0];
                 }
-                if (!$out) {
-                    $out = htmlspecialchars($value);
-                } else {
-                    $out .= $splitString . htmlspecialchars($value);
+                if ($out !== '') {
+                    $out .= $splitString;
                 }
+                $out .= htmlspecialchars($value);
             }
         }
         if ($fieldSetup['type'] === 'relation') {
@@ -1003,11 +992,10 @@ class QueryView
                         $value = $val[0];
                     }
                     if (GeneralUtility::inList($fieldValue, $value) || $fieldValue == $value) {
-                        if (!$out) {
-                            $out = htmlspecialchars($value);
-                        } else {
-                            $out .= $splitString . htmlspecialchars($value);
+                        if ($out !== '') {
+                            $out .= $splitString;
                         }
+                        $out .= htmlspecialchars($value);
                     }
                 }
             }
@@ -1141,38 +1129,19 @@ class QueryView
                             $this->settings['labels_noprefix'] === 'on'
                                 ? ''
                                 : ' [' . $tablePrefix . $val['uid'] . '] ';
+                        if ($out !== '') {
+                            $out .= $splitString;
+                        }
                         if (GeneralUtility::inList($fieldValue, $tablePrefix . $val['uid'])
                             || $fieldValue == $tablePrefix . $val['uid']) {
                             if ($useSelectLabels) {
-                                if (!$out) {
-                                    $out = htmlspecialchars($prefixString . $labelFieldSelect[$val[$labelField]]);
-                                } else {
-                                    $out .= $splitString . htmlspecialchars(
-                                        $prefixString . $labelFieldSelect[$val[$labelField]]
-                                    );
-                                }
+                                $out .= htmlspecialchars($prefixString . $labelFieldSelect[$val[$labelField]]);
                             } elseif ($val[$labelField]) {
-                                if (!$out) {
-                                    $out = htmlspecialchars($prefixString . $val[$labelField]);
-                                } else {
-                                    $out .= $splitString . htmlspecialchars(
-                                        $prefixString . $val[$labelField]
-                                    );
-                                }
+                                $out .= htmlspecialchars($prefixString . $val[$labelField]);
                             } elseif ($useAltSelectLabels) {
-                                if (!$out) {
-                                    $out = htmlspecialchars($prefixString . $altLabelFieldSelect[$val[$altLabelField]]);
-                                } else {
-                                    $out .= $splitString . htmlspecialchars(
-                                        $prefixString . $altLabelFieldSelect[$val[$altLabelField]]
-                                    );
-                                }
+                                $out .= htmlspecialchars($prefixString . $altLabelFieldSelect[$val[$altLabelField]]);
                             } else {
-                                if (!$out) {
-                                    $out = htmlspecialchars($prefixString . $val[$altLabelField]);
-                                } else {
-                                    $out .= $splitString . htmlspecialchars(($prefixString . $val[$altLabelField]));
-                                }
+                                $out .= htmlspecialchars($prefixString . $val[$altLabelField]);
                             }
                         }
                     }
@@ -1203,13 +1172,13 @@ class QueryView
                 && $fieldName !== 'deleted'
             ) {
                 if ($this->settings['search_result_labels']) {
-                    $title = htmlspecialchars($this->languageService->sL($conf['columns'][$fieldName]['label']
+                    $title = $this->languageService->sL($conf['columns'][$fieldName]['label']
                         ? $conf['columns'][$fieldName]['label']
-                        : $fieldName));
+                        : $fieldName);
                 } else {
-                    $title = htmlspecialchars($this->languageService->sL($fieldName));
+                    $title = $this->languageService->sL($fieldName);
                 }
-                $tableHeader[] = '<th>' . $title . '</th>';
+                $tableHeader[] = '<th>' . htmlspecialchars($title) . '</th>';
             }
         }
         // Add empty icon column
@@ -1233,22 +1202,19 @@ class QueryView
         foreach ($row as $fieldName => $fieldValue) {
             if (GeneralUtility::inList($this->settings['queryFields'], $fieldName)
                 || !$this->settings['queryFields'] && $fieldName !== 'pid') {
-                if (!$out) {
-                    if ($this->settings['search_result_labels']) {
-                        $out = htmlspecialchars($this->languageService->sL($conf['columns'][$fieldName]['label']
+                if ($out !== '') {
+                    $out .= ',';
+                }
+                if ($this->settings['search_result_labels']) {
+                    $out .= htmlspecialchars(
+                        $this->languageService->sL(
+                            $conf['columns'][$fieldName]['label']
                             ? $conf['columns'][$fieldName]['label']
-                            : $fieldName));
-                    } else {
-                        $out = htmlspecialchars($this->languageService->sL($fieldName));
-                    }
+                            : $fieldName
+                        )
+                    );
                 } else {
-                    if ($this->settings['search_result_labels']) {
-                        $out .= ',' . htmlspecialchars($this->languageService->sL(($conf['columns'][$fieldName]['label']
-                            ? $conf['columns'][$fieldName]['label']
-                            : $fieldName)));
-                    } else {
-                        $out .= ',' . htmlspecialchars($this->languageService->sL($fieldName));
-                    }
+                    $out .= htmlspecialchars($this->languageService->sL($fieldName));
                 }
             }
         }
@@ -1263,5 +1229,17 @@ class QueryView
     public function setFormName($formName)
     {
         $this->formName = trim($formName);
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     * @throws \TYPO3\CMS\Core\Exception
+     */
+    private function renderNoResultsFoundMessage()
+    {
+        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, 'No rows selected!', '', FlashMessage::INFO);
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 }
