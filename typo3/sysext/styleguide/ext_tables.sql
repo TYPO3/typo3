@@ -184,7 +184,6 @@ CREATE TABLE tx_styleguide_elements_group (
 	group_db_3 text,
 	group_db_4 text,
 	group_db_5 text,
-	group_db_6 text,
 	group_db_7 text,
 	group_db_8 text,
 	group_db_9 text,

@@ -217,30 +217,6 @@ return [
                 'readOnly' => 1,
             ]
         ],
-        'group_db_6' => [
-            // @todo: when and why is this useful?
-            // @todo: something is totally wrong here, the structure within sys_file_reference ends up being
-            // @todo: basically swapped with "foreign" and "local" fields!
-            'exclude' => 1,
-            'label' => 'group_db_6 FAL relation',
-            'config' => [
-                'type' => 'group',
-                'internal_type' => 'db',
-                'allowed' => 'sys_file',
-                'MM' => 'sys_file_reference',
-                'MM_match_fields' => [
-                    'fieldname' => 'image_fal_group',
-                ],
-                'prepend_tname' => true,
-                'appearance' => [
-                    'elementBrowserAllowed' => 'jpg, png, gif',
-                    'elementBrowserType' => 'file',
-                ],
-                'max_size' => 2000,
-                'size' => '3',
-                'autoSizeMax' => 40,
-            ],
-        ],
         'group_db_7' => [
             'exclude' => 1,
             'label' => 'group_db_7 allowed=be_users, prepend_tname=false',
@@ -435,7 +411,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;internal_type=db,
-                    group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_4, group_db_5, group_db_6, group_db_7,
+                    group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_4, group_db_5, group_db_7,
                 --div--;internal_type=file,
                     group_file_1, group_file_2, group_file_3,
                 --div--;internal_type=folder,
