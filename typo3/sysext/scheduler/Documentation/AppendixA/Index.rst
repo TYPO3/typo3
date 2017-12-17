@@ -27,7 +27,7 @@ table.
 
 That being said, a task also contains information about its execution.
 Indeed each task class has an instance of
-:code:`tx_scheduler_Execution` as a member variable, which contains
+:code:`TYPO3\CMS\Scheduler\Execution` as a member variable, which contains
 information such as start and end date and is used to calculate the
 next execution date.
 
@@ -36,6 +36,6 @@ is serialized and stored in the corresponding database record. If
 several executions are running at the same time, the array will
 contain several timestamps. Thus the "serialized\_executions" field
 actually contains an array of integers and not serialized instances of
-:code:`tx_scheduler_Execution` objects.
+:code:`TYPO3\CMS\Scheduler\Execution` objects.
 
 
