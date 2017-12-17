@@ -50,7 +50,7 @@ for i in `find typo3/sysext/core/Documentation/Changelog -name "*.rst" -type f`;
         fi
 
         # All Deprecation- / Breaking- files since v9 must have one of the tags FullyScanned|PartiallyScanned|NotScanned
-        if ! [[ "$i" =~ (Changelog\/8\.[0-99]+\/|Changelog\/7\.[0-99]+\/|Changelog\/7\.6\.x\/|Changelog\/master\/Feature-|Changelog\/master\/Important-|Changelog\/[0-99]+\.[0-99]+\/Feature-|Changelog\/[0-99]+\.[0-99]+\/Important-) ]]; then
+        if ! [[ "$i" =~ (Changelog\/8\.[0-99]+\/|Changelog\/8\.7\.x\/|Changelog\/7\.[0-99]+\/|Changelog\/7\.6\.x\/|Changelog\/master\/Feature-|Changelog\/master\/Important-|Changelog\/[0-99]+\.[0-99]+\/Feature-|Changelog\/[0-99]+\.[0-99]+\/Important-) ]]; then
             if ! [[ "$fileContent" =~ ('.. index:: '.*(FullyScanned|PartiallyScanned|NotScanned)+.*) ]]; then
                 INDEX="missing FullyScanned / PartiallyScanned / NotScanned tag"
                 index_message="insert '.. index:: <at least one valid keyword and either FullyScanned, PartiallyScanned or NotScanned>' at last line of the file. See Build/Scripts/validateRstFiles.sh for allowed keywords"
