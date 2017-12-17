@@ -11,6 +11,7 @@ Every change to the TYPO3 Core which might affect your site is documented here.
 .. toctree::
    :titlesonly:
 
+   Changelog/8.7.x/Index
    Changelog/8.7/Index
    Changelog/8.6/Index
    Changelog/8.5/Index
