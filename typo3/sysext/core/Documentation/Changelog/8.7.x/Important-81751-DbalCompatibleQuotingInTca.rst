@@ -9,7 +9,7 @@ See :issue:`81751`
 Description
 ===========
 
-Names of tables and columns used in SQL fragments of `TCA` definitions need proper quoting to be compatible with different database drivers. The database
+Names of tables and columns used in SQL fragments of :php:`TCA` definitions need proper quoting to be compatible with different database drivers. The database
 framework of the core now applies proper quoting to table and column names if they are wrapped as :php:`{#tableName}.{#columnName}`
 
 It is advised to adapt extensions accordingly to run successfully on databases like PostgreSQL.
