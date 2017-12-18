@@ -45,6 +45,12 @@
 			<trans-unit id="tx_extensionmanager_domain_model_extension.integerversion">
 				<source>Integer Version</source>
 			</trans-unit>
+			<trans-unit id="tx_extensionmanager_domain_model_extension.currentversion">
+				<source>Current Version</source>
+			</trans-unit>
+			<trans-unit id="tx_extensionmanager_domain_model_extension.serializedDependencies">
+				<source>Serialized dependencies</source>
+			</trans-unit>
 			<trans-unit id="tx_extensionmanager_domain_model_repository">
 				<source>Repository</source>
 			</trans-unit>
