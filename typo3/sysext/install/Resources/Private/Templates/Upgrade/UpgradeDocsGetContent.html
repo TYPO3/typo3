@@ -54,9 +54,9 @@
 				<div class="panel-collapse collapse"
 					id="version-{iterator.index}" role="tabpanel" data-group-version="{version}">
 					<div class="panel-body" role="tablist" aria-multiselectable="false">
-						<f:for each="{versionArray}" as="fileArray" key="issueNumber">
+						<f:for each="{versionArray}" as="fileArray" iteration="fileIterator">
 							<f:render partial="Upgrade/UpgradeDocs/PanelItem"
-								arguments="{issueNumber:issueNumber, fileArray:fileArray, version:version}"/>
+								arguments="{id:'file-{iterator.index}-{fileIterator.index}', fileArray:fileArray, version:version}"/>
 						</f:for>
 					</div>
 				</div>
@@ -76,9 +76,9 @@
 		</div>
 		<div class="collapse" id="collapseRead" role="tabpanel">
 			<div class="panel-body panel-body-read" role="tablist" aria-multiselectable="false">
-				<f:for each="{upgradeDocsReadFiles}" as="fileArray" key="issueNumber">
+				<f:for each="{upgradeDocsReadFiles}" as="fileArray" iteration="fileIterator">
 					<f:render partial="Upgrade/UpgradeDocs/PanelItem"
-						arguments="{issueNumber:issueNumber, fileArray:fileArray, version:fileArray.section, read:'true'}"/>
+						arguments="{id:'read-{fileIterator.index}', fileArray:fileArray, version:fileArray.section, read:'true'}"/>
 				</f:for>
 			</div>
 		</div>
@@ -95,9 +95,9 @@
 		</div>
 		<div class="collapse" id="collapseNotAffected" role="tabpanel">
 			<div class="panel-body panel-body-not-affected" role="tablist" aria-multiselectable="false">
-				<f:for each="{upgradeDocsNotAffectedFiles}" as="fileArray" key="issueNumber">
+				<f:for each="{upgradeDocsNotAffectedFiles}" as="fileArray" iteration="fileIterator">
 					<f:render partial="Upgrade/UpgradeDocs/PanelItem"
-						arguments="{issueNumber:issueNumber, fileArray:fileArray, version:fileArray.section, read:'true'}"
+						arguments="{id:'scanner-{fileIterator.index}', fileArray:fileArray, version:fileArray.section, read:'true'}"
 					/>
 				</f:for>
 			</div>
