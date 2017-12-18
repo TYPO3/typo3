@@ -17,10 +17,10 @@
 					<div class="panel-collapse collapse {f:if(condition: '{iterator.isFirst}', then: 'in')}"
 							 id="version-{iterator.index}" role="tabpanel" data-group-version="{version}">
 						<div class="panel-body" role="tablist" aria-multiselectable="false">
-							<f:for each="{versionArray}" as="fileArray" key="issueNumber">
+							<f:for each="{versionArray}" as="fileArray" iteration="fileIterator">
 
 								<f:render partial="Action/Tool/UpgradeAnalysis/PanelItem" section="Main"
-													arguments="{issueNumber:issueNumber, fileArray:fileArray, version:version}"/>
+													arguments="{id:'file-{iterator.index}-{fileIterator.index}', fileArray:fileArray, version:version}"/>
 
 							</f:for>
 						</div>
@@ -41,9 +41,9 @@
 			</div>
 			<div class="collapse" id="collapseRead" role="tabpanel">
 				<div class="panel-body panel-body-read" role="tablist" aria-multiselectable="false">
-					<f:for each="{shownFiles}" as="fileArray" key="issueNumber">
+					<f:for each="{shownFiles}" as="fileArray" iteration="fileIterator">
 						<f:render partial="Action/Tool/UpgradeAnalysis/PanelItem" section="Main"
-											arguments="{issueNumber:issueNumber, fileArray:fileArray, version:fileArray.section, read:'true'}"/>
+											arguments="{id:'read-{fileIterator.index}', fileArray:fileArray, version:fileArray.section, read:'true'}"/>
 					</f:for>
 				</div>
 			</div>
