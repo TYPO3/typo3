@@ -127,7 +127,7 @@ translationFile
 
 :aspect:`Good to know`
       :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
-      
+
 :aspect:`Description`
       The translation file(s) which should be used to translate parts of the form manager.
 

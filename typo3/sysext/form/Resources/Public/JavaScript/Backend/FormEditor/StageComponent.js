@@ -808,7 +808,7 @@ define(['jquery',
             } else {
                 selectedFormElementDomElement.prepend(createAbstractViewFormElementToolbar(formElement));
             }
-            
+
         };
 
         /**
@@ -1032,7 +1032,7 @@ define(['jquery',
                         collectionElementConfiguration = getFormEditorApp()
                             .getFormEditorDefinition('validators', validators[i]['identifier']);
                         rowTemplate = $($(validatorsTemplateContent).clone());
-                        
+
                         getHelper()
                             .getTemplatePropertyDomElement('_label', rowTemplate)
                             .append(collectionElementConfiguration['label']);

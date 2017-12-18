@@ -347,7 +347,7 @@ define(['jquery',
 
             return $('<span></span>').text((formElement.get('label')
                 ? formElement.get('label')
-                : formElement.get('identifier')));          
+                : formElement.get('identifier')));
         };
 
         /* *************************************************************

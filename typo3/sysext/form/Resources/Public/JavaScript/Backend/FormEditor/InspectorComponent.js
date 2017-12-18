@@ -615,7 +615,7 @@ define(['jquery',
         setFormValueFromBrowseWin = function(fieldReference, elValue, elName) {
             var result;
             result = elValue.split('_');
-            
+
             $(getHelper().getDomElementDataAttribute('contentElementSelectorTarget', 'bracesWithKeyValue', [fieldReference]))
                 .val(result.pop())
                 .trigger('paste');
@@ -2009,7 +2009,7 @@ define(['jquery',
             assert('object' === $.type(editorHtml), 'Invalid parameter "editorHtml"', 1475412564);
 
             if (getUtility().isUndefinedOrNull(collectionElementIdentifier)) {
-                
+
                 $('button', $(editorHtml))
                     .addClass(
                         getHelper().getDomElementClassName('buttonFormElementRemove') + ' ' +
@@ -2171,7 +2171,7 @@ define(['jquery',
 
             return $('<span></span>').text((formElement.get('label')
                 ? formElement.get('label')
-                : formElement.get('identifier')));          
+                : formElement.get('identifier')));
         };
 
         /**
