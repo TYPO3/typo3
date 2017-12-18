@@ -36,7 +36,7 @@ function jump(url, modName, mainModName, pageId) {
  * Function similar to PHPs  rawurlencode();
  */
 function rawurlencode(str) {
-	var output = escape(str);
+	var output = encodeURIComponent(str);
 	output = str_replace("*","%2A", output);
 	output = str_replace("+","%2B", output);
 	output = str_replace("/","%2F", output);
