@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -88,7 +89,7 @@ class BrowseTreeView extends AbstractTreeView
             }
         }
         // This is very important for making trees of pages: Filtering out deleted pages, pages with no access to and sorting them correctly:
-        parent::init(' AND ' . $this->getBackendUser()->getPagePermsClause(1) . ' ' . $clause . $clauseExcludePidList, 'sorting');
+        parent::init(' AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW) . ' ' . $clause . $clauseExcludePidList, 'sorting');
         $this->title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $this->MOUNTS = $this->getBackendUser()->returnWebmounts();
         if ($pidList) {

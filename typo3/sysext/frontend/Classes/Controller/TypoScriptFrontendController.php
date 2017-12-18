@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -1626,7 +1627,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                                 'uid',
                                 $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
                             ),
-                            $this->getBackendUser()->getPagePermsClause(1)
+                            $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
                         )
                         ->execute()
                         ->fetch();

@@ -430,7 +430,7 @@ class BackendController
         $editId = preg_replace('/[^[:alnum:]_]/', '', GeneralUtility::_GET('edit'));
         if ($editId) {
             // Looking up the page to edit, checking permissions:
-            $where = ' AND (' . $beUser->getPagePermsClause(2) . ' OR ' . $beUser->getPagePermsClause(16) . ')';
+            $where = ' AND (' . $beUser->getPagePermsClause(Permission::PAGE_EDIT) . ' OR ' . $beUser->getPagePermsClause(Permission::CONTENT_EDIT) . ')';
             if (MathUtility::canBeInterpretedAsInteger($editId)) {
                 $editRecord = BackendUtility::getRecordWSOL('pages', $editId, '*', $where);
             } else {

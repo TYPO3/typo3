@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -131,7 +132,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $this->id = (int)GeneralUtility::_GP('id');
         $this->sObj = GeneralUtility::_GP('sObj');
         $this->edit = GeneralUtility::_GP('edit');
-        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
+        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
     }
 
     /**

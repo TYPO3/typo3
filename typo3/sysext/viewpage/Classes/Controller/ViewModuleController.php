@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -167,7 +168,7 @@ class ViewModuleController extends ActionController
     {
         $pageIdToShow = (int)GeneralUtility::_GP('id');
 
-        $permissionClause = $this->getBackendUser()->getPagePermsClause(1);
+        $permissionClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $pageRecord = BackendUtility::readPageAccess($pageIdToShow, $permissionClause);
         if ($pageRecord) {
             $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
@@ -212,7 +213,7 @@ class ViewModuleController extends ActionController
     protected function getAdminCommand($pageId)
     {
         // The page will show only if there is a valid page and if this page may be viewed by the user
-        $pageinfo = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(1));
+        $pageinfo = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
         $addCommand = '';
         if (is_array($pageinfo)) {
             $addCommand = '&ADMCMD_editIcons=1' . BackendUtility::ADMCMD_previewCmds($pageinfo);

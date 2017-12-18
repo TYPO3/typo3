@@ -383,7 +383,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $id = (int)$checkRec['t3ver_oid'];
         }
         if (!$readPerms) {
-            $readPerms = $this->getPagePermsClause(1);
+            $readPerms = $this->getPagePermsClause(Permission::PAGE_SHOW);
         }
         if ($id > 0) {
             $wM = $this->returnWebmounts();
@@ -1413,7 +1413,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     ->from('pages')
                     // @todo DOCTRINE: check how to make getPagePermsClause() portable
                     ->where(
-                        $this->getPagePermsClause(1),
+                        $this->getPagePermsClause(Permission::PAGE_SHOW),
                         $queryBuilder->expr()->in(
                             'uid',
                             $queryBuilder->createNamedParameter(

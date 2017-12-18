@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Recordlist\Browser;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView;
@@ -230,7 +231,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             $out .= '<br />';
         }
 
-        $permsClause = $backendUser->getPagePermsClause(1);
+        $permsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         $pageInfo = BackendUtility::readPageAccess($this->expandPage, $permsClause);
 
         /** @var ElementBrowserRecordList $dbList */

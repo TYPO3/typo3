@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -107,7 +108,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
 
-        $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(1));
+        $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
         /** @var $dblist \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList */
         $dblist = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList::class);
         $dblist->pageRow = $pageinfo;

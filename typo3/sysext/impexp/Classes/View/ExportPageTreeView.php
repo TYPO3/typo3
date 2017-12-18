@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Tree\View\BrowseTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -84,7 +85,7 @@ class ExportPageTreeView extends BrowseTreeView
     public function ext_tree($pid, $clause = '')
     {
         // Initialize:
-        $this->init(' AND ' . $this->BE_USER->getPagePermsClause(1) . $clause);
+        $this->init(' AND ' . $this->BE_USER->getPagePermsClause(Permission::PAGE_SHOW) . $clause);
         // Get stored tree structure:
         $this->stored = unserialize($this->BE_USER->uc['browseTrees']['browsePages'], ['allowed_classes' => false]);
         $treeArr = [];

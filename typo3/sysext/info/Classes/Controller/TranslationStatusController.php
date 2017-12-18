@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -95,7 +96,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             $depth = $this->pObj->MOD_SETTINGS['depth'];
             // Initialize tree object:
             $tree = GeneralUtility::makeInstance(PageTreeView::class);
-            $tree->init('AND ' . $this->getBackendUser()->getPagePermsClause(1));
+            $tree->init('AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
             $tree->addField('l18n_cfg');
             // Creating top icon; the current page
             $HTML = $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render();

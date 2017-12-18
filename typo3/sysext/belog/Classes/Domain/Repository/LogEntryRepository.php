@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Belog\Domain\Repository;
  */
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -108,7 +109,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if ($constraint->getDepth() > 0) {
             /** @var $pageTree \TYPO3\CMS\Backend\Tree\View\PageTreeView */
             $pageTree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
-            $pageTree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
+            $pageTree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
             $pageTree->makeHTML = 0;
             $pageTree->fieldArray = ['uid'];
             $pageTree->getTree($constraint->getPageId(), $constraint->getDepth());

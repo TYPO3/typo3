@@ -411,7 +411,7 @@ class InlineRecordContainer extends AbstractContainer
         $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($data['inlineFirstPid']);
         $nameObjectFt = $nameObject . '-' . $foreignTable;
         $nameObjectFtId = $nameObjectFt . '-' . $rec['uid'];
-        $calcPerms = $backendUser->calcPerms(BackendUtility::readPageAccess($rec['pid'], $backendUser->getPagePermsClause(1)));
+        $calcPerms = $backendUser->calcPerms(BackendUtility::readPageAccess($rec['pid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW)));
         // If the listed table is 'pages' we have to request the permission settings for each page:
         $localCalcPerms = false;
         if ($isPagesTable) {

@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -121,7 +122,7 @@ class ElementInformationController
         $this->table = GeneralUtility::_GET('table');
         $this->uid = GeneralUtility::_GET('uid');
 
-        $this->permsClause = $this->getBackendUser()->getPagePermsClause(1);
+        $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->moduleTemplate->getDocHeaderComponent()->disable();
 

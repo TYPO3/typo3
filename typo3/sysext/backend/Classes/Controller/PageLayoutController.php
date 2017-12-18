@@ -257,7 +257,7 @@ class PageLayoutController
         $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
         // Setting module configuration / page select clause
         $this->MCONF['name'] = $this->moduleName;
-        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
+        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         // Get session data
         $sessionData = $this->getBackendUser()->getSessionData(RecordList::class);
         $this->search_field = !empty($sessionData['search_field']) ? $sessionData['search_field'] : '';

@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Taskcenter\Controller\TaskModuleController;
 use TYPO3\CMS\Taskcenter\TaskInterface;
@@ -104,7 +105,7 @@ class ImportExportTask implements TaskInterface
             // Header
             $lang = $this->getLanguageService();
             $content .= $this->taskObject->description($lang->getLL('.alttitle'), $lang->getLL('.description'));
-            $clause = $this->getBackendUser()->getPagePermsClause(1);
+            $clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
             $usernames = BackendUtility::getUserNames();
             // Create preset links:
             $presets = $this->getPresets();

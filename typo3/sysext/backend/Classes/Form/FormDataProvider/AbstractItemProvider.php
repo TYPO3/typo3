@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -1014,7 +1015,7 @@ abstract class AbstractItemProvider
                 )
             );
         } else {
-            $queryBuilder->andWhere($backendUser->getPagePermsClause(1));
+            $queryBuilder->andWhere($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
             if ($foreignTableName !== 'pages') {
                 $queryBuilder
                     ->from('pages')

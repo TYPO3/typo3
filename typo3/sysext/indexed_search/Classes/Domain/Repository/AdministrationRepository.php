@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\FileContentParser;
 
@@ -464,7 +465,7 @@ class AdministrationRepository
         }
         /** @var PageTreeView $tree */
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
-        $perms_clause = $this->getBackendUserAuthentication()->getPagePermsClause(1);
+        $perms_clause = $this->getBackendUserAuthentication()->getPagePermsClause(Permission::PAGE_SHOW);
         $tree->init('AND ' . $perms_clause);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $HTML = '<span title="' . htmlspecialchars($pageRecord['title']) . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';

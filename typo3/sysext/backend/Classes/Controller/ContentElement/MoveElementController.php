@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap;
 use TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -110,7 +111,7 @@ class MoveElementController
         $this->moveUid = $this->input_moveUid ? $this->input_moveUid : $this->page_id;
         $this->makeCopy = GeneralUtility::_GP('makeCopy');
         // Select-pages where clause for read-access:
-        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
+        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
     }
 
     /**

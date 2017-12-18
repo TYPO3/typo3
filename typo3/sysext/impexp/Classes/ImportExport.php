@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -1088,7 +1089,7 @@ abstract class ImportExport
     public function getRecordPath($pid)
     {
         if (!isset($this->cache_getRecordPath[$pid])) {
-            $clause = $this->getBackendUser()->getPagePermsClause(1);
+            $clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
             $this->cache_getRecordPath[$pid] = (string)BackendUtility::getRecordPath($pid, $clause, 20);
         }
         return $this->cache_getRecordPath[$pid];

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -66,7 +67,7 @@ class PagePathViewHelper extends AbstractBackendViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $id = GeneralUtility::_GP('id');
-        $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
+        $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
         // Is this a real page
         if ($pageRecord['uid']) {
             $title = $pageRecord['_thePathFull'];

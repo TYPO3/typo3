@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -519,7 +520,7 @@ class WorkspaceService implements SingletonInterface
     {
         // Reusing existing functionality with the drawback that
         // mount points are not covered yet
-        $perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+        $perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
         /** @var $searchObj \TYPO3\CMS\Core\Database\QueryView */
         $searchObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryView::class);
         if ($pageId > 0) {

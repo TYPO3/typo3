@@ -165,7 +165,7 @@ class AdminPanelView
                                 'clearCacheLevels'
                             ),
                             0,
-                            $beUser->getPagePermsClause(1)
+                            $beUser->getPagePermsClause(Permission::PAGE_SHOW)
                         ) . $theStartId
                     );
             }
@@ -480,7 +480,7 @@ class AdminPanelView
                ->from('pages')
                ->where(
                    $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('fe_groups.pid')),
-                   $this->getBackendUser()->getPagePermsClause(1)
+                   $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
                )
                ->execute()
                ->fetchColumn(0);
@@ -490,7 +490,7 @@ class AdminPanelView
                     ->from('pages')
                     ->where(
                         $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('fe_groups.pid')),
-                        $this->getBackendUser()->getPagePermsClause(1)
+                        $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
                     )
                     ->orderBy('fe_groups.title')
                     ->execute();

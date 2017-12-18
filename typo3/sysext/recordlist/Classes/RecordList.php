@@ -215,7 +215,7 @@ class RecordList
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $backendUser = $this->getBackendUserAuthentication();
-        $this->perms_clause = $backendUser->getPagePermsClause(1);
+        $this->perms_clause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         // Get session data
         $sessionData = $backendUser->getSessionData(__CLASS__);
         $this->search_field = !empty($sessionData['search_field']) ? $sessionData['search_field'] : '';

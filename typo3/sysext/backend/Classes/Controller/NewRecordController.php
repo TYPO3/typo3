@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -172,7 +173,7 @@ class NewRecordController
     {
         $beUser = $this->getBackendUserAuthentication();
         // Page-selection permission clause (reading)
-        $this->perms_clause = $beUser->getPagePermsClause(1);
+        $this->perms_clause = $beUser->getPagePermsClause(Permission::PAGE_SHOW);
         // This will hide records from display - it has nothing to do with user rights!!
         if ($pidList = $beUser->getTSConfigVal('options.hideRecords.pages')) {
             if (!empty($pidList)) {

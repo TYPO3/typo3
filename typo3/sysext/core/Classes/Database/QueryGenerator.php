@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -936,7 +937,7 @@ class QueryGenerator
                             ->orderBy('uid');
                         if (!$backendUserAuthentication->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
                             $webMounts = $backendUserAuthentication->returnWebmounts();
-                            $perms_clause = $backendUserAuthentication->getPagePermsClause(1);
+                            $perms_clause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
                             $webMountPageTree = '';
                             $webMountPageTreePrefix = '';
                             foreach ($webMounts as $webMount) {
@@ -1615,7 +1616,7 @@ class QueryGenerator
 
         if (!$backendUserAuthentication->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
             $webMounts = $backendUserAuthentication->returnWebmounts();
-            $perms_clause = $backendUserAuthentication->getPagePermsClause(1);
+            $perms_clause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
             $webMountPageTree = '';
             $webMountPageTreePrefix = '';
             foreach ($webMounts as $webMount) {

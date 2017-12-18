@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -128,7 +129,7 @@ class ElementHistoryController
             if ($elementData[0] !== 'pages') {
                 $this->view->assign('singleElement', true);
                 $parentPage = BackendUtility::getRecord($elementData[0], $elementData[1], '*', '', false);
-                if ($parentPage['pid'] > 0 && BackendUtility::readPageAccess($parentPage['pid'], $this->getBackendUser()->getPagePermsClause(1))) {
+                if ($parentPage['pid'] > 0 && BackendUtility::readPageAccess($parentPage['pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW))) {
                     $this->view->assign('fullHistoryUrl', $this->buildUrl([
                         'element' => 'pages:' . $parentPage['pid'],
                         'historyEntry' => '',
@@ -166,7 +167,7 @@ class ElementHistoryController
             $pageId = $record['pid'];
         }
 
-        $pageAccess = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(1));
+        $pageAccess = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
         if (is_array($pageAccess)) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageAccess);
         }

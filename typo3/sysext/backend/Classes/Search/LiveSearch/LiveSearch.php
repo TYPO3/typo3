@@ -82,7 +82,7 @@ class LiveSearch
      */
     public function __construct()
     {
-        $this->userPermissions = $GLOBALS['BE_USER']->getPagePermsClause(1);
+        $this->userPermissions = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
         $this->queryParser = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Search\LiveSearch\QueryParser::class);
     }
 

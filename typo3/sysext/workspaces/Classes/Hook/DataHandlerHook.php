@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -1603,7 +1604,7 @@ class DataHandlerHook
             }
             if ($table === 'pages') {
                 // Copy page access settings from original page to placeholder
-                $perms_clause = $dataHandler->BE_USER->getPagePermsClause(1);
+                $perms_clause = $dataHandler->BE_USER->getPagePermsClause(Permission::PAGE_SHOW);
                 $access = BackendUtility::readPageAccess($uid, $perms_clause);
                 $newVersion_placeholderFieldArray['perms_userid'] = $access['perms_userid'];
                 $newVersion_placeholderFieldArray['perms_groupid'] = $access['perms_groupid'];

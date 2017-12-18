@@ -715,7 +715,7 @@ class PageLayoutView implements LoggerAwareInterface
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
-                    $this->getBackendUser()->getPagePermsClause(1)
+                    $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
                 )
                 ->execute()
                 ->fetch();
@@ -1664,7 +1664,7 @@ class PageLayoutView implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                $this->getBackendUser()->getPagePermsClause(1)
+                $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
             );
 
         if (!empty($GLOBALS['TCA']['pages']['ctrl']['sortby'])) {
@@ -3000,7 +3000,7 @@ class PageLayoutView implements LoggerAwareInterface
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages')
             ->expr();
-        $permsClause = $expressionBuilder->andX($backendUser->getPagePermsClause(1));
+        $permsClause = $expressionBuilder->andX($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         // This will hide records from display - it has nothing to do with user rights!!
         if ($pidList = $backendUser->getTSConfigVal('options.hideRecords.pages')) {
             $pidList = GeneralUtility::intExplode(',', $pidList, true);

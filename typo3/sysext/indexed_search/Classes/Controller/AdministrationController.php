@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -89,7 +90,7 @@ class AdministrationController extends ActionController
         if ($view instanceof BackendTemplateView) {
             /** @var BackendTemplateView $view */
             parent::initializeView($view);
-            $permissionClause = $this->getBackendUserAuthentication()->getPagePermsClause(1);
+            $permissionClause = $this->getBackendUserAuthentication()->getPagePermsClause(Permission::PAGE_SHOW);
             $pageRecord = BackendUtility::readPageAccess($this->pageUid, $permissionClause);
             if ($pageRecord) {
                 $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);

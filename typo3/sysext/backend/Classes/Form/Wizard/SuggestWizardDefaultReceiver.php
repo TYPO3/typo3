@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -119,7 +120,7 @@ class SuggestWizardDefaultReceiver
         }
         if ($this->table === 'pages') {
             $this->queryBuilder->andWhere(
-                QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(1))
+                QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW))
             );
         }
         if (isset($config['addWhere'])) {
@@ -322,13 +323,13 @@ class SuggestWizardDefaultReceiver
         $retValue = true;
         $table = $this->mmForeignTable ?: $this->table;
         if ($table === 'pages') {
-            if (!BackendUtility::readPageAccess($uid, $GLOBALS['BE_USER']->getPagePermsClause(1))) {
+            if (!BackendUtility::readPageAccess($uid, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW))) {
                 $retValue = false;
             }
         } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['is_static']) && (bool)$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
             $retValue = true;
         } else {
-            if (!is_array(BackendUtility::readPageAccess($row['pid'], $GLOBALS['BE_USER']->getPagePermsClause(1)))) {
+            if (!is_array(BackendUtility::readPageAccess($row['pid'], $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW)))) {
                 $retValue = false;
             }
         }

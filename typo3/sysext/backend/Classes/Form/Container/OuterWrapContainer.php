@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -58,7 +59,7 @@ class OuterWrapContainer extends AbstractContainer
         $recordPath = '';
         // @todo: what is this >= 0 check for? wsol cases?!
         if ($this->data['effectivePid'] >= 0) {
-            $permissionsClause = $backendUser->getPagePermsClause(1);
+            $permissionsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
             $recordPath = BackendUtility::getRecordPath($this->data['effectivePid'], $permissionsClause, 15);
         }
 

@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -188,7 +189,7 @@ class NewContentElementWizardController
         $configuration = BackendUtility::getPagesTSconfig($this->id);
         $this->configuration = $configuration['mod.']['wizards.']['newContentElement.'];
         // Getting the current page and receiving access information (used in main())
-        $permissionsClause = $this->getBackendUser()->getPagePermsClause(1);
+        $permissionsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $this->pageInfo = BackendUtility::readPageAccess($this->id, $permissionsClause);
         $this->access = is_array($this->pageInfo);
     }

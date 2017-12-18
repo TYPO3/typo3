@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -258,7 +259,7 @@ class BackendConfigurationManager extends AbstractConfigurationManager
 
         $recursiveStoragePids = '';
         $storagePids = GeneralUtility::intExplode(',', $storagePid);
-        $permsClause = $this->getBackendUser()->getPagePermsClause(1);
+        $permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
         foreach ($storagePids as $startPid) {
             $pids = $queryGenerator->getTreeList($startPid, $recursionDepth, 0, $permsClause);
