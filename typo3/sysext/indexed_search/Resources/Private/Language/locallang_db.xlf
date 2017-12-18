@@ -12,6 +12,9 @@
 			<trans-unit id="index_config.description">
 				<source>Description:</source>
 			</trans-unit>
+			<trans-unit id="index_config.type.I.0">
+				<source>-</source>
+			</trans-unit>
 			<trans-unit id="index_config.type.I.1">
 				<source>Database Records</source>
 			</trans-unit>
@@ -35,6 +38,9 @@
 			</trans-unit>
 			<trans-unit id="index_config.table2index">
 				<source>Table to index:</source>
+			</trans-unit>
+			<trans-unit id="index_config.table2index.I.0">
+				<source>-</source>
 			</trans-unit>
 			<trans-unit id="index_config.alternative_source_pid">
 				<source>Alternative Source Page:</source>
