@@ -676,26 +676,48 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
-     * Internal method used by getMenu() and getMenuForPages()
-     * Returns an array with page rows for subpages with pid is in $pageIds or uid is in $pageIds, depending on $parentPages
-     * This is used for menus. If there are mount points in overlay mode
-     * the _MP_PARAM field is set to the correct MPvar.
+     * Loads page records either by PIDs or by UIDs.
      *
-     * If the $pageIds being input does in itself require MPvars to define a correct
-     * rootline these must be handled externally to this function.
+     * By default the subpages of the given page IDs are loaded (as the method name suggests). If $parentPages is set
+     * to FALSE, the page records for the given page IDs are loaded directly.
      *
-     * @param int[] $pageIds The page id (or array of page ids) for which to fetch subpages (PID)
-     * @param string $fields List of fields to select. Default is "*" = all
-     * @param string $sortField The field to sort by. Default is "sorting
-     * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
-     * @param bool $checkShortcuts Check if shortcuts exist, checks by default
-     * @param bool $parentPages Whether the uid list is meant as list of parent pages or the page itself TRUE means id list is checked against pid field
-     * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlaid localized fields, if any)
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
+     * Concerning the rationale, please see these two other methods:
+     *
+     * @see PageRepository::getMenu()
+     * @see PageRepository::getMenuForPages()
+     *
+     * Version and language overlay are applied to the loaded records.
+     *
+     * If a record is a mount point in overlay mode, the the overlaying page record is returned in place of the
+     * record. The record is enriched by the field _MP_PARAM containing the mount point mapping for the mount
+     * point.
+     *
+     * The query can be customized by setting fields, sorting and additional WHERE clauses. If additional WHERE
+     * clauses are given, the clause must start with an operator, i.e: "AND title like '%blabla%'".
+     *
+     * The keys of the returned page records are the page UIDs.
+     *
+     * CAUTION: In case of an overlaid mount point, it is the original UID.
+     *
+     * @param int[] $pageIds PIDs or UIDs to load records for
+     * @param string $fields fields to select
+     * @param string $sortField the field to sort by
+     * @param string $additionalWhereClause optional additional WHERE clause
+     * @param bool $checkShortcuts whether to check if shortcuts exist
+     * @param bool $parentPages Switch to load pages (false) or child pages (true).
+     * @return array page records
+     *
+     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut()
+     * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
      */
-    protected function getSubpagesForPages(array $pageIds, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = true, $parentPages = true)
-    {
-        $pages = [];
+    protected function getSubpagesForPages(
+        array $pageIds,
+        string $fields = '*',
+        string $sortField = 'sorting',
+        string $additionalWhereClause = '',
+        bool $checkShortcuts = true,
+        bool $parentPages = true
+    ): array {
         $relationField = $parentPages ? 'pid' : 'uid';
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
@@ -724,6 +746,7 @@ class PageRepository implements LoggerAwareInterface
         }
         $result = $res->execute();
 
+        $pages = [];
         while ($page = $result->fetch()) {
             $originalUid = $page['uid'];
 
