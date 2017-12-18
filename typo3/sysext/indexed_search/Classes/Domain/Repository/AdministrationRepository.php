@@ -13,7 +13,6 @@ namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -22,6 +21,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -420,7 +420,7 @@ class AdministrationRepository
                 $queryBuilder->expr()->in(
                     'pageid',
                     $queryBuilder->createNamedParameter(
-                        GeneralUtility::intExplode(',', $this->extGetTreeList((int)$pageUid, 100, 0, '1=1'), true),
+                        $this->extGetTreeList((int)$pageUid),
                         Connection::PARAM_INT_ARRAY
                     )
                 ),
@@ -641,23 +641,53 @@ class AdministrationRepository
      * The only pages excluded from the list are deleted pages.
      *
      * @param int $id page id
-     * @param int $depth to traverse down the page tree.
-     * @param int $begin is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
-     * @param string $perms_clause
-     * @return string Returns the list with a comma in the end + id itself
+     * @return array Returns an array with all page IDs
      */
-    protected function extGetTreeList($id, $depth, $begin = 0, $perms_clause)
+    protected function extGetTreeList(int $id): array
     {
-        $list = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class)
-            ->extGetTreeList($id, $depth, $begin, $perms_clause);
+        $pageIds = $this->getPageTreeIds($id, 100, 0);
+        $pageIds[] = $id;
+        return $pageIds;
+    }
 
-        if (empty($list)) {
-            $list = $id;
-        } else {
-            $list = rtrim($list, ',') . ',' . $id;
+    /**
+     * Generates a list of Page-uid's from $id. List does not include $id itself
+     * The only pages excluded from the list are deleted pages.
+     *
+     * @param int $id Start page id
+     * @param int $depth Depth to traverse down the page tree.
+     * @param int $begin Determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
+     * @return array Returns the list of pages
+     */
+    protected function getPageTreeIds(int $id, int $depth, int $begin): array
+    {
+        if (!$id || $depth <= 0) {
+            return [];
         }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
 
-        return $list;
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $result = $queryBuilder
+            ->select('uid', 'title')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
+            )
+            ->execute();
+
+        $pageIds = [];
+        while ($row = $result->fetch()) {
+            if ($begin <= 0) {
+                $pageIds[] = (int)$row['uid'];
+            }
+            if ($depth > 1) {
+                $pageIds[] = array_merge($pageIds, $this->getPageTreeIds((int)$row['uid'], $depth - 1, $begin - 1));
+            }
+        }
+        return $pageIds;
     }
 
     /**
