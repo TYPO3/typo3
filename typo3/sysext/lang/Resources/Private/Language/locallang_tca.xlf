@@ -534,6 +534,9 @@
 			<trans-unit id="sys_file_reference.sorting_foreign">
 				<source>Sorting foreign</source>
 			</trans-unit>
+			<trans-unit id="sys_file_reference.table_local">
+				<source>Local table</source>
+			</trans-unit>
 			<trans-unit id="sys_file_reference.basicoverlayPalette">
 				<source>File Metadata</source>
 			</trans-unit>
