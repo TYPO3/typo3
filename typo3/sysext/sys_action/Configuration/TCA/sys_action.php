@@ -81,7 +81,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 25,
-                'max' => '10',
+                'max' => 10,
                 'eval' => 'trim'
             ]
         ],

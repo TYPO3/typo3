@@ -154,7 +154,7 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'max' => '40'
+                'max' => 40
             ]
         ],
         'zip' => [
@@ -164,7 +164,7 @@ return [
                 'type' => 'input',
                 'eval' => 'trim',
                 'size' => 10,
-                'max' => '10'
+                'max' => 10
             ]
         ],
         'city' => [
