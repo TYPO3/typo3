@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
 
@@ -731,7 +732,7 @@ class UriBuilder
         if (!empty($this->arguments)) {
             $arguments = $this->convertDomainObjectsToIdentityArrays($this->arguments);
             $this->lastArguments = $arguments;
-            $typolinkConfiguration['additionalParams'] = GeneralUtility::implodeArrayForUrl(null, $arguments);
+            $typolinkConfiguration['additionalParams'] = HttpUtility::buildQueryString($arguments, '&');
         }
         if ($this->addQueryString === true) {
             $typolinkConfiguration['addQueryString'] = 1;

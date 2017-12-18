@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
@@ -474,9 +475,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         ) {
             $currentQueryArray = [];
             parse_str(GeneralUtility::getIndpEnv('QUERY_STRING'), $currentQueryArray);
-            $currentQueryParams = GeneralUtility::implodeArrayForUrl('', $currentQueryArray, '', false, true);
 
-            if (!trim($currentQueryParams)) {
+            if (empty($currentQueryArray)) {
                 list(, $URLparams) = explode('?', $url);
                 list($URLparams) = explode('#', (string)$URLparams);
                 parse_str($URLparams . $LD['orig_type'], $URLparamsArray);
@@ -753,7 +753,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         $LD['no_cache'] = $no_cache ? '&no_cache=1' : '';
         // linkVars
         if ($addParams) {
-            $LD['linkVars'] = GeneralUtility::implodeArrayForUrl('', GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars . $addParams), '', false, true);
+            $LD['linkVars'] = HttpUtility::buildQueryString(GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars . $addParams), '&');
         } else {
             $LD['linkVars'] = $this->getTypoScriptFrontendController()->linkVars;
         }

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Recordlist\Tree\View;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Extension class for the TBE record browser
@@ -55,7 +56,7 @@ class ElementBrowserPageTreeView extends \TYPO3\CMS\Backend\Tree\View\ElementBro
             return $out;
         }
 
-        $parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['pid' => $v['uid']]));
-        return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim($parameters, '&'))) . ');">' . $title . '</a>';
+        $parameters = HttpUtility::buildQueryString($this->linkParameterProvider->getUrlParameters(['pid' => $v['uid']]));
+        return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . $parameters)) . ');">' . $title . '</a>';
     }
 }

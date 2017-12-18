@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 
 /**
@@ -85,12 +86,12 @@ class FolderUtilityRenderer
             . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
 
         // Make footer of upload form, including the submit button:
-        $redirectValue = $this->parameterProvider->getScriptUrl() . GeneralUtility::implodeArrayForUrl(
-            '',
-            $this->parameterProvider->getUrlParameters(
-                ['identifier' => $folderObject->getCombinedIdentifier()]
-            )
-        );
+        $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
+                $this->parameterProvider->getUrlParameters(
+                    ['identifier' => $folderObject->getCombinedIdentifier()]
+                ),
+                '&'
+            );
         $markup[] = '<input type="hidden" name="data[newfolder][' . $a . '][redirect]" value="' . htmlspecialchars($redirectValue) . '" />';
 
         $markup[] = '</div></form>';
@@ -149,10 +150,10 @@ class FolderUtilityRenderer
                 . htmlspecialchars($combinedIdentifier) . '" />';
             $markup[] = '<input type="hidden" name="data[upload][' . $a . '][data]" value="' . $a . '" />';
         }
-        $redirectValue = $this->parameterProvider->getScriptUrl() . GeneralUtility::implodeArrayForUrl(
-            '',
-            $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier])
-        );
+        $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
+                $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]),
+                '&'
+            );
         $markup[] = '<input type="hidden" name="data[upload][1][redirect]" value="' . htmlspecialchars($redirectValue) . '" />';
 
         if (!empty($fileExtList)) {
@@ -238,7 +239,7 @@ class FolderUtilityRenderer
     public function getFileSearchField($searchWord)
     {
         $action = $this->parameterProvider->getScriptUrl()
-            . GeneralUtility::implodeArrayForUrl('', $this->parameterProvider->getUrlParameters([]));
+            . HttpUtility::buildQueryString($this->parameterProvider->getUrlParameters([]), '&');
 
         $markup = [];
         $markup[] = '<form method="post" action="' . htmlspecialchars($action) . '" style="padding-bottom: 15px;">';

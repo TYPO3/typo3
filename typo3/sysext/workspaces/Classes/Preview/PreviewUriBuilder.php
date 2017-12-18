@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -82,7 +83,7 @@ class PreviewUriBuilder
                 'id' => $uid,
                 'L' => $languageId
             ];
-            return BackendUtility::getViewDomain($uid) . '/index.php?' . GeneralUtility::implodeArrayForUrl('', $linkParams);
+            return BackendUtility::getViewDomain($uid) . '/index.php?' . HttpUtility::buildQueryString($linkParams);
         }
     }
 

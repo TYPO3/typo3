@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -390,7 +391,7 @@ class Indexer
         if ($createCHash) {
             /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHash */
             $cacheHash = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class);
-            $this->conf['cHash'] = $cacheHash->generateForParameters(GeneralUtility::implodeArrayForUrl('', $cHash_array));
+            $this->conf['cHash'] = $cacheHash->generateForParameters(HttpUtility::buildQueryString($cHash_array));
         } else {
             $this->conf['cHash'] = '';
         }

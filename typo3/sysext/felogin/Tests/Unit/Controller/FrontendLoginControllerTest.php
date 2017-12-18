@@ -322,7 +322,7 @@ class FrontendLoginControllerTest extends UnitTestCase
                     'id' => 42,
                 ],
                 '',
-                '',
+                [],
             ],
             'simple additional parameter is not preserved if not specified in preservedGETvars' => [
                 [
@@ -330,7 +330,7 @@ class FrontendLoginControllerTest extends UnitTestCase
                     'special' => 23,
                 ],
                 '',
-                '',
+                [],
             ],
             'all params except ignored ones are preserved if preservedGETvars is set to "all"' => [
                 [
@@ -344,14 +344,21 @@ class FrontendLoginControllerTest extends UnitTestCase
                     ],
                 ],
                 'all',
-                '&special1=23&special2[foo]=bar',
+                [
+                    'special1' => 23,
+                    'special2' => [
+                        'foo' => 'bar',
+                    ],
+                ]
             ],
             'preserve single parameter' => [
                 [
                     'L' => 42,
                 ],
                 'L',
-                '&L=42'
+                [
+                    'L' => 42,
+                ],
             ],
             'preserve whole parameter array' => [
                 [
@@ -364,7 +371,15 @@ class FrontendLoginControllerTest extends UnitTestCase
                     ],
                 ],
                 'L,tx_someext',
-                '&L=3&tx_someext[foo]=simple&tx_someext[bar][baz]=simple',
+                [
+                    'L' => 3,
+                    'tx_someext' => [
+                        'foo' => 'simple',
+                        'bar' => [
+                            'baz' => 'simple',
+                        ],
+                    ],
+                ],
             ],
             'preserve part of sub array' => [
                 [
@@ -377,7 +392,14 @@ class FrontendLoginControllerTest extends UnitTestCase
                     ],
                 ],
                 'L,tx_someext[bar]',
-                '&L=3&tx_someext[bar][baz]=simple',
+                [
+                    'L' => 3,
+                    'tx_someext' => [
+                        'bar' => [
+                            'baz' => 'simple',
+                        ],
+                    ],
+                ],
             ],
             'preserve keys on different levels' => [
                 [
@@ -394,18 +416,23 @@ class FrontendLoginControllerTest extends UnitTestCase
                     ],
                 ],
                 'L,tx_ext2,tx_ext3[bar]',
-                '&L=3&tx_ext2[foo]=simple&tx_ext3[bar][baz]=simple',
+                [
+                    'L' => 3,
+                    'tx_ext2' => [
+                        'foo' => 'simple',
+                    ],
+                    'tx_ext3' => [
+                        'bar' => [
+                            'baz' => 'simple',
+                        ],
+                    ],
+                ],
             ],
             'preserved value that does not exist in get' => [
                 [],
-                'L,foo[bar]',
-                ''
-            ],
-            'url params are encoded' => [
-                ['tx_ext1' => 'param with spaces and \\ %<>& /'],
-                'L,tx_ext1',
-                '&tx_ext1=param%20with%20spaces%20and%20%5C%20%25%3C%3E%26%20%2F'
-            ],
+                'L,foo%5Bbar%5D',
+                [],
+             ],
         ];
     }
 

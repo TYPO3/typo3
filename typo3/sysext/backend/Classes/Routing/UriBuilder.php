@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -159,7 +160,7 @@ class UriBuilder implements SingletonInterface
      */
     protected function buildUri($parameters, $referenceType)
     {
-        $uri = 'index.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $parameters, '', false, true), '&');
+        $uri = 'index.php' . HttpUtility::buildQueryString($parameters, '?');
         if ($referenceType === self::ABSOLUTE_PATH) {
             $uri = PathUtility::getAbsoluteWebPath(Environment::getBackendPath() . '/' . $uri);
         } else {

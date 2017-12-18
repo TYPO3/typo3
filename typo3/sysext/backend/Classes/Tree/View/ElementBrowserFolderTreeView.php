@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
 
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 
 /**
@@ -63,8 +64,10 @@ class ElementBrowserFolderTreeView extends FolderTreeView
 
         // Wrap icon in link (in ElementBrowser only the "titlelink" is used).
         if ($this->ext_IconMode === 'titlelink') {
-            $parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()]));
-            $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim($parameters, '&')) . ');';
+            $parameters = HttpUtility::buildQueryString(
+                $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()])
+            );
+            $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . $parameters) . ');';
             $theFolderIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
         }
 
@@ -81,8 +84,10 @@ class ElementBrowserFolderTreeView extends FolderTreeView
      */
     public function wrapTitle($title, $folderObject, $bank = 0)
     {
-        $parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()]));
-        return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim($parameters, '&'))) . ');">' . $title . '</a>';
+        $parameters = HttpUtility::buildQueryString(
+            $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()])
+        );
+        return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . $parameters)) . ');">' . $title . '</a>';
     }
 
     /**
@@ -127,7 +132,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView
         $name = $bMark ? ' name=' . $bMark : '';
         $urlParameters = $this->linkParameterProvider->getUrlParameters([]);
         $urlParameters['PM'] = $cmd;
-        $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&')) . ',' . GeneralUtility::quoteJSvalue($anchor) . ');';
+        $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . HttpUtility::buildQueryString($urlParameters)) . ',' . GeneralUtility::quoteJSvalue($anchor) . ');';
         return '<a href="#"' . htmlspecialchars($name) . ' onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
     }
 

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\ViewHelpers\Uri;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -79,9 +80,13 @@ class ActionViewHelper extends AbstractViewHelper
         }
 
         return GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')
-            . '?'
-            . GeneralUtility::implodeArrayForUrl('install', $arguments)
-            . GeneralUtility::implodeArrayForUrl('', $additionalParams)
+            . HttpUtility::buildQueryString(
+                array_merge(
+                    ['install' => $arguments],
+                    $additionalParams
+                ),
+                '?'
+            )
             . ($section ? '#' . $section : '');
     }
 }

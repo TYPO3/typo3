@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Class used in module tools/dbint (advanced search) and which may hold code specific for that module
@@ -707,7 +708,7 @@ class QueryView
                     ]
                 ],
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-                    . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET'))
+                    . HttpUtility::buildQueryString(['SET' => (array)GeneralUtility::_POST('SET')], '&')
             ]);
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
                 . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';

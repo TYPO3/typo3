@@ -623,7 +623,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setArguments(['foo' => 'bar', 'baz' => ['extbase' => 'fluid']]);
-        $expectedConfiguration = ['parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&foo=bar&baz[extbase]=fluid'];
+        $expectedConfiguration = ['parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&foo=bar&baz%5Bextbase%5D=fluid'];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }
@@ -664,7 +664,7 @@ class UriBuilderTest extends UnitTestCase
         $mockDomainObject2->_set('uid', '321');
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setArguments(['someDomainObject' => $mockDomainObject1, 'baz' => ['someOtherDomainObject' => $mockDomainObject2]]);
-        $expectedConfiguration = ['parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&someDomainObject=123&baz[someOtherDomainObject]=321'];
+        $expectedConfiguration = ['parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&someDomainObject=123&baz%5BsomeOtherDomainObject%5D=321'];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }

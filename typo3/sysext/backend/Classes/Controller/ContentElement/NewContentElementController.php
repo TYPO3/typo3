@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -601,7 +602,7 @@ class NewContentElementController
                         $tempGetVars['defVals']['tt_content']
                     );
                     unset($tempGetVars['defVals']['tt_content']);
-                    $wizardItems[$key]['params'] = GeneralUtility::implodeArrayForUrl('', $tempGetVars);
+                    $wizardItems[$key]['params'] = HttpUtility::buildQueryString($tempGetVars, '&');
                 }
             }
             // If tt_content_defValues are defined...:

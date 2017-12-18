@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -29,7 +30,7 @@ class HttpUtilityTest extends UnitTestCase
      */
     public function isUrlBuiltCorrectly(array $urlParts, $expected)
     {
-        $url = \TYPO3\CMS\Core\Utility\HttpUtility::buildUrl($urlParts);
+        $url = HttpUtility::buildUrl($urlParts);
         $this->assertEquals($expected, $url);
     }
 
@@ -60,5 +61,88 @@ class HttpUtilityTest extends UnitTestCase
                 'http://typo3.org'
             ]
         ];
+    }
+
+    /**
+     * Data provider for buildQueryString
+     *
+     * @return array
+     */
+    public function queryStringDataProvider()
+    {
+        $valueArray = ['one' => '√', 'two' => 2];
+
+        return [
+            'Empty input' => ['foo', [], ''],
+            'String parameters' => ['foo', $valueArray, 'foo%5Bone%5D=%E2%88%9A&foo%5Btwo%5D=2'],
+            'Nested array parameters' => ['foo', [$valueArray], 'foo%5B0%5D%5Bone%5D=%E2%88%9A&foo%5B0%5D%5Btwo%5D=2'],
+            'Keep blank parameters' => ['foo', ['one' => '√', ''], 'foo%5Bone%5D=%E2%88%9A&foo%5B0%5D=']
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider queryStringDataProvider
+     * @param string $name
+     * @param array $input
+     * @param string $expected
+     */
+    public function buildQueryStringBuildsValidParameterString($name, array $input, $expected)
+    {
+        if ($name === '') {
+            $this->assertSame($expected, HttpUtility::buildQueryString($input));
+        } else {
+            $this->assertSame($expected, HttpUtility::buildQueryString([$name => $input]));
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function buildQueryStringCanSkipEmptyParameters()
+    {
+        $input = ['one' => '√', ''];
+        $expected = 'foo%5Bone%5D=%E2%88%9A';
+        $this->assertSame($expected, HttpUtility::buildQueryString(['foo' => $input], '', true));
+    }
+
+    /**
+     * @test
+     */
+    public function buildQueryStringCanUrlEncodeKeyNames()
+    {
+        $input = ['one' => '√', ''];
+        $expected = 'foo%5Bone%5D=%E2%88%9A&foo%5B0%5D=';
+        $this->assertSame($expected, HttpUtility::buildQueryString(['foo' => $input]));
+    }
+
+    /**
+     * @test
+     */
+    public function buildQueryStringCanUrlEncodeKeyNamesMultidimensional()
+    {
+        $input = ['one' => ['two' => ['three' => '√']], ''];
+        $expected = 'foo%5Bone%5D%5Btwo%5D%5Bthree%5D=%E2%88%9A&foo%5B0%5D=';
+        $this->assertSame($expected, HttpUtility::buildQueryString(['foo' => $input]));
+    }
+
+    /**
+     * @test
+     */
+    public function buildQueryStringSkipsLeadingCharacterOnEmptyParameters()
+    {
+        $input = [];
+        $expected = '';
+        $this->assertSame($expected, HttpUtility::buildQueryString($input, '?', true));
+    }
+
+    /**
+     * @test
+     */
+    public function buildQueryStringSkipsLeadingCharacterOnCleanedEmptyParameters()
+    {
+        $input = ['one' => ''];
+        $expected = '';
+        $this->assertSame($expected, HttpUtility::buildQueryString(['foo' => $input], '?', true));
     }
 }

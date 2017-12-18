@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Recordlist\LinkHandler\LinkHandlerInterface;
 
 /**
@@ -385,8 +386,8 @@ abstract class AbstractLinkBrowserController
             if ($configuration['addParams']) {
                 $addParams = $configuration['addParams'];
             } else {
-                $parameters = GeneralUtility::implodeArrayForUrl('', $this->getUrlParameters(['act' => $identifier]));
-                $addParams = 'onclick="jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue('?' . ltrim($parameters, '&'))) . ');return false;"';
+                $parameters = HttpUtility::buildQueryString($this->getUrlParameters(['act' => $identifier]), '?');
+                $addParams = 'onclick="jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($parameters)) . ');return false;"';
             }
             $menuDef[$identifier] = [
                 'isActive' => $isActive,
@@ -587,7 +588,7 @@ abstract class AbstractLinkBrowserController
         $parameters['params']['allowedExtensions'] = $this->parameters['params']['allowedExtensions'] ?? '';
         $parameters['params']['blindLinkOptions'] = $this->parameters['params']['blindLinkOptions'] ?? '';
         $parameters['params']['blindLinkFields'] = $this->parameters['params']['blindLinkFields'] ?? '';
-        $addPassOnParams = GeneralUtility::implodeArrayForUrl('P', $parameters);
+        $addPassOnParams = HttpUtility::buildQueryString(['P' => $parameters], '&');
 
         $attributes = $this->displayedLinkHandler->getBodyTagAttributes();
         return array_merge(

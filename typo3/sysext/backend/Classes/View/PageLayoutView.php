@@ -3798,10 +3798,7 @@ class PageLayoutView implements LoggerAwareInterface
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = (string)$uriBuilder->buildUriFromRoutePath($routePath, $urlParameters);
         } else {
-            $url = GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?' . ltrim(
-                    GeneralUtility::implodeArrayForUrl('', $urlParameters),
-                    '&'
-                );
+            $url = GeneralUtility::getIndpEnv('SCRIPT_NAME') . HttpUtility::buildQueryString($urlParameters, '?');
         }
         return $url;
     }

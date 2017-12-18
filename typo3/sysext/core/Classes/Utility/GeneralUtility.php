@@ -2620,12 +2620,11 @@ class GeneralUtility
                 unset($params[$key]);
             }
         }
-        $pString = self::implodeArrayForUrl('', $params);
-        return $pString ? $parts . '?' . ltrim($pString, '&') : $parts;
+        return $parts . HttpUtility::buildQueryString($params, '?');
     }
 
     /**
-     * Takes a full URL, $url, possibly with a querystring and overlays the $getParams arrays values onto the quirystring, packs it all together and returns the URL again.
+     * Takes a full URL, $url, possibly with a querystring and overlays the $getParams arrays values onto the querystring, packs it all together and returns the URL again.
      * So basically it adds the parameters in $getParams to an existing URL, $url
      *
      * @param string $url URL string
@@ -2640,10 +2639,8 @@ class GeneralUtility
             parse_str($parts['query'], $getP);
         }
         ArrayUtility::mergeRecursiveWithOverrule($getP, $getParams);
-        $uP = explode('?', $url);
-        $params = self::implodeArrayForUrl('', $getP);
-        $outurl = $uP[0] . ($params ? '?' . substr($params, 1) : '');
-        return $outurl;
+        [$url] = explode('?', $url);
+        return $url . HttpUtility::buildQueryString($getP, '?');
     }
 
     /**

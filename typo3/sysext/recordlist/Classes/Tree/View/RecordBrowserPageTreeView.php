@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Recordlist\Tree\View;
 
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Specific page tree for the record link handler.
@@ -100,7 +101,7 @@ class RecordBrowserPageTreeView extends ElementBrowserPageTreeView
     public function wrapTitle($title, $record, $ext_pArrPages = false)
     {
         $urlParameters = $this->linkParameterProvider->getUrlParameters(['pid' => (int)$record['uid']]);
-        $url = $this->getThisScript() . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&');
+        $url = $this->getThisScript() . HttpUtility::buildQueryString($urlParameters);
         $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($url) . ');';
 
         return '<span class="list-tree-title"><a href="#" onclick="' . htmlspecialchars($aOnClick) . '">'

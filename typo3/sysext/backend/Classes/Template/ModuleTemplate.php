@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -572,7 +573,7 @@ class ModuleTemplate
      * - SET[] variables a stored in $GLOBALS["SOBE"]->MOD_SETTINGS for backend
      * modules
      *
-     * @return string
+     * @return string GET-parameters for the shortcut-url only(!). String starts with '&'
      * @internal
      */
     public function makeShortcutUrl($gvList, $setList)
@@ -582,7 +583,7 @@ class ModuleTemplate
             GeneralUtility::compileSelectedGetVarsFromArray($gvList, $getParams),
             ['SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS)]
         );
-        return GeneralUtility::implodeArrayForUrl('', $storeArray);
+        return HttpUtility::buildQueryString($storeArray, '&');
     }
 
     /**

@@ -23,6 +23,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
@@ -102,7 +103,7 @@ class PageArgumentValidator implements MiddlewareInterface
         if ($this->controller->cHash) {
             // Make sure we use the page uid and not the page alias
             $queryParams['id'] = $this->controller->id;
-            $this->controller->cHash_array = $this->cacheHashCalculator->getRelevantParameters(GeneralUtility::implodeArrayForUrl('', $queryParams));
+            $this->controller->cHash_array = $this->cacheHashCalculator->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
             $cHash_calc = $this->cacheHashCalculator->calculateCacheHash($this->controller->cHash_array);
             if (!hash_equals($cHash_calc, $this->controller->cHash)) {
                 // Early return to trigger the error controller
@@ -113,7 +114,7 @@ class PageArgumentValidator implements MiddlewareInterface
                 $this->getTimeTracker()->setTSlogMessage('The incoming cHash "' . $this->controller->cHash . '" and calculated cHash "' . $cHash_calc . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($this->controller->cHash_array)) . '"', 2);
             }
             // No cHash is set, check if that is correct
-        } elseif ($this->cacheHashCalculator->doParametersRequireCacheHash(GeneralUtility::implodeArrayForUrl('', $queryParams))) {
+        } elseif ($this->cacheHashCalculator->doParametersRequireCacheHash(HttpUtility::buildQueryString($queryParams))) {
             // Will disable caching
             $this->controller->reqCHash();
         }

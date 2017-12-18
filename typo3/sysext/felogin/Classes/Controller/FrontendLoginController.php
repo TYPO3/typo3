@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
@@ -907,19 +908,14 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
      */
     protected function getPageLink($label, $piVars, $returnUrl = false)
     {
-        $additionalParams = '';
-        if (!empty($piVars)) {
-            foreach ($piVars as $key => $val) {
-                $additionalParams .= '&' . $key . '=' . $val;
-            }
-        }
+        $additionalParams = is_array($piVars) && !empty($piVars) ? $piVars : [];
         // Should GETvars be preserved?
         if ($this->conf['preserveGETvars']) {
-            $additionalParams .= $this->getPreserveGetVars();
+            $additionalParams = array_merge_recursive($additionalParams, $this->getPreserveGetVars());
         }
         $this->conf['linkConfig.']['parameter'] = $this->frontendController->id;
-        if ($additionalParams) {
-            $this->conf['linkConfig.']['additionalParams'] = $additionalParams;
+        if (!empty($additionalParams)) {
+            $this->conf['linkConfig.']['additionalParams'] = HttpUtility::buildQueryString($additionalParams, '&');
         }
         if ($returnUrl) {
             return htmlspecialchars($this->cObj->typoLink_URL($this->conf['linkConfig.']));
@@ -933,7 +929,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
      * Supports multi-dimensional GET-vars.
      * Some hardcoded values are dropped.
      *
-     * @return string additionalParams-string
+     * @return array additionalParams-array
      */
     protected function getPreserveGetVars()
     {
@@ -954,8 +950,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
             parse_str(implode('=1&', $preserveQueryStringProperties) . '=1', $preserveQueryParts);
             $preserveQueryParts = \TYPO3\CMS\Core\Utility\ArrayUtility::intersectRecursive($getVars, $preserveQueryParts);
         }
-        $parameters = GeneralUtility::implodeArrayForUrl('', $preserveQueryParts);
-        return $parameters;
+        return $preserveQueryParts;
     }
 
     /**

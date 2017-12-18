@@ -400,7 +400,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
                     'foo' => [ 1, 2, 'f' => [ 4, 5 ] ],
                     'blub' => 123
                 ],
-                '&L=1&foo[0]=1&foo[1]=2&foo[f][0]=4&foo[f][1]=5'
+                '&L=1&foo%5B0%5D=1&foo%5B1%5D=2&foo%5Bf%5D%5B0%5D=4&foo%5Bf%5D%5B1%5D=5'
             ],
             'nested variables' => [
                 'bar|foo(1-2)',

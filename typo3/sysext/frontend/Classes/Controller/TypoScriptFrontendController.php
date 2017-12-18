@@ -2255,7 +2255,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($this->cHash && is_array($GET)) {
             // Make sure we use the page uid and not the page alias
             $GET['id'] = $this->id;
-            $this->cHash_array = $this->cacheHash->getRelevantParameters(GeneralUtility::implodeArrayForUrl('', $GET));
+            $this->cHash_array = $this->cacheHash->getRelevantParameters(HttpUtility::buildQueryString($GET));
             $cHash_calc = $this->cacheHash->calculateCacheHash($this->cHash_array);
             if (!hash_equals($cHash_calc, $this->cHash)) {
                 if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
@@ -2271,7 +2271,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         } elseif (is_array($GET)) {
             // No cHash is set, check if that is correct
-            if ($this->cacheHash->doParametersRequireCacheHash(GeneralUtility::implodeArrayForUrl('', $GET))) {
+            if ($this->cacheHash->doParametersRequireCacheHash(HttpUtility::buildQueryString($GET))) {
                 $this->reqCHash();
             }
         }
@@ -3084,7 +3084,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         // Error: This key must not be an array!
                         continue;
                     }
-                    $value = GeneralUtility::implodeArrayForUrl($parameterName, $value);
+                    $value = HttpUtility::buildQueryString([$parameterName => $value], '&');
                 }
                 $this->linkVars .= $value;
             }

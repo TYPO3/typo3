@@ -146,4 +146,36 @@ class HttpUtility
             (isset($urlParts['query']) ? '?' . $urlParts['query'] : '') .
             (isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '');
     }
+
+    /**
+     * Implodes a multidimensional array of query parameters to a string of GET parameters (eg. param[key][key2]=value2&param[key][key3]=value3)
+     * and properly encodes parameter names as well as values. Spaces are encoded as %20
+     *
+     * @param array $parameters The (multidimensional) array of query parameters with values
+     * @param string $prependCharacter If the created query string is not empty, prepend this character "?" or "&" else no prepend
+     * @param bool $skipEmptyParameters If true, empty parameters (blank string, empty array, null) are removed.
+     * @return string Imploded result, for example param[key][key2]=value2&param[key][key3]=value3
+     * @see explodeUrl2Array()
+     */
+    public static function buildQueryString(array $parameters, string $prependCharacter = '', bool $skipEmptyParameters = false): string
+    {
+        if (empty($parameters)) {
+            return '';
+        }
+
+        if ($skipEmptyParameters) {
+            // This callback filters empty strings, array and null but keeps zero integers
+            $parameters = ArrayUtility::filterRecursive(
+                $parameters,
+                function ($item) {
+                    return $item !== '' && $item !== [] && $item !== null;
+                }
+            );
+        }
+
+        $queryString = http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
+        $prependCharacter = $prependCharacter === '?' || $prependCharacter === '&' ? $prependCharacter : '';
+
+        return $queryString && $prependCharacter ? $prependCharacter . $queryString : $queryString;
+    }
 }

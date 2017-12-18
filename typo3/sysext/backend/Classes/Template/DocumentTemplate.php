@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -399,8 +400,11 @@ function jumpToUrl(URL) {
     public function makeShortcutUrl($gvList, $setList)
     {
         $GET = GeneralUtility::_GET();
-        $storeArray = array_merge(GeneralUtility::compileSelectedGetVarsFromArray($gvList, $GET), ['SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS)]);
-        return GeneralUtility::implodeArrayForUrl('', $storeArray);
+        $storeArray = array_merge(
+            GeneralUtility::compileSelectedGetVarsFromArray($gvList, $GET),
+            ['SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS)]
+        );
+        return HttpUtility::buildQueryString($storeArray, '&');
     }
 
     /**

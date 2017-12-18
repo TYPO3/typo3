@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
@@ -136,7 +137,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
         $formEngineParameters['fieldChangeFunc'] = $this->parameters['fieldChangeFunc'];
         $formEngineParameters['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($this->parameters['fieldChangeFunc']));
 
-        $parameters['data-add-on-params'] .= GeneralUtility::implodeArrayForUrl('P', $formEngineParameters);
+        $parameters['data-add-on-params'] .= HttpUtility::buildQueryString(['P' => $formEngineParameters], '&');
 
         return $parameters;
     }

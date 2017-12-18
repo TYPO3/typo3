@@ -925,10 +925,7 @@ class EditDocumentController
         $this->perms_clause = $beUser->getPagePermsClause(Permission::PAGE_SHOW);
         // Set other internal variables:
         $this->R_URL_getvars['returnUrl'] = $this->retUrl;
-        $this->R_URI = $this->R_URL_parts['path'] . '?' . ltrim(GeneralUtility::implodeArrayForUrl(
-            '',
-            $this->R_URL_getvars
-        ), '&');
+        $this->R_URI = $this->R_URL_parts['path'] . HttpUtility::buildQueryString($this->R_URL_getvars, '?');
 
         // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
         $this->MCONF['name'] = 'xMOD_alt_doc.php';
@@ -1056,14 +1053,14 @@ class EditDocumentController
 
         if (!empty($previewConfiguration['useCacheHash'])) {
             $cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
-            $fullLinkParameters = GeneralUtility::implodeArrayForUrl('', array_merge($linkParameters, ['id' => $previewPageId]));
+            $fullLinkParameters = HttpUtility::buildQueryString(array_merge($linkParameters, ['id' => $previewPageId]), '&');
             $cacheHashParameters = $cacheHashCalculator->getRelevantParameters($fullLinkParameters);
             $linkParameters['cHash'] = $cacheHashCalculator->calculateCacheHash($cacheHashParameters);
         } else {
             $linkParameters['no_cache'] = 1;
         }
 
-        return GeneralUtility::implodeArrayForUrl('', $linkParameters, '', false, true);
+        return HttpUtility::buildQueryString($linkParameters, '&');
     }
 
     /**
@@ -2595,7 +2592,7 @@ class EditDocumentController
             'edit,defVals,overrideVals,columnsOnly,noView,workspace',
             $this->R_URL_getvars
         );
-        $this->storeUrl = GeneralUtility::implodeArrayForUrl('', $this->storeArray);
+        $this->storeUrl = HttpUtility::buildQueryString($this->storeArray, '&');
         $this->storeUrlMd5 = md5($this->storeUrl);
     }
 

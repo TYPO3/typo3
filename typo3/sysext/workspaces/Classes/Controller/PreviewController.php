@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -121,7 +122,7 @@ class PreviewController
         unset($queryParameters['route'], $queryParameters['token'], $queryParameters['previewWS']);
 
         // Assemble a query string from the retrieved parameters
-        $queryString = GeneralUtility::implodeArrayForUrl('', $queryParameters);
+        $queryString = HttpUtility::buildQueryString($queryParameters, '&');
 
         // fetch the next and previous stage
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(

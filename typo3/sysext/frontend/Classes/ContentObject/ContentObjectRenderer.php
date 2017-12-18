@@ -53,6 +53,7 @@ use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -5564,7 +5565,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         if (is_array($urlParameters)) {
             if (!empty($urlParameters)) {
-                $conf['additionalParams'] .= GeneralUtility::implodeArrayForUrl('', $urlParameters);
+                $conf['additionalParams'] .= HttpUtility::buildQueryString($urlParameters, '&');
             }
         } else {
             $conf['additionalParams'] .= $urlParameters;
@@ -5865,7 +5866,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $newQueryArray = $currentQueryArray;
         }
         ArrayUtility::mergeRecursiveWithOverrule($newQueryArray, $overruleQueryArguments, $forceOverruleArguments);
-        return GeneralUtility::implodeArrayForUrl('', $newQueryArray, '', false, true);
+        return HttpUtility::buildQueryString($newQueryArray, '&');
     }
 
     /***********************************************
