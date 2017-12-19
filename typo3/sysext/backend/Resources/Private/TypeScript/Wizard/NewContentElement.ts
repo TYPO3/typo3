@@ -27,7 +27,7 @@ class NewContentElement {
       },
       content: url,
       severity: Severity.notice,
-      size: Modal.sizes.large,
+      size: Modal.sizes.medium,
       title,
       type: Modal.types.ajax,
     });
