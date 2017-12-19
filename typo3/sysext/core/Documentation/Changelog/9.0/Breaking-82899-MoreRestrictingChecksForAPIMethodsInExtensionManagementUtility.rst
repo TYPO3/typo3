@@ -17,7 +17,7 @@ now throw Exceptions with invalid calls:
 2. :php:`addNavigationComponent()` requires the third argument ($extensionKey)
 3. :php:`addService()` requires the second argument to be non-empty, and the fourth argument as array
 4. :php:`addPlugin()` requires the third argument ($extensionKey) to be set
-5. :php:`addStaticFile()` requires the second a third argument to be non-empty
+5. :php:`addStaticFile()` requires the second and third argument to be non-empty
 6. :php:`addTypoScript()` requires the second argument to be either `setup` or `constants`
 
 

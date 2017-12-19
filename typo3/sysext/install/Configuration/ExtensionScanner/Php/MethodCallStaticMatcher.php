@@ -470,18 +470,11 @@ return [
             'Deprecation-82899-ExtensionManagementUtilityMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addNavigationComponent' => [
-        'numberOfMandatoryArguments' => 3,
-        'maximumNumberOfArguments' => 3,
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionKeyByPrefix' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Breaking-82899-MoreRestrictingChecksForAPIMethodsInExtensionManagementUtility.rst',
-        ],
-    ],
-    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile' => [
-        'numberOfMandatoryArguments' => 3,
-        'maximumNumberOfArguments' => 3,
-        'restFiles' => [
-            'Breaking-82899-MoreRestrictingChecksForAPIMethodsInExtensionManagementUtility.rst',
+            'Deprecation-82899-ExtensionManagementUtilityMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles' => [

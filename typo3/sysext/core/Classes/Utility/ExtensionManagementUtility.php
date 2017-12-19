@@ -123,7 +123,7 @@ class ExtensionManagementUtility
         }
         $isLoaded = static::$packageManager->isPackageActive($key);
         if ($exitOnError && !$isLoaded) {
-            // @deprecated, once $existOnError is gone, this check can be removed.
+            // @deprecated, once $exitOnError is gone, this check can be removed.
             throw new \BadFunctionCallException('TYPO3 Fatal Error: Extension "' . $key . '" is not loaded!', 1270853910);
         }
         return $isLoaded;
@@ -1352,6 +1352,7 @@ tt_content.' . $key . $suffix . ' {
      * @param string $extKey Is of course the extension key
      * @param string $path Is the path where the template files (fixed names) include_static.txt, constants.txt, setup.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a comma separated list of static templates to include, like:  EXT:fluid_styled_content/Configuration/TypoScript/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
      * @param string $title Is the title in the selector box.
+     * @throws \InvalidArgumentException
      * @see addTypoScript()
      */
     public static function addStaticFile($extKey, $path, $title)
@@ -1376,6 +1377,7 @@ tt_content.' . $key . $suffix . ' {
      * @param string $extKey The extension key
      * @param string $filePath The path where the TSconfig file is located
      * @param string $title The title in the selector box
+     * @throws \InvalidArgumentException
      */
     public static function registerPageTSConfigFile($extKey, $filePath, $title)
     {
@@ -1437,6 +1439,7 @@ tt_content.' . $key . $suffix . ' {
      * @param string $type Is either "setup" or "constants" and obviously determines which kind of TypoScript code we are adding.
      * @param string $content Is the TS content, will be prefixed with a [GLOBAL] line and a comment-header.
      * @param int|string string pointing to the "key" of a static_file template ([reduced extension_key]/[local path]). The points is that the TypoScript you add is included only IF that static template is included (and in that case, right after). So effectively the TypoScript you set can specifically overrule settings from those static templates.
+     * @throws \InvalidArgumentException
      */
     public static function addTypoScript(string $key, string $type, string $content, $afterStaticUid = 0)
     {
