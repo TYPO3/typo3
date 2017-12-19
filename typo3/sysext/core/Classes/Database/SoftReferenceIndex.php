@@ -272,8 +272,8 @@ class SoftReferenceIndex
                             $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $linkTags[$key]);
                             $elements[$key] = $linkDetails;
                             $elements[$key]['subst'] = [
-                                'type' => $linkDetails['type'],
-                                'relFileName' => $fileIdMatch[1],
+                                'type' => 'db',
+                                'recordRef' => 'sys_file:' . $fileIdMatch[1],
                                 'tokenID' => $token,
                                 'tokenValue' => 'file:' . ($linkDetails['file'] instanceof File ? $linkDetails['file']->getUid() : $fileIdMatch[1])
                             ];
