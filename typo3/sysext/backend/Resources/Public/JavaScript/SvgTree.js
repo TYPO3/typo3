@@ -437,7 +437,7 @@ define(
             icon: '',
           };
           Icons.getIcon(iconName, Icons.sizes.small, null, null, 'inline').done(function (icon) {
-            _this.data.icons[iconName].icon = icon.match(/<svg.*<\/svg>/is)[0];
+            _this.data.icons[iconName].icon = icon.match(/<svg[\s\S]*<\/svg>/i)[0];
 
             if (update) {
               _this.update();
