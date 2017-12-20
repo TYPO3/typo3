@@ -73,15 +73,7 @@ class DatabaseConnect extends AbstractStepAction
                 }
             }
             if (isset($postValues['password'])) {
-                $value = $postValues['password'];
-                if (strlen($value) <= 50) {
-                    $defaultConnectionSettings['password'] = $value;
-                } else {
-                    $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $errorStatus->setTitle('Database password not valid');
-                    $errorStatus->setMessage('Given password must be shorter than fifty characters.');
-                    $result[] = $errorStatus;
-                }
+                $defaultConnectionSettings['password'] = $postValues['password'];
             }
             if (isset($postValues['host'])) {
                 $value = $postValues['host'];
