@@ -43,4 +43,4 @@ Instead of :php:`LocalizationRepository::getExcludeQueryPart()` configure the qu
 Instead of :php:`LocalizationRepository::getAllowedLanguagesForBackendUser()` add
 the required conditions to your query yourself.
 
-.. index:: PHP-API, Backend
+.. index:: PHP-API, Backend, Database

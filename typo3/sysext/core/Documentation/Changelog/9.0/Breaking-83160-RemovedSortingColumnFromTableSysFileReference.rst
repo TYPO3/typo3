@@ -23,4 +23,4 @@ Affected Installations
 
 All instances which use custom queries containing the mentioned column.
 
-.. index:: Database, NotScanned
+.. index:: Database, FAL, NotScanned

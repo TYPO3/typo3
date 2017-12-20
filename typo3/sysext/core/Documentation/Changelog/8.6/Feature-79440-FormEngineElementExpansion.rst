@@ -166,4 +166,4 @@ The new API brings lots of new options to add functionality to single elements
 without substituting the full element.
 
 
-.. index:: Backend, TCA
+.. index:: Backend, TCA, PHP-API

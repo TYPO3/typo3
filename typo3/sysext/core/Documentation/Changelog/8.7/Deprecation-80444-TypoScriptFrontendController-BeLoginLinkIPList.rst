@@ -30,4 +30,4 @@ Migration
 
 The functionality is moved to EXT:compatibility7.
 
-.. index:: Frontend
+.. index:: Frontend, PHP-API

@@ -25,4 +25,4 @@ Less toggling between the two "contants in green" modes while using the TS objec
 And as a side effect this patch improves the search feature of the object browser when searching
 for a constant value or name, i.e. 'maxWInText' while being on "substituted" mode.
 
-.. index:: Backend, TypoScript
+.. index:: Backend, TypoScript, ext:tstemplate

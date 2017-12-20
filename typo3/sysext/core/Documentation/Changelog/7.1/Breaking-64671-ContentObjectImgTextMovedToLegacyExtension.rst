@@ -29,3 +29,6 @@ Migration
 
 Any installation should migrate to alternatives such as CSS Styled Content without a table-based rendering for
 text w/ image elements to customize the output of content.
+
+
+.. index:: Backend, Frontend, TypoScript

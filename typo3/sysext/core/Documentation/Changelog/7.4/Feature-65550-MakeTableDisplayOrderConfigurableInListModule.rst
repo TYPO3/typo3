@@ -22,3 +22,6 @@ Example:
 	  before = <tableA>, <tableB>, ...
 	  after = <tableA>, <tableB>, ...
 	}
+
+
+.. index:: TSConfig, Backend

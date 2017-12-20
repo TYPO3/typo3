@@ -32,4 +32,4 @@ If you need to call the internal Bootstrap method, you can use :php:`Bootstrap::
 Please note that both methods are marked as internal and don't belong to public TYPO3 core API.
 This means that the methods can be adjusted anytime by the core itself.
 
-.. index:: Backend
+.. index:: Backend, PHP-API

@@ -24,4 +24,4 @@ Affected Installations
 
 Any installation with third-party CLI commands which use these constants or global variables.
 
-.. index:: CLI
+.. index:: CLI, PHP-API

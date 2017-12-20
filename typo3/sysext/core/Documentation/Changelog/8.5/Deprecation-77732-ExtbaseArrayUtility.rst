@@ -37,4 +37,4 @@ A migration is available for the following methods:
 - :php:`unsetValueByPath`: Use :php:`\TYPO3\CMS\Core\Utility\ArrayUtility::removeByPath`
 - :php:`sortArrayWithIntegerKeys`: Use :php:`\TYPO3\CMS\Core\Utility\ArrayUtility::sortArrayWithIntegerKeys`
 
-.. index:: Backend
+.. index:: Backend, ext:extbase, PHP-API

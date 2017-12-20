@@ -30,4 +30,4 @@ Migration
 
 Change the extensions to check for `info` instead of `info_pagetsconfig`.
 
-.. index:: Backend, NotScanned
+.. index:: Backend, NotScanned, ext:info

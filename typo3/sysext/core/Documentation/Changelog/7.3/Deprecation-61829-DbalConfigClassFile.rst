@@ -30,3 +30,6 @@ Migration
 =========
 
 Load the class using the autoloader.
+
+
+.. index:: PHP-API, ext:dbal

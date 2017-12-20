@@ -185,4 +185,4 @@ section.
    </html>
 
 
-.. index:: Frontend, TypoScript
+.. index:: Frontend, TypoScript, ext:fluid_styled_content

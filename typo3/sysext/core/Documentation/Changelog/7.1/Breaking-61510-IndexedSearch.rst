@@ -53,3 +53,6 @@ Backend
 -------
 
 Reconfigure the backend users and groups if users need to see the module of indexed_search.
+
+
+.. index:: PHP-API, Backend, Frontend, TypoScript, ext:indexed_search

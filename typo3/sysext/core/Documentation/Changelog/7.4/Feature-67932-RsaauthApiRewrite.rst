@@ -75,3 +75,6 @@ values for a `rsa:` prefix so you can be sure that non-matching data will not be
 	if ($this->isRsaAvailable()) {
 		$parameters['be_user_data'] = $this->getRsaEncryptionDecoder()->decrypt($parameters['be_user_data']);
 	}
+
+
+.. index:: PHP-API, Backend, ext:rsaauth

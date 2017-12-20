@@ -18,4 +18,4 @@ Impact
 Users who are not familiar with the command line can now trigger a dump of class
 loading information in install tool.
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

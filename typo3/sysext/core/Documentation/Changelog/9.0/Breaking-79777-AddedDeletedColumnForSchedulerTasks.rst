@@ -29,4 +29,4 @@ If an extension is accessing the database table ``tx_scheduler_task`` directly, 
 needs to be added.
 
 
-.. index:: Backend, CLI, NotScanned
+.. index:: Backend, CLI, NotScanned, ext:scheduler

@@ -33,3 +33,6 @@ Migration
 =========
 
 Use :code:`\TYPO3\CMS\Backend\Template\DocumentTemplate` instead.
+
+
+.. index:: PHP-API, Backend

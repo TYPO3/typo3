@@ -32,4 +32,4 @@ This method always returns an array.
 
 If you need the direct parent menuitem of the current sublevel use :php:`getParentMenuItem()` method.
 
-.. index:: Frontend
+.. index:: Frontend, PHP-API

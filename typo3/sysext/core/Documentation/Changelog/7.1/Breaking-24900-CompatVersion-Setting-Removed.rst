@@ -37,3 +37,6 @@ Migration
 
 Remove any direct usage of the option, and use the "compat_version" method within `GeneralUtility` as well as the
 TypoScript condition "compat_version" which gives more accurate results.
+
+
+.. index:: LocalConfiguration, PHP-API, TypoScript

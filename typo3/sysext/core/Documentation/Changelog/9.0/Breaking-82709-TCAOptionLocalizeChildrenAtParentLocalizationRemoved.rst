@@ -35,4 +35,4 @@ Migration
 
 Remove the TCA option in the extensions' TCA definition.
 
-.. index:: TCA, NotScanned
+.. index:: TCA, Backend, NotScanned

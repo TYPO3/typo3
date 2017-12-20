@@ -22,3 +22,6 @@ Impact
 By default in new and existing installations a header "Content-language: XX" is sent where "XX" is the iso code of the
 sys_language_content if that is properly defined by the sys_language record representing the sys_language_uid.
 You must set "config.disableLanguageHeader" to disable that and get previous behavior (no header).
+
+
+.. index:: TypoScript, Frontend

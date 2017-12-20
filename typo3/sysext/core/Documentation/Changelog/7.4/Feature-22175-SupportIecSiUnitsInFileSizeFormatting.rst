@@ -41,3 +41,6 @@ Example
 	echo GeneralUtility::formatSize(85123);
 	// => Before "83.1 K"
 	// => Now "83.13 Ki"
+
+
+.. index:: PHP-API, Backend

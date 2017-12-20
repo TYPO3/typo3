@@ -62,4 +62,4 @@ Caption Alignment
 Use CSS to align the caption text to your preference.
 
 
-.. index:: Frontend, TypoScript
+.. index:: Frontend, TypoScript, ext:css_styled_content

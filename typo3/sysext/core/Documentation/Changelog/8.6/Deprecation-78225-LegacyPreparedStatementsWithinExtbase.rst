@@ -31,4 +31,4 @@ Migration
 
 Use the same method :php:`setStatement()` and provide a QueryBuilder object or a Statement object based on Doctrine DBAL.
 
-.. index:: Database, PHP-API
+.. index:: Database, PHP-API, ext:extbase

@@ -24,3 +24,6 @@ Affected installations
 ======================
 
 Installations misusing top.busy until now for their own good will break.
+
+
+.. index:: PHP-API, JavaScript, Backend

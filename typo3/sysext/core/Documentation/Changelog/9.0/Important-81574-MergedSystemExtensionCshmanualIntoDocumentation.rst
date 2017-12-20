@@ -14,4 +14,4 @@ The system extension `cshmanual` was migrated into the "documentation" extension
 The functionality goes in line with streamline the amount of system extensions and
 sorting out parts which belong together conceptually.
 
-.. index:: Backend
+.. index:: Backend, ext:documentation

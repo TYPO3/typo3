@@ -54,4 +54,4 @@ Migration
 The TYPO3 Install Tool removes the configuration option for existing installations. Using the
 "Database Comparison" view, it is possible to remove the fields from the database.
 
-.. index:: LocalConfiguration
+.. index:: LocalConfiguration, PHP-API

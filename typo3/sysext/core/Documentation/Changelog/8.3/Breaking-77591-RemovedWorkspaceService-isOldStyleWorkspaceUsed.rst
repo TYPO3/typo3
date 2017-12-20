@@ -31,4 +31,4 @@ Migration
 
 Remove any occurrences to the PHP method.
 
-.. index:: PHP-API
+.. index:: PHP-API, ext:workspaces

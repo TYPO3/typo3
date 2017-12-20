@@ -285,4 +285,4 @@ scope "properties.fluidAdditionalAttributes" for each form element.
 This configuration property will be used to fill the fluid ViewHelper property "additionalAttributes".
 
 
-.. index:: Frontend, Backend, ext:form
+.. index:: Frontend, Backend, PHP-API, Fluid, ext:form

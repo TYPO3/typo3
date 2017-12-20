@@ -33,3 +33,6 @@ Migration
 =========
 
 Change the used CSS classes to the new ones.
+
+
+.. index:: Backend, Frontend

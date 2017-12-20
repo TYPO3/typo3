@@ -90,4 +90,4 @@ Impact
 
 SpaceBefore and SpaceAfter is now available to all CSS Styled Content elements.
 
-.. index:: Frontend
+.. index:: Frontend, ext:css_styled_content, TypoScript

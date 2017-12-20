@@ -33,4 +33,4 @@ Migration
 In many cases it should be possible to use signal :php:`hasInstalledExtensions` instead
 which is fired after an extension has been installed.
 
-.. index:: Backend, LocalConfiguration, PHP-API, NotScanned
+.. index:: Backend, LocalConfiguration, PHP-API, NotScanned, ext:extensionmanager

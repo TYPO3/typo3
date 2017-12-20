@@ -32,3 +32,6 @@ Migration
 Set the `stripslashes_values` property to FALSE and apply `stripslashes()` in the code that
 prepares the data if it was expected that DataHandler stripped the slashes from incoming
 data.
+
+
+.. index:: PHP-API, Backend

@@ -29,4 +29,4 @@ Migration
 
 Just remove the TypoScript instruction, as it is not needed anymore.
 
-.. index:: TypoScript, NotScanned
+.. index:: TypoScript, Frontend, NotScanned

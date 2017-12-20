@@ -91,3 +91,6 @@ Migration
 Use the available CSS classes for custom styling and modifying FormEngine. Clean up any custom TCA definitions with a
 stylescheme in 3rd party extensions, where the fifth parameter of a field definition in
 $TCA[mytable][types][mytype][showitem] or $TCA[mytable][palettes][mypalette][showitem] is used.
+
+
+.. index:: PHP-API, TCA, Backend

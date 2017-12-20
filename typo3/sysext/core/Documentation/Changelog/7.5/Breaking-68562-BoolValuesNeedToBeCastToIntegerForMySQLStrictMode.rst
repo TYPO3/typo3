@@ -37,3 +37,6 @@ Migration
 
 Adjust the code to either store boolean values in integer type columns or
 manually cast the boolean value to string before storing it in the database.
+
+
+.. index:: PHP-API, Database

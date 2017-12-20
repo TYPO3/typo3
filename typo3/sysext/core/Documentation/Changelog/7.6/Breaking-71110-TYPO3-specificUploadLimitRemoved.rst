@@ -37,3 +37,6 @@ Migration
 =========
 
 Explicitly set a value for `max_size` or drop those lines from your TCA configuration.
+
+
+.. index:: LocalConfiguration

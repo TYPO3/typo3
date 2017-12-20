@@ -44,3 +44,6 @@ Adjust flash messages to contain only plain text and remove the renderMode attri
 			</f:for>
 		</ul>
 	</f:flashMessages>
+
+
+.. index:: Fluid

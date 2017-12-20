@@ -28,3 +28,6 @@ Affected installations
 ======================
 
 Installations with 3rd-party extensions with TCA tables that have "dividers2tabs" disabled.
+
+
+.. index:: TCA, Backend

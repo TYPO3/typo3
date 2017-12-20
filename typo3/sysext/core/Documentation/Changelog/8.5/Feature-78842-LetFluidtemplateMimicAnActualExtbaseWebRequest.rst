@@ -42,4 +42,4 @@ initialized with the following settings:
    extbase.controllerName
    extbase.controllerActionName
 
-.. index:: Frontend
+.. index:: Frontend, TypoScript, PHP-API

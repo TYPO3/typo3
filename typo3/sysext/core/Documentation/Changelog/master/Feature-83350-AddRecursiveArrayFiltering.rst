@@ -19,6 +19,6 @@ are removed if they equal to boolean :php:`false`. See `converting to boolean`_.
 Impact
 ======
 
-Arrays can be filtered recursively using the new method.
+Arrays can be filtered recursive using the new method.
 
 .. index:: PHP-API, NotScanned

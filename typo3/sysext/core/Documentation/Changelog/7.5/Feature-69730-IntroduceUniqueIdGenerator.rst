@@ -24,3 +24,6 @@ Impact
 ======
 
 No need to remove the dot manually anymore.
+
+
+.. index:: PHP-API

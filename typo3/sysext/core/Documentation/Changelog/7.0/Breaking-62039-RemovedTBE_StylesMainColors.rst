@@ -31,3 +31,6 @@ Migration
 =========
 
 Use CSS directly to modify the appearance of the Backend.
+
+
+.. index:: PHP-API, Backend

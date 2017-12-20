@@ -51,4 +51,4 @@ Impact
 * The `extbase_reflection` cache is no longer plugin based and will no longer be stored in the
   database in the first place. Serialized `ClassSchema` instances will be stored in `typo3temp/var/Cache`.
 
-.. index:: PHP-API
+.. index:: PHP-API, ext:extbase

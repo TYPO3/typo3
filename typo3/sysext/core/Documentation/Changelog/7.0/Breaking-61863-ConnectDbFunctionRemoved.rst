@@ -30,3 +30,6 @@ Migration
 =========
 
 The function can be removed safely. The database will connect itself if needed.
+
+
+.. index:: PHP-API, Frontend

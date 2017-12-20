@@ -31,4 +31,4 @@ Migration
 Use :php:`AbstractDatabaseRecordList::setOverridePageIdList()` to set an array of page ids
 that should be used to restrict the query.
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

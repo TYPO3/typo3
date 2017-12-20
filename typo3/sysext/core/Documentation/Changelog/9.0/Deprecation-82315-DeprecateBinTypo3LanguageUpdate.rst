@@ -31,4 +31,4 @@ Migration
 
 Use :shell:`bin/typo3 lang:language:update` instead.
 
-.. index:: CLI, NotScanned
+.. index:: CLI, NotScanned, ext:lang

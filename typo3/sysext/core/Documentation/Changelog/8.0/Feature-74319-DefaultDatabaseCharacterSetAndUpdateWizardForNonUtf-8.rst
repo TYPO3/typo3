@@ -31,4 +31,4 @@ For existing installations the install tool also provides an environment check a
 upgrade wizard which changes the default database character set. The update wizard
 will NOT convert any existing tables though!
 
-.. index:: Backend
+.. index:: Backend, Database

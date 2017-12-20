@@ -17,4 +17,4 @@ Impact
 
 The sorting of the scheduler-list table is done by using the jquery datatables plugin.
 
-.. index:: Backend, JavaScript
+.. index:: Backend, ext:scheduler

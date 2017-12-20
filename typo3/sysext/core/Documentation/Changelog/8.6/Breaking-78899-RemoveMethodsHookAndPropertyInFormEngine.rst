@@ -49,4 +49,4 @@ The methods have been partially moved to the :php:`TcaGroup` data provider and m
 FormEngine elements :php:`GroupElement` and :php:`SelectMultipleSideBySideElement`. Those can be
 changed and extended via FormEngine's internal :php:`NodeFactory` and data provider resolvers.
 
-.. index:: Backend, PHP-API
+.. index:: Backend, PHP-API, TCA

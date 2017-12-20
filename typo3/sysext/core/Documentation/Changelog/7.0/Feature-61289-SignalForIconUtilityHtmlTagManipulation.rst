@@ -21,3 +21,6 @@ Impact
 ======
 
 The rendered html code is no longer a span with fixed classes, but can be modified by an extension.
+
+
+.. index:: PHP-API, Backend

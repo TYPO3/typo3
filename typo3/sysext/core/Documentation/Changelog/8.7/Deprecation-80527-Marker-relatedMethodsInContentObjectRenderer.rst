@@ -40,4 +40,4 @@ Migration
 Instantiate the class :php:`MarkerBasedTemplateService` available in TYPO3 v7, which contains equivalents
 to all methods that have been marked as deprecated with the same functionality and namings.
 
-.. index:: PHP-API
+.. index:: PHP-API, Frontend

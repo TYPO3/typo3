@@ -64,3 +64,6 @@ after the `stdWrap` processing right before the content is returned.
 Top level `cache.` will not evaluate the hook
 `$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore']`
 any more.
+
+
+.. index:: PHP-API, TypoScript, Frontend

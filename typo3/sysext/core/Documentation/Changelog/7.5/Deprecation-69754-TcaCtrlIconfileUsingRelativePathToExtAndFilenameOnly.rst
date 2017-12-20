@@ -78,3 +78,6 @@ or
 		// should also be stored in this extension
 		'iconfile' => '/fileadmin/icons/_icon_ftp.gif'
 	),
+
+
+.. index:: TCA, Backend

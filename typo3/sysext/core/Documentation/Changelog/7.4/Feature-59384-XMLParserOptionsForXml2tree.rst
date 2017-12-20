@@ -22,3 +22,6 @@ Impact
 ======
 
 It's just an optional parameter. If you don't specify it, simply no additional initialisation of the XML-parser will be done.
+
+
+.. index:: PHP-API, Backend

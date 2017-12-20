@@ -51,4 +51,4 @@ Adapt your changes to check for "workspaces" instead of the "version" extension.
 If you built custom functionality built on "version" without "workspaces", ensure to adapt
 your settings and old class names to use the workspace PHP namespaces.
 
-.. index:: PHP-API, NotScanned
+.. index:: PHP-API, NotScanned, ext:workspaces

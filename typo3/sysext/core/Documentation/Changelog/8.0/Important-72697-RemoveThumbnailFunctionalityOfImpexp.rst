@@ -13,4 +13,4 @@ Description
 Previously it was possible to add additional thumbnails to exports of the EXT:impexp.
 This functionality is completely outdated and not needed anymore.
 
-.. index:: PHP-API
+.. index:: PHP-API, ext:impexp

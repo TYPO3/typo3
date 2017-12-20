@@ -29,3 +29,6 @@ Migration
 =========
 
 Use the Extbase controller or Repository class.
+
+
+.. index:: PHP-API, ext:cshmanual, Backend

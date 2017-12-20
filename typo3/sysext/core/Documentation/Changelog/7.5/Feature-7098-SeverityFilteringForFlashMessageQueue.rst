@@ -22,3 +22,6 @@ Usage:
 	FlashMessageQueue::getAllMessagesAndFlush($severity);
 	FlashMessageQueue::removeAllFlashMessagesFromSession($severity);
 	FlashMessageQueue::clear($severity);
+
+
+.. index:: PHP-API

@@ -77,4 +77,4 @@ Impact
 
 Be happy with the new API.
 
-.. index:: PHP-API
+.. index:: PHP-API, Frontend

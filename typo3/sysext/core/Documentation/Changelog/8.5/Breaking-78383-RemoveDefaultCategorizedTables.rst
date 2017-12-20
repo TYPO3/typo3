@@ -39,4 +39,4 @@ Use PageTSConfig  to disable the field:
     TCEFORM.tt_content.categories.disabled = 1
     TCEFORM.sys_file_metadata.categories.disabled = 1
 
-.. index:: LocalConfiguration
+.. index:: LocalConfiguration, TSConfig, PHP-API

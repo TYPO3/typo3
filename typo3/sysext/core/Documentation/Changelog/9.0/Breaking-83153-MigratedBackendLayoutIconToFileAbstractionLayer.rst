@@ -36,4 +36,4 @@ An upgrade wizard in the TYPO3 install tool moves all existing icons of backend_
 
 For extensions directly working on the database table, the database access needs to be modified.
 
-.. index:: Database, NotScanned
+.. index:: Database, FAL, Backend, NotScanned

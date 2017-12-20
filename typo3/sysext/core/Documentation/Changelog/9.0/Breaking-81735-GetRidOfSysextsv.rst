@@ -31,4 +31,4 @@ Migration
 
 Use the new namespaces as mentioned above.
 
-.. index:: Backend, PHP-API, FullyScanned
+.. index:: Backend, PHP-API, FullyScanned, ext:sv

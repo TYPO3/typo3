@@ -44,3 +44,6 @@ Migration
 Use corresponding functionality from `getIndpEnv()` instead of `getThisUrl()`.
 
 For the other methods, you can re-implement the functionality yourself in your extension where needed.
+
+
+.. index:: PHP-API

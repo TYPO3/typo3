@@ -31,3 +31,6 @@ Migration
 =========
 
 Remove the require line in PHP and includeLibs line in TypoScript, they are obsolete.
+
+
+.. index:: TypoScript, Frontend, ext:felogin

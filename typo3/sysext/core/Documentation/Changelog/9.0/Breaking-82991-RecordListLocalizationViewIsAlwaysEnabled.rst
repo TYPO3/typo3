@@ -30,4 +30,4 @@ Migration
 
 Remove the TSconfig option.
 
-.. index:: TSConfig, NotScanned
+.. index:: TSConfig, Backend, NotScanned

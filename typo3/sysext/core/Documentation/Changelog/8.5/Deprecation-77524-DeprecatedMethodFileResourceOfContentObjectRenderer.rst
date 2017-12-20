@@ -27,6 +27,7 @@ Instances that use the method.
 Migration
 =========
 
-Migrate your code to use :php:`file_get_contents`. Use a call to :php:`$GLOBALS['TSFE']->tmpl->getFileName($fileName)` for substituting strings like `EXT`.
+Migrate your code to use :php:`file_get_contents`. Use a call to :php:`$GLOBALS['TSFE']->tmpl->getFileName($fileName)`
+for substituting strings like `EXT`.
 
-.. index:: Frontend
+.. index:: Frontend, PHP-API

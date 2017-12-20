@@ -65,3 +65,6 @@ Migration
 =========
 
 The above properties can be dropped, the `PageTS` and `TCA` settings have no effect anymore.
+
+
+.. index:: TCA, TSConfig, PHP-API, Backend

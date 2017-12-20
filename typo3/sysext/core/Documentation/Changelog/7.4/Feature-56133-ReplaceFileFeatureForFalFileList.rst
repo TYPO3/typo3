@@ -20,3 +20,6 @@ Provides a new button "replace" at the extended view in FAL equal to DAM. It's p
 * with a new one -> old file will be deleted; identifier of the file object will be changed to the new filename
 
 The file replacing also respects unique file names.
+
+
+.. index:: FAL, Backend

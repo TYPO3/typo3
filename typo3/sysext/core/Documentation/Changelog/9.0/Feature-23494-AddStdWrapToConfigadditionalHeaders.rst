@@ -24,4 +24,4 @@ Impact
 
 Allow to use stdWrap on the elements :ts:`header`, :ts:`replace` and :ts:`httpResponseCode`. Empty headers will be skipped now.
 
-.. index:: TypoScript
+.. index:: TypoScript, Frontend

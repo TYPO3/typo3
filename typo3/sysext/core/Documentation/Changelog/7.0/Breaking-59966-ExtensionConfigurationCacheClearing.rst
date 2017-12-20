@@ -30,3 +30,6 @@ Migration
 
 Extensions requiring a cache flush after configuration changes need to implement a slot
 for the `afterExtensionConfigurationWrite` signal which allows individual cache flush actions.
+
+
+.. index:: PHP-API, Backend, ext:extensionmanager

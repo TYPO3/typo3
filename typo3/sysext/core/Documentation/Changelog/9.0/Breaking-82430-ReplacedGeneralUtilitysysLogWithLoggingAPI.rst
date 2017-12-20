@@ -43,4 +43,4 @@ The Logging API provides these writers as replacements for the original configur
 More details on the configuration of log writers can be found in the Core API Reference
 at `<https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Logging/Writers/Index.html>`__.
 
-.. index:: LocalConfiguration, NotScanned
+.. index:: LocalConfiguration, PHP-API, NotScanned

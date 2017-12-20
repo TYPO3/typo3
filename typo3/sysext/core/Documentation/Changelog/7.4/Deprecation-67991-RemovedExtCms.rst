@@ -47,3 +47,6 @@ Move the following references to the new location of the language file:
 * typo3/sysext/cms/layout/locallang_mod.xlf -> typo3/sysext/backend/Resources/Private/Language/locallang_mod.xlf
 * typo3/sysext/cms/locallang_csh_webinfo.xlf -> typo3/sysext/frontend/Resources/Private/Language/locallang_csh_webinfo.xlf
 * typo3/sysext/cms/locallang_csh_weblayout.xlf -> typo3/sysext/frontend/Resources/Private/Language/locallang_csh_weblayout.xlf
+
+
+.. index:: PHP-API, Frontend

@@ -29,3 +29,6 @@ Migration
 =========
 
 Remove the call to this function. The bootstrap takes care to check the existence of the file.
+
+
+.. index:: PHP-API

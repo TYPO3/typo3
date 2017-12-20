@@ -41,3 +41,6 @@ Either remove usage of :code:`styles.insertContent` or add a snippet at an early
         languageField = sys_language_uid
       }
     }
+
+
+.. index:: TypoScript, Frontend

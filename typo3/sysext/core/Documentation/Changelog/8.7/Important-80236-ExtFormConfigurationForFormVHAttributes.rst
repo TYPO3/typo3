@@ -52,4 +52,4 @@ f:form -> enctype
 f:form -> method
 
 
-.. index:: Frontend, ext:form
+.. index:: Frontend, ext:form, Fluid

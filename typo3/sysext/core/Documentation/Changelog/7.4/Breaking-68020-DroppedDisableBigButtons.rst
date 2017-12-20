@@ -32,3 +32,6 @@ Affected Installations
 
 Instances that had User / Page TSconfig with this option may have a slightly
 different Web -> Page view.
+
+
+.. index:: PHP-API, Backend, TSConfig

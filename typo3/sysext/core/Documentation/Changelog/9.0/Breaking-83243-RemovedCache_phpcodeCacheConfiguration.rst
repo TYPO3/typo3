@@ -23,4 +23,4 @@ Affected Installations
 
 Every installation using a 3rd party extension that still relies on `cache_phpcode` is affected.
 
-.. index:: PHP-API, NotScanned
+.. index:: PHP-API, NotScanned, LocalConfiguration

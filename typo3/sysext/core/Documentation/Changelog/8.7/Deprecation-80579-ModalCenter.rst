@@ -31,4 +31,4 @@ Migration
 Remove obsolete calls to :javascript:`Modal.center()`.
 
 
-.. index:: JavaScript
+.. index:: JavaScript, Backend

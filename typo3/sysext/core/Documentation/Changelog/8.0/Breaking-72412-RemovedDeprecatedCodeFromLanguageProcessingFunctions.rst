@@ -31,7 +31,8 @@ Using the methods above directly in any third party extension will result in a f
 Affected Installations
 ======================
 
-Instances which use old locations of language files, instances which use the removed class LocallangArrayParser, instances which use calls to the methods above.
+Instances which use old locations of language files, instances which use the removed class LocallangArrayParser, instances
+which use calls to the methods above.
 
 
 Migration

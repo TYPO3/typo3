@@ -73,3 +73,6 @@ This includes test classes or classes of third party libraries, which might lead
 
 Therefore it is recommended to provide such an autoload section in an extension. It will be ignored in older TYPO3 versions, so
 there will be no issue with backwards compatibility.
+
+
+.. index:: PHP-API

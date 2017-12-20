@@ -29,4 +29,4 @@ a list of available number of results. Because of that it is possible to overwri
 of values displayed in the advanced search mode. The first value from the list will be used
 as default.
 
-.. index:: ext:indexed_search, TypoScript
+.. index:: ext:indexed_search, TypoScript, Frontend

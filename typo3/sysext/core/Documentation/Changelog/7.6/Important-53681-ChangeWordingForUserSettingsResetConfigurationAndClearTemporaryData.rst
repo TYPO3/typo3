@@ -13,3 +13,5 @@ Description
 To simplify the user settings form, the button "Clear Temporary Data" has been removed.
 The button to reset the configuration and clear the temporary data has been renamed to
 "Reset user settings to default state".
+
+.. index:: Backend

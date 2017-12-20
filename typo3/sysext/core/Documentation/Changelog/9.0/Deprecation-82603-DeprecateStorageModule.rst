@@ -39,4 +39,4 @@ Example code:
 		}
 	});
 
-.. index:: JavaScript, NotScanned
+.. index:: JavaScript, Backend, NotScanned

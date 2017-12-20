@@ -19,3 +19,6 @@ Impact
 
 The record list in the Element Browser benefits from the new setting as the localization view is now enabled. This will
 show editors translated records properly intended below the record with the default language.
+
+
+.. index:: PHP-API, Backend

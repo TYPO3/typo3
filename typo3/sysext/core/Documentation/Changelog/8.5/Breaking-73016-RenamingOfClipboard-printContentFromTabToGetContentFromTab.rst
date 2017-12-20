@@ -33,4 +33,4 @@ Migration
 
 Change the call from `Clipboard->printContentFromTab()` to `Clipboard->getContentFromTab()`.
 
-.. index:: Backend
+.. index:: Backend, PHP-API

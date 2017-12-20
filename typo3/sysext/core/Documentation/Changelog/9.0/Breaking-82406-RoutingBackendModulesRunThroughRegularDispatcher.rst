@@ -46,4 +46,4 @@ modified.
 If a backend module is using the GET parameter "M" currently, the code needs to be adjusted to the
 GET "route" or use the UriBuilder directly.
 
-.. index:: Backend, PartiallyScanned
+.. index:: Backend, PHP-API, PartiallyScanned

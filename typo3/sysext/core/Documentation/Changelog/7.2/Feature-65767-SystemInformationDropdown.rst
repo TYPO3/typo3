@@ -99,3 +99,6 @@ This requires the class `Message` and its method `getMessage()` in EXT:extension
 	}
 
 Due to the SignalSlot internals, the data array must be encapsulated with another array! If there is no data to return, return `NULL`.
+
+
+.. index:: PHP-API, Backend

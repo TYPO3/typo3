@@ -25,3 +25,6 @@ It is now possible to register or overwrite the iconIdentifier for a file mime-t
 
 	$iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 	$iconRegistry->registerMimeTypeIcon('video/my-custom-type', 'icon-identifier-for-my-custom-type');
+
+
+.. index:: PHP-API, Backend

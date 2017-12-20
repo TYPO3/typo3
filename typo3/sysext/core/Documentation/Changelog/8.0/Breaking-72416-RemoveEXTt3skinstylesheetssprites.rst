@@ -30,4 +30,4 @@ Migration
 
 No migration, remove all references and use the IconFactory for all icon related stuff.
 
-.. index:: PHP-API, Backend, Frontend
+.. index:: PHP-API, Backend, Frontend, ext:t3skin

@@ -35,3 +35,6 @@ Migration
 
 * Use `TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::class`
   instead of `TYPO3\CMS\Core\Tree\TableConfiguration\TableConfiguration\DatabaseTreeDataProvider`
+
+
+.. index:: PHP-API

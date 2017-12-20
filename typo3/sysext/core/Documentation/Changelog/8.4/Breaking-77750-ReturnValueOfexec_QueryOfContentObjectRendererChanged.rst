@@ -38,4 +38,4 @@ Change the way the result is being used to conform to the Doctrine API:
         // Do something here
     }
 
-.. index:: PHP-API
+.. index:: PHP-API, Frontend, Database

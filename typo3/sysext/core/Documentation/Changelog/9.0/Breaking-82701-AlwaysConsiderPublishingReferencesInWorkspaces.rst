@@ -36,4 +36,4 @@ Migration
 
 Remove any calls to the method, as it has no effect anymore.
 
-.. index:: TSConfig, PartiallyScanned
+.. index:: TSConfig, PartiallyScanned, ext:workspaces

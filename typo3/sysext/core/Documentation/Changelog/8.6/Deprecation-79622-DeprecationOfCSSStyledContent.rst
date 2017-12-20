@@ -35,4 +35,4 @@ Migration
 
 Create a custom content rendering definition or switch to a maintained one like `fluid_styled_content`.
 
-.. index:: Frontend
+.. index:: Frontend, ext:css_styled_content

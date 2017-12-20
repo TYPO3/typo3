@@ -41,4 +41,4 @@ Use the new namespace :php:`TYPO3\CMS\Reports\Report\ServicesListReport` and the
 - :file:`EXT:reports/Resources/Private/Templates/ServicesListReport.html`
 - :file:`EXT:reports/Resources/Public/Images/service-reports.png`
 
-.. index:: Backend, PartiallyScanned
+.. index:: Backend, PartiallyScanned, ext:sv, ext:reports

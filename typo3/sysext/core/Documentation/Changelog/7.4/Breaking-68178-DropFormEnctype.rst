@@ -30,3 +30,6 @@ Migration
 =========
 
 Substitute the variable access with `multipart/form-data`.
+
+
+.. index:: LocalConfiguration, Backend

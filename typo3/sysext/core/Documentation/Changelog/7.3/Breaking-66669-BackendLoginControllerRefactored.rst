@@ -41,3 +41,6 @@ Migration
 =========
 
 Use the new backend login form API.
+
+
+.. index:: PHP-API, Backend, ext:rsaauth

@@ -15,3 +15,6 @@ audits or modifications before installing an extension, therefore there is now a
 installation process and just download an extension.
 
 The option is located in the settings of the extension manager itself (Extensions > Installed > Extension Manager).
+
+
+.. index:: ext:extensionmanager

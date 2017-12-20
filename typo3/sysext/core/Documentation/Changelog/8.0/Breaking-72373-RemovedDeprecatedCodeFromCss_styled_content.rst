@@ -34,4 +34,4 @@ Migration
 
 Use default TypoScript from CSS Styled Content derived from the current version.
 
-.. index:: PHP-API, Frontend
+.. index:: PHP-API, Frontend, ext:css_styled_content

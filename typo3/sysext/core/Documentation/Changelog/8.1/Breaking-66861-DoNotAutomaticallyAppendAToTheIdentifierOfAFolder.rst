@@ -10,7 +10,8 @@ See :issue:`66861`
 Description
 ===========
 
-The `Folder` object automatically appended a `/` to the identifier. But as the `Folder` object should not manipulate the folder identifier this is removed.
+The `Folder` object automatically appended a `/` to the identifier. But as the `Folder` object should not
+manipulate the folder identifier this is removed.
 
 
 Impact

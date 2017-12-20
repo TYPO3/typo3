@@ -29,4 +29,4 @@ Migration
 
 Move the configuration into your used CSS files.
 
-.. index:: NotScanned
+.. index:: TypoScript, Frontend, NotScanned

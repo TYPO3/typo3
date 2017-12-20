@@ -24,3 +24,6 @@ Example usage inside ext_localconf.php:
 		},
 		'_CLI_lowlevel'
 	);
+
+
+.. index:: PHP-API, CLI

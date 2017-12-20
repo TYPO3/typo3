@@ -10,7 +10,7 @@ See :issue:`69083`
 Description
 ===========
 
-The filelist module was rewritten to use Extbase. Therefore the module identifier has been changed
+The filelist module has been rewritten to use Extbase. Therefore the module identifier has been changed
 from `file_list` to `file_FilelistList`.
 
 
@@ -31,3 +31,6 @@ Migration
 
 There is a upgrade wizard to change the backend user settings of users whose start module is the filelist module.
 All other links to the module have to be changed manually to use `file_FilelistList` as module identifier.
+
+
+.. index:: FAL, Backend

@@ -40,4 +40,4 @@ your own:
 
 
 
-.. index:: Frontend
+.. index:: Frontend, ext:felogin

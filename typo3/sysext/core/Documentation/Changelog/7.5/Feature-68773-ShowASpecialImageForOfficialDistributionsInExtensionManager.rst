@@ -13,3 +13,6 @@ Description
 For official distributions a special image is displayed in the "Get preconfigured
 distribution" list. So it is easier now to distinguish the official distributions
 from others.
+
+
+.. index:: Backend, ext:extensionmanager

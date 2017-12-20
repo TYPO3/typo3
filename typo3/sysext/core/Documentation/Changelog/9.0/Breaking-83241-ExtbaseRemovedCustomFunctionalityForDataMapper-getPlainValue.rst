@@ -33,4 +33,4 @@ Migration
 
 Use the transformations outside the DataMapper, if still necessary.
 
-.. index:: PHP-API, FullyScanned
+.. index:: PHP-API, FullyScanned, ext:extbase

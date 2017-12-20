@@ -29,4 +29,4 @@ Migration
 
 Use accessor method :javascript:`top.TYPO3.Backend.ContentContainer.get()` instead.
 
-.. index:: Backend
+.. index:: Backend, JavaScript

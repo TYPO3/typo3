@@ -18,4 +18,4 @@ content elements using the translation wizard's "Copy" strategy.
 The `localize` DataHandler command should be used when translating records in "Connected Mode" (strict translation of records from the default language).
 This command is used when selecting "Translate" strategy in content elements translation wizard.
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

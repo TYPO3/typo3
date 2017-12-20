@@ -43,3 +43,5 @@ The custom FAL drivers need to be updated to be in line with the updated DriverI
  - `getFilesInFolder(..., $sort, $sortRev)`
  - `getFoldersInFolder(..., $sort, $sortRev)`
 
+
+.. index:: PHP-API, FAL

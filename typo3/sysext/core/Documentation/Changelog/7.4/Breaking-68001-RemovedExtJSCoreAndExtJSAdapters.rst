@@ -44,3 +44,6 @@ Migration
 =========
 
 Use alternatives for ExtCore or adapters in custom extensions.
+
+
+.. index:: PHP-API, Fluid, TypoScript, JavaScript, Backend, Frontend

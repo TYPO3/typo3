@@ -15,4 +15,4 @@ The flags to mark install tool updates (aka "wizards") as done have been moved f
 
 The update can be performed from the install tool.
 
-.. index:: LocalConfiguration
+.. index:: LocalConfiguration, Backend

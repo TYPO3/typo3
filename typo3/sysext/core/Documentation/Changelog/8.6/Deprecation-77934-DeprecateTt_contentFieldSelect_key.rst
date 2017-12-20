@@ -29,4 +29,4 @@ Migration
 
 Install the extension `compatibility7` to enable the field again.
 
-.. index:: TCA
+.. index:: TCA, Database

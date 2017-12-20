@@ -43,4 +43,4 @@ You can do this by simply adding the configuration again in your `Configuration/
    $GLOBALS['TCA']['tt_content']['ctrl']['thumbnail'] = 'assets';
 
 
-.. index:: TCA
+.. index:: TCA, Backend, ext:fluid_styled_content, ext:css_styled_content

@@ -30,3 +30,6 @@ Migration
 =========
 
 Remove the parameter in the method call.
+
+
+.. index:: PHP-API

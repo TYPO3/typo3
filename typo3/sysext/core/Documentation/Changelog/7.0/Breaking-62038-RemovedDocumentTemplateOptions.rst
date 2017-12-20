@@ -38,3 +38,6 @@ Migration
 =========
 
 The variables can be removed safely, any modifications is possible via hooks in DocumentTemplate.
+
+
+.. index:: PHP-API, Backend

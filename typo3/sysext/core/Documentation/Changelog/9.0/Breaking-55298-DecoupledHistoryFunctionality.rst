@@ -96,4 +96,4 @@ An upgrade wizard to separate existing history data from ``sys_log`` can be foun
 
 The install tool also checks for existing extensions making use of the dropped and changed PHP code.
 
-.. index:: Database, PHP-API, PartiallyScanned
+.. index:: Database, PHP-API, Backend, PartiallyScanned

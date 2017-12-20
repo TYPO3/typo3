@@ -21,3 +21,6 @@ The parameters `fileName` and `fileTarget` are required:
 
 * fileName: Name of the file
 * fileTarget: Combined identifier of target directory for the file
+
+
+.. index:: JavaScript, Backend

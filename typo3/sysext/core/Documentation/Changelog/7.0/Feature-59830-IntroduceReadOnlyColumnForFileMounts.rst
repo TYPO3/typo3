@@ -19,3 +19,6 @@ Impact
 
 The impact is low as the old behavior still exists. A storage was never marked as read-only before. There is
 an option to set this through UserTs, but now it is also possible to set it on the storage record directly.
+
+
+.. index:: FAL, Backend

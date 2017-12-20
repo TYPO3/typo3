@@ -1,8 +1,8 @@
 .. include:: ../../Includes.txt
 
-===============================================================
-Deprecation: #57594 - Optimize ReflectionService Cache handling
-===============================================================
+=======================================================================
+Deprecation: #57594 - Optimize extbase ReflectionService Cache handling
+=======================================================================
 
 See :issue:`57594`
 
@@ -39,4 +39,4 @@ Migration
 Use the class :php:`ReflectionService` as API which will be automatically initialized on
 nstantiation.
 
-.. index:: PHP-API, FullyScanned
+.. index:: PHP-API, FullyScanned, ext:extbase

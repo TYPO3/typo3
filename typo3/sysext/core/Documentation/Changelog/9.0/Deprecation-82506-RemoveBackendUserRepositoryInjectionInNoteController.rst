@@ -32,4 +32,4 @@ Migration
 Use the method :php:`\TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository::findByPidsAndAuthorId`. and use the
  user id as 2nd argument instead of a `BackendUser` object.
 
-.. index:: Backend, PHP-API, FullyScanned
+.. index:: Backend, PHP-API, FullyScanned, ext:sys_note

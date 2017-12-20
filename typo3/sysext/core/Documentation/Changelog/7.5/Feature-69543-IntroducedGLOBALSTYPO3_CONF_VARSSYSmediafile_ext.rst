@@ -73,3 +73,6 @@ If you want to extend this list you can add the desired extension name to list i
 .. code-block:: php
 
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'] .= ',myext';
+
+
+.. index:: TCA, Backend, LocalConfiguration

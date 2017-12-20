@@ -29,3 +29,6 @@ Migration
 =========
 
 Use CSS to set a background on the body.
+
+
+.. index:: TypoScript, Frontend

@@ -40,3 +40,6 @@ Example to reset it for `page.shortcut`:
 			)
 		)
 	),
+
+
+.. index:: TCA, Backend

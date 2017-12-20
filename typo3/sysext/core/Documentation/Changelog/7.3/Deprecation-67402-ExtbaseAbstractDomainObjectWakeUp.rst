@@ -24,3 +24,6 @@ Migration
 =========
 
 Remove calls to `parent::__wakeup()` from own `__wakeup()` implementations.
+
+
+.. index:: PHP-API, ext:extbase

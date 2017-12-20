@@ -31,4 +31,4 @@ Migration
 A extension scanner already checks for the old class name. A simple renaming of the class name
 to the new class :php:`TYPO3\CMS\Backend\Controller\AjaxLoginController` is sufficient.
 
-.. index:: PHP-API, FullyScanned
+.. index:: PHP-API, Backend, FullyScanned

@@ -24,3 +24,6 @@ Migration
 =========
 
 Remove any reference to `TemplateService::$tempPath`.
+
+
+.. index:: PHP-API

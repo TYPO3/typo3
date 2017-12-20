@@ -36,4 +36,4 @@ Migration
 `MySQLMetaType` call `dbmsSpecifics->getMetaFieldType` instead
 `MetaType` call `getMetadata` instead
 
-.. index:: PHP-API
+.. index:: PHP-API, ext:dbal

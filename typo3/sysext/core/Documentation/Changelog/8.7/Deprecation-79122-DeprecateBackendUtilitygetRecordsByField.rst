@@ -29,4 +29,4 @@ Migration
 
 Use the :php:`ConnectionPool` and the :php:`QueryBuilder` classes directly to query the database from your code.
 
-.. index:: Backend
+.. index:: Backend, PHP-API

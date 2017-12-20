@@ -15,3 +15,6 @@ have been dropped. Since TYPO3 CMS doesn't support "older" browsers (IE < 9) any
 was updated from 1.x to 2.x. For extensions that ran fine with an up-to-date 1.x-version
 that shouldn't really make much difference. There might however be edge-cases where
 extension-authors might need to adapt their jQuery scripts for 2.x.
+
+
+.. index:: JavaScript, Backend

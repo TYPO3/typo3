@@ -30,3 +30,6 @@ Migration
 =========
 
 Change the `<input name="overwriteExistingFiles" value="1">` to `<input name="overwriteExistingFiles" value="replace">`.
+
+
+.. index:: PHP-API, FAL, Backend

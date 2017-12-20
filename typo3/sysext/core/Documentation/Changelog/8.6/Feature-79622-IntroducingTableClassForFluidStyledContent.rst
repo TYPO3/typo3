@@ -100,4 +100,4 @@ Impact
 `Table Class` is now available for the Fluid Styled Content table content element.
 
 
-.. index:: Fluid, Frontend
+.. index:: Fluid, Frontend, ext:fluid_styled_content, TypoScript

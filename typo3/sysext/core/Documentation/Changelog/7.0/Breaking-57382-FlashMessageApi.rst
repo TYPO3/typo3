@@ -28,3 +28,6 @@ Migration
 
 Change the API calls to not be of static kind anymore.
 Extbase extensions have to use `getFlashMessageQueue()` of the controllerContext
+
+
+.. index:: PHP-API

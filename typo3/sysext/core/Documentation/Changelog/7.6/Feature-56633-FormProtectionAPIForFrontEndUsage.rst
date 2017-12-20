@@ -38,3 +38,6 @@ Impact
 ======
 
 FormProtection API can now also be used in frontend context.
+
+
+.. index:: PHP-API, Frontend

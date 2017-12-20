@@ -34,3 +34,6 @@ Migration
 =========
 
 Use hooks during the Frontend set up to execute custom PHP code.
+
+
+.. index:: PHP-API, Frontend, TypoScript

@@ -22,4 +22,4 @@ Frontend enabled.
 If you look for the parse time of a frontend request, this can now easily be shown via
 `curl -I https://mydomain.com` or in the developer toolbar of the browser.
 
-.. index:: Frontend
+.. index:: Frontend, TypoScript

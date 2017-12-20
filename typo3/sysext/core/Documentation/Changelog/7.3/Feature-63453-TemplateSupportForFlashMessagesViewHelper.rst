@@ -30,3 +30,6 @@ Example usage:
 			</f:for>
 		</ul>
 	</f:flashMessages>
+
+
+.. index:: Fluid, Backend, Frontend

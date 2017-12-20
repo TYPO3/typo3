@@ -24,4 +24,4 @@ Affected Installations
 
 Any installation using indicators of the page tree.
 
-.. index:: Backend
+.. index:: Backend, JavaScript

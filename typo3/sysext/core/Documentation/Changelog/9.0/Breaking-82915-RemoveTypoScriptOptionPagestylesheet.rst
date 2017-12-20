@@ -29,4 +29,4 @@ Migration
 
 Use a configuration like :ts:`page.includeCSS.aFile = fileadmin/styles.css`
 
-.. index:: Frontend, NotScanned
+.. index:: Frontend, TypoScript, NotScanned

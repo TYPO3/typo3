@@ -34,4 +34,4 @@ Migration
 
 Switch to cron execution instead.
 
-.. index:: Backend, CLI, PHP-API, PartiallyScanned
+.. index:: Backend, CLI, PHP-API, PartiallyScanned, ext:scheduler

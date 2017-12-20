@@ -30,4 +30,4 @@ Migration
 
 Define the favicon in the setting of EXT:backend in the extension manager.
 
-.. index:: Backend, ext:backend
+.. index:: Backend, PHP-API

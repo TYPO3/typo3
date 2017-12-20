@@ -48,4 +48,4 @@ CustomHook class example :php:``\Vendor\ExtensionName\Hooks\CustomHook``
        }
    }
 
-.. index:: ext:indexed_search, PHP-API
+.. index:: ext:indexed_search, PHP-API, Fluid

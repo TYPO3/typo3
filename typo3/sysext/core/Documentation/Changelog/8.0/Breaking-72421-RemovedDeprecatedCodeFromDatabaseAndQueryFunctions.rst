@@ -38,4 +38,4 @@ Affected Installations
 
 Instances which use custom calls to the methods or classes above.
 
-.. index:: PHP-API
+.. index:: PHP-API, Database

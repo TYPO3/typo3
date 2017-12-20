@@ -42,3 +42,6 @@ If you really need to output HTML in your message, use the closing variant. All 
 	<f:be.infobox title="Message title" state="-2" iconName="check" disableIcon="TRUE">
 		<h1>{AlertMessage}</h1>
 	</f:be.infobox>
+
+
+.. index:: Fluid, Backend

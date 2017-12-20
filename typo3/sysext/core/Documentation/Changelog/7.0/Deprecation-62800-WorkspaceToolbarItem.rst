@@ -29,3 +29,6 @@ Migration
 =========
 
 Use the new AjaxHandler :code:`Workspaces::setWorkspace()` directly instead.
+
+
+.. index:: PHP-API, JavaScript, Backend, ext:workspaces

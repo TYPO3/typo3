@@ -31,3 +31,6 @@ Condition with square brackets. File will only be included if a frontend user is
 
 Condition without square brackets, backslashes doubled inside the condition. File will only be included in application context
 Production/Staging/Server followed by at least one digit.
+
+
+.. index:: TypoScript, Frontend

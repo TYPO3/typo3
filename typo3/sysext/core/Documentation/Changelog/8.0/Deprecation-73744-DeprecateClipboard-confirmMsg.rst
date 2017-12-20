@@ -30,4 +30,4 @@ Migration
 
 Use `Clipboard::confirmMsgText()` to get the confirm message and make use of the Modal API.
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

@@ -139,4 +139,4 @@ Use the new locations for accessing the TypoScript configuration.
 - `Fluid Styled Content` = EXT:fluid_styled_content/Configuration/TypoScript/
 
 
-.. index:: Fluid, Frontend
+.. index:: Fluid, Frontend, ext:fluid_styled_content

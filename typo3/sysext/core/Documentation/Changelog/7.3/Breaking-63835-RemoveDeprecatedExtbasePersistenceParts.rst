@@ -19,3 +19,6 @@ Impact
 ======
 
 Any direct calls to the methods will now exit with a PHP Fatal Error.
+
+
+.. index:: PHP-API, ext:extbase

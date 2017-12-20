@@ -13,3 +13,5 @@ Description
 The access permission parameters (fileCreateMask, folderCreateMask, createGroup) have been moved from
 `$GLOBALS['TYPO3_CONF_VARS']['BE']` to `$GLOBALS['TYPO3_CONF_VARS']['SYS']`.
 An Upgrade Wizard ensures the correct migrations of the settings.
+
+.. index:: LocalConfiguration

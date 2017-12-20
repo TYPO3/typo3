@@ -23,4 +23,4 @@ Removed Code
    # Clear out any constants in this reserved room!
    styles.content >
 
-.. index:: TypoScript
+.. index:: TypoScript, Frontend, ext:css_styled_content

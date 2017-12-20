@@ -36,4 +36,4 @@ Migration
 
 Remove the PHP calls and either extend the PHP class to your own needs or avoid accessing these properties.
 
-.. index:: PHP-API, FullyScanned
+.. index:: PHP-API, FullyScanned, Frontend

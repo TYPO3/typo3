@@ -33,3 +33,5 @@ Migration
 Rename `pi_list_browseresults()` to `renderPagination()`.
 
 Calling the method from outside the class is no longer possible.
+
+.. index:: PHP-API, Frontend, ext:indexed_search

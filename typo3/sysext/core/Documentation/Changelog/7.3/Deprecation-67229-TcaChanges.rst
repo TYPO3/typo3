@@ -15,7 +15,7 @@ Some details in the main `Table Configuration Array, TCA`, known on PHP side as 
 
 
 Simplified `types` `showitem` configuration using `columnsOverrides`
---------------------------------------------------------------------------
+--------------------------------------------------------------------
 
 If a field is configured as `type` in `TCA` `ctrl` section, the value of this database field determines
 which fields are shown if opening a record in the backend. The shown fields are configured in `TCA` section
@@ -238,3 +238,6 @@ is opened in the backend.
 Typical migration of the 4th `showitem` parameter involves moving a RTE configuration like
 `richtext:rte_transform[mode=ts_css]` or the `type=text` flags `nowrap`, `fixed-font`
 and `enabled-tab` to `columnsOverrides`.
+
+
+.. index:: TCA, Backend, ext:t3editor

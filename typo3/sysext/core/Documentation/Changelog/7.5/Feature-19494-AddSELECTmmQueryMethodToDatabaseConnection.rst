@@ -21,3 +21,6 @@ Example:
 .. code-block:: php
 
   $query = SELECT_mm_query('*', 'table1', 'table1_table2_mm', 'table2', 'AND table1.uid = 1', '', 'table1.title DESC');
+
+
+.. index:: PHP-API, Database

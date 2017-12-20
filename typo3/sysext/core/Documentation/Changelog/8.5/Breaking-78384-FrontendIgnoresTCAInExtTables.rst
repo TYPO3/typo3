@@ -52,4 +52,4 @@ via `ExtensionManagementUtility` methods. An example list of calls and their new
   is added to the `tt_content` table. Add this to `Configuration/TCA/Overrides/tt_content.php`.
 
 
-.. index:: Frontend, TCA
+.. index:: Frontend, TCA, PHP-API

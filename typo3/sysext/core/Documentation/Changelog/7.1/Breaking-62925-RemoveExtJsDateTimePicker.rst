@@ -28,3 +28,6 @@ Migration
 Use the new bootstrap DateTimePicker component which can be loaded with
 require.js. Example implementations can be found in EXT:belog, EXT:scheduler
 and the FormEngine component of the TYPO3 CMS core.
+
+
+.. index:: JavaScript, Backend

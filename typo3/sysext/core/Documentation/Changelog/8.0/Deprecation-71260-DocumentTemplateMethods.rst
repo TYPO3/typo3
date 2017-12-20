@@ -36,4 +36,4 @@ Migration
 
 Use plain HTML instead.
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

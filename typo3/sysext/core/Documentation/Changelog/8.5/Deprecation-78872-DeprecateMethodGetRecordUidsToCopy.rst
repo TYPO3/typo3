@@ -30,4 +30,4 @@ Migration
 
 No migration available.
 
-.. index:: Backend
+.. index:: Backend, PHP-API

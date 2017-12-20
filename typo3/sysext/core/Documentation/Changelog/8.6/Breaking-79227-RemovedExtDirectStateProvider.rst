@@ -48,4 +48,4 @@ access the user settings.
 
 See the implementation of the JavaScript Storage object for a more detailed usage.
 
-.. index:: JavaScript
+.. index:: JavaScript, Backend

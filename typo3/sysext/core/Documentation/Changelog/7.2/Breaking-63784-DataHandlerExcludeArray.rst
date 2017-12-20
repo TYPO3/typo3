@@ -34,3 +34,6 @@ Migration
 =========
 
 Remove code accessing DataHandler->exclude_array and configure the BE-User properly.
+
+
+.. index:: PHP-API, Backend

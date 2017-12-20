@@ -19,3 +19,6 @@ have been changed to not strip off slashes anymore.
 
 Since the PHP option was completely removed, TYPO3 is not adding slashes anymore,
 and also does not strip the slashes anymore when using the methods within GeneralUtility.
+
+
+.. index:: PHP-API

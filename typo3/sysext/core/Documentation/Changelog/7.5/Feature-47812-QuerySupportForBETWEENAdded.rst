@@ -22,3 +22,6 @@ Example:
 	$query->matching(
 		$query->between('uid', 3, 5)
 	);
+
+
+.. index:: PHP-API, ext:extbase

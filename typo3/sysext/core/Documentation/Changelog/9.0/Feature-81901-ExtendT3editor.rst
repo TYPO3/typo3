@@ -102,4 +102,4 @@ Affected Installations
 
 All installations are affected.
 
-.. index:: Backend
+.. index:: Backend, ext:t3editor

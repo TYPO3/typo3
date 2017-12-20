@@ -118,3 +118,6 @@ for these services, you could create an own helper class which provides more met
 
     // Register your own online custom youtube helper class
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['onlineMediaHelpers']['youtube'] = \MyCompany\Myextension\Helpers\YouTubeHelper::class;
+
+
+.. index:: FAL, Backend, Frontend, PHP-API, LocalConfiguration

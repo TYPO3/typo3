@@ -55,4 +55,4 @@ Migration
 
 Update the CLI call on your servers to the new command line and available options as shown above.
 
-.. index:: CLI
+.. index:: CLI, ext:lowlevel

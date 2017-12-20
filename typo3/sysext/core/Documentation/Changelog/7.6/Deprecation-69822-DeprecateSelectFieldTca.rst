@@ -36,20 +36,13 @@ These `renderType` settings are available:
         - `selectTree` - A tree for selecting hierarchical data.
 
    Scope
-         Display
-
-
-'renderType' => 'selectMultipleSideBySide',
-'renderType' => 'selectCheckBox',
-'renderType' => 'selectSingle',
-'renderType' => 'selectSingleBox',
-'renderType' => 'selectTree',
+        Display
 
 .. note::
 
-            If a field has no `renderType` set but `maxitems` is set, the migration will set
-            `renderType` to `selectSingle` in case of `maxitems` is <= 1 otherwise `renderType`
-            is set to `selectMultipleSideBySide`
+    If a field has no `renderType` set but `maxitems` is set, the migration will set
+    `renderType` to `selectSingle` in case of `maxitems` is <= 1 otherwise `renderType`
+    is set to `selectMultipleSideBySide`
 
 
 Impact
@@ -69,3 +62,6 @@ Migration
 
 Extension authors need to add the correct `renderType` setting to their select
 field definitions.
+
+
+.. index:: TCA, Backend

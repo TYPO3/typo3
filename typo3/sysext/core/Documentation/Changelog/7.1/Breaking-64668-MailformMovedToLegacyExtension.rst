@@ -51,3 +51,6 @@ Migration
 
 For TYPO3 CMS 7, installing EXT:compatibility6 brings back the existing functionality. For the long term the affected
 installations should migrate to a different, better suited solution for sending mails and building forms.
+
+
+.. index:: PHP-API, Backend, Frontend, LocalConfiguration, ext:form, TypoScript

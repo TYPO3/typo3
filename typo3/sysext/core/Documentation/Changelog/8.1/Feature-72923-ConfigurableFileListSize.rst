@@ -18,5 +18,5 @@ It is now possible to configure the maximum number of files shown per page in th
       filesPerPage = 40
    }
 
-.. index:: TSConfig
+.. index:: TSConfig, Backend
 

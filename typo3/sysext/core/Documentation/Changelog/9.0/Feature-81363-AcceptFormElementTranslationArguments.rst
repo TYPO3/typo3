@@ -104,4 +104,4 @@ Impact
 Form element property translations and finisher option translations can now use placeholders
 to output translation arguments.
 
-.. index:: Frontend, TypoScript, NotScanned
+.. index:: Frontend, TypoScript, NotScanned, ext:form

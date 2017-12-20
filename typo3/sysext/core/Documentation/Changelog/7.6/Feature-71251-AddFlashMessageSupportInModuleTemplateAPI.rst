@@ -27,3 +27,6 @@ Flash messages can be enqueued by the following code:
 .. code-block:: php
 
 	$this->moduleTemplate->addFlashMessage('I am a message body', 'Title', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK, true);
+
+
+.. index:: PHP-API, Backend

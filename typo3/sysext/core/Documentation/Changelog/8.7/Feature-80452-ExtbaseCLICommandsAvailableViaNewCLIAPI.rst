@@ -15,4 +15,4 @@ simply calling ``typo3/sysext/core/bin/typo3 controller:command``.
 Using the existing CLI entrypoint via ``typo3/cli_dispatch.phpsh extbase controller:command`` still
 works as expected.
 
-.. index:: CLI
+.. index:: CLI, ext:extbase

@@ -28,3 +28,5 @@ used to define relevant data provider within
 data provider can be added at specific positions using the `depends` and `before` keywords
 relative to other providers.
 
+
+.. index:: PHP-API, Backend, TCA

@@ -11,7 +11,8 @@ Description
 ===========
 
 The logic for working with galleries and calculating the maximum asset size is done in a separate GalleryProcessor.
-The GalleryProcessor uses the files already present in the processedData array for his calculations. The FilesProcessor can be used to fetch the files.
+The GalleryProcessor uses the files already present in the processedData array for his calculations. The FilesProcessor
+can be used to fetch the files.
 
 .. code-block:: typoscript
 
@@ -66,3 +67,6 @@ The GalleryProcessor uses the files already present in the processedData array f
 			}
 		}
 	}
+
+
+.. index:: TypoScript, Frontend

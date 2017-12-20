@@ -26,3 +26,6 @@ Migration
 =========
 
 Use :code:`BackendUtility::getModuleUrl()` instead to get the correct target for your links.
+
+
+.. index:: PHP-API, Backend

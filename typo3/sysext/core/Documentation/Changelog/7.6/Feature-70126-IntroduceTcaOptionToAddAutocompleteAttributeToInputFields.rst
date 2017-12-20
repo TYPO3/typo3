@@ -20,3 +20,6 @@ Example
 
 	// Prevent auto completion of username field for be_users records
 	$GLOBALS['TCA']['be_users']['columns']['username']['config']['autocomplete'] = FALSE;
+
+
+.. index:: TCA, Backend

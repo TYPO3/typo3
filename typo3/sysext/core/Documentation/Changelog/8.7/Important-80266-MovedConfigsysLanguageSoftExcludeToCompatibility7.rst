@@ -20,4 +20,4 @@ However, as the TCA option ``l10n_mode=exclude`` has been superseded
 by the TCA option ``allowLanguageSynchronization`` the actual use-case
 for this TypoScript setting should be re-evaluated.
 
-.. index:: TypoScript
+.. index:: TypoScript, Frontend, TCA

@@ -16,4 +16,4 @@ This now acts as the default module after login.
 An update wizard is in place to migrate to the new module name if the "About modules" module was selected as a
 default module after login for backend users.
 
-.. index:: Backend
+.. index:: Backend, ext:about

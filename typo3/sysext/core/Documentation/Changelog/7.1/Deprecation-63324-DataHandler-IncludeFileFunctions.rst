@@ -27,4 +27,8 @@ All installations running extensions that rely on reading this property. Current
 Migration
 =========
 
-If your extension needs to know whether the BasicFileUtility has been instantiated in DataHandler it could use `$datahandler->fileFunc instanceof \TYPO3\CMS\Core\Utility\File\BasicFileUtility`
+If your extension needs to know whether the BasicFileUtility has been instantiated in DataHandler it
+could use `$datahandler->fileFunc instanceof \TYPO3\CMS\Core\Utility\File\BasicFileUtility`
+
+
+.. index:: PHP-API, Backend

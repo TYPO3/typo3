@@ -44,3 +44,6 @@ as before.
 			</f:for>
 		</ul>
 	</f:flashMessages>
+
+
+.. index:: Fluid

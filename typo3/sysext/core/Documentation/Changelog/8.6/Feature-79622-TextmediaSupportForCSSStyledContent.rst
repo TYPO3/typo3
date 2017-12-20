@@ -25,4 +25,4 @@ Impact
 "Text and Media" content element is now also available for CSS Styled Content.
 
 
-.. index:: Frontend
+.. index:: Frontend, ext:css_styled_content

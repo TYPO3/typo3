@@ -34,4 +34,4 @@ Migration
 
 Use new class names instead.
 
-.. index:: Backend, PHP-API, FullyScanned
+.. index:: Backend, PHP-API, FullyScanned, ext:lowlevel

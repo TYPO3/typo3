@@ -44,4 +44,4 @@ Migration
 As the hooks `postTCEProcessingHook` and `postOutputProcessingHook` were removed without
 substitution, any functionality has to be migrated to custom FormEngine render types.
 
-.. index:: Backend, FullyScanned
+.. index:: Backend, FullyScanned, PHP-API

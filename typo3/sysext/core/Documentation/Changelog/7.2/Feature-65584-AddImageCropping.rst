@@ -50,3 +50,4 @@ Set custom cropping setting for image when used in *fluid*:
 	<f:image image="{imageObject}" crop="50,50,100,100" />
 
 
+.. index:: Fluid, Backend, Frontend

@@ -44,3 +44,6 @@ If the data given is not sufficient it is possible to register own element class
 API will be mostly stable throughout further TYPO3 CMS 7 LTS patch releases, it may however happen
 that the given API and data breaks again with the development of the TYPO3 CMS 8 path to make the
 FormEngine code more powerful and reliable in the end.
+
+
+.. index:: PHP-API, TCA

@@ -37,4 +37,4 @@ constant :php:`PATH_site` before the string to be handed over to the deprecated 
 
 Remove the fourth parameter of the callee of :php:`DataHandler->extFileFunctions()`.
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

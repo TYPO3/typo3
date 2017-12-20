@@ -33,4 +33,4 @@ Migration
 
 Use native Symfony Commands or Extbase Command Controller logic instead for creating CLI-based functionality.
 
-.. index:: CLI
+.. index:: CLI, ext:lowlevel, ext:extbase

@@ -20,4 +20,4 @@ Impact
 None, the new hashing algorithm needs to be enabled by the system administrator in the extension
 configuration and will upgrade existing passwords transparently on login.
 
-.. index:: Backend
+.. index:: Backend, ext:saltedpasswords

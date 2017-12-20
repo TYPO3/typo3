@@ -34,4 +34,4 @@ Migration
 
 Implement the two new methods in custom implementations of the `FolderInterface`.
 
-.. index:: PHP-API
+.. index:: PHP-API, FAL

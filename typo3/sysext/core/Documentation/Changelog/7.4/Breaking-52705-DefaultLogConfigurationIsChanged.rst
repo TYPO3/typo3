@@ -62,3 +62,6 @@ Migration
 Adjust the log configuration according to your needs in your :code:`LocalConfiguration.php`.
 
 Adjust any Extension code affected by the changes if needed.
+
+
+.. index:: PHP-API, LocalConfiguration

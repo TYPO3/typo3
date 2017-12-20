@@ -30,4 +30,4 @@ Migration
 
 Use DataHandlers' :php:`log()` functionality or the TYPO3 Logging API for logging.
 
-.. index:: PHP-API, FullyScanned
+.. index:: PHP-API, Backend, FullyScanned

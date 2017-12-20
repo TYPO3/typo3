@@ -61,3 +61,6 @@ Impact
 ======
 
 All records that have language-relevant information in the TCA "ctrl"-section displayed via .select in the frontend on translated pages are now translated by default.
+
+
+.. index:: TypoScript, Frontend

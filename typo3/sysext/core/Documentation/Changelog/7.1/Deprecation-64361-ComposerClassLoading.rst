@@ -50,3 +50,5 @@ the current changes in your Packages folder.
 
 .. _`wiki`: http://wiki.typo3.org/ComposerClassLoader
 
+
+.. index:: PHP-API

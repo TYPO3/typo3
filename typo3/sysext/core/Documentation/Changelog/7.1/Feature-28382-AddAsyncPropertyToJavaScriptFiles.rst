@@ -33,5 +33,5 @@ Usage:
 		}
 	}
 
-..
 
+.. index:: TypoScript, JavaScript, Frontend

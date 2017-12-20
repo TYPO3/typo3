@@ -125,4 +125,4 @@ Migration
 
 Rename assignments and modifications to :typoscript:`lib.contentElement`.
 
-.. index:: Fluid, Frontend
+.. index:: Fluid, Frontend, TypoScript, ext:fluid_styled_content

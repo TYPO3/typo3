@@ -33,3 +33,6 @@ Migration
 
 Use ModuleTemplate::getDynamicTabMenu() directly to use the Bootstrap-based API
 shipped with the TYPO3 Core.
+
+
+.. index:: PHP-API, JavaScript, Backend

@@ -108,3 +108,6 @@ Fluid and News extension.
 	</html>
 
 The output contains everything excluding the HTML-tag.
+
+
+.. index:: Fluid

@@ -30,3 +30,6 @@ Migration
 =========
 
 Upgrade to PHP 5.5 or above.
+
+
+.. index:: PHP-API

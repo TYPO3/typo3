@@ -15,3 +15,5 @@ The previously available "mediace" extension has been moved to the TYPO3 Extensi
 
 An upgrade wizard in the Install Tool will check if the extension is needed. If so, it is downloaded
 from the TER and installed if necessary.
+
+.. index:: Backend, Frontend

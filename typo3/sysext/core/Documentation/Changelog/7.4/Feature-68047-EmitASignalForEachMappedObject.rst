@@ -11,3 +11,6 @@ Description
 ===========
 
 The signal `afterMappingSingleRow` is emitted whenever the DataMapper creates an object.
+
+
+.. index:: PHP-API, Backend

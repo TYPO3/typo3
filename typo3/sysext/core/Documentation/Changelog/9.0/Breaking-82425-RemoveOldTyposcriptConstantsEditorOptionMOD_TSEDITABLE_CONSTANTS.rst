@@ -27,6 +27,7 @@ The constants editor does not show constants before the comment `###MOD_TS:EDITA
 Affected Installations
 ======================
 
-All installations which have configured the constants comment `###MOD_TS:EDITABLE_CONSTANTS###`. Since this has been a widely unknown feature, most instances should not be affected.
+All installations which have configured the constants comment `###MOD_TS:EDITABLE_CONSTANTS###`. Since this has been a widely
+unknown feature, most instances should not be affected.
 
 .. index:: Backend, TypoScript, PartiallyScanned

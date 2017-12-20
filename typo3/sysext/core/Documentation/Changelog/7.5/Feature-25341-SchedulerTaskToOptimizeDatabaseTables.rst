@@ -35,3 +35,6 @@ as InnoDB tables do not suffer from fragmentation in the same way
 that MyISAM tables do.
 
 .. _MySQL manual: https://dev.mysql.com/doc/refman/5.6/en/optimize-table.html
+
+
+.. index:: ext:scheduler, Database

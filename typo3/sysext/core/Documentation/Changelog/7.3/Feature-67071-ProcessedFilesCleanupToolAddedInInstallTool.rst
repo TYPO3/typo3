@@ -15,3 +15,6 @@ section.
 
 The tool is useful if you change graphic-related settings or after updating GraphicsMagick/ImageMagick on the server
 and you want all files to be regenerated.
+
+
+.. index:: Backend

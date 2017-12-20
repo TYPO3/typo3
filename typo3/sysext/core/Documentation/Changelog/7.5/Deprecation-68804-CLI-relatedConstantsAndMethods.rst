@@ -49,3 +49,6 @@ Migration
 
 Use the native `$_SERVER['argv']` or the given `Input` object directly in your code to detect the
 current CLI-relevant data.
+
+
+.. index:: PHP-API, CLI

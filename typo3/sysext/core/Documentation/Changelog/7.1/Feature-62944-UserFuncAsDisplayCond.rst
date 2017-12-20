@@ -22,3 +22,5 @@ to show or hide the TCA field.
 
 Any parameters can be added (separated by colons) that are sent to the ConditionMatcher class.
 
+
+.. index:: PHP-API, TCA, Backend

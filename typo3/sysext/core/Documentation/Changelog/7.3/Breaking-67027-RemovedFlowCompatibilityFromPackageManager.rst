@@ -36,3 +36,6 @@ Migration
 =========
 
 Use Composer packages natively for class loading, or use ext_localconf.php to additionally configure a package.
+
+
+.. index:: PHP-API

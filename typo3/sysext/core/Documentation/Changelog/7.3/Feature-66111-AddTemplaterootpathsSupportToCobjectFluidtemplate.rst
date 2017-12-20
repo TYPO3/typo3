@@ -87,3 +87,6 @@ Impact
 ======
 
 If templateName and templateRootPaths are set the template and file options are neglected.
+
+
+.. index:: TypoScript, Fluid, Frontend

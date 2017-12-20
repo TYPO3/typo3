@@ -30,3 +30,6 @@ Migration
 =========
 
 Ensure the templates have correct flags set.
+
+
+.. index:: TypoScript, Backend, Frontend

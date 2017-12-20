@@ -40,3 +40,6 @@ Impact
 
 The previous option `config.additionalHeaders = X-Header: ABC|X-Header2: DEF` is deprecated in favor of the more
 flexible solution.
+
+
+.. index:: TypoScript, Frontend

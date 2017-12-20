@@ -29,3 +29,6 @@ Migration
 =========
 
 No migration, use requireJS modules and register the module through `pageRenderer`.
+
+
+.. index:: PHP-API, Backend, JavaScript

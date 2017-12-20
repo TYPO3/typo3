@@ -65,3 +65,6 @@ Impact
 The registry on its own doesn't do anything. It provides a facility in the core
 that allows extensions to provide text extraction services to be used by other
 extensions.
+
+
+.. index:: PHP-API, FAL

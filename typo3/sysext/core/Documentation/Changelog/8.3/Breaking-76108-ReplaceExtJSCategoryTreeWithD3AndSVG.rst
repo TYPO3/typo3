@@ -37,4 +37,4 @@ Migration
 
 Migration of the JS code to the new `SvgTree` component is recommended.
 
-.. index:: JavaScript
+.. index:: JavaScript, Backend

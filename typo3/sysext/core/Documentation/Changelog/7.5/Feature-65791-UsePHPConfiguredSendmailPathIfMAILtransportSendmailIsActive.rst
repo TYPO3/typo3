@@ -23,3 +23,6 @@ using `sendmail_path` from PHP runtime configuration. It can still be changed ma
 
 As this setting is only used if `[MAIL][transport]` is set to `sendmail`, it doesn't have impact on
 other transport schemes.
+
+
+.. index:: LocalConfiguration

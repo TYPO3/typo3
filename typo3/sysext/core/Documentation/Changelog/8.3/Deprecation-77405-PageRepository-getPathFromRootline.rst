@@ -24,4 +24,4 @@ Affected Installations
 
 Any TYPO3 installation with a third-party extension using this method.
 
-.. index:: PHP-API
+.. index:: PHP-API, Frontend

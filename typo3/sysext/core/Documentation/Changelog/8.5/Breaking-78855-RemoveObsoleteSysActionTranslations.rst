@@ -40,4 +40,4 @@ Migration
 
 Create your own `locallang.xlf` file and add the required translations.
 
-.. index:: Backend
+.. index:: Backend, ext:sys_action

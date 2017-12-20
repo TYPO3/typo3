@@ -32,4 +32,4 @@ Example code:
 		// use Utility here
 	});
 
-.. index:: JavaScript, NotScanned
+.. index:: JavaScript, Backend, NotScanned

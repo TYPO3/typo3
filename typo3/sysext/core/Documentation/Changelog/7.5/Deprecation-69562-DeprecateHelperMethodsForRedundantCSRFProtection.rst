@@ -38,3 +38,6 @@ These method calls can safely be removed, when generating links to former entry
 points `tce_db.php` `tce_file.php` and `alt_doc.php` with the API method
 calls : `BackendUtility::getModuleUrl('tce_db')`, `BackendUtility::getModuleUrl('tce_file')`
 or `BackendUtility::getModuleUrl('record_edit')`.
+
+
+.. index:: PHP-API, Backend

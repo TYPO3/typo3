@@ -64,3 +64,6 @@ In the Fluid template then iterate over the files:
 		</li>
 	</f:for>
 	</ul>
+
+
+.. index:: Frontend, Fluid

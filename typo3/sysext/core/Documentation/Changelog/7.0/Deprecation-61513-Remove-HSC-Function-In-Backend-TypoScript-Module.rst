@@ -26,3 +26,6 @@ Affected installations
 ======================
 
 Installations using ExtendedTemplateService in their own extensions.
+
+
+.. index:: PHP-API, Backend

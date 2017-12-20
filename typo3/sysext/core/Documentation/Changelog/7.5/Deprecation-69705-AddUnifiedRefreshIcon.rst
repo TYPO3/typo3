@@ -30,3 +30,6 @@ Migration
 =========
 
 Use the icon `actions-refresh` instead.
+
+
+.. index:: PHP-API, Backend

@@ -17,3 +17,6 @@ fields have been removed.
 The editor is not able to select a width and height anymore, it can still be entered manually though.
 
 The RTE option `buttons.link.popupSelector.disabled` has no effect anymore.
+
+
+.. index:: TSConfig, RTE

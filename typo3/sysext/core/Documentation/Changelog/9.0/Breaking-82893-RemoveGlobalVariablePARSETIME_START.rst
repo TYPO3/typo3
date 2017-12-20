@@ -31,4 +31,4 @@ Migration
 Use :php:`round($GLOBALS['TYPO3_MISC']['microtime_start'] * 1000)` if you need the same value as
 :php:`$GLOBALS['PARSETIME_START']` previously contained.
 
-.. index:: Frontend, FullyScanned
+.. index:: Frontend, PHP-API, FullyScanned

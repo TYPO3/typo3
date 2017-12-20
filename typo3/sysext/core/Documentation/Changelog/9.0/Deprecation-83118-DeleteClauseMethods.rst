@@ -31,4 +31,4 @@ Migration
 Migrate to Doctrine DBAL and use the new Database API (ConnectionPool, QueryBuilder) to access the database
 with the :php:`DeletedRestriction` class.
 
-.. index:: PHP-API, FullyScanned
+.. index:: PHP-API, Database, Frontend, FullyScanned

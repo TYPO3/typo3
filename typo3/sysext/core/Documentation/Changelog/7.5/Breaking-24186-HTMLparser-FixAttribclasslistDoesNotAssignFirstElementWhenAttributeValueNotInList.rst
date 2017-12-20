@@ -25,3 +25,6 @@ Migration
 =========
 
 Add a class from the configured list to the HTML element or add a class at the first position of `fixAttrib.class.list`.
+
+
+.. index:: TypoScript, RTE

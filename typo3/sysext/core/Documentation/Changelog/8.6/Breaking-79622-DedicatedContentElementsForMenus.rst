@@ -44,4 +44,4 @@ TYPO3 core will be migrated to the new dedicated elements.
 The migration is optional, you can also enable the extension `compatibility7`
 that will make the old menu content element available again.
 
-.. index:: Frontend
+.. index:: Frontend, TypoScript, TCA

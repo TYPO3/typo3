@@ -15,7 +15,7 @@ The SVG Content Object property :typoscript:`src` now supports `EXT:` syntax to 
 
    page.10 = SVG
    page.10 {
-      src = EXT:my_extesion/Resources/Public/Icons/foo.svg
+      src = EXT:my_extension/Resources/Public/Icons/foo.svg
    }
 
 Impact

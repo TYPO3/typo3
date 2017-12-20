@@ -77,3 +77,6 @@ Examples:
 
 	// duration is optional, default is 0 seconds which means sticky!
 	top.TYPO3.Notification.error(title, message, duration)
+
+
+.. index:: JavaScript, Backend

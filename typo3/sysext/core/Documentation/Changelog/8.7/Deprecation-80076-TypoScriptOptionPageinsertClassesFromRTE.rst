@@ -34,4 +34,4 @@ Migration
 In order to separate the functionality, all CSS classes which have been used in the RTE should be
 defined separately for the frontend rendering in a custom CSS/LESS/SASS file.
 
-.. index:: TypoScript
+.. index:: TypoScript, Frontend, RTE

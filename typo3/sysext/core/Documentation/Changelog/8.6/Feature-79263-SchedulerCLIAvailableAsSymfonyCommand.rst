@@ -17,4 +17,4 @@ The following aliases for the scheduler options are now available:
 * `--force` as synonym to `-f` to force to run a specific task in combination with `--task` or `-i` 
 * `--stop` as synonym to `-s` to stop a specific task in combination with `--task` or `-i`
 
-.. index:: CLI
+.. index:: CLI, ext:scheduler

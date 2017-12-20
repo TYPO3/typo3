@@ -16,4 +16,4 @@ However this could not be configured in the install tool.
 In order to enable this possibility it has been renamed to
 :php:`$TYPO3_CONF_VARS['BE']['languageDebug']`
 
-.. index:: Backend
+.. index:: Backend, LocalConfiguration

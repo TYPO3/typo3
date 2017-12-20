@@ -111,3 +111,6 @@ Migration
 =========
 
 Replace the calls with the suggestions outlined above.
+
+
+.. index:: PHP-API

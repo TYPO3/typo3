@@ -56,3 +56,6 @@ Migration
 Change the interface of all DataProcessor classes from `FluidTemplateDataProcessorInterface` to the new
 `DataProcessorInterface` and adjust the `process()` method to match the new parameters and make sure it returns the
 processed data as the processed data.
+
+
+.. index:: PHP-API, Fluid, Frontend

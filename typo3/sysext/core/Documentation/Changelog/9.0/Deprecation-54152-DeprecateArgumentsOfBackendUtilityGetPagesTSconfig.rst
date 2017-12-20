@@ -43,4 +43,4 @@ If you called :php:`BackendUtility::getPagesTSconfig` providing a custom rootlin
 you should now call :php:`BackendUtility::getRawPagesTSconfig($id, $rootLine = null)` with your custom rootline
 and parse the returned TSconfig yourself, just like :php:`BackendUtility::getPagesTSconfig` does.
 
-.. index:: Backend, TSConfig, NotScanned
+.. index:: Backend, TSConfig, PHP-API, NotScanned

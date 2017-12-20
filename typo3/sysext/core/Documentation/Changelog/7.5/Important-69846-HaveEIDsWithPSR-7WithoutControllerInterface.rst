@@ -30,3 +30,5 @@ The eID_include registration in :file:`ext_localconf.php` must be changed in suc
 
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['identifier'] = \Foo\Bar::class . '::anyMethodNameYouLike';
 
+
+.. index:: PHP-API, Frontend

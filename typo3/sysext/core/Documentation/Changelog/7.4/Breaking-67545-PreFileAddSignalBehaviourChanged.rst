@@ -26,3 +26,6 @@ Affected Installations
 ======================
 
 All extensions that use the `PreFileAdd` signal and depend on the `$sourceFilePath` param.
+
+
+.. index:: PHP-API, FAL, Backend

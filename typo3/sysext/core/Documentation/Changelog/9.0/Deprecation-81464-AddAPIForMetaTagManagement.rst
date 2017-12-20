@@ -43,4 +43,4 @@ Migration
 
 Migrate code to use :php:`PageRenderer->setMetaTag($type, $name, $content)` instead.
 
-.. index:: PHP-API, FullyScanned
+.. index:: PHP-API, FullyScanned, Frontend

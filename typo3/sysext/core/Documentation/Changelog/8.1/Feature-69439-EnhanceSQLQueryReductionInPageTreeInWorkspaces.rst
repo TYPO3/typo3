@@ -32,4 +32,4 @@ Impact
 
 The hooks introduce the possibility to modify the determined results - only if those hooks are used.
 
-.. index:: Database, LocalConfiguration
+.. index:: Database, LocalConfiguration, ext:workspaces

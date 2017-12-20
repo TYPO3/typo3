@@ -32,4 +32,4 @@ Migration
 
 Set the method argument from "false" to "null" in the Extbase Command of your extension.
 
-.. index:: CLI
+.. index:: CLI, ext:extbase, PHP-API

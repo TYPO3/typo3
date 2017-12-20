@@ -36,4 +36,4 @@ Remove the setting `$TCA[$table][ctrl][versioning_followPages]` from any TCA def
 
 If a TCA table has workspaces enabled, set the option `$TCA[$table][ctrl][versioningWS]` to a boolean (true/false) directly.
 
-.. index:: TCA, ext:workspaces
+.. index:: TCA, ext:workspaces, Backend

@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-=============================================================
+=============================================
 Breaking: #62733 - RTE Javascript Files Moved
-=============================================================
+=============================================
 
 See :issue:`62733`
 
@@ -30,3 +30,6 @@ Migration
 =========
 
 Any affected 3rd party extension must be modified to load any JavaScript file from EXT:rtehtmlarea/Resources/Public/JavaScript/ instead.
+
+
+.. index:: JavaScript, RTE, Backend

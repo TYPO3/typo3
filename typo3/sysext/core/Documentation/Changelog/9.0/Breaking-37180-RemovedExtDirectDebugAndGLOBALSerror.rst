@@ -31,4 +31,4 @@ Affected Installations
 All instances, that use the mentioned class, global methods or access the global variable.
 The extension scanner of the install tool will find affected extensions.
 
-.. index:: PHP-API, FullyScanned
+.. index:: PHP-API, Backend, FullyScanned

@@ -38,3 +38,6 @@ and must be registered in $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'].
 
 Warning: The new interface is not 100% finished, method `checkAccess()` will probably be
 substituted by two other methods in later versions of TYPO3 CMS.
+
+
+.. index:: PHP-API, Backend

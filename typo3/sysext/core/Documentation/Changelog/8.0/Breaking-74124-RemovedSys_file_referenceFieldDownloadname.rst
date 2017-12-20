@@ -34,4 +34,4 @@ Migration
 
 If this field was used before and is still needed, re-create this field in the `ext_tables.sql` of your extension.
 
-.. index:: Database
+.. index:: Database, FAL

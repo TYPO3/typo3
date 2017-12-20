@@ -35,3 +35,6 @@ Migration
 =========
 
 Use the new API for adding element browsers or link handlers.
+
+
+.. index:: PHP-API, Backend, RTE

@@ -41,4 +41,4 @@ the configuration again in your `Configuration/TCA/Overrides/tt_content.php` fil
    $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['default'] = 'header';
 
 
-.. index:: TCA
+.. index:: TCA, ext:fluid_styled_content

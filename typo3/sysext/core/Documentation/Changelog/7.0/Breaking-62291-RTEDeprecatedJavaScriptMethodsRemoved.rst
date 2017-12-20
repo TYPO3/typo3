@@ -76,3 +76,6 @@ Migration
 =========
 
 The affected 3rd party extensions must be modified to use the replacement methods.
+
+
+.. index:: JavaScript, RTE, Backend

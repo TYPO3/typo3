@@ -31,3 +31,6 @@ Migration
 =========
 
 Use `\TYPO3\CMS\Workspaces\Service\WorkspaceService::hasPageRecordVersions()` instead.
+
+
+.. index:: PHP-API, Backend, ext:workspaces

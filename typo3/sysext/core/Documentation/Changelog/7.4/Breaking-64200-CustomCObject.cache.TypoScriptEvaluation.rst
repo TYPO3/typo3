@@ -59,3 +59,6 @@ by writing `stdWrap.cache` instead.
 If you used the hook
 `$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore']`,
 please use `stdWrap` and the available hooks inside `stdWrap` to achieve your goal.
+
+
+.. index:: PHP-API, TypoScript, Frontend

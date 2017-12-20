@@ -61,4 +61,4 @@ Additionally you have to check if some other attributes are now added/preserved 
 :html:`<blockquote/>` due the fact, that the former typoscript has removed all
 attributes before adding the style attribute.
 
-.. index:: Frontend, TypoScript, ext:fluid_styled_content
+.. index:: Frontend, TypoScript, ext:fluid_styled_content, RTE

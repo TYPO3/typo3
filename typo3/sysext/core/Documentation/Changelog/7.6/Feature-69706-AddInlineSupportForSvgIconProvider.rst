@@ -25,3 +25,6 @@ Impact
 ======
 
 An IconProvider can now add multiple markup variants for an icon.
+
+
+.. index:: PHP-API, Backend

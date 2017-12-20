@@ -30,4 +30,4 @@ Migration
 Use the method ``TypoScriptFrontendController->getDomainDataForPid()`` which returns more
 data from a domain record as array.
 
-.. index:: PHP-API, FullyScanned
+.. index:: PHP-API, FullyScanned, Frontend

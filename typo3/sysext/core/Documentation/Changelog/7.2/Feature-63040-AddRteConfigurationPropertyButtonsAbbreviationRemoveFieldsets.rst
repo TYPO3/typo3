@@ -25,3 +25,6 @@ The acronym tag is deprecated in HTML5. Installations that want to use the Abbre
 feature of the RTE, but do not wish to use the acronym setting tab of the Abbreviation
 dialogue, may set this property in the Page TSconfig of the RTE, specifying
 `buttons.abbreviation.removeFieldsets = acronym,definedAcronym`
+
+
+.. index:: TSConfig, RTE, Backend

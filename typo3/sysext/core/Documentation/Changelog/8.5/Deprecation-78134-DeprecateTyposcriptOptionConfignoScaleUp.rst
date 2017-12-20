@@ -27,6 +27,7 @@ Instances that use this TypoScript setting.
 Migration
 =========
 
-Use the provided global TYPO3 configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'];` to allow upscaling of images on a "per installation" basis.
+Use the provided global TYPO3 configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'];` to allow
+upscaling of images on a "per installation" basis.
 
-.. index:: Frontend
+.. index:: Frontend, TypoScript

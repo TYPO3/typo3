@@ -51,4 +51,4 @@ future. However, it may be possible that TypoScript will get more preparsing log
 
 Under the hood, Symfony Finder is used to detect files. This makes globbing (* syntax) possible.
 
-.. index:: TypoScript
+.. index:: TypoScript, Frontend

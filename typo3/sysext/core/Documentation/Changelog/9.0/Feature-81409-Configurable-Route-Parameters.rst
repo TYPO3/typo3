@@ -34,4 +34,4 @@ Impact
 
 Developers have easier and more standardized control over AJAX route parameters.
 
-.. index:: JavaScript, Backend
+.. index:: JavaScript, Backend, PHP-API

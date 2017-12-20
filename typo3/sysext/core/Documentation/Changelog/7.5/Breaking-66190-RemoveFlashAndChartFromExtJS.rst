@@ -29,3 +29,6 @@ Migration
 =========
 
 Don't use cores ExtJS anymore, as we migrate away from it. Use other JS frameworks which implement such functionality for you.
+
+
+.. index:: JavaScript, Backend

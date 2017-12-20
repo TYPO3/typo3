@@ -67,3 +67,6 @@ An `TYPO3\CMS\Backend\Backend\Image` object has 3 properties:
 * `$url`: Url of avatar image. Needs to be relative to the website root or an absolute URL.
 * `$width`: The width of the image.
 * `$height`: The height of the image.
+
+
+.. index:: PHP-API, Backend

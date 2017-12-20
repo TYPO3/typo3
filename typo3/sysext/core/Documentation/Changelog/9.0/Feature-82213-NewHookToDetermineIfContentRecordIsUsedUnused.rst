@@ -45,4 +45,4 @@ an own PHP class checking if an content record is used within your configuration
         }
     }
 
-.. index:: Backend
+.. index:: Backend, PHP-API

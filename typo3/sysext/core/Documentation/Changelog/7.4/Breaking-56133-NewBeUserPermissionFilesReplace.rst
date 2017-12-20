@@ -30,3 +30,6 @@ Migration
 =========
 
 An upgrade wizard was added to set this permission for all BE users that already are allowed to write files as this was the old permissions check.
+
+
+.. index:: FAL, Backend

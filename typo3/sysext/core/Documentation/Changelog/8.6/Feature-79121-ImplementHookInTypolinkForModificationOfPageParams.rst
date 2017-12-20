@@ -45,4 +45,4 @@ Example implementation:
 
 .. _TSRef: https://docs.typo3.org/typo3cms/TyposcriptReference/Functions/Typolink/Index.html
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

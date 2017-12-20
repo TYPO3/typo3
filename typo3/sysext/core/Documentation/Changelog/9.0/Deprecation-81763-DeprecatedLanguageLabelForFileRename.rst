@@ -24,4 +24,4 @@ Migration
 
 Add the label to the `locallang.xlf` of your extension and adjust the usage of the label.
 
-.. index:: Backend, NotScanned
+.. index:: Backend, NotScanned, ext:lang

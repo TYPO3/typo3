@@ -26,4 +26,4 @@ The enforcing of a cHash results in a 404, if plugin arguments are present but
 cHash is not, which would also happen if the plugin arguments were added to
 `cHashRequiredParameters` configuration.
 
-.. index:: Frontend, PHP-API
+.. index:: Frontend, PHP-API, ext:extbase

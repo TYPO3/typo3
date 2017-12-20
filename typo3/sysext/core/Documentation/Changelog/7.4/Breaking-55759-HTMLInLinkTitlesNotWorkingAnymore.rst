@@ -10,7 +10,8 @@ See :issue:`55759`
 Description
 ===========
 
-By introducing proper handling of double quotes in link titles (TypoLink fields) the processing of the link title is adjusted. Escaping will be done automatically now.
+By introducing proper handling of double quotes in link titles (TypoLink fields) the processing of the link title is adjusted.
+Escaping will be done automatically now.
 
 
 Impact
@@ -34,4 +35,8 @@ Change the affected link titles to contain the plain characters, the correct enc
 
 Example: `Some "special" title`
 
-If you need to encode a TypoLink manually in code, use the `TypoLinkCodecService` class, which provides a convenient way to encode a TypoLink from its fragments.
+If you need to encode a TypoLink manually in code, use the `TypoLinkCodecService` class, which provides a convenient way
+to encode a TypoLink from its fragments.
+
+
+.. index:: Frontend, Backend

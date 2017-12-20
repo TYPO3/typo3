@@ -56,3 +56,6 @@ Impact
 ======
 
 Meta tags with a different attribute name are supported now like the Open Graph meta tags.
+
+
+.. index:: TypoScript, Frontend

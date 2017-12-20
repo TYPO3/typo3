@@ -30,4 +30,4 @@ Run the upgrade wizard in the install tool to migrate the layout field to the
 dedicated database field `bullets_type`.
 
 
-.. index:: FlexForm, Frontend, TCA, TypoScript
+.. index:: FlexForm, Frontend, TCA, TypoScript, ext:css_styled_content

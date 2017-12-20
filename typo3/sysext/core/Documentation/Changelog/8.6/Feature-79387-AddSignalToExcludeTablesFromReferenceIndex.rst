@@ -9,8 +9,8 @@ See :issue:`79387`
 Description
 ===========
 
-A new signal :php:`shouldExcludeTableFromReferenceIndex` is emitted in :php:`TYPO3\CMS\Core\Database\ReferenceIndex` which allows extensions to define tables
-which should be excluded from ReferenceIndex.
+A new signal :php:`shouldExcludeTableFromReferenceIndex` is emitted in :php:`TYPO3\CMS\Core\Database\ReferenceIndex` which allows
+extensions to define tables which should be excluded from ReferenceIndex.
 
 Register the class which excludes tables in `ext_localconf.php`:
 
@@ -50,10 +50,11 @@ Your class could look like this:
 Impact
 ======
 
-This signal allows extensions to speed up the process of maintaining the ReferenceIndex. If an extension has tables in which by definition none of its columns
-can contain any relations to other records these can be excluded from the ReferenceIndex.
+This signal allows extensions to speed up the process of maintaining the ReferenceIndex. If an extension has tables in which by
+definition none of its columns can contain any relations to other records these can be excluded from the ReferenceIndex.
 
-Only exclude tables from ReferenceIndex which do not contain any relations and never did since existing references won't be deleted if it is excluded! There is
-no need to add tables without a definition in :php:`$GLOBALS['TCA]` since ReferenceIndex only handles those.
+Only exclude tables from ReferenceIndex which do not contain any relations and never did since existing references won't be
+deleted if it is excluded! There is no need to add tables without a definition in :php:`$GLOBALS['TCA]` since ReferenceIndex
+only handles those.
 
-.. index:: Database
+.. index:: Database, PHP-API, Backend

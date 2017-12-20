@@ -34,3 +34,6 @@ Migration
 Most simple solution is to copy over the "old" CSS file from an older instance. Directly including those
 files from t3skin is discouraged. A better solution is to refactor the extension to use the full t3skin
 CSS file and to overlay it with required changes in an own file.
+
+
+.. index:: PHP-API, Backend, ext:t3skin

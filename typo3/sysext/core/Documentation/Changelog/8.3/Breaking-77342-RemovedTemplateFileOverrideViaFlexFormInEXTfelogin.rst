@@ -33,4 +33,4 @@ Migration
 
 Use the TypoScript setting `plugin.tx_felogin.templateFile` to set an alternative template file.
 
-.. index:: Frontend, ext:felogin
+.. index:: Frontend, ext:felogin, TypoScript

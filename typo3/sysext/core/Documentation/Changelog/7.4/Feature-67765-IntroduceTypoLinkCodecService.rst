@@ -16,3 +16,6 @@ A given TypoLink string can be passed to the `decode` method, which will return 
 The `encode` method takes care of assembling a valid TypoLink string for an array of TypoLink parts.
 
 The encoding uses proper quoting and escaping, which allows safe usage of characters like `"\<space>`.
+
+
+.. index:: PHP-API, Frontend, Backend

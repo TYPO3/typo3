@@ -36,4 +36,4 @@ extensions, and the only recommended file extension for typoscript configuration
 files.
 
 
-.. index:: Frontend
+.. index:: Frontend, TypoScript

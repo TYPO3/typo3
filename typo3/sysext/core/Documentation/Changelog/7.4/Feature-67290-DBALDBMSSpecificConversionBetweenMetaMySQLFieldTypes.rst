@@ -20,3 +20,6 @@ Impact
 ======
 
 Running PostgreSQL, the Upgrade Wizard in the Install Tool will show a lot of field alterations as the optimized mappings will be used.
+
+
+.. index:: Database, ext:dbal

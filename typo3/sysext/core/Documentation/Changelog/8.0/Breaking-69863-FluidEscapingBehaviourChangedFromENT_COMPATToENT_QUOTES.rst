@@ -17,7 +17,8 @@ Now, `ENT_QUOTES` is used.
 Impact
 ======
 
-Fluid templates which depend on single quotes not being escaped when escaping variables. Affects ObjectAccessor (variable access in general) and calls to `f:format.htmlentities` and  `f:format.htmlspecialchars`.
+Fluid templates which depend on single quotes not being escaped when escaping variables. Affects
+ObjectAccessor (variable access in general) and calls to `f:format.htmlentities` and `f:format.htmlspecialchars`.
 
 
 Affected Installations
@@ -29,6 +30,9 @@ Any TYPO3 site containing Fluid templates which depend on single quotes not bein
 Migration
 =========
 
-Change template to not depend on single quotes being escaped in any ObjectAccessor, consider adding `{variable -> f:format.htmlspecialchars(keepQuotes: 1)}` or `<f:format.htmlspecialchars keepQuotes="1">{variable}</f:format.htmlentities>` when accessing variables but be aware of possible XSS implications due to incomplete escaping.
+Change template to not depend on single quotes being escaped in any ObjectAccessor, consider adding
+`{variable -> f:format.htmlspecialchars(keepQuotes: 1)}` or
+`<f:format.htmlspecialchars keepQuotes="1">{variable}</f:format.htmlentities>`
+when accessing variables but be aware of possible XSS implications due to incomplete escaping.
 
 .. index:: Fluid

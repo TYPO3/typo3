@@ -22,3 +22,6 @@ as array.
 		2:'TYPO3/CMS/Extension/Module3',
 		3:'TYPO3/CMS/Extension/Module4'
 	}">
+
+
+.. index:: Fluid, JavaScript, Backend

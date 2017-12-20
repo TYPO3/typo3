@@ -23,4 +23,4 @@ Affected Installations
 
 All installations are affected.
 
-.. index:: Backend, NotScanned
+.. index:: Backend, NotScanned, ext:t3editor

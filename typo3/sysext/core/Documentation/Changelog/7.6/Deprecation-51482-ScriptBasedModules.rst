@@ -39,3 +39,6 @@ Use Configuration/Backend/Routes.php to register wizards and use
 use the proper PSR-7 compatible way of registering and calling modules.
 Make sure to use UriBuilder and `BackendUtility::getModuleUrl()` to link to these modules instead of
 hard-linking to the script names.
+
+
+.. index:: PHP-API, Backend

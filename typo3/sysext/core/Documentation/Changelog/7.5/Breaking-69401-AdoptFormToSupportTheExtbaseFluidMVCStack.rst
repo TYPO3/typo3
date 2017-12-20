@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-=====================================================================
-Breaking: #69401 - Adopt form to support the Extbase/ Fluid MVC stack
-=====================================================================
+=========================================================================
+Breaking: #69401 - Adopt ext:form to support the Extbase/ Fluid MVC stack
+=========================================================================
 
 See :issue:`69401`
 
@@ -32,3 +32,6 @@ Migration
 =========
 
 Adopt own postProcessors, validators and filters to comply with the current implementation.
+
+
+.. index:: PHP-API, Frontend, Backend, Fluid, ext:extbase, ext:form

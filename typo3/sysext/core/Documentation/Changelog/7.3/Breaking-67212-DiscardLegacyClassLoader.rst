@@ -56,3 +56,6 @@ composer.json for all extensions which do not bring their own composer.json mani
             }
         }
     }
+
+
+.. index:: PHP-API

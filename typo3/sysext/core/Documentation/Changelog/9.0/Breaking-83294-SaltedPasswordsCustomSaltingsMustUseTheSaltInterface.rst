@@ -36,4 +36,4 @@ Migration
 Switch to the new implemention details mentioned above, and change your custom salt to fit
 to the :php:`SaltInterface` API.
 
-.. index:: PHP-API, NotScanned
+.. index:: PHP-API, NotScanned, ext:saltedpasswords

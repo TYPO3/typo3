@@ -41,3 +41,6 @@ Impact
 Mount point overriding is centralized in the BackendUser object and
 used by element browsers of rtehtmlarea and recordlist for calculating
 the page tree mount points that are displayed to the user.
+
+
+.. index:: TSConfig, Backend

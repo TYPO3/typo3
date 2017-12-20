@@ -30,4 +30,4 @@ Migration
 
 Use :php:`'<pre>' . $str . '</pre>'` instead.
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

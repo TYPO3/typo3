@@ -30,3 +30,6 @@ Migration
 =========
 
 Use `BackendUtility::getModuleUrl()`.
+
+
+.. index:: PHP-API, Backend

@@ -64,3 +64,6 @@ Migration
 The preferred substitution is jQuery and RequireJS that are loaded by default in any TYPO3 Backend module, if any
 third-party code is needed based on prototype and/or scriptaculous. Alternatively, it is possible to ship a separate
 prototype.js and scriptaculous library in a third-party extension if no migration is possible with jQuery.
+
+
+.. index:: JavaScript, TypoScript, Frontend, Backend

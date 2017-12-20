@@ -51,4 +51,4 @@ Impact
 
 Happy little wizard.
 
-.. index:: Frontend, PHP-API, JavaScript, ext:form
+.. index:: Frontend, PHP-API, JavaScript, ext:form, Backend

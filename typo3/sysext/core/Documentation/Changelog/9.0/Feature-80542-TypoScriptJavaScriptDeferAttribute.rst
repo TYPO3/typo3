@@ -18,4 +18,4 @@ supported.
    page.includeJSFooter.file.defer = 1
 
 
-.. index:: TypoScript
+.. index:: TypoScript, Frontend

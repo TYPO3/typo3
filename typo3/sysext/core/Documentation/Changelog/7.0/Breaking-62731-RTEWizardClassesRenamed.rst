@@ -32,3 +32,6 @@ Migration
 =========
 
 The affected 3rd party extensions must be modified to use the new names of these classes.
+
+
+.. index:: PHP-API, RTE, Backend

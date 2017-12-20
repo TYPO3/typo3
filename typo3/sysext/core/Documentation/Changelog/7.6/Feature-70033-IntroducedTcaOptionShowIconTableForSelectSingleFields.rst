@@ -21,3 +21,5 @@ Example
 	// Enforce icon table showing flags
 	$GLOBALS['TCA']['tt_content']['columns']['sys_language_uid']['config']['showIconTable'] = true;
 
+
+.. index:: TCA, Backend

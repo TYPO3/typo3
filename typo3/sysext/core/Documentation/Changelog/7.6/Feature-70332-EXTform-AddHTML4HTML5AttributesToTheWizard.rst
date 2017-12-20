@@ -223,3 +223,6 @@ New attributes
 
 Universal attributes + `autofocus, checked, disabled, name, readonly,
 required, type, value`
+
+
+.. index:: Frontend, ext:form

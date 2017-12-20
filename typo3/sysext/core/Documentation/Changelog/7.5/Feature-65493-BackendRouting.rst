@@ -53,3 +53,6 @@ Impact
 
 Handling of existing modules works the same as before and fully transparent. Any existing registration of entrypoints
 can be moved to the new registration file in Configuration/Backend/Routes.php.
+
+
+.. index:: PHP-API, Backend

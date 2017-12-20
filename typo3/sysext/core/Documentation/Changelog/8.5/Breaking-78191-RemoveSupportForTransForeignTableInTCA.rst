@@ -46,4 +46,4 @@ hard-coded for the time being.
 + `$TCA['pages']['ctrl']['transForeignTable']`, use value `pages_language_overlay` directly
 + `$TCA['pages_language_overlay']['ctrl']['transOrigPointerTable']`, use value `pages` directly
 
-.. index:: TCA
+.. index:: TCA, Backend

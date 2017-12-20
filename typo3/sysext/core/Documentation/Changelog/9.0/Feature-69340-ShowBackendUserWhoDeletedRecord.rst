@@ -12,4 +12,4 @@ Description
 Improve the recycler output by showing also the backend user who deleted the record.
 Furthermore the avatar of the creator and the remover are shown.
 
-.. index:: Backend
+.. index:: Backend, ext:recycler

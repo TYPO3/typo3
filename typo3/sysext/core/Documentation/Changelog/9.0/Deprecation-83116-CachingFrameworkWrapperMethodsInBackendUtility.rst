@@ -30,4 +30,4 @@ Migration
 
 Use the Caching Framework directly, as the methods now only act as wrapper methods.
 
-.. index:: PHP-API, FullyScanned
+.. index:: PHP-API, Backend, FullyScanned

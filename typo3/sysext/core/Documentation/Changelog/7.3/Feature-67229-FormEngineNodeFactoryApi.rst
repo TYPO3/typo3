@@ -104,3 +104,6 @@ Warning
 
 The internal data given to the resolver class still may change. Both the `globalOptions` and the current
 `renderType` values are subject to change without further notice until TYPO3 CMS 7 LTS.
+
+
+.. index:: PHP-API, TCA, Backend

@@ -37,4 +37,4 @@ Either one of the following:
 + disable the `feature.requireCHashArgumentForActionArguments`
   setting for the particular extension
 
-.. index:: Frontend, PHP-API
+.. index:: Frontend, PHP-API, ext:extbase

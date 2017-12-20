@@ -37,3 +37,6 @@ A typical call now should look like:
 		/** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
 		$languageFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LocalizationFactory::class);
 		$languageFactory->getParsedData($fileToParse, $language, $renderCharset, $errorMode);
+
+
+.. index:: PHP-API

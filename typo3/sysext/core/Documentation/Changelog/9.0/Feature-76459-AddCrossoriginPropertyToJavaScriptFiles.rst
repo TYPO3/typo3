@@ -40,4 +40,4 @@ Usage:
       }
    }
 
-.. index:: Frontend, TypoScript
+.. index:: Frontend, TypoScript, JavaScript

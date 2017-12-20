@@ -20,4 +20,4 @@ Impact
 Symfony commands can be executed via the scheduler which provides a migration path away from
 command controllers to native symfony commands.
 
-.. index:: CLI, NotScanned
+.. index:: CLI, NotScanned, ext:scheduler

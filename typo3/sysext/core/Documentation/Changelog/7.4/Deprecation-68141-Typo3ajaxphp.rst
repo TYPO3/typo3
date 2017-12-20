@@ -30,3 +30,6 @@ Migration
 =========
 
 Use `BackendUtility::getAjaxUrl()`.
+
+
+.. index:: PHP-API, Backend

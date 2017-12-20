@@ -42,4 +42,4 @@ layout. Have a look at the feature description on how to use the new layout.
 Feature-79622-NewDefaultLayoutForFluidStyledContent.rst
 
 
-.. index:: Fluid, Frontend
+.. index:: Fluid, Frontend, ext:fluid_styled_content

@@ -22,3 +22,6 @@ Example
 
 	// disables the display of " (-27 days)" p.e.
 	$GLOBALS['TCA']['tt_content']['columns']['date']['config']['disableAgeDisplay'] = true;
+
+
+.. index:: TCA, Backend

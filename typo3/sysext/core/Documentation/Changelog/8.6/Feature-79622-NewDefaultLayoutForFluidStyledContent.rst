@@ -148,4 +148,4 @@ Basic Usage
    </f:section>
 
 
-.. index:: Fluid, Frontend
+.. index:: Fluid, Frontend, ext:fluid_styled_content, TypoScript

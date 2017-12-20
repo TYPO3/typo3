@@ -1,8 +1,8 @@
 .. include:: ../../Includes.txt
 
-================================================================================
+==================================================================
 Important: #82328 - EXT:form - use own folder for form definitions
-================================================================================
+==================================================================
 
 See :issue:`82328`
 
@@ -21,4 +21,4 @@ necessary which can be done
 * by moving all form definitions to the new directory via filesystem or
 * by duplicating all form definitions (thus storing them in the new location) and removing the old form definitions.
 
-.. index:: Backend
+.. index:: Backend, ext:form

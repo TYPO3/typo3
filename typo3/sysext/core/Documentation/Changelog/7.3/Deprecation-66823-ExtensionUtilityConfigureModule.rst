@@ -31,3 +31,6 @@ Migration
 =========
 
 Use the 1:1 functionality in `TYPO3\CMS\Core\Utility\ExtensionManagementUtility->configureModule()` directly.
+
+
+.. index:: PHP-API, Backend, ext:extbase
