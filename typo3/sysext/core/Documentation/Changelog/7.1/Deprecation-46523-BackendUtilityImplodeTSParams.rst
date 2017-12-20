@@ -24,3 +24,6 @@ Affected installations
 ======================
 
 Any installation with third-party extensions using the method.
+
+
+.. index:: PHP-API, Backend

@@ -43,3 +43,6 @@ Migration
 
 Affected installations have to re-add the missing attributes manually
 and adopt the new array notation.
+
+
+.. index:: Frontend, ext:form

@@ -42,3 +42,6 @@ Examples:
     <output>
         <video width="400" height="375" controls loop><source src="fileadmin/user_upload/my-video.mp4" type="video/mp4"></video>
     </output>
+
+
+.. index:: Fluid, FAL, Frontend

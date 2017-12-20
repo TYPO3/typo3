@@ -32,3 +32,6 @@ Migration
 =========
 
 Move this logic elsewhere, eg. use hooks in DataHandler to write out DB content.
+
+
+.. index:: TCA, RTE, Backend

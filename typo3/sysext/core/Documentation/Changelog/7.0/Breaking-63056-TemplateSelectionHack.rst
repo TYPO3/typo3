@@ -28,3 +28,6 @@ Migration
 =========
 
 No migration path intended.
+
+
+.. index:: PHP-API, Frontend

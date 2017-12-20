@@ -30,3 +30,6 @@ Migration
 =========
 
 Delete the line from LocalConfiguration.php if the UpgradeWizard should fail to do so.
+
+
+.. index:: LocalConfiguration, Backend

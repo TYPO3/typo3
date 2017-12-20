@@ -37,3 +37,6 @@ Migration
 
 Running `rm -rf vendor/ bin/ Packages/Libraries/ composer.lock; composer install` will make PHPunit
 work again.
+
+
+.. index:: PHP-API

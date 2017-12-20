@@ -35,3 +35,6 @@ Migration
 
 Use native timezone support by PHP directly. See `date_default_timezone_get()`
 for more information.
+
+
+.. index:: PHP-API, LocalConfiguration

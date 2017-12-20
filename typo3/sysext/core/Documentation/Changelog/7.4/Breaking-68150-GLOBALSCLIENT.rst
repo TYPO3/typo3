@@ -29,3 +29,6 @@ Migration
 =========
 
 Extensions can still use `GeneralUtility::clientInfo()` API to retrieve the same information.
+
+
+.. index:: PHP-API

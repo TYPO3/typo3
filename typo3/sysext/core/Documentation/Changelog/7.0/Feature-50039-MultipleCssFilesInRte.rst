@@ -27,3 +27,6 @@ Impact
 
 The old syntax may still be used. If no CSS files are set, the RTE default CSS
 file is used as before.
+
+
+.. index:: TSConfig, RTE, Backend

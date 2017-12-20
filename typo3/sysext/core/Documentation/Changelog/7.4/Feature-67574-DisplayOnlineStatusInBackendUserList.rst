@@ -17,3 +17,6 @@ Impact
 ======
 
 The badge will be shown next to the username in the backend user list.
+
+
+.. index:: Backend, ext:beuser

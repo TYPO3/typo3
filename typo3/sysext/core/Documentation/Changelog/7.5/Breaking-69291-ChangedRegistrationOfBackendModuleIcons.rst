@@ -42,3 +42,5 @@ to
 
 	'iconIdentifier' => 'module-web',
 
+
+.. index:: PHP-API, Backend

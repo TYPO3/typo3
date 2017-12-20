@@ -16,3 +16,6 @@ If there is a jpg, jpeg or png image in the same folder with the same
 name as the video file it will be shown with the HTML5 poster attribute.
 
 The file extensions are checked exactly in the order mentioned above.
+
+
+.. index:: ext:mediace

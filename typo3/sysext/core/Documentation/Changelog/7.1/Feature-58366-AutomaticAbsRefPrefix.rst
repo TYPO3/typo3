@@ -42,3 +42,6 @@ Impact
 The new special option can be used to automatically set up installations and distributions like
 the Introduction Package where a site configuration is shipped with the system but might need
 to be adjusted.
+
+
+.. index:: TypoScript, Frontend

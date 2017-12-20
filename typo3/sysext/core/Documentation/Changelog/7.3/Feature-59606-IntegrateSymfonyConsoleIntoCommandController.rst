@@ -94,3 +94,6 @@ Previously all output was collected in the `Cli\Response` and only rendered to t
 Now all methods producing output (including `output()` and `outputLine()`) render the result directly to the console.
 If you use `$this->response` directly or let the command method return a string, the rendering is still deferred until
 the end of the CLI request.
+
+
+.. index:: CLI, ext:extbase, PHP-API

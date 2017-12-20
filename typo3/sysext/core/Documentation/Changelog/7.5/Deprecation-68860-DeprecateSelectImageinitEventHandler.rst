@@ -32,3 +32,6 @@ Migration
 =========
 
 Remove the call of `SelectImage.initEventHandler`.
+
+
+.. index:: JavaScript, Backend

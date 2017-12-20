@@ -32,3 +32,6 @@ Migration
 
 For TYPO3 CMS 7, installing EXT:compatibility6 brings back the existing functionality. For the long term
 the affected installations should be migrate to a better suited solution for searching.
+
+
+.. index:: Frontend, Backend, TypoScript

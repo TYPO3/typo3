@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-===========================================================
+==========================================================
 Breaking: #61459 - Removal of tslib directory and constant
-===========================================================
+==========================================================
 
 See :issue:`61459`
 
@@ -34,3 +34,6 @@ Migration
 
 Remove the constant PATH_tslib from the 3rd party extension, use a current version of index.php and use :code:`$GLOBALS['TT']`
 and :code:`$GLOBALS['TSFE']` where necessary.
+
+
+.. index:: PHP-API, Frontend

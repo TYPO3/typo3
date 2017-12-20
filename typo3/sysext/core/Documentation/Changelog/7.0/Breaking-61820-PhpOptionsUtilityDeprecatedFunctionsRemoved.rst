@@ -27,5 +27,9 @@ A TYPO3 instance is affected if a 3rd party extension uses one of the removed fu
 Migration
 =========
 
-Remove the call to :code:`\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSafeModeEnabled()` or :code:`\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isMagicQuotesGpcEnabled()` functions.
+Remove the call to :code:`\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSafeModeEnabled()`
+or :code:`\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isMagicQuotesGpcEnabled()` functions.
 The Install Tool takes care of the removed checks now.
+
+
+.. index:: PHP-API

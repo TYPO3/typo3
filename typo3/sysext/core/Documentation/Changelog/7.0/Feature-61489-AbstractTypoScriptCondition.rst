@@ -39,3 +39,6 @@ Impact
 
 If you've previously used the "userFunc" condition, you are encouraged
 to use this new API for your own TypoScript conditions.
+
+
+.. index:: PHP-API, TypoScript, Frontend

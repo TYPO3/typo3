@@ -27,3 +27,6 @@ Impact
 
 You can now access nested keys via getData `field:`. Nested keys are not available with the default set of
 content objects, however just content objects and `USER` object may return such a field structure.
+
+
+.. index:: TypoScript, Frontend

@@ -29,3 +29,6 @@ Migration
 =========
 
 The setting should be removed from any TypoScript configuration because it has no impact anymore.
+
+
+.. index:: TypoScript, Frontend

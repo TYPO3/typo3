@@ -29,3 +29,6 @@ Migration
 =========
 
 The respective options "web_func.menu.wiz" have been moved to "web_func.menu.functions".
+
+
+.. index:: TSConfig, Backend, ext:wizard_crpages, ext:wizard_sortpages

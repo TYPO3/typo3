@@ -30,3 +30,5 @@ Migration
 
 Use :code:`\TYPO3\CMS\Core\Database\RelationHandler::setFetchAllFields()` instead.
 
+
+.. index:: PHP-API, Backend

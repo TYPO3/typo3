@@ -29,3 +29,6 @@ Migration
 =========
 
 Any installation should migrate to alternatives such as FLUIDTEMPLATE to customize the output of the content.
+
+
+.. index:: Backend, Frontend, TypoScript

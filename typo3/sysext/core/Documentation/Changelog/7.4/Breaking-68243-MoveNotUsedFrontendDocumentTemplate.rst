@@ -31,3 +31,6 @@ Migration
 Install ext:compatibility6 or adapt the code to not use the FrontendDocumentTemplate functionality.
 
 Adapting the code is highly recommended.
+
+
+.. index:: PHP-API, Frontend

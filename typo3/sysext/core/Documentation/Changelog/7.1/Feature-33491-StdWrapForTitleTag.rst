@@ -20,3 +20,6 @@ The new option can be used like this, e.g. in order to write everything in upper
 
 	page = PAGE
 	page.config.pageTitle.case = upper
+
+
+.. index:: TypoScript, Frontend

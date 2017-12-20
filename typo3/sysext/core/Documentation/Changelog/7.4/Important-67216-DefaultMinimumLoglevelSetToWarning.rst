@@ -24,3 +24,6 @@ The previous behavior from TYPO3 <= 7.3 can be achieved with the following confi
                         ),
                 ),
         );
+
+
+.. index:: PHP-API, Backend

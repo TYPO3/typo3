@@ -29,3 +29,6 @@ Migration
 =========
 
 Use `IconUtility::getSpriteIconForRecord()` instead.
+
+
+.. index:: PHP-API, Backend

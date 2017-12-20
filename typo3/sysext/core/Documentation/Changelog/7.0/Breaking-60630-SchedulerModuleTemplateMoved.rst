@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-===========================================================
+=======================================================
 Breaking: #60630 - Scheduler Module Template File Moved
-===========================================================
+=======================================================
 
 See :issue:`60630`
 
@@ -31,3 +31,6 @@ Migration
 
 Use file EXT:scheduler/Resources/Private/Templates/Module.html instead or refactor the affected extension to free it
 from the dependency to this scheduler internal file.
+
+
+.. index:: ext:scheduler, Backend

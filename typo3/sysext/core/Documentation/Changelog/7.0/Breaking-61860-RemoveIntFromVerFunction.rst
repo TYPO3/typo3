@@ -29,3 +29,6 @@ Migration
 =========
 
 Replace the usage of the removed function with :code:`\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger()`
+
+
+.. index:: PHP-API

@@ -27,3 +27,6 @@ Usage:
 			file.import.data = file:current:uid
 		}
 	}
+
+
+.. index:: TypoScript, Frontend, FAL

@@ -53,3 +53,6 @@ Example code:
 
 		return CoolPlugin;
 	});
+
+
+.. index:: JavaScript, Backend, ext:t3editor

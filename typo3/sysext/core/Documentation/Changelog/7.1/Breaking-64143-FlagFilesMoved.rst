@@ -28,3 +28,6 @@ Affected installations
 
 Any installation using third-party extensions that access :file:`typo3/gfx/flags/` or
 :file:`typo3/sysext/t3skin/images/flags/` will fail.
+
+
+.. index:: PHP-API, Backend

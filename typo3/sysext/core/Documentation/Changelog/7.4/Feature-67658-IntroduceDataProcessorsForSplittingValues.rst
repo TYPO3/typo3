@@ -76,3 +76,6 @@ In the Fluid template then iterate over the processed data:
 			<tr>
 		</f:for>
 	</table>
+
+
+.. index:: TypoScript, Frontend

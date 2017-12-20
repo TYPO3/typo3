@@ -32,3 +32,6 @@ Migration
 
 If such a list is needed, create the files manually again in your system (outside your document root). The code can be
 found inside :file:`EXT:lowlevel/README.rst`.
+
+
+.. index:: ext:lowlevel, Backend

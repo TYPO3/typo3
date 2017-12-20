@@ -27,3 +27,6 @@ Impact
 
 If you add the parameter "multiple" to your checkboxes, it automatically
 appends [] to the name of your checkbox.
+
+
+.. index:: Fluid

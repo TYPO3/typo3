@@ -34,3 +34,6 @@ Migration
 
 Those options can be safely removed. They were used with old mail handling and
 are substituted with a different engine that rendered those useless.
+
+
+.. index:: TypoScript, Frontend

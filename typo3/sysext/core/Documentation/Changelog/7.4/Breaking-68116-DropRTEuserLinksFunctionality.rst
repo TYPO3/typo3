@@ -29,3 +29,6 @@ Migration
 =========
 
 Use the newly added Tabbing API to add your custom link selection tab.
+
+
+.. index:: Backend, RTE

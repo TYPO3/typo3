@@ -40,3 +40,6 @@ When `ratios` is set in TCA the defaults are neglected.
 
 Property `sys_file_reference.crop` can now hold a string representing a json object. `LocalCropScaleMaskHelper` checks
 if the it can parse the string as json. If it can it assumes it holds the properties: `x`, `y`, `width` and `height`.
+
+
+.. index:: TCA, LocalConfiguration, Backend

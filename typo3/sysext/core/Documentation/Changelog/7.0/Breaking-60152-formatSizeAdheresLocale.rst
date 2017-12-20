@@ -34,3 +34,6 @@ and the locale really exists on the server.
 
 TypoScript option: :code:`config.locale`
 Commandline: `locale -a`
+
+
+.. index:: PHP-API, TypoScript

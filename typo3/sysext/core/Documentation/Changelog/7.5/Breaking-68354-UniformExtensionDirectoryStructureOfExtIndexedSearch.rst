@@ -30,3 +30,6 @@ Migration
 =========
 
 Make sure your configuration matches with new directory structure.
+
+
+.. index:: ext:indexed_search

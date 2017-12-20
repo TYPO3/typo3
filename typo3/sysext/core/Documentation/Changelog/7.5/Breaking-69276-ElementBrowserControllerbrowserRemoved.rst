@@ -28,6 +28,10 @@ Installations using third party code, which accesses `$GLOBAL['SOBE']->browser`.
 Migration
 =========
 
-If the code is extending one of the ElementBrowser tree classes, the protected member variable `$elementBrowser` can be used to access the underlying ElementBrowser instance.
+If the code is extending one of the ElementBrowser tree classes, the protected member variable `$elementBrowser` can
+be used to access the underlying ElementBrowser instance.
 
 If your code is using the ElementBrowser tree classes, an instance of `ElementBrowser` has to be injected using the setter.
+
+
+.. index:: PHP-API, Backend

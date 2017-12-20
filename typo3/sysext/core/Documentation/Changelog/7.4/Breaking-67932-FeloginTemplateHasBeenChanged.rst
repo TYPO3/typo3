@@ -37,3 +37,6 @@ The field definition in your template has to be updated to like this:
 .. code-block:: html
 
 	<input type="password" id="pass" name="pass" value="" data-rsa-encryption="" />
+
+
+.. index:: Frontend, ext:felogin, ext:rsaauth

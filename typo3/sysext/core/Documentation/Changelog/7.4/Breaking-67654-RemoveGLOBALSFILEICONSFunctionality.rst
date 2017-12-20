@@ -33,3 +33,6 @@ Migration
 =========
 
 Use sprite icons via `IconUtility::getSpriteIconForFile()`.
+
+
+.. index:: PHP-API, Backend

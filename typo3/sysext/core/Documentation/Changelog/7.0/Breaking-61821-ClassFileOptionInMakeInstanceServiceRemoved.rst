@@ -30,3 +30,6 @@ Migration
 =========
 
 Use the ext_autoload.php file to autoload the class.
+
+
+.. index:: PHP-API

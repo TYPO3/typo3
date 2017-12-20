@@ -27,3 +27,6 @@ Migration
 Use `\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()` instead with the according module name.
 
 `typo3/show_item.php` will have to be refactored to `\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('show_item')`
+
+
+.. index:: PHP-API, Backend

@@ -52,3 +52,6 @@ Impact
 ======
 
 Extensions may now perform arbitrary processing for every mail.
+
+
+.. index:: PHP-API

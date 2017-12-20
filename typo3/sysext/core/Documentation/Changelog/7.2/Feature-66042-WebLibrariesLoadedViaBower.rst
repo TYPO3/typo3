@@ -34,3 +34,6 @@ Impact
 
 Setting up a development environment when working with frontend libraries (e.g. LESS)
 requires npm and bower to be installed on the local machine.
+
+
+.. index:: JavaScript, Backend

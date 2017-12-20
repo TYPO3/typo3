@@ -24,3 +24,6 @@ Migration
 =========
 
 Use TYPO3_URL_GENERAL instead.
+
+
+.. index:: PHP-API

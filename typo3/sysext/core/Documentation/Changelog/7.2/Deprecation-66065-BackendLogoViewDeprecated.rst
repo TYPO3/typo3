@@ -32,3 +32,6 @@ Migration
 
 As the same logic is now done in the BackendController and the main Backend Fluid Template, the template can be
 modified to fit the installations' needs.
+
+
+.. index:: PHP-API, Backend

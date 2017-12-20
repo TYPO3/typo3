@@ -45,3 +45,6 @@ Migration
 =========
 
 For TYPO3 CMS 7, installing EXT:compatibility6 brings back the existing functionality.
+
+
+.. index:: TypoScript, Frontend

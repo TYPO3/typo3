@@ -23,3 +23,6 @@ Migration
 =========
 
 Use the constant `TYPO3_OS` directly.
+
+
+.. index:: PHP-API, Backend

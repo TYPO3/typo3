@@ -24,3 +24,6 @@ Affected Installations
 ======================
 
 Installations having the option `$TYPO3_CONF_VARS[GFX][png_to_gif]` activated.
+
+
+.. index:: LocalConfiguration

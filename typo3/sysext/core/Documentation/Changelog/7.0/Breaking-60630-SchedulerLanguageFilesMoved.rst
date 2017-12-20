@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-===========================================================
+=================================================
 Breaking: #60630 - Scheduler Language Files Moved
-===========================================================
+=================================================
 
 See :issue:`60630`
 
@@ -32,3 +32,6 @@ Migration
 
 Use new path to language file instead or create/copy the labels to an own language file and
 adapt existing overrides to the new file locations.
+
+
+.. index:: Backend, ext:scheduler

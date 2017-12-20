@@ -26,3 +26,6 @@ Migration
 
 Move initialization code from `__wakeup()` to `initializeObject()`. As a bonus, dependencies have been injection at
 this point already.
+
+
+.. index:: PHP-API, ext:extbase

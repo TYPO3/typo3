@@ -42,3 +42,6 @@ Extensions needs adaption.
 
 The hook `getMainFieldsClass` has been substituted with a much more fine grained and flexible API.
 Use `FormDataProvider` to change data given to the render engine of FormEngine from now on.
+
+
+.. index:: PHP-API, Backend

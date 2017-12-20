@@ -22,3 +22,6 @@ Affected installations
 ======================
 
 Any installation using the CSH Glossary functionality.
+
+
+.. index:: PHP-API, Backend

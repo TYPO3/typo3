@@ -30,3 +30,6 @@ Impact
 ======
 
 The default value is set to 1, so it's backward compatible.
+
+
+.. index:: TypoScript, ext:indexed_search

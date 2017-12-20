@@ -26,3 +26,6 @@ Migration
 =========
 
 Redirecting to typo3/dummy.php instead.
+
+
+.. index:: PHP-API, Backend

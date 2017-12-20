@@ -33,3 +33,6 @@ Migration
 
 Change the call to `PageRenderer->addInlineLanguageLabelFile()` with `$stripFromSelectionName = ''` or adjust your Javascript to handle
 the now correctly rendered label keys.
+
+
+.. index:: PHP-API, Backend, Frontend

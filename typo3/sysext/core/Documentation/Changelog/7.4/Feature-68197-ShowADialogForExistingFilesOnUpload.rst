@@ -18,3 +18,6 @@ Impact
 ======
 
 The user is able to define an action for each conflicted image. A file can be replaced, renamed or skipped.
+
+
+.. index:: FAL, Backend

@@ -28,3 +28,6 @@ To encrypt your own TCA fields you can add define the render type `rsaInput`.
 .. code-block:: php
 
 $GLOBALS['TCA']['be_users']['columns']['password']['config']['renderType'] = 'rsaInput';
+
+
+.. index:: TCA, Backend

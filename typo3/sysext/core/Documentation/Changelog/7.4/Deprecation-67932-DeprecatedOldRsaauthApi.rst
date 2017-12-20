@@ -26,3 +26,6 @@ Migration
 There is no reason to use the entry points on your own anymore. Please update your scripts to use the new rsaauth API.
 For backend requests you should use the provided ajax handler `RsaEncryption::getRsaPublicKey()`.
 For frontend request you should use the provided eID script `RsaPublicKeyGenerationController`.
+
+
+.. index:: PHP-API, Backend, ext:rsaauth

@@ -57,3 +57,6 @@ While the class itself implements the SingletonInterface of the TYPO3 Core to on
 	class MysqlFulltextIndexHook implements \TYPO3\CMS\Core\Core\SingletonInterface {
 		...
 	}
+
+
+.. index:: PHP-API

@@ -24,3 +24,6 @@ You may add your own special type by registering your own element browser in you
 	}
 
 The registered class is expected to implement the `\TYPO3\CMS\Recordlist\Browser\ElementBrowserInterface` interface.
+
+
+.. index:: PHP-API, Backend

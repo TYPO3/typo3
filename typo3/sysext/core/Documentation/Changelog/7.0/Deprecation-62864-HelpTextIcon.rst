@@ -27,3 +27,6 @@ Migration
 =========
 
 Use :code:`BackendUtility::cshItem()` instead.
+
+
+.. index:: PHP-API, Backend

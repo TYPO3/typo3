@@ -29,3 +29,6 @@ Migration
 =========
 
 Change affected extension to include Javascript files from resources/ to Resources/Public/JavaScript/.
+
+
+.. index:: JavaScript, ext:rsaauth

@@ -25,3 +25,6 @@ Migration
 Use custom render code, the `<f:flashMessage />` ViewHelper or the `ModuleTemplate` for backend modules to render FlashMessages.
 It is suggested not to include HTML in flash messages. Flash messages should be short notifications on user interactions.
 If you need more elaborate or persistent messages, use `<f:be.infobox />` view helper or HTML similar to that.
+
+
+.. index:: PHP-API, Backend

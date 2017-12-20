@@ -83,3 +83,6 @@ In order to change the skin of an extension output, provided by the Fluid Standa
 copy the whole Resources folder into fileadmin or to some specific location, but you can pick only the files you want
 to change. Those need to be organized in folders, which are then configured for the view. The system will fall through
 all the provided locations, taking the first fitting file it finds.
+
+
+.. index:: PHP-API, TypoScript, Fluid

@@ -26,3 +26,6 @@ Impact
 
 When EXT:css_styled_content isn't installed a Migration wizard is shown in the install tool to move the flexform values
 to regular database fields in the tt_content table.
+
+
+.. index:: FlexForm, Backend, ext:css_styled_content

@@ -30,3 +30,6 @@ Migration
 =========
 
 Use the :code:`\TYPO3\CMS\Core\Mail\Mailer` API for sending email.
+
+
+.. index:: PHP-API

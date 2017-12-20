@@ -30,3 +30,6 @@ Impact
 ======
 
 The new ViewHelper can be used in all new projects. There is no interference with any part of existing code.
+
+
+.. index:: Fluid

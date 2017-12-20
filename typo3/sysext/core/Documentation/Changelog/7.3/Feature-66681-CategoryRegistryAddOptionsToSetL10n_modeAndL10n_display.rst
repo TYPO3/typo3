@@ -24,3 +24,6 @@ The values can be set via:
 			'l10n_display' => 'list of keywords'
 		)
 	);
+
+
+.. index:: PHP-API, TCA, Backend

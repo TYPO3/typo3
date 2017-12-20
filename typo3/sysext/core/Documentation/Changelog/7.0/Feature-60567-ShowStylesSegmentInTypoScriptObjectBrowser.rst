@@ -17,3 +17,6 @@ Impact
 ======
 
 The segment is cached in the Frontend and not unset anymore, page cache entries increase slightly in size.
+
+
+.. index:: TypoScript, Backend

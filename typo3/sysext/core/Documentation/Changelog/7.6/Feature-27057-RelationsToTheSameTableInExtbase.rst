@@ -67,3 +67,6 @@ Impact
 ======
 
 Extbase now correctly handles relations to objects of the same class.
+
+
+.. index:: PHP-API, ext:extbase

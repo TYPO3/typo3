@@ -28,3 +28,6 @@ Migration
 =========
 
 Replace all occurrences of `$GLOBALS['WEBMOUNTS']` with `$GLOBALS['BE_USER']->returnWebmounts()`.
+
+
+.. index:: PHP-API, Backend

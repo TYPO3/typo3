@@ -40,3 +40,6 @@ Use the following code instead of the init.php inclusion if you still need custo
 
 
 If using a module, use the mod.php to register your own module.
+
+
+.. index:: PHP-API, Backend

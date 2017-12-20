@@ -40,3 +40,6 @@ still possible until TYPO3 CMS 7 LTS, so be aware of changes to TCA, Templates,
 Behaviour and Feature set.
 
 Some conflicts regarding CSS Styled Content and Fluid Styled Content might still exist.
+
+
+.. index:: TypoScript, ext:fluid_styled_content, Backend, Frontend

@@ -24,3 +24,6 @@ The method `InformationStatus::mapStatusToInt()` has been replaced by `Informati
 usages have been replaced by the new method / logic.
 As the `InformationStatus` Enum has been introduced in 7.4 it should not be used by any public API and
 therefore the change should not have much impact.
+
+
+.. index:: PHP-API

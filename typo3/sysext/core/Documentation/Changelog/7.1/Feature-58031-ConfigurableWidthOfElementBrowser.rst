@@ -22,3 +22,6 @@ Impact
 ======
 
 The Element Browser width and height can be set for better usability and user experience.
+
+
+.. index:: TSConfig, Backend

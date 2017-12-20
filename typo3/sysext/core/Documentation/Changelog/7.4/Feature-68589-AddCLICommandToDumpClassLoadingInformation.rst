@@ -19,3 +19,6 @@ Impact
 
 By executing `typo3/cli_dispatch.phpsh extbase extension:dumpclassloadinginformation` on the command line,
 the class loading information of all active extensions is updated.
+
+
+.. index:: CLI

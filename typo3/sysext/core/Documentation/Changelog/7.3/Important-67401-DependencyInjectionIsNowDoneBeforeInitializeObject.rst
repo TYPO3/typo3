@@ -20,3 +20,6 @@ This may have impact on extensions that are relying on the reversed call order. 
 required to take into account that the injected objects are available.
 
 .. _documentation: http://wiki.typo3.org/Dependency_Injection#initializeObject.28.29_as_object_lifecycle_method
+
+
+.. index:: PHP-API, ext:extbase

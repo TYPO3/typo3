@@ -32,3 +32,6 @@ Migration
 =========
 
 Download and install the extension "jumpurl" from the TER.
+
+
+.. index:: PHP-API, Frontend, ext:jumpurl

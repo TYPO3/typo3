@@ -29,3 +29,6 @@ Migration
 =========
 
 Use :code:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_APPLICATION` instead, which matches the Iana standard.
+
+
+.. index:: PHP-API, FAL

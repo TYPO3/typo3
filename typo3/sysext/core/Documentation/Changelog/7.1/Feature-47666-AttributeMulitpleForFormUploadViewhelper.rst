@@ -21,3 +21,6 @@ Will result in the according HTML tag providing the field content as array.
 
 Be aware, that you need to prepare the incoming value for the property mapping yourself,
 by writing your own TypeConverter.
+
+
+.. index:: Fluid

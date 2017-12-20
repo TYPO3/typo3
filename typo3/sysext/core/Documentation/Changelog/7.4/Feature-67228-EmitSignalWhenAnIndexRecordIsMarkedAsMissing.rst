@@ -20,3 +20,6 @@ Impact
 
 This can be used by extensions that provide or extend file management capabilities
 (versioning, synchronizations, recovery etc).
+
+
+.. index:: PHP-API, FAL, Backend

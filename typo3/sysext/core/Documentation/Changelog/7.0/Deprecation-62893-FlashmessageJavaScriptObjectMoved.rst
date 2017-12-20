@@ -45,3 +45,6 @@ Example:
     top.TYPO3.Flashmessages.display(top.TYPO3.Severity.notice)
 
 The `TYPO3.Severity` object has been moved to `top.TYPO3.Severity`. Use `top.TYPO3.Severity.*` instead.
+
+
+.. index:: JavaScript, Backend

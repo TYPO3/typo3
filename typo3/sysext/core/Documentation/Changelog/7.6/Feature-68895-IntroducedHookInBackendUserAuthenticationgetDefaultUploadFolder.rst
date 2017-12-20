@@ -70,3 +70,6 @@ Example getDefaultUploadFolder hook
 			return $uploadFolder;
 		}
 	}
+
+
+.. index:: PHP-API, Backend

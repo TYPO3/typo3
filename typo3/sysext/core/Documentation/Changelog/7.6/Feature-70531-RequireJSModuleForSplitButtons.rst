@@ -34,3 +34,6 @@ Callbacks will be added by calling `SplitButtons.addPreSubmitCallback`:
 	SplitButtons.addPreSubmitCallback(function(e) {
 		// Code being executed as callback before submit
 	});
+
+
+.. index:: JavaScript, Backend

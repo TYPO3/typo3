@@ -12,3 +12,5 @@ Description
 
 The backend user groups can now be maintained in a sub-module of the
 "Backend users" backend module.
+
+.. index:: Backend, ext:beuser

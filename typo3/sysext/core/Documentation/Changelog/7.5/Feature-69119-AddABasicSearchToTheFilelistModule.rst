@@ -25,3 +25,5 @@ like editing, renaming and deleting are already implemented. By default the
 search results are ordered by the file identifier, i.e. the file path ascending
 from A-Z.
 
+
+.. index:: Backend, FAL

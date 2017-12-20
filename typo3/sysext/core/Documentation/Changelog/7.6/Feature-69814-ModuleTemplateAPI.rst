@@ -145,3 +145,6 @@ to manipulate buttons. A similar hook is available in ModuleTemplate API as `$GL
             return $buttons;
         }
     }
+
+
+.. index:: PHP-API, Backend

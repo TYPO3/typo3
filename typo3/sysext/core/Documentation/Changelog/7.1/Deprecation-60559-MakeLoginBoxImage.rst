@@ -31,3 +31,6 @@ Migration
 =========
 
 Free an affected 3rd party extension from using this method or unload the extension.
+
+
+.. index:: PHP-API, Backend

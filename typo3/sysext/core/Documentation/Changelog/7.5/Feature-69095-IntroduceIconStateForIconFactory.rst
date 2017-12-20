@@ -42,3 +42,5 @@ This ViewHelper has an argument for the new state parameter.
 	{namespace core = TYPO3\CMS\Core\ViewHelpers}
 	<core:icon identifier="my-icon-identifier" state="disabled" />
 
+
+.. index:: PHP-API, Backend, Fluid

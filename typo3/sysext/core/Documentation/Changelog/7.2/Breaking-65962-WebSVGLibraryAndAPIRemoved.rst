@@ -51,3 +51,6 @@ Migration
 =========
 
 Affected installations should include the "websvg" library directly from the library owner, and in their setups.
+
+
+.. index:: PHP-API, TypoScript, Frontend, Backend

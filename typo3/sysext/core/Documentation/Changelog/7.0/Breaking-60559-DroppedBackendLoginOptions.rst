@@ -30,3 +30,6 @@ Migration
 =========
 
 Remove these options and their usage from the affected 3rd party extension or unload the extension.
+
+
+.. index:: Backend, ext:t3skin

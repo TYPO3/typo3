@@ -38,3 +38,6 @@ Usage example:
 			<f:be.menus.actionMenuItem label="XClasses" controller="Information" action="xclass" />
 		</f:be.menus.actionMenuItemGroup>
 	</f:be.menus.actionMenu>
+
+
+.. index:: Fluid, Backend

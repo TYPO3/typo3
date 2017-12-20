@@ -40,3 +40,6 @@ For installations still needing the old templates, an old version of the templat
 need to be included separately. Any other installation still using the old TypoScript templates should migrate to
 the latest TypoScript templates of CSS Styled Content by choosing the correct version inside the Web=>Template
 module.
+
+
+.. index:: Frontend, TypoScript

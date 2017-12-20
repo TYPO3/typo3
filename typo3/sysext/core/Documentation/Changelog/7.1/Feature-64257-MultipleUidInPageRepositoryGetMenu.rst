@@ -21,3 +21,6 @@ Example: Fetch children of pages #2 and #3:
     $pageRepository = new \TYPO3\CMS\Frontend\Page\PageRepository();
     $pageRepository->init(false);
     $rows = $pageRepository->getMenu(array(2, 3));
+
+
+.. index:: PHP-API, Frontend

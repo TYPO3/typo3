@@ -30,3 +30,6 @@ Migration
 =========
 
 Make use of ServerRequestInterface and ResponseInterface, see :file:`typo3/sysext/t3editor/Classes/Hook/FileEditHook.php` for reference.
+
+
+.. index:: PHP-API, ext:t3editor

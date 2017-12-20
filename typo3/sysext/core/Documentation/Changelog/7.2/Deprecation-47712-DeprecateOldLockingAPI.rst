@@ -30,3 +30,6 @@ Migration
 =========
 
 Use the new Locking Service API instead.
+
+
+.. index:: PHP-API, Backend, LocalConfiguration

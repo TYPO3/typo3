@@ -34,3 +34,6 @@ Migration
 
 A `softRefParser_GL` hook in an extension has to be replaced with multiple `softRefParser` hooks for each type the
 parser can handle.
+
+
+.. index:: PHP-API

@@ -37,3 +37,6 @@ Example code:
 	CoolPlugin.afterKeyDown = function(currWordObj, compResult) {
 		CoolPlugin.somethingFunky(currWordObj, compResult);
 	};
+
+
+.. index:: JavaScript, Backend, ext:t3editor

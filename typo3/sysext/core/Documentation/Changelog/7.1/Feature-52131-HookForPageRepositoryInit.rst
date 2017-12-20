@@ -20,3 +20,6 @@ Register the hook as follows:
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Frontend\Page\PageRepository::class]['init']
 
 The hook class must implement the interface :code:`\TYPO3\CMS\Frontend\Page\PageRepositoryInitHookInterface`.
+
+
+.. index:: PHP-API, Frontend

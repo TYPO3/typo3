@@ -39,3 +39,6 @@ Migration
 Rewrite any needed logic for filtering, and include the RequireJS module like in e.g.
 FileSystemNavigationFrameController.php, to use the tree component. If the old code is needed, the :file:`tree.js` file
 and prototype need to be included as part of the extension, not from the core.
+
+
+.. index:: JavaScript, Backend

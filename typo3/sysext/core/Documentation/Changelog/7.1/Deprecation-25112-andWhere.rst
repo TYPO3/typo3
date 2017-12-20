@@ -56,3 +56,6 @@ Use the properties `where` and `markers` instead.
 			}
 		}
 	}
+
+
+.. index:: TypoScript, Frontend

@@ -34,3 +34,6 @@ Registering a module can now look like this (as an example the "Page" module):
 	);
 
 One can use any available sprite icon known to TYPO3.
+
+
+.. index:: PHP-API, Backend

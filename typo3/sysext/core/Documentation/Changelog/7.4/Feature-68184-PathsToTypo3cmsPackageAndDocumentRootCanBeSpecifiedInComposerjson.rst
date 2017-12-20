@@ -50,3 +50,6 @@ Impact
 ======
 
 When specifying the configuration like mentioned above, the directory structure of a `composer install` will change.
+
+
+.. index:: PHP-API

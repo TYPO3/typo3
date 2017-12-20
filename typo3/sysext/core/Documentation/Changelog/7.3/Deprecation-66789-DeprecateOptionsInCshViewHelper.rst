@@ -23,3 +23,6 @@ Migration
 =========
 
 Remove the options where the CshViewHelper is used.
+
+
+.. index:: Fluid, Backend

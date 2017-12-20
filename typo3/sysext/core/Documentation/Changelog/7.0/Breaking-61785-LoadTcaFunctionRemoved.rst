@@ -30,3 +30,5 @@ Migration
 The method is obsolete, full TCA is always loaded in all context except eID.
 It is safe to remove the method call.
 
+
+.. index:: PHP-API

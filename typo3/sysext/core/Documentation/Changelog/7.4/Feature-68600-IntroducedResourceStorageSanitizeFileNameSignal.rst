@@ -23,3 +23,6 @@ Impact
 
 All installations with extensions that use the PreFileAdd signal to change/sanitize a file name.
 This logic should be moved to the new sanitizeFileName signal.
+
+
+.. index:: PHP-API, FAL

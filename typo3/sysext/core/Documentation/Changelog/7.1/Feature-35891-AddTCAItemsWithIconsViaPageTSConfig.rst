@@ -25,3 +25,6 @@ separate option "altIcons".
 	}
 
 If the path is not prefixed with "EXT:" it needs to be relative to the typo3/ directory.
+
+
+.. index:: TSConfig, TCA, Backend

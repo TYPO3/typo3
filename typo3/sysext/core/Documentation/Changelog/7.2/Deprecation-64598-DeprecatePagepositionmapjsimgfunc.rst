@@ -36,3 +36,6 @@ Migration
 
 Write own JavaScript functions for your extension to handle onmouseover and onmouseout events to
 switch between two images.
+
+
+.. index:: PHP-API, JavaScript, Backend

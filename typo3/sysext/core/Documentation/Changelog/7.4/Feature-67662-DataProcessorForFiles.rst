@@ -70,3 +70,6 @@ In the Fluid template then iterate over the files:
 		<li><a href="{file.publicUrl}">{file.name}</a></li>
 	</f:for>
 	</ul>
+
+
+.. index:: TypoScript, Frontend

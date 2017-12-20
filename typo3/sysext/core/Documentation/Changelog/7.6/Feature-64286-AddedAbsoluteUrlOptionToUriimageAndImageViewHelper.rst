@@ -31,3 +31,6 @@ Examples:
     <output>
         http://www.mydomain.com/fileadmin/_processed_/323223424.png
     </output>
+
+
+.. index:: Fluid

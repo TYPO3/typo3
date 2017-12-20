@@ -73,3 +73,5 @@ The meaning and behavior of the workspaces notification settings concerning
 preselected recipients and the possibility to modify the selection on moving
 an element to a particular change is different now. However, an upgrade wizard
 helps to upgrade the settings to the new definitions.
+
+.. index:: Backend, ext:workspaces

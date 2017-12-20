@@ -45,3 +45,6 @@ Choose between the default value `checkbox` (no change required then) or set the
 	$GLOBALS['TCA']['be_groups']['columns']['tables_modify']['config']['renderMode'] = 'singlebox';
 	$GLOBALS['TCA']['be_groups']['columns']['non_exclude_fields']['config']['renderMode'] = 'singlebox';
 	$GLOBALS['TCA']['be_groups']['columns']['userMods']['config']['renderMode'] = 'singlebox';
+
+
+.. index:: LocalConfiguration, TCA, Backend

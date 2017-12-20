@@ -30,3 +30,6 @@ Impact
 ======
 
 Icons can now be animated.
+
+
+.. index:: PHP-API, Backend

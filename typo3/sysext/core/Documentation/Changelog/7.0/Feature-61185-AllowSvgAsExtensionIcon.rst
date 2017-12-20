@@ -17,3 +17,6 @@ Impact
 ======
 
 Extension icons might be rendered better when provided as vector graphics and not as bitmaps.
+
+
+.. index:: PHP-API, Backend

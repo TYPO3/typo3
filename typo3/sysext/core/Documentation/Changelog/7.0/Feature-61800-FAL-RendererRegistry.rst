@@ -47,3 +47,6 @@ Impact
 
 The registry on its own doesn't do anything. Some followup patches are needed to use this registry
 to find the correct renderer class for rendering videos and other media files in BE preview and FE.
+
+
+.. index:: PHP-API, FAL, Backend

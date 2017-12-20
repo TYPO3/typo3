@@ -30,3 +30,6 @@ Impact
 The flag is by default set for all existing and a new storage. When you have some
 special use-case where automatic extraction of metadata is not desired the flag
 can be disabled in File Storage configuration.
+
+
+.. index:: FAL, PHP-API, Backend

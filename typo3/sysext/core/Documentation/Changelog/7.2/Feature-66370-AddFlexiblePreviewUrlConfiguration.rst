@@ -55,3 +55,6 @@ Predefined GET-parameters
 
 The Core automatically sets the `no_cache` and the `L` parameter. The language matches the language of the current record.
 You may override each parameter by using the `additionalGetParameters` configuration option.
+
+
+.. index:: TSConfig, Frontend, Backend

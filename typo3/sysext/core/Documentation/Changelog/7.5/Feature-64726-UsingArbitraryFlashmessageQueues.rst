@@ -31,3 +31,6 @@ Impact
 
 Extensions may now render foreign flash message queues and add messages
 to them.
+
+
+.. index:: PHP-API, Fluid, ext:extbase

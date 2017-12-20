@@ -43,3 +43,6 @@ Example
 
 	// This example is from the tt_content TCA overrides file from the css_styled_content Extension.
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable('css_styled_content', 'tt_content', 'categories', array(), TRUE);
+
+
+.. index:: PHP-API, TCA, Backend

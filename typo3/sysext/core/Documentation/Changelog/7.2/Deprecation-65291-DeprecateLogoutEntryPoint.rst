@@ -27,3 +27,6 @@ Migration
 Use `\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()` instead with the according module name.
 
 `typo3/logout.php` will have to be refactored to `\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('logout')`
+
+
+.. index:: PHP-API, Backend

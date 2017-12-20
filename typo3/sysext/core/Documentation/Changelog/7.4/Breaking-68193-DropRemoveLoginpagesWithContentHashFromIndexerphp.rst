@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-========================================================================
-Breaking: #68193 - Drop removeLoginpagesWithContentHash from Indexer.php
-========================================================================
+===========================================================================================
+Breaking: #68193 - ext:indexed_search Drop removeLoginpagesWithContentHash from Indexer.php
+===========================================================================================
 
 See :issue:`68193`
 
@@ -30,3 +30,6 @@ Migration
 =========
 
 No migration is available.
+
+
+.. index:: PHP-API, ext:indexed_search

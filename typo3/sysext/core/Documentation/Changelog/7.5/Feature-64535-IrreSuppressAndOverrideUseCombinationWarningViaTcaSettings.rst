@@ -45,3 +45,6 @@ Example to override `useCombination` warning message:
 			'useCombination' => TRUE
 		)
 	)
+
+
+.. index:: TCA, Backend

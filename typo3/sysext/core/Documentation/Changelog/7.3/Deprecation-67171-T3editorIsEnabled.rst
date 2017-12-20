@@ -29,3 +29,6 @@ Migration
 =========
 
 The method call should be removed.
+
+
+.. index:: PHP-API, Backend, ext:t3editor

@@ -25,3 +25,6 @@ Migration
 =========
 
 Extensions that used this property to log errors have to use their own errorLog.
+
+
+.. index:: PHP-API, Backend

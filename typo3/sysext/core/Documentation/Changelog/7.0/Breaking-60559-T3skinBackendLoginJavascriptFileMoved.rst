@@ -30,3 +30,6 @@ Migration
 
 Include EXT:backend/Resources/Public/JavaScript/login.js instead or refactor the affected extension to free it
 from the dependency to this core internal file.
+
+
+.. index:: JavaScript, ext:t3skin, Backend

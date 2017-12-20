@@ -30,3 +30,6 @@ Migration
 =========
 
 These functions are internal and should not be used outside of the core.
+
+
+.. index:: PHP-API, Backend

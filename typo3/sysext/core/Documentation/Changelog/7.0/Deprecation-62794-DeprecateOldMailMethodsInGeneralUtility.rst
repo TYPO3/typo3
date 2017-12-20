@@ -32,3 +32,6 @@ Migration
 
 Code that still uses these methods should be refactored to the mail API using
 TYPO3\CMS\Core\Mail\Mailer class.
+
+
+.. index:: PHP-API, Backend

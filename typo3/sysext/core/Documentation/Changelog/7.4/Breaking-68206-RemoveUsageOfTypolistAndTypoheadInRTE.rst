@@ -32,3 +32,6 @@ Migration
 
 Substitute the tags by a tag `ul``or `header`.
 Remove any usage of `internalizeFontTags()`
+
+
+.. index:: PHP-API, RTE

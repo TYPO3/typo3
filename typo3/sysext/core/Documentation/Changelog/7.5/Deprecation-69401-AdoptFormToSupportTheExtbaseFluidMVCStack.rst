@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-========================================================================
-Deprecation: #69401 - Adopt form to support the Extbase/ Fluid MVC stack
-========================================================================
+============================================================================
+Deprecation: #69401 - Adopt ext:form to support the Extbase/ Fluid MVC stack
+============================================================================
 
 See :issue:`69401`
 
@@ -42,3 +42,6 @@ Migration
 
 Move away from `.layout` TypoScript properties and move to Fluid based
 templating.
+
+
+.. index:: TypoScript, ext:form

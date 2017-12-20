@@ -28,3 +28,6 @@ Affected Installations
 ======================
 
 Instances with third-party extensions calling this method.
+
+
+.. index:: PHP-API, Frontend, ext:jumpurl

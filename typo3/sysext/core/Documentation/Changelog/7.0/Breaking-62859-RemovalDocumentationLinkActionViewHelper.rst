@@ -29,3 +29,6 @@ Migration
 =========
 
 Either use f:be.buttons.icon or any of f:uri.* view helpers.
+
+
+.. index:: Fluid, Backend, ext:documentation

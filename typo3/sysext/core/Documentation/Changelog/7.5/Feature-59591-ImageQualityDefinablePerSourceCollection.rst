@@ -32,3 +32,6 @@ Impact
 ======
 
 The rendering of `sourceCollection` stays as it is. Users can additionally selectively control the quality of jpeg by TypoScript setup.
+
+
+.. index:: TypoScript, Frontend

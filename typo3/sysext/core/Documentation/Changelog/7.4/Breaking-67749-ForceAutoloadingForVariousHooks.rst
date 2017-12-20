@@ -41,3 +41,5 @@ simplified to an empty value, example:
 
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\TYPO3\CMS\Saltedpasswords\Evaluation\FrontendEvaluator::class] = '';
 
+
+.. index:: PHP-API, Backend

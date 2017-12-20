@@ -29,3 +29,5 @@ The following hooks were introduced:
 	Can be used to e.g. request additional attributes like a nickname from the OpenID Server.
 	The following parameters are passed to the hook: `authRequest`, `authInfo`.
 
+
+.. index:: PHP-API, Backend, ext:openid

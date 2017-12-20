@@ -17,3 +17,6 @@ Impact
 ======
 
 Distributions that require different TYPO3 versions are not shown anymore.
+
+
+.. index:: ext:extensionmanager

@@ -40,3 +40,6 @@ Impact
 ======
 
 The new property is available everywhere in TypoScript where `stdWrap` is applied.
+
+
+.. index:: TypoScript, Frontend

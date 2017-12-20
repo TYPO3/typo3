@@ -39,3 +39,6 @@ Migration
 Update the code to use `\TYPO3\CMS\Dbal\Database\SqlParser` instead of
 `\TYPO3\CMS\Core\Database\SqlParser` or install EXT:compatibility6 which
 maps the old class names to the new ones in EXT:dbal.
+
+
+.. index:: PHP-API, Database, ext:dbal

@@ -36,3 +36,6 @@ Impact
 ======
 
 Getting class tags by ReflectionService is now possible.
+
+
+.. index:: PHP-API, ext:extbase

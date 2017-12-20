@@ -35,3 +35,6 @@ Migration
 =========
 
 Use the `IconRegistry` to register icons.
+
+
+.. index:: PHP-API, Backend

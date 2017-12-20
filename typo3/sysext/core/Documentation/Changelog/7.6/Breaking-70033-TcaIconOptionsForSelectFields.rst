@@ -31,3 +31,6 @@ Migration
 =========
 
 Extension authors need to use the new option `showIconTable` to define the visibility of the icon table for their select fields.
+
+
+.. index:: TCA, Backend

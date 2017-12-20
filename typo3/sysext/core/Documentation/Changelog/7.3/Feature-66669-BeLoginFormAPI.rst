@@ -101,3 +101,6 @@ Impact
 ======
 
 All extensions which add additional fields to the login form must be updated and make use of the new BE login form API.
+
+
+.. index:: PHP-API, Backend, ext:openid

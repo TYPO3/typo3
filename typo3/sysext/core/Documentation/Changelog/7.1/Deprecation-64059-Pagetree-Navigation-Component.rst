@@ -34,3 +34,6 @@ Migration
 =========
 
 Use the ExtJS navigationComponentID instead within the module registration.
+
+
+.. index:: PHP-API, JavaScript, Backend

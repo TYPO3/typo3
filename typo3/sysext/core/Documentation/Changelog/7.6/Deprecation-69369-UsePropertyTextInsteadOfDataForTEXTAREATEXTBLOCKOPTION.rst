@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-=======================================================
-Deprecation: #69369 - Use property text instead of data
-=======================================================
+===================================================================
+Deprecation: #69369 - Use property text instead of data in ext:form
+===================================================================
 
 See :issue:`69369`
 
@@ -38,3 +38,6 @@ Migration
 Remove usage of the "data" property and use "text" instead. Opening a
 specific form with the form wizard and storing the form again will also
 migrate from "data" to "text".
+
+
+.. index:: ext:form

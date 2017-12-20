@@ -23,3 +23,6 @@ Migration
 =========
 
 Use `TYPO3\CMS\Backend\Utility\BackendUtility::wrapClickMenuOnIcon()` instead.
+
+
+.. index:: PHP-API, Backend

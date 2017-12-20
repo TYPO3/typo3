@@ -20,3 +20,6 @@ the TYPO3.l10n.localize() function for instance.
 	\TYPO3\CMS\Workspaces\Service\AdditionalResourceService::getInstance()->addLocalizationResource(
 		'EXT:my_extension/Resources/Private/Language/locallang.xlf'
 	);
+
+
+.. index:: PHP-API, Backend, ext:workspaces

@@ -37,3 +37,6 @@ Migration
 =========
 
 Use the newly introduced API.
+
+
+.. index:: PHP-API, Backend, ext:t3editor, RTE

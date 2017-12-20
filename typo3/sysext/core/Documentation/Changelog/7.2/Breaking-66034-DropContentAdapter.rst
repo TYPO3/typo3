@@ -24,3 +24,6 @@ Migration
 =========
 
 Change your TypoScript to use the new content object FILES to retrieve files.
+
+
+.. index:: LocalConfiguration, Frontend, TypoScript

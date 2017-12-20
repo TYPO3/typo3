@@ -16,7 +16,10 @@ The import module of extension "impexp" has been disabled for non-admin users by
 Impact
 ======
 
-For non-admin users who need that functionality, the userTsConfig option :ts:`options.impexp.enableImportForNonAdminUser = 1` must be set. This can have a negative security impact to the TYPO3 instance in core versions 7.6 and 6.2 and should only be enabled for "trustworthy" backend users in general.
+For non-admin users who need that functionality, the userTsConfig option
+:ts:`options.impexp.enableImportForNonAdminUser = 1` must be set. This can have a
+negative security impact to the TYPO3 instance in core versions 7.6 and 6.2 and
+should only be enabled for "trustworthy" backend users in general.
 
 
 Affected Installations
@@ -29,3 +32,5 @@ Migration
 =========
 
 Set userTsConfig option :ts:`options.impexp.enableImportForNonAdminUser = 1` to restore the old behavior.
+
+.. index:: Backend, ext:impexp, TSConfig

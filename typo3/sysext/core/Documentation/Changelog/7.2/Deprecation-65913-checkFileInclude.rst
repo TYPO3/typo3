@@ -23,3 +23,6 @@ Migration
 =========
 
 Use the autoloader for classes or `$TSFE->tmpl->getFileName()` if needed.
+
+
+.. index:: PHP-API, Frontend

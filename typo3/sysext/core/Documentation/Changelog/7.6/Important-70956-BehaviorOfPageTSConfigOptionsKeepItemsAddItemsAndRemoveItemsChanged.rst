@@ -2,7 +2,7 @@
 .. include:: ../../Includes.txt
 
 =================================================================================================
-Important: #70956 - Behavior of Page TCconfig options keepItems, addItems and removeItems changed
+Important: #70956 - Behavior of Page TSConfig options keepItems, addItems and removeItems changed
 =================================================================================================
 
 See :issue:`70956`
@@ -17,3 +17,5 @@ options has been formalized.
 The first option to be evaluated is `keepItems`, followed in turn by `addItems`
 and `removeItems`. All three options are evaluated after items have been added to
 the configuration by sources like folders or foreign tables.
+
+.. index:: TSConfig, Backend

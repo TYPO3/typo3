@@ -29,3 +29,6 @@ Migration
 =========
 
 Use the ModuleTemplate API instead.
+
+
+.. index:: PHP-API, Backend

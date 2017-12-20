@@ -38,3 +38,6 @@ The functionality of these scripts (except listframe_loader.php which is not use
 Use BackendUtility::getModuleUrl() to link to them. The module name is identical to the file name without the ".php" suffix.
 
 e.g. BackendUtility::getModuleUrl('file_edit');
+
+
+.. index:: PHP-API, Backend

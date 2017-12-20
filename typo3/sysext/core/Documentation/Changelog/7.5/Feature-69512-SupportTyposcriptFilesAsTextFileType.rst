@@ -17,3 +17,6 @@ Impact
 ======
 
 Files with the type **typoscript** can now be edited through the file list module.
+
+
+.. index:: TypoScript, Backend

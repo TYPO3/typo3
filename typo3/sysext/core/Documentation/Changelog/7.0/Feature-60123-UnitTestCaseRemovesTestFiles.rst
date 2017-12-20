@@ -20,3 +20,6 @@ Impact
 ======
 
 This allows tests to clean up the environment without leaving obsolete test files behind.
+
+
+.. index:: PHP-API

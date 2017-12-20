@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-====================================================================
-Feature: #69401 - Adopt form to support the Extbase/ Fluid MVC stack
-====================================================================
+========================================================================
+Feature: #69401 - Adopt ext:form to support the Extbase/ Fluid MVC stack
+========================================================================
 
 See :issue:`69401`
 
@@ -109,3 +109,6 @@ Another patch will take care of the documentation.
 
 A few more patches will come which will fix some issues regarding the
 validators and filters.
+
+
+.. index:: ext:form, Fluid, ext:extbase, TypoScript

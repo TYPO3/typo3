@@ -19,3 +19,6 @@ it can now be invoked like this:
 .. code-block:: shell
 
 	typo3/cli_dispatch.sh extbase my_ext:hello:world <arguments>
+
+
+.. index:: PHP-API, CLI, ext:extbase

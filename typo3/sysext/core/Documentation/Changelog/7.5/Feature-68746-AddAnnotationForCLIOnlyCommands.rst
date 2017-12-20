@@ -23,3 +23,6 @@ Impact
 
 Extbase `CommandController` commands annotated with `@cli` are not shown as
 command in the scheduler task.
+
+
+.. index:: CLI, ext:extbase

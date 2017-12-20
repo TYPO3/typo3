@@ -37,3 +37,6 @@ Migration
 =========
 
 Make all TCA tables "move-placeholders" aware by adding the necessary database field "t3ver_moveid".
+
+
+.. index:: TCA, ext:workspaces

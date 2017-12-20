@@ -32,3 +32,6 @@ Migration
 
 Use `COA` instead of `COBJ_ARRAY` and `CASE` instead of `CASEFUNC` in all TypoScript code.
 Installing ext:compatibility6 can be used as a short-term solution, although this is discouraged.
+
+
+.. index:: PHP-API, TypoScript, Frontend

@@ -40,3 +40,6 @@ and moved to extension `static_info_tables`, adding the field in an
 `Configuration/TCA/Overrides` file to the affected table. To ensure the load order
 of extensions is correct, `static_info_tables` could set a `suggest` dependency
 `rtehtmlarea`.
+
+
+.. index:: TCA, Backend

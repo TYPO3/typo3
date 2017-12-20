@@ -30,3 +30,6 @@ Migration
 =========
 
 The logic is moved into EXT:beuser. No special migration is necessary.
+
+
+.. index:: PHP-API, Backend, ext:beuser

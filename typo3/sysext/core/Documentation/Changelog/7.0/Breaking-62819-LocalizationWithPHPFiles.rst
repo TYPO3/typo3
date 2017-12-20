@@ -41,3 +41,6 @@ typo3conf/AdditionalConfiguration.php:
 
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xlf,xml,php';
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['parser']['php'] = 'TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangArrayParser';
+
+
+.. index:: PHP-API, Backend, Frontend, LocalConfiguration

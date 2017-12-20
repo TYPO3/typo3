@@ -32,3 +32,5 @@ Migration
 
 Use the File Abstraction Layer for any custom works. See `BackendUtility::thumbCode()` for inspiration.
 
+
+.. index:: PHP-API, Backend

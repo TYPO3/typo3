@@ -159,3 +159,6 @@ Old identifier                        New identifier             New AJAX ID
 ===================================   ========================   ======================
 Workspaces::setWorkspace              workspace_switch           /workspaces/switch
 ===================================   ========================   ======================
+
+
+.. index:: PHP-API, Backend

@@ -24,3 +24,6 @@ Migration
 =========
 
 Check if redirects are enabled before the actual call to `PageRepository->getExtURL()` in a third-party extension.
+
+
+.. index:: PHP-API, Frontend

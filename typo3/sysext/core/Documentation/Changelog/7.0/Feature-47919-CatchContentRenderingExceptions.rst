@@ -51,3 +51,6 @@ Impact
 Instead of breaking the whole page when an exception occurs, an error message is shown for the part of the page that is broken.
 Be aware that unlike before, it is now possible that a page with error message gets cached.
 To get rid of the error message not only the actual error needs to be fixed, but the cache must be cleared for this page.
+
+
+.. index:: TypoScript, Frontend

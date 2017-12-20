@@ -35,3 +35,5 @@ no migration possible. The attribute can be manually removed from the form
 configuration. The wizard ignores the existence of `breakOnError`.
 Since TYPO3 7.5 it is possible to utilize HTML5 attributes to validate
 form elements on the fly. This could be used to emulate the behaviour.
+
+.. index:: ext:form

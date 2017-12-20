@@ -24,10 +24,13 @@ Textfields with required="FALSE" are not required any longer.
 Affected Installations
 ======================
 
-Every installation that uses the textfield viewhelper with the required attribute.
+Every installation that uses the textfield view helper with the required attribute.
 
 
 Migration
 =========
 
 No migration is necessary.
+
+
+.. index:: Fluid

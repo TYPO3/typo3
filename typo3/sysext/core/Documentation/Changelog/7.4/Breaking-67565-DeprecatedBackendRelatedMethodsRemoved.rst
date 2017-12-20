@@ -30,3 +30,6 @@ Affected Installations
 ======================
 
 Instances with third-party extensions calling one of these methods.
+
+
+.. index:: PHP-API, Backend

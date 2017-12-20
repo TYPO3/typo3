@@ -27,3 +27,6 @@ preview links can be triggered using Page TSconfig.
 
 	# Using the pid field of each record for previewing (or table tx_myext_table)
 	options.workspaces.previewPageId.tx_myext_table = field:pid
+
+
+.. index:: TSConfig, ext:workspaces

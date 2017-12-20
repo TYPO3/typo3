@@ -24,3 +24,6 @@ Migration
 =========
 
 Remove any reference to `ContextMenuAction::$class`.
+
+
+.. index:: PHP-API, Backend
