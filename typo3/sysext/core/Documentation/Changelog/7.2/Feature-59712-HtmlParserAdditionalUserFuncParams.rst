@@ -51,3 +51,6 @@ containing the attributeValue key and all additional settings.
 
 This has an impact to all installations where additional parameters are used in the userFunc
 setting of the HTMLparser.
+
+
+.. index:: PHP-API, RTE, TypoScript, Frontend

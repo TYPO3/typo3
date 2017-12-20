@@ -86,3 +86,6 @@ structure XML. This can be suppressed with this `PageTSConfig` snippet:
 	TCEFORM.tt_content.pi_flexform.table.langDisable = 1
 	TCEFORM.tt_content.pi_flexform.login.langDisable = 1
 	TCEFORM.tt_content.pi_flexform.media.langDisable = 1
+
+
+.. index:: TSConfig, FlexForm

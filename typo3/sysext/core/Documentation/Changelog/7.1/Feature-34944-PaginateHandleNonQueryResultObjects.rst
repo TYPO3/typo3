@@ -25,4 +25,5 @@ The PaginateViewHelper accepts input collections of following types:
 		</f:for>
 	</f:widget.paginate>
 
-..
+
+.. index:: Fluid

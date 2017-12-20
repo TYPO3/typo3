@@ -30,3 +30,6 @@ Migration
 =========
 
 Remove usage of this class from custom extensions.
+
+
+.. index:: PHP-API, Backend

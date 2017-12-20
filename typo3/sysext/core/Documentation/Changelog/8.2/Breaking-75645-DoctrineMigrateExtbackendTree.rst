@@ -34,4 +34,4 @@ Migration
 Migrate all calls that work with the result :php:`Statement` from TreeView to be able to
 handle :php:`Statement` objects.
 
-.. index:: Database, PHP-API
+.. index:: Database, PHP-API, Backend

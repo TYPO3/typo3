@@ -31,4 +31,4 @@ Migration
 
 No migration available.
 
-.. index:: PHP-API
+.. index:: PHP-API, Database

@@ -25,8 +25,12 @@ No effect on existing installations.
 Usage
 =====
 
-In `Configuration/TCA/Overrides/pages.php` of any extension, register PageTS config files, which will be shown afterwards at the newly introduced field.
+In `Configuration/TCA/Overrides/pages.php` of any extension, register PageTS config files, which will be shown afterwards at
+the newly introduced field.
 
 .. code-block:: php
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerPageTSConfigFile('extension_name', 'Configuration/PageTS/myPageTSconfigFile.txt', 'My special config');
+
+
+.. index:: PHP-API, TSConfig, Backend

@@ -28,4 +28,4 @@ Migration
 
 For all backend-related calls, either use a custom RequestHandler or switch to Backend Routing.
 
-.. index:: Backend
+.. index:: Backend, PHP-API

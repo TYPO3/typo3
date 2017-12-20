@@ -34,4 +34,4 @@ Migration
 
 Use `getVariableProvider` instead of `getTemplateVariableContainer`.
 
-.. index:: PHP-API
+.. index:: PHP-API, Fluid

@@ -31,3 +31,5 @@ by updating the checksum of all existing processed files.
 	The Upgrade Wizard is only relevant for you if you're upgrading from any TYPO3 CMS version below 7.3 or 6.2.13.
 	Any upgrade from 7.3 or later or from 6.2.13 or later to a newer version does **not** require to run the wizard.
 
+
+.. index:: Database

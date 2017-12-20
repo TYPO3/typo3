@@ -9,8 +9,8 @@ See :issue:`79258`
 Description
 ===========
 
-The methods :php:`LocalizationRepository::getRecordLocalization()` and :php:`LocalizationRepository::getPreviousLocalizedRecordUid()` have been marked as
-deprecated as they are not used in the core anymore, since https://review.typo3.org/#/c/47645/ was merged.
+The methods :php:`LocalizationRepository::getRecordLocalization()` and :php:`LocalizationRepository::getPreviousLocalizedRecordUid()`
+have been marked as deprecated as they are not used in the core anymore, since https://review.typo3.org/#/c/47645/ was merged.
 
 
 Impact
@@ -22,7 +22,8 @@ Calling these methods will trigger a deprecation log entry. Code using them will
 Affected Installations
 ======================
 
-Any installation using the mentioned methods :php:`LocalizationRepository::getRecordLocalization()` and :php:`LocalizationRepository::getPreviousLocalizedRecordUid()`.
+Any installation using the mentioned methods :php:`LocalizationRepository::getRecordLocalization()`
+and :php:`LocalizationRepository::getPreviousLocalizedRecordUid()`.
 
 
 Migration

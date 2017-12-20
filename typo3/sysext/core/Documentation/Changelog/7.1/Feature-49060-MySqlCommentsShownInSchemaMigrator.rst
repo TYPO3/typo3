@@ -13,5 +13,8 @@ Description
 Comments in the :file:`*.sql` files are stored the database table and shown
 by the Schema Migration Feature in Install Tool.
 
-Existing comments are overriden with changes provided by other extensions.
+Existing comments are overridden with changes provided by other extensions.
 
+
+
+.. index:: Database, Backend

@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-==============================================
-Deprecation: #69371 - Form element IMAGEBUTTON
-==============================================
+==================================================
+Deprecation: #69371 - ext:Form element IMAGEBUTTON
+==================================================
 
 See :issue:`69371`
 
@@ -38,3 +38,6 @@ Migration
 =========
 
 No Migration is planned.
+
+
+.. index:: PHP-API, TypoScript, ext:form

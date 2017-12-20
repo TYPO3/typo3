@@ -62,3 +62,6 @@ Impact
 ======
 
 Extensions may now perform any kind of processing for every record when validating content links.
+
+
+.. index:: PHP-API, Backend, ext:linkvalidator

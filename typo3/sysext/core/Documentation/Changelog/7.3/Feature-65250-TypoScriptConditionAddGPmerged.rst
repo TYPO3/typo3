@@ -28,3 +28,6 @@ So, instead the check should use GeneralUtility::_GPmerged()
 	page.90 = TEXT
 	page.90.value = DEMO
 	[global]
+
+
+.. index:: TypoScript, Frontend

@@ -31,3 +31,6 @@ Migration
 
 As in the methods directly, plain HTML based on Twitter bootstrap can be used.
 Example: `<span class="label label-danger">3</span>`.
+
+
+.. index:: PHP-API, Backend

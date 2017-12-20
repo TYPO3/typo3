@@ -38,3 +38,6 @@ Migration
 
 Remove the `$GLOBALS['TBE_STYLES']['logo_login']` from your setup and go to the
 extension manager to edit the configuration for the backend extension.
+
+
+.. index:: PHP-API, Backend

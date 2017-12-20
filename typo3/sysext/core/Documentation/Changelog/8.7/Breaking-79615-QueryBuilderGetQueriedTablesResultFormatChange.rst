@@ -57,4 +57,4 @@ implementations needs to adapted to be able to handle the new incoming array str
 Format of the first parameter passed to :php:`buildExpression` needs to be adapted in case
 a query restriction is used directly (without using :php:`QueryBuilder::getQueriedTables`).
 
-.. index:: PHP-API
+.. index:: PHP-API, Database

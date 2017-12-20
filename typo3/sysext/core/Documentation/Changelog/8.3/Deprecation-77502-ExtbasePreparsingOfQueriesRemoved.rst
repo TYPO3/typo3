@@ -34,4 +34,4 @@ Migration
 
 Usage of these methods can be replaced by simply using the `DataMapper->getPlainValue()` functionality.
 
-.. index:: PHP-API, Database
+.. index:: PHP-API, Database, ext:extbase

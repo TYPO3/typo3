@@ -67,4 +67,4 @@ waiting for further refactorings in TYPO3 v9.
 to ContentObjectRenderer.
 
 
-.. index:: Frontend, TypoScript
+.. index:: Frontend, TypoScript, PHP-API

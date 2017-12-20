@@ -35,3 +35,6 @@ In JavaScript, use `TYPO3.Storage.Persistent` API. In PHP, use `\TYPO3\CMS\Backe
 	/** @var $userSettingsController \TYPO3\CMS\Backend\Controller\UserSettingsController */
 	$userSettingsController = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\UserSettingsController::class);
 	$state = $userSettingsController->process('get', 'BackendComponents.States.' . $stateId);
+
+
+.. index:: PHP-API, Backend, JavaScript

@@ -38,3 +38,6 @@ Migration
 =========
 
 If still used, extensions should switch to own solutions for those methods.
+
+
+.. index:: PHP-API, Backend

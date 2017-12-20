@@ -57,3 +57,5 @@ With this configuration RTE was only rendered if `otherField` had the value 1. T
 
 	'defaultExtras' => 'richtext:rte_transform[mode=ts_css]',
 
+
+.. index:: TCA, RTE, Backend

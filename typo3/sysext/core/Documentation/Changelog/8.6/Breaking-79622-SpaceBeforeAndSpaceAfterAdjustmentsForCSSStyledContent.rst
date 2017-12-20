@@ -120,4 +120,4 @@ for CSS Styled Content.
 Feature-79622-SpaceBeforeAndSpaceAfterClassForCssStyledContent.rst
 
 
-.. index:: Frontend
+.. index:: Frontend, Database, ext:css_styled_content, TypoScript

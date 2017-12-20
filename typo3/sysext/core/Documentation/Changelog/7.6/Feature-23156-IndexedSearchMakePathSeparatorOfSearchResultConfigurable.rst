@@ -30,3 +30,6 @@ For plugin based on AbstractPlugin use:
 .. code-block:: ts
 
    plugin.tx_indexedsearch.breadcrumbWrap = / || /
+
+
+.. index:: TypoScript, ext:indexed_search

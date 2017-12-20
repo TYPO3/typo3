@@ -29,3 +29,7 @@ Migration
 =========
 
 Configure error and exception handling in LocalConfiguration.php or AdditionalConfiguration.php
+
+
+
+.. index:: PHP-API, LocalConfiguration

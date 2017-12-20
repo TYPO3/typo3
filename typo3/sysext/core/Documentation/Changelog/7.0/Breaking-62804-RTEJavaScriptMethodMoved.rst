@@ -30,3 +30,6 @@ Migration
 
 The affected 3rd party extensions must be modified to use method :code:`HTMLArea.DOM.Node::getNodeByPosition()`
 instead.
+
+
+.. index:: RTE, JavaScript, Backend

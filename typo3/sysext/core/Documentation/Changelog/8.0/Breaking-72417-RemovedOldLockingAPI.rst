@@ -20,4 +20,4 @@ Impact
 Using the `Locker` class will result in a fatal error. The option `$TYPO3_CONF_VARS[SYS][lockingMode]` has
 no effect anymore.
 
-.. index:: PHP-API
+.. index:: PHP-API, LocalConfiguration

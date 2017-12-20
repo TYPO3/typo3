@@ -41,3 +41,6 @@ Migration
   should be done with a userFunc condition and a project like WURFL
   that keep the device information more recent than the current core
   code like matching AMIGA
+
+
+.. index:: TypoScript, Frontend

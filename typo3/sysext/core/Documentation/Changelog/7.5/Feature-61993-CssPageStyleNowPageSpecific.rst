@@ -21,3 +21,6 @@ The behaviour from now on is that `_CSS_PAGE_STYLE` is included only on the
 affected page. Depending on your configuration it will be written in an external
 file and included on the page or directly added as inline CSS block. Compression
 for page specific CSS also depends on the global `config.compressCss` setting.
+
+
+.. index:: TypoScript, Frontend

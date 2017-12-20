@@ -54,4 +54,4 @@ Migration
 
 Manual adaption is necessary.
 
-.. index:: TypoScript
+.. index:: TypoScript, Frontend, ext:fluid_styled_content

@@ -115,4 +115,4 @@ Rendering changes and removed TypoScript Options
 Use CSS styling to restore the look of your tables.
 
 
-.. index:: FlexForm, Frontend, TCA, TypoScript
+.. index:: FlexForm, Frontend, TCA, TypoScript, ext:css_styled_content

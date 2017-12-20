@@ -55,4 +55,4 @@ Affected Installations
 
 None as default.
 
-.. index:: Database, Backend
+.. index:: Database, Backend, LocalConfiguration

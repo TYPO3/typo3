@@ -777,4 +777,4 @@ An automatic TCA migration transfers from old TCA settings to new ones and throw
 hints which changes should be incorporated. For flex form data structure definitions, the TCA migration is called
 when opening an according record and logs, too.
 
-.. index:: Backend, TCA
+.. index:: Backend, TCA, RTE

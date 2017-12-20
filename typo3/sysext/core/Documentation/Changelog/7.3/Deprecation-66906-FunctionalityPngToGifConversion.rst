@@ -34,3 +34,6 @@ Migration
 
 Remove calls to the functionality, as the result will be a PNG. If GIF conversion is needed, the functionality needs
 to be implemented in a custom FAL Processor inside an extension.
+
+
+.. index:: PHP-API, Backend, LocalConfiguration, FAL

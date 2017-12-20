@@ -29,4 +29,4 @@ Migration
 
 There is no migration available.
 
-.. index:: PHP-API, Backend
+.. index:: PHP-API, Backend, ext:tstemplate

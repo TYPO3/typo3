@@ -53,3 +53,6 @@ Some methods also support non-blocking locks:
 	if ($result) {
 		$locker->release();
 	}
+
+
+.. index:: PHP-API

@@ -26,3 +26,6 @@ Breaking interface changes
 --------------------------
 
 * The `RenderingContextAwareInterface` has been removed. There is no replacement.
+
+
+.. index:: Fluid, PHP-API

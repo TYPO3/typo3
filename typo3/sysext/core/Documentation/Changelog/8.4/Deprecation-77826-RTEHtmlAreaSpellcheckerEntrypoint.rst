@@ -29,4 +29,4 @@ Migration
 
 Use `SpellCheckingController->processRequest` instead.
 
-.. index:: PHP-API, RTE
+.. index:: PHP-API, RTE, Backend

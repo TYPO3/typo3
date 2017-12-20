@@ -38,3 +38,6 @@ use `$MCONF['script'] = '_DISPATCH';`. Those modules must be adapted to the `mod
 need adaption of further references that are defined relative to the entry script.
 
 Searching for extensions with backend modules that define `TYPO3_MOD_PATH` is a good start to find unwanted usages.
+
+
+.. index:: PHP-API, Backend

@@ -30,3 +30,6 @@ Migration
 =========
 
 Remove calls to `parent::initializeObject()` from own `initializeObject()` implementations.
+
+
+.. index:: PHP-API, ext:extbase

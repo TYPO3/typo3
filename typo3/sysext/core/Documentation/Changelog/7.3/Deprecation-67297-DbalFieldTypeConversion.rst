@@ -26,3 +26,6 @@ Migration
 =========
 
 Use the functions `getNativeFieldType()` and `getMetaFieldType()` provided by the DBMS specifics class.
+
+
+.. index:: PHP-API, ext:dbal

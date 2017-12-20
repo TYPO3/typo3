@@ -52,4 +52,4 @@ Migration
 
 None - since public internal
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

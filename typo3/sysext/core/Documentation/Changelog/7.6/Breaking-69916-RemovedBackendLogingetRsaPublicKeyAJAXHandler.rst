@@ -31,3 +31,6 @@ Migration
 =========
 
 Use the AJAX handler `rsa_publickey` instead of `BackendLogin::getRsaPublicKey`.
+
+
+.. index:: PHP-API, Backend, ext:rsaauth

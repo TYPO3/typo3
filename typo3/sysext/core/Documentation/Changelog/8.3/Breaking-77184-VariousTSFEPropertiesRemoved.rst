@@ -42,4 +42,4 @@ body tag or the page title.
 
 The information previously stored in the clientInfo property can be fetched via `GeneralUtility::clientInfo()`.
 
-.. index:: PHP-API
+.. index:: PHP-API, Frontend

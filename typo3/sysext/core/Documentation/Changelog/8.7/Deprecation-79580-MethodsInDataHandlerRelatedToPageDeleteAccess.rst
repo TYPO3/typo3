@@ -32,4 +32,4 @@ Migration
 Use native :php:`rtrim($input, ',')` instead of :php:`TYPO3\CMS\Core\DataHandling\DataHandler->rmComma()`.
 No migration available for :php:`TYPO3\CMS\Core\DataHandling\DataHandler->noRecordsFromUnallowedTables()`.
 
-.. index:: Database, PHP-API
+.. index:: Database, PHP-API, Backend

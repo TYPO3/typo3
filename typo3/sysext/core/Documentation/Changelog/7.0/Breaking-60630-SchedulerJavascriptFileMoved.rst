@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-=============================================================
+==================================================
 Breaking: #60630 - Scheduler Javascript File Moved
-=============================================================
+==================================================
 
 See :issue:`60630`
 
@@ -31,3 +31,6 @@ Migration
 
 Include EXT:scheduler/Resources/Public/JavaScript/Scheduler.js instead or refactor the affected extension to free it
 from the dependency to this scheduler internal file.
+
+
+.. index:: JavaScript, Backend, ext:scheduler

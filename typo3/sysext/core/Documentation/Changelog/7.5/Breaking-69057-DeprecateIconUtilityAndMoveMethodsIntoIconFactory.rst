@@ -37,3 +37,6 @@ Migration
 =========
 
 Make use of the new `IconFactory` class.
+
+
+.. index:: PHP-API, Backend

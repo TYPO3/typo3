@@ -25,3 +25,5 @@ has implemented CompilableInterface and the `evaluateCondition` method.
 Making such third-party ViewHelpers no longer compilable (and thus decreasing performance
 when they are used) is chosen in favor of preserving the current behavior where such
 ViewHelpers would be completely unable to correctly evaluate the condition at all.
+
+.. index:: PHP-API, Fluid

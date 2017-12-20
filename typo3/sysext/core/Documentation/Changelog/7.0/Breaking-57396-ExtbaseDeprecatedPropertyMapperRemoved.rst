@@ -35,3 +35,6 @@ Migration
 
 Manual migration of extension code might be required, especially when own validators using the old
 validation API were used.
+
+
+.. index:: TypoScript, PHP-API, ext:extbase

@@ -48,4 +48,4 @@ Use the new render-type `colorpicker` in the TCA field configuration, like e.g.
 
    $GLOBALS['TCA']['tableName']['fieldName']['config']['renderType'] = 'colorpicker';
 
-.. index:: PHP-API, TCA
+.. index:: PHP-API, TCA, Backend

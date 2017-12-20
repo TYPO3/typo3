@@ -24,3 +24,6 @@ With TYPO3 7.4 the prefix used for index names has been changed to
 a unique constant length prefix. Due to this all non-primary indexes need
 to be dropped and re-created with a new name. The changes to the database
 will be performed by the Upgrade Wizard in the Install Tool.
+
+
+.. index:: Database, ext:dbal

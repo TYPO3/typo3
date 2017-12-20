@@ -15,3 +15,5 @@ A file search has been added to the TYPO3 Element Browser.
 The search happens recursively from the currently selected folder in the folder tree.
 This way it is possible to search whole mount points or just single folders with a lot of files.
 
+
+.. index:: Backend

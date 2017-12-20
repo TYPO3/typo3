@@ -43,3 +43,6 @@ Migration
 =========
 
 Install the system extension "mediace" to regain all functionality as it was before.
+
+
+.. index:: PHP-API, Frontend, Database, Backend, ext:mediace

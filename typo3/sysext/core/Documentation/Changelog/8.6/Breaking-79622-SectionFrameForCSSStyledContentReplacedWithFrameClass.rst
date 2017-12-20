@@ -103,4 +103,4 @@ Adapt rendering definition
    tt_content.stdWrap.innerWrap.cObject.custom-1.20.10.value = csc-frame csc-frame-custom-1
 
 
-.. index:: Frontend, TypoScript
+.. index:: Frontend, TypoScript, ext:css_styled_content

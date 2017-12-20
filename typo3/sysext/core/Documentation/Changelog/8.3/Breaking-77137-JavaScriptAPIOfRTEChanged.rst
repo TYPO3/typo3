@@ -51,4 +51,4 @@ buildButtonConfig
    severity of the button. This should always represent the severity of the modal, use one of the severities defined in
    :javascript:`TYPO3/CMS/Backend/Severity`.
 
-.. index:: JavaScript, RTE
+.. index:: JavaScript, RTE, Backend

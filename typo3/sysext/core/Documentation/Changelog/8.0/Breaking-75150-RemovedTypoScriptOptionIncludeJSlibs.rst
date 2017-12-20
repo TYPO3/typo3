@@ -30,4 +30,4 @@ Migration
 
 Use the TypoScript property `page.includeJSLibs` instead, which is in line with naming of `includeCSSLibs`.
 
-.. index:: TypoScript
+.. index:: TypoScript, Frontend

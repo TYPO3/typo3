@@ -29,3 +29,6 @@ Migration
 =========
 
 All classes are autoloaded automatically by TYPO3 CMS Core.
+
+
+.. index:: PHP-API, Backend

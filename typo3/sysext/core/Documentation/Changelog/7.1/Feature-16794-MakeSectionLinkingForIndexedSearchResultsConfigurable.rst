@@ -20,3 +20,6 @@ displayed as simple text.
 
 Will result in not linked section headlines.
 The setting is per default set to 1 in order to preserve current behaviour.
+
+
+.. index:: TypoScript, Frontend, ext:indexed_search

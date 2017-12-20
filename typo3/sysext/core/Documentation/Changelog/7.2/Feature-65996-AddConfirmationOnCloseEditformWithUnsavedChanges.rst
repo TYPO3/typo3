@@ -18,3 +18,5 @@ Impact
 
 When clicking the close icon of an edit form with unsaved changes, a confirmation modal will be shown.
 
+
+.. index:: Backend

@@ -33,4 +33,4 @@ Migration
 Remove setting `$GLOBALS['TCA'][<table-name>]['columns'][<column-name>]['l10n_mode']`
 if it is set to `noCopy`.
 
-.. index:: TCA
+.. index:: TCA, Backend

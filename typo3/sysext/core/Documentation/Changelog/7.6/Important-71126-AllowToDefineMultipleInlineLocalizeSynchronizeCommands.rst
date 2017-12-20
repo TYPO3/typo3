@@ -26,3 +26,5 @@ The current string configuration format is changed to be an array, legacy config
     ]
 
 Either "action" or "ids" must be defined.
+
+.. index:: PHP-API, Backend

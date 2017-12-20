@@ -30,3 +30,6 @@ Migration
 
 Use file EXT:backend/Resources/Private/Templates/login.html instead or refactor the affected extension to free it
 from the dependency to this core internal file.
+
+
+.. index:: Backend, ext:t3skin

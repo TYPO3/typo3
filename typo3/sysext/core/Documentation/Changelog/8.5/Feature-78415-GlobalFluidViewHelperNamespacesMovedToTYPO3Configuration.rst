@@ -27,4 +27,4 @@ Impact
 * Template developers can use such global namespaces without first importing them and can use them
   in all Fluid templates regardless of context.
 
-.. index:: Fluid, LocalConfiguration
+.. index:: Fluid, LocalConfiguration, PHP-API

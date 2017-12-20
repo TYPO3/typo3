@@ -17,7 +17,7 @@ The JavaScript will be loaded automatically when ext:cshmanual is enabled.
 Impact
 ======
 
-Using `<f:be.container>` ViewHelpers in a custom Backend module, setting the includeCsh property, will result in a fatal error.
+Using `<f:be.container>` view helpers in a custom Backend module, setting the includeCsh property, will result in a fatal error.
 
 
 Affected Installations
@@ -29,3 +29,6 @@ Migration
 =========
 
 Remove the property from the template. When ext:cshmanual is enabled the JavaScript is loaded automatically.
+
+
+.. index:: Fluid, Backend

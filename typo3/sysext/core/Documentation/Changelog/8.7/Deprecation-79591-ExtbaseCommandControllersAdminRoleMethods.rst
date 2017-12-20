@@ -32,4 +32,4 @@ Migration
 
 Remove the affected lines where the methods are called, as they are not necessary anymore.
 
-.. index:: CLI
+.. index:: CLI, ext:extbase, PHP-API

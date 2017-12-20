@@ -24,3 +24,6 @@ Migration
 =========
 
 Use `TYPO3\CMS\Backend\Utility\ModuleTemplate::getDynamicTabMenu()` instead.
+
+
+.. index:: PHP-API, Backend

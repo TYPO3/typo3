@@ -50,3 +50,6 @@ Migration
 =========
 
 The usage of recursive stdWrap TypoScript configuration needs to be checked and probably adapted to fit the fixed behavior.
+
+
+.. index:: TypoScript, Frontend

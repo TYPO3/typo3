@@ -30,4 +30,4 @@ Migration
 
 Remove the 'max' config option for renderType="inputDateTime".
 
-.. index:: Backend, Database
+.. index:: Backend, Database, TCA

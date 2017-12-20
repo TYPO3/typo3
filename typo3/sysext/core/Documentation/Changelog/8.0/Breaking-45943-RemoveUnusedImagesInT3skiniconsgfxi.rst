@@ -30,4 +30,4 @@ Migration
 
 No migration
 
-.. index:: Frontend, Backend
+.. index:: Frontend, Backend, ext:t3skin

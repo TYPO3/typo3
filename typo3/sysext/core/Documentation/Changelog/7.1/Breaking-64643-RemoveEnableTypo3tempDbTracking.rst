@@ -32,3 +32,6 @@ Migration
 
 If the functionality or a similar functionality is needed for some edge-cases, an own implementation via a third-party
 extension is necessary.
+
+
+.. index:: LocalConfiguration

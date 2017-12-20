@@ -15,4 +15,4 @@ to Extbase, and a lot of other system extensions are using the class.
 The old class name is still registered as a class alias, so extensions can call the class via
 the Extbase PHP namespace in TYPO3 v8 without any downsides.
 
-.. index:: PHP-API
+.. index:: PHP-API, ext:extbase, TypoScript

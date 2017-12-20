@@ -19,4 +19,4 @@ Impact
 All system information added by `addSystemInformation()` will now pass `InformationStatus::STATUS_NOTICE`
 as default value.
 
-.. index:: Backend
+.. index:: Backend, PHP-API

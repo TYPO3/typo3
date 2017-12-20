@@ -30,3 +30,6 @@ Migration
 
 Search and replace all TypoScript code of the installation from
 `includeJSlibs` to `includeJSLibs`.
+
+
+.. index:: TypoScript, Frontend

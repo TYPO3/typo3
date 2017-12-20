@@ -30,3 +30,6 @@ Migration
 =========
 
 Remove the slider wizard from affected TCA.
+
+
+.. index:: TCA, JavaScript, Backend

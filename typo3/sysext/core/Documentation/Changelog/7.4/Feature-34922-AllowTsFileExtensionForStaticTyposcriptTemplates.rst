@@ -25,3 +25,6 @@ Impact
 
 There is a little performance impact when loading the TypoScript from scratch like in the backend and frontend without
 cache as the new file extension is always tested.
+
+
+.. index:: Frontend, TypoScript

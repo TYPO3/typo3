@@ -46,4 +46,4 @@ the new entrypoint.
 If there any custom cliKeys registered, migrate them to a Symfony Command or an Extbase Command
 Controller.
 
-.. index:: CLI
+.. index:: CLI, LocalConfiguration

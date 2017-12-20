@@ -30,4 +30,4 @@ The method is called with the following arguments:
 * array `$recordData` all record data as array
 * string `$fileIdentifier` the file identifier
 
-.. index:: PHP-API
+.. index:: PHP-API, FAL

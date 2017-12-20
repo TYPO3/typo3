@@ -41,12 +41,10 @@ for i in `find typo3/sysext/core/Documentation/Changelog -name "*.rst" -type f`;
         # This regex needs to check that the ..index:: line a) holds valid content and b) is
         # the last line in the checked file
         INDEX=""
-        if ! [[ "$i" =~ (Changelog\/7\.[0-99]+\/|Changelog\/7\.6\.x\/) ]]; then
-            if ! [[ "$fileContent" =~ '.. index:: '((FullyScanned|PartiallyScanned|NotScanned|TypoScript|TSConfig|TCA|FlexForm|LocalConfiguration|Fluid|FAL|Database|JavaScript|PHP-API|Frontend|Backend|CLI|RTE|ext:([a-z|A-Z|_|0-9]*))([,|[:space:]]{2})?)+$ ]]; then
-                INDEX="no or wrong index"
-                index_message="insert '.. index:: <at least one valid keyword>' at last line of the file. See Build/Scripts/validateRstFiles.sh for allowed keywords"
-                outputFileToStream=1;
-            fi
+        if ! [[ "$fileContent" =~ '.. index:: '((FullyScanned|PartiallyScanned|NotScanned|TypoScript|TSConfig|TCA|FlexForm|LocalConfiguration|Fluid|FAL|Database|JavaScript|PHP-API|Frontend|Backend|CLI|RTE|ext:([a-z|A-Z|_|0-9]*))([,|[:space:]]{2})?)+$ ]]; then
+            INDEX="no or wrong index"
+            index_message="insert '.. index:: <at least one valid keyword>' at last line of the file. See Build/Scripts/validateRstFiles.sh for allowed keywords"
+            outputFileToStream=1;
         fi
 
         # All Deprecation- / Breaking- files since v9 must have one of the tags FullyScanned|PartiallyScanned|NotScanned

@@ -30,3 +30,6 @@ Migration
 
 The functions `getFolderInFolder()` and `getFileInFolder()` must be added to the custom FAL driver.
 A non-hierarchical driver needs to throw a "not implemented" exception when calling these functions.
+
+
+.. index:: PHP-API, FAL, Backend

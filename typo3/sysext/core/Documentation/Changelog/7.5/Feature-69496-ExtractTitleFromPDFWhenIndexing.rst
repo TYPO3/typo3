@@ -1,9 +1,9 @@
 
 .. include:: ../../Includes.txt
 
-======================================================
-Feature: #69496 - Extract title from PDF when indexing
-======================================================
+============================================================================
+Feature: #69496 - Extract title from PDF when indexing in ext:indexed_search
+============================================================================
 
 See :issue:`69496`
 
@@ -18,3 +18,5 @@ Impact
 
 The title of indexed PDF documents is now extracted.
 
+
+.. index:: Frontend, ext:indexed_search

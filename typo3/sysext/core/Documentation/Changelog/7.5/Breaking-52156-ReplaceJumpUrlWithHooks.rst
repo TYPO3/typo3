@@ -112,3 +112,6 @@ the file link in the :code:`typolinkConfiguration` parameter:
 		typolinkConfiguration.jumpurl = 1
 		typolinkConfiguration.jumpurl.secure = 1
 	}
+
+
+.. index:: PHP-API, ext:jumpurl, TypoScript, Frontend

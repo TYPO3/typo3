@@ -71,3 +71,6 @@ to the new DB field sys_language.language_isocode.
 
 If a site uses multiple languages without static_info_tables each sys_language record should be modified to select
 the proper ISO 639-1 code for the languages.
+
+
+.. index:: TypoScript, Frontend

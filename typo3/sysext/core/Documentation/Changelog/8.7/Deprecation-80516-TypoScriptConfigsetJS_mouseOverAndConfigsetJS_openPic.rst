@@ -30,4 +30,4 @@ Migration
 
 Include the small JavaScript files directly in your custom JavaScript file or inline via :typoscript:`page.inlineJS`.
 
-.. index:: TypoScript
+.. index:: TypoScript, Frontend

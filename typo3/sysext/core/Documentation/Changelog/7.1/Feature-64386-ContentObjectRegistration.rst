@@ -25,3 +25,6 @@ The registered class must be a subclass of `TYPO3\CMS\Frontend\ContentObject\Abs
 
 For future autoloading mechanisms, it is encouraged to place the custom ContentObject class inside
 `EXT:myextension/Classes/ContentObject/`.
+
+
+.. index:: PHP-API, Frontend

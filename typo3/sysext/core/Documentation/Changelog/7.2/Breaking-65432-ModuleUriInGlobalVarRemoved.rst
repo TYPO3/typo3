@@ -32,4 +32,8 @@ TYPO3 CMS 7 installations using extensions with backend modules which use `$GLOB
 Migration
 =========
 
-Extension code needs to be changed in a way that the API `BackendUtility::getModuleUrl('module_name')` is used instead of accessing `$GLOBALS['MCONF']['_']`.
+Extension code needs to be changed in a way that the API `BackendUtility::getModuleUrl('module_name')` is used
+instead of accessing `$GLOBALS['MCONF']['_']`.
+
+
+.. index:: PHP-API, Backend

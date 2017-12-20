@@ -26,3 +26,6 @@ Migration
 =========
 
 Switch to `getMetadata()` and the field name for which you need the ADOdb MetaType information.
+
+
+.. index:: PHP-API, Database, ext:dbal

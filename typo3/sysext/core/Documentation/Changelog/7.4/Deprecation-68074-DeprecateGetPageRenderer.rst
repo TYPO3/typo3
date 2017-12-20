@@ -29,3 +29,6 @@ Migration
 
 As the PageRenderer implements a SingletonInterface you can get your own (shared) instance with
 `\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class)` and work with that one.
+
+
+.. index:: PHP-API

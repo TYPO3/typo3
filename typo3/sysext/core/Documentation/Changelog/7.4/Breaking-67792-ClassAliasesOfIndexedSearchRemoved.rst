@@ -35,3 +35,6 @@ Use the new class names:
 
 - `\TYPO3\CMS\IndexedSearch\Controller\SearchFormController`
 - `\TYPO3\CMS\IndexedSearch\Controller\SearchController`
+
+
+.. index:: PHP-API, ext:indexed_search

@@ -26,3 +26,6 @@ Example:
 		split.token = ,
 		split.returnCount = 1
 	}
+
+
+.. index:: TypoScript, Frontend

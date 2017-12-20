@@ -15,3 +15,6 @@ a comma-separated list of paths to files were migrated at 6.2 with the shipped u
 The database fields `pages.media`, `pages_language_overlay.media`, `tt_content.image` and `tt_content.media`
 now only contain numeric values, which are handled by the DataHandler and the Reference Index, holding
 the number of references. The database fields are now changed to be only int fields, instead fields of type `text`.
+
+
+.. index:: Database, FAL

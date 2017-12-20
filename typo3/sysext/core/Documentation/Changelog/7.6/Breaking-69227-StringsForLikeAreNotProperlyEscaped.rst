@@ -37,3 +37,6 @@ Use the new constants:
 
 * `\TYPO3\CMS\IndexedSearch\Utility\LikeWildcard::LEFT`
 * `\TYPO3\CMS\IndexedSearch\Utility\LikeWildcard::RIGHT`
+
+
+.. index:: PHP-API, ext:indexed_search

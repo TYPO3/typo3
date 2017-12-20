@@ -22,4 +22,4 @@ Impact
 If the default database character set is not utf-8, the report warns administrators
 about a wrong charset.
 
-.. index:: Backend, Database
+.. index:: Backend, Database, ext:reports

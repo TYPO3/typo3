@@ -33,4 +33,4 @@ Implement it for example as follows:
 		}
 	}
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

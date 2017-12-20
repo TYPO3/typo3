@@ -33,4 +33,4 @@ Migration
 Implement this functionality with PHP's native :php:`(strpos($haystack, '?') !== false ? '?' : '')`
 one-liner directly.
 
-.. index:: PHP-API
+.. index:: PHP-API, Frontend

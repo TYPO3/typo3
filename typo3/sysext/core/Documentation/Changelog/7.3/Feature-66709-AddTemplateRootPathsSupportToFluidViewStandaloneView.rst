@@ -55,3 +55,6 @@ Impact
 
 The public API of `TYPO3\CMS\Fluid\View\StandaloneView` is enhanced with the methods
  `setTemplateRootPaths($templatePaths)` and `setTemplate($templateName, $throwException = TRUE)`
+
+
+.. index:: PHP-API, Fluid

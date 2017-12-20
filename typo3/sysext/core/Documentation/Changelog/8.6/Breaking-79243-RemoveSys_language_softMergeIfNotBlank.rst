@@ -19,4 +19,4 @@ Migration
 
 Remove TypoScript setting `config.sys_language_softMergeIfNotBlank`.
 
-.. index:: Frontend, TypoScript
+.. index:: Frontend, TypoScript, TCA

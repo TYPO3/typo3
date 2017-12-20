@@ -309,4 +309,4 @@ available for type :javascript:`Modal.types.ajax`.
    Modal.advanced(configuration);
 
 
-.. index:: JavaScript
+.. index:: JavaScript, Backend

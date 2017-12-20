@@ -28,4 +28,4 @@ Migration
 
 No migration available.
 
-.. index:: LocalConfiguration, Backend
+.. index:: LocalConfiguration, Backend, PHP-API

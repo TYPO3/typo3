@@ -33,3 +33,6 @@ Migration
 For tables we recommend the usage of the CSS class combination `table table-striped table-hover` instead of `t3-table`.
 
 For buttons we recommend the usage of the CSS class combination `btn btn-default` instead of `t3-button`.
+
+
+.. index:: Backend

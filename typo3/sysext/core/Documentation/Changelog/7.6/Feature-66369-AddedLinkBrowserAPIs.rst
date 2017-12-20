@@ -107,3 +107,6 @@ Currently the following list of hooks is implemented:
 
 	- modifyLinkHandlers(linkHandlers, currentLinkParts): May modify the list of available link handlers and has to return the final list.
 	- modifyAllowedItems(allowedTabs, currentLinkParts): May modify the list of available tabs and has to return the final list.
+
+
+.. index:: PHP-API, Backend, TSConfig, JavaScript

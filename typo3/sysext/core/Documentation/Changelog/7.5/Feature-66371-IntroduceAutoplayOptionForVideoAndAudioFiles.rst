@@ -68,3 +68,6 @@ Example config of an sys_file_reference field in TCA:
 	<output>
 		<video width="400" height="375" controls><source src="fileadmin/user_upload/my-video.mp4" type="video/mp4"></video>
 	</output>
+
+
+.. index:: FAL, TCA, Backend, Frontend

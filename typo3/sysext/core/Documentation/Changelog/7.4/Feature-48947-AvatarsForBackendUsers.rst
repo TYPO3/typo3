@@ -18,3 +18,6 @@ Impact
 ======
 
 The avatars will be shown in the topbar, users list and other places.
+
+
+.. index:: Backend

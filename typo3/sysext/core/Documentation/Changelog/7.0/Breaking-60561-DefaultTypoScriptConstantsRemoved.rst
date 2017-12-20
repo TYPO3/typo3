@@ -46,3 +46,6 @@ Either remove usage of the above constants or add a snippet at an early point in
       _stdFrameParams = frameborder="no" marginheight="0" marginwidth="0" noresize="noresize"
       _stdFramesetParams = 'border="0" framespacing="0" frameborder="no"
 
+
+
+.. index:: TypoScript, Frontend

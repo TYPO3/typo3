@@ -34,3 +34,6 @@ Impact
 
 The method signature of `\TYPO3\CMS\Linkvalidator::LinkAnalyser::init()` is changed. A new parameter has been added
 for submitting the current TSconfig. This can break third party code that extends this method.
+
+
+.. index:: TSConfig, Backend, ext:linkvalidator

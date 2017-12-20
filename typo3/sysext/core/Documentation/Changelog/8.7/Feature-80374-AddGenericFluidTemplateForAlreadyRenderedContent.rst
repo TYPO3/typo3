@@ -47,4 +47,4 @@ Example Usage
       }
    }
 
-.. index:: Fluid, TypoScript
+.. index:: Fluid, TypoScript, Frontend

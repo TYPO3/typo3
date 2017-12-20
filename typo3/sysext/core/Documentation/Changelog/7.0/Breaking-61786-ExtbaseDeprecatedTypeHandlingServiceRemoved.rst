@@ -28,4 +28,8 @@ A TYPO3 instance is affected if a 3rd party extension uses the removed class :co
 Migration
 =========
 
-Replace all calls to :code:`\TYPO3\CMS\Extbase\Service\TypeHandlingService` functions to their new static functions in :code:`\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility`
+Replace all calls to :code:`\TYPO3\CMS\Extbase\Service\TypeHandlingService` functions to their new static functions
+in :code:`\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility`
+
+
+.. index:: PHP-API, ext:extbase

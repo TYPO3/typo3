@@ -27,3 +27,6 @@ Migration
 Use `\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()` instead with the according module name.
 
 `typo3/db_new.php` will have to be refactored to `\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('db_new')`
+
+
+.. index:: PHP-API, Backend

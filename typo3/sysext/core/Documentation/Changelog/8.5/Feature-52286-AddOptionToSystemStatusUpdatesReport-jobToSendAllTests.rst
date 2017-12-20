@@ -22,4 +22,4 @@ Impact
 If the checkbox `Notification for all type of status, not only warning and error` is checked,
 then the `System Status Update (reports)` contains all type of notifications.
 
-.. index:: Backend
+.. index:: Backend, ext:reports

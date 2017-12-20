@@ -47,3 +47,6 @@ Migration
 In case records from multiple different tables must still be supported, the `TCA` configuration
 should be adapted to use a `MM` intermediate table. For existing migrations a database migration
 is required.
+
+
+.. index:: TCA, Backend

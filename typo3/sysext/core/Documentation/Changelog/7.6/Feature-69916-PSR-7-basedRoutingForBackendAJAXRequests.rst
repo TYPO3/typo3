@@ -36,3 +36,6 @@ due to different method signatures in the target actions, using PSR-7.
 
 The route identifier is used in `BackendUtility::getAjaxUrl()` as `$ajaxIdentifier` and as key in the global
 `TYPO3.settings.ajaxUrls` JavaScript object.
+
+
+.. index:: PHP-API, Backend

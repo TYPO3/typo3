@@ -34,3 +34,6 @@ There are two options to migrate away from `typo3conf/extTables.php` usage, the 
   :file:`typo3conf/extTables.php` to :file:`typo3conf/ext/<your_extension>/Configuration/TCA/Overrides/pages.php`.
 
 * Slot the signal `tcaIsBeingBuilt` that is emitted in `ExtensionManagementUtility.php`.
+
+
+.. index:: PHP-API, TCA, LocalConfiguration

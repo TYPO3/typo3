@@ -41,4 +41,4 @@ Migration
 
 No migration available.
 
-.. index:: PHP-API, TSConfig
+.. index:: PHP-API, TSConfig, Backend

@@ -23,3 +23,6 @@ Impact
 ======
 
 The introspection processor behaves as before as long as the feature is not explicitly configured.
+
+
+.. index:: PHP-API, Backend

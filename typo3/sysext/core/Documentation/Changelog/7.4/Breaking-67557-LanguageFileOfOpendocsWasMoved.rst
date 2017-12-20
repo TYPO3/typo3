@@ -31,3 +31,6 @@ Migration
 =========
 
 Use :file:`Resources/Private/Language/locallang.xlf`, if required.
+
+
+.. index:: PHP-API, Backend, ext:opendocs

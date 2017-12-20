@@ -83,4 +83,4 @@ After:
       ...
    </f:for>
 
-.. index:: Fluid, Frontend
+.. index:: Fluid, Frontend, ext:fluid_styled_content

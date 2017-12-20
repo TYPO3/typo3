@@ -15,4 +15,4 @@ available via the ClickMenu as it is formally superseded by the Workspaces Backe
 
 All related PHP classes and template files have been moved as well.
 
-.. index:: PHP-API, Backend
+.. index:: PHP-API, Backend, ext:version

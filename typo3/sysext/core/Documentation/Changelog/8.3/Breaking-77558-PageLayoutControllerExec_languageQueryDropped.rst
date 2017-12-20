@@ -35,4 +35,4 @@ Migration
 
 Move away from those methods.
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

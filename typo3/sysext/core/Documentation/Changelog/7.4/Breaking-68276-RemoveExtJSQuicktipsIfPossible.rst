@@ -38,3 +38,6 @@ Example
 .. code-block:: html
 
 	<a href="#" data-toggle="tooltip" data-title="My very nice title">My Link</a>
+
+
+.. index:: JavaScript, Backend

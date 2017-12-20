@@ -35,3 +35,6 @@ Example:
 .. code-block:: php
 
 	GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($cacheEntryPathAndFilename);
+
+
+.. index:: PHP-API

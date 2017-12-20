@@ -30,3 +30,6 @@ Migration
 =========
 
 Remove the call to the removed property.
+
+
+.. index:: TSConfig, Backend

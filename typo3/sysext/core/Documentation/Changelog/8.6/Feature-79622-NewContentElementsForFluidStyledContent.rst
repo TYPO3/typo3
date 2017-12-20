@@ -29,4 +29,4 @@ The content elements Text, Text and Images, Images are now also available
 when Fluid Styled Content is used as content rendering definition.
 
 
-.. index:: Frontend
+.. index:: Frontend, ext:fluid_styled_content, TypoScript

@@ -29,3 +29,6 @@ With the `base` property it can be defined whether to use a base of 1000 or 1024
 Thus::
     bytes.labels = " | K| M| G"
     bytes.base = 1000
+
+
+.. index:: PHP-API, TypoScript

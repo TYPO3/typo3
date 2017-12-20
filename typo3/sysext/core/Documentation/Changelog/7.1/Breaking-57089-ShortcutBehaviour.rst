@@ -32,3 +32,6 @@ Migration
 =========
 
 Run the supplied upgrade wizard in the Install Tool if it shows up.
+
+
+.. index:: PHP-API, Backend

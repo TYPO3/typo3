@@ -12,4 +12,4 @@ Description
 When task groups are used, the tasks are displayed grouped in the list of tasks.
 Clicking on the row with the group title hides or shows the tasks of the group now.
 
-.. index:: Backend
+.. index:: Backend, ext:scheduler

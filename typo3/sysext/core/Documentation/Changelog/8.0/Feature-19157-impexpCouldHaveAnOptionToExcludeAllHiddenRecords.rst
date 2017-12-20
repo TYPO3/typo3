@@ -18,4 +18,4 @@ Furthermore, if the inclusion of hidden records is activated (which is
 now an explicit choice), then an additional button is shown, allowing
 users to preselect all hidden records for manual exclusion.
 
-.. index:: Backend
+.. index:: Backend, ext:impexp

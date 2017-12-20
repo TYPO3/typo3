@@ -13,4 +13,4 @@ Description
 The property visibility information has been added to `DebuggerUtility::var_dump()`
 for each object property in the dump.
 
-.. index:: PHP-API
+.. index:: PHP-API, ext:extbase

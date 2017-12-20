@@ -37,4 +37,4 @@ Do not use ExtJS styling or images anymore, as ExtJS will be removed from the co
 Other direct references to image(s) in EXT:t3skin should be migrated to have the image(s) in
 custom extension.
 
-.. index:: Backend, TCA
+.. index:: Backend, TCA, ext:t3skin

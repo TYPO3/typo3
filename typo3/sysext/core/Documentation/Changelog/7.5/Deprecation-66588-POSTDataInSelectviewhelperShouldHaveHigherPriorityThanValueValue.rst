@@ -38,3 +38,6 @@ explicitly if the ViewHelper might be bound to (sub)entities.
 The default usage of getValueAttribute() did not respect the submitted form data,
 because not every viewhelper needs this feature. But you can enable the usage of
 the form data by setting `AbstractFormFieldViewHelper::respectSubmittedDataValue` to TRUE.
+
+
+.. index:: Fluid, PHP-API

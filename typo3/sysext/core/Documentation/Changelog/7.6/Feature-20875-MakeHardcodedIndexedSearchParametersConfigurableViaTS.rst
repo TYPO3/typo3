@@ -33,3 +33,6 @@ Impact
 ======
 
 Default settings do not change old behaviour.
+
+
+.. index:: TypoScript, ext:indexed_search

@@ -31,3 +31,6 @@ Migration
 =========
 
 Use CSS instead.
+
+
+.. index:: TypoScript, Frontend

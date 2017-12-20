@@ -40,4 +40,4 @@ Example 2: with alternativeMarkup = inline
       });
    });
 
-.. index:: JavaScript
+.. index:: JavaScript, Backend

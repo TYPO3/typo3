@@ -25,3 +25,6 @@ Impact
 
 The automatic detection for mimeTypes works great, but in some special cases not.
 This new setting should only be used, if the automatic detection fails.
+
+
+.. index:: LocalConfiguration

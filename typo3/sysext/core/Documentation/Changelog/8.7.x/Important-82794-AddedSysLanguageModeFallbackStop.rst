@@ -28,4 +28,4 @@ It is now possible to define a special keyword called "pageNotFound" to not fall
 sys_language_uid=0 if any other fallbacks do not work - so a 404 error page is thrown.
 `config.sys_language_mode = content_fallback;3,2,pageNotFound`
 
-.. index:: TypoScript
+.. index:: TypoScript, Frontend

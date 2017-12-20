@@ -30,3 +30,6 @@ Migration
 
 Replace all calls to :code:`\TYPO3\CMS\Core\DataHandling\DataHandler::getUniqueFields()`
 with calls to :code:`\TYPO3\CMS\Version\Hook\DataHandlerHook::getUniqueFields()`
+
+
+.. index:: PHP-API, Backend, ext:workspaces

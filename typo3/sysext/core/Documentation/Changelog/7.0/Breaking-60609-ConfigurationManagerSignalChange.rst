@@ -30,3 +30,6 @@ Migration
 =========
 
 Rewrite the listening function to use the extension key as first parameter.
+
+
+.. index:: PHP-API, Backend, ext:extensionmanager

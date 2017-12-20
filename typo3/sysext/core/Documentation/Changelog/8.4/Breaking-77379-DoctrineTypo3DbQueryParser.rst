@@ -35,4 +35,4 @@ Migration
 
 Switch to Doctrine DBAL and `Typo3DbQueryParser->convertQueryToDoctrineQueryBuilder()` which results in the same behaviour.
 
-.. index:: PHP-API
+.. index:: PHP-API, Database

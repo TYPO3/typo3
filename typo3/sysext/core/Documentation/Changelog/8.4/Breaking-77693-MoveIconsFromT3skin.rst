@@ -44,4 +44,4 @@ Migration
 
 No migration
 
-.. index:: Backend
+.. index:: Backend, ext:t3skin

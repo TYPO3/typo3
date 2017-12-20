@@ -41,4 +41,4 @@ Migration
 
 Use the new CLI command as shown above.
 
-.. index:: CLI
+.. index:: CLI, FlexForm, ext:lowlevel

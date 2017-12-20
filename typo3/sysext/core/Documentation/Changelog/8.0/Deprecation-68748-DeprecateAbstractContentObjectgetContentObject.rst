@@ -31,4 +31,4 @@ Migration
 
 Replace calls to `getContentObject()` with `getContentObjectRenderer()`.
 
-.. index:: PHP-API
+.. index:: PHP-API, Frontend

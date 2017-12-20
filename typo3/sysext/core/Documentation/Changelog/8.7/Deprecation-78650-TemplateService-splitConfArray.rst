@@ -33,4 +33,4 @@ Migration
 
 Use the new method :php:`TypoScriptService->explodeConfigurationForOptionSplit` instead.
 
-.. index:: PHP-API, TypoScript
+.. index:: PHP-API, TypoScript, Frontend

@@ -27,3 +27,6 @@ Migration
 =========
 
 Remove any usage of the removed field in 3rd party extensions.
+
+
+.. index:: Database, Backend, ext:workspaces

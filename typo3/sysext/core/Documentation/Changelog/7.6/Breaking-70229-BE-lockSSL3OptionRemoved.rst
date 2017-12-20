@@ -33,3 +33,6 @@ Migration
 
 It is recommended to set the `$TYPO3_CONF_VARS[BE][lockSSL]` option to 1 or 2, depending on the environment and the
 possibilities of having SSL available.
+
+
+.. index:: LocalConfiguration, Backend

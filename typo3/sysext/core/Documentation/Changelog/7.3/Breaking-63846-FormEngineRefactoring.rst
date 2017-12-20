@@ -86,3 +86,6 @@ Migration
 
 Adapt the extension code. The majority of methods were for internal core usage only, but still public. Please
 use the existing API to solve needs on FormEngine.
+
+
+.. index:: PHP-API, Backend, TSConfig, TCA

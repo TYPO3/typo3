@@ -30,3 +30,6 @@ Migration
 =========
 
 Remove the call to the method and replace the message with a FlashMessage.
+
+
+.. index:: PHP-API, Backend

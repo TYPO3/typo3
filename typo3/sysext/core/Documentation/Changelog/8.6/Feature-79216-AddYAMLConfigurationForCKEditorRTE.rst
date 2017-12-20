@@ -47,4 +47,4 @@ The YAML format thus states three important parts considered by the RTE configur
    from the ckeditor configuration specifications (see http://docs.ckeditor.com/#!/api/CKEDITOR.config
    for all options).
 
-.. index:: LocalConfiguration, RTE
+.. index:: LocalConfiguration, RTE, TSConfig

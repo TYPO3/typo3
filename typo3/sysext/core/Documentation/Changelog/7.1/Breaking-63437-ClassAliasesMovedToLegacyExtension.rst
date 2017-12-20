@@ -45,3 +45,6 @@ EXT:compatibility6, or to unload further extensions that rely on old class names
 Another option is to manually set all extensions that rely on old class names to "inactive"
 in typo3conf/PackageStates.php, or to set EXT:compatibility6 to "active". If a manual change is
 done, typo3temp/Cache directory have to be flushed afterwards.
+
+
+.. index:: PHP-API

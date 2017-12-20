@@ -49,3 +49,6 @@ How to use the `Session` class to retrieve objects by an identifier:
 	if ($session->hasIdentifier($identifier)) {
 		$object = $session->getObjectByIdentifier($identifier, $className);
 	}
+
+
+.. index:: PHP-API, ext:extbase

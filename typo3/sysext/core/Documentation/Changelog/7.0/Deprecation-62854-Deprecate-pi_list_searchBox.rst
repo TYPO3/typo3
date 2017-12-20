@@ -24,3 +24,6 @@ Affected installations
 ======================
 
 Any extension still using this method needs to be adapted.
+
+
+.. index:: PHP-API, Frontend

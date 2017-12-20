@@ -36,4 +36,4 @@ Migration
 If the workspace title is necessary, a separate SQL call should be done right after
 :php:`whichWorkspace()` is called in the extensions' PHP code.
 
-.. index:: Frontend, PHP-API
+.. index:: Frontend, PHP-API, ext:workspaces

@@ -22,3 +22,6 @@ http://www.php.net/manual/en/datetime.formats.relative.php
 	<f:format.date format="Y" base="{dateObject}">-1 year</f:format.date>
 
 This will result in the output `2016` assuming the `dateObject` is some date in 2017.
+
+
+.. index:: Fluid

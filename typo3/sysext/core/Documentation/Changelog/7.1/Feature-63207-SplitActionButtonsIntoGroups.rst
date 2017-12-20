@@ -39,3 +39,6 @@ Migration
 	$cells['secondary']['edit'] = '<a class="btn btn-default"><span class="t3-icon fa fa-trash"></span></a>';`
 
 Icons, that are not added into a section, will be sorted into the secondary group.
+
+
+.. index:: PHP-API, Backend

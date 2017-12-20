@@ -48,3 +48,6 @@ The `DependencyOrderingService` class also detects cycles in the dependencies an
 conflicting dependencies have been defined.
 
 In case the initial list does not specify a dependency for an item, those items will be put last in the final sorted list.
+
+
+.. index:: PHP-API

@@ -70,3 +70,6 @@ Migration
 An automatic migration is in place and logged to `typo3conf/deprecation_*`. The migration code
 will be dropped with TYPO3 CMS 8, a manual fix of the according `showitem` field is required,
 the deprecation log gives detailed information on how the definition should look like.
+
+
+.. index:: TCA, Backend

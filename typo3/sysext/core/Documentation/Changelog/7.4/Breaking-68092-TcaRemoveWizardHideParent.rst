@@ -52,3 +52,6 @@ Migration
 Wizards can not trigger that a main field is not rendered anymore. If this kind of functionality
 is needed, it is recommended to register an own `renderType` in the `NodeFactory` for this
 type of field instead to route the element rendering to an own class.
+
+
+.. index:: TCA, Backend

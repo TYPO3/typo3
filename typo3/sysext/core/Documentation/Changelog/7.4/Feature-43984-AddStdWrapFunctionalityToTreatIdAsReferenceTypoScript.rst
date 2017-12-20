@@ -12,3 +12,6 @@ Description
 
 The new TypoScript property "treatIdAsReference" for the getImgResource object
 can now be used with stdWrap properties.
+
+
+.. index:: Frontend, TypoScript

@@ -36,3 +36,6 @@ To fix this problem you need to add the module name in $this->MCONF.
 			'name' => $this->moduleName
 		);
 	}
+
+
+.. index:: PHP-API, Backend

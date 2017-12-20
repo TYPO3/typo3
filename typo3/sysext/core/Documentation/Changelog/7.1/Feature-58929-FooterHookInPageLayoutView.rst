@@ -11,3 +11,6 @@ Description
 ===========
 
 A hook has been added to the PageLayoutView to manipulate the rendering of the footer of a content element.
+
+
+.. index:: PHP-API, Backend

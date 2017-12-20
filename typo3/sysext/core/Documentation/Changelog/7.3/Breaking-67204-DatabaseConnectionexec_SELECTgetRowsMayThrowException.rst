@@ -35,3 +35,6 @@ Migration
 =========
 
 Fix your call to the method and correct the `$uidIndexField` parameter.
+
+
+.. index:: PHP-API, Database

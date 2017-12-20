@@ -63,4 +63,4 @@ EXT:my_site/Classes/Hooks/TypoScriptHook.php
       }
    }
 
-.. index:: PHP-API, TypoScript
+.. index:: PHP-API, TypoScript, Frontend

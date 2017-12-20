@@ -29,3 +29,6 @@ Migration
 
 Replace all calls to the method to the `LocalImageProcessor` with an instantiation of `GraphicalFunctions` and a call
 to `getTemporaryImageWithText()` on the `GraphicalFunctions` object.
+
+
+.. index:: PHP-API

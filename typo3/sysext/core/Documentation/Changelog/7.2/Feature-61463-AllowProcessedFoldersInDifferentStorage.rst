@@ -21,3 +21,6 @@ Impact
 For existing systems there is no impact. When the processing folder is changed
 to a folder in a different storage you need to make sure the folder exists
 and is writable.
+
+
+.. index:: FAL, Database, Backend

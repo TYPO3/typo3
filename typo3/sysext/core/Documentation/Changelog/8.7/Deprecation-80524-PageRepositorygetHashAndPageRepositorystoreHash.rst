@@ -31,4 +31,4 @@ Migration
 Use the Caching Framework directly. Simply spoken, the code that still exists in the functions,
 can simply be copied into the third-party extensions' code.
 
-.. index:: PHP-API
+.. index:: PHP-API, Frontend

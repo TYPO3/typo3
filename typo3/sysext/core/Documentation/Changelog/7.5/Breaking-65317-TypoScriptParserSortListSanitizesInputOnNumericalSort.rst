@@ -31,3 +31,6 @@ Migration
 =========
 
 Either remove the non-numerical values from the list or change the sort order to be non-numerical (ascending / descending).
+
+
+.. index:: TypoScript, Frontend

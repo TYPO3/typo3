@@ -43,3 +43,5 @@ Migration
 * Use the CSS class *text-danger* instead of the method :code:`rfw()`
 * Use HTML bootstrap classes, localStorage etc. instead of :code:`collapseableSection()`
 
+
+.. index:: PHP-API, Backend

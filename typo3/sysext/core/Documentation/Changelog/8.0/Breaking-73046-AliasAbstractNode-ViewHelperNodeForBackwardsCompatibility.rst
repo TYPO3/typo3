@@ -42,4 +42,4 @@ Migration
 
 Change any reference to classes in `TYPO3\CMS\Fluid\Core\TemplateParser` to `TYPO3Fluid\Fluid\Core\TemplateParser`.
 
-.. index:: PHP-API
+.. index:: PHP-API, Fluid

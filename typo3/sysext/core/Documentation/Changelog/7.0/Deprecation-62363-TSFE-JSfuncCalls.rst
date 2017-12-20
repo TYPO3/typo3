@@ -34,3 +34,6 @@ Migration
 
 Every call of a 3rd party extension to the mentioned method must be changed to use their own
 JS function registration.
+
+
+.. index:: JavaScript, TypoScript, Frontend

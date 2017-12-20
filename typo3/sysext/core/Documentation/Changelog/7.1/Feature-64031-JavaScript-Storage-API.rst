@@ -50,3 +50,6 @@ Storing / Updating data in the storage works like this, and can contain any data
 	top.TYPO3.Storage.Persistent.set('startModule', 'web_info');
 
 The same is possible for browserStorage using top.TYPO3.Storage.Client.
+
+
+.. index:: JavaScript, Backend

@@ -30,3 +30,6 @@ Migration
 =========
 
 Change the `$fileUtility->dontCheckForUnique = TRUE` to `$fileUtility->setExistingFileConflictMode(DuplicationBehavior::REPLACE)`.
+
+
+.. index:: PHP-API, FAL

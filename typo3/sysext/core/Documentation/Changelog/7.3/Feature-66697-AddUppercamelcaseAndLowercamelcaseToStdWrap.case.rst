@@ -37,3 +37,6 @@ To make it possible to change a value from underscored to "UpperCamelCase" or "l
 			file.wrap = EXT:site_base/Resources/Private/Templates/|.html
 		}
 	}
+
+
+.. index:: TypoScript, Frontend

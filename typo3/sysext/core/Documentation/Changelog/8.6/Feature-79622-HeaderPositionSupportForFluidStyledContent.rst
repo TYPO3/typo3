@@ -80,4 +80,4 @@ Impact
 Header positions are now available to all editors by default.
 
 
-.. index:: Fluid, Frontend
+.. index:: Fluid, Frontend, ext:fluid_styled_content, TypoScript

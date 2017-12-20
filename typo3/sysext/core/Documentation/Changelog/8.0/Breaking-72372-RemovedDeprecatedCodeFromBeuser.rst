@@ -34,4 +34,4 @@ Migration
 
 Migrate your code that calls one of the methods to Fluid templates.
 
-.. index:: PHP-API
+.. index:: PHP-API, ext:beuser, Backend

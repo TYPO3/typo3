@@ -37,4 +37,4 @@ expected return types are. The interfaces must of course be implemented by class
 these configuration sections. Due to their global nature you should be very careful to implement the classes and in
 particular observe the return types.
 
-.. index:: Fluid
+.. index:: Fluid, LocalConfiguration

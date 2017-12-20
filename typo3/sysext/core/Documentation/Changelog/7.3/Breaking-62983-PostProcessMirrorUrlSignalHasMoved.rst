@@ -45,3 +45,6 @@ signal. If it is required to serve multiple TYPO3 versions, use the following co
 		'Vendor\\Extension\\Slots\\CustomMirror',
 		'postProcessMirrorUrl'
 	);
+
+
+.. index:: PHP-API, Backend, ext:lang

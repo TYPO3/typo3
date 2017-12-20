@@ -31,4 +31,4 @@ Migration
 Make sure to include the static TypoScript "Form" in your (root) template record. Same procedure as with static includes
 of fluid_styled_content or css_styled_content.
 
-.. index:: ext:form, TypoScript
+.. index:: ext:form, TypoScript, Frontend

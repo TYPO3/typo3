@@ -29,3 +29,6 @@ Migration
 =========
 
 Remove all references to the file.
+
+
+.. index:: JavaScript, Backend

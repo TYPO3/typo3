@@ -33,4 +33,4 @@ Migration
 
 Remove any direct calls to the PHP class and use the provided APIs via CLI instead.
 
-.. index:: CLI
+.. index:: CLI, ext:scheduler

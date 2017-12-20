@@ -41,3 +41,6 @@ Migration
 =========
 
 No replacement for the mentioned methods is provided. Consider migrating your eID scripts to the new PSR-7 compliant model.
+
+
+.. index:: PHP-API, Frontend, Backend

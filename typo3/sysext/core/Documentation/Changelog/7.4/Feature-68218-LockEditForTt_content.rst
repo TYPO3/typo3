@@ -19,3 +19,6 @@ Impact
 
 This is useful to generally allow editors to edit content but be able to assure that important elements like the
 imprint or specific plugins are not changed.
+
+
+.. index:: Backend

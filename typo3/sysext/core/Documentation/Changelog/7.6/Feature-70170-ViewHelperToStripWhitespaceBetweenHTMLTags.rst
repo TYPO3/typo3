@@ -32,3 +32,6 @@ Heavily inspired by Twig's corresponding node type.
 
 	text</div></div></div>
 	</output>
+
+
+.. index:: Fluid

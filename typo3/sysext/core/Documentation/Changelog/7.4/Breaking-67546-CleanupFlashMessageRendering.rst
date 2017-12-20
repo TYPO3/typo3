@@ -37,3 +37,6 @@ Migration
 =========
 
 Remove all HTML from flash messages.
+
+
+.. index:: PHP-API, Backend

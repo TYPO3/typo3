@@ -32,3 +32,5 @@ Migration
 
 Replace `mod.tx_linkvalidator` with `mod.linkvalidator` in all affected scheduler tasks.
 
+
+.. index:: TSConfig, ext:linkvalidator, ext:scheduler

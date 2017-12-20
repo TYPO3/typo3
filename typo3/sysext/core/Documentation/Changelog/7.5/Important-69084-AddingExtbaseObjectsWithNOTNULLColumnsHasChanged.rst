@@ -34,12 +34,13 @@ Example model definition:
 .. code-block:: php
 
 	class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
-
 		/**
 		 * The blog's title.
 		 *
 		 * @var string
 		 */
 		protected $title = '';
-
 	}
+
+
+.. index:: Database, ext:extbase

@@ -36,4 +36,4 @@ needs to be extended to also include "class" and "align" as values, which is don
 If an installation has custom TSconfig settings using :ts:`keepPDIVattribs`, the two attributes need to be added
 accordingly to still allow class and align attributes to be kept when transforming from the RTE to the database.
 
-.. index:: TSConfig, RTE
+.. index:: TSConfig, RTE, Backend

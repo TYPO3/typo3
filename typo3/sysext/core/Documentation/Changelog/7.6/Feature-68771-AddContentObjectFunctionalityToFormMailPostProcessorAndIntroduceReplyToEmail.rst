@@ -44,3 +44,6 @@ In the mail postProcessor configuration you could do something like this
 		htmlSpecialChars = 1
 		noTrimWrap = |Mail from Form: ||
 	}
+
+
+.. index:: TypoScript, ext:form

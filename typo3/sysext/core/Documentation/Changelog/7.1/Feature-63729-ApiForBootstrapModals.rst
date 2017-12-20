@@ -114,3 +114,6 @@ A modal triggered on an anchor element:
 .. code-block:: html
 
 	<a href="delete.php" class="t3js-modal-trigger" data-title="Delete" data-content="Really delete?">delete</a>
+
+
+.. index:: PHP-API, JavaScript, Backend

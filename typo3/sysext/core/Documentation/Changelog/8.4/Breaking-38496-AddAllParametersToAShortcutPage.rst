@@ -48,4 +48,4 @@ Migration
 
 There is no migration available.
 
-.. index:: Frontend
+.. index:: Frontend, TypoScript

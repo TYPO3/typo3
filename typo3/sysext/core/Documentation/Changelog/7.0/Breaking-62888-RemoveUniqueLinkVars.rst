@@ -18,3 +18,6 @@ Migration
 =========
 
 Remove the setting :code:`config.uniqueLinkVars` from the TypoScript.
+
+
+.. index:: TypoScript, Frontend

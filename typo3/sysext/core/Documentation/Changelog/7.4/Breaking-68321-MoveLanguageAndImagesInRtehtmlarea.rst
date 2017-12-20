@@ -29,3 +29,6 @@ Migration
 =========
 
 Adjust the path to language and image files according the sample TypoScript files provided by the extension.
+
+
+.. index:: PHP-API, TypoScript, RTE

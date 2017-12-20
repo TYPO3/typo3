@@ -30,4 +30,4 @@ Migration
 
 There is no migration available, the obsolete configuration can be removed.
 
-.. index:: RTE, TSConfig
+.. index:: RTE, TSConfig, Backend

@@ -30,4 +30,4 @@ Migration
 
 Remove the call to the method and directly use :php:`htmlspecialchars()` instead.
 
-.. index:: PHP-API
+.. index:: PHP-API, ext:lowlevel

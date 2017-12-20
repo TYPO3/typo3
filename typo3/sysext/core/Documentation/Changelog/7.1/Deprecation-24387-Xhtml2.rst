@@ -24,3 +24,6 @@ Migration
 =========
 
 Use other doctypes like html5 to render the frontend of the TYPO3 site.
+
+
+.. index:: TypoScript, Frontend

@@ -15,4 +15,4 @@ a new option TYPO3_CONF_VARS is introduced.
 The option :php:`FE|pageNotFound_handling_accessdeniedheader` allows to configure the
 header which defaults to :php:`HTTP/1.0 403 Access denied`.
 
-.. index:: Frontend, LocalConfiguration
+.. index:: Frontend, LocalConfiguration, NotScanned

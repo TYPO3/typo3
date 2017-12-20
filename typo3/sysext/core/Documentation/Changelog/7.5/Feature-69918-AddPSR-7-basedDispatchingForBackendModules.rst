@@ -39,3 +39,6 @@ be called when rendering the module:
 			),
 		)
 	);
+
+
+.. index:: PHP-API, Backend

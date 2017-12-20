@@ -52,4 +52,4 @@ Use the TER extension `jumpurl` to implement the jumpurl functionality.
 
 Use the `config.additionalHeaders` subproperties (see https://docs.typo3.org/typo3cms/TyposcriptReference/Setup/Config/Index.html#additionalheaders for details) to add the additional header lines.
 
-.. index:: PHP-API, TypoScript, Frontend
+.. index:: PHP-API, TypoScript, Frontend, ext:jumpurl

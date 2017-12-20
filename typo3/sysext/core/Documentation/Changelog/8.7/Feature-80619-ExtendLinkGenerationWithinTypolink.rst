@@ -26,4 +26,4 @@ this functionality already, and it can be overridden.
 The functionality goes hand-in-hand with the LinkService registration functionality for setting
 links of a specific type.
 
-.. index:: Frontend, PHP-API
+.. index:: Frontend, PHP-API, LocalConfiguration

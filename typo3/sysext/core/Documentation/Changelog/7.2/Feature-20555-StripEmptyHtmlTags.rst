@@ -65,3 +65,4 @@ impact to existing systems (unless they already have used the stripEmptyTags set
 for whatever reason).
 
 
+.. index:: PHP-API, RTE, TypoScript, TSConfig, Backend, Frontend

@@ -31,3 +31,6 @@ Migration
 =========
 
 Ensure the intended mode is passed in via the `mode` GET-parameter and call the new `ElementBrowser::render` method.
+
+
+.. index:: PHP-API, Backend

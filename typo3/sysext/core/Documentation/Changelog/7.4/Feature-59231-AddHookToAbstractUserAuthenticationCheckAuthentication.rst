@@ -19,3 +19,6 @@ Register like this:
 .. code-block:: php
 
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'][] = 'My\\Package\\HookClass->hookMethod';
+
+
+.. index:: PHP-API, Backend

@@ -20,3 +20,6 @@ Migration
 =========
 
 Remove the TSconfig option `mod.wizards.newContentElement.renderMode` from any configuration settings.
+
+
+.. index:: TSConfig, Backend

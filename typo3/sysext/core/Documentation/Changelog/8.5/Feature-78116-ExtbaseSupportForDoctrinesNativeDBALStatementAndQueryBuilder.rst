@@ -38,4 +38,4 @@ The following example shows the usage with the QueryBuilder object:
    $query = $this->createQuery();
    $query->statement($queryBuilder);
 
-.. index:: Database, PHP-API
+.. index:: Database, PHP-API, ext:extbase

@@ -35,3 +35,6 @@ Migration
 =========
 
 Remove usage of these methods from custom extensions.
+
+
+.. index:: PHP-API

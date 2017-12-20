@@ -33,4 +33,4 @@ Migration
 
 No migration possible, remove the method call.
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

@@ -31,3 +31,6 @@ Migration
 =========
 
 Create directory `typo3/ext` before moving extensions into this folder.
+
+
+.. index:: PHP-API

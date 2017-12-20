@@ -15,8 +15,8 @@ For TYPO3 CMS 7.1, the following TypoScript lines have been removed without subs
 
 .. code-block:: typoscript
 
-lib.parseFunc_RTE.externalBlocks.blockquote.callRecursive.tagStdWrap.HTMLparser = 1
-lib.parseFunc_RTE.externalBlocks.blockquote.callRecursive.tagStdWrap.HTMLparser.tags.blockquote.overrideAttribs = style="margin-bottom:0;margin-top:0;"
+    lib.parseFunc_RTE.externalBlocks.blockquote.callRecursive.tagStdWrap.HTMLparser = 1
+    lib.parseFunc_RTE.externalBlocks.blockquote.callRecursive.tagStdWrap.HTMLparser.tags.blockquote.overrideAttribs = style="margin-bottom:0;margin-top:0;"
 
 The effect is that the following inline styles have been removed from blockquote tags without substitution:
 
@@ -42,3 +42,6 @@ Migration
 
 It is recommended to fix the margins inside your website CSS. Alternatively, you can re-add the above TypoScript lines
 to your website TypoScript template (not recommended).
+
+
+.. index:: TypoScript, Frontend, ext:css_styled_content

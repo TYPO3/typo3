@@ -32,3 +32,6 @@ Each method that is registered will receive both the Request object and the
 Response object which can be manipulated for output.
 
 The fixed `ControllerInterface` is not needed anymore and will be removed.
+
+
+.. index:: PHP-API, Backend

@@ -33,3 +33,6 @@ Affected installations
 
 All installations making use of `storage_pid` within the pages database table as well as installations using
 the Frontend Login plugin without having the storagePid option set.
+
+
+.. index:: PHP-API, Database, TypoScript, Frontend

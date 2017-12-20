@@ -30,3 +30,6 @@ Migration
 =========
 
 Use `ModuleTemplate::getDynamicTabMenu()` instead of `DocumentTemplate::getDynTabMenu()`
+
+
+.. index:: PHP-API, Backend

@@ -29,4 +29,4 @@ it to be called as `getArray()` enables:
 
 	{myObject.objectstorageproperty.array.4} in Fluid (including {myObject.objectstorageproperty.array.{dynamicIndex}} in v8)
 
-.. index:: Fluid
+.. index:: Fluid, PHP-API

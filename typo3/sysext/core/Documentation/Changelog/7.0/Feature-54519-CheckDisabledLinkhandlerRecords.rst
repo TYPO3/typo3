@@ -28,3 +28,6 @@ Impact
 The `\TYPO3\CMS\Linkvalidator\Linktype::checkLink()` method has been restructured
 and will now determine if the linked record is deleted or hidden and report
 a error depending on the `reportHiddenRecords` configuration.
+
+
+.. index:: PHP-API, Backend, ext:linkvalidator

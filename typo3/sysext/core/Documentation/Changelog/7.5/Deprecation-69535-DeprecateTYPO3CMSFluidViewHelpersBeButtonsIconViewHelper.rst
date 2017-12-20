@@ -16,13 +16,13 @@ Description
 Impact
 ======
 
-The viewhelper should not be used any longer and will be removed with TYPO3 CMS 8.
+The view helper should not be used any longer and will be removed with TYPO3 CMS 8.
 
 
 Affected Installations
 ======================
 
-Extensions which use the viewhelper.
+Extensions which use the view helper.
 
 
 Migration
@@ -31,3 +31,6 @@ Migration
 Use the core icon viewhelper `\TYPO3\CMS\Core\ViewHelpers\IconViewHelper` instead.
 
 Example: Instead of `<f:be.buttons.icon icon="apps-pagetree-collapse" />` use `<core:icon identifier="apps-pagetree-collapse" />`
+
+
+.. index:: PHP-API, Fluid, Backend

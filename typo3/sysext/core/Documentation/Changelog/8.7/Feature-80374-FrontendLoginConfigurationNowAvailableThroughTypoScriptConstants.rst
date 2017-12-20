@@ -113,4 +113,4 @@ Frontend Login configuration is now always added first and not depending anymore
 and not depending anymore on the configuration of the TypoScript template.
 This allows reliable configuration since the configuration is not a moving target.
 
-.. index:: TypoScript
+.. index:: TypoScript, Frontend

@@ -56,3 +56,6 @@ Example
 .. code-block:: php
 
 	$resourceStorage->copyFile($file, $targetFolder, 'target-file-name', DuplicationBehavior::RENAME);
+
+
+.. index:: FAL, PHP-API, Backend

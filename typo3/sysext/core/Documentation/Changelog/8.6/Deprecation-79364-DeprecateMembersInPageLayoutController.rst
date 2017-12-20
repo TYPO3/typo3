@@ -9,7 +9,8 @@ See :issue:`79364`
 Description
 ===========
 
-Deprecate the members :php:`\TYPO3\CMS\Backend\Controller\PageLayoutController::edit_record` and :php:`\TYPO3\CMS\Backend\Controller\PageLayoutController::new_unique_uid`.
+Deprecate the members :php:`\TYPO3\CMS\Backend\Controller\PageLayoutController::edit_record`
+and :php:`\TYPO3\CMS\Backend\Controller\PageLayoutController::new_unique_uid`.
 
 
 Impact
@@ -21,6 +22,7 @@ Installation of EXT:compatibility7 is required to continue using this members un
 Affected Installations
 ======================
 
-Any installation using the mentioned members :php:`\TYPO3\CMS\Backend\Controller\PageLayoutController::edit_record` and :php:`\TYPO3\CMS\Backend\Controller\PageLayoutController::new_unique_uid`.
+Any installation using the mentioned members :php:`\TYPO3\CMS\Backend\Controller\PageLayoutController::edit_record`
+and :php:`\TYPO3\CMS\Backend\Controller\PageLayoutController::new_unique_uid`.
 
-.. index:: PHP-API
+.. index:: PHP-API, Backend

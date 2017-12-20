@@ -29,3 +29,6 @@ Migration
 =========
 
 No migration possible for the callback method.
+
+
+.. index:: PHP-API

@@ -26,11 +26,11 @@ Instances that still use a configuration in `LocalConfiguration.php` or `Additio
 
 .. code-block:: php
 
-'SYS' => [
-	'caching' => [
-		'cacheConfigurations' => [
-			'aCache' => [
-				'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\XcacheBackend',
+    'SYS' => [
+        'caching' => [
+            'cacheConfigurations' => [
+                'aCache' => [
+                    'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\XcacheBackend',
 
 
 Migration

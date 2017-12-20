@@ -41,4 +41,4 @@ Migration
 
 Remove the usages to these methods, and use the strings directly.
 
-.. index:: PHP-API
+.. index:: PHP-API, ext:recycler

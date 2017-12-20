@@ -24,4 +24,4 @@ Migration
 
 Use :javascript:`top.TYPO3.Notification.*` to create flash messages within JavaScript for the TYPO3 backend.
 
-.. index:: JavaScript
+.. index:: JavaScript, Backend

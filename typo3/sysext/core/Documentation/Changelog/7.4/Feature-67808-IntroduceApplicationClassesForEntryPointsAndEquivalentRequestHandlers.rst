@@ -42,3 +42,6 @@ with the cliKey syntax. The typical CliRequestHandler is used for handling reque
 -----------------------------------
 The install tool Application only runs with a very limited bootstrap set up with a Failsafe Package Manager not taking
 the ext_localconf.php scripts of installed extensions into account.
+
+
+.. index:: PHP-API

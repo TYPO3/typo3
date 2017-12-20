@@ -44,3 +44,6 @@ Migration
 =========
 
 Use the introduced Fluid view to adapt the login screen to your demands.
+
+
+.. index:: PHP-API, Backend

@@ -25,3 +25,6 @@ Impact
 Generic data attributes do not need to be passed by the
 `additionalAttributes` array anymore making the viewhelper
 more straightforward to use.
+
+
+.. index:: Fluid

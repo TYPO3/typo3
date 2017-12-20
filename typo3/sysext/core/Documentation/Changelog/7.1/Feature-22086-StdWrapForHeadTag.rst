@@ -23,3 +23,6 @@ The new option can be set like this:
 	  isInList.field = uid
 	  value = 24
 	}
+
+
+.. index:: TypoScript, Frontend

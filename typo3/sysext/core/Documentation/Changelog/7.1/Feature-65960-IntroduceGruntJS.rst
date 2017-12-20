@@ -45,3 +45,6 @@ Watching Less files:
 .. code-block:: bash
 
 	grunt watch
+
+
+.. index:: JavaScript

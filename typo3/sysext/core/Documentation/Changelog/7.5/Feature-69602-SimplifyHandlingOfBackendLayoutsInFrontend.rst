@@ -41,3 +41,6 @@ Using  `data = pagelayout` is the same as using as
 	field = backend_layout
 	ifEmpty.data = levelfield:-2,backend_layout_next_level,slide
 	ifEmpty.ifEmpty = default
+
+
+.. index:: TypoScript, Frontend

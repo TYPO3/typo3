@@ -19,3 +19,6 @@ allow for a more specific database query based on any page properties.
 	lib.authormenu.1 = TMENU
 	lib.authormenu.1.additionalWhere = AND author!=""
 	...
+
+
+.. index:: TypoScript, Frontend

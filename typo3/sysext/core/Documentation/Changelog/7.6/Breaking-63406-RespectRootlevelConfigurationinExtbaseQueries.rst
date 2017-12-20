@@ -39,3 +39,6 @@ Migration
 
 Set `plugin.tx_myext.persistence.storagePid` to the page ids you want to find records from. 0 does not need to be included as
 it is added to the statement automatically.
+
+
+.. index:: TCA, TypoScript, ext:extbase

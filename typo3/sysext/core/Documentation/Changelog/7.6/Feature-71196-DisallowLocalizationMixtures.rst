@@ -24,3 +24,6 @@ Impact
 
 Upon setting `mod.web_layout.allowInconsistentLanguageHandling` to `1` the page module will behave
 as before and allow inconsistent mixups of languages in a certain language.
+
+
+.. index:: TSConfig, Backend

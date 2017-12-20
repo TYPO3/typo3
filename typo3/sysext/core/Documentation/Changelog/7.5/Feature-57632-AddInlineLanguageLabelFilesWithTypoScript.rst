@@ -41,3 +41,6 @@ Output in the HTML head:
 
 	var TYPO3 = TYPO3 || {};
 	TYPO3.lang = {"firstLabel":[{"source":"first Label","target":"erstes Label"}],"secondLabel":[{"source":"second Label","target":"zweites Label"}]};
+
+
+.. index:: TypoScript, JavaScript, Frontend

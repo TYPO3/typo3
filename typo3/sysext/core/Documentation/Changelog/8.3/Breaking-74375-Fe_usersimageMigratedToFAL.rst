@@ -41,4 +41,4 @@ for frontend users.
 Use the migration wizard provided in the install tool to migrate existing data to
 proper file references.
 
-.. index:: Frontend, Database
+.. index:: Frontend, Database, FAL

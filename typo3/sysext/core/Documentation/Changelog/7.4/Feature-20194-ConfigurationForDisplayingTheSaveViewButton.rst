@@ -19,3 +19,6 @@ Impact
 ======
 
 The "Save & View" button is no longer displayed in folders and recycler pages.
+
+
+.. index:: TSConfig, Backend

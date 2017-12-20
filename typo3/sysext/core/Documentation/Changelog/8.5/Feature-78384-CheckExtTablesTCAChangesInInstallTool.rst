@@ -18,4 +18,4 @@ Impact
 Changing the global `TCA` array in :file:`ext_tables.php` is not allowed and can lead to failing or incomplete frontend requests.
 The feature helps to find affected, loaded extensions.
 
-.. index:: TCA, ext:install
+.. index:: TCA, Backend

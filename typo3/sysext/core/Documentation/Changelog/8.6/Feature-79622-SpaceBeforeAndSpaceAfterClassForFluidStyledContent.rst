@@ -89,4 +89,4 @@ Impact
 
 SpaceBefore and SpaceAfter is now available to all Fluid Styled Content elements.
 
-.. index:: Fluid, Frontend
+.. index:: Fluid, Frontend, ext:fluid_styled_content, TypoScript

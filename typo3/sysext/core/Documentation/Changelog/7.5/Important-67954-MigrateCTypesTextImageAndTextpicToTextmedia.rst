@@ -36,3 +36,6 @@ Migration
 
 First un-install EXT:css_styled_content and install EXT:fluid_styled_content. After that an "Upgrade Wizard" will be
 available in the install tool to migrate all existing CE elements of type `text`, `image` or `textpic` to type `textmedia`.
+
+
+.. index:: ext:fluid_styled_content, ext:css_styled_content, Backend, Frontend

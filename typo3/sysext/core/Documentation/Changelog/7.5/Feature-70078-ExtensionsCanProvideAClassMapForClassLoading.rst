@@ -78,3 +78,6 @@ Impact
 
 Extensions that target TYPO3 6.2 LTS and 7 LTS can now provide a class map in ext_emconf.php which is only evaluated in
 TYPO3 7 LTS and an ext_autoload.php which is only evaluated in 6.2 LTS for maximum flexibility and compatibility.
+
+
+.. index:: PHP-API

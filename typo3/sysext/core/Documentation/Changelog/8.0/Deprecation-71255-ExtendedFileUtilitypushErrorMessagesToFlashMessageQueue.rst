@@ -30,4 +30,4 @@ Migration
 
 Implement the method by yourself.
 
-.. index:: PHP-API
+.. index:: PHP-API, FAL

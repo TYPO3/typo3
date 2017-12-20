@@ -56,3 +56,6 @@ Examples
 	Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(spinner) {
 		$toolbarItemIcon.replaceWith(spinner);
 	});
+
+
+.. index:: Backend, JavaScript

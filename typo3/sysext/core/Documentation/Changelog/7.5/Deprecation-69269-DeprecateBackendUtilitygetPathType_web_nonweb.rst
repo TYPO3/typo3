@@ -30,3 +30,6 @@ Migration
 =========
 
 Use path functions from `TYPO3\CMS\Core\Utility\PathUtility`.
+
+
+.. index:: PHP-API, Backend

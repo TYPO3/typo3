@@ -34,3 +34,6 @@ Custom implementations to determine the MIME type can be added with a hook. Regi
 .. code-block:: php
 
   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Type\File\FileInfo::class]['mimeTypeGuessers']
+
+
+.. index:: PHP-API, FAL

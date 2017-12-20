@@ -32,3 +32,6 @@ Use the PHP code below directly to fetch the information when needing baseURL an
 	GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))
 
 Alternatively, use `config.absRefPrefix` to achieve the same result.
+
+
+.. index:: TypoScript, Frontend

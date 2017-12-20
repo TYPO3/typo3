@@ -23,3 +23,6 @@ The existing option "includeNotInMenu" was not available yet for the `HMENU` wit
 	lib.browsemenu.special.excludeNoSearchPages = 1
 	lib.browsemenu.includeNotInMenu = 1
 	...
+
+
+.. index:: TypoScript, Frontend

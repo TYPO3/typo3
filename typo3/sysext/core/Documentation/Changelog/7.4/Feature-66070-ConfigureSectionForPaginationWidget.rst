@@ -30,3 +30,6 @@ Impact
 
 If the "section" attribute does not get specified or no configuration is supplied at all then no section parameter
 (#section) will get appended to the links and the pagination widget behaves as usual.
+
+
+.. index:: Fluid

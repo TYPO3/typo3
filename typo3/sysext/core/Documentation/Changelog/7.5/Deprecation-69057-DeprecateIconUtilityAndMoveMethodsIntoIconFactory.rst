@@ -45,3 +45,6 @@ Use the new `IconFactory` class instead of `IconUtility`.
 
 For content element wizard register your icon in `IconRegistry::registerIcon()` and use the new setting:
 `mod.wizards.newContentElement.wizardItems.*.elements.*.iconIdentifier`
+
+
+.. index:: TSConfig, PHP-API, Backend
