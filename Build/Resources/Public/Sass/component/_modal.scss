@@ -275,3 +275,19 @@ $modal-danger-border: $btn-danger-border;
         border-top: 1px solid #000;
     }
 }
+
+//
+// T3JS-Modal
+//
+.t3js-modal-footer {
+    .form-inline {
+        display: block;
+        margin: 1em 0;
+        width: 100%;
+    }
+
+    label {
+        margin-right: 10px;
+    }
+}
+
