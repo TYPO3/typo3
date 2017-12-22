@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Error;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -108,14 +109,17 @@ class ErrorHandler implements ErrorHandlerInterface
         switch ($errorLevel) {
             case E_USER_ERROR:
             case E_RECOVERABLE_ERROR:
+                // no $flashMessageSeverity, as there will be no flash message for errors
                 $severity = 2;
                 break;
             case E_USER_WARNING:
             case E_WARNING:
             case E_USER_DEPRECATED:
+                $flashMessageSeverity = FlashMessage::WARNING;
                 $severity = 1;
                 break;
             default:
+                $flashMessageSeverity = FlashMessage::NOTICE;
                 $severity = 0;
         }
         $logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
@@ -152,7 +156,7 @@ class ErrorHandler implements ErrorHandlerInterface
                         \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                         $message,
                         $errorLevels[$errorLevel],
-                        $severity
+                        $flashMessageSeverity
                     );
             /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
