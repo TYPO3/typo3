@@ -304,7 +304,7 @@ define(['jquery',
       }
       var $modalContent = $('<div/>').append(
         $('<p/>').text(TYPO3.lang['file_upload.existingfiles.description']),
-        $('<table/>', {class: 'table table-striped'}).append(
+        $('<table/>').append(
           $('<tr />').append(
             $('<th/>'),
             $('<th/>').text(TYPO3.lang['file_upload.header.originalFile']),
@@ -358,7 +358,7 @@ define(['jquery',
       $modal.find('.modal-dialog').addClass('modal-lg');
 
       $modal.find('.modal-footer').prepend(
-        $('<span/>').addClass('form-inline pull-left').append(
+        $('<span/>').addClass('form-inline').append(
           $('<label/>').text(TYPO3.lang['file_upload.actions.all.label']),
           $('<select/>', {class: 'form-control t3js-actions-all'}).append(
             $('<option/>').val('').text(TYPO3.lang['file_upload.actions.all.empty']),
