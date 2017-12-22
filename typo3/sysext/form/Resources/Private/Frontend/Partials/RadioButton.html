@@ -5,11 +5,12 @@
 		<div class="{element.properties.containerClassAttribute}">
 			<div id="{element.uniqueIdentifier}" class="inputs-list">
 				<div class="form-group">
-					<f:for each="{element.properties.options}" as="label" key="value">
+					<f:for each="{element.properties.options}" as="label" key="value" iteration="idIterator">
 						<div class="radio">
-							<label>
+							<label for="{element.uniqueIdentifier}-{idIterator.index}">
 								<f:form.radio
 									property="{element.identifier}"
+									id="{element.uniqueIdentifier}-{idIterator.index}"
 									class="{element.properties.elementClassAttribute} form-check-input"
 									value="{value}"
 									errorClass="{element.properties.elementErrorClassAttribute}"

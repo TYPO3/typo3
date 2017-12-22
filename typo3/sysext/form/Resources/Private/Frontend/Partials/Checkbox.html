@@ -2,7 +2,7 @@
 <formvh:renderRenderable renderable="{element}">
 	<f:render partial="Field/Field" arguments="{element: element, doNotShowLabel: 1}" contentAs="elementContent">
 		<div class="form-check">
-			<label class="{element.properties.elementClassAttribute} form-check-label">
+			<label class="{element.properties.elementClassAttribute} form-check-label" for="{element.uniqueIdentifier}">
 				<f:form.checkbox
 					property="{element.identifier}"
 					id="{element.uniqueIdentifier}"
