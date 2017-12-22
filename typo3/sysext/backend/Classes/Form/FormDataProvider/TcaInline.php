@@ -152,7 +152,20 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             // localized but miss default language record
             $fieldNameWithDefaultLanguageUid = $GLOBALS['TCA'][$childTableName]['ctrl']['transOrigPointerField'];
             foreach ($connectedUidsOfLocalizedOverlay as $localizedUid) {
-                $localizedRecord = $this->getRecordFromDatabase($childTableName, $localizedUid);
+                try {
+                    $localizedRecord = $this->getRecordFromDatabase($childTableName, $localizedUid);
+                } catch (DatabaseRecordException $e) {
+                    // The child could not be compiled, probably it was deleted and a dangling mm record exists
+                    $this->logger->warning(
+                        $e->getMessage(),
+                        [
+                            'table' => $childTableName,
+                            'uid' => $localizedUid,
+                            'exception' => $e
+                        ]
+                    );
+                    continue;
+                }
                 $uidOfDefaultLanguageRecord = $localizedRecord[$fieldNameWithDefaultLanguageUid];
                 if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord)) {
                     // This localized child has a default language record. Remove this record from list of default language records
@@ -166,7 +179,20 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 foreach ($connectedUidsOfDefaultLanguageRecord as $defaultLanguageUid) {
                     // If there are still uids in $connectedUidsOfDefaultLanguageRecord, these are records that
                     // exist in default language, but are not localized yet. Compile and mark those
-                    $compiledChild = $this->compileChild($result, $fieldName, $defaultLanguageUid);
+                    try {
+                        $compiledChild = $this->compileChild($result, $fieldName, $defaultLanguageUid);
+                    } catch (DatabaseRecordException $e) {
+                        // The child could not be compiled, probably it was deleted and a dangling mm record exists
+                        $this->logger->warning(
+                            $e->getMessage(),
+                            [
+                                'table' => $childTableName,
+                                'uid' => $localizedUid,
+                                'exception' => $e
+                            ]
+                        );
+                        continue;
+                    }
                     $compiledChild['isInlineDefaultLanguageRecordInLocalizedParentContext'] = true;
                     $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                 }
