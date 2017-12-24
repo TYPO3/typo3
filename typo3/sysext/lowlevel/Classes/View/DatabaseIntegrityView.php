@@ -374,7 +374,7 @@ class DatabaseIntegrityView extends BaseScriptClass
             ],
             'deleted_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', ['deleted' => 1], Icon::SIZE_SMALL)->render(),
-                'count' => count($admin->recStats['deleted']['pages'])
+                'count' => isset($admin->recStats['deleted']['pages']) ? count($admin->recStats['deleted']['pages']) : 0
             ]
         ];
 
@@ -416,7 +416,7 @@ class DatabaseIntegrityView extends BaseScriptClass
                 if ($t === 'pages' && $admin->lostPagesList !== '') {
                     $lostRecordCount = count(explode(',', $admin->lostPagesList));
                 } else {
-                    $lostRecordCount = count($admin->lRecords[$t]);
+                    $lostRecordCount = isset($admin->lRecords[$t]) ? count($admin->lRecords[$t]) : 0;
                 }
                 if ($countArr['all'][$t]) {
                     $theNumberOfRe = (int)$countArr['non_deleted'][$t] . '/' . $lostRecordCount;
