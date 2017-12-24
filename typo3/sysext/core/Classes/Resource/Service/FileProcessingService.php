@@ -74,6 +74,13 @@ class FileProcessingService
      */
     public function processFile(Resource\FileInterface $fileObject, Resource\ResourceStorage $targetStorage, $taskType, $configuration)
     {
+        // Enforce default configuration for preview processing here,
+        // to be sure we find already processed files below,
+        // which we wouldn't if we would change the configuration later, as configuration is part of the lookup.
+        if ($taskType === Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW) {
+            $configuration = Resource\Processing\LocalPreviewHelper::preProcessConfiguration($configuration);
+        }
+
         /** @var $processedFileRepository Resource\ProcessedFileRepository */
         $processedFileRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ProcessedFileRepository::class);
 
