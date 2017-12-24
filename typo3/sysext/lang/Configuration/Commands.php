@@ -5,12 +5,9 @@
  * Required parameter is the "class" of the command which needs to be a subclass
  * of Symfony/Console/Command.
  *
- * example: bin/typo3 lang:language:update
+ * example: bin/typo3 language:update
  */
 return [
-    'lang:language:update' => [
-        'class' => \TYPO3\CMS\Lang\Command\LanguageUpdateCommand::class
-    ],
     'language:update' => [
         'class' => \TYPO3\CMS\Lang\Command\LanguageUpdateCommand::class
     ]

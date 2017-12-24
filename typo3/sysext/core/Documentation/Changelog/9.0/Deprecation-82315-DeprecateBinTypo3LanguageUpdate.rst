@@ -1,28 +1,28 @@
 .. include:: ../../Includes.txt
 
-=========================================================
-Deprecation: #82315 - Deprecate bin/typo3 language:update
-=========================================================
+==============================================================
+Deprecation: #82315 - Deprecate bin/typo3 lang:language:update
+==============================================================
 
 See :issue:`82315`
 
 Description
 ===========
 
-The command `language:update` is an alias of `lang:language:update`, therefore it's superfluous and
+The command `lang:language:update` is an alias of `language:update`, therefore it's superfluous and
 will be removed in the future.
 
 
 Impact
 ======
 
-The command `language:update` will not work any more.
+The command `lang:language:update` will show a deprecation message when used.
 
 
 Affected Installations
 ======================
 
-All installations that make use of the command `language:update`. Most likely there are cronjobs
+All installations that make use of the command `lang:language:update`. Most likely there are cronjobs
 that need to be adjusted.
 
 

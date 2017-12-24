@@ -56,9 +56,8 @@ class LanguageUpdateCommand extends Command
      */
     protected function configure()
     {
-        $description = ($this->getName() === 'language:update')
-            ? '[Deprecated] Use lang:language:update instead'
-            : 'Update the language files of all activated extensions';
+        $this->setAliases(['lang:language:update']);
+        $description = 'Update the language files of all activated extensions';
 
         $this
             ->setDescription($description)
@@ -79,8 +78,8 @@ class LanguageUpdateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($this->getName() === 'language:update') {
-            $message = 'bin/typo3 language:update is deprecated, use bin/typo3 lang:language:update instead';
+        if (substr_count($input->getArgument('command'), ':') === 2) {
+            $message = 'bin/typo3 lang:language:update is deprecated, use bin/typo3 language:update instead';
             $output->writeln('<error>' . $message . '</error>');
             trigger_error($message, E_USER_DEPRECATED);
         }
