@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Resource;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * File representation in the file abstraction layer.
@@ -297,11 +296,6 @@ class File extends AbstractFile
      */
     public function process($taskType, array $configuration)
     {
-        if ($taskType === ProcessedFile::CONTEXT_IMAGEPREVIEW) {
-            $configuration = array_merge(['width' => 64, 'height' => 64], $configuration);
-            $configuration['width'] = MathUtility::forceIntegerInRange($configuration['width'], 1, 1000);
-            $configuration['height'] = MathUtility::forceIntegerInRange($configuration['height'], 1, 1000);
-        }
         return $this->getStorage()->processFile($this, $taskType, $configuration);
     }
 
