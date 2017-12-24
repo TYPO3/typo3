@@ -808,24 +808,6 @@ return [
         'excludeForPackaging' => '(?:\\..*(?!htaccess)|.*~|.*\\.swp|.*\\.bak|\\.sass-cache|node_modules|bower_components)',
         'runtimeActivatedPackages' => [],
     ],
-    // Custom options shipped by extensions
-    'EXTENSIONS' => [
-        'saltedpasswords' => [
-            'BE' => [
-                'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
-                'forceSalted' => 0,
-                'onlyAuthService' => 0,
-                'updatePasswd' => 1,
-            ],
-            'FE' => [
-                'enabled' => 0,
-                'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
-                'forceSalted' => 0,
-                'onlyAuthService' => 0,
-                'updatePasswd' => 1,
-            ],
-        ],
-    ],
     'BE' => [
         // Backend Configuration.
         'languageDebug' => false,
@@ -855,34 +837,34 @@ return [
         'checkStoredRecords' => true,
         'checkStoredRecordsLoose' => true,
         'defaultUserTSconfig' => 'options.enableBookmarks=1
-			options.file_list.enableDisplayBigControlPanel=selectable
-			options.file_list.enableDisplayThumbnails=selectable
-			options.file_list.enableClipBoard=selectable
-			options.file_list.thumbnail {
-				width = 64
-				height = 64
-			}
-			options.pageTree {
-				doktypesToShowInNewPageDragArea = 1,6,4,7,3,254,255,199
-			}
+            options.file_list.enableDisplayBigControlPanel=selectable
+            options.file_list.enableDisplayThumbnails=selectable
+            options.file_list.enableClipBoard=selectable
+            options.file_list.thumbnail {
+                width = 64
+                height = 64
+            }
+            options.pageTree {
+                doktypesToShowInNewPageDragArea = 1,6,4,7,3,254,255,199
+            }
 
-			options.contextMenu {
-				table {
-					pages {
-						disableItems =
-						tree.disableItems =
-					}
-					sys_file {
-						disableItems =
-						tree.disableItems =
-					}
-					sys_filemounts {
-						disableItems =
-						tree.disableItems =
-					}
-				}
-			}
-		',
+            options.contextMenu {
+                table {
+                    pages {
+                        disableItems =
+                        tree.disableItems =
+                    }
+                    sys_file {
+                        disableItems =
+                        tree.disableItems =
+                    }
+                    sys_filemounts {
+                        disableItems =
+                        tree.disableItems =
+                    }
+                }
+            }
+        ',
         // String (exclude). Enter lines of default backend user/group TSconfig.
         'defaultPageTSconfig' => '
             mod.web_list.enableDisplayBigControlPanel=selectable

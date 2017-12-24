@@ -8,10 +8,10 @@ checkConfigurationBE=0
 FE.enabled = 1
 
 # cat=Basic/enable; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorFE]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.saltedPWHashingMethod
-FE.saltedPWHashingMethod = tx_saltedpasswords_salts_phpass
+FE.saltedPWHashingMethod = TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt
 
 # cat=Basic/enable; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorBE]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.saltedPWHashingMethod
-BE.saltedPWHashingMethod = tx_saltedpasswords_salts_phpass
+BE.saltedPWHashingMethod = TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt
 
 # cat=Frontend; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationFE2
 checkConfigurationFE2=0

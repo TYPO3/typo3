@@ -41,6 +41,7 @@ use TYPO3\CMS\Install\Configuration\FeatureManager;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
+use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
@@ -167,6 +168,10 @@ class InstallerController
                 }
                 $packageManager->forceSortAndSavePackageStates();
             }
+            $extensionConfigurationService = new ExtensionConfigurationService();
+            $extensionConfigurationService->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
+            Bootstrap::getInstance()->populateLocalConfiguration();
+
             return new JsonResponse([
                 'success' => true,
             ]);
