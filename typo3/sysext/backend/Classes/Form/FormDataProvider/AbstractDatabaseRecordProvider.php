@@ -15,11 +15,9 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler\General;
 
 /**
  * Extended by other provider that fetch records from database

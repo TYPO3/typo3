@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Domain\Repository\Module;
  */
 
 use TYPO3\CMS\Backend\Module\ModuleLoader;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
