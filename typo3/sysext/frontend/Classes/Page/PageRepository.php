@@ -49,9 +49,9 @@ class PageRepository implements LoggerAwareInterface
      * @var array
      */
     protected $deprecatedPublicProperties = [
-        'workspaceCache' => 'Using $workspaceCache from the outside is discouraged, as this only reflects a local runtime cache.',
-        'error_getRootLine' => 'Using $error_getRootLine from the outside is deprecated as this property only exists for legacy reasons.',
-        'error_getRootLine_failPid' => 'Using $error_getRootLine_failPid from the outside is deprecated as this property only exists for legacy reasons.',
+        'workspaceCache' => 'Using $workspaceCache of class PageRepository from the outside is discouraged, as this only reflects a local runtime cache.',
+        'error_getRootLine' => 'Using $error_getRootLine of class PageRepository from the outside is deprecated as this property only exists for legacy reasons.',
+        'error_getRootLine_failPid' => 'Using $error_getRootLine_failPid of class PageRepository from the outside is deprecated as this property only exists for legacy reasons.',
     ];
 
     /**

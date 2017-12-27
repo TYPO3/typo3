@@ -47,20 +47,20 @@ class TemplateService
      * @var array
      */
     protected $deprecatedPublicProperties = [
-        'matchAll' => 'Using $matchAll from the outside is discouraged, as this variable is only used for internal storage.',
-        'whereClause' => 'Using $whereClause is discouraged, as this has been superseeded by Doctrine DBAL API.',
-        'debug' => 'Using $debug is discouraged, as this option has no effect anymore.',
-        'allowedPaths' => 'Using $allowedPaths from the outside is discouraged, as this variable is only used for internal storage.',
-        'simulationHiddenOrTime' => 'Using $simulationHiddenOrTime is discouraged, as this has been superseeded by Doctrine DBAL API.',
-        'nextLevel' => 'Using $nextLevel from the outside is discouraged, as this variable is only used for internal storage.',
-        'rootId' => 'Using $rootId from the outside is discouraged, as this variable is only used for internal storage.',
-        'absoluteRootLine' => 'Using $absoluteRootLine from the outside is discouraged, as this variable is only used for internal storage.',
-        'outermostRootlineIndexWithTemplate' => 'Using $outermostRootlineIndexWithTemplate from the outside is discouraged, as this variable is only used for internal storage.',
-        'rowSum' => 'Using $rowSum from the outside is discouraged, as this variable is only used for internal storage.',
-        'sitetitle' => 'Using $sitetitle from the outside is discouraged, as this variable is only used for internal storage.',
-        'sectionsMatch' => 'Using $sectionsMatch from the outside is discouraged, as this variable is only used for internal storage.',
-        'frames' => 'Using $frames from the outside is discouraged, as this variable is only used for internal storage.',
-        'MPmap' => 'Using $frames from the outside is discouraged, as this variable is only used for internal storage.',
+        'matchAll' => 'Using $matchAll of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'whereClause' => 'Using $whereClause of class TemplateService is discouraged, as this has been superseeded by Doctrine DBAL API.',
+        'debug' => 'Using $debug of class TemplateService is discouraged, as this option has no effect anymore.',
+        'allowedPaths' => 'Using $allowedPaths of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'simulationHiddenOrTime' => 'Using $simulationHiddenOrTime of class TemplateService is discouraged, as this has been superseeded by Doctrine DBAL API.',
+        'nextLevel' => 'Using $nextLevel of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'rootId' => 'Using $rootId of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'absoluteRootLine' => 'Using $absoluteRootLine of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'outermostRootlineIndexWithTemplate' => 'Using $outermostRootlineIndexWithTemplate of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'rowSum' => 'Using $rowSum of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'sitetitle' => 'Using $sitetitle of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'sectionsMatch' => 'Using $sectionsMatch of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'frames' => 'Using $frames of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'MPmap' => 'Using $MPmap of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
     ];
 
     /**
