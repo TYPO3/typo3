@@ -334,7 +334,7 @@ class DatabaseIntegrityController
     {
         $lang = $this->getLanguageService();
         $searchMode = $this->MOD_SETTINGS['search'];
-        $fullsearch = GeneralUtility::makeInstance(QueryView::class);
+        $fullsearch = GeneralUtility::makeInstance(QueryView::class, $this->MOD_SETTINGS, $this->MOD_MENU, $this->moduleName);
         $fullsearch->setFormName($this->formName);
         $submenu = '<div class="form-inline form-inline-spaced">';
         $submenu .= BackendUtility::getDropdownMenu(0, 'SET[search]', $searchMode, $this->MOD_MENU['search']);
