@@ -110,7 +110,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $lang = $this->getLanguageService();
         $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 
-        $id = $this->linkParts['url']['pageuid'];
+        $id = (int)$this->linkParts['url']['pageuid'];
         $pageRow = BackendUtility::getRecordWSOL('pages', $id);
 
         return htmlspecialchars($lang->getLL('page'))

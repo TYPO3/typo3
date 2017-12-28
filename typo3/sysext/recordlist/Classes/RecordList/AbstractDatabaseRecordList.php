@@ -1090,12 +1090,13 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 break;
             case 'info':
                 // "Info": (All records)
-                $code = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
+                $code = '<a href="#" onclick="' . htmlspecialchars('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . ');')
+                    . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
                 break;
             default:
                 // Output the label now:
                 if ($table === 'pages') {
-                    $code = '<a href="' . htmlspecialchars($this->listURL($uid, '', 'firstElementNumber')) . '" onclick="setHighlight(' . $uid . ')">' . $code . '</a>';
+                    $code = '<a href="' . htmlspecialchars($this->listURL($uid, '', 'firstElementNumber')) . '" onclick="setHighlight(' . (int)$uid . ')">' . $code . '</a>';
                 } else {
                     $code = $this->linkUrlMail($code, $origCode);
                 }

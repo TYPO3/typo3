@@ -38,10 +38,10 @@ class ElementBrowserPageTreeView extends \TYPO3\CMS\Backend\Tree\View\ElementBro
     /**
      * Wrapping the title in a link, if applicable.
      *
-     * @param string $title Title, ready for output.
+     * @param string $title Title, ready for output (already html-escaped)
      * @param array $v The record
      * @param bool $ext_pArrPages If set, pages clicked will return immediately, otherwise reload page.
-     * @return string Wrapping title string.
+     * @return string Wrapped title string
      */
     public function wrapTitle($title, $v, $ext_pArrPages = false)
     {
