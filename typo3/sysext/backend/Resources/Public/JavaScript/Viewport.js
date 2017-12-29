@@ -130,7 +130,7 @@ define(
 				},
 				setUrl: function (urlToLoad) {
 					TYPO3.Backend.Loader.start();
-					$('.t3js-scaffold-content-module-iframe')
+					return $('.t3js-scaffold-content-module-iframe')
 						.attr('src', urlToLoad)
 						.one('load', function() {
 							TYPO3.Backend.Loader.finish();
