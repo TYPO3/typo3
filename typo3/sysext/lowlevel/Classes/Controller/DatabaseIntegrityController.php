@@ -378,6 +378,10 @@ class DatabaseIntegrityController
                 'icon' => $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render(),
                 'count' => count($admin->page_idArray)
             ],
+            'translated_pages' => [
+                'icon' => $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render(),
+                'count' => count($admin->getPageTranslatedPageIDArray()),
+            ],
             'hidden_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', ['hidden' => 1], Icon::SIZE_SMALL)->render(),
                 'count' => $admin->recStats['hidden']

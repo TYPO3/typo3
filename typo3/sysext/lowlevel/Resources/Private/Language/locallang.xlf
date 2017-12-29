@@ -226,7 +226,10 @@
 				<source>Pages</source>
 			</trans-unit>
 			<trans-unit id="total_pages">
-				<source>Total number of pages</source>
+				<source>Total number of default language pages</source>
+			</trans-unit>
+			<trans-unit id="translated_pages">
+				<source>Total number of translated pages</source>
 			</trans-unit>
 			<trans-unit id="deleted_pages">
 				<source>Marked-deleted pages</source>

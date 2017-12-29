@@ -54,6 +54,11 @@ class DatabaseIntegrityCheck
     public $page_idArray = [];
 
     /**
+     * @var array Will hold id/rec pairs from genTree() that are not default language
+     */
+    protected $page_translatedPageIDArray = [];
+
+    /**
      * @var array
      */
     public $rec_idArray = [];
@@ -93,6 +98,14 @@ class DatabaseIntegrityCheck
     public $lostPagesList = '';
 
     /**
+     * @return array
+     */
+    public function getPageTranslatedPageIDArray(): array
+    {
+        return $this->page_translatedPageIDArray;
+    }
+
+    /**
      * Generates a list of Page-uid's that corresponds to the tables in the tree.
      * This list should ideally include all records in the pages-table.
      *
@@ -107,7 +120,7 @@ class DatabaseIntegrityCheck
         if (!$this->genTree_includeDeleted) {
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
-        $queryBuilder->select('uid', 'title', 'doktype', 'deleted', 'hidden')
+        $queryBuilder->select('uid', 'title', 'doktype', 'deleted', 'hidden', 'sys_language_uid')
             ->from('pages')
             ->orderBy('sorting');
         if ($versions) {
@@ -126,7 +139,11 @@ class DatabaseIntegrityCheck
         while ($row = $result->fetch()) {
             $newID = $row['uid'];
             // Register various data for this item:
-            $this->page_idArray[$newID] = $row;
+            if ($row['sys_language_uid'] === 0) {
+                $this->page_idArray[$newID] = $row;
+            } else {
+                $this->page_translatedPageIDArray[$newID] = $row;
+            }
             $this->recStats['all_valid']['pages'][$newID] = $newID;
             if ($row['deleted']) {
                 $this->recStats['deleted']['pages'][$newID] = $newID;
