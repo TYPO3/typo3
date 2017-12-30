@@ -703,6 +703,7 @@ class SchedulerModuleController
         }
         $this->view->assign('additionalFields', $additionalFieldList);
 
+        $this->view->assign('returnUrl', rawurlencode((string)GeneralUtility::getIndpEnv('REQUEST_URI')));
         $this->view->assign('table', implode(LF, $table));
         $this->view->assign('now', $this->getServerTime());
 

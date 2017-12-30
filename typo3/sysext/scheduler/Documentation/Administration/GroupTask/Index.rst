@@ -28,6 +28,9 @@ Scheduler task groups are records stored on the root page (pid=0). They may be c
    Management of scheduler task groups
 
 
+It is also possible to create a new task group from within the edit task form whith clicking on the `+` icon next to the
+task group select box.
+
 Individual tasks may then be edited as usual and associated to a given scheduler task group.
 
 The individual groups can be sorted independent of each other by clicking the column label.
