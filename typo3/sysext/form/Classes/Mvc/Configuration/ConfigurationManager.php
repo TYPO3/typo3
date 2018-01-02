@@ -95,16 +95,19 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
         }
         $ucFirstExtensioName = ucfirst($extensionName);
 
-        $yamlSettings = $this->getYamlSettingsFromCache($extensionName);
-        if (!empty($yamlSettings)) {
-            return $this->overrideConfigurationByTypoScript($yamlSettings, $extensionName);
-        }
-
         $typoscriptSettings = $this->getTypoScriptSettings($extensionName);
 
         $yamlSettingsFilePaths = isset($typoscriptSettings['yamlConfigurations'])
             ? ArrayUtility::sortArrayWithIntegerKeys($typoscriptSettings['yamlConfigurations'])
             : [];
+
+        $cacheKeySuffix = $extensionName . md5(json_encode($yamlSettingsFilePaths));
+
+        $yamlSettings = $this->getYamlSettingsFromCache($cacheKeySuffix);
+        if (!empty($yamlSettings)) {
+            return $this->overrideConfigurationByTypoScript($yamlSettings, $extensionName);
+        }
+
         $yamlSettings = InheritancesResolverService::create($this->yamlSource->load($yamlSettingsFilePaths))
             ->getResolvedConfiguration();
 
@@ -113,7 +116,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
             ? $yamlSettings['TYPO3']['CMS'][$ucFirstExtensioName]
             : [];
         $yamlSettings = ArrayUtility::sortArrayWithIntegerKeysRecursive($yamlSettings);
-        $this->setYamlSettingsIntoCache($extensionName, $yamlSettings);
+        $this->setYamlSettingsIntoCache($cacheKeySuffix, $yamlSettings);
 
         return $this->overrideConfigurationByTypoScript($yamlSettings, $extensionName);
     }
@@ -152,35 +155,35 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     }
 
     /**
-     * @param string $extensionName
+     * @param string $cacheKeySuffix
      * @return string
      */
-    protected function getConfigurationCacheKey(string $extensionName): string
+    protected function getConfigurationCacheKey(string $cacheKeySuffix): string
     {
-        return strtolower(self::CONFIGURATION_TYPE_YAML_SETTINGS . '_' . $extensionName);
+        return strtolower(self::CONFIGURATION_TYPE_YAML_SETTINGS . '_' . $cacheKeySuffix);
     }
 
     /**
-     * @param string $extensionName
+     * @param string $cacheKeySuffix
      * @return mixed
      */
-    protected function getYamlSettingsFromCache(string $extensionName)
+    protected function getYamlSettingsFromCache(string $cacheKeySuffix)
     {
         return $this->getCacheFrontend()->get(
-            $this->getConfigurationCacheKey($extensionName)
+            $this->getConfigurationCacheKey($cacheKeySuffix)
         );
     }
 
     /**
-     * @param string $extensionName
+     * @param string $cacheKeySuffix
      * @param array $yamlSettings
      */
     protected function setYamlSettingsIntoCache(
-        string $extensionName,
+        string $cacheKeySuffix,
         array $yamlSettings
     ) {
         $this->getCacheFrontend()->set(
-            $this->getConfigurationCacheKey($extensionName),
+            $this->getConfigurationCacheKey($cacheKeySuffix),
             $yamlSettings
         );
     }
