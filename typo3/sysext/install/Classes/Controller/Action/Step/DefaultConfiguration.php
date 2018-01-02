@@ -68,8 +68,8 @@ class DefaultConfiguration extends AbstractStepAction
                         'is_siteroot' => 1,
                         'perms_userid' => 1,
                         'perms_groupid' => 1,
-                        'perms_user' => 32,
-                        'perms_group' => 32,
+                        'perms_user' => 31,
+                        'perms_group' => 31,
                         'perms_everybody' => 1
                     ]
                 );
