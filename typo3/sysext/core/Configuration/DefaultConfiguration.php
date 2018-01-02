@@ -974,6 +974,20 @@ return [
                 iphone4.height = 480
 
             }
+            mod.web_info.fieldDefinitions {
+                0 {
+                    label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_0
+                    fields = title,uid,alias,starttime,endtime,fe_group,target,url,shortcut,shortcut_mode
+                }
+                1 {
+                    label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_1
+                    fields = title,uid,###ALL_TABLES###
+                }
+                2 {
+                    label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_2
+                    fields = title,uid,lastUpdated,newUntil,cache_timeout,php_tree_stop,TSconfig,is_siteroot,fe_login_mode
+                }
+            }
         ',
         // String (exclude).Enter lines of default Page TSconfig.
         'defaultPermissions' => [],

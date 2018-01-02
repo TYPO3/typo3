@@ -24,6 +24,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule
 {
+
+    /** @var array */
+    protected $fieldConfiguration = [];
+
     /**
      * Returns the menu array
      *
@@ -31,12 +35,8 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
      */
     public function modMenu()
     {
-        return [
-            'pages' => [
-                0 => $GLOBALS['LANG']->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_0'),
-                2 => $GLOBALS['LANG']->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_2'),
-                1 => $GLOBALS['LANG']->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_1')
-            ],
+        $menu = [
+            'pages' => [],
             'depth' => [
                 0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
                 1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
@@ -46,6 +46,12 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
                 999 => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
             ]
         ];
+
+        $this->fillFieldConfiguration($this->pObj->id);
+        foreach ($this->fieldConfiguration as $key => $item) {
+            $menu['pages'][$key] = $item['label'];
+        }
+        return $menu;
     }
 
     /**
@@ -55,6 +61,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
      */
     public function main()
     {
+        $this->fillFieldConfiguration($this->pObj->id);
         $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
         $dblist = GeneralUtility::makeInstance(PageLayoutView::class);
         $dblist->descrTable = '_MOD_web_info';
@@ -67,36 +74,8 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         $dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
         $dblist->pI_showUser = true;
 
-        switch ((int)$this->pObj->MOD_SETTINGS['pages']) {
-            case 1:
-                $dblist->fieldArray = ['title', 'uid'] + array_keys($this->cleanTableNames());
-                break;
-            case 2:
-                $dblist->fieldArray = [
-                    'title',
-                    'uid',
-                    'lastUpdated',
-                    'newUntil',
-                    'cache_timeout',
-                    'php_tree_stop',
-                    'TSconfig',
-                    'is_siteroot',
-                    'fe_login_mode'
-                ];
-                break;
-            default:
-                $dblist->fieldArray = [
-                    'title',
-                    'uid',
-                    'alias',
-                    'starttime',
-                    'endtime',
-                    'fe_group',
-                    'target',
-                    'url',
-                    'shortcut',
-                    'shortcut_mode'
-                ];
+        if (isset($this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']])) {
+            $dblist->fieldArray = $this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']]['fields'];
         }
 
         // PAGES:
@@ -106,13 +85,12 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         $h_func .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']);
         $dblist->start($this->pObj->id, 'pages', 0);
         $dblist->generateList();
-        // CSH
-        $optionKey = $this->pObj->MOD_SETTINGS['pages'];
-        $cshPagetreeOverview = BackendUtility::cshItem($dblist->descrTable, 'func_' . $optionKey, null, '<span class="btn btn-default btn-sm">|</span>');
 
         $theOutput .= '<div class="form-inline form-inline-spaced">'
             . $h_func
-            . '<div class="form-group">' . $cshPagetreeOverview . '</div>'
+            . '<div class="form-group">'
+            . BackendUtility::cshItem($dblist->descrTable, 'func_' . $this->pObj->MOD_SETTINGS['pages'], null, '<span class="btn btn-default btn-sm">|</span>')
+            . '</div>'
             . '</div>'
             . $dblist->HTMLcode;
 
@@ -125,13 +103,13 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
     }
 
     /**
-     * Function, which fills in the internal array, $this->allowedTableNames with all tables to
+     * Function, which returns all tables to
      * which the user has access. Also a set of standard tables (pages, sys_filemounts, etc...)
      * are filtered out. So what is left is basically all tables which makes sense to list content from.
      *
-     * @return string[]
+     * @return string
      */
-    protected function cleanTableNames()
+    protected function cleanTableNames(): string
     {
         // Get all table names:
         $tableNames = array_flip(array_keys($GLOBALS['TCA']));
@@ -151,7 +129,27 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
                 }
             }
         }
-        return $allowedTableNames;
+        return implode(',', array_keys($allowedTableNames));
+    }
+
+    /**
+     * Generate configuration for field selection
+     *
+     * @param int $pageId current page id
+     */
+    protected function fillFieldConfiguration(int $pageId)
+    {
+        $modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_info.fieldDefinitions');
+
+        foreach ($modTSconfig['properties'] as $key => $item) {
+            $fieldList = str_replace('###ALL_TABLES###', $this->cleanTableNames(), $item['fields']);
+            $fields = GeneralUtility::trimExplode(',', $fieldList, true);
+            $key = trim($key, '.');
+            $this->fieldConfiguration[$key] = [
+                'label' => $item['label'] ? $GLOBALS['LANG']->sL($item['label']) : $key,
+                'fields' => $fields
+            ];
+        }
     }
 
     /**
