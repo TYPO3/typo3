@@ -464,8 +464,9 @@ class DebuggerUtility
     {
         $dump = '';
         foreach ($collection as $key => $value) {
+            $dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level);
             if ($plainText) {
-                $dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level) . self::ansiEscapeWrap($key, '37', $ansiColors);
+                $dump .= self::ansiEscapeWrap($key, '37', $ansiColors);
             } else {
                 $dump .= '<span class="extbase-debug-property">' . htmlspecialchars($key) . '</span>';
             }
