@@ -28,7 +28,7 @@ Frontend Login
       felogin, frontend login
 
 :Copyright:
-      2000-2017
+      2000-2018
 
 :Author:
       TYPO3 CMS Core Development Team
