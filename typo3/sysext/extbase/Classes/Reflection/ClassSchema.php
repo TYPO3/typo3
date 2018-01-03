@@ -323,8 +323,13 @@ class ClassSchema
                 if ($tag === 'validate') {
                     $this->methods[$methodName]['annotations']['validators'] = $values;
                 }
-                $this->methods[$methodName]['tags'][$tag] = array_map(function ($value) {
-                    return ltrim($value, '$');
+                $this->methods[$methodName]['tags'][$tag] = array_map(function ($value) use ($tag) {
+                    // not stripping the dollar sign for @validate annotations is just
+                    // a quick fix for a regression introduced in 9.0.0.
+                    // This exception to the rules will vanish once the resolving of
+                    // validators will take place inside this class and not in the
+                    // controller during runtime.
+                    return $tag === 'validate' ? $value : ltrim($value, '$');
                 }, $values);
             }
 
