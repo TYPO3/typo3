@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -377,6 +378,10 @@ class PaletteAndSingleContainer extends AbstractContainer
 
         $label = BackendUtility::wrapInHelp($this->data['tableName'], $fieldName, htmlspecialchars($element['fieldLabel']));
 
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
+            $label .= '<code>[' . htmlspecialchars($fieldName) . ']</code>';
+        }
+
         $content = [];
         $content[] = '<div class="' . implode(' ', $paletteFieldClasses) . '">';
         $content[] =    '<label class="t3js-formengine-label">';
@@ -412,5 +417,15 @@ class PaletteAndSingleContainer extends AbstractContainer
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Returns the current BE user.
+     *
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

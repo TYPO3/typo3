@@ -19,6 +19,7 @@ use Prophecy\Argument;
 use TYPO3\CMS\Backend\Form\Container\PaletteAndSingleContainer;
 use TYPO3\CMS\Backend\Form\Container\SingleFieldContainer;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -66,6 +67,8 @@ class PaletteAndSingleContainerTest extends UnitTestCase
 
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
+        $backendUserAuthentication = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserAuthentication->reveal();
         $languageService->loadSingleTableDescription(Argument::cetera())->willReturn('');
 
         // Expect translation call to the label reference
@@ -121,6 +124,8 @@ class PaletteAndSingleContainerTest extends UnitTestCase
 
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
+        $backendUserAuthentication = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserAuthentication->reveal();
         $languageService->loadSingleTableDescription(Argument::cetera())->willReturn('');
 
         // Expect translation call to the label reference
@@ -177,6 +182,8 @@ class PaletteAndSingleContainerTest extends UnitTestCase
 
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
+        $backendUserAuthentication = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserAuthentication->reveal();
         $languageService->loadSingleTableDescription(Argument::cetera())->willReturn('');
 
         // Expect translation call to the label reference
