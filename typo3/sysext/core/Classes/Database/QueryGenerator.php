@@ -291,6 +291,10 @@ class QueryGenerator
                 $fC = $GLOBALS['TCA'][$this->table]['columns'][$fieldName];
                 $this->fields[$fieldName] = $fC['config'];
                 $this->fields[$fieldName]['exclude'] = $fC['exclude'];
+                if ($this->fields[$fieldName]['type'] === 'user' && !isset($this->fields[$fieldName]['type']['userFunc'])) {
+                    unset($this->fields[$fieldName]);
+                    continue;
+                }
                 if (is_array($fC) && $fC['label']) {
                     $this->fields[$fieldName]['label'] = rtrim(trim($this->getLanguageService()->sL($fC['label'])), ':');
                     switch ($this->fields[$fieldName]['type']) {
