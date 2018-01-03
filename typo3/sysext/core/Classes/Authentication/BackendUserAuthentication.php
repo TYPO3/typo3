@@ -2260,7 +2260,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Traverse custom workspaces:
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
-            $workspaces = $queryBuilder->select('uid', 'title', 'adminusers', 'reviewers')
+            $workspaces = $queryBuilder->select('uid', 'title', 'adminusers', 'members', 'reviewers')
                 ->from('sys_workspace')
                 ->orderBy('title')
                 ->execute()
