@@ -97,7 +97,7 @@ class LocalCropScaleMaskHelper
                 $configuration['fileExtension'],
                 '',
                 '',
-                sprintf('-crop %dx%d+%d+%d', $newWidth, $newHeight, $offsetLeft, $offsetTop),
+                sprintf('-crop %dx%d+%d+%d +repage', $newWidth, $newHeight, $offsetLeft, $offsetTop),
                 '',
                 ['noScale' => true],
                 true

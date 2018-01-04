@@ -2118,7 +2118,7 @@ class GraphicalFunctions
             }
             $offsetX = (int)(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
             $offsetY = (int)(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
-            $params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! ';
+            $params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! +repage';
         }
         $command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
         // re-apply colorspace-setting for the resulting image so colors don't appear to dark (sRGB instead of RGB)
