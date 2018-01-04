@@ -606,8 +606,7 @@ class QueryView
      */
     public function search()
     {
-        $SET = $this->settings;
-        $swords = $SET['sword'];
+        $swords = $this->settings['sword'];
         $out = '';
         if ($swords) {
             foreach ($GLOBALS['TCA'] as $table => $value) {
@@ -686,15 +685,14 @@ class QueryView
      */
     public function resultRowDisplay($row, $conf, $table)
     {
-        $SET = $this->settings;
         $out = '<tr>';
         foreach ($row as $fieldName => $fieldValue) {
-            if (GeneralUtility::inList($SET['queryFields'], $fieldName)
-                || !$SET['queryFields']
+            if (GeneralUtility::inList($this->settings['queryFields'], $fieldName)
+                || !$this->settings['queryFields']
                 && $fieldName !== 'pid'
                 && $fieldName !== 'deleted'
             ) {
-                if ($SET['search_result_labels']) {
+                if ($this->settings['search_result_labels']) {
                     $fVnew = $this->getProcessedValueExtra($table, $fieldName, $fieldValue, $conf, '<br />');
                 } else {
                     $fVnew = htmlspecialchars($fieldValue);
@@ -1194,14 +1192,13 @@ class QueryView
      */
     public function resultRowTitles($row, $conf, $table)
     {
-        $SET = $this->settings;
         $tableHeader = [];
         // Start header row
         $tableHeader[] = '<thead><tr>';
         // Iterate over given columns
         foreach ($row as $fieldName => $fieldValue) {
-            if (GeneralUtility::inList($SET['queryFields'], $fieldName)
-                || !$SET['queryFields']
+            if (GeneralUtility::inList($this->settings['queryFields'], $fieldName)
+                || !$this->settings['queryFields']
                 && $fieldName !== 'pid'
                 && $fieldName !== 'deleted'
             ) {
@@ -1233,10 +1230,9 @@ class QueryView
     public function csvRowTitles($row, $conf, $table)
     {
         $out = '';
-        $SET = $this->settings;
         foreach ($row as $fieldName => $fieldValue) {
-            if (GeneralUtility::inList($SET['queryFields'], $fieldName)
-                || !$SET['queryFields'] && $fieldName !== 'pid') {
+            if (GeneralUtility::inList($this->settings['queryFields'], $fieldName)
+                || !$this->settings['queryFields'] && $fieldName !== 'pid') {
                 if (!$out) {
                     if ($this->settings['search_result_labels']) {
                         $out = htmlspecialchars($this->languageService->sL($conf['columns'][$fieldName]['label']
