@@ -56,7 +56,7 @@
 		"symfony/polyfill-intl-icu": "^1.6"
 	},
 	"require-dev": {
-		"typo3/testing-framework": "2.0.1",
+		"typo3/testing-framework": "2.0.2",
 		"codeception/codeception": "^2.3",
 		"enm1989/chromedriver": "~2.30",
 		"friendsofphp/php-cs-fixer": "^2.0",
