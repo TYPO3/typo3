@@ -1164,6 +1164,10 @@ class PageLayoutView implements LoggerAwareInterface
                     $grid .= '<col />';
                 }
                 $grid .= '</colgroup>';
+
+                // Check how to handle restricted columns
+                $hideRestrictedCols = (bool)($tsConfig['properties']['web_layout.']['hideRestrictedCols'] ?? false);
+
                 // Cycle through rows
                 for ($row = 1; $row <= $rowCount; $row++) {
                     $rowConfig = $backendLayout['__config']['backend_layout.']['rows.'][$row . '.'];
@@ -1186,7 +1190,7 @@ class PageLayoutView implements LoggerAwareInterface
                             ($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') .
                             ' data-colpos="' . (int)$columnConfig['colPos'] . '" data-language-uid="' . $lP . '" class="t3js-page-lang-column-' . $lP . ' t3js-page-column t3-grid-cell t3-page-column t3-page-column-' . $columnKey .
                             ((!isset($columnConfig['colPos']) || $columnConfig['colPos'] === '') ? ' t3-grid-cell-unassigned' : '') .
-                            ((isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && !$head[$columnKey]) || !GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos']) ? ' t3-grid-cell-restricted' : '') .
+                            ((isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && !$head[$columnKey]) || !GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos']) ? ($hideRestrictedCols ? ' t3-grid-cell-restricted t3-grid-cell-hidden' : ' t3-grid-cell-restricted') : '') .
                             ($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') .
                             ($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
 
@@ -1199,12 +1203,16 @@ class PageLayoutView implements LoggerAwareInterface
                         } elseif (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== ''
                             && GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
                         ) {
-                            $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('noAccess'));
+                            if (!$hideRestrictedCols) {
+                                $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('noAccess'));
+                            }
                         } elseif (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== ''
                             && !GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
                         ) {
-                            $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name']) .
-                                ' (' . $this->getLanguageService()->getLL('noAccess') . ')');
+                            if (!$hideRestrictedCols) {
+                                $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name']) .
+                                  ' (' . $this->getLanguageService()->getLL('noAccess') . ')');
+                            }
                         } elseif (isset($columnConfig['name']) && $columnConfig['name'] !== '') {
                             $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name'])
                                 . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')');

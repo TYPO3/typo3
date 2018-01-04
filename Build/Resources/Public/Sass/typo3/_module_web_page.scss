@@ -54,6 +54,10 @@ $page-ce-dropzone-possible-border: $state-warning-border;
     background-color: $page-grid-cell-restricted;
 }
 
+.t3-grid-cell-hidden {
+    display: none;
+}
+
 .t3-grid-cell-unassigned {
     background: url('../../../../backend/Resources/Public/Images/Backgrounds/layout-not-assigned.png') repeat;
 }
