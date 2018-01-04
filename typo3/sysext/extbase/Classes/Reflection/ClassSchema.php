@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Extbase\Reflection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\Inject;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
@@ -24,7 +26,11 @@ use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
+use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
+use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
 /**
  * A class schema
@@ -90,6 +96,11 @@ class ClassSchema
     private $isSingleton;
 
     /**
+     * @var bool
+     */
+    private $isController;
+
+    /**
      * @var array
      */
     private $methods;
@@ -123,6 +134,7 @@ class ClassSchema
         $reflectionClass = new \ReflectionClass($className);
 
         $this->isSingleton = $reflectionClass->implementsInterface(SingletonInterface::class);
+        $this->isController = $reflectionClass->implementsInterface(ControllerInterface::class);
 
         if ($reflectionClass->isSubclassOf(AbstractEntity::class)) {
             $this->modelType = static::MODELTYPE_ENTITY;
@@ -164,7 +176,8 @@ class ClassSchema
                 'type'        => null, // Extbase
                 'elementType' => null, // Extbase
                 'annotations' => [],
-                'tags'        => []
+                'tags'        => [],
+                'validators'  => []
             ];
 
             $docCommentParser = new DocCommentParser(true);
@@ -179,10 +192,24 @@ class ClassSchema
             $this->properties[$propertyName]['annotations']['type'] = null;
             $this->properties[$propertyName]['annotations']['cascade'] = null;
             $this->properties[$propertyName]['annotations']['dependency'] = null;
-            $this->properties[$propertyName]['annotations']['validators'] = [];
 
             if ($docCommentParser->isTaggedWith('validate')) {
-                $this->properties[$propertyName]['annotations']['validators'] = $docCommentParser->getTagValues('validate');
+                $validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+
+                $validateValues = $docCommentParser->getTagValues('validate');
+                foreach ($validateValues as $validateValue) {
+                    $validatorConfiguration = $validatorResolver->parseValidatorAnnotation($validateValue);
+
+                    foreach ($validatorConfiguration['validators'] ?? [] as $validator) {
+                        $validatorObjectName = $validatorResolver->resolveValidatorObjectName($validator['validatorName']);
+
+                        $this->properties[$propertyName]['validators'][] = [
+                            'name' => $validator['validatorName'],
+                            'options' => $validator['validatorOptions'],
+                            'className' => $validatorObjectName,
+                        ];
+                    }
+                }
             }
 
             if ($annotationReader->getPropertyAnnotation($reflectionProperty, Lazy::class) instanceof Lazy) {
@@ -307,12 +334,12 @@ class ClassSchema
             $this->methods[$methodName]['params']       = [];
             $this->methods[$methodName]['tags']         = [];
             $this->methods[$methodName]['annotations']  = [];
+            $this->methods[$methodName]['isAction']     = StringUtility::endsWith($methodName, 'Action');
 
             $docCommentParser = new DocCommentParser(true);
             $docCommentParser->parseDocComment($reflectionMethod->getDocComment());
 
-            $this->methods[$methodName]['annotations']['validators'] = [];
-
+            $argumentValidators = [];
             foreach ($docCommentParser->getTagsValues() as $tag => $values) {
                 if ($tag === 'ignorevalidation') {
                     trigger_error(
@@ -320,8 +347,22 @@ class ClassSchema
                         E_USER_DEPRECATED
                     );
                 }
-                if ($tag === 'validate') {
-                    $this->methods[$methodName]['annotations']['validators'] = $values;
+                if ($tag === 'validate' && $this->isController && $this->methods[$methodName]['isAction']) {
+                    $validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+
+                    foreach ($values as $validate) {
+                        $methodValidatorDefinition = $validatorResolver->parseValidatorAnnotation($validate);
+
+                        foreach ($methodValidatorDefinition['validators'] as $validator) {
+                            $validatorObjectName = $validatorResolver->resolveValidatorObjectName($validator['validatorName']);
+
+                            $argumentValidators[$methodValidatorDefinition['argumentName']][] = [
+                                'name' => $validator['validatorName'],
+                                'options' => $validator['validatorOptions'],
+                                'className' => $validatorObjectName,
+                            ];
+                        }
+                    }
                 }
                 $this->methods[$methodName]['tags'][$tag] = array_map(function ($value) use ($tag) {
                     // not stripping the dollar sign for @validate annotations is just
@@ -332,6 +373,7 @@ class ClassSchema
                     return $tag === 'validate' ? $value : ltrim($value, '$');
                 }, $values);
             }
+            unset($methodValidatorDefinition);
 
             foreach ($annotationReader->getMethodAnnotations($reflectionMethod) as $annotation) {
                 if ($annotation instanceof IgnoreValidation) {
@@ -359,6 +401,7 @@ class ClassSchema
                 $this->methods[$methodName]['params'][$parameterName]['hasDefaultValue'] = $reflectionParameter->isDefaultValueAvailable();
                 $this->methods[$methodName]['params'][$parameterName]['defaultValue'] = null; // compat
                 $this->methods[$methodName]['params'][$parameterName]['dependency'] = null; // Extbase DI
+                $this->methods[$methodName]['params'][$parameterName]['validators'] = [];
 
                 if ($reflectionParameter->isDefaultValueAvailable()) {
                     $this->methods[$methodName]['params'][$parameterName]['default'] = $reflectionParameter->getDefaultValue();
@@ -397,6 +440,29 @@ class ClassSchema
                 ) {
                     $this->methods[$methodName]['params'][$parameterName]['dependency'] = $reflectionParameter->getClass()->getName();
                 }
+
+                // Extbase Validation
+                if (isset($argumentValidators[$parameterName])) {
+                    if ($this->methods[$methodName]['params'][$parameterName]['type'] === null) {
+                        throw new InvalidTypeHintException(
+                            'Missing type information for parameter "$' . $parameterName . '" in ' . $this->className . '->' . $methodName . '(): Either use an @param annotation or use a type hint.',
+                            1515075192
+                        );
+                    }
+
+                    $this->methods[$methodName]['params'][$parameterName]['validators'] = $argumentValidators[$parameterName];
+                    unset($argumentValidators[$parameterName]);
+                }
+            }
+
+            // Extbase Validation
+            foreach ($argumentValidators as $parameterName => $validators) {
+                $validatorNames = array_column($validators, 'name');
+
+                throw new InvalidValidationConfigurationException(
+                    'Invalid validate annotation in ' . $this->className . '->' . $methodName . '(): The following validators have been defined for missing param "$' . $parameterName . '": ' . implode(', ', $validatorNames),
+                    1515073585
+                );
             }
 
             // Extbase

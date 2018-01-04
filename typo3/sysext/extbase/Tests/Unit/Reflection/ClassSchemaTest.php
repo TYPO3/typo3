@@ -17,6 +17,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
+use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
+use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
+use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 
 /**
  * Test case
@@ -351,33 +355,127 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsValidateAnnotation()
+    public function classSchemaDetectsValidateAnnotationsModelProperties()
     {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithValidateAnnotation::class);
+        $classSchema = new ClassSchema(Fixture\DummyModel::class);
 
         static::assertSame(
             [],
-            $classSchema->getProperty('propertyWithoutValidateAnnotations')['annotations']['validators']
+            $classSchema->getProperty('propertyWithoutValidateAnnotations')['validators']
         );
         static::assertSame(
             [
-                'NotEmpty',
-                'Empty (Foo=Bar)'
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'minimum' => '1',
+                        'maximum' => '10',
+                    ],
+                    'className' => StringLengthValidator::class
+                ],
+                [
+                    'name' => 'NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
+                    'options' => [],
+                    'className' => Fixture\Validation\Validator\DummyValidator::class
+                ],
+                [
+                    'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class
+                ],
+                [
+                    'name' => NotEmptyValidator::class,
+                    'options' => [],
+                    'className' => NotEmptyValidator::class
+                ]
             ],
-            $classSchema->getProperty('propertyWithValidateAnnotations')['annotations']['validators']
+            $classSchema->getProperty('propertyWithValidateAnnotations')['validators']
         );
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaDetectsValidateAnnotationsOfControllerActions()
+    {
+        $classSchema = new ClassSchema(Fixture\DummyController::class);
 
         static::assertSame(
             [],
-            $classSchema->getMethod('methodWithoutValidateAnnotations')['annotations']['validators']
+            $classSchema->getMethod('methodWithoutValidateAnnotationsAction')['params']['fooParam']['validators']
         );
 
         static::assertSame(
             [
-                '$fooParam FooValidator (FooValidatorOptionKey=FooValidatorOptionValue)',
-                '$fooParam BarValidator'
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'minimum' => '1',
+                        'maximum' => '10',
+                    ],
+                    'className' => StringLengthValidator::class
+                ],
+                [
+                    'name' => 'NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
+                    'options' => [],
+                    'className' => Fixture\Validation\Validator\DummyValidator::class
+                ],
+                [
+                    'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class
+                ],
+                [
+                    'name' => NotEmptyValidator::class,
+                    'options' => [],
+                    'className' => NotEmptyValidator::class
+                ]
             ],
-            $classSchema->getMethod('methodWithValidateAnnotations')['annotations']['validators']
+            $classSchema->getMethod('methodWithValidateAnnotationsAction')['params']['fooParam']['validators']
         );
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaGenerationThrowsExceptionWithValidateAnnotationsForParamWithoutTypeHint()
+    {
+        $this->expectException(InvalidTypeHintException::class);
+        $this->expectExceptionMessage('Missing type information for parameter "$fooParam" in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint->methodWithValidateAnnotationsAction(): Either use an @param annotation or use a type hint.');
+        $this->expectExceptionCode(1515075192);
+
+        new ClassSchema(Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint::class);
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaGenerationThrowsExceptionWithValidateAnnotationsForMissingParam()
+    {
+        $this->expectException(InvalidValidationConfigurationException::class);
+        $this->expectExceptionMessage('Invalid validate annotation in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParam->methodWithValidateAnnotationsAction(): The following validators have been defined for missing param "$fooParam": NotEmpty, StringLength');
+        $this->expectExceptionCode(1515073585);
+
+        new ClassSchema(Fixture\DummyControllerWithValidateAnnotationWithoutParam::class);
     }
 }

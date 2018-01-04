@@ -21,4 +21,15 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class DummyModel extends AbstractEntity
 {
+    protected $propertyWithoutValidateAnnotations;
+
+    /**
+     * @validate StringLength (minimum=1,maximum=10)
+     * @validate NotEmpty
+     * @validate TYPO3.CMS.Extbase:NotEmpty
+     * @validate TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator
+     * @validate \TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
+     * @validate TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
+     */
+    protected $propertyWithValidateAnnotations;
 }

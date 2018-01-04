@@ -140,6 +140,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 'hasDefaultValue' =>  false,
                 'defaultValue' =>  null,
                 'dependency' =>  null,
+                'validators' => [],
             ]
         ], $parameters);
 
@@ -175,6 +176,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 'hasDefaultValue' =>  false,
                 'defaultValue' =>  null,
                 'dependency' =>  null,
+                'validators' => [],
             ],
             'foo' => [
                 'position' => 1,
@@ -189,6 +191,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 'hasDefaultValue' =>  false,
                 'defaultValue' =>  null,
                 'dependency' =>  null,
+                'validators' => [],
             ]
         ], $parameters);
     }

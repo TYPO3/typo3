@@ -540,4 +540,11 @@ return [
             'Deprecation-83254-MovedPageGenerationMethodsIntoTSFE.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\ActionController::getActionMethodParameters' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-83475-AggregateValidatorInformationInClassSchema-2.rst',
+        ],
+    ],
 ];

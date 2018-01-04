@@ -14,31 +14,17 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
  * Fixture class with @validate annotations
  */
-class DummyClassWithValidateAnnotation extends AbstractEntity
+class DummyControllerWithValidateAnnotationWithoutParamTypeHint extends ActionController
 {
-    protected $propertyWithoutValidateAnnotations;
-
     /**
-     * @validate NotEmpty
-     * @validate Empty (Foo=Bar)
+     * @validate $fooParam NotEmpty
      */
-    protected $propertyWithValidateAnnotations;
-
-    public function methodWithoutValidateAnnotations()
-    {
-    }
-
-    /**
-     * @param $fooParam
-     * @validate $fooParam FooValidator (FooValidatorOptionKey=FooValidatorOptionValue)
-     * @validate $fooParam BarValidator
-     */
-    public function methodWithValidateAnnotations($fooParam)
+    public function methodWithValidateAnnotationsAction($fooParam)
     {
     }
 }

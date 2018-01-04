@@ -21,6 +21,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
@@ -250,26 +251,37 @@ class ActionController extends AbstractController
      */
     protected function initializeActionMethodValidators()
     {
+        $methodParameters = $this->reflectionService->getMethodParameters(static::class, $this->actionMethodName);
 
-        /**
-         * @todo: add validation group support
-         * (https://review.typo3.org/#/c/13556/4)
-         */
-        $actionMethodParameters = static::getActionMethodParameters($this->objectManager);
-        if (isset($actionMethodParameters[$this->actionMethodName])) {
-            $methodParameters = $actionMethodParameters[$this->actionMethodName];
-        } else {
-            $methodParameters = [];
+        /** @var ConjunctionValidator[] $validatorConjunctions */
+        $validatorConjunctions = [];
+        foreach ($methodParameters as $parameterName => $methodParameter) {
+            /** @var ConjunctionValidator $validatorConjunction */
+            $validatorConjunction = $this->objectManager->get(ConjunctionValidator::class);
+
+            // @todo: remove check for old underscore model name syntax once it's possible
+            if (strpbrk($methodParameter['type'], '_\\') === false) {
+                // this checks if the type is a simply type and then adds a
+                // validator. StringValidator and such for example.
+                $typeValidator = $this->validatorResolver->createValidator($methodParameter['type']);
+
+                if ($typeValidator !== null) {
+                    $validatorConjunction->addValidator($typeValidator);
+                }
+            }
+
+            $validatorConjunctions[$parameterName] = $validatorConjunction;
+
+            foreach ($methodParameter['validators'] as $validator) {
+                $validatorConjunctions[$parameterName]->addValidator(
+                    $this->objectManager->get($validator['className'], $validator['options'])
+                );
+            }
         }
 
-        /**
-         * @todo: add resolving of $actionValidateAnnotations and pass them to
-         * buildMethodArgumentsValidatorConjunctions as in TYPO3.Flow
-         */
-        $parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(static::class, $this->actionMethodName, $methodParameters);
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
         foreach ($this->arguments as $argument) {
-            $validator = $parameterValidators[$argument->getName()];
+            $validator = $validatorConjunctions[$argument->getName()];
 
             $baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
             if (!empty($baseValidatorConjunction) && $validator instanceof AbstractCompositeValidator) {
@@ -636,9 +648,15 @@ class ActionController extends AbstractController
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      *
      * @return array Array of method parameters by action name
+     * @deprecated
      */
     public static function getActionMethodParameters($objectManager)
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         $reflectionService = $objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
 
         $result = [];

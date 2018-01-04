@@ -2025,4 +2025,11 @@ return [
             'Deprecation-84407-AJAXRequestMethodsInRsaEncryptionEncoder.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Validation\ValidatorResolver->buildMethodArgumentsValidatorConjunctions' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-83475-AggregateValidatorInformationInClassSchema-1.rst',
+        ],
+    ],
 ];

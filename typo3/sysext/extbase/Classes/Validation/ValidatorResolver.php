@@ -110,6 +110,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
 
             $validator = $this->objectManager->get($validatorObjectName, $validatorOptions);
 
+            // Move this check into ClassSchema
             if (!($validator instanceof \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface)) {
                 throw new Exception\NoSuchValidatorException('The validator "' . $validatorObjectName . '" does not implement TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface!', 1300694875);
             }
@@ -152,9 +153,15 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException
+     * @deprecated
      */
     public function buildMethodArgumentsValidatorConjunctions($className, $methodName, array $methodParameters = null, array $methodValidateAnnotations = null)
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         /** @var ConjunctionValidator[] $validatorConjunctions */
         $validatorConjunctions = [];
 
@@ -362,8 +369,9 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $validateValue
      * @return array
+     * @internal
      */
-    protected function parseValidatorAnnotation($validateValue)
+    public function parseValidatorAnnotation($validateValue)
     {
         $matches = [];
         if ($validateValue[0] === '$') {
@@ -432,8 +440,9 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @throws Exception\NoSuchValidatorException
      * @return string Name of the validator object
+     * @internal
      */
-    protected function resolveValidatorObjectName($validatorName)
+    public function resolveValidatorObjectName($validatorName)
     {
         if (strpos($validatorName, ':') !== false) {
             // Found shorthand validator, either extbase or foreign extension
