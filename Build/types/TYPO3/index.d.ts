@@ -5,6 +5,7 @@
  * Add types as you use them
  */
 declare namespace TYPO3 {
+  export let DebugConsole: any;
   export let Popover: any;
   export let Storage: any;
   export let Utility: any;
