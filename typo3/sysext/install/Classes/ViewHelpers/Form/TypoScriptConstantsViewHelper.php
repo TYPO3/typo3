@@ -17,8 +17,9 @@ namespace TYPO3\CMS\Install\ViewHelpers\Form;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * View Helper for rendering extension configuration forms
@@ -60,6 +61,15 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('value', 'mixed', 'Value of input tag');
         $this->registerArgument('configuration', 'array', '', true);
         $this->registerUniversalTagAttributes();
+    }
+
+    /**
+     * Create a fresh instance of $this->tag each time this VH is called.
+     */
+    public function initialize()
+    {
+        $this->setTagBuilder(new TagBuilder($this->tagName));
+        parent::initialize();
     }
 
     /**
