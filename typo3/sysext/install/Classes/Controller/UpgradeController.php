@@ -46,6 +46,7 @@ use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodAnnotationMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentDroppedMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentDroppedStaticMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentRequiredMatcher;
+use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentRequiredStaticMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentUnusedMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodCallMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodCallStaticMatcher;
@@ -128,6 +129,10 @@ class UpgradeController extends AbstractController
         [
             'class' => MethodArgumentRequiredMatcher::class,
             'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/MethodArgumentRequiredMatcher.php',
+        ],
+        [
+            'class' => MethodArgumentRequiredStaticMatcher::class,
+            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/MethodArgumentRequiredStaticMatcher.php',
         ],
         [
             'class' => MethodArgumentUnusedMatcher::class,
