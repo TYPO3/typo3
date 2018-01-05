@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 
 /*
@@ -62,32 +63,8 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function thawPropertiesSetsPropertyValues()
     {
-        $className = $this->getUniqueId('Class');
-        $classNameWithNS = __NAMESPACE__ . '\\' . $className;
-        eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
-		 
-		 /**
-		  * @var string
-		  */
-		 public $firstProperty; 
-		 
-		 /**
-		  * @var int
-		  */
-		 public $secondProperty; 
-		 
-		 /**
-		  * @var float
-		  */
-		 public $thirdProperty; 
-		 
-		 /**
-		  * @var bool
-		  */
-		 public $fourthProperty;
-		 }'
-        );
-        $object = new $classNameWithNS();
+        $className = Fixture\DummyEntity::class;
+        $object = new Fixture\DummyEntity();
         $row = [
             'uid' => '1234',
             'firstProperty' => 'firstValue',
@@ -105,10 +82,10 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $dataMap = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, ['dummy'], [$className, $className]);
         $dataMap->_set('columnMaps', $columnMaps);
         $dataMaps = [
-            $classNameWithNS => $dataMap
+            $className => $dataMap
         ];
         /** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
-        $classSchema = new ClassSchema($classNameWithNS);
+        $classSchema = new ClassSchema($className);
         $mockReflectionService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class)
             ->setMethods(['getClassSchema'])
             ->getMock();
@@ -201,23 +178,11 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $className = $this->getUniqueId('Class1');
-        $classNameWithNS = __NAMESPACE__ . '\\' . $className;
-
-        $className2 = $this->getUniqueId('Class2');
-        $className2WithNS = __NAMESPACE__ . '\\' . $className2;
-        eval('namespace ' . __NAMESPACE__ . '; class ' . $className2 . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' { }');
-        eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' { 
-            /**
-             * @var ' . $className2WithNS . '
-             */
-            public $relationProperty; 
-        }');
-        $object = new $classNameWithNS();
-        $child = new $className2WithNS();
+        $object = new Fixture\DummyParentEntity();
+        $child = new Fixture\DummyChildEntity();
 
         /** @var \TYPO3\CMS\Extbase\Reflection\ClassSchema|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject $classSchema1 */
-        $classSchema1 = new ClassSchema($classNameWithNS);
+        $classSchema1 = new ClassSchema(Fixture\DummyParentEntity::class);
         $identifier = 1;
 
         $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
