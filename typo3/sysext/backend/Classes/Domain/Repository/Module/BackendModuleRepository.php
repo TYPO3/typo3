@@ -191,23 +191,25 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function createMenuEntriesForTbeModulesExt()
     {
-        foreach ($GLOBALS['TBE_MODULES_EXT'] as $mainModule => $tbeModuleExt) {
-            list($main) = explode('_', $mainModule);
-            $mainEntry = $this->findByModuleName($main);
-            if ($mainEntry === false) {
-                continue;
-            }
+        if (isset($GLOBALS['TBE_MODULES_EXT'])) {
+            foreach ((array)$GLOBALS['TBE_MODULES_EXT'] as $mainModule => $tbeModuleExt) {
+                list($main) = explode('_', $mainModule);
+                $mainEntry = $this->findByModuleName($main);
+                if ($mainEntry === false) {
+                    continue;
+                }
 
-            $subEntries = $mainEntry->getChildren();
-            if (empty($subEntries)) {
-                continue;
-            }
-            $matchingSubEntry = $this->findByModuleName($mainModule);
-            if ($matchingSubEntry !== false) {
-                if (isset($tbeModuleExt['MOD_MENU']) && isset($tbeModuleExt['MOD_MENU']['function'])) {
-                    foreach ($tbeModuleExt['MOD_MENU']['function'] as $subModule) {
-                        $entry = $this->createEntryFromRawData($subModule);
-                        $matchingSubEntry->addChild($entry);
+                $subEntries = $mainEntry->getChildren();
+                if (empty($subEntries)) {
+                    continue;
+                }
+                $matchingSubEntry = $this->findByModuleName($mainModule);
+                if ($matchingSubEntry !== false) {
+                    if (isset($tbeModuleExt['MOD_MENU']) && isset($tbeModuleExt['MOD_MENU']['function'])) {
+                        foreach ($tbeModuleExt['MOD_MENU']['function'] as $subModule) {
+                            $entry = $this->createEntryFromRawData($subModule);
+                            $matchingSubEntry->addChild($entry);
+                        }
                     }
                 }
             }
