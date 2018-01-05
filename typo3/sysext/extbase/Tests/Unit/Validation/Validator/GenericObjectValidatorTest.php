@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 /*                                                                        *
@@ -21,29 +22,22 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\Error\Error;
+use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
+
 /**
- * Testcase for the Generic Object Validator
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * Testcase
  */
-class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase
+class GenericObjectValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * @var string
-     */
-    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class;
-
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
     /**
      * @test
      */
     public function validatorShouldReturnErrorsIfTheValueIsNoObjectAndNotNull()
     {
-        $this->assertTrue($this->validator->validate('foo')->hasErrors());
+        $this->assertTrue((new GenericObjectValidator())->validate('foo')->hasErrors());
     }
 
     /**
@@ -51,25 +45,27 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
      */
     public function validatorShouldReturnNoErrorsIfTheValueIsNull()
     {
-        $this->assertFalse($this->validator->validate(null)->hasErrors());
+        $this->assertFalse((new GenericObjectValidator())->validate(null)->hasErrors());
     }
 
     /**
      * @return array
      */
-    public function dataProviderForValidator()
+    public function dataProviderForValidator(): array
     {
-        $error1 = new \TYPO3\CMS\Extbase\Error\Error('error1', 1);
-        $error2 = new \TYPO3\CMS\Extbase\Error\Error('error2', 2);
-        $emptyResult1 = new \TYPO3\CMS\Extbase\Error\Result();
-        $emptyResult2 = new \TYPO3\CMS\Extbase\Error\Result();
-        $resultWithError1 = new \TYPO3\CMS\Extbase\Error\Result();
+        $error1 = new Error('error1', 1);
+        $error2 = new Error('error2', 2);
+        $emptyResult1 = new Result();
+        $emptyResult2 = new Result();
+        $resultWithError1 = new Result();
         $resultWithError1->addError($error1);
-        $resultWithError2 = new \TYPO3\CMS\Extbase\Error\Result();
+        $resultWithError2 = new Result();
         $resultWithError2->addError($error2);
-        $classNameForObjectWithPrivateProperties = $this->getUniqueId('B');
-        eval('class ' . $classNameForObjectWithPrivateProperties . '{ protected $foo = \'foovalue\'; protected $bar = \'barvalue\'; }');
-        $objectWithPrivateProperties = new $classNameForObjectWithPrivateProperties();
+        $objectWithPrivateProperties = new class() {
+            protected $foo = 'foovalue';
+            protected $bar = 'barvalue';
+        };
+
         return [
             // If no errors happened, this is shown
             [$objectWithPrivateProperties, $emptyResult1, $emptyResult2, []],
@@ -81,24 +77,32 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
     /**
      * @test
      * @dataProvider dataProviderForValidator
-     * @param mixed $mockObject
+     *
+     * @param mixed $objectToBeValidated
      * @param mixed $validationResultForFoo
      * @param mixed $validationResultForBar
      * @param mixed $errors
      */
-    public function validateChecksAllPropertiesForWhichAPropertyValidatorExists($mockObject, $validationResultForFoo, $validationResultForBar, $errors)
+    public function validateChecksAllPropertiesForWhichAPropertyValidatorExists($objectToBeValidated, $validationResultForFoo, $validationResultForBar, $errors)
     {
-        $validatorForFoo = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validator = new GenericObjectValidator();
+
+        /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validatorForFoo */
+        $validatorForFoo = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorForFoo->expects($this->once())->method('validate')->with('foovalue')->will($this->returnValue($validationResultForFoo));
-        $validatorForBar = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+
+        /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validatorForBar */
+        $validatorForBar = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorForBar->expects($this->once())->method('validate')->with('barvalue')->will($this->returnValue($validationResultForBar));
-        $this->validator->addPropertyValidator('foo', $validatorForFoo);
-        $this->validator->addPropertyValidator('bar', $validatorForBar);
-        $this->assertEquals($errors, $this->validator->validate($mockObject)->getFlattenedErrors());
+
+        $validator->addPropertyValidator('foo', $validatorForFoo);
+        $validator->addPropertyValidator('bar', $validatorForBar);
+
+        $this->assertEquals($errors, $validator->validate($objectToBeValidated)->getFlattenedErrors());
     }
 
     /**
@@ -106,20 +110,23 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
      */
     public function validateCanHandleRecursiveTargetsWithoutEndlessLooping()
     {
-        $classNameA = $this->getUniqueId('B');
-        eval('class ' . $classNameA . '{ public $b; }');
-        $classNameB = $this->getUniqueId('B');
-        eval('class ' . $classNameB . '{ public $a; }');
-        $A = new $classNameA();
-        $B = new $classNameB();
+        $A = new class() {
+            public $b;
+        };
+
+        $B = new class() {
+            public $a;
+        };
+
         $A->b = $B;
         $B->a = $A;
 
-        $aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator([]);
-        $bValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator([]);
+        $aValidator = new GenericObjectValidator();
+        $bValidator = new GenericObjectValidator();
 
         $aValidator->addPropertyValidator('b', $bValidator);
         $bValidator->addPropertyValidator('a', $aValidator);
+
         $this->assertFalse($aValidator->validate($A)->hasErrors());
     }
 
@@ -128,27 +135,33 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
      */
     public function validateDetectsFailuresInRecursiveTargetsI()
     {
-        $classNameA = $this->getUniqueId('A');
-        eval('class ' . $classNameA . '{ public $b; }');
-        $classNameB = $this->getUniqueId('B');
-        eval('class ' . $classNameB . '{ public $a; public $uuid = 0xF; }');
-        $A = new $classNameA();
-        $B = new $classNameB();
+        $A = new class() {
+            public $b;
+        };
+
+        $B = new class() {
+            public $a;
+            public $uuid = 0xF;
+        };
+
         $A->b = $B;
         $B->a = $A;
-        $aValidator = $this->getValidator();
-        $bValidator = $this->getValidator();
+        $aValidator = new GenericObjectValidator();
+        $bValidator = new GenericObjectValidator();
 
         $aValidator->addPropertyValidator('b', $bValidator);
         $bValidator->addPropertyValidator('a', $aValidator);
-        $error = new \TYPO3\CMS\Extbase\Error\Error('error1', 123);
-        $result = new \TYPO3\CMS\Extbase\Error\Result();
+        $error = new Error('error1', 123);
+        $result = new Result();
         $result->addError($error);
-        $mockUuidValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+
+        /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $mockUuidValidator */
+        $mockUuidValidator = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $mockUuidValidator->expects($this->any())->method('validate')->with(15)->will($this->returnValue($result));
         $bValidator->addPropertyValidator('uuid', $mockUuidValidator);
+
         $this->assertSame(['b.uuid' => [$error]], $aValidator->validate($A)->getFlattenedErrors());
     }
 
@@ -157,28 +170,35 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
      */
     public function validateDetectsFailuresInRecursiveTargetsII()
     {
-        $classNameA = $this->getUniqueId('A');
-        eval('class ' . $classNameA . '{ public $b; public $uuid = 0xF; }');
-        $classNameB = $this->getUniqueId('B');
-        eval('class ' . $classNameB . '{ public $a; public $uuid = 0xF; }');
-        $A = new $classNameA();
-        $B = new $classNameB();
+        $A = new class() {
+            public $b;
+            public $uuid = 0xF;
+        };
+
+        $B = new class() {
+            public $a;
+            public $uuid = 0xF;
+        };
+
         $A->b = $B;
         $B->a = $A;
-        $aValidator = $this->getValidator();
-        $bValidator = $this->getValidator();
+        $aValidator = new GenericObjectValidator();
+        $bValidator = new GenericObjectValidator();
 
         $aValidator->addPropertyValidator('b', $bValidator);
         $bValidator->addPropertyValidator('a', $aValidator);
-        $error1 = new \TYPO3\CMS\Extbase\Error\Error('error1', 123);
-        $result1 = new \TYPO3\CMS\Extbase\Error\Result();
+        $error1 = new Error('error1', 123);
+        $result1 = new Result();
         $result1->addError($error1);
-        $mockUuidValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+
+        /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $mockUuidValidator */
+        $mockUuidValidator = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $mockUuidValidator->expects($this->any())->method('validate')->with(15)->will($this->returnValue($result1));
         $aValidator->addPropertyValidator('uuid', $mockUuidValidator);
         $bValidator->addPropertyValidator('uuid', $mockUuidValidator);
+
         $this->assertSame(['b.uuid' => [$error1], 'uuid' => [$error1]], $aValidator->validate($A)->getFlattenedErrors());
     }
 }
