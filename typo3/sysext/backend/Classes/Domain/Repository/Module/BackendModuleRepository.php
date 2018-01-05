@@ -190,7 +190,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function createMenuEntriesForTbeModulesExt()
     {
-        foreach ($GLOBALS['TBE_MODULES_EXT'] as $mainModule => $tbeModuleExt) {
+        foreach ($GLOBALS['TBE_MODULES_EXT'] ?? [] as $mainModule => $tbeModuleExt) {
             list($main) = explode('_', $mainModule);
             $mainEntry = $this->findByModuleName($main);
             if ($mainEntry === false) {
