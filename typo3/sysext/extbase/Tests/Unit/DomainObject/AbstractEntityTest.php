@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\DomainObject;
 
 /*
@@ -24,16 +25,12 @@ class AbstractEntityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithSimpleProperties()
     {
-        $domainObjectName = $this->getUniqueId('DomainObject_');
-        $domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
-        eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
-			public $foo;
-			public $bar;
-		}');
-        $domainObject = new $domainObjectNameWithNS();
-        $domainObject->foo = 'Test';
-        $domainObject->bar = 'It is raining outside';
+        $domainObject = new class extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+            public $foo = 'Test';
+            public $bar = 'It is raining outside';
+        };
         $domainObject->_memorizeCleanState();
+
         $this->assertFalse($domainObject->_isDirty());
     }
 
@@ -42,17 +39,13 @@ class AbstractEntityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function objectIsDirtyAfterCallingMemorizeCleanStateWithSimplePropertiesAndModifyingThePropertiesAfterwards()
     {
-        $domainObjectName = $this->getUniqueId('DomainObject_');
-        $domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
-        eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
-			public $foo;
-			public $bar;
-		}');
-        $domainObject = new $domainObjectNameWithNS();
-        $domainObject->foo = 'Test';
-        $domainObject->bar = 'It is raining outside';
+        $domainObject = new class extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+            public $foo = 'Test';
+            public $bar = 'It is raining outside';
+        };
         $domainObject->_memorizeCleanState();
         $domainObject->bar = 'Now it is sunny.';
+
         $this->assertTrue($domainObject->_isDirty());
     }
 
@@ -61,16 +54,13 @@ class AbstractEntityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithObjectProperties()
     {
-        $domainObjectName = $this->getUniqueId('DomainObject_');
-        $domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
-        eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
-			public $foo;
-			public $bar;
-		}');
-        $domainObject = new $domainObjectNameWithNS();
+        $domainObject = new class extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+            public $foo;
+            public $bar = 'It is raining outside';
+        };
         $domainObject->foo = new \DateTime();
-        $domainObject->bar = 'It is raining outside';
         $domainObject->_memorizeCleanState();
+
         $this->assertFalse($domainObject->_isDirty());
     }
 
@@ -79,24 +69,21 @@ class AbstractEntityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithOtherDomainObjectsAsProperties()
     {
-        $domainObjectName = $this->getUniqueId('DomainObject_');
-        $domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
-        eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
-			public $foo;
-			public $bar;
-		}');
-        $secondDomainObjectName = $this->getUniqueId('DomainObject_');
-        $secondDomainObjectNameWithNS = __NAMESPACE__ . '\\' . $secondDomainObjectName;
-        eval('namespace ' . __NAMESPACE__ . '; class ' . $secondDomainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
-			public $foo;
-			public $bar;
-		}');
-        $secondDomainObject = new $secondDomainObjectNameWithNS();
+        $domainObject = new class extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+            public $foo;
+            public $bar;
+        };
+
+        $secondDomainObject = new class extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+            public $foo;
+            public $bar;
+        };
+
         $secondDomainObject->_memorizeCleanState();
-        $domainObject = new $domainObjectNameWithNS();
         $domainObject->foo = $secondDomainObject;
         $domainObject->bar = 'It is raining outside';
         $domainObject->_memorizeCleanState();
+
         $this->assertFalse($domainObject->_isDirty());
     }
 }
