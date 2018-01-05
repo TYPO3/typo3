@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 /*                                                                        *
@@ -51,8 +52,6 @@ class CollectionValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         return $this->getAccessibleMock($this->validatorClassName, $mockedMethods, [$options], '', true);
     }
 
-    /**
-     */
     protected function setUp()
     {
         $this->mockValidatorResolver = $this->getAccessibleMock(
@@ -84,6 +83,8 @@ class CollectionValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     public function collectionValidatorValidatesEveryElementOfACollectionWithTheGivenElementValidator()
     {
+        // todo: this test is rather complex, consider making it a functional test with fixtures
+
         $this->validator->_set('options', ['elementValidator' => 'EmailAddress']);
         $this->mockValidatorResolver->expects($this->exactly(4))
             ->method('createValidator')
@@ -104,7 +105,7 @@ class CollectionValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $result = $this->validator->validate($arrayOfEmailAddresses);
 
         $this->assertTrue($result->hasErrors());
-        $this->assertSame(2, count($result->getFlattenedErrors()));
+        $this->assertCount(2, $result->getFlattenedErrors());
     }
 
     /**
@@ -112,12 +113,19 @@ class CollectionValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     public function collectionValidatorValidatesNestedObjectStructuresWithoutEndlessLooping()
     {
-        $classNameA = $this->getUniqueId('A');
-        eval('class ' . $classNameA . '{ public $b = array(); public $integer = 5; }');
-        $classNameB = $this->getUniqueId('B');
-        eval('class ' . $classNameB . '{ public $a; public $c; public $integer = "Not an integer"; }');
-        $A = new $classNameA();
-        $B = new $classNameB();
+        // todo: this test is rather complex, consider making it a functional test with fixtures
+
+        $A = new class() {
+            public $b = [];
+            public $integer = 5;
+        };
+
+        $B = new class() {
+            public $a;
+            public $c;
+            public $integer = 'Not an integer';
+        };
+
         $A->b = [$B];
         $B->a = $A;
         $B->c = [$A];
@@ -154,6 +162,8 @@ class CollectionValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     public function collectionValidatorIsValidEarlyReturnsOnUnitializedLazyObjectStorages()
     {
+        // todo: this test is rather complex, consider making it a functional test with fixtures
+
         $parentObject  = new \TYPO3\CMS\Extbase\Tests\Fixture\Entity('Foo');
         $elementType = \TYPO3\CMS\Extbase\Tests\Fixture\Entity::class;
         $lazyObjectStorage = new \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage(
@@ -174,6 +184,8 @@ class CollectionValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     public function collectionValidatorCallsCollectionElementValidatorWhenValidatingObjectStorages()
     {
+        // todo: this test is rather complex, consider making it a functional test with fixtures
+
         $entity = new \TYPO3\CMS\Extbase\Tests\Fixture\Entity('Foo');
         $elementType = \TYPO3\CMS\Extbase\Tests\Fixture\Entity::class;
         $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
