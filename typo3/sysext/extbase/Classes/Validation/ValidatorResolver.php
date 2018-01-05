@@ -305,11 +305,9 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                         $parsedAnnotations = $this->parseValidatorAnnotation($validateValue);
 
                         foreach ($parsedAnnotations['validators'] as $validator) {
-                            array_push($validateAnnotations, [
-                                'argumentName' => $parsedAnnotations['argumentName'],
-                                'validatorName' => $validator['validatorName'],
-                                'validatorOptions' => $validator['validatorOptions']
-                            ]);
+                            $validateAnnotation = $validator;
+                            $validateAnnotation['argumentName'] = $parsedAnnotations['argumentName'] ?? null;
+                            $validateAnnotations[] = $validateAnnotation;
                         }
                     }
                 }
@@ -437,7 +435,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function resolveValidatorObjectName($validatorName)
     {
-        if (strpos($validatorName, ':') !== false || strpbrk($validatorName, '_\\') === false) {
+        if (strpos($validatorName, ':') !== false) {
             // Found shorthand validator, either extbase or foreign extension
             // NotEmpty or Acme.MyPck.Ext:MyValidator
             list($extensionName, $extensionValidatorName) = explode(':', $validatorName);
@@ -456,6 +454,9 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                 // Shorthand built in
                 $possibleClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . $this->getValidatorType($validatorName);
             }
+        } elseif (strpbrk($validatorName, '_\\') === false) {
+            // Shorthand built in
+            $possibleClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . $this->getValidatorType($validatorName);
         } else {
             // Full qualified
             // Tx_MyExt_Validation_Validator_MyValidator or \Acme\Ext\Validation\Validator\FooValidator
