@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 /*                                                                        *
@@ -21,31 +22,21 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\Validation\Validator\StringValidator;
+
 /**
  * Testcase for the string length validator
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class StringValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase
+class StringValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * @var string
-     */
-    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\StringValidator::class;
-
-    public function setup()
-    {
-        $this->validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(['translateErrorMessage'])
-            ->getMock();
-    }
-
     /**
      * @test
      */
     public function stringValidatorShouldValidateString()
     {
-        $this->assertFalse($this->validator->validate('Hello World')->hasErrors());
+        $this->assertFalse((new StringValidator())->validate('Hello World')->hasErrors());
     }
 
     /**
@@ -53,7 +44,12 @@ class StringValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valid
      */
     public function stringValidatorShouldReturnErrorIfNumberIsGiven()
     {
-        $this->assertTrue($this->validator->validate(42)->hasErrors());
+        /** @var StringValidator $validator */
+        $validator = $this->getMockBuilder(StringValidator::class)
+            ->setMethods(['translateErrorMessage'])
+            ->getMock();
+
+        $this->assertTrue($validator->validate(42)->hasErrors());
     }
 
     /**
@@ -61,15 +57,19 @@ class StringValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valid
      */
     public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven()
     {
-        $className = $this->getUniqueId('TestClass');
-        eval('
-			class ' . $className . ' {
-				public function __toString() {
-					return "ASDF";
-				}
-			}
-		');
-        $object = new $className();
-        $this->assertTrue($this->validator->validate($object)->hasErrors());
+        /** @var StringValidator $validator */
+        $validator = $this->getMockBuilder(StringValidator::class)
+            ->setMethods(['translateErrorMessage'])
+            ->getMock();
+
+        $object = new class() {
+            /** @return string */
+            public function __toString()
+            {
+                return 'ASDF';
+            }
+        };
+
+        $this->assertTrue($validator->validate($object)->hasErrors());
     }
 }
