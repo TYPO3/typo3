@@ -143,7 +143,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
      */
     public function getOverview()
     {
-        $content = '<p>' . $this->getLanguageService()->getLL('description') . '</p>';
+        $content = '<p>' . htmlspecialchars($this->getLanguageService()->getLL('description')) . '</p>';
         // Get the actions
         $actionList = $this->getActions();
         if (!empty($actionList)) {
@@ -235,10 +235,10 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                     ]
                 );
 
-                $title = 'title="' . $this->getLanguageService()->getLL('edit-sys_action') . '"';
+                $title = $this->getLanguageService()->getLL('edit-sys_action');
                 $icon = $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render();
-                $editActionLink = '<a class="btn btn-default btn-sm" href="' . $link . '"' . $title . '>';
-                $editActionLink .= $icon . ' ' . $this->getLanguageService()->getLL('edit-sys_action') . '</a>';
+                $editActionLink = '<a class="btn btn-default btn-sm" href="' . htmlspecialchars($link) . '" title="' . htmlspecialchars($title) . '">';
+                $editActionLink .= $icon . ' ' . htmlspecialchars($title) . '</a>';
             }
 
             $actionList[] = [
@@ -291,10 +291,11 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 ]
             );
 
+            $title = $this->getLanguageService()->getLL('new-sys_action');
             $content .= '<p>' .
-                '<a class="btn btn-default" href="' . $link . '" title="' . $this->getLanguageService()->getLL('new-sys_action') . '">' .
+                '<a class="btn btn-default" href="' . htmlspecialchars($link) . '" title="' . htmlspecialchars($title) . '">' .
                 $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . ' ' .
-                $this->getLanguageService()->getLL('new-sys_action') .
+                htmlspecialchars($title) .
                 '</a></p>';
         }
         return $content;
@@ -379,32 +380,32 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         }
         $content .= '<form action="" class="panel panel-default" method="post" enctype="multipart/form-data">
                         <fieldset class="form-section">
-                            <h4 class="form-section-headline">' . $this->getLanguageService()->getLL('action_t1_legend_generalFields') . '</h4>
+                            <h4 class="form-section-headline">' . htmlspecialchars($this->getLanguageService()->getLL('action_t1_legend_generalFields')) . '</h4>
                             <div class="form-group">
-                                <label for="field_disable">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable') . '</label>
+                                <label for="field_disable">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable')) . '</label>
                                 <input type="checkbox" id="field_disable" name="data[disable]" value="1" class="checkbox" ' . ($vars['disable'] == 1 ? ' checked="checked" ' : '') . ' />
                             </div>
                             <div class="form-group">
-                                <label for="field_realname">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.name') . '</label>
+                                <label for="field_realname">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.name')) . '</label>
                                 <input type="text" id="field_realname" class="form-control" name="data[realName]" value="' . htmlspecialchars($vars['realName']) . '" />
                             </div>
                             <div class="form-group">
-                                <label for="field_username">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.username') . '</label>
+                                <label for="field_username">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.username')) . '</label>
                                 <input type="text" id="field_username" class="form-control" name="data[username]" value="' . htmlspecialchars($vars['username']) . '" />
                             </div>
                             <div class="form-group">
-                                <label for="field_password">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.password') . '</label>
+                                <label for="field_password">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.password')) . '</label>
                                 <input type="password" id="field_password" class="form-control" name="data[password]" value="" />
                             </div>
                             <div class="form-group">
-                                <label for="field_email">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.email') . '</label>
+                                <label for="field_email">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.email')) . '</label>
                                 <input type="text" id="field_email" class="form-control" name="data[email]" value="' . htmlspecialchars($vars['email']) . '" />
                             </div>
                         </fieldset>
                         <fieldset class="form-section">
-                            <h4 class="form-section-headline">' . $this->getLanguageService()->getLL('action_t1_legend_configuration') . '</h4>
+                            <h4 class="form-section-headline">' . htmlspecialchars($this->getLanguageService()->getLL('action_t1_legend_configuration')) . '</h4>
                             <div class="form-group">
-                                <label for="field_usergroup">' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup') . '</label>
+                                <label for="field_usergroup">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup')) . '</label>
                                 <select id="field_usergroup" class="form-control" name="data[usergroup][]" multiple="multiple">
                                     ' . $this->getUsergroups($record, $vars) . '
                                 </select>
@@ -412,7 +413,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                             <div class="form-group">
                                 <input type="hidden" name="data[key]" value="' . $key . '" />
                                 <input type="hidden" name="data[sent]" value="1" />
-                                <input class="btn btn-default" type="submit" value="' . ($key === 'NEW' ? $this->getLanguageService()->getLL('action_Create') : $this->getLanguageService()->getLL('action_Update')) . '" />
+                                <input class="btn btn-default" type="submit" value="' . htmlspecialchars($this->getLanguageService()->getLL($key === 'NEW' ? 'action_Create' : 'action_Update')) . '" />
                             </div>
                         </fieldset>
                     </form>';
@@ -713,7 +714,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             $checkGroup = BackendUtility::getRecord('be_groups', $group);
             if (is_array($checkGroup)) {
                 $selected = GeneralUtility::inList($vars['usergroup'], $checkGroup['uid']) ? ' selected="selected" ' : '';
-                $content .= '<option ' . $selected . 'value="' . $checkGroup['uid'] . '">' . htmlspecialchars($checkGroup['title']) . '</option>';
+                $content .= '<option ' . $selected . 'value="' . (int)$checkGroup['uid'] . '">' . htmlspecialchars($checkGroup['title']) . '</option>';
             }
         }
         return $content;
@@ -758,7 +759,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             $description = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$el['table']]['ctrl']['title']));
             // @todo: which information could be needful
             if (isset($record['crdate'])) {
-                $description .= ' - ' . BackendUtility::dateTimeAge($record['crdate']);
+                $description .= ' - ' . htmlspecialchars(BackendUtility::dateTimeAge($record['crdate']));
             }
             $link = BackendUtility::getModuleUrl(
                 'record_edit',
@@ -816,7 +817,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                         $actionContent = $cP['content'];
                         // If the result is rendered as csv or xml, show a download link
                         if ($type === 'csv' || $type === 'xml') {
-                            $actionContent .= '<a href="' . GeneralUtility::getIndpEnv('REQUEST_URI') . '&download_file=1"><strong>' . $this->getLanguageService()->getLL('action_download_file') . '</strong></a>';
+                            $actionContent .= '<a href="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI') . '&download_file=1') . '">'
+                                . '<strong>' . htmlspecialchars($this->getLanguageService()->getLL('action_download_file')) . '</strong></a>';
                         }
                     } catch (DBALException $e) {
                         $actionContent .= $e->getMessage();
@@ -834,9 +836,9 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 // Admin users are allowed to see and edit the query
                 if ($this->getBackendUser()->isAdmin()) {
                     if (!$queryIsEmpty) {
-                        $actionContent .= '<div class="panel panel-default"><div class="panel-body"><pre>' . $sql_query['qSelect'] . '</pre></div></div>';
+                        $actionContent .= '<div class="panel panel-default"><div class="panel-body"><pre>' . htmlspecialchars($sql_query['qSelect']) . '</pre></div></div>';
                     }
-                    $actionContent .= '<a title="' . $this->getLanguageService()->getLL('action_editQuery') . '" class="btn btn-default" href="'
+                    $actionContent .= '<a title="' . htmlspecialchars($this->getLanguageService()->getLL('action_editQuery')) . '" class="btn btn-default" href="'
                         . htmlspecialchars(BackendUtility::getModuleUrl('system_dbint')
                             . '&id=' . '&SET[function]=search' . '&SET[search]=query'
                             . '&storeControl[STORE]=-' . $record['uid'] . '&storeControl[LOAD]=1')
@@ -939,7 +941,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
 
 				' . $dblist->CBfunctions() . '
 				function editRecords(table,idList,addParams,CBflag) {
-					window.location.href="' . BackendUtility::getModuleUrl('record_edit', ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]) . '&edit["+table+"]["+idList+"]=edit"+addParams;
+					var recordEditUrl = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('record_edit', ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')])) . ';
+					window.location.href = recordEditUrl + "&edit[" + table + "][" + idList + "]=edit" + addParams;
 				}
 				function editList(table,idList) {
 					var list="";
@@ -969,8 +972,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             $this->taskObject->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
             $this->taskObject->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
             // Begin to compile the whole page
-            $content .= '<form action="' . htmlspecialchars($dblist->listURL()) . '" method="post" name="dblistForm">' . $dblist->HTMLcode . '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" />
-						</form>';
+            $content .= '<form action="' . htmlspecialchars($dblist->listURL()) . '" method="post" name="dblistForm">' . $dblist->HTMLcode . '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
             // If a listing was produced, create the page footer with search form etc:
             // Making field select box (when extended view for a single table is enabled):
             if ($dblist->HTMLcode && $dblist->table) {
