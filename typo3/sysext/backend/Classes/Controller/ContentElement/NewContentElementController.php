@@ -254,9 +254,9 @@ class NewContentElementController extends AbstractModule
 
             foreach ($wizardItems as $wizardKey => $wInfo) {
                 $wizardOnClick = '';
-                if ($wInfo['header']) {
+                if (isset($wInfo['header'])) {
                     $menuItems[] = [
-                        'label' => $wInfo['header'],
+                        'label' => $wInfo['header'] ?: '-',
                         'content' => ''
                     ];
                     $key = count($menuItems) - 1;
