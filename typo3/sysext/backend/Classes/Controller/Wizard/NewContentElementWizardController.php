@@ -267,9 +267,9 @@ class NewContentElementWizardController
 
             foreach ($wizardItems as $wizardKey => $wizardInformation) {
                 $wizardOnClick = '';
-                if ($wizardInformation['header']) {
+                if (isset($wizardInformation['header'])) {
                     $menuItems[] = [
-                        'label' => $wizardInformation['header'],
+                        'label' => $wizardInformation['header'] ?: '-',
                         'content' => ''
                     ];
                     $key = count($menuItems) - 1;
