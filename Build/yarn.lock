@@ -562,8 +562,8 @@ circular-json@^0.3.1:
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
 
 ckeditor@^4.7.2:
-  version "4.7.3"
-  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.7.3.tgz#b486fb9eb91af9532a0acfaea4a55374970254d5"
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.8.0.tgz#5d450fa02a68d5a143cf5619754fbf0c04cad426"
 
 clean-css@^4.x:
   version "4.1.9"
