@@ -17,10 +17,23 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * A validator which accepts any input.
  *
- * @api
+ * @deprecated
  */
 class RawValidator extends AbstractValidator
 {
+    /**
+     * @param array $options
+     */
+    public function __construct(array $options = [])
+    {
+        trigger_error(
+            __CLASS__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
+        parent::__construct($options);
+    }
+
     /**
      * This validator is always valid.
      *

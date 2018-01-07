@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Validation\Validator;
 
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *

@@ -524,4 +524,9 @@ return [
             'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Validation\Validator\RawValidator' => [
+        'restFiles' => [
+            'Deprecation-83503-DeprecateUnneededRawValidator.rst',
+        ],
+    ],
 ];
