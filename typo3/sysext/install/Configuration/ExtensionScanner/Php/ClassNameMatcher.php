@@ -529,4 +529,9 @@ return [
             'Deprecation-83503-DeprecateUnneededRawValidator.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase' => [
+        'restFiles' => [
+            'Deprecation-83511-DeprecateAbstractValidatorTestcase.rst',
+        ],
+    ],
 ];

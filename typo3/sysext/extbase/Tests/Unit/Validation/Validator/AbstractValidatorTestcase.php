@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 /**
  * Test case for the Abstract Validator
+ * @deprecated
  */
 abstract class AbstractValidatorTestcase extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -36,6 +37,9 @@ abstract class AbstractValidatorTestcase extends \TYPO3\TestingFramework\Core\Un
      */
     protected $validator;
 
+    /**
+     * @deprecated
+     */
     protected function setUp()
     {
         $this->validator = $this->getValidator();
@@ -44,18 +48,30 @@ abstract class AbstractValidatorTestcase extends \TYPO3\TestingFramework\Core\Un
     /**
      * @param array $options
      * @return mixed
+     * @deprecated
      */
     protected function getValidator($options = [])
     {
+        trigger_error(
+            __CLASS__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         $validator = new $this->validatorClassName($options);
         return $validator;
     }
 
     /**
      * @param array $options
+     * @deprecated
      */
     protected function validatorOptions($options)
     {
+        trigger_error(
+            __CLASS__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         $this->validator = $this->getValidator($options);
     }
 }

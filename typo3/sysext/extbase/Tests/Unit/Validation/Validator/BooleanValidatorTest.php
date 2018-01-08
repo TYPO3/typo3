@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 /*                                                                        *
@@ -21,25 +22,20 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-/**
- * Testcase for the number range validator
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- */
-class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase
-{
-    /**
-     * @var string
-     */
-    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\BooleanValidator::class;
+use TYPO3\CMS\Extbase\Validation\Validator\BooleanValidator;
 
+/**
+ * Testcase
+ */
+class BooleanValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+{
     /**
      * @test
      */
     public function booleanValidatorReturnsNoErrorForAFalseStringExpectation()
     {
         $options = ['is' => 'false'];
-        $validator = $this->getMockBuilder($this->validatorClassName)
+        $validator = $this->getMockBuilder(BooleanValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
@@ -52,7 +48,7 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
     public function booleanValidatorReturnsNoErrorForATrueStringExpectation()
     {
         $options = ['is' => 'true'];
-        $validator = $this->getMockBuilder($this->validatorClassName)
+        $validator = $this->getMockBuilder(BooleanValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
@@ -65,7 +61,7 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
     public function booleanValidatorReturnsNoErrorForATrueExpectation()
     {
         $options = ['is' => true];
-        $validator = $this->getMockBuilder($this->validatorClassName)
+        $validator = $this->getMockBuilder(BooleanValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
@@ -78,7 +74,7 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
     public function booleanValidatorReturnsNoErrorForAFalseExpectation()
     {
         $options = ['is' => false];
-        $validator = $this->getMockBuilder($this->validatorClassName)
+        $validator = $this->getMockBuilder(BooleanValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
@@ -91,7 +87,7 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
     public function booleanValidatorReturnsErrorForTrueWhenFalseExpected()
     {
         $options = ['is' => false];
-        $validator = $this->getMockBuilder($this->validatorClassName)
+        $validator = $this->getMockBuilder(BooleanValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
@@ -104,7 +100,7 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
     public function booleanValidatorReturnsErrorForFalseWhenTrueExpected()
     {
         $options = ['is' => true];
-        $validator = $this->getMockBuilder($this->validatorClassName)
+        $validator = $this->getMockBuilder(BooleanValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
@@ -117,7 +113,7 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
     public function booleanValidatorReturnsErrorForAString()
     {
         $options = ['is' => true];
-        $validator = $this->getMockBuilder($this->validatorClassName)
+        $validator = $this->getMockBuilder(BooleanValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
@@ -130,7 +126,7 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
     public function booleanValidatorReturnsTrueIfNoParameterIsGiven()
     {
         $options = [];
-        $validator = $this->getMockBuilder($this->validatorClassName)
+        $validator = $this->getMockBuilder(BooleanValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
