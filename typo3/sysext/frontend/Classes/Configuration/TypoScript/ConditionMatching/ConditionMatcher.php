@@ -90,8 +90,13 @@ class ConditionMatcher extends AbstractConditionMatcher
     /**
      * Returns GP / ENV / TSFE vars
      *
+     * @example GP:L
+     * @example TSFE:fe_user|sesData|foo|bar
+     * @example TSFE:id
+     * @example ENV:HTTP_HOST
+     *
      * @param string $var Identifier
-     * @return mixed The value of the variable pointed to or NULL if variable did not exist
+     * @return mixed|null The value of the variable pointed to or NULL if variable did not exist
      */
     protected function getVariable($var)
     {
@@ -103,13 +108,44 @@ class ConditionMatcher extends AbstractConditionMatcher
             if ($k) {
                 switch ((string)trim($vars[0])) {
                     case 'TSFE':
-                        $val = $this->getGlobal('TSFE|' . $vars[1]);
+                        if (strpos($vars[1], 'fe_user|sesData|') === 0) {
+                            $val = $this->getSessionVariable(substr($vars[1], 16));
+                        } else {
+                            $val = $this->getGlobal('TSFE|' . $vars[1]);
+                        }
                         break;
                     default:
                 }
             }
         }
         return $val;
+    }
+
+    /**
+     * Return variable from current frontend user session
+     *
+     * @param string $var Session key
+     * @return mixed|null The value of the variable pointed to or NULL if variable did not exist
+     */
+    protected function getSessionVariable(string $var)
+    {
+        $retVal = null;
+        $keyParts = explode('|', $var);
+        $sessionKey = array_shift($keyParts);
+        $tsfe = $this->getTypoScriptFrontendController();
+        if ($tsfe && is_object($tsfe->fe_user)) {
+            $retVal = $tsfe->fe_user->getSessionData($sessionKey);
+            foreach ($keyParts as $keyPart) {
+                if (is_object($retVal)) {
+                    $retVal = $retVal->{$keyPart};
+                } elseif (is_array($retVal)) {
+                    $retVal = $retVal[$keyPart];
+                } else {
+                    break;
+                }
+            }
+        }
+        return $retVal;
     }
 
     /**
