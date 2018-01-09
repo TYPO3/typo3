@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  * **This class is NOT meant to be sub classed by developers.**
  * @internal
  */
-final class FinisherVariableProvider implements \ArrayAccess
+final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate, \Countable
 {
 
     /**
@@ -177,5 +177,26 @@ final class FinisherVariableProvider implements \ArrayAccess
     public function offsetUnset($offset)
     {
         unset($this->objects[$offset]);
+    }
+
+    /**
+     * @return \Traversable
+     */
+    public function getIterator(): \Traversable
+    {
+        foreach ($this->objects as $offset => $value) {
+            yield $offset => $value;
+        }
+    }
+
+    /**
+     * Count elements of an object
+     *
+     * @link http://php.net/manual/en/countable.count.php
+     * @return int The custom count as an integer.
+     */
+    public function count()
+    {
+        return count($this->objects);
     }
 }
