@@ -712,8 +712,8 @@ class Check implements CheckInterface
             && function_exists('imagegif')
             && (imagetypes() & IMG_GIF)
         ) {
-            // See http://stackoverflow.com/a/13139830
-            $imageResource = @imagecreatefromgif('data://image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+            // Do not use data:// wrapper to be independent of allow_url_fopen
+            $imageResource = @imagecreatefromgif(__DIR__ . '/../../Resources/Public/Images/TestInput/Test.gif');
             if (is_resource($imageResource)) {
                 imagedestroy($imageResource);
                 $this->messageQueue->enqueue(new FlashMessage(
@@ -767,7 +767,8 @@ class Check implements CheckInterface
             && function_exists('imagepng')
             && (imagetypes() & IMG_PNG)
         ) {
-            $imageResource = @imagecreatefrompng('data://image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVORK5CYII');
+            // Do not use data:// wrapper to be independent of allow_url_fopen
+            $imageResource = @imagecreatefrompng(__DIR__ . '/../../Resources/Public/Images/TestInput/Test.png');
             if (is_resource($imageResource)) {
                 imagedestroy($imageResource);
                 $this->messageQueue->enqueue(new FlashMessage(
