@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Annotation\Inject;
-use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
 
 /**
@@ -58,12 +58,12 @@ class DummyClassWithAllTypesOfProperties
 
     /**
      * @var DummyClassWithAllTypesOfProperties
-     * @Cascade("remove")
+     * @Extbase\ORM\Cascade("remove")
      */
     public $propertyWithCascadeAnnotation;
 
     /**
-     * @Cascade("remove")
+     * @Extbase\ORM\Cascade("remove")
      */
     public $propertyWithCascadeAnnotationWithoutVarAnnotation;
 

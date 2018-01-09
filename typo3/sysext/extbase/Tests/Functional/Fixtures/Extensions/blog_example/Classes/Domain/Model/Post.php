@@ -66,7 +66,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Comment>
      * @Extbase\ORM\Lazy
-     * @cascade remove
+     * @Extbase\ORM\Cascade("remove")
      */
     protected $comments = null;
 

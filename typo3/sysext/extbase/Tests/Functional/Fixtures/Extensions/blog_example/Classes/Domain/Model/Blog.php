@@ -56,7 +56,7 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Post>
      * @Extbase\ORM\Lazy
-     * @cascade remove
+     * @Extbase\ORM\Cascade("remove")
      */
     protected $posts = null;
 
