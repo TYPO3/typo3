@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * Model for backend user group
  */
@@ -36,7 +38,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup>
-     * @lazy
+     * @Extbase\ORM\Lazy
      */
     protected $subGroups;
 

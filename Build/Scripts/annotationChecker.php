@@ -61,7 +61,7 @@ class NodeVisitor extends NodeVisitorAbstract
                     // PHPCheckStyle
                     'SuppressWarnings', 'noinspection',
                     // Extbase related (deprecated)
-                    'inject', 'transient', 'lazy', 'validate', 'cascade', 'cli', 'flushesCaches',
+                    'inject', 'transient', 'validate', 'cascade', 'cli', 'flushesCaches',
                     // Extbase related
                     'Extbase\\\\Inject', 'Inject', 'Transient', 'Extbase\\\\ORM\\\\Lazy', 'Cascade', 'IgnoreValidation', 'Enum',
                     // Extension scanner
@@ -94,6 +94,8 @@ $finder = new Symfony\Component\Finder\Finder();
 $finder->files()
     ->in(__DIR__ . '/../../typo3/')
     ->name('/\.php$/')
+    // black list a unit test file that tests old deprecations
+    ->notName('DummyClassWithLazyProperty.php')
 ;
 
 $output = new ConsoleOutput();

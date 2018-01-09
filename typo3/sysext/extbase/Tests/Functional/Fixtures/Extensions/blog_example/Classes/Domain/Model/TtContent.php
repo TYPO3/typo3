@@ -16,6 +16,8 @@ namespace ExtbaseTeam\BlogExample\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * A tt_content model
  */
@@ -44,7 +46,7 @@ class TtContent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Images
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
-     * @lazy
+     * @Extbase\ORM\Lazy
      */
     protected $image;
 

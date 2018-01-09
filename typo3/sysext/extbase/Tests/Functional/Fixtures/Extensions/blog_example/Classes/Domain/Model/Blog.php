@@ -14,6 +14,8 @@ namespace ExtbaseTeam\BlogExample\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * A blog
  */
@@ -53,7 +55,7 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * The posts of this blog
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Post>
-     * @lazy
+     * @Extbase\ORM\Lazy
      * @cascade remove
      */
     protected $posts = null;
@@ -67,7 +69,7 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * The blog's administrator
      *
      * @var \ExtbaseTeam\BlogExample\Domain\Model\Administrator
-     * @lazy
+     * @Extbase\ORM\Lazy
      */
     protected $administrator = null;
 

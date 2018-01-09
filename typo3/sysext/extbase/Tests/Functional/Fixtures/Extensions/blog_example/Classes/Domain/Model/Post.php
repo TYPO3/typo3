@@ -14,6 +14,8 @@ namespace ExtbaseTeam\BlogExample\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * A blog post
  */
@@ -63,14 +65,14 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Comment>
-     * @lazy
+     * @Extbase\ORM\Lazy
      * @cascade remove
      */
     protected $comments = null;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Post>
-     * @lazy
+     * @Extbase\ORM\Lazy
      */
     protected $relatedPosts = null;
 

@@ -14,6 +14,8 @@ namespace OliverHader\IrreTutorial\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * Hotel
  */
@@ -25,7 +27,7 @@ class Hotel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $title = '';
 
     /**
-     * @lazy
+     * @Extbase\ORM\Lazy
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer>
      */
     protected $offers = null;
