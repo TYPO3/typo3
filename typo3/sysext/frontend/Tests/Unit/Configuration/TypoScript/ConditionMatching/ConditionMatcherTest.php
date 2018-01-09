@@ -615,13 +615,22 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         $GLOBALS['TSFE']->testSimpleObject = new \stdClass();
         $GLOBALS['TSFE']->testSimpleObject->testSimpleVariable = 'testValue';
 
+        $this->assertTrue($this->matchCondition->match('[globalString = TSFE:id = 1234567]'));
+        $this->assertTrue($this->matchCondition->match('[globalString = TSFE:testSimpleObject|testSimpleVariable = testValue]'));
+    }
+
+    /**
+     * Tests whether the generic fetching of variables works with the namespace 'session'.
+     *
+     * @test
+     */
+    public function genericGetVariablesSucceedsWithNamespaceSession()
+    {
         $prophecy = $this->prophesize(FrontendUserAuthentication::class);
         $prophecy->getSessionData(Argument::exact('foo'))->willReturn(['bar' => 1234567]);
         $GLOBALS['TSFE']->fe_user = $prophecy->reveal();
 
-        $this->assertTrue($this->matchCondition->match('[globalString = TSFE:id = 1234567]'));
-        $this->assertTrue($this->matchCondition->match('[globalString = TSFE:testSimpleObject|testSimpleVariable = testValue]'));
-        $this->assertTrue($this->matchCondition->match('[globalString = TSFE:fe_user|sesData|foo|bar = 1234567]'));
+        $this->assertTrue($this->matchCondition->match('[globalString = session:foo|bar = 1234567]'));
     }
 
     /**

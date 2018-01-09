@@ -88,7 +88,7 @@ class ConditionMatcher extends AbstractConditionMatcher
     }
 
     /**
-     * Returns GP / ENV / TSFE vars
+     * Returns GP / ENV / TSFE / session vars
      *
      * @example GP:L
      * @example TSFE:fe_user|sesData|foo|bar
@@ -109,10 +109,17 @@ class ConditionMatcher extends AbstractConditionMatcher
                 switch ((string)trim($vars[0])) {
                     case 'TSFE':
                         if (strpos($vars[1], 'fe_user|sesData|') === 0) {
+                            trigger_error(
+                                'Condition on TSFE|fe_user|sesData is deprecated and will be removed in TYPO3 CMS 10',
+                                E_USER_DEPRECATED
+                            );
                             $val = $this->getSessionVariable(substr($vars[1], 16));
                         } else {
                             $val = $this->getGlobal('TSFE|' . $vars[1]);
                         }
+                        break;
+                    case 'session':
+                        $val = $this->getSessionVariable($vars[1]);
                         break;
                     default:
                 }
