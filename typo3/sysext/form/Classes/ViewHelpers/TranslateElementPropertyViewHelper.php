@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -73,7 +74,22 @@ class TranslateElementPropertyViewHelper extends AbstractViewHelper
         } elseif (is_array($property)) {
             $propertyParts = $property;
         } else {
-            $propertyParts = [$property];
+            $propertyParts = explode('.', $property);
+            if (count($propertyParts) > 1 && $propertyParts[0] === 'options') {
+                GeneralUtility::deprecationLog(
+                    'EXT:form - translations for form element "options" with a string property path like ' .
+                    '"{formvh:translateElementProperty(element: element, property: \'options.{value}\')}" ' .
+                    'are deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Use an array like ' .
+                    '"{formvh:translateElementProperty(element: element, property: {0: \'options\', 1: \'value\'})}" instead.'
+                );
+                array_shift($propertyParts);
+                $propertyParts = [
+                    'options',
+                    htmlspecialchars_decode(implode('.', $propertyParts), ENT_QUOTES)
+                ];
+            } else {
+                $propertyParts = [$property];
+            }
         }
 
         /** @var FormRuntime $formRuntime */
