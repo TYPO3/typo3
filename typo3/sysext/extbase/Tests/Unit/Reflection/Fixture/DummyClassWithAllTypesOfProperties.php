@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
-use TYPO3\CMS\Extbase\Annotation\Inject;
 use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
 
 /**
@@ -46,7 +45,7 @@ class DummyClassWithAllTypesOfProperties
     public $propertyWithIgnoredTags;
 
     /**
-     * @Inject
+     * @Extbase\Inject
      * @var DummyClassWithAllTypesOfProperties
      */
     public $propertyWithInjectAnnotation;

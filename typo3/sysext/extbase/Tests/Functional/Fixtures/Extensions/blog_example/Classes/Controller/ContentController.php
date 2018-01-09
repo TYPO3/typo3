@@ -16,13 +16,15 @@ namespace ExtbaseTeam\BlogExample\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * ContentController
  */
 class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
     /**
-     * @inject
+     * @Extbase\Inject
      * @var \ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository
      */
     protected $contentRepository;
@@ -33,7 +35,7 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     protected $defaultViewObjectName = \TYPO3\CMS\Extbase\Mvc\View\JsonView::class;
 
     /**
-     * @inject
+     * @Extbase\Inject
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
      */
     protected $dataMapFactory;

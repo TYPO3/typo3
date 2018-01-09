@@ -14,13 +14,15 @@ namespace OliverHader\IrreTutorial\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * ContentController
  */
 class ContentController extends AbstractController
 {
     /**
-     * @inject
+     * @Extbase\Inject
      * @var \OliverHader\IrreTutorial\Domain\Repository\ContentRepository
      */
     protected $contentRepository;

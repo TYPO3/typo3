@@ -3,12 +3,12 @@ declare(strict_types = 1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures;
 
-use TYPO3\CMS\Extbase\Annotation\Inject;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 class PublicPropertyInjectClass
 {
     /**
-     * @Inject
+     * @Extbase\Inject
      * @var \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\ArgumentTestClassForPublicPropertyInjection
      */
     public $foo;
@@ -22,7 +22,7 @@ class ProtectedPropertyInjectClass
 {
 
     /**
-     * @Inject
+     * @Extbase\Inject
      * @var \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\ArgumentTestClassForPublicPropertyInjection
      */
     protected $foo;

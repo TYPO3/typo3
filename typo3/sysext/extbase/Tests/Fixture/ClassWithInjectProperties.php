@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  */
 class ClassWithInjectProperties
@@ -25,7 +27,7 @@ class ClassWithInjectProperties
 
     /**
      * @var \TYPO3\CMS\Extbase\Tests\Fixture\SecondDummyClass
-     * @inject
+     * @Extbase\Inject
      */
     protected $secondDummyClass;
 }

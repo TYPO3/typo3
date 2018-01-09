@@ -288,7 +288,7 @@ class t3lib_object_tests_injectmethods
     }
 
     /**
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      * @param \t3lib_object_tests_b_child $o
      */
     public function setClassBChild(\t3lib_object_tests_b_child $o)

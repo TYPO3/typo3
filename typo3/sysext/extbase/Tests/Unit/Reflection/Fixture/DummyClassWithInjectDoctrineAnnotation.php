@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\Annotation\Inject;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchemaTest;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchemaTest as AliasedClassSchemaTest;
 
@@ -26,25 +26,25 @@ use TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchemaTest as AliasedClassSchem
 class DummyClassWithInjectDoctrineAnnotation
 {
     /**
-     * @Inject
+     * @Extbase\Inject
      * @var \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithInjectDoctrineAnnotation
      */
     public $propertyWithFullQualifiedClassName;
 
     /**
-     * @Inject
+     * @Extbase\Inject
      * @var DummyClassWithInjectDoctrineAnnotation
      */
     public $propertyWithRelativeClassName;
 
     /**
-     * @Inject
+     * @Extbase\Inject
      * @var ClassSchemaTest
      */
     public $propertyWithImportedClassName;
 
     /**
-     * @Inject
+     * @Extbase\Inject
      * @var AliasedClassSchemaTest
      */
     public $propertyWithImportedAndAliasedClassName;

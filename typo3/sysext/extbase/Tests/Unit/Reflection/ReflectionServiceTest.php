@@ -213,7 +213,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $this->assertTrue($service->isPropertyTaggedWith(
             Fixture\DummyClassWithAllTypesOfProperties::class,
             'propertyWithInjectAnnotation',
-            'inject'
+            'extbase\inject'
         ));
 
         $this->assertFalse($service->isPropertyTaggedWith(
@@ -231,7 +231,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $this->assertFalse($service->isPropertyTaggedWith(
             'NonExistantNamespace\\NonExistantClass',
             'propertyWithInjectAnnotation',
-            'inject'
+            'extbase\inject'
         ));
     }
 
@@ -262,7 +262,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $service = new ReflectionService();
         $this->assertSame(
             [
-                'inject' => [],
+                'extbase\inject' => [],
                 'var' => [
                     'DummyClassWithAllTypesOfProperties'
                 ]

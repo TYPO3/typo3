@@ -61,9 +61,10 @@ class NodeVisitor extends NodeVisitorAbstract
                     // PHPCheckStyle
                     'SuppressWarnings', 'noinspection',
                     // Extbase related (deprecated)
-                    'inject', 'transient', 'validate', 'cli', 'flushesCaches',
+                    'transient', 'validate', 'cli', 'flushesCaches',
                     // Extbase related
-                    'Extbase\\\\Inject', 'Inject', 'Transient', 'Extbase\\\\ORM\\\\Lazy', 'IgnoreValidation', 'Enum',
+                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Inject', 'Extbase\\\\Inject', 'Inject',
+                    'Transient', 'Extbase\\\\ORM\\\\Lazy', 'IgnoreValidation', 'Enum',
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\ORM\\\\Cascade', 'Extbase\\\\ORM\\\\Cascade', 'Cascade',
                     // Extension scanner
                     'extensionScannerIgnoreFile', 'extensionScannerIgnoreLine'
@@ -97,6 +98,9 @@ $finder->files()
     ->name('/\.php$/')
     // black list some deprecated unit test fixture files that test old deprecations
     ->notPath('/.*sysext\/extbase\/Tests\/UnitDeprecated\/Reflection\/Fixture/')
+    // black list some unit test fixture files from extension scanner that test matchers of old annotations
+    ->notName('MethodAnnotationMatcherFixture.php')
+    ->notName('PropertyAnnotationMatcherFixture.php')
 ;
 
 $output = new ConsoleOutput();
