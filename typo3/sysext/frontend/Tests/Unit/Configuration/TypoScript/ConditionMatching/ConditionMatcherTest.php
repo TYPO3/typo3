@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures\TestConditionException;
 
@@ -607,8 +609,14 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         $GLOBALS['TSFE']->id = 1234567;
         $GLOBALS['TSFE']->testSimpleObject = new \stdClass();
         $GLOBALS['TSFE']->testSimpleObject->testSimpleVariable = 'testValue';
+
+        $prophecy = $this->prophesize(FrontendUserAuthentication::class);
+        $prophecy->getSessionData(Argument::exact('foo'))->willReturn(['bar' => 1234567]);
+        $GLOBALS['TSFE']->fe_user = $prophecy->reveal();
+
         $this->assertTrue($this->matchCondition->match('[globalString = TSFE:id = 1234567]'));
         $this->assertTrue($this->matchCondition->match('[globalString = TSFE:testSimpleObject|testSimpleVariable = testValue]'));
+        $this->assertTrue($this->matchCondition->match('[globalString = TSFE:fe_user|sesData|foo|bar = 1234567]'));
     }
 
     /**
