@@ -990,7 +990,7 @@ class ExtensionManagementUtility
     public static function addLLrefForTCAdescr($key, $file)
     {
         if (empty($key)) {
-            throw new \RuntimeException('No extension key set in addLLrefForTCAdescr(). Provide it as third parameter', 1507321596);
+            throw new \RuntimeException('No description key set in addLLrefForTCAdescr(). Provide it as first parameter', 1507321596);
         }
         if (!is_array($GLOBALS['TCA_DESCR'][$key] ?? false)) {
             $GLOBALS['TCA_DESCR'][$key] = [];
