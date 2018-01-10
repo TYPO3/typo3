@@ -92,11 +92,17 @@ class ConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
             ->method('getTypoScriptSettings')
             ->willReturn([]);
 
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        $objectMangerProphecy
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        $objectManagerProphecy
             ->get(FalYamlFileLoader::class)
             ->willReturn(new FalYamlFileLoader);
-        $mockConfigurationManager->_set('objectManager', $objectMangerProphecy->reveal());
+
+        $configuration = new Configuration();
+        $objectManagerProphecy
+            ->get(Configuration::class)
+            ->willReturn($configuration);
+
+        $mockConfigurationManager->_set('objectManager', $objectManagerProphecy->reveal());
 
         $input = 'form';
         $expected = [];

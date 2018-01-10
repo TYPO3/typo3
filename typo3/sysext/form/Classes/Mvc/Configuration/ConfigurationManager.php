@@ -100,9 +100,9 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
             return $this->overrideConfigurationByTypoScript($yamlSettings, $extensionName);
         }
 
+        $configuration = $this->objectManager->get(Configuration::class)
+            ->setMergeLists(false);
         if (isset($typoscriptSettings['configurationFile'])) {
-            $configuration = $this->objectManager->get(Configuration::class)
-                ->setMergeLists(false);
             $yamlSettings = $this->objectManager->get(FalYamlFileLoader::class, $configuration)
                 ->load($typoscriptSettings['configurationFile']);
         } elseif (isset($typoscriptSettings['yamlConfigurations'])) {
@@ -110,7 +110,8 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
             $yamlContent = $this->generateYamlFromLegacyYamlConfigurations(
                 $typoscriptSettings['yamlConfigurations']
             );
-            $yamlSettings = $this->objectManager->get(YamlFileLoader::class)
+
+            $yamlSettings = $this->objectManager->get(YamlFileLoader::class, $configuration)
                 ->loadFromContent($yamlContent);
         } else {
             throw new NoConfigurationFoundException(
