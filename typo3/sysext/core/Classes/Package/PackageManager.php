@@ -517,6 +517,11 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function isPackageAvailable($packageKey)
     {
+        // If activePackages is empty, the PackageManager is currently initializing
+        // thus packages should not be scanned
+        if (!$this->availablePackagesScanned && !empty($this->activePackages)) {
+            $this->scanAvailablePackages();
+        }
         if (isset($this->packageAliasMap[$lowercasedPackageKey = strtolower($packageKey)])) {
             $packageKey = $this->packageAliasMap[$lowercasedPackageKey];
         }
