@@ -157,6 +157,17 @@ class MetaInformation
     }
 
     /**
+     * Returns record additional information
+     *
+     * @return string Record additional information
+     */
+    public function getRecordInformationAdditionalInfo(): string
+    {
+        $recordInformations = $this->getRecordInformations();
+        return $recordInformations['additionalInfo'] ?? '';
+    }
+
+    /**
      * Setting page array
      *
      * @return array Record info

@@ -40,9 +40,10 @@
 				</span>
 				<strong>
 					<f:format.raw>
-						{docHeader.metaInformation.recordInformationIcon} {docHeader.metaInformation.recordInformationTitle} <f:if condition="docHeader.metaInformation.recordInformationUid}">[{docHeader.metaInformation.recordInformationUid}]</f:if>
+						{docHeader.metaInformation.recordInformationIcon} {docHeader.metaInformation.recordInformationTitle} <f:if condition="{docHeader.metaInformation.recordInformationUid}">[{docHeader.metaInformation.recordInformationUid}]</f:if>
 					</f:format.raw>
 				</strong>
+				{docHeader.metaInformation.recordInformationAdditionalInfo}
 			</f:if>
 		</div>
 	</div>
