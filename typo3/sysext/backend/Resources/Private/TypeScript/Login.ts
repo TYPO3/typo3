@@ -68,7 +68,7 @@ class BackendLogin {
    *
    * @param {Event} event
    */
-  public handleSubmit= (event: Event): void => {
+  public handleSubmit = (event: Event): void => {
     this.showLoginProcess();
 
     if (typeof this.options.submitHandler === 'function') {
