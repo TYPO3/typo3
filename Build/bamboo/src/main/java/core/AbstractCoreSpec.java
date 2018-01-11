@@ -528,11 +528,14 @@ abstract public class AbstractCoreSpec {
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
                 this.getTaskComposerInstall(),
-                new NpmTask()
-                    .description("npm install in Build/ dir")
-                    .nodeExecutable("Node.js")
-                    .workingSubdirectory("Build/")
-                    .command("install"),
+                new ScriptTask()
+                    .description("yarn install in Build/ dir")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "yarn install"
+                    )
+                    .workingSubdirectory("Build/"),
                 new ScriptTask()
                     .description("Run tests")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -595,11 +598,14 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                new NpmTask()
-                    .description("npm install in Build/ dir")
-                    .nodeExecutable("Node.js")
-                    .workingSubdirectory("Build/")
-                    .command("install"),
+                new ScriptTask()
+                    .description("yarn install in Build/ dir")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "yarn install"
+                    )
+                    .workingSubdirectory("Build/"),
                 new NpmTask()
                     .description("Run npm lint")
                     .nodeExecutable("Node.js")
