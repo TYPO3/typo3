@@ -142,7 +142,7 @@ class TreeController
             }
             $doktypeLabelMap[$doktypeItemConfig[1]] = $doktypeItemConfig[0];
         }
-        $doktypes = GeneralUtility::intExplode(',', $this->getBackendUser()->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea'));
+        $doktypes = GeneralUtility::intExplode(',', $this->getBackendUser()->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea'), true);
         $output = [];
         $allowedDoktypes = GeneralUtility::intExplode(',', $this->getBackendUser()->groupData['pagetypes_select'], true);
         $isAdmin = $this->getBackendUser()->isAdmin();
