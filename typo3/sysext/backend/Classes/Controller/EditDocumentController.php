@@ -1280,7 +1280,7 @@ class EditDocumentController
                 // Delete:
                 if ($this->firstEl['deleteAccess']
                     && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']
-                    && !$this->getNewIconMode($this->firstEl['table'], 'disableDelete')
+                    && !$this->getDisableDelete()
                 ) {
                     $returnUrl = $this->retUrl;
                     if ($this->firstEl['table'] === 'pages') {
@@ -1482,6 +1482,27 @@ class EditDocumentController
                 ButtonBar::BUTTON_POSITION_RIGHT
             );
         }
+    }
+
+    /**
+     * Returns if delete for the current table is disabled by configuration.
+     * For sys_file_metadata in default language delete is always disabled.
+     *
+     * @return bool
+     */
+    protected function getDisableDelete(): bool
+    {
+        $disableDelete = false;
+        if ($this->firstEl['table'] === 'sys_file_metadata') {
+            $row = BackendUtility::getRecord('sys_file_metadata', $this->firstEl['uid'], 'sys_language_uid');
+            $languageUid = $row['sys_language_uid'];
+            if ($languageUid === 0) {
+                $disableDelete = true;
+            }
+        } else {
+            $disableDelete = (bool)$this->getNewIconMode($this->firstEl['table'], 'disableDelete');
+        }
+        return $disableDelete;
     }
 
     /**
