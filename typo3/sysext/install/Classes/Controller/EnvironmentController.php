@@ -212,8 +212,12 @@ class EnvironmentController extends AbstractController
         );
         $outputFile = PATH_site . 'typo3temp/assets/images/installTool-' . StringUtility::getUniqueId('createTrueTypeFontTestImage') . '.gif';
         imagegif($image, $outputFile);
+        $fileExists = file_exists($outputFile);
+        if ($fileExists) {
+            GeneralUtility::fixPermissions($outputFile);
+        }
         return $this->getImageTestResponse([
-            'fileExists' => file_exists($outputFile),
+            'fileExists' => $fileExists,
             'outputFile' => $outputFile,
             'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Font.gif',
         ]);
