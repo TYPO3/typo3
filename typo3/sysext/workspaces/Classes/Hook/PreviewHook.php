@@ -115,6 +115,8 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
             $tempBackendUser->setBeUserByUid($this->previewConfiguration['BEUSER_uid']);
             if ($tempBackendUser->user['uid']) {
                 $tempBackendUser->unpack_uc();
+                $tempBackendUser->setTemporaryWorkspace($workspaceUid);
+                $tempBackendUser->user['workspace_id'] = $workspaceUid;
                 $tempBackendUser->fetchGroupData();
                 // Handle degradation of admin users
                 if ($tempBackendUser->isAdmin()) {
@@ -138,7 +140,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                         ->execute()
                         ->fetch();
 
-                    // Either use configured workspace mount or current page id, if admin user does not have any page mounts
+                    // Either use configured workspace mount (of the workspace) or current page id
                     if (empty($tempBackendUser->groupData['webmounts'])) {
                         $tempBackendUser->groupData['webmounts'] = !empty($workspaceRecord['db_mountpoints']) ? $workspaceRecord['db_mountpoints'] : $pObj->id;
                     }
