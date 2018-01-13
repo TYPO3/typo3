@@ -1035,7 +1035,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getPackageBasePaths()
     {
-        if (empty($this->packagesBasePaths)) {
+        if (count($this->packagesBasePaths) < 3) {
             // Check if the directory even exists and if it is not empty
             if (is_dir(PATH_typo3conf . 'ext') && count(scandir(PATH_typo3conf . 'ext')) > 2) {
                 $this->packagesBasePaths['local'] = PATH_typo3conf . 'ext/*/';
