@@ -4,10 +4,10 @@
 		<header/>
 		<body>
 			<trans-unit id="import">
-				<source>Import from .t3d</source>
+				<source>Import</source>
 			</trans-unit>
 			<trans-unit id="export">
-				<source>Export to .t3d</source>
+				<source>Export</source>
 			</trans-unit>
 			<trans-unit id="title">
 				<source>Import / Export</source>

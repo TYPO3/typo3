@@ -20,7 +20,7 @@
 				<source>Exporting records from TYPO3</source>
 			</trans-unit>
 			<trans-unit id="export.description">
-				<source>To export TYPO3 T3D/XML files you click any record icon or page in the page tree (including the root page!), select "More options" and then "Export to .t3d". This will bring up the export interface where you can configure options for your export session.</source>
+				<source>To export TYPO3 T3D/XML files you click any record icon or page in the page tree (including the root page!), select "More options" and then "Export". This will bring up the export interface where you can configure options for your export session.</source>
 			</trans-unit>
 			<trans-unit id="export.details" xml:space="preserve">
 				<source>There are a number of methods by which you can export data from TYPO3:
@@ -270,7 +270,7 @@ Entering a file name to save to makes it possible to write your export directly 
 				<source>Importing TYPO3 records</source>
 			</trans-unit>
 			<trans-unit id="import.description">
-				<source>To import TYPO3 T3D/XML files into the page tree you click any page in the page tree (including the root page!), select "More options" and then "Import from .t3d". This will bring up the import interface where you can select a file to import or upload a new one.</source>
+				<source>To import TYPO3 T3D/XML files into the page tree you click any page in the page tree (including the root page!), select "More options" and then "Import". This will bring up the import interface where you can select a file to import or upload a new one.</source>
 			</trans-unit>
 			<trans-unit id="import.details" xml:space="preserve">
 				<source>&lt;b&gt;Tip: Import into a Folder&lt;/b&gt;
