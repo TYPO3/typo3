@@ -30,7 +30,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * <f:format.crop maxCharacters="10">This is some very long text</f:format.crop>
  * </code>
  * <output>
- * This is...
+ * This is…
  * </output>
  *
  * <code title="Custom suffix">
@@ -44,7 +44,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * <f:format.crop maxCharacters="10" respectWordBoundaries="false">This is some very long text</f:format.crop>
  * </code>
  * <output>
- * This is so...
+ * This is so…
  * </output>
  *
  * <code title="Don't respect HTML tags">
@@ -58,7 +58,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * {someLongText -> f:format.crop(maxCharacters: 10)}
  * </code>
  * <output>
- * someLongText cropped after 10 characters...
+ * someLongText cropped after 10 characters…
  * (depending on the value of {someLongText})
  * </output>
  */
@@ -82,7 +82,7 @@ class CropViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('maxCharacters', 'int', 'Place where to truncate the string', true);
-        $this->registerArgument('append', 'string', 'What to append, if truncation happened', false, '...');
+        $this->registerArgument('append', 'string', 'What to append, if truncation happened', false, '&hellip;');
         $this->registerArgument('respectWordBoundaries', 'bool', 'If TRUE and division is in the middle of a word, the remains of that word is removed.', false, true);
         $this->registerArgument('respectHtml', 'bool', 'If TRUE the cropped string will respect HTML tags and entities. Technically that means, that cropHTML() is called rather than crop()', false, true);
     }
