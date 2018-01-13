@@ -1,0 +1,36 @@
+{
+	"name": "typo3/cms-redirects",
+	"type": "typo3-cms-framework",
+	"description": "Custom redirects in TYPO3.",
+	"homepage": "https://typo3.org",
+	"license": ["GPL-2.0-or-later"],
+	"authors": [{
+		"name": "TYPO3 Core Team",
+		"email": "typo3cms@typo3.org",
+		"role": "Developer"
+	}],
+	"require": {
+		"typo3/cms-core": "9.1.*@dev",
+		"typo3/cms-backend": "9.1.*@dev",
+		"typo3fluid/fluid": "^2.3"
+	},
+	"conflict": {
+		"typo3/cms": "*"
+	},
+	"replace": {
+		"redirects": "*"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "9.1.x-dev"
+		},
+		"typo3/cms": {
+			"extension-key": "redirects"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Redirects\\": "Classes/"
+		}
+	}
+}
