@@ -770,7 +770,7 @@ class FlexFormTools
         // Get data structure. The methods may throw various exceptions, with some of them being
         // ok in certain scenarios, for instance on new record rows. Those are ok to "eat" here
         // and substitute with a dummy DS.
-        $dataStructureArray = [ 'sheets' => [ 'sDEF' => [] ] ];
+        $dataStructureArray = ['sheets' => ['sDEF' => []]];
         try {
             $dataStructureIdentifier = $this->getDataStructureIdentifier($GLOBALS['TCA'][$table]['columns'][$field], $table, $field, $row);
             $dataStructureArray = $this->parseDataStructureByIdentifier($dataStructureIdentifier);

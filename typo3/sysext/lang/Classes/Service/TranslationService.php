@@ -90,7 +90,7 @@ class TranslationService implements SingletonInterface
         if (is_string($locales)) {
             $locales = GeneralUtility::trimExplode(',', $locales);
         }
-        $locales = array_flip((array) $locales);
+        $locales = array_flip((array)$locales);
         foreach ($locales as $locale => $key) {
             $state = static::TRANSLATION_INVALID;
             $error = '';

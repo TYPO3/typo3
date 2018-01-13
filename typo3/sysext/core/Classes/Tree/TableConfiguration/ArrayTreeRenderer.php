@@ -58,7 +58,7 @@ class ArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRen
      */
     protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node)
     {
-        $overlayIconName  = '';
+        $overlayIconName = '';
         if (is_object($node->getIcon())) {
             $iconName = $node->getIcon()->getIdentifier();
             if (is_object($node->getIcon()->getOverlayIcon())) {

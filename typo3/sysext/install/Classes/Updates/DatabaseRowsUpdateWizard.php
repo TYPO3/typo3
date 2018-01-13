@@ -179,7 +179,7 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
                 $updatedFields = array_diff_assoc($row, $rowBefore);
                 if (empty($updatedFields)) {
                     // Updaters changed no field of that row
-                    $rowCountWithoutUpdate ++;
+                    $rowCountWithoutUpdate++;
                     if ($rowCountWithoutUpdate >= 200) {
                         // Update startPosition if there were many rows without data change
                         $startPosition = [

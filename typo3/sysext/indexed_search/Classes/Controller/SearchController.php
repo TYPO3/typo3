@@ -1216,7 +1216,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     ->execute();
 
                 while ($row = $result->fetch()) {
-                    $allOptions[$row['uid']]= $row['title'];
+                    $allOptions[$row['uid']] = $row['title'];
                 }
             }
             // disable single entries by TypoScript

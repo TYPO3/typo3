@@ -181,7 +181,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $LD['target'] = $target;
             // Convert IDNA-like domain (if any)
             if (!preg_match('/^[a-z0-9.\\-]*$/i', $targetDomain)) {
-                $targetDomain =  GeneralUtility::idnaEncode($targetDomain);
+                $targetDomain = GeneralUtility::idnaEncode($targetDomain);
             }
             $url = $absoluteUrlScheme . '://' . $targetDomain . '/index.php?id=' . $page['uid'] . $addQueryParams . $sectionMark;
         } else {

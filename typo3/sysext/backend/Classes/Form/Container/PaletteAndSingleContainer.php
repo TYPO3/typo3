@@ -117,7 +117,7 @@ class PaletteAndSingleContainer extends AbstractContainer
             if ($fieldName === '--palette--') {
                 $paletteElementArray = $this->createPaletteContentArray($fieldConfiguration['paletteName']);
                 if (!empty($paletteElementArray)) {
-                    $mainStructureCounter ++;
+                    $mainStructureCounter++;
                     $paletteLabel = $fieldConfiguration['fieldLabel'];
                     if ($paletteLabel === null
                         && !empty($this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['label'])
@@ -145,7 +145,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                 $childResultArray = $this->nodeFactory->create($options)->render();
 
                 if (!empty($childResultArray['html'])) {
-                    $mainStructureCounter ++;
+                    $mainStructureCounter++;
                     $fieldLabel = '';
                     if (!empty($this->data['processedTca']['columns'][$fieldName]['label'])) {
                         $fieldLabel = $this->data['processedTca']['columns'][$fieldName]['label'];

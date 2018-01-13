@@ -131,7 +131,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
         $existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
         $saveId = 0;
         if ($existTemplate) {
-            $saveId = $this->templateRow['_ORIG_uid'] ? : $this->templateRow['uid'];
+            $saveId = $this->templateRow['_ORIG_uid'] ?: $this->templateRow['uid'];
         }
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);

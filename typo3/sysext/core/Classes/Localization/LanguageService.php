@@ -241,8 +241,7 @@ class LanguageService
                             $fieldName = substr($fieldName, 1);
                         }
                         // Append label
-                        $label = $lVal[0]['target'] ? :
-                            $lVal[0]['source'];
+                        $label = $lVal[0]['target'] ?: $lVal[0]['source'];
                         if ($specialInstruction) {
                             $GLOBALS['TCA_DESCR'][$table]['columns'][$fieldName][$type] .= LF . $label;
                         } else {

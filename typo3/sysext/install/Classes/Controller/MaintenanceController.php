@@ -471,7 +471,7 @@ class MaintenanceController extends AbstractController
                     // Update the LocalConfiguration.php file with the new list
                     $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
                     $configurationManager->setLocalConfigurationValuesByPathValuePairs(
-                        [ 'SYS/systemMaintainers' => $newSystemMaintainersList ]
+                        ['SYS/systemMaintainers' => $newSystemMaintainersList]
                     );
                 }
 

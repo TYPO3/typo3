@@ -52,9 +52,9 @@ class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler
         foreach ($storages as $storage) {
             $selected = '';
             if ($task !== null && $task->storageUid === $storage->getUid()) {
-                $selected =' selected="selected"';
+                $selected = ' selected="selected"';
             } elseif ((int)$taskInfo['scheduler_fileStorageIndexing_storage'] === $storage->getUid()) {
-                $selected =' selected="selected"';
+                $selected = ' selected="selected"';
             }
             $options[] = '<option value="' . $storage->getUid() . '" ' . $selected . ' >' . $storage->getName() . '</option>';
         }

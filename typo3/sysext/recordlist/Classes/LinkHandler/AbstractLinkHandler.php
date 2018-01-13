@@ -34,7 +34,7 @@ abstract class AbstractLinkHandler
      *
      * @var string[]
      */
-    protected $linkAttributes = [ 'target', 'title', 'class', 'params', 'rel' ];
+    protected $linkAttributes = ['target', 'title', 'class', 'params', 'rel'];
 
     /**
      * @var bool

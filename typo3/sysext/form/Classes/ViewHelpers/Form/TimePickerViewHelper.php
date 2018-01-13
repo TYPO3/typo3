@@ -97,7 +97,7 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
     protected function getSelectedDate()
     {
         /** @var FormRuntime $formRuntime */
-        $formRuntime =  $this->renderingContext
+        $formRuntime = $this->renderingContext
             ->getViewHelperVariableContainer()
             ->get(RenderRenderableViewHelper::class, 'formRuntime');
 

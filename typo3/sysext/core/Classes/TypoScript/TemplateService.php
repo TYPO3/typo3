@@ -1683,7 +1683,7 @@ class TemplateService
             array_unshift($this->config, (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']);
             array_unshift($this->templateIncludePaths, '');
             // prepare a proper entry to hierachyInfo (used by TemplateAnalyzer in BE)
-            $rootTemplateId = $this->hierarchyInfo[count($this->hierarchyInfo)-1]['templateID'];
+            $rootTemplateId = $this->hierarchyInfo[count($this->hierarchyInfo) - 1]['templateID'];
             $defaultTemplateInfo = [
                 'root' => '',
                 'next' => '',

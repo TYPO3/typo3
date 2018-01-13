@@ -486,7 +486,7 @@ class WorkspaceService implements SingletonInterface
 
         if ($pageList) {
             $pidField = $table === 'pages' ? 'B.uid' : 'A.pid';
-            $constraints[] =  $queryBuilder->expr()->in(
+            $constraints[] = $queryBuilder->expr()->in(
                 $pidField,
                 $queryBuilder->createNamedParameter(
                     GeneralUtility::intExplode(',', $pageList, true),

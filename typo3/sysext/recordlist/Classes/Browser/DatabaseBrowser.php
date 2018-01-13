@@ -197,7 +197,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
     protected function renderTableRecords($tables)
     {
         $backendUser = $this->getBackendUser();
-        if ($this->expandPage === null  || $this->expandPage < 0 || !$backendUser->isInWebMount($this->expandPage)) {
+        if ($this->expandPage === null || $this->expandPage < 0 || !$backendUser->isInWebMount($this->expandPage)) {
             return '';
         }
         // Set array with table names to list:

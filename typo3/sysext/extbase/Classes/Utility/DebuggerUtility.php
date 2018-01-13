@@ -263,7 +263,7 @@ class DebuggerUtility
         } else {
             $dump .= '<span class="extbase-debug-type">' . htmlspecialchars($className) . '</span>';
         }
-        if (! $object instanceof \Closure) {
+        if (!$object instanceof \Closure) {
             if ($object instanceof \TYPO3\CMS\Core\SingletonInterface) {
                 $scope = 'singleton';
             } else {
@@ -403,7 +403,7 @@ class DebuggerUtility
                     $dump .= '<span class="extbase-debug-closure">) {' . PHP_EOL . '</span>';
                 }
                 $lines = file($reflectionFunction->getFileName());
-                for ($l = $reflectionFunction->getStartLine(); $l < $reflectionFunction->getEndLine() -1; ++$l) {
+                for ($l = $reflectionFunction->getStartLine(); $l < $reflectionFunction->getEndLine() - 1; ++$l) {
                     $dump .= $plainText ? $lines[$l] : htmlspecialchars($lines[$l]);
                 }
                 $dump .= str_repeat(self::PLAINTEXT_INDENT, $level);

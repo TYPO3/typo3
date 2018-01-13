@@ -1247,7 +1247,7 @@ class DataMapProcessor
         $languageRecord = BackendUtility::getRecord('sys_language', $language, 'title');
         list($pageId) = BackendUtility::getTSCpid($tableName, $fromId, $data['pid'] ?? null);
 
-        $TSconfig =  $this->backendUser->getTSConfig(
+        $TSconfig = $this->backendUser->getTSConfig(
             'TCEMAIN',
             BackendUtility::getPagesTSconfig($pageId)
         );

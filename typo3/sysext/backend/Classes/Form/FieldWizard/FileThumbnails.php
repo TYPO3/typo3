@@ -110,7 +110,7 @@ class FileThumbnails extends AbstractNode
             }
         }
 
-        $html= [];
+        $html = [];
         if (!empty($thumbnailsHtml)) {
             $html[] = '<ul class="list-inline">';
             $html[] =   implode(LF, $thumbnailsHtml);

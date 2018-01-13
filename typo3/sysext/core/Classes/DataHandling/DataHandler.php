@@ -2449,10 +2449,10 @@ class DataHandler implements LoggerAwareInterface
             // Get data structure. The methods may throw various exceptions, with some of them being
             // ok in certain scenarios, for instance on new record rows. Those are ok to "eat" here
             // and substitute with a dummy DS.
-            $dataStructureArray = [ 'sheets' => [ 'sDEF' => [] ] ];
+            $dataStructureArray = ['sheets' => ['sDEF' => []]];
             try {
                 $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-                    [ 'config' => $tcaFieldConf ],
+                    ['config' => $tcaFieldConf],
                     $table,
                     $field,
                     $row
@@ -3883,7 +3883,7 @@ class DataHandler implements LoggerAwareInterface
             // Get current value array:
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
             $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-                [ 'config' => $conf ],
+                ['config' => $conf],
                 $table,
                 $field,
                 $row
@@ -5948,7 +5948,7 @@ class DataHandler implements LoggerAwareInterface
                                         BackendUtility::workspaceOL($table, $origRecordRow);
                                         // Get current data structure and value array:
                                         $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-                                            [ 'config' => $conf ],
+                                            ['config' => $conf],
                                             $table,
                                             $fieldName,
                                             $origRecordRow

@@ -68,7 +68,7 @@ class TabsContainer extends AbstractContainer
         $tabCounter = 0;
         $tabElements = [];
         foreach ($tabsArray as $tabWithLabelAndElements) {
-            $tabCounter ++;
+            $tabCounter++;
             $elements = $tabWithLabelAndElements['elements'];
 
             // Merge elements of this tab into a single list again and hand over to

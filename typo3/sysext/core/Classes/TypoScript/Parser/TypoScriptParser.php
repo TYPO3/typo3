@@ -369,7 +369,7 @@ class TypoScriptParser
                         // Find object name string until we meet an operator
                         $varL = strcspn($line, TAB . ' {=<>(');
                         // check for special ":=" operator
-                        if ($varL > 0 && substr($line, $varL-1, 2) === ':=') {
+                        if ($varL > 0 && substr($line, $varL - 1, 2) === ':=') {
                             --$varL;
                         }
                         // also remove tabs after the object string name

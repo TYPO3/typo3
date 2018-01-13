@@ -420,7 +420,7 @@ class FileList
                     if ($filesFrom + $this->iLimit > $filesCount) {
                         $filesNum = $filesCount - $filesFrom;
                     } else {
-                        $filesNum  = $this->iLimit;
+                        $filesNum = $this->iLimit;
                     }
                 }
             }
@@ -1209,7 +1209,7 @@ class FileList
      */
     public function linkWrapSort($code, $folderIdentifier, $col)
     {
-        $params = ['id' => $folderIdentifier, 'SET' => [ 'sort' => $col ]];
+        $params = ['id' => $folderIdentifier, 'SET' => ['sort' => $col]];
 
         if ($this->sort === $col) {
             // Check reverse sorting

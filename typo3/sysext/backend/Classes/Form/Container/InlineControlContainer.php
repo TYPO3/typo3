@@ -236,10 +236,10 @@ class InlineControlContainer extends AbstractContainer
         $numberOfNotYetLocalizedChildren = 0;
         foreach ($this->data['parameterArray']['fieldConf']['children'] as $child) {
             if (!$child['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
-                $numberOfFullLocalizedChildren ++;
+                $numberOfFullLocalizedChildren++;
             }
             if ($isLocalizedParent && $child['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
-                $numberOfNotYetLocalizedChildren ++;
+                $numberOfNotYetLocalizedChildren++;
             }
         }
 
@@ -316,7 +316,7 @@ class InlineControlContainer extends AbstractContainer
         $html .= $fieldWizardHtml;
 
         // Add the level links after all child records:
-        if ($config['appearance']['levelLinksPosition'] ===  'both' || $config['appearance']['levelLinksPosition'] === 'bottom') {
+        if ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'bottom') {
             $html .= $levelLinks . $localizationLinks;
         }
         if (is_array($config['customControls'])) {

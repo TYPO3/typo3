@@ -117,6 +117,6 @@ class SectionFrameToFrameClassUpdate extends AbstractUpdate
         if (array_key_exists($sectionFrame, $mapping)) {
             return $mapping[$sectionFrame];
         }
-        return 'custom-' . (int) $sectionFrame;
+        return 'custom-' . (int)$sectionFrame;
     }
 }

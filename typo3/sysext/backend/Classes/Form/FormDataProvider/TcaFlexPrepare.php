@@ -73,7 +73,7 @@ class TcaFlexPrepare implements FormDataProviderInterface
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
 
             $dataStructureIdentifier = '';
-            $dataStructureArray = [ 'sheets' => [ 'sDEF' => [] ] ];
+            $dataStructureArray = ['sheets' => ['sDEF' => []]];
 
             try {
                 $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(

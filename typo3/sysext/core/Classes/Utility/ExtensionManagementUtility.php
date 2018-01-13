@@ -820,7 +820,7 @@ class ExtensionManagementUtility
             $iconRegistry->registerIcon(
                 $iconIdentifier,
                 $iconProvider,
-                [ 'source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon']) ]
+                ['source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'])]
             );
             $moduleConfiguration['iconIdentifier'] = $iconIdentifier;
             unset($moduleConfiguration['icon']);
@@ -892,7 +892,7 @@ class ExtensionManagementUtility
                 $iconRegistry->registerIcon(
                     $iconIdentifier,
                     $iconProvider,
-                    [ 'source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon']) ]
+                    ['source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'])]
                 );
                 $moduleConfiguration['iconIdentifier'] = $iconIdentifier;
                 unset($moduleConfiguration['icon']);

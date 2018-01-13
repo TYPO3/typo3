@@ -182,7 +182,7 @@ class SettingsController extends AbstractController
 
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValuesByPathValuePairs(
-            [ 'SYS/systemMaintainers' => $validatedUserList ]
+            ['SYS/systemMaintainers' => $validatedUserList]
         );
 
         $messages = [];

@@ -39,7 +39,7 @@ class ContextMenu
      * @param string $context
      * @return array
      */
-    public function getItems(string $table, string $identifier, string $context=''): array
+    public function getItems(string $table, string $identifier, string $context = ''): array
     {
         $items = [];
         $itemsProviders = $this->getAvailableProviders($table, $identifier, $context);

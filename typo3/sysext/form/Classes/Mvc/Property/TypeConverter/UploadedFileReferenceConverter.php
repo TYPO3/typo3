@@ -200,7 +200,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         $conflictMode = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_UPLOAD_CONFLICT_MODE) ?: $this->defaultConflictMode;
 
         $uploadFolder = $this->resourceFactory->retrieveFileOrFolderObject($uploadFolderId);
-        $uploadedFile =  $uploadFolder->addUploadedFile($uploadInfo, $conflictMode);
+        $uploadedFile = $uploadFolder->addUploadedFile($uploadInfo, $conflictMode);
 
         $validators = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_FILE_VALIDATORS);
         if (is_array($validators)) {

@@ -217,7 +217,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             ];
             /** @var OnTheFly $formDataGroup */
             $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
-            $formDataGroup->setProviderList([ TcaSelectItems::class ]);
+            $formDataGroup->setProviderList([TcaSelectItems::class]);
             /** @var FormDataCompiler $formDataCompiler */
             $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
             $compilerResult = $formDataCompiler->compile($selectDataInput);
@@ -289,7 +289,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 // exists. This is a data inconsistency, we catch this exception and create a flash message
                 $message = vsprintf(
                     $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:formEngine.databaseRecordErrorInlineChildChild'),
-                    [ $e->getTableName(), $e->getUid(), $childTableName, (int)$childUid ]
+                    [$e->getTableName(), $e->getUid(), $childTableName, (int)$childUid]
                 );
                 $flashMessage = GeneralUtility::makeInstance(
                     FlashMessage::class,

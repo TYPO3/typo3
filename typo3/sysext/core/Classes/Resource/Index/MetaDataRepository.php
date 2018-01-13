@@ -127,7 +127,7 @@ class MetaDataRepository implements SingletonInterface
      */
     public function createMetaDataRecord($fileUid, array $additionalFields = [])
     {
-        $emptyRecord =  [
+        $emptyRecord = [
             'file' => (int)$fileUid,
             'pid' => 0,
             'crdate' => $GLOBALS['EXEC_TIME'],
@@ -146,7 +146,7 @@ class MetaDataRepository implements SingletonInterface
 
         $record = $emptyRecord;
         $record['uid'] = $connection->lastInsertId($this->tableName);
-        $record['newlyCreated']  = true;
+        $record['newlyCreated'] = true;
 
         $this->emitRecordCreatedSignal($record);
 

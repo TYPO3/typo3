@@ -145,10 +145,10 @@ class ExtensionConfiguration
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         if ($path === '' && $value === null) {
             // Remove whole extension config
-            $configurationManager->removeLocalConfigurationKeysByPath([ 'EXTENSIONS/' . $extension ]);
+            $configurationManager->removeLocalConfigurationKeysByPath(['EXTENSIONS/' . $extension]);
         } elseif ($path !== '' && $value === null) {
             // Remove a single value or sub path
-            $configurationManager->removeLocalConfigurationKeysByPath([ 'EXTENSIONS/' . $extension . '/' . $path]);
+            $configurationManager->removeLocalConfigurationKeysByPath(['EXTENSIONS/' . $extension . '/' . $path]);
         } elseif ($path === '' && $value !== null) {
             // Set full extension config
             $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/' . $extension, $value);

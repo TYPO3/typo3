@@ -166,7 +166,7 @@ class SystemEnvironmentBuilder
                 // Base the script path on the path taken from the environment
                 // to make relative path calculations work in case only one of both is symlinked
                 // or has the real path
-                $scriptName =  substr($scriptPath, strlen($rootPath));
+                $scriptName = substr($scriptPath, strlen($rootPath));
             }
             $rootPath = GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT'));
             $scriptPath = $rootPath . $scriptName;

@@ -127,7 +127,7 @@ class UserFileMountService
             try {
                 $subFolderItems = $this->getSubfoldersForOptionList($subFolder, $level);
             } catch (InsufficientFolderReadPermissionsException $e) {
-                $subFolderItems  = [];
+                $subFolderItems = [];
             }
             $allFolderItems = array_merge($allFolderItems, $subFolderItems);
         }

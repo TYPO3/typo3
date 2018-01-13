@@ -146,7 +146,7 @@ class ExtensionManagerConfigurationUtility
      */
     private function init()
     {
-        $requestSetup = $this->processPostData((array) $_REQUEST['data']);
+        $requestSetup = $this->processPostData((array)$_REQUEST['data']);
         $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('saltedpasswords');
         $this->extConf['BE'] = array_merge((array)$extConf['BE'], (array)$requestSetup['BE']);
         $this->extConf['FE'] = array_merge((array)$extConf['FE'], (array)$requestSetup['FE']);

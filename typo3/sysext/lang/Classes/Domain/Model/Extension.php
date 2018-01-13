@@ -64,7 +64,7 @@ class Extension extends AbstractEntity
      * @param string $title Title of the extension
      * @param string $icon Icon representing the extension
      */
-    public function __construct($key = '', $title= '', $icon = '')
+    public function __construct($key = '', $title = '', $icon = '')
     {
         $this->setKey($key);
         $this->setTitle($title);

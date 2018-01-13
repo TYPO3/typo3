@@ -136,7 +136,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         $this->throwExceptionIfFrontendDoesNotExist();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->cacheTable);
-        $cacheRow =  $queryBuilder->select('content')
+        $cacheRow = $queryBuilder->select('content')
             ->from($this->cacheTable)
             ->where(
                 $queryBuilder->expr()->eq(

@@ -76,7 +76,7 @@ class TranslateElementPropertyViewHelper extends AbstractViewHelper
         }
 
         /** @var FormRuntime $formRuntime */
-        $formRuntime =  $renderingContext
+        $formRuntime = $renderingContext
             ->getViewHelperVariableContainer()
             ->get(RenderRenderableViewHelper::class, 'formRuntime');
 

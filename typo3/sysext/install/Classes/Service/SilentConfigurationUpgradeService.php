@@ -655,7 +655,7 @@ class SilentConfigurationUpgradeService
         }
 
         try {
-            $value= $confManager->getLocalConfigurationValueByPath('DB/password');
+            $value = $confManager->getLocalConfigurationValueByPath('DB/password');
             $removeSettings[] = 'DB/password';
             $newSettings['DB/Connections/Default/password'] = $value;
         } catch (\RuntimeException $e) {

@@ -693,7 +693,7 @@ class Clipboard
     {
         if ($this->getBackendUser()->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
             $labelKey = 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.' . ($this->currentMode() === 'copy' ? 'copy' : 'move') . ($this->current === 'normal' ? '' : 'cb') . '_' . $type;
-            $msg = $this->getLanguageService()->sL($labelKey . ($columnLabel ? '_colPos': ''));
+            $msg = $this->getLanguageService()->sL($labelKey . ($columnLabel ? '_colPos' : ''));
             if ($table === '_FILE') {
                 $thisRecTitle = basename($rec);
                 if ($this->current === 'normal') {

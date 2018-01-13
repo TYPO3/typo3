@@ -272,7 +272,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                     );
                 }
                 $fieldName = $conditionArray[1];
-                $allowedOperators = [ 'REQ', '>', '<', '>=', '<=', '-', '!-', '=', '!=', 'IN', '!IN', 'BIT', '!BIT' ];
+                $allowedOperators = ['REQ', '>', '<', '>=', '<=', '-', '!-', '=', '!=', 'IN', '!IN', 'BIT', '!BIT'];
                 if (empty($conditionArray[2]) || !in_array($conditionArray[2], $allowedOperators)) {
                     throw new \RuntimeException(
                         'Field condition "' . $conditionString . '" must have a valid operator as third part, non or invalid one given.'
@@ -303,7 +303,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                             1481401892
                         );
                     }
-                } elseif (in_array($namedConditionArray['operator'], [ '>', '<', '>=', '<=', 'BIT', '!BIT' ])) {
+                } elseif (in_array($namedConditionArray['operator'], ['>', '<', '>=', '<=', 'BIT', '!BIT'])) {
                     if (!MathUtility::canBeInterpretedAsInteger($operand)) {
                         throw new \RuntimeException(
                             'Field condition "' . $conditionString . '" with comparison operator ' . $namedConditionArray['operator']

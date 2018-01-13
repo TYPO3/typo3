@@ -237,7 +237,7 @@ class MoveElementController
                 'EXT:backend/Resources/Private/Templates/ContentElement/MoveElement.html'
             ));
             $view->assignMultiple($assigns);
-            $this->content .=  $view->render();
+            $this->content .= $view->render();
         }
         // Setting up the buttons and markers for docheader
         $this->getButtons();

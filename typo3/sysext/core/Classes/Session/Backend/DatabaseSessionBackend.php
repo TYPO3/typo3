@@ -191,7 +191,7 @@ class DatabaseSessionBackend implements SessionBackendInterface
 
         $query->delete($this->configuration['table'])
             ->where($query->expr()->lt('ses_tstamp', (int)($GLOBALS['EXEC_TIME'] - (int)$maximumLifetime)))
-            ->andWhere($this->hasAnonymousSessions ? $query->expr()->eq('ses_anonymous', 0) :' 1 = 1');
+            ->andWhere($this->hasAnonymousSessions ? $query->expr()->eq('ses_anonymous', 0) : ' 1 = 1');
         $query->execute();
 
         if ($maximumAnonymousLifetime > 0 && $this->hasAnonymousSessions) {

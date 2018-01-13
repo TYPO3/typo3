@@ -294,7 +294,7 @@ class DocumentationService
             while (($zipEntry = zip_read($zip)) !== false) {
                 $zipEntryName = zip_entry_name($zipEntry);
                 if (strpos($zipEntryName, '/') !== false) {
-                    $zipEntryPathSegments =  explode('/', $zipEntryName);
+                    $zipEntryPathSegments = explode('/', $zipEntryName);
                     $fileName = array_pop($zipEntryPathSegments);
                     // It is a folder, because the last segment is empty, let's create it
                     if (empty($fileName)) {

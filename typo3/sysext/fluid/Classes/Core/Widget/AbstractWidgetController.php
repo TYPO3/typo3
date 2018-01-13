@@ -70,9 +70,9 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
             $pluginConfiguration['templateRootPaths'][10] = $pluginConfiguration['templateRootPath'];
         }
         $widgetViewConfiguration = array_merge_recursive(
-            (array) $rootConfiguration,
-            (array) $parentConfiguration,
-            (array) $pluginConfiguration
+            (array)$rootConfiguration,
+            (array)$parentConfiguration,
+            (array)$pluginConfiguration
         );
         $view->getTemplatePaths()->fillFromConfigurationArray($widgetViewConfiguration);
     }

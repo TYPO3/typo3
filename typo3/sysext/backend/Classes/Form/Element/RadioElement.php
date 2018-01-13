@@ -58,7 +58,7 @@ class RadioElement extends AbstractFormElement
 
         $html = [];
         foreach ($this->data['parameterArray']['fieldConf']['config']['items'] as $itemNumber => $itemLabelAndValue) {
-            $label =  $itemLabelAndValue[0];
+            $label = $itemLabelAndValue[0];
             $value = $itemLabelAndValue[1];
             $radioId = htmlspecialchars($this->data['parameterArray']['itemFormElID'] . '_' . $itemNumber);
             $radioChecked = (string)$value === (string)$this->data['parameterArray']['itemFormElValue'] ? ' checked="checked"' : '';

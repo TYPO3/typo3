@@ -59,7 +59,7 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
         $element = $arguments['element'];
 
         /** @var FormRuntime $formRuntime */
-        $formRuntime =  $renderingContext
+        $formRuntime = $renderingContext
             ->getViewHelperVariableContainer()
             ->get(RenderRenderableViewHelper::class, 'formRuntime');
 

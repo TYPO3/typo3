@@ -223,7 +223,7 @@ class TaskModuleController extends BaseScriptClass
             'EXT:taskcenter/Resources/Private/Templates/ModuleContent.html'
         ));
         $view->assignMultiple($assigns);
-        $this->content .=  $view->render();
+        $this->content .= $view->render();
     }
 
     /**
@@ -245,7 +245,7 @@ class TaskModuleController extends BaseScriptClass
             'EXT:taskcenter/Resources/Private/Templates/InformationContent.html'
         ));
         $view->assignMultiple($assigns);
-        $this->content .=  $view->render();
+        $this->content .= $view->render();
     }
 
     /**

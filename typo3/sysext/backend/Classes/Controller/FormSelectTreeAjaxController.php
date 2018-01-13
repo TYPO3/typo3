@@ -41,7 +41,7 @@ class FormSelectTreeAjaxController
 
         // Prepare processedTca: Remove all column definitions except the one that contains
         // our tree definition. This way only this field is calculated, everything else is ignored.
-        if (!isset($GLOBALS['TCA'][$tableName])  || !is_array($GLOBALS['TCA'][$tableName])) {
+        if (!isset($GLOBALS['TCA'][$tableName]) || !is_array($GLOBALS['TCA'][$tableName])) {
             throw new \RuntimeException(
                 'TCA for table ' . $tableName . ' not found',
                 1479386729

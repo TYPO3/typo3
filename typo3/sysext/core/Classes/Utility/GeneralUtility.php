@@ -1675,7 +1675,7 @@ class GeneralUtility
                                 $current[$tagName] = (int)$current[$tagName];
                                 break;
                             case 'double':
-                                $current[$tagName] = (double) $current[$tagName];
+                                $current[$tagName] = (double)$current[$tagName];
                                 break;
                             case 'boolean':
                                 $current[$tagName] = (bool)$current[$tagName];
@@ -2230,7 +2230,7 @@ class GeneralUtility
 
             foreach ($allowedFileExtensionArray as $allowedFileExtension) {
                 if (
-                    ($extensionList === ',,' || stripos($extensionList, ',' . substr($entry, strlen($allowedFileExtension)*-1, strlen($allowedFileExtension)) . ',') !== false)
+                    ($extensionList === ',,' || stripos($extensionList, ',' . substr($entry, strlen($allowedFileExtension) * -1, strlen($allowedFileExtension)) . ',') !== false)
                     && ($excludePattern === '' || !preg_match(('/^' . $excludePattern . '$/'), $entry))
                 ) {
                     if ($order !== 'mtime') {
@@ -4000,7 +4000,7 @@ class GeneralUtility
     public static function quoteJSvalue($value)
     {
         return strtr(
-            json_encode((string)$value, JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_TAG),
+            json_encode((string)$value, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG),
             [
                 '"' => '\'',
                 '\\\\' => '\\u005C',

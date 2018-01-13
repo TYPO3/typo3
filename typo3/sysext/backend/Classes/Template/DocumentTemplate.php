@@ -935,7 +935,7 @@ function jumpToUrl(URL) {
     {
         $backendFavicon = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend', 'backendFavicon');
         if (!empty($backendFavicon)) {
-            $path =  $this->getUriForFileName($backendFavicon);
+            $path = $this->getUriForFileName($backendFavicon);
         } else {
             $path = ExtensionManagementUtility::extPath('backend') . 'Resources/Public/Icons/favicon.ico';
         }

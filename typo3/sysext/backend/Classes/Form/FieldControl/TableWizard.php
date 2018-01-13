@@ -52,7 +52,7 @@ class TableWizard extends AbstractNode
             $flexFormPath = str_replace('][', '/', substr($itemName, strlen($prefixOfFormElName) + 1, -1));
         }
 
-        $urlParameters  = [
+        $urlParameters = [
             'P' => [
                 'params' => [
                     'xmlOutput' => $xmlOutput,

@@ -119,7 +119,7 @@ class CheckboxElement extends AbstractFormElement
             $counter = 0;
             foreach ($items as $itemKey => $itemDefinition) {
                 $label = $itemDefinition[0];
-                $elementHtml .=  $this->renderSingleCheckboxElement($label, $counter, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled);
+                $elementHtml .= $this->renderSingleCheckboxElement($label, $counter, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled);
                 $counter = $counter + 1;
             }
         }

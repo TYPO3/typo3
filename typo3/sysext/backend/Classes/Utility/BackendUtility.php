@@ -1995,7 +1995,7 @@ class BackendUtility
                                 // Add additional where clause if foreign_match_fields are defined
                                 $foreignMatchFields = [];
                                 if (is_array($theColConf['foreign_match_fields'])) {
-                                    $foreignMatchFields =  $theColConf['foreign_match_fields'];
+                                    $foreignMatchFields = $theColConf['foreign_match_fields'];
                                 }
 
                                 foreach ($foreignMatchFields as $matchField => $matchValue) {
@@ -2095,9 +2095,9 @@ class BackendUtility
                                 while ($MMrow = $result->fetch()) {
                                     // Keep sorting of $selectUids
                                     $selectedUid = array_search($MMrow['uid'], $selectUids);
-                                    $mmlA[$selectedUid] =  $MMrow['uid'];
+                                    $mmlA[$selectedUid] = $MMrow['uid'];
                                     if (!$noRecordLookup) {
-                                        $mmlA[$selectedUid] =  static::getRecordTitle(
+                                        $mmlA[$selectedUid] = static::getRecordTitle(
                                             $theColConf['foreign_table'],
                                             $MMrow,
                                             false,

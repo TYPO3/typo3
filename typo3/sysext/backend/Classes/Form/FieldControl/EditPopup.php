@@ -41,7 +41,7 @@ class EditPopup extends AbstractNode
         $itemName = $parameterArray['itemFormElName'];
         $windowOpenParameters = $options['windowOpenParameters'] ?? 'height=800,width=600,status=0,menubar=0,scrollbars=1';
 
-        $urlParameters  = [
+        $urlParameters = [
             'P' => [
                 'table' => $this->data['tableName'],
                 'field' => $this->data['fieldName'],

@@ -236,10 +236,10 @@ class ElementInformationController
                 $view->assignMultiple($this->getReferences());
                 $view->assignMultiple($this->getBackButton());
                 $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
-                $content .=  $view->render();
+                $content .= $view->render();
             }
         } else {
-            $content .=  $view->render();
+            $content .= $view->render();
         }
 
         $this->moduleTemplate->setContent($content);
@@ -284,7 +284,7 @@ class ElementInformationController
 
         // check if file is marked as missing
         if ($this->fileObject->isMissing()) {
-            $preview['missingFile'] =$this->fileObject->getName();
+            $preview['missingFile'] = $this->fileObject->getName();
         } else {
             /** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
             $rendererRegistry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::class);

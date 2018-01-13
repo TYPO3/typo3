@@ -161,7 +161,7 @@ class TypeHandlingUtility
         $binaryData = '';
         $length = strlen($hexadecimalData);
         for ($i = 0; $i < $length; $i += 2) {
-            $binaryData .=  pack('C', hexdec(substr($hexadecimalData, $i, 2)));
+            $binaryData .= pack('C', hexdec(substr($hexadecimalData, $i, 2)));
         }
         return $binaryData;
     }

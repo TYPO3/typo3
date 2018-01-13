@@ -72,7 +72,7 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
             $elements = [$renderable];
         }
 
-        $formRuntime =  $renderingContext
+        $formRuntime = $renderingContext
             ->getViewHelperVariableContainer()
             ->get(RenderRenderableViewHelper::class, 'formRuntime');
 

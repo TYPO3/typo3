@@ -1311,7 +1311,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             );
         }
         $parentFolderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($parentFolderIdentifier);
-        $fileIdentifier =  $this->canonicalizeAndCheckFileIdentifier(
+        $fileIdentifier = $this->canonicalizeAndCheckFileIdentifier(
             $parentFolderIdentifier . $this->sanitizeFileName(ltrim($fileName, '/'))
         );
         $absoluteFilePath = $this->getAbsolutePath($fileIdentifier);

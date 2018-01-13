@@ -53,7 +53,7 @@ class TreeDataProviderFactory
                 $dataProvider->setTableName($tableName);
                 if ($tableName == $table) {
                     // The uid of the currently opened row can not be selected in a table relation to "self"
-                    $unselectableUids = [ $currentValue['uid'] ];
+                    $unselectableUids = [$currentValue['uid']];
                     $dataProvider->setItemUnselectableList($unselectableUids);
                 }
             } else {

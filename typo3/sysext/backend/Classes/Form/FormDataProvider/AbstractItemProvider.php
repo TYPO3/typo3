@@ -241,7 +241,7 @@ abstract class AbstractItemProvider
                     // Item configuration:
                     $items[] = [
                         rtrim($excludeArray['origin'] === 'flexForm' ? $excludeArray['fieldLabel'] : $languageService->sL($GLOBALS['TCA'][$excludeArray['table']]['columns'][$excludeArray['fieldName']]['label']), ':') . ' (' . $excludeArray['fieldName'] . ')',
-                        $excludeArray['table'] . ':' . $excludeArray['fullField'] ,
+                        $excludeArray['table'] . ':' . $excludeArray['fullField'],
                         'empty-empty',
                         $helpText
                     ];

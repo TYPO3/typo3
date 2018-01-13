@@ -78,7 +78,7 @@ class PropertyMappingConfiguration
                 $persistenceIdentifier = $renderable->getRootForm()->getPersistenceIdentifier();
                 if (!empty($persistenceIdentifier)) {
                     $pathinfo = PathUtility::pathinfo($persistenceIdentifier);
-                    $saveToFileMountIdentifier  = $pathinfo['dirname'];
+                    $saveToFileMountIdentifier = $pathinfo['dirname'];
                     if ($this->checkSaveFileMountAccess($saveToFileMountIdentifier)) {
                         $uploadConfiguration[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER] = $saveToFileMountIdentifier;
                     }

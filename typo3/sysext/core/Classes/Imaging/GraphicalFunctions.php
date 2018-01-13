@@ -2452,7 +2452,7 @@ class GraphicalFunctions
         }
         // If addFrameSelection is set in the Install Tool, a frame number is added to
         // select a specific page of the image (by default this will be the first page)
-        $frame  = $this->addFrameSelection ? '[' . (int)$frame . ']' : '';
+        $frame = $this->addFrameSelection ? '[' . (int)$frame . ']' : '';
         $cmd = CommandUtility::imageMagickCommand('convert', $params . ' ' . CommandUtility::escapeShellArgument($input . $frame) . ' ' . CommandUtility::escapeShellArgument($output));
         $this->IM_commands[] = [$output, $cmd];
         $ret = CommandUtility::exec($cmd);

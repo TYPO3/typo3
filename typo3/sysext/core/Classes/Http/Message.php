@@ -475,7 +475,7 @@ class Message implements MessageInterface
             // 32-126, 128-254 === visible
             // 127 === DEL
             // 255 === null byte
-            if (($ascii < 32 && ! in_array($ascii, [9, 10, 13], true)) || $ascii === 127 || $ascii > 254) {
+            if (($ascii < 32 && !in_array($ascii, [9, 10, 13], true)) || $ascii === 127 || $ascii > 254) {
                 return false;
             }
         }

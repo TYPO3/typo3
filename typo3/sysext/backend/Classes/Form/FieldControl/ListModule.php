@@ -70,7 +70,7 @@ class ListModule extends AbstractNode
             $pid = 0;
         }
 
-        $urlParameters  = [
+        $urlParameters = [
             'P' => [
                 'params' => [
                     'table' => $table,

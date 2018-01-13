@@ -173,7 +173,7 @@ class SchedulerModuleController
         } else {
             // If no access, only display the module's title
             $content = '<h1>' . $this->getLanguageService()->getLL('title.') . '</h1>';
-            $content .='<div style="padding-top: 5px;"></div>';
+            $content .= '<div style="padding-top: 5px;"></div>';
         }
         $this->getButtons();
         $this->getModuleMenu();

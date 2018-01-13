@@ -1937,7 +1937,7 @@ class PageLayoutView implements LoggerAwareInterface
                 }
                 // Delete
                 $disableDeleteTS = $this->getBackendUser()->getTSConfig('options.disableDelete');
-                $disableDelete = (bool) trim($disableDeleteTS['properties']['tt_content'] ?? $disableDeleteTS['value']);
+                $disableDelete = (bool)trim($disableDeleteTS['properties']['tt_content'] ?? $disableDeleteTS['value']);
                 if (!$disableDelete) {
                     $params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
                     $confirm = $this->getLanguageService()->getLL('deleteWarning')

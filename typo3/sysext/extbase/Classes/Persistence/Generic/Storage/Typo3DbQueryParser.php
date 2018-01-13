@@ -897,7 +897,7 @@ class Typo3DbQueryParser
             $column1Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty1Name(), $leftClassName);
             $column2Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty2Name(), $rightClassName);
 
-            $joinConditionExpression =  $this->queryBuilder->expr()->eq(
+            $joinConditionExpression = $this->queryBuilder->expr()->eq(
                 $leftTableAlias . '.' . $column1Name,
                 $this->queryBuilder->quoteIdentifier($rightTableAlias . '.' . $column2Name)
             );

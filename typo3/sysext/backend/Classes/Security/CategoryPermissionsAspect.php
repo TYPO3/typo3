@@ -128,7 +128,7 @@ class CategoryPermissionsAspect
 
                 /** @var TreeNode $node */
                 $node = $this->lookUpCategoryMountPointInTreeNodes($categoryMountPoint, $treeNode->getChildNodes());
-                if (! is_null($node)) {
+                if (!is_null($node)) {
                     $result = $node;
                     break;
                 }

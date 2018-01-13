@@ -436,7 +436,7 @@ class InstallerController
             }
             $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
             // Remove full default connection array
-            $configurationManager->removeLocalConfigurationKeysByPath([ 'DB/Connections/Default' ]);
+            $configurationManager->removeLocalConfigurationKeysByPath(['DB/Connections/Default']);
             // Write new values
             $configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
         }
@@ -507,7 +507,7 @@ class InstallerController
             if ($status->getSeverity() === FlashMessage::ERROR) {
                 return new JsonResponse([
                     'success' => false,
-                    'status' => [ $status ],
+                    'status' => [$status],
                 ]);
             }
         } elseif ($postValues['type'] === 'existing' && !empty($postValues['existing'])) {
@@ -515,7 +515,7 @@ class InstallerController
             if ($status->getSeverity() === FlashMessage::ERROR) {
                 return new JsonResponse([
                     'success' => false,
-                    'status' => [ $status ],
+                    'status' => [$status],
                 ]);
             }
         } else {

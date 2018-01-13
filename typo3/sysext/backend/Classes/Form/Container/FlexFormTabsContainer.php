@@ -55,7 +55,7 @@ class FlexFormTabsContainer extends AbstractContainer
                 continue;
             }
 
-            $tabCounter ++;
+            $tabCounter++;
 
             // Assemble key for loading the correct CSH file
             // @todo: what is that good for? That is for the title of single elements ... see FlexFormElementContainer!

@@ -292,7 +292,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
-                'status' => [ $this->imageMagickDisabledMessage() ],
+                'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
         $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
@@ -330,7 +330,7 @@ class EnvironmentController extends AbstractController
             ];
         } else {
             $result = [
-                'status' => [ $this->imageGenerationFailedMessage() ],
+                'status' => [$this->imageGenerationFailedMessage()],
             ];
         }
         return $this->getImageTestResponse($result);
@@ -345,7 +345,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
-                'status' => [ $this->imageMagickDisabledMessage() ],
+                'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
         $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
@@ -362,7 +362,7 @@ class EnvironmentController extends AbstractController
             ];
         } else {
             $result = [
-                'status' => [ $this->imageGenerationFailedMessage() ],
+                'status' => [$this->imageGenerationFailedMessage()],
             ];
         }
         return $this->getImageTestResponse($result);
@@ -377,7 +377,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
-                'status' => [ $this->imageMagickDisabledMessage() ],
+                'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
         $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
@@ -394,7 +394,7 @@ class EnvironmentController extends AbstractController
             ];
         } else {
             $result = [
-                'status' => [ $this->imageGenerationFailedMessage() ],
+                'status' => [$this->imageGenerationFailedMessage()],
             ];
         }
         return $this->getImageTestResponse($result);
@@ -409,7 +409,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
-                'status' => [ $this->imageMagickDisabledMessage() ],
+                'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
         $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
@@ -426,7 +426,7 @@ class EnvironmentController extends AbstractController
             ];
         } else {
             $result = [
-                'status' => [ $this->imageGenerationFailedMessage() ],
+                'status' => [$this->imageGenerationFailedMessage()],
             ];
         }
         return $this->getImageTestResponse($result);
@@ -441,7 +441,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
-                'status' => [ $this->imageMagickDisabledMessage() ],
+                'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
         $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
@@ -458,7 +458,7 @@ class EnvironmentController extends AbstractController
             ];
         } else {
             $result = [
-                'status' => [ $this->imageGenerationFailedMessage() ],
+                'status' => [$this->imageGenerationFailedMessage()],
             ];
         }
         return $this->getImageTestResponse($result);
@@ -473,7 +473,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
-                'status' => [ $this->imageMagickDisabledMessage() ],
+                'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
         $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
@@ -494,7 +494,7 @@ class EnvironmentController extends AbstractController
             ];
         } else {
             $result = [
-                'status' => [ $this->imageGenerationFailedMessage() ],
+                'status' => [$this->imageGenerationFailedMessage()],
             ];
         }
         return $this->getImageTestResponse($result);
@@ -509,7 +509,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
-                'status' => [ $this->imageMagickDisabledMessage() ],
+                'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
         $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
@@ -530,7 +530,7 @@ class EnvironmentController extends AbstractController
             ];
         } else {
             $result = [
-                'status' => [ $this->imageGenerationFailedMessage() ],
+                'status' => [$this->imageGenerationFailedMessage()],
             ];
         }
         return $this->getImageTestResponse($result);
@@ -642,7 +642,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
-                'status' => [ $this->imageMagickDisabledMessage() ],
+                'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
         $imageProcessor = $this->initializeImageProcessor();
@@ -689,7 +689,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
-                'status' => [ $this->imageMagickDisabledMessage() ],
+                'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
         $imageProcessor = $this->initializeImageProcessor();
@@ -785,7 +785,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
-                'status' => [ $this->imageMagickDisabledMessage() ],
+                'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
         if (!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $inputFormat)) {
@@ -813,7 +813,7 @@ class EnvironmentController extends AbstractController
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
-            $result['status'] = [ $this->imageGenerationFailedMessage() ];
+            $result['status'] = [$this->imageGenerationFailedMessage()];
         }
         return $this->getImageTestResponse($result);
     }

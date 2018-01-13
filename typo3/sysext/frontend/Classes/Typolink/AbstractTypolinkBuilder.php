@@ -67,7 +67,7 @@ abstract class AbstractTypolinkBuilder
      */
     protected function forceAbsoluteUrl(string $url, array $configuration): string
     {
-        if (!empty($url) && !empty($configuration['forceAbsoluteUrl']) &&  preg_match('#^(?:([a-z]+)(://)([^/]*)/?)?(.*)$#', $url, $matches)) {
+        if (!empty($url) && !empty($configuration['forceAbsoluteUrl']) && preg_match('#^(?:([a-z]+)(://)([^/]*)/?)?(.*)$#', $url, $matches)) {
             $urlParts = [
                 'scheme' => $matches[1],
                 'delimiter' => '://',

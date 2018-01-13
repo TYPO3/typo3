@@ -201,7 +201,7 @@ class DownloadController extends AbstractController
         $this->view
             ->assign('result', $result)
             ->assign('extension', $extension)
-            ->assign('installationTypeLanguageKey', $isAutomaticInstallationEnabled ?  '' : '.downloadOnly')
+            ->assign('installationTypeLanguageKey', $isAutomaticInstallationEnabled ? '' : '.downloadOnly')
             ->assign('unresolvedDependencies', $errorMessages);
     }
 

@@ -41,8 +41,8 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     protected static $blacklistedCommands = [
         \TYPO3\CMS\Scheduler\Command\SchedulerCommand::class, // scheduler:run
-        \TYPO3\CMS\Extbase\Command\CoreCommand::class,        // _core_command
-        \TYPO3\CMS\Extbase\Command\HelpCommand::class,        // _extbase_help
+        \TYPO3\CMS\Extbase\Command\CoreCommand::class, // _core_command
+        \TYPO3\CMS\Extbase\Command\HelpCommand::class, // _extbase_help
     ];
 
     /**

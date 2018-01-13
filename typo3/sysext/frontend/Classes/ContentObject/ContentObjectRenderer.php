@@ -1448,7 +1448,7 @@ class ContentObjectRenderer
             'aTagParams' => &$aTagParams
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc'] ?? [] as $className) {
-            $processor =& GeneralUtility::makeInstance($className);
+            $processor = & GeneralUtility::makeInstance($className);
             $aTagParams = $processor->process($_params, $this);
         }
 
@@ -4391,7 +4391,7 @@ class ContentObjectRenderer
     {
         $aTagParams = $this->getATagParams($conf);
         $textstr = '';
-        foreach ([ 'http://', 'https://' ] as $scheme) {
+        foreach (['http://', 'https://'] as $scheme) {
             $textpieces = explode($scheme, $data);
             $pieces = count($textpieces);
             $textstr = $textpieces[0];
@@ -4891,7 +4891,7 @@ class ContentObjectRenderer
                             $rootLine = $tsfe->rootLine;
                             array_shift($rootLine);
                             foreach ($rootLine as $rootLinePage) {
-                                $retVal = (string) $rootLinePage['backend_layout_next_level'];
+                                $retVal = (string)$rootLinePage['backend_layout_next_level'];
                                 // If layout for "next level" is set to "none" - don't use any and stop searching
                                 if ($retVal === '-1') {
                                     $retVal = 'none';
@@ -6804,8 +6804,7 @@ class ContentObjectRenderer
                 // Use this option to include records that don't have a default translation
                 // (originalpointerfield is 0 and the language field contains the requested language)
                 $includeRecordsWithoutDefaultTranslation = isset($conf['includeRecordsWithoutDefaultTranslation.']) ?
-                    $this->stdWrap($conf['includeRecordsWithoutDefaultTranslation'], $conf['includeRecordsWithoutDefaultTranslation.']) :
-                    $conf['includeRecordsWithoutDefaultTranslation'];
+                    $this->stdWrap($conf['includeRecordsWithoutDefaultTranslation'], $conf['includeRecordsWithoutDefaultTranslation.']) : $conf['includeRecordsWithoutDefaultTranslation'];
                 if (trim($includeRecordsWithoutDefaultTranslation) !== '') {
                     $languageQuery = $expressionBuilder->orX(
                         $languageQuery,
