@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
  * Resolve checkbox items and set processed item list in processedTca
@@ -44,32 +43,7 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
             }
 
             $config = $fieldConfig['config'];
-            $items = $config['items'];
-
-            // Sanitize items
-            $newItems = [];
-            foreach ($items as $itemKey => $itemValue) {
-                if (!is_array($itemValue)) {
-                    throw new \UnexpectedValueException(
-                        'Item ' . $itemKey . ' of field ' . $fieldName . ' of TCA table ' . $result['tableName'] . ' is no array as exepcted',
-                        1440499337
-                    );
-                }
-                if (!array_key_exists(0, $itemValue)) {
-                    throw new \UnexpectedValueException(
-                        'Item ' . $itemKey . ' of field ' . $fieldName . ' of TCA table ' . $result['tableName'] . ' has no label',
-                        1440499338
-                    );
-                }
-                if (!array_key_exists(1, $itemValue)) {
-                    $itemValue[1] = '';
-                }
-                $newItems[$itemKey] = [
-                    $languageService->sL(trim($itemValue[0])),
-                    $itemValue[1]
-                ];
-            }
-            $items = $newItems;
+            $items = $this->sanitizeConfiguration($config, $fieldName, $table);
 
             // Resolve "itemsProcFunc"
             if (!empty($config['itemsProcFunc'])) {
@@ -80,7 +54,7 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
 
             // Set label overrides from pageTsConfig if given
             if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'])
-                && is_array($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'])
+                && \is_array($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'])
             ) {
                 foreach ($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'] as $itemKey => $label) {
                     if (isset($items[$itemKey][0])) {
@@ -96,10 +70,115 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
     }
 
     /**
-     * @return LanguageService
+     * @param array $config
+     * @param string $fieldName
+     * @param string $tableName
+     * @return array
+     * @throws \UnexpectedValueException
      */
-    protected function getLanguageService()
+    private function sanitizeConfiguration(array $config, string $fieldName, string $tableName)
     {
-        return $GLOBALS['LANG'];
+        $newItems = [];
+        foreach ($config['items'] as $itemKey => $checkboxEntry) {
+            $this->basicChecks($fieldName, $tableName, $checkboxEntry, $itemKey);
+            $newItems[$itemKey] = [
+                $this->getLanguageService()->sL(trim($checkboxEntry[0])),
+                $checkboxEntry[1]
+            ];
+            switch ($config['renderType']) {
+                case 'checkboxToggle':
+                    $newItems = $this->sanitizeToggleCheckbox($checkboxEntry, $itemKey, $newItems);
+                    break;
+                case 'checkboxLabeledToggle':
+                    $newItems = $this->sanitizeLabeledToggleCheckbox($checkboxEntry, $itemKey, $newItems);
+                    break;
+                default:
+                    $newItems = $this->sanitizeIconToggleCheckbox($checkboxEntry, $itemKey, $newItems);
+            }
+        }
+        return $newItems;
+    }
+
+    /**
+     * @param string $fieldName
+     * @param string $tableName
+     * @param $checkboxEntry
+     * @param int $checkboxKey
+     * @throws \UnexpectedValueException
+     */
+    private function basicChecks(string $fieldName, string $tableName, $checkboxEntry, int $checkboxKey)
+    {
+        if (!\is_array($checkboxEntry)) {
+            throw new \UnexpectedValueException(
+                'Item ' . $checkboxKey . ' of field ' . $fieldName . ' of TCA table ' . $tableName . ' is not an array as expected',
+                1440499337
+            );
+        }
+        if (!\array_key_exists(0, $checkboxEntry)) {
+            throw new \UnexpectedValueException(
+                'Item ' . $checkboxKey . ' of field ' . $fieldName . ' of TCA table ' . $tableName . ' has no label',
+                1440499338
+            );
+        }
+    }
+
+    /**
+     * @param array $item
+     * @param int $itemKey
+     * @param array $newItems
+     * @return array
+     */
+    private function sanitizeToggleCheckbox(array $item, int $itemKey, array $newItems)
+    {
+        if (array_key_exists('invertStateDisplay', $item)) {
+            $newItems[$itemKey]['invertStateDisplay'] = $item['invertStateDisplay'];
+        } else {
+            $newItems[$itemKey]['invertStateDisplay'] = false;
+        }
+        return $newItems;
+    }
+
+    /**
+     * @param array $item
+     * @param int $itemKey
+     * @param array $newItems
+     * @return array
+     */
+    private function sanitizeLabeledToggleCheckbox(array $item, int $itemKey, array $newItems)
+    {
+        if (array_key_exists('labelChecked', $item)) {
+            $newItems[$itemKey]['labelChecked'] = $item['labelChecked'];
+        }
+        if (array_key_exists('labelUnchecked', $item)) {
+            $newItems[$itemKey]['labelUnchecked'] = $item['labelUnchecked'];
+        }
+        if (array_key_exists('invertStateDisplay', $item)) {
+            $newItems[$itemKey]['invertStateDisplay'] = $item['invertStateDisplay'];
+        } else {
+            $newItems[$itemKey]['invertStateDisplay'] = false;
+        }
+        return $newItems;
+    }
+
+    /**
+     * @param array $item
+     * @param int $itemKey
+     * @param array $newItems
+     * @return array
+     */
+    private function sanitizeIconToggleCheckbox(array $item, int $itemKey, array $newItems)
+    {
+        if (array_key_exists('iconIdentifierChecked', $item)) {
+            $newItems[$itemKey]['iconIdentifierChecked'] = $item['iconIdentifierChecked'];
+        }
+        if (array_key_exists('iconIdentifierUnchecked', $item)) {
+            $newItems[$itemKey]['iconIdentifierUnchecked'] = $item['iconIdentifierUnchecked'];
+        }
+        if (array_key_exists('invertStateDisplay', $item)) {
+            $newItems[$itemKey]['invertStateDisplay'] = $item['invertStateDisplay'];
+        } else {
+            $newItems[$itemKey]['invertStateDisplay'] = false;
+        }
+        return $newItems;
     }
 }

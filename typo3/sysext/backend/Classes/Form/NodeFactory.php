@@ -67,6 +67,8 @@ class NodeFactory
 
         // Default single element classes
         'check' => Element\CheckboxElement::class,
+        'checkboxToggle' => Element\CheckboxToggleElement::class,
+        'checkboxLabeledToggle' => Element\CheckboxLabeledToggleElement::class,
         'group' => Element\GroupElement::class,
         'input' => Element\InputTextElement::class,
         'inputDateTime' => Element\InputDateTimeElement::class,

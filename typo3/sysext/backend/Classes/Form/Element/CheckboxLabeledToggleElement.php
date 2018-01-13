@@ -16,14 +16,13 @@ namespace TYPO3\CMS\Backend\Form\Element;
  */
 
 use TYPO3\CMS\Backend\Form\NodeFactory;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Generation of TCEform elements of the type "check"
  */
-class CheckboxElement extends AbstractFormElement
+class CheckboxLabeledToggleElement extends AbstractFormElement
 {
     /**
      * @var IconRegistry
@@ -173,20 +172,8 @@ class CheckboxElement extends AbstractFormElement
             implode('', $additionalInformation['fieldChangeFunc'])
         );
         $checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter;
-
-        $iconIdentifierChecked = !empty($config['items'][$itemCounter]['iconIdentifierChecked']) ? $config['items'][$itemCounter]['iconIdentifierChecked'] : 'actions-check';
-        if (!$this->iconRegistry->isRegistered($iconIdentifierChecked)) {
-            $iconIdentifierChecked = 'actions-check';
-        }
-        $iconIdentifierUnchecked = !empty($config['items'][$itemCounter]['iconIdentifierUnchecked']) ? $config['items'][$itemCounter]['iconIdentifierUnchecked'] : 'empty-empty';
-        if (!$this->iconRegistry->isRegistered($iconIdentifierUnchecked)) {
-            $iconIdentifierUnchecked = 'empty-empty';
-        }
-        $iconChecked = $this->iconFactory->getIcon($iconIdentifierChecked, Icon::SIZE_SMALL)->render('inline');
-        $iconUnchecked = $this->iconFactory->getIcon($iconIdentifierUnchecked, Icon::SIZE_SMALL)->render('inline');
-
         return '
-            <div class="checkbox checkbox-type-icon-toggle' . ($invert ? ' checkbox-invert' : '') . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
+            <div class="checkbox checkbox-type-labeled-toggle' . ($invert ? ' checkbox-invert' : '') . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
                 <input type="checkbox"
                     class="checkbox-input"
                     value="1"
@@ -195,9 +182,13 @@ class CheckboxElement extends AbstractFormElement
                     ' . (!$disabled ?: ' disabled="disabled"') . '
                     id="' . $checkboxId . '" />
                 <label class="checkbox-label" for="' . $checkboxId . '">
-                    <span class="checkbox-label-icon">
-                        <span class="checkbox-label-icon-checked">' . ($invert ? $iconUnchecked : $iconChecked) . '</span>
-                        <span class="checkbox-label-icon-unchecked">' . ($invert ? $iconChecked : $iconUnchecked) . '</span>
+                    <span class="checkbox-label-switch">
+                        <span class="checkbox-label-switch-checked">
+                            ' . $config['items'][$itemCounter]['labelChecked'] . '
+                        </span>
+                        <span class="checkbox-label-switch-unchecked">
+                            ' . $config['items'][$itemCounter]['labelUnchecked'] . '
+                        </span>
                     </span>
                     <span class="checkbox-label-text">' . ($label ? htmlspecialchars($label) : '&nbsp;') . '</span>
                 </label>

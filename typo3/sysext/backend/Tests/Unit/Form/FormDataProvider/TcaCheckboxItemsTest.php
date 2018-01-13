@@ -53,32 +53,373 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 
     /**
      * @test
+     * @dataProvider checkboxConfigurationDataProvider
      */
-    public function addDataKeepExistingItems()
+    public function addDataKeepExistingItems($input, $expectedResult)
     {
-        $input = [
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'check',
-                            'items' => [
-                                0 => [
-                                    'foo',
-                                    'bar',
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+        $this->assertSame($expectedResult, $this->subject->addData($input));
+    }
+
+    public function checkboxConfigurationDataProvider()
+    {
+        return [
+            'simpleCheckboxConfig' => [
+                'input' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
                     ],
                 ],
+                'expected' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'items' => [
+                                        0 => [
+                                            'foo', //@todo a followup patch should refactor towards 'label' => 'foo'
+                                            'bar', //@todo a followup patch should remove this numeric key altogether
+                                            'invertStateDisplay' => false
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'brokenSimpleCheckboxConfig' => [
+                'input' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'baz'
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expected' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'invertStateDisplay' => false
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'toggleCheckboxConfig' => [
+                'input' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'labelChecked' => 'Enabled',
+                                            'labelUnchecked' => 'Disabled'
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expected' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'invertStateDisplay' => false
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'inverted_toggleCheckboxConfig' => [
+                'input' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'labelChecked' => 'Enabled',
+                                            'labelUnchecked' => 'Disabled',
+                                            'invertStateDisplay' => true
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expected' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'invertStateDisplay' => true
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'labeledCheckboxConfig' => [
+                'input' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxLabeledToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'labelChecked' => 'Enabled',
+                                            'labelUnchecked' => 'Disabled'
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expected' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxLabeledToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'labelChecked' => 'Enabled',
+                                            'labelUnchecked' => 'Disabled',
+                                            'invertStateDisplay' => false
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'inverted_labeledCheckboxConfig' => [
+                'input' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxLabeledToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'labelChecked' => 'Enabled',
+                                            'labelUnchecked' => 'Disabled',
+                                            'invertStateDisplay' => true
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expected' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxLabeledToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'labelChecked' => 'Enabled',
+                                            'labelUnchecked' => 'Disabled',
+                                            'invertStateDisplay' => true
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'iconCheckboxConfig' => [
+                'input' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxIconToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'labelChecked' => 'Enabled',
+                                            'labelUnchecked' => 'Disabled',
+                                            'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
+                                            'iconIdentifierUnchecked' => 'styleguide-icon-toggle-checked',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expected' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxIconToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
+                                            'iconIdentifierUnchecked' => 'styleguide-icon-toggle-checked',
+                                            'invertStateDisplay' => false
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'inverted_iconCheckboxConfig' => [
+                'input' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxIconToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'labelChecked' => 'Enabled',
+                                            'labelUnchecked' => 'Disabled',
+                                            'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
+                                            'iconIdentifierUnchecked' => 'styleguide-icon-toggle-checked',
+                                            'invertStateDisplay' => true
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expected' => [
+                    'tableName' => 'foo',
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'renderType' => 'checkboxIconToggle',
+                                    'items' => [
+                                        0 => [
+                                            'foo',
+                                            'bar',
+                                            'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
+                                            'iconIdentifierUnchecked' => 'styleguide-icon-toggle-checked',
+                                            'invertStateDisplay' => true
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
             ],
         ];
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
-
-        $expected = $input;
-        $this->assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -99,6 +440,7 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                     ],
                 ],
             ],
+            'tableName' => 'foo'
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499337);
@@ -125,6 +467,7 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                     ],
                 ],
             ],
+            'tableName' => 'foo'
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499338);
@@ -152,6 +495,7 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                     ],
                 ],
             ],
+            'tableName' => 'foo'
         ];
 
         /** @var LanguageService|ObjectProphecy $languageService */
@@ -162,6 +506,7 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
         $this->assertSame($expected, $this->subject->addData($input));
         $this->subject->addData($input);
@@ -233,12 +578,14 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                             'aKey' => 'aValue',
                             'items' => [
                                 0 => [
-                                    'foo',
-                                    'bar',
+                                    0 => 'foo',
+                                    1 => 'bar',
+                                    'invertedStateDisplay' => false
                                 ],
                             ],
                             'itemsProcFunc' => function (array $parameters, $pObj) {
-                                if ($parameters['items'] !== [ 0 => [ 'foo', 'bar'] ]
+                                if (
+                                    $parameters['items'] !== [ 0 => [0=>'foo', 1 =>'bar', 'invertStateDisplay' => false]]
                                     || $parameters['config']['aKey'] !== 'aValue'
                                     || $parameters['TSconfig'] !== [ 'itemParamKey' => 'itemParamValue' ]
                                     || $parameters['table'] !== 'aTable'
@@ -377,6 +724,7 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
         $this->assertSame($expected, $this->subject->addData($input));
         $this->subject->addData($input);

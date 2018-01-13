@@ -1,0 +1,303 @@
+//
+// Card
+//
+// Styleguide component.checkbox
+//
+
+//
+// Variables
+//
+$checkbox-bg: #dadada;
+$checkbox-bg-active: #79a548;
+$checkbox-bg-inactive: #e74856;
+
+//
+// Component
+//
+.checkbox {
+    .checkbox-input {
+        display: none;
+    }
+
+    .checkbox-label {
+        position: relative;
+        display: inline-flex;
+        align-items: baseline;
+        overflow: hidden;
+        padding: 0;
+        min-height: 0;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .checkbox-label-switch,
+    .checkbox-label-icon {
+        flex-shrink: 0;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .checkbox-label-text {
+        padding-left: 6px;
+        position: relative;
+        display: inline-flex;
+    }
+}
+
+//
+// Disabled
+//
+.checkbox {
+    .checkbox-input:disabled + .checkbox-label {
+        opacity: 0.5;
+    }
+}
+
+//
+// Toggle
+//
+// Markup:
+// <div class="checkbox checkbox-type-toggle">
+//     <input type="checkbox" class="checkbox-input" value="1" id="checkbox-toggle">
+//     <label class="checkbox-label" for="checkbox-toggle">
+//         <span class="checkbox-label-text">foo</span>
+//     </label>
+// </div>
+//
+// Styleguide component.checkbox.1
+//
+.checkbox-type-toggle {
+    .checkbox-label {
+        overflow: visible;
+        padding-left: 36px;
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 0;
+            padding-left: 0;
+            width: 36px;
+            height: 20px;
+            background-color: darken($checkbox-bg, 20%);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            background-color: #fff;
+            height: 12px;
+            width: 12px;
+            top: 3px;
+            left: 5px;
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+    }
+
+    .checkbox-input:checked + .checkbox-label {
+        &:before {
+            background-color: $checkbox-bg-active;
+        }
+
+        &:after {
+            left: 19px;
+        }
+    }
+
+    &.checkbox-invert {
+        .checkbox-label {
+            &:before {
+                background-color: $checkbox-bg-active;
+            }
+
+            &:after {
+                left: 19px;
+            }
+        }
+
+        .checkbox-input:checked + .checkbox-label {
+            &:before {
+                background-color: darken($checkbox-bg, 20%);
+            }
+
+            &:after {
+                left: 5px;
+            }
+        }
+    }
+}
+
+//
+// Labeled Toggle
+//
+// Markup:
+// <div class="checkbox checkbox-type-labeled-toggle">
+//     <input type="checkbox" class="checkbox-input" value="1" id="checkbox-labeled-toggle">
+//     <label class="checkbox-label" for="checkbox-labeled-toggle">
+//         <span class="checkbox-label-switch">
+//             <span class="checkbox-label-switch-checked">
+//                 Enabled
+//             </span>
+//             <span class="checkbox-label-switch-unchecked">
+//                 Disabled
+//             </span>
+//         </span>
+//         <span class="checkbox-label-text">
+//             Foo
+//         </span>
+//     </label>
+// </div>
+//
+// Styleguide component.checkbox.2
+//
+.checkbox-type-labeled-toggle {
+    .checkbox-label-switch {
+        height: 24px;
+        background-color: $checkbox-bg-inactive;
+        border-radius: 2px;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        color: #fff;
+        display: inline-flex;
+        flex-direction: column;
+        line-height: 22px;
+        text-align: center;
+    }
+
+    .checkbox-label-switch-checked,
+    .checkbox-label-switch-unchecked {
+        padding-left: 8px;
+        padding-right: 8px;
+        flex-grow: 1;
+        user-select: none;
+    }
+
+    .checkbox-label-switch-checked {
+        order: 2;
+    }
+
+    .checkbox-label-switch-unchecked {
+        order: 1;
+    }
+
+    .checkbox-input:checked + .checkbox-label {
+        .checkbox-label-switch {
+            background-color: $checkbox-bg-active;
+
+            .checkbox-label-switch-checked {
+                order: 1;
+            }
+
+            .checkbox-label-switch-unchecked {
+                order: 2;
+            }
+        }
+    }
+
+    &.checkbox-invert {
+        .checkbox-label-switch {
+            background-color: $checkbox-bg-active;
+
+            .checkbox-label-switch-checked {
+                order: 1;
+            }
+
+            .checkbox-label-switch-unchecked {
+                order: 2;
+            }
+        }
+
+        .checkbox-input:checked + .checkbox-label {
+            .checkbox-label-switch {
+                background-color: $checkbox-bg-inactive;
+
+                .checkbox-label-switch-checked {
+                    order: 2;
+                }
+
+                .checkbox-label-switch-unchecked {
+                    order: 1;
+                }
+            }
+        }
+    }
+}
+
+//
+// Icon Toggle
+//
+// Markup:
+// <div class="checkbox checkbox-type-icon-toggle">
+//     <input type="checkbox" class="checkbox-input" value="1" id="checkbox-icon-toggle">
+//     <label class="checkbox-label" for="checkbox-icon-toggle">
+//         <span class="checkbox-label-icon">
+//             <span class="checkbox-label-icon-checked">
+//                 <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-check" data-identifier="actions-check">
+//                     <span class="icon-markup">
+//                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M13.3 4.8l-.7-.7c-.2-.2-.5-.2-.7 0L6.5 9.5 4 6.9c-.2-.2-.5-.2-.7 0l-.6.7c-.2.2-.2.5 0 .7l3.6 3.6c.2.2.5.2.7 0l6.4-6.4c.1-.2.1-.5-.1-.7z" class="icon-color"></path></svg>
+//                     </span>
+//                 </span>
+//             </span>
+//             <span class="checkbox-label-icon-unchecked">
+//                 <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-close" data-identifier="actions-close">
+//                     <span class="icon-markup">
+//                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M11.9 5.5L9.4 8l2.5 2.5c.2.2.2.5 0 .7l-.7.7c-.2.2-.5.2-.7 0L8 9.4l-2.5 2.5c-.2.2-.5.2-.7 0l-.7-.7c-.2-.2-.2-.5 0-.7L6.6 8 4.1 5.5c-.2-.2-.2-.5 0-.7l.7-.7c.2-.2.5-.2.7 0L8 6.6l2.5-2.5c.2-.2.5-.2.7 0l.7.7c.2.2.2.5 0 .7z" class="icon-color"></path></svg>
+//                     </span>
+//                 </span>
+//             </span>
+//         </span>
+//         <span class="checkbox-label-text">foo</span>
+//     </label>
+// </div>
+//
+// Styleguide component.checkbox.3
+//
+.checkbox-type-icon-toggle {
+    .checkbox-label-icon {
+        border-radius: 2px;
+        width: 24px;
+        height: 24px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: center;
+        background-color: $checkbox-bg;
+        color: #333;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+    }
+
+    .checkbox-label-icon-checked {
+        display: none;
+    }
+
+    .checkbox-label-icon-unchecked {
+        display: inline-block;
+    }
+
+    .checkbox-input:checked + .checkbox-label {
+        .checkbox-label-icon {
+            background-color: $checkbox-bg-active;
+            color: #fff;
+        }
+
+        .checkbox-label-icon-checked {
+            display: inline-block;
+        }
+
+        .checkbox-label-icon-unchecked {
+            display: none;
+        }
+    }
+
+    &.checkbox-invert {
+        .checkbox-label-icon {
+            background-color: $checkbox-bg-active;
+            color: #fff;
+        }
+
+        .checkbox-input:checked + .checkbox-label .checkbox-label-icon {
+            background-color: $checkbox-bg;
+            color: #333;
+        }
+    }
+}

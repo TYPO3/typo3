@@ -306,6 +306,70 @@ abstract class AbstractFormElement extends AbstractNode
         return ceil($size * $compensationForFormFields);
     }
 
+    /***********************************************
+     * CheckboxElement related methods
+     ***********************************************/
+
+    /**
+     * Creates checkbox parameters
+     *
+     * @param string $itemName Form element name
+     * @param int $formElementValue The value of the checkbox (representing checkboxes with the bits)
+     * @param int $checkbox Checkbox # (0-9?)
+     * @param int $checkboxesCount Total number of checkboxes in the array.
+     * @param string $additionalJavaScript Additional JavaScript for the onclick handler.
+     * @return string The onclick attribute + possibly the checked-option set.
+     * @internal
+     */
+    protected function checkBoxParams($itemName, $formElementValue, $checkbox, $checkboxesCount, $additionalJavaScript = ''): string
+    {
+        $elementName = 'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . ']';
+        $checkboxPow = 2 ** $checkbox;
+        $onClick = $elementName . '.value=this.checked?(' . $elementName . '.value|' . $checkboxPow . '):('
+            . $elementName . '.value&' . ((2 ** $checkboxesCount) - 1 - $checkboxPow) . ');' . $additionalJavaScript;
+        return ' onclick="' . htmlspecialchars($onClick) . '"' . ($formElementValue & $checkboxPow ? ' checked="checked"' : '');
+    }
+
+    /**
+     * Calculates the bootstrap grid classes based on the amount of columns
+     * defined in the checkbox item TCA
+     *
+     * @param $cols
+     * @return array
+     * @internal
+     */
+    protected function calculateColumnMarkup(int $cols): array
+    {
+        $colWidth = floor(12 / $cols);
+        $colClass = 'col-md-12';
+        $colClear = [];
+        if ($colWidth === 6) {
+            $colClass = 'col-sm-6';
+            $colClear = [
+                2 => 'visible-sm-block visible-md-block visible-lg-block',
+            ];
+        } elseif ($colWidth === 4) {
+            $colClass = 'col-sm-4';
+            $colClear = [
+                3 => 'visible-sm-block visible-md-block visible-lg-block',
+            ];
+        } elseif ($colWidth === 3) {
+            $colClass = 'col-sm-6 col-md-3';
+            $colClear = [
+                2 => 'visible-sm-block',
+                4 => 'visible-md-block visible-lg-block',
+            ];
+        } elseif ($colWidth <= 2) {
+            $colClass = 'checkbox-column col-sm-6 col-md-3 col-lg-2';
+            $colClear = [
+                2 => 'visible-sm-block',
+                4 => 'visible-md-block',
+                6 => 'visible-lg-block'
+            ];
+        }
+        return [$colClass, $colClear];
+    }
+
     /**
      * @return LanguageService
      */
