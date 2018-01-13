@@ -188,8 +188,8 @@ class InfoModuleController extends BaseScriptClass
 
         // CSH
         $cshButton = $buttonBar->makeHelpButton()
-          ->setModuleName('xMOD_csh_corebe')
-          ->setFieldName('pagetree_overview');
+            ->setModuleName('xMOD_csh_corebe')
+            ->setFieldName('pagetree_overview');
         $buttonBar->addButton($cshButton);
     }
 

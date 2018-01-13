@@ -740,7 +740,6 @@ abstract class AbstractTreeView
      * @param int $uid item id for which to select subitems (parent id)
      * @param int $depth Max depth (recursivity limit)
      * @param string $depthData HTML-code prefix for recursive calls.
-
      * @return int The count of items on the level
      */
     public function getTree($uid, $depth = 999, $depthData = '')

@@ -1024,7 +1024,7 @@ class WorkspaceService implements SingletonInterface
 
             $movePointerParameter = $queryBuilder->createNamedParameter(
                 VersionState::MOVE_POINTER,
-               \PDO::PARAM_INT
+                \PDO::PARAM_INT
             );
             $workspaceIdParameter = $queryBuilder->createNamedParameter(
                 $workspaceId,

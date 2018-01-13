@@ -2481,10 +2481,10 @@ class GraphicalFunctions
         $this->imageMagickExec($mask, $theMask, '-colorspace GRAY +matte');
 
         $parameters = '-compose over +matte '
-                      . CommandUtility::escapeShellArgument($input) . ' '
-                      . CommandUtility::escapeShellArgument($overlay) . ' '
-                      . CommandUtility::escapeShellArgument($theMask) . ' '
-                      . CommandUtility::escapeShellArgument($output);
+            . CommandUtility::escapeShellArgument($input) . ' '
+            . CommandUtility::escapeShellArgument($overlay) . ' '
+            . CommandUtility::escapeShellArgument($theMask) . ' '
+            . CommandUtility::escapeShellArgument($output);
         $cmd = CommandUtility::imageMagickCommand('combine', $parameters);
         $this->IM_commands[] = [$output, $cmd];
         $ret = CommandUtility::exec($cmd);

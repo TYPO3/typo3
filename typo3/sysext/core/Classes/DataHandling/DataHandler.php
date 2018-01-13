@@ -4819,7 +4819,7 @@ class DataHandler implements LoggerAwareInterface
                 ($fCfg['l10n_mode'] === 'exclude')
                     && $fN != $GLOBALS['TCA'][$table]['ctrl']['languageField']
                     && $fN != $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-             ) {
+            ) {
                 // Otherwise, do not copy field (unless it is the language field or
                 // pointer to the original language)
                 $excludeFields[] = $fN;

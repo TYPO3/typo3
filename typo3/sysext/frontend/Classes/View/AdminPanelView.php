@@ -476,14 +476,14 @@ class AdminPanelView
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $optionCount = $queryBuilder->count('fe_groups.uid')
-               ->from('fe_groups')
-               ->from('pages')
-               ->where(
-                   $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('fe_groups.pid')),
-                   $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
-               )
-               ->execute()
-               ->fetchColumn(0);
+                ->from('fe_groups')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('fe_groups.pid')),
+                    $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+                )
+                ->execute()
+                ->fetchColumn(0);
             if ($optionCount > 0) {
                 $result = $queryBuilder->select('fe_groups.uid', 'fe_groups.title')
                     ->from('fe_groups')

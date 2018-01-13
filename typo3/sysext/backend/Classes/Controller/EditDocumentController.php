@@ -1626,8 +1626,8 @@ class EditDocumentController
                             }
                             if ($addOption) {
                                 $menuItem = $languageMenu->makeMenuItem()
-                                                         ->setTitle($lang['title'] . $newTranslation)
-                                                         ->setHref($href);
+                                    ->setTitle($lang['title'] . $newTranslation)
+                                    ->setHref($href);
                                 if ((int)$lang['uid'] === $currentLanguage) {
                                     $menuItem->setActive(true);
                                 }

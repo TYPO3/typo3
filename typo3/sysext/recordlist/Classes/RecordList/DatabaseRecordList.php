@@ -1907,8 +1907,8 @@ class DatabaseRecordList
         if ($table === 'pages' || $table === 'tt_content') {
             $onClick = $this->getOnClickForRow($table, $row);
             $viewAction = '<a class="btn btn-default" href="#" onclick="'
-                          . htmlspecialchars(
-                              $onClick
+                            . htmlspecialchars(
+                                $onClick
                 ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
             if ($table === 'pages') {
                 $viewAction .= $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render();
@@ -2032,17 +2032,17 @@ class DatabaseRecordList
                     if ($row[$hiddenField]) {
                         $params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
                         $hideAction = '<a class="btn btn-default t3js-record-hide" data-state="hidden" href="#"'
-                                      . ' data-params="' . htmlspecialchars($params) . '"'
-                                      . ' title="' . $unhideTitle . '"'
-                                      . ' data-toggle-title="' . $hideTitle . '">'
-                                      . $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render() . '</a>';
+                                        . ' data-params="' . htmlspecialchars($params) . '"'
+                                        . ' title="' . $unhideTitle . '"'
+                                        . ' data-toggle-title="' . $hideTitle . '">'
+                                        . $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render() . '</a>';
                     } else {
                         $params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=1';
                         $hideAction = '<a class="btn btn-default t3js-record-hide" data-state="visible" href="#"'
-                                      . ' data-params="' . htmlspecialchars($params) . '"'
-                                      . ' title="' . $hideTitle . '"'
-                                      . ' data-toggle-title="' . $unhideTitle . '">'
-                                      . $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render() . '</a>';
+                                        . ' data-params="' . htmlspecialchars($params) . '"'
+                                        . ' title="' . $hideTitle . '"'
+                                        . ' data-toggle-title="' . $unhideTitle . '">'
+                                        . $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render() . '</a>';
                     }
                 }
                 $this->addActionToCellGroup($cells, $hideAction, 'hide');
@@ -3713,8 +3713,8 @@ class DatabaseRecordList
                 }
             } else {
                 GeneralUtility::makeInstance(LogManager::class)
-                              ->getLogger(__CLASS__)
-                              ->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
+                    ->getLogger(__CLASS__)
+                    ->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
             }
         }
         return $fieldListArr;

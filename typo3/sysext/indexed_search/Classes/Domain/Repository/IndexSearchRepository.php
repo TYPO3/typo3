@@ -610,10 +610,10 @@ class IndexSearchRepository
                 case '10':
                     // Sounds like
                     /**
-                    * Indexer object
-                    *
-                    * @var Indexer
-                    */
+                     * Indexer object
+                     *
+                     * @var Indexer
+                     */
                     $indexerObj = GeneralUtility::makeInstance(Indexer::class);
                     // Perform metaphone search
                     $storeMetaphoneInfoAsWords = !$this->isTableUsed('index_words');

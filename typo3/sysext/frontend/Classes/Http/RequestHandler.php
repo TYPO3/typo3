@@ -273,7 +273,7 @@ class RequestHandler implements RequestHandlerInterface
             $response->getBody()->write($this->controller->content);
         }
         GeneralUtility::makeInstance(LogManager::class)
-                      ->getLogger(get_class())->debug('END of FRONTEND session', ['_FLUSH' => true]);
+            ->getLogger(get_class())->debug('END of FRONTEND session', ['_FLUSH' => true]);
         return $response;
     }
 

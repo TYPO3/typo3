@@ -30,8 +30,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractElementBrowser
 {
     /**
-    * @var DocumentTemplate
-    */
+     * @var DocumentTemplate
+     */
     protected $doc;
 
     /**

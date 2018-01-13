@@ -517,8 +517,8 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-    * @return string The HTML for the menu
-    */
+     * @return string The HTML for the menu
+     */
     public function writeMenu()
     {
         return '';

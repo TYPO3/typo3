@@ -927,10 +927,10 @@ function jumpToUrl(URL) {
     }
 
     /**
-    * Retrieves configured favicon for backend (with fallback)
-    *
-    * @return string
-    */
+     * Retrieves configured favicon for backend (with fallback)
+     *
+     * @return string
+     */
     protected function getBackendFavicon()
     {
         $backendFavicon = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend', 'backendFavicon');

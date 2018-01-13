@@ -471,8 +471,8 @@ class Import extends ImportExport
                 unset($this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]);
                 $this->error(
                     'Error: sys_file_reference record ' . (int)$sysFileReferenceUid
-                             . ' with relation to sys_file record ' . (int)$fileReferenceRecord['uid_local']
-                             . ', which is not part of the import data, was not imported.'
+                    . ' with relation to sys_file record ' . (int)$fileReferenceRecord['uid_local']
+                    . ', which is not part of the import data, was not imported.'
                 );
             }
         }
@@ -503,7 +503,7 @@ class Import extends ImportExport
      *
      * @param int $oldFileUid
      * @param int $newFileUid
-    */
+     */
     protected function fixUidLocalInSysFileReferenceRecords($oldFileUid, $newFileUid)
     {
         if (!isset($this->dat['header']['records']['sys_file_reference'])) {

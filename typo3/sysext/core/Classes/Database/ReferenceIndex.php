@@ -1335,8 +1335,8 @@ class ReferenceIndex implements LoggerAwareInterface
             } catch (DBALException $e) {
                 // Table exists in TCA but does not exist in the database
                 $msg = 'Table "' .
-                       $tableName .
-                       '" exists in TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.';
+                        $tableName .
+                        '" exists in TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.';
                 $this->logger->error($msg, ['exception' => $e]);
                 continue;
             }

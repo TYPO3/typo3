@@ -474,7 +474,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 $tableName = $source['alias'] ?: $source['table'];
                 $fieldName = $queryBuilder->quoteIdentifier('uid');
                 $queryBuilder->resetQueryPart('groupBy')
-                             ->selectLiteral(sprintf('COUNT(DISTINCT %s.%s)', $tableName, $fieldName));
+                    ->selectLiteral(sprintf('COUNT(DISTINCT %s.%s)', $tableName, $fieldName));
             } else {
                 $queryBuilder->count('*');
             }

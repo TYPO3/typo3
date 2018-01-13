@@ -171,11 +171,9 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 
         if (!empty($frameworkConfiguration['persistence']['storagePid'])) {
             if (is_array($frameworkConfiguration['persistence']['storagePid'])) {
-                /**
-                    * We simulate the frontend to enable the use of cObjects in
-                    * stdWrap. Than we convert the configuration to normal TypoScript
-                    * and apply the stdWrap to the storagePid
-                    */
+                // We simulate the frontend to enable the use of cObjects in
+                // stdWrap. Than we convert the configuration to normal TypoScript
+                // and apply the stdWrap to the storagePid
                 if (!$this->environmentService->isEnvironmentInFrontendMode()) {
                     \TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility::simulateFrontendEnvironment($this->getContentObject());
                 }

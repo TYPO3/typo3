@@ -4513,7 +4513,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param int $targetPid Target page id
      * @return mixed Return domain data or NULL
-    */
+     */
     public function getDomainDataForPid($targetPid)
     {
         // Using array_key_exists() here, nice $result can be NULL

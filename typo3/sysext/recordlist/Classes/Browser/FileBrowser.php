@@ -58,8 +58,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected $elements = [];
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     protected $searchWord;
 
     /**

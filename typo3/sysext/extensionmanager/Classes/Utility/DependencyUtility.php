@@ -241,7 +241,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
             if (!($dependency->getLowestVersion() === '') && version_compare(PHP_VERSION, $dependency->getLowestVersion()) === -1) {
                 throw new Exception\UnresolvedPhpDependencyException(
                     'Your PHP version is lower than necessary. You need at least PHP version ' . $dependency->getLowestVersion(),
-                     1377977857
+                    1377977857
                 );
             }
             if (!($dependency->getHighestVersion() === '') && version_compare($dependency->getHighestVersion(), PHP_VERSION) === -1) {

@@ -499,7 +499,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             'inlineParentTableName' => $parentData['tableName'],
             'inlineParentFieldName' => $parentFieldName,
 
-             // values of the top most parent element set on first level and not overridden on following levels
+            // values of the top most parent element set on first level and not overridden on following levels
             'inlineTopMostParentUid' => $inlineTopMostParent['uid'],
             'inlineTopMostParentTableName' => $inlineTopMostParent['table'],
             'inlineTopMostParentFieldName' => $inlineTopMostParent['field'],

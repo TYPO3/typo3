@@ -22,11 +22,11 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
 {
     /**
-      * Uid of the referenced sys_file. Needed for extbase to serialize the
-      * reference correctly.
-      *
-      * @var int
-      */
+     * Uid of the referenced sys_file. Needed for extbase to serialize the
+     * reference correctly.
+     *
+     * @var int
+     */
     protected $uidLocal;
 
     /**

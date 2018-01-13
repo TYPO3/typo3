@@ -1241,8 +1241,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 }
             } else {
                 GeneralUtility::makeInstance(LogManager::class)
-                              ->getLogger(__CLASS__)
-                              ->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
+                    ->getLogger(__CLASS__)
+                    ->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
             }
         }
         return $fieldListArr;

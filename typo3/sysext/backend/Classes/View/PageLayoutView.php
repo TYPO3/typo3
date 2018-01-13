@@ -1942,7 +1942,7 @@ class PageLayoutView implements LoggerAwareInterface
                     $params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
                     $confirm = $this->getLanguageService()->getLL('deleteWarning')
                         . BackendUtility::translationCount('tt_content', $row['uid'], (' '
-                                                                                       . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')));
+                        . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')));
                     $out .= '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params)) . '"'
                         . ' data-severity="warning"'
                         . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'

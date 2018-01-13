@@ -1204,7 +1204,7 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Creates a (cryptographic) hash for a fileIdentifier.
-
+     *
      * @param string $fileIdentifier
      * @param string $hash
      *

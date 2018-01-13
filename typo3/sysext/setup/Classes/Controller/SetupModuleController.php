@@ -821,11 +821,11 @@ class SetupModuleController
         }
 
         return '<div class="form-inline"><div class="form-group"><p>'
-             . '<label for="field_simulate" style="margin-right: 20px;">'
-             . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:simulate'))
-             . '</label>'
-             . $this->simulateSelector
-             . '</p></div></div>';
+                . '<label for="field_simulate" style="margin-right: 20px;">'
+                . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:simulate'))
+                . '</label>'
+                . $this->simulateSelector
+                . '</p></div></div>';
     }
 
     /**
