@@ -123,6 +123,13 @@ CREATE TABLE tx_styleguide_elements_basic (
 	checkbox_14 int(11) DEFAULT '0' NOT NULL,
 	checkbox_15 int(11) DEFAULT '0' NOT NULL,
 	checkbox_16 int(11) DEFAULT '0' NOT NULL,
+	checkbox_17 int(11) DEFAULT '0' NOT NULL,
+	checkbox_18 int(11) DEFAULT '0' NOT NULL,
+	checkbox_19 int(11) DEFAULT '0' NOT NULL,
+	checkbox_20 int(11) DEFAULT '0' NOT NULL,
+	checkbox_21 int(11) DEFAULT '0' NOT NULL,
+	checkbox_22 int(11) DEFAULT '0' NOT NULL,
+	checkbox_23 int(11) DEFAULT '0' NOT NULL,
 
 	radio_1 int(11) DEFAULT '0' NOT NULL,
 	radio_2 int(11) DEFAULT '0' NOT NULL,
