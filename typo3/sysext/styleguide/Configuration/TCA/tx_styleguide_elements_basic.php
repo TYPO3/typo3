@@ -797,8 +797,8 @@ return [
                     ['foo', ''],
                     [
                         'foo and this here is very long text that maybe does not really fit into the form in one line.'
-                            . ' Ok let us add even more text to see how this looks like if wrapped. Is this enough now? No?'
-                            . ' Then let us add some even more useless text here!',
+                        . ' Ok let us add even more text to see how this looks like if wrapped. Is this enough now? No?'
+                        . ' Then let us add some even more useless text here!',
                         ''
                     ],
                     ['foobar', ''],
@@ -903,7 +903,7 @@ return [
                     ['foo2', ''],
                     [
                         'foo3 and this here is very long text that maybe does not really fit into the'
-                            . ' form in one line. Ok let us add even more text to see how',
+                        . ' form in one line. Ok let us add even more text to see how',
                         ''
                     ],
                     ['foo4', ''],
@@ -966,6 +966,134 @@ return [
                 'cols' => 'inline',
             ],
         ],
+        'checkbox_17' => [
+            'exclude' => 1,
+            'label' => 'checkbox_17 single checkbox with toggle',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    [
+                        0 => 'foo',
+                        1 => '',
+                        'labelChecked' => 'Enabled',
+                        'labelUnchecked' => 'Disabled'
+                    ]
+                ],
+            ]
+        ],
+        'checkbox_18' => [
+            'exclude' => 1,
+            'label' => 'checkbox_18 single checkbox with toggle inverted state display',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    [
+                        0 => 'foo',
+                        1 => '',
+                        'labelChecked' => 'Enabled',
+                        'labelUnchecked' => 'Disabled',
+                        'invertStateDisplay' => true
+                    ]
+                ],
+            ]
+        ],
+        'checkbox_19' => [
+            'exclude' => 1,
+            'label' => 'checkbox_19 single checkbox with labeled toggle',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxLabeledToggle',
+                'items' => [
+                    [
+                        0 => 'foo',
+                        1 => '',
+                        'labelChecked' => 'Enabled',
+                        'labelUnchecked' => 'Disabled',
+                    ]
+                ],
+            ]
+        ],
+        'checkbox_20' => [
+            'exclude' => 1,
+            'label' => 'checkbox_20 single checkbox with multiple labeled toggles',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxLabeledToggle',
+                'items' => [
+                    [
+                        0 => 'foo',
+                        1 => '',
+                        'labelChecked' => 'On',
+                        'labelUnchecked' => 'Off',
+                    ],
+                    [
+                        0 => 'bar',
+                        1 => '',
+                        'labelChecked' => 'On',
+                        'labelUnchecked' => 'Off',
+                    ],
+                    [
+                        0 => 'inv',
+                        1 => '',
+                        'labelChecked' => 'On',
+                        'labelUnchecked' => 'Off',
+                        'invertStateDisplay' => true
+                    ]
+                ],
+            ]
+        ],
+        'checkbox_21' => [
+            'exclude' => 1,
+            'label' => 'checkbox_21 single checkbox with labeled toggle inverted state display',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxLabeledToggle',
+                'items' => [
+                    [
+                        0 => 'foo',
+                        1 => '',
+                        'labelChecked' => 'Enabled',
+                        'labelUnchecked' => 'Disabled',
+                        'invertStateDisplay' => true
+                    ]
+                ],
+            ]
+        ],
+        'checkbox_22' => [
+            'exclude' => 1,
+            'label' => 'checkbox_22 single checkbox with icon toggle',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxIconToggle',
+                'items' => [
+                    [
+                        0 => 'foo',
+                        1 => '',
+                        'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
+                        'iconIdentifierUnchecked' => 'styleguide-icon-toggle-checked',
+                    ]
+                ],
+            ]
+        ],
+        'checkbox_23' => [
+            'exclude' => 1,
+            'label' => 'checkbox_23 single checkbox with icon toggle inverted state display',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxIconToggle',
+                'items' => [
+                    [
+                        0 => 'foo',
+                        1 => '',
+                        'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
+                        'iconIdentifierUnchecked' => 'styleguide-icon-toggle-checked',
+                        'invertStateDisplay' => true
+                    ]
+                ],
+            ]
+        ],
 
 
         'radio_1' => [
@@ -988,8 +1116,8 @@ return [
                 'items' => [
                     [
                         'foo and this here is very long text that maybe does not really fit into the form in one line.'
-                            . ' Ok let us add even more text to see how this looks like if wrapped. Is this enough now?'
-                            . ' No? Then let us add some even more useless text here!',
+                        . ' Ok let us add even more text to see how this looks like if wrapped. Is this enough now?'
+                        . ' No? Then let us add some even more useless text here!',
                         1
                     ],
                     ['bar', 2],
@@ -1398,7 +1526,7 @@ return [
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17,
                 --div--;check,
-                    checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
+                    checkbox_1, checkbox_2, checkbox_17, checkbox_18, checkbox_19, checkbox_20, checkbox_21, checkbox_22, checkbox_23, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
                     checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16,
                 --div--;radio,
                     radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
