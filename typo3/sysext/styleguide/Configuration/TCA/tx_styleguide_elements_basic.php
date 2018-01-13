@@ -784,7 +784,12 @@ return [
                 'items' => [
                     ['foo', ''],
                     ['', ''],
-                    ['foobar', ''],
+                    [
+                        'foobar',
+                        '',
+                        'iconIdentifierChecked' => 'content-beside-text-img-below-center',
+                        'iconIdentifierUnchecked' => 'content-beside-text-img-below-center',
+                    ],
                 ],
             ],
         ],
@@ -1061,37 +1066,31 @@ return [
                 ],
             ]
         ],
-        'checkbox_22' => [
+        'checkbox_24' => [
             'exclude' => 1,
-            'label' => 'checkbox_22 single checkbox with icon toggle',
+            'label' => 'checkbox_24 multiple toggles checkbox',
             'config' => [
                 'type' => 'check',
-                'renderType' => 'checkboxIconToggle',
+                'renderType' => 'checkboxToggle',
                 'items' => [
                     [
                         0 => 'foo',
                         1 => '',
-                        'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
-                        'iconIdentifierUnchecked' => 'styleguide-icon-toggle-checked',
-                    ]
-                ],
-            ]
-        ],
-        'checkbox_23' => [
-            'exclude' => 1,
-            'label' => 'checkbox_23 single checkbox with icon toggle inverted state display',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxIconToggle',
-                'items' => [
+                    ],
                     [
-                        0 => 'foo',
+                        0 => 'bar',
                         1 => '',
-                        'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
-                        'iconIdentifierUnchecked' => 'styleguide-icon-toggle-checked',
-                        'invertStateDisplay' => true
+                    ],
+                    [
+                        0 => 'baz',
+                        1 => '',
+                    ],
+                    [
+                        0 => 'husel',
+                        1 => '',
                     ]
                 ],
+                'cols' => '4',
             ]
         ],
 
@@ -1526,7 +1525,7 @@ return [
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17,
                 --div--;check,
-                    checkbox_1, checkbox_2, checkbox_17, checkbox_18, checkbox_19, checkbox_20, checkbox_21, checkbox_22, checkbox_23, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
+                    checkbox_1, checkbox_2, checkbox_17, checkbox_18, checkbox_24, checkbox_19, checkbox_20, checkbox_21, checkbox_22, checkbox_23, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
                     checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16,
                 --div--;radio,
                     radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
