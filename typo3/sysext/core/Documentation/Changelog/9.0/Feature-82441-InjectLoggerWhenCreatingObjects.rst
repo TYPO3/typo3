@@ -22,7 +22,7 @@ A minimal example looks like this (example from a test case fixture):
 .. code-block:: php
 
     <?php
-    declare(strict_types=1);
+    declare(strict_types = 1);
     namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
 
     use Psr\Log\LoggerAwareInterface;

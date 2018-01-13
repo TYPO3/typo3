@@ -28,7 +28,7 @@ CustomHook class example :php:``\Vendor\ExtensionName\Hooks\CustomHook``
 .. code-block:: php
 
    <?php
-   declare(strict_types=1);
+   declare(strict_types = 1);
    namespace Vendor\ExtensionName\Hooks;
 
    class CustomHook
