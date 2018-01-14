@@ -4433,7 +4433,6 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $targetDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
         $absoluteTargetDirectory = PATH_site . $targetDirectory;
         $this->testFilesToDelete[] = $absoluteTargetDirectory;
-        GeneralUtility::mkdir($absoluteTargetDirectory);
 
         GeneralUtility::writeFileToTypo3tempDir($absoluteSourceDirectory . 'file', '42');
         GeneralUtility::mkdir($absoluteSourceDirectory . 'foo');
@@ -4458,7 +4457,6 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $targetDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
         $absoluteTargetDirectory = PATH_site . $targetDirectory;
         $this->testFilesToDelete[] = $absoluteTargetDirectory;
-        GeneralUtility::mkdir($absoluteTargetDirectory);
 
         GeneralUtility::writeFileToTypo3tempDir($absoluteSourceDirectory . 'file', '42');
         GeneralUtility::mkdir($absoluteSourceDirectory . 'foo');

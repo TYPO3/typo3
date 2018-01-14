@@ -3382,6 +3382,7 @@ class GeneralUtility
             $destination = PATH_site . $destination;
         }
         if (static::isAllowedAbsPath($source) && static::isAllowedAbsPath($destination)) {
+            static::mkdir_deep($destination);
             $iterator = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
                 \RecursiveIteratorIterator::SELF_FIRST
