@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Exception;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+
 /**
  * A caching backend which stores cache entries by using Memcached.
  *
@@ -40,7 +43,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * This file is a backport from FLOW3 by Ingo Renner.
  * @api
  */
-class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface
+class MemcachedBackend extends AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
 {
     /**
      * Max bucket size, (1024*1024)-42 bytes
@@ -48,12 +51,20 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      * @var int
      */
     const MAX_BUCKET_SIZE = 1048534;
+
     /**
      * Instance of the PHP Memcache class
      *
-     * @var \Memcache
+     * @var \Memcache|\Memcached
      */
     protected $memcache;
+
+    /**
+     * Used PECL module for memcached
+     *
+     * @var string
+     */
+    protected $usedPeclModule = '';
 
     /**
      * Array of Memcache server configurations
@@ -64,7 +75,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 
     /**
      * Indicates whether the memcache uses compression or not (requires zlib),
-     * either 0 or MEMCACHE_COMPRESSED
+     * either 0 or \Memcached::OPT_COMPRESSION / MEMCACHE_COMPRESSED
      *
      * @var int
      */
@@ -82,14 +93,23 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      *
      * @param string $context FLOW3's application context
      * @param array $options Configuration options - depends on the actual backend
-     * @throws \TYPO3\CMS\Core\Cache\Exception if memcache is not installed
+     * @throws Exception if memcache is not installed
      */
     public function __construct($context, array $options = [])
     {
-        if (!extension_loaded('memcache')) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('The PHP extension "memcache" must be installed and loaded in ' . 'order to use the Memcached backend.', 1213987706);
+        if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
+            throw new Exception('The PHP extension "memcache" or "memcached" must be installed and loaded in ' . 'order to use the Memcached backend.', 1213987706);
         }
+
         parent::__construct($context, $options);
+
+        if ($this->usedPeclModule === '') {
+            if (extension_loaded('memcache')) {
+                $this->usedPeclModule = 'memcache';
+            } elseif (extension_loaded('memcached')) {
+                $this->usedPeclModule = 'memcached';
+            }
+        }
     }
 
     /**
@@ -97,7 +117,6 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      * to be formatted like "<host>[:<port>]" or "unix://<path>"
      *
      * @param array $servers An array of servers to add.
-     * @return void
      * @api
      */
     protected function setServers(array $servers)
@@ -109,33 +128,44 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      * Setter for compression flags bit
      *
      * @param bool $useCompression
-     * @return void
      * @api
      */
     protected function setCompression($useCompression)
     {
+        $compressionFlag = $this->usedPeclModule === 'memcache' ? MEMCACHE_COMPRESSED : \Memcached::OPT_COMPRESSION;
         if ($useCompression === true) {
-            $this->flags ^= MEMCACHE_COMPRESSED;
+            $this->flags ^= $compressionFlag;
         } else {
-            $this->flags &= ~MEMCACHE_COMPRESSED;
+            $this->flags &= ~$compressionFlag;
         }
+    }
+
+    /**
+     * Getter for compression flag
+     *
+     * @return bool
+     * @api
+     */
+    protected function getCompression()
+    {
+        return $this->flags !== 0;
     }
 
     /**
      * Initializes the identifier prefix
      *
-     * @return void
-     * @throws \TYPO3\CMS\Core\Cache\Exception
+     * @throws Exception
      */
     public function initializeObject()
     {
         if (empty($this->servers)) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('No servers were given to Memcache', 1213115903);
+            throw new Exception('No servers were given to Memcache', 1213115903);
         }
-        $this->memcache = new \Memcache();
-        $defaultPort = ini_get('memcache.default_port');
+        $memcachedPlugin = '\\' . ucfirst($this->usedPeclModule);
+        $this->memcache = new $memcachedPlugin;
+        $defaultPort = $this->usedPeclModule === 'memcache' ? ini_get('memcache.default_port') : 11211;
         foreach ($this->servers as $server) {
-            if (substr($server, 0, 7) == 'unix://') {
+            if (substr($server, 0, 7) === 'unix://') {
                 $host = $server;
                 $port = 0;
             } else {
@@ -151,15 +181,32 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
             }
             $this->memcache->addserver($host, $port);
         }
+        if ($this->usedPeclModule === 'memcached') {
+            $this->memcache->setOption(\Memcached::OPT_COMPRESSION, $this->getCompression());
+        }
+    }
+
+    /**
+     * Sets the preferred PECL module
+     *
+     * @param string $peclModule
+     * @throws Exception
+     */
+    public function setPeclModule($peclModule)
+    {
+        if ($peclModule !== 'memcache' && $peclModule !== 'memcached') {
+            throw new Exception('PECL module must be either "memcache" or "memcached".', 1442239768);
+        }
+
+        $this->usedPeclModule = $peclModule;
     }
 
     /**
      * Initializes the identifier prefix when setting the cache.
      *
-     * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The frontend for this backend
-     * @return void
+     * @param FrontendInterface $cache The frontend for this backend
      */
-    public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
+    public function setCache(FrontendInterface $cache)
     {
         parent::setCache($cache);
         $identifierHash = substr(md5(PATH_site . $this->context . $this->cacheIdentifier), 0, 12);
@@ -173,10 +220,9 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
-     * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
+     * @throws Exception if no cache frontend has been set.
      * @throws \InvalidArgumentException if the identifier is not valid or the final memcached key is longer than 250 characters
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if $data is not a string
+     * @throws Exception\InvalidDataException if $data is not a string
      * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
@@ -184,41 +230,55 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
         if (strlen($this->identifierPrefix . $entryIdentifier) > 250) {
             throw new \InvalidArgumentException('Could not set value. Key more than 250 characters (' . $this->identifierPrefix . $entryIdentifier . ').', 1232969508);
         }
-        if (!$this->cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1207149215);
-        }
-        if (!is_string($data)) {
-            throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1207149231);
+        if (!$this->cache instanceof FrontendInterface) {
+            throw new Exception('No cache frontend has been set yet via setCache().', 1207149215);
         }
         $tags[] = '%MEMCACHEBE%' . $this->cacheIdentifier;
-        $expiration = $lifetime !== null ? $lifetime : $this->defaultLifetime;
+        $expiration = $lifetime ?? $this->defaultLifetime;
+
         // Memcached consideres values over 2592000 sec (30 days) as UNIX timestamp
         // thus $expiration should be converted from lifetime to UNIX timestamp
         if ($expiration > 2592000) {
             $expiration += $GLOBALS['EXEC_TIME'];
         }
         try {
-            if (strlen($data) > self::MAX_BUCKET_SIZE) {
+            if (is_string($data) && strlen($data) > self::MAX_BUCKET_SIZE) {
                 $data = str_split($data, 1024 * 1000);
                 $success = true;
                 $chunkNumber = 1;
                 foreach ($data as $chunk) {
-                    $success = $success && $this->memcache->set($this->identifierPrefix . $entryIdentifier . '_chunk_' . $chunkNumber, $chunk, $this->flags, $expiration);
+                    $success = $success && $this->setInternal($entryIdentifier . '_chunk_' . $chunkNumber, $chunk, $expiration);
                     $chunkNumber++;
                 }
-                $success = $success && $this->memcache->set($this->identifierPrefix . $entryIdentifier, 'TYPO3*chunked:' . $chunkNumber, $this->flags, $expiration);
+                $success = $success && $this->setInternal($entryIdentifier, 'TYPO3*chunked:' . $chunkNumber, $expiration);
             } else {
-                $success = $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $this->flags, $expiration);
+                $success = $this->setInternal($entryIdentifier, $data, $expiration);
             }
             if ($success === true) {
                 $this->removeIdentifierFromAllTags($entryIdentifier);
                 $this->addIdentifierToTags($entryIdentifier, $tags);
             } else {
-                throw new \TYPO3\CMS\Core\Cache\Exception('Could not set data to memcache server.', 1275830266);
+                throw new Exception('Could not set data to memcache server.', 1275830266);
             }
         } catch (\Exception $exception) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Memcache: could not set value. Reason: ' . $exception->getMessage(), 'core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+            $this->logger->alert('Memcache: could not set value.', ['exception' => $exception]);
         }
+    }
+
+    /**
+     * Stores the actual data inside memcache/memcached
+     *
+     * @param string $entryIdentifier
+     * @param mixed $data
+     * @param int $expiration
+     * @return bool
+     */
+    protected function setInternal($entryIdentifier, $data, $expiration)
+    {
+        if ($this->usedPeclModule === 'memcache') {
+            return $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $this->flags, $expiration);
+        }
+        return $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $expiration);
     }
 
     /**
@@ -231,7 +291,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
     public function get($entryIdentifier)
     {
         $value = $this->memcache->get($this->identifierPrefix . $entryIdentifier);
-        if (substr($value, 0, 14) === 'TYPO3*chunked:') {
+        if (is_string($value) && substr($value, 0, 14) === 'TYPO3*chunked:') {
             list(, $chunkCount) = explode(':', $value);
             $value = '';
             for ($chunkNumber = 1; $chunkNumber < $chunkCount; $chunkNumber++) {
@@ -250,7 +310,13 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      */
     public function has($entryIdentifier)
     {
-        return $this->memcache->get($this->identifierPrefix . $entryIdentifier) !== false;
+        if ($this->usedPeclModule === 'memcache') {
+            return $this->memcache->get($this->identifierPrefix . $entryIdentifier) !== false;
+        }
+
+        // pecl-memcached supports storing literal FALSE
+        $this->memcache->get($this->identifierPrefix . $entryIdentifier);
+        return $this->memcache->getResultCode() !== \Memcached::RES_NOTFOUND;
     }
 
     /**
@@ -281,22 +347,20 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
         $identifiers = $this->memcache->get($this->identifierPrefix . 'tag_' . $tag);
         if ($identifiers !== false) {
             return (array)$identifiers;
-        } else {
-            return [];
         }
+        return [];
     }
 
     /**
      * Removes all cache entries of this cache.
      *
-     * @return void
-     * @throws \TYPO3\CMS\Core\Cache\Exception
+     * @throws Exception
      * @api
      */
     public function flush()
     {
-        if (!$this->cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set via setCache() yet.', 1204111376);
+        if (!$this->cache instanceof FrontendInterface) {
+            throw new Exception('No cache frontend has been set via setCache() yet.', 1204111376);
         }
         $this->flushByTag('%MEMCACHEBE%' . $this->cacheIdentifier);
     }
@@ -305,7 +369,6 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @return void
      * @api
      */
     public function flushByTag($tag)
@@ -321,7 +384,6 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      *
      * @param string $entryIdentifier
      * @param array $tags
-     * @return void
      */
     protected function addIdentifierToTags($entryIdentifier, array $tags)
     {
@@ -353,14 +415,12 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      * Removes association of the identifier with the given tags
      *
      * @param string $entryIdentifier
-     * @param array Array of tags
-     * @return void
      */
     protected function removeIdentifierFromAllTags($entryIdentifier)
     {
         // Get tags for this identifier
         $tags = $this->findTagsByIdentifier($entryIdentifier);
-        // Deassociate tags with this identifier
+        // De-associate tags with this identifier
         foreach ($tags as $tag) {
             $identifiers = $this->findIdentifiersByTag($tag);
             // Formally array_search() below should never return FALSE due to
@@ -398,7 +458,6 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
     /**
      * Does nothing, as memcached does GC itself
      *
-     * @return void
      * @api
      */
     public function collectGarbage()
