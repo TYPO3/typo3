@@ -511,10 +511,11 @@ class Import extends ImportExport
         }
 
         foreach ($this->dat['header']['records']['sys_file_reference'] as $sysFileReferenceUid => $_) {
-            $fileReferenceRecord = $this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['data'];
-            if ($fileReferenceRecord['uid_local'] == $oldFileUid) {
-                $fileReferenceRecord['uid_local'] = $newFileUid;
-                $this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['data'] = $fileReferenceRecord;
+            if (!isset($this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['hasBeenMapped'])
+                && $this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['data']['uid_local'] == $oldFileUid
+            ) {
+                $this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['hasBeenMapped'] = true;
+                $this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['data']['uid_local'] = $newFileUid;
             }
         }
     }
