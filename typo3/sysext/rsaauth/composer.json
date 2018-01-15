@@ -24,9 +24,6 @@
 			"dev-master": "9.1.x-dev"
 		},
 		"typo3/cms": {
-			"Package": {
-				"partOfFactoryDefault": true
-			},
 			"extension-key": "rsaauth"
 		}
 	},

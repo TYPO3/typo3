@@ -8,7 +8,7 @@
 return [
     'BE' => [
         'explicitADmode' => 'explicitAllow',
-        'loginSecurityLevel' => 'rsa',
+        'loginSecurityLevel' => 'normal',
     ],
     'DB' => [
         'Connections' => [
@@ -19,7 +19,7 @@ return [
         ],
     ],
     'FE' => [
-        'loginSecurityLevel' => 'rsa',
+        'loginSecurityLevel' => 'normal',
     ],
     'SYS' => [
         'sitename' => 'New TYPO3 site',
