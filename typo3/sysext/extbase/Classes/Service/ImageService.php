@@ -127,7 +127,8 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         if (!($image instanceof File || $image instanceof FileReference)) {
-            throw new \UnexpectedValueException('Supplied file object type ' . get_class($image) . ' for ' . $src . ' must be File or FileReference.', 1382687163);
+            $class = is_object($image) ? get_class($image) : 'null';
+            throw new \UnexpectedValueException('Supplied file object type ' . $class . ' for ' . $src . ' must be File or FileReference.', 1382687163);
         }
 
         return $image;
