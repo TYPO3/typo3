@@ -37,7 +37,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Ba
                     fileTarget: form.find('input[name="data[rename][0][destination]"]').val(),
                 },
                 success: function (response) {
-                    var fileExists = response !== false;
+                    var fileExists = typeof response.uid !== 'undefined';
                     var originalFileName = fileNameField.data('original');
                     var newFileName = fileNameField.val();
                     if (fileExists && originalFileName !== newFileName) {

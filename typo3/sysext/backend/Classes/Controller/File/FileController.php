@@ -255,11 +255,11 @@ class FileController
         $fileTargetObject = $fileFactory->retrieveFileOrFolderObject($fileTarget);
         $processedFileName = $fileTargetObject->getStorage()->sanitizeFileName($fileName, $fileTargetObject);
 
-        $result = false;
+        $result = [];
         if ($fileTargetObject->hasFile($processedFileName)) {
             $result = $this->flattenResultDataValue($fileTargetObject->getStorage()->getFileInFolder($processedFileName, $fileTargetObject));
         }
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload([$result]);
+        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($result);
     }
 
     /**

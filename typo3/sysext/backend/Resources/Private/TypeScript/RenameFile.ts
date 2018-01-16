@@ -45,7 +45,7 @@ class RenameFile {
         fileTarget: form.find('input[name="data[rename][0][destination]"]').val(),
       },
       success: (response: any): void => {
-        const fileExists: boolean = response !== false;
+        const fileExists: boolean = typeof response.uid !== 'undefined';
         const originalFileName: string = fileNameField.data('original');
         const newFileName: string = fileNameField.val();
 

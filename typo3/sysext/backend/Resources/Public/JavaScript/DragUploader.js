@@ -175,7 +175,7 @@ define(['jquery',
 					},
 					cache: false,
 					success: function(response) {
-						var fileExists = response !== false;
+						var fileExists = typeof response.uid !== 'undefined';
 						if (fileExists) {
 							askForOverride.push({
 								original: response,
