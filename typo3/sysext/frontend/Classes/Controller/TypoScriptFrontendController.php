@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Frontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\DBALException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -841,12 +841,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function connectToDB()
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
         try {
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
             $connection->connect();
-        } catch (ConnectionException $exception) {
+        } catch (DBALException $exception) {
             // Cannot connect to current database
-            $message = 'Cannot connect to the configured database "' . $connection->getDatabase() . '"';
+            $message = sprintf(
+                'Cannot connect to the configured database. Connection failed with: "%s"',
+                $exception->getMessage()
+            );
             $this->logger->emergency($message, ['exception' => $exception]);
             try {
                 $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($message);

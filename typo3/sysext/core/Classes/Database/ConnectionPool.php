@@ -16,7 +16,15 @@ namespace TYPO3\CMS\Core\Database;
  */
 
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Events;
+use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaAlterTableListener;
+use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
+use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaIndexDefinitionListener;
+use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
+use TYPO3\CMS\Core\Database\Schema\Types\SetType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Manager that handles opening/retrieving database connections.
@@ -39,6 +47,14 @@ class ConnectionPool
      * @var Connection[]
      */
     protected static $connections = [];
+
+    /**
+     * @var array
+     */
+    protected $customDoctrineTypes = [
+        EnumType::TYPE => EnumType::class,
+        SetType::TYPE => SetType::class,
+    ];
 
     /**
      * Creates a connection object based on the specified table name.
@@ -138,6 +154,38 @@ class ConnectionPool
         $conn->setFetchMode(\PDO::FETCH_ASSOC);
         $conn->prepareConnection($connectionParams['initCommands'] ?? '');
 
+        // Register custom data types
+        foreach ($this->customDoctrineTypes as $type => $className) {
+            if (!Type::hasType($type)) {
+                Type::addType($type, $className);
+            }
+        }
+
+        // Register all custom data types in the type mapping
+        foreach ($this->customDoctrineTypes as $type => $className) {
+            $conn->getDatabasePlatform()->registerDoctrineTypeMapping($type, $type);
+        }
+
+        // Handler for building custom data type column definitions
+        // in the SchemaManager
+        $conn->getDatabasePlatform()->getEventManager()->addEventListener(
+            Events::onSchemaColumnDefinition,
+            GeneralUtility::makeInstance(SchemaColumnDefinitionListener::class)
+        );
+
+        // Handler for enhanced index definitions in the SchemaManager
+        $conn->getDatabasePlatform()->getEventManager()->addEventListener(
+            Events::onSchemaIndexDefinition,
+            GeneralUtility::makeInstance(SchemaIndexDefinitionListener::class)
+        );
+
+        // Handler for adding custom database platform options to ALTER TABLE
+        // requests in the SchemaManager
+        $conn->getDatabasePlatform()->getEventManager()->addEventListener(
+            Events::onSchemaAlterTable,
+            GeneralUtility::makeInstance(SchemaAlterTableListener::class)
+        );
+
         return $conn;
     }
 
@@ -172,5 +220,19 @@ class ConnectionPool
     public function getConnectionNames(): array
     {
         return array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']);
+    }
+
+    /**
+     * Returns the list of custom Doctrine data types implemented by TYPO3.
+     * This method is needed by the Schema parser to register the types as it
+     * does not require a database connection and thus the types don't get
+     * registered automatically.
+     *
+     * @internal
+     * @return array
+     */
+    public function getCustomDoctrineTypes(): array
+    {
+        return $this->customDoctrineTypes;
     }
 }
