@@ -4354,12 +4354,12 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * If the element is not empty, its contents might be treated as "something" (instead of "nothing") e.g. by Fluid
-     * view helpers, which is why we want to avoid that.
+     * If the element is not empty, its contents might be treated as "something" (instead of "nothing")
+     * e.g. by Fluid view helpers, which is why we want to avoid that.
      *
      * @test
      */
-    public function xml2ArrayConvertsEmptyArraysToElementWithoutContent()
+    public function array2xmlConvertsEmptyArraysToElementWithoutContent()
     {
         $input = [
             'el' => []
@@ -4373,64 +4373,67 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * @return array
+     * @return string[][]
      */
-    public function providerForXml2Array(): array
+    public function xml2arrayHandlesWhitespacesDataProvider(): array
     {
-        return [
-            'inputWithoutWhitespaces' => [
-                '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-                <T3FlexForms>
-                    <data>
-                        <field index="settings.persistenceIdentifier">
-                            <value index="vDEF">egon</value>
-                        </field>
-                    </data>
-                </T3FlexForms>'
-            ],
-            'inputWithPrecedingWhitespaces' => [
-                '
-                <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-                <T3FlexForms>
-                    <data>
-                        <field index="settings.persistenceIdentifier">
-                            <value index="vDEF">egon</value>
-                        </field>
-                    </data>
-                </T3FlexForms>'
-            ],
-            'inputWithTrailingWhitespaces' => [
-                '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-                <T3FlexForms>
-                    <data>
-                        <field index="settings.persistenceIdentifier">
-                            <value index="vDEF">egon</value>
-                        </field>
-                    </data>
-                </T3FlexForms>
-                '
-            ],
-            'inputWithPrecedingAndTrailingWhitespaces' => [
-                '
-                <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-                <T3FlexForms>
-                    <data>
-                        <field index="settings.persistenceIdentifier">
-                            <value index="vDEF">egon</value>
-                        </field>
-                    </data>
-                </T3FlexForms>
-                '
-            ],
+        $headerVariants = [
+            'utf-8' => '<?xml version="1.0" encoding="utf-8" standalone="yes"?>',
+            'UTF-8' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+            'no-encoding' => '<?xml version="1.0" standalone="yes"?>',
+            'iso-8859-1' => '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',
+            'ISO-8859-1' => '<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>',
         ];
+        $data = [];
+        foreach ($headerVariants as $identifier => $headerVariant) {
+            $data += [
+                'inputWithoutWhitespaces-' . $identifier => [
+                    $headerVariant . '<T3FlexForms>
+                        <data>
+                            <field index="settings.persistenceIdentifier">
+                                <value index="vDEF">egon</value>
+                            </field>
+                        </data>
+                    </T3FlexForms>'
+                ],
+                'inputWithPrecedingWhitespaces-' . $identifier => [
+                    CR . ' ' . $headerVariant . '<T3FlexForms>
+                        <data>
+                            <field index="settings.persistenceIdentifier">
+                                <value index="vDEF">egon</value>
+                            </field>
+                        </data>
+                    </T3FlexForms>'
+                ],
+                'inputWithTrailingWhitespaces-' . $identifier => [
+                    $headerVariant . '<T3FlexForms>
+                        <data>
+                            <field index="settings.persistenceIdentifier">
+                                <value index="vDEF">egon</value>
+                            </field>
+                        </data>
+                    </T3FlexForms>' . CR . ' '
+                ],
+                'inputWithPrecedingAndTrailingWhitespaces-' . $identifier => [
+                    CR . ' ' . $headerVariant . '<T3FlexForms>
+                        <data>
+                            <field index="settings.persistenceIdentifier">
+                                <value index="vDEF">egon</value>
+                            </field>
+                        </data>
+                    </T3FlexForms>' . CR . ' '
+                ],
+            ];
+        }
+        return $data;
     }
 
     /**
      * @test
-     * @dataProvider providerForXml2Array
+     * @dataProvider xml2arrayHandlesWhitespacesDataProvider
      * @param string $input
      */
-    public function xml2ArrayDealsProperlyWithWhitespace(string $input)
+    public function xml2arrayHandlesWhitespaces(string $input)
     {
         $expected = [
             'data' => [
@@ -4440,6 +4443,281 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ],
         ];
         $this->assertSame($expected, GeneralUtility::xml2array($input));
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function xml2arrayHandlesTagNamespacesDataProvider(): array
+    {
+        return [
+            'inputWithNameSpaceOnRootLevel' => [
+                '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+                <T3:T3FlexForms>
+                    <data>
+                        <field index="settings.persistenceIdentifier">
+                            <value index="vDEF">egon</value>
+                        </field>
+                    </data>
+                </T3:T3FlexForms>'
+            ],
+            'inputWithNameSpaceOnNonRootLevel' => [
+                '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+                <T3FlexForms>
+                    <data>
+                        <T3:field index="settings.persistenceIdentifier">
+                            <value index="vDEF">egon</value>
+                        </T3:field>
+                    </data>
+                </T3FlexForms>'
+            ],
+            'inputWithNameSpaceOnRootAndNonRootLevel' => [
+                '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+                <T3:T3FlexForms>
+                    <data>
+                        <T3:field index="settings.persistenceIdentifier">
+                            <value index="vDEF">egon</value>
+                        </T3:field>
+                    </data>
+                </T3:T3FlexForms>'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider xml2arrayHandlesTagNamespacesDataProvider
+     * @param string $input
+     */
+    public function xml2arrayHandlesTagNamespaces(string $input)
+    {
+        $expected = [
+            'data' => [
+                'settings.persistenceIdentifier' => [
+                    'vDEF' => 'egon',
+                ]
+            ],
+        ];
+        $this->assertSame($expected, GeneralUtility::xml2array($input, 'T3:'));
+    }
+
+    /**
+     * @return array[]
+     */
+    public function xml2arrayHandlesDocumentTagDataProvider(): array
+    {
+        return [
+            'input' => [
+                '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+                <T3FlexForms>
+                    <data>
+                        <field index="settings.persistenceIdentifier">
+                            <value index="vDEF">egon</value>
+                        </field>
+                    </data>
+                </T3FlexForms>',
+                'T3FlexForms'
+            ],
+            'input-with-root-namespace' => [
+                '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+                <T3:T3FlexForms>
+                    <data>
+                        <field index="settings.persistenceIdentifier">
+                            <value index="vDEF">egon</value>
+                        </field>
+                    </data>
+                </T3:T3FlexForms>',
+                'T3:T3FlexForms'
+            ],
+            'input-with-namespace' => [
+                '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+                <T3FlexForms>
+                    <data>
+                        <T3:field index="settings.persistenceIdentifier">
+                            <value index="vDEF">egon</value>
+                        </T3:field>
+                    </data>
+                </T3FlexForms>',
+                'T3FlexForms'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider xml2arrayHandlesDocumentTagDataProvider
+     * @param string $input
+     * @param string $docTag
+     */
+    public function xml2arrayHandlesDocumentTag(string $input, string $docTag)
+    {
+        $expected = [
+            'data' => [
+                'settings.persistenceIdentifier' => [
+                    'vDEF' => 'egon',
+                ]
+            ],
+            '_DOCUMENT_TAG' => $docTag
+        ];
+        $this->assertSame($expected, GeneralUtility::xml2array($input, '', true));
+    }
+
+    /**
+     * @return array[]
+     */
+    public function xml2ArrayHandlesBigXmlContentDataProvider(): array
+    {
+        return [
+            '1mb' => [
+                '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+                <T3:T3FlexForms>
+                    <data>
+                        <field index="settings.persistenceIdentifier">
+                            <value index="vDEF">' . str_repeat('1', 1024 * 1024) . '</value>
+                        </field>
+                    </data>
+                </T3:T3FlexForms>',
+                str_repeat('1', 1024 * 1024)
+            ],
+            '5mb' => [
+                '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+                <T3:T3FlexForms>
+                    <data>
+                        <field index="settings.persistenceIdentifier">
+                            <value index="vDEF">' . str_repeat('1', 5 * 1024 * 1024) . '</value>
+                        </field>
+                    </data>
+                </T3:T3FlexForms>',
+                str_repeat('1', 5 * 1024 * 1024)
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider xml2ArrayHandlesBigXmlContentDataProvider
+     * @param string $input
+     * @param string $testValue
+     */
+    public function xml2ArrayHandlesBigXmlContent(string $input, string $testValue)
+    {
+        $expected = [
+            'data' => [
+                'settings.persistenceIdentifier' => [
+                    'vDEF' => $testValue,
+                ]
+            ],
+        ];
+        $this->assertSame($expected, GeneralUtility::xml2array($input));
+    }
+
+    /**
+     * @todo: The parser run into a memory issue with files bigger 10 MB
+     * @todo: This special tests documents the issue. If fixed, this test
+     * @todo: should become a data set of xml2ArrayHandlesBigXmlFilesDataProvider()
+     *
+     * @see https://forge.typo3.org/issues/83580
+     *
+     * @test
+     */
+    public function xml2ArrayFailsWithXmlContentBiggerThanTenMegabytes()
+    {
+        $input = '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+            <T3:T3FlexForms>
+                <data>
+                    <field index="settings.persistenceIdentifier">
+                        <value index="vDEF">' . str_repeat('1', 10 * 1024 * 1024) . '</value>
+                    </field>
+                </data>
+            </T3:T3FlexForms>';
+        $this->assertContains('No memory', GeneralUtility::xml2array($input));
+    }
+
+    /**
+     * @return array[]
+     */
+    public function xml2ArrayHandlesAttributeTypesDataProvider()
+    {
+        $prefix = '<?xml version="1.0" encoding="utf-8" standalone="yes"?><T3FlexForms><field index="index">';
+        $suffix = '</field></T3FlexForms>';
+        return [
+            'no-type string' => [
+                $prefix . '<value index="vDEF">foo bar</value>' . $suffix,
+                'foo bar'
+            ],
+            'no-type integer' => [
+                $prefix . '<value index="vDEF">123</value>' . $suffix,
+                '123'
+            ],
+            'no-type double' => [
+                $prefix . '<value index="vDEF">1.23</value>' . $suffix,
+                '1.23'
+            ],
+            'integer integer' => [
+                $prefix . '<value index="vDEF" type="integer">123</value>' . $suffix,
+                123
+            ],
+            'integer double' => [
+                $prefix . '<value index="vDEF" type="integer">1.23</value>' . $suffix,
+                1
+            ],
+            'double integer' => [
+                $prefix . '<value index="vDEF" type="double">123</value>' . $suffix,
+                123.0
+            ],
+            'double double' => [
+                $prefix . '<value index="vDEF" type="double">1.23</value>' . $suffix,
+                1.23
+            ],
+            'boolean 0' => [
+                $prefix . '<value index="vDEF" type="boolean">0</value>' . $suffix,
+                false
+            ],
+            'boolean 1' => [
+                $prefix . '<value index="vDEF" type="boolean">1</value>' . $suffix,
+                true
+            ],
+            'boolean true' => [
+                $prefix . '<value index="vDEF" type="boolean">true</value>' . $suffix,
+                true
+            ],
+            'boolean false' => [
+                $prefix . '<value index="vDEF" type="boolean">false</value>' . $suffix,
+                true // sic(!)
+            ],
+            'NULL' => [
+                $prefix . '<value index="vDEF" type="NULL"></value>' . $suffix,
+                null
+            ],
+            'NULL string' => [
+                $prefix . '<value index="vDEF" type="NULL">foo bar</value>' . $suffix,
+                null
+            ],
+            'NULL integer' => [
+                $prefix . '<value index="vDEF" type="NULL">123</value>' . $suffix,
+                null
+            ],
+            'NULL double' => [
+                $prefix . '<value index="vDEF" type="NULL">1.23</value>' . $suffix,
+                null
+            ],
+            'array' => [
+                $prefix . '<value index="vDEF" type="array"></value>' . $suffix,
+                []
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider xml2ArrayHandlesAttributeTypesDataProvider
+     * @param string $input
+     * @param $expected
+     */
+    public function xml2ArrayHandlesAttributeTypes(string $input, $expected)
+    {
+        $result = GeneralUtility::xml2array($input);
+        $this->assertSame($expected, $result['index']['vDEF']);
     }
 
     /**
