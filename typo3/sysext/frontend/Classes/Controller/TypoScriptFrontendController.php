@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Frontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -916,12 +916,15 @@ class TypoScriptFrontendController
      */
     public function connectToDB()
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
         try {
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
             $connection->connect();
-        } catch (ConnectionException $exception) {
+        } catch (DBALException $exception) {
             // Cannot connect to current database
-            $message = 'Cannot connect to the configured database "' . $connection->getDatabase() . '"';
+            $message = sprintf(
+                'Cannot connect to the configured database. Connection failed with: "%s"',
+                $exception->getMessage()
+            );
             if ($this->checkPageUnavailableHandler()) {
                 $this->pageUnavailableAndExit($message);
             } else {
