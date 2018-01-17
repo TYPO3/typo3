@@ -311,4 +311,9 @@ return [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
         ],
     ],
+    'TYPO3\CMS\Impexp\Export->maxFileSize' => [
+        'restFiles' => [
+            'Deprecation-83596-ImpexpRemovedMaxFileSizeRestriction.rst'
+        ],
+    ],
 ];

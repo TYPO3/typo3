@@ -59,8 +59,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class Export extends ImportExport
 {
     /**
-     * 1MB max file size
-     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. In v10, just remove property, it is not used any longer.
      * @var int
      */
     public $maxFileSize = 1000000;
@@ -661,10 +660,6 @@ class Export extends ImportExport
      */
     public function export_addSysFile(File $file)
     {
-        if ($file->getProperty('size') >= $this->maxFileSize) {
-            $this->error('File ' . $file->getPublicUrl() . ' was larger (' . GeneralUtility::formatSize($file->getProperty('size')) . ') than the maxFileSize (' . GeneralUtility::formatSize($this->maxFileSize) . ')! Skipping.');
-            return;
-        }
         $fileContent = '';
         try {
             if (!$this->saveFilesOutsideExportFile) {
@@ -722,10 +717,6 @@ class Export extends ImportExport
     {
         if (!@is_file($fI['ID_absFile'])) {
             $this->error($fI['ID_absFile'] . ' was not a file! Skipping.');
-            return;
-        }
-        if (filesize($fI['ID_absFile']) >= $this->maxFileSize) {
-            $this->error($fI['ID_absFile'] . ' was larger (' . GeneralUtility::formatSize(filesize($fI['ID_absFile'])) . ') than the maxFileSize (' . GeneralUtility::formatSize($this->maxFileSize) . ')! Skipping.');
             return;
         }
         $fileInfo = stat($fI['ID_absFile']);

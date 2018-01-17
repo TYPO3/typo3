@@ -40,6 +40,10 @@ export module usually set the 'maximum number of records' value high
 enough to export everything they wanted already. The interface now
 just misses the according input fields.
 
+
+Migration
+=========
+
 On PHP level, the extension scanner will find extensions that use
 the changed methods and checks if they are called with the
 correct number of arguments. Additionally, :php:`E_USER_DEPRECATED`

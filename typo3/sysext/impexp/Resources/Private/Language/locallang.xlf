@@ -201,9 +201,6 @@
 			<trans-unit id="makesavefo_fileFormat">
 				<source>File format:</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_maxSizeOfFiles">
-				<source>Max size of files to include (kb):</source>
-			</trans-unit>
 			<trans-unit id="makesavefo_filenameSavedInS">
 				<source>Filename (saved in "%s"):</source>
 			</trans-unit>

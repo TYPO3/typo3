@@ -368,7 +368,6 @@ class ImportExportController extends BaseScriptClass
     {
         // BUILDING EXPORT DATA:
         // Processing of InData array values:
-        $inData['maxFileSize'] = MathUtility::forceIntegerInRange($inData['maxFileSize'], 1, 1000000, 1000);
         $inData['filename'] = trim(preg_replace('/[^[:alnum:]._-]*/', '', preg_replace('/\\.(t3d|xml)$/', '', $inData['filename'])));
         if (strlen($inData['filename'])) {
             $inData['filename'] .= $inData['filetype'] === 'xml' ? '.xml' : '.t3d';
@@ -382,7 +381,6 @@ class ImportExportController extends BaseScriptClass
         // Create export object and configure it:
         $this->export = GeneralUtility::makeInstance(Export::class);
         $this->export->init(0);
-        $this->export->maxFileSize = $inData['maxFileSize'] * 1024;
         $this->export->excludeMap = (array)$inData['exclude'];
         $this->export->softrefCfg = (array)$inData['softrefCfg'];
         $this->export->extensionDependencies = ($inData['extension_dep'] === '') ? [] : (array)$inData['extension_dep'];
