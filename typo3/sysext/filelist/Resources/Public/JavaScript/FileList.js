@@ -17,53 +17,56 @@
  */
 define(['jquery'], function($) {
 
-  $('a.filelist-file-title').click(function(event) {
-    event.preventDefault();
+  $(function() {
+    $('a.filelist-file-title').click(function(event) {
+      event.preventDefault();
 
-    var url = $(this).attr('data-url');
-    window.location.href = url;
-  });
+      var url = $(this).attr('data-url');
+      window.location.href = url;
+    });
 
-  $('a.btn.filelist-file-edit').click(function(event) {
-    event.preventDefault();
+    $('a.btn.filelist-file-edit').click(function(event) {
+      event.preventDefault();
 
-    var url = $(this).attr('data-url');
-    top.list_frame.location.href = url;
-  });
+      var url = $(this).attr('data-url');
+      top.list_frame.location.href = url;
+    });
 
-  $('a.btn.filelist-file-view').click(function(event) {
-    event.preventDefault();
+    $('a.btn.filelist-file-view').click(function(event) {
+      event.preventDefault();
 
-    var url = $(this).attr('data-url');
-    top.openUrlInWindow(url, 'WebFile')
-  });
+      var url = $(this).attr('data-url');
+      top.openUrlInWindow(url, 'WebFile')
+    });
 
-  $('a.btn.filelist-file-replace').click(function(event) {
-    event.preventDefault();
+    $('a.btn.filelist-file-replace').click(function(event) {
+      event.preventDefault();
 
-    var url = $(this).attr('data-url');
-    top.list_frame.location.href = url;
-  });
+      var url = $(this).attr('data-url');
+      top.list_frame.location.href = url;
+    });
 
-  $('a.btn.filelist-file-rename').click(function(event) {
-    event.preventDefault();
+    $('a.btn.filelist-file-rename').click(function(event) {
+      event.preventDefault();
 
-    var url = $(this).attr('data-url');
-    top.list_frame.location.href = url;
-  });
+      var url = $(this).attr('data-url');
+      top.list_frame.location.href = url;
+    });
 
-  $('a.btn.filelist-file-info').click(function(event) {
-    event.preventDefault();
+    $('a.btn.filelist-file-info').click(function(event) {
+      event.preventDefault();
 
-    var identifier = $(this).attr('data-identifier');
-    openFileInfoPopup(identifier);
-  });
+      var identifier = $(this).attr('data-identifier');
+      openFileInfoPopup(identifier);
+    });
 
-  $('a.filelist-file-references').click(function(event) {
-    event.preventDefault();
+    $('a.filelist-file-references').click(function(event) {
+      event.preventDefault();
 
-    var identifier = $(this).attr('data-identifier');
-    openFileInfoPopup(identifier);
+      var identifier = $(this).attr('data-identifier');
+      openFileInfoPopup(identifier);
+    });
+
   });
 
   /**
