@@ -35,7 +35,6 @@
 				<tr>
 					<th><f:translate key="impexpcore_displaycon_controls" /></th>
 					<th><f:translate key="impexpcore_displaycon_title" /></th>
-					<th><f:translate key="impexpcore_displaycon_size" /></th>
 					<th><f:translate key="impexpcore_displaycon_message" /></th>
 					<f:if condition="{contentOverview.update}">
 						<th><f:translate key="impexpcore_displaycon_updateMode" /></th>
@@ -49,7 +48,6 @@
 					<tr data-active="{line.active}">
 						<td><f:format.raw>{line.controls}</f:format.raw></td>
 						<td class="col-nowrap"><f:format.raw>{line.preCode}{line.title}</f:format.raw></td>
-						<td class="col-nowrap"><f:format.raw>{line.fileSize}</f:format.raw></td>
 						<td class="col-nowrap"><f:format.raw>{line.message}</f:format.raw></td>
 						<f:if condition="{contentOverview.update}">
 							<td class="col-nowrap"><f:format.raw>{line.updateMode}</f:format.raw></td>
@@ -70,7 +68,6 @@
 				<tr data-active="{line.active}">
 					<th><f:translate key="impexpcore_displaycon_controls" /></th>
 					<th><f:translate key="impexpcore_displaycon_title" /></th>
-					<th><f:translate key="impexpcore_displaycon_size" /></th>
 					<th><f:translate key="impexpcore_displaycon_message" /></th>
 					<f:if condition="{contentOverview.update}">
 						<th><f:translate key="impexpcore_displaycon_updateMode" /></th>
@@ -84,7 +81,6 @@
 					<tr>
 						<td><f:format.raw>{line.controls}</f:format.raw></td>
 						<td class="col-nowrap"><f:format.raw>{line.preCode}{line.title}</f:format.raw></td>
-						<td class="col-nowrap"><f:format.raw>{line.fileSize}</f:format.raw></td>
 						<td class="col-nowrap"><f:format.raw>{line.message}</f:format.raw></td>
 						<f:if condition="{contentOverview.update}">
 							<td class="col-nowrap"><f:format.raw>{line.updateMode}</f:format.raw></td>

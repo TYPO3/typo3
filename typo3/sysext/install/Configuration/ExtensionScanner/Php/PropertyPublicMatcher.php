@@ -313,7 +313,17 @@ return [
     ],
     'TYPO3\CMS\Impexp\Export->maxFileSize' => [
         'restFiles' => [
-            'Deprecation-83596-ImpexpRemovedMaxFileSizeRestriction.rst'
+            'Deprecation-83596-ImpexpRemovedMaxFileSizeRestriction.rst',
+        ],
+    ],
+    'TYPO3\CMS\Impexp\Export->maxRecordSize' => [
+        'restFiles' => [
+            'Deprecation-83606-ImpexpSizeHandlingRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Impexp\Export->maxExportSize' => [
+        'restFiles' => [
+            'Deprecation-83606-ImpexpSizeHandlingRemoved.rst',
         ],
     ],
 ];

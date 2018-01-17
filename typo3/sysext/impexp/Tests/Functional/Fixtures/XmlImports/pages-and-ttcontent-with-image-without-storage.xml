@@ -7,7 +7,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>Root</title>
-					<size>162</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -15,7 +14,6 @@
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Dummy 1-2</title>
-					<size>167</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -25,7 +23,6 @@
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>Test content</title>
-					<size>188</size>
 					<relations index="rels" type="array">
 						<element index="sys_file_reference:1" type="array">
 							<id>1</id>
@@ -40,7 +37,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>Deutsch</title>
-					<size>109</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -50,7 +46,6 @@
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>1</title>
-					<size>292</size>
 					<relations index="rels" type="array">
 						<element index="sys_file:1" type="array">
 							<id>1</id>
@@ -65,7 +60,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>typo3_image2.jpg</title>
-					<size>532</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file_storage:1" type="array">
@@ -89,7 +83,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>typo3_image2.jpg</title>
-					<size>294</size>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file:1" type="array">
@@ -103,7 +96,6 @@
 					<uid>2</uid>
 					<pid>0</pid>
 					<title>typo3_image2.jpg</title>
-					<size>291</size>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_language:1" type="array">
@@ -164,7 +156,6 @@
 		</pagetree>
 		<files_fal type="array">
 			<file index="4a705ca3ef43b53dc00de861ba2c86af" type="array">
-				<filesize>7958</filesize>
 				<filename>typo3_image2.jpg</filename>
 				<filemtime>1389878273</filemtime>
 			</file>
@@ -368,7 +359,6 @@
 	</records>
 	<files_fal type="array">
 		<file index="4a705ca3ef43b53dc00de861ba2c86af" type="array">
-			<filesize>7958</filesize>
 			<filename>typo3_image2.jpg</filename>
 			<filemtime>1389878273</filemtime>
 			<content base64="1">

@@ -7,7 +7,6 @@
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Dummy 1-2</title>
-					<size>143</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -17,7 +16,6 @@
 					<uid>2</uid>
 					<pid>2</pid>
 					<title>Test item 2</title>
-					<size>643</size>
 					<relations index="rels" type="array">
 						<element index="sys_file:3" type="array">
 							<table>sys_file</table>
@@ -48,7 +46,6 @@
 					<uid>3</uid>
 					<pid>0</pid>
 					<title>typo3_image5.jpg</title>
-					<size>528</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file_storage:1" type="array">
@@ -62,7 +59,6 @@
 					<uid>2</uid>
 					<pid>0</pid>
 					<title>typo3_image3.jpg</title>
-					<size>528</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file_storage:1" type="array">
@@ -78,7 +74,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>fileadmin/ (auto-created)</title>
-					<size>694</size>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
@@ -113,7 +108,6 @@
 		</pagetree>
 		<files type="array">
 			<file index="66a2b7534be9ebf810cd55164c5f085d" type="array">
-				<filesize>6758</filesize>
 				<filename>typo3_image4.jpg</filename>
 				<filemtime>1393866824</filemtime>
 				<relFileRef>uploads/tx_impexpgroupfiles/typo3_image4.jpg</relFileRef>
@@ -122,12 +116,10 @@
 		</files>
 		<files_fal type="array">
 			<file index="23116a2a95820388bb7eede903382d4c" type="array">
-				<filesize>7425</filesize>
 				<filename>typo3_image5.jpg</filename>
 				<filemtime>1393432183</filemtime>
 			</file>
 			<file index="0e290b0bb4f0b57f7f58fd5c342117fe" type="array">
-				<filesize>5565</filesize>
 				<filename>typo3_image3.jpg</filename>
 				<filemtime>1392907534</filemtime>
 			</file>
@@ -321,7 +313,6 @@
 	</records>
 	<files type="array">
 		<file index="66a2b7534be9ebf810cd55164c5f085d" type="array">
-			<filesize>6758</filesize>
 			<filename>typo3_image4.jpg</filename>
 			<filemtime>1393866824</filemtime>
 			<relFileRef>uploads/tx_impexpgroupfiles/typo3_image4.jpg</relFileRef>
@@ -452,7 +443,6 @@ YuxtJplbtQASgAAAAAAAAAAAAAACS4AoCAAAAAAB/9k=
 	</files>
 	<files_fal type="array">
 		<file index="23116a2a95820388bb7eede903382d4c" type="array">
-			<filesize>7425</filesize>
 			<filename>typo3_image5.jpg</filename>
 			<filemtime>1393432183</filemtime>
 			<content base64="1">
@@ -591,7 +581,6 @@ oDglIOy49+o2eaEKg//Z
 			<content_sha1>c3511df85d21bc578faf71c6a19eeb3ff44af370</content_sha1>
 		</file>
 		<file index="0e290b0bb4f0b57f7f58fd5c342117fe" type="array">
-			<filesize>5565</filesize>
 			<filename>typo3_image3.jpg</filename>
 			<filemtime>1392907534</filemtime>
 			<content base64="1">

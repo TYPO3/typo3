@@ -7,7 +7,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>Root</title>
-					<size>138</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -15,7 +14,6 @@
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Dummy 1-2</title>
-					<size>143</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -25,7 +23,6 @@
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>Test content</title>
-					<size>177</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array">
 						<softref_element index="header_link:typolink:2487ce518ed56d22f20f259928ff43f1:0" type="array">
@@ -45,7 +42,6 @@
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Test content 2</title>
-					<size>179</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array">
 						<softref_element index="header_link:typolink:81b8b33df54ef433f1cbc7c3e513e6c4:0" type="array">
@@ -67,7 +63,6 @@
 					<uid>2</uid>
 					<pid>0</pid>
 					<title>typo3_image3.jpg</title>
-					<size>506</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file_storage:1" type="array">
@@ -81,7 +76,6 @@
 					<uid>4</uid>
 					<pid>0</pid>
 					<title>Empty.html</title>
-					<size>538</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
@@ -120,12 +114,10 @@
 		</pagetree>
 		<files_fal type="array">
 			<file index="0e290b0bb4f0b57f7f58fd5c342117fe" type="array">
-				<filesize>5565</filesize>
 				<filename>typo3_image3.jpg</filename>
 				<filemtime>1392907534</filemtime>
 			</file>
 			<file index="006f2bbed1bef099981ce4cb9a0f8e14" type="array">
-				<filesize>92</filesize>
 				<filename>Empty.html</filename>
 				<filemtime>1400176659</filemtime>
 			</file>
@@ -271,7 +263,6 @@
 	</records>
 	<files_fal type="array">
 		<file index="0e290b0bb4f0b57f7f58fd5c342117fe" type="array">
-			<filesize>5565</filesize>
 			<filename>typo3_image3.jpg</filename>
 			<filemtime>1392907534</filemtime>
 			<content base64="1">
@@ -377,7 +368,6 @@ tiNwZbSZIYCCxuK0ABsLFY0aTIrYWKxkjYuQsVgSZAQAw//Z
 			<content_sha1>e873c1e2ffd0f191e183a1057de3eef4d62e782d</content_sha1>
 		</file>
 		<file index="006f2bbed1bef099981ce4cb9a0f8e14" type="array">
-			<filesize>92</filesize>
 			<filename>Empty.html</filename>
 			<filemtime>1400176659</filemtime>
 			<content>&lt;!DOCTYPE html&gt;

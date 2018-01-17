@@ -7,7 +7,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>Root</title>
-					<size>162</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -15,7 +14,6 @@
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Dummy 1-2</title>
-					<size>167</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -25,7 +23,6 @@
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>Test content</title>
-					<size>188</size>
 					<relations index="rels" type="array">
 						<element index="sys_file_reference:1" type="array">
 							<id>1</id>
@@ -40,7 +37,6 @@
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>1</title>
-					<size>292</size>
 					<relations index="rels" type="array">
 						<element index="sys_file:1" type="array">
 							<id>1</id>
@@ -55,7 +51,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>typo3_image2.jpg</title>
-					<size>532</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file_storage:1" type="array">
@@ -73,7 +68,6 @@
 					<uid>2</uid>
 					<pid>0</pid>
 					<title>typo3_image3.jpg</title>
-					<size>532</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file_storage:1" type="array">
@@ -93,7 +87,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>typo3_image2.jpg</title>
-					<size>294</size>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file:1" type="array">
@@ -107,7 +100,6 @@
 					<uid>2</uid>
 					<pid>0</pid>
 					<title>typo3_image3.jpg</title>
-					<size>294</size>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file:2" type="array">
@@ -157,7 +149,6 @@
 		</pagetree>
 		<files_fal type="array">
 			<file index="4a705ca3ef43b53dc00de861ba2c86af" type="array">
-				<filesize>7958</filesize>
 				<filename>typo3_image2.jpg</filename>
 				<filemtime>1389878273</filemtime>
 			</file>
@@ -367,7 +358,6 @@
 	</records>
 	<files_fal type="array">
 		<file index="458c594a760993a54469e6ab046f7fb8" type="array">
-			<filesize>7958</filesize>
 			<filename>typo3_image2.jpg</filename>
 			<filemtime>1389878273</filemtime>
 			<content base64="1">
@@ -515,7 +505,6 @@ AgKDQDAgQD9xAwAMAYQDF7gwAMBphAP3ALhAMTIEAAB//9k=
 			<content_sha1>da9acdf1e105784a57bbffec9520969578287797</content_sha1>
 		</file>
 		<file index="017072e659271bbab68e76fac37de542" type="array">
-			<filesize>5565</filesize>
 			<filename>typo3_image3.jpg</filename>
 			<filemtime>1389878273</filemtime>
 			<content base64="1">

@@ -81,7 +81,6 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         $out = $subject->compileMemoryToFileContent('xml');
 
         $expectedErrors = [
-            'File size of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added with current size.',
             'File sha1 hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added on current sha1.'
         ];
         $errors = $subject->errorLog;

@@ -8,7 +8,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>Root</title>
-					<size>162</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -18,7 +17,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>Test item</title>
-					<size>220</size>
 					<relations index="rels" type="array">
 						<element index="sys_file:3" type="array">
 							<table>sys_file</table>
@@ -36,7 +34,6 @@
 					<uid>3</uid>
 					<pid>0</pid>
 					<title>typo3_image5.jpg</title>
-					<size>558</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file_storage:1" type="array">
@@ -52,7 +49,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>fileadmin/ (auto-created)</title>
-					<size>722</size>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
@@ -82,7 +78,6 @@
 		</pagetree>
 		<files type="array">
 			<file index="66a2b7534be9ebf810cd55164c5f085d" type="array">
-				<filesize>6758</filesize>
 				<filename>typo3_image4.jpg</filename>
 				<filemtime>1393866824</filemtime>
 				<relFileRef>uploads/tx_impexpgroupfiles/typo3_image4.jpg</relFileRef>
@@ -91,7 +86,6 @@
 		</files>
 		<files_fal type="array">
 			<file index="23116a2a95820388bb7eede903382d4c" type="array">
-				<filesize>7425</filesize>
 				<filename>typo3_image5.jpg</filename>
 				<filemtime>1393432183</filemtime>
 			</file>
@@ -219,7 +213,6 @@
 	</records>
 	<files type="array">
 		<file index="66a2b7534be9ebf810cd55164c5f085d" type="array">
-			<filesize>6758</filesize>
 			<filename>typo3_image4.jpg</filename>
 			<filemtime>1393866824</filemtime>
 			<relFileRef>uploads/tx_impexpgroupfiles/typo3_image4.jpg</relFileRef>
@@ -350,7 +343,6 @@ YuxtJplbtQASgAAAAAAAAAAAAAACS4AoCAAAAAAB/9k=
 	</files>
 	<files_fal type="array">
 		<file index="23116a2a95820388bb7eede903382d4c" type="array">
-			<filesize>7425</filesize>
 			<filename>typo3_image5.jpg</filename>
 			<filemtime>1393432183</filemtime>
 			<content base64="1">

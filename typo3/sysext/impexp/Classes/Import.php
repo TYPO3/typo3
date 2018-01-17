@@ -557,11 +557,7 @@ class Import extends ImportExport
             clearstatcache();
             if (@is_file($temporaryFilePathInternal)) {
                 $this->unlinkFiles[] = $temporaryFilePathInternal;
-                if (filesize($temporaryFilePathInternal) == $this->dat[$dataKey][$fileId]['filesize']) {
-                    $temporaryFilePath = $temporaryFilePathInternal;
-                } else {
-                    $this->error('Error: temporary file ' . $temporaryFilePathInternal . ' had a size (' . filesize($temporaryFilePathInternal) . ') different from the original (' . $this->dat[$dataKey][$fileId]['filesize'] . ')');
-                }
+                $temporaryFilePath = $temporaryFilePathInternal;
             } else {
                 $this->error('Error: temporary file ' . $temporaryFilePathInternal . ' was not written as it should have been!');
             }
@@ -1113,15 +1109,11 @@ class Import extends ImportExport
             clearstatcache();
             if (@is_file($tmpFile)) {
                 $this->unlinkFiles[] = $tmpFile;
-                if (filesize($tmpFile) == $this->dat['files'][$fI['ID']]['filesize']) {
-                    $this->alternativeFileName[$tmpFile] = $fI['filename'];
-                    $this->alternativeFilePath[$tmpFile] = $this->dat['files'][$fI['ID']]['relFileRef'];
-                    return $tmpFile;
-                }
-                $this->error('Error: temporary file ' . $tmpFile . ' had a size (' . filesize($tmpFile) . ') different from the original (' . $this->dat['files'][$fI['ID']]['filesize'] . ')');
-            } else {
-                $this->error('Error: temporary file ' . $tmpFile . ' was not written as it should have been!');
+                $this->alternativeFileName[$tmpFile] = $fI['filename'];
+                $this->alternativeFilePath[$tmpFile] = $this->dat['files'][$fI['ID']]['relFileRef'];
+                return $tmpFile;
             }
+            $this->error('Error: temporary file ' . $tmpFile . ' was not written as it should have been!');
         } else {
             $this->error('Error: No file found for ID ' . $fI['ID']);
         }

@@ -357,9 +357,6 @@
 			<trans-unit id="impexpcore_displaycon_title">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_displaycon_size">
-				<source>Size:</source>
-			</trans-unit>
 			<trans-unit id="impexpcore_displaycon_message">
 				<source>Message:</source>
 			</trans-unit>

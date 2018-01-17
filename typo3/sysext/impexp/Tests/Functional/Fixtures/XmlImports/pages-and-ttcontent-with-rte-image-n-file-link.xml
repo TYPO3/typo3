@@ -7,7 +7,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>Root</title>
-					<size>138</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -15,7 +14,6 @@
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Dummy 1-2</title>
-					<size>143</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -25,7 +23,6 @@
 					<uid>1</uid>
 					<pid>2</pid>
 					<title>Text element with image in RTE</title>
-					<size>444</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array">
 						<softref_element index="bodytext:rtehtmlarea_images:1" type="array">
@@ -58,7 +55,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>typo3_image2.jpg</title>
-					<size>528</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file_storage:1" type="array">
@@ -72,7 +68,6 @@
 					<uid>2</uid>
 					<pid>0</pid>
 					<title>typo3_image3.jpg</title>
-					<size>528</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file_storage:1" type="array">
@@ -88,7 +83,6 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>fileadmin/ (auto-created)</title>
-					<size>694</size>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
@@ -131,12 +125,10 @@
 		</pagetree>
 		<files_fal type="array">
 			<file index="4a705ca3ef43b53dc00de861ba2c86af" type="array">
-				<filesize>7958</filesize>
 				<filename>typo3_image2.jpg</filename>
 				<filemtime>1389878273</filemtime>
 			</file>
 			<file index="0e290b0bb4f0b57f7f58fd5c342117fe" type="array">
-				<filesize>5565</filesize>
 				<filename>typo3_image3.jpg</filename>
 				<filemtime>1392907534</filemtime>
 			</file>
@@ -315,7 +307,6 @@
 	</records>
 	<files_fal type="array">
 		<file index="4a705ca3ef43b53dc00de861ba2c86af" type="array">
-			<filesize>7958</filesize>
 			<filename>typo3_image2.jpg</filename>
 			<filemtime>1389878273</filemtime>
 			<content base64="1">
@@ -463,7 +454,6 @@ AgKDQDAgQD9xAwAMAYQDF7gwAMBphAP3ALhAMTIEAAB//9k=
 			<content_sha1>da9acdf1e105784a57bbffec9520969578287797</content_sha1>
 		</file>
 		<file index="0e290b0bb4f0b57f7f58fd5c342117fe" type="array">
-			<filesize>5565</filesize>
 			<filename>typo3_image3.jpg</filename>
 			<filemtime>1392907534</filemtime>
 			<content base64="1">

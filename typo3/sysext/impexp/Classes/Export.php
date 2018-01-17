@@ -65,15 +65,13 @@ class Export extends ImportExport
     public $maxFileSize = 1000000;
 
     /**
-     * 1MB max record size
-     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. In v10, just remove property, it is not used any longer.
      * @var int
      */
     public $maxRecordSize = 1000000;
 
     /**
-     * 10MB max export size
-     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. In v10, just remove property, it is not used any longer.
      * @var int
      */
     public $maxExportSize = 10000000;
@@ -311,35 +309,29 @@ class Export extends ImportExport
                     $headerInfo['uid'] = $row['uid'];
                     $headerInfo['pid'] = $row['pid'];
                     $headerInfo['title'] = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), 40);
-                    $headerInfo['size'] = strlen(serialize($row));
                     if ($relationLevel) {
                         $headerInfo['relationLevel'] = $relationLevel;
                     }
-                    // If record content is not too large in size, set the header content and add the rest:
-                    if ($headerInfo['size'] < $this->maxRecordSize) {
-                        // Set the header summary:
-                        $this->dat['header']['records'][$table][$row['uid']] = $headerInfo;
-                        // Create entry in the PID lookup:
-                        $this->dat['header']['pid_lookup'][$row['pid']][$table][$row['uid']] = 1;
-                        // Initialize reference index object:
-                        $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-                        $refIndexObj->enableRuntimeCache();
-                        // Yes to workspace overlays for exporting....
-                        $refIndexObj->WSOL = true;
-                        $relations = $refIndexObj->getRelations($table, $row);
-                        $relations = $this->fixFileIDsInRelations($relations);
-                        $relations = $this->removeSoftrefsHavingTheSameDatabaseRelation($relations);
-                        // Data:
-                        $this->dat['records'][$table . ':' . $row['uid']] = [];
-                        $this->dat['records'][$table . ':' . $row['uid']]['data'] = $row;
-                        $this->dat['records'][$table . ':' . $row['uid']]['rels'] = $relations;
-                        // Add information about the relations in the record in the header:
-                        $this->dat['header']['records'][$table][$row['uid']]['rels'] = $this->flatDBrels($this->dat['records'][$table . ':' . $row['uid']]['rels']);
-                        // Add information about the softrefs to header:
-                        $this->dat['header']['records'][$table][$row['uid']]['softrefs'] = $this->flatSoftRefs($this->dat['records'][$table . ':' . $row['uid']]['rels']);
-                    } else {
-                        $this->error('Record ' . $table . ':' . $row['uid'] . ' was larger than maxRecordSize (' . GeneralUtility::formatSize($this->maxRecordSize) . ')');
-                    }
+                    // Set the header summary:
+                    $this->dat['header']['records'][$table][$row['uid']] = $headerInfo;
+                    // Create entry in the PID lookup:
+                    $this->dat['header']['pid_lookup'][$row['pid']][$table][$row['uid']] = 1;
+                    // Initialize reference index object:
+                    $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+                    $refIndexObj->enableRuntimeCache();
+                    // Yes to workspace overlays for exporting....
+                    $refIndexObj->WSOL = true;
+                    $relations = $refIndexObj->getRelations($table, $row);
+                    $relations = $this->fixFileIDsInRelations($relations);
+                    $relations = $this->removeSoftrefsHavingTheSameDatabaseRelation($relations);
+                    // Data:
+                    $this->dat['records'][$table . ':' . $row['uid']] = [];
+                    $this->dat['records'][$table . ':' . $row['uid']]['data'] = $row;
+                    $this->dat['records'][$table . ':' . $row['uid']]['rels'] = $relations;
+                    // Add information about the relations in the record in the header:
+                    $this->dat['header']['records'][$table][$row['uid']]['rels'] = $this->flatDBrels($this->dat['records'][$table . ':' . $row['uid']]['rels']);
+                    // Add information about the softrefs to header:
+                    $this->dat['header']['records'][$table][$row['uid']]['softrefs'] = $this->flatSoftRefs($this->dat['records'][$table . ':' . $row['uid']]['rels']);
                 } else {
                     $this->error('Record ' . $table . ':' . $row['uid'] . ' already added.');
                 }
@@ -672,12 +664,6 @@ class Export extends ImportExport
             return;
         }
         $fileUid = $file->getUid();
-        $fileInfo = $file->getStorage()->getFileInfo($file);
-        $fileSize = (int)$fileInfo['size'];
-        if ($fileSize !== (int)$file->getProperty('size')) {
-            $this->error('File size of ' . $file->getCombinedIdentifier() . ' is not up-to-date in index! File added with current size.');
-            $this->dat['records']['sys_file:' . $fileUid]['data']['size'] = $fileSize;
-        }
         $fileSha1 = $file->getStorage()->hashFile($file, 'sha1');
         if ($fileSha1 !== $file->getProperty('sha1')) {
             $this->error('File sha1 hash of ' . $file->getCombinedIdentifier() . ' is not up-to-date in index! File added on current sha1.');
@@ -685,7 +671,6 @@ class Export extends ImportExport
         }
 
         $fileRec = [];
-        $fileRec['filesize'] = $fileSize;
         $fileRec['filename'] = $file->getProperty('name');
         $fileRec['filemtime'] = $file->getProperty('modification_date');
 
@@ -721,7 +706,6 @@ class Export extends ImportExport
         }
         $fileInfo = stat($fI['ID_absFile']);
         $fileRec = [];
-        $fileRec['filesize'] = $fileInfo['size'];
         $fileRec['filename'] = PathUtility::basename($fI['ID_absFile']);
         $fileRec['filemtime'] = $fileInfo['mtime'];
         //for internal type file_reference
@@ -760,7 +744,6 @@ class Export extends ImportExport
                     $RTEoriginal_ID = md5($RTEoriginal_absPath);
                     $fileInfo = stat($RTEoriginal_absPath);
                     $fileRec = [];
-                    $fileRec['filesize'] = $fileInfo['size'];
                     $fileRec['filename'] = PathUtility::basename($RTEoriginal_absPath);
                     $fileRec['filemtime'] = $fileInfo['mtime'];
                     $fileRec['record_ref'] = '_RTE_COPY_ID:' . $fI['ID'];
@@ -806,7 +789,6 @@ class Export extends ImportExport
                             if (!isset($this->dat['header']['files'][$EXTres_ID])) {
                                 $fileInfo = stat($EXTres_absPath);
                                 $fileRec = [];
-                                $fileRec['filesize'] = $fileInfo['size'];
                                 $fileRec['filename'] = PathUtility::basename($EXTres_absPath);
                                 $fileRec['filemtime'] = $fileInfo['mtime'];
                                 $fileRec['record_ref'] = '_EXT_PARENT_:' . $fI['ID'];

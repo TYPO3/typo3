@@ -322,7 +322,6 @@ abstract class ImportExport
             if (!empty($lines)) {
                 foreach ($lines as &$r) {
                     $r['controls'] = $this->renderControls($r);
-                    $r['fileSize'] = GeneralUtility::formatSize($r['size']);
                     $r['message'] = ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '');
                 }
                 $viewData['pagetreeLines'] = $lines;
@@ -340,7 +339,6 @@ abstract class ImportExport
             if (!empty($lines)) {
                 foreach ($lines as &$r) {
                     $r['controls'] = $this->renderControls($r);
-                    $r['fileSize'] = GeneralUtility::formatSize($r['size']);
                     $r['message'] = ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '');
                 }
                 $viewData['remainingRecords'] = $lines;
@@ -605,7 +603,6 @@ abstract class ImportExport
             }
         }
         $pInfo['type'] = 'record';
-        $pInfo['size'] = (int)$record['size'];
         $lines[] = $pInfo;
         // File relations:
         if (is_array($record['filerefs'])) {
@@ -633,7 +630,6 @@ abstract class ImportExport
                     $pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] === 'file' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_filename')) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] === 'string' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_value')) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] === 'db' ? htmlspecialchars($lang->getLL('impexpcore_softrefsel_record')) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
                 }
                 $pInfo['ref'] = 'SOFTREF';
-                $pInfo['size'] = 0;
                 $pInfo['type'] = 'softref';
                 $pInfo['_softRefInfo'] = $info;
                 $pInfo['type'] = 'softref';
@@ -747,7 +743,6 @@ abstract class ImportExport
             $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('status-reference-hard', Icon::SIZE_SMALL)->render();
             $pInfo['title'] = htmlspecialchars($fI['filename']);
             $pInfo['ref'] = 'FILE';
-            $pInfo['size'] = $fI['filesize'];
             $pInfo['type'] = 'file';
             // If import mode and there is a non-RTE softreference, check the destination directory:
             if ($this->mode === 'import' && $tokenID && !$fI['RTE_ORIG_ID']) {
@@ -797,7 +792,6 @@ abstract class ImportExport
                 $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('status-reference-hard', Icon::SIZE_SMALL)->render();
                 $pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Original)</em>';
                 $pInfo['ref'] = 'FILE';
-                $pInfo['size'] = $fI['filesize'];
                 $pInfo['type'] = 'file';
                 $lines[] = $pInfo;
                 unset($this->remainHeader['files'][$ID]);
@@ -817,7 +811,6 @@ abstract class ImportExport
                     $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('actions-insert-reference', Icon::SIZE_SMALL)->render();
                     $pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Resource)</em>';
                     $pInfo['ref'] = 'FILE';
-                    $pInfo['size'] = $fI['filesize'];
                     $pInfo['type'] = 'file';
                     $lines[] = $pInfo;
                     unset($this->remainHeader['files'][$extID]);
