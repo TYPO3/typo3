@@ -524,14 +524,16 @@ class FileList
             // half line is drawn
             // finish
             $out = '
-		<!--
-			Filelist table:
-		-->
-			<div class="table-fit">
-				<table class="table table-striped table-hover" id="typo3-filelist">
-					' . $out . '
-				</table>
-			</div>';
+                <!--
+                    Filelist table:
+                -->
+                <div class="panel panel-default">
+                    <div class="table-fit">
+                        <table class="table table-striped table-hover" id="typo3-filelist">
+                            ' . $out . '
+                        </table>
+                    </div>
+                </div>';
         } else {
             /** @var $flashMessage FlashMessage */
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('storageNotBrowsableMessage'), $this->getLanguageService()->getLL('storageNotBrowsableTitle'), FlashMessage::INFO);
