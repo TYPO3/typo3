@@ -17,9 +17,11 @@
  */
 define(['jquery'], function($) {
 
-  $('a.filelist-translationToggler').click(function(event) {
-    var id = $(this).attr('data-fileid');
-    $('div[data-fileid="' + id + '"]').toggle();
+  $(function() {
+    $('a.filelist-translationToggler').click(function(event) {
+      var id = $(this).attr('data-fileid');
+      $('div[data-fileid="' + id + '"]').toggle();
+    });
   });
 
   return null;

@@ -18,16 +18,18 @@
  */
 define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
 
-  var $searchFields = $('input[name="tx_filelist_file_filelistlist[searchWord]"]');
-  var searchResultShown = ('' !== $searchFields.first().val());
+  $(function() {
+    var $searchFields = $('input[name="tx_filelist_file_filelistlist[searchWord]"]');
+    var searchResultShown = ('' !== $searchFields.first().val());
 
-  // make search field clearable
-  $searchFields.clearable({
-    onClear: function() {
-      if (searchResultShown) {
-        $(this).closest('form').submit();
+    // make search field clearable
+    $searchFields.clearable({
+      onClear: function() {
+        if (searchResultShown) {
+          $(this).closest('form').submit();
+        }
       }
-    }
+    });
   });
 
 });
