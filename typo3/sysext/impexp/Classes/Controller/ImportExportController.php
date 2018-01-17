@@ -811,11 +811,11 @@ class ImportExportController extends BaseScriptClass
 
         // Add file options:
         $opt = [];
+        $opt['xml'] = $this->lang->getLL('makesavefo_xml');
         if ($this->export->compress) {
             $opt['t3d_compressed'] = $this->lang->getLL('makesavefo_t3dFileCompressed');
         }
         $opt['t3d'] = $this->lang->getLL('makesavefo_t3dFile');
-        $opt['xml'] = $this->lang->getLL('makesavefo_xml');
 
         $this->standaloneView->assign('filetypeSelectOptions', $opt);
 

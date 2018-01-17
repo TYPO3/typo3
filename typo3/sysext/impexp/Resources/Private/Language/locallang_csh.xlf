@@ -247,14 +247,12 @@ The "Notes" field can be used for additional details, especially remarks about i
 				<source>File format options</source>
 			</trans-unit>
 			<trans-unit id="fileFormat.description">
-				<source>You can export your records to a TYPO3 specific binary format (serialized PHP array) called "T3D". Alternatively you can select a plain-text XML export which potentially can be imported by other applications written to support this format. However the schema of the XML is TYPO3 specific.</source>
+				<source>You can export your records to a generic XML format which potentially can be imported by other applications. However, the schema of the XML is TYPO3 specific. Alternatively, you can select a TYPO3 specific binary format called "T3D".</source>
 			</trans-unit>
 			<trans-unit id="fileFormat.details" xml:space="preserve">
-				<source>Generally you should use the T3D format, preferably compressed. The T3D compressed format normally yields a size about 10 times less than the XML format which is bloaded due to the plain-text nature of the format.
+				<source>Generally you should use the XML format. The T3D compressed format is usually smaller, but much harder to read and process.
 
-With "Max size of files to include" you can set a limit to the size of attached files to records. This is useful if you have large PDF files or videoclips attached to records which you do not desire (or do desire!) to include; then with this limit you can adjust whether they are allowed in or not.
-
-Entering a file name to save to makes it possible to write your export directly to a file (pressing "Save to filename") instead of downloading it (pressing "Download export"). The correct file extensions depending on file format is automatically applied. Files are saved in a proper filemount in "fileadmin/". This is shown to you upon saving. Existing files are overwritten.</source>
+Entering a file name to save makes it possible to write your export directly to a file (pressing "Save to filename") instead of downloading it (pressing "Download export"). The correct file extensions depending on file format is automatically applied. Files are saved in a proper file mount in "fileadmin/". This is shown to you upon saving. Existing files are overwritten.</source>
 			</trans-unit>
 			<trans-unit id="_fileFormat.image">
 				<source>EXT:impexp/Resources/Public/Images/cshimages/fileformat.png</source>
