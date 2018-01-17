@@ -42,12 +42,6 @@
 								 options="{tableSelectOptions}" multiple="multiple" value="{inData.pagetree.tables}"
 								 size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
 </div>
-<div class="form-group">
-	<label for="impexp-pagetree-maxnumber">
-		<f:translate key="makeconfig_maxNumberOfRecords" />
-	</label>
-	<f:form.textfield class="form-control" name="tx_impexp[pagetree][maxNumber]" id="impexp-pagetree-maxnumber" value="{inData.pagetree.maxNumber}" />
-</div>
 <f:if condition="{records -> f:count()} > 0">
 	<h4>
 		<f:translate key="makeconfig_exportSingleRecord" />
@@ -83,13 +77,6 @@
 				<br />
 			</f:for>
 		</div>
-	</div>
-	<div class="form-group">
-		<label for="impexp-listcfg-maxnumber">
-			<f:translate key="makeconfig_maxNumberOfRecords" />
-			<f:be.buttons.csh table="xMOD_tx_impexp" field="tableListMaxNumber" />
-		</label>
-		<f:form.textfield class="form-control" name="tx_impexp[listCfg][maxNumber]" id="impexp-listcfg-maxnumber"value="{inData.listCfg.maxNumber}" />
 	</div>
 </f:if>
 <h4><f:translate key="makeconfig_relationsAndExclusions" /></h4>

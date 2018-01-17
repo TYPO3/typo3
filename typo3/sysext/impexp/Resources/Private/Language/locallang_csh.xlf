@@ -121,12 +121,6 @@ EXT:impexp/Resources/Public/Images/cshimages/export1.png</source>
 				<source>Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
 Here you see how to use the Web&gt;List module to export all records from a table on a page.</source>
 			</trans-unit>
-			<trans-unit id="tableListMaxNumber.alttitle">
-				<source>Max number to export</source>
-			</trans-unit>
-			<trans-unit id="tableListMaxNumber.description">
-				<source>Run-away brake that will make sure a large amount of records does not halt the interface. Default is 100, but you can change it to anything you like of course.</source>
-			</trans-unit>
 			<trans-unit id="inclRelations.alttitle">
 				<source>Include relations</source>
 			</trans-unit>

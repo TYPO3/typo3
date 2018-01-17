@@ -135,4 +135,16 @@ return [
             'Breaking-83241-ExtbaseRemovedCustomFunctionalityForDataMapper-getPlainValue.rst',
         ],
     ],
+    'TYPO3\CMS\Impexp\Controller\ImportExportController->addRecordsForPid' => [
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-83592-ImpexpRemovedMaximumNumberOfRecordsRestriction.rst'
+        ],
+    ],
+    'TYPO3\CMS\Impexp\Controller\ImportExportController->exec_listQueryPid' => [
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-83592-ImpexpRemovedMaximumNumberOfRecordsRestriction.rst'
+        ],
+    ],
 ];

@@ -78,9 +78,6 @@
 			<trans-unit id="makeconfig_includeTables">
 				<source>Include tables:</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_maxNumberOfRecords">
-				<source>Max number of records:</source>
-			</trans-unit>
 			<trans-unit id="makeconfig_exportSingleRecord">
 				<source>Export single record:</source>
 			</trans-unit>
