@@ -39,6 +39,15 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * <output>
  * CSH button as known from the TYPO3 backend with some custom settings.
  * </output>
+ *
+ * <code title="Full configuration with content">
+ * <f:be.buttons.csh table="xMOD_csh_corebe" field="someCshKey">
+ *   some text to link
+ * </f:be.buttons.csh>
+ * </code>
+ * <output>
+ * A link with text "some text to link" to link the help
+ * </output>
  */
 class CshViewHelper extends AbstractBackendViewHelper
 {
@@ -93,6 +102,11 @@ class CshViewHelper extends AbstractBackendViewHelper
             $moduleName = $currentRequest->getPluginName();
             $table = '_MOD_' . $moduleName;
         }
+        $content = (string)$renderChildrenClosure();
+        if ($content !== '') {
+            return BackendUtility::wrapInHelp($table, $field, $content);
+        }
+
         return '<div class="docheader-csh">' . BackendUtility::cshItem($table, $field, '', $wrap) . '</div>';
     }
 }

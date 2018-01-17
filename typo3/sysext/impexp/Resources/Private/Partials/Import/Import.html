@@ -2,9 +2,8 @@
 <h3><f:translate key="importdata_selectFileToImport" /></h3>
 <div class="form-group">
 	<label for="impexp-file">
-		<f:translate key="importdata_file" />
+		<f:be.buttons.csh table="xMOD_tx_impexp" field="importFile"><f:translate key="importdata_file" /></f:be.buttons.csh>
 	</label>
-	<f:be.buttons.csh table="xMOD_tx_impexp" field="importFile" />
 	<f:form.select name="tx_impexp[file]" class="form-control" id="impexp-file" value="{inData.file}" options="{fileSelectOptions}" />
 	<p class="help-block">{importPath}</p>
 	<f:if condition="{import.compress}">
@@ -14,8 +13,7 @@
 <h3><f:translate key="importdata_importOptions" /></h3>
 
 <h4>
-	<f:translate key="importdata_update" />
-	<f:be.buttons.csh table="xMOD_tx_impexp" field="update" />
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="update"><f:translate key="importdata_update" /></f:be.buttons.csh>
 </h4>
 <div class="form-group">
 	<label for="checkDo_update">
@@ -35,8 +33,7 @@
 </f:if>
 
 <h4>
-	<f:translate key="importdata_options" />
-	<f:be.buttons.csh table="xMOD_tx_impexp" field="options" />
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="options"><f:translate key="importdata_options" /></f:be.buttons.csh>
 </h4>
 <div class="form-group">
 	<label for="checkNotShowDiff">
@@ -68,8 +65,7 @@
 </f:if>
 
 <h4>
-	<f:translate key="importdata_action" />
-	<f:be.buttons.csh table="xMOD_tx_impexp" field="action" />
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="action"><f:translate key="importdata_action" /></f:be.buttons.csh>
 </h4>
 <f:if condition="{inData.import_file}">
 	<f:then>
@@ -101,8 +97,7 @@
 <f:form.hidden name="tx_impexp[action]" value="import" />
 
 <h4>
-	<f:translate key="importdata_enableLogging" />
-	<f:be.buttons.csh table="xMOD_tx_impexp" field="enableLogging" />
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="enableLogging"><f:translate key="importdata_enableLogging" /></f:be.buttons.csh>
 </h4>
 <div class="form-group">
 	<label for="checkEnableLogging">

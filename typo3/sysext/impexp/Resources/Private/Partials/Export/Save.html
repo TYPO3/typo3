@@ -1,7 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <h3>
-	<f:translate key="makesavefo_presets" />
-	<f:be.buttons.csh table="xMOD_tx_impexp" field="presets" />
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="presets"><f:translate key="makesavefo_presets" /></f:be.buttons.csh>
 </h3>
 <div class="form-group">
 	<label for="preset-select"><f:translate key="makesavefo_selectPreset" /></label>
@@ -41,8 +40,7 @@
 <h3><f:translate key="makesavefo_outputOptions" /></h3>
 
 <h4>
-	<f:translate key="makesavefo_metaData" />
-	<f:be.buttons.csh table="xMOD_tx_impexp" field="metadata" />
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="metadata"><f:translate key="makesavefo_metaData" /></f:be.buttons.csh>
 </h4>
 <div class="form-group">
 	<label for="meta-title"><f:translate key="makesavefo_title" /></label>
@@ -58,8 +56,7 @@
 </div>
 
 <h4>
-	<f:translate key="makesavefo_fileFormat" />
-	<f:be.buttons.csh table="xMOD_tx_impexp" field="fileFormat" />
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="fileFormat"><f:translate key="makesavefo_fileFormat" /></f:be.buttons.csh>
 </h4>
 <div class="form-group">
 	<f:form.select class="form-control" name="tx_impexp[filetype]" options="{filetypeSelectOptions}" value="{inData.filetype}" />
