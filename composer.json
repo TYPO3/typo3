@@ -4,7 +4,7 @@
 	"keywords": ["typo3", "cms", "content management system", "extbase"],
 	"homepage": "http://typo3.org/",
 	"type": "typo3-cms-core",
-	"license": "GPL-2.0+",
+	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
 			"name": "TYPO3 CMS Core Team",
