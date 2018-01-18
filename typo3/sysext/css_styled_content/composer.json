@@ -3,7 +3,7 @@
 	"type": "typo3-cms-framework",
 	"description": "TYPO3 Core",
 	"homepage": "http://typo3.org",
-	"license": ["GPL-2.0+"],
+	"license": ["GPL-2.0-or-later"],
 	"version": "7.0.0",
 
 	"require": {
