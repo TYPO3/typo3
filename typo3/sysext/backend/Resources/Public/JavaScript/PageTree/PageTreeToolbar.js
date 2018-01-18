@@ -202,12 +202,12 @@ define(['jquery',
      */
     TreeToolbar.prototype.search = function (input) {
       var _this = this;
-      var name = $(input).val();
+      var name = $(input).val().trim();
 
       this.tree.nodes[0].expanded = false;
       this.tree.nodes.forEach(function (node) {
         var regex = new RegExp(name, 'i');
-        if (regex.test(node.name) || regex.test(node.alias)) {
+        if (node.identifier.toString() === name || regex.test(node.name) || regex.test(node.alias)) {
           _this.showParents(node);
           node.expanded = true;
           node.hidden = false;
