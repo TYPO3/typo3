@@ -3,7 +3,7 @@
 	"type": "typo3-cms-framework",
 	"description": "Adds basic frontend editing capabilities to TYPO3.",
 	"homepage": "https://typo3.org",
-	"license": ["GPL-2.0+"],
+	"license": ["GPL-2.0-or-later"],
 	"authors": [{
 			"name": "TYPO3 Core Team",
 			"email": "typo3cms@typo3.org",

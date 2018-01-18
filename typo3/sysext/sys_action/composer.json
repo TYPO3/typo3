@@ -3,7 +3,7 @@
 	"type": "typo3-cms-framework",
 	"description": "Actions are 'programmed' admin tasks which can be performed by selected regular users from the Task Center. An action could be creation of backend users, fixed SQL SELECT queries, listing of records, direct edit access to selected records etc.",
 	"homepage": "https://typo3.org",
-	"license": ["GPL-2.0+"],
+	"license": ["GPL-2.0-or-later"],
 	"authors": [{
 			"name": "TYPO3 Core Team",
 			"email": "typo3cms@typo3.org",
