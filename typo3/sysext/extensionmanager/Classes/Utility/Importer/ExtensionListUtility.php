@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Importer;
  */
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser;
 
 /**
  * Importer object for extension list
@@ -24,7 +26,7 @@ class ExtensionListUtility implements \SplObserver
     /**
      * Keeps instance of a XML parser.
      *
-     * @var \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser
+     * @var AbstractExtensionXmlParser
      */
     protected $parser;
 
@@ -102,6 +104,11 @@ class ExtensionListUtility implements \SplObserver
     protected $extensionModel;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected $objectManager;
+
+    /**
      * Class constructor.
      *
      * Method retrieves and initializes extension XML parser instance.
@@ -160,9 +167,9 @@ class ExtensionListUtility implements \SplObserver
     /**
      * Method collects and stores extension version details into the database.
      *
-     * @param \SplSubject|\TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser &$subject a subject notifying this observer
+     * @param AbstractExtensionXmlParser $subject a subject notifying this observer
      */
-    protected function loadIntoDatabase(\SplSubject &$subject)
+    protected function loadIntoDatabase(AbstractExtensionXmlParser &$subject)
     {
         // flush every 50 rows to database
         if ($this->sumRecords !== 0 && $this->sumRecords % 50 === 0) {
@@ -175,7 +182,7 @@ class ExtensionListUtility implements \SplObserver
                 );
             $this->arrRows = [];
         }
-        $versionRepresentations = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionStringToArray($subject->getVersion());
+        $versionRepresentations = VersionNumberUtility::convertVersionStringToArray($subject->getVersion());
         // order must match that of self::$fieldNames!
         $this->arrRows[] = [
             $subject->getExtkey(),
@@ -210,7 +217,7 @@ class ExtensionListUtility implements \SplObserver
      */
     public function update(\SplSubject $subject)
     {
-        if (is_subclass_of($subject, \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser::class)) {
+        if (is_subclass_of($subject, AbstractExtensionXmlParser::class)) {
             $this->loadIntoDatabase($subject);
         }
     }

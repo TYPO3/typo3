@@ -431,7 +431,7 @@ class Clipboard
                                 'removeLink' => $this->removeUrl($table, $uid)
                             ];
 
-                            $localizationData = $this->getLocalizations($table, $rec, '', '');
+                            $localizationData = $this->getLocalizations($table, $rec);
                             if (!empty($localizationData)) {
                                 $lines = array_merge($lines, $localizationData);
                             }
@@ -468,11 +468,9 @@ class Clipboard
      *
      * @param string $table The table
      * @param array $parentRec The current record
-     * @param string $bgColClass Class for the background color of a column
-     * @param string $pad Pad reference
-     * @return string HTML table rows
+     * @return array HTML table rows
      */
-    public function getLocalizations($table, $parentRec, $bgColClass, $pad)
+    public function getLocalizations($table, $parentRec)
     {
         $lines = [];
         $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
@@ -944,7 +942,7 @@ class Clipboard
      *
      * @param string $ref [tablename]:[paste-uid], see description
      * @param array $CMD Command-array
-     * @param array|null If additional values should get set in the copied/moved record this will be an array containing key=>value pairs
+     * @param array|null $update If additional values should get set in the copied/moved record this will be an array containing key=>value pairs
      * @return array Modified Command-array
      */
     public function makePasteCmdArray($ref, $CMD, array $update = null)

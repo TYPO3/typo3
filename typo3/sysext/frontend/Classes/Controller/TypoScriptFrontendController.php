@@ -4220,7 +4220,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $index Local_lang key for which to return label (language is determined by $this->lang)
      * @param array $LOCAL_LANG The locallang array in which to search
-     * @return string Label value of $index key.
+     * @return string|false Label value of $index key.
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use LanguageService->getLLL() directly
      */
     public function getLLL($index, $LOCAL_LANG)

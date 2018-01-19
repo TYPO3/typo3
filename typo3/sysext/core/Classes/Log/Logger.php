@@ -54,7 +54,6 @@ class Logger implements \Psr\Log\LoggerInterface
      * Constructor.
      *
      * @param string $name A name for the logger.
-     * @return \TYPO3\CMS\Core\Log\Logger
      */
     public function __construct($name)
     {

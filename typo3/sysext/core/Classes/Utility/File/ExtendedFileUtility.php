@@ -629,7 +629,7 @@ class ExtendedFileUtility extends BasicFileUtility
      * $cmds['altName'] (string): Use an alternative name if the target already exists
      *
      * @param array $cmds Command details as described above
-     * @return \TYPO3\CMS\Core\Resource\File
+     * @return \TYPO3\CMS\Core\Resource\File|false
      */
     protected function func_copy($cmds)
     {
@@ -719,7 +719,7 @@ class ExtendedFileUtility extends BasicFileUtility
      * $cmds['altName'] (string): Use an alternative name if the target already exists
      *
      * @param array $cmds Command details as described above
-     * @return \TYPO3\CMS\Core\Resource\File
+     * @return \TYPO3\CMS\Core\Resource\File|false
      */
     protected function func_move($cmds)
     {
@@ -882,7 +882,7 @@ class ExtendedFileUtility extends BasicFileUtility
      * + example "2:targetpath/targetfolder/"
      *
      * @param array $cmds Command details as described above
-     * @return \TYPO3\CMS\Core\Resource\Folder Returns the new foldername upon success
+     * @return \TYPO3\CMS\Core\Resource\Folder|false Returns the new foldername upon success
      */
     public function func_newfolder($cmds)
     {

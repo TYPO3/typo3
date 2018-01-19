@@ -72,6 +72,7 @@ trait PublicPropertyDeprecationTrait
      *
      * This method is not called for public properties.
      *
+     * @property array $deprecatedPublicProperties List of deprecated public properties
      * @param string $propertyName
      * @return bool
      */
@@ -90,6 +91,7 @@ trait PublicPropertyDeprecationTrait
      * The evaluation is done in the assumption that this method is never
      * reached for a public property.
      *
+     * @property array $deprecatedPublicProperties List of deprecated public properties
      * @param string $propertyName
      * @return mixed
      */
@@ -109,6 +111,7 @@ trait PublicPropertyDeprecationTrait
      * The evaluation is done in the assumption that this method is never
      * reached for a public property.
      *
+     * @property array $deprecatedPublicProperties List of deprecated public properties
      * @param string $propertyName
      * @param mixed $propertyValue
      */
@@ -124,6 +127,7 @@ trait PublicPropertyDeprecationTrait
     /**
      * Unsets the property of the given name if tagged.
      *
+     * @property array $deprecatedPublicProperties List of deprecated public properties
      * @param string $propertyName
      */
     public function __unset(string $propertyName)

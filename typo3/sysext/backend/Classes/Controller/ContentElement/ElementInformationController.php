@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\AbstractFile;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -168,7 +169,7 @@ class ElementInformationController
             $this->folderObject = $fileOrFolderObject;
             $this->access = $this->folderObject->checkActionPermission('read');
             $this->type = 'folder';
-        } else {
+        } elseif ($fileOrFolderObject instanceof File) {
             $this->fileObject = $fileOrFolderObject;
             $this->access = $this->fileObject->checkActionPermission('read');
             $this->type = 'file';

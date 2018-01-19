@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,7 +26,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class HelpToolbarItem implements ToolbarItemInterface
 {
     /**
-     * @var \SplObjectStorage<BackendModule>
+     * @var BackendModule
      */
     protected $helpModuleMenu = null;
 

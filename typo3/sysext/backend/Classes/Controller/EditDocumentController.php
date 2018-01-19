@@ -1830,7 +1830,7 @@ class EditDocumentController
      *
      * @param string $table Table name
      * @param int $theUid Record UID
-     * @return array Returns record to edit, FALSE if none
+     * @return array|false Returns record to edit, FALSE if none
      */
     public function getRecordForEdit($table, $theUid)
     {
