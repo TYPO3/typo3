@@ -154,7 +154,10 @@ class ExtensionConfigurationService
         }
         $extConfTemplateConfiguration = $this->getExtConfTablesWithoutCommentsAsNestedArrayWithoutDots($extensionKey);
         ArrayUtility::mergeRecursiveWithOverrule($extConfTemplateConfiguration, $currentLocalConfiguration);
-        $extensionConfiguration->set($extensionKey, '', $extConfTemplateConfiguration);
+        // Write new config if changed. Loose array comparison to not write if only array key order is different
+        if ($extConfTemplateConfiguration != $currentLocalConfiguration) {
+            $extensionConfiguration->set($extensionKey, '', $extConfTemplateConfiguration);
+        }
     }
 
     /**
