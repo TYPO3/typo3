@@ -2516,8 +2516,16 @@ This is a dump of the failures:
                 if ($this->isUserAllowedToLogin()) {
                     // Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
                     $this->backendSetUC();
-                    // Email at login - if option set.
-                    $this->emailAtLogin();
+                    if ($this->loginSessionStarted) {
+                        // Process hooks
+                        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'];
+                        foreach ($hooks ?? [] as $_funcRef) {
+                            $_params = ['user' => $this->user];
+                            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+                        }
+                        // Email at login, if feature is enabled in configuration
+                        $this->emailAtLogin();
+                    }
                 } else {
                     throw new \RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1294585860);
                 }
@@ -2600,54 +2608,51 @@ This is a dump of the failures:
     }
 
     /**
-     * Will send an email notification to warning_email_address/the login users email address when a login session is just started.
-     * Depends on various parameters whether mails are send and to whom.
+     * Sends an email notification to warning_email_address and/or the logged-in user's email address.
      *
      * @access private
      */
     private function emailAtLogin()
     {
-        if ($this->loginSessionStarted) {
-            // Send notify-mail
-            $subject = 'At "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"' . ' from '
-                . GeneralUtility::getIndpEnv('REMOTE_ADDR')
-                . (GeneralUtility::getIndpEnv('REMOTE_HOST') ? ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')' : '');
-            $msg = sprintf(
-                'User "%s" logged in from %s (%s) at "%s" (%s)',
-                $this->user['username'],
-                GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-                GeneralUtility::getIndpEnv('REMOTE_HOST'),
-                $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
-                GeneralUtility::getIndpEnv('HTTP_HOST')
-            );
-            // Warning email address
-            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr']) {
-                $warn = 0;
-                $prefix = '';
-                if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] & 1) {
-                    // first bit: All logins
-                    $warn = 1;
-                    $prefix = $this->isAdmin() ? '[AdminLoginWarning]' : '[LoginWarning]';
-                }
-                if ($this->isAdmin() && (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] & 2) {
-                    // second bit: Only admin-logins
-                    $warn = 1;
-                    $prefix = '[AdminLoginWarning]';
-                }
-                if ($warn) {
-                    /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-                    $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-                    $mail->setTo($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'])->setSubject($prefix . ' ' . $subject)->setBody($msg);
-                    $mail->send();
-                }
+        // Send notify-mail
+        $subject = 'At "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"' . ' from '
+            . GeneralUtility::getIndpEnv('REMOTE_ADDR')
+            . (GeneralUtility::getIndpEnv('REMOTE_HOST') ? ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')' : '');
+        $msg = sprintf(
+            'User "%s" logged in from %s (%s) at "%s" (%s)',
+            $this->user['username'],
+            GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+            GeneralUtility::getIndpEnv('REMOTE_HOST'),
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
+            GeneralUtility::getIndpEnv('HTTP_HOST')
+        );
+        // Warning email address
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr']) {
+            $warn = 0;
+            $prefix = '';
+            if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] & 1) {
+                // first bit: All logins
+                $warn = 1;
+                $prefix = $this->isAdmin() ? '[AdminLoginWarning]' : '[LoginWarning]';
             }
-            // If An email should be sent to the current user, do that:
-            if ($this->uc['emailMeAtLogin'] && strstr($this->user['email'], '@')) {
+            if ($this->isAdmin() && (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] & 2) {
+                // second bit: Only admin-logins
+                $warn = 1;
+                $prefix = '[AdminLoginWarning]';
+            }
+            if ($warn) {
                 /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
                 $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-                $mail->setTo($this->user['email'])->setSubject($subject)->setBody($msg);
+                $mail->setTo($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'])->setSubject($prefix . ' ' . $subject)->setBody($msg);
                 $mail->send();
             }
+        }
+        // Trigger an email to the current BE user, if this has been enabled in the user configuration
+        if ($this->uc['emailMeAtLogin'] && strstr($this->user['email'], '@')) {
+            /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
+            $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+            $mail->setTo($this->user['email'])->setSubject($subject)->setBody($msg);
+            $mail->send();
         }
     }
 
