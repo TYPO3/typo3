@@ -18,6 +18,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
@@ -108,7 +109,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
             ['BE/loginSecurityLevel', $current]
         ];
         $closure = function () {
-            throw new \RuntimeException('Path does not exist in array', 1476109311);
+            throw new MissingArrayPathException('Path does not exist in array', 1476109311);
         };
 
         $this->createConfigurationManagerWithMockedMethods(
@@ -261,7 +262,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         );
 
         $closure = function () {
-            throw new \RuntimeException('Path does not exist in array', 1476109266);
+            throw new MissingArrayPathException('Path does not exist in array', 1476109266);
         };
 
         $this->createConfigurationManagerWithMockedMethods(
@@ -673,26 +674,28 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
 
     /**
      * @test
-     *
-     * @param array $oldValues
-     * @param array $newValues
-     *
-     * @dataProvider migrateCacheHashOptionsDataProvider
      */
-    public function migrateCacheHashOptions(array $oldValues, array $newValues)
+    public function migrateCacheHashOptions()
     {
+        $oldConfig = [
+            'FE/cHashOnlyForParameters' => 'foo,bar',
+            'FE/cHashExcludedParameters' => 'bar,foo',
+            'FE/cHashRequiredParameters' => 'bar,baz',
+            'FE/cHashExcludedParametersIfEmpty' => '*'
+        ];
+
         /** @var ConfigurationManager|ObjectProphecy $configurationManager */
         $configurationManager = $this->prophesize(ConfigurationManager::class);
 
-        foreach ($oldValues as $key => $value) {
+        foreach ($oldConfig as $key => $value) {
             $configurationManager->getLocalConfigurationValueByPath($key)
                 ->shouldBeCalled()
                 ->willReturn($value);
         }
 
-        $configurationManager->setLocalConfigurationValuesByPathValuePairs($newValues)
+        $configurationManager->setLocalConfigurationValuesByPathValuePairs(\Prophecy\Argument::cetera())
             ->shouldBeCalled();
-        $configurationManager->removeLocalConfigurationKeysByPath(array_keys($oldValues))
+        $configurationManager->removeLocalConfigurationKeysByPath(\Prophecy\Argument::cetera())
             ->shouldBeCalled();
 
         $this->expectException(ConfigurationChangedException::class);
@@ -709,36 +712,5 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManager->reveal());
 
         $silentConfigurationUpgradeServiceInstance->_call('migrateCacheHashOptions');
-    }
-
-    /**
-     * @return array
-     */
-    public function migrateCacheHashOptionsDataProvider()
-    {
-        return [
-            [
-                'old' => [
-                    'FE/cHashOnlyForParameters' => 'foo,bar',
-                    'FE/cHashExcludedParameters' => 'bar,foo',
-                    'FE/cHashRequiredParameters' => 'bar,baz',
-                    'FE/cHashExcludedParametersIfEmpty' => '*'
-                ],
-                'new' => [
-                    'FE/cacheHash/cachedParametersWhiteList' => ['foo', 'bar'],
-                    'FE/cacheHash/excludedParameters' => ['bar', 'foo'],
-                    'FE/cacheHash/requireCacheHashPresenceParameters' => ['bar', 'baz'],
-                    'FE/cacheHash/excludeAllEmptyParameters' => true
-                ]
-            ],
-            [
-                'old' => [
-                    'FE/cHashExcludedParametersIfEmpty' => 'foo,bar'
-                ],
-                'new' => [
-                    'FE/cacheHash/excludedParametersIfEmpty' => ['foo', 'bar']
-                ]
-            ]
-        ];
     }
 }

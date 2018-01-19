@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Updates;
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -41,11 +42,11 @@ class WizardDoneToRegistry extends AbstractUpdate
 
         try {
             $wizardsDone = GeneralUtility::makeInstance(ConfigurationManager::class)->getLocalConfigurationValueByPath('INSTALL/wizardDone');
-
             if (!empty($wizardsDone)) {
                 $result = true;
             }
-        } catch (\RuntimeException $e) {
+        } catch (MissingArrayPathException $e) {
+            // Result stays false with broken path
         }
 
         return $result;

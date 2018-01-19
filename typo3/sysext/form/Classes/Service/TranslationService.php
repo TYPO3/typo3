@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -260,7 +261,7 @@ class TranslationService implements SingletonInterface
 
         try {
             $arguments = ArrayUtility::getValueByPath($renderingOptions['arguments'] ?? [], $optionKey, '.');
-        } catch (\RuntimeException $e) {
+        } catch (MissingArrayPathException $e) {
             $arguments = [];
         }
 
@@ -303,14 +304,14 @@ class TranslationService implements SingletonInterface
             if ($element instanceof FormElementInterface) {
                 try {
                     $defaultValue = ArrayUtility::getValueByPath($element->getProperties(), $propertyParts, '.');
-                } catch (\RuntimeException $exception) {
+                } catch (MissingArrayPathException $exception) {
                     $defaultValue = null;
                 }
             } else {
                 $propertyType = 'renderingOptions';
                 try {
                     $defaultValue = ArrayUtility::getValueByPath($renderingOptions, $propertyParts, '.');
-                } catch (\RuntimeException $exception) {
+                } catch (MissingArrayPathException $exception) {
                     $defaultValue = null;
                 }
             }
@@ -345,7 +346,7 @@ class TranslationService implements SingletonInterface
 
         try {
             $arguments = ArrayUtility::getValueByPath($renderingOptions['translation']['arguments'] ?? [], $propertyParts, '.');
-        } catch (\RuntimeException $e) {
+        } catch (MissingArrayPathException $e) {
             $arguments = [];
         }
 

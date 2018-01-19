@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Form\Mvc\Configuration;
  */
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
@@ -149,7 +150,7 @@ class InheritancesResolverService
                             $path . '.' . self::INHERITANCE_OPERATOR,
                             '.'
                         );
-                    } catch (\RuntimeException $exception) {
+                    } catch (MissingArrayPathException $exception) {
                         $inheritances = null;
                     }
 
@@ -198,7 +199,7 @@ class InheritancesResolverService
                     $inheritancePath,
                     '.'
                 );
-            } catch (\RuntimeException $exception) {
+            } catch (MissingArrayPathException $exception) {
                 $inheritedConfiguration = null;
             }
 
@@ -262,7 +263,7 @@ class InheritancesResolverService
                 $path,
                 '.'
             );
-        } catch (\RuntimeException $exception) {
+        } catch (MissingArrayPathException $exception) {
             $configuration = null;
         }
 
@@ -273,7 +274,7 @@ class InheritancesResolverService
                     $path . '.' . self::INHERITANCE_OPERATOR,
                     '.'
                 );
-            } catch (\RuntimeException $exception) {
+            } catch (MissingArrayPathException $exception) {
                 $inheritances = null;
             }
 
@@ -285,7 +286,7 @@ class InheritancesResolverService
                             $inheritancePath,
                             '.'
                         );
-                    } catch (\RuntimeException $exception) {
+                    } catch (MissingArrayPathException $exception) {
                         $configuration = null;
                     }
 
@@ -296,7 +297,7 @@ class InheritancesResolverService
                                 $inheritancePath . '.' . self::INHERITANCE_OPERATOR,
                                 '.'
                             );
-                        } catch (\RuntimeException $exception) {
+                        } catch (MissingArrayPathException $exception) {
                             $_inheritances = null;
                         }
 

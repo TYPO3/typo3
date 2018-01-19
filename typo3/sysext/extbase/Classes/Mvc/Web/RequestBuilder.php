@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception as MvcException;
 
@@ -261,7 +263,6 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param array $convolutedFiles The _FILES superglobal
      * @return array Untangled files
-     * @see TYPO3\Flow\Utility\Environment
      */
     protected function untangleFilesArray(array $convolutedFiles)
     {
@@ -285,13 +286,13 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
                 $fileInformation = [];
                 foreach ($convolutedFiles[$fieldPath[0]] as $key => $subStructure) {
                     try {
-                        $fileInformation[$key] = \TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath($subStructure, array_slice($fieldPath, 1));
-                    } catch (\RuntimeException $e) {
+                        $fileInformation[$key] = ArrayUtility::getValueByPath($subStructure, array_slice($fieldPath, 1));
+                    } catch (MissingArrayPathException $e) {
                         // do nothing if the path is invalid
                     }
                 }
             }
-            $untangledFiles = \TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath($untangledFiles, $fieldPath, $fileInformation);
+            $untangledFiles = ArrayUtility::setValueByPath($untangledFiles, $fieldPath, $fileInformation);
         }
         return $untangledFiles;
     }

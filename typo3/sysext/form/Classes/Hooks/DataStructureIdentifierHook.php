@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -223,12 +224,12 @@ class DataStructureIdentifierHook
                             $optionKey,
                             '.'
                         );
-                    } catch (\RuntimeException $exception) {
+                    } catch (MissingArrayPathException $exception) {
                         $elementConfiguration = null;
                     }
                     try {
                         $optionValue = ArrayUtility::getValueByPath($finisherValue['options'], $optionKey, '.');
-                    } catch (\RuntimeException $exception) {
+                    } catch (MissingArrayPathException $exception) {
                         $optionValue = null;
                     }
                 } else {

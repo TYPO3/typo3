@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Configuration;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -87,7 +88,7 @@ abstract class AbstractPreset implements PresetInterface
         foreach ($this->configurationValues as $configurationKey => $configurationValue) {
             try {
                 $currentValue = $this->configurationManager->getConfigurationValueByPath($configurationKey);
-            } catch (\RuntimeException $e) {
+            } catch (MissingArrayPathException $e) {
                 $currentValue = null;
             }
             if ($currentValue !== $configurationValue) {

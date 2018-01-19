@@ -15,11 +15,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  */
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ArrayUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ArrayUtilityTest extends UnitTestCase
 {
     ///////////////////////
     // Tests concerning filterByValueRecursive
@@ -196,11 +198,6 @@ class ArrayUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     // Tests concerning isValidPath
     ///////////////////////
     /**
-     * Mock the class under test, isValidPath() (method under test), calls
-     * static getValuePath() internally, which is mocked here to return a specific
-     * result. This works because of 'static' keyword'  instead of 'self'
-     * for getValueByPath() call, using late static binding in PHP 5.3
-     *
      * @test
      */
     public function isValidPathReturnsTrueIfPathExists()
@@ -327,7 +324,19 @@ class ArrayUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1341397869);
+        ArrayUtility::getValueByPath($array, $path);
+    }
 
+    /**
+     * @test
+     * @dataProvider getValueByPathInvalidPathDataProvider
+     * @param array $array
+     * @param string $path
+     */
+    public function getValueByPathThrowsSpecificExceptionIfPathNotExists(array $array, string $path)
+    {
+        $this->expectException(MissingArrayPathException::class);
+        $this->expectExceptionCode(1341397869);
         ArrayUtility::getValueByPath($array, $path);
     }
 

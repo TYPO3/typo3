@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
@@ -106,11 +107,16 @@ class LayoutController extends AbstractController
         $configurationManager = new ConfigurationManager();
         try {
             $oldExtConfSettings = $configurationManager->getConfigurationValueByPath('EXT/extConf');
-        } catch (\RuntimeException $e) {
+        } catch (MissingArrayPathException $e) {
             // The old 'extConf' array may not exist anymore, set to empty array if so.
             $oldExtConfSettings = [];
         }
-        $newExtensionSettings = $configurationManager->getConfigurationValueByPath('EXTENSIONS');
+        try {
+            $newExtensionSettings = $configurationManager->getConfigurationValueByPath('EXTENSIONS');
+        } catch (MissingArrayPathException $e) {
+            // New 'EXTENSIONS' array may not exist yet, for instance if just upgrading to v9
+            $newExtensionSettings = [];
+        }
         foreach ($oldExtConfSettings as $extensionName => $extensionSettings) {
             if (!array_key_exists($extensionName, $newExtensionSettings)) {
                 $newExtensionSettings = $this->removeDotsFromArrayKeysRecursive(unserialize($extensionSettings, ['allowed_classes' => false]));

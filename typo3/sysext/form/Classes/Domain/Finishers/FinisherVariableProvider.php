@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
  */
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 
 /**
  * Store data for usage between the finishers.
@@ -98,7 +99,7 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
     {
         try {
             ArrayUtility::getValueByPath($this->objects[$finisherIdentifier], $key, '.');
-        } catch (\RuntimeException $e) {
+        } catch (MissingArrayPathException $e) {
             return false;
         }
         return true;

@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Form\Domain\Runtime;
  */
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
@@ -441,7 +442,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         foreach ($page->getElementsRecursively() as $element) {
             try {
                 $value = ArrayUtility::getValueByPath($requestArguments, $element->getIdentifier(), '.');
-            } catch (\RuntimeException $exception) {
+            } catch (MissingArrayPathException $exception) {
                 $value = null;
             }
 

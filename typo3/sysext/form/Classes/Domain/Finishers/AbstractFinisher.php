@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
  */
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -153,12 +154,12 @@ abstract class AbstractFinisher implements FinisherInterface
 
         try {
             $optionValue = ArrayUtility::getValueByPath($this->options, $optionName, '.');
-        } catch (\RuntimeException $exception) {
+        } catch (MissingArrayPathException $exception) {
             $optionValue = null;
         }
         try {
             $defaultValue = ArrayUtility::getValueByPath($this->defaultOptions, $optionName, '.');
-        } catch (\RuntimeException $exception) {
+        } catch (MissingArrayPathException $exception) {
             $defaultValue = null;
         }
 
