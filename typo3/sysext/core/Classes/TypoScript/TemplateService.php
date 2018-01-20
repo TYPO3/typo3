@@ -53,7 +53,7 @@ class TemplateService
         'allowedPaths' => 'Using $allowedPaths of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
         'simulationHiddenOrTime' => 'Using $simulationHiddenOrTime of class TemplateService is discouraged, as this has been superseeded by Doctrine DBAL API.',
         'nextLevel' => 'Using $nextLevel of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
-        'rootId' => 'Using $rootId of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'rootId' => 'Using $rootId of class TemplateService from the outside is discouraged, use TemplateService->getRootId() instead.',
         'absoluteRootLine' => 'Using $absoluteRootLine of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
         'outermostRootlineIndexWithTemplate' => 'Using $outermostRootlineIndexWithTemplate of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
         'rowSum' => 'Using $rowSum of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
@@ -1445,6 +1445,16 @@ class TemplateService
             $idx++;
         }
         return false;
+    }
+
+    /**
+     * Returns the page ID of the rootlevel
+     *
+     * @return int
+     */
+    public function getRootId(): int
+    {
+        return (int)$this->rootId;
     }
 
     /*******************************************************************
