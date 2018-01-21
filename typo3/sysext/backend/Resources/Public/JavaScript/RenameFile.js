@@ -62,8 +62,10 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Ba
                             },
                         ]);
                         modal.on('button.clicked', function (event) {
-                            conflictModeField.val(event.target.name);
-                            form.submit();
+                            if (event.target.name !== 'cancel') {
+                                conflictModeField.val(event.target.name);
+                                form.submit();
+                            }
                             Modal.dismiss();
                         });
                     }

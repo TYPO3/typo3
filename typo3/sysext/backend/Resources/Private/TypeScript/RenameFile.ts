@@ -77,8 +77,10 @@ class RenameFile {
             ]);
 
           modal.on('button.clicked', (event: any): void => {
-            conflictModeField.val(event.target.name);
-            form.submit();
+            if (event.target.name !== 'cancel') {
+              conflictModeField.val(event.target.name);
+              form.submit();
+            }
             Modal.dismiss();
           });
         } else {
