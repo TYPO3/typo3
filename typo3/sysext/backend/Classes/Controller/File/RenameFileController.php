@@ -204,7 +204,7 @@ class RenameFileController
             $fileIdentifier = $this->fileOrFolderObject->getUid();
             $targetLabel = 'file_rename.php.label.target.file';
             $assigns['conflictMode'] = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
-            $assigns['destination'] = substr($this->fileOrFolderObject->getCombinedIdentifier(), 0, -strlen($this->fileOrFolderObject->getName()));
+            $assigns['destination'] = $this->fileOrFolderObject->getParentFolder()->getCombinedIdentifier();
         }
 
         $assigns['fileName'] = $this->fileOrFolderObject->getName();
