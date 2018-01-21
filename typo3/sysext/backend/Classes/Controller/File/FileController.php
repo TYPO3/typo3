@@ -173,8 +173,11 @@ class FileController
 
         // go and edit the new created file
         if ($request->getParsedBody()['edit']) {
+            /** @var \TYPO3\CMS\Core\Resource\File $file */
+            $file = $this->fileData['newfile'][0];
+            $properties = $file->getProperties();
             $urlParameters = [
-                'target' => $this->file['newfile'][0]['target'] . $this->file['newfile'][0]['data']
+                'target' =>  $properties['storage'] . ':' . $properties['identifier']
             ];
             if ($this->redirect) {
                 $urlParameters['returnUrl'] = $this->redirect;
