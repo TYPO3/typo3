@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Form\Domain\Factory;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -49,11 +48,6 @@ class ArrayFormFactory extends AbstractFormFactory
             $prototypeName = $configuration['prototypeName'] ?? 'standard';
         }
         $persistenceIdentifier = $configuration['persistenceIdentifier'] ?? null;
-
-        $configuration = $this->transformFormDefinitionWithImportsForFormFramework($configuration);
-        unset($configuration['imports']);
-        $configuration = ArrayUtility::convertBooleanStringsToBooleanRecursive($configuration);
-        $configuration = ArrayUtility::removeNullValuesRecursive($configuration);
 
         $prototypeConfiguration = GeneralUtility::makeInstance(ObjectManager::class)
             ->get(ConfigurationService::class)
@@ -123,35 +117,5 @@ class ArrayFormFactory extends AbstractFormFactory
         }
 
         return $renderable;
-    }
-
-    /**
-     * @param array $array
-     * @return array
-     * @internal
-     */
-    protected function transformFormDefinitionWithImportsForFormFramework(array $array): array
-    {
-        $result = $array;
-        foreach ($result as $key => $value) {
-            if (is_array($value)) {
-                if (
-                    $key === 'renderables'
-                    || $key === 'validators'
-                    || $key === 'finishers'
-                ) {
-                    // sort by "sorting"
-                    usort($value, function ($a, $b) {
-                        return (float)$a['sorting'] - (float)$b['sorting'];
-                    });
-
-                    foreach ($value as $itemKey => $item) {
-                        unset($value[$itemKey]['sorting']);
-                    }
-                }
-                $result[$key] = $this->transformFormDefinitionWithImportsForFormFramework($value);
-            }
-        }
-        return $result;
     }
 }

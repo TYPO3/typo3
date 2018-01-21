@@ -1,0 +1,1410 @@
+TYPO3:
+  CMS:
+    Form:
+      ########### FORM MANAGER CONFIGURATION ###########
+      formManager:
+        dynamicRequireJsModules:
+          app: 'TYPO3/CMS/Form/Backend/FormManager'
+          viewModel: 'TYPO3/CMS/Form/Backend/FormManager/ViewModel'
+        stylesheets:
+          100: 'EXT:form/Resources/Public/Css/form.css'
+        translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+        javaScriptTranslationFile: 'EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf'
+        selectablePrototypesConfiguration:
+          100:
+            identifier: 'standard'
+            label: 'formManager.selectablePrototypesConfiguration.standard.label'
+            newFormTemplates:
+              100:
+                templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml'
+                label: 'formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label'
+              200:
+                templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/SimpleContactForm.yaml'
+                label: 'formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label'
+        controller:
+          deleteAction:
+            errorTitle: 'formManagerController.deleteAction.error.title'
+            errorMessage: 'formManagerController.deleteAction.error.body'
+
+      ########### FORMEDITOR CONFIGURATION ###########
+      prototypes:
+        standard:
+          formEditor:
+            translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+            dynamicRequireJsModules:
+              app: 'TYPO3/CMS/Form/Backend/FormEditor'
+              mediator: 'TYPO3/CMS/Form/Backend/FormEditor/Mediator'
+              viewModel: 'TYPO3/CMS/Form/Backend/FormEditor/ViewModel'
+              additionalViewModelModules:
+
+            addInlineSettings: []
+            maximumUndoSteps: 10
+
+            stylesheets:
+              200: 'EXT:form/Resources/Public/Css/form.css'
+
+            formEditorFluidConfiguration:
+              templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
+              partialRootPaths:
+                10: 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'
+              layoutRootPaths:
+                10: 'EXT:form/Resources/Private/Backend/Layouts/FormEditor/'
+
+            formEditorPartials:
+              # abstract form element partials
+              FormElement-_ElementToolbar: 'Stage/_ElementToolbar'
+              FormElement-_UnknownElement: 'Stage/_UnknownElement'
+              FormElement-Page: 'Stage/Page'
+              FormElement-SummaryPage: 'Stage/SummaryPage'
+              FormElement-Fieldset: 'Stage/Fieldset'
+              FormElement-GridContainer: 'Stage/Fieldset'
+              FormElement-GridRow: 'Stage/Fieldset'
+              FormElement-Text: 'Stage/SimpleTemplate'
+              FormElement-Password: 'Stage/SimpleTemplate'
+              FormElement-AdvancedPassword: 'Stage/SimpleTemplate'
+              FormElement-Textarea: 'Stage/SimpleTemplate'
+              FormElement-Checkbox: 'Stage/SimpleTemplate'
+              FormElement-MultiCheckbox: 'Stage/SelectTemplate'
+              FormElement-MultiSelect: 'Stage/SelectTemplate'
+              FormElement-RadioButton: 'Stage/SelectTemplate'
+              FormElement-SingleSelect: 'Stage/SelectTemplate'
+              FormElement-DatePicker: 'Stage/SimpleTemplate'
+              FormElement-StaticText: 'Stage/StaticText'
+              FormElement-Hidden: 'Stage/SimpleTemplate'
+              FormElement-ContentElement: 'Stage/ContentElement'
+              FormElement-FileUpload: 'Stage/FileUploadTemplate'
+              FormElement-ImageUpload: 'Stage/FileUploadTemplate'
+              FormElement-Email: 'Stage/SimpleTemplate'
+              FormElement-Telephone: 'Stage/SimpleTemplate'
+              FormElement-Url: 'Stage/SimpleTemplate'
+              FormElement-Number: 'Stage/SimpleTemplate'
+
+              # modals
+              Modal-InsertElements: 'Modals/InsertElements'
+              Modal-InsertPages: 'Modals/InsertPages'
+              Modal-ValidationErrors: 'Modals/ValidationErrors'
+
+              # inspector editors
+              Inspector-FormElementHeaderEditor: 'Inspector/FormElementHeaderEditor'
+              Inspector-CollectionElementHeaderEditor: 'Inspector/CollectionElementHeaderEditor'
+              Inspector-TextEditor: 'Inspector/TextEditor'
+              Inspector-PropertyGridEditor: 'Inspector/PropertyGridEditor'
+              Inspector-SingleSelectEditor: 'Inspector/SingleSelectEditor'
+              Inspector-MultiSelectEditor: 'Inspector/MultiSelectEditor'
+              Inspector-GridColumnViewPortConfigurationEditor: 'Inspector/GridColumnViewPortConfigurationEditor'
+              Inspector-TextareaEditor: 'Inspector/TextareaEditor'
+              Inspector-RemoveElementEditor: 'Inspector/RemoveElementEditor'
+              Inspector-FinishersEditor: 'Inspector/FinishersEditor'
+              Inspector-ValidatorsEditor: 'Inspector/ValidatorsEditor'
+              Inspector-RequiredValidatorEditor: 'Inspector/RequiredValidatorEditor'
+              Inspector-CheckboxEditor: 'Inspector/CheckboxEditor'
+              Inspector-Typo3WinBrowserEditor: 'Inspector/Typo3WinBrowserEditor'
+
+            formElementPropertyValidatorsDefinition:
+              NotEmpty:
+                errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label'
+              Integer:
+                errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.Integer.label'
+              NaiveEmail:
+                errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label'
+              NaiveEmailOrEmpty:
+                errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label'
+              FormElementIdentifierWithinCurlyBracesInclusive:
+                errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label'
+              FormElementIdentifierWithinCurlyBracesExclusive:
+                errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label'
+              FileSize:
+                errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.FileSize.label'
+
+            formElementGroups:
+              input:
+                label: 'formEditor.formElementGroups.input.label'
+              html5:
+                label: 'formEditor.formElementGroups.html5.label'
+              select:
+                label: 'formEditor.formElementGroups.select.label'
+              custom:
+                label: 'formEditor.formElementGroups.custom.label'
+              container:
+                label: 'formEditor.formElementGroups.container.label'
+              page:
+                label: 'formEditor.formElementGroups.page.label'
+
+          ########### DEFAULT FORM ELEMENT DEFINITIONS ###########
+          formElementsDefinition:
+            Form:
+              formEditor:
+                _isCompositeFormElement: false
+                _isTopLevelFormElement: true
+
+                saveSuccessFlashMessageTitle: 'formEditor.elements.Form.saveSuccessFlashMessageTitle'
+                saveSuccessFlashMessageMessage: 'formEditor.elements.Form.saveSuccessFlashMessageMessage'
+                saveErrorFlashMessageTitle: 'formEditor.elements.Form.saveErrorFlashMessageTitle'
+                saveErrorFlashMessageMessage: 'formEditor.elements.Form.saveErrorFlashMessageMessage'
+
+                modalValidationErrorsDialogTitle: 'formEditor.modals.validationErrors.dialogTitle'
+                modalValidationErrorsConfirmButton: 'formEditor.modals.validationErrors.confirmButton'
+
+                modalInsertElementsDialogTitle: 'formEditor.modals.insertElements.dialogTitle'
+                modalInsertPagesDialogTitle: 'formEditor.modals.newPages.dialogTitle'
+
+                modalCloseDialogMessage: 'formEditor.modals.close.dialogMessage'
+                modalCloseDialogTitle: 'formEditor.modals.close.dialogTitle'
+                modalCloseConfirmButton: 'formEditor.modals.close.confirmButton'
+                modalCloseCancleButton: 'formEditor.modals.close.cancleButton'
+
+                modalRemoveElementDialogTitle: 'formEditor.modals.removeElement.dialogTitle'
+                modalRemoveElementDialogMessage: 'formEditor.modals.removeElement.dialogMessage'
+                modalRemoveElementConfirmButton: 'formEditor.modals.removeElement.confirmButton'
+                modalRemoveElementCancleButton: 'formEditor.modals.removeElement.cancleButton'
+                modalRemoveElementLastAvailablePageFlashMessageTitle: 'formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle'
+                modalRemoveElementLastAvailablePageFlashMessageMessage: 'formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage'
+
+                inspectorEditorFormElementSelectorNoElements: 'formEditor.inspector.editor.formelement_selector.no_elements'
+
+                paginationTitle: 'formEditor.pagination.title'
+
+                iconIdentifier: 'content-elements-mailform'
+                predefinedDefaults:
+                  renderingOptions:
+                    submitButtonLabel: 'formEditor.elements.Form.editor.submitButtonLabel.value'
+                editors:
+                  300:
+                    identifier: 'submitButtonLabel'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.Form.editor.submitButtonLabel.label'
+                    propertyPath: 'renderingOptions.submitButtonLabel'
+                  900:
+                    identifier: 'finishers'
+                    templateName: 'Inspector-FinishersEditor'
+                    label: 'formEditor.elements.Form.editor.finishers.label'
+                    selectOptions:
+                      10:
+                        value: ''
+                        label: 'formEditor.elements.Form.editor.finishers.EmptyValue.label'
+                      20:
+                        value: 'EmailToSender'
+                        label: 'formEditor.elements.Form.editor.finishers.EmailToSender.label'
+                      30:
+                        value: 'EmailToReceiver'
+                        label: 'formEditor.elements.Form.editor.finishers.EmailToReceiver.label'
+                      40:
+                        value: 'Redirect'
+                        label: 'formEditor.elements.Form.editor.finishers.Redirect.label'
+                      50:
+                        value: 'DeleteUploads'
+                        label: 'formEditor.elements.Form.editor.finishers.DeleteUploads.label'
+                      60:
+                        value: 'Confirmation'
+                        label: 'formEditor.elements.Form.editor.finishers.Confirmation.label'
+
+                propertyCollections:
+                  finishers:
+                    10:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.formEmailFinisherMixin'
+                      identifier: 'EmailToSender'
+
+                    20:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.formEmailFinisherMixin'
+                      identifier: 'EmailToReceiver'
+                      editors:
+                        100:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label'
+                        200:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label'
+                        300:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientAddress.label'
+                          fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientAddress.fieldExplanationText'
+                        400:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientName.label'
+                          fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientName.fieldExplanationText'
+                        500:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label'
+                          fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.fieldExplanationText'
+                        600:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label'
+                          fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.fieldExplanationText'
+                        700:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToAddress.label'
+                        800:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.carbonCopyAddress.label'
+                        900:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyAddress.label'
+                        1000:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.format.label'
+                        1100:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label'
+                        1200:
+                          identifier: 'language'
+                          templateName: 'Inspector-SingleSelectEditor'
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.language.label'
+                          propertyPath: 'options.translation.language'
+                          selectOptions:
+                            10:
+                              value: 'default'
+                              label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1'
+
+                    30:
+                      identifier: 'Redirect'
+                      editors:
+                        __inheritances:
+                          10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        100:
+                          label: 'formEditor.elements.Form.finisher.Redirect.editor.header.label'
+                        200:
+                          identifier: 'pageUid'
+                          templateName: 'Inspector-Typo3WinBrowserEditor'
+                          label: 'formEditor.elements.Form.finisher.Redirect.editor.pageUid.label'
+                          buttonLabel: 'formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel'
+                          browsableType: pages
+                          propertyPath: 'options.pageUid'
+                          propertyValidatorsMode: 'OR'
+                          propertyValidators:
+                            10: 'Integer'
+                            20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+
+                        300:
+                          identifier: 'additionalParameters'
+                          templateName: 'Inspector-TextEditor'
+                          label: 'formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label'
+                          propertyPath: 'options.additionalParameters'
+
+                    40:
+                      identifier: 'DeleteUploads'
+                      editors:
+                        __inheritances:
+                          10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        100:
+                          label: 'formEditor.elements.Form.finisher.DeleteUploads.editor.header.label'
+
+                    50:
+                      identifier: 'Confirmation'
+                      editors:
+                        __inheritances:
+                          10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        100:
+                          label: 'formEditor.elements.Form.finisher.Confirmation.editor.header.label'
+                        200:
+                          identifier: 'contentElement'
+                          templateName: 'Inspector-Typo3WinBrowserEditor'
+                          label: 'formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label'
+                          buttonLabel: 'formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel'
+                          browsableType: tt_content
+                          propertyPath: 'options.contentElementUid'
+                          propertyValidatorsMode: 'OR'
+                          propertyValidators:
+                            10: 'IntegerOrEmpty'
+                            20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+                        300:
+                          identifier: 'message'
+                          templateName: 'Inspector-TextareaEditor'
+                          label: 'formEditor.elements.Form.finisher.Confirmation.editor.message.label'
+                          propertyPath: 'options.message'
+                          fieldExplanationText: 'formEditor.elements.Form.finisher.Confirmation.editor.message.fieldExplanationText'
+
+                    60:
+                      identifier: 'Closure'
+                      editors:
+                        __inheritances:
+                          10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        100:
+                          label: 'formEditor.elements.Form.finisher.Closure.editor.header.label'
+
+                    70:
+                      identifier: 'FlashMessage'
+                      editors:
+                        __inheritances:
+                          10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        100:
+                          label: 'formEditor.elements.Form.finisher.FlashMessage.editor.header.label'
+
+                    80:
+                      identifier: 'SaveToDatabase'
+                      editors:
+                        __inheritances:
+                          10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        100:
+                          label: 'formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label'
+
+            ### FORM ELEMENTS: CONTAINER ###
+            Fieldset:
+              formEditor:
+                label: 'formEditor.elements.Fieldset.label'
+                group: container
+                groupSorting: 100
+                _isCompositeFormElement: true
+                iconIdentifier: 't3-form-icon-fieldset'
+                editors:
+                  200:
+                    label: 'formEditor.elements.Fieldset.editor.label.label'
+                  800: null
+
+            GridContainer:
+              formEditor:
+                label: 'formEditor.elements.GridContainer.label'
+                _isCompositeFormElement: true
+                _isGridContainerFormElement: true
+                iconIdentifier: 't3-form-icon-gridcontainer'
+                editors:
+                  200:
+                    label: 'formEditor.elements.GridContainer.editor.label.label'
+                  800: null
+
+            GridRow:
+              formEditor:
+                label: 'formEditor.elements.GridRow.label'
+                group: container
+                groupSorting: 300
+                _isCompositeFormElement: true
+                _isGridRowFormElement: true
+                iconIdentifier: 't3-form-icon-gridrow'
+                editors:
+                  200:
+                    label: 'formEditor.elements.GridRow.editor.label.label'
+                  800: null
+
+            ### FORM ELEMENTS: PAGE TYPES ###
+            Page:
+              formEditor:
+                __inheritances:
+                  10: 'TYPO3.CMS.Form.mixins.formElementMixins.RemovableFormElementMixin'
+                predefinedDefaults:
+                  renderingOptions:
+                    previousButtonLabel: 'formEditor.elements.Page.editor.previousButtonLabel.value'
+                    nextButtonLabel: 'formEditor.elements.Page.editor.nextButtonLabel.value'
+                label: 'formEditor.elements.Page.label'
+                group: page
+                groupSorting: 100
+                _isTopLevelFormElement: true
+                _isCompositeFormElement: true
+                iconIdentifier: 't3-form-icon-page'
+                editors:
+                  200:
+                    label: 'formEditor.elements.Page.editor.label.label'
+                  300:
+                    identifier: 'previousButtonLabel'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.Page.editor.previousButtonLabel.label'
+                    propertyPath: 'renderingOptions.previousButtonLabel'
+                  400:
+                    identifier: 'nextButtonLabel'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.Page.editor.nextButtonLabel.label'
+                    propertyPath: 'renderingOptions.nextButtonLabel'
+
+            SummaryPage:
+              formEditor:
+                predefinedDefaults:
+                  renderingOptions:
+                    previousButtonLabel: 'formEditor.elements.SummaryPage.editor.previousButtonLabel.value'
+                    nextButtonLabel: 'formEditor.elements.SummaryPage.editor.nextButtonLabel.value'
+                label: 'formEditor.elements.SummaryPage.label'
+                group: page
+                groupSorting: 200
+                _isTopLevelFormElement: true
+                _isCompositeFormElement: false
+                iconIdentifier: 't3-form-icon-summary-page'
+                editors:
+                  200:
+                    label: 'formEditor.elements.SummaryPage.editor.label.label'
+                  300:
+                    identifier: 'previousButtonLabel'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.SummaryPage.editor.previousButtonLabel.label'
+                    propertyPath: 'renderingOptions.previousButtonLabel'
+                  400:
+                    identifier: 'nextButtonLabel'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.SummaryPage.editor.nextButtonLabel.label'
+                    propertyPath: 'renderingOptions.nextButtonLabel'
+
+            ### FORM ELEMENTS: INPUT ###
+
+            Text:
+              formEditor:
+                label: 'formEditor.elements.Text.label'
+                group: input
+                groupSorting: 100
+                iconIdentifier: 't3-form-icon-text'
+
+            Password:
+              formEditor:
+                label: 'formEditor.elements.Password.label'
+                group: input
+                groupSorting: 300
+                iconIdentifier: 't3-form-icon-password'
+
+            AdvancedPassword:
+              formEditor:
+                label: 'formEditor.elements.AdvancedPassword.label'
+                group: custom
+                groupSorting: 500
+                predefinedDefaults:
+                  properties:
+                    confirmationLabel: 'formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults'
+                  defaultValue: null
+                iconIdentifier: 't3-form-icon-advanced-password'
+                editors:
+                  300:
+                    identifier: 'confirmationLabel'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.AdvancedPassword.editor.confirmationLabel.label'
+                    propertyPath: 'properties.confirmationLabel'
+                  500: null
+
+            Hidden:
+              formEditor:
+                label: 'formEditor.elements.Hidden.label'
+                group: custom
+                groupSorting: 300
+                iconIdentifier: 't3-form-icon-hidden'
+                predefinedDefaults:
+                  defaultValue: ''
+                editors:
+                  300:
+                    identifier: 'defaultValue'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.Hidden.editor.defaultValue.label'
+                    propertyPath: 'defaultValue'
+                  800: null
+
+            Textarea:
+              formEditor:
+                label: 'formEditor.elements.Textarea.label'
+                group: input
+                groupSorting: 200
+                iconIdentifier: 't3-form-icon-textarea'
+                editors:
+                  900:
+                    selectOptions:
+                      # remove email validator
+                      50: null
+
+            ### FORM ELEMENTS: HTML5 ###
+            Email:
+              formEditor:
+                label: 'formEditor.elements.Email.label'
+                group: html5
+                groupSorting: 100
+                iconIdentifier: 't3-form-icon-email'
+                predefinedDefaults:
+                  validators:
+                    -
+                      identifier: EmailAddress
+                editors:
+                  500:
+                    propertyValidators:
+                      10: 'NaiveEmailOrEmpty'
+                  900:
+                    selectOptions:
+                      20: null
+                      30: null
+                      40: null
+                      60: null
+                      70: null
+                      80: null
+                      90: null
+
+                propertyCollections:
+                  validators:
+                    40:
+                      editors:
+                        9999: null
+
+            Telephone:
+              formEditor:
+                label: 'formEditor.elements.Telephone.label'
+                group: html5
+                groupSorting: 200
+                iconIdentifier: 't3-form-icon-telephone'
+
+                editors:
+                  900:
+                    selectOptions:
+                      20: null
+                      30: null
+                      40: null
+                      50: null
+                      60: null
+                      70: null
+                      80: null
+
+                propertyCollections:
+                  validators:
+                    80:
+                      editors:
+                        9999: null
+
+            Url:
+              formEditor:
+                label: 'formEditor.elements.Url.label'
+                group: html5
+                groupSorting: 300
+                iconIdentifier: 't3-form-icon-url'
+
+                editors:
+                  900:
+                    selectOptions:
+                      20: null
+                      30: null
+                      40: null
+                      50: null
+                      60: null
+                      70: null
+                      80: null
+
+                propertyCollections:
+                  validators:
+                    80:
+                      editors:
+                        9999: null
+
+            Number:
+              formEditor:
+                label: 'formEditor.elements.Number.label'
+                group: html5
+                groupSorting: 400
+                iconIdentifier: 't3-form-icon-number'
+                predefinedDefaults:
+                  properties:
+                    fluidAdditionalAttributes:
+                      step: 1
+                  validators:
+                    -
+                      identifier: Number
+                editors:
+                  500:
+                   propertyValidators:
+                      10: 'IntegerOrEmpty'
+                  700:
+                    identifier: 'step'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.TextMixin.editor.step.label'
+                    propertyPath: 'properties.fluidAdditionalAttributes.step'
+                    propertyValidators:
+                      10: 'Integer'
+
+                  900:
+                    selectOptions:
+                      20: null
+                      30: null
+                      40: null
+                      50: null
+                      60:
+                        value: 'Number'
+                        label: 'formEditor.elements.Number.editor.validators.Number.label'
+                      70: null
+                      90: null
+
+                propertyCollections:
+                  validators:
+                    60:
+                      identifier: 'Number'
+                      editors:
+                        __inheritances:
+                          10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        100:
+                          label: 'formEditor.elements.TextMixin.validators.Number.editor.header.label'
+                        9999: null
+
+            ### FORM ELEMENTS: SELECT ###
+            Checkbox:
+              formEditor:
+                label: 'formEditor.elements.Checkbox.label'
+                group: select
+                groupSorting: 100
+                iconIdentifier: 't3-form-icon-checkbox'
+
+            MultiCheckbox:
+              formEditor:
+                label: 'formEditor.elements.MultiCheckbox.label'
+                group: select
+                groupSorting: 400
+                iconIdentifier: 't3-form-icon-multi-checkbox'
+                editors:
+                  800:
+                    propertyPath: null
+                    propertyValue: null
+
+            MultiSelect:
+              formEditor:
+                label: 'formEditor.elements.MultiSelect.label'
+                group: select
+                groupSorting: 500
+                iconIdentifier: 't3-form-icon-multi-select'
+                editors:
+                  250:
+                    identifier: 'inactiveOption'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.SelectionMixin.editor.inactiveOption.label'
+                    propertyPath: 'properties.prependOptionLabel'
+                    fieldExplanationText: 'formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText'
+                    doNotSetIfPropertyValueIsEmpty: true
+
+            RadioButton:
+              formEditor:
+                label: 'formEditor.elements.RadioButton.label'
+                group: select
+                groupSorting: 300
+                iconIdentifier: 't3-form-icon-radio-button'
+
+            SingleSelect:
+              formEditor:
+                label: 'formEditor.elements.SingleSelect.label'
+                group: select
+                groupSorting: 200
+                iconIdentifier: 't3-form-icon-single-select'
+                editors:
+                  250:
+                    identifier: 'inactiveOption'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.SelectionMixin.editor.inactiveOption.label'
+                    propertyPath: 'properties.prependOptionLabel'
+                    fieldExplanationText: 'formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText'
+                    doNotSetIfPropertyValueIsEmpty: true
+
+            ### FORM ELEMENTS: CUSTOM ###
+            DatePicker:
+              formEditor:
+                label: 'formEditor.elements.DatePicker.label'
+                group: custom
+                groupSorting: 200
+                predefinedDefaults:
+                  properties:
+                    dateFormat: 'Y-m-d'
+                    enableDatePicker: true
+                    displayTimeSelector: false
+                iconIdentifier: 't3-form-icon-date-picker'
+                editors:
+                  300:
+                    identifier: 'dateFormat'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.DatePicker.editor.dateFormat.label'
+                    propertyPath: 'properties.dateFormat'
+                  400:
+                    identifier: 'enableDatePicker'
+                    templateName: 'Inspector-CheckboxEditor'
+                    label: 'formEditor.elements.DatePicker.editor.enableDatePicker.label'
+                    propertyPath: 'properties.enableDatePicker'
+                  500:
+                    identifier: 'displayTimeSelector'
+                    templateName: 'Inspector-CheckboxEditor'
+                    label: 'formEditor.elements.DatePicker.editor.displayTimeSelector.label'
+                    propertyPath: 'properties.displayTimeSelector'
+                  900:
+                    identifier: 'validators'
+                    templateName: 'Inspector-ValidatorsEditor'
+                    label: 'formEditor.elements.DatePicker.editor.validators.label'
+                    selectOptions:
+                      10:
+                        value: ''
+                        label: 'formEditor.elements.DatePicker.editor.validators.EmptyValue.label'
+                      20:
+                        value: 'DateTime'
+                        label: 'formEditor.elements.DatePicker.editor.validators.DateTime.label'
+
+                propertyCollections:
+                  validators:
+                    10:
+                      identifier: 'DateTime'
+                      editors:
+                        __inheritances:
+                          10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        100:
+                          label: 'formEditor.elements.DatePicker.validators.DateTime.editor.header.label'
+
+            StaticText:
+              formEditor:
+                label: 'formEditor.elements.StaticText.label'
+                group: custom
+                groupSorting: 600
+                predefinedDefaults:
+                  properties:
+                    text: ''
+                iconIdentifier: 't3-form-icon-static-text'
+                editors:
+                  300:
+                    identifier: 'staticText'
+                    templateName: 'Inspector-TextareaEditor'
+                    label: 'formEditor.elements.StaticText.editor.staticText.label'
+                    propertyPath: 'properties.text'
+
+            ContentElement:
+              formEditor:
+                label: 'formEditor.elements.ContentElement.label'
+                group: custom
+                groupSorting: 700
+                predefinedDefaults:
+                  properties:
+                    contentElementUid: ''
+                iconIdentifier: 't3-form-icon-content-element'
+                editors:
+                  200: null
+                  300:
+                    identifier: 'contentElement'
+                    templateName: 'Inspector-Typo3WinBrowserEditor'
+                    label: 'formEditor.elements.ContentElement.editor.contentElement.label'
+                    buttonLabel: 'formEditor.elements.ContentElement.editor.contentElement.buttonLabel'
+                    browsableType: tt_content
+                    propertyPath: 'properties.contentElementUid'
+                    propertyValidatorsMode: 'OR'
+                    propertyValidators:
+                      10: 'Integer'
+                      20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+
+            ### FORM ELEMENTS: UPLOADS ###
+            FileUpload:
+              formEditor:
+                label: 'formEditor.elements.FileUpload.label'
+                group: custom
+                groupSorting: 100
+                predefinedDefaults:
+                  properties:
+                    allowedMimeTypes: ['application/pdf']
+                iconIdentifier: 't3-form-icon-file-upload'
+                editors:
+                  300:
+                    identifier: 'allowedMimeTypes'
+                    templateName: 'Inspector-MultiSelectEditor'
+                    label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.label'
+                    propertyPath: 'properties.allowedMimeTypes'
+                    selectOptions:
+                      10:
+                        value: 'application/msword'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.doc'
+                      20:
+                        value: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.docx'
+                      30:
+                        value: 'application/msexcel'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.xls'
+                      40:
+                        value: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx'
+                      50:
+                        value: 'application/pdf'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf'
+                      60:
+                        value: 'application/vnd.oasis.opendocument.text'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.odt'
+                      70:
+                        value: 'application/vnd.oasis.opendocument.spreadsheet-template'
+                        label: 'formEditor.elements.FileUpload.editor.allowedMimeTypes.ods'
+
+            ImageUpload:
+              formEditor:
+                label: 'formEditor.elements.ImageUpload.label'
+                group: custom
+                groupSorting: 400
+                predefinedDefaults:
+                  properties:
+                    allowedMimeTypes: ['image/jpeg']
+                iconIdentifier: 't3-form-icon-image-upload'
+                editors:
+                  300:
+                    identifier: 'allowedMimeTypes'
+                    templateName: 'Inspector-MultiSelectEditor'
+                    label: 'formEditor.elements.ImageUpload.editor.allowedMimeTypes.label'
+                    propertyPath: 'properties.allowedMimeTypes'
+                    selectOptions:
+                      10:
+                        value: 'image/jpeg'
+                        label: 'formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg'
+                      20:
+                        value: 'image/png'
+                        label: 'formEditor.elements.ImageUpload.editor.allowedMimeTypes.png'
+                      30:
+                        value: 'image/bmp'
+                        label: 'formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp'
+
+          ### FINISHERS ###
+          finishersDefinition:
+            EmailToSender:
+              formEditor:
+                iconIdentifier: 't3-form-icon-finisher'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.header.label'
+                predefinedDefaults:
+                  options:
+                    subject: ''
+                    recipientAddress: ''
+                    recipientName: ''
+                    senderAddress: ''
+                    senderName: ''
+                    replyToAddress: ''
+                    carbonCopyAddress: ''
+                    blindCarbonCopyAddress: ''
+                    format: 'html'
+                    attachUploads: true
+
+            EmailToReceiver:
+              formEditor:
+                iconIdentifier: 't3-form-icon-finisher'
+                label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label'
+                predefinedDefaults:
+                  options:
+                    subject: ''
+                    recipientAddress: ''
+                    recipientName: ''
+                    senderAddress: ''
+                    senderName: ''
+                    replyToAddress: ''
+                    carbonCopyAddress: ''
+                    blindCarbonCopyAddress: ''
+                    format: 'html'
+                    attachUploads: true
+                    translation:
+                      language: ''
+
+            Redirect:
+              formEditor:
+                iconIdentifier: 't3-form-icon-finisher'
+                label: 'formEditor.elements.Form.finisher.Redirect.editor.header.label'
+                predefinedDefaults:
+                  options:
+                    pageUid: ''
+                    additionalParameters: ''
+
+            Closure:
+              formEditor:
+                iconIdentifier: 't3-form-icon-finisher'
+                label: 'formEditor.elements.Form.finisher.Closure.editor.header.label'
+                predefinedDefaults:
+                  options:
+                    closure: ''
+
+            Confirmation:
+              formEditor:
+                iconIdentifier: 't3-form-icon-finisher'
+                label: 'formEditor.elements.Form.finisher.Confirmation.editor.header.label'
+                predefinedDefaults:
+                  options:
+                    message: ''
+                    contentElementUid: ''
+
+            FlashMessage:
+              formEditor:
+                iconIdentifier: 't3-form-icon-finisher'
+                label: 'formEditor.elements.Form.finisher.FlashMessage.editor.header.label'
+                predefinedDefaults:
+                  options:
+                    messageBody: ''
+                    messageTitle: ''
+                    messageArguments: ''
+                    messageCode: 0
+                    severity: 0
+
+            SaveToDatabase:
+              formEditor:
+                iconIdentifier: 't3-form-icon-finisher'
+                label: 'formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label'
+                predefinedDefaults:
+                  options: []
+
+            DeleteUploads:
+              formEditor:
+                iconIdentifier: 't3-form-icon-finisher'
+                label: 'formEditor.elements.Form.finisher.DeleteUploads.editor.header.label'
+
+          ### VALIDATORS ###
+          validatorsDefinition:
+            NotEmpty:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label : 'formEditor.elements.FormElement.editor.requiredValidator.label'
+            DateTime:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.DatePicker.validators.DateTime.editor.header.label'
+            Alphanumeric:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.TextMixin.editor.validators.Alphanumeric.label'
+            Text:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.TextMixin.editor.validators.Text.label'
+            StringLength:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.TextMixin.editor.validators.StringLength.label'
+                predefinedDefaults:
+                  options:
+                    minimum: ''
+                    maximum: ''
+            EmailAddress:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.TextMixin.editor.validators.EmailAddress.label'
+            Integer:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.TextMixin.editor.validators.Integer.label'
+            Float:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.TextMixin.editor.validators.Float.label'
+            Number:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.TextMixin.editor.validators.Number.label'
+            NumberRange:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.TextMixin.editor.validators.NumberRange.label'
+                predefinedDefaults:
+                  options:
+                    minimum: ''
+                    maximum: ''
+            RegularExpression:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.TextMixin.editor.validators.RegularExpression.label'
+                predefinedDefaults:
+                  options:
+                    regularExpression: ''
+            Count:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label'
+                predefinedDefaults:
+                  options:
+                    minimum: ''
+                    maximum: ''
+            FileSize:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label'
+                predefinedDefaults:
+                  options:
+                    minimum: '0B'
+                    maximum: '10M'
+
+      ########### MIXINS ###########
+      mixins:
+        ########### FORM ELEMENT MIXINS ###########
+        formElementMixins:
+          BaseFormElementMixin:
+            formEditor:
+              predefinedDefaults: []
+              editors:
+                100:
+                  identifier: 'header'
+                  templateName: 'Inspector-FormElementHeaderEditor'
+                200:
+                  identifier: 'label'
+                  templateName: 'Inspector-TextEditor'
+                  label: 'formEditor.elements.BaseFormElementMixin.editor.label.label'
+                  propertyPath: 'label'
+
+          RemoveButtonMixin:
+            9999:
+              identifier: 'removeButton'
+              templateName: 'Inspector-RemoveElementEditor'
+
+          RemovableFormElementMixin:
+            editors:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.RemoveButtonMixin'
+
+          BaseCollectionEditorsMixin:
+            __inheritances:
+              10: 'TYPO3.CMS.Form.mixins.formElementMixins.RemoveButtonMixin'
+            100:
+              identifier: 'header'
+              templateName: 'Inspector-CollectionElementHeaderEditor'
+              label: ''
+
+          MinimumMaximumEditorsMixin:
+            200:
+              identifier: 'minimum'
+              templateName: 'Inspector-TextEditor'
+              label: 'formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label'
+              propertyPath: 'options.minimum'
+              propertyValidators:
+                10: 'Integer'
+            300:
+              identifier: 'maximum'
+              templateName: 'Inspector-TextEditor'
+              label: 'formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label'
+              propertyPath: 'options.maximum'
+              propertyValidators:
+                10: 'Integer'
+
+          ReadOnlyFormElementMixin:
+            formEditor:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.RemovableFormElementMixin'
+              editors:
+                200:
+                  label: 'formEditor.elements.ReadOnlyFormElement.editor.label.label'
+
+          FormElementMixin:
+            formEditor:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.RemovableFormElementMixin'
+              editors:
+                200:
+                  label: 'formEditor.elements.FormElement.editor.label.label'
+
+                700:
+                  identifier: 'gridColumnViewPortConfiguration'
+                  templateName: 'Inspector-GridColumnViewPortConfigurationEditor'
+                  label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label'
+                  configurationOptions:
+                    viewPorts:
+                      10:
+                        viewPortIdentifier: 'xs'
+                        label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label'
+                      20:
+                        viewPortIdentifier: 'sm'
+                        label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label'
+                      30:
+                        viewPortIdentifier: 'md'
+                        label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label'
+                      40:
+                        viewPortIdentifier: 'lg'
+                        label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label'
+                    numbersOfColumnsToUse:
+                      label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label'
+                      propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                      fieldExplanationText: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText'
+
+                800:
+                  identifier: 'requiredValidator'
+                  templateName: 'Inspector-RequiredValidatorEditor'
+                  label: 'formEditor.elements.FormElement.editor.requiredValidator.label'
+                  validatorIdentifier: 'NotEmpty'
+                  propertyPath: 'properties.fluidAdditionalAttributes.required'
+                  propertyValue: 'required'
+
+          TextMixin:
+            formEditor:
+              predefinedDefaults:
+                defaultValue: ''
+              editors:
+                400:
+                  identifier: 'placeholder'
+                  templateName: 'Inspector-TextEditor'
+                  label: 'formEditor.elements.TextMixin.editor.placeholder.label'
+                  propertyPath: 'properties.fluidAdditionalAttributes.placeholder'
+                  doNotSetIfPropertyValueIsEmpty: true
+                500:
+                  identifier: 'defaultValue'
+                  templateName: 'Inspector-TextEditor'
+                  label: 'formEditor.elements.TextMixin.editor.defaultValue.label'
+                  propertyPath: 'defaultValue'
+                900:
+                  identifier: 'validators'
+                  templateName: 'Inspector-ValidatorsEditor'
+                  label: 'formEditor.elements.TextMixin.editor.validators.label'
+                  selectOptions:
+                    10:
+                      value: ''
+                      label: 'formEditor.elements.TextMixin.editor.validators.EmptyValue.label'
+                    20:
+                      value: 'Alphanumeric'
+                      label: 'formEditor.elements.TextMixin.editor.validators.Alphanumeric.label'
+                    30:
+                      value: 'Text'
+                      label: 'formEditor.elements.TextMixin.editor.validators.Text.label'
+                    40:
+                      value: 'StringLength'
+                      label: 'formEditor.elements.TextMixin.editor.validators.StringLength.label'
+                    50:
+                      value: 'EmailAddress'
+                      label: 'formEditor.elements.TextMixin.editor.validators.EmailAddress.label'
+                    60:
+                      value: 'Integer'
+                      label: 'formEditor.elements.TextMixin.editor.validators.Integer.label'
+                    70:
+                      value: 'Float'
+                      label: 'formEditor.elements.TextMixin.editor.validators.Float.label'
+                    80:
+                      value: 'NumberRange'
+                      label: 'formEditor.elements.TextMixin.editor.validators.NumberRange.label'
+                    90:
+                      value: 'RegularExpression'
+                      label: 'formEditor.elements.TextMixin.editor.validators.RegularExpression.label'
+
+              propertyCollections:
+                validators:
+                  10:
+                    identifier: 'Alphanumeric'
+                    editors:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                      100:
+                        label: 'formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label'
+                  20:
+                    identifier: 'Text'
+                    editors:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                      100:
+                        label: 'formEditor.elements.TextMixin.validators.Text.editor.header.label'
+                  30:
+                    identifier: 'StringLength'
+                    editors:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        20: 'TYPO3.CMS.Form.mixins.formElementMixins.MinimumMaximumEditorsMixin'
+                      100:
+                        label: 'formEditor.elements.TextMixin.validators.StringLength.editor.header.label'
+                      200:
+                        additionalElementPropertyPaths:
+                          10: 'properties.fluidAdditionalAttributes.minlength'
+                      300:
+                        additionalElementPropertyPaths:
+                          10: 'properties.fluidAdditionalAttributes.maxlength'
+                  40:
+                    identifier: 'EmailAddress'
+                    editors:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                      100:
+                        label: 'formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label'
+                  50:
+                    identifier: 'Integer'
+                    editors:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                      100:
+                        label: 'formEditor.elements.TextMixin.validators.Integer.editor.header.label'
+                  60:
+                    identifier: 'Float'
+                    editors:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                      100:
+                        label: 'formEditor.elements.TextMixin.validators.Float.editor.header.label'
+                  70:
+                    identifier: 'NumberRange'
+                    editors:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        20: 'TYPO3.CMS.Form.mixins.formElementMixins.MinimumMaximumEditorsMixin'
+                      100:
+                        label: 'formEditor.elements.TextMixin.validators.NumberRange.editor.header.label'
+                      200:
+                        additionalElementPropertyPaths:
+                          10: 'properties.fluidAdditionalAttributes.min'
+                      300:
+                        additionalElementPropertyPaths:
+                          10: 'properties.fluidAdditionalAttributes.max'
+                  80:
+                    identifier: 'RegularExpression'
+                    editors:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                      100:
+                        label: 'formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label'
+                      200:
+                        identifier: 'regex'
+                        templateName: 'Inspector-TextEditor'
+                        label: 'formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label'
+                        fieldExplanationText: 'formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText'
+                        propertyPath: 'options.regularExpression'
+                        propertyValidators:
+                          10: 'NotEmpty'
+
+          SelectionMixin:
+            formEditor:
+              predefinedDefaults:
+                properties:
+                  options: []
+              editors:
+                300:
+                  identifier: 'options'
+                  templateName: 'Inspector-PropertyGridEditor'
+                  label: 'formEditor.elements.SelectionMixin.editor.options.label'
+                  propertyPath: 'properties.options'
+                  isSortable: true
+                  enableAddRow: true
+                  enableDeleteRow: true
+                  removeLastAvailableRowFlashMessageTitle: 'formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageTitle'
+                  removeLastAvailableRowFlashMessageMessage: 'formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageMessage'
+
+          SingleSelectionMixin:
+            formEditor:
+              editors:
+                300:
+                  shouldShowPreselectedValueColumn: 'single'
+                  multiSelection: false
+
+          MultiSelectionMixin:
+            formEditor:
+              editors:
+                300:
+                  shouldShowPreselectedValueColumn: 'multiple'
+                  multiSelection: true
+                900:
+                  identifier: 'validators'
+                  templateName: 'Inspector-ValidatorsEditor'
+                  label: 'formEditor.elements.MultiSelectionMixin.editor.validators.label'
+                  selectOptions:
+                    10:
+                      value: ''
+                      label: 'formEditor.elements.MultiSelectionMixin.editor.validators.EmptyValue.label'
+                    20:
+                      value: 'Count'
+                      label: 'formEditor.elements.MultiSelectionMixin.editor.validators.Count.label'
+
+              propertyCollections:
+                validators:
+                  10:
+                    identifier: 'Count'
+                    editors:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        20: 'TYPO3.CMS.Form.mixins.formElementMixins.MinimumMaximumEditorsMixin'
+                      100:
+                        label: 'formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label'
+
+          FileUploadMixin:
+            formEditor:
+              predefinedDefaults:
+                properties:
+                  saveToFileMount: '1:/user_upload/'
+              editors:
+                400:
+                  identifier: 'saveToFileMount'
+                  templateName: 'Inspector-SingleSelectEditor'
+                  label: 'formEditor.elements.FileUploadMixin.editor.saveToFileMount.label'
+                  propertyPath: 'properties.saveToFileMount'
+                  selectOptions:
+                    10:
+                      value: '1:/user_upload/'
+                      label: '1:/user_upload/'
+                900:
+                  identifier: 'validators'
+                  templateName: 'Inspector-ValidatorsEditor'
+                  label: 'formEditor.elements.FileUploadMixin.editor.validators.label'
+                  selectOptions:
+                    10:
+                      value: ''
+                      label: 'formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label'
+                    20:
+                      value: 'FileSize'
+                      label: 'formEditor.elements.FileUploadMixin.editor.validators.FileSize.label'
+
+              propertyCollections:
+                validators:
+                  10:
+                    identifier: 'FileSize'
+                    editors:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        20: 'TYPO3.CMS.Form.mixins.formElementMixins.MinimumMaximumEditorsMixin'
+                      100:
+                        label: 'formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label'
+                      200:
+                        propertyValidators:
+                          10: 'FileSize'
+                      300:
+                        propertyValidators:
+                          10: 'FileSize'
+
+          formEmailFinisherMixin:
+            editors:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+              100:
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.header.label'
+              200:
+                identifier: 'subject'
+                templateName: 'Inspector-TextEditor'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.subject.label'
+                propertyPath: 'options.subject'
+                enableFormelementSelectionButton: true
+                propertyValidators:
+                  10: 'NotEmpty'
+                  20: 'FormElementIdentifierWithinCurlyBracesInclusive'
+              300:
+                identifier: 'recipientAddress'
+                templateName: 'Inspector-TextEditor'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.recipientAddress.label'
+                propertyPath: 'options.recipientAddress'
+                enableFormelementSelectionButton: true
+                propertyValidatorsMode: 'OR'
+                propertyValidators:
+                  10: 'NaiveEmail'
+                  20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+                fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToSender.editor.recipientAddress.fieldExplanationText'
+              400:
+                identifier: 'recipientName'
+                templateName: 'Inspector-TextEditor'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.recipientName.label'
+                propertyPath: 'options.recipientName'
+                enableFormelementSelectionButton: true
+                propertyValidators:
+                  10: 'FormElementIdentifierWithinCurlyBracesInclusive'
+                fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToSender.editor.recipientName.fieldExplanationText'
+              500:
+                identifier: 'senderAddress'
+                templateName: 'Inspector-TextEditor'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label'
+                propertyPath: 'options.senderAddress'
+                enableFormelementSelectionButton: true
+                propertyValidatorsMode: 'OR'
+                propertyValidators:
+                  10: 'NaiveEmail'
+                  20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+                fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.fieldExplanationText'
+              600:
+                identifier: 'senderName'
+                templateName: 'Inspector-TextEditor'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label'
+                propertyPath: 'options.senderName'
+                enableFormelementSelectionButton: true
+                propertyValidators:
+                  10: 'FormElementIdentifierWithinCurlyBracesInclusive'
+                fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToSender.editor.senderName.fieldExplanationText'
+              700:
+                identifier: 'replyToAddress'
+                templateName: 'Inspector-TextEditor'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.replyToAddress.label'
+                propertyPath: 'options.replyToAddress'
+                enableFormelementSelectionButton: true
+                propertyValidatorsMode: 'OR'
+                propertyValidators:
+                  10: 'NaiveEmailOrEmpty'
+                  20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+              800:
+                identifier: 'carbonCopyAddress'
+                templateName: 'Inspector-TextEditor'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyAddress.label'
+                propertyPath: 'options.carbonCopyAddress'
+                enableFormelementSelectionButton: true
+                propertyValidatorsMode: 'OR'
+                propertyValidators:
+                  10: 'NaiveEmailOrEmpty'
+                  20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+              900:
+                identifier: 'blindCarbonCopyAddress'
+                templateName: 'Inspector-TextEditor'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyAddress.label'
+                propertyPath: 'options.blindCarbonCopyAddress'
+                enableFormelementSelectionButton: true
+                propertyValidatorsMode: 'OR'
+                propertyValidators:
+                  10: 'NaiveEmailOrEmpty'
+                  20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+              1000:
+                identifier: 'format'
+                templateName: 'Inspector-SingleSelectEditor'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.format.label'
+                propertyPath: 'options.format'
+                selectOptions:
+                  10:
+                    value: 'plaintext'
+                    label: 'formEditor.elements.Form.finisher.EmailToSender.editor.format.1'
+                  20:
+                    value: 'html'
+                    label: 'formEditor.elements.Form.finisher.EmailToSender.editor.format.2'
+              1100:
+                identifier: 'attachUploads'
+                templateName: 'Inspector-CheckboxEditor'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label'
+                propertyPath: 'options.attachUploads'

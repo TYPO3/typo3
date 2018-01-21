@@ -63,7 +63,7 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
         }
 
         $rawFormDefinitionArray = ArrayUtility::stripTagsFromValuesRecursive($rawFormDefinitionArray);
-        $rawFormDefinitionArray = $this->transformMultivalueElementsForFormFramework($rawFormDefinitionArray);
+        $rawFormDefinitionArray = $this->convertJsonArrayToAssociativeArray($rawFormDefinitionArray);
         $formDefinitionArray = new FormDefinitionArray($rawFormDefinitionArray);
 
         return $formDefinitionArray;
@@ -88,20 +88,23 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
      * @param array $input
      * @return array
      */
-    protected function transformMultivalueElementsForFormFramework(array $input): array
+    protected function convertJsonArrayToAssociativeArray(array $input): array
     {
         $output = [];
+
         foreach ($input as $key => $value) {
             if (is_int($key) && is_array($value) && isset($value['_label']) && isset($value['_value'])) {
                 $key = $value['_value'];
                 $value = $value['_label'];
             }
+
             if (is_array($value)) {
-                $output[$key] = $this->transformMultivalueElementsForFormFramework($value);
+                $output[$key] = $this->convertJsonArrayToAssociativeArray($value);
             } else {
                 $output[$key] = $value;
             }
         }
+
         return $output;
     }
 }

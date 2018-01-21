@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Configuration\Loader;
  */
 
 use Symfony\Component\Yaml\Yaml;
-use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader\Configuration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -26,64 +25,35 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * - A special "imports" key in the YAML file allows to include other YAML files recursively
  *   where the actual YAML file gets loaded after the import statements, which are interpreted at the very beginning
  *
- * - Merging configuration options of import files when having simple "lists" will add items to the list by default
- *   instead of overwriting them.
+ * - Merging configuration options of import files when having simple "lists" will add items to the list instead
+ *   of overwriting them.
  *
  * - Special placeholder values set via %optionA.suboptionB% replace the value with the named path of the configuration
  *   The placeholders will act as a full replacement of this value.
  */
-class YamlFileLoader implements YamlFileLoaderInterface
+class YamlFileLoader
 {
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
 
     /**
-     * @param Configuration|null $configuration
-     */
-    public function __construct(Configuration $configuration = null)
-    {
-        $this->configuration = $configuration ?: GeneralUtility::makeInstance(Configuration::class);
-    }
-
-    /**
-     * Loads and parses a YAML file, returns an array with the data found
+     * Loads and parses a YAML file, and returns an array with the found data
      *
      * @param string $fileName either relative to PATH_site or prefixed with EXT:...
      * @return array the configuration as array
-     */
-    public function load($fileName): array
-    {
-        if (!is_string($fileName)) {
-            throw new \InvalidArgumentException('The argument "$fileName" must be a string ("' . gettype($fileName) . '" given)', 1512558206);
-        }
-        return $this->loadFromContent($this->getFileContents($fileName));
-    }
-
-    /**
-     * Parses a string as YAML, returns an array with the data found
-     *
-     * @param string $content
-     * @return array the configuration as array
      * @throws \RuntimeException when the file is empty or is of invalid format
      */
-    public function loadFromContent(string $content): array
+    public function load(string $fileName): array
     {
+        $content = $this->getFileContents($fileName);
         $content = Yaml::parse($content);
 
         if (!is_array($content)) {
-            throw new \RuntimeException('YAML content could not be parsed into valid syntax, probably empty?', 1497332874);
+            throw new \RuntimeException('YAML file "' . $fileName . '" could not be parsed into valid syntax, probably empty?', 1497332874);
         }
 
-        if ($this->configuration->getProcessImports()) {
-            $content = $this->processImports($content);
-        }
+        $content = $this->processImports($content);
 
         // Check for "%" placeholders
-        if ($this->configuration->getProcessPlaceholders()) {
-            $content = $this->processPlaceholders($content, $content);
-        }
+        $content = $this->processPlaceholders($content, $content);
 
         return $content;
     }
@@ -96,14 +66,11 @@ class YamlFileLoader implements YamlFileLoaderInterface
      * @return string the contents of the file
      * @throws \RuntimeException when the file was not accessible
      */
-    protected function getFileContents($fileName): string
+    protected function getFileContents(string $fileName): string
     {
-        if (!is_string($fileName)) {
-            throw new \InvalidArgumentException('The argument "$fileName" must be a string ("' . gettype($fileName) . '" given)', 1512558207);
-        }
         $streamlinedFileName = GeneralUtility::getFileAbsFileName($fileName);
         if (!$streamlinedFileName) {
-            throw new \RuntimeException('YAML file "' . $fileName . '" could not be loaded', 1485784246);
+            throw new \RuntimeException('YAML File "' . $fileName . '" could not be loaded', 1485784246);
         }
         return file_get_contents($streamlinedFileName);
     }
@@ -123,9 +90,7 @@ class YamlFileLoader implements YamlFileLoaderInterface
                 // override the imported content with the one from the current file
                 $content = $this->merge($importedContent, $content);
             }
-            if ($this->configuration->getRemoveImportsProperty()) {
-                unset($content['imports']);
-            }
+            unset($content['imports']);
         }
         return $content;
     }
@@ -190,8 +155,8 @@ class YamlFileLoader implements YamlFileLoaderInterface
     }
 
     /**
-     * Same as array_replace_recursive except that when in simple arrays (= YAML lists),
-     * the entries are appended (array_merge) configured accordingly
+     * Same as array_replace_recursive except that when in simple arrays (= YAML lists), the entries are
+     * appended (array_merge)
      *
      * @param array $val1
      * @param array $val2
@@ -201,10 +166,8 @@ class YamlFileLoader implements YamlFileLoaderInterface
     protected function merge(array $val1, array $val2): array
     {
         // Simple lists get merged / added up
-        if ($this->configuration->getMergeLists()) {
-            if (count(array_filter(array_keys($val1), 'is_int')) === count($val1)) {
-                return array_merge($val1, $val2);
-            }
+        if (count(array_filter(array_keys($val1), 'is_int')) === count($val1)) {
+            return array_merge($val1, $val2);
         }
         foreach ($val1 as $k => $v) {
             // The key also exists in second array, if it is a simple value

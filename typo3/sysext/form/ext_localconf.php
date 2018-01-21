@@ -62,20 +62,9 @@ call_user_func(function () {
         '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/PageTS/modWizards.ts">'
     );
 
-    // Add module configuration
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
-        trim('
-            module.tx_form {
-                view {
-                    templateRootPaths.10 = EXT:form/Resources/Private/Backend/Templates/
-                    partialRootPaths.10 = EXT:form/Resources/Private/Backend/Partials/
-                    layoutRootPaths.10 = EXT:form/Resources/Private/Backend/Layouts/
-                }
-                settings {
-                    configurationFile = EXT:form/Configuration/Yaml/FormSetup.yaml
-                }
-            }
-        ')
+    // Add new content element wizard entry
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/PageTS/modWizards.ts">'
     );
 
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'][1489772699]

@@ -1,6 +1,0 @@
-TYPO3:
-  CMS:
-    Form:
-      config:
-        value9: File 4 (should be overridden by File3)
-        value10: File 4
