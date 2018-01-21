@@ -145,7 +145,7 @@ class RenameFileController extends AbstractModule
         } else {
             $fileIdentifier = $this->fileOrFolderObject->getUid();
             $assigns['conflictMode'] = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
-            $assigns['destination'] = substr($this->fileOrFolderObject->getCombinedIdentifier(), 0, -strlen($this->fileOrFolderObject->getName()));
+            $assigns['destination'] = $this->fileOrFolderObject->getParentFolder()->getCombinedIdentifier();
         }
 
         $assigns['fileName'] = $this->fileOrFolderObject->getName();
