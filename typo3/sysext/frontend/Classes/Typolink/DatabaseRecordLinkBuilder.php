@@ -34,7 +34,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         $configuration = $tsfe->tmpl->setup['config.']['recordLinks.'];
         $linkHandlerConfiguration = $pageTsConfig['TCEMAIN.']['linkHandler.'];
 
-        if (!isset($configuration[$configurationKey]) || !isset($linkHandlerConfiguration[$configurationKey])) {
+        if (!isset($configuration[$configurationKey], $linkHandlerConfiguration[$configurationKey])) {
             throw new UnableToLinkException(
                 'Configuration how to link "' . $linkDetails['typoLinkParameter'] . '" was not found, so "' . $linkText . '" was not linked.',
                 1490989149,
@@ -58,6 +58,11 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
                 $linkText
             );
         }
+
+        // Unset the parameter part of the given TypoScript configuration while keeping
+        // config that has been set in addition.
+        unset($conf['parameter.']);
+        $typoScriptConfiguration = array_merge_recursive($typoScriptConfiguration, $conf);
 
         // Build the full link to the record
         $localContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
