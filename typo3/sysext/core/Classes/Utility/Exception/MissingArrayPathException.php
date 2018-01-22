@@ -16,7 +16,8 @@ namespace TYPO3\CMS\Core\Utility\Exception;
  */
 
 /**
- * Exception thrown if ArrayUtility::getValueByPath() does not find target path in array
+ * Exception thrown if ArrayUtility::getValueByPath() and
+ * ArrayUtility::removeByPath() don't find the target path in given array.
  *
  * Note this extends from \RuntimeException to be backwards compatible with the
  * formerly thrown \RuntimeException in the method.

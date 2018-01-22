@@ -329,7 +329,7 @@ class ArrayUtility
                 throw new \RuntimeException('Invalid path segment specified', 1371757720);
             }
             if (!array_key_exists($segment, $pointer)) {
-                throw new \RuntimeException('Segment ' . $segment . ' of path ' . $path . ' does not exist in array', 1371758436);
+                throw new MissingArrayPathException('Segment ' . $segment . ' of path ' . $path . ' does not exist in array', 1371758436);
             }
             if ($currentDepth === $pathDepth) {
                 unset($pointer[$segment]);

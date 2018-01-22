@@ -792,6 +792,23 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      */
+    public function removeByPathThrowsSpecificExceptionIfPathDoesNotExistInArray()
+    {
+        $inputArray = [
+            'foo' => [
+                'bar' => 42,
+            ]
+        ];
+
+        $this->expectException(MissingArrayPathException::class);
+        $this->expectExceptionCode(1371758436);
+
+        ArrayUtility::removeByPath($inputArray, 'foo/baz');
+    }
+
+    /**
+     * @test
+     */
     public function removeByPathAcceptsGivenDelimiter()
     {
         $inputArray = [
