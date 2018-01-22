@@ -148,14 +148,11 @@ CREATE TABLE sys_domain (
 	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
 	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	domainName varchar(255) DEFAULT '' NOT NULL,
-	redirectTo varchar(255) DEFAULT '' NOT NULL,
-	redirectHttpStatusCode int(4) unsigned DEFAULT '301' NOT NULL,
 	sorting int(10) unsigned DEFAULT '0' NOT NULL,
-	prepend_params int(10) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	KEY getSysDomain (redirectTo,hidden),
+	KEY getSysDomain (hidden),
 	KEY getDomainStartPage (pid,hidden,domainName)
 );
 

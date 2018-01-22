@@ -3475,10 +3475,6 @@ class BackendUtility
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT, ':pid')
                 ),
                 $queryBuilder->expr()->eq(
-                    'redirectTo',
-                    $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
                     'hidden',
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )

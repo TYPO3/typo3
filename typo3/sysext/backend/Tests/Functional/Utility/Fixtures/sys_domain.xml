@@ -13,7 +13,5 @@
         <tstamp>1487563945</tstamp>
         <hidden>0</hidden>
         <domainName>www.example.net</domainName>
-        <redirectTo>http://example.com/</redirectTo>
-        <redirectHttpStatusCode>301</redirectHttpStatusCode>
     </sys_domain>
 </dataset>

@@ -480,27 +480,6 @@
 			<trans-unit id="sys_domain.domainName">
 				<source>Domain:</source>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectTo">
-				<source>Redirect to:</source>
-			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode">
-				<source>HTTP Status Code for the Redirect:</source>
-			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.301">
-				<source>Moved permanently (301)</source>
-			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.302">
-				<source>Found (302)</source>
-			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.303">
-				<source>See Other (303)</source>
-			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.307">
-				<source>Moved Temporarily (307)</source>
-			</trans-unit>
-			<trans-unit id="sys_domain.prepend_params">
-				<source>Transfer parameters to Redirect URL:</source>
-			</trans-unit>
 			<trans-unit id="sys_template">
 				<source>Template</source>
 			</trans-unit>

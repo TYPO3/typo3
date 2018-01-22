@@ -372,9 +372,6 @@ class TreeController
             $result = $queryBuilder
                 ->select('domainName', 'pid')
                 ->from('sys_domain')
-                ->where(
-                    $queryBuilder->expr()->neq('redirectTo', $queryBuilder->createNamedParameter('""'))
-                )
                 ->orderBy('sorting')
                 ->execute()
                 ->fetchAll();

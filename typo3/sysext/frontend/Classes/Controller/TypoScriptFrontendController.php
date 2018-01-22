@@ -4465,12 +4465,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $result = $queryBuilder
                 ->select('uid', 'pid', 'domainName')
                 ->from('sys_domain')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'redirectTo',
-                        $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
-                    )
-                )
                 ->orderBy('sorting', 'ASC')
                 ->execute();
 

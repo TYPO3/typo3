@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -880,8 +879,6 @@ class PageRepository implements LoggerAwareInterface
     }
     /**
      * Will find the page carrying the domain record matching the input domain.
-     * Might exit after sending a redirect-header IF a found domain record
-     * instructs to do so.
      *
      * @param string $domain Domain name to search for. Eg. "www.typo3.com". Typical the HTTP_HOST value.
      * @param string $path Path for the current script in domain. Eg. "/somedir/subdir". Typ. supplied by \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')
@@ -902,10 +899,7 @@ class PageRepository implements LoggerAwareInterface
         $queryBuilder->getRestrictions()->removeAll();
         $row = $queryBuilder
             ->select(
-                'pages.uid',
-                'sys_domain.redirectTo',
-                'sys_domain.redirectHttpStatusCode',
-                'sys_domain.prepend_params'
+                'pages.uid'
             )
             ->from('pages')
             ->from('sys_domain')
@@ -934,22 +928,6 @@ class PageRepository implements LoggerAwareInterface
 
         if (!$row) {
             return '';
-        }
-
-        if ($row['redirectTo']) {
-            $redirectUrl = $row['redirectTo'];
-            if ($row['prepend_params']) {
-                $redirectUrl = rtrim($redirectUrl, '/');
-                $prependStr = ltrim(substr($request_uri, strlen($path)), '/');
-                $redirectUrl .= '/' . $prependStr;
-            }
-            $statusCode = (int)$row['redirectHttpStatusCode'];
-            if ($statusCode && defined(HttpUtility::class . '::HTTP_STATUS_' . $statusCode)) {
-                HttpUtility::redirect($redirectUrl, constant(HttpUtility::class . '::HTTP_STATUS_' . $statusCode));
-            } else {
-                HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_301);
-            }
-            die;
         }
         return $row['uid'];
     }
