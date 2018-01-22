@@ -128,6 +128,12 @@ class IconRegistry implements SingletonInterface
                 'name' => 'file-o'
             ]
         ],
+        'module-site' => [
+            'provider' => FontawesomeIconProvider::class,
+            'options' => [
+                'name' => 'globe'
+            ]
+        ],
         'module-file' => [
             'provider' => FontawesomeIconProvider::class,
             'options' => [

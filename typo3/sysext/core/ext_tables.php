@@ -37,6 +37,7 @@ $GLOBALS['PAGES_TYPES'] = [
  */
 $GLOBALS['TBE_MODULES'] = [
     'web' => 'list',
+    'site' => '',
     'file' => '',
     'user' => '',
     'tools' => '',
@@ -47,6 +48,12 @@ $GLOBALS['TBE_MODULES'] = [
             'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web.xlf',
             'name' => 'web',
             'iconIdentifier' => 'module-web'
+        ],
+        'site' => [
+            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_site.xlf',
+            'name' => 'site',
+            'workspaces' => 'online',
+            'iconIdentifier' => 'module-site',
         ],
         'file' => [
             'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
