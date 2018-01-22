@@ -460,6 +460,13 @@ class RecordList
             $title = $this->pageinfo['title'];
         }
         $this->body = $this->moduleTemplate->header($title);
+
+        // Additional header content
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawHeaderHook'] ?? [] as $hook) {
+            $params = [];
+            $this->body .= GeneralUtility::callUserFunction($hook, $params, $this);
+        }
+
         $this->moduleTemplate->setTitle($title);
 
         $output = '';
