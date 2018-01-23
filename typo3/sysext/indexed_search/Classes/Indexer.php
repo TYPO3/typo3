@@ -378,7 +378,7 @@ class Indexer
         // Set to defaults
         $this->conf['freeIndexUid'] = 0;
         $this->conf['freeIndexSetId'] = 0;
-        $this->conf['page_cache_reg1'] = '';
+        $this->conf['page_cache_reg1'] = 0;
         // Root line uids
         $this->conf['rootline_uids'] = $uidRL;
         // Configuration of behavior:
