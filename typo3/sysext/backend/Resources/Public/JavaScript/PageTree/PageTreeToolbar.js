@@ -168,6 +168,7 @@ define(['jquery',
 
           $toolbar.find('[data-tree-submenu]').not($submenu).removeClass('active');
           $submenu.toggleClass('active', $this.hasClass('active'));
+          $submenu.find('input').focus();
         });
       });
 
