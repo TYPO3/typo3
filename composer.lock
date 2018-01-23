@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8100b1ed42d29e4858138859e0c78b4d",
+    "content-hash": "130e4cb12eccf704ca66950ae4c184fa",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4296,16 +4296,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "2.0.2",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "77c2906628d9c04cd6aa7b6c6ce6f753c3adb117"
+                "reference": "e271251d8190b4c8e40238cd2c61565a531fa6a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/77c2906628d9c04cd6aa7b6c6ce6f753c3adb117",
-                "reference": "77c2906628d9c04cd6aa7b6c6ce6f753c3adb117",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/e271251d8190b4c8e40238cd2c61565a531fa6a4",
+                "reference": "e271251d8190b4c8e40238cd2c61565a531fa6a4",
                 "shasum": ""
             },
             "require": {
@@ -4320,7 +4320,6 @@
             },
             "suggest": {
                 "codeception/codeception": "^2.2",
-                "se/selenium-server-standalone": "~2.53",
                 "typo3/cms-saltedpasswords": "^8.5",
                 "typo3/cms-styleguide": "~8.0.8"
             },
@@ -4334,7 +4333,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4355,7 +4354,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2018-01-04T12:33:55+00:00"
+            "time": "2018-01-24T08:50:16+00:00"
         },
         {
             "name": "webmozart/assert",

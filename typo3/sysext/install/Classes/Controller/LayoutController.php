@@ -18,11 +18,11 @@ namespace TYPO3\CMS\Install\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
-use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 
 /**
@@ -138,8 +138,8 @@ class LayoutController extends AbstractController
      */
     public function executeSilentExtensionConfigurationSynchronizationAction(): ResponseInterface
     {
-        $extensionConfigurationService = new ExtensionConfigurationService();
-        $extensionConfigurationService->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
+        $extensionConfiguration = new ExtensionConfiguration();
+        $extensionConfiguration->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
         return new JsonResponse([
             'success' => true,
         ]);

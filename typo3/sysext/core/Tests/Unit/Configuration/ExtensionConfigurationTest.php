@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
-use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -27,17 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtensionConfigurationTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
-    public function getThrowExceptionIfExtensionConfigurationDoesNotExist()
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['someOtherExtension']['someKey'] = 'someValue';
-        $this->expectException(ExtensionConfigurationExtensionNotConfiguredException::class);
-        $this->expectExceptionCode(1509654728);
-        (new ExtensionConfiguration())->get('someExtension');
-    }
-
     /**
      * @test
      */

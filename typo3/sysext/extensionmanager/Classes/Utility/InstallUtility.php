@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
-use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 
 /**
  * Extension Manager Install Utility
@@ -162,8 +161,9 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         } else {
             $this->cacheManager->flushCachesInGroup('system');
         }
+        // TODO: Should be possible to move this call to processExtensionSetup.
+        // TODO: We need to check why our acceptance test on postgress fails then
         $this->saveDefaultConfiguration($extensionKey);
-        Bootstrap::getInstance()->populateLocalConfiguration();
         $this->reloadCaches();
         $this->processExtensionSetup($extensionKey);
 
@@ -441,8 +441,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function saveDefaultConfiguration($extensionKey)
     {
-        $configUtility = $this->objectManager->get(ExtensionConfigurationService::class);
-        $configUtility->synchronizeExtConfTemplateWithLocalConfiguration($extensionKey);
+        $extensionConfiguration = $this->objectManager->get(ExtensionConfiguration::class);
+        $extensionConfiguration->synchronizeExtConfTemplateWithLocalConfiguration($extensionKey);
     }
 
     /**
