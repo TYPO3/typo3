@@ -912,7 +912,7 @@ define(
        * @returns {String}
        */
       getToggleVisibility: function (node) {
-        return node.hasChildren ? 'visible' : 'collapse';
+        return node.hasChildren ? 'visible' : 'hidden';
       },
 
       /**
