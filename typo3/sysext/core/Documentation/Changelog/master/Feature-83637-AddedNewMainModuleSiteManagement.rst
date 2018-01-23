@@ -11,7 +11,7 @@ Description
 
 A new main module for the TYPO3 Backend "Site" (module key "site") has been added to the TYPO3 Core.
 
-It's main purpose is to host submodules related to Integrators and Site maintainers to configure a website,
+Its main purpose is to host submodules related to integrators and site maintainers to configure a website,
 language configuration, domains and routing.
 
 For TYPO3 9.1, the system extension "redirects" adds URL redirects to the main module, if installed.
