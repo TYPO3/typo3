@@ -23,8 +23,14 @@
 			<trans-unit id="redirect_add_text">
 				<source>Add redirect</source>
 			</trans-unit>
-			<trans-unit id="redirect_refreshview">
-				<source>Refresh view</source>
+			<trans-unit id="redirect_not_found.title">
+				<source>No redirects found!</source>
+			</trans-unit>
+			<trans-unit id="redirect_not_found.message">
+				<source>There are currently no redirect records found in the database.</source>
+			</trans-unit>
+			<trans-unit id="redirect_create">
+				<source>Create new redirect</source>
 			</trans-unit>
 
 			<trans-unit id="record_disabled">

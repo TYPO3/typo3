@@ -6,6 +6,18 @@
 </f:section>
 
 <f:section name="content">
+	<f:if condition="{redirects -> f:count()}">
+		<f:then><f:render section="table" arguments="{redirects: redirects}" /></f:then>
+		<f:else>
+			<f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.title')}">
+				<p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.message"/></p>
+				<a class="btn btn-primary" href="{rd:editRecord(command: 'new', uid: 0)}"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/></a>
+			</f:be.infobox>
+		</f:else>
+	</f:if>
+</f:section>
+
+<f:section name="table">
 	<div class="table-fit">
 		<table class="table table-striped table-hover">
 			<thead>
