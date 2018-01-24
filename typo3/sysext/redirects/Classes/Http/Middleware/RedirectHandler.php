@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace TYPO3\CMS\Redirects\Http;
+namespace TYPO3\CMS\Redirects\Http\Middleware;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,51 +16,55 @@ namespace TYPO3\CMS\Redirects\Http;
  */
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Redirects\Service\RedirectService;
 
 /**
  * Hooks into the frontend request, and checks if a redirect should apply,
  * If so, a redirect response is triggered.
  */
-class RedirectHandler implements LoggerAwareInterface
+class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     /**
      * First hook within the Frontend Request handling
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
-    public function handle()
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $redirectService = GeneralUtility::makeInstance(RedirectService::class);
-        //@todo The request object should be handed in by the hook in the future
-        $currentRequest = ServerRequestFactory::fromGlobals();
-        $port = $currentRequest->getUri()->getPort();
+        $port = $request->getUri()->getPort();
         $matchedRedirect = $redirectService->matchRedirect(
-            $currentRequest->getUri()->getHost() . ($port ? ':' . $port : ''),
-            $currentRequest->getUri()->getPath()
+            $request->getUri()->getHost() . ($port ? ':' . $port : ''),
+            $request->getUri()->getPath()
         );
 
         // If the matched redirect is found, resolve it, and check further
-        if (!is_array($matchedRedirect)) {
-            return;
+        if (is_array($matchedRedirect)) {
+            $url = $redirectService->getTargetUrl($matchedRedirect, $request->getQueryParams());
+            if ($url instanceof UriInterface) {
+                $this->logger->debug('Redirecting', ['record' => $matchedRedirect, 'uri' => $url]);
+                $response = $this->buildRedirectResponse($url, $matchedRedirect);
+                $this->incrementHitCount($matchedRedirect);
+
+                return $response;
+            }
         }
 
-        $url = $redirectService->getTargetUrl($matchedRedirect, $currentRequest->getQueryParams());
-        if ($url instanceof UriInterface) {
-            $this->logger->debug('Redirecting', ['record' => $matchedRedirect, 'uri' => $url]);
-            $response = $this->buildRedirectResponse($url, $matchedRedirect);
-            $this->incrementHitCount($matchedRedirect);
-            HttpUtility::sendResponse($response);
-        }
+        return $handler->handle($request);
     }
 
     /**
