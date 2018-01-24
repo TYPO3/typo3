@@ -38,8 +38,20 @@
 								<tr>
 									<td>{redirect.source_host}</td>
 									<td>
-										<f:if condition="{redirect.disabled} == 1"><span title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:record_disabled')}"><core:icon identifier="overlay-hidden" /></span></f:if>
-										<f:if condition="{redirect.starttime} != 0 || {redirect.endtime} != 0"><span title="{f:format.date(date: redirect.starttime, format: '%d.%m.%Y %H:%M')} - {f:format.date(date: redirect.endtime, format: '%d.%m.%Y %H:%M')}"><core:icon identifier="overlay-scheduled" /></span></f:if>
+										<f:alias map="{
+											disable: '{f:translate(key: \'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:record_disabled\')}',
+											onlystart: '{f:translate(key: \'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'d.m.Y H:i:s\')}',
+											onlyend: '{f:translate(key: \'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'d.m.Y H:i:s\')}',
+											startend: '{f:translate(key: \'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'d.m.Y H:i:s\')} - {f:translate(key: \'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'d.m.Y H:i:s\')}'
+										}">
+										<f:if condition="{redirect.disabled}"><f:then><span title="{disable}"></f:then>
+										<f:else if="{redirect.starttime} && !{redirect.endtime}"><span title="{onlystart}"></f:else>
+										<f:else if="!{redirect.starttime} && {redirect.endtime}"><span title="{onlyend}"></f:else>
+										<f:else if="{redirect.starttime} && {redirect.endtime}"><span title="{startend}"></f:else>
+										<f:else><span></f:else>
+										</f:if>
+										<core:iconForRecord table="sys_redirect" row="{redirect}" /></span>
+										</f:alias>
 										<strong><f:link.external uri="{redirect.source_host}{redirect.source_path}" target="_blank">{redirect.source_path}</f:link.external></strong>
 									</td>
 									<td><f:link.typolink parameter="{redirect.target}" target="_blank"><f:uri.typolink parameter="{redirect.target}"></f:uri.typolink></f:link.typolink> (<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination_status_code"/>: {redirect.target_statuscode})</td>
