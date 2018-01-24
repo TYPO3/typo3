@@ -48,9 +48,6 @@
 		"core": "*"
 	},
 	"extra": {
-		"branch-alias": {
-			"dev-TYPO3_8-7": "8.x-dev"
-		},
 		"typo3/cms": {
 			"Package": {
 				"protected": true,

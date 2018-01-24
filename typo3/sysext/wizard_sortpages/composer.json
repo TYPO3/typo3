@@ -12,16 +12,13 @@
 
 	"require": {
 		"php": ">=7.0.0 <=7.2.99",
-		"typo3/cms-core": "8.7.10",
-		"typo3/cms-func": "8.7.10"
+		"typo3/cms-core": "8.7.*@dev",
+		"typo3/cms-func": "8.7.*@dev"
 	},
 	"replace": {
 		"wizard_sortpages": "*"
 	},
 	"extra": {
-		"branch-alias": {
-			"dev-TYPO3_8-7": "8.x-dev"
-		},
 		"typo3/cms": {
 			"Package": {
 				"partOfFactoryDefault": true

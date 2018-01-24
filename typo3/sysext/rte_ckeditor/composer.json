@@ -12,7 +12,7 @@
 
 	"require": {
 		"php": ">=7.0.0 <=7.2.99",
-		"typo3/cms-core": "8.7.10"
+		"typo3/cms-core": "8.7.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -24,9 +24,6 @@
 		"typo3/cms-setup": "*"
 	},
 	"extra": {
-		"branch-alias": {
-			"dev-TYPO3_8-7": "8.x-dev"
-		},
 		"typo3/cms": {
 			"Package": {
 				"partOfFactoryDefault": true
