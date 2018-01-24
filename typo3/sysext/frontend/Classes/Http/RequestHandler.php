@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Http;
 
 /*
@@ -14,9 +15,12 @@ namespace TYPO3\CMS\Frontend\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
+use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -58,7 +62,7 @@ class RequestHandler implements RequestHandlerInterface
 
     /**
      * The request handed over
-     * @var \Psr\Http\Message\ServerRequestInterface
+     * @var ServerRequestInterface
      */
     protected $request;
 
@@ -75,10 +79,10 @@ class RequestHandler implements RequestHandlerInterface
     /**
      * Handles a frontend request
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request)
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $response = null;
         $this->request = $request;
@@ -274,16 +278,17 @@ class RequestHandler implements RequestHandlerInterface
         }
         GeneralUtility::makeInstance(LogManager::class)
             ->getLogger(get_class())->debug('END of FRONTEND session', ['_FLUSH' => true]);
-        return $response;
+
+        return $response ?: new NullResponse();
     }
 
     /**
      * This request handler can handle any frontend request.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param ServerRequestInterface $request
      * @return bool If the request is not an eID request, TRUE otherwise FALSE
      */
-    public function canHandleRequest(\Psr\Http\Message\ServerRequestInterface $request)
+    public function canHandleRequest(ServerRequestInterface $request): bool
     {
         return $request->getQueryParams()['eID'] || $request->getParsedBody()['eID'] ? false : true;
     }
@@ -294,7 +299,7 @@ class RequestHandler implements RequestHandlerInterface
      *
      * @return int The priority of the request handler.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 50;
     }

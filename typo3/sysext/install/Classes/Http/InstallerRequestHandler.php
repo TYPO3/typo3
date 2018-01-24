@@ -114,7 +114,7 @@ class InstallerRequestHandler implements RequestHandlerInterface
      * @param ServerRequestInterface $request
      * @return bool Returns always TRUE
      */
-    public function canHandleRequest(ServerRequestInterface $request)
+    public function canHandleRequest(ServerRequestInterface $request): bool
     {
         $localConfigurationFileLocation = (new ConfigurationManager())->getLocalConfigurationFileLocation();
         return !@is_file($localConfigurationFileLocation) || EnableFileService::isFirstInstallAllowed();

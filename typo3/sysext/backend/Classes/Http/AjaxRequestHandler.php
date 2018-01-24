@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Http;
 
 /*
@@ -66,12 +67,12 @@ class AjaxRequestHandler implements RequestHandlerInterface
      * Handles any AJAX request in the TYPO3 Backend
      *
      * @param ServerRequestInterface $request
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface
      */
-    public function handleRequest(ServerRequestInterface $request)
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         // First get the name of the route
-        $routePath = $request->getParsedBody()['route'] ?? $request->getQueryParams()['route'];
+        $routePath = $request->getParsedBody()['route'] ?? $request->getQueryParams()['route'] ?? '';
         $request = $request->withAttribute('routePath', $routePath);
 
         $proceedIfNoUserIsLoggedIn = $this->isLoggedInBackendUserRequired($routePath);
@@ -88,9 +89,9 @@ class AjaxRequestHandler implements RequestHandlerInterface
      * @param ServerRequestInterface $request
      * @return bool If the request is an AJAX backend request, TRUE otherwise FALSE
      */
-    public function canHandleRequest(ServerRequestInterface $request)
+    public function canHandleRequest(ServerRequestInterface $request): bool
     {
-        $routePath = $request->getParsedBody()['route'] ?? $request->getQueryParams()['route'];
+        $routePath = $request->getParsedBody()['route'] ?? $request->getQueryParams()['route'] ?? '';
         return strpos($routePath, '/ajax/') === 0;
     }
 
@@ -99,7 +100,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
      *
      * @return int The priority of the request handler.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 80;
     }
@@ -111,7 +112,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
      * @param string $routePath the Route path to check against, something like '
      * @return bool whether the request can proceed without a login required
      */
-    protected function isLoggedInBackendUserRequired($routePath)
+    protected function isLoggedInBackendUserRequired(string $routePath): bool
     {
         return in_array($routePath, $this->publicAjaxRoutes, true);
     }
@@ -121,7 +122,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
      *
      * @param bool $proceedIfNoUserIsLoggedIn a flag if a backend user is required
      */
-    protected function boot($proceedIfNoUserIsLoggedIn)
+    protected function boot(bool $proceedIfNoUserIsLoggedIn)
     {
         $this->bootstrap
             ->checkLockedBackendAndRedirectOrDie($proceedIfNoUserIsLoggedIn)
@@ -146,7 +147,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
      * @throws ResourceNotFoundException if no valid route was found
      * @throws InvalidRequestTokenException if the request could not be verified
      */
-    protected function dispatch(ServerRequestInterface $request)
+    protected function dispatch(ServerRequestInterface $request): ResponseInterface
     {
         /** @var Response $response */
         $response = GeneralUtility::makeInstance(Response::class, 'php://temp', 200, [

@@ -199,7 +199,7 @@ class RequestHandler implements RequestHandlerInterface
      * @param ServerRequestInterface $request
      * @return bool Returns always TRUE
      */
-    public function canHandleRequest(ServerRequestInterface $request)
+    public function canHandleRequest(ServerRequestInterface $request): bool
     {
         $basicIntegrity = $this->bootstrap->checkIfEssentialConfigurationExists()
             && !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])
@@ -215,7 +215,7 @@ class RequestHandler implements RequestHandlerInterface
      *
      * @return int The priority of the request handler.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 50;
     }

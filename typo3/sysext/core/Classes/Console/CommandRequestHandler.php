@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Console;
 
 /*
@@ -79,7 +80,7 @@ class CommandRequestHandler implements RequestHandlerInterface
      * @param InputInterface $input
      * @return bool Always TRUE
      */
-    public function canHandleRequest(InputInterface $input)
+    public function canHandleRequest(InputInterface $input): bool
     {
         return true;
     }
@@ -89,7 +90,7 @@ class CommandRequestHandler implements RequestHandlerInterface
      *
      * @return int The priority of the request handler.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 50;
     }

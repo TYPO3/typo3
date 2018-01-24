@@ -351,7 +351,7 @@ class Bootstrap
      */
     protected function sendResponse()
     {
-        if ($this->response instanceof \Psr\Http\Message\ResponseInterface) {
+        if ($this->response instanceof \Psr\Http\Message\ResponseInterface && !($this->response instanceof \TYPO3\CMS\Core\Http\NullResponse)) {
             if (!headers_sent()) {
                 // If the response code was not changed by legacy code (still is 200)
                 // then allow the PSR-7 response object to explicitly set it.

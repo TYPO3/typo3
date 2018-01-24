@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Http;
 
 /*
@@ -14,6 +15,9 @@ namespace TYPO3\CMS\Core\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * The interface for a request handler
  * see RequestHandler in EXT:backend/Classes/Http/ and EXT:frontend/Classes/Http
@@ -25,20 +29,20 @@ interface RequestHandlerInterface
     /**
      * Handles a raw request
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
      * @api
      */
-    public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request);
+    public function handleRequest(ServerRequestInterface $request);
 
     /**
      * Checks if the request handler can handle the given request.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param ServerRequestInterface $request
      * @return bool TRUE if it can handle the request, otherwise FALSE
      * @api
      */
-    public function canHandleRequest(\Psr\Http\Message\ServerRequestInterface $request);
+    public function canHandleRequest(ServerRequestInterface $request);
 
     /**
      * Returns the priority - how eager the handler is to actually handle the
