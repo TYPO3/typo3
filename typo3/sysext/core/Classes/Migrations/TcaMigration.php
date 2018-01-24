@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Migrations;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -2566,9 +2567,12 @@ class TcaMigration
     protected function migratePagesLanguageOverlayRemoval(array $tca)
     {
         if (isset($tca['pages_language_overlay'])) {
-            $this->messages[] = 'The TCA table \'pages_language_overlay\' is'
-                . ' not used anymore and has been removed automatically in'
-                . ' order to avoid negative side-effects.';
+            // If the feature is not enabled, a deprecation log entry is thrown
+            if (!GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('unifiedPageTranslationHandling')) {
+                $this->messages[] = 'The TCA table \'pages_language_overlay\' is'
+                    . ' not used anymore and has been removed automatically in'
+                    . ' order to avoid negative side-effects.';
+            }
             unset($tca['pages_language_overlay']);
         }
         return $tca;

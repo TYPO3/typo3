@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\LoadTcaService;
@@ -46,7 +47,8 @@ class MigratePagesLanguageOverlayUpdate extends AbstractUpdate
 
         $updateNeeded = false;
 
-        if (!$this->isWizardDone()) {
+        // Check if the database table even exists
+        if ($this->checkIfWizardIsRequired() && !$this->isWizardDone()) {
             $updateNeeded = true;
         }
 
@@ -92,6 +94,7 @@ class MigratePagesLanguageOverlayUpdate extends AbstractUpdate
         $this->updateInlineRelations();
         $this->updateSysHistoryRelations();
         $this->markWizardAsDone();
+        $this->enableFeatureFlag();
         return true;
     }
 
@@ -292,5 +295,41 @@ class MigratePagesLanguageOverlayUpdate extends AbstractUpdate
             ->execute()
             ->fetch();
         return !empty($migratedRecord);
+    }
+
+    /**
+     * Check if the database table "pages_language_overlay" exists and if so, if there are entries in the DB table.
+     *
+     * @return bool
+     * @throws \InvalidArgumentException
+     */
+    protected function checkIfWizardIsRequired(): bool
+    {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionByName('Default');
+        $tableNames = $connection->getSchemaManager()->listTableNames();
+        if (in_array('pages_language_overlay', $tableNames, true)) {
+            // table is available, now check if there are entries in it
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages_language_overlay');
+            $numberOfEntries = $queryBuilder->count('*')
+                ->from('pages_language_overlay')
+                ->execute()
+                ->fetchColumn();
+            return (bool)$numberOfEntries;
+        }
+
+        return false;
+    }
+
+    /**
+     * Once the update wizard is run through, the feature to not load any pages_language_overlay data can
+     * be activated.
+     *
+     * Basically writes 'SYS/features/unifiedPageTranslationHandling' to LocalConfiguration.php
+     */
+    protected function enableFeatureFlag()
+    {
+        GeneralUtility::makeInstance(ConfigurationManager::class)->enableFeature('unifiedPageTranslationHandling');
     }
 }

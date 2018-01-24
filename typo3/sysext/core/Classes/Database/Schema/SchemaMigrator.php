@@ -19,6 +19,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
@@ -268,6 +269,18 @@ class SchemaMigrator
         }
 
         // Flatten the array of arrays by one level
-        return array_merge(...$tables);
+        $tables = array_merge(...$tables);
+
+        // Drop any definition of pages_language_overlay in SQL
+        // will be removed in TYPO3 v10.0 once the feature is enabled by default
+        if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('unifiedPageTranslationHandling')) {
+            foreach ($tables as $k => $table) {
+                if ($table->getName() === 'pages_language_overlay') {
+                    unset($tables[$k]);
+                }
+            }
+        }
+
+        return $tables;
     }
 }

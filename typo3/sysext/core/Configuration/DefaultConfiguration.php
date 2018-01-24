@@ -69,7 +69,8 @@ return [
         'fileCreateMask' => '0664',
         'folderCreateMask' => '2775',
         'features' => [
-            'redirects.hitCount' => false
+            'redirects.hitCount' => false,
+            'unifiedPageTranslationHandling' => false
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',

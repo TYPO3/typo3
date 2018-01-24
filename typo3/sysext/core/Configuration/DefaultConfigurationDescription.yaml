@@ -202,6 +202,13 @@ SYS:
         systemMaintainers:
             type: array
             description: 'A list of backend user IDs allowed to access the Install Tool'
+        features:
+            type: container
+            description: 'New features of TYPO3 that are activated on new installations but upgrading installations can still use the old behaviour'
+            items:
+              unifiedPageTranslationHandling:
+                type: bool
+                description: 'If activated, TCA configuration for pages_language_overlay will never be loaded, and the database table "pages_language_overlay" will not be created.'
 EXT:
     type: container
     items:
