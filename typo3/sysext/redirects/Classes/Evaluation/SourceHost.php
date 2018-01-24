@@ -16,7 +16,8 @@ namespace TYPO3\CMS\Redirects\Evaluation;
  */
 
 /**
- * Class SourceHost - Used for validation / sanitation of domain values
+ * Class SourceHost
+ * Triggered from DataHandler as TCA formevals hook for validation / sanitation of domain values.
  */
 class SourceHost
 {
@@ -24,12 +25,10 @@ class SourceHost
      * Server-side removing of protocol on save
      *
      * @param string $value The field value to be evaluated
-     * @param string $is_in The "is_in" value of the field configuration from TCA
-     * @param bool $set Boolean defining if the value is written to the database or not.
      * @return string Evaluated field value
      */
-    public function evaluateFieldValue($value, $isIn, &$set)
+    public function evaluateFieldValue(string $value): string
     {
-        return preg_replace('#(.*?:\/\/)#', '', $value);
+        return preg_replace('#(.*?:\/\/)#', '', $value) ?? '';
     }
 }
