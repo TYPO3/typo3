@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -156,7 +158,20 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             // @todo: format of databaseRow for this field and separate the child compilation to an own provider?
             if ($result['inlineCompileExistingChildren']) {
                 foreach ($connectedUids as $childUid) {
-                    $result['processedTca']['columns'][$fieldName]['children'][] = $this->compileChild($result, $fieldName, $childUid);
+                    try {
+                        $result['processedTca']['columns'][$fieldName]['children'][] = $this->compileChild($result, $fieldName, $childUid);
+                    } catch (DatabaseRecordException $e) {
+                        // The child could not be compiled, probably it was deleted and a dangling mm record exists
+                        $this->getLogger()->warning(
+                            $e->getMessage(),
+                            [
+                                'table' => $childTableName,
+                                'uid' => $childUid,
+                                'exception' => $e
+                            ]
+                        );
+                        continue;
+                    }
                 }
             }
         } elseif ($mode === 'keep') {
@@ -203,21 +218,60 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 // localized but miss default language record
                 $fieldNameWithDefaultLanguageUid = $GLOBALS['TCA'][$childTableName]['ctrl']['transOrigPointerField'];
                 foreach ($connectedUidsOfLocalizedOverlay as $localizedUid) {
-                    $localizedRecord = $this->getRecordFromDatabase($childTableName, $localizedUid);
+                    try {
+                        $localizedRecord = $this->getRecordFromDatabase($childTableName, $localizedUid);
+                    } catch (DatabaseRecordException $e) {
+                        // The child could not be compiled, probably it was deleted and a dangling mm record exists
+                        $this->getLogger()->warning(
+                            $e->getMessage(),
+                            [
+                                'table' => $childTableName,
+                                'uid' => $localizedUid,
+                                'exception' => $e
+                            ]
+                        );
+                        continue;
+                    }
                     $uidOfDefaultLanguageRecord = $localizedRecord[$fieldNameWithDefaultLanguageUid];
                     if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord)) {
                         // This localized child has a default language record. Remove this record from list of default language records
                         $connectedUidsOfDefaultLanguageRecord = array_diff($connectedUidsOfDefaultLanguageRecord, [$uidOfDefaultLanguageRecord]);
                     }
                     // Compile localized record
-                    $compiledChild = $this->compileChild($result, $fieldName, $localizedUid);
+                    try {
+                        $compiledChild = $this->compileChild($result, $fieldName, $localizedUid);
+                    } catch (DatabaseRecordException $e) {
+                        // The child could not be compiled, probably it was deleted and a dangling mm record exists
+                        $this->getLogger()->warning(
+                            $e->getMessage(),
+                            [
+                                'table' => $childTableName,
+                                'uid' => $localizedUid,
+                                'exception' => $e
+                            ]
+                        );
+                        continue;
+                    }
                     $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                 }
                 if ($showPossible) {
                     foreach ($connectedUidsOfDefaultLanguageRecord as $defaultLanguageUid) {
                         // If there are still uids in $connectedUidsOfDefaultLanguageRecord, these are records that
                         // exist in default language, but are not localized yet. Compile and mark those
-                        $compiledChild = $this->compileChild($result, $fieldName, $defaultLanguageUid);
+                        try {
+                            $compiledChild = $this->compileChild($result, $fieldName, $defaultLanguageUid);
+                        } catch (DatabaseRecordException $e) {
+                            // The child could not be compiled, probably it was deleted and a dangling mm record exists
+                            $this->getLogger()->warning(
+                                $e->getMessage(),
+                                [
+                                    'table' => $childTableName,
+                                    'uid' => $defaultLanguageUid,
+                                    'exception' => $e
+                                ]
+                            );
+                            continue;
+                        }
                         $compiledChild['isInlineDefaultLanguageRecordInLocalizedParentContext'] = true;
                         $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                     }
@@ -489,5 +543,13 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return Logger
+     */
+    protected function getLogger()
+    {
+        return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 }
