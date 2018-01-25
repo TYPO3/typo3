@@ -2013,9 +2013,6 @@ class PageLayoutView implements LoggerAwareInterface
         }
         $allowDragAndDrop = $this->isDragAndDropAllowed($row);
         $additionalIcons = [];
-        if ($row['sys_language_uid'] > 0 && $this->checkIfTranslationsExistInLanguage([], (int)$row['sys_language_uid'])) {
-            $allowDragAndDrop = false;
-        }
         $additionalIcons[] = $this->getIcon('tt_content', $row) . ' ';
         $additionalIcons[] = $langMode ? $this->languageFlag($row['sys_language_uid'], false) : '';
         // Get record locking status:
@@ -2046,10 +2043,13 @@ class PageLayoutView implements LoggerAwareInterface
      */
     protected function isDragAndDropAllowed(array $row)
     {
-        if ($this->getBackendUser()->isAdmin()
-            || ((int)$row['editlock'] === 0 && (int)$this->pageinfo['editlock'] === 0)
-            && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
-            && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $row['CType'], $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'])
+        if ((int)$row['l18n_parent'] === 0 &&
+            (
+                $this->getBackendUser()->isAdmin()
+                || ((int)$row['editlock'] === 0 && (int)$this->pageinfo['editlock'] === 0)
+                && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+                && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $row['CType'], $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'])
+            )
         ) {
             return true;
         }
