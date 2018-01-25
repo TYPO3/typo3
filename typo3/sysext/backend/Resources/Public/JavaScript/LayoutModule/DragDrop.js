@@ -42,7 +42,7 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 	 */
 	DragDrop.initialize = function () {
 		$(DragDrop.contentIdentifier).draggable({
-			handle: this.dragHeaderIdentifier,
+			handle: DragDrop.dragHeaderIdentifier,
 			scope: 'tt_content',
 			cursor: 'move',
 			distance: 20,
@@ -92,12 +92,11 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 
 		// make the drop zones visible
 		$(DragDrop.dropZoneIdentifier).each(function () {
-			if (
-				$(this).parent().find('.icon-actions-document-new').length
-			) {
-				$(this).addClass(DragDrop.validDropZoneClass);
+			var $me = $(this);
+			if ($me.parent().find('.icon-actions-document-new').length) {
+				$me.addClass(DragDrop.validDropZoneClass);
 			} else {
-				$(this).closest(DragDrop.contentIdentifier).find('> ' + DragDrop.addContentIdentifier + ', > > ' + DragDrop.addContentIdentifier).show();
+				$me.closest(DragDrop.contentIdentifier).find('> ' + DragDrop.addContentIdentifier + ', > > ' + DragDrop.addContentIdentifier).show();
 			}
 		});
 	};
@@ -220,7 +219,7 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 	};
 
 	/**
-	 * this method does the actual AJAX request for both, the  move and the copy action.
+	 * this method does the actual AJAX request for both, the move and the copy action.
 	 *
 	 * @param $droppableElement
 	 * @param $draggableElement
