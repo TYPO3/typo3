@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
+use TYPO3\CMS\Redirects\Service\UrlService;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
@@ -96,7 +97,12 @@ class ManagementController
         $this->getButtons();
 
         $redirects = GeneralUtility::makeInstance(RedirectCacheService::class)->getAllRedirects();
-        $this->view->assign('redirects', $redirects);
+        $defaultUrl = GeneralUtility::makeInstance(UrlService::class)->getDefaultUrl();
+
+        $this->view->assignMultiple([
+            'redirects' => $redirects,
+            'defaultUrl' => $defaultUrl,
+        ]);
     }
 
     /**

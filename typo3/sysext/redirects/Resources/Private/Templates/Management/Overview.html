@@ -7,7 +7,7 @@
 
 <f:section name="content">
 	<f:if condition="{redirects -> f:count()}">
-		<f:then><f:render section="table" arguments="{redirects: redirects}" /></f:then>
+		<f:then><f:render section="table" arguments="{_all}" /></f:then>
 		<f:else>
 			<f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.title')}">
 				<p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.message"/></p>
@@ -52,7 +52,7 @@
 										</f:if>
 										<core:iconForRecord table="sys_redirect" row="{redirect}" /></span>
 										</f:alias>
-										<strong><f:link.external uri="{redirect.source_host}{redirect.source_path}" target="_blank">{redirect.source_path}</f:link.external></strong>
+										<strong><f:link.external uri="{f:if(condition: '{redirect.source_host} == \'*\'', then: defaultUrl, else: redirect.source_host)}{redirect.source_path}" target="_blank">{redirect.source_path}</f:link.external></strong>
 									</td>
 									<td><f:link.typolink parameter="{redirect.target}" target="_blank"><f:uri.typolink parameter="{redirect.target}"></f:uri.typolink></f:link.typolink> (<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination_status_code"/>: {redirect.target_statuscode})</td>
 									<td>
