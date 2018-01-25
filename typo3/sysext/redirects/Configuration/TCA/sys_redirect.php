@@ -22,8 +22,10 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
+        'typeicon_classes' => [
+            'default' => 'mimetypes-x-sys_redirect',
+        ],
         'searchFields' => 'source_host,source_path,target,target_statuscode',
-        'iconfile' => 'EXT:redirects/Resources/Public/Icons/repeat_64x64.png',
     ],
     'interface' => [
         'showRecordFieldList' => 'disabled, source_host, source_path, is_regexp, force_https, keep_query_parameters, target, target_statuscode, hitcount, lasthiton, disable_hitcount',
