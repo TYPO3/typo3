@@ -158,6 +158,7 @@ return [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => [
                     ['LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.301', 301],
                     ['LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.302', 302],
@@ -166,7 +167,6 @@ return [
                 ],
                 'default' => 307,
                 'size' => 1,
-                'maxitems' => 1
             ],
         ],
         'hitcount' => [
