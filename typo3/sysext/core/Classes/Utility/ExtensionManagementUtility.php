@@ -1042,7 +1042,7 @@ class ExtensionManagementUtility
     /**
      * Adds $content to the default Page TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultPageTSconfig']
      * Prefixed with a [GLOBAL] line
-     * FOR USE IN ext_tables.php/ext_localconf.php FILES
+     * FOR USE IN ext_localconf.php FILE
      *
      * @param string $content Page TSconfig content
      */
@@ -1056,7 +1056,7 @@ class ExtensionManagementUtility
     /**
      * Adds $content to the default User TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultUserTSconfig']
      * Prefixed with a [GLOBAL] line
-     * FOR USE IN ext_tables.php/ext_localconf.php FILES
+     * FOR USE IN ext_localconf.php FILE
      *
      * @param string $content User TSconfig content
      */
