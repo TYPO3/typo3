@@ -73,17 +73,17 @@ class BackendUserActionController extends ActionController
             'index' => [
                 'controller' => 'BackendUser',
                 'action' => 'index',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:backendUsers')
+                'label' => $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUsers')
             ],
             'pages' => [
                 'controller' => 'BackendUserGroup',
                 'action' => 'index',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:backendUserGroupsMenu')
+                'label' => $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroupsMenu')
             ],
             'online' => [
                 'controller' => 'BackendUser',
                 'action' => 'online',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:onlineUsers')
+                'label' => $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:onlineUsers')
             ]
         ];
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
@@ -129,7 +129,7 @@ class BackendUserActionController extends ActionController
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
-        $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:backendUsers');
+        $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUsers');
         if ($this->request->getControllerName() === 'BackendUser') {
             if ($this->request->getControllerActionName() === 'index') {
                 $returnUrl = rawurlencode((string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
@@ -154,11 +154,11 @@ class BackendUserActionController extends ActionController
                 $buttonBar->addButton($addUserButton, ButtonBar::BUTTON_POSITION_LEFT);
             }
             if ($this->request->getControllerActionName() === 'online') {
-                $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:onlineUsers');
+                $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:onlineUsers');
             }
         }
         if ($this->request->getControllerName() === 'BackendUserGroup') {
-            $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:backendUserGroupsMenu');
+            $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroupsMenu');
             $returnUrl = rawurlencode((string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser', [
                 'tx_beuser_system_beusertxbeuser' => [
                     'action' => 'index',

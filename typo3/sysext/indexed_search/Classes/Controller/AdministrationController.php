@@ -110,22 +110,22 @@ class AdministrationController extends ActionController
             'index' => [
                 'controller' => 'Administration',
                 'action' => 'index',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xml:administration.menu.general')
+                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.general')
             ],
             'pages' => [
                 'controller' => 'Administration',
                 'action' => 'pages',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xml:administration.menu.pages')
+                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.pages')
             ],
             'externalDocuments' => [
                 'controller' => 'Administration',
                 'action' => 'externalDocuments',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xml:administration.menu.externalDocuments')
+                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.externalDocuments')
             ],
             'statistic' => [
                 'controller' => 'Administration',
                 'action' => 'statistic',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xml:administration.menu.statistic')
+                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.statistic')
             ]
         ];
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
@@ -261,7 +261,7 @@ class AdministrationController extends ActionController
         $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL);
         $backButton = $this->view->getModuleTemplate()->getDocHeaderComponent()
             ->getButtonBar()->makeLinkButton()
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xml:administration.back'))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.back'))
             ->setIcon($icon)
             ->setHref($this->getHref('Administration', 'statistic'));
         $this->view->getModuleTemplate()->getDocHeaderComponent()

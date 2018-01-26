@@ -277,15 +277,15 @@ return [
     ],
     'palettes' => [
         'stage.edit' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.palette.stage.edit',
+            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.palette.stage.edit',
             'showitem' => 'edit_allow_notificaton_settings, edit_notification_preselection,',
         ],
         'stage.publish' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.palette.stage.publish',
+            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.palette.stage.publish',
             'showitem' => 'publish_allow_notificaton_settings, publish_notification_preselection,',
         ],
         'stage.execute' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.palette.stage.execute',
+            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.palette.stage.execute',
             'showitem' => 'execute_allow_notificaton_settings, execute_notification_preselection,',
         ]
     ],
