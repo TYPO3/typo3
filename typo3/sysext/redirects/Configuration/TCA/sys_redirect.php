@@ -106,7 +106,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required,' . \TYPO3\CMS\Redirects\Evaluation\SourcePath::class,
+                'eval' => 'trim,required',
                 'placeholder' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path.placeholder',
             ],
         ],
