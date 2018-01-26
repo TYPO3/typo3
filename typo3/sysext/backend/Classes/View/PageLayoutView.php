@@ -1260,11 +1260,31 @@ class PageLayoutView implements LoggerAwareInterface
             $cCont = [];
             $sCont = [];
             foreach ($langListArr as $lP) {
+                $languageMode = '';
+                $labelClass = 'info';
                 // Header:
                 $lP = (int)$lP;
+                // Determine language mode
+                if ($lP > 0 && isset($this->languageHasTranslationsCache[$lP]['mode'])) {
+                    switch ($this->languageHasTranslationsCache[$lP]['mode']) {
+                        case 'mixed':
+                            $languageMode = $this->getLanguageService()->getLL('languageModeMixed');
+                            $labelClass = 'danger';
+                            break;
+                        case 'connected':
+                            $languageMode = $this->getLanguageService()->getLL('languageModeConnected');
+                            break;
+                        case 'free':
+                            $languageMode = $this->getLanguageService()->getLL('languageModeFree');
+                            break;
+                        default:
+                            // we'll let opcode optimize this intentionally empty case
+                    }
+                }
                 $cCont[$lP] = '
-					<td valign="top" class="t3-page-column" data-language-uid="' . $lP . '">
+					<td valign="top" class="t3-page-column t3-page-column-lang-name" data-language-uid="' . $lP . '">
 						<h2>' . htmlspecialchars($this->tt_contentConfig['languageCols'][$lP]) . '</h2>
+						' . ($languageMode !== '' ? '<span class="label label-' . $labelClass . '">' . $languageMode . '</span>' : '') . '
 					</td>';
 
                 // "View page" icon is added:
@@ -2890,9 +2910,11 @@ class PageLayoutView implements LoggerAwareInterface
                 foreach ($columns as $contentElement) {
                     if ((int)$contentElement['l18n_parent'] === 0) {
                         $this->languageHasTranslationsCache[$language]['hasStandAloneContent'] = true;
+                        $this->languageHasTranslationsCache[$language]['mode'] = 'free';
                     }
                     if ((int)$contentElement['l18n_parent'] > 0) {
                         $this->languageHasTranslationsCache[$language]['hasTranslations'] = true;
+                        $this->languageHasTranslationsCache[$language]['mode'] = 'connected';
                     }
                 }
             }
@@ -2900,6 +2922,7 @@ class PageLayoutView implements LoggerAwareInterface
             if ($this->languageHasTranslationsCache[$language]['hasStandAloneContent']
                 && $this->languageHasTranslationsCache[$language]['hasTranslations']
             ) {
+                $this->languageHasTranslationsCache[$language]['mode'] = 'mixed';
                 $message = GeneralUtility::makeInstance(
                     FlashMessage::class,
                     sprintf($this->getLanguageService()->getLL('staleTranslationWarning'), $this->languageIconTitles[$language]['title']),
