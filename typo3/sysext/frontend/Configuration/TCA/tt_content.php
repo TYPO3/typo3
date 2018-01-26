@@ -1228,7 +1228,7 @@ return [
                 'type' => 'check',
                 'default' => 0,
                 'items' => [
-                    ['LLL:EXT:lang/Resources/Private/Language/locallang_core.xml:labels.enabled', 1]
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled', 1]
                 ]
             ]
         ],
@@ -1239,7 +1239,7 @@ return [
                 'type' => 'check',
                 'default' => 0,
                 'items' => [
-                    ['LLL:EXT:lang/Resources/Private/Language/locallang_core.xml:labels.enabled', 1]
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled', 1]
                 ]
             ]
         ],
