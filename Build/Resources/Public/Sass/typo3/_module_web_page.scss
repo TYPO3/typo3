@@ -70,6 +70,14 @@ $page-ce-dropzone-possible-border: $state-warning-border;
     }
 }
 
+.t3-page-column-lang-name {
+    padding-bottom: 1em;
+
+    h2 {
+        margin-bottom: 0;
+    }
+}
+
 .t3-page-column-header-icons {
     @include transition(opacity 0.15s ease-in);
 
