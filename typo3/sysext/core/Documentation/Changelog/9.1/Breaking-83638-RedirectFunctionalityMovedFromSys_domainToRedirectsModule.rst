@@ -6,6 +6,7 @@ Breaking: #83638 - Redirect functionality moved from sys_domain to redirects mod
 
 See :issue:`83638`
 
+
 Description
 ===========
 
@@ -17,7 +18,7 @@ new `sys_redirect` database records.
 Impact
 ======
 
-The database fields `redirectTo`, `redirectHttpStatusCode` and `prepend_params` of table `sys_domain` were removed.
+The database fields `redirectTo`, `redirectHttpStatusCode` and `prepend_params` of table `sys_domain` have been removed.
 Domain selection logic has been simplified to not consider these fields anymore.
 
 

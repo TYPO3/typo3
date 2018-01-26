@@ -6,6 +6,7 @@ Deprecation: #83592 - impexp: Removed "Maximum number of records" restriction
 
 See :issue:`83592`
 
+
 Description
 ===========
 
@@ -26,10 +27,10 @@ is not suitable.
 On PHP level, two export related methods changed their signature:
 
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->addRecordsForPid()` -
-  Third method argument deprecated
+  Third method argument marked as deprecated
 
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->exec_listQueryPid` -
-  Third method argument deprecated
+  Third method argument marked as deprecated
 
 
 Affected Installations

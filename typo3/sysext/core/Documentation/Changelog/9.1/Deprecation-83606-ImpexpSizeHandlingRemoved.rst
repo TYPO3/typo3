@@ -6,6 +6,7 @@ Deprecation: #83606 - impexp: Size handling removed
 
 See :issue:`83606`
 
+
 Description
 ===========
 
@@ -18,7 +19,7 @@ Impact
 ======
 
 This change has no impact on editors, on PHP level, two class
-properties have been deprecated:
+properties have been marked as deprecated:
 
 * :php:`TYPO3\CMS\Impexp\Export->maxRecordSize`
 
@@ -29,7 +30,7 @@ Affected Installations
 ======================
 
 Using these properties in PHP has been deprecated, they will be removed
-with core verision 10. The extension scanner will find possible usages.
+with CMS 10. The extension scanner will find possible usages.
 
 
 Migration

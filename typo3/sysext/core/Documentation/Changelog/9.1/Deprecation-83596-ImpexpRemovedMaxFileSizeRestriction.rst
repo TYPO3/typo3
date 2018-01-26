@@ -6,6 +6,7 @@ Deprecation: #83596 - impexp: Removed "Max file size" restriction
 
 See :issue:`83596`
 
+
 Description
 ===========
 
@@ -17,7 +18,7 @@ maximum size has been removed.
 Impact
 ======
 
-On PHP level, one class property has been deprecated and is unused now:
+On PHP level, one class property has been marked as deprecated and is unused now:
 
 * :php:`TYPO3\CMS\Impexp\Export->maxFileSize`
 

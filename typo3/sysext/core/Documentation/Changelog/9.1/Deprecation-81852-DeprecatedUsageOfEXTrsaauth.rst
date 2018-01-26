@@ -6,10 +6,11 @@ Deprecation: #81852 - Deprecated Usage of EXT:rsaauth
 
 See :issue:`81852`
 
+
 Description
 ===========
 
-The extension rsaauth has been deprecated. The reasons are
+The extension rsaauth has been marked as deprecated. The reasons are:
 
 * With the extension the password transmission is the only thing that is encrypted
 * Even though the transmission is encrypted, the public key exchange from server to client

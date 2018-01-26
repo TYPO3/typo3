@@ -6,6 +6,7 @@ Feature: #83529 - Execute hooks on backend user login
 
 See :issue:`83529`
 
+
 Description
 ===========
 
@@ -18,12 +19,13 @@ Developers can register their hooks as shown below.
    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'][] =
        \Vendor\MyExtension\Hooks\BackendUserLogin::class . '->dispatch';
 
+
 On user login, method :php:`dispatch()` of class :php:`\Vendor\MyExtension\Hooks\BackendUserLogin`
 is executed and the backend user array is passed as a parameter:
 
 .. code-block:: php
 
-    public function dispatch($backendUser)
+    public function dispatch(array $backendUser)
     {
       if (isset($backendUser['user']['username'])) {
         $username = $backendUser['user']['username'];

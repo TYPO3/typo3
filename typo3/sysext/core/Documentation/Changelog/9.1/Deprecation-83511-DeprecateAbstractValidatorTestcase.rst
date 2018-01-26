@@ -6,10 +6,11 @@ Deprecation: #83511 - Deprecate AbstractValidatorTestcase
 
 See :issue:`83511`
 
+
 Description
 ===========
 
-The class AbstractValidatorTestcase is deprecated and will be removed in TYPO3 version 10.0.
+The class AbstractValidatorTestcase has been marked as deprecated and will be removed in CMS 10.
 
 
 Impact

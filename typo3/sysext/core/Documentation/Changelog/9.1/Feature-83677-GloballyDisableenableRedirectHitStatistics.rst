@@ -9,7 +9,10 @@ See :issue:`83677`
 Description
 ===========
 
-The redirects module provides the optional feature to count hits on redirects. On most installations this will probably be achieved using analytics tools such as Google Analytics, Piwik or alike - for those not using any other ways of measuring, counting hits can be enabled with a feature switch.
+The redirects module provides the optional feature to count hits on redirects.
+On most installations this will probably be achieved using analytics tools such as
+Google Analytics, Piwik or alike - for those not using any other ways of measuring,
+counting hits can be enabled with a feature switch.
 
 
 Impact
