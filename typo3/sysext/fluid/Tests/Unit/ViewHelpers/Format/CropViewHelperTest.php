@@ -52,7 +52,7 @@ class CropViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperCallsCropHtmlByDefault()
     {
-        $this->mockContentObject->expects($this->once())->method('cropHTML')->with('Some Content', '123|...|1')->will($this->returnValue('Cropped Content'));
+        $this->mockContentObject->expects($this->once())->method('cropHTML')->with('Some Content', '123|&hellip;|1')->will($this->returnValue('Cropped Content'));
         GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
         $this->setArgumentsUnderTest(
             $this->viewHelper,
