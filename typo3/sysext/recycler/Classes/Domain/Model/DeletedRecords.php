@@ -15,10 +15,17 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
@@ -96,7 +103,7 @@ class DeletedRecords
                 $this->setData($id, $table, $depth, $filter);
             }
         } else {
-            foreach (array_keys($GLOBALS['TCA']) as $tableKey) {
+            foreach (RecyclerUtility::getModifyableTables() as $tableKey) {
                 // only go into this table if the limit allows it
                 if ($this->limit !== '') {
                     $parts = GeneralUtility::intExplode(',', $this->limit, true);
@@ -141,20 +148,20 @@ class DeletedRecords
      */
     protected function setData($id, $table, $depth, $filter)
     {
-        if (!array_key_exists('delete', $GLOBALS['TCA'][$table]['ctrl'])) {
+        $deletedField = RecyclerUtility::getDeletedField($table);
+        if (!$deletedField) {
             return;
         }
 
         $id = (int)$id;
         $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
-        $deletedField = RecyclerUtility::getDeletedField($table);
         $firstResult = 0;
         $maxResults = 0;
 
         // get the limit
         if (!empty($this->limit)) {
             // count the number of deleted records for this pid
-            $queryBuilder = $this->getFilteredQueryBuilder($table, $id, $filter);
+            $queryBuilder = $this->getFilteredQueryBuilder($table, $id, $depth, $filter);
             $queryBuilder->getRestrictions()->removeAll();
 
             $deletedCount = (int)$queryBuilder
@@ -180,7 +187,6 @@ class DeletedRecords
                 $this->limit = implode(',', [$offset, $rowCount]);
                 // do NOT query this depth; limit also does not need to be set, we set it anyways
                 $allowQuery = false;
-                $allowDepth = true;
             } else {
                 // the offset for the temporary limit has to remain like the original offset
                 // in case the original offset was just crossed by the amount of deleted records
@@ -199,8 +205,6 @@ class DeletedRecords
                     $maxResults = $rowCount;
                     // set the limit's row count to 0
                     $this->limit = implode(',', [$newOffset, 0]);
-                    // do not go into new depth
-                    $allowDepth = false;
                 } else {
                     // if the result now is <= limit's row count
                     // use the result as the temporary limit
@@ -210,26 +214,16 @@ class DeletedRecords
                     $newCount = $rowCount - $absResult;
                     // store the new result in the limit's row count
                     $this->limit = implode(',', [$newOffset, $newCount]);
-                    // if the new row count is > 0
-                    if ($newCount > 0) {
-                        // go into new depth
-                        $allowDepth = true;
-                    } else {
-                        // if the new row count is <= 0 (only =0 makes sense though)
-                        // do not go into new depth
-                        $allowDepth = false;
-                    }
                 }
                 // allow query for this depth
                 $allowQuery = true;
             }
         } else {
-            $allowDepth = true;
             $allowQuery = true;
         }
         // query for actual deleted records
         if ($allowQuery) {
-            $queryBuilder = $this->getFilteredQueryBuilder($table, $id, $filter);
+            $queryBuilder = $this->getFilteredQueryBuilder($table, $id, $depth, $filter);
             if ($firstResult) {
                 $queryBuilder->setFirstResult($firstResult);
             }
@@ -239,10 +233,6 @@ class DeletedRecords
             $recordsToCheck = $queryBuilder->select('*')
                 ->from($table)
                 ->andWhere(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
-                    ),
                     $queryBuilder->expr()->eq(
                         $deletedField,
                         $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
@@ -254,31 +244,8 @@ class DeletedRecords
 
             if ($recordsToCheck !== false) {
                 $this->checkRecordAccess($table, $recordsToCheck);
-            }
-        }
-        // go into depth
-        if ($allowDepth && $depth >= 1) {
-            // check recursively for elements beneath this page
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll();
-            $resPages = $queryBuilder
-                ->select('uid')
-                ->from('pages')
-                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
-                ->orderBy('sorting')
-                ->execute();
-
-            while ($row = $resPages->fetch()) {
-                $this->setData($row['uid'], $table, $depth - 1, $filter);
-                // some records might have been added, check if we still have the limit for further queries
-                if (!empty($this->limit)) {
-                    $parts = GeneralUtility::intExplode(',', $this->limit, true);
-                    // abort loop if LIMIT 0,0
-                    if ($parts[0] === 0 && $parts[1] === 0) {
-                        $resPages->closeCursor();
-                        break;
-                    }
-                }
+                $pidList = $this->getTreeList($id, $depth);
+                $this->sortDeletedRowsByPidList($pidList);
             }
         }
         $this->label[$table] = $tcaCtrl['label'];
@@ -290,12 +257,13 @@ class DeletedRecords
      *
      * @param string $table
      * @param int $pid
+     * @param int $depth
      * @param string $filter
      * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
-     * @throws \InvalidArgumentException
      */
-    protected function getFilteredQueryBuilder(string $table, int $pid, string $filter): QueryBuilder
+    protected function getFilteredQueryBuilder(string $table, int $pid, int $depth, string $filter): QueryBuilder
     {
+        $pidList = $this->getTreeList($pid, $depth);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()
             ->removeAll()
@@ -326,9 +294,19 @@ class DeletedRecords
             }
         }
 
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($queryBuilder->getConnection()->getDatabasePlatform());
+        $pidConstraints = [];
+        foreach (array_chunk($pidList, $maxBindParameters - 10) as $chunk) {
+            $pidConstraints[] = $queryBuilder->expr()->in(
+                'pid',
+                $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
+            );
+        }
         $queryBuilder->where(
-            $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
-            $filterConstraint
+            $queryBuilder->expr()->andX(
+                $filterConstraint,
+                $queryBuilder->expr()->orX(...$pidConstraints)
+            )
         );
 
         return $queryBuilder;
@@ -342,6 +320,7 @@ class DeletedRecords
      */
     protected function checkRecordAccess($table, array $rows)
     {
+        $deleteField = '';
         if ($table === 'pages') {
             // The "checkAccess" method validates access to the passed table/rows. When access to
             // a page record gets validated it is necessary to disable the "delete" field temporarily
@@ -363,6 +342,27 @@ class DeletedRecords
         }
     }
 
+    /**
+     * @param array $pidList
+     */
+    protected function sortDeletedRowsByPidList(array $pidList)
+    {
+        foreach ($this->deletedRows as $table => $rows) {
+            // Reset array of deleted rows for current table
+            $this->deletedRows[$table] = [];
+
+            // Get rows for current pid
+            foreach ($pidList as $pid) {
+                $rowsForCurrentPid = array_filter($rows, function ($row) use ($pid) {
+                    return (int)$row['pid'] === (int)$pid;
+                });
+
+                // Append sorted records to the array again
+                $this->deletedRows[$table] = array_merge($this->deletedRows[$table], $rowsForCurrentPid);
+            }
+        }
+    }
+
     /************************************************************
      * DELETE FUNCTIONS
      ************************************************************/
@@ -377,7 +377,7 @@ class DeletedRecords
         if (is_array($recordsArray)) {
             /** @var $tce DataHandler **/
             $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->start('', '');
+            $tce->start([], []);
             $tce->disableDeleteClause();
             foreach ($recordsArray as $record) {
                 list($table, $uid) = explode(':', $record);
@@ -513,5 +513,84 @@ class DeletedRecords
     public function getTable()
     {
         return $this->table;
+    }
+
+    /**
+     * Get tree list
+     *
+     * @param int $id
+     * @param int $depth
+     * @param int $begin
+     * @return array
+     */
+    protected function getTreeList(int $id, int $depth, int $begin = 0): array
+    {
+        $cache = $this->getCache();
+        $identifier = md5($id . '_' . $depth . '_' . $begin);
+        $pageTree = $cache->get($identifier);
+        if ($pageTree === false) {
+            $pageTree = $this->resolveTree($id, $depth, $begin, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
+            $cache->set($identifier, $pageTree);
+        }
+
+        return $pageTree;
+    }
+
+    /**
+     * @param $id
+     * @param int $depth
+     * @param int $begin
+     * @param string $permsClause
+     * @return array
+     */
+    protected function resolveTree(int $id, int $depth, int $begin = 0, string $permsClause = ''): array
+    {
+        $depth = (int)$depth;
+        $begin = (int)$begin;
+        $id = abs((int)$id);
+        $theList = [];
+        if ($begin === 0) {
+            $theList[] = $id;
+        }
+        if ($depth > 0) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+            $statement = $queryBuilder->select('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
+                    QueryHelper::stripLogicalOperatorPrefix($permsClause)
+                )
+                ->execute();
+            while ($row = $statement->fetch()) {
+                if ($begin <= 0) {
+                    $theList[] = $row['uid'];
+                }
+                if ($depth > 1) {
+                    $theList = array_merge($theList, $this->resolveTree($row['uid'], $depth - 1, $begin - 1, $permsClause));
+                }
+            }
+        }
+        return $theList;
+    }
+
+    /**
+     * Gets an instance of the memory cache.
+     *
+     * @return FrontendInterface
+     */
+    protected function getCache(): FrontendInterface
+    {
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+    }
+
+    /**
+     * Returns the BackendUser
+     *
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
