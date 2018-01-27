@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Recycler\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\History\RecordHistoryStore;
@@ -50,7 +51,7 @@ class DeletedRecordsController
      *
      * @param array $deletedRowsArray Array with table as key and array with all deleted rows
      * @param int $totalDeleted Number of deleted records in total
-     * @return string JSON array
+     * @return array JSON array
      */
     public function transform($deletedRowsArray, $totalDeleted)
     {
@@ -189,11 +190,11 @@ class DeletedRecordsController
     /**
      * Create and returns an instance of the CacheManager
      *
-     * @return \TYPO3\CMS\Core\Cache\CacheManager
+     * @return CacheManager
      */
     protected function getCacheManager()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        return GeneralUtility::makeInstance(CacheManager::class);
     }
 
     /**

@@ -28,7 +28,7 @@ class Tables
      *
      * @param int $startUid UID from selected page
      * @param int $depth How many levels recursive
-     * @return string The tables to be displayed
+     * @return array The tables to be displayed
      */
     public function getTables($startUid, $depth = 0)
     {
@@ -64,7 +64,7 @@ class Tables
                             $tables[] = [
                                 $tableName,
                                 $deletedRecordsInTable,
-                                $lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'])
+                                $lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'] ?? $tableName)
                             ];
                         }
                     }
@@ -75,7 +75,7 @@ class Tables
         array_unshift($jsonArray, [
             '',
             $deletedRecordsTotal,
-            $lang->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_allrecordtypes')
+            $lang->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:label_allrecordtypes')
         ]);
         return $jsonArray;
     }
