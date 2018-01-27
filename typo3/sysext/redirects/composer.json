@@ -25,7 +25,10 @@
 			"dev-master": "9.1.x-dev"
 		},
 		"typo3/cms": {
-			"extension-key": "redirects"
+			"extension-key": "redirects",
+			"Package": {
+				"partOfFactoryDefault": true
+			}
 		}
 	},
 	"autoload": {
