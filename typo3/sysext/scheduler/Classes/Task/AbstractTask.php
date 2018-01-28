@@ -426,7 +426,7 @@ abstract class AbstractTask
             ->fetch();
 
         $runningExecutions = [];
-        if ($row && $row['serialized_executions'] !== '') {
+        if ($row && !empty($row['serialized_executions'])) {
             $runningExecutions = unserialize($row['serialized_executions']);
         }
         // Count the number of existing executions and use that number as a key
