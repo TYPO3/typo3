@@ -2844,13 +2844,22 @@ class ResourceStorage implements ResourceStorageInterface
                 } else {
                     if ($this->driver->folderExists($processingFolder) === false) {
                         $rootFolder = $this->getRootLevelFolder(false);
-                        $currentEvaluatePermissions = $this->evaluatePermissions;
-                        $this->evaluatePermissions = false;
-                        $this->processingFolder = $this->createFolder(
-                            $processingFolder,
-                            $rootFolder
-                        );
-                        $this->evaluatePermissions = $currentEvaluatePermissions;
+                        try {
+                            $currentEvaluatePermissions = $this->evaluatePermissions;
+                            $this->evaluatePermissions = false;
+                            $this->processingFolder = $this->createFolder(
+                                $processingFolder,
+                                $rootFolder
+                            );
+                            $this->evaluatePermissions = $currentEvaluatePermissions;
+                        } catch (\InvalidArgumentException $e) {
+                            $this->processingFolder = GeneralUtility::makeInstance(
+                                InaccessibleFolder::class,
+                                $this,
+                                $processingFolder,
+                                $processingFolder
+                            );
+                        }
                     } else {
                         $data = $this->driver->getFolderInfoByIdentifier($processingFolder);
                         $this->processingFolder = $this->getResourceFactoryInstance()->createFolderObject($this, $data['identifier'], $data['name']);
