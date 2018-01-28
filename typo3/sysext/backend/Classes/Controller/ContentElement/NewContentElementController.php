@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
@@ -188,9 +189,24 @@ class NewContentElementController
      */
     public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $this->main();
+        $this->prepareContent('window');
         $this->moduleTemplate->setContent($this->content);
         $response->getBody()->write($this->moduleTemplate->renderContent());
+        return $response;
+    }
+
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
+     */
+    public function wizardAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->prepareContent('list_frame');
+        $response->getBody()->write($this->content);
         return $response;
     }
 
@@ -198,14 +214,33 @@ class NewContentElementController
      * Creating the module output.
      *
      * @throws \UnexpectedValueException
+     * @deprecated since TYPO3 v10 (not used since v9) without substitute
      */
     public function main()
+    {
+        $this->prepareContent('window');
+    }
+
+    /**
+     * Creating the module output.
+     *
+     * @param string $clientContext JavaScript client context to be used
+     *        + 'window', legacy if rendered in current document
+     *        + 'list_frame', in case rendered in global modal
+     *
+     * @throws \UnexpectedValueException
+     */
+    protected function prepareContent(string $clientContext)
     {
         $hasAccess = true;
         if ($this->id && $this->access) {
 
             // Init position map object:
-            $posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap::class);
+            $posMap = GeneralUtility::makeInstance(
+                ContentCreationPagePositionMap::class,
+                null,
+                $clientContext
+            );
             $posMap->cur_sys_language = $this->sys_language;
             // If a column is pre-set:
             if (isset($this->colPos)) {
@@ -242,14 +277,6 @@ class NewContentElementController
                 }
                 $hookObject->manipulateWizardItems($wizardItems, $this);
             }
-            // Add document inline javascript
-            $this->moduleTemplate->addJavaScriptCode(
-                'NewContentElementWizardInlineJavascript',
-                '
-				function goToalt_doc() {
-					' . $this->onClickEvent . '
-				}'
-            );
 
             // Traverse items for the wizard.
             // An item is either a header or an item rendered with a radio button and title/description and icon:
@@ -262,18 +289,18 @@ class NewContentElementController
                 $wizardOnClick = '';
                 if ($wInfo['header']) {
                     $menuItems[] = [
-                        'label' => $wInfo['header'],
+                        'label' => $wInfo['header'] ?: '-',
                         'content' => ''
                     ];
                     $key = count($menuItems) - 1;
                 } else {
                     if (!$this->onClickEvent) {
                         // Radio button:
-                        $wizardOnClick = 'document.editForm.defValues.value=unescape(' . GeneralUtility::quoteJSvalue(rawurlencode($wInfo['params'])) . ');goToalt_doc();' . (!$this->onClickEvent ? 'window.location.hash=\'#sel2\';' : '');
+                        $wizardOnClick = 'document.editForm.defValues.value=unescape(' . GeneralUtility::quoteJSvalue(rawurlencode($wInfo['params'])) . '); window.location.hash=\'#sel2\';';
                         // Onclick action for icon/title:
                         $aOnClick = 'document.getElementsByName(\'tempB\')[' . $cc . '].checked=1;' . $wizardOnClick . 'return false;';
                     } else {
-                        $aOnClick = "document.editForm.defValues.value=unescape('" . rawurlencode($wInfo['params']) . "');goToalt_doc();" . (!$this->onClickEvent ? "window.location.hash='#sel2';" : '');
+                        $aOnClick = "document.editForm.defValues.value=unescape('" . rawurlencode($wInfo['params']) . "');goToalt_doc();";
                     }
 
                     $icon = $this->moduleTemplate->getIconFactory()->getIcon($wInfo['iconIdentifier'])->render();
@@ -358,7 +385,7 @@ class NewContentElementController
     {
         $wizardItems = [];
         if (is_array($this->config)) {
-            $wizards = $this->config['wizardItems.'];
+            $wizards = $this->config['wizardItems.'] ?? [];
             $appendWizards = $this->wizard_appendWizards($wizards['elements.']);
             if (is_array($wizards)) {
                 foreach ($wizards as $groupKey => $wizardGroup) {
@@ -411,9 +438,13 @@ class NewContentElementController
         }
         if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
             foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] as $class => $path) {
-                require_once $path;
+                if (!class_exists($class) && file_exists($path)) {
+                    require_once $path;
+                }
                 $modObj = GeneralUtility::makeInstance($class);
-                $wizardElements = $modObj->proc($wizardElements);
+                if (method_exists($modObj, 'proc')) {
+                    $wizardElements = $modObj->proc($wizardElements);
+                }
             }
         }
         $returnElements = [];

@@ -115,15 +115,22 @@ class PagePositionMap
     protected $iconFactory;
 
     /**
+     * @var string
+     */
+    protected $clientContext;
+
+    /**
      * Constructor allowing to set pageTreeImplementation
      *
      * @param string $pageTreeClassName
+     * @param string $clientContext JavaScript context of view client (either 'window' or 'list_frame')
      */
-    public function __construct($pageTreeClassName = null)
+    public function __construct(string $pageTreeClassName = null, string $clientContext = 'window')
     {
         if ($pageTreeClassName !== null) {
             $this->pageTreeClassName = $pageTreeClassName;
         }
+        $this->clientContext = $clientContext;
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
@@ -284,7 +291,7 @@ class PagePositionMap
                     'returnUrl'   => GeneralUtility::getIndpEnv('REQUEST_URI')
                 ]
             );
-            return 'list_frame.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . ';';
+            return $this->clientContext . '.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . ';';
         }
         $params = '&edit[pages][' . $pid . ']=new&returnNewPageId=1';
         return BackendUtility::editOnClick($params, '', $this->R_URI);
@@ -577,7 +584,7 @@ class PagePositionMap
             ]);
         }
         // returns to prev. page
-        return 'list_frame.location.href=' . GeneralUtility::quoteJSvalue((string)$location) . ';return false;';
+        return $this->clientContext . '.location.href=' . GeneralUtility::quoteJSvalue((string)$location) . ';return false;';
     }
 
     /**
