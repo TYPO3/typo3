@@ -121,7 +121,7 @@ return [
         'checkStoredRecords' => 'Boolean: If set, values of the record are validated after saving in DataHandler. Disable only if using a database in strict mode.',
         'checkStoredRecordsLoose' => 'Boolean: If set, make a loose comparison (\'\' equals 0) when validating record values after saving in DataHandler.',
         'fileDenyPattern' => 'A perl-compatible regular expression (without delimiters!) that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitrary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. Default value is stored in constant FILE_DENY_PATTERN_DEFAULT',
-        'interfaces' => 'This determines which interface options is available in the login prompt and in which order (All options: ",backend,frontend")',
+        'interfaces' => 'This determines which interface options are available in the login prompt (All options: "backend,frontend")',
         'explicitADmode' => 'Sets the general allow/deny mode for selector box values. Value can be either "explicitAllow" or "explicitDeny", nothing else!',
         'flexformForceCDATA' => 'Boolean: If set, will add CDATA to Flexform XML. Some versions of libxml have a bug that causes HTML entities to be stripped from any XML content and this setting will avoid the bug by adding CDATA.',
         'explicitConfirmationOfTranslation' => 'If set, then the diff-data of localized records is not saved automatically when updated but requires that a translator clicks the special finish_translation/save/close button that becomes available.',
