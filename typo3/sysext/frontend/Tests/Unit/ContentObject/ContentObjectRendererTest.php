@@ -4677,7 +4677,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $result = $this->subject->stdWrap_debugData($content);
         $out = ob_get_clean();
         $this->assertSame($result, $content);
-        $this->assertNotContains('$cObj->data', $out);
+        $this->assertContains('$cObj->data', $out);
         $this->assertContains($value, $out);
         $this->assertNotContains($altValue, $out);
         // By adding alternative data both are returned together.
