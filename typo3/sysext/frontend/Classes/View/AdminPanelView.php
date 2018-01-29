@@ -871,7 +871,6 @@ class AdminPanelView
         $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
             ? $tsConfig['properties']['newContentElementWizard.']['override']
             : 'new_content_element';
-        $newContentWizScriptPath = BackendUtility::getModuleUrl($moduleName);
         $perms = $this->getBackendUser()->calcPerms($tsfe->page);
         $langAllowed = $this->getBackendUser()->checkLanguageAccess($tsfe->sys_language_uid);
         $id = $tsfe->id;
@@ -896,11 +895,14 @@ class AdminPanelView
 
         // New Content
         if ($perms & Permission::CONTENT_EDIT && $langAllowed) {
-            $params = '';
-            if ($tsfe->sys_language_uid) {
-                $params = '&sys_language_uid=' . $tsfe->sys_language_uid;
+            $linkParameters = [
+                'id' => $id,
+                'returnUrl' => $returnUrl,
+            ];
+            if (!empty($tsfe->sys_language_uid)) {
+                $linkParameters['sys_language_uid'] = $tsfe->sys_language_uid;
             }
-            $link = $newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl);
+            $link = BackendUtility::getModuleUrl($moduleName, $linkParameters);
             $icon = $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
             $title = $this->extGetLL('edit_newContentElement');
             $output[] = '<a class="' . $classes . '" href="' . htmlspecialchars($link) . '" title="' . $title . '">';
