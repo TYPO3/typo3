@@ -52,7 +52,7 @@
 										</f:if>
 										<core:iconForRecord table="sys_redirect" row="{redirect}" /></span>
 										</f:alias>
-										<strong><f:link.external uri="{f:if(condition: '{redirect.source_host} == \'*\'', then: defaultUrl, else: redirect.source_host)}{redirect.source_path}" target="_blank">{redirect.source_path}</f:link.external></strong>
+										<a href="{rd:editRecord(command: 'edit', uid: redirect.uid)}" title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">{redirect.source_path}</a>
 									</td>
 									<td><f:link.typolink parameter="{redirect.target}" target="_blank"><f:uri.typolink parameter="{redirect.target}"></f:uri.typolink></f:link.typolink> (<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination_status_code"/>: {redirect.target_statuscode})</td>
 									<td>
@@ -76,6 +76,16 @@
 									</td>
 									<td>
 										<div class="btn-group">
+											<f:if condition="{redirect.is_regexp}">
+												<f:then>
+													<span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
+												</f:then>
+												<f:else>
+													<f:link.external class="btn btn-default" uri="{f:if(condition: '{redirect.source_host} == \'*\'', then: defaultUrl, else: redirect.source_host)}{redirect.source_path}" target="_blank">
+														<core:icon identifier="actions-view-page" />
+													</f:link.external>
+												</f:else>
+											</f:if>
 											<a class="btn btn-default"
 												 href="{rd:editRecord(command: 'edit', uid: redirect.uid)}"
 												 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">
