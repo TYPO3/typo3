@@ -830,7 +830,6 @@ class AdminPanelView
         $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element';
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        $newContentWizScriptPath = (string)$uriBuilder->buildUriFromRoute($moduleName);
         $perms = $this->getBackendUser()->calcPerms($tsfe->page);
         $langAllowed = $this->getBackendUser()->checkLanguageAccess($tsfe->sys_language_uid);
         $id = $tsfe->id;
@@ -855,11 +854,14 @@ class AdminPanelView
 
         // New Content
         if ($perms & Permission::CONTENT_EDIT && $langAllowed) {
-            $params = '';
-            if ($tsfe->sys_language_uid) {
-                $params = '&sys_language_uid=' . $tsfe->sys_language_uid;
+            $linkParameters = [
+                'id' => $id,
+                'returnUrl' => $returnUrl,
+            ];
+            if (!empty($tsfe->sys_language_uid)) {
+                $linkParameters['sys_language_uid'] = $tsfe->sys_language_uid;
             }
-            $link = $newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl);
+            $link = (string)$uriBuilder->buildUriFromRoute($moduleName, $linkParameters);
             $icon = $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render();
             $title = $this->extGetLL('edit_newContentElement');
             $output[] = '<a class="' . $classes . '" href="' . htmlspecialchars($link) . '" title="' . $title . '">';
