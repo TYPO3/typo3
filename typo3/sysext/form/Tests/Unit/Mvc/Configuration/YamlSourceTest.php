@@ -103,4 +103,135 @@ class YamlSourceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $this->assertSame($expected, $mockYamlSource->_call('getHeaderFromFile', $input));
     }
+
+    /**
+     * @test
+     */
+    public function loadOverruleNonArrayValuesOverArrayValues()
+    {
+        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, ['dummy'], [], '', false);
+
+        $input = [
+            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/OverruleNonArrayValuesOverArrayValues1.yaml',
+            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/OverruleNonArrayValuesOverArrayValues2.yaml'
+        ];
+
+        $expected = [
+            'Form' => [
+                'klaus01' => null,
+                'key03' => 'value2',
+            ],
+        ];
+
+        $this->assertSame($expected, $mockYamlSource->_call('load', $input));
+    }
+
+    /**
+     * @return array
+     */
+    public function mergeRecursiveWithOverruleCalculatesExpectedResultDataProvider()
+    {
+        return [
+            'Override array can reset string to array' => [
+                [
+                    'first' => [
+                        'second' => 'foo',
+                    ],
+                ],
+                [
+                    'first' => [
+                        'second' => ['third' => 'bar'],
+                    ],
+                ],
+                [
+                    'first' => [
+                        'second' => ['third' => 'bar'],
+                    ],
+                ],
+            ],
+            'Override array does reset array to string' => [
+                [
+                    'first' => [],
+                ],
+                [
+                    'first' => 'foo',
+                ],
+                [
+                    'first' => 'foo', // Note that ArrayUtility::mergeRecursiveWithOverrule returns [] here
+                ],
+            ],
+            'Override array does override null with string' => [
+                [
+                    'first' => null,
+                ],
+                [
+                    'first' => 'foo',
+                ],
+                [
+                    'first' => 'foo',
+                ],
+            ],
+            'Override array does override null with empty string' => [
+                [
+                    'first' => null,
+                ],
+                [
+                    'first' => '',
+                ],
+                [
+                    'first' => '',
+                ],
+            ],
+            'Override array does override string with null' => [
+                [
+                    'first' => 'foo',
+                ],
+                [
+                    'first' => null,
+                ],
+                [
+                    'first' => null, // Note that ArrayUtility::mergeRecursiveWithOverrule returns 'foo' here
+                ],
+            ],
+            'Override array does override null with null' => [
+                [
+                    'first' => null,
+                ],
+                [
+                    'first' => null,
+                ],
+                [
+                    'first' => null, // Note that ArrayUtility::mergeRecursiveWithOverrule returns '' here
+                ],
+            ],
+            'Override can add keys' => [
+                [
+                    'first' => 'foo',
+                ],
+                [
+                    'second' => 'bar',
+                ],
+                [
+                    'first' => 'foo',
+                    'second' => 'bar',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Note the data provider is similar to the data provider for ArrayUtility::mergeRecursiveWithOverrule()
+     *
+     * @test
+     * @dataProvider mergeRecursiveWithOverruleCalculatesExpectedResultDataProvider
+     * @param array $input1 Input 1
+     * @param array $input2 Input 2
+     * @param array $expected expected array
+     */
+    public function mergeRecursiveWithOverruleCalculatesExpectedResult($input1, $input2, $expected)
+    {
+        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, ['dummy'], [], '', false);
+        $mockYamlSource->_callRef('mergeRecursiveWithOverrule', $input1, $input2);
+        $this->assertSame($expected, $input1);
+    }
 }

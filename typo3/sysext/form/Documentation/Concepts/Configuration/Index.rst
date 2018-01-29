@@ -244,8 +244,7 @@ The final YAML configuration is not based on one huge file. Instead, it is
 a compilation of a sequential process:
 
 - First of all, all registered configuration files are parsed as YAML and
-  are overlain according to their order. ``TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule()``
-  is involved in this first step.
+  are overlaid according to their order.
 - After that, the ``__inheritances`` operator is applied. It is a unique
   operator introduced by the form framework.
 - Finally, all configuration entries with a value of ``null`` are deleted.
