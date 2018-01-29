@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
@@ -82,7 +83,7 @@ class RedirectHandler implements LoggerAwareInterface
     protected function incrementHitCount(array $redirectRecord)
     {
         // Track the hit if not disabled
-        if ($redirectRecord['disable_hitcount']) {
+        if (!GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount') || $redirectRecord['disable_hitcount']) {
             return;
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

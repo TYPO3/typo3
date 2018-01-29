@@ -178,6 +178,7 @@ return [
                 'default' => 0,
                 'readOnly' => true
             ],
+            'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled'
         ],
         'lasthiton' => [
             'exclude' => true,
@@ -188,6 +189,7 @@ return [
                 'renderType' => 'inputDateTime',
                 'readOnly' => true
             ],
+            'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled'
         ],
         'disable_hitcount' => [
             'exclude' => true,
@@ -200,6 +202,7 @@ return [
                     ]
                 ]
             ],
+            'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled'
         ],
         'is_regexp' => [
             'exclude' => true,

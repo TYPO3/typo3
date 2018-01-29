@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -98,10 +99,12 @@ class ManagementController
 
         $redirects = GeneralUtility::makeInstance(RedirectCacheService::class)->getAllRedirects();
         $defaultUrl = GeneralUtility::makeInstance(UrlService::class)->getDefaultUrl();
+        $showHitCounter = GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount');
 
         $this->view->assignMultiple([
             'redirects' => $redirects,
             'defaultUrl' => $defaultUrl,
+            'showHitCounter' => $showHitCounter,
         ]);
     }
 

@@ -25,8 +25,10 @@
 					<th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></th>
 					<th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path"/></th>
 					<th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination"/></th>
-					<th># <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hits"/></th>
-					<th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_last"/></th>
+					<f:if condition="{showHitCounter}">
+						<th># <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hits"/></th>
+						<th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_last"/></th>
+					</f:if>
 					<th></th>
 				</tr>
 			</thead>
@@ -55,25 +57,27 @@
 										<a href="{rd:editRecord(command: 'edit', uid: redirect.uid)}" title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">{redirect.source_path}</a>
 									</td>
 									<td><f:link.typolink parameter="{redirect.target}" target="_blank"><f:uri.typolink parameter="{redirect.target}"></f:uri.typolink></f:link.typolink> (<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination_status_code"/>: {redirect.target_statuscode})</td>
-									<td>
-										<f:if condition="!{redirect.disable_hitcount}">
-												<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit{f:if(condition:'{redirect.hitcount} > 1',then:'s')}_text" arguments="{0:redirect.hitcount}"/>
-												<f:if condition="{redirect.hitcount} != 0">
-												<a class="t3js-modal-trigger"
-												   href="{rd:editRecord(command: 'resetcounter', uid: redirect.uid)}"
-												   title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset')}"
-												   data-title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.title')}"
-												   data-content="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.content')}"
-												   data-button-close-text="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
-												<core:icon identifier="actions-edit-restore" /></a>
+									<f:if condition="{showHitCounter}">
+										<td>
+											<f:if condition="!{redirect.disable_hitcount}">
+													<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit{f:if(condition:'{redirect.hitcount} > 1',then:'s')}_text" arguments="{0:redirect.hitcount}"/>
+													<f:if condition="{redirect.hitcount} != 0">
+													<a class="t3js-modal-trigger"
+													   href="{rd:editRecord(command: 'resetcounter', uid: redirect.uid)}"
+													   title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset')}"
+													   data-title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.title')}"
+													   data-content="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.content')}"
+													   data-button-close-text="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
+													<core:icon identifier="actions-edit-restore" /></a>
+												</f:if>
 											</f:if>
-										</f:if>
-									<td>
-										<f:if condition="{redirect.lasthiton}">
-											<f:then><f:format.date format="d.m.Y H:i:s">@{redirect.lasthiton}</f:format.date></f:then>
-											<f:else><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_last_never"/></f:else>
-										</f:if>
-									</td>
+										<td>
+											<f:if condition="{redirect.lasthiton}">
+												<f:then><f:format.date format="d.m.Y H:i:s">@{redirect.lasthiton}</f:format.date></f:then>
+												<f:else><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_last_never"/></f:else>
+											</f:if>
+										</td>
+									</f:if>
 									<td>
 										<div class="btn-group">
 											<f:if condition="{redirect.is_regexp}">
