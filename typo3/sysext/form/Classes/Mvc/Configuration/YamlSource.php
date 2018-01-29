@@ -105,7 +105,7 @@ class YamlSource
                 }
 
                 if (is_array($loadedConfiguration)) {
-                    $this->mergeRecursiveWithOverrule($configuration, $loadedConfiguration);
+                    $configuration = array_replace_recursive($configuration, $loadedConfiguration);
                 }
             } catch (ParseException $exception) {
                 throw new ParseErrorException(
@@ -181,29 +181,5 @@ class YamlSource
             }
         }
         return $header;
-    }
-
-    /**
-     * The differences to the existing PHP function array_merge_recursive() are:
-     *  * If the original value is an array and the overrule value is something else
-     *    (like null) the overrule value is used.
-     *    (TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule does not do this)
-     *
-     * @param array $original Original array. It will be *modified* by this method and contains the result afterwards!
-     * @param array $overrule Overrule array, overruling the original array
-     */
-    protected function mergeRecursiveWithOverrule(array &$original, array $overrule)
-    {
-        foreach ($overrule as $key => $_) {
-            if (isset($original[$key]) && is_array($original[$key])) {
-                if (is_array($overrule[$key])) {
-                    $this->mergeRecursiveWithOverrule($original[$key], $overrule[$key]);
-                } else {
-                    $original[$key] = $overrule[$key];
-                }
-            } else {
-                $original[$key] = $overrule[$key];
-            }
-        }
     }
 }
