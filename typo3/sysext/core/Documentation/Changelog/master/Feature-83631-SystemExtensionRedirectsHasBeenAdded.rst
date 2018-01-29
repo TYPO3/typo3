@@ -32,7 +32,7 @@ A system extension "Redirects" was added with the following features:
 * A new sub module "Redirects"
 * Possibility to add redirects with the following caveats
 ** Source may be a specific domain, domain with port or "any" domain
-** Source Path may be an absolute path (`/foo/bar/`) or a regular expression (`#f(+*?)#`)
+** Source Path may be an absolute path (`/foo/bar/`) or a regular expression (`#f(.*?)#`)
 ** Target may be selected with the link wizard (and may be a page, file, folder or external URL)
 * The target can be forced to HTTPS only
 * The status code of the redirect can be configured per redirect
