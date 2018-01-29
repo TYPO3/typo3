@@ -655,7 +655,6 @@ class AdminPanelView
         $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
             ? $tsConfig['properties']['newContentElementWizard.']['override']
             : 'new_content_element';
-        $newContentWizScriptPath = BackendUtility::getModuleUrl($moduleName);
         $perms = $this->getBackendUser()->calcPerms($tsfe->page);
         $langAllowed = $this->getBackendUser()->checkLanguageAccess($tsfe->sys_language_uid);
         $id = $tsfe->id;
@@ -665,12 +664,15 @@ class AdminPanelView
         $link = BackendUtility::getModuleUrl('record_history', ['element' => 'pages:' . $id, 'returnUrl' => $returnUrl]);
         $toolBar = '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '#latest" title="' . $this->extGetLL('edit_recordHistory') . '">' . $icon . '</a>';
         if ($perms & Permission::CONTENT_EDIT && $langAllowed) {
-            $params = '';
-            if ($tsfe->sys_language_uid) {
-                $params = '&sys_language_uid=' . $tsfe->sys_language_uid;
+            $linkParameters = [
+                'id' => $id,
+                'returnUrl' => $returnUrl,
+            ];
+            if (!empty($tsfe->sys_language_uid)) {
+                $linkParameters['sys_language_uid'] = $tsfe->sys_language_uid;
             }
+            $link = BackendUtility::getModuleUrl($moduleName, $linkParameters);
             $icon = $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
-            $link = $newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl);
             $toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '" title="' . $this->extGetLL('edit_newContentElement') . '"">' . $icon . '</a>';
         }
         if ($perms & Permission::PAGE_EDIT) {
