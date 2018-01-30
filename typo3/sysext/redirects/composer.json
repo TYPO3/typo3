@@ -10,8 +10,8 @@
 		"role": "Developer"
 	}],
 	"require": {
-		"typo3/cms-core": "9.1.0",
-		"typo3/cms-backend": "9.1.0",
+		"typo3/cms-core": "9.2.*@dev",
+		"typo3/cms-backend": "9.2.*@dev",
 		"typo3fluid/fluid": "^2.3"
 	},
 	"conflict": {
@@ -22,7 +22,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "9.1.x-dev"
+			"dev-master": "9.2.x-dev"
 		},
 		"typo3/cms": {
 			"extension-key": "redirects",
