@@ -597,7 +597,7 @@ Example after:
              'rootLevel' => 1,
              'size' => 5,
              'autoSizeMax' => 20,
-             'fieldControls' => [
+             'fieldControl' => [
                  'editPopup' => [
                      'disabled' => false,
                  ],
@@ -695,7 +695,7 @@ Example after:
             'type' => 'group',
             'internal_type' => 'db',
             'allowed' => 'be_users,be_groups',
-            'fieldControls' => [
+            'fieldControl' => [
                 'editPopup' => [
                     'disabled' => false,
                 ],
