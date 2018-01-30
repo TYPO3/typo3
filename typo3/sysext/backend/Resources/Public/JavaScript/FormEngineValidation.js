@@ -425,7 +425,7 @@ define(['jquery', 'moment'], function ($, moment) {
 				returnValue = newString;
 				break;
 			case 'nospace':
-				returnValue = '' + value.replace(/ /g, '');
+				returnValue = ('' + value).replace(/ /g, '');
 				break;
 			case 'md5':
 				if (value !== '') {
