@@ -10,8 +10,8 @@
 		"role": "Developer"
 	}],
 	"require": {
-		"typo3/cms-core": "9.1.*@dev",
-		"typo3/cms-backend": "9.1.*@dev",
+		"typo3/cms-core": "9.1.0",
+		"typo3/cms-backend": "9.1.0",
 		"typo3fluid/fluid": "^2.3"
 	},
 	"conflict": {
