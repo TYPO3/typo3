@@ -626,11 +626,11 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
                     if (trim($row['subgroup'])) {
                         // Make integer list
                         $theList = implode(',', GeneralUtility::intExplode(',', $row['subgroup']));
-                        // Get the subarray
-                        $subbarray = $this->fetchGroups($theList, $idList . ',' . $uid);
-                        list($subUid, $subArray) = each($subbarray);
-                        // Merge the subarray to the already existing userGroups array
-                        $this->userGroups[$subUid] = $subArray;
+                        // Get the subgroups
+                        $subGroups = $this->fetchGroups($theList, $idList . ',' . $uid);
+                        // Merge the subgroups to the already existing userGroups array
+                        $subUid = key($subGroups);
+                        $this->userGroups[$subUid] = $subGroups[$subUid];
                     }
                 }
             }

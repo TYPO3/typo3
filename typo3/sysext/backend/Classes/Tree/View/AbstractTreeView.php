@@ -960,7 +960,9 @@ abstract class AbstractTreeView
             if ($res < 0) {
                 $row = false;
             } else {
-                list(, $row) = each($this->dataLookup[$res][$this->subLevelID]);
+                $key = key($this->dataLookup[$res][$this->subLevelID]);
+                next($this->dataLookup[$res][$this->subLevelID]);
+                $row = $this->dataLookup[$res][$this->subLevelID][$key];
             }
             return $row;
         }
