@@ -44,6 +44,14 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             }
 
             $fieldConfig['config']['items'] = $this->sanitizeItemArray($fieldConfig['config']['items'], $table, $fieldName);
+
+            // Resolve "itemsProcFunc"
+            if (!empty($fieldConfig['config']['itemsProcFunc'])) {
+                $fieldConfig['config']['items'] = $this->resolveItemProcessorFunction($result, $fieldName, $fieldConfig['config']['items']);
+                // itemsProcFunc must not be used anymore
+                unset($fieldConfig['config']['itemsProcFunc']);
+            }
+
             $fieldConfig['config']['maxitems'] = MathUtility::forceIntegerInRange($fieldConfig['config']['maxitems'], 0, 99999);
             if ($fieldConfig['config']['maxitems'] === 0) {
                 $fieldConfig['config']['maxitems'] = 99999;
@@ -70,13 +78,6 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             $fieldConfig['config']['items'] = $this->removeItemsByDoktypeUserRestriction($result, $fieldName, $fieldConfig['config']['items']);
 
             $removedItems = array_diff_key($removedItems, $fieldConfig['config']['items']);
-
-            // Resolve "itemsProcFunc"
-            if (!empty($fieldConfig['config']['itemsProcFunc'])) {
-                $fieldConfig['config']['items'] = $this->resolveItemProcessorFunction($result, $fieldName, $fieldConfig['config']['items']);
-                // itemsProcFunc must not be used anymore
-                unset($fieldConfig['config']['itemsProcFunc']);
-            }
 
             // needed to determine the items for invalid values
             $currentDatabaseValuesArray = $this->processDatabaseFieldValue($result['databaseRow'], $fieldName);
