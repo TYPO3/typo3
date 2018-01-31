@@ -87,23 +87,27 @@ define([
 		if (
 			typeof window.parent !== 'undefined' &&
 			typeof window.parent.document.list_frame !== 'undefined' &&
-			window.parent.document.activeElement.classList.contains('t3js-modal-iframe')
+			window.parent.document.list_frame.parent.document.querySelector('.t3js-modal-iframe') !== null
 		) {
 			opener = window.parent.document.list_frame;
-		}
-		else if (
+		} else if (
+			typeof window.parent !== 'undefined' &&
+			typeof window.parent.frames.list_frame !== 'undefined' &&
+			window.parent.frames.list_frame.parent.document.querySelector('.t3js-modal-iframe') !== null
+		) {
+			opener = window.parent.frames.list_frame;
+		} else if (
 			typeof window.frames !== 'undefined' &&
 			typeof window.frames.frameElement !== 'undefined' &&
 			window.frames.frameElement !== null &&
 			window.frames.frameElement.classList.contains('t3js-modal-iframe')
 		) {
-			opener = window.frames.parent.frames.list_frame;
-		}
-		else if (window.opener) {
-			opener = window.opener
+			opener = window.frames.frameElement.contentWindow.parent;
+		} else if (window.opener) {
+			opener = window.opener;
 		}
 		return opener;
-	}
+	};
 
 	/**
 	 *
