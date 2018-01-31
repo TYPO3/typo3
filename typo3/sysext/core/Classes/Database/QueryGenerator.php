@@ -1206,7 +1206,7 @@ class QueryGenerator
         $retArr = [];
         while (is_array($arr)) {
             reset($arr);
-            list($key, ) = each($arr);
+            $key = key($arr);
             $retArr[] = $key;
             $arr = $arr[$key];
         }
