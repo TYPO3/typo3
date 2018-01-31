@@ -3262,8 +3262,10 @@ class DatabaseRecordList
             );
         }
 
-        $hookName = static::class;
+        $hookName = DatabaseRecordList::class;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'])) {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the modifyQuery hook should be used instead.
+            trigger_error('The hook ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][' . $hookName . '][\'buildQueryParameters\']) will be removed in TYPO3 v10, the modifyQuery hook should be used instead.', E_USER_DEPRECATED);
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObject, 'buildQueryParametersPostProcess')) {
@@ -3277,6 +3279,19 @@ class DatabaseRecordList
                         $queryBuilder
                     );
                 }
+            }
+        }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['modifyQuery'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObject, 'modifyQuery')) {
+                $hookObject->modifyQuery(
+                    $parameters,
+                    $table,
+                    $pageId,
+                    $additionalConstraints,
+                    $fieldList,
+                    $queryBuilder
+                );
             }
         }
 

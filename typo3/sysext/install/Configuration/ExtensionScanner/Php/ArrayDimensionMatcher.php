@@ -144,4 +144,9 @@ return [
             'Deprecation-83252-Link-tagSyntaxProcesssing.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList\'][\'buildQueryParameters\']' => [
+        'restFiles' => [
+            'Deprecation-83740-CleanupOfAbstractRecordListBreaksHook.rst',
+        ],
+    ],
 ];

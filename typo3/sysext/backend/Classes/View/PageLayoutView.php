@@ -3407,6 +3407,8 @@ class PageLayoutView implements LoggerAwareInterface
 
         $hookName = DatabaseRecordList::class;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] ?? [] as $className) {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the modifyQuery hook should be used instead.
+            trigger_error('The hook ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][' . $hookName . '][\'buildQueryParameters\']) will be removed in TYPO3 v10, the modifyQuery hook should be used instead.', E_USER_DEPRECATED);
             $hookObject = GeneralUtility::makeInstance($className);
             if (method_exists($hookObject, 'buildQueryParametersPostProcess')) {
                 $hookObject->buildQueryParametersPostProcess(
@@ -3416,6 +3418,19 @@ class PageLayoutView implements LoggerAwareInterface
                     $additionalConstraints,
                     $fieldList,
                     $this,
+                    $queryBuilder
+                );
+            }
+        }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageLayoutView::class]['modifyQuery'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObject, 'modifyQuery')) {
+                $hookObject->modifyQuery(
+                    $parameters,
+                    $table,
+                    $pageId,
+                    $additionalConstraints,
+                    $fieldList,
                     $queryBuilder
                 );
             }

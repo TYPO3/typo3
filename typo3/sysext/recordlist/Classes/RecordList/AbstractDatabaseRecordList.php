@@ -803,6 +803,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
 
         $hookName = DatabaseRecordList::class;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'])) {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the modifyQuery hook should be used instead.
+            trigger_error('The hook ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][' . $hookName . '][\'buildQueryParameters\']) will be removed in TYPO3 v10, the modifyQuery hook should be used instead.', E_USER_DEPRECATED);
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObject, 'buildQueryParametersPostProcess')) {
