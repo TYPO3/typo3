@@ -16,15 +16,15 @@
  * Javascript for adding links for calling the page browser pop up
  */
 define(['jquery'], function($) {
-    'use strict';
+  'use strict';
 
-    $(document).on('click', '.t3js-pageBrowser', function() {
-        var $this = $(this),
-            browserWin = "",
-            pageUrl = $this.data('url');
+  $(document).on('click', '.t3js-pageBrowser', function() {
+    var $this = $(this),
+      browserWin = "",
+      pageUrl = $this.data('url');
 
-        browserWin = window.open(pageUrl,"Typo3WinBrowser","height=650,width=800,status=0,menubar=0,resizable=1,scrollbars=1");
-        browserWin.focus();
-    });
+    browserWin = window.open(pageUrl, "Typo3WinBrowser", "height=650,width=800,status=0,menubar=0,resizable=1,scrollbars=1");
+    browserWin.focus();
+  });
 
 });

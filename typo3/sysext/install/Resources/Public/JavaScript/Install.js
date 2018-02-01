@@ -12,12 +12,12 @@
  */
 
 require([
-	'jquery',
-	'TYPO3/CMS/Install/Router'
+  'jquery',
+  'TYPO3/CMS/Install/Router'
 ], function($, Router) {
-	'use strict';
+  'use strict';
 
-	$(function() {
-		Router.initialize();
-	});
+  $(function() {
+    Router.initialize();
+  });
 });

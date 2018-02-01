@@ -17,30 +17,30 @@
  * JavaScript to handle permissions module from context menu
  * @exports TYPO3/CMS/Beuser/ContextMenuActions
  */
-define(function () {
-    'use strict';
+define(function() {
+  'use strict';
 
-    /**
-     * @exports TYPO3/CMS/Beuser/ContextMenuActions
-     */
-    var ContextMenuActions = {};
+  /**
+   * @exports TYPO3/CMS/Beuser/ContextMenuActions
+   */
+  var ContextMenuActions = {};
 
-    /**
-     * Open permission module for given uid
-     *
-     * @param {string} table
-     * @param {int} uid of the page
-     */
-    ContextMenuActions.openPermissionsModule = function (table, uid) {
-        if (table === 'pages') {
-            top.TYPO3.Backend.ContentContainer.setUrl(
-                top.TYPO3.settings.AccessPermissions.moduleUrl +
-                    '&id=' + uid +
-                    '&tx_beuser_system_beusertxpermission[action]=edit' +
-                    '&tx_beuser_system_beusertxpermission[controller]=Permission'
-            );
-        }
-    };
+  /**
+   * Open permission module for given uid
+   *
+   * @param {string} table
+   * @param {int} uid of the page
+   */
+  ContextMenuActions.openPermissionsModule = function(table, uid) {
+    if (table === 'pages') {
+      top.TYPO3.Backend.ContentContainer.setUrl(
+        top.TYPO3.settings.AccessPermissions.moduleUrl +
+        '&id=' + uid +
+        '&tx_beuser_system_beusertxpermission[action]=edit' +
+        '&tx_beuser_system_beusertxpermission[controller]=Permission'
+      );
+    }
+  };
 
-    return ContextMenuActions;
+  return ContextMenuActions;
 });

@@ -14,36 +14,36 @@
 /**
  * Module: TYPO3/CMS/Install/FlashMessage
  */
-define(['jquery', 'TYPO3/CMS/Install/Severity'], function ($, Severity) {
-	'use strict';
+define(['jquery', 'TYPO3/CMS/Install/Severity'], function($, Severity) {
+  'use strict';
 
-	/**
-	 * @type {{template: (*)}}
-	 */
-	var FlashMessage = {
-		template: $('<div class="t3js-message typo3-message alert"><h4></h4><p class="messageText"></p></div>')
-	};
+  /**
+   * @type {{template: (*)}}
+   */
+  var FlashMessage = {
+    template: $('<div class="t3js-message typo3-message alert"><h4></h4><p class="messageText"></p></div>')
+  };
 
-	/**
-	 * render a FlashMessage
-	 * @param {Number} severity
-	 * @param {String} title
-	 * @param {String} message
-	 * @returns {jQuery}
-	 */
-	FlashMessage.render = function (severity, title, message) {
-		var flashMessage = this.template.clone();
-		flashMessage.addClass('alert-' + Severity.getCssClass(severity));
-		if (title) {
-			flashMessage.find('h4').text(title);
-		}
-		if (message) {
-			flashMessage.find('.messageText').text(message);
-		} else {
-			flashMessage.find('.messageText').remove();
-		}
-		return flashMessage;
-	};
+  /**
+   * render a FlashMessage
+   * @param {Number} severity
+   * @param {String} title
+   * @param {String} message
+   * @returns {jQuery}
+   */
+  FlashMessage.render = function(severity, title, message) {
+    var flashMessage = this.template.clone();
+    flashMessage.addClass('alert-' + Severity.getCssClass(severity));
+    if (title) {
+      flashMessage.find('h4').text(title);
+    }
+    if (message) {
+      flashMessage.find('.messageText').text(message);
+    } else {
+      flashMessage.find('.messageText').remove();
+    }
+    return flashMessage;
+  };
 
-	return FlashMessage;
+  return FlashMessage;
 });

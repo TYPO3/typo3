@@ -15,58 +15,58 @@
  * Module: TYPO3/CMS/Linkvalidator/Linkvalidator
  */
 define(['jquery'], function($) {
-	'use strict';
+  'use strict';
 
-	/**
-	 *
-	 * @type {{}}
-	 * @exports TYPO3/CMS/Linkvalidator/Linkvalidator
-	 */
-	var Linkvalidator = {};
+  /**
+   *
+   * @type {{}}
+   * @exports TYPO3/CMS/Linkvalidator/Linkvalidator
+   */
+  var Linkvalidator = {};
 
-	/**
-	 *
-	 * @param {String} prefix
-	 */
-	Linkvalidator.toggleActionButton = function(prefix) {
-		var buttonDisable = true;
-		$('.' + prefix).each(function() {
-			if ($(this).prop('checked')) {
-				buttonDisable = false;
-			}
-		});
+  /**
+   *
+   * @param {String} prefix
+   */
+  Linkvalidator.toggleActionButton = function(prefix) {
+    var buttonDisable = true;
+    $('.' + prefix).each(function() {
+      if ($(this).prop('checked')) {
+        buttonDisable = false;
+      }
+    });
 
-		if (prefix === 'check') {
-			$('#updateLinkList').prop('disabled', buttonDisable);
-		} else {
-			$('#refreshLinkList').prop('disabled', buttonDisable);
-		}
-	};
+    if (prefix === 'check') {
+      $('#updateLinkList').prop('disabled', buttonDisable);
+    } else {
+      $('#refreshLinkList').prop('disabled', buttonDisable);
+    }
+  };
 
-	/**
-	 * Registers listeners
-	 */
-	Linkvalidator.initializeEvents = function() {
-		$('.refresh').on('click', function() {
-			Linkvalidator.toggleActionButton('refresh');
-		});
+  /**
+   * Registers listeners
+   */
+  Linkvalidator.initializeEvents = function() {
+    $('.refresh').on('click', function() {
+      Linkvalidator.toggleActionButton('refresh');
+    });
 
-		$('.check').on('click', function() {
-			Linkvalidator.toggleActionButton('check');
-		});
+    $('.check').on('click', function() {
+      Linkvalidator.toggleActionButton('check');
+    });
 
-		$('.t3js-update-button').on('click', function() {
-			var $element = $(this);
-			var name = $element.attr('name');
-			var message = 'Event triggered';
-			if (name === 'refreshLinkList' || name === 'updateLinkList') {
-				message = $element.data('notification-message');
-			}
-			top.TYPO3.Notification.success(message);
-		});
-	};
+    $('.t3js-update-button').on('click', function() {
+      var $element = $(this);
+      var name = $element.attr('name');
+      var message = 'Event triggered';
+      if (name === 'refreshLinkList' || name === 'updateLinkList') {
+        message = $element.data('notification-message');
+      }
+      top.TYPO3.Notification.success(message);
+    });
+  };
 
-	$(Linkvalidator.initializeEvents);
+  $(Linkvalidator.initializeEvents);
 
-	return Linkvalidator;
+  return Linkvalidator;
 });

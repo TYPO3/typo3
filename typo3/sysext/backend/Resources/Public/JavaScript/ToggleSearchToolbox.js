@@ -17,28 +17,28 @@
  * @exports TYPO3/CMS/Backend/ToggleSearchToolbox
  */
 define(['jquery', 'TYPO3/CMS/Backend/DocumentHeader', 'TYPO3/CMS/Backend/jquery.clearable'], function($, DocumentHeader) {
-	'use strict';
+  'use strict';
 
-	$(function() {
-		var $toolbar = $('#db_list-searchbox-toolbar');
-		$('.t3js-toggle-search-toolbox').on('click', function() {
-			$toolbar.toggle();
-			DocumentHeader.reposition();
-			if ($toolbar.is(':visible')) {
-				$('#search_field').focus();
-			}
-		});
+  $(function() {
+    var $toolbar = $('#db_list-searchbox-toolbar');
+    $('.t3js-toggle-search-toolbox').on('click', function() {
+      $toolbar.toggle();
+      DocumentHeader.reposition();
+      if ($toolbar.is(':visible')) {
+        $('#search_field').focus();
+      }
+    });
 
-		var $searchFields = $('#search_field');
-		var searchResultShown = ('' !== $searchFields.val());
+    var $searchFields = $('#search_field');
+    var searchResultShown = ('' !== $searchFields.val());
 
-		// make search field clearable
-		$searchFields.clearable({
-			onClear: function() {
-				if (searchResultShown) {
-					$(this).closest('form').submit();
-				}
-			}
-		});
-	});
+    // make search field clearable
+    $searchFields.clearable({
+      onClear: function() {
+        if (searchResultShown) {
+          $(this).closest('form').submit();
+        }
+      }
+    });
+  });
 });

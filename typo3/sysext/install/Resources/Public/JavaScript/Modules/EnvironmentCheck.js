@@ -15,75 +15,75 @@
  * Module: TYPO3/CMS/Install/EnvironmentCheck
  */
 define([
-    'jquery',
-    'TYPO3/CMS/Install/Router',
-    'TYPO3/CMS/Install/FlashMessage',
-    'TYPO3/CMS/Install/ProgressBar',
-    'TYPO3/CMS/Install/InfoBox',
-    'TYPO3/CMS/Install/Severity',
-    'bootstrap'
+  'jquery',
+  'TYPO3/CMS/Install/Router',
+  'TYPO3/CMS/Install/FlashMessage',
+  'TYPO3/CMS/Install/ProgressBar',
+  'TYPO3/CMS/Install/InfoBox',
+  'TYPO3/CMS/Install/Severity',
+  'bootstrap'
 ], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
-    'use strict';
+  'use strict';
 
-    return {
-        selectorGridderBadge: '.t3js-environmentCheck-badge',
-        selectorExecuteTrigger: '.t3js-environmentCheck-execute',
-        selectorOutputContainer: '.t3js-environmentCheck-output',
+  return {
+    selectorGridderBadge: '.t3js-environmentCheck-badge',
+    selectorExecuteTrigger: '.t3js-environmentCheck-execute',
+    selectorOutputContainer: '.t3js-environmentCheck-output',
 
-        initialize: function() {
-            var self = this;
+    initialize: function() {
+      var self = this;
 
-            // Get status on initialize to have the badge and content ready
-            self.runTests();
+      // Get status on initialize to have the badge and content ready
+      self.runTests();
 
-            $(document).on('click', this.selectorExecuteTrigger, function(e) {
-                e.preventDefault();
-                self.runTests();
+      $(document).on('click', this.selectorExecuteTrigger, function(e) {
+        e.preventDefault();
+        self.runTests();
+      });
+    },
+
+    runTests: function() {
+      var $outputContainer = $(this.selectorOutputContainer);
+      var $errorBadge = $(this.selectorGridderBadge);
+      $errorBadge.text('').hide();
+      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
+      $outputContainer.empty().append(message);
+      $.ajax({
+        url: Router.getUrl('environmentCheckGetStatus'),
+        cache: false,
+        success: function(data) {
+          $outputContainer.empty();
+          var warningCount = 0;
+          var errorCount = 0;
+          if (data.success === true && typeof(data.status) === 'object') {
+            $.each(data.status, function(i, element) {
+              if (Array.isArray(element) && element.length > 0) {
+                element.forEach(function(aStatus) {
+                  if (aStatus.severity === 1) {
+                    warningCount += 1;
+                  }
+                  if (aStatus.severity === 2) {
+                    errorCount += 1;
+                  }
+                  var message = InfoBox.render(aStatus.severity, aStatus.title, aStatus.message);
+                  $outputContainer.append(message);
+                });
+              }
             });
-        },
-
-        runTests: function() {
-            var $outputContainer = $(this.selectorOutputContainer);
-            var $errorBadge = $(this.selectorGridderBadge);
-            $errorBadge.text('').hide();
-            var message = ProgressBar.render(Severity.loading, 'Loading...', '');
+            if (errorCount > 0) {
+              $errorBadge.removeClass('label-warning').addClass('label-danger').text(errorCount).show();
+            } else if (warningCount > 0) {
+              $errorBadge.removeClass('label-error').addClass('label-warning').text(warningCount).show();
+            }
+          } else {
+            var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
             $outputContainer.empty().append(message);
-            $.ajax({
-                url: Router.getUrl('environmentCheckGetStatus'),
-                cache: false,
-                success: function(data) {
-                    $outputContainer.empty();
-                    var warningCount = 0;
-                    var errorCount = 0;
-                    if (data.success === true && typeof(data.status) === 'object') {
-                        $.each(data.status, function(i, element) {
-                            if (Array.isArray(element) && element.length > 0) {
-                                element.forEach(function(aStatus) {
-                                    if (aStatus.severity === 1) {
-                                        warningCount += 1;
-                                    }
-                                    if (aStatus.severity === 2) {
-                                        errorCount += 1;
-                                    }
-                                    var message = InfoBox.render(aStatus.severity, aStatus.title, aStatus.message);
-                                    $outputContainer.append(message);
-                                });
-                            }
-                        });
-                        if (errorCount > 0) {
-                            $errorBadge.removeClass('label-warning').addClass('label-danger').text(errorCount).show();
-                        } else if (warningCount > 0) {
-                            $errorBadge.removeClass('label-error').addClass('label-warning').text(warningCount).show();
-                        }
-                    } else {
-                      var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-                      $outputContainer.empty().append(message);
-                    }
-                },
-                error: function(xhr) {
-                    Router.handleAjaxError(xhr);
-                }
-            });
+          }
+        },
+        error: function(xhr) {
+          Router.handleAjaxError(xhr);
         }
-    };
+      });
+    }
+  };
 });

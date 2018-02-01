@@ -16,57 +16,57 @@
  * JavaScript functions for creating multiple pages
  */
 define(['jquery'], function($) {
-	'use strict';
+  'use strict';
 
-	/**
-	 * @type {{lineCounter: number, containerSelector: string, addMoreFieldsButtonSelector: string, doktypeSelector: string}}
-	 * @exports TYPO3/CMS/Backend/NewMultiplePages
-	 */
-	var NewMultiplePages = {
-		lineCounter: 5,
-		containerSelector: '.t3js-newmultiplepages-container',
-		addMoreFieldsButtonSelector: '.t3js-newmultiplepages-createnewfields',
-		doktypeSelector: '.t3js-newmultiplepages-select-doktype',
-		templateRow: '.t3js-newmultiplepages-newlinetemplate'
-	};
+  /**
+   * @type {{lineCounter: number, containerSelector: string, addMoreFieldsButtonSelector: string, doktypeSelector: string}}
+   * @exports TYPO3/CMS/Backend/NewMultiplePages
+   */
+  var NewMultiplePages = {
+    lineCounter: 5,
+    containerSelector: '.t3js-newmultiplepages-container',
+    addMoreFieldsButtonSelector: '.t3js-newmultiplepages-createnewfields',
+    doktypeSelector: '.t3js-newmultiplepages-select-doktype',
+    templateRow: '.t3js-newmultiplepages-newlinetemplate'
+  };
 
-	/**
-	 * Add further input rows
-	 */
-	NewMultiplePages.createNewFormFields = function() {
-		for (var i = 0; i < 5; i++) {
-			var label = NewMultiplePages.lineCounter + i + 1;
-			var line = $(NewMultiplePages.templateRow).html()
-				.replace(/\[0\]/g, (NewMultiplePages.lineCounter + i))
-				.replace(/\[1\]/g, label);
-			$(line).appendTo(NewMultiplePages.containerSelector);
-		}
-		NewMultiplePages.lineCounter += 5;
-	};
+  /**
+   * Add further input rows
+   */
+  NewMultiplePages.createNewFormFields = function() {
+    for (var i = 0; i < 5; i++) {
+      var label = NewMultiplePages.lineCounter + i + 1;
+      var line = $(NewMultiplePages.templateRow).html()
+        .replace(/\[0\]/g, (NewMultiplePages.lineCounter + i))
+        .replace(/\[1\]/g, label);
+      $(line).appendTo(NewMultiplePages.containerSelector);
+    }
+    NewMultiplePages.lineCounter += 5;
+  };
 
-	/**
-	 * @param {Object} $selectElement
-	 */
-	NewMultiplePages.actOnTypeSelectChange = function($selectElement) {
-		var $optionElement = $selectElement.find(':selected');
-		var $target = $($selectElement.data('target'));
-		$target.html($optionElement.data('icon'));
-	};
+  /**
+   * @param {Object} $selectElement
+   */
+  NewMultiplePages.actOnTypeSelectChange = function($selectElement) {
+    var $optionElement = $selectElement.find(':selected');
+    var $target = $($selectElement.data('target'));
+    $target.html($optionElement.data('icon'));
+  };
 
-	/**
-	 * Register listeners
-	 */
-	NewMultiplePages.initializeEvents = function() {
-		$(NewMultiplePages.addMoreFieldsButtonSelector).on('click', function() {
-			NewMultiplePages.createNewFormFields();
-		});
+  /**
+   * Register listeners
+   */
+  NewMultiplePages.initializeEvents = function() {
+    $(NewMultiplePages.addMoreFieldsButtonSelector).on('click', function() {
+      NewMultiplePages.createNewFormFields();
+    });
 
-		$(document).on('change', NewMultiplePages.doktypeSelector, function() {
-			NewMultiplePages.actOnTypeSelectChange($(this));
-		});
-	};
+    $(document).on('change', NewMultiplePages.doktypeSelector, function() {
+      NewMultiplePages.actOnTypeSelectChange($(this));
+    });
+  };
 
-	$(NewMultiplePages.initializeEvents);
+  $(NewMultiplePages.initializeEvents);
 
-	return NewMultiplePages;
+  return NewMultiplePages;
 });

@@ -16,21 +16,21 @@
  * Folder selection
  * @exports TYPO3/CMS/Recordlist/BrowseFolders
  */
-define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], function ($, ElementBrowser, Modal, Severity) {
-	'use strict';
+define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], function($, ElementBrowser, Modal, Severity) {
+  'use strict';
 
-	$(function() {
-		$('[data-folder-id]').on('click', function (event) {
-			event.preventDefault();
-			var folderId = $(this).data('folderId');
-			var close = $(this).data('close');
-			ElementBrowser.insertElement('', folderId, 'folder', folderId, folderId, '', '', '', close);
-		});
+  $(function() {
+    $('[data-folder-id]').on('click', function(event) {
+      event.preventDefault();
+      var folderId = $(this).data('folderId');
+      var close = $(this).data('close');
+      ElementBrowser.insertElement('', folderId, 'folder', folderId, folderId, '', '', '', close);
+    });
 
-		$('.t3js-folderIdError').on('click', function (event) {
-			event.preventDefault();
-			Modal.confirm('', $(this).data('message'), Severity.error, [], []);
-		});
-	});
+    $('.t3js-folderIdError').on('click', function(event) {
+      event.preventDefault();
+      Modal.confirm('', $(this).data('message'), Severity.error, [], []);
+    });
+  });
 
 });

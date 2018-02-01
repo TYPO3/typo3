@@ -16,53 +16,52 @@
  * API for tooltip windows powered by Twitter Bootstrap.
  */
 define(['jquery', 'bootstrap'], function($) {
-	'use strict';
+  'use strict';
 
-	/**
-	 * The main tooltip object
-	 *
-	 * @type {{}}
-	 * @exports TYPO3/CMS/Backend/Tooltip
-	 */
-	var Tooltip = {
-	};
+  /**
+   * The main tooltip object
+   *
+   * @type {{}}
+   * @exports TYPO3/CMS/Backend/Tooltip
+   */
+  var Tooltip = {};
 
-	/**
-	 * Initialize
-	 */
-	Tooltip.initialize = function(selector, options) {
-		options = options || {};
-		$(selector).tooltip(options);
-	};
+  /**
+   * Initialize
+   */
+  Tooltip.initialize = function(selector, options) {
+    options = options || {};
+    $(selector).tooltip(options);
+  };
 
-	/**
-	 * Show tooltip on $element
-	 *
-	 * @param {Object} $element
-	 * @param {String} title
-	 */
-	Tooltip.show = function($element, title) {
-		$element
-			.attr('data-placement', 'auto')
-			.attr('data-title', title)
-			.tooltip('show');
-	};
+  /**
+   * Show tooltip on $element
+   *
+   * @param {Object} $element
+   * @param {String} title
+   */
+  Tooltip.show = function($element, title) {
+    $element
+      .attr('data-placement', 'auto')
+      .attr('data-title', title)
+      .tooltip('show');
+  };
 
-	/**
-	 * Hide tooltip on $element
-	 *
-	 * @param {Object} $element
-	 */
-	Tooltip.hide = function($element) {
-		$element.tooltip('hide');
-	};
+  /**
+   * Hide tooltip on $element
+   *
+   * @param {Object} $element
+   */
+  Tooltip.hide = function($element) {
+    $element.tooltip('hide');
+  };
 
-	$(function () {
-		Tooltip.initialize('[data-toggle="tooltip"]');
-	});
+  $(function() {
+    Tooltip.initialize('[data-toggle="tooltip"]');
+  });
 
-	// expose as global object
-	TYPO3.Tooltip = Tooltip;
+  // expose as global object
+  TYPO3.Tooltip = Tooltip;
 
-	return Tooltip;
+  return Tooltip;
 });

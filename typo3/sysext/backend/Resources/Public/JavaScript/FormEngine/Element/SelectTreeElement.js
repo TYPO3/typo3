@@ -15,14 +15,14 @@
  * Initialization of the selectTree js component used e.g. for category tree rendering
  */
 define(['jquery', 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree'],
-  function ($, SelectTree) {
+  function($, SelectTree) {
     'use strict';
 
     var SelectTreeElement = {};
 
-    SelectTreeElement.initialize = function () {
-      $(document).ready(function () {
-        $('.typo3-tceforms-tree .treeRecord').each(function (i, element) {
+    SelectTreeElement.initialize = function() {
+      $(document).ready(function() {
+        $('.typo3-tceforms-tree .treeRecord').each(function(i, element) {
 
           /**
            * Hidden input field storing selected elements.
@@ -43,7 +43,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree'],
             flexFormContainerIdentifier: $treeInput.data('flexformcontaineridentifier'),
             flexFormContainerFieldName: $treeInput.data('flexformcontainerfieldname'),
             flexFormSectionContainerIsNew: $treeInput.data('flexformsectioncontainerisnew'),
-            command: $treeInput.data('command'),
+            command: $treeInput.data('command')
           };
           var $wrapper = $treeInput.parent().siblings('.svg-tree-wrapper');
           var dataUrl = TYPO3.settings.ajaxUrls.record_tree_data + '&' + $.param(dataParams);
@@ -56,7 +56,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree'],
             input: $treeInput,
             exclusiveNodesIdentifiers: $treeInput.data('tree-exclusive-keys'),
             validation: $treeInput.data('formengine-validation-rules')[0],
-            expandUpToLevel: $treeInput.data('tree-expand-up-to-level'),
+            expandUpToLevel: $treeInput.data('tree-expand-up-to-level')
           });
           if (!initialized) {
             return;
@@ -65,7 +65,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree'],
           tree.dispatch.on('nodeSelectedAfter.requestUpdate', window[$wrapper.attr('id')]);
 
           if ($treeInput.data('tree-show-toolbar')) {
-            require(['TYPO3/CMS/Backend/FormEngine/Element/TreeToolbar'], function (TreeToolbar) {
+            require(['TYPO3/CMS/Backend/FormEngine/Element/TreeToolbar'], function(TreeToolbar) {
               var selectTreeToolbar = new TreeToolbar();
               selectTreeToolbar.initialize($wrapper);
             });

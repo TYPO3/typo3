@@ -23,16 +23,16 @@ define(
     'TYPO3/CMS/Backend/Severity',
     'TYPO3/CMS/Backend/Notification',
     'TYPO3/CMS/Backend/Icons',
-    'TYPO3/CMS/Lang/Lang',
+    'TYPO3/CMS/Lang/Lang'
   ],
-  function ($, d3, ContextMenu, Modal, Severity, Notification, Icons) {
+  function($, d3, ContextMenu, Modal, Severity, Notification, Icons) {
     'use strict';
 
     /**
      * @constructor
      * @exports SvgTree
      */
-    var SvgTree = function () {
+    var SvgTree = function() {
       this.settings = {
         showCheckboxes: false,
         showIcons: false,
@@ -45,7 +45,7 @@ define(
         dataUrl: '',
         nodeOver: {},
         validation: {
-          maxItems: Number.MAX_VALUE,
+          maxItems: Number.MAX_VALUE
         },
         unselectableElements: [],
         expandUpToLevel: null,
@@ -53,7 +53,7 @@ define(
         /**
          * List node identifiers which can not be selected together with any other node
          */
-        exclusiveNodesIdentifiers: '',
+        exclusiveNodesIdentifiers: ''
       };
 
       /**
@@ -154,7 +154,7 @@ define(
        * @param {String} selector
        * @param {Object} settings
        */
-      initialize: function (selector, settings) {
+      initialize: function(selector, settings) {
         var $wrapper = $(selector);
 
         // Do nothing if already initialized
@@ -191,10 +191,10 @@ define(
         this.svg = this.d3wrapper.append('svg')
           .attr('version', '1.1')
           .attr('width', '100%')
-          .on('mouseover', function () {
+          .on('mouseover', function() {
             _this.isOverSvg = true;
           })
-          .on('mouseout', function () {
+          .on('mouseout', function() {
             _this.isOverSvg = false;
           });
 
@@ -216,7 +216,7 @@ define(
         this.updateScrollPosition();
         this.loadData();
 
-        this.wrapper.on('resize scroll', function () {
+        this.wrapper.on('resize scroll', function() {
           _this.updateScrollPosition();
           _this.update();
         });
@@ -232,10 +232,10 @@ define(
       /**
        * Update svg tree after changed window height
        */
-      resize: function () {
+      resize: function() {
         var _this = this;
 
-        $(window).resize(function () {
+        $(window).resize(function() {
           _this.setWrapperHeight();
           _this.updateScrollPosition();
           _this.update();
@@ -245,7 +245,7 @@ define(
       /**
        * Set svg wrapper height
        */
-      setWrapperHeight: function () {
+      setWrapperHeight: function() {
         var treeWrapperHeight = ($('#typo3-pagetree').height() - $('#svg-toolbar').height());
         $('#typo3-pagetree-tree').height(treeWrapperHeight);
       },
@@ -253,7 +253,7 @@ define(
       /**
        * Updates variables used for visible nodes calculation
        */
-      updateScrollPosition: function () {
+      updateScrollPosition: function() {
         this.viewportHeight = this.wrapper.height();
         this.scrollTop = this.wrapper.scrollTop();
         this.scrollBottom = this.scrollTop + this.viewportHeight + (this.viewportHeight / 2);
@@ -262,17 +262,17 @@ define(
       /**
        * Loads tree data (json) from configured url
        */
-      loadData: function () {
+      loadData: function() {
         var _this = this;
         _this.nodesAddPlaceholder();
 
-        d3.json(this.settings.dataUrl, function (error, json) {
+        d3.json(this.settings.dataUrl, function(error, json) {
           if (error) {
             var title = TYPO3.lang.pagetree_networkErrorTitle;
             var desc = TYPO3.lang.pagetree_networkErrorDesc;
 
             if (error && error.target && (error.target.status || error.target.statusText)) {
-              title += ' - ' + (error.target.status || '')  + ' ' + (error.target.statusText || '');
+              title += ' - ' + (error.target.status || '') + ' ' + (error.target.statusText || '');
             }
 
             Notification.error(
@@ -294,7 +294,7 @@ define(
        *
        * @param {Node[]} nodes
        */
-      replaceData: function (nodes) {
+      replaceData: function(nodes) {
         var _this = this;
 
         _this.setParametersNode(nodes);
@@ -311,11 +311,11 @@ define(
        *
        * @param {Node[]} nodes
        */
-      setParametersNode: function (nodes) {
+      setParametersNode: function(nodes) {
         var _this = this;
 
         nodes = nodes || this.nodes;
-        nodes = nodes.map(function (node, index) {
+        nodes = nodes.map(function(node, index) {
           node.expanded = (_this.settings.expandUpToLevel !== null) ? node.depth < _this.settings.expandUpToLevel : Boolean(node.expanded);
           node.parents = [];
           node.parentsStateIdentifier = [];
@@ -353,14 +353,14 @@ define(
         _this.nodes = nodes;
       },
 
-      nodesRemovePlaceholder: function () {
+      nodesRemovePlaceholder: function() {
         $('.svg-tree').find('.node-loader').hide();
         $('.svg-tree').find('.svg-tree-loader').hide();
       },
 
-      nodesAddPlaceholder: function (node) {
+      nodesAddPlaceholder: function(node) {
         if (node) {
-          $('.svg-tree').find('.node-loader').css({ top: node.y + this.settings.marginTop }).show();
+          $('.svg-tree').find('.node-loader').css({top: node.y + this.settings.marginTop}).show();
         } else {
           $('.svg-tree').find('.svg-tree-loader').show();
         }
@@ -371,18 +371,18 @@ define(
        * and enriches dataset with additional properties
        * Visible dataset is stored in this.data
        */
-      prepareDataForVisibleNodes: function () {
+      prepareDataForVisibleNodes: function() {
         var _this = this;
 
         var blacklist = {};
-        this.nodes.map(function (node, index) {
+        this.nodes.map(function(node, index) {
           if (!node.expanded) {
             blacklist[index] = true;
           }
         });
 
-        this.data.nodes = this.nodes.filter(function (node) {
-          return node.hidden !== true && !node.parents.some(function (index) {
+        this.data.nodes = this.nodes.filter(function(node) {
+          return node.hidden !== true && !node.parents.some(function(index) {
             return Boolean(blacklist[index]);
           });
         });
@@ -390,7 +390,7 @@ define(
         this.data.links = [];
         var pathAboveMounts = 0;
 
-        this.data.nodes.forEach(function (n, i) {
+        this.data.nodes.forEach(function(n, i) {
           // delete n.children;
           n.x = n.depth * _this.settings.indentWidth;
 
@@ -402,7 +402,7 @@ define(
           if (n.parents[0] !== undefined) {
             _this.data.links.push({
               source: _this.nodes[n.parents[0]],
-              target: n,
+              target: n
             });
           }
 
@@ -421,7 +421,7 @@ define(
        * @param {String} iconName
        * @param {Boolean} update
        */
-      fetchIcon: function (iconName, update) {
+      fetchIcon: function(iconName, update) {
         if (!iconName) {
           return;
         }
@@ -434,9 +434,9 @@ define(
         if (!(iconName in this.data.icons)) {
           this.data.icons[iconName] = {
             identifier: iconName,
-            icon: '',
+            icon: ''
           };
-          Icons.getIcon(iconName, Icons.sizes.small, null, null, 'inline').done(function (icon) {
+          Icons.getIcon(iconName, Icons.sizes.small, null, null, 'inline').done(function(icon) {
             var result = icon.match(/<svg[\s\S]*<\/svg>/i);
 
             // Check if the icon is from the Bitmap Icon Provider (see PHP class for the inline rendering)
@@ -458,17 +458,17 @@ define(
       /**
        * Renders the subset of the tree nodes fitting the viewport (adding, modifying and removing SVG nodes)
        */
-      update: function () {
+      update: function() {
         var _this = this;
         var visibleRows = Math.ceil(_this.viewportHeight / _this.settings.nodeHeight + 1);
         var position = Math.floor(Math.max(_this.scrollTop, 0) / _this.settings.nodeHeight);
 
         var visibleNodes = this.data.nodes.slice(position, position + visibleRows);
-        var nodes = this.nodesContainer.selectAll('.node').data(visibleNodes, function (d) {
+        var nodes = this.nodesContainer.selectAll('.node').data(visibleNodes, function(d) {
           return d.stateIdentifier;
         });
 
-        var nodesBg = this.nodesBgContainer.selectAll('.node-bg').data(visibleNodes, function (d) {
+        var nodesBg = this.nodesBgContainer.selectAll('.node-bg').data(visibleNodes, function(d) {
           return d.stateIdentifier;
         });
 
@@ -486,10 +486,10 @@ define(
         var nodeBgClass = this.updateNodeBgClass(nodesBg);
 
         nodeBgClass
-          .attr('class', function (node, i) {
+          .attr('class', function(node, i) {
             return _this.getNodeBgClass(node, i, nodeBgClass);
           })
-          .attr('style', function (node) {
+          .attr('style', function(node) {
             return node.backgroundColor ? 'fill: ' + node.backgroundColor + ';' : '';
           });
 
@@ -529,7 +529,7 @@ define(
        * @param {Node} nodesBg
        * @returns {Node} nodesBg
        */
-      updateNodeBgClass: function (nodesBg) {
+      updateNodeBgClass: function(nodesBg) {
         var _this = this;
 
         return nodesBg.enter()
@@ -539,17 +539,17 @@ define(
           .attr('height', this.settings.nodeHeight)
           .attr('data-state-id', this.getNodeStateIdentifier)
           .attr('transform', this.getNodeBgTransform)
-          .on('mouseover', function (node) {
+          .on('mouseover', function(node) {
             _this.nodeBgEvents().mouseOver(node, this);
           })
-          .on('mouseout', function (node) {
+          .on('mouseout', function(node) {
             _this.nodeBgEvents().mouseOut(node, this);
           })
-          .on('click', function (node) {
+          .on('click', function(node) {
             _this.nodeBgEvents().click(node, this);
             _this.selectNode(node);
           })
-          .on('contextmenu', function (node) {
+          .on('contextmenu', function(node) {
             _this.dispatch.call('nodeRightClick', node, this);
           });
       },
@@ -558,11 +558,11 @@ define(
        * node background events
        *
        */
-      nodeBgEvents: function () {
+      nodeBgEvents: function() {
         var _this = this;
         var self = {};
 
-        self.mouseOver = function (node, element) {
+        self.mouseOver = function(node, element) {
           var elementNodeBg = _this.svg.select('.nodes-bg .node-bg[data-state-id="' + node.stateIdentifier + '"]');
 
           node.isOver = true;
@@ -576,7 +576,7 @@ define(
           }
         };
 
-        self.mouseOut = function (node, element) {
+        self.mouseOut = function(node, element) {
           var elementNodeBg = _this.svg.select('.nodes-bg .node-bg[data-state-id="' + node.stateIdentifier + '"]');
 
           node.isOver = false;
@@ -590,10 +590,10 @@ define(
           }
         };
 
-        self.click = function (node, element) {
+        self.click = function(node, element) {
           var $nodeBg = $(element).closest('svg').find('.nodes-bg .node-bg[data-state-id=' + node.stateIdentifier + ']');
 
-          _this.nodes.forEach(function (node) {
+          _this.nodes.forEach(function(node) {
             if (node.selected === true) {
               node.selected = false;
             }
@@ -615,9 +615,9 @@ define(
       /**
        * Renders links(lines) between parent and child nodes
        */
-      updateLinks: function () {
+      updateLinks: function() {
         var _this = this;
-        var visibleLinks = this.data.links.filter(function (linkData) {
+        var visibleLinks = this.data.links.filter(function(linkData) {
           return linkData.source.y <= _this.scrollBottom && linkData.target.y >= _this.scrollTop;
         });
 
@@ -646,18 +646,18 @@ define(
        * @param {Selection} nodes
        * @returns {Selection}
        */
-      enterSvgElements: function (nodes) {
+      enterSvgElements: function(nodes) {
         var _this = this;
         this.textPosition = 10;
 
         if (this.settings.showIcons) {
-          var iconsArray = $.map(this.data.icons, function (value) {
+          var iconsArray = $.map(this.data.icons, function(value) {
             if (value.icon !== '') return value;
           });
 
           var icons = this.iconsContainer
             .selectAll('.icon-def')
-            .data(iconsArray, function (i) {
+            .data(iconsArray, function(i) {
               return i.stateIdentifier;
             });
 
@@ -665,10 +665,10 @@ define(
             .enter()
             .append('g')
             .attr('class', 'icon-def')
-            .attr('id', function (i) {
+            .attr('id', function(i) {
               return 'icon-' + i.identifier;
             })
-            .append(function (i) {
+            .append(function(i) {
               // workaround for IE11 where you can't simply call .html(content) on svg
               var parser = new DOMParser();
               var markupText = i.icon.replace('<svg', '<g').replace('/svg>', '/g>');
@@ -687,7 +687,7 @@ define(
           .attr('class', 'toggle')
           .attr('visibility', this.getToggleVisibility)
           .attr('transform', 'translate(-8, -8)')
-          .on('click', function (node) {
+          .on('click', function(node) {
             _this.chevronClick(node);
           });
 
@@ -710,7 +710,7 @@ define(
             .attr('y', -8)
             .attr('class', 'node-icon')
             .attr('data-uid', this.getNodeIdentifier)
-            .on('click', function (node) {
+            .on('click', function(node) {
               _this.clickOnIcon(node, this);
             });
 
@@ -719,7 +719,7 @@ define(
             .attr('x', 8)
             .attr('y', -3)
             .attr('class', 'node-icon-overlay')
-            .on('click', function (node) {
+            .on('click', function(node) {
               _this.clickOnIcon(node, this);
             });
         }
@@ -741,7 +741,7 @@ define(
        * @param {Node} node
        * @returns {Node} node
        */
-      appendTextElement: function (node) {
+      appendTextElement: function(node) {
         var _this = this;
 
         return node
@@ -749,7 +749,7 @@ define(
           .attr('dx', this.textPosition)
           .attr('dy', 5)
           .attr('class', 'node-name')
-          .on('click', function (node) {
+          .on('click', function(node) {
             _this.clickOnLabel(node, this);
             _this.nodeBgEvents().click(node, this);
             _this.selectNode(node);
@@ -760,7 +760,7 @@ define(
        * @param {Node} nodes
        * @returns {Node} nodes
        */
-      nodesUpdate: function (nodes) {
+      nodesUpdate: function(nodes) {
         var _this = this;
 
         nodes = nodes
@@ -771,25 +771,25 @@ define(
           .attr('data-table', 'pages')
           .attr('data-state-id', this.getNodeStateIdentifier)
           .attr('title', this.getNodeTitle)
-          .on('mouseover', function (node) {
+          .on('mouseover', function(node) {
             _this.nodeBgEvents().mouseOver(node, this);
           })
-          .on('mouseout', function (node) {
+          .on('mouseout', function(node) {
             _this.nodeBgEvents().mouseOut(node, this);
           })
-          .on('contextmenu', function (node) {
+          .on('contextmenu', function(node) {
             _this.dispatch.call('nodeRightClick', node, this);
           });
 
         var nodeStop = nodes
           .append('text')
-          .text(function (node) {
+          .text(function(node) {
             return node.readableRootline;
           })
           .attr('class', 'node-rootline')
           .attr('dx', 0)
           .attr('dy', -15)
-          .attr('visibility', function (node) {
+          .attr('visibility', function(node) {
             return node.readableRootline ? 'visible' : 'hidden';
           });
 
@@ -802,7 +802,7 @@ define(
        * @param {Node} node
        * @returns {String}
        */
-      getNodeIdentifier: function (node) {
+      getNodeIdentifier: function(node) {
         return node.identifier;
       },
 
@@ -812,7 +812,7 @@ define(
        * @param {Node} node
        * @returns {String}
        */
-      getNodeStateIdentifier: function (node) {
+      getNodeStateIdentifier: function(node) {
         return node.stateIdentifier;
       },
 
@@ -822,7 +822,7 @@ define(
        * @param {Node} node
        * @returns {String}
        */
-      getNodeLabel: function (node) {
+      getNodeLabel: function(node) {
         return (node.prefix || '') + node.name + (node.suffix || '');
       },
 
@@ -832,7 +832,7 @@ define(
        * @param {Node} node
        * @returns {String}
        */
-      getNodeClass: function (node) {
+      getNodeClass: function(node) {
         return 'node identifier-' + node.stateIdentifier;
       },
 
@@ -844,7 +844,7 @@ define(
        * @param {Object} nodeBgClass
        * @returns {String}
        */
-      getNodeBgClass: function (node, i, nodeBgClass) {
+      getNodeBgClass: function(node, i, nodeBgClass) {
         var bgClass = 'node-bg';
         var prevNode = false;
         var nextNode = false;
@@ -881,7 +881,7 @@ define(
        * @param {Node} node
        * @returns {String}
        */
-      getNodeTitle: function (node) {
+      getNodeTitle: function(node) {
         return node.tip ? node.tip : 'uid=' + node.identifier;
       },
 
@@ -891,7 +891,7 @@ define(
        * @param {Node} node
        * @returns {String}
        */
-      getChevronTransform: function (node) {
+      getChevronTransform: function(node) {
         return node.expanded ? 'translate(16,0) rotate(90)' : ' rotate(0)';
       },
 
@@ -901,7 +901,7 @@ define(
        * @param {Node} node
        * @returns {String}
        */
-      getChevronColor: function (node) {
+      getChevronColor: function(node) {
         return node.expanded ? '#000' : '#8e8e8e';
       },
 
@@ -911,7 +911,7 @@ define(
        * @param {Node} node
        * @returns {String}
        */
-      getToggleVisibility: function (node) {
+      getToggleVisibility: function(node) {
         return node.hasChildren ? 'visible' : 'hidden';
       },
 
@@ -921,7 +921,7 @@ define(
        * @param {Node} node
        * @returns {String}
        */
-      getChevronClass: function (node) {
+      getChevronClass: function(node) {
         return 'chevron ' + (node.expanded ? 'expanded' : 'collapsed');
       },
 
@@ -931,7 +931,7 @@ define(
        * @param {Node} node
        * @returns {String}
        */
-      getIconId: function (node) {
+      getIconId: function(node) {
         return '#icon-' + node.icon;
       },
 
@@ -941,7 +941,7 @@ define(
        * @param {Node} node
        * @returns {String}
        */
-      getIconOverlayId: function (node) {
+      getIconOverlayId: function(node) {
         return '#icon-' + node.overlayIcon;
       },
 
@@ -951,10 +951,10 @@ define(
        * @param {Object} link
        * @returns {String}
        */
-      getLinkPath: function (link) {
+      getLinkPath: function(link) {
         var target = {
           x: link.target._isDragged ? link.target._x : link.target.x,
-          y: link.target._isDragged ? link.target._y : link.target.y,
+          y: link.target._isDragged ? link.target._y : link.target.y
         };
         var path = [];
         path.push('M' + link.source.x + ' ' + link.source.y);
@@ -973,7 +973,7 @@ define(
        *
        * @param {Node} node
        */
-      getNodeTransform: function (node) {
+      getNodeTransform: function(node) {
         return 'translate(' + (node.x || 0) + ',' + (node.y || 0) + ')';
       },
 
@@ -982,7 +982,7 @@ define(
        *
        * @param {Node} node
        */
-      getNodeBgTransform: function (node) {
+      getNodeBgTransform: function(node) {
         return 'translate(-8, ' + ((node.y || 0) - 10) + ')';
       },
 
@@ -991,7 +991,7 @@ define(
        *
        * @param {Node} node
        */
-      selectNode: function (node) {
+      selectNode: function(node) {
         if (!this.isNodeSelectable(node)) {
           return;
         }
@@ -1019,14 +1019,14 @@ define(
        *
        * @param {Node} node
        */
-      handleExclusiveNodeSelection: function (node) {
+      handleExclusiveNodeSelection: function(node) {
         var exclusiveKeys = this.settings.exclusiveNodesIdentifiers.split(',');
         var _this = this;
         if (this.settings.exclusiveNodesIdentifiers.length && node.checked === false) {
           if (exclusiveKeys.indexOf('' + node.identifier) > -1) {
 
             // this key is exclusive, so uncheck all others
-            this.nodes.forEach(function (node) {
+            this.nodes.forEach(function(node) {
               if (node.checked === true) {
                 node.checked = false;
                 _this.dispatch.call('nodeSelectedAfter', _this, node);
@@ -1052,7 +1052,7 @@ define(
        * @param {Node} node
        * @returns {Boolean}
        */
-      isNodeSelectable: function (node) {
+      isNodeSelectable: function(node) {
         return !this.settings.readOnlyMode && this.settings.unselectableElements.indexOf(node.identifier) === -1;
       },
 
@@ -1061,8 +1061,8 @@ define(
        *
        * @returns {Node[]}
        */
-      getSelectedNodes: function () {
-        return this.nodes.filter(function (node) {
+      getSelectedNodes: function() {
+        return this.nodes.filter(function(node) {
           return node.checked;
         });
       },
@@ -1073,7 +1073,7 @@ define(
        * @param {Node} node
        * @param {HTMLElement} element
        */
-      clickOnIcon: function (node, element) {
+      clickOnIcon: function(node, element) {
         this.dispatch.call('contextmenu', node, element);
       },
 
@@ -1083,7 +1083,7 @@ define(
        * @param {Node} node
        * @param {HTMLElement} element
        */
-      clickOnLabel: function (node, element) {
+      clickOnLabel: function(node, element) {
         this.selectNode(node);
         this.nodeBgEvents().click(node, element);
       },
@@ -1093,7 +1093,7 @@ define(
        *
        * @param {Node} node
        */
-      chevronClick: function (node) {
+      chevronClick: function(node) {
         if (node.expanded) {
           this.hideChildren(node);
         } else {
@@ -1109,7 +1109,7 @@ define(
        *
        * @param {Node} node
        */
-      hideChildren: function (node) {
+      hideChildren: function(node) {
         node.expanded = false;
       },
 
@@ -1118,21 +1118,21 @@ define(
        *
        * @param {Node} node
        */
-      showChildren: function (node) {
+      showChildren: function(node) {
         node.expanded = true;
       },
 
       /**
        * Refresh view with new data
        */
-      refreshTree: function () {
+      refreshTree: function() {
         this.loadData();
       },
 
       /**
        * Expand all nodes and refresh view
        */
-      expandAll: function () {
+      expandAll: function() {
         this.nodes.forEach(this.showChildren.bind(this));
         this.prepareDataForVisibleNodes();
         this.update();
@@ -1141,11 +1141,11 @@ define(
       /**
        * Collapse all nodes recursively and refresh view
        */
-      collapseAll: function () {
+      collapseAll: function() {
         this.nodes.forEach(this.hideChildren.bind(this));
         this.prepareDataForVisibleNodes();
         this.update();
-      },
+      }
     };
 
     return SvgTree;

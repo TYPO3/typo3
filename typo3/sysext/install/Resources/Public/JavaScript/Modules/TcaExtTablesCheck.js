@@ -15,61 +15,61 @@
  * Module: TYPO3/CMS/Install/TcaExtTablesCheck
  */
 define([
-	'jquery',
-	'TYPO3/CMS/Install/Router',
-	'TYPO3/CMS/Install/FlashMessage',
-	'TYPO3/CMS/Install/ProgressBar',
-	'TYPO3/CMS/Install/InfoBox',
-	'TYPO3/CMS/Install/Severity'
+  'jquery',
+  'TYPO3/CMS/Install/Router',
+  'TYPO3/CMS/Install/FlashMessage',
+  'TYPO3/CMS/Install/ProgressBar',
+  'TYPO3/CMS/Install/InfoBox',
+  'TYPO3/CMS/Install/Severity'
 ], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
-	'use strict';
+  'use strict';
 
-	return {
-		selectorCheckTrigger: '.t3js-tcaExtTablesCheck-check',
-		selectorOutputContainer: '.t3js-tcaExtTablesCheck-output',
+  return {
+    selectorCheckTrigger: '.t3js-tcaExtTablesCheck-check',
+    selectorOutputContainer: '.t3js-tcaExtTablesCheck-output',
 
-		initialize: function() {
-			var self = this;
-			$(document).on('click', this.selectorCheckTrigger, function(e) {
-				e.preventDefault();
-				self.check();
-			});
-		},
+    initialize: function() {
+      var self = this;
+      $(document).on('click', this.selectorCheckTrigger, function(e) {
+        e.preventDefault();
+        self.check();
+      });
+    },
 
-		check: function() {
-			var $outputContainer = $(this.selectorOutputContainer);
-			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-			$outputContainer.empty().html(message);
-			$.ajax({
-				url: Router.getUrl('tcaExtTablesCheck'),
-				cache: false,
-				success: function (data) {
-					if (data.success === true && Array.isArray(data.status)) {
-						if (data.status.length > 0) {
-							var message = InfoBox.render(
-								Severity.warning,
-								'Extensions change TCA in ext_tables.php',
-								'Check for ExtensionManagementUtility and $GLOBALS["TCA"]'
-							);
-							$outputContainer.empty();
-							$outputContainer.append(message);
-							data.status.forEach(function (element) {
-								var message = InfoBox.render(element.severity, element.title, element.message);
-								$outputContainer.append(message);
-							});
-						} else {
-							var message = InfoBox.render(Severity.ok, 'No TCA changes in ext_tables.php files. Good job!', '');
-							$outputContainer.empty().html(message);
-						}
-					} else {
-						var message = FlashMessage.render(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"');
-						$outputContainer.empty().html(message);
-					}
-				},
-				error: function(xhr) {
-					Router.handleAjaxError(xhr);
-				}
-			});
-		}
-	};
+    check: function() {
+      var $outputContainer = $(this.selectorOutputContainer);
+      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
+      $outputContainer.empty().html(message);
+      $.ajax({
+        url: Router.getUrl('tcaExtTablesCheck'),
+        cache: false,
+        success: function(data) {
+          if (data.success === true && Array.isArray(data.status)) {
+            if (data.status.length > 0) {
+              var message = InfoBox.render(
+                Severity.warning,
+                'Extensions change TCA in ext_tables.php',
+                'Check for ExtensionManagementUtility and $GLOBALS["TCA"]'
+              );
+              $outputContainer.empty();
+              $outputContainer.append(message);
+              data.status.forEach(function(element) {
+                var message = InfoBox.render(element.severity, element.title, element.message);
+                $outputContainer.append(message);
+              });
+            } else {
+              var message = InfoBox.render(Severity.ok, 'No TCA changes in ext_tables.php files. Good job!', '');
+              $outputContainer.empty().html(message);
+            }
+          } else {
+            var message = FlashMessage.render(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"');
+            $outputContainer.empty().html(message);
+          }
+        },
+        error: function(xhr) {
+          Router.handleAjaxError(xhr);
+        }
+      });
+    }
+  };
 });

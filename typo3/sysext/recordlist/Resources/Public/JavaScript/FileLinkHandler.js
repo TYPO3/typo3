@@ -16,40 +16,40 @@
  * File link interaction
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyTree'], function($, LinkBrowser, Tree) {
-	'use strict';
+  'use strict';
 
-	/**
-	 *
-	 * @type {{currentLink: string}}
-	 * @exports TYPO3/CMS/Recordlist/FileLinkHandler
-	 */
-	var FileLinkHandler = {
-		currentLink: ''
-	};
+  /**
+   *
+   * @type {{currentLink: string}}
+   * @exports TYPO3/CMS/Recordlist/FileLinkHandler
+   */
+  var FileLinkHandler = {
+    currentLink: ''
+  };
 
-	/**
-	 *
-	 * @param {Event} event
-	 */
-	FileLinkHandler.linkFile = function(event) {
-		event.preventDefault();
-		LinkBrowser.finalizeFunction($(this).attr('href'));
-	};
+  /**
+   *
+   * @param {Event} event
+   */
+  FileLinkHandler.linkFile = function(event) {
+    event.preventDefault();
+    LinkBrowser.finalizeFunction($(this).attr('href'));
+  };
 
-	/**
-	 *
-	 * @param {Event} event
-	 */
-	FileLinkHandler.linkCurrent = function(event) {
-		event.preventDefault();
-		LinkBrowser.finalizeFunction(FileLinkHandler.currentLink);
-	};
+  /**
+   *
+   * @param {Event} event
+   */
+  FileLinkHandler.linkCurrent = function(event) {
+    event.preventDefault();
+    LinkBrowser.finalizeFunction(FileLinkHandler.currentLink);
+  };
 
-	$(function() {
-		FileLinkHandler.currentLink = $('body').data('currentLink');
-		$('a.t3js-fileLink').on('click', FileLinkHandler.linkFile);
-		$('input.t3js-linkCurrent').on('click', FileLinkHandler.linkCurrent);
-	});
+  $(function() {
+    FileLinkHandler.currentLink = $('body').data('currentLink');
+    $('a.t3js-fileLink').on('click', FileLinkHandler.linkFile);
+    $('input.t3js-linkCurrent').on('click', FileLinkHandler.linkCurrent);
+  });
 
-	return FileLinkHandler;
+  return FileLinkHandler;
 });

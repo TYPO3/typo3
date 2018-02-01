@@ -21,16 +21,16 @@ define(['jquery',
     'TYPO3/CMS/Backend/SvgTree',
     'TYPO3/CMS/Backend/ContextMenu',
     'TYPO3/CMS/Backend/Storage/Persistent',
-    'TYPO3/CMS/Backend/Notification',
+    'TYPO3/CMS/Backend/Notification'
   ],
-  function ($, d3, Icons, PageTreeDragDrop, SvgTree, ContextMenu, Persistent, Notification) {
+  function($, d3, Icons, PageTreeDragDrop, SvgTree, ContextMenu, Persistent, Notification) {
     'use strict';
 
     /**
      * @constructor
      * @exports TYPO3/CMS/Backend/PageTree/PageTree
      */
-    var PageTree = function () {
+    var PageTree = function() {
       SvgTree.call(this);
     };
 
@@ -43,7 +43,7 @@ define(['jquery',
      * @param {String} selector
      * @param {Object} settings
      */
-    PageTree.prototype.initialize = function (selector, settings) {
+    PageTree.prototype.initialize = function(selector, settings) {
       var _this = this;
 
       if (!_super_.initialize.call(_this, selector, settings)) {
@@ -68,7 +68,7 @@ define(['jquery',
     /**
      * Add mount point
      */
-    PageTree.prototype.addMountPoint = function (breadcrumb) {
+    PageTree.prototype.addMountPoint = function(breadcrumb) {
       var _this = this;
 
       if (_this.wrapper.parent().find('.node-mount-point').length) {
@@ -77,24 +77,24 @@ define(['jquery',
 
       _this.mountPoint = _this.wrapper.before(
         '<div class="node-mount-point">' +
-          '<div class="node-mount-point__icon" data-tree-icon="actions-document-info"></div>' +
-          '<div class="node-mount-point__text"><div>' + breadcrumb + '</div></div>' +
-          '<div class="node-mount-point__icon" data-tree-icon="actions-close" title="' + TYPO3.lang['labels.temporaryDBmount'] + '"></div>' +
+        '<div class="node-mount-point__icon" data-tree-icon="actions-document-info"></div>' +
+        '<div class="node-mount-point__text"><div>' + breadcrumb + '</div></div>' +
+        '<div class="node-mount-point__icon" data-tree-icon="actions-close" title="' + TYPO3.lang['labels.temporaryDBmount'] + '"></div>' +
         '</div>'
       );
 
       _this.wrapper.parent()
         .find('[data-tree-icon=actions-close]')
-        .on('click', function () {
+        .on('click', function() {
           top.TYPO3.Backend.NavigationContainer.PageTree.unsetTemporaryMountPoint();
           _this.wrapper.parent().find('.node-mount-point').remove();
         });
 
       //get icons
-      _this.wrapper.parent().find('.node-mount-point [data-tree-icon]').each(function () {
+      _this.wrapper.parent().find('.node-mount-point [data-tree-icon]').each(function() {
         var $this = $(this);
 
-        Icons.getIcon($this.attr('data-tree-icon'), Icons.sizes.small, null, null, 'inline').done(function (icon) {
+        Icons.getIcon($this.attr('data-tree-icon'), Icons.sizes.small, null, null, 'inline').done(function(icon) {
           $this.append(icon);
         });
       });
@@ -105,19 +105,19 @@ define(['jquery',
      *
      * @param error
      */
-    PageTree.prototype.errorNotification = function (error) {
+    PageTree.prototype.errorNotification = function(error) {
       var title = TYPO3.lang.pagetree_networkErrorTitle;
       var desc = TYPO3.lang.pagetree_networkErrorDesc;
 
       if (error && error.target && (error.target.status || error.target.statusText)) {
-        title += ' - ' + (error.target.status || '')  + ' ' + (error.target.statusText || '');
+        title += ' - ' + (error.target.status || '') + ' ' + (error.target.statusText || '');
       }
 
       Notification.error(title, desc);
       this.loadData();
     };
 
-    PageTree.prototype.sendChangeCommand = function (data) {
+    PageTree.prototype.sendChangeCommand = function(data) {
       var _this = this;
       var params = '';
 
@@ -148,17 +148,17 @@ define(['jquery',
       d3.request(top.TYPO3.settings.ajaxUrls.record_process)
         .header('X-Requested-With', 'XMLHttpRequest')
         .header('Content-Type', 'application/x-www-form-urlencoded')
-        .on('error', function (error) {
+        .on('error', function(error) {
           _this.errorNotification(error);
           throw error;
         })
-        .post(params, function (data) {
+        .post(params, function(data) {
           if (data) {
             var response = JSON.parse(data.response);
 
             if (response && response.hasErrors) {
               if (response.messages) {
-                $.each(response.messages, function (id, message) {
+                $.each(response.messages, function(id, message) {
                   Notification.error(
                     message.title,
                     message.message
@@ -185,7 +185,7 @@ define(['jquery',
      *
      * @param {Node} node
      */
-    PageTree.prototype.nodeSelectedAfter = function (node) {
+    PageTree.prototype.nodeSelectedAfter = function(node) {
       var separator = '?';
       if (currentSubScript.indexOf('?') !== -1) {
         separator = '&';
@@ -197,7 +197,7 @@ define(['jquery',
       );
     };
 
-    PageTree.prototype.nodeRightClick = function (node) {
+    PageTree.prototype.nodeRightClick = function(node) {
       d3.event.preventDefault();
       var $node = $(node).closest('svg').find('.nodes .node[data-state-id=' + this.stateIdentifier + ']');
 
@@ -212,7 +212,7 @@ define(['jquery',
       }
     };
 
-    PageTree.prototype.contextmenu = function (node) {
+    PageTree.prototype.contextmenu = function(node) {
       var $node = $(node).closest('svg').find('.nodes .node[data-state-id=' + this.stateIdentifier + ']');
 
       if ($node.length) {
@@ -226,27 +226,27 @@ define(['jquery',
       }
     };
 
-    PageTree.prototype.updateSvg = function (nodeEnter) {
+    PageTree.prototype.updateSvg = function(nodeEnter) {
       nodeEnter
         .select('use')
         .attr('data-table', 'pages');
     };
 
-    PageTree.prototype.hideChildren = function (node) {
+    PageTree.prototype.hideChildren = function(node) {
       _super_.hideChildren(node);
       Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, 0);
     };
 
-    PageTree.prototype.showChildren = function (node) {
+    PageTree.prototype.showChildren = function(node) {
       _super_.showChildren(node);
       Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, 1);
     };
 
-    PageTree.prototype.updateNodeBgClass = function (nodeBg) {
+    PageTree.prototype.updateNodeBgClass = function(nodeBg) {
       return _super_.updateNodeBgClass.call(this, nodeBg).call(this.dragDrop.drag());
     };
 
-    PageTree.prototype.nodesUpdate = function (nodes) {
+    PageTree.prototype.nodesUpdate = function(nodes) {
       var _this = this;
 
       nodes = _super_.nodesUpdate.call(this, nodes)
@@ -258,10 +258,10 @@ define(['jquery',
         .attr('class', 'node-stop')
         .attr('dx', 30)
         .attr('dy', 5)
-        .attr('visibility', function (node) {
+        .attr('visibility', function(node) {
           return (node.stopPageTree && (node.depth !== 0)) ? 'visible' : 'hidden';
         })
-        .on('click', function (node) {
+        .on('click', function(node) {
           _this.setTemporaryMountPoint(node.identifier);
         });
 
@@ -274,24 +274,24 @@ define(['jquery',
      *
      * @param {Node} node
      */
-    PageTree.prototype.appendTextElement = function (node) {
+    PageTree.prototype.appendTextElement = function(node) {
       var _this = this;
       var clicks = 0;
 
       _super_.appendTextElement.call(this, node)
-        .attr('dx', function (node) {
+        .attr('dx', function(node) {
           if (node.stopPageTree && node.depth !== 0) {
             return _this.textPosition + 15;
           }
 
           return _this.textPosition;
         })
-        .on('click', function (node) {
+        .on('click', function(node) {
           if (node.identifier !== 0) {
             clicks++;
 
             if (clicks === 1) {
-              setTimeout(function () {
+              setTimeout(function() {
                 if (clicks === 1) {
                   _this.clickOnLabel(node, this);
                   _this.nodeBgEvents().click(node, this);
@@ -311,24 +311,24 @@ define(['jquery',
         });
     };
 
-    PageTree.prototype.setTemporaryMountPoint = function (pid) {
+    PageTree.prototype.setTemporaryMountPoint = function(pid) {
       var params = 'pid=' + pid;
       var _this = this;
 
       d3.request(top.TYPO3.settings.ajaxUrls.page_tree_set_temporary_mount_point)
         .header('X-Requested-With', 'XMLHttpRequest')
         .header('Content-Type', 'application/x-www-form-urlencoded')
-        .on('error', function (error) {
+        .on('error', function(error) {
           _this.errorNotification(error);
           throw error;
         })
-        .post(params, function (data) {
+        .post(params, function(data) {
           if (data) {
             var response = JSON.parse(data.response);
 
             if (response && response.hasErrors) {
               if (response.messages) {
-                $.each(response.messages, function (id, message) {
+                $.each(response.messages, function(id, message) {
                   Notification.error(
                     message.title,
                     message.message
@@ -349,14 +349,14 @@ define(['jquery',
         });
     };
 
-    PageTree.prototype.unsetTemporaryMountPoint = function () {
+    PageTree.prototype.unsetTemporaryMountPoint = function() {
       var _this = this;
-      Persistent.unset('pageTree_temporaryMountPoint').then(function () {
+      Persistent.unset('pageTree_temporaryMountPoint').then(function() {
         _this.refreshTree();
       });
     };
 
-    PageTree.prototype.sendEditNodeLabelCommand = function (node) {
+    PageTree.prototype.sendEditNodeLabelCommand = function(node) {
       var _this = this;
 
       var params = '&data[pages][' + node.identifier + '][' + node.nameSourceField + ']=' + node.newName;
@@ -367,17 +367,17 @@ define(['jquery',
       d3.request(top.TYPO3.settings.ajaxUrls.record_process)
         .header('X-Requested-With', 'XMLHttpRequest')
         .header('Content-Type', 'application/x-www-form-urlencoded')
-        .on('error', function (error) {
+        .on('error', function(error) {
           _this.errorNotification(error);
           throw error;
         })
-        .post(params, function (data) {
+        .post(params, function(data) {
           if (data) {
             var response = JSON.parse(data.response);
 
             if (response && response.hasErrors) {
               if (response.messages) {
-                $.each(response.messages, function (id, message) {
+                $.each(response.messages, function(id, message) {
                   Notification.error(
                     message.title,
                     message.message
@@ -402,7 +402,7 @@ define(['jquery',
         });
     };
 
-    PageTree.prototype.editNodeLabel = function (node) {
+    PageTree.prototype.editNodeLabel = function(node) {
       var _this = this;
 
       _this.removeEditedText();
@@ -411,7 +411,7 @@ define(['jquery',
       d3.select(_this.svg.node().parentNode)
         .append('input')
         .attr('class', 'node-edit')
-        .style('top', function () {
+        .style('top', function() {
           var top = node.y + _this.settings.marginTop;
           return top + 'px';
         })
@@ -420,7 +420,7 @@ define(['jquery',
         .style('height', _this.settings.nodeHeight + 'px')
         .attr('type', 'text')
         .attr('value', node.name)
-        .on('keydown', function () {
+        .on('keydown', function() {
           var code = d3.event.keyCode;
 
           if (code === 13 || code === 9) { //enter || tab
@@ -441,7 +441,7 @@ define(['jquery',
             _this.removeEditedText();
           }
         })
-        .on('blur', function () {
+        .on('blur', function() {
           if (_this.nodeIsEdit) {
             var newName = this.value.trim();
 
@@ -459,7 +459,7 @@ define(['jquery',
         .select();
     };
 
-    PageTree.prototype.removeEditedText = function () {
+    PageTree.prototype.removeEditedText = function() {
       var _this = this;
       var inputWrapper = d3.selectAll('.node-edit');
 

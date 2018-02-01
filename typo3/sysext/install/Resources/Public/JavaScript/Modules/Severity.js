@@ -14,42 +14,42 @@
 /**
  * Module: TYPO3/CMS/Install/Severity
  */
-define([], function () {
-	'use strict';
+define([], function() {
+  'use strict';
 
-	var Severity = {
-		loading: -3,
-		notice: -2,
-		info: -1,
-		ok: 0,
-		warning: 1,
-		error: 2
-	};
+  var Severity = {
+    loading: -3,
+    notice: -2,
+    info: -1,
+    ok: 0,
+    warning: 1,
+    error: 2
+  };
 
-	Severity.getCssClass = function (severity) {
-		var severityClass;
-		switch (severity) {
-			case Severity.loading:
-				severityClass = 'notice alert-loading';
-				break;
-			case Severity.notice:
-				severityClass = 'notice';
-				break;
-			case Severity.ok:
-				severityClass = 'success';
-				break;
-			case Severity.warning:
-				severityClass = 'warning';
-				break;
-			case Severity.error:
-				severityClass = 'danger';
-				break;
-			case Severity.info:
-			default:
-				severityClass = 'info';
-		}
-		return severityClass;
-	};
+  Severity.getCssClass = function(severity) {
+    var severityClass;
+    switch (severity) {
+      case Severity.loading:
+        severityClass = 'notice alert-loading';
+        break;
+      case Severity.notice:
+        severityClass = 'notice';
+        break;
+      case Severity.ok:
+        severityClass = 'success';
+        break;
+      case Severity.warning:
+        severityClass = 'warning';
+        break;
+      case Severity.error:
+        severityClass = 'danger';
+        break;
+      case Severity.info:
+      default:
+        severityClass = 'info';
+    }
+    return severityClass;
+  };
 
-	return Severity;
+  return Severity;
 });

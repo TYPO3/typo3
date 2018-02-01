@@ -17,17 +17,17 @@
  * @exports TYPO3/CMS/Recordlist/Tooltip
  */
 define(['jquery', 'TYPO3/CMS/Backend/Tooltip'], function($, Tooltip) {
-	'use strict';
+  'use strict';
 
-	$(function() {
-		Tooltip.initialize('.table-fit a[title]', {
-			delay: {
-				show: 500,
-				hide: 100
-			},
-			trigger: 'hover',
-			container: 'body'
-		});
-	});
+  $(function() {
+    Tooltip.initialize('.table-fit a[title]', {
+      delay: {
+        show: 500,
+        hide: 100
+      },
+      trigger: 'hover',
+      container: 'body'
+    });
+  });
 
 });

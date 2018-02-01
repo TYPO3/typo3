@@ -17,9 +17,9 @@
 define(['jquery',
     'TYPO3/CMS/Backend/Icons',
     'TYPO3/CMS/Backend/Tooltip',
-    'TYPO3/CMS/Backend/SvgTree',
+    'TYPO3/CMS/Backend/SvgTree'
   ],
-  function ($, Icons) {
+  function($, Icons) {
     'use strict';
 
     /**
@@ -28,13 +28,13 @@ define(['jquery',
      * @constructor
      * @exports TYPO3/CMS/Backend/FormEngine/Element/TreeToolbar
      */
-    var TreeToolbar = function () {
+    var TreeToolbar = function() {
       this.settings = {
         toolbarSelector: '.tree-toolbar',
         collapseAllBtn: '.collapse-all-btn',
         expandAllBtn: '.expand-all-btn',
         searchInput: '.search-input',
-        toggleHideUnchecked: '.hide-unchecked-btn',
+        toggleHideUnchecked: '.hide-unchecked-btn'
       };
 
       /**
@@ -66,15 +66,15 @@ define(['jquery',
        */
       this.$template = $(
         '<div class="tree-toolbar btn-toolbar">' +
-          '<div class="input-group">' +
-            '<span class="input-group-addon input-group-icon filter"></span>' +
-            '<input type="text" class="form-control search-input" placeholder="' + TYPO3.lang['tcatree.findItem'] + '">' +
-          '</div>' +
-          '<div class="btn-group">' +
-            '<button type="button" data-toggle="tooltip" class="btn btn-default expand-all-btn" title="' + TYPO3.lang['tcatree.expandAll'] + '"></button>' +
-            '<button type="button" data-toggle="tooltip" class="btn btn-default collapse-all-btn" title="' + TYPO3.lang['tcatree.collapseAll'] + '"></button>' +
-            '<button type="button" data-toggle="tooltip" class="btn btn-default hide-unchecked-btn" title="' + TYPO3.lang['tcatree.toggleHideUnchecked'] + '"></button>' +
-          '</div>' +
+        '<div class="input-group">' +
+        '<span class="input-group-addon input-group-icon filter"></span>' +
+        '<input type="text" class="form-control search-input" placeholder="' + TYPO3.lang['tcatree.findItem'] + '">' +
+        '</div>' +
+        '<div class="btn-group">' +
+        '<button type="button" data-toggle="tooltip" class="btn btn-default expand-all-btn" title="' + TYPO3.lang['tcatree.expandAll'] + '"></button>' +
+        '<button type="button" data-toggle="tooltip" class="btn btn-default collapse-all-btn" title="' + TYPO3.lang['tcatree.collapseAll'] + '"></button>' +
+        '<button type="button" data-toggle="tooltip" class="btn btn-default hide-unchecked-btn" title="' + TYPO3.lang['tcatree.toggleHideUnchecked'] + '"></button>' +
+        '</div>' +
         '</div>'
       );
     };
@@ -85,7 +85,7 @@ define(['jquery',
      * @param {String} treeSelector
      * @param {Object} settings
      */
-    TreeToolbar.prototype.initialize = function (treeSelector, settings) {
+    TreeToolbar.prototype.initialize = function(treeSelector, settings) {
       this.$treeWrapper = $(treeSelector);
       if (!this.$treeWrapper.data('svgtree-initialized') || typeof this.$treeWrapper.data('svgtree') !== 'object') {
 
@@ -103,30 +103,30 @@ define(['jquery',
     /**
      * Renders toolbar
      */
-    TreeToolbar.prototype.render = function () {
+    TreeToolbar.prototype.render = function() {
       var _this = this;
       this.tree = this.$treeWrapper.data('svgtree');
       var $toolbar = this.$template.clone().insertBefore(this.$treeWrapper);
 
-      Icons.getIcon('actions-filter', Icons.sizes.small).done(function (icon) {
+      Icons.getIcon('actions-filter', Icons.sizes.small).done(function(icon) {
         $toolbar.find('.filter').append(icon);
       });
 
-      Icons.getIcon('apps-pagetree-category-expand-all', Icons.sizes.small).done(function (icon) {
+      Icons.getIcon('apps-pagetree-category-expand-all', Icons.sizes.small).done(function(icon) {
         $toolbar.find('.expand-all-btn').append(icon);
       });
 
-      Icons.getIcon('apps-pagetree-category-collapse-all', Icons.sizes.small).done(function (icon) {
+      Icons.getIcon('apps-pagetree-category-collapse-all', Icons.sizes.small).done(function(icon) {
         $toolbar.find('.collapse-all-btn').append(icon);
       });
 
-      Icons.getIcon('apps-pagetree-category-toggle-hide-checked', Icons.sizes.small).done(function (icon) {
+      Icons.getIcon('apps-pagetree-category-toggle-hide-checked', Icons.sizes.small).done(function(icon) {
         $toolbar.find('.hide-unchecked-btn').append(icon);
       });
 
       $toolbar.find(this.settings.collapseAllBtn).on('click', this.collapseAll.bind(this));
       $toolbar.find(this.settings.expandAllBtn).on('click', this.expandAll.bind(this));
-      $toolbar.find(this.settings.searchInput).on('input', function () {
+      $toolbar.find(this.settings.searchInput).on('input', function() {
         _this.search.call(_this, this);
       });
 
@@ -137,14 +137,14 @@ define(['jquery',
     /**
      * Collapse children of root node
      */
-    TreeToolbar.prototype.collapseAll = function () {
+    TreeToolbar.prototype.collapseAll = function() {
       this.tree.collapseAll();
     };
 
     /**
      * Expand all nodes
      */
-    TreeToolbar.prototype.expandAll = function () {
+    TreeToolbar.prototype.expandAll = function() {
       this.tree.expandAll();
     };
 
@@ -153,12 +153,12 @@ define(['jquery',
      *
      * @param {HTMLElement} input
      */
-    TreeToolbar.prototype.search = function (input) {
+    TreeToolbar.prototype.search = function(input) {
       var _this = this;
       var name = $(input).val();
 
       this.tree.nodes[0].open = false;
-      this.tree.nodes.forEach(function (node) {
+      this.tree.nodes.forEach(function(node) {
         var regex = new RegExp(name, 'i');
         if (regex.test(node.name)) {
           _this.showParents(node);
@@ -177,13 +177,13 @@ define(['jquery',
     /**
      * Show only checked items
      */
-    TreeToolbar.prototype.toggleHideUnchecked = function () {
+    TreeToolbar.prototype.toggleHideUnchecked = function() {
       var _this = this;
 
       this._hideUncheckedState = !this._hideUncheckedState;
 
       if (this._hideUncheckedState) {
-        this.tree.nodes.forEach(function (node) {
+        this.tree.nodes.forEach(function(node) {
           if (node.checked) {
             _this.showParents(node);
             node.open = true;
@@ -194,7 +194,7 @@ define(['jquery',
           }
         });
       } else {
-        this.tree.nodes.forEach(function (node) {
+        this.tree.nodes.forEach(function(node) {
           node.hidden = false;
         });
       }
@@ -209,7 +209,7 @@ define(['jquery',
      * @param {Node} node
      * @returns {Boolean}
      */
-    TreeToolbar.prototype.showParents = function (node) {
+    TreeToolbar.prototype.showParents = function(node) {
       if (node.parents.length === 0) {
         return true;
       }
