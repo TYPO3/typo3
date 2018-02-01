@@ -385,7 +385,6 @@ module.exports = function(grunt) {
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js"],
-					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"],
 					"<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.node_modules %>chosen-js/chosen.jquery.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js": ["<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js"]
