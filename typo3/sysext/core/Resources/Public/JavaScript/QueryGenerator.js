@@ -16,7 +16,7 @@
  * This module handle the QueryGenerator forms.
  * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
  */
-define(['jquery', 'TYPO3/CMS/Lowlevel/QueryGenerator'], function ($, QueryGenerator) {
-	console.log('TYPO3/CMS/Core/QueryGenerator has been marked as deprecated since TYPO3 v8, will be removed in TYPO3 v9. Please use TYPO3/CMS/Lowlevel/QueryGenerator instead');
-	return QueryGenerator;
+define(['jquery', 'TYPO3/CMS/Lowlevel/QueryGenerator'], function($, QueryGenerator) {
+  console.log('TYPO3/CMS/Core/QueryGenerator has been marked as deprecated since TYPO3 v8, will be removed in TYPO3 v9. Please use TYPO3/CMS/Lowlevel/QueryGenerator instead');
+  return QueryGenerator;
 });

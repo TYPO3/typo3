@@ -17,30 +17,30 @@
  * @exports TYPO3/CMS/Recordlist/BrowseDatabase
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser'], function($, ElementBrowser) {
-	'use strict';
+  'use strict';
 
-	$(function() {
-		$('[data-close]').on('click', function(event) {
-			event.preventDefault();
-			var data = $(this).parents('span').data();
+  $(function() {
+    $('[data-close]').on('click', function(event) {
+      event.preventDefault();
+      var data = $(this).parents('span').data();
 
-			ElementBrowser.insertElement(
-				data.table,
-				data.uid,
-				'db',
-				data.title,
-				'',
-				'',
-				data.icon,
-				'',
-				$(this).data('close')
-			);
-		});
+      ElementBrowser.insertElement(
+        data.table,
+        data.uid,
+        'db',
+        data.title,
+        '',
+        '',
+        data.icon,
+        '',
+        $(this).data('close')
+      );
+    });
 
-		// adjust searchbox layout
-		var searchbox = document.getElementById('db_list-searchbox-toolbar');
-		searchbox.style.display = 'block';
-		searchbox.style.position = 'relative';
-	});
+    // adjust searchbox layout
+    var searchbox = document.getElementById('db_list-searchbox-toolbar');
+    searchbox.style.display = 'block';
+    searchbox.style.position = 'relative';
+  });
 
 });

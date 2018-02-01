@@ -15,53 +15,53 @@
  * Module: TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement
  * Logic for SelectSingleElement
  */
-define(['jquery'], function ($) {
+define(['jquery'], function($) {
 
-	/**
-	 *
-	 * @type {{}}
-	 * @exports TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement
-	 */
-	var SelectSingleElement = {};
+  /**
+   *
+   * @type {{}}
+   * @exports TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement
+   */
+  var SelectSingleElement = {};
 
-	/**
-	 * Initializes the SelectSingleEleemnt
-	 *
-	 * @param {String} selector
-	 * @param {Object} options
-	 */
-	SelectSingleElement.initialize = function(selector, options) {
+  /**
+   * Initializes the SelectSingleEleemnt
+   *
+   * @param {String} selector
+   * @param {Object} options
+   */
+  SelectSingleElement.initialize = function(selector, options) {
 
-		var $selectElement = $(selector);
-		var $groupIconContainer = $selectElement.prev('.input-group-icon');
-		var options = options || {};
+    var $selectElement = $(selector);
+    var $groupIconContainer = $selectElement.prev('.input-group-icon');
+    var options = options || {};
 
-		$selectElement.on('change', function() {
-			// Update prepended select icon
-			$groupIconContainer.html($selectElement.find(':selected').data('icon'));
-		});
+    $selectElement.on('change', function() {
+      // Update prepended select icon
+      $groupIconContainer.html($selectElement.find(':selected').data('icon'));
+    });
 
-		// Append optionally passed additional "change" event callback
-		if (typeof options.onChange === 'function') {
-			$selectElement.on('change', options.onChange);
-		}
+    // Append optionally passed additional "change" event callback
+    if (typeof options.onChange === 'function') {
+      $selectElement.on('change', options.onChange);
+    }
 
-		// Append optionally passed additional "focus" event callback
-		if (typeof options.onFocus === 'function') {
-			$selectElement.on('focus', options.onFocus);
-		}
+    // Append optionally passed additional "focus" event callback
+    if (typeof options.onFocus === 'function') {
+      $selectElement.on('focus', options.onFocus);
+    }
 
-		$selectElement.closest('.form-control-wrap').find('.t3js-forms-select-single-icons').on('click', function(e) {
-			var $selectIcon = $(e.target).closest('[data-select-index]');
+    $selectElement.closest('.form-control-wrap').find('.t3js-forms-select-single-icons').on('click', function(e) {
+      var $selectIcon = $(e.target).closest('[data-select-index]');
 
-			$selectElement
-				.prop('selectedIndex', $selectIcon.data('selectIndex'))
-				.trigger('change');
-			$selectIcon.trigger('blur');
+      $selectElement
+        .prop('selectedIndex', $selectIcon.data('selectIndex'))
+        .trigger('change');
+      $selectIcon.trigger('blur');
 
-			return false;
-		});
-	};
+      return false;
+    });
+  };
 
-	return SelectSingleElement;
+  return SelectSingleElement;
 });

@@ -16,61 +16,61 @@
  * LinkBrowser communication with parent window
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
-	'use strict';
+  'use strict';
 
-	/**
-	 *
-	 * @type {{updateFunctions: null}}
-	 * @exports TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter
-	 */
-	var FormEngineLinkBrowserAdapter = {
-		updateFunctions: null // those are set in the module initializer function in PHP
-	};
+  /**
+   *
+   * @type {{updateFunctions: null}}
+   * @exports TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter
+   */
+  var FormEngineLinkBrowserAdapter = {
+    updateFunctions: null // those are set in the module initializer function in PHP
+  };
 
-	/**
-	 * Return reference to parent's form element
-	 *
-	 * @returns {Element}
-	 */
-	FormEngineLinkBrowserAdapter.checkReference = function () {
-		var selector = 'form[name="' + LinkBrowser.parameters.formName + '"] [data-formengine-input-name="' + LinkBrowser.parameters.itemName + '"]';
-		if (window.opener && window.opener.document && window.opener.document.querySelector(selector)) {
-			return window.opener.document.querySelector(selector);
-		} else {
-			close();
-		}
-	};
+  /**
+   * Return reference to parent's form element
+   *
+   * @returns {Element}
+   */
+  FormEngineLinkBrowserAdapter.checkReference = function() {
+    var selector = 'form[name="' + LinkBrowser.parameters.formName + '"] [data-formengine-input-name="' + LinkBrowser.parameters.itemName + '"]';
+    if (window.opener && window.opener.document && window.opener.document.querySelector(selector)) {
+      return window.opener.document.querySelector(selector);
+    } else {
+      close();
+    }
+  };
 
-	/**
-	 * Save the current link back to the opener
-	 *
-	 * @param {String} input
-	 */
-	LinkBrowser.finalizeFunction = function(input) {
-		var field = FormEngineLinkBrowserAdapter.checkReference();
-		if (field) {
-			var attributeValues = LinkBrowser.getLinkAttributeValues();
-			// encode link on server
-			attributeValues.url = input;
+  /**
+   * Save the current link back to the opener
+   *
+   * @param {String} input
+   */
+  LinkBrowser.finalizeFunction = function(input) {
+    var field = FormEngineLinkBrowserAdapter.checkReference();
+    if (field) {
+      var attributeValues = LinkBrowser.getLinkAttributeValues();
+      // encode link on server
+      attributeValues.url = input;
 
-			$.ajax({
-				url: TYPO3.settings.ajaxUrls['link_browser_encodetypolink'],
-				data: attributeValues,
-				method: 'GET'
-			}).done(function(data) {
-				if (data.typoLink) {
-					$('#' + field.id, parent.opener.document).val(data.typoLink);
-					if (typeof field.onchange === 'function') {
-						field.onchange();
-					}
+      $.ajax({
+        url: TYPO3.settings.ajaxUrls['link_browser_encodetypolink'],
+        data: attributeValues,
+        method: 'GET'
+      }).done(function(data) {
+        if (data.typoLink) {
+          $('#' + field.id, parent.opener.document).val(data.typoLink);
+          if (typeof field.onchange === 'function') {
+            field.onchange();
+          }
 
-					FormEngineLinkBrowserAdapter.updateFunctions();
+          FormEngineLinkBrowserAdapter.updateFunctions();
 
-					close();
-				}
-			});
-		}
-	};
+          close();
+        }
+      });
+    }
+  };
 
-	return FormEngineLinkBrowserAdapter;
+  return FormEngineLinkBrowserAdapter;
 });

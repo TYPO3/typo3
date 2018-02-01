@@ -15,232 +15,232 @@
  * Module: TYPO3/CMS/Backend/ContextMenuActions
  * Click menu actions for db records including tt_content and pages
  */
-define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], function ($, Modal, Severity) {
-    /**
-     *
-     * @exports TYPO3/CMS/Backend/ContextMenuActions
-     */
-    var ContextMenuActions = {};
+define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], function($, Modal, Severity) {
+  /**
+   *
+   * @exports TYPO3/CMS/Backend/ContextMenuActions
+   */
+  var ContextMenuActions = {};
 
-    ContextMenuActions.getReturnUrl = function () {
-       return top.rawurlencode(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
-    };
+  ContextMenuActions.getReturnUrl = function() {
+    return top.rawurlencode(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
+  };
 
-    ContextMenuActions.editRecord = function (table, uid) {
-        top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][' + uid + ']=edit&returnUrl=' + ContextMenuActions.getReturnUrl()
-        );
-    };
+  ContextMenuActions.editRecord = function(table, uid) {
+    top.TYPO3.Backend.ContentContainer.setUrl(
+      top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][' + uid + ']=edit&returnUrl=' + ContextMenuActions.getReturnUrl()
+    );
+  };
 
-    ContextMenuActions.viewRecord = function (table, uid) {
-        var $viewUrl = $(this).data('preview-url');
-        if ($viewUrl) {
-            var previewWin = window.open($viewUrl, 'newTYPO3frontendWindow');
-            previewWin.focus();
+  ContextMenuActions.viewRecord = function(table, uid) {
+    var $viewUrl = $(this).data('preview-url');
+    if ($viewUrl) {
+      var previewWin = window.open($viewUrl, 'newTYPO3frontendWindow');
+      previewWin.focus();
+    }
+  };
+
+  ContextMenuActions.openInfoPopUp = function(table, uid) {
+    top.launchView(table, uid);
+  };
+
+  ContextMenuActions.mountAsTreeRoot = function(table, uid) {
+    // see actions.js -> mountAsTreeRoot
+    if (table === 'pages' && typeof top.Ext.getCmp('typo3-pagetree') !== 'undefined') {
+      var app = top.Ext.getCmp('typo3-pagetree-tree').app;
+      var node = app.getTree().getRootNode().findChild('realId', uid, true);
+      if (node === null) {
+        return false;
+      }
+
+      var useNode = {
+        attributes: {
+          nodeData: {
+            id: uid
+          }
         }
-    };
+      };
+      top.TYPO3.Components.PageTree.Actions.mountAsTreeRoot(useNode, node.ownerTree);
+    }
+  };
 
-    ContextMenuActions.openInfoPopUp = function (table, uid) {
-        top.launchView(table, uid);
-    };
+  ContextMenuActions.newPageWizard = function(table, uid) {
+    top.TYPO3.Backend.ContentContainer.setUrl(
+      top.TYPO3.settings.NewRecord.moduleUrl + '&id=' + uid + '&pagesOnly=1&returnUrl=' + ContextMenuActions.getReturnUrl()
+    );
+  };
 
-    ContextMenuActions.mountAsTreeRoot = function (table, uid) {
-        // see actions.js -> mountAsTreeRoot
-        if (table === 'pages' && typeof top.Ext.getCmp('typo3-pagetree') !== 'undefined') {
-            var app = top.Ext.getCmp('typo3-pagetree-tree').app;
-            var node = app.getTree().getRootNode().findChild('realId', uid, true);
-            if (node === null) {
-                return false;
-            }
+  ContextMenuActions.newContentWizard = function(table, uid) {
+    var $wizardUrl = $(this).data('new-wizard-url');
+    if ($wizardUrl) {
+      $wizardUrl += '&returnUrl=' + ContextMenuActions.getReturnUrl();
+      top.TYPO3.Backend.ContentContainer.setUrl($wizardUrl);
+    }
+  };
 
-            var useNode = {
-                attributes: {
-                    nodeData: {
-                        id: uid
-                    }
-                }
-            };
-            top.TYPO3.Components.PageTree.Actions.mountAsTreeRoot(useNode, node.ownerTree);
+  ContextMenuActions.newRecord = function(table, uid) {
+    top.TYPO3.Backend.ContentContainer.setUrl(
+      top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][-' + uid + ']=new&returnUrl=' + ContextMenuActions.getReturnUrl()
+    );
+  };
+
+  ContextMenuActions.openHistoryPopUp = function(table, uid) {
+    top.TYPO3.Backend.ContentContainer.setUrl(
+      top.TYPO3.settings.RecordHistory.moduleUrl + '&element=' + table + ':' + uid + '&returnUrl=' + ContextMenuActions.getReturnUrl()
+    );
+  };
+
+  ContextMenuActions.openListModule = function(table, uid) {
+    var pageId = table === 'pages' ? uid : $(this).data('page-uid');
+    top.TYPO3.ModuleMenu.App.showModule('web_list', 'id='.pageId);
+  };
+
+  ContextMenuActions.disableRecord = function(table, uid) {
+    top.TYPO3.Backend.ContentContainer.setUrl(
+      top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=1&prErr=1&redirect=' + ContextMenuActions.getReturnUrl()
+    ).on('load', function() {
+      top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+    });
+  };
+
+  ContextMenuActions.enableRecord = function(table, uid) {
+    top.TYPO3.Backend.ContentContainer.setUrl(
+      top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=0&prErr=1&redirect=' + ContextMenuActions.getReturnUrl()
+    ).on('load', function() {
+      top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+    });
+  };
+
+  ContextMenuActions.deleteRecord = function(table, uid) {
+    var $anchorElement = $(this);
+    var $modal = Modal.confirm(
+      $anchorElement.data('title'),
+      $anchorElement.data('message'),
+      Severity.warning, [
+        {
+          text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+          active: true,
+          btnClass: 'btn-default',
+          name: 'cancel'
+        },
+        {
+          text: $(this).data('button-ok-text') || TYPO3.lang['button.delete'] || 'Delete',
+          btnClass: 'btn-warning',
+          name: 'delete'
         }
-    };
+      ]);
 
-    ContextMenuActions.newPageWizard = function (table, uid) {
+    $modal.on('button.clicked', function(e) {
+      if (e.target.name === 'delete') {
         top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.NewRecord.moduleUrl + '&id=' + uid + '&pagesOnly=1&returnUrl=' + ContextMenuActions.getReturnUrl()
-        );
-    };
-
-    ContextMenuActions.newContentWizard = function (table, uid) {
-        var $wizardUrl = $(this).data('new-wizard-url');
-        if ($wizardUrl) {
-            $wizardUrl += '&returnUrl='+ ContextMenuActions.getReturnUrl();
-            top.TYPO3.Backend.ContentContainer.setUrl($wizardUrl);
-        }
-    };
-
-    ContextMenuActions.newRecord = function (table, uid) {
-        top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][-' + uid + ']=new&returnUrl=' + ContextMenuActions.getReturnUrl()
-        );
-    };
-
-    ContextMenuActions.openHistoryPopUp = function (table, uid) {
-        top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.RecordHistory.moduleUrl + '&element=' + table + ':' + uid + '&returnUrl=' + ContextMenuActions.getReturnUrl()
-        );
-    };
-
-    ContextMenuActions.openListModule = function (table, uid) {
-        var pageId = table === 'pages' ? uid : $(this).data('page-uid');
-        top.TYPO3.ModuleMenu.App.showModule('web_list', 'id='.pageId);
-    };
-
-    ContextMenuActions.disableRecord = function (table, uid) {
-        top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=1&prErr=1&redirect=' + ContextMenuActions.getReturnUrl()
-        ).on('load', function () {
+          top.TYPO3.settings.RecordCommit.moduleUrl + '&redirect=' + ContextMenuActions.getReturnUrl() + '&cmd[' + table + '][' + uid + '][delete]=1&prErr=1'
+        ).on('load', function() {
+          if (table === 'pages' && top.TYPO3.Backend.NavigationContainer.PageTree) {
             top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+          }
         });
-    };
+      }
+      Modal.dismiss();
+    });
+  };
 
-    ContextMenuActions.enableRecord = function (table, uid) {
-        top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=0&prErr=1&redirect=' + ContextMenuActions.getReturnUrl()
-        ).on('load', function () {
-            top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
-        });
-    };
+  ContextMenuActions.copy = function(table, uid) {
+    var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
+    url += '&CB[el][' + table + '%7C' + uid + ']=1' + '&CB[setCopyMode]=1';
+    $.ajax(url).always(function() {
+      top.list_frame.location.reload(true);
+    });
+  };
 
-    ContextMenuActions.deleteRecord = function (table, uid) {
-        var $anchorElement = $(this);
-        var $modal = Modal.confirm(
-            $anchorElement.data('title'),
-            $anchorElement.data('message'),
-            Severity.warning, [
-                {
-                    text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
-                    active: true,
-                    btnClass: 'btn-default',
-                    name: 'cancel'
-                },
-                {
-                    text: $(this).data('button-ok-text') || TYPO3.lang['button.delete'] || 'Delete',
-                    btnClass: 'btn-warning',
-                    name: 'delete'
-                }
-            ]);
+  ContextMenuActions.clipboardRelease = function(table, uid) {
+    var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
+    url += '&CB[el][' + table + '%7C' + uid + ']=0';
+    $.ajax(url).always(function() {
+      top.list_frame.location.reload(true);
+    });
+  };
 
-        $modal.on('button.clicked', function (e) {
-            if (e.target.name === 'delete') {
-                top.TYPO3.Backend.ContentContainer.setUrl(
-                    top.TYPO3.settings.RecordCommit.moduleUrl + '&redirect=' + ContextMenuActions.getReturnUrl() + '&cmd[' + table + '][' + uid + '][delete]=1&prErr=1'
-                ).on('load', function () {
-                    if (table === 'pages' && top.TYPO3.Backend.NavigationContainer.PageTree) {
-                        top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
-                    }
-                });
-            }
-            Modal.dismiss();
-        });
-    };
+  ContextMenuActions.cut = function(table, uid) {
+    var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
+    url += '&CB[el][' + table + '%7C' + uid + ']=1' + '&CB[setCopyMode]=0';
+    $.ajax(url).always(function() {
+      top.list_frame.location.reload(true);
+    });
+  };
 
-    ContextMenuActions.copy = function (table, uid) {
-        var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
-        url += '&CB[el][' + table + '%7C' + uid + ']=1'+ '&CB[setCopyMode]=1';
-        $.ajax(url).always(function () {
-            top.list_frame.location.reload(true);
-        });
-    };
+  /**
+   * Clear cache for given page uid
+   *
+   * @param {string} table pages table
+   * @param {int} uid of the page
+   */
+  ContextMenuActions.clearCache = function(table, uid) {
+    var url = top.TYPO3.settings.WebLayout.moduleUrl;
+    url += '&id=' + uid + '&clear_cache=1';
+    $.ajax(url);
+  };
 
-    ContextMenuActions.clipboardRelease = function (table, uid) {
-        var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
-        url += '&CB[el][' + table + '%7C' + uid + ']=0';
-        $.ajax(url).always(function () {
-            top.list_frame.location.reload(true);
-        });
-    };
+  /**
+   * Paste db record after another
+   *
+   * @param {string} table any db table except sys_file
+   * @param {int} uid of the record after which record from the cliboard will be pasted
+   */
+  ContextMenuActions.pasteAfter = function(table, uid) {
+    ContextMenuActions.pasteInto.bind($(this))(table, -uid);
+  };
 
-    ContextMenuActions.cut = function (table, uid) {
-        var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
-        url += '&CB[el][' + table + '%7C' + uid + ']=1'+ '&CB[setCopyMode]=0';
-        $.ajax(url).always(function () {
-            top.list_frame.location.reload(true);
-        });
-    };
+  /**
+   * Paste page into another page
+   *
+   * @param {string} table any db table except sys_file
+   * @param {int} uid of the record after which record from the cliboard will be pasted
+   */
+  ContextMenuActions.pasteInto = function(table, uid) {
+    var $anchorElement = $(this);
+    var title = $anchorElement.data('title');
+    var performPaste = function() {
+      var url = '&CB[paste]=' + table + '%7C' + uid
+        + '&CB[pad]=normal&prErr=1&uPT=1'
+        + '&redirect=' + ContextMenuActions.getReturnUrl();
 
-    /**
-     * Clear cache for given page uid
-     *
-     * @param {string} table pages table
-     * @param {int} uid of the page
-     */
-    ContextMenuActions.clearCache = function (table, uid) {
-        var url = top.TYPO3.settings.WebLayout.moduleUrl;
-        url += '&id=' + uid + '&clear_cache=1';
-        $.ajax(url);
-    };
-
-    /**
-     * Paste db record after another
-     *
-     * @param {string} table any db table except sys_file
-     * @param {int} uid of the record after which record from the cliboard will be pasted
-     */
-    ContextMenuActions.pasteAfter = function (table, uid) {
-        ContextMenuActions.pasteInto.bind($(this))(table, -uid);
-    };
-
-    /**
-     * Paste page into another page
-     *
-     * @param {string} table any db table except sys_file
-     * @param {int} uid of the record after which record from the cliboard will be pasted
-     */
-    ContextMenuActions.pasteInto = function (table, uid) {
-        var $anchorElement = $(this);
-        var title = $anchorElement.data('title');
-        var performPaste = function () {
-            var url = '&CB[paste]=' + table + '%7C' + uid
-                + '&CB[pad]=normal&prErr=1&uPT=1'
-                + '&redirect=' + ContextMenuActions.getReturnUrl();
-
-            top.TYPO3.Backend.ContentContainer.setUrl(
-                top.TYPO3.settings.RecordCommit.moduleUrl + url
-            ).on('load', function () {
-                if (table === 'pages' && top.TYPO3.Backend.NavigationContainer.PageTree) {
-                    top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
-                }
-            });
-        };
-        if (!$anchorElement.data('title')) {
-            performPaste();
-            return;
+      top.TYPO3.Backend.ContentContainer.setUrl(
+        top.TYPO3.settings.RecordCommit.moduleUrl + url
+      ).on('load', function() {
+        if (table === 'pages' && top.TYPO3.Backend.NavigationContainer.PageTree) {
+          top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
         }
-        var $modal = Modal.confirm(
-            $anchorElement.data('title'),
-            $anchorElement.data('message'),
-            Severity.warning, [
-                {
-                    text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
-                    active: true,
-                    btnClass: 'btn-default',
-                    name: 'cancel'
-                },
-                {
-                    text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
-                    btnClass: 'btn-warning',
-                    name: 'ok'
-                }
-            ]);
-
-        $modal.on('button.clicked', function (e) {
-            if (e.target.name === 'ok') {
-                performPaste();
-            }
-            Modal.dismiss();
-        });
-
+      });
     };
+    if (!$anchorElement.data('title')) {
+      performPaste();
+      return;
+    }
+    var $modal = Modal.confirm(
+      $anchorElement.data('title'),
+      $anchorElement.data('message'),
+      Severity.warning, [
+        {
+          text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+          active: true,
+          btnClass: 'btn-default',
+          name: 'cancel'
+        },
+        {
+          text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
+          btnClass: 'btn-warning',
+          name: 'ok'
+        }
+      ]);
 
-    return ContextMenuActions;
+    $modal.on('button.clicked', function(e) {
+      if (e.target.name === 'ok') {
+        performPaste();
+      }
+      Modal.dismiss();
+    });
+
+  };
+
+  return ContextMenuActions;
 });

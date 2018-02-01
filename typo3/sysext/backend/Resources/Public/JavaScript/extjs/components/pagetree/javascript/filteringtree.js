@@ -21,40 +21,40 @@ Ext.namespace('TYPO3.Components.PageTree');
  * @extends TYPO3.Components.PageTree.Tree
  */
 TYPO3.Components.PageTree.FilteringTree = Ext.extend(TYPO3.Components.PageTree.Tree, {
-	/**
-	 * Search word
-	 *
-	 * @type {String}
-	 */
-	searchWord: '',
+  /**
+   * Search word
+   *
+   * @type {String}
+   */
+  searchWord: '',
 
-	/**
-	 * Tree loader implementation for the filtering tree
-	 *
-	 * @return {void}
-	 */
-	addTreeLoader: function() {
-		this.loader = new Ext.tree.TreeLoader({
-			directFn: this.treeDataProvider.getFilteredTree,
-			paramOrder: 'nodeId,attributes,searchWord',
-			nodeParameter: 'nodeId',
-			baseAttrs: {
-				uiProvider: this.uiProvider
-			},
+  /**
+   * Tree loader implementation for the filtering tree
+   *
+   * @return {void}
+   */
+  addTreeLoader: function() {
+    this.loader = new Ext.tree.TreeLoader({
+      directFn: this.treeDataProvider.getFilteredTree,
+      paramOrder: 'nodeId,attributes,searchWord',
+      nodeParameter: 'nodeId',
+      baseAttrs: {
+        uiProvider: this.uiProvider
+      },
 
-			listeners: {
-				beforeload: function(treeLoader, node) {
-					if (!node.ownerTree.searchWord || node.ownerTree.searchWord === '') {
-						return false;
-					}
+      listeners: {
+        beforeload: function(treeLoader, node) {
+          if (!node.ownerTree.searchWord || node.ownerTree.searchWord === '') {
+            return false;
+          }
 
-					treeLoader.baseParams.nodeId = node.id;
-					treeLoader.baseParams.searchWord = node.ownerTree.searchWord;
-					treeLoader.baseParams.attributes = node.attributes.nodeData;
-				}
-			}
-		});
-	}
+          treeLoader.baseParams.nodeId = node.id;
+          treeLoader.baseParams.searchWord = node.ownerTree.searchWord;
+          treeLoader.baseParams.attributes = node.attributes.nodeData;
+        }
+      }
+    });
+  }
 });
 
 // XTYPE Registration

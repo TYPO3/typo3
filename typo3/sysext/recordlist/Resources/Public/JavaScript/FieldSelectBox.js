@@ -17,18 +17,18 @@
  * @exports TYPO3/CMS/Recordlist/FieldSelectBox
  */
 define(['jquery'], function($) {
-	'use strict';
+  'use strict';
 
-	$(function() {
-		$('.fieldSelectBox .checkAll').change(function() {
-			var checked = $(this).prop('checked');
-			var $checkboxes = $('.fieldSelectBox tbody').find(':checkbox');
-			$checkboxes.each(function() {
-				if (!$(this).prop('disabled')) {
-					$(this).prop('checked', checked);
-				}
-			});
-		});
-	});
+  $(function() {
+    $('.fieldSelectBox .checkAll').change(function() {
+      var checked = $(this).prop('checked');
+      var $checkboxes = $('.fieldSelectBox tbody').find(':checkbox');
+      $checkboxes.each(function() {
+        if (!$(this).prop('disabled')) {
+          $(this).prop('checked', checked);
+        }
+      });
+    });
+  });
 
 });

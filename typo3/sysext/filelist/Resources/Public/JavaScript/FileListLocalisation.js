@@ -17,10 +17,10 @@
  */
 define(['jquery'], function($) {
 
-	$('a.filelist-translationToggler').click(function(event) {
-		var id = $(this).attr('data-fileid');
-		$('div[data-fileid="' + id + '"]').toggle();
-	});
+  $('a.filelist-translationToggler').click(function(event) {
+    var id = $(this).attr('data-fileid');
+    $('div[data-fileid="' + id + '"]').toggle();
+  });
 
-	return null;
+  return null;
 });

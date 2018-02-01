@@ -18,19 +18,19 @@
  */
 define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
 
-	var $searchFields = $('input[name="search_field"]');
-	var searchResultShown = ('' !== $searchFields.first().val());
+  var $searchFields = $('input[name="search_field"]');
+  var searchResultShown = ('' !== $searchFields.first().val());
 
-	// make search field clearable
-	$searchFields.clearable({
-		onClear: function() {
-			if (searchResultShown) {
-				$(this).closest('form').submit();
-			}
-		}
-	});
+  // make search field clearable
+  $searchFields.clearable({
+    onClear: function() {
+      if (searchResultShown) {
+        $(this).closest('form').submit();
+      }
+    }
+  });
 
-	if (self.location.hash) {
-		window.scrollTo(window.pageXOffset, window.pageYOffset - 40);
-	}
+  if (self.location.hash) {
+    window.scrollTo(window.pageXOffset, window.pageYOffset - 40);
+  }
 });

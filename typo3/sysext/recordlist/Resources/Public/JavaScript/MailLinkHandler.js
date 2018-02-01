@@ -16,31 +16,31 @@
  * Mail link interaction
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
-	'use strict';
+  'use strict';
 
-	/**
-	 *
-	 * @type {{}}
-	 * @exports TYPO3/CMS/Recordlist/MailLinkHandler
-	 */
-	var MailLinkHandler = {};
+  /**
+   *
+   * @type {{}}
+   * @exports TYPO3/CMS/Recordlist/MailLinkHandler
+   */
+  var MailLinkHandler = {};
 
-	$(function() {
-		$('#lmailform').on('submit', function(event) {
-			event.preventDefault();
+  $(function() {
+    $('#lmailform').on('submit', function(event) {
+      event.preventDefault();
 
-			var value = $(this).find('[name="lemail"]').val();
-			if (value === 'mailto:') {
-				return;
-			}
+      var value = $(this).find('[name="lemail"]').val();
+      if (value === 'mailto:') {
+        return;
+      }
 
-			while (value.substr(0, 7) === 'mailto:') {
-				value = value.substr(7);
-			}
+      while (value.substr(0, 7) === 'mailto:') {
+        value = value.substr(7);
+      }
 
-			LinkBrowser.finalizeFunction('mailto:' + value);
-		});
-	});
+      LinkBrowser.finalizeFunction('mailto:' + value);
+    });
+  });
 
-	return MailLinkHandler;
+  return MailLinkHandler;
 });

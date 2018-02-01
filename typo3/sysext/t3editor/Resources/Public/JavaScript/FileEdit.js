@@ -16,45 +16,45 @@
  * File edit for ext:t3editor
  * @exports TYPO3/CMS/T3editor/FileEdit
  */
-define(['jquery', 'TYPO3/CMS/T3editor/T3editor'], function ($, T3editor) {
-	'use strict';
+define(['jquery', 'TYPO3/CMS/T3editor/T3editor'], function($, T3editor) {
+  'use strict';
 
-	$(function() {
+  $(function() {
 
-		// Remove document.editform.submit from save and close onclick
-		// Form will be submitted by the new on click handler
-		var $saveAndCloseButton = $('[data-name="_saveandclose"], [name="_saveandclose"]'),
-			$saveButton = $('[data-name="_save"], [name="_save"]');
+    // Remove document.editform.submit from save and close onclick
+    // Form will be submitted by the new on click handler
+    var $saveAndCloseButton = $('[data-name="_saveandclose"], [name="_saveandclose"]'),
+      $saveButton = $('[data-name="_save"], [name="_save"]');
 
-		var onClick = $saveAndCloseButton.attr('onclick');
-		$saveAndCloseButton.attr('onclick', onClick.replace('document.editform.submit();', ''));
+    var onClick = $saveAndCloseButton.attr('onclick');
+    $saveAndCloseButton.attr('onclick', onClick.replace('document.editform.submit();', ''));
 
-		// Remove onclick for save icon, saving is done by an AJAX-call
-		$saveButton.removeAttr('onclick');
+    // Remove onclick for save icon, saving is done by an AJAX-call
+    $saveButton.removeAttr('onclick');
 
-		$saveButton.on('click', function(e) {
-			e.preventDefault();
+    $saveButton.on('click', function(e) {
+      e.preventDefault();
 
-			if (!T3editor || !T3editor.instances[0]) {
-				document.editform.submit();
-				return false;
-			}
+      if (!T3editor || !T3editor.instances[0]) {
+        document.editform.submit();
+        return false;
+      }
 
-			T3editor.saveFunction(T3editor.instances[0]);
-			return false;
-		});
+      T3editor.saveFunction(T3editor.instances[0]);
+      return false;
+    });
 
-		$saveAndCloseButton.on('click', function(e) {
-			e.preventDefault();
+    $saveAndCloseButton.on('click', function(e) {
+      e.preventDefault();
 
-			if (!T3editor || !T3editor.instances[0]) {
-				document.editform.submit();
-				return false;
-			}
-			T3editor.updateTextarea(T3editor.instances[0]);
-			document.editform.submit();
-			return false;
-		});
+      if (!T3editor || !T3editor.instances[0]) {
+        document.editform.submit();
+        return false;
+      }
+      T3editor.updateTextarea(T3editor.instances[0]);
+      document.editform.submit();
+      return false;
+    });
 
-	});
+  });
 });

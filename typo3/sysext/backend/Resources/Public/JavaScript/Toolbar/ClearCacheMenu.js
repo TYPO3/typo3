@@ -17,71 +17,71 @@
  * reloading the clear cache icon
  */
 define([
-	'jquery',
-	'TYPO3/CMS/Backend/Icons',
-	'TYPO3/CMS/Backend/Notification',
-	'TYPO3/CMS/Backend/Viewport'
+  'jquery',
+  'TYPO3/CMS/Backend/Icons',
+  'TYPO3/CMS/Backend/Notification',
+  'TYPO3/CMS/Backend/Viewport'
 ], function($, Icons, Notification, Viewport) {
-	'use strict';
+  'use strict';
 
-	/**
-	 *
-	 * @type {{options: {containerSelector: string, menuItemSelector: string, toolbarIconSelector: string}}}
-	 * @exports TYPO3/CMS/Backend/Toolbar/ClearCacheMenu
-	 */
-	var ClearCacheMenu = {
-		options: {
-			containerSelector: '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',
-			menuItemSelector: 'a.toolbar-cache-flush-action',
-			toolbarIconSelector: '.toolbar-item-icon .t3js-icon',
-		}
-	};
+  /**
+   *
+   * @type {{options: {containerSelector: string, menuItemSelector: string, toolbarIconSelector: string}}}
+   * @exports TYPO3/CMS/Backend/Toolbar/ClearCacheMenu
+   */
+  var ClearCacheMenu = {
+    options: {
+      containerSelector: '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',
+      menuItemSelector: 'a.toolbar-cache-flush-action',
+      toolbarIconSelector: '.toolbar-item-icon .t3js-icon'
+    }
+  };
 
-	/**
-	 * Registers listeners for the icons inside the dropdown to trigger
-	 * the clear cache call
-	 */
-	ClearCacheMenu.initializeEvents = function() {
-		$(ClearCacheMenu.options.containerSelector).on('click', ClearCacheMenu.options.menuItemSelector, function(evt) {
-			evt.preventDefault();
-			var ajaxUrl = $(this).attr('href');
-			if (ajaxUrl) {
-				ClearCacheMenu.clearCache(ajaxUrl);
-			}
-		});
-	};
+  /**
+   * Registers listeners for the icons inside the dropdown to trigger
+   * the clear cache call
+   */
+  ClearCacheMenu.initializeEvents = function() {
+    $(ClearCacheMenu.options.containerSelector).on('click', ClearCacheMenu.options.menuItemSelector, function(evt) {
+      evt.preventDefault();
+      var ajaxUrl = $(this).attr('href');
+      if (ajaxUrl) {
+        ClearCacheMenu.clearCache(ajaxUrl);
+      }
+    });
+  };
 
-	/**
-	 * calls TYPO3 to clear a cache, then changes the topbar icon
-	 * to a spinner. Restores the original topbar icon when the request completed.
-	 *
-	 * @param {String} ajaxUrl the URL to load
-	 */
-	ClearCacheMenu.clearCache = function(ajaxUrl) {
-		// Close clear cache menu
-		$(ClearCacheMenu.options.containerSelector).removeClass('open');
+  /**
+   * calls TYPO3 to clear a cache, then changes the topbar icon
+   * to a spinner. Restores the original topbar icon when the request completed.
+   *
+   * @param {String} ajaxUrl the URL to load
+   */
+  ClearCacheMenu.clearCache = function(ajaxUrl) {
+    // Close clear cache menu
+    $(ClearCacheMenu.options.containerSelector).removeClass('open');
 
-		var $toolbarItemIcon = $(ClearCacheMenu.options.toolbarIconSelector, ClearCacheMenu.options.containerSelector),
-			$existingIcon = $toolbarItemIcon.clone();
+    var $toolbarItemIcon = $(ClearCacheMenu.options.toolbarIconSelector, ClearCacheMenu.options.containerSelector),
+      $existingIcon = $toolbarItemIcon.clone();
 
-		Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(spinner) {
-			$toolbarItemIcon.replaceWith(spinner);
-		});
+    Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(spinner) {
+      $toolbarItemIcon.replaceWith(spinner);
+    });
 
-		$.ajax({
-			url: ajaxUrl,
-			type: 'post',
-			cache: false,
-			complete: function(jqXHRObject, status) {
-				$(ClearCacheMenu.options.toolbarIconSelector, ClearCacheMenu.options.containerSelector).replaceWith($existingIcon);
-				if (status !== 'success' || jqXHRObject.responseText !== '') {
-					Notification.error('An error occurs', 'An error occurred while clearing the cache. It is likely not all caches were cleared as expected.', 0);
-				}
-			}
-		});
-	};
+    $.ajax({
+      url: ajaxUrl,
+      type: 'post',
+      cache: false,
+      complete: function(jqXHRObject, status) {
+        $(ClearCacheMenu.options.toolbarIconSelector, ClearCacheMenu.options.containerSelector).replaceWith($existingIcon);
+        if (status !== 'success' || jqXHRObject.responseText !== '') {
+          Notification.error('An error occurs', 'An error occurred while clearing the cache. It is likely not all caches were cleared as expected.', 0);
+        }
+      }
+    });
+  };
 
-	Viewport.Topbar.Toolbar.registerEvent(ClearCacheMenu.initializeEvents);
+  Viewport.Topbar.Toolbar.registerEvent(ClearCacheMenu.initializeEvents);
 
-	return ClearCacheMenu;
+  return ClearCacheMenu;
 });

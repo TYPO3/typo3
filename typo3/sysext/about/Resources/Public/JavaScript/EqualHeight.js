@@ -16,8 +16,8 @@
  * matchHeight makes the height of all selected elements exactly equal.
  */
 define(['jquery', 'matchheight'], function($) {
-	'use strict';
+  'use strict';
 
-	$('.t3js-equalheight').matchHeight();
+  $('.t3js-equalheight').matchHeight();
 
 });

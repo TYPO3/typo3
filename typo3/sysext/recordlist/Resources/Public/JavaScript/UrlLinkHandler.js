@@ -16,33 +16,33 @@
  * URL link interaction
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
-	'use strict';
+  'use strict';
 
-	/**
-	 *
-	 * @type {{}}
-	 * @exports TYPO3/CMS/Recordlist/UrlLinkHandler
-	 */
-	var UrlLinkHandler = {};
+  /**
+   *
+   * @type {{}}
+   * @exports TYPO3/CMS/Recordlist/UrlLinkHandler
+   */
+  var UrlLinkHandler = {};
 
-	/**
-	 *
-	 * @param {Event} event
-	 */
-	UrlLinkHandler.link = function(event) {
-		event.preventDefault();
+  /**
+   *
+   * @param {Event} event
+   */
+  UrlLinkHandler.link = function(event) {
+    event.preventDefault();
 
-		var value = $(this).find('[name="lurl"]').val();
-		if (value === "http://") {
-			return;
-		}
+    var value = $(this).find('[name="lurl"]').val();
+    if (value === "http://") {
+      return;
+    }
 
-		LinkBrowser.finalizeFunction(value);
-	};
+    LinkBrowser.finalizeFunction(value);
+  };
 
-	$(function() {
-		$('#lurlform').on('submit', UrlLinkHandler.link);
-	});
+  $(function() {
+    $('#lurlform').on('submit', UrlLinkHandler.link);
+  });
 
-	return UrlLinkHandler;
+  return UrlLinkHandler;
 });

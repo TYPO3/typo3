@@ -13,141 +13,141 @@
 
 'use strict';
 
-(function () {
+(function() {
 
-	CKEDITOR.plugins.add('typo3link', {
-		elementBrowser: null,
-		init: function (editor) {
-			var allowedAttributes = ['!href', 'title', 'class', 'target', 'rel'],
-				required = 'a[href]';
+  CKEDITOR.plugins.add('typo3link', {
+    elementBrowser: null,
+    init: function(editor) {
+      var allowedAttributes = ['!href', 'title', 'class', 'target', 'rel'],
+        required = 'a[href]';
 
-			var additionalAttributes = getAdditionalAttributes(editor);
-			if (additionalAttributes.length) {
-				allowedAttributes.push.apply(allowedAttributes, additionalAttributes);
-			}
+      var additionalAttributes = getAdditionalAttributes(editor);
+      if (additionalAttributes.length) {
+        allowedAttributes.push.apply(allowedAttributes, additionalAttributes);
+      }
 
-			// Override link command
-			editor.addCommand('link', {
-				exec: openLinkBrowser,
-				allowedContent: 'a[' + allowedAttributes.join(',') + ']',
-				requiredContent: required
-			});
+      // Override link command
+      editor.addCommand('link', {
+        exec: openLinkBrowser,
+        allowedContent: 'a[' + allowedAttributes.join(',') + ']',
+        requiredContent: required
+      });
 
-			// Override doubleclick opening default link dialog
-			editor.on('doubleclick', function (evt) {
-				var element = CKEDITOR.plugins.link.getSelectedLink(editor) || evt.data.element;
-				if (!element.isReadOnly() && element.is('a') && element.getAttribute('href')) {
-					evt.stop();
-					openLinkBrowser(editor, element);
-				}
-			}, null, null, 30);
+      // Override doubleclick opening default link dialog
+      editor.on('doubleclick', function(evt) {
+        var element = CKEDITOR.plugins.link.getSelectedLink(editor) || evt.data.element;
+        if (!element.isReadOnly() && element.is('a') && element.getAttribute('href')) {
+          evt.stop();
+          openLinkBrowser(editor, element);
+        }
+      }, null, null, 30);
 
-		}
-	});
+    }
+  });
 
-	/**
-	 * Open link browser
-	 *
-	 * @param {Object} editor CKEditor object
-	 * @param {Object} element Selected link element
-	 */
-	function openLinkBrowser(editor, element) {
-		var additionalParameters = '';
+  /**
+   * Open link browser
+   *
+   * @param {Object} editor CKEditor object
+   * @param {Object} element Selected link element
+   */
+  function openLinkBrowser(editor, element) {
+    var additionalParameters = '';
 
-		if ($.isEmptyObject(element)) {
-			element = CKEDITOR.plugins.link.getSelectedLink(editor);
-		}
-		if (element) {
-			additionalParameters = '&curUrl[url]=' + encodeURIComponent(element.getAttribute('href'));
-			var i = 0,
-				attributeNames = ["target", "class", "title", "rel"];
-			for (i = 0; i < attributeNames.length; ++i) {
-				if (element.getAttribute(attributeNames[i])) {
-					additionalParameters += '&curUrl[' + attributeNames[i] + ']=';
-					additionalParameters += encodeURIComponent(element.getAttribute(attributeNames[i]));
-				}
-			}
+    if ($.isEmptyObject(element)) {
+      element = CKEDITOR.plugins.link.getSelectedLink(editor);
+    }
+    if (element) {
+      additionalParameters = '&curUrl[url]=' + encodeURIComponent(element.getAttribute('href'));
+      var i = 0,
+        attributeNames = ["target", "class", "title", "rel"];
+      for (i = 0; i < attributeNames.length; ++i) {
+        if (element.getAttribute(attributeNames[i])) {
+          additionalParameters += '&curUrl[' + attributeNames[i] + ']=';
+          additionalParameters += encodeURIComponent(element.getAttribute(attributeNames[i]));
+        }
+      }
 
-			var additionalAttributes = getAdditionalAttributes(editor);
-			for (i = additionalAttributes.length; --i >= 0;) {
-				if (element.hasAttribute(additionalAttributes[i])) {
-					additionalParameters += '&curUrl[' + additionalAttributes[i] + ']=';
-					additionalParameters += encodeURIComponent(element.getAttribute(additionalAttributes[i]));
-				}
-			}
-		}
+      var additionalAttributes = getAdditionalAttributes(editor);
+      for (i = additionalAttributes.length; --i >= 0;) {
+        if (element.hasAttribute(additionalAttributes[i])) {
+          additionalParameters += '&curUrl[' + additionalAttributes[i] + ']=';
+          additionalParameters += encodeURIComponent(element.getAttribute(additionalAttributes[i]));
+        }
+      }
+    }
 
-		openElementBrowser(
-			editor,
-			editor.lang.link.toolbar,
-			TYPO3.settings.Textarea.RTEPopupWindow.height,
-			makeUrlFromModulePath(
-				editor,
-				editor.config.typo3link.routeUrl,
-				additionalParameters
-			));
-	}
+    openElementBrowser(
+      editor,
+      editor.lang.link.toolbar,
+      TYPO3.settings.Textarea.RTEPopupWindow.height,
+      makeUrlFromModulePath(
+        editor,
+        editor.config.typo3link.routeUrl,
+        additionalParameters
+      ));
+  }
 
-	/**
-	 * Make url from url
-	 *
-	 * @param {Object} editor CKEditor object
-	 * @param {String} routeUrl URL
-	 * @param {String} parameters Additional parameters
-	 *
-	 * @return {String} The url
-	 */
-	function makeUrlFromModulePath(editor, routeUrl, parameters) {
+  /**
+   * Make url from url
+   *
+   * @param {Object} editor CKEditor object
+   * @param {String} routeUrl URL
+   * @param {String} parameters Additional parameters
+   *
+   * @return {String} The url
+   */
+  function makeUrlFromModulePath(editor, routeUrl, parameters) {
 
-		return routeUrl
-			+ (routeUrl.indexOf('?') === -1 ? '?' : '&')
-			+ '&contentsLanguage=' + editor.config.contentsLanguage
-			+ '&editorId=' + editor.id
-			+ (parameters ? parameters : '');
-	}
+    return routeUrl
+      + (routeUrl.indexOf('?') === -1 ? '?' : '&')
+      + '&contentsLanguage=' + editor.config.contentsLanguage
+      + '&editorId=' + editor.id
+      + (parameters ? parameters : '');
+  }
 
-	/**
-	 * Open a window with container iframe
-	 *
-	 * @param {Object} editor The CKEditor instance
-	 * @param {String} title The window title (will be localized here)
-	 * @param {Integer} height The height of the containing iframe
-	 * @param {String} url The url to load ino the iframe
-	 */
-	function openElementBrowser(editor, title, height, url) {
-		require([
-			'jquery',
-			'TYPO3/CMS/Backend/Modal'
-			], function ($, Modal) {
+  /**
+   * Open a window with container iframe
+   *
+   * @param {Object} editor The CKEditor instance
+   * @param {String} title The window title (will be localized here)
+   * @param {Integer} height The height of the containing iframe
+   * @param {String} url The url to load ino the iframe
+   */
+  function openElementBrowser(editor, title, height, url) {
+    require([
+      'jquery',
+      'TYPO3/CMS/Backend/Modal'
+    ], function($, Modal) {
 
-			Modal.advanced({
-				type: Modal.types.iframe,
-				title: title,
-				content: url,
-				size: Modal.sizes.large,
-				callback: function(currentModal) {
-					// Add the instance to the iframe itself
-					currentModal.data('ckeditor', editor);
-					currentModal.find('.t3js-modal-body')
-						.addClass('rte-ckeditor-window')
-						.attr('id', editor.id);
-				}
-			});
-		});
-	}
+      Modal.advanced({
+        type: Modal.types.iframe,
+        title: title,
+        content: url,
+        size: Modal.sizes.large,
+        callback: function(currentModal) {
+          // Add the instance to the iframe itself
+          currentModal.data('ckeditor', editor);
+          currentModal.find('.t3js-modal-body')
+            .addClass('rte-ckeditor-window')
+            .attr('id', editor.id);
+        }
+      });
+    });
+  }
 
-	/**
-	 * Fetch attributes for the <a> tag which are allowed additionally
-	 * @param {Object} editor The CKEditor instance
-	 *
-	 * @return {Array} registered attributes available for the link
-	 */
-	function getAdditionalAttributes(editor) {
-		if (editor.config.typo3link.additionalAttributes && editor.config.typo3link.additionalAttributes.length) {
-			return editor.config.typo3link.additionalAttributes;
-		} else {
-			return [];
-		}
-	}
+  /**
+   * Fetch attributes for the <a> tag which are allowed additionally
+   * @param {Object} editor The CKEditor instance
+   *
+   * @return {Array} registered attributes available for the link
+   */
+  function getAdditionalAttributes(editor) {
+    if (editor.config.typo3link.additionalAttributes && editor.config.typo3link.additionalAttributes.length) {
+      return editor.config.typo3link.additionalAttributes;
+    } else {
+      return [];
+    }
+  }
 
 })();

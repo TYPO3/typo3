@@ -16,59 +16,59 @@
  * JavaScript functions for creating multiple pages
  */
 define(['jquery'], function($) {
-	'use strict';
+  'use strict';
 
-	/**
-	 *
-	 * @type {{lineCounter: number, containerSelector: string, addMoreFieldsButtonSelector: string, doktypeSelector: string}}
-	 * @exports TYPO3/CMS/WizardCrpages/WizardCreatePages
-	 */
-	var WizardCreatePages = {
-		lineCounter: 5,
-		containerSelector: '.t3js-wizardcrpages-container',
-		addMoreFieldsButtonSelector: '.t3js-wizardcrpages-createnewfields',
-		doktypeSelector: '.t3js-wizardcrpages-select-doktype'
-	};
+  /**
+   *
+   * @type {{lineCounter: number, containerSelector: string, addMoreFieldsButtonSelector: string, doktypeSelector: string}}
+   * @exports TYPO3/CMS/WizardCrpages/WizardCreatePages
+   */
+  var WizardCreatePages = {
+    lineCounter: 5,
+    containerSelector: '.t3js-wizardcrpages-container',
+    addMoreFieldsButtonSelector: '.t3js-wizardcrpages-createnewfields',
+    doktypeSelector: '.t3js-wizardcrpages-select-doktype'
+  };
 
-	/**
-	 *
-	 */
-	WizardCreatePages.createNewFormFields = function() {
-		for (var i = 0; i < 5; i++) {
-			var label = WizardCreatePages.lineCounter + i + 1;
-			var line = tpl
-				.replace(/\[0\]/g, (WizardCreatePages.lineCounter + i))
-				.replace(/\[1\]/g, label);
+  /**
+   *
+   */
+  WizardCreatePages.createNewFormFields = function() {
+    for (var i = 0; i < 5; i++) {
+      var label = WizardCreatePages.lineCounter + i + 1;
+      var line = tpl
+        .replace(/\[0\]/g, (WizardCreatePages.lineCounter + i))
+        .replace(/\[1\]/g, label);
 
-			$(line).appendTo(WizardCreatePages.containerSelector);
-		}
-		WizardCreatePages.lineCounter += 5;
-	};
+      $(line).appendTo(WizardCreatePages.containerSelector);
+    }
+    WizardCreatePages.lineCounter += 5;
+  };
 
-	/**
-	 *
-	 * @param {Object} $selectElement
-	 */
-	WizardCreatePages.actOnTypeSelectChange = function($selectElement) {
-		var $optionElement = $selectElement.find(':selected');
-		var $target = $($selectElement.data('target'));
-		$target.html($optionElement.data('icon'));
-	};
+  /**
+   *
+   * @param {Object} $selectElement
+   */
+  WizardCreatePages.actOnTypeSelectChange = function($selectElement) {
+    var $optionElement = $selectElement.find(':selected');
+    var $target = $($selectElement.data('target'));
+    $target.html($optionElement.data('icon'));
+  };
 
-	/**
-	 * Register listeners
-	 */
-	WizardCreatePages.initializeEvents = function() {
-		$(WizardCreatePages.addMoreFieldsButtonSelector).on('click', function() {
-			WizardCreatePages.createNewFormFields();
-		});
+  /**
+   * Register listeners
+   */
+  WizardCreatePages.initializeEvents = function() {
+    $(WizardCreatePages.addMoreFieldsButtonSelector).on('click', function() {
+      WizardCreatePages.createNewFormFields();
+    });
 
-		$(document).on('change', WizardCreatePages.doktypeSelector, function() {
-			WizardCreatePages.actOnTypeSelectChange($(this));
-		});
-	};
+    $(document).on('change', WizardCreatePages.doktypeSelector, function() {
+      WizardCreatePages.actOnTypeSelectChange($(this));
+    });
+  };
 
-	$(WizardCreatePages.initializeEvents);
+  $(WizardCreatePages.initializeEvents);
 
-	return WizardCreatePages;
+  return WizardCreatePages;
 });

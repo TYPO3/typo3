@@ -15,57 +15,57 @@ Ext.ns('TYPO3.l10n');
 
 TYPO3.l10n = function() {
 
-	/**
-	 * Protected copy of translationUnits
-	 * @private
-	 */
-	var lang = [],
+  /**
+   * Protected copy of translationUnits
+   * @private
+   */
+  var lang = [],
 
-	sanitize = function() {
-		if (typeof TYPO3.lang !== 'undefined') {
-			for (key in TYPO3.lang) {
-				lang[key] = TYPO3.lang[key];
+    sanitize = function() {
+      if (typeof TYPO3.lang !== 'undefined') {
+        for (key in TYPO3.lang) {
+          lang[key] = TYPO3.lang[key];
 
-				if (!Ext.isString(TYPO3.lang[key])) {
-					TYPO3.lang[key] = TYPO3.lang[key][0].target;
-				}
-			}
-		}
-	};
+          if (!Ext.isString(TYPO3.lang[key])) {
+            TYPO3.lang[key] = TYPO3.lang[key][0].target;
+          }
+        }
+      }
+    };
 
-	return {
+  return {
 
-		initialize: function() {
-			sanitize();
-		},
+    initialize: function() {
+      sanitize();
+    },
 
-		localize: function(label, replace, plural) {
-			if (typeof lang === 'undefined' || typeof lang[label] === 'undefined') {
-				return false;
-			}
+    localize: function(label, replace, plural) {
+      if (typeof lang === 'undefined' || typeof lang[label] === 'undefined') {
+        return false;
+      }
 
-			var i = plural || 0,
-					translationUnit = lang[label],
-					label = null, regexp = null;
+      var i = plural || 0,
+        translationUnit = lang[label],
+        label = null, regexp = null;
 
-			// Get localized label
-			if (Ext.isString(translationUnit)) {
-				label = translationUnit;
-			} else {
-				label = translationUnit[i]['target'];
-			}
+      // Get localized label
+      if (Ext.isString(translationUnit)) {
+        label = translationUnit;
+      } else {
+        label = translationUnit[i]['target'];
+      }
 
-			// Replace
-			if (typeof replace !== 'undefined') {
-				for (key in replace) {
-					regexp = new RegExp('%' + key + '|%s');
-					label = label.replace(regexp, replace[key]);
-				}
-			}
+      // Replace
+      if (typeof replace !== 'undefined') {
+        for (key in replace) {
+          regexp = new RegExp('%' + key + '|%s');
+          label = label.replace(regexp, replace[key]);
+        }
+      }
 
-			return label;
-		}
-	};
+      return label;
+    }
+  };
 }();
 
 TYPO3.l10n.initialize();

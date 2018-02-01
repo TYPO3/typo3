@@ -16,20 +16,20 @@
  * JavaScript to handle confirm windows in the task center module
  * @exports TYPO3/CMS/SysAction/ActionTask
  */
-define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
-	$(function() {
-		$(document).on('click', '.t3js-confirm-trigger', function(e) {
-			e.preventDefault();
-			var $link = $(this);
-			Modal.confirm($link.data('title'), $link.data('message'))
-				.on('confirm.button.ok', function() {
-					self.location.href = $link.attr('href');
-					Modal.currentModal.trigger('modal-dismiss');
-				})
-				.on('confirm.button.cancel', function() {
-					Modal.currentModal.trigger('modal-dismiss');
-				});
-			return false;
-		});
-	});
+define(['jquery', 'TYPO3/CMS/Backend/Modal'], function($, Modal) {
+  $(function() {
+    $(document).on('click', '.t3js-confirm-trigger', function(e) {
+      e.preventDefault();
+      var $link = $(this);
+      Modal.confirm($link.data('title'), $link.data('message'))
+        .on('confirm.button.ok', function() {
+          self.location.href = $link.attr('href');
+          Modal.currentModal.trigger('modal-dismiss');
+        })
+        .on('confirm.button.cancel', function() {
+          Modal.currentModal.trigger('modal-dismiss');
+        });
+      return false;
+    });
+  });
 });
