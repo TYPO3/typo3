@@ -105,6 +105,6 @@ class StringUtility
      */
     public static function escapeCssSelector(string $selector) : string
     {
-        return preg_replace('([#:.\\[\\],=@])', '\\$1', $selector);
+        return preg_replace('/([#:.\\[\\],=@])/', '\\\\$1', $selector);
     }
 }
