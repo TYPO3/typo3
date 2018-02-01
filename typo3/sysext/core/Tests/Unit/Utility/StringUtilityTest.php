@@ -219,6 +219,7 @@ class StringUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
+     * @test
      * @param string $selector
      * @param string $expectedValue
      * @dataProvider escapeCssSelectorDataProvider
