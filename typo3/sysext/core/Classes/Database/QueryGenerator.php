@@ -1268,6 +1268,13 @@ class QueryGenerator
         ksort($queryConfig);
         $first = 1;
         foreach ($queryConfig as $key => $conf) {
+            // Convert ISO-8601 timestamp (string) into unix timestamp (int)
+            if (strtotime($conf['inputValue'])) {
+                $conf['inputValue'] = strtotime($conf['inputValue']);
+                if ($conf['inputValue1'] && strtotime($conf['inputValue1'])) {
+                    $conf['inputValue1'] = strtotime($conf['inputValue1']);
+                }
+            }
             switch ($conf['type']) {
                 case 'newlevel':
                     $qs .= LF . $pad . trim($conf['operator']) . ' (' . $this->getQuery($queryConfig[$key]['nl'], ($pad . '   ')) . LF . $pad . ')';
@@ -1353,6 +1360,8 @@ class QueryGenerator
             } else {
                 $inputVal = 0;
             }
+        } elseif (strtotime($conf['inputValue' . $suffix])) {
+            $inputVal = $conf['inputValue' . $suffix];
         } else {
             $inputVal = (float)$conf['inputValue' . $suffix];
         }
@@ -1660,20 +1669,19 @@ class QueryGenerator
 
     /**
      * @param string $name the field name
-     * @param int $timestamp the unix timestamp
+     * @param string $timestamp ISO-8601 timestamp
      * @param string $type [datetime, date, time, timesec, year]
      *
      * @return string
      */
     protected function getDateTimePickerField($name, $timestamp, $type)
     {
-        $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '%H:%M %m-%d-%Y' : '%H:%M %d-%m-%Y';
-        $value = ($timestamp > 0 ? strftime($dateFormat, $timestamp) : '');
+        $value = strtotime($timestamp) ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], strtotime($timestamp)) : '';
         $id = StringUtility::getUniqueId('dt_');
         $html = [];
         $html[] = '<div class="input-group" id="' . $id . '-wrapper">';
         $html[] = '		<input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" type="text" id="' . $id . '">';
-        $html[] = '		<input name="' . htmlspecialchars($name) . '" value="' . (int)$timestamp . '" type="hidden">';
+        $html[] = '		<input name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($timestamp) . '" type="hidden">';
         $html[] = '		<span class="input-group-btn">';
         $html[] = '			<label class="btn btn-default" for="' . $id . '">';
         $html[] = '				<span class="fa fa-calendar"></span>';
