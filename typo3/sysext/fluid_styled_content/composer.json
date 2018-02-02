@@ -12,6 +12,7 @@
 
 	"require": {
 		"typo3/cms-core": "9.2.*@dev",
+		"typo3/cms-fluid": "9.2.*@dev",
 		"typo3/cms-frontend": "9.2.*@dev"
 	},
 	"conflict": {
