@@ -687,7 +687,7 @@ export class GridEditor {
         text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
       },
       {
-        btnClass: 'btn-' + Severity.getCssClass(Severity.notice),
+        btnClass: 'btn-primary',
         name: 'ok',
         text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
       },
