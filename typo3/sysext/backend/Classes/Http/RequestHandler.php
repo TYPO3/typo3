@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -35,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *   - route
  *   - token
  */
-class RequestHandler implements RequestHandlerInterface
+class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {
     /**
      * Instance of the current TYPO3 bootstrap
@@ -60,6 +61,17 @@ class RequestHandler implements RequestHandlerInterface
      * @return ResponseInterface
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->handle($request);
+    }
+
+    /**
+     * Handles a backend request, after finishing running middlewares
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         // Check if a module URL is requested and deprecate this call
         $moduleName = $request->getQueryParams()['M'] ?? $request->getParsedBody()['M'] ?? null;

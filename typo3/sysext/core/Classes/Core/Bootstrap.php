@@ -16,6 +16,10 @@ namespace TYPO3\CMS\Core\Core;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -330,18 +334,86 @@ class Bootstrap
      * through the request handlers depending on Frontend, Backend, CLI etc.
      *
      * @param \Psr\Http\Message\RequestInterface|\Symfony\Component\Console\Input\InputInterface $request
+     * @param string $middlewareStackName the name of the middleware, usually "frontend" or "backend" for TYPO3 applications
      * @return Bootstrap
      * @throws \TYPO3\CMS\Core\Exception
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function handleRequest($request)
+    public function handleRequest($request, string $middlewareStackName = null)
     {
         // Resolve request handler that were registered based on the Application
         $requestHandler = $this->resolveRequestHandler($request);
 
-        // Execute the command which returns a Response object or NULL
-        $this->response = $requestHandler->handleRequest($request);
+        // The application requested a middleware stack, and the request handler is PSR-15 capable.
+        // Fill the middleware dispatcher; enqueue the request handler as kernel for the middleware stack.
+        if ($request instanceof ServerRequestInterface && $requestHandler instanceof RequestHandlerInterface && $middlewareStackName !== null) {
+            $middlewares = $this->resolveMiddlewareStack($middlewareStackName);
+            $dispatcher = new MiddlewareDispatcher($requestHandler, $middlewares);
+            $this->response = $dispatcher->handle($request);
+        } else {
+            // Execute the command which returns a Response object or NULL
+            $this->response = $requestHandler->handleRequest($request);
+        }
+
         return $this;
+    }
+
+    /**
+     * Returns the middleware stack registered in all packages within Configuration/RequestMiddlewares.php
+     * which are sorted by dependency
+     *
+     * @todo: think if we should move this to a "MiddlewareResolver" class
+     *
+     * @param string $stackName
+     * @return array
+     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
+     * @throws \TYPO3\CMS\Core\Exception
+     */
+    protected function resolveMiddlewareStack(string $stackName): array
+    {
+        $middlewares = [];
+        // Check if the registered middlewares from all active packages have already been cached
+        $cacheIdentifier = 'middlewares_' . $stackName . '_' . sha1((TYPO3_version . PATH_site));
+
+        /** @var $cache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+        $cache = $this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
+        if ($cache->has($cacheIdentifier)) {
+            $middlewares = $cache->requireOnce($cacheIdentifier);
+        } else {
+            // Loop over all packages and check for a Configuration/RequestMiddlewares.php file
+            $packageManager = $this->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+            $packages = $packageManager->getActivePackages();
+            $allMiddlewares = [];
+            foreach ($packages as $package) {
+                $packageConfiguration = $package->getPackagePath() . 'Configuration/RequestMiddlewares.php';
+                if (file_exists($packageConfiguration)) {
+                    $middlewaresInPackage = require $packageConfiguration;
+                    if (is_array($middlewaresInPackage)) {
+                        $allMiddlewares = array_merge_recursive($allMiddlewares, $middlewaresInPackage);
+                    }
+                }
+            }
+
+            // Order each stack
+            $dependencyOrdering = GeneralUtility::makeInstance(DependencyOrderingService::class);
+            foreach ($allMiddlewares as $stack => $middlewaresOfStack) {
+                $middlewaresOfStack = $dependencyOrdering->orderByDependencies($middlewaresOfStack);
+                $sanitizedMiddlewares = [];
+                foreach ($middlewaresOfStack as $name => $middleware) {
+                    $sanitizedMiddlewares[$name] = $middleware['target'];
+                }
+                // Order reverse, the last middleware in the array is executed first (last in, first out).
+                $sanitizedMiddlewares = array_reverse($sanitizedMiddlewares);
+                $stackCacheIdentifier = 'middlewares_' . $stack . '_' . sha1((TYPO3_version . PATH_site));
+                $cache->set($stackCacheIdentifier, 'return ' . var_export($sanitizedMiddlewares, true) . ';');
+
+                // Save the stack which we need later-on for returning them
+                if ($stack === $stackName) {
+                    $middlewares = $sanitizedMiddlewares;
+                }
+            }
+        }
+        return $middlewares;
     }
 
     /**
