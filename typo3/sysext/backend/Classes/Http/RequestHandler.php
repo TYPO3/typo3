@@ -19,8 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
-use TYPO3\CMS\Backend\Routing\Router;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
@@ -40,22 +38,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {
     /**
-     * Instance of the current TYPO3 bootstrap
-     * @var Bootstrap
-     */
-    protected $bootstrap;
-
-    /**
-     * Constructor handing over the bootstrap and the original request
-     *
-     * @param Bootstrap $bootstrap
-     */
-    public function __construct(Bootstrap $bootstrap)
-    {
-        $this->bootstrap = $bootstrap;
-    }
-
-    /**
      * Handles any backend request
      *
      * @param ServerRequestInterface $request
@@ -68,68 +50,24 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
 
     /**
      * Handles a backend request, after finishing running middlewares
+     * Dispatch the request to the appropriate controller through the
+     * Backend Dispatcher which resolves the routing
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // Check if a module URL is requested and deprecate this call
-        $moduleName = $request->getQueryParams()['M'] ?? $request->getParsedBody()['M'] ?? null;
-        // Allow the login page to be displayed if routing is not used and on index.php
-        $pathToRoute = $request->getQueryParams()['route'] ?? $request->getParsedBody()['route'] ?? $moduleName ?? '/login';
-
-        // skip the BE user check on the login page
-        // should be handled differently in the future by checking the Bootstrap directly
-        $this->boot($pathToRoute === '/login');
-
-        if ($moduleName !== null) {
-            // backwards compatibility for old module names
-            // @deprecated since TYPO3 CMS 9, will be removed in TYPO3 CMS 10.
-            $router = GeneralUtility::makeInstance(Router::class);
-            foreach ($router->getRoutes() as $routeIdentifier => $route) {
-                if ($routeIdentifier === $moduleName) {
-                    $pathToRoute = $route->getPath();
-                    break;
-                }
-            }
-
-            trigger_error('Calling the TYPO3 Backend with "M" GET parameter will be removed in TYPO3 v10,'
-                . ' the calling code calls this script with "&M=' . $moduleName . '" and needs to be adapted'
-                . ' to use the TYPO3 API.', E_USER_DEPRECATED);
-        }
-        $request = $request->withAttribute('routePath', $pathToRoute);
-
         // Check if the router has the available route and dispatch.
         try {
-            return $this->dispatch($request);
+            $response = GeneralUtility::makeInstance(Response::class);
+            $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
+            return $dispatcher->dispatch($request, $response);
         } catch (InvalidRequestTokenException $e) {
             // When token was invalid redirect to login
             $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
             return new RedirectResponse($url);
         }
-    }
-
-    /**
-     * Does the main work for setting up the backend environment for any Backend request
-     *
-     * @param bool $proceedIfNoUserIsLoggedIn option to allow to render the request even if no user is logged in
-     */
-    protected function boot(bool $proceedIfNoUserIsLoggedIn)
-    {
-        $this->bootstrap
-            ->checkLockedBackendAndRedirectOrDie()
-            ->checkBackendIpOrDie()
-            ->checkSslBackendAndRedirectIfNeeded()
-            ->initializeBackendRouter()
-            ->loadExtTables()
-            ->initializeBackendUser()
-            ->initializeBackendAuthentication($proceedIfNoUserIsLoggedIn)
-            ->initializeLanguageObject()
-            ->initializeBackendTemplate()
-            ->endOutputBufferingAndCleanPreviousOutput()
-            ->initializeOutputCompression()
-            ->sendHttpHeaders();
     }
 
     /**
@@ -152,22 +90,5 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
     public function getPriority(): int
     {
         return 50;
-    }
-
-    /**
-     * Dispatch the request to the appropriate controller through the Backend Dispatcher which resolves the routing
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @throws InvalidRequestTokenException if the request could not be verified
-     * @throws \InvalidArgumentException when a route is found but the target of the route cannot be called
-     */
-    protected function dispatch(ServerRequestInterface $request): ResponseInterface
-    {
-        /** @var Response $response */
-        $response = GeneralUtility::makeInstance(Response::class);
-        /** @var RouteDispatcher $dispatcher */
-        $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
-        return $dispatcher->dispatch($request, $response);
     }
 }

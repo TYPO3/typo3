@@ -20,7 +20,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,41 +28,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * AJAX dispatcher
  *
  * Main entry point for AJAX calls in the TYPO3 Backend. Based on ?route=/ajax/* of the outside application.
- * Before doing the basic BE-related set up of this request (see the additional calls on $this->bootstrap inside
- * handleRequest()), some AJAX-calls can be made without a valid user, which is determined here.
  *
  * AJAX Requests are typically registered within EXT:myext/Configuration/Backend/AjaxRoutes.php
  */
 class AjaxRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {
-    /**
-     * Instance of the current TYPO3 bootstrap
-     * @var Bootstrap
-     */
-    protected $bootstrap;
-
-    /**
-     * List of requests that don't need a valid BE user
-     * @var array
-     */
-    protected $publicAjaxRoutes = [
-        '/ajax/login',
-        '/ajax/logout',
-        '/ajax/login/refresh',
-        '/ajax/login/timedout',
-        '/ajax/rsa/publickey'
-    ];
-
-    /**
-     * Constructor handing over the bootstrap and the original request
-     *
-     * @param Bootstrap $bootstrap
-     */
-    public function __construct(Bootstrap $bootstrap)
-    {
-        $this->bootstrap = $bootstrap;
-    }
-
     /**
      * Handles any AJAX request in the TYPO3 Backend
      *
@@ -78,20 +47,24 @@ class AjaxRequestHandler implements RequestHandlerInterface, PsrRequestHandlerIn
     /**
      * Handles any AJAX request in the TYPO3 Backend, after finishing running middlewares
      *
+     * Creates a response object with JSON headers automatically, and then dispatches to the correct route
+     *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws ResourceNotFoundException if no valid route was found
+     * @throws InvalidRequestTokenException if the request could not be verified
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // First get the name of the route
-        $routePath = $request->getParsedBody()['route'] ?? $request->getQueryParams()['route'] ?? '';
-        $request = $request->withAttribute('routePath', $routePath);
+        /** @var Response $response */
+        $response = GeneralUtility::makeInstance(Response::class, 'php://temp', 200, [
+            'Content-Type' => 'application/json; charset=utf-8',
+            'X-JSON' => 'true'
+        ]);
 
-        $proceedIfNoUserIsLoggedIn = $this->isLoggedInBackendUserRequired($routePath);
-        $this->boot($proceedIfNoUserIsLoggedIn);
-
-        // Backend Routing - check if a valid route is there, and dispatch
-        return $this->dispatch($request);
+        /** @var RouteDispatcher $dispatcher */
+        $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
+        return $dispatcher->dispatch($request, $response);
     }
 
     /**
@@ -115,60 +88,5 @@ class AjaxRequestHandler implements RequestHandlerInterface, PsrRequestHandlerIn
     public function getPriority(): int
     {
         return 80;
-    }
-
-    /**
-     * Check if the user is required for the request
-     * If we're trying to do an ajax login, don't require a user
-     *
-     * @param string $routePath the Route path to check against, something like '
-     * @return bool whether the request can proceed without a login required
-     */
-    protected function isLoggedInBackendUserRequired(string $routePath): bool
-    {
-        return in_array($routePath, $this->publicAjaxRoutes, true);
-    }
-
-    /**
-     * Start the Backend bootstrap part
-     *
-     * @param bool $proceedIfNoUserIsLoggedIn a flag if a backend user is required
-     */
-    protected function boot(bool $proceedIfNoUserIsLoggedIn)
-    {
-        $this->bootstrap
-            ->checkLockedBackendAndRedirectOrDie($proceedIfNoUserIsLoggedIn)
-            ->checkBackendIpOrDie()
-            ->checkSslBackendAndRedirectIfNeeded()
-            ->initializeBackendRouter()
-            ->loadExtTables()
-            ->initializeBackendUser()
-            ->initializeBackendAuthentication($proceedIfNoUserIsLoggedIn)
-            ->initializeLanguageObject()
-            ->initializeBackendTemplate()
-            ->endOutputBufferingAndCleanPreviousOutput()
-            ->initializeOutputCompression()
-            ->sendHttpHeaders();
-    }
-
-    /**
-     * Creates a response object with JSON headers automatically, and then dispatches to the correct route
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface $response
-     * @throws ResourceNotFoundException if no valid route was found
-     * @throws InvalidRequestTokenException if the request could not be verified
-     */
-    protected function dispatch(ServerRequestInterface $request): ResponseInterface
-    {
-        /** @var Response $response */
-        $response = GeneralUtility::makeInstance(Response::class, 'php://temp', 200, [
-            'Content-Type' => 'application/json; charset=utf-8',
-            'X-JSON' => 'true'
-        ]);
-
-        /** @var RouteDispatcher $dispatcher */
-        $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
-        return $dispatcher->dispatch($request, $response);
     }
 }
