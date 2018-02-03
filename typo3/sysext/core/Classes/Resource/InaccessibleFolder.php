@@ -33,7 +33,7 @@ class InaccessibleFolder extends Folder
     protected function throwInaccessibleException()
     {
         throw new Exception\InsufficientFolderReadPermissionsException(
-            'You are trying to use a method on an inaccessible folder.',
+            'You are trying to use a method on the inaccessible folder "' . $this->getName() . '".',
             1390290029
         );
     }
