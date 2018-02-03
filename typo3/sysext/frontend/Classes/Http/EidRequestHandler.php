@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Http\Dispatcher;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -91,19 +90,6 @@ class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInt
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // Starting time tracking
-        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
-
-        /** @var TimeTracker $timeTracker */
-        $timeTracker = GeneralUtility::makeInstance(TimeTracker::class, ($request->getCookieParams()[$configuredCookieName] ? true : false));
-        $timeTracker->start();
-
-        // Hook to preprocess the current request
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] ?? [] as $hookFunction) {
-            $hookParameters = [];
-            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
-        }
-
         // Remove any output produced until now
         $this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
 
