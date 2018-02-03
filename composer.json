@@ -53,7 +53,8 @@
 		"guzzlehttp/guzzle": "^6.3.0",
 		"doctrine/dbal": "^2.6",
 		"nikic/php-parser": "^3.1",
-		"symfony/polyfill-intl-icu": "^1.6"
+		"symfony/polyfill-intl-icu": "^1.6",
+		"psr/http-server-middleware": "^1.0"
 	},
 	"require-dev": {
 		"codeception/codeception": "^2.3",

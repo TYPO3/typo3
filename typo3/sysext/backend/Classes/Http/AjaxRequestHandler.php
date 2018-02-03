@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Core\Bootstrap;
@@ -33,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * AJAX Requests are typically registered within EXT:myext/Configuration/Backend/AjaxRoutes.php
  */
-class AjaxRequestHandler implements RequestHandlerInterface
+class AjaxRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {
     /**
      * Instance of the current TYPO3 bootstrap
@@ -70,6 +71,17 @@ class AjaxRequestHandler implements RequestHandlerInterface
      * @return ResponseInterface
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->handle($request);
+    }
+
+    /**
+     * Handles any AJAX request in the TYPO3 Backend, after finishing running middlewares
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         // First get the name of the route
         $routePath = $request->getParsedBody()['route'] ?? $request->getQueryParams()['route'] ?? '';
