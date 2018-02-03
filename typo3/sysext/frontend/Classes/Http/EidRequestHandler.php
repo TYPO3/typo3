@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Frontend\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\Dispatcher;
@@ -31,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Lightweight alternative to the regular RequestHandler used when $_GET[eID] is set.
  * In the future, logic from the EidUtility will be moved to this class.
  */
-class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
+class EidRequestHandler implements RequestHandlerInterface
 {
     /**
      * Instance of the current TYPO3 bootstrap
@@ -57,7 +56,22 @@ class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInt
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->handle($request);
+        // Starting time tracking
+        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
+
+        /** @var TimeTracker $timeTracker */
+        $timeTracker = GeneralUtility::makeInstance(TimeTracker::class, ($request->getCookieParams()[$configuredCookieName] ? true : false));
+        $timeTracker->start();
+
+        // Hook to preprocess the current request
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] ?? [] as $hookFunction) {
+            $hookParameters = [];
+            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
+        }
+
+        // Remove any output produced until now
+        $this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
+        return $this->dispatch($request);
     }
 
     /**
@@ -89,24 +103,8 @@ class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInt
      * @return ResponseInterface
      * @throws Exception
      */
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    protected function dispatch(ServerRequestInterface $request): ResponseInterface
     {
-        // Starting time tracking
-        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
-
-        /** @var TimeTracker $timeTracker */
-        $timeTracker = GeneralUtility::makeInstance(TimeTracker::class, ($request->getCookieParams()[$configuredCookieName] ? true : false));
-        $timeTracker->start();
-
-        // Hook to preprocess the current request
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] ?? [] as $hookFunction) {
-            $hookParameters = [];
-            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
-        }
-
-        // Remove any output produced until now
-        $this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
-
         /** @var Response $response */
         $response = GeneralUtility::makeInstance(Response::class);
 

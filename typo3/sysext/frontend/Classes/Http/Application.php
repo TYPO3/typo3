@@ -76,7 +76,7 @@ class Application implements ApplicationInterface
      */
     public function run(callable $execute = null)
     {
-        $this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals(), 'frontend');
+        $this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
 
         if ($execute !== null) {
             call_user_func($execute);

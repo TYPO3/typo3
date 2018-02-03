@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Frontend\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
@@ -41,7 +40,7 @@ use TYPO3\CMS\Frontend\View\AdminPanelView;
  * Previously, this was called index_ts.php and also included the logic for the lightweight "eID" concept,
  * which is now handled in a separate request handler (EidRequestHandler).
  */
-class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
+class RequestHandler implements RequestHandlerInterface
 {
     /**
      * Instance of the current TYPO3 bootstrap
@@ -84,17 +83,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
      * @return ResponseInterface
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
-    {
-        return $this->handle($request);
-    }
-
-    /**
-     * Handles a frontend request, after finishing running middlewares
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface|null
-     */
-    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = null;
         $this->request = $request;
