@@ -98,14 +98,8 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
     {
         $response = null;
         $this->request = $request;
-        $this->initializeTimeTracker();
-
-        // Hook to preprocess the current request:
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] ?? [] as $hookFunction) {
-            $hookParameters = [];
-            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
-        }
-
+        // Fetch the initialized time tracker object
+        $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
         $this->initializeController();
 
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_force']
@@ -328,18 +322,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             }
             ob_start([GeneralUtility::makeInstance(CompressionUtility::class), 'compressionOutputHandler']);
         }
-    }
-
-    /**
-     * Timetracking started depending if a Backend User is logged in
-     */
-    protected function initializeTimeTracker()
-    {
-        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
-
-        /** @var TimeTracker timeTracker */
-        $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class, ($this->request->getCookieParams()[$configuredCookieName] ? true : false));
-        $this->timeTracker->start();
     }
 
     /**
