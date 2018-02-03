@@ -89,7 +89,7 @@ class BrowseTreeView extends AbstractTreeView
             }
         }
         // This is very important for making trees of pages: Filtering out deleted pages, pages with no access to and sorting them correctly:
-        parent::init(' AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW) . ' ' . $clause . $clauseExcludePidList, 'sorting');
+        parent::init(' AND deleted=0 AND sys_language_uid=0 AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW) . ' ' . $clause . $clauseExcludePidList, 'sorting');
         $this->title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $this->MOUNTS = $this->getBackendUser()->returnWebmounts();
         if ($pidList) {
