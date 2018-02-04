@@ -64,6 +64,11 @@ class Connection extends \Doctrine\DBAL\Connection
     const PARAM_BOOL = \PDO::PARAM_BOOL; // 5
 
     /**
+     * @var array
+     */
+    private $prepareConnectionCommands = [];
+
+    /**
      * Prevents the duplicate registration of event handlers and types for this connection.
      * If true the events will not be initialized any more in the connect() method.
      *
@@ -147,6 +152,16 @@ class Connection extends \Doctrine\DBAL\Connection
         );
 
         $this->customTypesAndEventsInitialized = true;
+
+        foreach ($this->prepareConnectionCommands as $command) {
+            if ($this->executeUpdate($command) === false) {
+                GeneralUtility::sysLog(
+                    'Could not initialize DB connection with query "' . $command . '": ' . $this->errorInfo(),
+                    'core',
+                    GeneralUtility::SYSLOG_SEVERITY_ERROR
+                );
+            }
+        }
 
         return true;
     }
@@ -464,7 +479,7 @@ class Connection extends \Doctrine\DBAL\Connection
             return;
         }
 
-        $commandsToPerform = GeneralUtility::trimExplode(
+        $this->prepareConnectionCommands = GeneralUtility::trimExplode(
             LF,
             str_replace(
                 '\' . LF . \'',
@@ -473,16 +488,6 @@ class Connection extends \Doctrine\DBAL\Connection
             ),
             true
         );
-
-        foreach ($commandsToPerform as $command) {
-            if ($this->executeUpdate($command) === false) {
-                GeneralUtility::sysLog(
-                    'Could not initialize DB connection with query "' . $command . '": ' . $this->errorInfo(),
-                    'core',
-                    GeneralUtility::SYSLOG_SEVERITY_ERROR
-                );
-            }
-        }
     }
 
     /**
