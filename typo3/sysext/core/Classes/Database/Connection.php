@@ -68,6 +68,11 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     const PARAM_BOOL = \PDO::PARAM_BOOL; // 5
 
     /**
+     * @var array
+     */
+    private $prepareConnectionCommands = [];
+
+    /**
      * Prevents the duplicate registration of event handlers and types for this connection.
      * If true the events will not be initialized any more in the connect() method.
      *
@@ -151,6 +156,12 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
         );
 
         $this->customTypesAndEventsInitialized = true;
+
+        foreach ($this->prepareConnectionCommands as $command) {
+            if ($this->executeUpdate($command) === false) {
+                $this->logger->critical('Could not initialize DB connection with query "' . $command . '": ' . $this->errorInfo());
+            }
+        }
 
         return true;
     }
@@ -468,7 +479,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
             return;
         }
 
-        $commandsToPerform = GeneralUtility::trimExplode(
+        $this->prepareConnectionCommands = GeneralUtility::trimExplode(
             LF,
             str_replace(
                 '\' . LF . \'',
@@ -477,12 +488,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
             ),
             true
         );
-
-        foreach ($commandsToPerform as $command) {
-            if ($this->executeUpdate($command) === false) {
-                $this->logger->critical('Could not initialize DB connection with query "' . $command . '": ' . $this->errorInfo());
-            }
-        }
     }
 
     /**
