@@ -25,7 +25,9 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Default implementation of a handler class for an ajax record selector.
@@ -110,7 +112,7 @@ class SuggestWizardDefaultReceiver
             $depth = (int)$config['pidDepth'];
             foreach ($pageIds as $pageId) {
                 if ($pageId > 0) {
-                    \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($allowedPages, $this->getAllSubpagesOfPage($pageId, $depth));
+                    ArrayUtility::mergeRecursiveWithOverrule($allowedPages, $this->getAllSubpagesOfPage($pageId, $depth));
                 }
             }
             $this->allowedPages = array_unique($allowedPages);
@@ -213,26 +215,16 @@ class SuggestWizardDefaultReceiver
     protected function prepareSelectStatement()
     {
         $expressionBuilder = $this->queryBuilder->expr();
-        $searchWholePhrase = !isset($this->config['searchWholePhrase']) || $this->config['searchWholePhrase'];
         $searchString = $this->params['value'];
-        $searchUid = (int)$searchString;
         if ($searchString !== '') {
-            $likeCondition = ($searchWholePhrase ? '%' : '') . $searchString . '%';
-            // Search in all fields given by label or label_alt
-            $selectFieldsList = $GLOBALS['TCA'][$this->table]['ctrl']['label'] . ',' . $GLOBALS['TCA'][$this->table]['ctrl']['label_alt'] . ',' . $this->config['additionalSearchFields'];
-            $selectFields = GeneralUtility::trimExplode(',', $selectFieldsList, true);
-            $selectFields = array_unique($selectFields);
-            $selectParts = $expressionBuilder->orX();
-            foreach ($selectFields as $field) {
-                $selectParts->add($expressionBuilder->like($field, $this->queryBuilder->createPositionalParameter($likeCondition)));
+            $splitStrings = $this->splitSearchString($searchString);
+            $constraints = [];
+            foreach ($splitStrings as $splitString) {
+                $constraints[] = $this->buildConstraintBlock($splitString);
             }
-
-            $searchClause = $expressionBuilder->orX($selectParts);
-            if ($searchUid > 0 && $searchUid == $searchString) {
-                $searchClause->add($expressionBuilder->eq('uid', $searchUid));
+            foreach ($constraints as $constraint) {
+                $this->queryBuilder->andWhere($expressionBuilder->andX($constraint));
             }
-
-            $this->queryBuilder->andWhere($expressionBuilder->orX($searchClause));
         }
         if (!empty($this->allowedPages)) {
             $pidList = array_map('intval', $this->allowedPages);
@@ -246,6 +238,47 @@ class SuggestWizardDefaultReceiver
         if (isset($this->config['searchCondition']) && $this->config['searchCondition'] !== '') {
             $this->queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->config['searchCondition']));
         }
+    }
+
+    /**
+     * Creates OR constraints for each split searchWord.
+     *
+     * @param string $searchString
+     * @return string|\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression
+     */
+    protected function buildConstraintBlock(string $searchString)
+    {
+        $expressionBuilder = $this->queryBuilder->expr();
+        if (MathUtility::canBeInterpretedAsInteger($searchString) && (int)$searchString > 0) {
+            $searchClause = $expressionBuilder->eq('uid', (int)$searchString);
+        } else {
+            $searchWholePhrase = !isset($this->config['searchWholePhrase']) || $this->config['searchWholePhrase'];
+            $likeCondition = ($searchWholePhrase ? '%' : '') . $this->queryBuilder->escapeLikeWildcards($searchString) . '%';
+            // Search in all fields given by label or label_alt
+            $selectFieldsList = ($GLOBALS['TCA'][$this->table]['ctrl']['label'] ?? '') . ',' . ($GLOBALS['TCA'][$this->table]['ctrl']['label_alt'] ?? '') . ',' . $this->config['additionalSearchFields'];
+            $selectFields = GeneralUtility::trimExplode(',', $selectFieldsList, true);
+            $selectFields = array_unique($selectFields);
+            $selectParts = $expressionBuilder->orX();
+            foreach ($selectFields as $field) {
+                $selectParts->add($expressionBuilder->like($field, $this->queryBuilder->createPositionalParameter($likeCondition)));
+            }
+            $searchClause = $expressionBuilder->orX($selectParts);
+        }
+        return $searchClause;
+    }
+
+    /**
+     * Splits the search string by +
+     * This allows searching for "elements+basic" and will find results like
+     * "elements rte basic
+     *
+     * @param string $searchString
+     * @return array
+     */
+    protected function splitSearchString(string $searchString): array
+    {
+        $spitStrings = GeneralUtility::trimExplode('+', $searchString, true);
+        return $spitStrings;
     }
 
     /**
@@ -357,7 +390,7 @@ class SuggestWizardDefaultReceiver
      * The path is returned uncut, cutting has to be done by calling function.
      *
      * @param array $row The row
-     * @param array $record The record
+     * @param int $uid UID of the record
      * @return string The record-path
      */
     protected function getRecordPath(&$row, $uid)
