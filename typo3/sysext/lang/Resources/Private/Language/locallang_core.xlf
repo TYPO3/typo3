@@ -1303,6 +1303,12 @@ Do you want to refresh it now?</source>
 			<trans-unit id="pageTranslation">
 				<source>Page Translation</source>
 			</trans-unit>
+			<trans-unit id="filestorage.invalidpathexception.title">
+				<source>Error in Path</source>
+			</trans-unit>
+			<trans-unit id="filestorage.invalidpathexception.message">
+				<source>You entered an invalid path for this File Storage. Note that "../" and "//" are not allowed when using an absolute path.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
