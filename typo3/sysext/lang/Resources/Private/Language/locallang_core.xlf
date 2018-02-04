@@ -1319,6 +1319,12 @@ Check also the following points:\n
 			<trans-unit id="labels.editTitle">
 				<source>Edit this Constant</source>
 			</trans-unit>
+			<trans-unit id="filestorage.invalidpathexception.title">
+				<source>Error in Path</source>
+			</trans-unit>
+			<trans-unit id="filestorage.invalidpathexception.message">
+				<source>You entered an invalid path for this File Storage. Note that "../" and "//" are not allowed when using an absolute path.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
