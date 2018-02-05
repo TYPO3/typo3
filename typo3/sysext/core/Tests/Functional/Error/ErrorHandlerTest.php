@@ -23,18 +23,11 @@ class ErrorHandlerTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = [
-        'workspaces',
-    ];
-
-    /**
-     * @var array
-     */
     protected $configurationToUseInTestInstance = [
         'DB' => [
             'Connections' => [
                 'Default' => [
-                    'initCommands' => 'SET SESSION sql_mode = \'STRICT_ALL_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_VALUE_ON_ZERO,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY\';',
+                    'initCommands' => 'SET NAMES \'UTF8\';',
                 ],
             ],
         ],
@@ -45,6 +38,14 @@ class ErrorHandlerTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
      */
     public function handleErrorFetchesDeprecations()
     {
-        $this->assertTrue(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version'));
+        trigger_error(
+            'The first error triggers database connection to be initialized and should be caught.',
+            E_USER_DEPRECATED
+        );
+        trigger_error(
+            'The second error should be caught by ErrorHandler as well.',
+            E_USER_DEPRECATED
+        );
+        $this->assertTrue(true);
     }
 }
