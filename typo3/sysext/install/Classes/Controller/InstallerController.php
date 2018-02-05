@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
@@ -299,6 +300,17 @@ class InstallerController
                 $activeAvailableOption = 'postgresManualConfiguration';
             }
         }
+        if (extension_loaded('pdo_sqlite')) {
+            $hasAtLeastOneOption = true;
+            $view->assign('hasSqliteManualConfiguration', true);
+            $view->assign(
+                'sqliteManualConfigurationOptions',
+                []
+            );
+            if ($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driver'] === 'pdo_sqlite') {
+                $activeAvailableOption = 'sqliteManualConfiguration';
+            }
+        }
 
         if (!empty($this->getDatabaseConfigurationFromEnvironment())) {
             $hasAtLeastOneOption = true;
@@ -339,6 +351,7 @@ class InstallerController
                     'pdo_mysql',
                     'pdo_pgsql',
                     'mssql',
+                    'pdo_sqlite',
                 ];
                 if (in_array($postValues['driver'], $validDrivers, true)) {
                     $defaultConnectionSettings['driver'] = $postValues['driver'];
@@ -412,6 +425,18 @@ class InstallerController
                     );
                 }
             }
+            // For sqlite a db path is automatically calculated
+            if (isset($postValues['driver']) && $postValues['driver'] === 'pdo_sqlite') {
+                $dbFilename = '/cms-' . (new Random())->generateRandomHexString(8) . '.sqlite';
+                // If the var/ folder exists outside of document root, put it into var/sqlite/
+                // Otherwise simply into typo3conf/
+                if (Environment::getProjectPath() !== Environment::getPublicPath()) {
+                    GeneralUtility::mkdir_deep(Environment::getVarPath() . '/sqlite');
+                    $defaultConnectionSettings['path'] = Environment::getVarPath() . '/sqlite' . $dbFilename;
+                } else {
+                    $defaultConnectionSettings['path'] = Environment::getConfigPath() . $dbFilename;
+                }
+            }
         }
 
         $success = false;
@@ -455,7 +480,9 @@ class InstallerController
     public function checkDatabaseSelectAction(): ResponseInterface
     {
         $success = false;
-        if ((string)$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname'] !== '') {
+        if ((string)$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname'] !== ''
+            || (string)$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['path'] !== ''
+        ) {
             try {
                 $success = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
@@ -815,6 +842,7 @@ For each website you need a TypoScript template on the main page of your website
     /**
      * Check LocalConfiguration.php for required database settings:
      * - 'username' and 'password' are mandatory, but may be empty
+     * - if 'driver' is pdo_sqlite and 'path' is set, its ok, too
      *
      * @return bool TRUE if required settings are present
      */
@@ -826,6 +854,12 @@ For each website you need a TypoScript template on the main page of your website
         }
         if (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['password'])) {
             $configurationComplete = false;
+        }
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driver'])
+            && $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driver'] === 'pdo_sqlite'
+            && !empty($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['path'])
+        ) {
+            $configurationComplete = true;
         }
         return $configurationComplete;
     }

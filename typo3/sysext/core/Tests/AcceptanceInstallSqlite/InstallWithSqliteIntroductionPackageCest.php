@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\AcceptanceInstallMysql;
+namespace TYPO3\CMS\Core\Tests\AcceptanceInstallSqlite;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,14 +15,14 @@ namespace TYPO3\CMS\Core\Tests\AcceptanceInstallMysql;
  */
 
 /**
- * Click through installer, go to backend, check blank site in FE works
+ * Click through installer, go to backend, install introduction package
  */
-class InstallWithMysqlIntroductionPackageCest
+class InstallWithSqliteIntroductionPackageCest
 {
     /**
      * @param \AcceptanceTester $I
      */
-    public function installTypo3OnMysql(\AcceptanceTester $I)
+    public function installTypo3OnSqlite(\AcceptanceTester $I)
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');
@@ -34,14 +34,7 @@ class InstallWithMysqlIntroductionPackageCest
 
         // DatabaseConnection step
         $I->waitForText('Select database');
-        $I->fillField('#t3-install-step-mysqliManualConfiguration-username', getenv('typo3DatabaseUsername'));
-        $I->fillField('#t3-install-step-mysqliManualConfiguration-password', getenv('typo3DatabasePassword'));
-        $I->click('Continue');
-
-        // DatabaseSelect step
-        $I->waitForText('Select a database');
-        $I->click('#t3-install-form-db-select-type-new');
-        $I->fillField('#t3-install-step-database-new', getenv('typo3DatabaseName') . '_atimysql');
+        $I->selectOption('#t3js-connect-database-driver', 'Manually configured SQLite connection');
         $I->click('Continue');
 
         // DatabaseData step
@@ -50,7 +43,7 @@ class InstallWithMysqlIntroductionPackageCest
         $I->fillField('#password', 'password');
         $I->click('Continue');
 
-        // DefaultConfiguration step - Create empty page
+        // DefaultConfiguration step - load distributions
         $I->waitForText('Installation Complete');
         $I->click('#load-distributions');
         $I->click('Open the TYPO3 Backend');

@@ -40,6 +40,14 @@
 									Manually configured PostgreSQL connection
 									</option>
 								</f:if>
+								<f:if condition="{hasSqliteManualConfiguration}">
+									<option
+										value="sqliteManualConfiguration"
+										{f:if(condition:'{activeAvailableOption} == sqliteManualConfiguration', then: 'selected="selected"')}
+									>
+									Manually configured SQLite connection
+									</option>
+								</f:if>
 								<f:if condition="{hasConfigurationFromEnvironment}">
 									<option
 										value="configurationFromEnvironment"
@@ -243,6 +251,12 @@
 									/>
 								</div>
 							</div>
+						</div>
+					</f:if>
+
+					<f:if condition="{hasSqliteManualConfiguration}">
+						<div id="sqliteManualConfiguration" class="t3-install-driver-data">
+							<input type="hidden" value="pdo_sqlite" name="install[values][driver]"/>
 						</div>
 					</f:if>
 

@@ -79,8 +79,8 @@ public class NightlySpec extends AbstractCoreSpec {
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
         jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion72(), "PHP72"));
-
         jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(this.getRequirementPhpVersion72(), "PHP72"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallSqlite(this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion72(), "PHP72"));
 

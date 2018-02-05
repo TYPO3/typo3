@@ -173,7 +173,7 @@ abstract public class AbstractCoreSpec {
      */
     protected Job getJobAcceptanceTestInstallMysql(Requirement requirement, String requirementIdentifier) {
         return new Job("Accept inst my " + requirementIdentifier, new BambooKey("ACINSTMY" + requirementIdentifier))
-            .description("Install TYPO3 on mysql and create empty frontend page " + requirementIdentifier)
+            .description("Install TYPO3 on mysql and load introduction package " + requirementIdentifier)
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
@@ -236,6 +236,43 @@ abstract public class AbstractCoreSpec {
         .artifacts(new Artifact()
             .name("Test Report")
             .copyPattern("typo3temp/var/tests/AcceptanceReportsInstallPgsql/")
+            .shared(false)
+        )
+        .cleanWorkingDirectory(true);
+    }
+
+    /**
+     * Job acceptance test installs system and introduction package on sqlite
+     *
+     * @param Requirement requirement
+     * @param String requirementIdentfier
+     */
+    protected Job getJobAcceptanceTestInstallSqlite(Requirement requirement, String requirementIdentifier) {
+        return new Job("Accept inst sq " + requirementIdentifier, new BambooKey("ACINSTSQ" + requirementIdentifier))
+        .description("Install TYPO3 on sqlite and load introduction package " + requirementIdentifier)
+        .pluginConfigurations(this.getDefaultJobPluginConfiguration())
+        .tasks(
+            this.getTaskGitCloneRepository(),
+            this.getTaskGitCherryPick(),
+            this.getTaskComposerInstall(),
+            this.getTaskPrepareAcceptanceTest(),
+            new CommandTask()
+                .description("Execute codeception AcceptanceInstallSqlite suite")
+                .executable("codecept")
+                .argument("run AcceptanceInstallSqlite -d -c " + this.testingFrameworkBuildPath + "AcceptanceTestsInstallSqlite.yml --xml reports.xml --html reports.html")
+                .environmentVariables(this.credentialsSqlite)
+        )
+        .finalTasks(
+            new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
+                .resultDirectories("typo3temp/var/tests/AcceptanceReportsInstallSqlite/reports.xml"),
+            this.getTaskTearDownAcceptanceTestSetup()
+        )
+        .requirements(
+            requirement
+        )
+        .artifacts(new Artifact()
+            .name("Test Report")
+            .copyPattern("typo3temp/var/tests/AcceptanceReportsInstallSqlite/")
             .shared(false)
         )
         .cleanWorkingDirectory(true);
