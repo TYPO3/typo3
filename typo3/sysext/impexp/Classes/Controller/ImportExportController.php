@@ -980,21 +980,11 @@ class ImportExportController extends BaseScriptClass
         $this->fileProcessor->setActionPermissions();
         $conflictMode = empty(GeneralUtility::_GP('overwriteExistingFiles')) ? DuplicationBehavior::__default : DuplicationBehavior::REPLACE;
         $this->fileProcessor->setExistingFilesConflictMode(DuplicationBehavior::cast($conflictMode));
-        // Checking referer / executing:
-        $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
-        $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-        if (
-            $httpHost != $refInfo['host']
-            && !$GLOBALS['$TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']
-        ) {
-            $this->fileProcessor->writeLog(0, 2, 1, 'Referer host "%s" and server host "%s" did not match!', [$refInfo['host'], $httpHost]);
-        } else {
-            $this->fileProcessor->start($file);
-            $result = $this->fileProcessor->processData();
-            if (!empty($result['upload'])) {
-                foreach ($result['upload'] as $uploadedFiles) {
-                    $this->uploadedFiles += $uploadedFiles;
-                }
+        $this->fileProcessor->start($file);
+        $result = $this->fileProcessor->processData();
+        if (!empty($result['upload'])) {
+            foreach ($result['upload'] as $uploadedFiles) {
+                $this->uploadedFiles += $uploadedFiles;
             }
         }
     }

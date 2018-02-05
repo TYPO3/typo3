@@ -122,7 +122,9 @@ class SilentConfigurationUpgradeService
         // #82803
         'FE/content_doktypes',
         // #83081
-        'BE/fileExtensions'
+        'BE/fileExtensions',
+        // #83768
+        'SYS/doNotCheckReferer',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

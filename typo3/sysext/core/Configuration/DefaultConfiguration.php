@@ -75,7 +75,6 @@ return [
         'encryptionKey' => '',
         'cookieDomain' => '',
         'cookieSecure' => 0,
-        'doNotCheckReferer' => false,
         'recursiveDomainSearch' => false,
         'trustedHostsPattern' => 'SERVER_NAME',
         'devIPmask' => '127.0.0.1,::1',
