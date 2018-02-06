@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Controller;
  */
 
 use Doctrine\DBAL\Exception\ConnectionException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
@@ -2767,16 +2768,22 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * the redirectUrl propert is not empty, the user will be redirected to this URL.
      *
      * @internal Should be called by the FrontendRequestHandler only.
+     * @return ResponseInterface|null
      */
     public function redirectToExternalUrl()
     {
         foreach ($this->activeUrlHandlers as $redirectHandler) {
-            $redirectHandler->handle();
+            $response = $redirectHandler->handle();
+            if ($response instanceof ResponseInterface) {
+                return $response;
+            }
         }
 
         if (!empty($this->activeUrlHandlers)) {
             throw new \RuntimeException('A URL handler is active but did not process the URL.', 1442305505);
         }
+
+        return null;
     }
 
     /**

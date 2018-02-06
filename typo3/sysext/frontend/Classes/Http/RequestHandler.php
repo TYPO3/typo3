@@ -253,7 +253,11 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
                 $response = $response->withHeader('X-TYPO3-Parsetime', $this->timeTracker->getParseTime() . 'ms');
             }
         }
-        $this->controller->redirectToExternalUrl();
+        $redirectResponse = $this->controller->redirectToExternalUrl();
+        if ($redirectResponse instanceof ResponseInterface) {
+            return $redirectResponse;
+        }
+
         // Preview info
         $this->controller->previewInfo();
         // Hook for end-of-frontend

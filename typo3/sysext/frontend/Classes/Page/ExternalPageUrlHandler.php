@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Page;
 
 /*
@@ -14,7 +15,9 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\HttpUtility;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Handles the redirection for external URL pages.
@@ -31,7 +34,7 @@ class ExternalPageUrlHandler implements \TYPO3\CMS\Frontend\Http\UrlHandlerInter
      *
      * @return bool
      */
-    public function canHandleCurrentUrl()
+    public function canHandleCurrentUrl(): bool
     {
         $tsfe = $this->getTypoScriptFrontendController();
 
@@ -49,15 +52,15 @@ class ExternalPageUrlHandler implements \TYPO3\CMS\Frontend\Http\UrlHandlerInter
     /**
      * Redirects the user to the detected external URL.
      */
-    public function handle()
+    public function handle(): ResponseInterface
     {
-        HttpUtility::redirect($this->externalUrl, HttpUtility::HTTP_STATUS_303);
+        return new RedirectResponse($this->externalUrl, 303);
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
-    protected function getTypoScriptFrontendController()
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }
