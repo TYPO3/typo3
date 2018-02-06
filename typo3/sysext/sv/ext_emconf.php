@@ -10,10 +10,10 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Rene Fritz',
     'author_email' => 'r.fritz@colorcube.de',
     'author_company' => 'Colorcube',
-    'version' => '7.6.24',
+    'version' => '7.6.25',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.24',
+            'typo3' => '7.6.25',
         ],
         'conflicts' => [],
         'suggests' => [],
