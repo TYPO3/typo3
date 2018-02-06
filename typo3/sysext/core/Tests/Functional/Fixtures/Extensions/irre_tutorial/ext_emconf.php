@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.0-7.6.24',
+            'typo3' => '7.6.24',
             'workspaces' => '0.0.0-',
             'version' => '7.6.24',
         ],

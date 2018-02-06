@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'version' => '7.6.24',
     'constraints' => [
         'depends' => [
-            'extbase' => '7.6.0-7.6.24',
+            'extbase' => '7.6.24',
         ],
         'conflicts' => [],
         'suggests' => [],
