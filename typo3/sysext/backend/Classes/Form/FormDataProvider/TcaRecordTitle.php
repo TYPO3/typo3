@@ -262,7 +262,9 @@ class TcaRecordTitle implements FormDataProviderInterface
         }
         $labelParts = array_map(
             function ($rawLabelItem) {
-                return array_pop(GeneralUtility::trimExplode('|', $rawLabelItem, true, 2));
+                return rawurldecode(
+                    array_pop(GeneralUtility::trimExplode('|', $rawLabelItem, true, 2))
+                );
             },
             GeneralUtility::trimExplode(',', $value, true)
         );
