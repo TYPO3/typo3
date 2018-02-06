@@ -36,9 +36,15 @@ define(['jquery'], function($) {
     var $groupIconContainer = $selectElement.prev('.input-group-icon');
     var options = options || {};
 
-    $selectElement.on('change', function() {
+    $selectElement.on('change', function(e) {
+      var $me = $(e.target);
+
       // Update prepended select icon
       $groupIconContainer.html($selectElement.find(':selected').data('icon'));
+
+      var $selectIcons = $me.closest('.t3js-formengine-field-item').find('.t3js-forms-select-single-icons');
+      $selectIcons.find('.item.active').removeClass('active');
+      $selectIcons.find('[data-select-index="' + $me.prop('selectedIndex') + '"]').closest('.item').addClass('active');
     });
 
     // Append optionally passed additional "change" event callback
@@ -51,13 +57,15 @@ define(['jquery'], function($) {
       $selectElement.on('focus', options.onFocus);
     }
 
-    $selectElement.closest('.form-control-wrap').find('.t3js-forms-select-single-icons').on('click', function(e) {
-      var $selectIcon = $(e.target).closest('[data-select-index]');
+    $selectElement.closest('.form-control-wrap').find('.t3js-forms-select-single-icons a').on('click', function(e) {
+      var $me = $(e.target);
+      var $selectIcon = $me.closest('[data-select-index]');
 
+      $me.closest('.t3js-forms-select-single-icons').find('.item.active').removeClass('active');
       $selectElement
         .prop('selectedIndex', $selectIcon.data('selectIndex'))
         .trigger('change');
-      $selectIcon.trigger('blur');
+      $selectIcon.closest('.item').addClass('active');
 
       return false;
     });

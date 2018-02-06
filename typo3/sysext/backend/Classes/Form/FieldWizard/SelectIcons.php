@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 
 /**
  * Render thumbnails of icons,
- * typically used with type=group and internal_type=file and file_reference.
+ * typically used with type=select.
  */
 class SelectIcons extends AbstractNode
 {
@@ -43,8 +43,10 @@ class SelectIcons extends AbstractNode
             }
             $icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $item[0], $item[0]) : '';
             if ($icon) {
+                $fieldValue = $this->data['databaseRow'][$this->data['fieldName']];
                 $selectIcons[] = [
                         'title' => $item[0],
+                        'active' => ($fieldValue[0] === (string)$item[1]) ? true : false,
                         'icon' => $icon,
                         'index' => $selectItemCounter,
                     ];
@@ -57,7 +59,8 @@ class SelectIcons extends AbstractNode
             $html[] = '<div class="t3js-forms-select-single-icons icon-list">';
             $html[] =    '<div class="row">';
             foreach ($selectIcons as $i => $selectIcon) {
-                $html[] =   '<div class="item">';
+                $active = ($selectIcon['active']) ?  ' active' : '';
+                $html[] =   '<div class="item' . $active . '">';
                 if (is_array($selectIcon)) {
                     $html[] = '<a href="#" title="' . htmlspecialchars($selectIcon['title'], ENT_COMPAT, 'UTF-8', false) . '" data-select-index="' . htmlspecialchars((string)$selectIcon['index']) . '">';
                     $html[] =   $selectIcon['icon'];
