@@ -2821,7 +2821,7 @@ class ContentObjectRenderer
      */
     public function stdWrap_editIcons($content = '', $conf = [])
     {
-        if ($this->getTypoScriptFrontendController()->beUserLogin && $conf['editIcons']) {
+        if ($this->getTypoScriptFrontendController()->isBackendUserLoggedIn() && $conf['editIcons']) {
             if (!is_array($conf['editIcons.'])) {
                 $conf['editIcons.'] = [];
             }
@@ -2840,7 +2840,7 @@ class ContentObjectRenderer
      */
     public function stdWrap_editPanel($content = '', $conf = [])
     {
-        if ($this->getTypoScriptFrontendController()->beUserLogin) {
+        if ($this->getTypoScriptFrontendController()->isBackendUserLoggedIn()) {
             $content = $this->editPanel($content, $conf['editPanel.']);
         }
         return $content;
@@ -7067,7 +7067,7 @@ class ContentObjectRenderer
      */
     public function editPanel($content, $conf, $currentRecord = '', $dataArr = [])
     {
-        if ($this->getTypoScriptFrontendController()->beUserLogin && $this->getFrontendBackendUser()->frontendEdit instanceof FrontendEditingController) {
+        if ($this->getTypoScriptFrontendController()->isBackendUserLoggedIn() && $this->getFrontendBackendUser()->frontendEdit instanceof FrontendEditingController) {
             if (!$currentRecord) {
                 $currentRecord = $this->currentRecord;
             }
@@ -7094,7 +7094,7 @@ class ContentObjectRenderer
      */
     public function editIcons($content, $params, array $conf = [], $currentRecord = '', $dataArr = [], $addUrlParamStr = '')
     {
-        if ($this->getTypoScriptFrontendController()->beUserLogin && $this->getFrontendBackendUser()->frontendEdit instanceof FrontendEditingController) {
+        if ($this->getTypoScriptFrontendController()->isBackendUserLoggedIn() && $this->getFrontendBackendUser()->frontendEdit instanceof FrontendEditingController) {
             if (!$currentRecord) {
                 $currentRecord = $this->currentRecord;
             }

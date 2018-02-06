@@ -864,7 +864,7 @@ class AbstractPlugin
             $row = $this->internal['currentRow'];
             $tablename = $this->internal['currentTable'];
         }
-        if ($this->frontendController->beUserLogin) {
+        if ($this->frontendController->isBackendUserLoggedIn()) {
             // Create local cObj if not set:
             if (!is_object($this->pi_EPtemp_cObj)) {
                 $this->pi_EPtemp_cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
@@ -900,7 +900,7 @@ class AbstractPlugin
      */
     public function pi_getEditIcon($content, $fields, $title = '', $row = [], $tablename = '', $oConf = [])
     {
-        if ($this->frontendController->beUserLogin) {
+        if ($this->frontendController->isBackendUserLoggedIn()) {
             if (!$row || !$tablename) {
                 $row = $this->internal['currentRow'];
                 $tablename = $this->internal['currentTable'];

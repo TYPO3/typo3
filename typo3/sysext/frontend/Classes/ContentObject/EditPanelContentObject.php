@@ -28,7 +28,7 @@ class EditPanelContentObject extends AbstractContentObject
     public function render($conf = [])
     {
         $theValue = '';
-        if ($GLOBALS['TSFE']->beUserLogin) {
+        if ($GLOBALS['TSFE']->isBackendUserLoggedIn()) {
             $theValue = $this->cObj->editPanel($theValue, $conf);
         }
         if (isset($conf['stdWrap.'])) {

@@ -100,7 +100,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
         }
         // Only show errors in FE, if a BE user is authenticated
         if (TYPO3_MODE === 'FE') {
-            return $GLOBALS['TSFE']->beUserLogin;
+            return $GLOBALS['TSFE']->isBackendUserLoggedIn();
         }
         return true;
     }

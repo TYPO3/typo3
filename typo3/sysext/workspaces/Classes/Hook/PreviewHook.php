@@ -163,7 +163,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
             unset($tempBackendUser);
             $params['BE_USER'] = $BE_USER;
         }
-        if ($pObj->beUserLogin
+        if ($pObj->isBackendUserLoggedIn()
             && is_object($params['BE_USER'])
             && MathUtility::canBeInterpretedAsInteger($workspaceUid)
         ) {

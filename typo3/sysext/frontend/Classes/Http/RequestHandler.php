@@ -275,7 +275,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             // in (admin panel might show...) or if debug mode is turned on, we disable it!
             if (
                 (!isset($this->controller->config['config']['enableContentLengthHeader']) || $this->controller->config['config']['enableContentLengthHeader'])
-                && !$this->controller->beUserLogin && !$GLOBALS['TYPO3_CONF_VARS']['FE']['debug']
+                && !$this->controller->isBackendUserLoggedIn() && !$GLOBALS['TYPO3_CONF_VARS']['FE']['debug']
                 && !$this->controller->config['config']['debug'] && !$this->controller->doWorkspacePreview()
             ) {
                 header('Content-Length: ' . strlen($this->controller->content));
