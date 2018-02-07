@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Dispatcher which resolves a target, which was given to the request to call a controller and method (but also a callable)
  * where the request contains a "target" as attribute.
  *
- * Used in eID Frontend Requests, see EidRequestHandler
+ * Used in eID Frontend Requests, see EidHandler
  */
 class Dispatcher implements DispatcherInterface
 {

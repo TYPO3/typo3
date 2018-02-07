@@ -39,7 +39,7 @@ use TYPO3\CMS\Frontend\View\AdminPanelView;
  * frontend (the website). The script instantiates a $TSFE object, includes libraries and does a little logic here
  * and there in order to instantiate the right classes to create the webpage.
  * Previously, this was called index_ts.php and also included the logic for the lightweight "eID" concept,
- * which is now handled in a separate request handler (EidRequestHandler).
+ * which is now handled in a separate middleware (EidHandler).
  */
 class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {
@@ -296,7 +296,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
      */
     public function canHandleRequest(ServerRequestInterface $request): bool
     {
-        return $request->getQueryParams()['eID'] || $request->getParsedBody()['eID'] ? false : true;
+        return true;
     }
 
     /**

@@ -20,5 +20,11 @@ return [
                 'typo3/cms-frontend/timetracker'
             ]
         ],
+        'typo3/cms-frontend/eid' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\EidHandler::class,
+            'after' => [
+                'typo3/cms-frontend/preprocessing'
+            ]
+        ],
     ]
 ];

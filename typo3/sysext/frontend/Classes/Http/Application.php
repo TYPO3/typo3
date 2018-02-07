@@ -40,7 +40,6 @@ class Application implements ApplicationInterface
      */
     protected $availableRequestHandlers = [
         \TYPO3\CMS\Frontend\Http\RequestHandler::class,
-        \TYPO3\CMS\Frontend\Http\EidRequestHandler::class
     ];
 
     /**
