@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -612,6 +613,13 @@ class PageLayoutView implements LoggerAwareInterface
      * @var array[]
      */
     protected $tableDisplayOrder = [];
+
+    /**
+     * Cache the number of references to a record
+     *
+     * @var array
+     */
+    protected $referenceCount = [];
 
     /**
      * Construct to initialize class variables.
@@ -1969,9 +1977,18 @@ class PageLayoutView implements LoggerAwareInterface
                 $disableDelete = (bool)trim($disableDeleteTS['properties']['tt_content'] ?? $disableDeleteTS['value']);
                 if (!$disableDelete) {
                     $params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
+                    $refCountMsg = BackendUtility::referenceCount(
+                            'tt_content',
+                            $row['uid'],
+                            ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
+                            $this->getReferenceCount('tt_content', $row['uid'])
+                        ) . BackendUtility::translationCount(
+                            'tt_content',
+                            $row['uid'],
+                            ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
+                        );
                     $confirm = $this->getLanguageService()->getLL('deleteWarning')
-                        . BackendUtility::translationCount('tt_content', $row['uid'], (' '
-                        . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')));
+                        . $refCountMsg;
                     $out .= '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params)) . '"'
                         . ' data-severity="warning"'
                         . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
@@ -2042,6 +2059,24 @@ class PageLayoutView implements LoggerAwareInterface
 					<div class="t3-page-ce-header-icons-right">' . ($out ? '<div class="btn-toolbar">' . $out . '</div>' : '') . '</div>
 				</div>
 				<div class="t3-page-ce-body">';
+    }
+
+    /**
+     * Gets the number of records referencing the record with the UID $uid in
+     * the table $tableName.
+     *
+     * @param string $tableName
+     * @param int $uid
+     * @return int The number of references to record $uid in table
+     */
+    protected function getReferenceCount(string $tableName, int $uid): int
+    {
+        if (!isset($this->referenceCount[$tableName][$uid])) {
+            $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
+            $numberOfReferences = $referenceIndex->getNumberOfReferencedRecords($tableName, $uid);
+            $this->referenceCount[$tableName][$uid] = $numberOfReferences;
+        }
+        return $this->referenceCount[$tableName][$uid];
     }
 
     /**

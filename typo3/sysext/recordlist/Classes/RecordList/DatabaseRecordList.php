@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -1517,17 +1518,8 @@ class DatabaseRecordList
     protected function getReferenceCount($tableName, $uid)
     {
         if (!isset($this->referenceCount[$tableName][$uid])) {
-            $numberOfReferences = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('sys_refindex')
-                ->count(
-                    '*',
-                    'sys_refindex',
-                    [
-                        'ref_table' => $tableName,
-                        'ref_uid' => (int)$uid,
-                        'deleted' => 0
-                    ]
-                );
+            $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
+            $numberOfReferences = $referenceIndex->getNumberOfReferencedRecords($tableName, $uid);
             $this->referenceCount[$tableName][$uid] = $numberOfReferences;
         }
         return $this->referenceCount[$tableName][$uid];

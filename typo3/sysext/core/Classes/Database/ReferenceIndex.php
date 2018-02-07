@@ -338,6 +338,34 @@ class ReferenceIndex implements LoggerAwareInterface
     }
 
     /**
+     * Returns the amount of references for the given record
+     *
+     * @param string $tableName
+     * @param int $uid
+     * @return int
+     */
+    public function getNumberOfReferencedRecords(string $tableName, int $uid): int
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        return (int)$queryBuilder
+            ->count('*')->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'ref_table',
+                    $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'ref_uid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'deleted',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
+            )->execute()->fetchColumn(0);
+    }
+
+    /**
      * Calculate the relations for a record of a given table
      *
      * @param string $tableName Table being processed
