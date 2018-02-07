@@ -665,8 +665,6 @@ class Bootstrap
     /**
      * Define TYPO3_REQUESTTYPE* constants that can be used for developers to see if any context has been hit
      * also see setRequestType(). Is done at the very beginning so these parameters are always available.
-     *
-     * @return Bootstrap
      */
     protected function defineTypo3RequestTypes()
     {
@@ -680,6 +678,7 @@ class Bootstrap
     /**
      * Defines the TYPO3_REQUESTTYPE constant so the environment knows which context the request is running.
      *
+     * @param int $requestType
      * @throws \RuntimeException if the method was already called during a request
      * @return Bootstrap
      */
