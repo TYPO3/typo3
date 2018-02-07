@@ -88,7 +88,13 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
             return true;
         }
         $token = (string)($request->getParsedBody()['token'] ?? $request->getQueryParams()['token']);
-        return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
+        if ($token) {
+            return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
+        }
+        // backwards compatibility: check for M and module token params
+        // @deprecated since TYPO3 CMS 9, will be removed in TYPO3 CMS 10.
+        $token = (string)($request->getParsedBody()['moduleToken'] ?? $request->getQueryParams()['moduleToken']);
+        return $this->getFormProtection()->validateToken($token, 'moduleCall', $request->getParsedBody()['M'] ?? $request->getQueryParams()['M']);
     }
 
     /**

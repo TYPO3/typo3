@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Web\Routing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -664,7 +665,9 @@ class UriBuilder
             }
         } else {
             $id = GeneralUtility::_GP('id');
-            $module = GeneralUtility::_GP('route');
+            // backwards compatibility: check for M parameter
+            // @deprecated since TYPO3 CMS 9, will be removed in TYPO3 CMS 10.
+            $module = GeneralUtility::_GP('route') ?: GeneralUtility::_GP('M');
             if ($id !== null) {
                 $arguments['id'] = $id;
             }
@@ -678,13 +681,13 @@ class UriBuilder
         $moduleName = $arguments['route'] ?? null;
         unset($arguments['route'], $arguments['token']);
         $backendUriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        if (!empty($moduleName)) {
+        try {
             if ($this->request instanceof WebRequest && $this->createAbsoluteUri) {
                 $uri = (string)$backendUriBuilder->buildUriFromRoutePath($moduleName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_URL);
             } else {
                 $uri = (string)$backendUriBuilder->buildUriFromRoutePath($moduleName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_PATH);
             }
-        } else {
+        } catch (ResourceNotFoundException $e) {
             if ($this->request instanceof WebRequest && $this->createAbsoluteUri) {
                 $uri = (string)$backendUriBuilder->buildUriFromModule($moduleName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_URL);
             } else {
