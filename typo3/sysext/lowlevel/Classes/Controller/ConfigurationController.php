@@ -20,7 +20,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -99,6 +104,10 @@ class ConfigurationController
             'label' => 'routes',
             'type' => 'routes',
         ],
+        'httpMiddlewareStacks' => [
+            'label' => 'httpMiddlewareStacks',
+            'type' => 'httpMiddlewareStacks',
+        ],
     ];
 
     /**
@@ -163,6 +172,7 @@ class ConfigurationController
         $moduleState['regexSearch'] = (bool)($postValues['regexSearch'] ?? $moduleState['regexSearch'] ?? false);
 
         // Prepare main array
+        $sortKeysByName = true;
         if ($selectedTreeDetails['type'] === 'global') {
             $globalArrayKey = $selectedTreeDetails['globalKey'];
             $renderArray = $GLOBALS[$globalArrayKey];
@@ -201,10 +211,33 @@ class ConfigurationController
                     'options' => $route->getOptions()
                 ];
             }
+        } elseif ($selectedTreeDetails['type'] === 'httpMiddlewareStacks') {
+            // Keep the order of the keys
+            $sortKeysByName = false;
+            // Fake a PHP frontend with a null backend to avoid PHP Opcache conflicts
+            // When using >requireOnce() multiple times in one request
+            $cache = GeneralUtility::makeInstance(
+                PhpFrontend::class,
+                'middleware',
+                GeneralUtility::makeInstance(NullBackend::class, 'Production')
+            );
+            $stackResolver = GeneralUtility::makeInstance(
+                MiddlewareStackResolver::class,
+                GeneralUtility::makeInstance(PackageManager::class),
+                GeneralUtility::makeInstance(DependencyOrderingService::class),
+                $cache
+            );
+            $renderArray = [];
+            foreach (['frontend', 'backend'] as $stackName) {
+                // reversing the array allows the admin to read the stack from top to bottom
+                $renderArray[$stackName] = array_reverse($stackResolver->resolve($stackName));
+            }
         } else {
             throw new \RuntimeException('Unknown array type "' . $selectedTreeDetails['type'] . '"', 1507845662);
         }
-        ArrayUtility::naturalKeySortRecursive($renderArray);
+        if ($sortKeysByName) {
+            ArrayUtility::naturalKeySortRecursive($renderArray);
+        }
 
         // Prepare array renderer class, apply search and expand / collapse states
         $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class);

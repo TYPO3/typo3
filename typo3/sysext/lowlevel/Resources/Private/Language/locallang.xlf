@@ -30,6 +30,9 @@
 			<trans-unit id="routes">
 				<source>Backend Routes</source>
 			</trans-unit>
+			<trans-unit id="httpMiddlewareStacks">
+				<source>HTTP Middlewares (PSR-15)</source>
+			</trans-unit>
 			<trans-unit id="t3services">
 				<source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
 			</trans-unit>
