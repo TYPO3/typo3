@@ -459,7 +459,9 @@ class RecordProvider extends AbstractProvider
      */
     protected function canShowHistory(): bool
     {
-        return true;
+        $showHistoryTS = $this->backendUser->getTSConfig('options.showHistory');
+        $showHistory = (bool)trim($showHistoryTS['properties'][$this->table] ?? $showHistoryTS['value'] ?? '1');
+        return $showHistory;
     }
 
     /**

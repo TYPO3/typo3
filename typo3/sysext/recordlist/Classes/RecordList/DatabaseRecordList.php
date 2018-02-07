@@ -1956,12 +1956,16 @@ class DatabaseRecordList
         // If the table is NOT a read-only table, then show these links:
         if ($this->isEditable($table)) {
             // "Revert" link (history/undo)
-            $moduleUrl = (string)$uriBuilder->buildUriFromRoute('record_history', ['element' => $table . ':' . $row['uid']]);
-            $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($moduleUrl) . ',\'#latest\');';
-            $historyAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-                . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'
-                . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
-            $this->addActionToCellGroup($cells, $historyAction, 'history');
+            $showHistoryTS = $this->getBackendUserAuthentication()->getTSConfig('options.showHistory');
+            $showHistory = (bool)trim($showHistoryTS['properties'][$table] ?? $showHistoryTS['value'] ?? '1');
+            if ($showHistory) {
+                $moduleUrl = BackendUtility::getModuleUrl('record_history', ['element' => $table . ':' . $row['uid']]);
+                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($moduleUrl) . ',\'#latest\');';
+                $historyAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
+                    . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'
+                    . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
+                $this->addActionToCellGroup($cells, $historyAction, 'history');
+            }
             // "Edit Perms" link:
             if ($table === 'pages' && $this->getBackendUserAuthentication()->check('modules', 'system_BeuserTxPermission') && ExtensionManagementUtility::isLoaded('beuser')) {
                 if ($isL10nOverlay) {
