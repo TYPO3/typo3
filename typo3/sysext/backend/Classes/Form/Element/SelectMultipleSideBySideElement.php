@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -331,6 +332,9 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
 
         $possibleItems = $config['items'];
         $selectedItems = $parameterArray['itemFormElValue'] ?: [];
+        if (!is_array($selectedItems)) {
+            $selectedItems = GeneralUtility::trimExplode(',', $selectedItems, true);
+        }
         $selectedItemsCount = count($selectedItems);
 
         $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'], 0);
