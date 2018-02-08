@@ -5131,18 +5131,6 @@ TYPO3.settings = {"TS":{"setting1":"Hello","setting2":"GoOnTop"}};
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="javascriptLibs" type="array">
-			<description><![CDATA[array of Strings
-	This allows to include the JavaScript libraries that are shipped with the TYPO3 Core.
-
-javascriptLibs {
-     # includes jQuery
-   jQuery = 1
-}
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="jsInline" type="CARRAY">
 			<description><![CDATA[Use cObjects for creating inline JavaScript
 

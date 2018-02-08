@@ -351,8 +351,14 @@ class PageGenerator
         }
         // Javascript Libraries
         if (is_array($tsfe->pSetup['javascriptLibs.'])) {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the setting page.javascriptLibs has been deprecated and will be removed in TYPO3 CMS 10.
+            trigger_error('The setting page.javascriptLibs has been deprecated and will be removed in TYPO3 CMS 10', E_USER_DEPRECATED);
+
             // Include jQuery into the page renderer
             if (!empty($tsfe->pSetup['javascriptLibs.']['jQuery'])) {
+                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the setting page.javascriptLibs.jQuery has been deprecated and will be removed in TYPO3 CMS 10.
+                trigger_error('The setting page.javascriptLibs.jQuery has been deprecated and will be removed in TYPO3 CMS 10', E_USER_DEPRECATED);
+
                 $jQueryTS = $tsfe->pSetup['javascriptLibs.']['jQuery.'];
                 // Check if version / source is set, if not set variable to "NULL" to use the default of the page renderer
                 $version = $jQueryTS['version'] ?? null;
