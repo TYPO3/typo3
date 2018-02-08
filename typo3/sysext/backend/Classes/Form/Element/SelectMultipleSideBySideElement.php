@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -61,6 +62,9 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         }
         // Get the array with selected items:
         $itemsArray = $parameterArray['itemFormElValue'] ?: [];
+        if (!is_array($itemsArray)) {
+            $itemsArray = GeneralUtility::trimExplode(',', $itemsArray, true);
+        }
 
         // Perform modification of the selected items array:
         foreach ($itemsArray as $itemNumber => $itemValue) {
