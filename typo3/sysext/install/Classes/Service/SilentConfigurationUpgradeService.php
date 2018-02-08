@@ -119,6 +119,7 @@ class SilentConfigurationUpgradeService
         $this->migrateDatabaseConnectionCharset();
         $this->migrateDatabaseDriverOptions();
         $this->migrateLangDebug();
+        $this->migrateDisplayErrorsSetting();
 
         // Should run at the end to prevent that obsolete settings are removed before migration
         $this->removeObsoleteLocalConfigurationSettings();
@@ -774,6 +775,23 @@ class SilentConfigurationUpgradeService
             // check if the current option is set and boolean
             if (isset($currentOption) && is_bool($currentOption)) {
                 $confManager->setLocalConfigurationValueByPath('BE/languageDebug', $currentOption);
+            }
+        } catch (\RuntimeException $e) {
+            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+        }
+    }
+
+    /**
+     * Migrate SYS/displayErrors to not contain 2
+     */
+    protected function migrateDisplayErrorsSetting()
+    {
+        $confManager = $this->configurationManager;
+        try {
+            $currentOption = (int)$confManager->getLocalConfigurationValueByPath('SYS/displayErrors');
+            // make sure displayErrors is set to 2
+            if ($currentOption === 2) {
+                $confManager->setLocalConfigurationValueByPath('SYS/displayErrors', -1);
             }
         } catch (\RuntimeException $e) {
             // no change inside the LocalConfiguration.php found, so nothing needs to be modified

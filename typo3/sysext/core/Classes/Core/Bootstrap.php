@@ -650,11 +650,13 @@ class Bootstrap
                 $displayErrors = 1;
                 break;
             default:
-                // Throw exception if an invalid option is set.
-                throw new \RuntimeException(
-                    'The option $TYPO3_CONF_VARS[SYS][displayErrors] is not set to "-1", "0" or "1".',
-                    1476046290
-                );
+                if (!TYPO3_REQUESTTYPE_INSTALL) {
+                    // Throw exception if an invalid option is set.
+                    throw new \RuntimeException(
+                        'The option $TYPO3_CONF_VARS[SYS][displayErrors] is not set to "-1", "0" or "1".',
+                        1476046290
+                    );
+                }
         }
         @ini_set('display_errors', $displayErrors);
 
