@@ -13,14 +13,18 @@ namespace TYPO3\CMS\Install\Http;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
-use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Http\AbstractApplication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entry point for the TYPO3 Install Tool
  */
-class Application implements ApplicationInterface
+class Application extends AbstractApplication
 {
     /**
      * @var Bootstrap
@@ -56,10 +60,6 @@ class Application implements ApplicationInterface
             ->setRequestType(TYPO3_REQUESTTYPE_INSTALL)
             ->baseSetup($this->entryPointLevel);
 
-        foreach ($this->availableRequestHandlers as $requestHandler) {
-            $this->bootstrap->registerRequestHandlerImplementation($requestHandler);
-        }
-
         $this->bootstrap
             ->startOutputBuffering()
             ->loadConfigurationAndInitialize(false, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
@@ -68,21 +68,19 @@ class Application implements ApplicationInterface
     }
 
     /**
-     * Set up the application and shut it down afterwards
-     * Failsafe minimal setup mode for the install tool
-     * Does not call "run()" therefore
-     *
-     * @param callable $execute
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    public function run(callable $execute = null)
+    protected function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
-
-        if ($execute !== null) {
-            call_user_func($execute);
+        foreach ($this->availableRequestHandlers as $requestHandler) {
+            $handler = GeneralUtility::makeInstance($requestHandler, $this->bootstrap);
+            if ($handler->canHandleRequest($request)) {
+                return $handler->handleRequest($request);
+            }
         }
 
-        $this->bootstrap->shutdown();
+        throw new \TYPO3\CMS\Core\Exception('No suitable request handler found.', 1518448686);
     }
 
     /**

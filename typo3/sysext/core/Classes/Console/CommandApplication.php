@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Console;
 use Symfony\Component\Console\Input\ArgvInput;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entry point for the TYPO3 Command Line for Commands
@@ -36,14 +37,6 @@ class CommandApplication implements ApplicationInterface
     protected $entryPointLevel = 4;
 
     /**
-     * All available request handlers that can deal with a CLI Request
-     * @var array
-     */
-    protected $availableRequestHandlers = [
-        \TYPO3\CMS\Core\Console\CommandRequestHandler::class,
-    ];
-
-    /**
      * Constructor setting up legacy constants and register available Request Handlers
      *
      * @param \Composer\Autoload\ClassLoader $classLoader an instance of the class loader
@@ -57,10 +50,6 @@ class CommandApplication implements ApplicationInterface
             ->setRequestType(TYPO3_REQUESTTYPE_CLI)
             ->baseSetup($this->entryPointLevel);
 
-        foreach ($this->availableRequestHandlers as $requestHandler) {
-            $this->bootstrap->registerRequestHandlerImplementation($requestHandler);
-        }
-
         $this->bootstrap->configure();
     }
 
@@ -71,13 +60,12 @@ class CommandApplication implements ApplicationInterface
      */
     public function run(callable $execute = null)
     {
-        $this->bootstrap->handleRequest(new ArgvInput());
+        $handler = GeneralUtility::makeInstance(CommandRequestHandler::class, $this->bootstrap);
+        $handler->handleRequest(new ArgvInput());
 
         if ($execute !== null) {
             call_user_func($execute);
         }
-
-        $this->bootstrap->shutdown();
     }
 
     /**

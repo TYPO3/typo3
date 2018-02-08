@@ -16,10 +16,6 @@ namespace TYPO3\CMS\Core\Core;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
-use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -308,7 +304,7 @@ class Bootstrap
      * @throws \TYPO3\CMS\Core\Exception
      * @internal This is not a public API method, do not use in own extensions
      */
-    protected function resolveRequestHandler($request)
+    public function resolveRequestHandler($request)
     {
         $suitableRequestHandlers = [];
         foreach ($this->availableRequestHandlers as $requestHandlerClassName) {
@@ -334,32 +330,17 @@ class Bootstrap
      * through the request handlers depending on Frontend, Backend, CLI etc.
      *
      * @param \Psr\Http\Message\RequestInterface|\Symfony\Component\Console\Input\InputInterface $request
-     * @param string $middlewareStackName the name of the middleware, usually "frontend" or "backend" for TYPO3 applications
      * @return Bootstrap
      * @throws \TYPO3\CMS\Core\Exception
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function handleRequest($request, string $middlewareStackName = null)
+    public function handleRequest($request)
     {
         // Resolve request handler that were registered based on the Application
         $requestHandler = $this->resolveRequestHandler($request);
 
-        // The application requested a middleware stack, and the request handler is PSR-15 capable.
-        // Fill the middleware dispatcher; enqueue the request handler as kernel for the middleware stack.
-        if ($request instanceof ServerRequestInterface && $requestHandler instanceof RequestHandlerInterface && $middlewareStackName !== null) {
-            $resolver = new MiddlewareStackResolver(
-                $this->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class),
-                GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class),
-                $this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core')
-            );
-            $middlewares = $resolver->resolve($middlewareStackName);
-
-            $dispatcher = new MiddlewareDispatcher($requestHandler, $middlewares);
-            $this->response = $dispatcher->handle($request);
-        } else {
-            // Execute the command which returns a Response object or NULL
-            $this->response = $requestHandler->handleRequest($request);
-        }
+        // Execute the command which returns a Response object or NULL
+        $this->response = $requestHandler->handleRequest($request);
 
         return $this;
     }

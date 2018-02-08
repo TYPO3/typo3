@@ -1,0 +1,110 @@
+<?php
+declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Http;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Core\ApplicationInterface;
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+/**
+ * @internal
+ */
+class AbstractApplication implements ApplicationInterface
+{
+    /**
+     * @var string
+     */
+    protected $requestHandler = '';
+
+    /**
+     * @var string
+     */
+    protected $middlewareStack = '';
+
+    /**
+     * @param RequestHandlerInterface $requestHandler
+     * @return MiddlewareDispatcher
+     */
+    protected function createMiddlewareDispatcher(RequestHandlerInterface $requestHandler): MiddlewareDispatcher
+    {
+        $resolver = new MiddlewareStackResolver(
+            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class),
+            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class),
+            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core')
+        );
+        $middlewares = $resolver->resolve($this->middlewareStack);
+
+        return new MiddlewareDispatcher($requestHandler, $middlewares);
+    }
+
+    /**
+     * Outputs content
+     *
+     * @param ResponseInterface $response
+     */
+    protected function sendResponse(ResponseInterface $response)
+    {
+        if ($response instanceof \TYPO3\CMS\Core\Http\NullResponse) {
+            return;
+        }
+
+        if (!headers_sent()) {
+            // If the response code was not changed by legacy code (still is 200)
+            // then allow the PSR-7 response object to explicitly set it.
+            // Otherwise let legacy code take precedence.
+            // This code path can be deprecated once we expose the response object to third party code
+            if (http_response_code() === 200) {
+                header('HTTP/' . $response->getProtocolVersion() . ' ' . $response->getStatusCode() . ' ' . $response->getReasonPhrase());
+            }
+
+            foreach ($response->getHeaders() as $name => $values) {
+                header($name . ': ' . implode(', ', $values));
+            }
+        }
+        echo $response->getBody()->__toString();
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    protected function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        $requestHandler = GeneralUtility::makeInstance($this->requestHandler, Bootstrap::getInstance());
+        $dispatcher = $this->createMiddlewareDispatcher($requestHandler);
+
+        return $dispatcher->handle($request);
+    }
+
+    /**
+     * Set up the application and shut it down afterwards
+     *
+     * @param callable $execute
+     */
+    public function run(callable $execute = null)
+    {
+        $response = $this->handle(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
+
+        if ($execute !== null) {
+            call_user_func($execute);
+        }
+
+        $this->sendResponse($response);
+    }
+}

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Http;
 
 /*
@@ -13,14 +14,24 @@ namespace TYPO3\CMS\Backend\Http;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Http\AbstractApplication;
 
 /**
  * Entry point for the TYPO3 Backend (HTTP requests)
  */
-class Application implements ApplicationInterface
+class Application extends AbstractApplication
 {
+    /**
+     * @var string
+     */
+    protected $requestHandler = RequestHandler::class;
+
+    /**
+     * @var string
+     */
+    protected $middlewareStack = 'backend';
+
     /**
      * @var Bootstrap
      */
@@ -32,14 +43,6 @@ class Application implements ApplicationInterface
      * @var int
      */
     protected $entryPointLevel = 1;
-
-    /**
-     * All available request handlers that can handle backend requests (non-CLI)
-     * @var array
-     */
-    protected $availableRequestHandlers = [
-        \TYPO3\CMS\Backend\Http\RequestHandler::class
-    ];
 
     /**
      * Constructor setting up legacy constant and register available Request Handlers
@@ -60,27 +63,7 @@ class Application implements ApplicationInterface
             $this->bootstrap->redirectToInstallTool($this->entryPointLevel);
         }
 
-        foreach ($this->availableRequestHandlers as $requestHandler) {
-            $this->bootstrap->registerRequestHandlerImplementation($requestHandler);
-        }
-
         $this->bootstrap->configure();
-    }
-
-    /**
-     * Set up the application and shut it down afterwards
-     *
-     * @param callable $execute
-     */
-    public function run(callable $execute = null)
-    {
-        $this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals(), 'backend');
-
-        if ($execute !== null) {
-            call_user_func($execute);
-        }
-
-        $this->bootstrap->shutdown();
     }
 
     /**
