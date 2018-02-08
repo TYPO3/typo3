@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Resource\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -87,15 +89,23 @@ class UserStorageCapabilityService
      */
     protected function renderFileInformationContent(array $fileRecord, $isPublic)
     {
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $iconChecked = $iconFactory->getIcon('actions-check', Icon::SIZE_SMALL)->render('inline');
+        $iconUnchecked = $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render('inline');
+
         $template = '
-		<div class="t3-form-field-item">
-			<div class="checkbox">
-				<label>
-					<input name="data[sys_file_storage][{uid}][is_public]" value="0" type="hidden">
-					<input class="checkbox" value="1" name="data[sys_file_storage][{uid}][is_public]_0" type="checkbox" %s>
-				</label>
-			</div>
-		</div>';
+        <div class="checkbox checkbox-type-icon-toggle">
+                <input type="checkbox" id="filestorage-ispublic" onclick="document.editform[\'data[sys_file_storage][{uid}][is_public]\'].value=this.checked?(document.editform[\'data[sys_file_storage][{uid}][is_public]\'].value|1):(document.editform[\'data[sys_file_storage][{uid}][is_public]\'].value&0);TBE_EDITOR.fieldChanged(\'sys_file_storage\',\'{uid}\',\'is_public\',\'data[sys_file_storage][{uid}][is_public]\');" class="checkbox-input" value="1" name="data[sys_file_storage][{uid}][is_public]_0" %s />
+                <label class="checkbox-label" for="filestorage-ispublic">
+                    <span class="checkbox-label-icon">
+                        <span class="checkbox-label-icon-checked">' . $iconChecked . '</span>
+                        <span class="checkbox-label-icon-unchecked">' . $iconUnchecked . '</span>
+                    </span>
+                    <span class="checkbox-label-text">&nbsp;</span>
+                </label>
+                <input type="hidden" name="data[sys_file_storage][{uid}][is_public]" value="1">
+            </div>
+        ';
 
         $content = sprintf(
             $template,
