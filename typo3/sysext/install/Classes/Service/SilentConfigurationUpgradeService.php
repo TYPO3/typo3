@@ -150,6 +150,7 @@ class SilentConfigurationUpgradeService
         $this->migrateLangDebug();
         $this->migrateCacheHashOptions();
         $this->migrateExceptionErrors();
+        $this->migrateDisplayErrorsSetting();
 
         // Should run at the end to prevent that obsolete settings are removed before migration
         $this->removeObsoleteLocalConfigurationSettings();
@@ -885,6 +886,23 @@ class SilentConfigurationUpgradeService
             // make sure E_USER_DEPRECATED is not part of the exceptionalErrors
             if ($currentOption & E_USER_DEPRECATED) {
                 $confManager->setLocalConfigurationValueByPath('SYS/exceptionalErrors', $currentOption & ~E_USER_DEPRECATED);
+            }
+        } catch (MissingArrayPathException $e) {
+            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+        }
+    }
+
+    /**
+     * Migrate SYS/displayErrors to not contain 2
+     */
+    protected function migrateDisplayErrorsSetting()
+    {
+        $confManager = $this->configurationManager;
+        try {
+            $currentOption = (int)$confManager->getLocalConfigurationValueByPath('SYS/displayErrors');
+            // make sure displayErrors is set to 2
+            if ($currentOption === 2) {
+                $confManager->setLocalConfigurationValueByPath('SYS/displayErrors', -1);
             }
         } catch (MissingArrayPathException $e) {
             // no change inside the LocalConfiguration.php found, so nothing needs to be modified
