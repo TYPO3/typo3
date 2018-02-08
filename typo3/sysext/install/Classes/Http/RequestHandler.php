@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Install\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -44,10 +44,9 @@ use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 class RequestHandler implements RequestHandlerInterface
 {
     /**
-     * Instance of the current TYPO3 bootstrap
-     * @var Bootstrap
+     * @var ConfigurationManager
      */
-    protected $bootstrap;
+    protected $configurationManager;
 
     /**
      * @var array List of valid controllers
@@ -62,13 +61,11 @@ class RequestHandler implements RequestHandlerInterface
     ];
 
     /**
-     * Constructor handing over the bootstrap
-     *
-     * @param Bootstrap $bootstrap
+     * @param ConfigurationManager $configurationManager
      */
-    public function __construct(Bootstrap $bootstrap)
+    public function __construct(ConfigurationManager $configurationManager)
     {
-        $this->bootstrap = $bootstrap;
+        $this->configurationManager = $configurationManager;
     }
 
     /**
@@ -201,7 +198,7 @@ class RequestHandler implements RequestHandlerInterface
      */
     public function canHandleRequest(ServerRequestInterface $request): bool
     {
-        $basicIntegrity = $this->bootstrap->checkIfEssentialConfigurationExists()
+        $basicIntegrity = $this->checkIfEssentialConfigurationExists()
             && !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])
             && !EnableFileService::isFirstInstallAllowed();
         if (!$basicIntegrity) {
@@ -298,5 +295,15 @@ class RequestHandler implements RequestHandlerInterface
             $session->startSession();
         }
         return !$isExpired;
+    }
+
+    /**
+     * Check if LocalConfiguration.php and PackageStates.php exist
+     *
+     * @return bool TRUE when the essential configuration is available, otherwise FALSE
+     */
+    protected function checkIfEssentialConfigurationExists(): bool
+    {
+        return file_exists($this->configurationManager->getLocalConfigurationFileLocation()) && file_exists(PATH_typo3conf . 'PackageStates.php');
     }
 }

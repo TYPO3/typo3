@@ -14,9 +14,18 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Composer\Autoload\ClassLoader;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Package\FailsafePackageManager;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -39,34 +48,170 @@ class Bootstrap
     protected static $instance = null;
 
     /**
-     * Unique Request ID
-     *
-     * @var string
-     */
-    protected $requestId;
-
-    /**
-     * The application context
-     *
-     * @var \TYPO3\CMS\Core\Core\ApplicationContext
-     */
-    protected $applicationContext;
-
-    /**
      * @var array List of early instances
      */
     protected $earlyInstances = [];
 
     /**
      * Disable direct creation of this object.
-     * Set unique requestId and the application context
-     *
-     * @var string Application context
      */
-    protected function __construct($applicationContext)
+    protected function __construct()
     {
-        $this->requestId = substr(md5(uniqid('', true)), 0, 13);
-        $this->applicationContext = new ApplicationContext($applicationContext);
+    }
+
+    /**
+     * Bootstrap TYPO3 and return a Container that may be used
+     * to initialize an Application class.
+     *
+     * @param ClassLoader $classLoader an instance of the class loader
+     * @param bool $failsafe true if no caching and a failsaife package manager should be used
+     * @return ContainerInterface
+     */
+    public static function init(
+        ClassLoader $classLoader,
+        bool $failsafe = false
+    ): ContainerInterface {
+        $requestId = substr(md5(uniqid('', true)), 0, 13);
+        $applicationContext = static::createApplicationContext();
+        SystemEnvironmentBuilder::initializeEnvironment($applicationContext);
+        GeneralUtility::presetApplicationContext($applicationContext);
+
+        static::initializeClassLoader($classLoader);
+        static::baseSetup();
+
+        static::startOutputBuffering();
+
+        $configurationManager = static::createConfigurationManager();
+        if (!static::checkIfessentialConfigurationExists($configurationManager)) {
+            $failsafe = true;
+        }
+        static::populateLocalConfiguration($configurationManager);
+        static::initializeErrorHandling();
+
+        $logManager = new LogManager($requestId);
+        $cacheManager = static::createCacheManager($failsafe ? true : false);
+        $packageManager = static::createPackageManager(
+            $failsafe ? FailsafePackageManager::class : PackageManager::class,
+            $cacheManager->getCache('cache_core')
+        );
+
+        // Push singleton instances to GeneralUtility and ExtensionManagementUtility
+        // They should be fetched through a container (later) but currently a PackageManager
+        // singleton instance is required by PackageManager->activePackageDuringRuntime
+        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
+        ExtensionManagementUtility::setPackageManager($packageManager);
+
+        static::initializeRuntimeActivatedPackagesFromConfiguration($packageManager);
+
+        static::setDefaultTimeZone();
+        $locales = Locales::initialize();
+        static::setMemoryLimit();
+
+        // Create (to be deprecated) bootstrap instance with (to be deprecated) early instances
+        static::$instance = new static();
+        static::$instance->earlyInstances = [
+            ClassLoader::class => $classLoader,
+            ConfigurationManager::class => $configurationManager,
+            CacheManager::class => $cacheManager,
+            PackageManager::class => $packageManager,
+        ];
+
+        if (!$failsafe) {
+            static::loadTypo3LoadedExtAndExtLocalconf(true);
+            static::setFinalCachingFrameworkCacheConfiguration($cacheManager);
+            static::unsetReservedGlobalVariables();
+            static::loadBaseTca();
+            static::checkEncryptionKey();
+        }
+
+        $defaultContainerEntries = [
+            ClassLoader::class => $classLoader,
+            'request.id' => $requestId,
+            ApplicationContext::class => $applicationContext,
+            ConfigurationManager::class => $configurationManager,
+            LogManager::class => $logManager,
+            CacheManager::class => $cacheManager,
+            PackageManager::class => $packageManager,
+            Locales::class => $locales,
+        ];
+
+        return new class($defaultContainerEntries) implements ContainerInterface {
+            /**
+             * @var array
+             */
+            private $entries;
+
+            /**
+             * @param array $entries
+             */
+            public function __construct(array $entries)
+            {
+                $this->entries = $entries;
+            }
+
+            /**
+             * @param string $id Identifier of the entry to look for.
+             * @return bool
+             */
+            public function has($id)
+            {
+                if (isset($this->entries[$id])) {
+                    return true;
+                }
+
+                switch ($id) {
+                case \TYPO3\CMS\Frontend\Http\Application::class:
+                case \TYPO3\CMS\Backend\Http\Application::class:
+                case \TYPO3\CMS\Install\Http\Application::class:
+                case \TYPO3\CMS\Core\Console\CommandApplication::class:
+                    return true;
+                }
+
+                return false;
+            }
+
+            /**
+             * Method get() as specified in ContainerInterface
+             *
+             * @param string $id
+             * @return mixed
+             * @throws NotFoundExceptionInterface
+             */
+            public function get($id)
+            {
+                $entry = null;
+
+                if (isset($this->entries[$id])) {
+                    return $this->entries[$id];
+                }
+
+                switch ($id) {
+                case \TYPO3\CMS\Frontend\Http\Application::class:
+                case \TYPO3\CMS\Backend\Http\Application::class:
+                    $entry = new $id($this->get(ConfigurationManager::class));
+                    break;
+                case \TYPO3\CMS\Install\Http\Application::class:
+                    $entry = new $id(
+                        GeneralUtility::makeInstance(\TYPO3\CMS\Install\Http\RequestHandler::class, $this->get(ConfigurationManager::class)),
+                        GeneralUtility::makeInstance(\TYPO3\CMS\Install\Http\InstallerRequestHandler::class)
+                    );
+                    break;
+                case \TYPO3\CMS\Core\Console\CommandApplication::class:
+                    $entry = new $id;
+                    break;
+                default:
+                    throw new class($id . ' not found', 1518638338) extends \Exception implements NotFoundExceptionInterface {
+                    };
+                    break;
+                }
+
+                $this->entries[$id] = $entry;
+
+                return $entry;
+            }
+        };
     }
 
     /**
@@ -89,16 +234,28 @@ class Bootstrap
      *
      * @return Bootstrap
      * @internal This is not a public API method, do not use in own extensions
+     * @todo deprecate
      */
     public static function getInstance()
     {
         if (static::$instance === null) {
-            $applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
-            self::$instance = new static($applicationContext);
+            self::$instance = new static();
             self::$instance->defineTypo3RequestTypes();
-            GeneralUtility::setSingletonInstance(LogManager::class, new LogManager(self::$instance->requestId));
+            $requestId = substr(md5(uniqid('', true)), 0, 13);
+            GeneralUtility::setSingletonInstance(LogManager::class, new LogManager($requestId));
         }
         return static::$instance;
+    }
+
+    /**
+     * @return ApplicationContext
+     * @internal This is not a public API method, do not use in own extensions
+     */
+    public static function createApplicationContext(): ApplicationContext
+    {
+        $applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
+
+        return new ApplicationContext($applicationContext);
     }
 
     /**
@@ -121,6 +278,7 @@ class Bootstrap
      * Make sure that the baseSetup() is called before and the class loader is present
      *
      * @return Bootstrap
+     * @todo deprecate
      */
     public function configure()
     {
@@ -129,13 +287,8 @@ class Bootstrap
             ->loadTypo3LoadedExtAndExtLocalconf(true)
             ->setFinalCachingFrameworkCacheConfiguration()
             ->unsetReservedGlobalVariables()
-            ->loadBaseTca();
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
-            throw new \RuntimeException(
-                'TYPO3 Encryption is empty. $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'encryptionKey\'] needs to be set for TYPO3 to work securely',
-                1502987245
-            );
-        }
+            ->loadBaseTca()
+            ->checkEncryptionKey();
         return $this;
     }
 
@@ -149,31 +302,34 @@ class Bootstrap
      * @return Bootstrap
      * @throws \RuntimeException when TYPO3_REQUESTTYPE was not set before, setRequestType() needs to be called before
      * @internal This is not a public API method, do not use in own extensions
+     * @todo deprecate entryPointLevel parameter
      */
-    public function baseSetup($entryPointLevel = 0)
+    public static function baseSetup($entryPointLevel = 0)
     {
         if (!defined('TYPO3_REQUESTTYPE')) {
             throw new \RuntimeException('No Request Type was set, TYPO3 does not know in which context it is run.', 1450561838);
         }
-        GeneralUtility::presetApplicationContext($this->applicationContext);
-        SystemEnvironmentBuilder::run($entryPointLevel);
-        SystemEnvironmentBuilder::initializeEnvironment($this->applicationContext);
+        if (GeneralUtility::getApplicationContext() === null) { // @todo deprecate
+            $applicationContext = static::createApplicationContext();
+            SystemEnvironmentBuilder::run($entryPointLevel);
+            SystemEnvironmentBuilder::initializeEnvironment($applicationContext);
+            GeneralUtility::presetApplicationContext($applicationContext);
+        }
         if (!Environment::isComposerMode() && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
             ClassLoadingInformation::registerClassLoadingInformation();
         }
-        return $this;
+        return static::$instance;
     }
 
     /**
      * Sets the class loader to the bootstrap
      *
-     * @param \Composer\Autoload\ClassLoader $classLoader an instance of the class loader
+     * @param ClassLoader $classLoader an instance of the class loader
      * @return Bootstrap
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function initializeClassLoader($classLoader)
+    public static function initializeClassLoader(ClassLoader $classLoader)
     {
-        $this->setEarlyInstance(\Composer\Autoload\ClassLoader::class, $classLoader);
         ClassLoadingInformation::setClassLoader($classLoader);
 
         /** @see initializeAnnotationRegistry */
@@ -202,20 +358,23 @@ class Bootstrap
         AnnotationReader::addGlobalIgnoredName('extensionScannerIgnoreFile');
         AnnotationReader::addGlobalIgnoredName('extensionScannerIgnoreLine');
 
-        return $this;
+        return static::$instance;
     }
 
     /**
      * checks if LocalConfiguration.php or PackageStates.php is missing,
      * used to see if a redirect to the install tool is needed
      *
+     * @param ConfigurationManager $configurationManager
      * @return bool TRUE when the essential configuration is available, otherwise FALSE
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function checkIfEssentialConfigurationExists()
+    public static function checkIfEssentialConfigurationExists(ConfigurationManager $configurationManager = null): bool
     {
-        $configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
-        $this->setEarlyInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, $configurationManager);
+        if ($configurationManager === null) { // @todo deprecate
+            $configurationManager = new ConfigurationManager;
+            static::$instance->setEarlyInstance(ConfigurationManager::class, $configurationManager);
+        }
         return file_exists($configurationManager->getLocalConfigurationFileLocation()) && file_exists(PATH_typo3conf . 'PackageStates.php');
     }
 
@@ -227,6 +386,7 @@ class Bootstrap
      * @param string $objectName Object name, as later used by the Object Manager
      * @param object $instance The instance to register
      * @internal This is not a public API method, do not use in own extensions
+     * @todo deprecate
      */
     public function setEarlyInstance($objectName, $instance)
     {
@@ -240,6 +400,7 @@ class Bootstrap
      * @return object
      * @throws \TYPO3\CMS\Core\Exception
      * @internal This is not a public API method, do not use in own extensions
+     * @todo deprecate
      */
     public function getEarlyInstance($objectName)
     {
@@ -254,6 +415,7 @@ class Bootstrap
      *
      * @return array
      * @internal This is not a public API method, do not use in own extensions
+     * @todo deprecate
      */
     public function getEarlyInstances()
     {
@@ -263,23 +425,51 @@ class Bootstrap
     /**
      * Includes LocalConfiguration.php and sets several
      * global settings depending on configuration.
+     * For functional and acceptance tests.
      *
      * @param bool $allowCaching Whether to allow caching - affects cache_core (autoloader)
      * @param string $packageManagerClassName Define an alternative package manager implementation (usually for the installer)
-     * @return Bootstrap
+     * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function loadConfigurationAndInitialize($allowCaching = true, $packageManagerClassName = \TYPO3\CMS\Core\Package\PackageManager::class)
+    public static function loadConfigurationAndInitialize($allowCaching = true, $packageManagerClassName = \TYPO3\CMS\Core\Package\PackageManager::class)
     {
-        $this->populateLocalConfiguration()
-            ->initializeErrorHandling()
-            ->initializeCachingFramework($allowCaching)
-            ->initializePackageManagement($packageManagerClassName)
-            ->initializeRuntimeActivatedPackagesFromConfiguration()
-            ->setDefaultTimezone()
-            ->initializeL10nLocales()
-            ->setMemoryLimit();
-        return $this;
+        $configurationManager = static::createConfigurationManager();
+        static::populateLocalConfiguration($configurationManager);
+        static::initializeErrorHandling();
+
+        $cacheManager = static::createCacheManager(!$allowCaching);
+        $packageManager = static::createPackageManager($packageManagerClassName, $cacheManager->getCache('cache_core'));
+
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
+        ExtensionManagementUtility::setPackageManager($packageManager);
+
+        static::initializeRuntimeActivatedPackagesFromConfiguration($packageManager);
+        static::setDefaultTimezone();
+        Locales::initialize();
+        static::setMemoryLimit();
+        return static::$instance;
+    }
+
+    /**
+     * Initializes the package system and loads the package configuration and settings
+     * provided by the packages.
+     *
+     * @param string $packageManagerClassName Define an alternative package manager implementation (usually for the installer)
+     * @param FrontendInterface $coreCache
+     * @return PackageManager
+     * @internal This is not a public API method, do not use in own extensions
+     */
+    public static function createPackageManager($packageManagerClassName, FrontendInterface $coreCache): PackageManager
+    {
+        $dependencyOrderingService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class);
+        /** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
+        $packageManager = new $packageManagerClassName($dependencyOrderingService);
+        $packageManager->injectCoreCache($coreCache);
+        $packageManager->initialize();
+
+        return $packageManager;
     }
 
     /**
@@ -289,36 +479,36 @@ class Bootstrap
      * @param string $packageManagerClassName Define an alternative package manager implementation (usually for the installer)
      * @return Bootstrap
      * @internal This is not a public API method, do not use in own extensions
+     * @todo deprecate
      */
     public function initializePackageManagement($packageManagerClassName)
     {
-        $dependencyOrderingService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class);
-        /** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
-        $packageManager = new $packageManagerClassName($dependencyOrderingService);
-        GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
-        $this->setEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
+        $packageManager = static::createPackageManager(
+            $packageManagerClassName,
+            GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core')
+        );
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
         ExtensionManagementUtility::setPackageManager($packageManager);
-        $packageManager->injectCoreCache(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core'));
-        $packageManager->initialize();
+        $this->setEarlyInstance(PackageManager::class, $packageManager);
+
         return $this;
     }
 
     /**
      * Activates a package during runtime. This is used in AdditionalConfiguration.php
      * to enable extensions under conditions.
-     *
-     * @return Bootstrap
      */
-    protected function initializeRuntimeActivatedPackagesFromConfiguration()
+    protected static function initializeRuntimeActivatedPackagesFromConfiguration(PackageManager $packageManager = null)
     {
+        if ($packageManager === null) { // @todo deprecate
+            $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        }
         $packages = $GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'] ?? [];
         if (!empty($packages)) {
-            $packageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
             foreach ($packages as $runtimeAddedPackageKey) {
                 $packageManager->activatePackageDuringRuntime($runtimeAddedPackageKey);
             }
         }
-        return $this;
     }
 
     /**
@@ -338,19 +528,31 @@ class Bootstrap
      * We need an early instance of the configuration manager.
      * Since makeInstance relies on the object configuration, we create it here with new instead.
      *
+     * @return ConfigurationManager
+     */
+    public static function createConfigurationManager(): ConfigurationManager
+    {
+        return new ConfigurationManager();
+    }
+
+    /**
+     * We need an early instance of the configuration manager.
+     * Since makeInstance relies on the object configuration, we create it here with new instead.
+     *
+     * @param ConfigurationManager $configurationManager
      * @return Bootstrap
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function populateLocalConfiguration()
+    public static function populateLocalConfiguration(ConfigurationManager $configurationManager = null)
     {
-        try {
-            $configurationManager = $this->getEarlyInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
-        } catch (\TYPO3\CMS\Core\Exception $exception) {
-            $configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager();
-            $this->setEarlyInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, $configurationManager);
+        if ($configurationManager === null) { // @todo deprecate
+            $configurationManager = new ConfigurationManager();
+            static::$instance->setEarlyInstance(ConfigurationManager::class, $configurationManager);
         }
+
         $configurationManager->exportConfiguration();
-        return $this;
+
+        return static::$instance;
     }
 
     /**
@@ -359,6 +561,7 @@ class Bootstrap
      *
      * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
+     * @todo deprecate
      */
     public static function disableCoreCache()
     {
@@ -372,25 +575,38 @@ class Bootstrap
      * Initialize caching framework, and re-initializes it (e.g. in the install tool) by recreating the instances
      * again despite the Singleton instance
      *
+     * @param bool $disableCaching
+     * @return CacheManager
+     * @internal This is not a public API method, do not use in own extensions
+     */
+    public static function createCacheManager(bool $disableCaching = false): CacheManager
+    {
+        $cacheManager = new CacheManager($disableCaching);
+        $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+        return $cacheManager;
+    }
+
+    /**
+     * Initialize caching framework, and re-initializes it (e.g. in the install tool) by recreating the instances
+     * again despite the Singleton instance
+     *
      * @param bool $allowCaching
      * @return Bootstrap
      * @internal This is not a public API method, do not use in own extensions
+     * @todo deprecate
      */
     public function initializeCachingFramework(bool $allowCaching = true)
     {
-        $cacheManager = new \TYPO3\CMS\Core\Cache\CacheManager(!$allowCaching);
-        $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-        GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManager);
-        $this->setEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManager);
+        $cacheManager = static::createCacheManager(!$allowCaching);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
+        $this->setEarlyInstance(CacheManager::class, $cacheManager);
         return $this;
     }
 
     /**
      * Set default timezone
-     *
-     * @return Bootstrap
      */
-    protected function setDefaultTimezone()
+    protected static function setDefaultTimezone()
     {
         $timeZone = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'];
         if (empty($timeZone)) {
@@ -404,27 +620,14 @@ class Bootstrap
         }
         // Set default to avoid E_WARNINGs with PHP > 5.3
         date_default_timezone_set($timeZone);
-        return $this;
-    }
-
-    /**
-     * Initialize the locales handled by TYPO3
-     *
-     * @return Bootstrap
-     */
-    protected function initializeL10nLocales()
-    {
-        \TYPO3\CMS\Core\Localization\Locales::initialize();
-        return $this;
     }
 
     /**
      * Configure and set up exception and error handling
      *
-     * @return Bootstrap
      * @throws \RuntimeException
      */
-    protected function initializeErrorHandling()
+    protected static function initializeErrorHandling()
     {
         $productionExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'];
         $debugExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['debugExceptionHandler'];
@@ -472,29 +675,34 @@ class Bootstrap
             // Registering the exception handler is done in the constructor
             GeneralUtility::makeInstance($exceptionHandlerClassName);
         }
-        return $this;
     }
 
     /**
      * Set PHP memory limit depending on value of
      * $GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit']
-     *
-     * @return Bootstrap
      */
-    protected function setMemoryLimit()
+    protected static function setMemoryLimit()
     {
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] > 16) {
             @ini_set('memory_limit', (string)((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] . 'm'));
         }
-        return $this;
     }
 
     /**
      * Define TYPO3_REQUESTTYPE* constants that can be used for developers to see if any context has been hit
      * also see setRequestType(). Is done at the very beginning so these parameters are always available.
+     *
+     * Note: The definition of TYPO3_REQUEST_TYPE_* constants has been moved to the SystemEnvironmentBuilder
+     * and is included here for backwards compatibility reasons (as Bootstrap::getInstance() is expected
+     * to implicitly define these constants).
+     *
+     * @todo deprecate or remove once Bootstrap::getInstance is removed
      */
     protected function defineTypo3RequestTypes()
     {
+        if (defined('TYPO3_REQUESTTYPE_FE')) {
+            return;
+        }
         define('TYPO3_REQUESTTYPE_FE', 1);
         define('TYPO3_REQUESTTYPE_BE', 2);
         define('TYPO3_REQUESTTYPE_CLI', 4);
@@ -508,6 +716,7 @@ class Bootstrap
      * @param int $requestType
      * @throws \RuntimeException if the method was already called during a request
      * @return Bootstrap
+     * @todo deprecate
      */
     public function setRequestType($requestType)
     {
@@ -522,13 +731,17 @@ class Bootstrap
      * Extensions may register new caches, so we set the
      * global cache array to the manager again at this point
      *
-     * @return Bootstrap
+     * @param CacheManager $cacheManager
+     * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function setFinalCachingFrameworkCacheConfiguration()
+    public static function setFinalCachingFrameworkCacheConfiguration(CacheManager $cacheManager = null)
     {
-        GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-        return $this;
+        if ($cacheManager === null) { // @todo deprecate
+            $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+        }
+        $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+        return static::$instance;
     }
 
     /**
@@ -565,6 +778,19 @@ class Bootstrap
     {
         ExtensionManagementUtility::loadBaseTca($allowCaching);
         return static::$instance;
+    }
+
+    /**
+     * Check if a configuration key has been configured
+     */
+    protected static function checkEncryptionKey()
+    {
+        if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
+            throw new \RuntimeException(
+                'TYPO3 Encryption is empty. $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'encryptionKey\'] needs to be set for TYPO3 to work securely',
+                1502987245
+            );
+        }
     }
 
     /**

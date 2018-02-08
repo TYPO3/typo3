@@ -16,7 +16,8 @@ namespace TYPO3\CMS\Frontend\Http;
  */
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 
@@ -36,46 +37,38 @@ class Application extends AbstractApplication
     protected $middlewareStack = 'frontend';
 
     /**
-     * @var Bootstrap
+     * @var ConfigurationManager
      */
-    protected $bootstrap;
+    protected $configurationManager;
 
     /**
-     * Number of subdirectories where the entry script is located, relative to PATH_site
-     * Usually this is equal to PATH_site = 0
-     * @var int
+     * @param ConfigurationManager $configurationManager
      */
-    protected $entryPointLevel = 0;
-
-    /**
-     * Constructor setting up legacy constant and register available Request Handlers
-     *
-     * @param \Composer\Autoload\ClassLoader $classLoader an instance of the class loader
-     */
-    public function __construct($classLoader)
+    public function __construct(ConfigurationManager $configurationManager)
     {
-        $this->defineLegacyConstants();
-
-        $this->bootstrap = Bootstrap::getInstance()
-            ->initializeClassLoader($classLoader)
-            ->setRequestType(TYPO3_REQUESTTYPE_FE)
-            ->baseSetup($this->entryPointLevel);
-
-        // Redirect to install tool if base configuration is not found
-        if (!$this->bootstrap->checkIfEssentialConfigurationExists()) {
-            $this->sendResponse($this->installToolRedirect());
-            exit;
-        }
-
-        $this->bootstrap->configure();
+        $this->configurationManager = $configurationManager;
     }
 
     /**
-     * Define constants and variables
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    protected function defineLegacyConstants()
+    protected function handle(ServerRequestInterface $request): ResponseInterface
     {
-        define('TYPO3_MODE', 'FE');
+        if (!$this->checkIfEssentialConfigurationExists()) {
+            return $this->installToolRedirect();
+        }
+        return parent::handle($request);
+    }
+
+    /**
+     * Check if LocalConfiguration.php and PackageStates.php exist
+     *
+     * @return bool TRUE when the essential configuration is available, otherwise FALSE
+     */
+    protected function checkIfEssentialConfigurationExists(): bool
+    {
+        return file_exists($this->configurationManager->getLocalConfigurationFileLocation()) && file_exists(PATH_typo3conf . 'PackageStates.php');
     }
 
     /**

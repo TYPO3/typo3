@@ -131,8 +131,9 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Initializes the languages.
+     * @return Locales
      */
-    public static function initialize()
+    public static function initialize(): Locales
     {
         /** @var $instance Locales */
         $instance = GeneralUtility::makeInstance(self::class);
@@ -152,6 +153,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         }
         // Merge user-provided locale dependencies
         ArrayUtility::mergeRecursiveWithOverrule($instance->localeDependencies, $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'] ?? []);
+        return $instance;
     }
 
     /**

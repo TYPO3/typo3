@@ -16,9 +16,8 @@ namespace TYPO3\CMS\Install\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\AbstractApplication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 
 /**
  * Entry point for the TYPO3 Install Tool
@@ -26,42 +25,25 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Application extends AbstractApplication
 {
     /**
-     * @var Bootstrap
-     */
-    protected $bootstrap;
-
-    /**
-     * Number of subdirectories where the entry script is located, relative to PATH_site
-     * @var int
-     */
-    protected $entryPointLevel = 1;
-
-    /**
      * All available request handlers that can handle an install tool request
      * @var array
      */
-    protected $availableRequestHandlers = [
-        \TYPO3\CMS\Install\Http\RequestHandler::class,
-        \TYPO3\CMS\Install\Http\InstallerRequestHandler::class
-    ];
+    protected $availableRequestHandlers = [];
 
     /**
-     * Constructor setting up legacy constant and register available Request Handlers
+     * Construct Application
      *
-     * @param \Composer\Autoload\ClassLoader $classLoader an instance of the class loader
+     * @param RequestHandlerInterface $requestHandler
+     * @param RequestHandlerInterface $installerRequestHandler
      */
-    public function __construct($classLoader)
-    {
-        $this->defineLegacyConstants();
-
-        $this->bootstrap = Bootstrap::getInstance()
-            ->initializeClassLoader($classLoader)
-            ->setRequestType(TYPO3_REQUESTTYPE_INSTALL)
-            ->baseSetup($this->entryPointLevel);
-
-        $this->bootstrap
-            ->startOutputBuffering()
-            ->loadConfigurationAndInitialize(false, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
+    public function __construct(
+        RequestHandlerInterface $requestHandler,
+        RequestHandlerInterface $installerRequestHandler
+    ) {
+        $this->availableRequestHandlers = [
+            $requestHandler,
+            $installerRequestHandler
+        ];
     }
 
     /**
@@ -70,21 +52,12 @@ class Application extends AbstractApplication
      */
     protected function handle(ServerRequestInterface $request): ResponseInterface
     {
-        foreach ($this->availableRequestHandlers as $requestHandler) {
-            $handler = GeneralUtility::makeInstance($requestHandler, $this->bootstrap);
+        foreach ($this->availableRequestHandlers as $handler) {
             if ($handler->canHandleRequest($request)) {
                 return $handler->handleRequest($request);
             }
         }
 
         throw new \TYPO3\CMS\Core\Exception('No suitable request handler found.', 1518448686);
-    }
-
-    /**
-     * Define constants
-     */
-    protected function defineLegacyConstants()
-    {
-        define('TYPO3_MODE', 'BE');
     }
 }

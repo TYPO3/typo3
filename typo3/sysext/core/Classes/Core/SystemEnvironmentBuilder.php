@@ -38,6 +38,17 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class SystemEnvironmentBuilder
 {
+    /** @internal */
+    const REQUESTTYPE_FE = 1;
+    /** @internal */
+    const REQUESTTYPE_BE = 2;
+    /** @internal */
+    const REQUESTTYPE_CLI = 4;
+    /** @internal */
+    const REQUESTTYPE_AJAX = 8;
+    /** @internal */
+    const REQUESTTYPE_INSTALL = 16;
+
     /**
      * A list of supported CGI server APIs
      * NOTICE: This is a duplicate of the SAME array in GeneralUtility!
@@ -66,10 +77,14 @@ class SystemEnvironmentBuilder
      *
      * @internal This method should not be used by 3rd party code. It will change without further notice.
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
+     * @param int $requestType
      */
-    public static function run($entryPointLevel = 0)
+    public static function run(int $entryPointLevel = 0, int $requestType = self::REQUESTTYPE_FE)
     {
         self::defineBaseConstants();
+        self::defineTypo3RequestTypes();
+        self::setRequestType($requestType | ($requestType === self::REQUESTTYPE_BE && strpos($_REQUEST['route'] ?? '', '/ajax/') === 0 ? TYPO3_REQUESTTYPE_AJAX : 0));
+        self::defineLegacyConstants($requestType === self::REQUESTTYPE_FE ? 'FE' : 'BE');
         self::definePaths($entryPointLevel);
         self::checkMainPathsExist();
         self::initializeGlobalVariables();
@@ -440,5 +455,47 @@ class SystemEnvironmentBuilder
     protected static function usesComposerClassLoading(): bool
     {
         return defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE;
+    }
+
+    /**
+     * Define TYPO3_REQUESTTYPE* constants that can be used for developers to see if any context has been hit
+     * also see setRequestType(). Is done at the very beginning so these parameters are always available.
+     */
+    protected static function defineTypo3RequestTypes()
+    {
+        if (defined('TYPO3_REQUESTTYPE_FE')) { // @todo remove once Bootstrap::getInstance() is dropped
+            return;
+        }
+        define('TYPO3_REQUESTTYPE_FE', self::REQUESTTYPE_FE);
+        define('TYPO3_REQUESTTYPE_BE', self::REQUESTTYPE_BE);
+        define('TYPO3_REQUESTTYPE_CLI', self::REQUESTTYPE_CLI);
+        define('TYPO3_REQUESTTYPE_AJAX', self::REQUESTTYPE_AJAX);
+        define('TYPO3_REQUESTTYPE_INSTALL', self::REQUESTTYPE_INSTALL);
+    }
+
+    /**
+     * Defines the TYPO3_REQUESTTYPE constant so the environment knows which context the request is running.
+     *
+     * @param int $requestType
+     */
+    protected static function setRequestType(int $requestType)
+    {
+        if (defined('TYPO3_REQUESTTYPE')) { // @todo remove once Bootstrap::getInstance() is dropped
+            return;
+        }
+        define('TYPO3_REQUESTTYPE', $requestType);
+    }
+
+    /**
+     * Define constants and variables
+     *
+     * @param string
+     */
+    protected static function defineLegacyConstants(string $mode)
+    {
+        if (defined('TYPO3_MODE')) { // @todo remove once Bootstrap::getInstance()
+            return;
+        }
+        define('TYPO3_MODE', $mode);
     }
 }

@@ -20,6 +20,6 @@ if (version_compare(PHP_VERSION, '7.2.0', '<')) {
 // Set up the application for the backend
 call_user_func(function () {
     $classLoader = require __DIR__ . '/../../../../../../vendor/autoload.php';
-
-    (new \TYPO3\CMS\Backend\Http\Application($classLoader))->run();
+    \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run(1, \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_BE);
+    \TYPO3\CMS\Core\Core\Bootstrap::init($classLoader)->get(\TYPO3\CMS\Backend\Http\Application::class)->run();
 });
