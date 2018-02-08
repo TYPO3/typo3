@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+
 /**
  * Email link view helper.
  * Generates an email link incorporating TYPO3s spamProtectEmailAddresses-settings.
@@ -35,7 +37,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
  * <a href="javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');">some custom content</a>
  * </output>
  */
-class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class EmailViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

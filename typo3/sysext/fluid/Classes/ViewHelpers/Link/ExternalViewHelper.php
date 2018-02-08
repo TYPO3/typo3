@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+
 /**
  * A view helper for creating links to external targets.
  *
@@ -35,7 +37,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
  *
  * @api
  */
-class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class ExternalViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

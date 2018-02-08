@@ -14,12 +14,14 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+
 /**
  * View helper to let 3rd-party extensions process the list of available
  * actions for a given extension.
  * @internal
  */
-class ProcessAvailableActionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class ProcessAvailableActionsViewHelper extends AbstractTagBasedViewHelper
 {
     const SIGNAL_ProcessActions = 'processActions';
 

@@ -14,12 +14,14 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Link;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+
 /**
  * A view helper for creating links to extensionmanager actions
  *
  * @internal
  */
-class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class ActionViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

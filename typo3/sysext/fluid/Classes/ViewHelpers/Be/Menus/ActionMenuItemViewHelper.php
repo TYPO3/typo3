@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+
 /**
  * View helper which returns an option tag.
  * This view helper only works in conjunction with \TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper
@@ -42,7 +44,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  * localized selectbox
  * <output>
  */
-class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

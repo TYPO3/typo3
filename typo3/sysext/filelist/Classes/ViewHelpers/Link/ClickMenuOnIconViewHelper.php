@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Filelist\ViewHelpers\Link;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+
 /**
  * Class ClickMenuOnIconViewHelper
  */
-class ClickMenuOnIconViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class ClickMenuOnIconViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

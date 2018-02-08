@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
 
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * View helper which returns a select box, that can be used to switch between
@@ -45,7 +46,7 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
  * localized selectbox
  * <output>
  */
-class ActionMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class ActionMenuViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

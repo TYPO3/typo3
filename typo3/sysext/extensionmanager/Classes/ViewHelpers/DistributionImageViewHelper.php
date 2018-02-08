@@ -15,13 +15,14 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders the distribution image
  *
  * @internal
  */
-class DistributionImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class DistributionImageViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

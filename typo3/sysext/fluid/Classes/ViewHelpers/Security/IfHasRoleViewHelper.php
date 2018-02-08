@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+
 /**
  * This view helper implements an ifHasRole/else condition for FE users/groups.
  *
@@ -54,7 +56,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Security;
  *
  * @api
  */
-class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper
+class IfHasRoleViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initializes the "role" argument.

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+
 /**
  * A view helper for creating Links to extbase actions within widets.
  *
@@ -29,7 +31,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
  *
  * @api
  */
-class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class LinkViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string
