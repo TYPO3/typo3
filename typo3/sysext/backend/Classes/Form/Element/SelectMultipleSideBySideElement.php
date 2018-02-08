@@ -348,6 +348,9 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
 
         $possibleItems = $config['items'];
         $selectedItems = $parameterArray['itemFormElValue'] ?: [];
+        if (!is_array($selectedItems)) {
+            $selectedItems = GeneralUtility::trimExplode(',', $selectedItems, true);
+        }
         $selectedItemsCount = count($selectedItems);
 
         $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'], 0);
