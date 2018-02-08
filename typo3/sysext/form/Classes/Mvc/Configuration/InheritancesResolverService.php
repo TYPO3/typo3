@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Form\Mvc\Configuration;
  */
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
@@ -353,7 +354,7 @@ class InheritancesResolverService
     {
         try {
             return ArrayUtility::getValueByPath($config, $path, $delimiter);
-        } catch (\RuntimeException $exception) {
+        } catch (MissingArrayPathException $exception) {
             return null;
         }
     }
