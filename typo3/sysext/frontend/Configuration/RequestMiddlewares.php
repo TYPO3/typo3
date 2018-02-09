@@ -26,5 +26,11 @@ return [
                 'typo3/cms-frontend/preprocessing'
             ]
         ],
+        'typo3/cms-frontend/content-length-headers' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\ContentLengthResponseHeader::class,
+            'after' => [
+                'typo3/cms-frontend/eid'
+            ]
+        ],
     ]
 ];

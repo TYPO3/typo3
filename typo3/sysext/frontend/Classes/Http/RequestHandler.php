@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -273,21 +272,8 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         }
 
         if ($sendTSFEContent) {
-            // Send content-length header.
-            // Notice that all HTML content outside the length of the content-length header will be cut off!
-            // Therefore content of unknown length from included PHP-scripts and if admin users are logged
-            // in (admin panel might show...) or if debug mode is turned on, we disable it!
-            if (
-                (!isset($this->controller->config['config']['enableContentLengthHeader']) || $this->controller->config['config']['enableContentLengthHeader'])
-                && !$this->controller->isBackendUserLoggedIn() && !$GLOBALS['TYPO3_CONF_VARS']['FE']['debug']
-                && !$this->controller->config['config']['debug'] && !$this->controller->doWorkspacePreview()
-            ) {
-                header('Content-Length: ' . strlen($this->controller->content));
-            }
             $response->getBody()->write($this->controller->content);
         }
-        GeneralUtility::makeInstance(LogManager::class)
-            ->getLogger(get_class())->debug('END of FRONTEND session', ['_FLUSH' => true]);
 
         return $response ?: new NullResponse();
     }
