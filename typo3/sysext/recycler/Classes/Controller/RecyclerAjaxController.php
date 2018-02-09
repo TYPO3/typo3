@@ -75,16 +75,18 @@ class RecyclerAjaxController
         // Determine the scripts to execute
         switch ($this->conf['action']) {
             case 'getTables':
-                $this->setDataInSession('depthSelection', $this->conf['depth']);
+                $this->setDataInSession(['depthSelection' => $this->conf['depth']]);
 
                 /* @var $model Tables */
                 $model = GeneralUtility::makeInstance(Tables::class);
                 $content = $model->getTables($this->conf['startUid'], $this->conf['depth']);
                 break;
             case 'getDeletedRecords':
-                $this->setDataInSession('tableSelection', $this->conf['table']);
-                $this->setDataInSession('depthSelection', $this->conf['depth']);
-                $this->setDataInSession('resultLimit', $this->conf['limit']);
+                $this->setDataInSession([
+                    'tableSelection' => $this->conf['table'],
+                    'depthSelection' => $this->conf['depth'],
+                    'resultLimit' => $this->conf['limit'],
+                ]);
 
                 /* @var $model DeletedRecords */
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
@@ -155,14 +157,16 @@ class RecyclerAjaxController
     /**
      * Sets data in the session of the current backend user.
      *
-     * @param string $identifier The identifier to be used to set the data
-     * @param string $data The data to be stored in the session
+     * @param array $data The data to be stored in the session
      */
-    protected function setDataInSession($identifier, $data)
+    protected function setDataInSession(array $data)
     {
         $beUser = $this->getBackendUser();
-        $beUser->uc['tx_recycler'][$identifier] = $data;
-        $beUser->writeUC();
+        $recyclerUC = $beUser->uc['tx_recycler'] ?? [];
+        if (!empty(array_diff_assoc($data, $recyclerUC))) {
+            $beUser->uc['tx_recycler'] = array_merge($recyclerUC, $data);
+            $beUser->writeUC();
+        }
     }
 
     /**
