@@ -48,7 +48,7 @@ return [
         'devIPmask' => 'Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function <code>\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::cmpIP()</code> for details on syntax. Setting this to blank value will deny all. Setting to "*" will allow all.',
         'sqlDebug' => '<p>Integer (0, 1, 2). Allows displaying executed SQL queries in the browser (for debugging purposes and development)</p><dl><dt>0</dt><dd>no SQL shown (default)</dd><dt>1</dt><dd>show only failed queries</dd><dt>2</dt><dd>show all queries</dd></dl>',
         'enable_DLOG' => 'Boolean: Whether the developer log is enabled. See constant "TYPO3_DLOG"',
-        'ddmmyy' => 'Format of Date-Month-Year - see PHP-function <a href="http://php.net/date" target="_blank">date()</a>',
+        'ddmmyy' => 'Format of Day-Month-Year - see PHP-function <a href="http://php.net/date" target="_blank">date()</a>',
         'hhmm' => 'Format of Hours-Minutes - see PHP-function <a href="http://php.net/date" target="_blank">date()</a>',
         'USdateFormat' => 'Boolean: If TRUE, dates entered in the TCEforms of the backend will be formatted mm-dd-yyyy',
         'loginCopyrightWarrantyProvider' => 'String: If you provide warranty for TYPO3 to your customers insert you (company) name here. It will appear in the login-dialog as the warranty provider. (You must also set URL below).',
