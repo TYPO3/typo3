@@ -136,20 +136,24 @@ class Inline1nCest
      */
     public function deleteInline1nInlineElement(Admin $I, ModalDialog $modalDialog)
     {
-        $inlineElmentToDelete = '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div';
+        $inlineElementToDelete = '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div';
         $I->wantTo('Cancel the delete dialog');
-        $I->click('a span[data-identifier="actions-edit-delete"]', $inlineElmentToDelete);
+        $I->click('a span[data-identifier="actions-edit-delete"]', $inlineElementToDelete);
         $modalDialog->clickButtonInDialog('button[name="no"]');
         // switch form Dialogbox back to IFrame
         $I->switchToIFrame('list_frame');
-        $I->seeElement($inlineElmentToDelete);
+        $I->seeElement($inlineElementToDelete);
 
         $I->wantTo('Accept the delete dialog');
-        $I->click('a span[data-identifier="actions-edit-delete"]', $inlineElmentToDelete);
-        $modalDialog->clickButtonInDialog('button[name="yes"]');
+        $I->click('a span[data-identifier="actions-edit-delete"]', $inlineElementToDelete);
+
+        // don't use $modalDialog->clickButtonInDialog due to too low timeout
+        $modalDialog->canSeeDialog();
+        $I->click('button[name="yes"]', ModalDialog::$openedModalButtonContainerSelector);
+        $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
         // switch form Dialogbox back to IFrame
         $I->switchToIFrame('list_frame');
-        $I->waitForElementNotVisible($inlineElmentToDelete);
+        $I->waitForElementNotVisible($inlineElementToDelete);
     }
 
     /**
