@@ -10,17 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports", "TYPO3/CMS/Backend/GridEditor"], function (require, exports, GridEditor_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    describe('TYPO3/CMS/Backend/GridEditorTest:', function () {
-        describe('tests for stripMarkup', function () {
-            it('works with string which contains html markup only', function () {
-                expect(GridEditor_1.GridEditor.stripMarkup('<b>foo</b>')).toBe('');
-            });
-            it('works with string which contains html markup and normal text', function () {
-                expect(GridEditor_1.GridEditor.stripMarkup('<b>foo</b> bar')).toBe(' bar');
-            });
-        });
-    });
-});
+define(["require","exports","TYPO3/CMS/Backend/GridEditor"],function(a,b,c){"use strict";Object.defineProperty(b,"__esModule",{value:!0}),describe("TYPO3/CMS/Backend/GridEditorTest:",function(){describe("tests for stripMarkup",function(){it("works with string which contains html markup only",function(){expect(c.GridEditor.stripMarkup("<b>foo</b>")).toBe("")}),it("works with string which contains html markup and normal text",function(){expect(c.GridEditor.stripMarkup("<b>foo</b> bar")).toBe(" bar")})})})});

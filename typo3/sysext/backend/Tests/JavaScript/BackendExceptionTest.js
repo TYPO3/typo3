@@ -10,17 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports", "TYPO3/CMS/Backend/BackendException"], function (require, exports, BackendException_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    describe('TYPO3/CMS/Backend/BackendException', function () {
-        it('sets exception message', function () {
-            var backendException = new BackendException_1.BackendException('some message');
-            expect(backendException.message).toBe('some message');
-        });
-        it('sets exception code', function () {
-            var backendException = new BackendException_1.BackendException('', 12345);
-            expect(backendException.code).toBe(12345);
-        });
-    });
-});
+define(["require","exports","TYPO3/CMS/Backend/BackendException"],function(a,b,c){"use strict";Object.defineProperty(b,"__esModule",{value:!0}),describe("TYPO3/CMS/Backend/BackendException",function(){it("sets exception message",function(){var a=new c.BackendException("some message");expect(a.message).toBe("some message")}),it("sets exception code",function(){var a=new c.BackendException("",12345);expect(a.code).toBe(12345)})})});

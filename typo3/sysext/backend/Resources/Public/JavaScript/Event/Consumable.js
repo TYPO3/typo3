@@ -10,7 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-});
+define(["require","exports"],function(a,b){"use strict";Object.defineProperty(b,"__esModule",{value:!0})});

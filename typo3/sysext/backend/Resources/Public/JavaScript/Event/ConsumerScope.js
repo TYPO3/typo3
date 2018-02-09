@@ -10,37 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports", "jquery"], function (require, exports, $) {
-    "use strict";
-    var ConsumerScope = (function () {
-        function ConsumerScope() {
-            this.consumers = [];
-        }
-        ConsumerScope.prototype.getConsumers = function () {
-            return this.consumers;
-        };
-        ConsumerScope.prototype.hasConsumer = function (consumer) {
-            return this.consumers.indexOf(consumer) !== -1;
-        };
-        ConsumerScope.prototype.attach = function (consumer) {
-            if (!this.hasConsumer(consumer)) {
-                this.consumers.push(consumer);
-            }
-        };
-        ConsumerScope.prototype.detach = function (consumer) {
-            this.consumers = this.consumers.filter(function (currentConsumer) { return currentConsumer !== consumer; });
-        };
-        ConsumerScope.prototype.invoke = function (request) {
-            var deferreds = [];
-            this.consumers.forEach(function (consumer) {
-                var deferred = consumer.consume.call(consumer, request);
-                if (deferred) {
-                    deferreds.push(deferred);
-                }
-            });
-            return $.when.apply($, deferreds);
-        };
-        return ConsumerScope;
-    }());
-    return new ConsumerScope();
-});
+define(["require","exports","jquery"],function(a,b,c){"use strict";var d=function(){function a(){this.consumers=[]}return a.prototype.getConsumers=function(){return this.consumers},a.prototype.hasConsumer=function(a){return this.consumers.indexOf(a)!==-1},a.prototype.attach=function(a){this.hasConsumer(a)||this.consumers.push(a)},a.prototype.detach=function(a){this.consumers=this.consumers.filter(function(b){return b!==a})},a.prototype.invoke=function(a){var b=[];return this.consumers.forEach(function(c){var d=c.consume.call(c,a);d&&b.push(d)}),c.when.apply(c,b)},a}();return new d});

@@ -10,17 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var BackendException = (function () {
-        function BackendException(message, code) {
-            if (message === void 0) { message = ''; }
-            if (code === void 0) { code = 0; }
-            this.message = message;
-            this.code = code;
-        }
-        return BackendException;
-    }());
-    exports.BackendException = BackendException;
-});
+define(["require","exports"],function(a,b){"use strict";Object.defineProperty(b,"__esModule",{value:!0});var c=function(){function a(a,b){void 0===a&&(a=""),void 0===b&&(b=0),this.message=a,this.code=b}return a}();b.BackendException=c});

@@ -10,39 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports"], function (require, exports) {
-    "use strict";
-    var InteractionRequest = (function () {
-        function InteractionRequest(type, parentRequest) {
-            if (parentRequest === void 0) { parentRequest = null; }
-            this.processed = false;
-            this.processedData = null;
-            this.type = type;
-            this.parentRequest = parentRequest;
-        }
-        Object.defineProperty(InteractionRequest.prototype, "outerMostRequest", {
-            get: function () {
-                var request = this;
-                while (request.parentRequest instanceof InteractionRequest) {
-                    request = request.parentRequest;
-                }
-                return request;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        InteractionRequest.prototype.isProcessed = function () {
-            return this.processed;
-        };
-        InteractionRequest.prototype.getProcessedData = function () {
-            return this.processedData;
-        };
-        InteractionRequest.prototype.setProcessedData = function (processedData) {
-            if (processedData === void 0) { processedData = null; }
-            this.processed = true;
-            this.processedData = processedData;
-        };
-        return InteractionRequest;
-    }());
-    return InteractionRequest;
-});
+define(["require","exports"],function(a,b){"use strict";var c=function(){function a(a,b){void 0===b&&(b=null),this.processed=!1,this.processedData=null,this.type=a,this.parentRequest=b}return Object.defineProperty(a.prototype,"outerMostRequest",{get:function(){for(var b=this;b.parentRequest instanceof a;)b=b.parentRequest;return b},enumerable:!0,configurable:!0}),a.prototype.isProcessed=function(){return this.processed},a.prototype.getProcessedData=function(){return this.processedData},a.prototype.setProcessedData=function(a){void 0===a&&(a=null),this.processed=!0,this.processedData=a},a}();return c});
