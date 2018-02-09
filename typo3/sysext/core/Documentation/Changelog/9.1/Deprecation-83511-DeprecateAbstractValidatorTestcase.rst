@@ -30,4 +30,4 @@ Migration
 
 Put the logic of that test case into your own test cases.
 
-.. index:: PHP-API, PartiallyScanned
+.. index:: PHP-API, FullyScanned

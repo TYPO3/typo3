@@ -112,6 +112,11 @@ return [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Http\EidRequestHandler' => [
+        'restFiles' => [
+            'Deprecation-83803-DeprecateEidRequestHandler.rst',
+        ],
+    ],
     'TYPO3\CMS\Frontend\Page\FramesetRenderer' => [
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',

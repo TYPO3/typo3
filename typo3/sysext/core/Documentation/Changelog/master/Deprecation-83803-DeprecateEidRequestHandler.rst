@@ -32,4 +32,4 @@ Migration
 
 Use :php:`\TYPO3\CMS\Frontend\Middleware\EidHandler` instead.
 
-.. index:: Frontend, PHP-API, NotScanned
+.. index:: Frontend, PHP-API, FullyScanned
