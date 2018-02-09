@@ -56,7 +56,7 @@ class SectionFrameToFrameClassUpdate extends AbstractUpdate
         if ($elementCount) {
             $description = 'Section frames were used to control the wrapping of each content element in the frontend '
                 . 'output, stored as integers in the database. To get rid of a nessesary mapping of those values we '
-                . 'are now storing strings you an easily adjust that will simply passed to the rendering.';
+                . 'are now storing strings you can easily adjust that will simply passed to the rendering.';
         }
         return (bool)$elementCount;
     }
