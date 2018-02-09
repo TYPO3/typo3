@@ -74,11 +74,11 @@ class SessionService implements SingletonInterface
         session_set_save_handler([$this, 'open'], [$this, 'close'], [$this, 'read'], [$this, 'write'], [$this, 'destroy'], [$this, 'gc']);
         session_save_path($sessionSavePath);
         session_name($this->cookieName);
-        ini_set('session.cookie_path', GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
+        ini_set('session.cookie_path', (string)GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
         // Always call the garbage collector to clean up stale session files
-        ini_set('session.gc_probability', 100);
-        ini_set('session.gc_divisor', 100);
-        ini_set('session.gc_maxlifetime', $this->expireTimeInMinutes * 2 * 60);
+        ini_set('session.gc_probability', (string)100);
+        ini_set('session.gc_divisor', (string)100);
+        ini_set('session.gc_maxlifetime', (string)$this->expireTimeInMinutes * 2 * 60);
         if (\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSessionAutoStartEnabled()) {
             $sessionCreationError = 'Error: session.auto-start is enabled.<br />';
             $sessionCreationError .= 'The PHP option session.auto-start is enabled. Disable this option in php.ini or .htaccess:<br />';

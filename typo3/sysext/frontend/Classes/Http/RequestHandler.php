@@ -322,7 +322,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] && extension_loaded('zlib')) {
             if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
-                @ini_set('zlib.output_compression_level', $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']);
+                @ini_set('zlib.output_compression_level', (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']);
             }
             ob_start([GeneralUtility::makeInstance(CompressionUtility::class), 'compressionOutputHandler']);
         }

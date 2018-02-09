@@ -52,7 +52,7 @@ class OutputCompression implements MiddlewareInterface
     {
         if (extension_loaded('zlib') && $GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']) {
             if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'])) {
-                @ini_set('zlib.output_compression_level', $GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']);
+                @ini_set('zlib.output_compression_level', (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']);
             }
             ob_start('ob_gzhandler');
         }

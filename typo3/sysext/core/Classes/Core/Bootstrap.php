@@ -633,7 +633,7 @@ class Bootstrap
                     );
                 }
         }
-        @ini_set('display_errors', $displayErrors);
+        @ini_set('display_errors', (string)$displayErrors);
 
         if (!empty($errorHandlerClassName)) {
             // Register an error handler for the given errorHandlerError
@@ -659,7 +659,7 @@ class Bootstrap
     protected function setMemoryLimit()
     {
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] > 16) {
-            @ini_set('memory_limit', ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] . 'm'));
+            @ini_set('memory_limit', (string)((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] . 'm'));
         }
         return $this;
     }
@@ -972,7 +972,7 @@ class Bootstrap
     {
         if (extension_loaded('zlib') && $GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']) {
             if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'])) {
-                @ini_set('zlib.output_compression_level', $GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']);
+                @ini_set('zlib.output_compression_level', (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']);
             }
             ob_start('ob_gzhandler');
         }
