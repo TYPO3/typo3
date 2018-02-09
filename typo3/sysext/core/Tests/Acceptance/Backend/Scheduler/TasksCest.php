@@ -112,7 +112,12 @@ class TasksCest
         $I->seeElement('//a[contains(@data-original-title, "Delete")]');
         $I->click('//a[contains(@data-original-title, "Delete")]');
         $I->wantTo('Cancel the delete dialog');
-        $modalDialog->clickButtonInDialog('Cancel');
+
+        // don't use $modalDialog->clickButtonInDialog due to too low timeout
+        $modalDialog->canSeeDialog();
+        $I->click('Cancel', ModalDialog::$openedModalButtonContainerSelector);
+        $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
+
         $I->switchToIFrame('list_frame');
         $I->wantTo('Still see and can click the Delete button as the deletion has been canceled');
         $I->click('//a[contains(@data-original-title, "Delete")]');

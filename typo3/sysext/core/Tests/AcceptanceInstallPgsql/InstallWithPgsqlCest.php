@@ -69,7 +69,7 @@ class InstallWithPgsqlCest
 
         // Verify default frontend is rendered
         $I->amOnPage('/');
-        $I->waitForText('Let us introduce you to TYPO3');
+        $I->waitForText('Let us introduce you to TYPO3', 30);
         $I->waitForText('Make it your own');
 
         // Verify link

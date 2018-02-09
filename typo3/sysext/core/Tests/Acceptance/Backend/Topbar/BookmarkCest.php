@@ -77,7 +77,10 @@ class BookmarkCest
 
         $I->click(self::$docHeaderBookmarkButtonSelector);
         // cancel the action to test the functionality
-        $dialog->clickButtonInDialog('Cancel');
+        // don't use $modalDialog->clickButtonInDialog due to too low timeout
+        $dialog->canSeeDialog();
+        $I->click('Cancel', ModalDialog::$openedModalButtonContainerSelector);
+        $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
 
         // check if the list is still empty
         $this->checkThatBookmarkListIsInitiallyEmpty($I);
