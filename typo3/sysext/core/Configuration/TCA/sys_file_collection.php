@@ -70,7 +70,8 @@ return [
                     ['', 0]
                 ],
                 'foreign_table' => 'sys_file_collection',
-                'foreign_table_where' => 'AND sys_file_collection.pid=###CURRENT_PID### AND sys_file_collection.sys_language_uid IN (-1,0)'
+                'foreign_table_where' => 'AND sys_file_collection.pid=###CURRENT_PID### AND sys_file_collection.sys_language_uid IN (-1,0)',
+                'default' => 0,
             ]
         ],
         'l10n_diffsource' => [
@@ -147,7 +148,8 @@ return [
                 'foreign_table_where' => 'ORDER BY sys_file_storage.name',
                 'size' => 1,
                 'minitems' => 0,
-                'maxitems' => 1
+                'maxitems' => 1,
+                'default' => 0,
             ]
         ],
         'folder' => [
@@ -182,7 +184,8 @@ return [
                         'expandAll' => true,
                         'showHeader' => true,
                     ]
-                ]
+                ],
+                'default' => 0,
             ]
         ]
     ],
