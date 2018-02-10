@@ -1323,28 +1323,29 @@ class EditDocumentController extends AbstractModule
                     $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
                 }
                 // Undo:
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('sys_history');
+                if ($this->getNewIconMode($this->firstEl['table'], 'showHistory')) {
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable('sys_history');
 
-                $undoButtonR = $queryBuilder->select('tstamp')
-                    ->from('sys_history')
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'tablename',
-                            $queryBuilder->createNamedParameter($this->firstEl['table'], \PDO::PARAM_STR)
-                        ),
-                        $queryBuilder->expr()->eq(
-                            'recuid',
-                            $queryBuilder->createNamedParameter($this->firstEl['uid'], \PDO::PARAM_INT)
+                    $undoButtonR = $queryBuilder->select('tstamp')
+                        ->from('sys_history')
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'tablename',
+                                $queryBuilder->createNamedParameter($this->firstEl['table'], \PDO::PARAM_STR)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                'recuid',
+                                $queryBuilder->createNamedParameter($this->firstEl['uid'], \PDO::PARAM_INT)
+                            )
                         )
-                    )
-                    ->orderBy('tstamp', 'DESC')
-                    ->setMaxResults(1)
-                    ->execute()
-                    ->fetch();
+                        ->orderBy('tstamp', 'DESC')
+                        ->setMaxResults(1)
+                        ->execute()
+                        ->fetch();
 
-                if ($undoButtonR !== false) {
-                    $aOnClick = 'window.location.href=' .
+                    if ($undoButtonR !== false) {
+                        $aOnClick = 'window.location.href=' .
                         GeneralUtility::quoteJSvalue(
                             BackendUtility::getModuleUrl(
                                 'record_history',
@@ -1356,23 +1357,24 @@ class EditDocumentController extends AbstractModule
                             )
                         ) . '; return false;';
 
-                    $undoButton = $buttonBar->makeLinkButton()
-                        ->setHref('#')
-                        ->setOnClick($aOnClick)
-                        ->setTitle(
-                            sprintf(
-                                $lang->getLL('undoLastChange'),
-                                BackendUtility::calcAge(
-                                    ($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']),
-                                    $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                        $undoButton = $buttonBar->makeLinkButton()
+                            ->setHref('#')
+                            ->setOnClick($aOnClick)
+                            ->setTitle(
+                                sprintf(
+                                    $lang->getLL('undoLastChange'),
+                                    BackendUtility::calcAge(
+                                        ($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']),
+                                        $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                                    )
                                 )
                             )
-                        )
-                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                            'actions-document-history-open',
-                            Icon::SIZE_SMALL
-                        ));
-                    $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+                            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                                'actions-document-history-open',
+                                Icon::SIZE_SMALL
+                            ));
+                        $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+                    }
                 }
                 if ($this->getNewIconMode($this->firstEl['table'], 'showHistory')) {
                     $aOnClick = 'window.location.href=' .

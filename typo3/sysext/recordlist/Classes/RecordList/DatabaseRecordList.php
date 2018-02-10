@@ -1500,12 +1500,16 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         // If the table is NOT a read-only table, then show these links:
         if ($this->isEditable($table)) {
             // "Revert" link (history/undo)
-            $moduleUrl = BackendUtility::getModuleUrl('record_history', ['element' => $table . ':' . $row['uid']]);
-            $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($moduleUrl) . ',\'#latest\');';
-            $historyAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-                . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'
-                . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
-            $this->addActionToCellGroup($cells, $historyAction, 'history');
+            $showHistoryTS = $this->getBackendUserAuthentication()->getTSConfig('options.showHistory');
+            $showHistory = (bool)trim($showHistoryTS['properties'][$table] ?? $showHistoryTS['value'] ?? '1');
+            if ($showHistory) {
+                $moduleUrl = BackendUtility::getModuleUrl('record_history', ['element' => $table . ':' . $row['uid']]);
+                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($moduleUrl) . ',\'#latest\');';
+                $historyAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
+                    . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'
+                    . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
+                $this->addActionToCellGroup($cells, $historyAction, 'history');
+            }
             // Versioning:
             if (ExtensionManagementUtility::isLoaded('version') && ExtensionManagementUtility::isLoaded('compatibility7') && !ExtensionManagementUtility::isLoaded('workspaces')) {
                 $vers = BackendUtility::selectVersionsOfRecord($table, $row['uid'], 'uid', $this->getBackendUserAuthentication()->workspace, false, $row);
