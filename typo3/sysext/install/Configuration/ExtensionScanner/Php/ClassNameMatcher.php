@@ -117,6 +117,11 @@ return [
             'Deprecation-83803-DeprecateEidRequestHandler.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Http\AjaxRequestHandler' => [
+        'restFiles' => [
+            'Deprecation-83853-BackendAjaxRequestHandler.rst',
+        ],
+    ],
     'TYPO3\CMS\Frontend\Page\FramesetRenderer' => [
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',

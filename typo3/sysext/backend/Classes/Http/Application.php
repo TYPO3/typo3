@@ -38,8 +38,7 @@ class Application implements ApplicationInterface
      * @var array
      */
     protected $availableRequestHandlers = [
-        \TYPO3\CMS\Backend\Http\RequestHandler::class,
-        \TYPO3\CMS\Backend\Http\AjaxRequestHandler::class
+        \TYPO3\CMS\Backend\Http\RequestHandler::class
     ];
 
     /**

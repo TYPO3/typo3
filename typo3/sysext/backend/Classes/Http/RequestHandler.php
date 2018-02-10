@@ -58,9 +58,17 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // Check if the router has the available route and dispatch.
+        // Use a custom pre-created response for AJAX calls
+        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
+            $response = new Response('php://temp', 200, [
+                'Content-Type' => 'application/json; charset=utf-8',
+                'X-JSON' => 'true'
+            ]);
+        } else {
+            $response = new Response();
+        }
         try {
-            $response = GeneralUtility::makeInstance(Response::class);
+            // Check if the router has the available route and dispatch.
             $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
             return $dispatcher->dispatch($request, $response);
         } catch (InvalidRequestTokenException $e) {
