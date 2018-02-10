@@ -48,7 +48,7 @@
 			<bu:removeUser backendUser="{backendUser}" />
 		</div>
 		<div class="btn-group" role="group">
-			<a class="btn btn-default" href="#" onclick="top.launchView('be_users', '{backendUser.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>
+			<a class="btn btn-default" href="#" onclick="top.TYPO3.InfoWindow.showItem('be_users', '{backendUser.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>
 		</div>
 		<div class="btn-group" role="group">
 			<f:if condition="{compareUserUidList.{backendUser.uid}}">

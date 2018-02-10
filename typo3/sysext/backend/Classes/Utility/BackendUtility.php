@@ -1346,7 +1346,7 @@ class BackendUtility
                         . '</span>';
                 }
                 if ($linkInfoPopup) {
-                    $onClick = 'top.launchView(\'_FILE\',\'' . (int)$fileObject->getUid() . '\'); return false;';
+                    $onClick = 'top.TYPO3.InfoWindow.showItem(\'_FILE\',\'' . (int)$fileObject->getUid() . '\'); return false;';
                     $thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $imgTag . '</a> ';
                 } else {
                     $thumbData .= $imgTag;
@@ -1400,7 +1400,7 @@ class BackendUtility
 
                         $image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" border="0" title="' . htmlspecialchars($fileObject->getName()) . '"' . $tparams . ' alt="" />';
                         if ($linkInfoPopup) {
-                            $onClick = 'top.launchView(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\');return false;';
+                            $onClick = 'top.TYPO3.InfoWindow.showItem(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\');return false;';
                             $thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $image . '</a> ';
                         } else {
                             $thumbData .= $image;
@@ -1411,7 +1411,7 @@ class BackendUtility
                             . $iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render()
                             . '</span>';
                         if ($linkInfoPopup) {
-                            $onClick = 'top.launchView(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\'); return false;';
+                            $onClick = 'top.TYPO3.InfoWindow.showItem(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\'); return false;';
                             $thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $fileIcon . '</a> ';
                         } else {
                             $thumbData .= $fileIcon;

@@ -41,7 +41,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
   };
 
   ContextMenuActions.openInfoPopUp = function(table, uid) {
-    top.launchView(table, uid);
+    top.TYPO3.InfoWindow.showItem(table, uid);
   };
 
   ContextMenuActions.mountAsTreeRoot = function(table, uid) {

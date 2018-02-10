@@ -151,6 +151,9 @@ class BackendController
         // load Modals
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
 
+        // load InfoWindow
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/InfoWindow');
+
         // load ContextMenu
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 

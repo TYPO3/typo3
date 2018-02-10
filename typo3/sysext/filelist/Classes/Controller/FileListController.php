@@ -517,7 +517,11 @@ class FileListController extends ActionController
             }
         }
 
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
         $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
+        $pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('show_item'));
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
 
         $thumbnailConfiguration = GeneralUtility::makeInstance(ThumbnailConfiguration::class);
@@ -528,8 +532,6 @@ class FileListController extends ActionController
 
         $this->view->assign('searchWord', $searchWord);
         $this->view->assign('files', $fileFacades);
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $this->view->assign('deleteUrl', (string)$uriBuilder->buildUriFromRoute('tce_file'));
         $this->view->assign('settings', [
             'jsConfirmationDelete' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)

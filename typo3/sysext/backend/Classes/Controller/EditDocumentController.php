@@ -732,6 +732,7 @@ class EditDocumentController
 
 				// Info view:
 			function launchView(table,uid) {
+				console.warn(\'Calling launchView() has been deprecated in v9 and will be removed in v10.0\');
 				var thePreviewWindow = window.open(
 					' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('show_item') . '&table=') . ' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
 					"ShowItem" + Math.random().toString(16).slice(2),

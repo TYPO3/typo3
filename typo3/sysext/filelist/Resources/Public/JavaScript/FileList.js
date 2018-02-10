@@ -15,7 +15,7 @@
  * Module: TYPO3/CMS/Filelist/Filelist
  * @exports TYPO3/CMS/Filelist/Filelist
  */
-define(['jquery'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/InfoWindow'], function($, InfoWindow) {
 
   $(function() {
     $('a.filelist-file-title').click(function(event) {
@@ -73,7 +73,7 @@ define(['jquery'], function($) {
    * @param identifier
    */
   function openFileInfoPopup(identifier) {
-    top.launchView('_FILE', identifier);
+    InfoWindow.showItem('_FILE', identifier);
   }
 
 });

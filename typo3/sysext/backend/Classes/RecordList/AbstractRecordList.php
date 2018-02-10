@@ -517,7 +517,7 @@ abstract class AbstractRecordList
      * sys_refindex records you hand over
      *
      * @param int $references number of records from sys_refindex table
-     * @param string $launchViewParameter JavaScript String, which will be passed as parameters to top.launchView
+     * @param string $launchViewParameter JavaScript String, which will be passed as parameters to top.TYPO3.InfoWindow.showItem
      * @return string
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
@@ -528,7 +528,7 @@ abstract class AbstractRecordList
         } else {
             $htmlCode = '<a href="#"';
             if ($launchViewParameter !== '') {
-                $htmlCode .= ' onclick="' . htmlspecialchars(('top.launchView(' . $launchViewParameter . '); return false;')) . '"';
+                $htmlCode .= ' onclick="' . htmlspecialchars(('top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;')) . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references') . ' (' . $references . ')') . '">';
             $htmlCode .= $references;

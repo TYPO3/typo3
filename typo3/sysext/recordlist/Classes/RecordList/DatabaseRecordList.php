@@ -1937,7 +1937,7 @@ class DatabaseRecordList
         }
         $this->addActionToCellGroup($cells, $editAction, 'edit');
         // "Info": (All records)
-        $onClick = 'top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;';
+        $onClick = 'top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;';
         $viewBigAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('showInfo')) . '">'
             . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
         $this->addActionToCellGroup($cells, $viewBigAction, 'viewBig');
@@ -3582,7 +3582,7 @@ class DatabaseRecordList
             case 'info':
                 // "Info": (All records)
                 $code = '<a href="#" onclick="' . htmlspecialchars(
-                        ('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;')
+                        ('top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;')
                     ) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
                 break;
             default:
@@ -4282,7 +4282,7 @@ class DatabaseRecordList
      * sys_refindex records you hand over
      *
      * @param int $references number of records from sys_refindex table
-     * @param string $launchViewParameter JavaScript String, which will be passed as parameters to top.launchView
+     * @param string $launchViewParameter JavaScript String, which will be passed as parameters to top.TYPO3.InfoWindow.showItem
      * @return string
      */
     protected function generateReferenceToolTip($references, $launchViewParameter = '')
@@ -4293,7 +4293,7 @@ class DatabaseRecordList
             $htmlCode = '<a href="#"';
             if ($launchViewParameter !== '') {
                 $htmlCode .= ' onclick="' . htmlspecialchars(
-                        ('top.launchView(' . $launchViewParameter . '); return false;')
+                        ('top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;')
                     ) . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars(

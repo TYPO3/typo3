@@ -3750,7 +3750,7 @@ class PageLayoutView implements LoggerAwareInterface
             case 'info':
                 // "Info": (All records)
                 $code = '<a href="#" onclick="' . htmlspecialchars(
-                        ('top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')
+                        ('top.TYPO3.InfoWindow.showItem(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')
                     ) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
                 break;
             default:
@@ -4440,7 +4440,7 @@ class PageLayoutView implements LoggerAwareInterface
      * sys_refindex records you hand over
      *
      * @param int $references number of records from sys_refindex table
-     * @param string $launchViewParameter JavaScript String, which will be passed as parameters to top.launchView
+     * @param string $launchViewParameter JavaScript String, which will be passed as parameters to top.TYPO3.InfoWindow.showItem
      * @return string
      */
     protected function generateReferenceToolTip($references, $launchViewParameter = '')
@@ -4451,7 +4451,7 @@ class PageLayoutView implements LoggerAwareInterface
             $htmlCode = '<a href="#"';
             if ($launchViewParameter !== '') {
                 $htmlCode .= ' onclick="' . htmlspecialchars(
-                        ('top.launchView(' . $launchViewParameter . '); return false;')
+                        ('top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;')
                     ) . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars(

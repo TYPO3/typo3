@@ -1381,9 +1381,9 @@ class FileList
         if ($fileOrFolderObject->checkActionPermission('read')) {
             $infoOnClick = '';
             if ($fileOrFolderObject instanceof Folder) {
-                $infoOnClick = 'top.launchView( \'_FOLDER\', ' . GeneralUtility::quoteJSvalue($fullIdentifier) . ');return false;';
+                $infoOnClick = 'top.TYPO3.InfoWindow.showItem(\'_FOLDER\', ' . GeneralUtility::quoteJSvalue($fullIdentifier) . ');return false;';
             } elseif ($fileOrFolderObject instanceof File) {
-                $infoOnClick = 'top.launchView( \'_FILE\', ' . GeneralUtility::quoteJSvalue($fullIdentifier) . ');return false;';
+                $infoOnClick = 'top.TYPO3.InfoWindow.showItem(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fullIdentifier) . ');return false;';
             }
             $cells['info'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($infoOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info') . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
@@ -1535,7 +1535,7 @@ class FileList
      * sys_refindex records you hand over
      *
      * @param int $references number of records from sys_refindex table
-     * @param string $launchViewParameter JavaScript String, which will be passed as parameters to top.launchView
+     * @param string $launchViewParameter JavaScript String, which will be passed as parameters to top.TYPO3.InfoWindow.showItem
      * @return string
      */
     protected function generateReferenceToolTip($references, $launchViewParameter = '')
@@ -1546,7 +1546,7 @@ class FileList
             $htmlCode = '<a href="#"';
             if ($launchViewParameter !== '') {
                 $htmlCode .= ' onclick="' . htmlspecialchars(
-                        ('top.launchView(' . $launchViewParameter . '); return false;')
+                        ('top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;')
                     ) . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars(

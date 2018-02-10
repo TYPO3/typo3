@@ -48,10 +48,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 
   ContextMenuActions.openInfoPopUp = function(table, uid) {
     if (table === 'sys_file_storage') {
-      top.launchView(table, uid);
+      top.TYPO3.InfoWindow.showItem(table, uid);
     } else {
       //files and folders
-      top.launchView('_FILE', uid);
+      top.TYPO3.InfoWindow.showItem('_FILE', uid);
     }
   };
 

@@ -405,7 +405,7 @@ class Clipboard
                                     $this->getBackendUser()->uc['titleLen']
                                 )), $fileObject->getName()),
                                 'thumb' => $thumb,
-                                'infoLink' => htmlspecialchars('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($v) . '); return false;'),
+                                'infoLink' => htmlspecialchars('top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($v) . '); return false;'),
                                 'removeLink' => $this->removeUrl('_FILE', GeneralUtility::shortMD5($v))
                             ];
                         } else {
@@ -427,7 +427,7 @@ class Clipboard
                                     $table,
                                     $rec
                                 ), $this->getBackendUser()->uc['titleLen'])), $rec, $table),
-                                'infoLink' => htmlspecialchars('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', \'' . (int)$uid . '\'); return false;'),
+                                'infoLink' => htmlspecialchars('top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', \'' . (int)$uid . '\'); return false;'),
                                 'removeLink' => $this->removeUrl($table, $uid)
                             ];
 
