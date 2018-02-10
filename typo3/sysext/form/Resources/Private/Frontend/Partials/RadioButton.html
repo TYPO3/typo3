@@ -3,11 +3,12 @@
 	<f:render partial="Field/Field" arguments="{element: element}" contentAs="elementContent">
 		<div id="{element.uniqueIdentifier}" class="inputs-list">
 			<div class="form-group">
-				<f:for each="{element.properties.options}" as="label" key="value">
+				<f:for each="{element.properties.options}" as="label" key="value" iteration="idIterator">
 					<div class="form-check">
-						<label class="form-check-label">
+						<label class="form-check-label" for="{element.uniqueIdentifier}-{idIterator.index}">
 							<f:form.radio
 								property="{element.identifier}"
+								id="{element.uniqueIdentifier}-{idIterator.index}"
 								class="{element.properties.elementClassAttribute} form-check-input"
 								value="{value}"
 								errorClass="{element.properties.elementErrorClassAttribute}"
