@@ -166,7 +166,8 @@ body {
     display: block;
     border: none;
     height: 100%;
-    width: 100%;
+    width: 1px;
+    min-width: 100%;
 }
 
 .scaffold-content-navigation {
