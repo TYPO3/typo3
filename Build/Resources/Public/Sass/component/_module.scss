@@ -36,6 +36,7 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 // Loading indicator
 //
 .module-loading-indicator {
+    position: fixed;
     min-height: 5px;
     width: 100%;
     z-index: 999999;
@@ -150,6 +151,10 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 //
 .module-body {
     padding: $module-body-padding;
+    height: 100%;
+    // Use overflow-y: auto to ensure ckeditor dropdowns
+    // do not conflict with height: 100% on <body>
+    overflow-y: auto;
 
     > .callout:first-child {
         margin-top: 0;
