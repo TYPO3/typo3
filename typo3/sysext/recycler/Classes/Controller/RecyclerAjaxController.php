@@ -161,8 +161,9 @@ class RecyclerAjaxController
     protected function setDataInSession(array $data)
     {
         $beUser = $this->getBackendUser();
-        if (!empty(array_diff_assoc($data, $beUser->uc['tx_recycler']))) {
-            $beUser->uc['tx_recycler'] = array_merge($beUser->uc['tx_recycler'], $data);
+        $recyclerUC = $beUser->uc['tx_recycler'] ?? [];
+        if (!empty(array_diff_assoc($data, $recyclerUC))) {
+            $beUser->uc['tx_recycler'] = array_merge($recyclerUC, $data);
             $beUser->writeUC();
         }
     }
