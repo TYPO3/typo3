@@ -62,7 +62,7 @@ define(['jquery'], function($) {
    * Scroll
    */
   DocumentHeader.scroll = function() {
-    DocumentHeader.currentPosition = $(window).scrollTop();
+    DocumentHeader.currentPosition = $(this).scrollTop();
     if (DocumentHeader.currentPosition > DocumentHeader.lastPosition) {
       if (DocumentHeader.direction !== 'down') {
         DocumentHeader.direction = 'down';
@@ -89,7 +89,7 @@ define(['jquery'], function($) {
   DocumentHeader.start = function() {
     DocumentHeader.reposition();
     $(window).on('resize', DocumentHeader.reposition);
-    $(window).on('scroll', DocumentHeader.scroll);
+    $('.t3js-module-docheader + .t3js-module-body').on('scroll', DocumentHeader.scroll);
   };
 
   /**
