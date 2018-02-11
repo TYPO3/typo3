@@ -83,7 +83,7 @@ class ExternalLinktype extends AbstractLinktype
             if ($response->getStatusCode() >= 300) {
                 $isValidUrl = false;
                 $errorParams['errorType'] = $response->getStatusCode();
-                $errorParams['message'] = $response->getReasonPhrase();
+                $errorParams['message'] = $this->getErrorMessage($errorParams);
             }
         } catch (TooManyRedirectsException $e) {
             $lastRequest = $e->getRequest();
@@ -91,6 +91,14 @@ class ExternalLinktype extends AbstractLinktype
             $errorParams['errorType'] = 'loop';
             $errorParams['location'] = (string)$lastRequest->getUri();
             $errorParams['errorCode'] = $response->getStatusCode();
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $isValidUrl = false;
+            $errorParams['errorType'] = $e->getResponse()->getStatusCode();
+            $errorParams['message'] = $this->getErrorMessage($errorParams);
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            $isValidUrl = false;
+            $errorParams['errorType'] = 'network';
+            $errorParams['message'] = $this->getErrorMessage($errorParams);
         } catch (\Exception $e) {
             $isValidUrl = false;
             $errorParams['errorType'] = 'exception';
@@ -132,6 +140,9 @@ class ExternalLinktype extends AbstractLinktype
                 break;
             case 'exception':
                 $response = sprintf($lang->getLL('list.report.httpexception'), $errorParams['message']);
+                break;
+            case 'network':
+                $response = $lang->getLL('list.report.networkexception');
                 break;
             default:
                 $response = sprintf($lang->getLL('list.report.otherhttpcode'), $errorType, $errorParams['message']);

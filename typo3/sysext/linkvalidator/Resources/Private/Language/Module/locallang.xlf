@@ -183,6 +183,9 @@
 			<trans-unit id="list.report.httpexception">
 				<source>Exception: %s</source>
 			</trans-unit>
+			<trans-unit id="list.report.networkexception">
+				<source>Network error</source>
+			</trans-unit>
 			<trans-unit id="list.msg.ok">
 				<source>Ok</source>
 			</trans-unit>
