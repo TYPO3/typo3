@@ -1949,7 +1949,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'localhost IP' => ['127.0.0.1'],
             'relative path' => ['./relpath/file.txt'],
             'absolute path' => ['/abspath/file.txt?arg=value'],
-            'differnt host' => [GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '.example.org']
+            'different host' => [GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '.example.org']
         ];
     }
 

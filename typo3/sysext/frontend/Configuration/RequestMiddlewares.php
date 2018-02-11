@@ -20,10 +20,16 @@ return [
                 'typo3/cms-core/legacy-request-handler-dispatcher'
             ],
         ],
+        'typo3/cms-core/normalized-params-attribute' => [
+            'target' => \TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute::class,
+            'after' => [
+                'typo3/cms-frontend/timetracker',
+            ]
+        ],
         'typo3/cms-frontend/preprocessing' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\PreprocessRequestHook::class,
             'after' => [
-                'typo3/cms-frontend/timetracker'
+                'typo3/cms-core/normalized-params-attribute',
             ]
         ],
         'typo3/cms-frontend/eid' => [

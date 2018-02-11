@@ -15,4 +15,9 @@ return [
             'Breaking-82893-RemoveGlobalVariablePARSETIME_START.rst'
         ],
     ],
+    '$GLOBALS[\'TYPO3_REQUEST\']' => [
+        'restFiles' => [
+            'Deprecation-83736-DeprecatedGlobalsTYPO3_REQUEST.rst',
+        ],
+    ],
 ];
