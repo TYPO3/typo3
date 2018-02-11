@@ -1626,7 +1626,7 @@ abstract class AbstractMenuContentObject
             // Links to emails should not have any target
             if (stripos($externalUrl, 'mailto:') === 0) {
                 $LD['target'] = '';
-                // use external target for the URL
+            // use external target for the URL
             } elseif (empty($LD['target']) && !empty($this->getTypoScriptFrontendController()->extTarget)) {
                 $LD['target'] = $this->getTypoScriptFrontendController()->extTarget;
             }

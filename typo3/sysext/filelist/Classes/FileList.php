@@ -1117,7 +1117,7 @@ class FileList
                             $theData[$field] .= '<span class="label label-danger label-space-left">'
                                 . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                                 . '</span>';
-                            // Thumbnails?
+                        // Thumbnails?
                         } elseif ($this->thumbs && ($this->isImage($ext) || $this->isMediaFile($ext))) {
                             $processedFile = $fileObject->process(
                                 ProcessedFile::CONTEXT_IMAGEPREVIEW,
