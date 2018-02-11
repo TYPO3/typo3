@@ -137,6 +137,26 @@ class SaltFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
+    public function objectInstanceForPhpPasswordHashBcryptSalts()
+    {
+        $saltBcrypt = '$2y$12$Tz.al0seuEgRt61u0bzqAOWu67PgG2ThG25oATJJ0oS5KLCPCgBOe';
+        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltBcrypt);
+        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt::class, $this->objectInstance);
+    }
+
+    /**
+     * @test
+     */
+    public function objectInstanceForPhpPasswordHashArgon2iSalts()
+    {
+        $saltArgon2i = '$argon2i$v=19$m=8,t=1,p=1$djZiNkdEa3lOZm1SSmZsdQ$9iiRjpLZAT7kfHwS1xU9cqSU7+nXy275qpB/eKjI1ig';
+        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltArgon2i);
+        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt::class, $this->objectInstance);
+    }
+
+    /**
+     * @test
+     */
     public function resettingFactoryInstanceSucceeds()
     {
         $defaultClassNameToUse = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getDefaultSaltingHashingMethod();

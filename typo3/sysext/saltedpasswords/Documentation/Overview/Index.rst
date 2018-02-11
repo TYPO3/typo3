@@ -67,6 +67,20 @@ The extension provides several types of hashing method:
   comparison to MD5 salted hashing. Use this setting if you have higher
   requirements on password security. This requires a PHP > 5.5.0.
 
+- **Standard PHP password hashing (bcrypt)** This method
+  implements the `PHP password hashing API
+  <https://secure.php.net/manual/en/book.password.php>`_ with the bcrypt
+  algorithm. It can be considered very secure and is recommended to be
+  used as default password hashing method.
+
+- **Standard PHP password hashing (argon2i)** This method
+  implements the `PHP password hashing API
+  <https://secure.php.net/manual/en/book.password.php>`_ with the argon2i
+  algorithm, winner of the `Password Hashing Competition
+  <https://password-hashing.net/>`_. It is the future "standard" for
+  password hashing. Please check your system whether argon2i is available
+  to you.
+
 
 .. _server-environment:
 

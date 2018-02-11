@@ -68,7 +68,9 @@ class SaltFactory
             Md5Salt::class => Md5Salt::class,
             BlowfishSalt::class => BlowfishSalt::class,
             PhpassSalt::class => PhpassSalt::class,
-            Pbkdf2Salt::class => Pbkdf2Salt::class
+            Pbkdf2Salt::class => Pbkdf2Salt::class,
+            BcryptSalt::class => BcryptSalt::class,
+            Argon2iSalt::class => Argon2iSalt::class,
         ];
     }
 
