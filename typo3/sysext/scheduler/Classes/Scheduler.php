@@ -14,19 +14,24 @@ namespace TYPO3\CMS\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
  * Formerly known as "Gabriel TYPO3 arch angel"
  */
-class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
+class Scheduler implements SingletonInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var array $extConf Settings from the extension manager
      */
@@ -34,8 +39,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Constructor, makes sure all derived client classes are included
-     *
-     * @return \TYPO3\CMS\Scheduler\Scheduler
      */
     public function __construct()
     {
@@ -117,8 +120,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
                         $executions[] = $task;
                     } else {
                         $task = unserialize($row['serialized_task_object']);
-                        $logMessage = 'Removing logged execution, assuming that the process is dead. Execution of \'' . get_class($task) . '\' (UID: ' . $row['uid'] . ') was started at ' . date('Y-m-d H:i:s', $task->getExecutionTime());
-                        $this->log($logMessage);
+                        $this->log('Removing logged execution, assuming that the process is dead. Execution of \'' . get_class($task) . '\' (UID: ' . $row['uid'] . ') was started at ' . date('Y-m-d H:i:s', $task->getExecutionTime()));
                     }
                 }
             }
@@ -163,12 +165,11 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         if (!$task->areMultipleExecutionsAllowed() && $task->isExecutionRunning()) {
             // Log multiple execution error
             $logMessage = 'Task is already running and multiple executions are not allowed, skipping! Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid();
-            $this->log($logMessage);
+            $this->logger->info($logMessage);
             $result = false;
         } else {
             // Log scheduler invocation
-            $logMessage = 'Start execution. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid();
-            $this->log($logMessage);
+            $this->logger->info('Start execution. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid());
             // Register execution
             $executionID = $task->markExecution();
             $failure = null;
@@ -185,8 +186,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
             // Un-register execution
             $task->unmarkExecution($executionID, $failure);
             // Log completion of execution
-            $logMessage = 'Task executed. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid();
-            $this->log($logMessage);
+            $this->logger->info('Task executed. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid());
             // Now that the result of the task execution has been handled,
             // throw the exception again, if any
             if ($failure instanceof \Exception) {
@@ -445,11 +445,25 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
      * @param int $status Status (0 = message, 1 = error)
      * @param mixed $code Key for the message
      */
-    public function log($message, $status = 0, $code = 'scheduler')
+    public function log($message, $status = 0, $code = '')
     {
-        // Log only if enabled
-        if (!empty($this->extConf['enableBELog'])) {
-            $GLOBALS['BE_USER']->writelog(4, 0, $status, 0, '[scheduler]: ' . $code . ' - ' . $message, []);
+        $message = trim('[scheduler]: ' . $code) . ' - ' . $message;
+        switch ((int)$status) {
+            // error (user problem)
+            case 1:
+                $this->logger->alert($message);
+                break;
+            // System Error (which should not happen)
+            case 2:
+                $this->logger->error($message);
+                break;
+            // security notice (admin)
+            case 3:
+                $this->logger->emergency($message);
+                break;
+            // regular message (= 0)
+            default:
+                $this->logger->info($message);
         }
     }
 }

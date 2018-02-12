@@ -496,7 +496,7 @@ abstract class AbstractTask implements LoggerAwareInterface
                 // Log failed execution
                 $logMessage = 'Task failed to execute successfully. Class: ' . static::class
                     . ', UID: ' . $this->taskUid . ', Code: ' . $failure->getCode() . ', ' . $failure->getMessage();
-                $this->scheduler->log($logMessage, 1);
+                $this->logger->error($logMessage, ['exception' => $failure]);
                 // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
                 $failureString = serialize([
                     'code' => $failure->getCode(),
