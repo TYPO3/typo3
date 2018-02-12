@@ -70,20 +70,21 @@ class YamlSourceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function loadThrowsExceptionIfFileToLoadIsNotValidYamlUsePhpExtensionParser()
     {
-        if (extension_loaded('yaml')) {
-            $this->expectException(ParseErrorException::class);
-            $this->expectExceptionCode(1391894094);
-
-            $mockYamlSource = $this->getAccessibleMock(YamlSource::class, [
-                'dummy',
-            ], [], '', false);
-
-            $input = [
-                'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Invalid.yaml'
-            ];
-
-            $mockYamlSource->_call('load', $input);
+        if (!extension_loaded('yaml')) {
+            $this->markTestSkipped('Yaml PHP extension not available, skipping.');
         }
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionCode(1391894094);
+
+        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, [
+            'dummy',
+        ], [], '', false);
+
+        $input = [
+            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Invalid.yaml'
+        ];
+
+        $mockYamlSource->_call('load', $input);
     }
 
     /**
