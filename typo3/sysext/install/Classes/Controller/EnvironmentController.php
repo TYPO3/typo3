@@ -331,6 +331,7 @@ class EnvironmentController extends AbstractController
         } else {
             $result = [
                 'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageProcessor->IM_commands,
             ];
         }
         return $this->getImageTestResponse($result);
@@ -363,6 +364,7 @@ class EnvironmentController extends AbstractController
         } else {
             $result = [
                 'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageProcessor->IM_commands,
             ];
         }
         return $this->getImageTestResponse($result);
@@ -395,6 +397,7 @@ class EnvironmentController extends AbstractController
         } else {
             $result = [
                 'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageProcessor->IM_commands,
             ];
         }
         return $this->getImageTestResponse($result);
@@ -427,6 +430,7 @@ class EnvironmentController extends AbstractController
         } else {
             $result = [
                 'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageProcessor->IM_commands,
             ];
         }
         return $this->getImageTestResponse($result);
@@ -459,6 +463,7 @@ class EnvironmentController extends AbstractController
         } else {
             $result = [
                 'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageProcessor->IM_commands,
             ];
         }
         return $this->getImageTestResponse($result);
@@ -495,6 +500,7 @@ class EnvironmentController extends AbstractController
         } else {
             $result = [
                 'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageProcessor->IM_commands,
             ];
         }
         return $this->getImageTestResponse($result);
@@ -531,6 +537,7 @@ class EnvironmentController extends AbstractController
         } else {
             $result = [
                 'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageProcessor->IM_commands,
             ];
         }
         return $this->getImageTestResponse($result);
@@ -813,7 +820,10 @@ class EnvironmentController extends AbstractController
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
-            $result['status'] = [$this->imageGenerationFailedMessage()];
+            $result = [
+                'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageProcessor->IM_commands,
+            ];
         }
         return $this->getImageTestResponse($result);
     }
