@@ -63,7 +63,7 @@ class EidHandler implements MiddlewareInterface
             /** @var Dispatcher $dispatcher */
             $dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
             $request = $request->withAttribute('target', $configuration);
-            return $dispatcher->dispatch($request, $response);
+            return $dispatcher->dispatch($request, $response) ?? new NullResponse();
         }
 
         $scriptPath = GeneralUtility::getFileAbsFileName($configuration);
