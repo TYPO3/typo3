@@ -396,7 +396,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     protected function registerPackagesFromConfiguration(array $packages, $registerOnlyNewPackages = false, $packageStatesHasChanged = false)
     {
         foreach ($packages as $packageKey => $stateConfiguration) {
-            if ($registerOnlyNewPackages && $this->isPackageAvailable($packageKey)) {
+            if ($registerOnlyNewPackages && $this->isPackageRegistered($packageKey)) {
                 continue;
             }
 
@@ -436,12 +436,11 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * @param PackageInterface $package The Package to be registered
      * @return PackageInterface
      * @throws Exception\InvalidPackageStateException
-     * @throws Exception\PackageStatesFileNotWritableException
      */
     public function registerPackage(PackageInterface $package)
     {
         $packageKey = $package->getPackageKey();
-        if ($this->isPackageAvailable($packageKey)) {
+        if ($this->isPackageRegistered($packageKey)) {
             throw new Exception\InvalidPackageStateException('Package "' . $packageKey . '" is already registered.', 1338996122);
         }
 
@@ -483,10 +482,10 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getPackageKeyFromComposerName($composerName)
     {
-        if (isset($this->packageAliasMap[$composerName])) {
-            return $this->packageAliasMap[$composerName];
-        }
         $lowercasedComposerName = strtolower($composerName);
+        if (isset($this->packageAliasMap[$lowercasedComposerName])) {
+            return $this->packageAliasMap[$lowercasedComposerName];
+        }
         if (isset($this->composerNameToPackageKeyMap[$lowercasedComposerName])) {
             return $this->composerNameToPackageKeyMap[$lowercasedComposerName];
         }
@@ -504,10 +503,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getPackage($packageKey)
     {
-        if (isset($this->packageAliasMap[$lowercasedPackageKey = strtolower($packageKey)])) {
-            $packageKey = $this->packageAliasMap[$lowercasedPackageKey];
-        }
-        if (!$this->isPackageAvailable($packageKey)) {
+        if (!$this->isPackageRegistered($packageKey) && !$this->isPackageAvailable($packageKey)) {
             throw new Exception\UnknownPackageException('Package "' . $packageKey . '" is not available. Please check if the package exists and that the package key is correct (package keys are case sensitive).', 1166546734);
         }
         return $this->packages[$packageKey];
@@ -523,15 +519,17 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function isPackageAvailable($packageKey)
     {
+        if ($this->isPackageRegistered($packageKey)) {
+            return true;
+        }
+
         // If activePackages is empty, the PackageManager is currently initializing
         // thus packages should not be scanned
         if (!$this->availablePackagesScanned && !empty($this->activePackages)) {
             $this->scanAvailablePackages();
         }
-        if (isset($this->packageAliasMap[$lowercasedPackageKey = strtolower($packageKey)])) {
-            $packageKey = $this->packageAliasMap[$lowercasedPackageKey];
-        }
-        return isset($this->packages[$packageKey]);
+
+        return $this->isPackageRegistered($packageKey);
     }
 
     /**
@@ -543,6 +541,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function isPackageActive($packageKey)
     {
+        $packageKey = $this->getPackageKeyFromComposerName($packageKey);
+
         return isset($this->runtimeActivatedPackages[$packageKey]) || isset($this->packageStatesConfiguration['packages'][$packageKey]);
     }
 
@@ -631,7 +631,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $packageKey
      * @throws Exception
-     * @throws Exception\InvalidPackageStateException
      * @throws Exception\ProtectedPackageKeyException
      * @throws Exception\UnknownPackageException
      */
@@ -678,6 +677,19 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         return array_merge($this->activePackages, $this->runtimeActivatedPackages);
+    }
+
+    /**
+     * Returns TRUE if a package was already registered or FALSE if it's not.
+     *
+     * @param string $packageKey
+     * @return bool
+     */
+    protected function isPackageRegistered($packageKey)
+    {
+        $packageKey = $this->getPackageKeyFromComposerName($packageKey);
+
+        return isset($this->packages[$packageKey]);
     }
 
     /**
@@ -819,7 +831,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     public function unregisterPackage(PackageInterface $package)
     {
         $packageKey = $package->getPackageKey();
-        if (!$this->isPackageAvailable($packageKey)) {
+        if (!$this->isPackageRegistered($packageKey)) {
             throw new Exception\InvalidPackageStateException('Package "' . $packageKey . '" is not registered.', 1338996142);
         }
         $this->unregisterPackageByPackageKey($packageKey);
@@ -830,13 +842,10 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $packageKey
      * @throws Exception\InvalidPackageStateException if the package isn't available
-     * @throws Exception\InvalidPackageKeyException if an invalid package key was passed
-     * @throws Exception\InvalidPackagePathException if an invalid package path was passed
-     * @throws Exception\InvalidPackageManifestException if no extension configuration file could be found
      */
     public function reloadPackageInformation($packageKey)
     {
-        if (!$this->isPackageAvailable($packageKey)) {
+        if (!$this->isPackageRegistered($packageKey)) {
             throw new Exception\InvalidPackageStateException('Package "' . $packageKey . '" is not registered.', 1436201329);
         }
 
