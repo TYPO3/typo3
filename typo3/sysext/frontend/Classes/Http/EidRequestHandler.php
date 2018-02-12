@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Frontend\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\Dispatcher;
 use TYPO3\CMS\Core\Http\NullResponse;
@@ -36,20 +35,11 @@ use TYPO3\CMS\Frontend\Middleware\EidHandler as EidMiddleware;
 class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {
     /**
-     * Instance of the current TYPO3 bootstrap
-     * @var Bootstrap
-     */
-    protected $bootstrap;
-
-    /**
      * Constructor handing over the bootstrap and the original request
-     *
-     * @param Bootstrap $bootstrap
      */
-    public function __construct(Bootstrap $bootstrap)
+    public function __construct()
     {
         trigger_error(self::class . ' will be removed in TYPO3 v10. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
-        $this->bootstrap = $bootstrap;
     }
 
     /**
@@ -99,7 +89,7 @@ class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInt
     {
         trigger_error(self::class . ' will be removed in TYPO3 v10. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
         // Remove any output produced until now
-        $this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
+        ob_clean();
 
         /** @var Response $response */
         $response = GeneralUtility::makeInstance(Response::class);

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @internal
  */
-class AbstractApplication implements ApplicationInterface
+abstract class AbstractApplication implements ApplicationInterface
 {
     /**
      * @var string

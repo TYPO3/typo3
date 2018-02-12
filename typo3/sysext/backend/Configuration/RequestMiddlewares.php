@@ -11,14 +11,8 @@
  */
 return [
     'backend' => [
-        'typo3/cms-core/legacy-request-handler-dispatcher' => [
-            'target' => \TYPO3\CMS\Core\Middleware\LegacyRequestHandlerDispatcher::class,
-        ],
         'typo3/cms-core/normalized-params-attribute' => [
             'target' => \TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute::class,
-            'after' => [
-                'typo3/cms-core/legacy-request-handler-dispatcher',
-            ],
         ],
         'typo3/cms-backend/locked-backend' => [
             'target' => \TYPO3\CMS\Backend\Middleware\LockedBackendGuard::class,

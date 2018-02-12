@@ -11,14 +11,8 @@
  */
 return [
     'frontend' => [
-        'typo3/cms-core/legacy-request-handler-dispatcher' => [
-            'target' => \TYPO3\CMS\Core\Middleware\LegacyRequestHandlerDispatcher::class,
-        ],
         'typo3/cms-frontend/timetracker' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\TimeTrackerInitialization::class,
-            'after' => [
-                'typo3/cms-core/legacy-request-handler-dispatcher'
-            ],
         ],
         'typo3/cms-core/normalized-params-attribute' => [
             'target' => \TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute::class,

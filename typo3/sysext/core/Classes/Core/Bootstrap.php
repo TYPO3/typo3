@@ -18,7 +18,6 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * This class encapsulates bootstrap related methods.
@@ -56,24 +55,6 @@ class Bootstrap
      * @var array List of early instances
      */
     protected $earlyInstances = [];
-
-    /**
-     * @var string Path to install tool
-     */
-    protected $installToolPath;
-
-    /**
-     * A list of all registered request handlers, see the Application class / entry points for the registration
-     * @var \TYPO3\CMS\Core\Http\RequestHandlerInterface[]|\TYPO3\CMS\Core\Console\RequestHandlerInterface[]
-     */
-    protected $availableRequestHandlers = [];
-
-    /**
-     * The Response object when using Request/Response logic
-     * @var \Psr\Http\Message\ResponseInterface
-     * @see shutdown()
-     */
-    protected $response;
 
     /**
      * @var bool
@@ -264,112 +245,6 @@ class Bootstrap
         $configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
         $this->setEarlyInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, $configurationManager);
         return file_exists($configurationManager->getLocalConfigurationFileLocation()) && file_exists(PATH_typo3conf . 'PackageStates.php');
-    }
-
-    /**
-     * Redirect to install tool if LocalConfiguration.php is missing.
-     *
-     * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function redirectToInstallTool($entryPointLevel = 0)
-    {
-        $path = TYPO3_mainDir . 'install.php';
-        if ($entryPointLevel > 0) {
-            $path = str_repeat('../', $entryPointLevel) . $path;
-        }
-        header('Location: ' . $path);
-        die;
-    }
-
-    /**
-     * Adds available request handlers usually done via an application from the outside.
-     *
-     * @param string $requestHandler class which implements the request handler interface
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function registerRequestHandlerImplementation($requestHandler)
-    {
-        $this->availableRequestHandlers[] = $requestHandler;
-        return $this;
-    }
-
-    /**
-     * Fetches the request handler that suits the best based on the priority and the interface
-     * Be sure to always have the constants that are defined in $this->defineTypo3RequestTypes() are set,
-     * so most RequestHandlers can check if they can handle the request.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface|\Symfony\Component\Console\Input\InputInterface $request
-     * @return \TYPO3\CMS\Core\Http\RequestHandlerInterface|\TYPO3\CMS\Core\Console\RequestHandlerInterface
-     * @throws \TYPO3\CMS\Core\Exception
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function resolveRequestHandler($request)
-    {
-        $suitableRequestHandlers = [];
-        foreach ($this->availableRequestHandlers as $requestHandlerClassName) {
-            /** @var \TYPO3\CMS\Core\Http\RequestHandlerInterface|\TYPO3\CMS\Core\Console\RequestHandlerInterface $requestHandler */
-            $requestHandler = GeneralUtility::makeInstance($requestHandlerClassName, $this);
-            if ($requestHandler->canHandleRequest($request)) {
-                $priority = $requestHandler->getPriority();
-                if (isset($suitableRequestHandlers[$priority])) {
-                    throw new \TYPO3\CMS\Core\Exception('More than one request handler with the same priority can handle the request, but only one handler may be active at a time!', 1176471352);
-                }
-                $suitableRequestHandlers[$priority] = $requestHandler;
-            }
-        }
-        if (empty($suitableRequestHandlers)) {
-            throw new \TYPO3\CMS\Core\Exception('No suitable request handler found.', 1225418233);
-        }
-        ksort($suitableRequestHandlers);
-        return array_pop($suitableRequestHandlers);
-    }
-
-    /**
-     * Builds a Request instance from the current process, and then resolves the request
-     * through the request handlers depending on Frontend, Backend, CLI etc.
-     *
-     * @param \Psr\Http\Message\RequestInterface|\Symfony\Component\Console\Input\InputInterface $request
-     * @return Bootstrap
-     * @throws \TYPO3\CMS\Core\Exception
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function handleRequest($request)
-    {
-        // Resolve request handler that were registered based on the Application
-        $requestHandler = $this->resolveRequestHandler($request);
-
-        // Execute the command which returns a Response object or NULL
-        $this->response = $requestHandler->handleRequest($request);
-
-        return $this;
-    }
-
-    /**
-     * Outputs content if there is a proper Response object.
-     *
-     * @return Bootstrap
-     */
-    protected function sendResponse()
-    {
-        if ($this->response instanceof \Psr\Http\Message\ResponseInterface && !($this->response instanceof \TYPO3\CMS\Core\Http\NullResponse)) {
-            if (!headers_sent()) {
-                // If the response code was not changed by legacy code (still is 200)
-                // then allow the PSR-7 response object to explicitly set it.
-                // Otherwise let legacy code take precedence.
-                // This code path can be deprecated once we expose the response object to third party code
-                if (http_response_code() === 200) {
-                    header('HTTP/' . $this->response->getProtocolVersion() . ' ' . $this->response->getStatusCode() . ' ' . $this->response->getReasonPhrase());
-                }
-
-                foreach ($this->response->getHeaders() as $name => $values) {
-                    header($name . ': ' . implode(', ', $values));
-                }
-            }
-            echo $this->response->getBody()->__toString();
-        }
-        return $this;
     }
 
     /**
@@ -709,74 +584,6 @@ class Bootstrap
     }
 
     /**
-     * Check adminOnly configuration variable and redirects
-     * to an URL in file typo3conf/LOCK_BACKEND or exit the script
-     *
-     * @throws \RuntimeException
-     * @param bool $forceProceeding if this option is set, the bootstrap will proceed even if the user is logged in (usually only needed for special AJAX cases, see AjaxRequestHandler)
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function checkLockedBackendAndRedirectOrDie($forceProceeding = false)
-    {
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
-            throw new \RuntimeException('TYPO3 Backend locked: Backend and Install Tool are locked for maintenance. [BE][adminOnly] is set to "' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] . '".', 1294586847);
-        }
-        if (@is_file(PATH_typo3conf . 'LOCK_BACKEND') && $forceProceeding === false) {
-            $fileContent = file_get_contents(PATH_typo3conf . 'LOCK_BACKEND');
-            if ($fileContent) {
-                header('Location: ' . $fileContent);
-            } else {
-                throw new \RuntimeException('TYPO3 Backend locked: Browser backend is locked for maintenance. Remove lock by removing the file "typo3conf/LOCK_BACKEND" or use CLI-scripts.', 1294586848);
-            }
-            die;
-        }
-        return $this;
-    }
-
-    /**
-     * Compare client IP with IPmaskList and exit the script run
-     * if the client is not allowed to access the backend
-     *
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     * @throws \RuntimeException
-     */
-    public function checkBackendIpOrDie()
-    {
-        if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
-            if (!GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
-                throw new \RuntimeException('TYPO3 Backend access denied: The IP address of your client does not match the list of allowed IP addresses.', 1389265900);
-            }
-        }
-        return $this;
-    }
-
-    /**
-     * Check lockSSL configuration variable and redirect
-     * to https version of the backend if needed
-     *
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     * @throws \RuntimeException
-     */
-    public function checkSslBackendAndRedirectIfNeeded()
-    {
-        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-            if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']) {
-                $sslPortSuffix = ':' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
-            } else {
-                $sslPortSuffix = '';
-            }
-            list(, $url) = explode('://', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
-            list($server, $address) = explode('/', $url, 2);
-            header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
-            die;
-        }
-        return $this;
-    }
-
-    /**
      * Load $TCA
      *
      * This will mainly set up $TCA through extMgm API.
@@ -928,74 +735,6 @@ class Bootstrap
         /** @var $GLOBALS['LANG'] \TYPO3\CMS\Core\Localization\LanguageService */
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
         $GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
-        return $this;
-    }
-
-    /**
-     * Throw away all output that may have happened during bootstrapping by weird extensions
-     *
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function endOutputBufferingAndCleanPreviousOutput()
-    {
-        ob_clean();
-        return $this;
-    }
-
-    /**
-     * Initialize output compression if configured
-     *
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function initializeOutputCompression()
-    {
-        if (extension_loaded('zlib') && $GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']) {
-            if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'])) {
-                @ini_set('zlib.output_compression_level', (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']);
-            }
-            ob_start('ob_gzhandler');
-        }
-        return $this;
-    }
-
-    /**
-     * Send HTTP headers if configured
-     *
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function sendHttpHeaders()
-    {
-        array_map('header', $GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers'] ?? []);
-        return $this;
-    }
-
-    /**
-     * Things that should be performed to shut down the framework.
-     * This method is called in all important scripts for a clean
-     * shut down of the system.
-     *
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function shutdown()
-    {
-        $this->sendResponse();
-        return $this;
-    }
-
-    /**
-     * Provides an instance of "template" for backend-modules to
-     * work with.
-     *
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function initializeBackendTemplate()
-    {
-        $GLOBALS['TBE_TEMPLATE'] = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
         return $this;
     }
 }

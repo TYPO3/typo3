@@ -52,4 +52,19 @@ return [
             'Breaking-55298-DecoupledHistoryFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Core\Bootstrap->installToolPath' => [
+        'restFiles' => [
+            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Bootstrap->availableRequestHandlers' => [
+        'restFiles' => [
+            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Bootstrap->response' => [
+        'restFiles' => [
+            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+        ],
+    ],
 ];

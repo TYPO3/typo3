@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Backend\Http;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\AbstractApplication;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 
 /**
  * Entry point for the TYPO3 Backend (HTTP requests)
@@ -60,7 +63,8 @@ class Application extends AbstractApplication
 
         // Redirect to install tool if base configuration is not found
         if (!$this->bootstrap->checkIfEssentialConfigurationExists()) {
-            $this->bootstrap->redirectToInstallTool($this->entryPointLevel);
+            $this->sendResponse($this->installToolRedirect());
+            exit;
         }
 
         $this->bootstrap->configure();
@@ -72,5 +76,16 @@ class Application extends AbstractApplication
     protected function defineLegacyConstants()
     {
         define('TYPO3_MODE', 'BE');
+    }
+
+    /**
+     * Create a PSR-7 Response that redirects to the install tool
+     *
+     * @return ResponseInterface
+     */
+    protected function installToolRedirect(): ResponseInterface
+    {
+        $path = '../' . TYPO3_mainDir . 'install.php';
+        return new RedirectResponse($path, 302);
     }
 }

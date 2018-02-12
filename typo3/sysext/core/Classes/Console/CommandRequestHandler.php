@@ -64,9 +64,9 @@ class CommandRequestHandler implements RequestHandlerInterface
             ->loadExtTables()
             // create the BE_USER object (not logged in yet)
             ->initializeBackendUser(CommandLineUserAuthentication::class)
-            ->initializeLanguageObject()
-            // Make sure output is not buffered, so command-line output and interaction can take place
-            ->endOutputBufferingAndCleanPreviousOutput();
+            ->initializeLanguageObject();
+        // Make sure output is not buffered, so command-line output and interaction can take place
+        ob_clean();
 
         $this->populateAvailableCommands();
 
