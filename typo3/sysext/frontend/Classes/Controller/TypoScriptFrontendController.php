@@ -847,10 +847,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         } catch (ConnectionException $exception) {
             // Cannot connect to current database
             $message = 'Cannot connect to the configured database "' . $connection->getDatabase() . '"';
-            if ($this->checkPageUnavailableHandler()) {
-                $this->pageUnavailableAndExit($message);
-            } else {
-                $this->logger->emergency($message, ['exception' => $exception]);
+            $this->logger->emergency($message, ['exception' => $exception]);
+            try {
+                $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($message);
+                $this->sendResponseAndExit($response);
+            } catch (ServiceUnavailableException $e) {
                 throw new ServiceUnavailableException($message, 1301648782);
             }
         }
@@ -1310,10 +1311,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $this->id = $theFirstPage['uid'];
                 } else {
                     $message = 'No pages are found on the rootlevel!';
-                    if ($this->checkPageUnavailableHandler()) {
-                        $this->pageUnavailableAndExit($message);
-                    } else {
-                        $this->logger->alert($message);
+                    $this->logger->alert($message);
+                    try {
+                        $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($message);
+                        $this->sendResponseAndExit($response);
+                    } catch (ServiceUnavailableException $e) {
                         throw new ServiceUnavailableException($message, 1301648975);
                     }
                 }
@@ -1325,6 +1327,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->requestedId = $this->id;
         $this->getPageAndRootlineWithDomain($this->domainStartPage);
         $timeTracker->pull();
+        // @todo: in the future, the check if "pageNotFound_handling" is configured should go away, but this breaks
+        // Functional tests in workspaces currently
         if ($this->pageNotFound && $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling']) {
             $pNotFoundMsg = [
                 1 => 'ID was not an accessible page',
@@ -1332,11 +1336,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 3 => 'ID was outside the domain',
                 4 => 'The requested page alias does not exist'
             ];
-            $header = '';
+            $message = $pNotFoundMsg[$this->pageNotFound];
             if ($this->pageNotFound === 1 || $this->pageNotFound === 2) {
-                $header = $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_accessdeniedheader'];
+                $response = GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction($message, $this->getPageAccessFailureReasons());
+            } else {
+                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($message, $this->getPageAccessFailureReasons());
             }
-            $this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound], $header);
+            $this->sendResponseAndExit($response);
         }
         // Init SYS_LASTCHANGED
         $this->register['SYS_LASTCHANGED'] = (int)$this->page['tstamp'];
@@ -1423,10 +1429,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // If still no page...
             if (empty($this->page)) {
                 $message = 'The requested page does not exist!';
-                if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling']) {
-                    $this->pageNotFoundAndExit($message);
-                } else {
-                    $this->logger->error($message);
+                $this->logger->error($message);
+                try {
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($message, $this->getPageAccessFailureReasons());
+                    $this->sendResponseAndExit($response);
+                } catch (PageNotFoundException $e) {
                     throw new PageNotFoundException($message, 1301648780);
                 }
             }
@@ -1434,10 +1441,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Spacer is not accessible in frontend
         if ($this->page['doktype'] == PageRepository::DOKTYPE_SPACER) {
             $message = 'The requested page does not exist!';
-            if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling']) {
-                $this->pageNotFoundAndExit($message);
-            } else {
-                $this->logger->error($message);
+            $this->logger->error($message);
+            try {
+                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($message, $this->getPageAccessFailureReasons());
+                $this->sendResponseAndExit($response);
+            } catch (PageNotFoundException $e) {
                 throw new PageNotFoundException($message, 1301648781);
             }
         }
@@ -1472,10 +1480,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // If not rootline we're off...
         if (empty($this->rootLine)) {
             $message = 'The requested page didn\'t have a proper connection to the tree-root!';
-            if ($this->checkPageUnavailableHandler()) {
-                $this->pageUnavailableAndExit($message);
-            } else {
-                $this->logger->error($message);
+            $this->logger->error($message);
+            try {
+                $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($message, $this->getPageAccessFailureReasons());
+                $this->sendResponseAndExit($response);
+            } catch (ServiceUnavailableException $e) {
                 throw new ServiceUnavailableException($message, 1301648167);
             }
         }
@@ -1483,9 +1492,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($this->checkRootlineForIncludeSection()) {
             if (empty($this->rootLine)) {
                 $message = 'The requested page was not accessible!';
-                if ($this->checkPageUnavailableHandler()) {
-                    $this->pageUnavailableAndExit($message);
-                } else {
+                try {
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($message, $this->getPageAccessFailureReasons());
+                    $this->sendResponseAndExit($response);
+                } catch (ServiceUnavailableException $e) {
                     $this->logger->warning($message);
                     throw new ServiceUnavailableException($message, 1301648234);
                 }
@@ -1871,9 +1881,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $reason Reason text
      * @param string $header HTTP header to send
+     * @deprecated
      */
     public function pageUnavailableAndExit($reason = '', $header = '')
     {
+        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         $header = $header ?: $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling_statheader'];
         $this->pageUnavailableHandler($GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'], $header, $reason);
         die;
@@ -1884,9 +1896,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $reason Reason text
      * @param string $header HTTP header to send
+     * @deprecated
      */
     public function pageNotFoundAndExit($reason = '', $header = '')
     {
+        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         $header = $header ?: $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'];
         $this->pageNotFoundHandler($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'], $header, $reason);
         die;
@@ -1897,9 +1911,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * and devIPMask must not match the current visitor's IP address.
      *
      * @return bool TRUE/FALSE whether the pageUnavailable_handler should be used.
+     * @deprecated
      */
     public function checkPageUnavailableHandler()
     {
+        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         if (
             $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling']
             && !GeneralUtility::cmpIP(
@@ -1920,9 +1936,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param mixed $code See ['FE']['pageUnavailable_handling'] for possible values
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
+     * @deprecated
      */
     public function pageUnavailableHandler($code, $header, $reason)
     {
+        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         $this->pageErrorHandler($code, $header, $reason);
     }
 
@@ -1932,9 +1950,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param mixed $code See docs of ['FE']['pageNotFound_handling'] for possible values
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
+     * @deprecated
      */
     public function pageNotFoundHandler($code, $header = '', $reason = '')
     {
+        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         $this->pageErrorHandler($code, $header, $reason);
     }
 
@@ -1946,9 +1966,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
      * @throws \RuntimeException
+     * @deprecated
      */
     public function pageErrorHandler($code, $header = '', $reason = '')
     {
+        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         // Issue header in any case:
         if ($header) {
             $headerArr = preg_split('/\\r|\\n/', $header, -1, PREG_SPLIT_NO_EMPTY);
@@ -2161,7 +2183,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $cHash_calc = $this->cacheHash->calculateCacheHash($this->cHash_array);
             if (!hash_equals($cHash_calc, $this->cHash)) {
                 if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
-                    $this->pageNotFoundAndExit('Request parameters could not be validated (&cHash comparison failed)');
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction('Request parameters could not be validated (&cHash comparison failed)');
+                    $this->sendResponseAndExit($response);
                 } else {
                     $this->disableCache();
                     $this->getTimeTracker()->setTSlogMessage('The incoming cHash "' . $this->cHash . '" and calculated cHash "' . $cHash_calc . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($this->cHash_array)) . '"', 2);
@@ -2188,7 +2211,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 if ($this->tempContent) {
                     $this->clearPageCacheContent();
                 }
-                $this->pageNotFoundAndExit('Request parameters could not be validated (&cHash empty)');
+                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction('Request parameters could not be validated (&cHash empty)');
+                $this->sendResponseAndExit($response);
             } else {
                 $this->disableCache();
                 $this->getTimeTracker()->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', 2);
@@ -2451,11 +2475,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->pSetup = $this->tmpl->setup[$this->sPre . '.'];
                 if (!is_array($this->pSetup)) {
                     $message = 'The page is not configured! [type=' . $this->type . '][' . $this->sPre . '].';
-                    if ($this->checkPageUnavailableHandler()) {
-                        $this->pageUnavailableAndExit($message);
-                    } else {
+                    $this->logger->alert($message);
+                    try {
+                        $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($message);
+                        $this->sendResponseAndExit($response);
+                    } catch (ServiceUnavailableException $e) {
                         $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
-                        $this->logger->alert($message);
                         throw new ServiceUnavailableException($message . ' ' . $explanation, 1294587217);
                     }
                 } else {
@@ -2498,11 +2523,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 }
                 $timeTracker->pull();
             } else {
-                if ($this->checkPageUnavailableHandler()) {
-                    $this->pageUnavailableAndExit('No TypoScript template found!');
-                } else {
-                    $message = 'No TypoScript template found!';
-                    $this->logger->alert($message);
+                $message = 'No TypoScript template found!';
+                $this->logger->alert($message);
+                try {
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($message);
+                    $this->sendResponseAndExit($response);
+                } catch (ServiceUnavailableException $e) {
                     throw new ServiceUnavailableException($message, 1294587218);
                 }
             }
@@ -2574,11 +2600,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 if ($this->sys_language_uid) {
                     // If requested translation is not available:
                     if (GeneralUtility::hideIfNotTranslated($this->page['l18n_cfg'])) {
-                        $this->pageNotFoundAndExit('Page is not available in the requested language.');
+                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction('Page is not available in the requested language.');
+                        $this->sendResponseAndExit($response);
                     } else {
                         switch ((string)$this->sys_language_mode) {
                             case 'strict':
-                                $this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
+                                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction('Page is not available in the requested language (strict).');
+                                $this->sendResponseAndExit($response);
                                 break;
                             case 'content_fallback':
                                 // Setting content uid (but leaving the sys_language_uid) when a content_fallback
@@ -2597,7 +2625,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                                         // The existing fallbacks have not been found, but instead of continuing
                                         // page rendering with default language, a "page not found" message should be shown
                                         // instead.
-                                        $this->pageNotFoundAndExit('Page is not available in the requested language (fallbacks did not apply).');
+                                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction('Page is not available in the requested language (fallbacks did not apply).');
+                                        $this->sendResponseAndExit($response);
                                     }
                                 }
                                 break;
@@ -2621,7 +2650,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ((!$this->sys_language_uid || !$this->sys_language_content) && GeneralUtility::hideIfDefaultLanguage($this->page['l18n_cfg'])) {
             $message = 'Page is not available in default language.';
             $this->logger->error($message);
-            $this->pageNotFoundAndExit($message);
+            $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($message);
+            $this->sendResponseAndExit($response);
         }
         $this->updateRootLinesWithTranslations();
 
@@ -4673,6 +4703,30 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $httpResponseCode ?: null
             );
         }
+    }
+
+    /**
+     * Helper method to kill the request. Exits.
+     * Should not be used from the outside, rather return the response object
+     * Ideally, this method will be dropped by TYPO3 v9 LTS.
+     *
+     * @param ResponseInterface $response
+     */
+    protected function sendResponseAndExit(ResponseInterface $response)
+    {
+        // If the response code was not changed by legacy code (still is 200)
+        // then allow the PSR-7 response object to explicitly set it.
+        // Otherwise let legacy code take precedence.
+        // This code path can be deprecated once we expose the response object to third party code
+        if (http_response_code() === 200) {
+            header('HTTP/' . $response->getProtocolVersion() . ' ' . $response->getStatusCode() . ' ' . $response->getReasonPhrase());
+        }
+
+        foreach ($response->getHeaders() as $name => $values) {
+            header($name . ': ' . implode(', ', $values));
+        }
+        echo $response->getBody()->__toString();
+        die;
     }
 
     /**

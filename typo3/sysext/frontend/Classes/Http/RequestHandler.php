@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageGenerator;
 use TYPO3\CMS\Frontend\Utility\CompressionUtility;
@@ -107,7 +108,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
                 $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']
             )
         ) {
-            $this->controller->pageUnavailableAndExit('This page is temporarily unavailable.');
+            return GeneralUtility::makeInstance(ErrorController::class)->unavailableAction('This page is temporarily unavailable.');
         }
 
         $this->controller->connectToDB();
