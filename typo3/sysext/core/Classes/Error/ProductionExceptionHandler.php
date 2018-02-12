@@ -13,14 +13,15 @@ namespace TYPO3\CMS\Core\Error;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A quite exception handler which catches but ignores any exception.
- *
- * This file is a backport from FLOW3
+ * An exception handler which catches any exception and
+ * renders an error page without backtrace (Web) or a slim
+ * message on CLI.
  */
 class ProductionExceptionHandler extends AbstractExceptionHandler
 {
@@ -98,11 +99,11 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
         if ($exception instanceof Http\AbstractClientErrorException) {
             return true;
         }
-        // Only show errors in FE, if a BE user is authenticated
-        if (TYPO3_MODE === 'FE') {
-            return $GLOBALS['TSFE']->beUserLogin;
+        // Only show errors if a BE user is authenticated
+        if ($GLOBALS['BE_USER'] instanceof BackendUserAuthentication) {
+            return $GLOBALS['BE_USER']->user['uid'] > 0;
         }
-        return true;
+        return false;
     }
 
     /**
