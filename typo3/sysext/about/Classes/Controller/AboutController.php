@@ -14,10 +14,10 @@ namespace TYPO3\CMS\About\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\About\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -31,19 +31,6 @@ class AboutController extends ActionController
      * @var ViewInterface
      */
     protected $defaultViewObjectName = BackendTemplateView::class;
-
-    /**
-     * @var ExtensionRepository
-     */
-    protected $extensionRepository;
-
-    /**
-     * @param ExtensionRepository $extensionRepository
-     */
-    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
-    {
-        $this->extensionRepository = $extensionRepository;
-    }
 
     /**
      * Set up the doc header properly here
@@ -76,7 +63,7 @@ class AboutController extends ActionController
             'copyrightYear' => TYPO3_copyright_year,
             'donationUrl' => TYPO3_URL_DONATE,
             'currentVersion' => TYPO3_version,
-            'loadedExtensions' => $this->extensionRepository->findAllLoaded(),
+            'loadedExtensions' => $this->getLoadedExtensions(),
             'copyRightNotice' => BackendUtility::TYPO3_copyRightNotice(),
             'warnings' => $warnings,
             'modules' => $this->getModulesData()
@@ -131,5 +118,28 @@ class AboutController extends ActionController
             $subModulesData[] = $subModuleData;
         }
         return $subModulesData;
+    }
+
+    /**
+     * Fetches a list of all active (loaded) extensions in the current system
+     *
+     * @return array
+     */
+    protected function getLoadedExtensions(): array
+    {
+        $extensions = [];
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        foreach ($packageManager->getActivePackages() as $package) {
+            // Skip system extensions (= type: typo3-cms-framework)
+            if ($package->getValueFromComposerManifest('type') !== 'typo3-cms-extension') {
+                continue;
+            }
+            $extensions[] = [
+                'key' => $package->getPackageKey(),
+                'title' => $package->getPackageMetaData()->getDescription(),
+                'authors' => $package->getValueFromComposerManifest('authors')
+            ];
+        }
+        return $extensions;
     }
 }
