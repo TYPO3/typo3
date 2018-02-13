@@ -8254,7 +8254,7 @@ class DataHandler implements LoggerAwareInterface
      */
     public function clearPrefixFromValue($table, $value)
     {
-        $regex = '/' . sprintf(quotemeta($this->prependLabel($table)), '[0-9]*') . '$/';
+        $regex = '/\s' . sprintf(preg_quote($this->prependLabel($table)), '[0-9]*') . '$/';
         return @preg_replace($regex, '', $value);
     }
 
