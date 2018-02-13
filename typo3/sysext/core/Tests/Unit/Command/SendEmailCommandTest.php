@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Command;
 
 /*
@@ -16,11 +17,13 @@ namespace TYPO3\CMS\Core\Tests\Functional\Command;
 
 use Symfony\Component\Console\Tester\CommandTester;
 use TYPO3\CMS\Core\Command\SendEmailCommand;
+use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the TYPO3\CMS\Core\Command\SendEmailCommand class.
  */
-class SendEmailCommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SendEmailCommandTest extends UnitTestCase
 {
     /**
      * @test
@@ -38,7 +41,7 @@ class SendEmailCommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         ;
         $spoolTransport = new \Swift_Transport_SpoolTransport(new \Swift_Events_SimpleEventDispatcher(), $spool);
 
-        $mailer = $this->getMockBuilder(\TYPO3\CMS\Core\Mail\Mailer::class)
+        $mailer = $this->getMockBuilder(Mailer::class)
             ->disableOriginalConstructor()
             ->setMethods(['getTransport', 'getRealTransport'])
             ->getMock();
@@ -53,6 +56,7 @@ class SendEmailCommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             ->method('getRealTransport')
             ->will($this->returnValue($realTransport));
 
+        /** @var SendEmailCommand|\PHPUnit_Framework_MockObject_MockObject $command */
         $command = $this->getMockBuilder(SendEmailCommand::class)
             ->setConstructorArgs(['swiftmailer:spool:send'])
             ->setMethods(['getMailer'])
@@ -66,6 +70,6 @@ class SendEmailCommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         $tester = new CommandTester($command);
         $tester->execute([], []);
 
-        $this->assertStringEndsWith("5 emails sent\n", $tester->getDisplay());
+        $this->assertTrue(strpos($tester->getDisplay(), '5 emails sent') > 0);
     }
 }

@@ -103,11 +103,10 @@ class Mailer extends \Swift_Mailer
      * Returns the real transport (not a spool).
      *
      * @return \Swift_Transport
-     * @api
      */
     public function getRealTransport(): Swift_Transport
     {
-        $mailSettings = (false === empty($this->mailSettings)) ? $this->mailSettings: (array)$GLOBALS['TYPO3_CONF_VARS']['MAIL'];
+        $mailSettings = !empty($this->mailSettings) ? $this->mailSettings : (array)$GLOBALS['TYPO3_CONF_VARS']['MAIL'];
         unset($mailSettings['transport_spool_type']);
         return $this->getTransportFactory()->get($mailSettings);
     }

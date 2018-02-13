@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
 /*
@@ -14,22 +15,24 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeValidSpoolFixture;
+use TYPO3\CMS\Core\Mail\MemorySpool;
+use TYPO3\CMS\Core\Mail\TransportFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the TYPO3\CMS\Core\Mail\TransportFactory class.
  */
-class TransportFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TransportFactoryTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Mail\TransportFactory
+     * @var TransportFactory
      */
     protected $subject;
 
     protected function setUp()
     {
-        $this->subject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\TransportFactory::class);
+        $this->subject = GeneralUtility::makeInstance(TransportFactory::class);
     }
 
     /**
@@ -48,15 +51,17 @@ class TransportFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             'defaultMailFromAddress' => '',
             'defaultMailFromName' => '',
             'transport_spool_type' => 'file',
-            'transport_spool_filepath' => 'typo3temp/var/messages/',
+            'transport_spool_filepath' => '.',
         ];
 
         // Register fixture class
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\Swift_FileSpool::class]['className'] = \TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeFileSpoolFixture::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\Swift_FileSpool::class]['className'] = Fixtures\FakeFileSpoolFixture::class;
 
+        /** @var \Swift_SpoolTransport $transport */
         $transport = $this->subject->get($mailSettings);
         $this->assertInstanceOf(\Swift_SpoolTransport::class, $transport);
 
+        /** @var Fixtures\FakeFileSpoolFixture $spool */
         $spool = $transport->getSpool();
         $this->assertInstanceOf(\Swift_FileSpool::class, $spool);
 
@@ -84,11 +89,13 @@ class TransportFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         ];
 
         // Register fixture class
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Mail\MemorySpool::class]['className'] = \TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeMemorySpoolFixture::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][MemorySpool::class]['className'] = Fixtures\FakeMemorySpoolFixture::class;
 
+        /** @var \Swift_SpoolTransport $transport */
         $transport = $this->subject->get($mailSettings);
         $this->assertInstanceOf(\Swift_SpoolTransport::class, $transport);
 
+        /** @var \Swift_MemorySpool $spool */
         $spool = $transport->getSpool();
         $this->assertInstanceOf(\Swift_MemorySpool::class, $spool);
     }
@@ -112,11 +119,13 @@ class TransportFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             'transport_spool_filepath' => 'typo3temp/var/messages/',
         ];
 
+        /** @var \Swift_SpoolTransport $transport */
         $transport = $this->subject->get($mailSettings);
         $this->assertInstanceOf(\Swift_SpoolTransport::class, $transport);
 
+        /** @var Fixtures\FakeValidSpoolFixture $spool */
         $spool = $transport->getSpool();
-        $this->assertInstanceOf(FakeValidSpoolFixture::class, $spool);
+        $this->assertInstanceOf(Fixtures\FakeValidSpoolFixture::class, $spool);
 
         $this->assertSame($mailSettings, $spool->getSettings());
     }

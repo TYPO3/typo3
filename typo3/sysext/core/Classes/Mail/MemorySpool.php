@@ -1,21 +1,23 @@
 <?php
-
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Mail;
 
-/*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
- *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 3 as published by  *
- * the Free Software Foundation.                                          *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
-use TYPO3\CMS\Core\Log\LogManager;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -23,37 +25,32 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Because TYPO3 doesn't offer a terminate signal or hook,
  * and taking in account the risk that extensions do some redirects or even exits,
- * we simpley use the destructor of a singleton class which should be pretty much
+ * we simply use the destructor of a singleton class which should be pretty much
  * at the end of a request.
  *
  * To have only one memory spool per request seems to be more appropriate anyway.
  *
- * @api experimental! This class is experimental and subject to change!
+ * @internal This class is experimental and subject to change!
  */
-class MemorySpool extends \Swift_MemorySpool implements \TYPO3\CMS\Core\SingletonInterface
+class MemorySpool extends \Swift_MemorySpool implements SingletonInterface, LoggerAwareInterface
 {
-    public function __destruct()
-    {
-        $this->sendMessages();
-    }
+    use LoggerAwareTrait;
 
+    /**
+     * Sends out the messages in the memory
+     */
     public function sendMessages()
     {
         $mailer = GeneralUtility::makeInstance(Mailer::class);
         try {
             $this->flushQueue($mailer->getRealTransport());
         } catch (\Swift_TransportException $exception) {
-            $this->getLogger()->error(sprintf('Exception occurred while flushing email queue: %s', $exception->getMessage()));
+            $this->logger->error('An Exception occurred while flushing email queue: ' . $exception->getMessage());
         }
     }
 
-    /**
-     * Get class logger
-     *
-     * @return TYPO3\CMS\Core\Log\Logger
-     */
-    protected function getLogger()
+    public function __destruct()
     {
-        return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        $this->sendMessages();
     }
 }

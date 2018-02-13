@@ -485,6 +485,12 @@ MAIL:
         transport_mbox_file:
             type: text
             description: '<em>only with transport=mbox</em>: The file where to write the mails into. This file will be conforming the mbox format described in RFC 4155. It is a simple text file with a concatenation of all mails. Path must be absolute.'
+        transport_spool_type:
+            type: text
+            description: '<dl><dt>file</dt><dd>Messages get stored to the file system till they get sent through the command swiftmailer:spool:send.</dd><dt>memory</dt><dd>Messages get send at the end of the running process.</dd><dt>&lt;classname&gt;</dt><dd>Custom class which implements the Swift_Spool interface.</dd></dl>'
+        transport_spool_filepath:
+            type: text
+            description: '<em>only with transport_spool_type=file</em>: Path where messages get temporarily stored. Ensure that this is stored outside of your webroot.'
         defaultMailFromAddress:
             type: text
             description: 'This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (eg. info@example.org).'
@@ -497,12 +503,6 @@ MAIL:
         defaultMailReplyToName:
             type: text
             description: 'This default name is used when no other "reply-to" name is set for a TYPO3-generated email.'
-        transport_spool_type:
-            type: text
-            description: '<dl><dt>file</dt><dd>Messages get stored to the file system till they get sent through the command swiftmailer:spool:send.</dd><dt>memory</dt><dd>Messages get send at the end of the running process.</dd><dt>&lt;classname&gt;</dt><dd>Custom class which implements the Swift_Spool interface.</dd></dl>'
-        transport_spool_filepath:
-            type: text
-            description: '<em>only with transport_spool_type=file</em>: Path where messages get temporarily stored.'
 HTTP:
     type: container
     items:

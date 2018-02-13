@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
 /*
@@ -13,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeTransportFixture;
 
 /**
@@ -136,7 +138,6 @@ class MailerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getRealTransportReturnsNoSpoolTransport($settings)
     {
         $this->subject->injectMailSettings($settings);
-        // $this->subject->__construct();
         $transport = $this->subject->getRealTransport();
 
         $this->assertInstanceOf(\Swift_Transport::class, $transport);

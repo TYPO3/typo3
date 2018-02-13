@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Command;
 
 /*
@@ -31,6 +32,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SendEmailCommand extends Command
 {
+    /**
+     * Defines the allowed options for this command
+     */
     protected function configure()
     {
         $this
@@ -40,6 +44,13 @@ class SendEmailCommand extends Command
             ->addOption('recover-timeout', null, InputArgument::REQUIRED, 'The timeout for recovering messages that have taken too long to send (in seconds).');
     }
 
+    /**
+     * Executes the mailer command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|void|null
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
@@ -50,27 +61,28 @@ class SendEmailCommand extends Command
         if ($transport instanceof \Swift_Transport_SpoolTransport) {
             $spool = $transport->getSpool();
             if ($spool instanceof \Swift_ConfigurableSpool) {
-                $spool->setMessageLimit((int) $input->getOption('message-limit'));
-                $spool->setTimeLimit((int) $input->getOption('time-limit'));
+                $spool->setMessageLimit((int)$input->getOption('message-limit'));
+                $spool->setTimeLimit((int)$input->getOption('time-limit'));
             }
             if ($spool instanceof \Swift_FileSpool) {
-                if (null !== $recoverTimeout) {
-                    $spool->recover((int) $input->getOption('recover-timeout'));
+                $recoverTimeout = (int)$input->getOption('recover-timeout');
+                if ($recoverTimeout) {
+                    $spool->recover($recoverTimeout);
                 } else {
                     $spool->recover();
                 }
             }
             $sent = $spool->flushQueue($mailer->getRealTransport());
-            $io->text(sprintf('<comment>%d</comment> emails sent', $sent));
+            $io->comment($sent . ' emails sent');
         } else {
-            $io->warning('Transport is not a Swift_Transport_SpoolTransport.');
+            $io->error('The Mailer Transport is not set to "spool".');
         }
     }
 
     /**
      * Returns the TYPO3 mailer.
      *
-     * @return \TYPO3\CMS\Core\Mail\Mailer
+     * @return Mailer
      */
     protected function getMailer(): Mailer
     {
