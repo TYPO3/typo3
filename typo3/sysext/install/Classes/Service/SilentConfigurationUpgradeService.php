@@ -125,6 +125,9 @@ class SilentConfigurationUpgradeService
         'BE/fileExtensions',
         // #83768
         'SYS/doNotCheckReferer',
+        // #83878
+        'SYS/isInitialInstallationInProgress',
+        'SYS/isInitialDatabaseImportDone',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)
