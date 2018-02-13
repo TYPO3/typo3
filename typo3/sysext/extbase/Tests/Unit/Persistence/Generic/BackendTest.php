@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 class BackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @test
      */
     public function insertRelationInRelationtableSetsMmMatchFieldsInRow()

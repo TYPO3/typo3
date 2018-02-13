@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "404f780d81028713a93bcb93bdfc3d69",
+    "content-hash": "2bd96e5071eb99b24b31261e2e03e4aa",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4414,31 +4414,31 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "2.0.4",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "602e59f8d80f83c006566ade6037875ecba30353"
+                "reference": "0793e458c801f746c8da55453d8c98744d477ede"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/602e59f8d80f83c006566ade6037875ecba30353",
-                "reference": "602e59f8d80f83c006566ade6037875ecba30353",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/0793e458c801f746c8da55453d8c98744d477ede",
+                "reference": "0793e458c801f746c8da55453d8c98744d477ede",
                 "shasum": ""
             },
             "require": {
                 "mikey179/vfsstream": "~1.6.0",
                 "phpunit/phpunit": "^6.2",
-                "typo3/cms-backend": "^8.5 || ^9",
-                "typo3/cms-core": "^8.5 || ^9",
-                "typo3/cms-extbase": "^8.5 || ^9",
-                "typo3/cms-fluid": "^8.5 || ^9",
-                "typo3/cms-frontend": "^8.5 || ^9",
+                "typo3/cms-backend": "^9",
+                "typo3/cms-core": "^9",
+                "typo3/cms-extbase": "^9",
+                "typo3/cms-fluid": "^9",
+                "typo3/cms-frontend": "^9",
                 "typo3fluid/fluid": "^2.2"
             },
             "suggest": {
                 "codeception/codeception": "^2.2",
-                "typo3/cms-saltedpasswords": "^8.5",
+                "typo3/cms-saltedpasswords": "^9",
                 "typo3/cms-styleguide": "~8.0.8"
             },
             "type": "library",
@@ -4472,7 +4472,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2018-02-13T16:14:26+00:00"
+            "time": "2018-02-13T22:48:10+00:00"
         },
         {
             "name": "webmozart/assert",

@@ -23,6 +23,11 @@ use org\bovigo\vfs\vfsStreamWrapper;
 class FileWriterTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var string
      */
     protected $logFileDirectory = 'Log';

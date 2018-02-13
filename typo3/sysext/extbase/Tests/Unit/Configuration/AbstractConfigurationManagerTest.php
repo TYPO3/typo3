@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 class AbstractConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $abstractConfigurationManager;

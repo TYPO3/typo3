@@ -14,6 +14,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class AbstractFormElementTest extends UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @test
      */
     public function newInstanceHasNoProperties()

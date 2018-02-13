@@ -29,6 +29,11 @@ use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
 class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var array
      */
     protected $singletonInstances = [];

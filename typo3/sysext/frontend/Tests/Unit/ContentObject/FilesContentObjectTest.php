@@ -33,6 +33,11 @@ use TYPO3\CMS\Frontend\Resource\FileCollector;
 class FilesContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Frontend\ContentObject\FilesContentObject|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject = null;

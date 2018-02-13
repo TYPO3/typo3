@@ -28,6 +28,11 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 class IconViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var IconViewHelper
      */
     protected $viewHelper;

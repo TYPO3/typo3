@@ -24,6 +24,11 @@ use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $requestBuilder;

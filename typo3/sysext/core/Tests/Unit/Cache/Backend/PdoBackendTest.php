@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 class PdoBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * Sets up this testcase
      */
     protected function setUp()

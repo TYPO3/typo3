@@ -25,6 +25,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class CharsetConverterTest extends UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * Data provider for specialCharactersToAsciiConvertsUmlautsToAscii()
      *
      * @return string[][]

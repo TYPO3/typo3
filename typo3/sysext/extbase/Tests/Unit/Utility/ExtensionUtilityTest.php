@@ -19,6 +19,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  */
 class ExtensionUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
+    /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
     protected function setUp()
     {
         $GLOBALS['TSFE'] = new \stdClass();

@@ -34,6 +34,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DatabaseSystemLanguageRowsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var DatabaseSystemLanguageRows
      */
     protected $subject;

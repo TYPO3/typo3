@@ -22,6 +22,11 @@ use TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList;
 class AbstractDatabaseRecordListTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @test
      * @dataProvider setTableDisplayOrderConvertsStringsDataProvider
      * @param array $input

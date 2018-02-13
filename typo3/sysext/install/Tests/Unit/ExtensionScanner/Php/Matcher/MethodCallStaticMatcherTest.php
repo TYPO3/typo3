@@ -28,6 +28,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class MethodCallStaticMatcherTest extends UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @test
      */
     public function hitsFromFixtureAreFound()

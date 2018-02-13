@@ -24,6 +24,11 @@ use TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor;
 class GalleryProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $contentObjectRenderer;

@@ -29,6 +29,11 @@ use TYPO3\CMS\Install\Updates\RowUpdater\L10nModeUpdater;
 class L10nModeUpdaterTest extends BaseTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @test
      */
     public function hasPotentialUpdateForTableThrowsExceptionIfGlobalsTcaIsNoArray()

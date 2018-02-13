@@ -22,6 +22,11 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 class TypoScriptParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $typoScriptParser = null;

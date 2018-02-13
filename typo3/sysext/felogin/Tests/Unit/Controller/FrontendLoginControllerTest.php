@@ -31,6 +31,11 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class FrontendLoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Felogin\Controller\FrontendLoginController|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $accessibleFixture;

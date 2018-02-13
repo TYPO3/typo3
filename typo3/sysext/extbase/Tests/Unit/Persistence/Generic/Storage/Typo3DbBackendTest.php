@@ -27,6 +27,11 @@ use TYPO3\CMS\Extbase\Service\EnvironmentService;
  */
 class Typo3DbBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
+    /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
     public function setUp()
     {
         parent::setUp();

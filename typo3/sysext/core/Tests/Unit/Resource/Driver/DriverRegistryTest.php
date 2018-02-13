@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 class DriverRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry
      */
     protected $subject;

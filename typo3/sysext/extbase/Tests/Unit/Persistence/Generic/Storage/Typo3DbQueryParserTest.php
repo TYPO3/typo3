@@ -35,7 +35,12 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var arary
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
+     * @var array
      */
     protected $singletonInstances;
 

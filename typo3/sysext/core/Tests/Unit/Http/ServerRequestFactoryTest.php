@@ -24,6 +24,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ServerRequestFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * Set up
      */
     protected function setUp()

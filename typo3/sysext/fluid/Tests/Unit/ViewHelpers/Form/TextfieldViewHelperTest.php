@@ -24,6 +24,11 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 class TextfieldViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var TextfieldViewHelper
      */
     protected $viewHelper;

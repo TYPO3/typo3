@@ -21,6 +21,11 @@ use TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException;
 class FrontendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $mockContentObject;

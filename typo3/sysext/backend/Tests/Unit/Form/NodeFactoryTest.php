@@ -25,6 +25,11 @@ use TYPO3\CMS\Backend\Form\NodeResolverInterface;
 class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @test
      */
     public function constructThrowsExceptionIfOverrideMissesNodeNameKey()

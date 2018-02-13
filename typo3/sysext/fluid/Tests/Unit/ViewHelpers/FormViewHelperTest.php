@@ -24,6 +24,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 class FormViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Extbase\Service\ExtensionService
      */
     protected $mockExtensionService;

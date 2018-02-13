@@ -26,6 +26,11 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 class InputDateTimeElementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var string Selected timezone backup
      */
     protected $timezoneBackup = '';

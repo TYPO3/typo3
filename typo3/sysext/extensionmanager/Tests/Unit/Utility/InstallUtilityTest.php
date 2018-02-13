@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 class InstallUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var string
      */
     protected $extensionKey;

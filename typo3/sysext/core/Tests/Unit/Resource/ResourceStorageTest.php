@@ -35,6 +35,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ResourceStorageTest extends BaseTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var array A backup of registered singleton instances
      */
     protected $singletonInstances = [];

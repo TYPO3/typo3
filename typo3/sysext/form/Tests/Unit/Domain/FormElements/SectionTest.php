@@ -10,6 +10,11 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\Section;
  */
 class SectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
+    /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
     protected static $IDENTIFIER = 'an_id';
     protected static $TYPE = 'a_type';
 

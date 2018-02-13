@@ -22,6 +22,11 @@ use TYPO3\CMS\Core\Migrations\TcaMigration;
 class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @test
      */
     public function missingTypeThrowsException()

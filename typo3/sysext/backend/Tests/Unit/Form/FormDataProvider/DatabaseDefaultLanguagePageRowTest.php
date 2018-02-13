@@ -23,6 +23,11 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseDefaultLanguagePageRow;
 class DatabaseDefaultLanguagePageRowTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var DatabaseDefaultLanguagePageRow|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;

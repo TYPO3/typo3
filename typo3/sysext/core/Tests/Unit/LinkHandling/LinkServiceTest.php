@@ -20,6 +20,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class LinkServiceTest extends UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
      *
      * @return array

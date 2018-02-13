@@ -21,6 +21,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 class TextareaViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\TextareaViewHelper
      */
     protected $viewHelper;

@@ -26,6 +26,11 @@ use TYPO3\TestingFramework\Core\FileStreamWrapper;
 class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver
      */
     protected $localDriver = null;

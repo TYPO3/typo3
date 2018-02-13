@@ -39,6 +39,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FrontendUserAuthenticationTest extends UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var array A backup of registered singleton instances
      */
     protected $singletonInstances = [];

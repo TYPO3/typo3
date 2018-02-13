@@ -24,6 +24,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class QueryGeneratorTest extends UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @return array
      */
     public function getSubscriptReturnsExpectedValuesDataProvider(): array

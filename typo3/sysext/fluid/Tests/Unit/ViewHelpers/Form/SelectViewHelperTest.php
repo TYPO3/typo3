@@ -23,6 +23,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 class SelectViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
      */
     protected $viewHelper;

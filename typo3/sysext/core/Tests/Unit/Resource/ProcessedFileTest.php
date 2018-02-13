@@ -25,6 +25,11 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 class ProcessedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Folder
      */
     protected $folderMock;

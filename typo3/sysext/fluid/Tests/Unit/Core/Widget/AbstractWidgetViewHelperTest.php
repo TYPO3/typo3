@@ -25,6 +25,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 class AbstractWidgetViewHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
      */
     protected $viewHelper;

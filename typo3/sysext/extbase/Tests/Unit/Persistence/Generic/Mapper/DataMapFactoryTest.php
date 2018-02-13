@@ -26,6 +26,11 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @return array
      */
     public function oneToOneRelation()

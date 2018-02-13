@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting
      */
     protected $subject;

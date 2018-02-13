@@ -22,6 +22,11 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * Instance of configurationManager, injected to subject
      *
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager

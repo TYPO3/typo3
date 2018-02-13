@@ -22,6 +22,11 @@ use TYPO3\CMS\Core\Log\LogRecord;
 class LogRecordTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * Returns a \TYPO3\CMS\Core\Log\LogRecord
      *
      * @param array $parameters Parameters to set in \TYPO3\CMS\Core\Log\LogRecord constructor.

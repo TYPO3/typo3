@@ -27,6 +27,11 @@ use TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fix
 class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var string Name of a key in $GLOBALS for this test
      */
     protected $testGlobalNamespace;

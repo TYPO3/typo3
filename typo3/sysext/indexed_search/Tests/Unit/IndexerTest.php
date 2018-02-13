@@ -20,6 +20,11 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
 class IndexerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * Indexer instance
      *
      * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\IndexedSearch\Indexer

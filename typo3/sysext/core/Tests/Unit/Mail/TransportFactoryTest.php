@@ -26,7 +26,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class TransportFactoryTest extends UnitTestCase
 {
     /**
-     * @var TransportFactory
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
+     * * @var TransportFactory
      */
     protected $subject;
 

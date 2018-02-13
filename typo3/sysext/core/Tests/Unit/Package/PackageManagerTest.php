@@ -26,6 +26,11 @@ use TYPO3\CMS\Core\Package\PackageManager;
 class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager
      */
     protected $packageManager;

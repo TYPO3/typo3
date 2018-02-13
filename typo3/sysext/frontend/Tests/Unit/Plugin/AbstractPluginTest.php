@@ -25,6 +25,11 @@ use TYPO3\CMS\Frontend\Tests\Unit\Fixtures\ResultBrowserPluginHook;
 class AbstractPluginTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var AbstractPlugin
      */
     protected $abstractPlugin;

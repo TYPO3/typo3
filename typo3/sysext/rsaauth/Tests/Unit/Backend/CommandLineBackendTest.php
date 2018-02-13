@@ -22,6 +22,11 @@ use TYPO3\CMS\Rsaauth\Backend\CommandLineBackend;
 class CommandLineBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var CommandLineBackend
      */
     protected $subject = null;

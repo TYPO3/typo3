@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Report;
 class ExtensionStatusTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
     protected $mockObjectManager;

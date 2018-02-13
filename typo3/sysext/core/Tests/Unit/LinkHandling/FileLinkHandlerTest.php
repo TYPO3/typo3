@@ -22,6 +22,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 class FileLinkHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
+    /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
 
     /**
      * testing folders

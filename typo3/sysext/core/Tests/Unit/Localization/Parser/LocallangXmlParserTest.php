@@ -21,6 +21,11 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 class LocallangXmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser
      */
     protected $parser;

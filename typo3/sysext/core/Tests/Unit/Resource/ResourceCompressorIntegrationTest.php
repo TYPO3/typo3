@@ -23,6 +23,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ResourceCompressorIntegrationTest extends BaseTestCase
 {
+    /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
 
     /**
      * @var TestableResourceCompressor

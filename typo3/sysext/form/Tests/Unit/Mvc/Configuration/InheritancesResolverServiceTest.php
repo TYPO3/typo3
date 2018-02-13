@@ -23,6 +23,11 @@ use TYPO3\CMS\Form\Mvc\Configuration\InheritancesResolverService;
 class InheritancesResolverServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var InheritancesResolverService
      */
     protected $subject;

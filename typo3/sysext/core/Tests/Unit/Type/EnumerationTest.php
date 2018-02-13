@@ -24,6 +24,11 @@ use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @test
      */
     public function constructorThrowsExceptionIfNoConstantsAreDefined()

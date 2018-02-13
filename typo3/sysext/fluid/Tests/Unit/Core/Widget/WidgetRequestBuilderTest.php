@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
 class WidgetRequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder
      */
     protected $widgetRequestBuilder;

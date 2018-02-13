@@ -21,11 +21,9 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
      */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
+    protected static $suppressNotices = true;
 
     /**
      * @test

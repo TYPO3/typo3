@@ -33,6 +33,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SchemaColumnDefinitionListenerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var SchemaColumnDefinitionListener
      */
     protected $subject;

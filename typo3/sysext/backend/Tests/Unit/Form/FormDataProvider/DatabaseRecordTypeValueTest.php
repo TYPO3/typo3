@@ -22,6 +22,11 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue;
 class DatabaseRecordTypeValueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var DatabaseRecordTypeValue|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;

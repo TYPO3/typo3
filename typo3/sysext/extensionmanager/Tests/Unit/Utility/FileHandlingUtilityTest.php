@@ -21,6 +21,11 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * @var array List of created fake extensions to be deleted in tearDown() again
      */
     protected $fakedExtensions = [];

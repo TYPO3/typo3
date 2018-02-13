@@ -25,6 +25,11 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 class QueryHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
+     * Subject is not notice free, disable E_NOTICES
+     */
+    protected static $suppressNotices = true;
+
+    /**
      * Test cases for stripping of leading logical operators in where constraints.
      *
      * @return array
