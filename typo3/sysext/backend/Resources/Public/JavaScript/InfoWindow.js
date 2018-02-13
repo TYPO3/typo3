@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Backend/Modal","TYPO3/CMS/Backend/Severity"],function(a,b,c,d){"use strict";var e=function(){function a(){}return a.showItem=function(a,b){console.log(TYPO3.settings),c.advanced({type:c.types.iframe,size:c.sizes.large,content:TYPO3.settings.ShowItem.moduleUrl+"&table="+encodeURIComponent(a)+"&uid="+("number"==typeof b?b:encodeURIComponent(b)),severity:d.notice})},a}();return TYPO3.InfoWindow=e,e});
+define(["require","exports","TYPO3/CMS/Backend/Modal","TYPO3/CMS/Backend/Severity"],function(a,b,c,d){"use strict";var e=function(){function a(){}return a.showItem=function(a,b){c.advanced({type:c.types.iframe,size:c.sizes.large,content:TYPO3.settings.ShowItem.moduleUrl+"&table="+encodeURIComponent(a)+"&uid="+("number"==typeof b?b:encodeURIComponent(b)),severity:d.notice})},a}();return TYPO3.InfoWindow=e,e});
