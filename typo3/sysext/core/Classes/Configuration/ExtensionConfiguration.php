@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Configuration;
 
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -170,29 +169,16 @@ class ExtensionConfiguration
      * on the fly for whatever reason.
      *
      * Examples:
-     * // Enable a single feature
-     * ->set('myExtension', 'myFeature', true)
-     *
      * // Set a full extension configuration ($value could be a nested array, too)
-     * ->set('myExtension', '', ['aFeature' => 'true', 'aCustomClass' => 'css-foo'])
-     *
-     * // Set a full sub path
-     * ->set('myExtension', 'myFeatureCategory', ['aFeature' => 'true', 'aCustomClass' => 'css-foo'])
+     * ->set('myExtension', ['aFeature' => 'true', 'aCustomClass' => 'css-foo'])
      *
      * // Unset a whole extension configuration
      * ->set('myExtension')
-     *
-     * // Unset a single value or sub path
-     * ->set('myExtension', 'myFeature')
      *
      * Notes:
      * - Do NOT call this at arbitrary places during runtime (eg. NOT in ext_localconf.php or
      *   similar). ->set() is not supposed to be called each request since it writes LocalConfiguration
      *   each time. This API is however OK to be called from extension manager hooks.
-     * - $path is NOT validated. It is up to an ext author to also define them in
-     *   ext_conf_template.txt to have an interface in install tool reflecting these settings.
-     * - If $path is currently an array, $value overrides the whole thing. Merging existing values
-     *   is up to the extension author
      * - Values are not type safe, if the install tool wrote them,
      *   boolean true could become string 1 on ->get()
      * - It is not possible to store 'null' as value, giving $value=null
@@ -211,31 +197,34 @@ class ExtensionConfiguration
         if (empty($extension)) {
             throw new \RuntimeException('extension name must not be empty', 1509715852);
         }
+        if (!empty($path)) {
+            // @todo: this functionality can be removed once EXT:bootstrap_package is adapted to the new API.
+            $extensionConfiguration = $this->get($extension);
+            $value = ArrayUtility::setValueByPath($extensionConfiguration, $path, $value);
+        }
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
-        if ($path === '' && $value === null) {
+        if ($value === null) {
             // Remove whole extension config
             $configurationManager->removeLocalConfigurationKeysByPath(['EXTENSIONS/' . $extension]);
-        } elseif ($path !== '' && $value === null) {
-            // Remove a single value or sub path
-            $configurationManager->removeLocalConfigurationKeysByPath(['EXTENSIONS/' . $extension . '/' . $path]);
-        } elseif ($path === '' && $value !== null) {
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension])) {
+                unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension]);
+            }
+        } else {
             // Set full extension config
             $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/' . $extension, $value);
-        } else {
-            // Set single path
-            $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/' . $extension . '/' . $path, $value);
+            $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension] = $value;
         }
 
         // After TYPO3_CONF_VARS['EXTENSIONS'] has been written, update legacy layer TYPO3_CONF_VARS['EXTENSIONS']['extConf']
         // @deprecated since TYPO3 v9, will be removed in v10 with removal of old serialized 'extConf' layer
-        $extensionsConfigs = $configurationManager->getConfigurationValueByPath('EXTENSIONS');
-        foreach ($extensionsConfigs as $extensionName => $extensionConfig) {
-            $extensionConfig = $this->addDotsToArrayKeysRecursiveForLegacyExtConf($extensionConfig);
-            $configurationManager->setLocalConfigurationValueByPath('EXT/extConf/' . $extensionName, serialize($extensionConfig));
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'])) {
+            $extConfArray = [];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'] as $extensionName => $extensionConfig) {
+                $extConfArray[$extensionName] = serialize($this->addDotsToArrayKeysRecursiveForLegacyExtConf($extensionConfig));
+            }
+            $configurationManager->setLocalConfigurationValueByPath('EXT/extConf', $extConfArray);
+            $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'] = $extConfArray;
         }
-
-        // Reload TYPO3_CONF_VARS from LocalConfiguration & AdditionalConfiguration
-        Bootstrap::getInstance()->populateLocalConfiguration();
     }
 
     /**
@@ -250,6 +239,7 @@ class ExtensionConfiguration
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS', $configuration);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'] = $configuration;
 
         // After TYPO3_CONF_VARS['EXTENSIONS'] has been written, update legacy layer TYPO3_CONF_VARS['EXTENSIONS']['extConf']
         // @deprecated since TYPO3 v9, will be removed in v10 with removal of old serialized 'extConf' layer
@@ -258,9 +248,7 @@ class ExtensionConfiguration
             $extConfArray[$extensionName] = serialize($this->addDotsToArrayKeysRecursiveForLegacyExtConf($extensionConfig));
         }
         $configurationManager->setLocalConfigurationValueByPath('EXT/extConf', $extConfArray);
-
-        // Reload TYPO3_CONF_VARS from LocalConfiguration & AdditionalConfiguration
-        Bootstrap::getInstance()->populateLocalConfiguration();
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'] = $extConfArray;
     }
 
     /**

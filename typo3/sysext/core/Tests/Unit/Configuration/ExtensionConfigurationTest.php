@@ -86,21 +86,8 @@ class ExtensionConfigurationTest extends UnitTestCase
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
-        $configurationManagerProphecy->getConfigurationValueByPath(Argument::cetera())->willReturn([]);
         $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXTENSIONS/foo'])->shouldBeCalled();
         (new ExtensionConfiguration())->set('foo');
-    }
-
-    /**
-     * @test
-     */
-    public function setRemovesPath()
-    {
-        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
-        GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
-        $configurationManagerProphecy->getConfigurationValueByPath(Argument::cetera())->willReturn([]);
-        $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXTENSIONS/foo/bar'])->shouldBeCalled();
-        (new ExtensionConfiguration())->set('foo', 'bar');
     }
 
     /**
@@ -110,21 +97,9 @@ class ExtensionConfigurationTest extends UnitTestCase
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
-        $configurationManagerProphecy->getConfigurationValueByPath(Argument::cetera())->willReturn([]);
+        $configurationManagerProphecy->setLocalConfigurationValueByPath(Argument::cetera())->shouldBeCalled();
         $configurationManagerProphecy->setLocalConfigurationValueByPath('EXTENSIONS/foo', ['bar' => 'baz'])->shouldBeCalled();
         (new ExtensionConfiguration())->set('foo', '', ['bar' => 'baz']);
-    }
-
-    /**
-     * @test
-     */
-    public function setWritesPath()
-    {
-        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
-        GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
-        $configurationManagerProphecy->getConfigurationValueByPath(Argument::cetera())->willReturn([]);
-        $configurationManagerProphecy->setLocalConfigurationValueByPath('EXTENSIONS/foo/aPath', ['bar' => 'baz'])->shouldBeCalled();
-        (new ExtensionConfiguration())->set('foo', 'aPath', ['bar' => 'baz']);
     }
 
     /**
@@ -135,8 +110,7 @@ class ExtensionConfigurationTest extends UnitTestCase
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
         $configurationManagerProphecy->setLocalConfigurationValueByPath(Argument::cetera())->shouldBeCalled();
-        $configurationManagerProphecy->getConfigurationValueByPath('EXTENSIONS')->willReturn(['foo' => ['bar' => 'baz']]);
-        $configurationManagerProphecy->setLocalConfigurationValueByPath('EXT/extConf/foo', serialize(['bar' => 'baz']))->shouldBeCalled();
+        $configurationManagerProphecy->setLocalConfigurationValueByPath('EXT/extConf', ['foo' => serialize(['bar' => 'baz'])])->shouldBeCalled();
         (new ExtensionConfiguration())->set('foo', '', ['bar' => 'baz']);
     }
 
@@ -147,7 +121,6 @@ class ExtensionConfigurationTest extends UnitTestCase
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
-        $configurationManagerProphecy->setLocalConfigurationValueByPath(Argument::cetera())->shouldBeCalled();
         $nestedInput = [
             'FE' => [
                 'forceSalted' => true,
@@ -158,8 +131,8 @@ class ExtensionConfigurationTest extends UnitTestCase
                 'forceSalted' => true,
             ]
         ];
-        $configurationManagerProphecy->getConfigurationValueByPath('EXTENSIONS')->willReturn(['saltedPasswords' => $nestedInput]);
-        $configurationManagerProphecy->setLocalConfigurationValueByPath('EXT/extConf/saltedPasswords', serialize($expectedLegacyExtConf))->shouldBeCalled();
+        $configurationManagerProphecy->setLocalConfigurationValueByPath(Argument::cetera())->shouldBeCalled();
+        $configurationManagerProphecy->setLocalConfigurationValueByPath('EXT/extConf', ['saltedPasswords' => serialize($expectedLegacyExtConf)])->shouldBeCalled();
         (new ExtensionConfiguration())->set('saltedPasswords', '', $nestedInput);
     }
 
@@ -170,7 +143,6 @@ class ExtensionConfigurationTest extends UnitTestCase
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
-        $configurationManagerProphecy->setLocalConfigurationValueByPath(Argument::cetera())->shouldBeCalled();
         $nestedInput = [
             'aCategory' => [
                 'aSubCategory' => [
@@ -185,8 +157,8 @@ class ExtensionConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
-        $configurationManagerProphecy->getConfigurationValueByPath('EXTENSIONS')->willReturn(['someExtension' => $nestedInput]);
-        $configurationManagerProphecy->setLocalConfigurationValueByPath('EXT/extConf/someExtension', serialize($expectedLegacyExtConf))->shouldBeCalled();
+        $configurationManagerProphecy->setLocalConfigurationValueByPath(Argument::cetera())->shouldBeCalled();
+        $configurationManagerProphecy->setLocalConfigurationValueByPath('EXT/extConf', ['someExtension' => serialize($expectedLegacyExtConf)])->shouldBeCalled();
         (new ExtensionConfiguration())->set('someExtension', '', $nestedInput);
     }
 }
