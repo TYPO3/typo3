@@ -184,6 +184,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * and later perform some external cache management, like clearing only a part
      * of the cache of a page...
      * @var int
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public $page_cache_reg1 = 0;
 
@@ -3137,6 +3138,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->cacheExpires = $expirationTstamp;
         $this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
         if ($this->page_cache_reg1) {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove this "if" along with property page_cache_reg1
+            trigger_error('Property page_cache_reg1 has been deprecated and will be removed in core version 10', E_USER_DEPRECATED);
             $reg1 = (int)$this->page_cache_reg1;
             $cacheData['reg1'] = $reg1;
             $this->pageCacheTags[] = 'reg1_' . $reg1;

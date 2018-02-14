@@ -326,4 +326,9 @@ return [
             'Deprecation-83606-ImpexpSizeHandlingRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->page_cache_reg1' => [
+        'restFiles' => [
+            'Deprecation-83905-TypoScriptFrontendController-page_cache_reg1.rst',
+        ],
+    ],
 ];

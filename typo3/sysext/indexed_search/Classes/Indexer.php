@@ -289,8 +289,11 @@ class Indexer
                             // Array of the additional parameters
                             $this->conf['crdate'] = $pObj->page['crdate'];
                             // The creation date of the TYPO3 page
-                            $this->conf['page_cache_reg1'] = $pObj->page_cache_reg1;
+
                             // reg1 of the caching table. Not known what practical use this has.
+                            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
+                            $this->conf['page_cache_reg1'] = $pObj->page_cache_reg1;
+
                             // Root line uids
                             $this->conf['rootline_uids'] = [];
                             foreach ($pObj->config['rootLine'] as $rlkey => $rldat) {
@@ -379,7 +382,10 @@ class Indexer
         // Set to defaults
         $this->conf['freeIndexUid'] = 0;
         $this->conf['freeIndexSetId'] = 0;
+
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
         $this->conf['page_cache_reg1'] = 0;
+
         // Root line uids
         $this->conf['rootline_uids'] = $uidRL;
         // Configuration of behavior:
@@ -1437,6 +1443,7 @@ class Indexer
             'cHashParams' => serialize($this->cHashParams),
             'contentHash' => $this->content_md5h,
             'data_page_id' => $this->conf['id'],
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
             'data_page_reg1' => $this->conf['page_cache_reg1'],
             'data_page_type' => $this->conf['type'],
             'data_page_mp' => $this->conf['MP'],
