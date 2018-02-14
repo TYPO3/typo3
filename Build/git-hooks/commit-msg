@@ -1,0 +1,249 @@
+#!/usr/bin/env bash
+# From TYPO3 CI Review 1.1
+# original version Gerrit Code Review 2.14.6
+#
+# Part of Gerrit Code Review (http://code.google.com/p/gerrit/)
+#
+# Copyright (c) 2012-2015 TYPO3 CMS (Markus Klein)
+# Copyright (c) 2009 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+#
+# Changes for TYPO3:
+# - check for line length
+# - check for commit type (e.g. BUG)
+# - check for Resolves
+# - check for Releases
+# - put Change-Id after Resolves / Releases footer
+
+
+unset GREP_OPTIONS
+
+MSG="$1"
+
+# Check for, and add if missing, a unique Change-Id
+#
+add_ChangeId() {
+	clean_message=`sed -e '
+		/^diff --git .*/{
+			s///
+			q
+		}
+		/^Signed-off-by:/d
+		/^#/d
+	' "$MSG" | git stripspace`
+	if test -z "$clean_message"
+	then
+		return
+	fi
+
+	# Do not add Change-Id to temp commits
+	if echo "$clean_message" | head -1 | grep -q '^\(fixup\|squash\)!'
+	then
+		return
+	fi
+
+	if test "false" = "`git config --bool --get gerrit.createChangeId`"
+	then
+		return
+	fi
+
+	# Does Change-Id: already exist? if so, exit (no change).
+	if grep -i '^Change-Id:' "$MSG" >/dev/null
+	then
+		return
+	fi
+
+	id=`_gen_ChangeId`
+	T="$MSG.tmp.$$"
+	AWK=awk
+	if [ -x /usr/xpg4/bin/awk ]; then
+		# Solaris AWK is just too broken
+		AWK=/usr/xpg4/bin/awk
+	fi
+
+	# Get core.commentChar from git config or use default symbol
+	commentChar=`git config --get core.commentChar`
+	commentChar=${commentChar:-#}
+
+	# How this works:
+	# - parse the commit message as (textLine+ blankLine*)*
+	# - assume textLine+ to be a footer until proven otherwise
+	# - exception: the first block is not footer (as it is the title)
+	# - read textLine+ into a variable
+	# - then count blankLines
+	# - once the next textLine appears, print textLine+ blankLine* as these
+	#   aren't footer
+	# - in END, the last textLine+ block is available for footer parsing
+	$AWK '
+	BEGIN {
+		# while we start with the assumption that textLine+
+		# is a footer, the first block is not.
+		isFooter = 0
+		footerComment = 0
+		blankLines = 0
+	}
+
+	# Skip lines starting with commentChar without any spaces before it.
+	/^'"$commentChar"'/ { next }
+
+	# Skip the line starting with the diff command and everything after it,
+	# up to the end of the file, assuming it is only patch data.
+	# If more than one line before the diff was empty, strip all but one.
+	/^diff --git / {
+		blankLines = 0
+		while (getline) { }
+		next
+	}
+
+	# Count blank lines outside footer comments
+	/^$/ && (footerComment == 0) {
+		blankLines++
+		next
+	}
+
+	# Catch footer comment
+	/^\[[a-zA-Z0-9-]+:/ && (isFooter == 1) {
+		footerComment = 1
+	}
+
+	/]$/ && (footerComment == 1) {
+		footerComment = 2
+	}
+
+	# We have a non-blank line after blank lines. Handle this.
+	(blankLines > 0) {
+		print lines
+		for (i = 0; i < blankLines; i++) {
+			print ""
+		}
+
+		lines = ""
+		blankLines = 0
+		isFooter = 1
+		footerComment = 0
+	}
+
+	# Detect that the current block is not the footer
+	(footerComment == 0) && (!/^\[?[a-zA-Z0-9-]+:/ || /^[a-zA-Z0-9-]+:\/\//) {
+		isFooter = 0
+	}
+
+	{
+		# We need this information about the current last comment line
+		if (footerComment == 2) {
+			footerComment = 0
+		}
+		if (lines != "") {
+			lines = lines "\n";
+		}
+		lines = lines $0
+	}
+
+	# Footer handling:
+	# Our footer handling is different from original footer handling in Gerrit.
+	# We dont consider CHANGE_ID_AFTER.
+	#
+	# Just print the footer block, a new line and the Change-Id
+	END {
+		unprinted = 1
+		if (isFooter == 0) {
+			print lines "\n"
+			lines = ""
+		}
+		numlines = split(lines, footer, "\n")
+		for (line = 1; line <= numlines; line++) {
+			print footer[line]
+		}
+		if (unprinted) {
+			print "Change-Id: I'"$id"'"
+		}
+	}' "$MSG" > "$T" && mv "$T" "$MSG" || rm -f "$T"
+}
+_gen_ChangeIdInput() {
+	echo "tree `git write-tree`"
+	if parent=`git rev-parse "HEAD^0" 2>/dev/null`
+	then
+		echo "parent $parent"
+	fi
+	echo "author `git var GIT_AUTHOR_IDENT`"
+	echo "committer `git var GIT_COMMITTER_IDENT`"
+	echo
+	printf '%s' "$clean_message"
+}
+_gen_ChangeId() {
+	_gen_ChangeIdInput |
+	git hash-object -t commit --stdin
+}
+
+COMMIT_MSG_ERROR_FOUND=0
+MSG="$1"
+ERROR_TEXT="\n"
+
+# Check for maximum line length
+#
+checkForLineLength() {
+	if egrep -q '^[^#].{74}' "$MSG"; then
+		COMMIT_MSG_ERROR_FOUND=1
+		ERROR_TEXT="${ERROR_TEXT} - The maximum line length of 74 characters is exceeded.\n"
+	fi
+}
+
+# Check for existence of the commit type text
+#
+checkForCommitType() {
+	if ! egrep -q '\[[^]]+\] .+$' "$MSG"; then
+		COMMIT_MSG_ERROR_FOUND=1
+		ERROR_TEXT="${ERROR_TEXT} - Your first line has to contain a commit type like '[BUGFIX]'.\n"
+	fi
+}
+
+# Check for existence of a "Resolves: " line.
+#
+checkForResolves() {
+	if ! egrep -q '^(Resolves|Fixes): \#[0-9]+$' "$MSG"; then
+		COMMIT_MSG_ERROR_FOUND=1
+		ERROR_TEXT="${ERROR_TEXT} - You need at least one 'Resolves|Fixes: #<issue number>' line.\n"
+	fi
+}
+
+# Check for existence of a "Releases: " line.
+#
+checkForReleases() {
+	if ! egrep -q '^Releases: (master|[0-9]\.[0-9])(, *(master|[0-9]\.[0-9]))*$' "$MSG"; then
+		COMMIT_MSG_ERROR_FOUND=1
+		ERROR_TEXT="${ERROR_TEXT} - You need a 'Releases:' line. For instance: Releases: master, 8.7\n"
+	fi
+}
+
+checkForLineLength
+checkForCommitType
+checkForResolves
+checkForReleases
+
+# Abort commit on message format errors
+if [ $COMMIT_MSG_ERROR_FOUND -eq 1 ]; then
+	echo -e " "
+	echo -e "------------------------------------------------------------------"
+	echo -e " >> ERROR in your commit message:                                 "
+	echo -e "  $ERROR_TEXT"
+	echo -e " "
+	echo -e "  Please refer to [1] for details on the commit requirements.     "
+	echo -e "  You should fix this and then do commit --amend etc.             "
+	echo -e "  [1] https://docs.typo3.org/typo3cms/ContributionWorkflowGuide/latest/singlehtml/Index.html#commit-message-rules-for-typo3-cms"
+	echo -e "------------------------------------------------------------------\n"
+fi
+
+add_ChangeId
