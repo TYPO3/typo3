@@ -4365,16 +4365,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "9.0.1",
+            "version": "9.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "60562f5a59111e4146d3dfd13b50873f4bedb944"
+                "reference": "c967a78d74d7a62f177887f588a3dbf9ad1c391f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/60562f5a59111e4146d3dfd13b50873f4bedb944",
-                "reference": "60562f5a59111e4146d3dfd13b50873f4bedb944",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/c967a78d74d7a62f177887f588a3dbf9ad1c391f",
+                "reference": "c967a78d74d7a62f177887f588a3dbf9ad1c391f",
                 "shasum": ""
             },
             "replace": {
@@ -4388,7 +4388,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4410,7 +4410,7 @@
                 "typo3",
                 "typo3 backend"
             ],
-            "time": "2017-12-16T12:07:29+00:00"
+            "time": "2018-02-14T12:57:12+00:00"
         },
         {
             "name": "typo3/testing-framework",
