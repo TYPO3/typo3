@@ -143,6 +143,18 @@ return [
                 $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']
             ),
         ],
+        'inline_3' => [
+            'label' => 'inline_3 media fal with allowLanguageSynchronization',
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'inline_3',
+                [
+                    'behaviour' => [
+                        'allowLanguageSynchronization' => true,
+                    ],
+                ],
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']
+            ),
+        ],
 
 
         'inline_flex_1' => [
@@ -269,7 +281,7 @@ return [
                 --div--;typical fal,
                     inline_1,
                 --div--;media,
-                    inline_2,
+                    inline_2, inline_3,
                 --div--;in flex,
                     inline_flex_1,
             ',
