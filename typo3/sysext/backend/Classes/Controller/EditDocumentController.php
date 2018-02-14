@@ -1328,7 +1328,27 @@ class EditDocumentController
             ));
         $buttonBar->addButton($closeButton);
         // DUPLICATE button:
+        $record = BackendUtility::getRecord($this->firstEl['table'], $this->firstEl['uid']);
+        $l18nParent = $record['l18n_parent'] ?? 0;
+        $sysLanguageUid = $record['sys_language_uid'] ?? 0;
+        $showDuplicateButton = false;
         if ($this->firstEl['cmd'] !== 'new' && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])) {
+            // Special case: pages
+            if ($this->firstEl['table'] === 'pages') {
+                // show button only, if record is in default language
+                $showDuplicateButton = (int)$sysLanguageUid === 0;
+            } else {
+                // not pages table
+                if ((int)$sysLanguageUid === 0) {
+                    // show button, if record is in default language
+                    $showDuplicateButton = true;
+                } else {
+                    // show button, if record is NOT in default language AND has no parent
+                    $showDuplicateButton = (int)$l18nParent === 0;
+                }
+            }
+        }
+        if ($showDuplicateButton) {
             $duplicateButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
                 ->setClasses('t3js-editform-duplicate')
