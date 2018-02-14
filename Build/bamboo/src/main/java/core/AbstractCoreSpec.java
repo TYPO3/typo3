@@ -45,7 +45,7 @@ abstract public class AbstractCoreSpec {
     protected static String projectName = "TYPO3 Core";
     protected static String projectKey = "CORE";
 
-    protected String composerRootVersionEnvironment = "COMPOSER_ROOT_VERSION=9.0.0";
+    protected String composerRootVersionEnvironment = "COMPOSER_ROOT_VERSION=9.1.0";
 
     protected String testingFrameworkBuildPath = "vendor/typo3/testing-framework/Resources/Core/Build/";
 
@@ -593,7 +593,7 @@ abstract public class AbstractCoreSpec {
      */
     protected Job getJobLintScssTs() {
         return new Job("Lint scss ts", new BambooKey("LSTS"))
-            .description("Run npm lint in Build/ dir")
+            .description("Run npm lint, run npm run build-js")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
@@ -610,7 +610,19 @@ abstract public class AbstractCoreSpec {
                     .description("Run npm lint")
                     .nodeExecutable("Node.js")
                     .workingSubdirectory("Build/")
-                    .command("run lint")
+                    .command("run lint"),
+                new NpmTask()
+                    .description("Run npm build-js")
+                    .nodeExecutable("Node.js")
+                    .workingSubdirectory("Build/")
+                    .command("run build-js"),
+                new ScriptTask()
+                    .description("git status to check for changed files after build-js")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "git status | grep -q \"nothing to commit, working directory clean\""
+                    )
             )
             .requirements(
                 new Requirement("system.imageVersion")
