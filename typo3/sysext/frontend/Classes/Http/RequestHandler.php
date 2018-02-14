@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageGenerator;
 use TYPO3\CMS\Frontend\Utility\CompressionUtility;
@@ -101,16 +100,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         // Fetch the initialized time tracker object
         $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
         $this->initializeController();
-
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_force']
-            && !GeneralUtility::cmpIP(
-                GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-                $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']
-            )
-        ) {
-            return GeneralUtility::makeInstance(ErrorController::class)->unavailableAction('This page is temporarily unavailable.');
-        }
-
         $this->controller->connectToDB();
 
         // Output compression

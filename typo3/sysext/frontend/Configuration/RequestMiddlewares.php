@@ -38,10 +38,17 @@ return [
                 'typo3/cms-frontend/preprocessing'
             ]
         ],
+        'typo3/cms-frontend/maintenance-mode' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\MaintenanceMode::class,
+            'after' => [
+                'typo3/cms-core/normalized-params-attribute',
+                'typo3/cms-frontend/eid'
+            ]
+        ],
         'typo3/cms-frontend/content-length-headers' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\ContentLengthResponseHeader::class,
             'after' => [
-                'typo3/cms-frontend/eid'
+                'typo3/cms-frontend/maintenance-mode'
             ]
         ],
     ]
