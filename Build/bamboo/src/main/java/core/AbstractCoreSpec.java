@@ -560,7 +560,7 @@ abstract public class AbstractCoreSpec {
      */
     protected Job getJobLintScssTs() {
         return new Job("Lint scss ts", new BambooKey("LSTS"))
-            .description("Run npm lint in Build/ dir")
+            .description("Run npm lint, run npm run build-js")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
@@ -577,7 +577,19 @@ abstract public class AbstractCoreSpec {
                     .description("Run npm lint")
                     .nodeExecutable("Node.js")
                     .workingSubdirectory("Build/")
-                    .command("run lint")
+                    .command("run lint"),
+                new NpmTask()
+                    .description("Run npm build-js")
+                    .nodeExecutable("Node.js")
+                    .workingSubdirectory("Build/")
+                    .command("run build-js"),
+                new ScriptTask()
+                    .description("git status to check for changed files after build-js")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "git status | grep -q \"nothing to commit, working directory clean\""
+                    )
             )
             .requirements(
                 new Requirement("system.imageVersion")
