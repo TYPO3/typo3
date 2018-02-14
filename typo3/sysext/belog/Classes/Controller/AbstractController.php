@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Belog\Controller;
  */
 
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
@@ -165,6 +166,7 @@ abstract class AbstractController extends ActionController
         $this->forceWorkspaceSelectionIfInWorkspace($constraint);
         $logEntries = $this->logEntryRepository->findByConstraint($constraint);
         $groupedLogEntries = $this->groupLogEntriesByPageAndDay($logEntries, $constraint->getGroupByPage());
+        $this->view->assign('workspacesExtensionLoaded', ExtensionManagementUtility::isLoaded('workspaces'));
         $this->view->assign('groupedLogEntries', $groupedLogEntries)->assign('constraint', $constraint)->assign('userGroups', $this->createUserAndGroupListForSelectOptions())->assign('workspaces', $this->createWorkspaceListForSelectOptions())->assign('pageDepths', $this->createPageDepthOptions());
     }
 
