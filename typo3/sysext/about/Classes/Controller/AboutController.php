@@ -14,42 +14,45 @@ namespace TYPO3\CMS\About\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
- * Module 'about' shows some standard information for TYPO3 CMS: About-text, version number, available modules and so on.
+ * Module 'about' shows some standard information for TYPO3 CMS:
+ * About-text, version number, available modules and so on.
  */
-class AboutController extends ActionController
+class AboutController
 {
+    /**
+     * ModuleTemplate object
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
     /**
      * @var ViewInterface
      */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
-    /**
-     * Set up the doc header properly here
-     *
-     * @param ViewInterface $view
-     */
-    protected function initializeView(ViewInterface $view)
-    {
-        /** @var BackendTemplateView $view */
-        parent::initializeView($view);
-        // Disable Path
-        $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
-    }
+    protected $view;
 
     /**
      * Main action: Show standard information
+     *
+     * @param ServerRequestInterface $request the incoming PSR-7 request
+     * @return ResponseInterface the HTML output
      */
-    public function indexAction()
+    public function indexAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->initializeView('index');
         $warnings = [];
         // Hook for additional warnings
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] ?? [] as $className) {
@@ -68,6 +71,9 @@ class AboutController extends ActionController
             'warnings' => $warnings,
             'modules' => $this->getModulesData()
         ]);
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -76,7 +82,7 @@ class AboutController extends ActionController
      *
      * @return array
      */
-    protected function getModulesData()
+    protected function getModulesData(): array
     {
         $loadedModules = GeneralUtility::makeInstance(ModuleLoader::class);
         $loadedModules->observeWorkspaces = true;
@@ -103,7 +109,7 @@ class AboutController extends ActionController
      * @param string $moduleName Name of the main module
      * @return array
      */
-    protected function getSubModuleData(ModuleLoader $loadedModules, $moduleName)
+    protected function getSubModuleData(ModuleLoader $loadedModules, $moduleName): array
     {
         $subModulesData = [];
         foreach ($loadedModules->modules[$moduleName]['sub'] as $subModuleName => $subModuleInfo) {
@@ -141,5 +147,19 @@ class AboutController extends ActionController
             ];
         }
         return $extensions;
+    }
+
+    /**
+     * Initializes the view by setting the templateName
+     *
+     * @param string $templateName
+     */
+    protected function initializeView(string $templateName)
+    {
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->setTemplate($templateName);
+        $this->view->setTemplateRootPaths(['EXT:about/Resources/Private/Templates/About']);
+        $this->view->setPartialRootPaths(['EXT:about/Resources/Private/Partials']);
+        $this->view->setLayoutRootPaths(['EXT:about/Resources/Private/Layouts']);
     }
 }
