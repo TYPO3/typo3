@@ -87,15 +87,17 @@
 		/>
 	</div>
 
-	<div class="form-group">
-		<label for="belog-group"><f:translate key="groupByPage" /></label>
-		<f:form.checkbox
-			property="groupByPage"
-			value="1"
-			additionalAttributes="{onchange : 'submit()'}"
-			id="belog-group"
-		/>
-	</div>
+	<f:if condition="{constraint.depth} > 0">
+		<div class="form-group">
+			<label for="belog-group"><f:translate key="groupByPage" /></label>
+			<f:form.checkbox
+				property="groupByPage"
+				value="1"
+				additionalAttributes="{onchange : 'submit()'}"
+				id="belog-group"
+			/>
+		</div>
+	</f:if>
 
 	<f:comment>
 		Date time fields for manual date selection
