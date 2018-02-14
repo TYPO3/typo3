@@ -1591,4 +1591,18 @@ return [
             'Deprecation-83883-PageNotFoundAndErrorHandlingInFrontend.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->setDataFromArray' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-83904-ArrayHandlingInAbstractTreeView.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->setDataFromTreeArray' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-83904-ArrayHandlingInAbstractTreeView.rst',
+        ],
+    ],
 ];

@@ -329,6 +329,16 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->page_cache_reg1' => [
         'restFiles' => [
             'Deprecation-83905-TypoScriptFrontendController-page_cache_reg1.rst',
+        ]
+    ],
+    'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->dataLookup' => [
+        'restFiles' => [
+            'Deprecation-83904-ArrayHandlingInAbstractTreeView.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->subLevelID' => [
+        'restFiles' => [
+            'Deprecation-83904-ArrayHandlingInAbstractTreeView.rst',
         ],
     ],
 ];
