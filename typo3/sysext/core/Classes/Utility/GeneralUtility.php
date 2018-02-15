@@ -1808,7 +1808,7 @@ class GeneralUtility
                 $response = $requestFactory->request($url, 'GET', $configuration);
             } catch (RequestException $exception) {
                 if (isset($report)) {
-                    $report['error'] = $exception->getCode();
+                    $report['error'] = $exception->getCode() ?: 1518707554;
                     $report['message'] = $exception->getMessage();
                     $report['exception'] = $exception;
                 }
@@ -1823,7 +1823,7 @@ class GeneralUtility
                 $parsedURL = parse_url($url);
                 $method = $includeHeader === 2 ? 'HEAD' : 'GET';
                 $content = $method . ' ' . ($parsedURL['path'] ?? '/')
-                    . ($parsedURL['query'] ? '?' . $parsedURL['query'] : '') . ' HTTP/1.0' . CRLF
+                    . (!empty($parsedURL['query']) ? '?' . $parsedURL['query'] : '') . ' HTTP/1.0' . CRLF
                     . 'Host: ' . $parsedURL['host'] . CRLF
                     . 'Connection: close' . CRLF;
                 if (is_array($requestHeaders)) {

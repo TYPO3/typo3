@@ -15,19 +15,45 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use Psr\Http\Message\StreamInterface;
+use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for \TYPO3\CMS\Frontend\Controller\ErrorController
+ * Test case
  */
-class ErrorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ErrorControllerTest extends UnitTestCase
 {
+    /**
+     * @var array Backup of singleton instances
+     */
+    protected $backupSingletonInstances;
 
     /**
-     * Tests concerning pageNotFound handling
+     * setUp() stores non singleton instances to reset in tearDown()
      */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->backupSingletonInstances = GeneralUtility::getSingletonInstances();
+    }
+
+    /**
+     * Purge instances and reset singleton instances
+     */
+    public function tearDown()
+    {
+        GeneralUtility::purgeInstances();
+        GeneralUtility::resetSingletonInstances($this->backupSingletonInstances);
+        parent::tearDown();
+    }
 
     /**
      * @test
@@ -59,9 +85,9 @@ class ErrorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     'reasonPhrase' => 'Not Found',
                     'content' => 'Reason: Custom message',
                     'headers' => [
-                        'Content-Type' => ['text/html; charset=utf-8']
-                    ]
-                ]
+                        'Content-Type' => ['text/html; charset=utf-8'],
+                    ],
+                ],
             ],
             '404 with default errorpage setting the handler to legacy value' => [
                 'handler' => '1',
@@ -73,9 +99,9 @@ class ErrorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     'reasonPhrase' => 'This is a dead end',
                     'content' => 'Reason: Come back tomorrow',
                     'headers' => [
-                        'Content-Type' => ['text/html; charset=utf-8']
-                    ]
-                ]
+                        'Content-Type' => ['text/html; charset=utf-8'],
+                    ],
+                ],
             ],
             '404 with custom userfunction' => [
                 'handler' => 'USER_FUNCTION:' . ErrorControllerTest::class . '->mockedUserFunctionCall',
@@ -87,23 +113,23 @@ class ErrorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     'reasonPhrase' => 'Not Found',
                     'content' => 'It\'s magic, Michael: Custom message',
                     'headers' => [
-                        'Content-Type' => ['text/html; charset=utf-8']
-                    ]
-                ]
+                        'Content-Type' => ['text/html; charset=utf-8'],
+                    ],
+                ],
             ],
             '404 with a readfile functionality' => [
-                'handler' => 'READFILE:LICENSE.txt',
+                'handler' => 'READFILE:typo3/sysext/frontend/Tests/Unit/Controller/Fixtures/error.txt',
                 'header' => 'HTTP/1.0 404 Not Found',
                 'message' => 'Custom message',
                 'response' => [
                     'type' => HtmlResponse::class,
                     'statusCode' => 404,
                     'reasonPhrase' => 'Not Found',
-                    'content' => 'GNU GENERAL PUBLIC LICENSE',
+                    'content' => 'rama-lama-ding-dong',
                     'headers' => [
-                        'Content-Type' => ['text/html; charset=utf-8']
-                    ]
-                ]
+                        'Content-Type' => ['text/html; charset=utf-8'],
+                    ],
+                ],
             ],
             '404 with a readfile functionality with an invalid file' => [
                 'handler' => 'READFILE:does_not_exist.php6',
@@ -124,23 +150,8 @@ X-TYPO3-Additional-Header: Banana Stand',
                     'headers' => [
                         'location' => ['www.typo3.org'],
                         'X-TYPO3-Additional-Header' => ['Banana Stand'],
-                    ]
-                ]
-            ],
-            'Custom path, no prefix' => [
-                'handler' => '/404/',
-                'header' => 'HTTP/1.0 404 Not Found
-X-TYPO3-Additional-Header: Banana Stand',
-                'message' => 'Custom message',
-                'response' => [
-                    'type' => RedirectResponse::class,
-                    'statusCode' => 404,
-                    'reasonPhrase' => 'Not Found',
-                    'headers' => [
-                        'location' => ['https://localhost/404/'],
-                        'X-TYPO3-Additional-Header' => ['Banana Stand'],
-                    ]
-                ]
+                    ],
+                ],
             ],
         ];
     }
@@ -149,8 +160,13 @@ X-TYPO3-Additional-Header: Banana Stand',
      * @test
      * @dataProvider errorPageHandlingDataProvider
      */
-    public function pageNotFoundHandlingReturnsConfiguredResponseObject($handler, $header, $message, $expectedResponseDetails, $expectedExceptionCode = null)
-    {
+    public function pageNotFoundHandlingReturnsConfiguredResponseObject(
+        $handler,
+        $header,
+        $message,
+        $expectedResponseDetails,
+        $expectedExceptionCode = null
+    ) {
         if ($expectedExceptionCode !== null) {
             $this->expectExceptionCode($expectedExceptionCode);
         }
@@ -161,6 +177,9 @@ X-TYPO3-Additional-Header: Banana Stand',
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['SSL_SESSION_ID'] = true;
+
+        $this->prophesizeErrorPageController();
+
         $subject = new ErrorController();
         $response = $subject->pageNotFoundAction($message);
         if (is_array($expectedResponseDetails)) {
@@ -175,8 +194,41 @@ X-TYPO3-Additional-Header: Banana Stand',
     }
 
     /**
-     * Tests concerning accessDenied handling
+     * @test
      */
+    public function pageNotFoundHandlingReturnsResponseFromPrefix()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'] = '/404/';
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'] = 'HTTP/1.0 404 Not Found
+X-TYPO3-Additional-Header: Banana Stand';
+        // faking getIndpEnv() variables
+        $_SERVER['REQUEST_URI'] = '/unit-test/';
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['SSL_SESSION_ID'] = true;
+        $this->prophesizeErrorPageController();
+        $subject = new ErrorController();
+
+        $this->prophesizeGetUrl();
+        $response = $subject->pageNotFoundAction('Custom message');
+
+        $expectedResponseDetails = [
+            'type' => HtmlResponse::class,
+            'statusCode' => 404,
+            'reasonPhrase' => 'Not Found',
+            'headers' => [
+                'Content-Type' => ['text/html; charset=utf-8'],
+                'X-TYPO3-Additional-Header' => ['Banana Stand'],
+            ],
+        ];
+        $this->assertInstanceOf($expectedResponseDetails['type'], $response);
+        $this->assertEquals($expectedResponseDetails['statusCode'], $response->getStatusCode());
+        $this->assertEquals($expectedResponseDetails['reasonPhrase'], $response->getReasonPhrase());
+        if (isset($expectedResponseDetails['content'])) {
+            $this->assertContains($expectedResponseDetails['content'], $response->getBody()->getContents());
+        }
+        $this->assertEquals($expectedResponseDetails['headers'], $response->getHeaders());
+    }
 
     /**
      * Data Provider for 403
@@ -196,9 +248,9 @@ X-TYPO3-Additional-Header: Banana Stand',
                     'reasonPhrase' => 'Who are you',
                     'content' => 'Reason: Be nice, do good',
                     'headers' => [
-                        'Content-Type' => ['text/html; charset=utf-8']
-                    ]
-                ]
+                        'Content-Type' => ['text/html; charset=utf-8'],
+                    ],
+                ],
             ],
         ];
     }
@@ -230,10 +282,6 @@ X-TYPO3-Additional-Header: Banana Stand',
     }
 
     /**
-     * Tests concerning unavailable handling
-     */
-
-    /**
      * @test
      */
     public function unavailableHandlingThrowsExceptionIfNotConfigured()
@@ -262,6 +310,7 @@ X-TYPO3-Additional-Header: Banana Stand',
         $subject = new ErrorController();
         $subject->unavailableAction('All your system are belong to us!');
     }
+
     /**
      * Data Provider for 503
      *
@@ -277,12 +326,12 @@ X-TYPO3-Additional-Header: Banana Stand',
                 'response' => [
                     'type' => HtmlResponse::class,
                     'statusCode' => 503,
-                    'reasonPhrase' => 'Not Found',
+                    'reasonPhrase' => 'Service Temporarily Unavailable',
                     'content' => 'Reason: Custom message',
                     'headers' => [
-                        'Content-Type' => ['text/html; charset=utf-8']
-                    ]
-                ]
+                        'Content-Type' => ['text/html; charset=utf-8'],
+                    ],
+                ],
             ],
             '503 with default errorpage setting the handler to legacy value' => [
                 'handler' => '1',
@@ -294,9 +343,9 @@ X-TYPO3-Additional-Header: Banana Stand',
                     'reasonPhrase' => 'This is a dead end',
                     'content' => 'Reason: Come back tomorrow',
                     'headers' => [
-                        'Content-Type' => ['text/html; charset=utf-8']
-                    ]
-                ]
+                        'Content-Type' => ['text/html; charset=utf-8'],
+                    ],
+                ],
             ],
             '503 with custom userfunction' => [
                 'handler' => 'USER_FUNCTION:' . ErrorControllerTest::class . '->mockedUserFunctionCall',
@@ -305,26 +354,26 @@ X-TYPO3-Additional-Header: Banana Stand',
                 'response' => [
                     'type' => HtmlResponse::class,
                     'statusCode' => 503,
-                    'reasonPhrase' => 'Not Found',
+                    'reasonPhrase' => 'Service Temporarily Unavailable',
                     'content' => 'It\'s magic, Michael: Custom message',
                     'headers' => [
-                        'Content-Type' => ['text/html; charset=utf-8']
-                    ]
-                ]
+                        'Content-Type' => ['text/html; charset=utf-8'],
+                    ],
+                ],
             ],
             '503 with a readfile functionality' => [
-                'handler' => 'READFILE:LICENSE.txt',
+                'handler' => 'READFILE:typo3/sysext/frontend/Tests/Unit/Controller/Fixtures/error.txt',
                 'header' => 'HTTP/1.0 503 Service Temporarily Unavailable',
                 'message' => 'Custom message',
                 'response' => [
                     'type' => HtmlResponse::class,
                     'statusCode' => 503,
-                    'reasonPhrase' => 'Not Found',
-                    'content' => 'GNU GENERAL PUBLIC LICENSE',
+                    'reasonPhrase' => 'Service Temporarily Unavailable',
+                    'content' => 'Let it snow',
                     'headers' => [
-                        'Content-Type' => ['text/html; charset=utf-8']
-                    ]
-                ]
+                        'Content-Type' => ['text/html; charset=utf-8'],
+                    ],
+                ],
             ],
             '503 with a readfile functionality with an invalid file' => [
                 'handler' => 'READFILE:does_not_exist.php6',
@@ -341,37 +390,27 @@ X-TYPO3-Additional-Header: Banana Stand',
                 'response' => [
                     'type' => RedirectResponse::class,
                     'statusCode' => 503,
-                    'reasonPhrase' => 'Not Found',
+                    'reasonPhrase' => 'Service Temporarily Unavailable',
                     'headers' => [
                         'location' => ['www.typo3.org'],
                         'X-TYPO3-Additional-Header' => ['Banana Stand'],
-                    ]
-                ]
-            ],
-            'Custom path, no prefix' => [
-                'handler' => '/fail/',
-                'header' => 'HTTP/1.0 503 Service Temporarily Unavailable
-X-TYPO3-Additional-Header: Banana Stand',
-                'message' => 'Custom message',
-                'response' => [
-                    'type' => RedirectResponse::class,
-                    'statusCode' => 503,
-                    'reasonPhrase' => 'Not Found',
-                    'headers' => [
-                        'location' => ['https://localhost/fail/'],
-                        'X-TYPO3-Additional-Header' => ['Banana Stand'],
-                    ]
-                ]
+                    ],
+                ],
             ],
         ];
     }
 
     /**
      * @test
-     * @dataProvider errorPageHandlingDataProvider
+     * @dataProvider unavailableHandlingDataProvider
      */
-    public function pageUnavailableHandlingReturnsConfiguredResponseObject($handler, $header, $message, $expectedResponseDetails, $expectedExceptionCode = null)
-    {
+    public function pageUnavailableHandlingReturnsConfiguredResponseObject(
+        $handler,
+        $header,
+        $message,
+        $expectedResponseDetails,
+        $expectedExceptionCode = null
+    ) {
         if ($expectedExceptionCode !== null) {
             $this->expectExceptionCode($expectedExceptionCode);
         }
@@ -383,6 +422,8 @@ X-TYPO3-Additional-Header: Banana Stand',
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['SSL_SESSION_ID'] = true;
+        $this->prophesizeGetUrl();
+        $this->prophesizeErrorPageController();
         $subject = new ErrorController();
         $response = $subject->unavailableAction($message);
         if (is_array($expectedResponseDetails)) {
@@ -397,10 +438,72 @@ X-TYPO3-Additional-Header: Banana Stand',
     }
 
     /**
+     * @test
+     */
+    public function pageUnavailableHandlingReturnsResponseOfPrefix()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '-1';
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'] = '/fail/';
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling_statheader'] = 'HTTP/1.0 503 Service Temporarily Unavailable
+X-TYPO3-Additional-Header: Banana Stand';
+        // faking getIndpEnv() variables
+        $_SERVER['REQUEST_URI'] = '/unit-test/';
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['SSL_SESSION_ID'] = true;
+        $this->prophesizeErrorPageController();
+        $this->prophesizeGetUrl();
+        $subject = new ErrorController();
+        $response = $subject->unavailableAction('custom message');
+
+        $expectedResponseDetails = [
+            'type' => HtmlResponse::class,
+            'statusCode' => 503,
+            'reasonPhrase' => 'Service Temporarily Unavailable',
+            'headers' => [
+                'Content-Type' => ['text/html; charset=utf-8'],
+                'X-TYPO3-Additional-Header' => ['Banana Stand'],
+            ],
+        ];
+        $this->assertInstanceOf($expectedResponseDetails['type'], $response);
+        $this->assertEquals($expectedResponseDetails['statusCode'], $response->getStatusCode());
+        $this->assertEquals($expectedResponseDetails['reasonPhrase'], $response->getReasonPhrase());
+        if (isset($expectedResponseDetails['content'])) {
+            $this->assertContains($expectedResponseDetails['content'], $response->getBody()->getContents());
+        }
+        $this->assertEquals($expectedResponseDetails['headers'], $response->getHeaders());
+    }
+
+    /**
      * Callback function when testing "USER_FUNCTION:" prefix
      */
     public function mockedUserFunctionCall($params)
     {
         return '<p>It\'s magic, Michael: ' . $params['reasonText'] . '</p>';
+    }
+
+    private function prophesizeErrorPageController(): void
+    {
+        $errorPageControllerProphecy = $this->prophesize(ErrorPageController::class);
+        $errorPageControllerProphecy->errorAction(Argument::cetera())
+            ->will(
+                function ($args) {
+                    return 'Reason: ' . $args[1];
+                }
+            );
+        GeneralUtility::addInstance(ErrorPageController::class, $errorPageControllerProphecy->reveal());
+    }
+
+    private function prophesizeGetUrl(): void
+    {
+        $streamProphecy = $this->prophesize(StreamInterface::class);
+        $prefixPageResponseProphecy = $this->prophesize(Response::class);
+        $prefixPageResponseProphecy->getHeaders()->willReturn([]);
+        $prefixPageResponseProphecy->getBody()->willReturn($streamProphecy);
+        $prefixPageResponseProphecy->getStatusCode()->willReturn(200);
+        $prefixPageResponseProphecy->getReasonPhrase()->willReturn('OK');
+        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
+        $requestFactoryProphecy->request(Argument::cetera())->willReturn($prefixPageResponseProphecy->reveal());
+        GeneralUtility::addInstance(RequestFactory::class, $requestFactoryProphecy->reveal());
     }
 }
