@@ -31,9 +31,9 @@
 				<f:for each="{files}" as="file">
 					<tr data-uid="0" data-l10nparent="0">
 						<td class="col-icon nowrap">
-							<fl:link.clickMenuOnIcon table="{file.identifier}">
+							<a class="t3js-contextmenutrigger" data-uid="{file.identifier}" data-table="sys_file" href="#">
 								{file.icon->f:format.raw()}
-							</fl:link.clickMenuOnIcon>
+							</a>
 						</td>
 						<td class="col-path nowrap">
 							{file.path}
