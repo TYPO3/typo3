@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
 /*
@@ -20,22 +21,13 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\OrderedProviderList;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class OrderedProviderListTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class OrderedProviderListTest extends UnitTestCase
 {
-    /**
-     * @var OrderedProviderList
-     */
-    protected $subject;
-
-    protected function setUp()
-    {
-        $this->subject = new OrderedProviderList();
-    }
-
     /**
      * @test
      */
@@ -48,8 +40,9 @@ class OrderedProviderListTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
         $input = ['foo'];
 
-        $this->subject->setProviderList([]);
-        $this->assertEquals($input, $this->subject->compile($input));
+        $subject = new OrderedProviderList();
+        $subject->setProviderList([]);
+        $this->assertEquals($input, $subject->compile($input));
     }
 
     /**
@@ -68,10 +61,31 @@ class OrderedProviderListTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $providerResult = ['foo'];
         $formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
 
-        $this->subject->setProviderList([
+        $subject = new OrderedProviderList();
+        $subject->setProviderList([
             FormDataProviderInterface::class => [],
         ]);
-        $this->assertEquals($providerResult, $this->subject->compile([]));
+        $this->assertEquals($providerResult, $subject->compile([]));
+    }
+
+    /**
+     * @test
+     */
+    public function compileDoesNotCallDisabledDataProvider()
+    {
+        /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
+        $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
+        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
+        $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
+
+        $subject = new OrderedProviderList();
+        $subject->setProviderList([
+            FormDataProviderInterface::class => [
+                'disabled' => true,
+            ],
+        ]);
+        $input = ['foo'];
+        $this->assertEquals($input, $subject->compile($input));
     }
 
     /**
@@ -91,9 +105,10 @@ class OrderedProviderListTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1485299408);
 
-        $this->subject->setProviderList([
+        $subject = new OrderedProviderList();
+        $subject->setProviderList([
             \stdClass::class => [],
         ]);
-        $this->subject->compile([]);
+        $subject->compile([]);
     }
 }

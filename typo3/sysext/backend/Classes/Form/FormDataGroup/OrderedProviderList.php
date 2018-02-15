@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Form\FormDataGroup;
 
 /*
@@ -27,9 +28,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class OrderedProviderList implements FormDataGroupInterface
 {
-
     /**
-     * @var array<FormDataProviderInterface>
+     * @var FormDataProviderInterface[]
      */
     protected $providerList = [];
 
@@ -40,12 +40,17 @@ class OrderedProviderList implements FormDataGroupInterface
      * @return array Result filled with data
      * @throws \UnexpectedValueException
      */
-    public function compile(array $result)
+    public function compile(array $result): array
     {
         $orderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
         $orderedDataProvider = $orderingService->orderByDependencies($this->providerList, 'before', 'depends');
 
-        foreach ($orderedDataProvider as $providerClassName => $_) {
+        foreach ($orderedDataProvider as $providerClassName => $providerConfig) {
+            if (isset($providerConfig['disabled']) && $providerConfig['disabled'] === true) {
+                // Skip this data provider if disabled by configuration
+                continue;
+            }
+
             /** @var FormDataProviderInterface $provider */
             $provider = GeneralUtility::makeInstance($providerClassName);
 
