@@ -189,10 +189,12 @@ class ModuleTemplate
      * Sets the body tag
      *
      * @param string $bodyTag
+     * @return self
      */
-    public function setBodyTag($bodyTag)
+    public function setBodyTag($bodyTag): self
     {
         $this->bodyTag = $bodyTag;
+        return $this;
     }
 
     /**
@@ -209,20 +211,24 @@ class ModuleTemplate
      * Set content
      *
      * @param string $content Content of the module
+     * @return self
      */
-    public function setContent($content)
+    public function setContent($content): self
     {
         $this->view->assign('content', $content);
+        return $this;
     }
 
     /**
      * Set title tag
      *
      * @param string $title
+     * @return self
      */
-    public function setTitle($title)
+    public function setTitle($title): self
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -305,10 +311,12 @@ class ModuleTemplate
      *
      * @param string $name Javascript code block name
      * @param string $code Inline Javascript
+     * @return self
      */
-    public function addJavaScriptCode($name = '', $code = '')
+    public function addJavaScriptCode($name = '', $code = ''): self
     {
         $this->javascriptCodeArray[$name] = $code;
+        return $this;
     }
 
     /**
@@ -366,39 +374,46 @@ class ModuleTemplate
      * Set form tag
      *
      * @param string $formTag Form tag to add
+     * @return self
      */
-    public function setForm($formTag = '')
+    public function setForm($formTag = ''): self
     {
         $this->view->assign('formTag', $formTag);
+        return $this;
     }
 
     /**
      * Sets the ModuleId
      *
      * @param string $moduleId ID of the module
+     * @return self
      */
-    public function setModuleId($moduleId)
+    public function setModuleId($moduleId): self
     {
         $this->moduleId = $moduleId;
         $this->registerModuleMenu($moduleId);
+        return $this;
     }
 
     /**
      * Sets the ModuleName
      *
      * @param string $moduleName Name of the module
+     * @return self
      */
-    public function setModuleName($moduleName)
+    public function setModuleName($moduleName): self
     {
         $this->moduleName = $moduleName;
+        return $this;
     }
 
     /**
      * Generates the Menu for things like Web->Info
      *
      * @param $moduleMenuIdentifier
+     * @return self
      */
-    public function registerModuleMenu($moduleMenuIdentifier)
+    public function registerModuleMenu($moduleMenuIdentifier): self
     {
         if (isset($GLOBALS['TBE_MODULES_EXT'][$moduleMenuIdentifier])) {
             $menuEntries =
@@ -412,6 +427,7 @@ class ModuleTemplate
             }
             $this->docHeaderComponent->getMenuRegistry()->addMenu($menu);
         }
+        return $this;
     }
 
     /**
@@ -469,11 +485,13 @@ class ModuleTemplate
      * "sysext/core/Resources/Public/JavaScript/QueryGenerator.js" to load it
      *
      * @internal
+     * @return self
      */
-    public function loadJavascriptLib($lib)
+    public function loadJavascriptLib($lib): self
     {
         // @todo: maybe we can remove this one as well
         $this->pageRenderer->addJsFile($lib);
+        return $this;
     }
 
     /**
@@ -672,8 +690,9 @@ class ModuleTemplate
      * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
      * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default)
      * @throws \InvalidArgumentException if the message body is no string
+     * @return self
      */
-    public function addFlashMessage($messageBody, $messageTitle = '', $severity = AbstractMessage::OK, $storeInSession = true)
+    public function addFlashMessage($messageBody, $messageTitle = '', $severity = AbstractMessage::OK, $storeInSession = true): self
     {
         if (!is_string($messageBody)) {
             throw new \InvalidArgumentException('The message body must be of type string, "' . gettype($messageBody) . '" given.', 1446483133);
@@ -687,14 +706,17 @@ class ModuleTemplate
             $storeInSession
         );
         $this->getFlashMessageQueue()->enqueue($flashMessage);
+        return $this;
     }
 
     /**
      * @param \TYPO3\CMS\Core\Messaging\FlashMessageQueue $flashMessageQueue
+     * @return self
      */
-    public function setFlashMessageQueue($flashMessageQueue)
+    public function setFlashMessageQueue($flashMessageQueue): self
     {
         $this->flashMessageQueue = $flashMessageQueue;
+        return $this;
     }
 
     /**
@@ -720,9 +742,11 @@ class ModuleTemplate
 
     /**
      * @param bool $uiBlock
+     * @return self
      */
-    public function setUiBlock(bool $uiBlock)
+    public function setUiBlock(bool $uiBlock): self
     {
         $this->uiBlock = $uiBlock;
+        return $this;
     }
 }
