@@ -56,12 +56,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
     protected $timeTracker;
 
     /**
-     * Instance of the TSFE object
-     * @var TypoScriptFrontendController
-     */
-    protected $controller;
-
-    /**
      * Constructor handing over the bootstrap and the original request
      *
      * @param Bootstrap $bootstrap
@@ -92,8 +86,8 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
     {
         // Fetch the initialized time tracker object
         $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
-        $this->initializeController();
-        $this->controller->connectToDB();
+        /** @var TypoScriptFrontendController $controller */
+        $controller = $GLOBALS['TSFE'];
 
         // Output compression
         // Remove any output produced until now
@@ -102,49 +96,49 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
 
         // Initializing the Frontend User
         $this->timeTracker->push('Front End user initialized', '');
-        $this->controller->initFEuser();
+        $controller->initFEuser();
         $this->timeTracker->pull();
 
         // Initializing a possible logged-in Backend User
         /** @var $GLOBALS['BE_USER'] \TYPO3\CMS\Backend\FrontendBackendUserAuthentication */
-        $GLOBALS['BE_USER'] = $this->controller->initializeBackendUser();
+        $GLOBALS['BE_USER'] = $controller->initializeBackendUser();
 
         // Process the ID, type and other parameters.
         // After this point we have an array, $page in TSFE, which is the page-record
         // of the current page, $id.
         $this->timeTracker->push('Process ID', '');
         // Initialize admin panel since simulation settings are required here:
-        if ($this->controller->isBackendUserLoggedIn()) {
+        if ($controller->isBackendUserLoggedIn()) {
             $GLOBALS['BE_USER']->initializeAdminPanel();
             $this->bootstrap
                     ->initializeBackendRouter()
                     ->loadExtTables();
         }
-        $this->controller->checkAlternativeIdMethods();
-        $this->controller->clear_preview();
-        $this->controller->determineId();
+        $controller->checkAlternativeIdMethods();
+        $controller->clear_preview();
+        $controller->determineId();
 
         // Now, if there is a backend user logged in and he has NO access to this page,
         // then re-evaluate the id shown! _GP('ADMCMD_noBeUser') is placed here because
         // \TYPO3\CMS\Version\Hook\PreviewHook might need to know if a backend user is logged in.
         if (
-            $this->controller->isBackendUserLoggedIn()
-            && (!$GLOBALS['BE_USER']->extPageReadAccess($this->controller->page) || GeneralUtility::_GP('ADMCMD_noBeUser'))
+            $controller->isBackendUserLoggedIn()
+            && (!$GLOBALS['BE_USER']->extPageReadAccess($controller->page) || GeneralUtility::_GP('ADMCMD_noBeUser'))
         ) {
             // Remove user
             unset($GLOBALS['BE_USER']);
-            $this->controller->beUserLogin = false;
+            $controller->beUserLogin = false;
             // Re-evaluate the page-id.
-            $this->controller->checkAlternativeIdMethods();
-            $this->controller->clear_preview();
-            $this->controller->determineId();
+            $controller->checkAlternativeIdMethods();
+            $controller->clear_preview();
+            $controller->determineId();
         }
 
-        $this->controller->makeCacheHash();
+        $controller->makeCacheHash();
         $this->timeTracker->pull();
 
         // Admin Panel & Frontend editing
-        if ($this->controller->isBackendUserLoggedIn()) {
+        if ($controller->isBackendUserLoggedIn()) {
             $GLOBALS['BE_USER']->initializeFrontendEdit();
             if ($GLOBALS['BE_USER']->adminPanel instanceof AdminPanelView) {
                 $this->bootstrap->initializeLanguageObject();
@@ -156,54 +150,54 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
 
         // Starts the template
         $this->timeTracker->push('Start Template', '');
-        $this->controller->initTemplate();
+        $controller->initTemplate();
         $this->timeTracker->pull();
         // Get from cache
         $this->timeTracker->push('Get Page from cache', '');
-        $this->controller->getFromCache();
+        $controller->getFromCache();
         $this->timeTracker->pull();
         // Get config if not already gotten
         // After this, we should have a valid config-array ready
-        $this->controller->getConfigArray();
+        $controller->getConfigArray();
         // Setting language and locale
         $this->timeTracker->push('Setting language and locale', '');
-        $this->controller->settingLanguage();
-        $this->controller->settingLocale();
+        $controller->settingLanguage();
+        $controller->settingLocale();
         $this->timeTracker->pull();
 
         // Convert POST data to utf-8 for internal processing if metaCharset is different
-        $this->controller->convPOSTCharset();
+        $controller->convPOSTCharset();
 
-        $this->controller->initializeRedirectUrlHandlers();
+        $controller->initializeRedirectUrlHandlers();
 
-        $this->controller->handleDataSubmission();
+        $controller->handleDataSubmission();
 
         // Check for shortcut page and redirect
-        $this->controller->checkPageForShortcutRedirect();
-        $this->controller->checkPageForMountpointRedirect();
+        $controller->checkPageForShortcutRedirect();
+        $controller->checkPageForMountpointRedirect();
 
         // Generate page
-        $this->controller->setUrlIdToken();
+        $controller->setUrlIdToken();
         $this->timeTracker->push('Page generation', '');
-        if ($this->controller->isGeneratePage()) {
-            $this->controller->generatePage_preProcessing();
-            $this->controller->preparePageContentGeneration();
+        if ($controller->isGeneratePage()) {
+            $controller->generatePage_preProcessing();
+            $controller->preparePageContentGeneration();
             // Content generation
-            if (!$this->controller->isINTincScript()) {
+            if (!$controller->isINTincScript()) {
                 PageGenerator::renderContent();
-                $this->controller->setAbsRefPrefix();
+                $controller->setAbsRefPrefix();
             }
-            $this->controller->generatePage_postProcessing();
-        } elseif ($this->controller->isINTincScript()) {
-            $this->controller->preparePageContentGeneration();
+            $controller->generatePage_postProcessing();
+        } elseif ($controller->isINTincScript()) {
+            $controller->preparePageContentGeneration();
         }
-        $this->controller->releaseLocks();
+        $controller->releaseLocks();
         $this->timeTracker->pull();
 
         // Render non-cached parts
-        if ($this->controller->isINTincScript()) {
+        if ($controller->isINTincScript()) {
             $this->timeTracker->push('Non-cached objects', '');
-            $this->controller->INTincScript();
+            $controller->INTincScript();
             $this->timeTracker->pull();
         }
 
@@ -211,40 +205,40 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $response = new Response();
 
         // Output content
-        $isOutputting = $this->controller->isOutputting();
+        $isOutputting = $controller->isOutputting();
         if ($isOutputting) {
             $this->timeTracker->push('Print Content', '');
-            $this->controller->processOutput();
+            $controller->processOutput();
             $this->timeTracker->pull();
         }
         // Store session data for fe_users
-        $this->controller->storeSessionData();
+        $controller->storeSessionData();
 
-        $redirectResponse = $this->controller->redirectToExternalUrl();
+        $redirectResponse = $controller->redirectToExternalUrl();
         if ($redirectResponse instanceof ResponseInterface) {
             return $redirectResponse;
         }
 
         // Statistics
         $GLOBALS['TYPO3_MISC']['microtime_end'] = microtime(true);
-        if ($isOutputting && ($this->controller->config['config']['debug'] ?? !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']))) {
+        if ($isOutputting && ($controller->config['config']['debug'] ?? !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']))) {
             $response = $response->withHeader('X-TYPO3-Parsetime', $this->timeTracker->getParseTime() . 'ms');
         }
 
         // Preview info
-        $this->controller->previewInfo();
+        $controller->previewInfo();
         // Hook for end-of-frontend
-        $this->controller->hook_eofe();
+        $controller->hook_eofe();
         // Finish timetracking
         $this->timeTracker->pull();
 
         // Admin panel
-        if ($this->controller->isBackendUserLoggedIn() && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication && $GLOBALS['BE_USER']->isAdminPanelVisible()) {
-            $this->controller->content = str_ireplace('</body>', $GLOBALS['BE_USER']->displayAdminPanel() . '</body>', $this->controller->content);
+        if ($controller->isBackendUserLoggedIn() && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication && $GLOBALS['BE_USER']->isAdminPanelVisible()) {
+            $controller->content = str_ireplace('</body>', $GLOBALS['BE_USER']->displayAdminPanel() . '</body>', $controller->content);
         }
 
         if ($isOutputting) {
-            $response->getBody()->write($this->controller->content);
+            $response->getBody()->write($controller->content);
         }
 
         return $isOutputting ? $response : new NullResponse();
@@ -284,28 +278,5 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             }
             ob_start([GeneralUtility::makeInstance(CompressionUtility::class), 'compressionOutputHandler']);
         }
-    }
-
-    /**
-     * Creates an instance of TSFE and sets it as a global variable
-     */
-    protected function initializeController()
-    {
-        $this->controller = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            null,
-            GeneralUtility::_GP('id'),
-            GeneralUtility::_GP('type'),
-            GeneralUtility::_GP('no_cache'),
-            GeneralUtility::_GP('cHash'),
-            null,
-            GeneralUtility::_GP('MP')
-        );
-        // setting the global variable for the controller
-        // We have to define this as reference here, because there is code around
-        // which exchanges the TSFE object in the global variable. The reference ensures
-        // that the $controller member always works on the same object as the global variable.
-        // This is a dirty workaround and bypasses the protected access modifier of the controller member.
-        $GLOBALS['TSFE'] = &$this->controller;
     }
 }

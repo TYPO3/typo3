@@ -51,5 +51,11 @@ return [
                 'typo3/cms-frontend/maintenance-mode'
             ]
         ],
+        'typo3/cms-frontend/tsfe' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\TypoScriptFrontendInitialization::class,
+            'after' => [
+                'typo3/cms-core/normalized-params-attribute',
+            ]
+        ],
     ]
 ];
