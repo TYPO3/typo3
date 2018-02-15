@@ -25,6 +25,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Checks various security options for accessing the TYPO3 backend before proceeding
  *
+ * Depends on the NormalizedParams middleware to identify the
+ * Site URL and if the page is not running via HTTPS yet.
+ *
  * @internal
  */
 class LockedBackendGuard implements MiddlewareInterface
@@ -43,7 +46,7 @@ class LockedBackendGuard implements MiddlewareInterface
             return new RedirectResponse($redirectToUri, 302);
         }
         $this->validateVisitorsIpAgainstIpMaskList(
-            $request->getServerParams()['REMOTE_ADDR'],
+            $request->getAttribute('normalizedParams')->getRemoteAddress(),
             trim((string)$GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])
         );
 

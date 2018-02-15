@@ -29,7 +29,8 @@ return [
         'typo3/cms-backend/https-redirector' => [
             'target' => \TYPO3\CMS\Backend\Middleware\ForcedHttpsBackendRedirector::class,
             'after' => [
-                'typo3/cms-backend/locked-backend'
+                'typo3/cms-core/normalized-params-attribute',
+                'typo3/cms-backend/locked-backend',
             ]
         ],
         'typo3/cms-backend/backend-routing' => [

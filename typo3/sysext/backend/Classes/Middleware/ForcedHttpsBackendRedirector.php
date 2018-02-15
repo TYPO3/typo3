@@ -20,32 +20,32 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Check lockSSL configuration variable and redirect
  * to https version of the backend if needed
+ *
+ * Depends on the NormalizedParams middleware to identify the
+ * Site URL and if the page is not running via HTTPS yet.
  *
  * @internal
  */
 class ForcedHttpsBackendRedirector implements MiddlewareInterface
 {
     /**
-     * @todo Remove getIndpEnv() usage once $request contains all the site parameters (URL etc.)
-     *
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !$request->getAttribute('normalizedParams')->isHttps()) {
             if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']) {
                 $sslPortSuffix = ':' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
             } else {
                 $sslPortSuffix = '';
             }
-            list(, $url) = explode('://', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
+            list(, $url) = explode('://', $request->getAttribute('normalizedParams')->getSiteUrl() . TYPO3_mainDir, 2);
             list($server, $address) = explode('/', $url, 2);
             return new RedirectResponse('https://' . $server . $sslPortSuffix . '/' . $address);
         }
