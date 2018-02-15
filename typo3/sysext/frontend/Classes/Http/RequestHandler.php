@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -61,12 +62,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
     protected $controller;
 
     /**
-     * The request handed over
-     * @var ServerRequestInterface
-     */
-    protected $request;
-
-    /**
      * Constructor handing over the bootstrap and the original request
      *
      * @param Bootstrap $bootstrap
@@ -95,8 +90,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $response = null;
-        $this->request = $request;
         // Fetch the initialized time tracker object
         $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
         $this->initializeController();
@@ -214,37 +207,28 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             $this->timeTracker->pull();
         }
 
+        // Create a Response object when sending content
+        $response = new Response();
+
         // Output content
-        $sendTSFEContent = false;
-        if ($this->controller->isOutputting()) {
+        $isOutputting = $this->controller->isOutputting();
+        if ($isOutputting) {
             $this->timeTracker->push('Print Content', '');
             $this->controller->processOutput();
-            $sendTSFEContent = true;
             $this->timeTracker->pull();
         }
         // Store session data for fe_users
         $this->controller->storeSessionData();
 
-        // Create a Response object when sending content
-        if ($sendTSFEContent) {
-            $response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
+        $redirectResponse = $this->controller->redirectToExternalUrl();
+        if ($redirectResponse instanceof ResponseInterface) {
+            return $redirectResponse;
         }
 
         // Statistics
         $GLOBALS['TYPO3_MISC']['microtime_end'] = microtime(true);
-        if ($sendTSFEContent) {
-            if (isset($this->controller->config['config']['debug'])) {
-                $includeParseTime = (bool)$this->controller->config['config']['debug'];
-            } else {
-                $includeParseTime = !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
-            }
-            if ($includeParseTime) {
-                $response = $response->withHeader('X-TYPO3-Parsetime', $this->timeTracker->getParseTime() . 'ms');
-            }
-        }
-        $redirectResponse = $this->controller->redirectToExternalUrl();
-        if ($redirectResponse instanceof ResponseInterface) {
-            return $redirectResponse;
+        if ($isOutputting && ($this->controller->config['config']['debug'] ?? !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']))) {
+            $response = $response->withHeader('X-TYPO3-Parsetime', $this->timeTracker->getParseTime() . 'ms');
         }
 
         // Preview info
@@ -255,17 +239,15 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $this->timeTracker->pull();
 
         // Admin panel
-        if ($this->controller->isBackendUserLoggedIn() && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
-            if ($GLOBALS['BE_USER']->isAdminPanelVisible()) {
-                $this->controller->content = str_ireplace('</body>', $GLOBALS['BE_USER']->displayAdminPanel() . '</body>', $this->controller->content);
-            }
+        if ($this->controller->isBackendUserLoggedIn() && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication && $GLOBALS['BE_USER']->isAdminPanelVisible()) {
+            $this->controller->content = str_ireplace('</body>', $GLOBALS['BE_USER']->displayAdminPanel() . '</body>', $this->controller->content);
         }
 
-        if ($sendTSFEContent) {
+        if ($isOutputting) {
             $response->getBody()->write($this->controller->content);
         }
 
-        return $response ?: new NullResponse();
+        return $isOutputting ? $response : new NullResponse();
     }
 
     /**
