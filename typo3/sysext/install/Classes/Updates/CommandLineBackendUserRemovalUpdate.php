@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Remove all backend users starting with _CLI_
+ * Remove all backend users starting with _cli_
  */
 class CommandLineBackendUserRemovalUpdate extends AbstractUpdate
 {
@@ -43,7 +43,7 @@ class CommandLineBackendUserRemovalUpdate extends AbstractUpdate
         $usersFound = $this->getUnneededCommandLineUsers();
         if (!empty($usersFound)) {
             $needsExecution = true;
-            $description = 'The command line interface does not need to have custom _CLI_* backend users anymore. They can safely be deleted.';
+            $description = 'The command line interface does not need to have custom _cli_* backend users anymore. They can safely be deleted.';
         }
         return $needsExecution;
     }
@@ -108,13 +108,8 @@ class CommandLineBackendUserRemovalUpdate extends AbstractUpdate
             ->select('uid', 'username')
             ->from('be_users')
             ->where(
-                $queryBuilder->expr()->like(
-                    'username',
-                    $queryBuilder->createNamedParameter(
-                        $queryBuilder->escapeLikeWildcards('_CLI_') . '%',
-                        \PDO::PARAM_STR
-                    )
-                ),
+                // Using query builder is complicated in this case. Get it straight, no user input is involved.
+                'LOWER(username) LIKE \'_cli_%\'',
                 $queryBuilder->expr()->neq(
                     'username',
                     $queryBuilder->createNamedParameter('_cli_', \PDO::PARAM_STR)
