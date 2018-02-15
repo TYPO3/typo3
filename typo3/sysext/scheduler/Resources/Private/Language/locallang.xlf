@@ -165,6 +165,9 @@
 			<trans-unit id="label.schedulableCommandName">
 				<source><![CDATA[Schedulable Command. <em>Save and reopen to define command arguments</em>]]></source>
 			</trans-unit>
+			<trans-unit id="label.saveAndCreateNewTask">
+				<source>Save and create new task</source>
+			</trans-unit>
 			<trans-unit id="msg.addError">
 				<source>The task could not be added.</source>
 			</trans-unit>

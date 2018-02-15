@@ -1335,7 +1335,7 @@ class SchedulerModuleController
                 ->setValue('savenew')
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-new', Icon::SIZE_SMALL))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:saveAndCreateNewDoc'));
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.saveAndCreateNewTask'));
             $saveButtonDropdown->addItem($saveAndNewButton);
             $saveAndCloseButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
