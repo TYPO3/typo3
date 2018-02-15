@@ -1330,23 +1330,21 @@ class EditDocumentController
         $buttonBar->addButton($closeButton);
         // DUPLICATE button:
         $record = BackendUtility::getRecord($this->firstEl['table'], $this->firstEl['uid']);
-        $l18nParent = $record['l18n_parent'] ?? 0;
-        $sysLanguageUid = $record['sys_language_uid'] ?? 0;
+        $TCActrl = $GLOBALS['TCA'][$this->firstEl['table']]['ctrl'];
+        $l18nParent = isset($TCActrl['transOrigPointerField'], $record[$TCActrl['transOrigPointerField']])
+            ? (int)$record[$TCActrl['transOrigPointerField']]
+            : 0;
+        $sysLanguageUid = isset($TCActrl['languageField'], $record[$TCActrl['languageField']])
+            ? (int)$record[$TCActrl['languageField']]
+            : 0;
         $showDuplicateButton = false;
         if ($this->firstEl['cmd'] !== 'new' && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])) {
-            // Special case: pages
-            if ($this->firstEl['table'] === 'pages') {
-                // show button only, if record is in default language
-                $showDuplicateButton = (int)$sysLanguageUid === 0;
+            if ($sysLanguageUid === 0) {
+                // show button, if record is in default language
+                $showDuplicateButton = true;
             } else {
-                // not pages table
-                if ((int)$sysLanguageUid === 0) {
-                    // show button, if record is in default language
-                    $showDuplicateButton = true;
-                } else {
-                    // show button, if record is NOT in default language AND has no parent
-                    $showDuplicateButton = (int)$l18nParent === 0;
-                }
+                // show button, if record is NOT in default language AND has no parent
+                $showDuplicateButton = $l18nParent === 0;
             }
         }
         if ($showDuplicateButton) {
