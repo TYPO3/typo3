@@ -26,10 +26,8 @@ use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageGenerator;
-use TYPO3\CMS\Frontend\Utility\CompressionUtility;
 use TYPO3\CMS\Frontend\View\AdminPanelView;
 
 /**
@@ -88,11 +86,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
         /** @var TypoScriptFrontendController $controller */
         $controller = $GLOBALS['TSFE'];
-
-        // Output compression
-        // Remove any output produced until now
-        $this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
-        $this->initializeOutputCompression();
 
         // Initializing the Frontend User
         $this->timeTracker->push('Front End user initialized', '');
@@ -264,19 +257,5 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
     public function getPriority(): int
     {
         return 50;
-    }
-
-    /**
-     * Initializes output compression when enabled, could be split up and put into Bootstrap
-     * at a later point
-     */
-    protected function initializeOutputCompression()
-    {
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] && extension_loaded('zlib')) {
-            if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
-                @ini_set('zlib.output_compression_level', (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']);
-            }
-            ob_start([GeneralUtility::makeInstance(CompressionUtility::class), 'compressionOutputHandler']);
-        }
     }
 }
