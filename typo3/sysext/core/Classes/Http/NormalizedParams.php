@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * This class provides normalized server parameters in HTTP request context.
  * It normalizes reverse proxy scenarios and various other web server specific differences
- * of native the PSR-7 request object parameters (->getServerParams() / $GLOBALS['_SERVER']).
+ * of the native PSR-7 request object parameters (->getServerParams() / $GLOBALS['_SERVER']).
  *
  * An instance of this class is available as PSR-7 ServerRequestInterface attribute:
  * $normalizedParams = $request->getAttribute('normalizedParams')

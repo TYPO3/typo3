@@ -118,6 +118,10 @@ class MiddlewareStackResolver
 
             $sanitizedMiddlewares = [];
             foreach ($middlewaresOfStack as $name => $middleware) {
+                if (isset($middleware['disabled']) && $middleware['disabled'] === true) {
+                    // Skip this middleware if disabled by configuration
+                    continue;
+                }
                 $sanitizedMiddlewares[$name] = $middleware['target'];
             }
 

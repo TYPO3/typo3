@@ -37,21 +37,34 @@ To add a middleware to the "frontend" or "backend" middleware stack, create the
 
 .. code-block:: php
 
-	return [
-		// stack name: currently 'frontend' or 'backend'
-		'frontend' => [
-			'middleware-identifier' => [
-				'target' => \ACME\Ext\Middleware::class,
-				'description' => '',
-				'before' => [
-					'another-middleware-identifier',
-				],
-				'after' => [
-					'yet-another-middleware-identifier',
-				],
-			]
-		]
-	];
+    return [
+        // stack name: currently 'frontend' or 'backend'
+        'frontend' => [
+            'middleware-identifier' => [
+                'target' => \ACME\Ext\Middleware::class,
+                'description' => '',
+                'before' => [
+                    'another-middleware-identifier',
+                ],
+                'after' => [
+                    'yet-another-middleware-identifier',
+                ],
+            ]
+        ]
+    ];
 
+If extensions need to shut down or substitute existing middlewares with an own solution, they can
+disable an existing middleware by adding the following code in :file:`Configuration/RequestMiddlewares.php`: of their
+extension.
 
-.. index:: Backend, Frontend, PHP-API, NotScanned
+.. code-block:: php
+
+    return [
+        'frontend' => [
+            'middleware-identifier' => [
+                'disabled' => true,
+            ],
+        ],
+    ];
+
+.. index:: Backend, Frontend, PHP-API
