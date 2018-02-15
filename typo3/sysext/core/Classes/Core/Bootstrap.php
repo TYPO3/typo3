@@ -606,7 +606,7 @@ class Bootstrap
                 $displayErrors = 1;
                 break;
             default:
-                if (!TYPO3_REQUESTTYPE_INSTALL) {
+                if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
                     // Throw exception if an invalid option is set.
                     throw new \RuntimeException(
                         'The option $TYPO3_CONF_VARS[SYS][displayErrors] is not set to "-1", "0" or "1".',
