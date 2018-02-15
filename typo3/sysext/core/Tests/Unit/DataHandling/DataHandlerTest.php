@@ -908,4 +908,37 @@ class DataHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ],
         ];
     }
+
+    /**
+     * @return array
+     */
+    public function clearPrefixFromValueRemovesPrefixDataProvider(): array
+    {
+        return [
+            'normal case' => ['Test (copy 42)', 'Test'],
+            // all cases below look fishy and indicate bugs
+            'with double spaces before' => ['Test  (copy 42)', 'Test '],
+            'with three spaces before' => ['Test   (copy 42)', 'Test  '],
+            'with space after' => ['Test (copy 42) ', 'Test (copy 42) '],
+            'with double spaces after' => ['Test (copy 42)  ', 'Test (copy 42)  '],
+            'with three spaces after' => ['Test (copy 42)   ', 'Test (copy 42)   '],
+            'with double tab before' => ['Test' . chr(9) . '(copy 42)', 'Test'],
+            'with double tab after' => ['Test (copy 42)' . chr(9), 'Test (copy 42)' . chr(9)],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider clearPrefixFromValueRemovesPrefixDataProvider
+     * @param string $input
+     * @param string $expected
+     */
+    public function clearPrefixFromValueRemovesPrefix(string $input, string $expected)
+    {
+        $languageServiceProphecy = $this->prophesize(\TYPO3\CMS\Core\Localization\LanguageService::class);
+        $languageServiceProphecy->sL('testLabel')->willReturn('(copy %s)');
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $GLOBALS['TCA']['testTable']['ctrl']['prependAtCopy'] = 'testLabel';
+        $this->assertEquals($expected, (new DataHandler())->clearPrefixFromValue('testTable', $input));
+    }
 }
