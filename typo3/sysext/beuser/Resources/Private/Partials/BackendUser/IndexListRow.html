@@ -45,7 +45,21 @@
 					</f:if>
 				</f:else>
 			</f:if>
-			<bu:removeUser backendUser="{backendUser}" />
+			<f:if condition="{currentUserUid} == {backendUser.uid}">
+				<f:then>
+					<span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
+				</f:then>
+				<f:else>
+					<a class="btn btn-default t3js-modal-trigger" href="{bu:removeUser(backendUser:backendUser)}"
+						 title="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:delete')}"
+						 data-severity="warning"
+						 data-title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
+						 data-content="{f:translate(key:'confirm',arguments:'{0:backendUser.userName}')}"
+						 data-button-close-text="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:cancel')}">
+						<core:icon identifier="actions-edit-delete" />
+					</a>
+				</f:else>
+			</f:if>
 		</div>
 		<div class="btn-group" role="group">
 			<a class="btn btn-default" href="#" onclick="top.TYPO3.InfoWindow.showItem('be_users', '{backendUser.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>

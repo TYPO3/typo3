@@ -16,30 +16,19 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Displays 'Delete user' link with sprite icon to remove user
+ * Renders 'Delete user' link
  *
  * @internal
  */
 class RemoveUserViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
-
-    /**
-     * As this ViewHelper renders HTML, the output must not be escaped.
-     *
-     * @var bool
-     */
-    protected $escapeOutput = false;
 
     /**
      * Initializes the arguments
@@ -50,7 +39,7 @@ class RemoveUserViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Render link with sprite icon to remove user
+     * Renders the URL to remove a user.
      *
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
@@ -60,29 +49,11 @@ class RemoveUserViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        /** @var \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser */
-        $backendUser = $arguments['backendUser'];
-        /** @var BackendUserAuthentication $beUser */
-        $beUser = $GLOBALS['BE_USER'];
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        if ($backendUser->getUid() === (int)$beUser->user['uid']) {
-            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
-        }
-
         $urlParameters = [
-            'cmd[be_users][' . $backendUser->getUid() . '][delete]' => 1,
+            'cmd[be_users][' . $arguments['backendUser']->getUid() . '][delete]' => 1,
             'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
         ];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $url = (string)$uriBuilder->buildUriFromRoute('tce_db', $urlParameters);
-
-        return '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($url) . '"'
-            . ' title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:delete')) . '"'
-            . ' data-severity="warning"'
-            . ' data-title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
-            . ' data-content="' . htmlspecialchars(LocalizationUtility::translate('confirm', 'beuser', [$backendUser->getUserName()])) . '" '
-            . ' data-button-close-text="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
-            . '>' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
+        return (string)$uriBuilder->buildUriFromRoute('tce_db', $urlParameters);
     }
 }

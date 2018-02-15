@@ -166,6 +166,7 @@ class BackendUserController extends BackendUserActionController
         $this->view->assign('compareUserUidList', array_map(function ($item) {
             return true;
         }, array_flip((array)$compareUserList)));
+        $this->view->assign('currentUserUid', $this->getBackendUserAuthentication()->user['uid']);
         $this->view->assign('compareUserList', !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '');
     }
 
