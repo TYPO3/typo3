@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
+use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
@@ -1062,14 +1063,11 @@ class EditDocumentController
                                 $this->dontStoreDocumentRef = 1;
                             }
 
-                            /** @var TcaDatabaseRecord $formDataGroup */
-                            $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-                            /** @var FormDataCompiler $formDataCompiler */
-                            $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-                            /** @var NodeFactory $nodeFactory */
-                            $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-
                             try {
+                                $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+                                $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+                                $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
+
                                 // Reset viewId - it should hold data of last entry only
                                 $this->viewId = 0;
                                 $this->viewId_addParams = '';
@@ -1201,6 +1199,8 @@ class EditDocumentController
                                 }
                                 $editForm .= htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission'))
                                     . '<br /><br />' . htmlspecialchars($message) . '<br /><br />';
+                            } catch (DatabaseRecordException $e) {
+                                $editForm = '<div class="alert alert-warning">' . htmlspecialchars($e->getMessage()) . '</div>';
                             }
                         } // End of for each uid
                     }
