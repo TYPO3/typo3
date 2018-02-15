@@ -19,17 +19,29 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
 /**
  * Display a deactivate / activate link
  * @internal
  */
-class ToggleExtensionInstallationStateViewHelper extends Link\ActionViewHelper
+class ToggleExtensionInstallationStateViewHelper extends ActionViewHelper
 {
     /**
      * @var string
      */
     protected $tagName = 'a';
+
+    /** @var \TYPO3\CMS\Extbase\Object\ObjectManager */
+    protected $objectManager;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
 
     /**
      * Initialize arguments

@@ -17,13 +17,26 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
 /**
  * View helper for update script link
  * @internal
  */
-class UpdateScriptViewHelper extends Link\ActionViewHelper
+class UpdateScriptViewHelper extends ActionViewHelper
 {
+
+    /** @var \TYPO3\CMS\Extbase\Object\ObjectManager */
+    protected $objectManager;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+
     /**
      * initialize arguments
      */

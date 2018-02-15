@@ -15,12 +15,13 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  */
 
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
 /**
  * Display a link to show all versions of an extension
  * @internal
  */
-class ShowExtensionVersionsViewHelper extends Link\ActionViewHelper
+class ShowExtensionVersionsViewHelper extends ActionViewHelper
 {
     /**
      * @var string

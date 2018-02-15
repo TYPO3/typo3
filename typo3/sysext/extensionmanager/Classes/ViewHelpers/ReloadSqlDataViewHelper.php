@@ -19,11 +19,12 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
 /**
  * View helper for update script link
  */
-class ReloadSqlDataViewHelper extends Link\ActionViewHelper
+class ReloadSqlDataViewHelper extends ActionViewHelper
 {
     /**
      * @var string
