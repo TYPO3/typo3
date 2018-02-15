@@ -72,12 +72,12 @@ class InlineStackProcessor
                 if ($i > 0 && $i % 3 == 0) {
                     // Load the TCA configuration of the table field and store it in the stack
                     // @todo: This TCA loading here must fall - config sub-array shouldn't exist at all!
-                    $unstable['config'] = $GLOBALS['TCA'][$unstable['table']]['columns'][$unstable['field']]['config'];
+                    $unstable['config'] = $GLOBALS['TCA'][$unstable['table']]['columns'][$unstable['field']]['config'] ?? [];
                     // Fetch TSconfig:
                     // @todo: aaargs ;)
                     $TSconfig = FormEngineUtility::getTSconfigForTableRow($unstable['table'], ['uid' => $unstable['uid'], 'pid' => $inlineFirstPid], $unstable['field']);
                     // Override TCA field config by TSconfig:
-                    if (!$TSconfig['disabled']) {
+                    if (!isset($TSconfig['disabled']) || !$TSconfig['disabled']) {
                         $unstable['config'] = FormEngineUtility::overrideFieldConf($unstable['config'], $TSconfig);
                     }
 

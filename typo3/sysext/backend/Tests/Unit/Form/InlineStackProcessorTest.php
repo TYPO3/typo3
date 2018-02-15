@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
 /*
@@ -15,17 +16,13 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
  */
 
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class InlineStackProcessorTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @return array
      */
@@ -39,7 +36,10 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                         'table' => 'childTable',
                     ],
                 ],
-                []
+                [
+                    'form' => '',
+                    'object' => '',
+                ]
             ],
             'simple 1-level table-uid structure' => [
                 'data-pageId-childTable-childUid',
@@ -49,7 +49,10 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                         'uid' => 'childUid',
                     ],
                 ],
-                []
+                [
+                    'form' => '',
+                    'object' => '',
+                ]
             ],
             'simple 1-level table-uid-field structure' => [
                 'data-pageId-childTable-childUid-childField',
@@ -60,7 +63,10 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                         'field' => 'childField',
                     ],
                 ],
-                [],
+                [
+                    'form' => '',
+                    'object' => '',
+                ],
             ],
             'simple 2-level table structure' => [
                 'data-pageId-parentTable-parentUid-parentField-childTable',
@@ -70,7 +76,7 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
-                            'config' => null,
+                            'config' => [],
                         ],
                     ],
                     'unstable' => [
@@ -90,7 +96,7 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
-                            'config' => null,
+                            'config' => [],
                         ],
                     ],
                     'unstable' => [
@@ -111,7 +117,7 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
-                            'config' => null,
+                            'config' => [],
                         ],
                     ],
                     'unstable' => [
@@ -133,13 +139,13 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'table' => 'grandParentTable',
                             'uid' => 'grandParentUid',
                             'field' => 'grandParentField',
-                            'config' => null,
+                            'config' => [],
                         ],
                         [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
-                            'config' => null,
+                            'config' => [],
                         ],
                     ],
                     'unstable' => [
@@ -159,13 +165,13 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'table' => 'grandParentTable',
                             'uid' => 'grandParentUid',
                             'field' => 'grandParentField',
-                            'config' => null,
+                            'config' => [],
                         ],
                         [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
-                            'config' => null,
+                            'config' => [],
                         ],
                     ],
                     'unstable' => [
@@ -186,13 +192,13 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'table' => 'grandParentTable',
                             'uid' => 'grandParentUid',
                             'field' => 'grandParentField',
-                            'config' => null,
+                            'config' => [],
                         ],
                         [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
-                            'config' => null,
+                            'config' => [],
                         ],
                     ],
                     'unstable' => [
@@ -217,13 +223,13 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'flexform' => [
                                 'data', 'sDEF', 'lDEF', 'grandParentFlexForm', 'vDEF',
                             ],
-                            'config' => null,
+                            'config' => [],
                         ],
                         [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
-                            'config' => null,
+                            'config' => [],
                         ],
                     ],
                     'unstable' => [
