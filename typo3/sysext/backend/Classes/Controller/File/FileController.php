@@ -176,7 +176,7 @@ class FileController
         BackendUtility::setUpdateSignal('updateFolderTree');
 
         // go and edit the new created file
-        if ($request->getParsedBody()['edit']) {
+        if ($request->getParsedBody()['edit'] ?? '') {
             /** @var \TYPO3\CMS\Core\Resource\File $file */
             $file = $this->fileData['newfile'][0];
             $properties = $file->getProperties();

@@ -37,7 +37,7 @@ class ContextHelpAjaxController
     public function getHelpAction(ServerRequestInterface $request): ResponseInterface
     {
         $params = $request->getParsedBody()['params'] ?? $request->getQueryParams()['params'];
-        if ($params['action'] !== 'getContextHelp') {
+        if (($params['action'] ?? '') !== 'getContextHelp') {
             throw new \RuntimeException('Action must be set to "getContextHelp"', 1518787887);
         }
         $result = $this->getContextHelp($params['table'], $params['field']);

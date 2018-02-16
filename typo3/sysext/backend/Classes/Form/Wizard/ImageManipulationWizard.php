@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -71,9 +71,9 @@ class ImageManipulationWizard
                 'cropVariants' => $queryParams['cropVariants']
             ];
             $content = $this->templateView->renderSection('Main', $viewData);
-            return new HtmlResponse($content);
+            return new JsonResponse($content);
         }
-        return new HtmlResponse('', 403);
+        return new JsonResponse(null, 403);
     }
 
     /**

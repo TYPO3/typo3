@@ -415,8 +415,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getSignalSlotDispatcher()
     {
         if (!isset($this->signalSlotDispatcher)) {
-            $this->signalSlotDispatcher = GeneralUtility::makeInstance(ObjectManager::class)
-                ->get(Dispatcher::class);
+            $this->signalSlotDispatcher = GeneralUtility::makeInstance(ObjectManager::class)->get(Dispatcher::class);
         }
         return $this->signalSlotDispatcher;
     }

@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Taskcenter;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\JsonResponse;
 
 /**
  * Status of tasks
@@ -39,7 +39,7 @@ class TaskStatus
         $this->getBackendUserAuthentication()->uc['taskcenter']['states'][$item] = $state;
         $this->getBackendUserAuthentication()->writeUC();
 
-        return new HtmlResponse('');
+        return new JsonResponse(null);
     }
 
     /**
@@ -60,7 +60,7 @@ class TaskStatus
         $this->getBackendUserAuthentication()->uc['taskcenter']['sorting'] = serialize($sort);
         $this->getBackendUserAuthentication()->writeUC();
 
-        return new HtmlResponse('');
+        return new JsonResponse(null);
     }
 
     /**

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Frontend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -200,12 +200,14 @@ EOF;
         try {
             $this->initialize();
             $this->main();
-            return new HtmlResponse($this->content);
+            $response = new Response();
+            $response->getBody()->write($this->content);
+            return $response;
         } catch (\InvalidArgumentException $e) {
             // add a 410 "gone" if invalid parameters given
-            return new HtmlResponse('', 410);
+            return (new Response)->withStatus(410);
         } catch (Exception $e) {
-            return new HtmlResponse('', 404);
+            return (new Response)->withStatus(404);
         }
     }
 }

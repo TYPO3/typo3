@@ -20,7 +20,6 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -71,7 +70,7 @@ class LocalizationController
     {
         $params = $request->getQueryParams();
         if (!isset($params['pageId'], $params['colPos'], $params['languageId'])) {
-            return new HtmlResponse('', 400);
+            return new JsonResponse(null, 400);
         }
 
         $pageId = (int)$params['pageId'];
@@ -123,7 +122,7 @@ class LocalizationController
     {
         $params = $request->getQueryParams();
         if (!isset($params['pageId'], $params['colPos'], $params['destLanguageId'], $params['languageId'])) {
-            return new HtmlResponse('', 400);
+            return new JsonResponse(null, 400);
         }
 
         $records = [];
@@ -158,11 +157,13 @@ class LocalizationController
     {
         $params = $request->getQueryParams();
         if (!isset($params['pageId'], $params['srcLanguageId'], $params['destLanguageId'], $params['action'], $params['uidList'])) {
-            return new HtmlResponse('', 400);
+            return new JsonResponse(null, 400);
         }
 
         if ($params['action'] !== static::ACTION_COPY && $params['action'] !== static::ACTION_LOCALIZE) {
-            return new HtmlResponse('Invalid action "' . $params['action'] . '" called.', 400);
+            $response = new Response('php://temp', 400, ['Content-Type' => 'application/json; charset=utf-8']);
+            $response->getBody()->write('Invalid action "' . $params['action'] . '" called.');
+            return $response;
         }
 
         // Filter transmitted but invalid uids

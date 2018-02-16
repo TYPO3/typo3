@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Rsaauth;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -120,6 +121,9 @@ class RsaEncryptionEncoder implements SingletonInterface
                 ])
             );
         }
-        return new HtmlResponse('No OpenSSL backend could be obtained for rsaauth.', 500);
+
+        $response = new Response('php://temp', 500, ['Content-Type' => 'application/json; charset=utf-8']);
+        $response->getBody()->write('No OpenSSL backend could be obtained for rsaauth.');
+        return $response;
     }
 }

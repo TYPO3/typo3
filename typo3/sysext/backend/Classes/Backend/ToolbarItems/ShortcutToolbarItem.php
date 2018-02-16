@@ -714,10 +714,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             }
         }
 
-        if ($queryBuilder->execute() === 1) {
-            return new HtmlResponse($shortcutName);
-        }
-        return new HtmlResponse('failed');
+        return new HtmlResponse($queryBuilder->execute() === 1 ? $shortcutName : 'failed');
     }
 
     /**

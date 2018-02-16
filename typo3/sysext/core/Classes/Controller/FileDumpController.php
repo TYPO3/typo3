@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Core\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -88,7 +88,7 @@ class FileDumpController
             // @todo Refactor FAL to not echo directly, but to implement a stream for output here and use response
             return null;
         }
-        return new HtmlResponse('', 403);
+        return (new Response)->withStatus(403);
     }
 
     /**

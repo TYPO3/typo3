@@ -231,7 +231,7 @@ class FileSystemNavigationFrameController
         $this->init();
         $tree = $this->foldertree->getBrowsableTree();
         if ($this->foldertree->getAjaxStatus() === false) {
-            return new HtmlResponse('', 500);
+            return new JsonResponse(null, 500);
         }
         return new JsonResponse([$tree]);
     }
