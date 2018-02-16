@@ -509,6 +509,13 @@ abstract public class AbstractCoreSpec {
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
                         "./Build/Scripts/extensionScannerRstFileReferences.php"
+                    ),
+                new ScriptTask()
+                    .description("Run functional fixture csv format checker")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "./Build/Scripts/checkIntegrityCsvFixtures.php"
                     )
             )
             .requirements(
