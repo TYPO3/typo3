@@ -432,6 +432,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskComposerInstall(),
                 new ScriptTask()
                     .description("Run duplicate exception code check script")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -476,6 +477,13 @@ abstract public class AbstractCoreSpec {
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
                         "./Build/Scripts/maxFilePathLength.sh"
+                    ),
+                new ScriptTask()
+                    .description("Run functional fixture csv format checker")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "./Build/Scripts/checkIntegrityCsvFixtures.php"
                     )
             )
             .requirements(
