@@ -49,6 +49,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected function tearDown()
     {
         date_default_timezone_set($this->timeZone);
+        parent::tearDown();
     }
 
     /**

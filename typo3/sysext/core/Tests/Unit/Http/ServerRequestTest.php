@@ -117,7 +117,6 @@ class ServerRequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * @depends testAttributesAreEmptyByDefault
      * @test
      */
     public function withAttributeMutatorReturnsCloneWithChanges()
@@ -130,11 +129,11 @@ class ServerRequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * @depends testAttributeMutatorReturnsCloneWithChanges
      * @test
      */
-    public function withoutAttributeReturnsCloneWithoutAttribute($request)
+    public function withoutAttributeReturnsCloneWithoutAttribute()
     {
+        $request = $this->request;
         $new = $request->withoutAttribute('foo');
         $this->assertNotSame($request, $new);
         $this->assertNull($new->getAttribute('foo', null));

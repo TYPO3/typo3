@@ -36,11 +36,6 @@ class UriBuilderTest extends UnitTestCase
         $this->uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['loadBackendRoutes']);
     }
 
-    protected function tearDown()
-    {
-        unset($this->uriBuilder);
-    }
-
     /**
      * @return array
      */

@@ -37,6 +37,7 @@ class UploadedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         if (is_scalar($this->tmpFile) && file_exists($this->tmpFile)) {
             unlink($this->tmpFile);
         }
+        parent::tearDown();
     }
 
     /**

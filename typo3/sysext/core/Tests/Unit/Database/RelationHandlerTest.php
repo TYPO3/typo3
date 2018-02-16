@@ -34,13 +34,6 @@ class RelationHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     */
-    protected function tearDown()
-    {
-        unset($this->subject);
-    }
-
-    /**
      * @test
      */
     public function purgeItemArrayReturnsFalseIfVersioningForTableIsDisabled()

@@ -95,6 +95,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     {
         // Remove all singleton instances
         GeneralUtility::resetSingletonInstances($this->singletons);
+        parent::tearDown();
     }
 
     /**
