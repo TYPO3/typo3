@@ -588,10 +588,12 @@ class NormalizedParams
         if ($configuredProxySSL === '*') {
             $configuredProxySSL = trim($typo3ConfVars['SYS']['reverseProxyIP'] ?? '');
         }
+        $httpsParam = (string)($serverParams['HTTPS'] ?? '');
         if (GeneralUtility::cmpIP(trim($serverParams['REMOTE_ADDR'] ?? ''), $configuredProxySSL)
             || ($serverParams['SSL_SESSION_ID'] ?? '')
-            || strtolower($serverParams['HTTPS'] ?? '') === 'on'
-            || (string)($serverParams['HTTPS'] ?? '') === '1'
+            // https://secure.php.net/manual/en/reserved.variables.server.php
+            // "Set to a non-empty value if the script was queried through the HTTPS protocol."
+            || ($httpsParam !== '' && $httpsParam !== 'off' && $httpsParam !== '0')
         ) {
             $isHttps = true;
         }

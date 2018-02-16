@@ -190,10 +190,52 @@ class NormalizedParamsTest extends UnitTestCase
                 [],
                 true,
             ],
+            'true if HTTPS is int(1)"' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'HTTPS' => 1,
+                ],
+                [],
+                true,
+            ],
+            'true if HTTPS is bool(true)' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'HTTPS' => true,
+                ],
+                [],
+                true,
+            ],
+            // https://secure.php.net/manual/en/reserved.variables.server.php
+            // "Set to a non-empty value if the script was queried through the HTTPS protocol."
+            'true if HTTPS is "somethingrandom"' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'HTTPS' => 'somethingrandom',
+                ],
+                [],
+                true,
+            ],
             'false if HTTPS is "0"' => [
                 [
                     'HTTP_HOST' => 'www.domain.com',
                     'HTTPS' => '0',
+                ],
+                [],
+                false,
+            ],
+            'false if HTTPS is int(0)' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'HTTPS' => 0,
+                ],
+                [],
+                false,
+            ],
+            'false if HTTPS is float(0)' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'HTTPS' => 0.0,
                 ],
                 [],
                 false,
@@ -214,6 +256,35 @@ class NormalizedParamsTest extends UnitTestCase
                 [],
                 false,
             ],
+            'false if HTTPS is null' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'HTTPS' => null,
+                ],
+                [],
+                false,
+            ],
+            'false if HTTPS is bool(false)' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'HTTPS' => false,
+                ],
+                [],
+                false,
+            ],
+            // Per PHP documententation 'HTTPS' is:
+            //   "Set to a non-empty value if the script
+            //   was queried through the HTTPS protocol."
+            // So theoretically an empty array means HTTPS is off.
+            // We do not support that. Therefore this test is disabled.
+            //'false if HTTPS is an empty Array' => [
+            //    [
+            //        'HTTP_HOST' => 'www.domain.com',
+            //        'HTTPS' => [],
+            //    ],
+            //    [],
+            //    false,
+            //],
             'true if ssl proxy IP matches REMOTE_ADDR' => [
                 [
                     'HTTP_HOST' => 'www.domain.com',
