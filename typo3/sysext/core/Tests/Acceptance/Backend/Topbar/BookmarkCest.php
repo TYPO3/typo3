@@ -153,6 +153,7 @@ class BookmarkCest
      */
     protected function clickBookmarkDropdownToggleInTopbar(Admin $I)
     {
+        $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownToggleSelector);
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
     }
 }
