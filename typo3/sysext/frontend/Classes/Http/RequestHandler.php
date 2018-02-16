@@ -87,11 +87,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         /** @var TypoScriptFrontendController $controller */
         $controller = $GLOBALS['TSFE'];
 
-        // Initializing the Frontend User
-        $this->timeTracker->push('Front End user initialized', '');
-        $controller->initFEuser();
-        $this->timeTracker->pull();
-
         // Initializing a possible logged-in Backend User
         /** @var $GLOBALS['BE_USER'] \TYPO3\CMS\Backend\FrontendBackendUserAuthentication */
         $GLOBALS['BE_USER'] = $controller->initializeBackendUser();
