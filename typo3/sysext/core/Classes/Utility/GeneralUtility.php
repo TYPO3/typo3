@@ -3029,7 +3029,10 @@ class GeneralUtility
                 if (self::cmpIP($_SERVER['REMOTE_ADDR'], $proxySSL)) {
                     $retVal = true;
                 } else {
-                    $retVal = $_SERVER['SSL_SESSION_ID'] || strtolower($_SERVER['HTTPS']) === 'on' || (string)$_SERVER['HTTPS'] === '1';
+                    // https://secure.php.net/manual/en/reserved.variables.server.php
+                    // "Set to a non-empty value if the script was queried through the HTTPS protocol."
+                    $retVal = $_SERVER['SSL_SESSION_ID']
+                        || (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off');
                 }
                 break;
             case '_ARRAY':
