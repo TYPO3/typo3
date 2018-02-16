@@ -3633,6 +3633,22 @@ class GeneralUtility
     }
 
     /**
+     * Get all currently registered non singleton instances
+     *
+     * Warning:
+     * This is NOT a public API method and must not be used in own extensions!
+     * This method is only used in UnitTestCase base test tearDown() to verify tests
+     * have no left over instances that were previously added using addInstance().
+     *
+     * @internal
+     * @return array $className => $objects[]
+     */
+    public static function getInstances()
+    {
+        return static::$nonSingletonInstances;
+    }
+
+    /**
      * Sets the instance of a non-singleton class to be returned by makeInstance.
      *
      * If this function is called multiple times for the same $className,
