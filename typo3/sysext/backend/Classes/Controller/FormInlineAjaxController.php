@@ -162,7 +162,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         // Fade out and fade in the new record in the browser view to catch the user's eye
         $jsonArray['scriptCall'][] = 'inline.fadeOutFadeIn(' . GeneralUtility::quoteJSvalue($objectId . '_div') . ');';
 
-        return GeneralUtility::makeInstance(JsonResponse::class, $jsonArray);
+        return new JsonResponse($jsonArray);
     }
 
     /**
@@ -243,7 +243,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             $jsonArray['scriptCall'][] = 'inline.collapseAllRecords(' . GeneralUtility::quoteJSvalue($objectId) . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',\'' . (int)$child['uid'] . '\');';
         }
 
-        return GeneralUtility::makeInstance(JsonResponse::class, $jsonArray);
+        return new JsonResponse($jsonArray);
     }
 
     /**
@@ -401,7 +401,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 . ', json.data);';
             }
         }
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($jsonArray);
+        return new JsonResponse($jsonArray);
     }
 
     /**
@@ -450,7 +450,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 $backendUser->writeUC();
             }
         }
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload([]);
+        return (new JsonResponse())->setPayload([]);
     }
 
     /**

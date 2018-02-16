@@ -179,6 +179,6 @@ class FormSelectTreeAjaxController
         } else {
             $treeData = $formData['processedTca']['columns'][$fieldName]['config']['items'];
         }
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($treeData);
+        return (new JsonResponse())->setPayload($treeData);
     }
 }

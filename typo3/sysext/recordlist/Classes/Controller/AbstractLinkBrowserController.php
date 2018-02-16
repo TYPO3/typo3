@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -147,10 +148,9 @@ abstract class AbstractLinkBrowserController
      * As this controller goes only through the main() method, it is rather simple for now
      *
      * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response the prepared response object
      * @return ResponseInterface the response with the content
      */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->determineScriptUrl($request);
         $this->initVariables($request);
@@ -186,8 +186,7 @@ abstract class AbstractLinkBrowserController
         $content .= $browserContent;
         $content .= $this->doc->endPage();
 
-        $response->getBody()->write($this->doc->insertStylesAndJS($content));
-        return $response;
+        return new HtmlResponse($this->doc->insertStylesAndJS($content));
     }
 
     /**

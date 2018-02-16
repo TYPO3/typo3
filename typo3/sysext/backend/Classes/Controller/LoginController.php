@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -139,14 +140,11 @@ class LoginController
      * As this controller goes only through the main() method, it is rather simple for now
      *
      * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response the current response
      * @return ResponseInterface the finished response with the content
      */
-    public function formAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function formAction(ServerRequestInterface $request): ResponseInterface
     {
-        $content = $this->main();
-        $response->getBody()->write($content);
-        return $response;
+        return new HtmlResponse($this->main());
     }
 
     /**

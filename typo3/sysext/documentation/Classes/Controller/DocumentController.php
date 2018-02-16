@@ -181,7 +181,7 @@ class DocumentController extends ActionController
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function deleteAction(ServerRequestInterface $request)
+    public function deleteAction(ServerRequestInterface $request): ResponseInterface
     {
         $basePath = 'typo3conf/Documentation/';
         $packageKey = $request->getParsedBody();
@@ -189,8 +189,7 @@ class DocumentController extends ActionController
         if (!$isDirDeleted) {
             $this->addFlashMessage(LocalizationUtility::translate('deleteFailed', 'Documentation'), '', FlashMessage::ERROR);
         }
-
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload([$isDirDeleted]);
+        return new JsonResponse([$isDirDeleted]);
     }
 
     /**

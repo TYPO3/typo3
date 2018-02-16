@@ -161,7 +161,7 @@ class SuggestWizardController
         $maxItems = min(count($resultRows), $maxItems);
 
         array_splice($resultRows, $maxItems);
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload(array_values($resultRows));
+        return (new JsonResponse())->setPayload(array_values($resultRows));
     }
 
     /**

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -35,7 +34,6 @@ class SuggestWizardControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
      */
     public function getFlexFieldConfigurationThrowsExceptionIfSimpleFlexFieldIsNotFound()
     {
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
         $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
         $serverRequestProphecy->getParsedBody()->willReturn([
             'value' => 'theSearchValue',
@@ -73,7 +71,7 @@ class SuggestWizardControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480609491);
-        (new SuggestWizardController())->searchAction($serverRequestProphecy->reveal(), $responseProphecy->reveal());
+        (new SuggestWizardController())->searchAction($serverRequestProphecy->reveal());
     }
 
     /**
@@ -81,7 +79,6 @@ class SuggestWizardControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
      */
     public function getFlexFieldConfigurationThrowsExceptionIfSectionContainerFlexFieldIsNotFound()
     {
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
         $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
         $serverRequestProphecy->getParsedBody()->willReturn([
             'value' => 'theSearchValue',
@@ -119,7 +116,7 @@ class SuggestWizardControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480611208);
-        (new SuggestWizardController())->searchAction($serverRequestProphecy->reveal(), $responseProphecy->reveal());
+        (new SuggestWizardController())->searchAction($serverRequestProphecy->reveal());
     }
 
     /**

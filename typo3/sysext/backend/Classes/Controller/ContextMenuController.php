@@ -52,7 +52,7 @@ class ContextMenuController
         if (!is_array($items)) {
             $items = [];
         }
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($items);
+        return (new JsonResponse())->setPayload($items);
     }
 
     /**
@@ -70,7 +70,7 @@ class ContextMenuController
         $clipboard->cleanCurrent();
 
         $clipboard->endClipboard();
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload([]);
+        return (new JsonResponse())->setPayload([]);
     }
 
     /**

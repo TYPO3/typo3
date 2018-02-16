@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -34,7 +33,6 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      */
     public function createActionThrowsExceptionIfContextIsEmpty()
     {
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
             [
@@ -45,7 +43,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController())->createAction($requestProphecy->reveal(), $responseProphecy->reveal());
+        (new FormInlineAjaxController())->createAction($requestProphecy->reveal());
     }
 
     /**
@@ -53,7 +51,6 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      */
     public function createActionThrowsExceptionIfContextConfigSectionIsEmpty()
     {
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
             [
@@ -64,7 +61,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController())->createAction($requestProphecy->reveal(), $responseProphecy->reveal());
+        (new FormInlineAjaxController())->createAction($requestProphecy->reveal());
     }
 
     /**
@@ -72,7 +69,6 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      */
     public function createActionThrowsExceptionIfContextConfigSectionDoesNotValidate()
     {
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
             [
@@ -90,7 +86,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController())->createAction($requestProphecy->reveal(), $responseProphecy->reveal());
+        (new FormInlineAjaxController())->createAction($requestProphecy->reveal());
     }
 
     /**
@@ -98,7 +94,6 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      */
     public function detailsActionThrowsExceptionIfContextIsEmpty()
     {
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
             [
@@ -109,7 +104,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController())->detailsAction($requestProphecy->reveal(), $responseProphecy->reveal());
+        (new FormInlineAjaxController())->detailsAction($requestProphecy->reveal());
     }
 
     /**
@@ -117,7 +112,6 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      */
     public function detailsActionThrowsExceptionIfContextConfigSectionIsEmpty()
     {
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
             [
@@ -128,7 +122,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController())->detailsAction($requestProphecy->reveal(), $responseProphecy->reveal());
+        (new FormInlineAjaxController())->detailsAction($requestProphecy->reveal());
     }
 
     /**
@@ -136,7 +130,6 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      */
     public function detailsActionThrowsExceptionIfContextConfigSectionDoesNotValidate()
     {
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
             [
@@ -154,7 +147,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController())->detailsAction($requestProphecy->reveal(), $responseProphecy->reveal());
+        (new FormInlineAjaxController())->detailsAction($requestProphecy->reveal());
     }
 
     /**
@@ -162,7 +155,6 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      */
     public function synchronizeLocalizeActionThrowsExceptionIfContextIsEmpty()
     {
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
             [
@@ -173,7 +165,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController())->synchronizeLocalizeAction($requestProphecy->reveal(), $responseProphecy->reveal());
+        (new FormInlineAjaxController())->synchronizeLocalizeAction($requestProphecy->reveal());
     }
 
     /**
@@ -181,7 +173,6 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      */
     public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionIsEmpty()
     {
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
             [
@@ -192,7 +183,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController())->synchronizeLocalizeAction($requestProphecy->reveal(), $responseProphecy->reveal());
+        (new FormInlineAjaxController())->synchronizeLocalizeAction($requestProphecy->reveal());
     }
 
     /**
@@ -200,7 +191,6 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      */
     public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionDoesNotValidate()
     {
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
             [
@@ -218,7 +208,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController())->synchronizeLocalizeAction($requestProphecy->reveal(), $responseProphecy->reveal());
+        (new FormInlineAjaxController())->synchronizeLocalizeAction($requestProphecy->reveal());
     }
 
     /**

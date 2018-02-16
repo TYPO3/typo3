@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Rsaauth;
  */
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -106,24 +106,20 @@ class RsaEncryptionEncoder implements SingletonInterface
     /**
      * Ajax handler to return a RSA public key.
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function getRsaPublicKeyAjaxHandler(ServerRequestInterface $request, ResponseInterface $response)
+    public function getRsaPublicKeyAjaxHandler(): ResponseInterface
     {
         $keyPair = $this->getRsaPublicKey();
         if ($keyPair !== null) {
-            $response->getBody()->write(implode('', [
-                'publicKeyModulus' => $keyPair->getPublicKeyModulus(),
-                'spacer' => ':',
-                'exponent' => sprintf('%x', $keyPair->getExponent())
-            ]));
-            $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
-        } else {
-            $response->getBody()->write('No OpenSSL backend could be obtained for rsaauth.');
-            $response = $response->withStatus(500);
+            return new HtmlResponse(
+                implode('', [
+                    'publicKeyModulus' => $keyPair->getPublicKeyModulus(),
+                    'spacer' => ':',
+                    'exponent' => sprintf('%x', $keyPair->getExponent())
+                ])
+            );
         }
-        return $response;
+        return new HtmlResponse('No OpenSSL backend could be obtained for rsaauth.', 500);
     }
 }

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -190,23 +191,21 @@ EOF;
      * Fetches the content and builds a content file out of it
      *
      * @param ServerRequestInterface $request the current request object
-     * @param ResponseInterface $response the available response
      * @return ResponseInterface the modified response
      */
-    public function processRequest(ServerRequestInterface $request, ResponseInterface $response)
+    public function processRequest(ServerRequestInterface $request): ResponseInterface
     {
         $this->request = $request;
 
         try {
             $this->initialize();
             $this->main();
-            $response->getBody()->write($this->content);
-            return $response;
+            return new HtmlResponse($this->content);
         } catch (\InvalidArgumentException $e) {
             // add a 410 "gone" if invalid parameters given
-            return $response->withStatus(410);
+            return new HtmlResponse('', 410);
         } catch (Exception $e) {
-            return $response->withStatus(404);
+            return new HtmlResponse('', 404);
         }
     }
 }

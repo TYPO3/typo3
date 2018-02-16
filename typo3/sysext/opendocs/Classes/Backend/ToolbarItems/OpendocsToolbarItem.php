@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -196,10 +197,9 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      * Closes a document in the session and
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function closeDocument(ServerRequestInterface $request, ResponseInterface $response)
+    public function closeDocument(ServerRequestInterface $request): ResponseInterface
     {
         $md5sum = $request->getParsedBody()['md5sum'] ?? $request->getQueryParams()['md5sum'];
         if ($md5sum && isset($this->openDocs[$md5sum])) {
@@ -216,20 +216,17 @@ class OpendocsToolbarItem implements ToolbarItemInterface
             $backendUser->pushModuleData('FormEngine', [$this->openDocs, $docDat]);
             $backendUser->pushModuleData('opendocs::recent', $this->recentDocs);
         }
-        return $this->renderMenu($request, $response);
+        return $this->renderMenu();
     }
 
     /**
      * Renders the menu so that it can be returned as response to an AJAX call
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function renderMenu(ServerRequestInterface $request, ResponseInterface $response)
+    public function renderMenu(): ResponseInterface
     {
-        $response->getBody()->write($this->getDropDown());
-        return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+        return new HtmlResponse($this->getDropDown());
     }
 
     /**

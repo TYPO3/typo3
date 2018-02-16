@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -34,10 +35,9 @@ class OnlineMediaController
     /**
      * AJAX endpoint for storing the URL as a sys_file record
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function createAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function createAction(ServerRequestInterface $request): ResponseInterface
     {
         $url = $request->getParsedBody()['url'];
         $targetFolderIdentifier = $request->getParsedBody()['targetFolder'];
@@ -51,9 +51,9 @@ class OnlineMediaController
             } else {
                 $data['error'] = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.error.invalid_url');
             }
-            return GeneralUtility::makeInstance(JsonResponse::class, $data);
+            return new JsonResponse($data);
         }
-        return $response;
+        return new HtmlResponse('');
     }
 
     /**
@@ -61,8 +61,9 @@ class OnlineMediaController
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws \RuntimeException
      */
-    public function mainAction(ServerRequestInterface $request)
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $files = $request->getParsedBody()['data'];
         $redirect = $request->getParsedBody()['redirect'];

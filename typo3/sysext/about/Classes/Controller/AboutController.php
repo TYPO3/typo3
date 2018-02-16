@@ -15,7 +15,6 @@ namespace TYPO3\CMS\About\Controller;
  */
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -46,10 +45,9 @@ class AboutController
     /**
      * Main action: Show standard information
      *
-     * @param ServerRequestInterface $request the incoming PSR-7 request
      * @return ResponseInterface the HTML output
      */
-    public function indexAction(ServerRequestInterface $request): ResponseInterface
+    public function indexAction(): ResponseInterface
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->initializeView('index');

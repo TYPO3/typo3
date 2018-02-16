@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Install\Controller;
  */
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Install\Service\SessionService;
 
@@ -34,11 +33,9 @@ class BackendModuleController
     /**
      * Initialize session and redirect to "maintenance"
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function maintenanceAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function maintenanceAction(): ResponseInterface
     {
         return $this->setAuthorizedAndRedirect('maintenance');
     }
@@ -46,11 +43,9 @@ class BackendModuleController
     /**
      * Initialize session and redirect to "settings"
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function settingsAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function settingsAction(): ResponseInterface
     {
         return $this->setAuthorizedAndRedirect('settings');
     }
@@ -58,11 +53,9 @@ class BackendModuleController
     /**
      * Initialize session and redirect to "upgrade"
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function upgradeAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function upgradeAction(): ResponseInterface
     {
         return $this->setAuthorizedAndRedirect('upgrade');
     }
@@ -70,11 +63,9 @@ class BackendModuleController
     /**
      * Initialize session and redirect to "environment"
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function environmentAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function environmentAction(): ResponseInterface
     {
         return $this->setAuthorizedAndRedirect('environment');
     }

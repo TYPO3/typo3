@@ -31,21 +31,21 @@ class ContextHelpAjaxController
      * The main dispatcher function. Collect data and prepare HTML output.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
+     * @throws \RuntimeException
      */
-    public function getHelpAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function getHelpAction(ServerRequestInterface $request): ResponseInterface
     {
         $params = $request->getParsedBody()['params'] ?? $request->getQueryParams()['params'];
-        if ($params['action'] === 'getContextHelp') {
-            $result = $this->getContextHelp($params['table'], $params['field']);
-            return GeneralUtility::makeInstance(JsonResponse::class, [
-                'title' => $result['title'],
-                'content' => $result['description'],
-                'link' => $result['moreInfo']
-            ]);
+        if ($params['action'] !== 'getContextHelp') {
+            throw new \RuntimeException('Action must be set to "getContextHelp"', 1518787887);
         }
-        return $response;
+        $result = $this->getContextHelp($params['table'], $params['field']);
+        return new JsonResponse([
+            'title' => $result['title'],
+            'content' => $result['description'],
+            'link' => $result['moreInfo']
+        ]);
     }
 
     /**

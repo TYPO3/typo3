@@ -19,7 +19,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -192,10 +194,9 @@ class SimpleDataHandlerController
      * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
      *
      * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response
      * @return ResponseInterface the response with the content
      */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->initClipboard();
         $this->main();
@@ -203,11 +204,9 @@ class SimpleDataHandlerController
         // Write errors to flash message queue
         $this->tce->printLogErrorMessages();
         if ($this->redirect) {
-            $response = $response
-                ->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect))
-                ->withStatus(303);
+            return new RedirectResponse(GeneralUtility::locationHeaderUrl($this->redirect), 303);
         }
-        return $response;
+        return new HtmlResponse('');
     }
 
     /**
@@ -247,7 +246,7 @@ class SimpleDataHandlerController
                 }
             }
         }
-        return GeneralUtility::makeInstance(JsonResponse::class, $content);
+        return new JsonResponse($content);
     }
 
     /**

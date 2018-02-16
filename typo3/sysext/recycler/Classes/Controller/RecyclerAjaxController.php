@@ -64,7 +64,7 @@ class RecyclerAjaxController
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function dispatch(ServerRequestInterface $request)
+    public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
         $extPath = ExtensionManagementUtility::extPath('recycler');
         /* @var $view StandaloneView */
@@ -150,7 +150,7 @@ class RecyclerAjaxController
                 ];
                 break;
         }
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($content);
+        return (new JsonResponse())->setPayload($content);
     }
 
     /**

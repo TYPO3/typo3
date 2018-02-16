@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -77,16 +78,13 @@ class FileSystemNavigationFrameController
 
     /**
      * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response
      * @return ResponseInterface the response with the content
      */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->initPage();
         $this->main();
-
-        $response->getBody()->write($this->content);
-        return $response;
+        return new HtmlResponse($this->content);
     }
 
     /**
@@ -226,17 +224,16 @@ class FileSystemNavigationFrameController
      * Called by an AJAX Route, see AjaxRequestHandler
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function ajaxExpandCollapse(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function ajaxExpandCollapse(ServerRequestInterface $request): ResponseInterface
     {
         $this->init();
         $tree = $this->foldertree->getBrowsableTree();
         if ($this->foldertree->getAjaxStatus() === false) {
-            return $response->withStatus(500);
+            return new HtmlResponse('', 500);
         }
-        return GeneralUtility::makeInstance(JsonResponse::class, [$tree]);
+        return new JsonResponse([$tree]);
     }
 
     /**

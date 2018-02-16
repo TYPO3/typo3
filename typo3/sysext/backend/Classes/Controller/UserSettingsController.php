@@ -41,7 +41,7 @@ class UserSettingsController
         $value = $request->getParsedBody()['value'] ?? $request->getQueryParams()['value'];
 
         $content = $this->process($action, $key, $value);
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($content);
+        return (new JsonResponse())->setPayload($content);
     }
 
     /**

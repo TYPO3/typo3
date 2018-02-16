@@ -15,18 +15,20 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  */
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -66,7 +68,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected $systemMessages = [];
 
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @var Dispatcher
      */
     protected $signalSlotDispatcher = null;
 
@@ -107,15 +109,12 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     /**
      * Renders the menu for AJAX calls
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function renderMenuAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function renderMenuAction(): ResponseInterface
     {
         $this->collectInformation();
-        $response->getBody()->write($this->getDropDown());
-        return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+        return new HtmlResponse($this->getDropDown());
     }
 
     /**
@@ -411,13 +410,13 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     /**
      * Get the SignalSlot dispatcher
      *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @return Dispatcher
      */
     protected function getSignalSlotDispatcher()
     {
         if (!isset($this->signalSlotDispatcher)) {
-            $this->signalSlotDispatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
-                ->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+            $this->signalSlotDispatcher = GeneralUtility::makeInstance(ObjectManager::class)
+                ->get(Dispatcher::class);
         }
         return $this->signalSlotDispatcher;
     }

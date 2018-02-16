@@ -122,7 +122,7 @@ class TreeController
             'temporaryMountPoint' => $this->getMountPointPath((int)($this->getBackendUser()->uc['pageTree_temporaryMountPoint'] ?? 0)),
         ];
 
-        return GeneralUtility::makeInstance(JsonResponse::class, $configuration);
+        return new JsonResponse($configuration);
     }
 
     /**
@@ -197,7 +197,7 @@ class TreeController
             $items = array_merge($items, $this->pagesToFlatArray($page, (int)$page['uid']));
         }
 
-        return GeneralUtility::makeInstance(JsonResponse::class, $items);
+        return new JsonResponse($items);
     }
 
     /**
@@ -222,7 +222,7 @@ class TreeController
         $response = [
             'mountPointPath' => $this->getMountPointPath($pid)
         ];
-        return GeneralUtility::makeInstance(JsonResponse::class, $response);
+        return new JsonResponse($response);
     }
 
     /**

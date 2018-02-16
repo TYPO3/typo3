@@ -15,9 +15,8 @@ namespace TYPO3\CMS\T3editor;
  */
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Code completion for t3editor
@@ -42,10 +41,9 @@ class CodeCompletion
      * Called by AjaxRequestHandler
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response)
+    public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
         $pageId = (int)($request->getParsedBody()['pageId'] ?? $request->getQueryParams()['pageId']);
         return $this->loadTemplates($pageId);
@@ -60,22 +58,15 @@ class CodeCompletion
      */
     protected function loadTemplates($pageId): ResponseInterface
     {
-        $response = GeneralUtility::makeInstance(Response::class);
-
         // Check whether access is granted (only admin have access to sys_template records):
         if ($GLOBALS['BE_USER']->isAdmin()) {
             // Check whether there is a pageId given:
             if ($pageId) {
-                $response = GeneralUtility::makeInstance(JsonResponse::class)->setPayload($this->getMergedTemplates($pageId));
-            } else {
-                $response->getBody()->write($GLOBALS['LANG']->getLL('pageIDInteger'));
-                $response = $response->withStatus(500);
+                return (new JsonResponse())->setPayload($this->getMergedTemplates($pageId));
             }
-        } else {
-            $response->getBody()->write($GLOBALS['LANG']->getLL('noPermission'));
-            $response = $response->withStatus(500);
+            return new HtmlResponse($GLOBALS['LANG']->getLL('pageIDInteger'), 500);
         }
-        return $response;
+        return new HtmlResponse($GLOBALS['LANG']->getLL('noPermission'), 500);
     }
 
     /**
@@ -83,10 +74,9 @@ class CodeCompletion
      *
      * @todo oliver@typo3.org: Refactor this method and comment what's going on there
      * @param int $pageId
-     * @param int $templateId
      * @return array Setup part of merged template records
      */
-    protected function getMergedTemplates($pageId, $templateId = 0)
+    protected function getMergedTemplates($pageId)
     {
         /** @var $tsParser \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
         $tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);

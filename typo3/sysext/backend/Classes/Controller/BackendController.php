@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Controller;
  */
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -25,6 +24,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -224,15 +224,12 @@ class BackendController
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the render() method, it is rather simple for now
      *
-     * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response
      * @return ResponseInterface the response with the content
      */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function mainAction(): ResponseInterface
     {
         $this->render();
-        $response->getBody()->write($this->content);
-        return $response;
+        return new HtmlResponse($this->content);
     }
 
     /**
@@ -588,23 +585,21 @@ class BackendController
     /**
      * Returns the Module menu for the AJAX request
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function getModuleMenu(ServerRequestInterface $request): ResponseInterface
+    public function getModuleMenu(): ResponseInterface
     {
-        return GeneralUtility::makeInstance(JsonResponse::class, ['menu' => $this->generateModuleMenu()]);
+        return new JsonResponse(['menu' => $this->generateModuleMenu()]);
     }
 
     /**
      * Returns the toolbar for the AJAX request
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function getTopbar(ServerRequestInterface $request): ResponseInterface
+    public function getTopbar(): ResponseInterface
     {
-        return GeneralUtility::makeInstance(JsonResponse::class, ['topbar' => $this->renderTopbar()]);
+        return new JsonResponse(['topbar' => $this->renderTopbar()]);
     }
 
     /**

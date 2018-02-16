@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -64,15 +65,13 @@ class LocalizationController
      * Get used languages in a colPos of a page
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function getUsedLanguagesInPageAndColumn(ServerRequestInterface $request, ResponseInterface $response)
+    public function getUsedLanguagesInPageAndColumn(ServerRequestInterface $request): ResponseInterface
     {
         $params = $request->getQueryParams();
         if (!isset($params['pageId'], $params['colPos'], $params['languageId'])) {
-            $response = $response->withStatus(400);
-            return $response;
+            return new HtmlResponse('', 400);
         }
 
         $pageId = (int)$params['pageId'];
@@ -111,22 +110,20 @@ class LocalizationController
             }
         }
 
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($availableLanguages);
+        return (new JsonResponse())->setPayload($availableLanguages);
     }
 
     /**
      * Get a prepared summary of records being translated
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function getRecordLocalizeSummary(ServerRequestInterface $request, ResponseInterface $response)
+    public function getRecordLocalizeSummary(ServerRequestInterface $request): ResponseInterface
     {
         $params = $request->getQueryParams();
         if (!isset($params['pageId'], $params['colPos'], $params['destLanguageId'], $params['languageId'])) {
-            $response = $response->withStatus(400);
-            return $response;
+            return new HtmlResponse('', 400);
         }
 
         $records = [];
@@ -150,26 +147,22 @@ class LocalizationController
             ];
         }
 
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($records);
+        return (new JsonResponse())->setPayload($records);
     }
 
     /**
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function localizeRecords(ServerRequestInterface $request, ResponseInterface $response)
+    public function localizeRecords(ServerRequestInterface $request): ResponseInterface
     {
         $params = $request->getQueryParams();
         if (!isset($params['pageId'], $params['srcLanguageId'], $params['destLanguageId'], $params['action'], $params['uidList'])) {
-            $response = $response->withStatus(400);
-            return $response;
+            return new HtmlResponse('', 400);
         }
 
         if ($params['action'] !== static::ACTION_COPY && $params['action'] !== static::ACTION_LOCALIZE) {
-            $response->getBody()->write('Invalid action "' . $params['action'] . '" called.');
-            $response = $response->withStatus(400);
-            return $response;
+            return new HtmlResponse('Invalid action "' . $params['action'] . '" called.', 400);
         }
 
         // Filter transmitted but invalid uids
@@ -183,7 +176,7 @@ class LocalizationController
 
         $this->process($params);
 
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload([]);
+        return (new JsonResponse())->setPayload([]);
     }
 
     /**

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Imaging;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
@@ -71,11 +72,10 @@ class IconFactory
 
     /**
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @return string
+     * @return ResponseInterface
      * @internal
      */
-    public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response)
+    public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -89,11 +89,7 @@ class IconFactory
             $overlayIdentifier = null;
         }
         $iconState = IconState::cast($iconState);
-        $response->getBody()->write(
-            $this->getIcon($identifier, $size, $overlayIdentifier, $iconState)->render($alternativeMarkupIdentifier)
-        );
-        $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
-        return $response;
+        return new HtmlResponse($this->getIcon($identifier, $size, $overlayIdentifier, $iconState)->render($alternativeMarkupIdentifier));
     }
 
     /**

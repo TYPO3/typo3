@@ -93,7 +93,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
         }
 
         $typoLink = GeneralUtility::makeInstance(TypoLinkCodecService::class)->encode($typoLinkParts);
-        return GeneralUtility::makeInstance(JsonResponse::class, ['typoLink' => $typoLink]);
+        return new JsonResponse(['typoLink' => $typoLink]);
     }
 
     /**

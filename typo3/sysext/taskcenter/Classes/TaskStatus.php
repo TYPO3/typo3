@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Taskcenter;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 
 /**
  * Status of tasks
@@ -26,10 +27,9 @@ class TaskStatus
      * Saves the section toggle state of tasks in the backend user's uc
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function saveCollapseState(ServerRequestInterface $request, ResponseInterface $response)
+    public function saveCollapseState(ServerRequestInterface $request): ResponseInterface
     {
         // Remove 'el_' in the beginning which is needed for the saveSortingState()
         $item = $request->getParsedBody()['item'] ?? $request->getQueryParams()['item'];
@@ -39,17 +39,16 @@ class TaskStatus
         $this->getBackendUserAuthentication()->uc['taskcenter']['states'][$item] = $state;
         $this->getBackendUserAuthentication()->writeUC();
 
-        return $response;
+        return new HtmlResponse('');
     }
 
     /**
      * Saves the sorting order of tasks in the backend user's uc
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function saveSortingState(ServerRequestInterface $request, ResponseInterface $response)
+    public function saveSortingState(ServerRequestInterface $request): ResponseInterface
     {
         $sort = [];
         $data = $request->getParsedBody()['data'] ?? $request->getQueryParams()['data'];
@@ -61,7 +60,7 @@ class TaskStatus
         $this->getBackendUserAuthentication()->uc['taskcenter']['sorting'] = serialize($sort);
         $this->getBackendUserAuthentication()->writeUC();
 
-        return $response;
+        return new HtmlResponse('');
     }
 
     /**

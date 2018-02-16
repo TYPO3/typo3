@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -57,10 +58,9 @@ class NewMultiplePagesController
      * Main function Handling input variables and rendering main view
      *
      * @param $request ServerRequestInterface
-     * @param $response ResponseInterface
      * @return ResponseInterface Response
      */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
         $pageUid = (int)$request->getQueryParams()['id'];
@@ -70,8 +70,7 @@ class NewMultiplePagesController
         if (!is_array($pageRecord)) {
             // User has no permission on parent page, should not happen, just render an empty page
             $this->moduleTemplate->setContent('');
-            $response->getBody()->write($this->moduleTemplate->renderContent());
-            return $response;
+            return new HtmlResponse($this->moduleTemplate->renderContent());
         }
 
         // Doc header handling
@@ -130,8 +129,7 @@ class NewMultiplePagesController
         }
 
         $this->moduleTemplate->setContent($view->render());
-        $response->getBody()->write($this->moduleTemplate->renderContent());
-        return $response;
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**

@@ -19,7 +19,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This is the ajax handler for backend login after timeout.
@@ -49,7 +48,7 @@ class AjaxLoginController
         } else {
             $result = ['success' => false];
         }
-        return GeneralUtility::makeInstance(JsonResponse::class, ['login' => $result]);
+        return new JsonResponse(['login' => $result]);
     }
 
     /**
@@ -62,7 +61,7 @@ class AjaxLoginController
     {
         $backendUser = $this->getBackendUser();
         $backendUser->logoff();
-        return GeneralUtility::makeInstance(JsonResponse::class, [
+        return new JsonResponse([
             'logout' => [
                 'success' => !isset($backendUser->user['uid'])
             ]
@@ -78,7 +77,7 @@ class AjaxLoginController
     public function refreshAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->getBackendUser()->checkAuthentication();
-        return GeneralUtility::makeInstance(JsonResponse::class, [
+        return new JsonResponse([
             'refresh' => [
                 'success' => true
             ]
@@ -111,7 +110,7 @@ class AjaxLoginController
             // 120 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
             $session['will_time_out'] = $GLOBALS['EXEC_TIME'] >= $ses_tstamp + $timeout - 120;
         }
-        return GeneralUtility::makeInstance(JsonResponse::class, ['login' => $session]);
+        return new JsonResponse(['login' => $session]);
     }
 
     /**

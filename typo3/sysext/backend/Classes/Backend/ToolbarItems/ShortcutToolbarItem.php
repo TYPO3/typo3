@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -142,8 +143,6 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      * Render drop down content
      *
      * @return string HTML
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
-     * @throws \InvalidArgumentException
      */
     public function getDropDown()
     {
@@ -166,17 +165,11 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     /**
      * Renders the menu so that it can be returned as response to an AJAX call
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function menuAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function menuAction(): ResponseInterface
     {
-        $menuContent = $this->getDropDown();
-
-        $response->getBody()->write($menuContent);
-        $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
-        return $response;
+        return new HtmlResponse($this->getDropDown());
     }
 
     /**
@@ -442,16 +435,12 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Fetches the available shortcut groups, renders a form so it can be saved later on, usually called via AJAX
+     * Fetches the available shortcut groups, renders a form so it can be saved later on, called via AJAX
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface the full HTML for the form
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
      */
-    public function editFormAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function editFormAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -474,8 +463,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $editFormView->assign('selectedShortcut', $selectedShortcut);
         $editFormView->assign('shortcutGroups', $shortcutGroups);
 
-        $response->getBody()->write($editFormView->render());
-        return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+        return new HtmlResponse($editFormView->render());
     }
 
     /**
@@ -507,17 +495,17 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 $success = true;
             }
         }
-        return GeneralUtility::makeInstance(JsonResponse::class, ['success' => $success]);
+        return new JsonResponse(['success' => $success]);
     }
 
     /**
      * Creates a shortcut through an AJAX call
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
+     * @throws \RuntimeException
      */
-    public function createShortcutAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function createShortcutAction(ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $parsedBody = $request->getParsedBody();
@@ -539,76 +527,76 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $queryParameters = GeneralUtility::explodeUrl2Array($queryParts['query'], true);
 
         // Proceed only if no scheme is defined, as URL is expected to be relative
-        if (empty($queryParts['scheme'])) {
-            if (is_array($queryParameters['edit'])) {
-                $shortcut['table'] = key($queryParameters['edit']);
-                $shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
-                $shortcut['pid'] = BackendUtility::getRecord($shortcut['table'], $shortcut['recordid'])['pid'];
-                if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] === 'edit') {
-                    $shortcut['type'] = 'edit';
-                    $shortcutNamePrepend = htmlspecialchars($languageService->getLL('shortcut_edit'));
-                } elseif ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] === 'new') {
-                    $shortcut['type'] = 'new';
-                    $shortcutNamePrepend = htmlspecialchars($languageService->getLL('shortcut_create'));
-                }
-            } else {
-                $shortcut['type'] = 'other';
-                $shortcut['table'] = '';
-                $shortcut['recordid'] = 0;
-            }
-
-            // Check if given id is a combined identifier
-            if (!empty($queryParameters['id']) && preg_match('/^[0-9]+:/', $queryParameters['id'])) {
-                try {
-                    $resourceFactory = ResourceFactory::getInstance();
-                    $resource = $resourceFactory->getObjectFromCombinedIdentifier($queryParameters['id']);
-                    $shortcutName = trim($shortcutNamePrepend . ' ' . $resource->getName());
-                } catch (ResourceDoesNotExistException $e) {
-                }
-            } else {
-                // Lookup the title of this page and use it as default description
-                $pageId = (int)($shortcut['pid'] ?: ($shortcut['recordid'] ?: $this->getLinkedPageId($url)));
-                $page = false;
-                if ($pageId) {
-                    $page = BackendUtility::getRecord('pages', $pageId);
-                }
-                if (!empty($page)) {
-                    // Set the name to the title of the page
-                    if ($shortcut['type'] === 'other') {
-                        if (empty($shortcutName)) {
-                            $shortcutName = $page['title'];
-                        } else {
-                            $shortcutName .= ' (' . $page['title'] . ')';
-                        }
-                    } else {
-                        $shortcutName = $shortcutNamePrepend . ' ' .
-                            $languageService->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']) .
-                            ' (' . $page['title'] . ')';
-                    }
-                } elseif ($shortcut['table'] !== '' && $shortcut['type'] !== 'other') {
-                    $shortcutName = $shortcutNamePrepend . ' ' .
-                        $languageService->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']);
-                }
-            }
-
-            return $this->tryAddingTheShortcut($response, $url, $shortcutName);
+        if (!empty($queryParameters['scheme'])) {
+            throw new \RuntimeException('relative url expected', 1518785877);
         }
+
+        if (is_array($queryParameters['edit'])) {
+            $shortcut['table'] = key($queryParameters['edit']);
+            $shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
+            $shortcut['pid'] = BackendUtility::getRecord($shortcut['table'], $shortcut['recordid'])['pid'];
+            if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] === 'edit') {
+                $shortcut['type'] = 'edit';
+                $shortcutNamePrepend = htmlspecialchars($languageService->getLL('shortcut_edit'));
+            } elseif ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] === 'new') {
+                $shortcut['type'] = 'new';
+                $shortcutNamePrepend = htmlspecialchars($languageService->getLL('shortcut_create'));
+            }
+        } else {
+            $shortcut['type'] = 'other';
+            $shortcut['table'] = '';
+            $shortcut['recordid'] = 0;
+        }
+
+        // Check if given id is a combined identifier
+        if (!empty($queryParameters['id']) && preg_match('/^[0-9]+:/', $queryParameters['id'])) {
+            try {
+                $resourceFactory = ResourceFactory::getInstance();
+                $resource = $resourceFactory->getObjectFromCombinedIdentifier($queryParameters['id']);
+                $shortcutName = trim($shortcutNamePrepend . ' ' . $resource->getName());
+            } catch (ResourceDoesNotExistException $e) {
+            }
+        } else {
+            // Lookup the title of this page and use it as default description
+            $pageId = (int)($shortcut['pid'] ?: ($shortcut['recordid'] ?: $this->getLinkedPageId($url)));
+            $page = false;
+            if ($pageId) {
+                $page = BackendUtility::getRecord('pages', $pageId);
+            }
+            if (!empty($page)) {
+                // Set the name to the title of the page
+                if ($shortcut['type'] === 'other') {
+                    if (empty($shortcutName)) {
+                        $shortcutName = $page['title'];
+                    } else {
+                        $shortcutName .= ' (' . $page['title'] . ')';
+                    }
+                } else {
+                    $shortcutName = $shortcutNamePrepend . ' ' .
+                        $languageService->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']) .
+                        ' (' . $page['title'] . ')';
+                }
+            } elseif ($shortcut['table'] !== '' && $shortcut['type'] !== 'other') {
+                $shortcutName = $shortcutNamePrepend . ' ' .
+                    $languageService->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']);
+            }
+        }
+
+        $shortcutCreated = $this->tryAddingTheShortcut($parsedBody['module'], $url, $shortcutName);
+        return new HtmlResponse($shortcutCreated);
     }
 
     /**
      * Try to adding a shortcut
      *
-     * @param ResponseInterface $response
+     * @param string $module
      * @param string $url
      * @param string $shortcutName
-     * @return ResponseInterface
-     * @throws \InvalidArgumentException
+     * @return string
      */
-    protected function tryAddingTheShortcut(ResponseInterface $response, $url, $shortcutName)
+    protected function tryAddingTheShortcut(string $module, $url, $shortcutName): string
     {
-        $module = GeneralUtility::_POST('module');
         $shortcutCreated = 'failed';
-
         if (!empty($module) && !empty($url)) {
             $shortcutCreated = 'alreadyExists';
 
@@ -616,9 +604,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 $shortcutCreated = $this->addShortcut($url, $shortcutName, $module);
             }
         }
-
-        $response->getBody()->write($shortcutCreated);
-        return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+        return $shortcutCreated;
     }
 
     /**
@@ -690,10 +676,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      * permissions to do so and saves the changes if everything is ok
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function saveFormAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function saveFormAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -730,11 +715,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         }
 
         if ($queryBuilder->execute() === 1) {
-            $response->getBody()->write($shortcutName);
-        } else {
-            $response->getBody()->write('failed');
+            return new HtmlResponse($shortcutName);
         }
-        return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+        return new HtmlResponse('failed');
     }
 
     /**

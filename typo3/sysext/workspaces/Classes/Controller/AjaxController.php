@@ -18,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Implements the AJAX functionality for the various asynchronous calls
@@ -69,7 +68,7 @@ class AjaxController
             'workspaceId' => $workspaceId,
             'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid
         ];
-        return GeneralUtility::makeInstance(JsonResponse::class, $ajaxResponse);
+        return new JsonResponse($ajaxResponse);
     }
 
     /**

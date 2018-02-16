@@ -17,11 +17,14 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -164,10 +167,9 @@ class FileController
      * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
      *
      * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response
      * @return ResponseInterface the response with the content
      */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->main();
 
@@ -189,12 +191,13 @@ class FileController
             $this->redirect = (string)$uriBuilder->buildUriFromRoute('file_edit', $urlParameters);
         }
         if ($this->redirect) {
-            return $response
-                    ->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect))
-                    ->withStatus(303);
+            return new RedirectResponse(
+                GeneralUtility::locationHeaderUrl($this->redirect),
+                303
+            );
         }
         // empty response
-        return $response;
+        return new HtmlResponse('');
     }
 
     /**
@@ -204,34 +207,28 @@ class FileController
      * actual return value
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response)
+    public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
         $this->main();
         $errors = $this->fileProcessor->getErrorMessages();
         if (!empty($errors)) {
-            $response->getBody()->write('<t3err>' . implode(',', $errors) . '</t3err>');
-            $response = $response
-                ->withHeader('Content-Type', 'text/html; charset=utf-8')
-                ->withStatus(500, '(AJAX)');
-        } else {
-            $flatResult = [];
-            foreach ($this->fileData as $action => $results) {
-                foreach ($results as $result) {
-                    if (is_array($result)) {
-                        foreach ($result as $subResult) {
-                            $flatResult[$action][] = $this->flattenResultDataValue($subResult);
-                        }
-                    } else {
-                        $flatResult[$action][] = $this->flattenResultDataValue($result);
+            return (new HtmlResponse('<t3err>' . implode(',', $errors) . '</t3err>'))->withStatus(500, '(AJAX)');
+        }
+        $flatResult = [];
+        foreach ($this->fileData as $action => $results) {
+            foreach ($results as $result) {
+                if (is_array($result)) {
+                    foreach ($result as $subResult) {
+                        $flatResult[$action][] = $this->flattenResultDataValue($subResult);
                     }
+                } else {
+                    $flatResult[$action][] = $this->flattenResultDataValue($result);
                 }
             }
-            return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($flatResult);
         }
-        return $response;
+        return (new JsonResponse())->setPayload($flatResult);
     }
 
     /**
@@ -240,13 +237,12 @@ class FileController
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function fileExistsInFolderAction(ServerRequestInterface $request)
+    public function fileExistsInFolderAction(ServerRequestInterface $request): ResponseInterface
     {
         $fileName = $request->getParsedBody()['fileName'] ?? $request->getQueryParams()['fileName'];
         $fileTarget = $request->getParsedBody()['fileTarget'] ?? $request->getQueryParams()['fileTarget'];
 
-        /** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
-        $fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        $fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         /** @var Folder $fileTargetObject */
         $fileTargetObject = $fileFactory->retrieveFileOrFolderObject($fileTarget);
         $processedFileName = $fileTargetObject->getStorage()->sanitizeFileName($fileName, $fileTargetObject);
@@ -255,7 +251,7 @@ class FileController
         if ($fileTargetObject->hasFile($processedFileName)) {
             $result = $this->flattenResultDataValue($fileTargetObject->getStorage()->getFileInFolder($processedFileName, $fileTargetObject));
         }
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($result);
+        return (new JsonResponse())->setPayload($result);
     }
 
     /**

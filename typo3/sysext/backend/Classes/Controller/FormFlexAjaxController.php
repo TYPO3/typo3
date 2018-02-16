@@ -180,6 +180,6 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $requireJsModule = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($newContainerResult);
         $jsonResult['scriptCall'] = array_merge($requireJsModule, $jsonResult['scriptCall']);
 
-        return GeneralUtility::makeInstance(JsonResponse::class, $jsonResult);
+        return new JsonResponse($jsonResult);
     }
 }

@@ -15,57 +15,30 @@ namespace TYPO3\CMS\Backend\Controller;
  */
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 
 /**
- * Script Class, creating the content for the dummy script - which is just blank output.
+ * '/empty' routing target returns dummy content.
  */
 class DummyController
 {
     /**
-     * @var string
-     */
-    public $content;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $GLOBALS['SOBE'] = $this;
-    }
-
-    /**
-     * Injects the request object for the current request or subrequest
-     * As this controller goes only through the main() method, it is rather simple for now
+     * Return simple dummy content
      *
-     * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response
      * @return ResponseInterface the response with the content
      */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function mainAction(): ResponseInterface
     {
-        $this->main();
-
-        $response->getBody()->write($this->content);
-        return $response;
-    }
-
-    /**
-     * Create content for the dummy script - outputting a blank page.
-     */
-    public function main()
-    {
-        // Start page
-        $this->content .= $this->getDocumentTemplate()->startPage('Dummy document');
-        // End page:
-        $this->content .= $this->getDocumentTemplate()->endPage();
+        $documentTemplate = $this->getDocumentTemplate();
+        $content = $documentTemplate->startPage('Dummy document') . $documentTemplate->endPage();
+        return new HtmlResponse($content);
     }
 
     /**
      * Returns an instance of DocumentTemplate
      *
-     * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @return DocumentTemplate
      */
     protected function getDocumentTemplate()
     {

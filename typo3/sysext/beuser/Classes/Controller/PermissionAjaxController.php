@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -70,10 +71,9 @@ class PermissionAjaxController
      * The main dispatcher function. Collect data and prepare HTML output.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
+    public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
         $extPath = ExtensionManagementUtility::extPath('beuser');
 
@@ -81,13 +81,12 @@ class PermissionAjaxController
         $view->setPartialRootPaths(['default' => ExtensionManagementUtility::extPath('beuser') . 'Resources/Private/Partials']);
         $view->assign('pageId', $this->conf['page']);
 
-        $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+        $response = new HtmlResponse('');
 
         // Basic test for required value
         if ($this->conf['page'] <= 0) {
             $response->getBody()->write('This script cannot be called directly');
-            $response = $response->withStatus(500);
-            return $response;
+            return $response->withStatus(500);
         }
 
         $content = '';

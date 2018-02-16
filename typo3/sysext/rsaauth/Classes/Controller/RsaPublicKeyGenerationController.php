@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Rsaauth\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Rsaauth\Backend\BackendFactory;
 use TYPO3\CMS\Rsaauth\Storage\StorageFactory;
 
@@ -26,16 +27,15 @@ class RsaPublicKeyGenerationController
 {
     /**
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function processRequest(ServerRequestInterface $request, ResponseInterface $response)
+    public function processRequest(ServerRequestInterface $request): ResponseInterface
     {
         /** @var \TYPO3\CMS\Rsaauth\Backend\AbstractBackend $backend */
         $backend = BackendFactory::getBackend();
         if ($backend === null) {
             // add a HTTP 500 error code, if an error occurred
-            return $response->withStatus(500);
+            return new HtmlResponse('', 500);
         }
 
         $keyPair = $backend->createNewKeyPair();
@@ -43,7 +43,6 @@ class RsaPublicKeyGenerationController
         $storage->put($keyPair->getPrivateKey());
         session_commit();
         $content = $keyPair->getPublicKeyModulus() . ':' . sprintf('%x', $keyPair->getExponent()) . ':';
-        $response->getBody()->write($content);
-        return $response;
+        return new HtmlResponse($content);
     }
 }

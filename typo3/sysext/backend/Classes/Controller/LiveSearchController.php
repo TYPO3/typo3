@@ -59,6 +59,6 @@ class LiveSearchController
                 $searchResults[] = $item;
             }
         }
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($searchResults);
+        return (new JsonResponse())->setPayload($searchResults);
     }
 }

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -51,10 +52,9 @@ class ImageManipulationWizard
      * Returns the HTML for the wizard inside the modal
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface $response
      */
-    public function getWizardAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function getWizardAction(ServerRequestInterface $request): ResponseInterface
     {
         if ($this->isSignatureValid($request)) {
             $queryParams = json_decode($request->getQueryParams()['arguments'], true);
@@ -71,11 +71,9 @@ class ImageManipulationWizard
                 'cropVariants' => $queryParams['cropVariants']
             ];
             $content = $this->templateView->renderSection('Main', $viewData);
-            $response->getBody()->write($content);
-
-            return $response;
+            return new HtmlResponse($content);
         }
-        return $response->withStatus(403);
+        return new HtmlResponse('', 403);
     }
 
     /**

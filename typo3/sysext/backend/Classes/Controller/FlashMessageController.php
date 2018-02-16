@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Controller;
  */
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,10 +28,9 @@ class FlashMessageController
     /**
      * Renders the FlashMessages from queue and returns them as JSON.
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function getQueuedFlashMessagesAction(ServerRequestInterface $request): ResponseInterface
+    public function getQueuedFlashMessagesAction(): ResponseInterface
     {
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
@@ -47,6 +45,6 @@ class FlashMessageController
             ];
         }
 
-        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($messages);
+        return (new JsonResponse())->setPayload($messages);
     }
 }
