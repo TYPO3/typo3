@@ -398,12 +398,23 @@ class InputLinkElement extends AbstractFormElement
             case LinkService::TYPE_RECORD:
                 $table = $this->data['pageTsConfig']['TCEMAIN.']['linkHandler.'][$linkData['identifier'] . '.']['configuration.']['table'];
                 $record = BackendUtility::getRecord($table, $linkData['uid']);
-                $recordTitle = BackendUtility::getRecordTitle($table, $record);
-                $tableTitle = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
-                $data = [
-                    'text' => sprintf('%s [%s:%d]', $recordTitle, $tableTitle, $linkData['uid']),
-                    'icon' => $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render()
-                ];
+                if ($record) {
+                    $recordTitle = BackendUtility::getRecordTitle($table, $record);
+                    $tableTitle = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
+                    $data = [
+                        'text' => sprintf('%s [%s:%d]', $recordTitle, $tableTitle, $linkData['uid']),
+                        'icon' => $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render(),
+                    ];
+                } else {
+                    $icon = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
+                    if (empty($icon)) {
+                        $icon = 'tcarecords-' . $table . '-default';
+                    }
+                    $data = [
+                        'text' => sprintf('%s', $linkData['uid']),
+                        'icon' => $this->iconFactory->getIcon('tcarecords-' . $table . '-default', Icon::SIZE_SMALL, 'overlay-missing')->render(),
+                    ];
+                }
                 break;
             default:
                 // Please note that this hook is preliminary and might change, as this element could become its own
