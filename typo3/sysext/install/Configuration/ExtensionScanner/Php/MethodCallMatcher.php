@@ -1605,4 +1605,11 @@ return [
             'Deprecation-83904-ArrayHandlingInAbstractTreeView.rst',
         ],
     ],
+    'TYPO3\CMS\Filelist\FileFacade->getIcon' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-83942-DeprecatedFileFacadegetIcon.rst',
+        ],
+    ],
 ];

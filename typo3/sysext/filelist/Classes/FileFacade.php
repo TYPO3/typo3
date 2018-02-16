@@ -15,9 +15,11 @@ namespace TYPO3\CMS\Filelist;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -60,9 +62,11 @@ class FileFacade
 
     /**
      * @return string
+     * @deprecated
      */
-    public function getIcon()
+    public function getIcon(): string
     {
+        trigger_error('This method has been deprecated in v9 will be removed in TYPO3 v10, use ViewHelper <core:iconForResource /> instead', E_USER_DEPRECATED);
         $title = htmlspecialchars($this->resource->getName() . ' [' . (int)$this->resource->getProperty('uid') . ']');
         return '<span title="' . $title . '">' . $this->iconFactory->getIconForResource($this->resource, Icon::SIZE_SMALL) . '</span>';
     }
@@ -70,7 +74,7 @@ class FileFacade
     /**
      * @return \TYPO3\CMS\Core\Resource\FileInterface
      */
-    public function getResource()
+    public function getResource(): FileInterface
     {
         return $this->resource;
     }
@@ -78,7 +82,7 @@ class FileFacade
     /**
      * @return bool
      */
-    public function getIsEditable()
+    public function getIsEditable(): bool
     {
         return $this->getIsWritable()
             && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $this->resource->getExtension());
@@ -87,7 +91,7 @@ class FileFacade
     /**
      * @return bool
      */
-    public function getIsMetadataEditable()
+    public function getIsMetadataEditable(): bool
     {
         return $this->resource->isIndexed() && $this->getIsWritable() && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata');
     }
@@ -95,7 +99,7 @@ class FileFacade
     /**
      * @return int
      */
-    public function getMetadataUid()
+    public function getMetadataUid(): int
     {
         $uid = 0;
         $method = '_getMetadata';
@@ -113,7 +117,7 @@ class FileFacade
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->resource->getName();
     }
@@ -121,7 +125,7 @@ class FileFacade
     /**
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         $method = 'getReadablePath';
         if (is_callable([$this->resource->getParentFolder(), $method])) {
@@ -134,7 +138,7 @@ class FileFacade
     /**
      * @return string
      */
-    public function getPublicUrl()
+    public function getPublicUrl(): string
     {
         return $this->resource->getPublicUrl(true);
     }
@@ -142,7 +146,7 @@ class FileFacade
     /**
      * @return string
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         return strtoupper($this->resource->getExtension());
     }
@@ -150,7 +154,7 @@ class FileFacade
     /**
      * @return string
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->resource->getStorage()->getUid() . ':' . $this->resource->getIdentifier();
     }
@@ -158,7 +162,7 @@ class FileFacade
     /**
      * @return string
      */
-    public function getLastModified()
+    public function getLastModified(): string
     {
         return BackendUtility::date($this->resource->getModificationTime());
     }
@@ -166,7 +170,7 @@ class FileFacade
     /**
      * @return string
      */
-    public function getSize()
+    public function getSize(): string
     {
         return GeneralUtility::formatSize($this->resource->getSize(), htmlspecialchars($this->getLanguageService()->getLL('byteSizeUnits')));
     }
@@ -249,7 +253,7 @@ class FileFacade
      *
      * @return int
      */
-    public function getReferenceCount()
+    public function getReferenceCount(): int
     {
         $uid = (int)$this->resource->getProperty('uid');
 
@@ -303,7 +307,7 @@ class FileFacade
     /**
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
@@ -311,7 +315,7 @@ class FileFacade
     /**
      * @return \TYPO3\CMS\Core\Localization\LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
