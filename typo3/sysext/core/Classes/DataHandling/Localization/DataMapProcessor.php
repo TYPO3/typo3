@@ -325,13 +325,15 @@ class DataMapProcessor
             );
         }
 
-        foreach ($fieldNames as $fieldName) {
-            $this->synchronizeFieldValues(
-                $item,
-                $fieldName,
-                $fromRecord,
-                $forRecord
-            );
+        if (is_array($fromRecord) && is_array($forRecord)) {
+            foreach ($fieldNames as $fieldName) {
+                $this->synchronizeFieldValues(
+                    $item,
+                    $fieldName,
+                    $fromRecord,
+                    $forRecord
+                );
+            }
         }
     }
 
