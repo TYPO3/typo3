@@ -258,7 +258,10 @@ define(['jquery',
 
       // no filelist then create own progress table
       if (me.$fileList.length === 0) {
-        me.$fileList = $('<table />').attr('id', 'typo3-filelist').addClass('table table-striped table-hover upload-queue').html('<tbody></tbody>').hide();
+        me.$fileList = $('<table />')
+          .attr('id', 'typo3-filelist')
+          .addClass('table table-striped table-hover upload-queue')
+          .html('<tbody></tbody>').hide();
         if (me.dropZoneInsertBefore) {
           me.$fileList.insertAfter(me.$dropzone);
         } else {
@@ -304,12 +307,14 @@ define(['jquery',
       }
       var $modalContent = $('<div/>').append(
         $('<p/>').text(TYPO3.lang['file_upload.existingfiles.description']),
-        $('<table/>').append(
-          $('<tr />').append(
-            $('<th/>'),
-            $('<th/>').text(TYPO3.lang['file_upload.header.originalFile']),
-            $('<th/>').text(TYPO3.lang['file_upload.header.uploadedFile']),
-            $('<th/>').text(TYPO3.lang['file_upload.header.action'])
+        $('<table/>', {class: 'table'}).append(
+          $('<thead/>').append(
+            $('<tr />').append(
+              $('<th/>'),
+              $('<th/>').text(TYPO3.lang['file_upload.header.originalFile']),
+              $('<th/>').text(TYPO3.lang['file_upload.header.uploadedFile']),
+              $('<th/>').text(TYPO3.lang['file_upload.header.action'])
+            )
           )
         )
       );
@@ -339,7 +344,7 @@ define(['jquery',
             )
           )
         );
-        $modalContent.find('table').append($record);
+        $modalContent.find('table').append('<tbody />').append($record);
       }
 
       var $modal = Modal.confirm(TYPO3.lang['file_upload.existingfiles.title'], $modalContent, Severity.warning, [
