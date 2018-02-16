@@ -139,7 +139,9 @@
 						<f:for each="{day}" as="logItem">
 							<tr>
 								<td>
-									<belog:ErrorIcon errorNumber="{logItem.error}"/>
+									<f:if condition="{logItem.errorIconClass}">
+										<core:icon identifier="{logItem.errorIconClass}" />
+									</f:if>
 								</td>
 								<td>
 									<f:format.date format="H:i:s">@{logItem.tstamp}</f:format.date>

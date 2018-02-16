@@ -279,6 +279,24 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
+     * Get class name for the error code
+     *
+     * @return string
+     */
+    public function getErrorIconClass(): string
+    {
+        switch ($this->getError()) {
+            case 1:
+                return 'status-dialog-warning';
+            case 2:
+            case 3:
+                return 'status-dialog-error';
+            default:
+                return 'empty-empty';
+        }
+    }
+
+    /**
      * Set details
      *
      * @param string $details
