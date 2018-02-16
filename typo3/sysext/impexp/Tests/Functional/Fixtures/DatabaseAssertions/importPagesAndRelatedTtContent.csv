@@ -1,12 +1,12 @@
-"pages"
-,"uid","pid","sorting","deleted","title"
-,1,0,256,0,"Root"
-,2,1,256,0,"Dummy 1-2"
-"tt_content"
-,"uid","pid","sorting","deleted","header","header_link"
-,1,1,256,0,"Test content 2","file:2"
-,2,1,128,0,"Test content","file:1"
-"sys_file"
+"pages",,,,,,,,,,,,
+,"uid","pid","sorting","deleted","title",,,,,,,
+,1,0,256,0,"Root",,,,,,,
+,2,1,256,0,"Dummy 1-2",,,,,,,
+"tt_content",,,,,,,,,,,,
+,"uid","pid","sorting","deleted","header","header_link",,,,,,
+,1,1,256,0,"Test content 2","file:2",,,,,,
+,2,1,128,0,"Test content","file:1",,,,,,
+"sys_file",,,,,,,,,,,,
 ,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size"
-,1,0,1,2,"/user_upload/typo3_image3.jpg","25777b72e5e1cbed2d1b33e4fe5b737304b5bd28","19669f1e02c2f16705ec7587044c66443be70725","jpg","image/jpeg","typo3_image3.jpg","e873c1e2ffd0f191e183a1057de3eef4d62e782d","5565"
-,2,0,0,1,"/typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html","ae03df120da87352822f4aae6d476086cb8c0cf8","85051482e1ba204348a9b9f6c1a37069e77de027","html","text/html","Empty.html","4a53ba5b5a156b82e3efd443f9a402f8c6e6dd08","92"
+,1,0,1,2,"/user_upload/typo3_image3.jpg","25777b72e5e1cbed2d1b33e4fe5b737304b5bd28","19669f1e02c2f16705ec7587044c66443be70725","jpg","image/jpeg","typo3_image3.jpg","e873c1e2ffd0f191e183a1057de3eef4d62e782d",5565
+,2,0,0,1,"/typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html","ae03df120da87352822f4aae6d476086cb8c0cf8","85051482e1ba204348a9b9f6c1a37069e77de027","html","text/html","Empty.html","4a53ba5b5a156b82e3efd443f9a402f8c6e6dd08",92

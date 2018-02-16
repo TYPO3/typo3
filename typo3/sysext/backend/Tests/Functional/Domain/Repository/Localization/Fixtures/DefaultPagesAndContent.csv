@@ -1,23 +1,23 @@
-pages,,,,,,,,,
-,uid,pid,sorting,deleted,t3_origuid,title,,,
-,1,0,256,0,0,Connected mode,,,
-,2,0,512,0,0,Free mode,,,
-,3,0,768,0,0,Free mode CE copied from pid 2,,,
-sys_language,,,,,,,,,
-,uid,pid,hidden,title,flag,,,,
-,1,0,0,Dansk,dk,,,,
-,2,0,0,Deutsch,de,,,,
-tt_content,,,,,,,,,
-,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,l10n_source,t3_origuid,header
-,297,1,256,0,0,0,0,0,Regular Element #1
-,298,1,512,0,0,0,0,0,Regular Element #2
-,299,1,768,0,0,0,0,0,Regular Element #3
-,300,1,1024,0,1,299,299,299,[Translate to Dansk:] Regular Element #3
-,301,1,384,0,1,297,297,297,[Translate to Dansk:] Regular Element #1
-,302,1,448,0,2,297,301,301,[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1
-,310,2,256,0,0,0,0,0,Regular Element #10
-,311,2,512,0,1,0,310,310,[Translate to Dansk:] Regular Element #10
-,312,2,768,0,2,0,311,311,[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10
-,313,3,128,0,0,0,0,310,Regular Element #10
-,314,3,256,0,1,0,313,311,[Translate to Dansk:] Regular Element #10
-,315,3,512,0,2,0,314,312,[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10
+"pages",,,,,,,,,
+,"uid","pid","sorting","deleted","t3_origuid","title",,,
+,1,0,256,0,0,"Connected mode",,,
+,2,0,512,0,0,"Free mode",,,
+,3,0,768,0,0,"Free mode CE copied from pid 2",,,
+"sys_language",,,,,,,,,
+,"uid","pid","hidden","title","flag",,,,
+,1,0,0,"Dansk","dk",,,,
+,2,0,0,"Deutsch","de",,,,
+"tt_content",,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3_origuid","header"
+,297,1,256,0,0,0,0,0,"Regular Element #1"
+,298,1,512,0,0,0,0,0,"Regular Element #2"
+,299,1,768,0,0,0,0,0,"Regular Element #3"
+,300,1,1024,0,1,299,299,299,"[Translate to Dansk:] Regular Element #3"
+,301,1,384,0,1,297,297,297,"[Translate to Dansk:] Regular Element #1"
+,302,1,448,0,2,297,301,301,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
+,310,2,256,0,0,0,0,0,"Regular Element #10"
+,311,2,512,0,1,0,310,310,"[Translate to Dansk:] Regular Element #10"
+,312,2,768,0,2,0,311,311,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10"
+,313,3,128,0,0,0,0,310,"Regular Element #10"
+,314,3,256,0,1,0,313,311,"[Translate to Dansk:] Regular Element #10"
+,315,3,512,0,2,0,314,312,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10"
