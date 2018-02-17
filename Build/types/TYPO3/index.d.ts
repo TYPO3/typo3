@@ -114,6 +114,6 @@ interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
  * Required to make jQuery plugins "available" in TypeScript
  */
 interface JQuery {
-  clearable(): JQuery;
+  clearable(options?: any): JQuery;
   dragUploader(options?: DragUploaderOptions): JQuery;
 }
