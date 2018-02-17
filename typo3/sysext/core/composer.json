@@ -33,15 +33,15 @@
 		"mso/idna-convert": "^1.1.0",
 		"typo3fluid/fluid": "^2.4",
 		"guzzlehttp/guzzle": "^6.3.0",
-		"doctrine/dbal": "~2.5.4",
+		"doctrine/dbal": "~2.6",
 		"nikic/php-parser": "^3.1",
 		"symfony/polyfill-intl-icu": "^1.6"
 	},
 	"require-dev": {
-		"typo3/testing-framework": "2.0.1",
+		"typo3/testing-framework": "^3.0",
 		"codeception/codeception": "^2.3",
 		"enm1989/chromedriver": "~2.30",
-		"typo3/cms-styleguide": "~9.0.0",
+		"typo3/cms-styleguide": "~9.0.1",
 		"friendsofphp/php-cs-fixer": "^2.0",
 		"fiunchinho/phpunit-randomizer": "~3.0.0"
 	},
