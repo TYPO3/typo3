@@ -31,7 +31,7 @@
 		}
 	},
 	"require": {
-		"php": "^7.0",
+		"php": ">=7.0.0 <=7.2.99",
 		"ext-json": "*",
 		"ext-pcre": "*",
 		"ext-session": "*",

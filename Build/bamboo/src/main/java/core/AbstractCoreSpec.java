@@ -484,8 +484,15 @@ abstract public class AbstractCoreSpec {
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
                         "./Build/Scripts/checkIntegrityCsvFixtures.php"
-                    )
-            )
+                    ),
+                new ScriptTask()
+                    .description("Run composer.json integrity check")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "./Build/Scripts/checkIntegrityComposer.php"
+                   )
+           )
             .requirements(
                 this.getRequirementPhpVersion70Or71Or72()
             )
