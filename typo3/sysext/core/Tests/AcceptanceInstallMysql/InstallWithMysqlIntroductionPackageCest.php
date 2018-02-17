@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\AcceptanceInstallMysql;
 /**
  * Click through installer, go to backend, check blank site in FE works
  */
-class InstallWithMysqlCest
+class InstallWithMysqlIntroductionPackageCest
 {
     /**
      * @param \AcceptanceTester $I
@@ -29,7 +29,7 @@ class InstallWithMysqlCest
 
         // EnvironmentAndFolders step
         $I->waitForText('Installing TYPO3');
-        $I->see('System looks good. Continue!');
+        $I->waitForText('System looks good. Continue!');
         $I->click('System looks good. Continue!');
 
         // DatabaseConnection step
@@ -52,7 +52,7 @@ class InstallWithMysqlCest
 
         // DefaultConfiguration step - Create empty page
         $I->waitForText('Installation done!');
-        $I->click('#create-site');
+        $I->click('#load-distributions');
         $I->click('Open the TYPO3 Backend');
 
         // Verify backend login successful
@@ -65,8 +65,19 @@ class InstallWithMysqlCest
         $I->seeCookie('be_lastLoginProvider');
         $I->seeCookie('be_typo_user');
 
+        // Loading might take some time
+        $I->switchToIFrame('list_frame');
+        $I->waitForText('Get preconfigured distribution', 30);
+        $I->click('.t3-button-action-installdistribution');
+        $I->waitForText('You successfully installed the distribution:introduction', 30);
+
         // Verify default frontend is rendered
         $I->amOnPage('/');
-        $I->waitForText('Welcome to a default website made with TYPO3');
+        $I->waitForText('Let us introduce you to TYPO3', 30);
+        $I->waitForText('Make it your own');
+
+        // Verify link
+        $I->click('[title="Features"]');
+        $I->waitForText('Feature Complete Out-of-the-box', 30);
     }
 }
