@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Package;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class takes care about dependencies between packages.
@@ -154,8 +154,7 @@ class DependencyResolver
     protected function findFrameworkPackages(array $packageStateConfiguration)
     {
         $frameworkPackageKeys = [];
-        /** @var PackageManager $packageManager */
-        $packageManager = Bootstrap::getInstance()->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
         foreach ($packageStateConfiguration as $packageKey => $packageConfiguration) {
             /** @var Package $package */
             $package = $packageManager->getPackage($packageKey);

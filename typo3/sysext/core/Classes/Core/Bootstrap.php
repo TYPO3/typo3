@@ -218,6 +218,7 @@ class Bootstrap
     public function initializeClassLoader($classLoader)
     {
         $this->setEarlyInstance(\Composer\Autoload\ClassLoader::class, $classLoader);
+        ClassLoadingInformation::setClassLoader($classLoader);
         if (defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE) {
             self::$usesComposerClassLoading = true;
         }
@@ -449,14 +450,14 @@ class Bootstrap
     {
         /** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
         $packageManager = new $packageManagerClassName();
+        GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
         $this->setEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
         ExtensionManagementUtility::setPackageManager($packageManager);
-        $packageManager->injectCoreCache($this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core'));
+        $packageManager->injectCoreCache(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core'));
         $dependencyResolver = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\DependencyResolver::class);
         $dependencyResolver->injectDependencyOrderingService(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class));
         $packageManager->injectDependencyResolver($dependencyResolver);
         $packageManager->initialize();
-        GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
         return $this;
     }
 
@@ -470,8 +471,7 @@ class Bootstrap
     {
         $packages = $GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'] ?? [];
         if (!empty($packages)) {
-            /** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
-            $packageManager = $this->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+            $packageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
             foreach ($packages as $runtimeAddedPackageKey) {
                 $packageManager->activatePackageDuringRuntime($runtimeAddedPackageKey);
             }
@@ -683,7 +683,7 @@ class Bootstrap
      */
     public function setFinalCachingFrameworkCacheConfiguration()
     {
-        $this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+        GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
         return $this;
     }
 
@@ -841,14 +841,14 @@ class Bootstrap
         $cacheIdentifier = 'BackendRoutesFromPackages_' . sha1((TYPO3_version . PATH_site . 'BackendRoutesFromPackages'));
 
         /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
-        $codeCache = $this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
+        $codeCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
         $routesFromPackages = [];
         if ($codeCache->has($cacheIdentifier)) {
             // substr is necessary, because the php frontend wraps php code around the cache value
             $routesFromPackages = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
         } else {
             // Loop over all packages and check for a Configuration/Backend/Routes.php file
-            $packageManager = $this->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+            $packageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
             $packages = $packageManager->getActivePackages();
             foreach ($packages as $package) {
                 $routesFileNameForPackage = $package->getPackagePath() . 'Configuration/Backend/Routes.php';

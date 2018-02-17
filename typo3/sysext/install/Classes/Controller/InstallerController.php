@@ -157,7 +157,7 @@ class InstallerController
 
             // Create a PackageStates.php with all packages activated marked as "part of factory default"
             if (!file_exists(PATH_typo3conf . 'PackageStates.php')) {
-                $packageManager = Bootstrap::getInstance()->getEarlyInstance(PackageManager::class);
+                $packageManager = GeneralUtility::makeInstance(PackageManager::class);
                 $packages = $packageManager->getAvailablePackages();
                 foreach ($packages as $package) {
                     if ($package instanceof PackageInterface

@@ -99,8 +99,7 @@ class Application extends AbstractApplication
             }
             $cacheConfigurationsWithCachesSetToNullBackend[$cacheName] = $cacheConfiguration;
         }
-        /** @var $cacheManager \TYPO3\CMS\Core\Cache\CacheManager */
-        $cacheManager = $this->bootstrap->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
         $cacheManager->setCacheConfigurations($cacheConfigurationsWithCachesSetToNullBackend);
     }
 

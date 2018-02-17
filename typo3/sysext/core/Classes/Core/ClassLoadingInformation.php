@@ -56,6 +56,22 @@ class ClassLoadingInformation
     const AUTOLOAD_CLASSALIASMAP_FILENAME = 'autoload_classaliasmap.php';
 
     /**
+     * @var ClassLoader
+     */
+    protected static $classLoader;
+
+    /**
+     * Sets the package manager instance
+     *
+     * @param ClassLoader $classLoader
+     * @internal
+     */
+    public static function setClassLoader(ClassLoader $classLoader)
+    {
+        static::$classLoader = $classLoader;
+    }
+
+    /**
      * Checks if the autoload_classmap.php exists and we are not in testing context.
      * Used to see if the ClassLoadingInformationGenerator should be called.
      *
@@ -187,7 +203,7 @@ class ClassLoadingInformation
      */
     protected static function getClassLoader()
     {
-        return Bootstrap::getInstance()->getEarlyInstance(ClassLoader::class);
+        return static::$classLoader;
     }
 
     /**
@@ -209,8 +225,7 @@ class ClassLoadingInformation
     protected static function getActiveExtensionPackages()
     {
         $activeExtensionPackages = [];
-        /** @var PackageManager $packageManager */
-        $packageManager = Bootstrap::getInstance()->getEarlyInstance(PackageManager::class);
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
         foreach ($packageManager->getActivePackages() as $package) {
             if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
                 // Skip all core packages as the class loading info is prepared for them already
