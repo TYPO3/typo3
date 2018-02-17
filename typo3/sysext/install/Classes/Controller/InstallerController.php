@@ -170,7 +170,6 @@ class InstallerController
             }
             $extensionConfiguration = new ExtensionConfiguration();
             $extensionConfiguration->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
-            Bootstrap::getInstance()->populateLocalConfiguration();
 
             return new JsonResponse([
                 'success' => true,
