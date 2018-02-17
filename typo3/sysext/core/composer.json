@@ -33,7 +33,7 @@
 		"mso/idna-convert": "^1.1.0",
 		"typo3fluid/fluid": "^2.4",
 		"guzzlehttp/guzzle": "^6.3.0",
-		"doctrine/dbal": "~2.6",
+		"doctrine/dbal": "^2.6",
 		"nikic/php-parser": "^3.1",
 		"symfony/polyfill-intl-icu": "^1.6"
 	},
