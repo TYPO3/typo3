@@ -46,14 +46,6 @@ declare namespace TYPO3 {
         public error(title: string, message: string, duration: Number): string;
         public showMessage(title: string, message: string, severity: Number, duration?: Number): string;
       }
-      export class Severity {
-        public readonly notice: number;
-        public readonly info: number;
-        public readonly ok: number;
-        public readonly warning: number;
-        public readonly: number;
-        public getCssClass(severity: number): string;
-      }
     }
   }
 }
@@ -76,10 +68,6 @@ declare module 'TYPO3/CMS/Backend/Modal' {
 
 declare module 'TYPO3/CMS/Backend/Notification' {
   export = new TYPO3.CMS.Backend.Notification();
-}
-
-declare module 'TYPO3/CMS/Backend/Severity' {
-  export = new TYPO3.CMS.Backend.Severity();
 }
 
 // type definition for global namespace object

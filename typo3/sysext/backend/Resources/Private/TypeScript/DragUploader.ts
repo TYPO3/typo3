@@ -20,7 +20,7 @@ import moment = require('moment');
 import NProgress = require('nprogress');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
-import Severity = require('TYPO3/CMS/Backend/Severity');
+import Severity = require('./Severity');
 
 /**
  * Possible actions for conflicts w/ existing files

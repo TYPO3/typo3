@@ -13,7 +13,7 @@
 
 import * as $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
-import Severity = require('TYPO3/CMS/Backend/Severity');
+import Severity = require('./Severity');
 
 /**
  * Module: TYPO3/CMS/Backend/RenameFile
