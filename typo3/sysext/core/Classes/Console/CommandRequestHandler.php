@@ -29,25 +29,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CommandRequestHandler implements RequestHandlerInterface
 {
     /**
-     * Instance of the current TYPO3 bootstrap
-     * @var Bootstrap
-     */
-    protected $bootstrap;
-
-    /**
      * Instance of the symfony application
      * @var Application
      */
     protected $application;
 
     /**
-     * Constructor handing over the bootstrap
-     *
-     * @param Bootstrap $bootstrap
+     * Constructor initializing the symfony application
      */
-    public function __construct(Bootstrap $bootstrap)
+    public function __construct()
     {
-        $this->bootstrap = $bootstrap;
         $this->application = new Application('TYPO3 CMS', TYPO3_version);
     }
 
@@ -60,11 +51,10 @@ class CommandRequestHandler implements RequestHandlerInterface
     {
         $output = new ConsoleOutput();
 
-        $this->bootstrap
-            ->loadExtTables()
-            // create the BE_USER object (not logged in yet)
-            ->initializeBackendUser(CommandLineUserAuthentication::class)
-            ->initializeLanguageObject();
+        Bootstrap::loadExtTables();
+        // create the BE_USER object (not logged in yet)
+        Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
+        Bootstrap::initializeLanguageObject();
         // Make sure output is not buffered, so command-line output and interaction can take place
         ob_clean();
 

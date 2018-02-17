@@ -35,7 +35,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->setUpBackendUserFromFixture(1);
-        Bootstrap::getInstance()->initializeLanguageObject();
+        Bootstrap::initializeLanguageObject();
         $this->importDataSet(__DIR__ . '/../Fixtures/sys_workspace.xml');
     }
 

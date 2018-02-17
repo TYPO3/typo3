@@ -80,7 +80,7 @@ class ImportCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         // Ensure the _cli_ user is authenticated
-        Bootstrap::getInstance()->initializeBackendAuthentication();
+        Bootstrap::initializeBackendAuthentication();
 
         $pageId = (int)$input->getArgument('pageId');
 

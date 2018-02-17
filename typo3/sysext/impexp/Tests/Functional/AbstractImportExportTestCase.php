@@ -66,7 +66,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
 
         $backendUser = $this->setUpBackendUserFromFixture(1);
         $backendUser->workspace = 0;
-        Bootstrap::getInstance()->initializeLanguageObject();
+        Bootstrap::initializeLanguageObject();
     }
 
     /**

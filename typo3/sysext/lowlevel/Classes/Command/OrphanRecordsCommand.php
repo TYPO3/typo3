@@ -70,7 +70,7 @@ Manual repair suggestions:
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Make sure the _cli_ user is loaded
-        Bootstrap::getInstance()->initializeBackendAuthentication();
+        Bootstrap::initializeBackendAuthentication();
 
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());

@@ -58,7 +58,7 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
         $this->backendUser = $this->setUpBackendUserFromFixture(1);
         $this->backendUser->workspace = 0;
 
-        Bootstrap::getInstance()->initializeLanguageObject();
+        Bootstrap::initializeLanguageObject();
         $this->actionService = GeneralUtility::makeInstance(ActionService::class);
 
         $this->importDataSet(__DIR__ . '/Fixtures/pages.xml');

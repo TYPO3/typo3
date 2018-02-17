@@ -33,7 +33,7 @@ class ActionHandlerTest extends \TYPO3\TestingFramework\Core\Functional\Function
     {
         parent::setUp();
         $this->setUpBackendUserFromFixture(1);
-        \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
+        \TYPO3\CMS\Core\Core\Bootstrap::initializeLanguageObject();
     }
 
     /**

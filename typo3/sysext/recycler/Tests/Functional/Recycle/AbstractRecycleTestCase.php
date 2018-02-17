@@ -41,7 +41,7 @@ abstract class AbstractRecycleTestCase extends \TYPO3\TestingFramework\Core\Func
     {
         parent::setUp();
         $this->importDataSet(__DIR__ . '/../Fixtures/Database/be_groups.xml');
-        \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
+        \TYPO3\CMS\Core\Core\Bootstrap::initializeLanguageObject();
     }
 
     /**

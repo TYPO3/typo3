@@ -60,7 +60,7 @@ class CommandApplication implements ApplicationInterface
      */
     public function run(callable $execute = null)
     {
-        $handler = GeneralUtility::makeInstance(CommandRequestHandler::class, $this->bootstrap);
+        $handler = GeneralUtility::makeInstance(CommandRequestHandler::class);
         $handler->handleRequest(new ArgvInput());
 
         if ($execute !== null) {

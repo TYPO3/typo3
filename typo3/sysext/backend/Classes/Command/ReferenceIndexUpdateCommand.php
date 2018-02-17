@@ -49,7 +49,7 @@ class ReferenceIndexUpdateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        Bootstrap::getInstance()->initializeBackendAuthentication();
+        Bootstrap::initializeBackendAuthentication();
 
         $isTestOnly = $input->getOption('check');
         $isSilent = $output->getVerbosity() !== OutputInterface::VERBOSITY_QUIET;

@@ -56,10 +56,9 @@ class AbstractController
      */
     protected function loadExtLocalconfDatabaseAndExtTables()
     {
-        \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-            ->loadTypo3LoadedExtAndExtLocalconf(false)
-            ->unsetReservedGlobalVariables()
-            ->loadBaseTca(false)
-            ->loadExtTables(false);
+        \TYPO3\CMS\Core\Core\Bootstrap::loadTypo3LoadedExtAndExtLocalconf(false);
+        \TYPO3\CMS\Core\Core\Bootstrap::unsetReservedGlobalVariables();
+        \TYPO3\CMS\Core\Core\Bootstrap::loadBaseTca(false);
+        \TYPO3\CMS\Core\Core\Bootstrap::loadExtTables(false);
     }
 }

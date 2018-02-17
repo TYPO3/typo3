@@ -323,7 +323,7 @@ class SettingsController extends AbstractController
     public function extensionConfigurationGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
         // Extension configuration needs initialized $GLOBALS['LANG']
-        Bootstrap::getInstance()->initializeLanguageObject();
+        Bootstrap::initializeLanguageObject();
         $extensionConfigurationService = new ExtensionConfigurationService();
         $extensionsWithConfigurations = [];
         $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();

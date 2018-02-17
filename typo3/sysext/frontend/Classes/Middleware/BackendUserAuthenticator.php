@@ -80,10 +80,9 @@ class BackendUserAuthenticator implements MiddlewareInterface
         // like $GLOBALS['LANG'] for labels in the language of the BE User, the router, and ext_tables.php for all modules
         // So things like Frontend Editing and Admin Panel can use this for generating links to the TYPO3 Backend.
         if ($GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
-            Bootstrap::getInstance()
-                ->initializeLanguageObject()
-                ->initializeBackendRouter()
-                ->loadExtTables();
+            Bootstrap::initializeLanguageObject();
+            Bootstrap::initializeBackendRouter();
+            Bootstrap::loadExtTables();
             // Initialize admin panel since simulation settings are required here
             $GLOBALS['BE_USER']->initializeAdminPanel();
         }

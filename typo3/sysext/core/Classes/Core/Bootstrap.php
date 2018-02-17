@@ -110,13 +110,13 @@ class Bootstrap
      * Prevent any unwanted output that may corrupt AJAX/compression.
      * This does not interfere with "die()" or "echo"+"exit()" messages!
      *
-     * @return Bootstrap
+     * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function startOutputBuffering()
+    public static function startOutputBuffering()
     {
         ob_start();
-        return $this;
+        return static::$instance;
     }
 
     /**
@@ -337,13 +337,13 @@ class Bootstrap
      * Load ext_localconf of extensions
      *
      * @param bool $allowCaching
-     * @return Bootstrap
+     * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function loadTypo3LoadedExtAndExtLocalconf($allowCaching = true)
+    public static function loadTypo3LoadedExtAndExtLocalconf($allowCaching = true)
     {
         ExtensionManagementUtility::loadExtLocalconf($allowCaching);
-        return $this;
+        return static::$instance;
     }
 
     /**
@@ -368,15 +368,15 @@ class Bootstrap
     /**
      * Set cache_core to null backend, effectively disabling eg. the cache for ext_localconf and PackageManager etc.
      *
-     * @return \TYPO3\CMS\Core\Core\Bootstrap
+     * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function disableCoreCache()
+    public static function disableCoreCache()
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['backend']
             = \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['options']);
-        return $this;
+        return static::$instance;
     }
 
     /**
@@ -545,10 +545,10 @@ class Bootstrap
      * Unsetting reserved global variables:
      * Those are set in "ext:core/ext_tables.php" file:
      *
-     * @return Bootstrap
+     * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function unsetReservedGlobalVariables()
+    public static function unsetReservedGlobalVariables()
     {
         unset($GLOBALS['PAGES_TYPES']);
         unset($GLOBALS['TCA']);
@@ -559,7 +559,7 @@ class Bootstrap
         unset($GLOBALS['TBE_MODULES_EXT']);
         unset($GLOBALS['TCA_DESCR']);
         unset($GLOBALS['LOCAL_LANG']);
-        return $this;
+        return static::$instance;
     }
 
     /**
@@ -568,13 +568,13 @@ class Bootstrap
      * This will mainly set up $TCA through extMgm API.
      *
      * @param bool $allowCaching True, if loading TCA from cache is allowed
-     * @return Bootstrap
+     * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function loadBaseTca(bool $allowCaching = true): Bootstrap
+    public static function loadBaseTca(bool $allowCaching = true)
     {
         ExtensionManagementUtility::loadBaseTca($allowCaching);
-        return $this;
+        return static::$instance;
     }
 
     /**
@@ -584,14 +584,14 @@ class Bootstrap
      * or the according cache file if exists.
      *
      * @param bool $allowCaching True, if reading compiled ext_tables file from cache is allowed
-     * @return Bootstrap
+     * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function loadExtTables(bool $allowCaching = true): Bootstrap
+    public static function loadExtTables(bool $allowCaching = true)
     {
         ExtensionManagementUtility::loadExtTables($allowCaching);
-        $this->runExtTablesPostProcessingHooks();
-        return $this;
+        static::runExtTablesPostProcessingHooks();
+        return static::$instance;
     }
 
     /**
@@ -599,7 +599,7 @@ class Bootstrap
      *
      * @throws \UnexpectedValueException
      */
-    protected function runExtTablesPostProcessingHooks()
+    protected static function runExtTablesPostProcessingHooks()
     {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] ?? [] as $className) {
             /** @var $hookObject \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface */
@@ -618,10 +618,10 @@ class Bootstrap
      * Initialize the Routing for the TYPO3 Backend
      * Loads all routes registered inside all packages and stores them inside the Router
      *
-     * @return Bootstrap
+     * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function initializeBackendRouter()
+    public static function initializeBackendRouter()
     {
         // See if the Routes.php from all active packages have been built together already
         $cacheIdentifier = 'BackendRoutesFromPackages_' . sha1((TYPO3_version . PATH_site . 'BackendRoutesFromPackages'));
@@ -669,17 +669,17 @@ class Bootstrap
             $route = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Route::class, $path, $options);
             $router->addRoute($name, $route);
         }
-        return $this;
+        return static::$instance;
     }
 
     /**
      * Initialize backend user object in globals
      *
      * @param string $className usually \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class but can be used for CLI
-     * @return Bootstrap
+     * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function initializeBackendUser($className = \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class)
+    public static function initializeBackendUser($className = \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class)
     {
         /** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
         $backendUser = GeneralUtility::makeInstance($className);
@@ -687,7 +687,7 @@ class Bootstrap
         // might trigger code which relies on it. See: #45625
         $GLOBALS['BE_USER'] = $backendUser;
         $backendUser->start();
-        return $this;
+        return static::$instance;
     }
 
     /**
@@ -695,25 +695,25 @@ class Bootstrap
      *
      * @internal This is not a public API method, do not use in own extensions
      * @param bool $proceedIfNoUserIsLoggedIn if set to TRUE, no forced redirect to the login page will be done
-     * @return \TYPO3\CMS\Core\Core\Bootstrap
+     * @return Bootstrap|null
      */
-    public function initializeBackendAuthentication($proceedIfNoUserIsLoggedIn = false)
+    public static function initializeBackendAuthentication($proceedIfNoUserIsLoggedIn = false)
     {
         $GLOBALS['BE_USER']->backendCheckLogin($proceedIfNoUserIsLoggedIn);
-        return $this;
+        return static::$instance;
     }
 
     /**
      * Initialize language object
      *
-     * @return Bootstrap
+     * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function initializeLanguageObject()
+    public static function initializeLanguageObject()
     {
         /** @var $GLOBALS['LANG'] \TYPO3\CMS\Core\Localization\LanguageService */
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
         $GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
-        return $this;
+        return static::$instance;
     }
 }

@@ -87,7 +87,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         $this->backendUser->workspace = 0;
 
         $this->actionService = $this->getActionService();
-        Bootstrap::getInstance()->initializeLanguageObject();
+        Bootstrap::initializeLanguageObject();
     }
 
     protected function tearDown()

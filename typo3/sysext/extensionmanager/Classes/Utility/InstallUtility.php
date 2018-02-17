@@ -421,9 +421,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $this->reloadOpcache();
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtLocalconf(false);
-        \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-            ->loadBaseTca(false)
-            ->loadExtTables(false);
+        \TYPO3\CMS\Core\Core\Bootstrap::loadBaseTca(false);
+        \TYPO3\CMS\Core\Core\Bootstrap::loadExtTables(false);
     }
 
     /**

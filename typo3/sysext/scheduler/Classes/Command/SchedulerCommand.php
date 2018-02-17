@@ -76,7 +76,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
     public function execute(InputInterface $input, OutputInterface $output)
     {
         // Make sure the _cli_ user is loaded
-        Bootstrap::getInstance()->initializeBackendAuthentication();
+        Bootstrap::initializeBackendAuthentication();
 
         $this->scheduler = GeneralUtility::makeInstance(Scheduler::class);
 

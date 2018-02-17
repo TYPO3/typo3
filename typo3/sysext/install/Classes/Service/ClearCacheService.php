@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -41,7 +42,7 @@ class ClearCacheService
         // Delete typo3temp/Cache
         GeneralUtility::flushDirectory(PATH_site . 'typo3temp/var/Cache', true, true);
 
-        $bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
+        $bootstrap = Bootstrap::getInstance();
         $bootstrap
             ->initializeCachingFramework()
             ->initializePackageManagement(\TYPO3\CMS\Core\Package\PackageManager::class);
@@ -69,11 +70,10 @@ class ClearCacheService
         // From this point on, the code may fatal, if some broken extension is loaded.
 
         // Use bootstrap to load all ext_localconf and ext_tables
-        $bootstrap
-            ->loadTypo3LoadedExtAndExtLocalconf(false)
-            ->unsetReservedGlobalVariables()
-            ->loadBaseTca(false)
-            ->loadExtTables(false);
+        Bootstrap::loadTypo3LoadedExtAndExtLocalconf(false);
+        Bootstrap::unsetReservedGlobalVariables();
+        Bootstrap::loadBaseTca(false);
+        Bootstrap::loadExtTables(false);
 
         // The cache manager is already instantiated in the install tool
         // with some hacked settings to disable caching of extbase and fluid.

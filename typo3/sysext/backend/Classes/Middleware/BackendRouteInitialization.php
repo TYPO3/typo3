@@ -63,9 +63,8 @@ class BackendRouteInitialization implements MiddlewareInterface
                 . ' to use the TYPO3 API.', E_USER_DEPRECATED);
         }
 
-        Bootstrap::getInstance()
-            ->initializeBackendRouter()
-            ->loadExtTables();
+        Bootstrap::initializeBackendRouter();
+        Bootstrap::loadExtTables();
 
         // Add the route path to the request
         $request = $request->withAttribute('routePath', $pathToRoute);
