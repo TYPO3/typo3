@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\AcceptanceInstallPsql;
 /**
  * Click through installer, go to backend, install introduction package
  */
-class InstallWithPgsqlCest
+class InstallWithPgsqlIntroductionPackageCest
 {
     /**
      * @param \AcceptanceTester $I

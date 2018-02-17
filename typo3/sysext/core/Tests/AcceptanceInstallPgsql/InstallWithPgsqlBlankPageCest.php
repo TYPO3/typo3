@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\AcceptanceInstallMysql;
+namespace TYPO3\CMS\Core\Tests\AcceptanceInstallPsql;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,12 +17,12 @@ namespace TYPO3\CMS\Core\Tests\AcceptanceInstallMysql;
 /**
  * Click through installer, go to backend, check blank site in FE works
  */
-class InstallWithMysqlCest
+class InstallWithPgsqlBlankPageCest
 {
     /**
      * @param \AcceptanceTester $I
      */
-    public function installTypo3OnMysql(\AcceptanceTester $I)
+    public function installTypo3OnPgSql(\AcceptanceTester $I)
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');
@@ -34,14 +34,10 @@ class InstallWithMysqlCest
 
         // DatabaseConnection step
         $I->waitForText('Database connection');
-        $I->fillField('#t3-install-step-mysqliManualConfiguration-username', getenv('typo3DatabaseUsername'));
-        $I->fillField('#t3-install-step-mysqliManualConfiguration-password', getenv('typo3DatabasePassword'));
-        $I->click('Continue');
-
-        // DatabaseSelect step
-        $I->waitForText('Select database');
-        $I->click('#t3-install-form-db-select-type-new');
-        $I->fillField('#t3-install-step-database-new', getenv('typo3DatabaseName') . '_atimysql');
+        $I->selectOption('#t3js-connect-database-driver', 'Manually configured PostgreSQL connection');
+        $I->fillField('#t3-install-step-postgresManualConfiguration-username', getenv('typo3DatabaseUsername'));
+        // password intentionally not filled. Postgres authenticates with the shell user.
+        $I->fillField('#t3-install-step-postgresManualConfiguration-database', getenv('typo3DatabaseName') . '_atipgsql');
         $I->click('Continue');
 
         // DatabaseData step
@@ -50,7 +46,7 @@ class InstallWithMysqlCest
         $I->fillField('#password', 'password');
         $I->click('Continue');
 
-        // DefaultConfiguration step - Create empty page
+        // DefaultConfiguration step - load distributions
         $I->waitForText('Installation done!');
         $I->click('#create-site');
         $I->click('Open the TYPO3 Backend');
