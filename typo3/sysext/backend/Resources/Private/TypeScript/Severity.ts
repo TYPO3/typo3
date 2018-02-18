@@ -11,13 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-enum SeverityEnum {
-  notice = -2,
-  info = -1,
-  ok = 0,
-  warning = 1,
-  error = 2
-}
+import {SeverityEnum} from './Enum/Severity';
 
 /**
  * Module: TYPO3/CMS/Backend/Severity

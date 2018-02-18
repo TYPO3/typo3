@@ -8,6 +8,7 @@ declare namespace TYPO3 {
   export let DebugConsole: any;
   export let Icons: any;
   export let InfoWindow: any;
+  export let Notification: any;
   export let Popover: any;
   export let ShortcutMenu: any;
   export let Storage: any;
@@ -32,21 +33,6 @@ declare namespace TYPO3 {
         public show(title: string, content: any, severity: number, buttons: any[], additionalCssClasses?: string[]): JQuery; // tslint:disable-line:max-line-length
         public dismiss(): void;
       }
-      export class Notification {
-        public readonly Notification: {
-          NOTICE: -2,
-          INFO: -1,
-          OK: 0,
-          WARNING: 1,
-          ERROR: 2
-        };
-        public notice(title: string, message: string, duration: Number): string;
-        public info(title: string, message: string, duration: Number): string;
-        public success(title: string, message: string, duration: Number): string;
-        public warning(title: string, message: string, duration: Number): string;
-        public error(title: string, message: string, duration: Number): string;
-        public showMessage(title: string, message: string, severity: Number, duration?: Number): string;
-      }
     }
   }
 }
@@ -65,10 +51,6 @@ declare module 'TYPO3/CMS/Backend/FormEngine' {
 
 declare module 'TYPO3/CMS/Backend/Modal' {
   export = new TYPO3.CMS.Backend.Modal();
-}
-
-declare module 'TYPO3/CMS/Backend/Notification' {
-  export = new TYPO3.CMS.Backend.Notification();
 }
 
 // type definition for global namespace object

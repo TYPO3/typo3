@@ -19,7 +19,7 @@ import * as $ from 'jquery';
 import moment = require('moment');
 import NProgress = require('nprogress');
 import Modal = require('TYPO3/CMS/Backend/Modal');
-import Notification = require('TYPO3/CMS/Backend/Notification');
+import Notification = require('./Notification');
 import Severity = require('./Severity');
 
 /**
