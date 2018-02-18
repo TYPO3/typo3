@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Log\Writer;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
@@ -31,7 +30,7 @@ class DatabaseWriterTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     public function writeLogInsertsLogRecordWithGivenProperties()
     {
         $logRecordData = [
-            'request_id' => Bootstrap::getInstance()->getRequestId(),
+            'request_id' => '5862c0e7838ac',
             'time_micro' => 1469740000.0,
             'component' => 'aComponent',
             'level' => LogLevel::DEBUG,
@@ -42,7 +41,8 @@ class DatabaseWriterTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             $logRecordData['component'],
             $logRecordData['level'],
             $logRecordData['message'],
-            []
+            [],
+            $logRecordData['request_id']
         );
         $logRecord->setCreated($logRecordData['time_micro']);
 

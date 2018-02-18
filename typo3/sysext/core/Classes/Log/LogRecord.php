@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Core\Log;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\Bootstrap;
-
 /**
  * Log record
  */
@@ -95,10 +93,11 @@ class LogRecord implements \ArrayAccess
      * @param int $level Severity level (see \TYPO3\CMS\Core\Log\Level)
      * @param string $message Log message
      * @param array $data Additional data
+     * @param string $requestId Unique ID of the request
      */
-    public function __construct($component = '', $level, $message, array $data = [])
+    public function __construct($component = '', $level, $message, array $data = [], string $requestId = '')
     {
-        $this->setRequestId(Bootstrap::getInstance()->getRequestId())
+        $this->setRequestId($requestId)
             ->setCreated(microtime(true))
             ->setComponent($component)
             ->setLevel($level)

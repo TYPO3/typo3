@@ -30,6 +30,13 @@ class Logger implements \Psr\Log\LoggerInterface
     protected $name = '';
 
     /**
+     * Unique ID of the request
+     *
+     * @var string
+     */
+    protected $requestId = '';
+
+    /**
      * Minimum log level, anything below this level will be ignored.
      *
      * @var int
@@ -54,10 +61,12 @@ class Logger implements \Psr\Log\LoggerInterface
      * Constructor.
      *
      * @param string $name A name for the logger.
+     * @param string $requestId Unique ID of the request
      */
-    public function __construct($name)
+    public function __construct(string $name, string $requestId = '')
     {
         $this->name = $name;
+        $this->requestId = $requestId;
     }
 
     /**
@@ -175,7 +184,7 @@ class Logger implements \Psr\Log\LoggerInterface
             return $this;
         }
         /** @var $record \TYPO3\CMS\Core\Log\LogRecord */
-        $record = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(LogRecord::class, $this->name, $level, $message, $data);
+        $record = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(LogRecord::class, $this->name, $level, $message, $data, $this->requestId);
         $record = $this->callProcessors($record);
         $this->writeLog($record);
         return $this;

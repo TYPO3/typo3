@@ -46,11 +46,21 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
     protected $rootLogger = null;
 
     /**
-     * Constructor
+     * Unique ID of the request
+     *
+     * @var string
      */
-    public function __construct()
+    protected $requestId = '';
+
+    /**
+     * Constructor
+     *
+     * @param string $requestId Unique ID of the request
+     */
+    public function __construct(string $requestId = '')
     {
-        $this->rootLogger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Logger::class, '');
+        $this->requestId = $requestId;
+        $this->rootLogger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Logger::class, '', $requestId);
         $this->loggers[''] = $this->rootLogger;
     }
 
@@ -86,7 +96,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
         } else {
             // Lazy instantiation
             /** @var $logger \TYPO3\CMS\Core\Log\Logger */
-            $logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Logger::class, $name);
+            $logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Logger::class, $name, $this->requestId);
             $this->loggers[$name] = $logger;
             $this->setWritersForLogger($logger);
             $this->setProcessorsForLogger($logger);

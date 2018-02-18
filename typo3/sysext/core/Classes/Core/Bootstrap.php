@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Core;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -100,19 +101,9 @@ class Bootstrap
             $applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
             self::$instance = new static($applicationContext);
             self::$instance->defineTypo3RequestTypes();
+            GeneralUtility::setSingletonInstance(LogManager::class, new LogManager(self::$instance->requestId));
         }
         return static::$instance;
-    }
-
-    /**
-     * Gets the request's unique ID
-     *
-     * @return string Unique request ID
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function getRequestId()
-    {
-        return $this->requestId;
     }
 
     /**
