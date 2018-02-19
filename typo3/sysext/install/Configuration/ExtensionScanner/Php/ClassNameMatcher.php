@@ -512,6 +512,11 @@ return [
             'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
         ],
     ],
+    'TYPO3\CMS\SysNote\Domain\Model\SysNote' => [
+        'restFiles' => [
+            'Breaking-84055-MigrateSys_notesAwayFromExtbase.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [

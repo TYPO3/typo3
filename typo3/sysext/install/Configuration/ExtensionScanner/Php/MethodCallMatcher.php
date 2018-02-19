@@ -1230,7 +1230,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-82506-RemoveBackendUserRepositoryInjectionInNoteController.rst',
+            'Breaking-82506-RemoveBackendUserRepositoryInjectionInNoteController.rst',
         ],
     ],
     'TYPO3\CMS\Core\Service\AbstractService->devLog' => [

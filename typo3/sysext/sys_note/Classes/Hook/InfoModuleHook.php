@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\SysNote\Hook;
 
 /*
@@ -14,6 +15,9 @@ namespace TYPO3\CMS\SysNote\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\SysNote\Controller\NoteController;
+
 /**
  * Hook for the info module
  */
@@ -28,8 +32,7 @@ class InfoModuleHook
      */
     public function render(array $params = [], \TYPO3\CMS\Info\Controller\PageInformationController $parentObject)
     {
-        /** @var $noteBootstrap \TYPO3\CMS\SysNote\Core\Bootstrap */
-        $noteBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\SysNote\Core\Bootstrap::class);
-        return $noteBootstrap->run('Note', 'list', ['pids' => $parentObject->pObj->id]);
+        $controller = GeneralUtility::makeInstance(NoteController::class);
+        return $controller->listAction($parentObject->pObj->id);
     }
 }

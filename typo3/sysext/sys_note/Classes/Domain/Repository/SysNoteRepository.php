@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\SysNote\Domain\Repository;
 
 /*
@@ -14,76 +15,51 @@ namespace TYPO3\CMS\SysNote\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Sys_note repository
+ *
+ * @internal
  */
-class SysNoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class SysNoteRepository
 {
-    /**
-     * Initialize the repository
-     */
-    public function initializeObject()
-    {
-        $querySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
-        $querySettings->setRespectStoragePage(false);
-        $this->setDefaultQuerySettings($querySettings);
-    }
-
-    /**
-     * Find notes by given pids and author
-     *
-     * @param string $pids Single PID or comma separated list of PIDs
-     * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $author The author
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
-     * @deprecated
-     */
-    public function findByPidsAndAuthor($pids, \TYPO3\CMS\Extbase\Domain\Model\BackendUser $author)
-    {
-        trigger_error('Method findByPidsAndAuthor() is deprecated since v9 and will be removed with v10', E_USER_DEPRECATED);
-        $pids = GeneralUtility::intExplode(',', (string)$pids);
-        $query = $this->createQuery();
-        $query->setOrderings([
-            'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
-            'creationDate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-        ]);
-        $query->matching(
-            $query->logicalAnd(
-                $query->in('pid', $pids),
-                $query->logicalOr(
-                    $query->equals('personal', 0),
-                    $query->equals('author', $author)
-                )
-            )
-        );
-        return $query->execute();
-    }
 
     /**
      * Find notes by given pids and author
      *
      * @param string $pids Single PID or comma separated list of PIDs
      * @param int $author author uid
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return array
      */
-    public function findByPidsAndAuthorId($pids, int $author)
+    public function findByPidsAndAuthorId($pids, int $author): array
     {
         $pids = GeneralUtility::intExplode(',', (string)$pids);
-        $query = $this->createQuery();
-        $query->setOrderings([
-            'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
-            'creationDate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-        ]);
-        $query->matching(
-            $query->logicalAnd(
-                $query->in('pid', $pids),
-                $query->logicalOr(
-                    $query->equals('personal', 0),
-                    $query->equals('author', $author)
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_note');
+        $rows = $queryBuilder
+            ->select('sys_note.*', 'be_users.username', 'be_users.realName')
+            ->from('sys_note')
+            ->leftJoin(
+                'sys_note',
+                'be_users',
+                'be_users',
+                $queryBuilder->expr()->eq('sys_note.cruser', $queryBuilder->quoteIdentifier('be_users.uid'))
+            )
+            ->where(
+                $queryBuilder->expr()->in('sys_note.pid', $queryBuilder->createNamedParameter($pids, Connection::PARAM_INT_ARRAY)),
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->in('sys_note.personal', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->in('sys_note.cruser', $queryBuilder->createNamedParameter($author, \PDO::PARAM_INT))
                 )
             )
-        );
-        return $query->execute();
+            ->orderBy('sorting', 'asc')
+            ->addOrderBy('crdate', 'desc')
+            ->execute()->fetchAll();
+
+        return $rows;
     }
 }

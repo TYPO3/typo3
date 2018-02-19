@@ -1,52 +1,47 @@
 {namespace notes=TYPO3\CMS\SysNote\ViewHelpers}
 
-<f:layout name="Default" />
+<f:if condition="{notes}">
+	<h2><f:translate key="internal_note" /></h2>
 
-<f:section name="Content">
-	<f:if condition="{notes}">
-		<h2><f:translate key="internal_note" /></h2>
-
-		<div class="typo3-dblist-sysnotes">
-			<f:for each="{notes}" as="note">
-				<div class="panel panel-default panel-sysnote panel-sysnote-category-{note.category}">
-					<div class="panel-heading clearfix">
-						<span class="typeicon t3js-contextmenutrigger" data-table="sys_note" data-uid="{note.uid}">
-							<core:icon identifier="sysnote-type-{note.category}" />
-						</span>
-						<span class="author">
-							<f:translate key="author" />
-							<f:if condition="{note.author.realName}">
-								<f:then>{note.author.realName}</f:then>
-								<f:else>{note.author.userName}</f:else>
-							</f:if>
-						</span>
-						&nbsp; <span>&bull;</span> &nbsp;
-						<span class="date">
-							<f:translate key="date" />
-							<f:format.date>{note.modificationDate}</f:format.date>
-						</span>
-						<f:if condition="{note.personal}">
-							&middot;
-							<span class="personal">
-								<f:translate key="personal" />&nbsp;<f:translate key="yes" /></span>
+	<div class="typo3-dblist-sysnotes">
+		<f:for each="{notes}" as="note">
+			<div class="panel panel-default panel-sysnote panel-sysnote-category-{note.category}">
+				<div class="panel-heading clearfix">
+					<span class="typeicon t3js-contextmenutrigger" data-table="sys_note" data-uid="{note.uid}">
+						<core:icon identifier="sysnote-type-{note.category}" />
+					</span>
+					<span class="author">
+						<f:translate key="author" />
+						<f:if condition="{note.realName}">
+							<f:then>{note.realName}</f:then>
+							<f:else>{note.userName}</f:else>
 						</f:if>
+					</span>
+					&nbsp; <span>&bull;</span> &nbsp;
+					<span class="date">
+						<f:translate key="date" />
+						<f:format.date>{note.modificationDate}</f:format.date>
+					</span>
+					<f:if condition="{note.personal}">
+						&middot;
+						<span class="personal">
+							<f:translate key="personal" />&nbsp;<f:translate key="yes" /></span>
+					</f:if>
 
-						<div class="btn-group pull-right">
-							<a href="{notes:editLink(id:note.uid)}" class="btn btn-default btn-sm">
-								<core:icon identifier="actions-open" />
-							</a>
-							<a href="{notes:deleteLink(id:note.uid)}" class="btn btn-default btn-sm t3js-modal-trigger" data-severity="warning" data-title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:delete')}" data-content="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}" data-button-close-text="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:cancel')}">
-								<core:icon identifier="actions-edit-delete" />
-							</a>
-						</div>
-					</div>
-					<div class="panel-body">
-						<h4><span><f:if condition="{note.category}"><f:translate key="category.{note.category}" />: </f:if></span>{note.subject}</h4>
-						<f:format.nl2br>{note.message}</f:format.nl2br>
+					<div class="btn-group pull-right">
+						<a href="{notes:editLink(id:note.uid)}" class="btn btn-default btn-sm">
+							<core:icon identifier="actions-open" />
+						</a>
+						<a href="{notes:deleteLink(id:note.uid)}" class="btn btn-default btn-sm t3js-modal-trigger" data-severity="warning" data-title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:delete')}" data-content="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}" data-button-close-text="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:cancel')}">
+							<core:icon identifier="actions-edit-delete" />
+						</a>
 					</div>
 				</div>
-			</f:for>
-		</div>
-
-	</f:if>
-</f:section>
+				<div class="panel-body">
+					<h4><span><f:if condition="{note.category}"><f:translate key="category.{note.category}" />: </f:if></span>{note.subject}</h4>
+					<f:format.nl2br>{note.message}</f:format.nl2br>
+				</div>
+			</div>
+		</f:for>
+	</div>
+</f:if>

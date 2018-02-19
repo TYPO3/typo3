@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\SysNote\Controller;
 
 /*
@@ -14,22 +15,25 @@ namespace TYPO3\CMS\SysNote\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
+
 /**
- * Note controller
+ * Renders notes for the current backend user
+ *
+ * @internal
  */
-class NoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class NoteController
 {
     /**
-     * @var \TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository
+     * @var SysNoteRepository
      */
-    protected $sysNoteRepository;
+    protected $notesRepository;
 
-    /**
-     * @param \TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository $sysNoteRepository
-     */
-    public function injectSysNoteRepository(\TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository $sysNoteRepository)
+    public function __construct()
     {
-        $this->sysNoteRepository = $sysNoteRepository;
+        $this->notesRepository = GeneralUtility::makeInstance(SysNoteRepository::class);
     }
 
     /**
@@ -38,12 +42,23 @@ class NoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param string $pids Single PID or comma separated list of PIDs
      * @return string
      */
-    public function listAction($pids)
+    public function listAction($pids): string
     {
         if (empty($pids) || empty($GLOBALS['BE_USER']->user['uid'])) {
             return '';
         }
-        $notes = $this->sysNoteRepository->findByPidsAndAuthorId($pids, $GLOBALS['BE_USER']->user['uid']);
-        $this->view->assign('notes', $notes);
+
+        $notes = $this->notesRepository->findByPidsAndAuthorId($pids, (int)$GLOBALS['BE_USER']->user['uid']);
+        if ($notes) {
+            $view = GeneralUtility::makeInstance(StandaloneView::class);
+            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+                'EXT:sys_note/Resources/Private/Templates/Note/List.html'
+            ));
+            $view->getRequest()->setControllerExtensionName('SysNote');
+            $view->assign('notes', $notes);
+            return $view->render();
+        }
+
+        return '';
     }
 }
