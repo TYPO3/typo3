@@ -19,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -86,7 +85,7 @@ class AbstractApplication implements ApplicationInterface
      */
     protected function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $requestHandler = GeneralUtility::makeInstance($this->requestHandler, Bootstrap::getInstance());
+        $requestHandler = GeneralUtility::makeInstance($this->requestHandler);
         $dispatcher = $this->createMiddlewareDispatcher($requestHandler);
 
         return $dispatcher->handle($request);
