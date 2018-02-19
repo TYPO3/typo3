@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageGenerator;
-use TYPO3\CMS\Frontend\View\AdminPanelView;
 
 /**
  * This is the main entry point of the TypoScript driven standard front-end
@@ -87,21 +86,10 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         /** @var TypoScriptFrontendController $controller */
         $controller = $GLOBALS['TSFE'];
 
-        // Initializing a possible logged-in Backend User
-        /** @var $GLOBALS['BE_USER'] \TYPO3\CMS\Backend\FrontendBackendUserAuthentication */
-        $GLOBALS['BE_USER'] = $controller->initializeBackendUser();
-
         // Process the ID, type and other parameters.
         // After this point we have an array, $page in TSFE, which is the page-record
         // of the current page, $id.
         $this->timeTracker->push('Process ID', '');
-        // Initialize admin panel since simulation settings are required here:
-        if ($controller->isBackendUserLoggedIn()) {
-            $GLOBALS['BE_USER']->initializeAdminPanel();
-            $this->bootstrap
-                    ->initializeBackendRouter()
-                    ->loadExtTables();
-        }
         $controller->checkAlternativeIdMethods();
         $controller->clear_preview();
         $controller->determineId();
@@ -128,9 +116,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         // Admin Panel & Frontend editing
         if ($controller->isBackendUserLoggedIn()) {
             $GLOBALS['BE_USER']->initializeFrontendEdit();
-            if ($GLOBALS['BE_USER']->adminPanel instanceof AdminPanelView) {
-                $this->bootstrap->initializeLanguageObject();
-            }
             if ($GLOBALS['BE_USER']->frontendEdit instanceof FrontendEditingController) {
                 $GLOBALS['BE_USER']->frontendEdit->initConfigOptions();
             }

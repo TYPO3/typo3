@@ -69,5 +69,11 @@ return [
                 'typo3/cms-frontend/tsfe',
             ]
         ],
+        'typo3/cms-frontend/backend-user-authentication' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\BackendUserAuthenticator::class,
+            'after' => [
+                'typo3/cms-frontend/tsfe',
+            ]
+        ],
     ]
 ];
