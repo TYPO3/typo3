@@ -335,7 +335,7 @@ TYPO3:
                 group: container
                 groupSorting: 100
                 _isCompositeFormElement: true
-                iconIdentifier: 't3-form-icon-fieldset'
+                iconIdentifier: 'form-fieldset'
                 editors:
                   200:
                     label: 'formEditor.elements.Fieldset.editor.label.label'
@@ -346,7 +346,7 @@ TYPO3:
                 label: 'formEditor.elements.GridContainer.label'
                 _isCompositeFormElement: true
                 _isGridContainerFormElement: true
-                iconIdentifier: 't3-form-icon-gridcontainer'
+                iconIdentifier: 'form-gridcontainer'
                 editors:
                   200:
                     label: 'formEditor.elements.GridContainer.editor.label.label'
@@ -359,7 +359,7 @@ TYPO3:
                 groupSorting: 300
                 _isCompositeFormElement: true
                 _isGridRowFormElement: true
-                iconIdentifier: 't3-form-icon-gridrow'
+                iconIdentifier: 'form-gridrow'
                 editors:
                   200:
                     label: 'formEditor.elements.GridRow.editor.label.label'
@@ -379,7 +379,7 @@ TYPO3:
                 groupSorting: 100
                 _isTopLevelFormElement: true
                 _isCompositeFormElement: true
-                iconIdentifier: 't3-form-icon-page'
+                iconIdentifier: 'form-page'
                 editors:
                   200:
                     label: 'formEditor.elements.Page.editor.label.label'
@@ -405,7 +405,7 @@ TYPO3:
                 groupSorting: 200
                 _isTopLevelFormElement: true
                 _isCompositeFormElement: false
-                iconIdentifier: 't3-form-icon-summary-page'
+                iconIdentifier: 'form-summary-page'
                 editors:
                   200:
                     label: 'formEditor.elements.SummaryPage.editor.label.label'
@@ -427,14 +427,14 @@ TYPO3:
                 label: 'formEditor.elements.Text.label'
                 group: input
                 groupSorting: 100
-                iconIdentifier: 't3-form-icon-text'
+                iconIdentifier: 'form-text'
 
             Password:
               formEditor:
                 label: 'formEditor.elements.Password.label'
                 group: input
                 groupSorting: 300
-                iconIdentifier: 't3-form-icon-password'
+                iconIdentifier: 'form-password'
 
             AdvancedPassword:
               formEditor:
@@ -445,7 +445,7 @@ TYPO3:
                   properties:
                     confirmationLabel: 'formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults'
                   defaultValue: null
-                iconIdentifier: 't3-form-icon-advanced-password'
+                iconIdentifier: 'form-advanced-password'
                 editors:
                   300:
                     identifier: 'confirmationLabel'
@@ -459,7 +459,7 @@ TYPO3:
                 label: 'formEditor.elements.Hidden.label'
                 group: custom
                 groupSorting: 300
-                iconIdentifier: 't3-form-icon-hidden'
+                iconIdentifier: 'form-hidden'
                 predefinedDefaults:
                   defaultValue: ''
                 editors:
@@ -475,7 +475,7 @@ TYPO3:
                 label: 'formEditor.elements.Textarea.label'
                 group: input
                 groupSorting: 200
-                iconIdentifier: 't3-form-icon-textarea'
+                iconIdentifier: 'form-textarea'
                 editors:
                   900:
                     selectOptions:
@@ -488,7 +488,7 @@ TYPO3:
                 label: 'formEditor.elements.Email.label'
                 group: html5
                 groupSorting: 100
-                iconIdentifier: 't3-form-icon-email'
+                iconIdentifier: 'form-email'
                 predefinedDefaults:
                   validators:
                     -
@@ -518,7 +518,7 @@ TYPO3:
                 label: 'formEditor.elements.Telephone.label'
                 group: html5
                 groupSorting: 200
-                iconIdentifier: 't3-form-icon-telephone'
+                iconIdentifier: 'form-telephone'
 
                 editors:
                   900:
@@ -542,7 +542,7 @@ TYPO3:
                 label: 'formEditor.elements.Url.label'
                 group: html5
                 groupSorting: 300
-                iconIdentifier: 't3-form-icon-url'
+                iconIdentifier: 'form-url'
 
                 editors:
                   900:
@@ -566,7 +566,7 @@ TYPO3:
                 label: 'formEditor.elements.Number.label'
                 group: html5
                 groupSorting: 400
-                iconIdentifier: 't3-form-icon-number'
+                iconIdentifier: 'form-number'
                 predefinedDefaults:
                   properties:
                     fluidAdditionalAttributes:
@@ -615,14 +615,14 @@ TYPO3:
                 label: 'formEditor.elements.Checkbox.label'
                 group: select
                 groupSorting: 100
-                iconIdentifier: 't3-form-icon-checkbox'
+                iconIdentifier: 'form-checkbox'
 
             MultiCheckbox:
               formEditor:
                 label: 'formEditor.elements.MultiCheckbox.label'
                 group: select
                 groupSorting: 400
-                iconIdentifier: 't3-form-icon-multi-checkbox'
+                iconIdentifier: 'form-multi-checkbox'
                 editors:
                   800:
                     propertyPath: null
@@ -633,7 +633,7 @@ TYPO3:
                 label: 'formEditor.elements.MultiSelect.label'
                 group: select
                 groupSorting: 500
-                iconIdentifier: 't3-form-icon-multi-select'
+                iconIdentifier: 'form-multi-select'
                 editors:
                   250:
                     identifier: 'inactiveOption'
@@ -648,14 +648,14 @@ TYPO3:
                 label: 'formEditor.elements.RadioButton.label'
                 group: select
                 groupSorting: 300
-                iconIdentifier: 't3-form-icon-radio-button'
+                iconIdentifier: 'form-radio-button'
 
             SingleSelect:
               formEditor:
                 label: 'formEditor.elements.SingleSelect.label'
                 group: select
                 groupSorting: 200
-                iconIdentifier: 't3-form-icon-single-select'
+                iconIdentifier: 'form-single-select'
                 editors:
                   250:
                     identifier: 'inactiveOption'
@@ -676,7 +676,7 @@ TYPO3:
                     dateFormat: 'Y-m-d'
                     enableDatePicker: true
                     displayTimeSelector: false
-                iconIdentifier: 't3-form-icon-date-picker'
+                iconIdentifier: 'form-date-picker'
                 editors:
                   300:
                     identifier: 'dateFormat'
@@ -729,7 +729,7 @@ TYPO3:
                 predefinedDefaults:
                   properties:
                     text: ''
-                iconIdentifier: 't3-form-icon-static-text'
+                iconIdentifier: 'form-static-text'
                 editors:
                   300:
                     identifier: 'staticText'
@@ -745,7 +745,7 @@ TYPO3:
                 predefinedDefaults:
                   properties:
                     contentElementUid: ''
-                iconIdentifier: 't3-form-icon-content-element'
+                iconIdentifier: 'form-content-element'
                 editors:
                   200: null
                   300:
@@ -769,7 +769,7 @@ TYPO3:
                 predefinedDefaults:
                   properties:
                     allowedMimeTypes: ['application/pdf']
-                iconIdentifier: 't3-form-icon-file-upload'
+                iconIdentifier: 'form-file-upload'
                 editors:
                   300:
                     identifier: 'allowedMimeTypes'
@@ -807,7 +807,7 @@ TYPO3:
                 predefinedDefaults:
                   properties:
                     allowedMimeTypes: ['image/jpeg']
-                iconIdentifier: 't3-form-icon-image-upload'
+                iconIdentifier: 'form-image-upload'
                 editors:
                   300:
                     identifier: 'allowedMimeTypes'
@@ -829,7 +829,7 @@ TYPO3:
           finishersDefinition:
             EmailToSender:
               formEditor:
-                iconIdentifier: 't3-form-icon-finisher'
+                iconIdentifier: 'form-finisher'
                 label: 'formEditor.elements.Form.finisher.EmailToSender.editor.header.label'
                 predefinedDefaults:
                   options:
@@ -846,7 +846,7 @@ TYPO3:
 
             EmailToReceiver:
               formEditor:
-                iconIdentifier: 't3-form-icon-finisher'
+                iconIdentifier: 'form-finisher'
                 label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label'
                 predefinedDefaults:
                   options:
@@ -865,7 +865,7 @@ TYPO3:
 
             Redirect:
               formEditor:
-                iconIdentifier: 't3-form-icon-finisher'
+                iconIdentifier: 'form-finisher'
                 label: 'formEditor.elements.Form.finisher.Redirect.editor.header.label'
                 predefinedDefaults:
                   options:
@@ -874,7 +874,7 @@ TYPO3:
 
             Closure:
               formEditor:
-                iconIdentifier: 't3-form-icon-finisher'
+                iconIdentifier: 'form-finisher'
                 label: 'formEditor.elements.Form.finisher.Closure.editor.header.label'
                 predefinedDefaults:
                   options:
@@ -882,7 +882,7 @@ TYPO3:
 
             Confirmation:
               formEditor:
-                iconIdentifier: 't3-form-icon-finisher'
+                iconIdentifier: 'form-finisher'
                 label: 'formEditor.elements.Form.finisher.Confirmation.editor.header.label'
                 predefinedDefaults:
                   options:
@@ -891,7 +891,7 @@ TYPO3:
 
             FlashMessage:
               formEditor:
-                iconIdentifier: 't3-form-icon-finisher'
+                iconIdentifier: 'form-finisher'
                 label: 'formEditor.elements.Form.finisher.FlashMessage.editor.header.label'
                 predefinedDefaults:
                   options:
@@ -903,37 +903,37 @@ TYPO3:
 
             SaveToDatabase:
               formEditor:
-                iconIdentifier: 't3-form-icon-finisher'
+                iconIdentifier: 'form-finisher'
                 label: 'formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label'
                 predefinedDefaults:
                   options: []
 
             DeleteUploads:
               formEditor:
-                iconIdentifier: 't3-form-icon-finisher'
+                iconIdentifier: 'form-finisher'
                 label: 'formEditor.elements.Form.finisher.DeleteUploads.editor.header.label'
 
           ### VALIDATORS ###
           validatorsDefinition:
             NotEmpty:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label : 'formEditor.elements.FormElement.editor.requiredValidator.label'
             DateTime:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.DatePicker.validators.DateTime.editor.header.label'
             Alphanumeric:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.TextMixin.editor.validators.Alphanumeric.label'
             Text:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.TextMixin.editor.validators.Text.label'
             StringLength:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.TextMixin.editor.validators.StringLength.label'
                 predefinedDefaults:
                   options:
@@ -941,23 +941,23 @@ TYPO3:
                     maximum: ''
             EmailAddress:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.TextMixin.editor.validators.EmailAddress.label'
             Integer:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.TextMixin.editor.validators.Integer.label'
             Float:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.TextMixin.editor.validators.Float.label'
             Number:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.TextMixin.editor.validators.Number.label'
             NumberRange:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.TextMixin.editor.validators.NumberRange.label'
                 predefinedDefaults:
                   options:
@@ -965,14 +965,14 @@ TYPO3:
                     maximum: ''
             RegularExpression:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.TextMixin.editor.validators.RegularExpression.label'
                 predefinedDefaults:
                   options:
                     regularExpression: ''
             Count:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label'
                 predefinedDefaults:
                   options:
@@ -980,7 +980,7 @@ TYPO3:
                     maximum: ''
             FileSize:
               formEditor:
-                iconIdentifier: 't3-form-icon-validator'
+                iconIdentifier: 'form-validator'
                 label: 'formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label'
                 predefinedDefaults:
                   options:

@@ -15,48 +15,6 @@ call_user_func(function () {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['form_formframework'] =
         \TYPO3\CMS\Form\Hooks\FormPagePreviewRenderer::class;
 
-    // Add a bunch of icons to icon registry
-    $iconIdentifiers = [
-        'advanced-password',
-        'checkbox',
-        'content-element',
-        'date-picker',
-        'duplicate',
-        'email',
-        'fieldset',
-        'file-upload',
-        'finisher',
-        'form-element-selector',
-        'gridcontainer',
-        'gridrow',
-        'hidden',
-        'image-upload',
-        'insert-after',
-        'insert-in',
-        'multi-checkbox',
-        'multi-select',
-        'number',
-        'page',
-        'password',
-        'radio-button',
-        'single-select',
-        'static-text',
-        'summary-page',
-        'telephone',
-        'text',
-        'textarea',
-        'url',
-        'validator'
-    ];
-    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-    foreach ($iconIdentifiers as $iconIdentifier) {
-        $iconRegistry->registerIcon(
-            't3-form-icon-' . $iconIdentifier,
-            \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-            ['source' => 'EXT:form/Resources/Public/Images/' . $iconIdentifier . '.svg']
-        );
-    }
-
     // Add new content element wizard entry
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
         '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/PageTS/modWizards.ts">'

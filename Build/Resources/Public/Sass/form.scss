@@ -304,7 +304,7 @@ body {
     }
 
     h4 {
-        padding: 0.8em 3em 0.8em 2.5em;
+        padding: 0.8em 3em 0.8em 4em;
         font-weight: 500;
         background-color: $panel-default-heading-bg;
 
@@ -400,7 +400,12 @@ body {
     .t3-form-collection-element-remove-button {
         position: absolute;
         right: 0.5em;
-        top: 0.6em;
+        top: 0.5em;
+    }
+
+    h4 > .icon {
+        position: absolute;
+        left: 2.2em;
     }
 }
 
@@ -561,10 +566,6 @@ body {
 
             .t3-form-icon-container {
                 background-color: darken($panel-default-heading-bg, 40%);
-
-                path {
-                    fill: #fff;
-                }
             }
         }
 
@@ -1016,11 +1017,6 @@ body {
     }
 
     #t3-form-navigation-component & {
-        &:hover:before,
-        &.t3-form-form-element-selected:before {
-            left: 2.4em;
-        }
-
         &:before {
             margin-top: 0.2em;
             color: #fff;

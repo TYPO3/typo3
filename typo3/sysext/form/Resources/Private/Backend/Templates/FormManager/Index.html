@@ -73,11 +73,11 @@
 											</f:if>
 											<f:if condition="{form.invalid}">
 												<f:then>
-													<button class="btn btn-default form-record-readonly" disabled="disabled" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_form_not_allowed')}"><core:icon identifier="t3-form-icon-duplicate" /></button>
+													<button class="btn btn-default form-record-readonly" disabled="disabled" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_form_not_allowed')}"><core:icon identifier="actions-duplicate" /></button>
 													<button class="btn btn-default form-record-readonly" disabled="disabled" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.delete_form_not_allowed')}"><core:icon identifier="actions-edit-delete" /></button>
 												</f:then>
 												<f:else>
-													<a href="#" data-identifier="duplicateForm" data-form-persistence-identifier="{form.persistenceIdentifier}" data-form-name="{form.name}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_this_form')}" class="btn btn-default form-record-duplicate"><core:icon identifier="t3-form-icon-duplicate" /></a>
+													<a href="#" data-identifier="duplicateForm" data-form-persistence-identifier="{form.persistenceIdentifier}" data-form-name="{form.name}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_this_form')}" class="btn btn-default form-record-duplicate"><core:icon identifier="actions-duplicate" /></a>
 													<f:if condition="{form.removable}">
 														<f:then>
 															<a href="#" data-identifier="removeForm" data-form-persistence-identifier="{form.persistenceIdentifier}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.delete_form')}" class="btn btn-default form-record-delete"><core:icon identifier="actions-edit-delete" /></a>
