@@ -71,7 +71,7 @@ class IconRegistry implements SingletonInterface
         'EXT:backend/Resources/Public/Icons/',
         'EXT:core/Resources/Public/Icons/T3Icons/',
         'EXT:impexp/Resources/Public/Icons/',
-        'EXT:install/Resources/Public/Icons'
+        'EXT:install/Resources/Public/Icons/'
     ];
 
     /**
@@ -612,6 +612,11 @@ class IconRegistry implements SingletonInterface
                 ->name('/\.(' . implode('|', array_keys($this->backendIconAllowedExtensionsWithProvider)) . ')$/');
 
             foreach ($finder as $iconFile) {
+                // ignore icons that are used as extension icon in extension manager
+                // @see ExtensionManagementUtility::getExtensionIcon()
+                if (strpos($iconFile->getRelativePathname(), 'Extension.') === 0) {
+                    continue;
+                }
                 $iconOptions = [
                     'source' => $iconPath . GeneralUtility::fixWindowsFilePath($iconFile->getRelativePathname())
                 ];
