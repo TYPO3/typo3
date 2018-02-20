@@ -26,7 +26,7 @@ define(['jquery',
   'TYPO3/CMS/Backend/Icons',
   'TYPO3/CMS/Backend/Notification',
   'TYPO3/CMS/Backend/Modal',
-  'TYPO3/CMS/Form/Backend/Vendor/jquery.mjs.nestedSortable'
+  'TYPO3/CMS/Form/Backend/Contrib/jquery.mjs.nestedSortable'
 ], function($, Helper, Icons, Notification, Modal) {
   'use strict';
 
