@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Form\Hooks;
  */
 
 use TYPO3\CMS\Core\Database\SoftReferenceIndex;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Register new referenced formDefinitions within a plugin as a soft reference.
@@ -43,13 +45,18 @@ class SoftReferenceParserHook extends SoftReferenceIndex
     {
         $this->tokenID_basePrefix = $table . ':' . $uid . ':' . $field . ':' . $structurePath . ':' . $spKey;
         $tokenId = $this->makeTokenID($content);
+
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $file = $resourceFactory->retrieveFileOrFolderObject($content);
+
         return [
             'content' => '{softref:' . $tokenId . '}',
             'elements' => [
                 $tokenId => [
                     'matchString' => $content,
                     'subst' => [
-                        'type' => 'string',
+                        'type' => 'db',
+                        'recordRef' => 'sys_file:' . $file->getUid(),
                         'tokenID' => $tokenId,
                         'tokenValue' => $content
                     ],
