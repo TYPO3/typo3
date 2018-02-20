@@ -88,13 +88,20 @@ class FormPagePreviewRenderer implements PageLayoutViewDrawItemHookInterface
                     }
                 } catch (NoSuchFileException $e) {
                     $this->addInvalidFrameworkConfigurationFlashMessage($e);
-                    $formLabel = $messageText;
+                    $formLabel = sprintf(
+                        $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.notExistingdPersistenceIdentifier'),
+                        $persistenceIdentifier
+                    );
                 } catch (ParseErrorException $e) {
                     $this->addInvalidFrameworkConfigurationFlashMessage($e);
                     $formLabel = sprintf(
                         $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration'),
                         $persistenceIdentifier
                     );
+                } catch (\Exception $e) {
+                    // Top level catch - FAL throws top level exceptions on missing files, eg. in getFileInfoByIdentifier() of LocalDriver
+                    $this->addInvalidFrameworkConfigurationFlashMessage($e);
+                    $formLabel = $e->getMessage();
                 }
             } else {
                 $formLabel = $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.noPersistenceIdentifier');
