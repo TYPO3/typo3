@@ -718,19 +718,20 @@ class IconRegistry implements SingletonInterface
         if (!$this->fullInitialized) {
             $this->initialize();
         }
-        if (!$this->isRegistered($identifier)) {
-            throw new Exception('Icon with identifier "' . $identifier . '" is not registered"', 1437425804);
-        }
         if ($this->isDeprecated($identifier)) {
-            $replacement = $this->deprecatedIcons[$identifier];
+            $replacement = $this->deprecatedIcons[$identifier] ?? null;
             if (!empty($replacement)) {
                 $message = 'The icon "%s" is deprecated since TYPO3 v9 and will be removed in TYPO3 v10. Please use "%s" instead.';
-                $arguments = [$replacement];
+                $arguments = [$identifier, $replacement];
+                $identifier = $replacement;
             } else {
                 $message = 'The icon "%s" is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.';
-                $arguments = [];
+                $arguments = [$identifier];
             }
             trigger_error(vsprintf($message, $arguments), E_USER_DEPRECATED);
+        }
+        if (!$this->isRegistered($identifier)) {
+            throw new Exception('Icon with identifier "' . $identifier . '" is not registered"', 1437425804);
         }
         return $this->icons[$identifier];
     }
@@ -744,6 +745,14 @@ class IconRegistry implements SingletonInterface
             $this->initialize();
         }
         return array_keys($this->icons);
+    }
+
+    /**
+     * @return array
+     */
+    public function getDeprecatedIcons(): array
+    {
+        return $this->deprecatedIcons;
     }
 
     /**

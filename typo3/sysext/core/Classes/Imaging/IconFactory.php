@@ -105,7 +105,12 @@ class IconFactory
         if (!empty(static::$iconCache[$cacheIdentifier])) {
             return static::$iconCache[$cacheIdentifier];
         }
-        if (!$this->iconRegistry->isRegistered($identifier)) {
+
+        if (
+            !$this->iconRegistry->isDeprecated($identifier)
+            && !$this->iconRegistry->isRegistered($identifier)
+        ) {
+            // in case icon identifier is neither deprecated nor registered
             $identifier = $this->iconRegistry->getDefaultIconIdentifier();
         }
 
