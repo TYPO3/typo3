@@ -225,6 +225,9 @@ div.icon-container {
   margin-bottom: 20px;
   height: 100px;
 }
+div.icon-container.icon-deprecated-container {
+  height: 175px;
+}
 div.icon-container span.icon-container-icon,
 div.icon-container span.icon-container-label {
   display: block;
