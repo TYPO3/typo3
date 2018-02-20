@@ -727,6 +727,9 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         $pC = $table === 'pages' && $this->perms_clause ? ' AND ' . $this->perms_clause : '';
         // Adding search constraints:
         $search = $this->makeSearchString($table, $id);
+        if ($search !== '') {
+            $search = ' AND ' . $search;
+        }
         // Compiling query array:
         $queryParts = [
             'SELECT' => $fieldList,
