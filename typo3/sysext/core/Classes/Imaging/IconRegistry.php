@@ -745,20 +745,18 @@ class IconRegistry implements SingletonInterface
     {
         $resultArray = [];
 
-        $tcaTables = array_keys($GLOBALS['TCA']);
+        $tcaTables = array_keys($GLOBALS['TCA'] ?? []);
         // check every table in the TCA, if an icon is needed
         foreach ($tcaTables as $tableName) {
             // This method is only needed for TCA tables where typeicon_classes are not configured
-            if (is_array($GLOBALS['TCA'][$tableName])) {
-                $tcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'];
-                $iconIdentifier = 'tcarecords-' . $tableName . '-default';
-                if (isset($this->icons[$iconIdentifier])) {
-                    continue;
-                }
-                if (isset($tcaCtrl['iconfile'])) {
-                    $resultArray[$iconIdentifier] = $tcaCtrl['iconfile'];
-                }
+            $iconIdentifier = 'tcarecords-' . $tableName . '-default';
+            if (
+                isset($this->icons[$iconIdentifier])
+                || !isset($GLOBALS['TCA'][$tableName]['ctrl']['iconfile'])
+            ) {
+                continue;
             }
+            $resultArray[$iconIdentifier] = $GLOBALS['TCA'][$tableName]['ctrl']['iconfile'];
         }
 
         foreach ($resultArray as $iconIdentifier => $iconFilePath) {
