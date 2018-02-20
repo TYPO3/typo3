@@ -134,15 +134,8 @@ class FileController
         // Initializing:
         $this->fileProcessor->setActionPermissions();
         $this->fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
-        // Checking referrer / executing:
-        $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
-        $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-        if ($httpHost !== $refInfo['host'] && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-            $this->fileProcessor->writeLog(0, 2, 1, 'Referrer host "%s" and server host "%s" did not match!', [$refInfo['host'], $httpHost]);
-        } else {
-            $this->fileProcessor->start($this->file);
-            $this->fileData = $this->fileProcessor->processData();
-        }
+        $this->fileProcessor->start($this->file);
+        $this->fileData = $this->fileProcessor->processData();
     }
 
     /**

@@ -187,25 +187,18 @@ class SimpleDataHandlerController
         if (is_array($this->mirror)) {
             $this->tce->setMirror($this->mirror);
         }
-        // Checking referer / executing
-        $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
-        $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-        if ($httpHost != $refInfo['host'] && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-            $this->tce->log('', 0, 0, 0, 1, 'Referer host "%s" and server host "%s" did not match!', 1, [$refInfo['host'], $httpHost]);
-        } else {
-            // Register uploaded files
-            $this->tce->process_uploads($_FILES);
-            // Execute actions:
-            $this->tce->process_datamap();
-            $this->tce->process_cmdmap();
-            // Clearing cache:
-            if (!empty($this->cacheCmd)) {
-                $this->tce->clear_cacheCmd($this->cacheCmd);
-            }
-            // Update page tree?
-            if ($this->uPT && (isset($this->data['pages']) || isset($this->cmd['pages']))) {
-                BackendUtility::setUpdateSignal('updatePageTree');
-            }
+        // Register uploaded files
+        $this->tce->process_uploads($_FILES);
+        // Execute actions:
+        $this->tce->process_datamap();
+        $this->tce->process_cmdmap();
+        // Clearing cache:
+        if (!empty($this->cacheCmd)) {
+            $this->tce->clear_cacheCmd($this->cacheCmd);
+        }
+        // Update page tree?
+        if ($this->uPT && (isset($this->data['pages']) || isset($this->cmd['pages']))) {
+            BackendUtility::setUpdateSignal('updatePageTree');
         }
     }
 

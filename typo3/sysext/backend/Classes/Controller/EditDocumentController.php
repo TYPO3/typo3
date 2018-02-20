@@ -555,144 +555,125 @@ class EditDocumentController extends AbstractModule
         if (is_array($this->mirror)) {
             $tce->setMirror($this->mirror);
         }
-        // Checking referer / executing
-        $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
-        $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-        if ($httpHost != $refInfo['host']
-            && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']
+        // Perform the saving operation with DataHandler:
+        $tce->process_uploads($_FILES);
+        $tce->process_datamap();
+        $tce->process_cmdmap();
+        // If pages are being edited, we set an instruction about updating the page tree after this operation.
+        if ($tce->pagetreeNeedsRefresh
+            && (isset($this->data['pages']) || $beUser->workspace != 0 && !empty($this->data))
         ) {
-            $tce->log(
-                '',
-                0,
-                0,
-                0,
-                1,
-                'Referer host \'%s\' and server host \'%s\' did not match!',
-                1,
-                [$refInfo['host'], $httpHost]
-            );
-            debug('Error: Referer host did not match with server host.');
-        } else {
-            // Perform the saving operation with DataHandler:
-            $tce->process_uploads($_FILES);
-            $tce->process_datamap();
-            $tce->process_cmdmap();
-            // If pages are being edited, we set an instruction about updating the page tree after this operation.
-            if ($tce->pagetreeNeedsRefresh
-                && (isset($this->data['pages']) || $beUser->workspace != 0 && !empty($this->data))
-            ) {
-                BackendUtility::setUpdateSignal('updatePageTree');
-            }
-            // If there was saved any new items, load them:
-            if (!empty($tce->substNEWwithIDs_table)) {
-                // save the expanded/collapsed states for new inline records, if any
-                FormEngineUtility::updateInlineView($this->uc, $tce);
-                $newEditConf = [];
-                foreach ($this->editconf as $tableName => $tableCmds) {
-                    $keys = array_keys($tce->substNEWwithIDs_table, $tableName);
-                    if (!empty($keys)) {
-                        foreach ($keys as $key) {
-                            $editId = $tce->substNEWwithIDs[$key];
-                            // Check if the $editId isn't a child record of an IRRE action
-                            if (!(is_array($tce->newRelatedIDs[$tableName])
-                                && in_array($editId, $tce->newRelatedIDs[$tableName]))
-                            ) {
-                                // Translate new id to the workspace version:
-                                if ($versionRec = BackendUtility::getWorkspaceVersionOfRecord(
-                                    $beUser->workspace,
-                                    $tableName,
-                                    $editId,
-                                    'uid'
-                                )) {
-                                    $editId = $versionRec['uid'];
-                                }
-                                $newEditConf[$tableName][$editId] = 'edit';
+            BackendUtility::setUpdateSignal('updatePageTree');
+        }
+        // If there was saved any new items, load them:
+        if (!empty($tce->substNEWwithIDs_table)) {
+            // save the expanded/collapsed states for new inline records, if any
+            FormEngineUtility::updateInlineView($this->uc, $tce);
+            $newEditConf = [];
+            foreach ($this->editconf as $tableName => $tableCmds) {
+                $keys = array_keys($tce->substNEWwithIDs_table, $tableName);
+                if (!empty($keys)) {
+                    foreach ($keys as $key) {
+                        $editId = $tce->substNEWwithIDs[$key];
+                        // Check if the $editId isn't a child record of an IRRE action
+                        if (!(is_array($tce->newRelatedIDs[$tableName])
+                            && in_array($editId, $tce->newRelatedIDs[$tableName]))
+                        ) {
+                            // Translate new id to the workspace version:
+                            if ($versionRec = BackendUtility::getWorkspaceVersionOfRecord(
+                                $beUser->workspace,
+                                $tableName,
+                                $editId,
+                                'uid'
+                            )) {
+                                $editId = $versionRec['uid'];
                             }
-                            // Traverse all new records and forge the content of ->editconf so we can continue to EDIT
-                            // these records!
-                            if ($tableName === 'pages'
-                                && $this->retUrl != BackendUtility::getModuleUrl('dummy')
-                                && $this->returnNewPageId
-                            ) {
-                                $this->retUrl .= '&id=' . $tce->substNEWwithIDs[$key];
-                            }
+                            $newEditConf[$tableName][$editId] = 'edit';
                         }
-                    } else {
-                        $newEditConf[$tableName] = $tableCmds;
-                    }
-                }
-                // Resetting editconf if newEditConf has values:
-                if (!empty($newEditConf)) {
-                    $this->editconf = $newEditConf;
-                }
-                // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
-                $this->R_URL_getvars['edit'] = $this->editconf;
-                // Unsetting default values since we don't need them anymore.
-                unset($this->R_URL_getvars['defVals']);
-                // Re-compile the store* values since editconf changed...
-                $this->compileStoreDat();
-            }
-            // See if any records was auto-created as new versions?
-            if (!empty($tce->autoVersionIdMap)) {
-                $this->fixWSversioningInEditConf($tce->autoVersionIdMap);
-            }
-            // If a document is saved and a new one is created right after.
-            if (isset($_POST['_savedoknew']) && is_array($this->editconf)) {
-                $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT);
-                // Finding the current table:
-                reset($this->editconf);
-                $nTable = key($this->editconf);
-                // Finding the first id, getting the records pid+uid
-                reset($this->editconf[$nTable]);
-                $nUid = key($this->editconf[$nTable]);
-                $recordFields = 'pid,uid';
-                if (!empty($GLOBALS['TCA'][$nTable]['ctrl']['versioningWS'])) {
-                    $recordFields .= ',t3ver_oid';
-                }
-                $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
-                // Determine insertion mode ('top' is self-explaining,
-                // otherwise new elements are inserted after one using a negative uid)
-                $insertRecordOnTop = ($this->getNewIconMode($nTable) === 'top');
-                // Setting a blank editconf array for a new record:
-                $this->editconf = [];
-                // Determine related page ID for regular live context
-                if ($nRec['pid'] != -1) {
-                    if ($insertRecordOnTop) {
-                        $relatedPageId = $nRec['pid'];
-                    } else {
-                        $relatedPageId = -$nRec['uid'];
+                        // Traverse all new records and forge the content of ->editconf so we can continue to EDIT
+                        // these records!
+                        if ($tableName === 'pages'
+                            && $this->retUrl != BackendUtility::getModuleUrl('dummy')
+                            && $this->returnNewPageId
+                        ) {
+                            $this->retUrl .= '&id=' . $tce->substNEWwithIDs[$key];
+                        }
                     }
                 } else {
-                    // Determine related page ID for workspace context
-                    if ($insertRecordOnTop) {
-                        // Fetch live version of workspace version since the pid value is always -1 in workspaces
-                        $liveRecord = BackendUtility::getRecord($nTable, $nRec['t3ver_oid'], $recordFields);
-                        $relatedPageId = $liveRecord['pid'];
-                    } else {
-                        // Use uid of live version of workspace version
-                        $relatedPageId = -$nRec['t3ver_oid'];
-                    }
+                    $newEditConf[$tableName] = $tableCmds;
                 }
-                $this->editconf[$nTable][$relatedPageId] = 'new';
-                // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
-                $this->R_URL_getvars['edit'] = $this->editconf;
-                // Re-compile the store* values since editconf changed...
-                $this->compileStoreDat();
             }
-            // If a preview is requested
-            if (isset($_POST['_savedokview'])) {
-                // Get the first table and id of the data array from DataHandler
-                $table = reset(array_keys($this->data));
-                $id = reset(array_keys($this->data[$table]));
-                if (!MathUtility::canBeInterpretedAsInteger($id)) {
-                    $id = $tce->substNEWwithIDs[$id];
-                }
-                // Store this information for later use
-                $this->previewData['table'] = $table;
-                $this->previewData['id'] = $id;
+            // Resetting editconf if newEditConf has values:
+            if (!empty($newEditConf)) {
+                $this->editconf = $newEditConf;
             }
-            $tce->printLogErrorMessages();
+            // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
+            $this->R_URL_getvars['edit'] = $this->editconf;
+            // Unsetting default values since we don't need them anymore.
+            unset($this->R_URL_getvars['defVals']);
+            // Re-compile the store* values since editconf changed...
+            $this->compileStoreDat();
         }
+        // See if any records was auto-created as new versions?
+        if (!empty($tce->autoVersionIdMap)) {
+            $this->fixWSversioningInEditConf($tce->autoVersionIdMap);
+        }
+        // If a document is saved and a new one is created right after.
+        if (isset($_POST['_savedoknew']) && is_array($this->editconf)) {
+            $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT);
+            // Finding the current table:
+            reset($this->editconf);
+            $nTable = key($this->editconf);
+            // Finding the first id, getting the records pid+uid
+            reset($this->editconf[$nTable]);
+            $nUid = key($this->editconf[$nTable]);
+            $recordFields = 'pid,uid';
+            if (!empty($GLOBALS['TCA'][$nTable]['ctrl']['versioningWS'])) {
+                $recordFields .= ',t3ver_oid';
+            }
+            $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
+            // Determine insertion mode ('top' is self-explaining,
+            // otherwise new elements are inserted after one using a negative uid)
+            $insertRecordOnTop = ($this->getNewIconMode($nTable) === 'top');
+            // Setting a blank editconf array for a new record:
+            $this->editconf = [];
+            // Determine related page ID for regular live context
+            if ($nRec['pid'] != -1) {
+                if ($insertRecordOnTop) {
+                    $relatedPageId = $nRec['pid'];
+                } else {
+                    $relatedPageId = -$nRec['uid'];
+                }
+            } else {
+                // Determine related page ID for workspace context
+                if ($insertRecordOnTop) {
+                    // Fetch live version of workspace version since the pid value is always -1 in workspaces
+                    $liveRecord = BackendUtility::getRecord($nTable, $nRec['t3ver_oid'], $recordFields);
+                    $relatedPageId = $liveRecord['pid'];
+                } else {
+                    // Use uid of live version of workspace version
+                    $relatedPageId = -$nRec['t3ver_oid'];
+                }
+            }
+            $this->editconf[$nTable][$relatedPageId] = 'new';
+            // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
+            $this->R_URL_getvars['edit'] = $this->editconf;
+            // Re-compile the store* values since editconf changed...
+            $this->compileStoreDat();
+        }
+        // If a preview is requested
+        if (isset($_POST['_savedokview'])) {
+            // Get the first table and id of the data array from DataHandler
+            $table = reset(array_keys($this->data));
+            $id = reset(array_keys($this->data[$table]));
+            if (!MathUtility::canBeInterpretedAsInteger($id)) {
+                $id = $tce->substNEWwithIDs[$id];
+            }
+            // Store this information for later use
+            $this->previewData['table'] = $table;
+            $this->previewData['id'] = $id;
+        }
+        $tce->printLogErrorMessages();
         //  || count($tce->substNEWwithIDs)... If any new items has been save, the document is CLOSED
         // because if not, we just get that element re-listed as new. And we don't want that!
         if ((int)$this->closeDoc < self::DOCUMENT_CLOSE_MODE_DEFAULT
