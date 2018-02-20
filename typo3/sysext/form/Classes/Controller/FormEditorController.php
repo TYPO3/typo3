@@ -79,6 +79,7 @@ class FormEditorController extends AbstractBackendController
             $prototypeName = isset($formDefinition['prototypeName']) ? $formDefinition['prototypeName'] : 'standard';
         }
         $formDefinition['prototypeName'] = $prototypeName;
+        $formDefinition = $this->filterEmptyArrays($formDefinition);
 
         $configurationService = $this->objectManager->get(ConfigurationService::class);
         $this->prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
@@ -153,6 +154,7 @@ class FormEditorController extends AbstractBackendController
     public function saveFormAction(string $formPersistenceIdentifier, FormDefinitionArray $formDefinition)
     {
         $formDefinition = $formDefinition->getArrayCopy();
+        $formDefinition = $this->filterEmptyArrays($formDefinition);
         if (
             isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'])
@@ -217,7 +219,7 @@ class FormEditorController extends AbstractBackendController
     }
 
     /**
-     * Prepare the formElements.*.formEditor section from the yaml settings.
+     * Prepare the formElements.*.formEditor section from the YAML settings.
      * Sort all formElements into groups and add additional data.
      *
      * @param array $formElementsDefinition
@@ -277,7 +279,7 @@ class FormEditorController extends AbstractBackendController
     }
 
     /**
-     * Reduce the Yaml settings by the 'formEditor' keyword.
+     * Reduce the YAML settings by the 'formEditor' keyword.
      *
      * @return array
      */
@@ -517,6 +519,31 @@ class FormEditorController extends AbstractBackendController
         }
 
         return $output;
+    }
+
+    /**
+     * Remove keys from an array if the key value is an empty array
+     *
+     * @param array $array
+     * @return array
+     */
+    protected function filterEmptyArrays(array $array): array
+    {
+        foreach ($array as $key => $value) {
+            if (!is_array($value)) {
+                continue;
+            }
+            if (empty($value)) {
+                unset($array[$key]);
+                continue;
+            }
+            $array[$key] = $this->filterEmptyArrays($value);
+            if (empty($array[$key])) {
+                unset($array[$key]);
+            }
+        }
+
+        return $array;
     }
 
     /**
