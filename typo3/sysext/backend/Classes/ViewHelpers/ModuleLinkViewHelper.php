@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -35,6 +36,8 @@ class ModuleLinkViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('route', 'string', 'The route to link to', true);
         $this->registerArgument('arguments', 'array', 'Additional link arguments', false, []);
+        $this->registerArgument('query', 'string', 'Additional link arguments as string');
+        $this->registerArgument('currentUrlParameterName', 'string', 'Add current url as given parameter');
     }
 
     /**
@@ -48,6 +51,14 @@ class ModuleLinkViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return (string)$uriBuilder->buildUriFromRoute($arguments['route'], $arguments['arguments']);
+        $parameters = $arguments['arguments'];
+        if ($arguments['query'] !== null) {
+            ArrayUtility::mergeRecursiveWithOverrule($parameters, GeneralUtility::explodeUrl2Array($arguments['query']));
+        }
+        if ($arguments['currentUrlParameterName'] !== null) {
+            $parameters[$arguments['currentUrlParameterName']] = GeneralUtility::getIndpEnv('REQUEST_URI');
+        }
+
+        return (string)$uriBuilder->buildUriFromRoute($arguments['route'], $parameters);
     }
 }
