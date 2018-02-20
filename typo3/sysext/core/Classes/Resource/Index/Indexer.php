@@ -311,7 +311,9 @@ class Indexer
         $fileInfo = $this->transformFromDriverFileInfoArrayToFileObjectFormat($fileInfo);
         $fileInfo['type'] = $this->getFileType($fileInfo['mime_type']);
         $fileInfo['sha1'] = $this->storage->hashFileByIdentifier($identifier, 'sha1');
-        $fileInfo['extension'] = PathUtility::pathinfo($fileInfo['name'], PATHINFO_EXTENSION);
+        if (!isset($fileInfo['extension'])) {
+            $fileInfo['extension'] = PathUtility::pathinfo($fileInfo['name'], PATHINFO_EXTENSION);
+        }
         $fileInfo['missing'] = 0;
 
         return $fileInfo;

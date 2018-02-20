@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Utility methods for filtering filenames
@@ -64,7 +65,7 @@ class FileExtensionFilter
                 $fileReferenceUid = $parts[count($parts) - 1];
                 $fileReference = ResourceFactory::getInstance()->getFileReferenceObject($fileReferenceUid);
                 $file = $fileReference->getOriginalFile();
-                if ($this->isAllowed($file->getName())) {
+                if ($this->isAllowed($file->getExtension())) {
                     $cleanValues[] = $value;
                 } else {
                     // Remove the erroneously created reference record again
@@ -97,7 +98,15 @@ class FileExtensionFilter
         }
         // Check that this is a file and not a folder
         if ($driver->fileExists($itemIdentifier)) {
-            if (!$this->isAllowed($itemName)) {
+            try {
+                $fileInfo = $driver->getFileInfoByIdentifier($itemIdentifier, ['extension']);
+            } catch (\InvalidArgumentException $e) {
+                $fileInfo = [];
+            }
+            if (!isset($fileInfo['extension'])) {
+                $fileInfo['extension'] = PathUtility::pathinfo($itemIdentifier, PATHINFO_EXTENSION);
+            }
+            if (!$this->isAllowed($fileInfo['extension'])) {
                 $returnCode = -1;
             }
         }
@@ -107,13 +116,13 @@ class FileExtensionFilter
     /**
      * Checks whether a file is allowed according to the criteria defined in the class variables ($this->allowedFileExtensions etc.)
      *
-     * @param string $fileName
+     * @param string $fileExt
      * @return bool
      */
-    protected function isAllowed($fileName)
+    protected function isAllowed($fileExt)
     {
+        $fileExt = strtolower($fileExt);
         $result = true;
-        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         // Check allowed file extensions
         if ($this->allowedFileExtensions !== null && !empty($this->allowedFileExtensions) && !in_array($fileExt, $this->allowedFileExtensions)) {
             $result = false;
