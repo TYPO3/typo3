@@ -233,32 +233,38 @@ class AddController extends AbstractWizardController
                             $insertValue
                         );
                     } else {
-                        // Check the row for its datatype. If it is an array it stores the relation
-                        // to other rows. Implode it into a comma separated list to be able to restore the stored
-                        // values after the wizard falls back to the parent record
                         $currentValue = $currentParentRow[$this->P['field']];
-                        if (is_array($currentValue)) {
-                            $currentValue = implode(',', array_column($currentValue, 'uid'));
+
+                        // Normalize CSV values
+                        if (!is_array($currentValue)) {
+                            $currentValue = GeneralUtility::trimExplode(',', $currentValue, true);
                         }
+
+                        // Normalize all items to "<table>_<uid>" format
+                        $currentValue = array_map(function ($item) {
+                            // Handle per-item table for "group" elements
+                            if (is_array($item)) {
+                                $item = $item['table'] . '_' . $item['uid'];
+                            } else {
+                                $item = $this->table . '_' . $item;
+                            }
+
+                            return $item;
+                        }, $currentValue);
+
                         switch ((string)$this->P['params']['setValue']) {
                             case 'set':
-                                $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $recordId;
+                                $currentValue = [$recordId];
                                 break;
                             case 'append':
-                                $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $currentValue . ',' . $recordId;
+                                $currentValue[] = $recordId;
                                 break;
                             case 'prepend':
-                                $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $recordId . ',' . $currentValue;
+                                array_unshift($currentValue, $recordId);
                                 break;
                         }
-                        $data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(
-                            ',',
-                            GeneralUtility::trimExplode(
-                                ',',
-                                $data[$this->P['table']][$this->P['uid']][$this->P['field']],
-                                true
-                            )
-                        );
+
+                        $data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',', $currentValue);
                     }
                     // Submit the data:
                     $dataHandler->start($data, []);
