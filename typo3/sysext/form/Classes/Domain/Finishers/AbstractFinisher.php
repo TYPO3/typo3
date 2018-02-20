@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -173,58 +175,28 @@ abstract class AbstractFinisher implements FinisherInterface
             return null;
         }
 
-        if (is_array($optionValue) || is_bool($optionValue)) {
-            return $optionValue;
-        }
-
-        if ($optionValue instanceof \Closure) {
+        if (!is_string($optionValue) && !is_array($optionValue)) {
             return $optionValue;
         }
 
         $formRuntime = $this->finisherContext->getFormRuntime();
+        $optionValue = $this->substituteRuntimeReferences($optionValue, $formRuntime);
 
-        // You can encapsulate a option value with {}.
-        // This enables you to access every getable property from the
-        // TYPO3\CMS\Form\Domain\Runtime\FormRuntime.
-        //
-        // For example: {formState.formValues.<elemenIdentifier>}
-        // or {<elemenIdentifier>}
-        //
-        // Both examples are equal to "$formRuntime->getFormState()->getFormValues()[<elemenIdentifier>]"
-        // If the value is not a string nothing will be replaced.
-        // There is a special option value '{__currentTimestamp}'.
-        // This will be replaced with the current timestamp.
-        $optionValue = preg_replace_callback('/{([^}]+)}/', function ($match) use ($formRuntime) {
-            if ($match[1] === '__currentTimestamp') {
-                $value = time();
-            } else {
-                // try to resolve the path '{...}' within the FormRuntime
-                $value = ObjectAccess::getPropertyPath($formRuntime, $match[1]);
-                if ($value === null) {
-                    // try to resolve the path '{...}' within the FinisherVariableProvider
-                    $value = ObjectAccess::getPropertyPath(
-                        $this->finisherContext->getFinisherVariableProvider(),
-                        $match[1]
-                    );
-                }
-            }
-            if (!is_string($value) && !is_numeric($value)) {
-                $value = '{' . $match[1] . '}';
-            }
-            return $value;
-        }, $optionValue);
+        if (is_string($optionValue)) {
+            $translationOptions = isset($this->options['translation']) && \is_array($this->options['translation'])
+                                ? $this->options['translation']
+                                : [];
 
-        $renderingOptions = isset($this->options['translation']) ?? \is_array($this->options['translation'])
-                            ? $this->options['translation']
-                            : [];
+            $optionValue = $this->translateFinisherOption(
+                $optionValue,
+                $formRuntime,
+                $optionName,
+                $optionValue,
+                $translationOptions
+            );
 
-        $optionValue = TranslationService::getInstance()->translateFinisherOption(
-            $formRuntime,
-            $this->finisherIdentifier,
-            $optionName,
-            $optionValue,
-            $renderingOptions
-        );
+            $optionValue = $this->substituteRuntimeReferences($optionValue, $formRuntime);
+        }
 
         if (empty($optionValue)) {
             if ($defaultValue !== null) {
@@ -232,6 +204,149 @@ abstract class AbstractFinisher implements FinisherInterface
             }
         }
         return $optionValue;
+    }
+
+    /**
+     * Wraps TranslationService::translateFinisherOption to recursively
+     * invoke all array items of resolved form state values or nested
+     * finisher option configuration settings.
+     *
+     * @param string|array $subject
+     * @param FormRuntime $formRuntime
+     * @param string $optionName
+     * @param string|array $optionValue
+     * @param array $translationOptions
+     * @return array|string
+     */
+    protected function translateFinisherOption(
+        $subject,
+        FormRuntime $formRuntime,
+        string $optionName,
+        $optionValue,
+        array $translationOptions
+    ) {
+        if (is_array($subject)) {
+            foreach ($subject as $key => $value) {
+                $subject[$key] = $this->translateFinisherOption(
+                    $value,
+                    $formRuntime,
+                    $optionName . '.' . $value,
+                    $value,
+                    $translationOptions
+                );
+            }
+            return $subject;
+        }
+
+        return TranslationService::getInstance()->translateFinisherOption(
+            $formRuntime,
+            $this->finisherIdentifier,
+            $optionName,
+            $optionValue,
+            $translationOptions
+        );
+    }
+
+    /**
+     * You can encapsulate a option value with {}.
+     * This enables you to access every getable property from the
+     * TYPO3\CMS\Form\Domain\Runtime\FormRuntime.
+     *
+     * For example: {formState.formValues.<elemenIdentifier>}
+     * or {<elemenIdentifier>}
+     *
+     * Both examples are equal to "$formRuntime->getFormState()->getFormValues()[<elemenIdentifier>]"
+     * There is a special option value '{__currentTimestamp}'.
+     * This will be replaced with the current timestamp.
+     *
+     * @param string|array $needle
+     * @param FormRuntime $formRuntime
+     * @return mixed
+     */
+    protected function substituteRuntimeReferences($needle, FormRuntime $formRuntime)
+    {
+        // neither array nor string, directly return
+        if (!is_array($needle) && !is_string($needle)) {
+            return $needle;
+        }
+
+        // resolve (recursively) all array items
+        if (is_array($needle)) {
+            return array_map(
+                function ($item) use ($formRuntime) {
+                    return $this->substituteRuntimeReferences($item, $formRuntime);
+                },
+                $needle
+            );
+        }
+
+        // substitute one(!) variable in string which either could result
+        // again in a string or an array representing multiple values
+        if (preg_match('/^{([^}]+)}$/', $needle, $matches)) {
+            return $this->resolveRuntimeReference(
+                $matches[1],
+                $formRuntime
+            );
+        }
+
+        // in case string contains more than just one variable or just a static
+        // value that does not need to be substituted at all, candidates are:
+        // * "prefix{variable}suffix
+        // * "{variable-1},{variable-2}"
+        // * "some static value"
+        // * mixed cases of the above
+        return preg_replace_callback(
+            '/{([^}]+)}/',
+            function ($matches) use ($formRuntime) {
+                $value = $this->resolveRuntimeReference(
+                    $matches[1],
+                    $formRuntime
+                );
+
+                // substitute each match by returning the resolved value
+                if (!is_array($value)) {
+                    return $value;
+                }
+
+                // now the resolve value is an array that shall substitute
+                // a variable in a string that probably is not the only one
+                // or is wrapped with other static string content (see above)
+                // ... which is just not possible
+                throw new FinisherException(
+                    'Cannot convert array to string',
+                    1519239265
+                );
+            },
+            $needle
+        );
+    }
+
+    /**
+     * Resolving property by name from submitted form data.
+     *
+     * @param string $property
+     * @param FormRuntime $formRuntime
+     * @return int|string|array
+     */
+    protected function resolveRuntimeReference(string $property, FormRuntime $formRuntime)
+    {
+        if ($property === '__currentTimestamp') {
+            return time();
+        }
+        // try to resolve the path '{...}' within the FormRuntime
+        $value = ObjectAccess::getPropertyPath($formRuntime, $property);
+        if ($value === null) {
+            // try to resolve the path '{...}' within the FinisherVariableProvider
+            $value = ObjectAccess::getPropertyPath(
+                $this->finisherContext->getFinisherVariableProvider(),
+                $property
+            );
+        }
+        if ($value !== null) {
+            return $value;
+        }
+        // in case no value could be resolved
+        return '{' . $property . '}';
     }
 
     /**
