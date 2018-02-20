@@ -46,7 +46,9 @@ class QueryHelper
 
         return array_map(
             function ($expression) {
-                list($fieldName, $order) = GeneralUtility::trimExplode(' ', $expression, true);
+                $fieldNameOrderArray = GeneralUtility::trimExplode(' ', $expression, true);
+                $fieldName = $fieldNameOrderArray[0] ?? null;
+                $order = $fieldNameOrderArray[1] ?? null;
 
                 return [$fieldName, $order];
             },

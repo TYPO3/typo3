@@ -234,7 +234,7 @@ abstract class AbstractItemProvider
                     // Add help text
                     $helpText = [];
                     $languageService->loadSingleTableDescription($excludeArray['table']);
-                    $helpTextArray = $GLOBALS['TCA_DESCR'][$excludeArray['table']]['columns'][$excludeArray['table']];
+                    $helpTextArray = $GLOBALS['TCA_DESCR'][$excludeArray['table']]['columns'][$excludeArray['table']] ?? [];
                     if (!empty($helpTextArray['description'])) {
                         $helpText['description'] = $helpTextArray['description'];
                     }
@@ -255,7 +255,7 @@ abstract class AbstractItemProvider
                 ];
                 // Traverse types:
                 foreach ($theTypes as $tableFieldKey => $theTypeArrays) {
-                    if (is_array($theTypeArrays['items'])) {
+                    if (!empty($theTypeArrays['items'])) {
                         // Add header:
                         $items[] = [
                             $theTypeArrays['tableFieldLabel'],
@@ -326,7 +326,9 @@ abstract class AbstractItemProvider
                 if (is_array($modList)) {
                     foreach ($modList as $theMod) {
                         $moduleLabels = $loadModules->getLabelsForModule($theMod);
-                        list($mainModule, $subModule) = explode('_', $theMod, 2);
+                        $moduleArray = GeneralUtility::trimExplode('_', $theMod, true);
+                        $mainModule = $moduleArray[0] ?? '';
+                        $subModule = $moduleArray[1] ?? '';
                         // Icon:
                         if (!empty($subModule)) {
                             $icon = $loadModules->modules[$mainModule]['sub'][$subModule]['iconIdentifier'];
@@ -443,7 +445,7 @@ abstract class AbstractItemProvider
 
         $foreignTable = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'];
 
-        if (!is_array($GLOBALS['TCA'][$foreignTable])) {
+        if (!isset($GLOBALS['TCA'][$foreignTable]) || !is_array($GLOBALS['TCA'][$foreignTable])) {
             throw new \UnexpectedValueException(
                 'Field ' . $fieldName . ' of table ' . $result['tableName'] . ' reference to foreign table '
                 . $foreignTable . ', but this table is not defined in TCA',
@@ -491,8 +493,10 @@ abstract class AbstractItemProvider
                 $isReferenceField = false;
                 if (!empty($GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field'])) {
                     $iconFieldName = $GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field'];
-                    if ($GLOBALS['TCA'][$foreignTable]['columns'][$iconFieldName]['config']['type'] === 'inline'
-                        && $GLOBALS['TCA'][$foreignTable]['columns'][$iconFieldName]['config']['foreign_table'] === 'sys_file_reference') {
+                    if (isset($GLOBALS['TCA'][$foreignTable]['columns'][$iconFieldName]['config']['type'])
+                        && $GLOBALS['TCA'][$foreignTable]['columns'][$iconFieldName]['config']['type'] === 'inline'
+                        && $GLOBALS['TCA'][$foreignTable]['columns'][$iconFieldName]['config']['foreign_table'] === 'sys_file_reference'
+                    ) {
                         $isReferenceField = true;
                     }
                 }
@@ -749,7 +753,7 @@ abstract class AbstractItemProvider
                 && (empty($GLOBALS['TCA'][$table]['ctrl']['rootLevel']) || !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']))
             ) {
                 foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $_) {
-                    if ($GLOBALS['TCA'][$table]['columns'][$field]['exclude']) {
+                    if (isset($GLOBALS['TCA'][$table]['columns'][$field]['exclude']) && (bool)$GLOBALS['TCA'][$table]['columns'][$field]['exclude']) {
                         // Get human readable names of fields
                         $translatedField = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']);
                         // Add entry, key 'labels' needed for sorting
@@ -918,9 +922,9 @@ abstract class AbstractItemProvider
                                         $iMode = 'DENY';
                                         break;
                                     case 'individual':
-                                        if ($iVal[4] === 'EXPL_ALLOW') {
+                                        if (isset($iVal[4]) && $iVal[4] === 'EXPL_ALLOW') {
                                             $iMode = 'ALLOW';
-                                        } elseif ($iVal[4] === 'EXPL_DENY') {
+                                        } elseif (isset($iVal[4]) && $iVal[4] === 'EXPL_DENY') {
                                             $iMode = 'DENY';
                                         }
                                         break;
@@ -1101,12 +1105,16 @@ abstract class AbstractItemProvider
             }
 
             $pageTsConfigId = 0;
-            if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID']) {
+            if (isset($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID'])
+                && $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID']
+            ) {
                 $pageTsConfigId = (int)$result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID'];
             }
 
             $pageTsConfigIdList = 0;
-            if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST']) {
+            if (isset($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST'])
+                && $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST']
+            ) {
                 $pageTsConfigIdList = $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST'];
             }
             $pageTsConfigIdListArray = GeneralUtility::trimExplode(',', $pageTsConfigIdList, true);
@@ -1119,7 +1127,9 @@ abstract class AbstractItemProvider
             $pageTsConfigIdList = implode(',', $pageTsConfigIdList);
 
             $pageTsConfigString = '';
-            if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR']) {
+            if (isset($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR'])
+                && $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR']
+            ) {
                 $pageTsConfigString = $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR'];
                 $pageTsConfigString = $connection->quote($pageTsConfigString);
             }
@@ -1253,7 +1263,7 @@ abstract class AbstractItemProvider
             $newDatabaseValueArray = array_merge($newDatabaseValueArray, $relationHandler->getValueArray());
         }
 
-        if ($fieldConfig['config']['multiple']) {
+        if ($fieldConfig['config']['multiple'] ?? false) {
             return $newDatabaseValueArray;
         }
         return array_unique($newDatabaseValueArray);
@@ -1286,8 +1296,8 @@ abstract class AbstractItemProvider
                 $label = $languageService->sL(trim($item[0]));
             }
             $value = strlen((string)$item[1]) > 0 ? $item[1] : '';
-            $icon = $item[2] ?: null;
-            $helpText = $item[3] ?: null;
+            $icon = !empty($item[2]) ? $item[2] : null;
+            $helpText = !empty($item[3]) ? $item[3] : null;
             $itemArray[$key] = [
                 $label,
                 $value,

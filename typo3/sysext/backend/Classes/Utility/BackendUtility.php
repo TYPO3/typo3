@@ -1869,11 +1869,11 @@ class BackendUtility
             return $value;
         }
         // Check if table and field is configured
-        if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$col])) {
+        if (!isset($GLOBALS['TCA'][$table]['columns'][$col]) || !is_array($GLOBALS['TCA'][$table]['columns'][$col])) {
             return null;
         }
         // Depending on the fields configuration, make a meaningful output value.
-        $theColConf = $GLOBALS['TCA'][$table]['columns'][$col]['config'];
+        $theColConf = $GLOBALS['TCA'][$table]['columns'][$col]['config'] ?? [];
         /*****************
          *HOOK: pre-processing the human readable output from a record
          ****************/
@@ -1884,7 +1884,7 @@ class BackendUtility
 
         $l = '';
         $lang = static::getLanguageService();
-        switch ((string)$theColConf['type']) {
+        switch ((string)($theColConf['type'] ?? '')) {
             case 'radio':
                 $l = self::getLabelFromItemlist($table, $col, $value);
                 $l = $lang->sL($l);
@@ -2225,7 +2225,7 @@ class BackendUtility
             default:
                 if ($defaultPassthrough) {
                     $l = $value;
-                } elseif ($theColConf['MM']) {
+                } elseif (isset($theColConf['MM'])) {
                     $l = 'N/A';
                 } elseif ($value) {
                     $l = GeneralUtility::fixed_lgd_cs(strip_tags($value), 200);
@@ -2310,7 +2310,7 @@ class BackendUtility
         if (isset($GLOBALS['TCA'][$table]['ctrl']['label']) && $GLOBALS['TCA'][$table]['ctrl']['label'] != '') {
             $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['label'];
         }
-        if ($GLOBALS['TCA'][$table]['ctrl']['label_alt']) {
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt'])) {
             $secondFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], true);
             foreach ($secondFields as $fieldN) {
                 $fields[] = $prefix . $fieldN;
@@ -2322,25 +2322,23 @@ class BackendUtility
             $fields[] = $prefix . 't3ver_wsid';
             $fields[] = $prefix . 't3ver_count';
         }
-        if ($GLOBALS['TCA'][$table]['ctrl']['selicon_field']) {
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['selicon_field'])) {
             $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['selicon_field'];
         }
-        if ($GLOBALS['TCA'][$table]['ctrl']['typeicon_column']) {
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
             $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
         }
-        if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
-            if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']) {
-                $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
-            }
-            if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']) {
-                $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'];
-            }
-            if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']) {
-                $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'];
-            }
-            if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group']) {
-                $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'];
-            }
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
+            $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
+        }
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'])) {
+            $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'];
+        }
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'])) {
+            $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'];
+        }
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'])) {
+            $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'];
         }
         return implode(',', array_unique($fields));
     }

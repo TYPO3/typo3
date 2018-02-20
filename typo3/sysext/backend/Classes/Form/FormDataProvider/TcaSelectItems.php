@@ -43,7 +43,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                 continue;
             }
 
-            $fieldConfig['config']['items'] = $this->sanitizeItemArray($fieldConfig['config']['items'], $table, $fieldName);
+            $fieldConfig['config']['items'] = $this->sanitizeItemArray($fieldConfig['config']['items'] ?? [], $table, $fieldName);
 
             // Resolve "itemsProcFunc"
             if (!empty($fieldConfig['config']['itemsProcFunc'])) {
@@ -52,7 +52,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                 unset($fieldConfig['config']['itemsProcFunc']);
             }
 
-            $fieldConfig['config']['maxitems'] = MathUtility::forceIntegerInRange($fieldConfig['config']['maxitems'], 0, 99999);
+            $fieldConfig['config']['maxitems'] = MathUtility::forceIntegerInRange($fieldConfig['config']['maxitems'] ?? 0, 0, 99999);
             if ($fieldConfig['config']['maxitems'] === 0) {
                 $fieldConfig['config']['maxitems'] = 99999;
             }
@@ -124,8 +124,8 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
         // Early return if there are no items or invalid values should not be displayed
         if (empty($fieldConf['config']['items'])
             || $fieldConf['config']['renderType'] !== 'selectSingle'
-            || $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['disableNoMatchingValueElement']
-            || $fieldConf['config']['disableNoMatchingValueElement']
+            || ($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['disableNoMatchingValueElement'] ?? false)
+            || ($fieldConf['config']['disableNoMatchingValueElement'] ?? false)
         ) {
             return $fieldConf['config']['items'];
         }

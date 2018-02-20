@@ -1610,7 +1610,7 @@ class GeneralUtility
         // Default output charset is UTF-8, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
         $match = [];
         preg_match('/^[[:space:]]*<\\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/', substr($string, 0, 200), $match);
-        $theCharset = $match[1] ?: 'utf-8';
+        $theCharset = $match[1] ?? 'utf-8';
         // us-ascii / utf-8 / iso-8859-1
         xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);
         // Parse content:

@@ -263,12 +263,12 @@ class RelationHandler
     {
         $conf = (array)$conf;
         // SECTION: MM reverse relations
-        $this->MM_is_foreign = (bool)$conf['MM_opposite_field'];
-        $this->MM_oppositeField = $conf['MM_opposite_field'];
-        $this->MM_table_where = $conf['MM_table_where'];
-        $this->MM_hasUidField = $conf['MM_hasUidField'];
-        $this->MM_match_fields = is_array($conf['MM_match_fields']) ? $conf['MM_match_fields'] : [];
-        $this->MM_insert_fields = is_array($conf['MM_insert_fields']) ? $conf['MM_insert_fields'] : $this->MM_match_fields;
+        $this->MM_is_foreign = (bool)($conf['MM_opposite_field'] ?? false);
+        $this->MM_oppositeField = $conf['MM_opposite_field'] ?? null;
+        $this->MM_table_where = $conf['MM_table_where'] ?? null;
+        $this->MM_hasUidField = $conf['MM_hasUidField'] ?? null;
+        $this->MM_match_fields = (isset($conf['MM_match_fields']) && is_array($conf['MM_match_fields'])) ? $conf['MM_match_fields'] : [];
+        $this->MM_insert_fields = (isset($conf['MM_insert_fields']) && is_array($conf['MM_insert_fields'])) ? $conf['MM_insert_fields'] : $this->MM_match_fields;
         $this->currentTable = $currentTable;
         if (!empty($conf['MM_oppositeUsage']) && is_array($conf['MM_oppositeUsage'])) {
             $this->MM_oppositeUsage = $conf['MM_oppositeUsage'];
@@ -301,8 +301,9 @@ class RelationHandler
         foreach ($tempTableArray as $val) {
             $tName = trim($val);
             $this->tableArray[$tName] = [];
-            if ($this->checkIfDeleted && $GLOBALS['TCA'][$tName]['ctrl']['delete']) {
-                $fieldN = $tName . '.' . $GLOBALS['TCA'][$tName]['ctrl']['delete'];
+            $deleteField = $GLOBALS['TCA'][$tName]['ctrl']['delete'] ?? false;
+            if ($this->checkIfDeleted && $deleteField) {
+                $fieldN = $tName . '.' . $deleteField;
                 $this->additionalWhere[$tName] .= ' AND ' . $fieldN . '=0';
             }
         }
@@ -330,14 +331,14 @@ class RelationHandler
                 $this->readList($itemlist, $conf);
                 $this->purgeItemArray();
             }
-        } elseif ($MMuid && $conf['foreign_field']) {
+        } elseif ($MMuid && isset($conf['foreign_field']) && (bool)$conf['foreign_field']) {
             // If not MM but foreign_field, the read the records by the foreign_field
             $this->readForeignField($MMuid, $conf);
         } else {
             // If not MM, then explode the itemlist by "," and traverse the list:
             $this->readList($itemlist, $conf);
             // Do automatic default_sortby, if any
-            if ($conf['foreign_default_sortby']) {
+            if (isset($conf['foreign_default_sortby']) && $conf['foreign_default_sortby']) {
                 $this->sortList($conf['foreign_default_sortby']);
             }
         }
