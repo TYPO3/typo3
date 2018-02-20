@@ -74,7 +74,7 @@ class YamlSource
                 $rawYamlContent = $fileToLoad->getContents();
                 if ($rawYamlContent === false) {
                     throw new NoSuchFileException(
-                        'The file "' . $fileToLoad . '" does not exist.',
+                        'The file "' . $fileIdentifier . '" does not exist.',
                         1498802253
                     );
                 }
