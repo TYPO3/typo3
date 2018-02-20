@@ -478,4 +478,39 @@ class FormEditorControllerTest extends UnitTestCase
 
         $this->assertSame($expected, $mockController->_call('transformMultiValueElementsForFormEditor', $input, $multiValueProperties));
     }
+
+    /**
+     * @test
+     */
+    public function filterEmptyArraysRemovesEmptyArrayKeys()
+    {
+        $mockController = $this->getAccessibleMock(FormEditorController::class, [
+            'dummy'
+        ], [], '', false);
+
+        $input = [
+            'heinz' => 1,
+            'klaus' => [],
+            'sabine' => [
+                'heinz' => '2',
+                'klaus' => [],
+                'horst' => [
+                    'heinz' => '',
+                    'paul' => [[]],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'heinz' => 1,
+            'sabine' => [
+                'heinz' => '2',
+                'horst' => [
+                    'heinz' => '',
+                ],
+            ],
+        ];
+
+        $this->assertSame($expected, $mockController->_call('filterEmptyArrays', $input));
+    }
 }

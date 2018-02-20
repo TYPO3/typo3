@@ -1637,9 +1637,8 @@ define(['jquery',
           var that = $(this);
           if (!$.isNumeric(that.val())) {
             that.val('');
-          } else {
-            getCurrentlySelectedFormElement().set(propertyPath, that.val());
           }
+          getCurrentlySelectedFormElement().set(propertyPath, that.val());
         });
       };
 

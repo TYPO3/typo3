@@ -77,6 +77,7 @@ class FormEditorController extends AbstractBackendController
         $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
 
         $formDefinition['prototypeName'] = $prototypeName;
+        $formDefinition = $this->filterEmptyArrays($formDefinition);
 
         $configurationService = $this->objectManager->get(ConfigurationService::class);
         $this->prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
@@ -152,7 +153,7 @@ class FormEditorController extends AbstractBackendController
     public function saveFormAction(string $formPersistenceIdentifier, FormDefinitionArray $formDefinition)
     {
         $formDefinition = $formDefinition->getArrayCopy();
-
+        $formDefinition = $this->filterEmptyArrays($formDefinition);
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
             if (method_exists($hookObj, 'beforeFormSave')) {
@@ -512,6 +513,31 @@ class FormEditorController extends AbstractBackendController
         }
 
         return $output;
+    }
+
+    /**
+     * Remove keys from an array if the key value is an empty array
+     *
+     * @param array $array
+     * @return array
+     */
+    protected function filterEmptyArrays(array $array): array
+    {
+        foreach ($array as $key => $value) {
+            if (!is_array($value)) {
+                continue;
+            }
+            if (empty($value)) {
+                unset($array[$key]);
+                continue;
+            }
+            $array[$key] = $this->filterEmptyArrays($value);
+            if (empty($array[$key])) {
+                unset($array[$key]);
+            }
+        }
+
+        return $array;
     }
 
     /**
