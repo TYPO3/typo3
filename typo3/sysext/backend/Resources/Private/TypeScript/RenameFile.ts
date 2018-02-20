@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {SeverityEnum} from './Enum/Severity';
 import * as $ from 'jquery';
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Severity = require('./Severity');
+import Modal = require('./Modal');
 
 /**
  * Module: TYPO3/CMS/Backend/RenameFile
@@ -56,7 +56,7 @@ class RenameFile {
           const modal: JQuery = Modal.confirm(
             TYPO3.lang['file_rename.exists.title'],
             description,
-            Severity.warning,
+            SeverityEnum.warning,
             [
               {
                 active: true,

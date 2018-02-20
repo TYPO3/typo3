@@ -14,7 +14,7 @@
 import * as $ from 'jquery';
 import 'jquery-ui/draggable';
 import 'jquery-ui/resizable';
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import Modal = require('./Modal');
 import ImagesLoaded = require('TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min');
 
 interface Area {

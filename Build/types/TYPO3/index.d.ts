@@ -10,6 +10,7 @@ declare namespace TYPO3 {
   export let InfoWindow: any;
   export let ModuleMenu: any;
   export let Notification: any;
+  export let Modal: any;
   export let Popover: any;
   export let Severity: any;
   export let ShortcutMenu: any;
@@ -25,16 +26,6 @@ declare namespace TYPO3 {
       export class FormEngine {
         public readonly Validation: FormEngineValidation;
       }
-      export class Modal {
-        public readonly sizes: {[key: string]: string};
-        public readonly styles: {[key: string]: string};
-        public readonly types: {[key: string]: string};
-        public currentModal: JQuery;
-        public advanced(configuration: object): any;
-        public confirm(title: string, content: any, severity: number, buttons: any[], additionalCssClasses?: string[]): JQuery; // tslint:disable-line:max-line-length
-        public show(title: string, content: any, severity: number, buttons: any[], additionalCssClasses?: string[]): JQuery; // tslint:disable-line:max-line-length
-        public dismiss(): void;
-      }
     }
   }
 }
@@ -49,10 +40,6 @@ declare module 'TYPO3/CMS/Backend/FormEngineValidation' {
 
 declare module 'TYPO3/CMS/Backend/FormEngine' {
   export = new TYPO3.CMS.Backend.FormEngine();
-}
-
-declare module 'TYPO3/CMS/Backend/Modal' {
-  export = new TYPO3.CMS.Backend.Modal();
 }
 
 // type definition for global namespace object

@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Severity = require('./Severity');
+import {SeverityEnum} from './Enum/Severity';
+import Modal = require('./Modal');
 
 /**
  * Module: TYPO3/CMS/Backend/InfoWindow
@@ -32,7 +32,7 @@ class InfoWindow {
       content: TYPO3.settings.ShowItem.moduleUrl
         + '&table=' + encodeURIComponent(table)
         + '&uid=' + (typeof uid === 'number' ? uid : encodeURIComponent(uid)),
-      severity: Severity.notice
+      severity: SeverityEnum.notice
     });
   }
 }

@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {SeverityEnum} from './Enum/Severity';
 import 'bootstrap';
 import * as $ from 'jquery';
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Severity = require('./Severity');
+import Modal = require('./Modal');
 
 /**
  * GridEditorConfigurationInterface
@@ -679,7 +679,7 @@ export class GridEditor {
         ]),
     ]);
 
-    const $modal = Modal.show(TYPO3.lang.grid_windowTitle, $markup, Severity.notice, [
+    const $modal = Modal.show(TYPO3.lang.grid_windowTitle, $markup, SeverityEnum.notice, [
       {
         active: true,
         btnClass: 'btn-default',

@@ -14,13 +14,12 @@
 /**
  * Module: TYPO3/CMS/Backend/DragUploader
  */
-
+import {SeverityEnum} from './Enum/Severity';
 import * as $ from 'jquery';
 import moment = require('moment');
 import NProgress = require('nprogress');
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import Modal = require('./Modal');
 import Notification = require('./Notification');
-import Severity = require('./Severity');
 
 /**
  * Possible actions for conflicts w/ existing files
@@ -363,7 +362,7 @@ class DragUploaderPlugin {
     }
 
     const $modal = Modal.confirm(
-      TYPO3.lang['file_upload.existingfiles.title'], $modalContent, Severity.warning,
+      TYPO3.lang['file_upload.existingfiles.title'], $modalContent, SeverityEnum.warning,
       [
         {
           text: $(this).data('button-close-text') || TYPO3.lang['file_upload.button.cancel'] || 'Cancel',

@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Severity = require('../Severity');
+import {SeverityEnum} from '../Enum/Severity';
+import Modal = require('../Modal');
 
 /**
  * Module: TYPO3/CMS/Backend/Wizard/NewContentElement
@@ -26,7 +26,7 @@ class NewContentElement {
         currentModal.find('.t3js-modal-body').addClass('t3-new-content-element-wizard-window');
       },
       content: url,
-      severity: Severity.notice,
+      severity: SeverityEnum.notice,
       size: Modal.sizes.medium,
       title,
       type: Modal.types.ajax,
