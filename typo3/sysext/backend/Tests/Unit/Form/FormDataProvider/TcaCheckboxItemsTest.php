@@ -22,22 +22,13 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaCheckboxItemsTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TcaCheckboxItems
-     */
-    protected $subject;
-
     /**
      * @var array A backup of registered singleton instances
      */
@@ -46,7 +37,6 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     protected function setUp()
     {
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
-        $this->subject = new TcaCheckboxItems();
     }
 
     protected function tearDown()
@@ -54,19 +44,6 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         GeneralUtility::purgeInstances();
         GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
-    }
-
-    /**
-     * @test
-     * @dataProvider checkboxConfigurationDataProvider
-     */
-    public function addDataKeepExistingItems($input, $expectedResult)
-    {
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL(Argument::cetera())->willReturnArgument(0);
-
-        $this->assertSame($expectedResult, $this->subject->addData($input));
     }
 
     public function checkboxConfigurationDataProvider()
@@ -429,6 +406,19 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 
     /**
      * @test
+     * @dataProvider checkboxConfigurationDataProvider
+     */
+    public function addDataKeepExistingItems($input, $expectedResult)
+    {
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+        $this->assertSame($expectedResult, (new TcaCheckboxItems)->addData($input));
+    }
+
+    /**
+     * @test
      */
     public function addDataThrowsExceptionIfItemsAreNoArray()
     {
@@ -447,9 +437,14 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             ],
             'tableName' => 'foo'
         ];
+
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499337);
-        $this->subject->addData($input);
+        (new TcaCheckboxItems)->addData($input);
     }
 
     /**
@@ -474,9 +469,14 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             ],
             'tableName' => 'foo'
         ];
+
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499338);
-        $this->subject->addData($input);
+        (new TcaCheckboxItems)->addData($input);
     }
 
     /**
@@ -513,8 +513,7 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
         $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
-        $this->assertSame($expected, $this->subject->addData($input));
-        $this->subject->addData($input);
+        $this->assertSame($expected, (new TcaCheckboxItems)->addData($input));
     }
 
     /**
@@ -541,6 +540,11 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                 ],
             ],
         ];
+
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config'] = [
             'type' => 'check',
@@ -548,7 +552,7 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                 'foo' => 'bar',
             ],
         ];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaCheckboxItems)->addData($input));
     }
 
     /**
@@ -623,7 +627,7 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         // itemsProcFunc must NOT have raised an exception
         $flashMessageQueue->enqueue($flashMessage)->shouldNotBeCalled();
 
-        $this->subject->addData($input);
+        (new TcaCheckboxItems)->addData($input);
     }
 
     /**
@@ -682,7 +686,7 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 
         $flashMessageQueue->enqueue($flashMessage)->shouldBeCalled();
 
-        $this->subject->addData($input);
+        (new TcaCheckboxItems)->addData($input);
     }
 
     /**
@@ -731,7 +735,6 @@ class TcaCheckboxItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';
         $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
-        $this->assertSame($expected, $this->subject->addData($input));
-        $this->subject->addData($input);
+        $this->assertSame($expected, (new TcaCheckboxItems)->addData($input));
     }
 }

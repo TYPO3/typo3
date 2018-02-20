@@ -62,7 +62,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
     {
         $flexColumns = [];
         foreach ($result['processedTca']['columns'] as $columnName => $columnConfiguration) {
-            if ($columnConfiguration['config']['type'] === 'flex') {
+            if (isset($columnConfiguration['config']['type']) && $columnConfiguration['config']['type'] === 'flex') {
                 $flexColumns[$columnName] = $columnConfiguration;
             }
             if (!isset($columnConfiguration['displayCond'])) {
@@ -110,7 +110,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                         'context' => 'flexSheet',
                         'sheetNameFieldNames' => $sheetNameFieldNames,
                         'currentSheetName' => $sheetName,
-                        'flexFormRowData' => $result['databaseRow'][$columnName],
+                        'flexFormRowData' => $result['databaseRow'][$columnName] ?? null,
                     ];
                     $parsedDisplayCondition = $this->parseConditionRecursive(
                         $sheetConfiguration['ROOT']['displayCond'],
@@ -131,7 +131,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                                 'currentSheetName' => $sheetName,
                                 'currentFieldName' => $flexElementName,
                                 'flexFormDataStructure' => $result['processedTca']['columns'][$columnName]['config']['ds'],
-                                'flexFormRowData' => $result['databaseRow'][$columnName],
+                                'flexFormRowData' => $result['databaseRow'][$columnName] ?? null,
                             ];
                             $parsedDisplayCondition = $this->parseConditionRecursive(
                                 $flexElementConfiguration['displayCond'],
@@ -471,8 +471,8 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                         );
                     }
                 }
-                $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'];
-                $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
+                $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'] ?? null;
+                $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'] ?? null;
                 if (!isset($flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$fieldName]['vDEF'])) {
                     throw new \RuntimeException(
                         'Flex form displayCond on sheet "' . $flexContext['currentSheetName'] . '" references field "' . $fieldName
@@ -552,7 +552,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                 );
                 if (in_array($givenFieldName, $listOfLocalContainerElementNames, true)) {
                     // Condition references field of same container instance
-                    $containerType = array_shift(array_keys(
+                    $containerType = current(array_keys(
                         $flexContext['flexFormRowData']['data'][$currentSheetName]
                             ['lDEF'][$currentFieldName]
                             ['el'][$currentContainerIdentifier]
@@ -564,7 +564,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                         ['el'][$givenFieldName]['vDEF'];
                 } elseif (in_array($givenFieldName, array_keys($listOfLocalContainerElementNamesWithSheetName, true))) {
                     // Condition references field name of same container instance and has sheet name included
-                    $containerType = array_shift(array_keys(
+                    $containerType = current(array_keys(
                         $flexContext['flexFormRowData']['data'][$currentSheetName]
                         ['lDEF'][$currentFieldName]
                         ['el'][$currentContainerIdentifier]
@@ -584,7 +584,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                     $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
                     $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$fieldName]['vDEF'];
                 } else {
-                    $containerType = array_shift(array_keys(
+                    $containerType = current(array_keys(
                         $flexContext['flexFormRowData']['data'][$currentSheetName]
                         ['lDEF'][$currentFieldName]
                         ['el'][$currentContainerIdentifier]
@@ -635,7 +635,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
         foreach ($listOfFlexFieldNames as $columnName) {
             $columnConfiguration = $result['processedTca']['columns'][$columnName];
             foreach ($columnConfiguration['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
-                if (is_array($sheetConfiguration['ROOT']['displayCond'])) {
+                if (isset($sheetConfiguration['ROOT']['displayCond']) && is_array($sheetConfiguration['ROOT']['displayCond'])) {
                     if (!$this->evaluateConditionRecursive($sheetConfiguration['ROOT']['displayCond'])) {
                         unset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName]);
                     } else {
@@ -651,10 +651,10 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
             $columnConfiguration = $result['processedTca']['columns'][$columnName];
             if (is_array($columnConfiguration['config']['ds']['sheets'])) {
                 foreach ($columnConfiguration['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
-                    if (is_array($sheetConfiguration['ROOT']['el'])) {
+                    if (isset($sheetConfiguration['ROOT']['el']) && is_array($sheetConfiguration['ROOT']['el'])) {
                         foreach ($sheetConfiguration['ROOT']['el'] as $flexField => $flexConfiguration) {
                             $conditionResult = true;
-                            if (is_array($flexConfiguration['displayCond'])) {
+                            if (isset($flexConfiguration['displayCond']) && is_array($flexConfiguration['displayCond'])) {
                                 $conditionResult = $this->evaluateConditionRecursive($flexConfiguration['displayCond']);
                                 if (!$conditionResult) {
                                     unset(
@@ -699,7 +699,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
             foreach ($sectionElement['children'] as $containerInstanceName => $containerDataStructure) {
                 if (isset($containerDataStructure['el']) && is_array($containerDataStructure['el'])) {
                     foreach ($containerDataStructure['el'] as $containerElementName => $containerElementConfiguration) {
-                        if (is_array($containerElementConfiguration['displayCond'])) {
+                        if (isset($containerElementConfiguration['displayCond']) && is_array($containerElementConfiguration['displayCond'])) {
                             if (!$this->evaluateConditionRecursive($containerElementConfiguration['displayCond'])) {
                                 unset(
                                     $result['processedTca']['columns'][$columnName]['config']['ds']

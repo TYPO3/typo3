@@ -27,17 +27,13 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabaseSystemLanguageRowsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseSystemLanguageRowsTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var DatabaseSystemLanguageRows
      */
@@ -69,7 +65,11 @@ class DatabaseSystemLanguageRowsTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     public function addDataSetsDefaultLanguageAndAllEntries()
     {
+        $input = [
+            'pageTsConfig' => [],
+        ];
         $expected = [
+            'pageTsConfig' => [],
             'systemLanguageRows' => [
                 -1 => [
                     'uid' => -1,
@@ -112,7 +112,7 @@ class DatabaseSystemLanguageRowsTest extends \TYPO3\TestingFramework\Core\Unit\U
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
         $statementProphecy->fetch()->shouldBeCalledTimes(1)->willReturn(false);
 
-        $this->assertSame($expected, $this->subject->addData([]));
+        $this->assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -273,7 +273,12 @@ class DatabaseSystemLanguageRowsTest extends \TYPO3\TestingFramework\Core\Unit\U
 
         $statementProphecy->fetch()->shouldBeCalledTimes(2)->willReturn($aDatabaseResultRow, false);
 
+        $input = [
+            'pageTsConfig' => [],
+        ];
+
         $expected = [
+            'pageTsConfig' => [],
             'systemLanguageRows' => [
                 -1 => [
                     'uid' => -1,
@@ -295,7 +300,7 @@ class DatabaseSystemLanguageRowsTest extends \TYPO3\TestingFramework\Core\Unit\U
                 ],
             ],
         ];
-        $this->assertSame($expected, $this->subject->addData([]));
+        $this->assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -338,9 +343,14 @@ class DatabaseSystemLanguageRowsTest extends \TYPO3\TestingFramework\Core\Unit\U
 
         $statementProphecy->fetch()->shouldBeCalledTimes(2)->willReturn($aDatabaseResultRow, false);
 
+        $input = [
+            'pageTsConfig' => [],
+        ];
+
         // Needed for backendUtility::getRecord()
         $GLOBALS['TCA']['static_languages'] = [ 'foo' ];
         $expected = [
+            'pageTsConfig' => [],
             'systemLanguageRows' => [
                 -1 => [
                     'uid' => -1,
@@ -375,6 +385,6 @@ class DatabaseSystemLanguageRowsTest extends \TYPO3\TestingFramework\Core\Unit\U
 
         $flashMessageQueue->enqueue($flashMessage)->shouldBeCalled();
 
-        $this->assertSame($expected, $this->subject->addData([]));
+        $this->assertSame($expected, $this->subject->addData($input));
     }
 }

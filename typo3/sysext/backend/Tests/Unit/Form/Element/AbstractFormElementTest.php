@@ -15,17 +15,13 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
  */
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class AbstractFormElementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractFormElementTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @return array
      */
@@ -284,7 +280,7 @@ class AbstractFormElementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $subject = $this->getAccessibleMock(AbstractFormElement::class, ['render'], [], '', false);
         $timezoneBackup = date_default_timezone_get();
         date_default_timezone_set('UTC');
-        $result = $subject->_call('formatValue', $config['format'], $itemValue, $config['format.']);
+        $result = $subject->_call('formatValue', $config['format'], $itemValue, $config['format.'] ?? []);
         date_default_timezone_set($timezoneBackup);
 
         $this->assertEquals($expectedResult, $result);

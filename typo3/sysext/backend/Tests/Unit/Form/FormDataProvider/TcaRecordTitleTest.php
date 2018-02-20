@@ -18,22 +18,13 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaRecordTitleTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TcaRecordTitle
-     */
-    protected $subject;
-
     /**
      * @var string
      */
@@ -41,7 +32,6 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     public function setUp()
     {
-        $this->subject = new TcaRecordTitle();
         $this->timeZone = date_default_timezone_get();
         date_default_timezone_set('UTC');
     }
@@ -66,7 +56,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1443706103);
-        $this->subject->addData($input);
+        (new TcaRecordTitle)->addData($input);
     }
 
     /**
@@ -77,6 +67,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $input = [
             'tableName' => 'aTable',
             'databaseRow' => [],
+            'isInlineChild' => false,
             'processedTca' => [
                 'ctrl' => [
                     'label' => 'uid',
@@ -91,7 +82,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $expected = $input;
         $expected['recordTitle'] = 'Test';
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -101,8 +92,14 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
-            'databaseRow' => [],
+            'databaseRow' => [
+                'uid' => 5,
+            ],
             'isInlineChild' => true,
+            'isOnSymmetricSide' => false,
+            'inlineParentConfig' => [
+                'foreign_label' => 'aField',
+            ],
             'processedTca' => [
                 'ctrl' => [
                     'label' => 'uid',
@@ -117,7 +114,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $expected = $input;
         $expected['recordTitle'] = 'Test';
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -146,13 +143,14 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
             ],
             'isInlineChild' => true,
+            'isOnSymmetricSide' => false,
             'inlineParentConfig' => [
                 'foreign_label' => 'aField',
             ],
         ];
         $expected = $input;
         $expected['recordTitle'] = 'aValue';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -163,6 +161,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $input = [
             'tableName' => 'aTable',
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => 'aValue',
             ],
             'processedTca' => [
@@ -181,13 +180,14 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
             ],
             'isInlineChild' => true,
+            'isOnSymmetricSide' => false,
             'inlineParentConfig' => [
                 'foreign_label' => 'aField',
             ],
         ];
         $expected = $input;
         $expected['recordTitle'] = 'aFormattedLabel';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -220,7 +220,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         ];
         $expected = $input;
         $expected['recordTitle'] = 'aValue';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -230,6 +230,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'uid' => 'NEW56017ee37d10e587251374',
             ],
@@ -248,7 +249,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'NEW56017ee37d10e587251374';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -370,6 +371,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'uid' => '1',
                 'aField' => $fieldValue,
@@ -396,7 +398,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = $expectedTitle;
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -406,6 +408,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'uid' => '1',
                 'aField' => '',
@@ -433,7 +436,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'anotherValue';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -443,6 +446,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'uid' => '1',
                 'aField' => '',
@@ -476,7 +480,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'additionalValue';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -486,6 +490,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'uid' => '1',
                 'aField' => 'aField',
@@ -514,7 +519,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'aField, anotherField';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -524,6 +529,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'uid' => '1',
                 'aField' => 'aField',
@@ -558,7 +564,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'aField, anotherField, additionalValue';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -568,6 +574,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'uid' => '1',
                 'aField' => 'aField',
@@ -602,7 +609,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'aField, additionalValue';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -612,6 +619,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'uid' => '1',
                 'aField' => '2',
@@ -637,7 +645,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'bar';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -647,6 +655,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'uid' => '1',
                 'aField' => '2',
@@ -673,7 +682,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'foo';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -784,6 +793,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'uid' => '1',
                 'aField' => $fieldValue,
@@ -812,7 +822,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = $expectedTitle;
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -822,6 +832,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'uid' => '1',
                 'aField' => [
@@ -855,7 +866,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'aValue, anotherValue';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -865,6 +876,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'aField' => 1,
             ],
@@ -889,7 +901,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:yes';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -899,6 +911,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'aField' => '5'
             ],
@@ -921,9 +934,14 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ]
         ];
 
+        /** @var LanguageService|ObjectProphecy $languageService */
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
         $expected = $input;
         $expected['recordTitle'] = 'foo, baz';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -933,6 +951,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'aField' => [
                     'data' => [
@@ -980,7 +999,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = '';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -990,6 +1009,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'aField' => [
                     '1',
@@ -1017,7 +1037,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'foo, bar';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -1027,6 +1047,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'isInlineChild' => false,
             'databaseRow' => [
                 'aField' => '<p> text </p>',
             ],
@@ -1046,6 +1067,6 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'text';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 }

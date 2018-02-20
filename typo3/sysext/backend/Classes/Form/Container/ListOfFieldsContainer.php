@@ -38,7 +38,7 @@ class ListOfFieldsContainer extends AbstractContainer
         $recordTypeValue = $this->data['recordTypeValue'];
 
         // Load the description content for the table if requested
-        if ($GLOBALS['TCA'][$table]['interface']['always_description']) {
+        if (!empty($GLOBALS['TCA'][$table]['interface']['always_description'])) {
             $languageService = $this->getLanguageService();
             $languageService->loadSingleTableDescription($table);
         }

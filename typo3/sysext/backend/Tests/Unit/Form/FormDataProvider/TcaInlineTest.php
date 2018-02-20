@@ -17,22 +17,13 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaInlineTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaInlineTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TcaInline
-     */
-    protected $subject;
-
     /**
      * @var BackendUserAuthentication | ObjectProphecy
      */
@@ -42,26 +33,7 @@ class TcaInlineTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $this->beUserProphecy->reveal();
-
-        $this->subject = new TcaInline();
     }
-
-    /**
-     * @var array Set of default controls
-     */
-    protected $defaultConfig = [
-        'processedTca' => [
-            'columns' => [
-                'aField' => [
-                    'config' => [
-                        'type' => 'inline',
-                        'foreign_table' => 'aForeignTableName'
-                    ],
-                ],
-            ],
-        ],
-        'inlineFirstPid' => 0,
-    ];
 
     /**
      * @test
@@ -79,6 +51,7 @@ class TcaInlineTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     ],
                 ],
             ],
+            'inlineFirstPid' => 0,
         ];
 
         $this->beUserProphecy
@@ -89,9 +62,9 @@ class TcaInlineTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->shouldBeCalled()
             ->willReturn(false);
 
-        $expected = $this->defaultConfig;
+        $expected = $input;
         $expected['processedTca']['columns']['aField']['children'] = [];
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInline)->addData($input));
     }
 
     /**
@@ -110,6 +83,7 @@ class TcaInlineTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     ],
                 ],
             ],
+            'inlineFirstPid' => 0,
         ];
 
         $this->beUserProphecy
@@ -119,9 +93,9 @@ class TcaInlineTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             )
             ->shouldNotBeCalled();
 
-        $expected = $this->defaultConfig;
+        $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['type'] = 'input';
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInline)->addData($input));
     }
 
     /**
@@ -140,6 +114,8 @@ class TcaInlineTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     ],
                 ],
             ],
+            'inlineFirstPid' => 0,
+            'inlineResolveExistingChildren' => false,
         ];
 
         $this->beUserProphecy
@@ -150,8 +126,8 @@ class TcaInlineTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->shouldBeCalled()
             ->willReturn(true);
 
-        $expected = $this->defaultConfig;
+        $expected = $input;
         $expected['processedTca']['columns']['aField']['children'] = [];
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInline)->addData($input));
     }
 }

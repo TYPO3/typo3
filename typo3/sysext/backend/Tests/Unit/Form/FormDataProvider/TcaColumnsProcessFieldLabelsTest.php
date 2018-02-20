@@ -16,33 +16,20 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaColumnsProcessFieldLabelsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TcaColumnsProcessFieldLabels
-     */
-    protected $subject;
-
-    protected function setUp()
-    {
-        $this->subject = new TcaColumnsProcessFieldLabels();
-    }
-
     /**
      * @test
      */
     public function addDataKeepsLabelAsIsIfNoOverrideIsGiven()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -50,13 +37,14 @@ class TcaColumnsProcessFieldLabelsTest extends \TYPO3\TestingFramework\Core\Unit
                     ],
                 ],
             ],
+            'recordTypeValue' => 'aType',
         ];
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL('foo')->shouldBeCalled()->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
 
         $expected = $input;
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessFieldLabels)->addData($input));
     }
 
     /**
@@ -65,6 +53,7 @@ class TcaColumnsProcessFieldLabelsTest extends \TYPO3\TestingFramework\Core\Unit
     public function addDataSetsLabelFromShowitem()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -85,7 +74,7 @@ class TcaColumnsProcessFieldLabelsTest extends \TYPO3\TestingFramework\Core\Unit
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessFieldLabels)->addData($input));
     }
 
     /**
@@ -94,6 +83,7 @@ class TcaColumnsProcessFieldLabelsTest extends \TYPO3\TestingFramework\Core\Unit
     public function addDataSetsLabelFromPalettesShowitem()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -119,7 +109,7 @@ class TcaColumnsProcessFieldLabelsTest extends \TYPO3\TestingFramework\Core\Unit
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessFieldLabels)->addData($input));
     }
 
     /**
@@ -145,6 +135,7 @@ class TcaColumnsProcessFieldLabelsTest extends \TYPO3\TestingFramework\Core\Unit
                     ],
                 ],
             ],
+            'recordTypeValue' => 'aType',
         ];
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL('aLabelOverride')->shouldBeCalled()->willReturnArgument(0);
@@ -152,7 +143,7 @@ class TcaColumnsProcessFieldLabelsTest extends \TYPO3\TestingFramework\Core\Unit
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessFieldLabels)->addData($input));
     }
 
     /**
@@ -180,6 +171,7 @@ class TcaColumnsProcessFieldLabelsTest extends \TYPO3\TestingFramework\Core\Unit
                     ],
                 ],
             ],
+            'recordTypeValue' => 'aType',
         ];
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->lang = 'fr';
@@ -188,6 +180,6 @@ class TcaColumnsProcessFieldLabelsTest extends \TYPO3\TestingFramework\Core\Unit
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessFieldLabels)->addData($input));
     }
 }

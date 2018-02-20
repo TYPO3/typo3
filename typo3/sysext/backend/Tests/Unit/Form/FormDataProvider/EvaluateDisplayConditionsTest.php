@@ -19,17 +19,13 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class EvaluateDisplayConditionsTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
@@ -3761,6 +3757,9 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
             ]
         ];
 
+        $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserAuthenticationProphecy->reveal();
+
         $expected = $input;
         if ($expectedResult) {
             // displayCond vanished from result array after this data provider is done
@@ -3792,7 +3791,18 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                 ],
             ],
         ];
-        $input['databaseRow'] = $record ?: ['testField' => ['key' => $record['testField']]];
+
+        $input['databaseRow'] = $record;
+        if (!empty($record['testField'])) {
+            $input['databaseRow'] = [
+                'testField' => [
+                    'key' => $record['testField']
+                ]
+            ];
+        }
+
+        $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserAuthenticationProphecy->reveal();
 
         $expected = $input;
         if ($expectedResult) {

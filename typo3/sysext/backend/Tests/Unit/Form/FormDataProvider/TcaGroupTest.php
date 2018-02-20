@@ -17,26 +17,18 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaGroupTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TcaGroup
-     */
-    protected $subject;
-
     /**
      * @var array
      */
@@ -44,7 +36,6 @@ class TcaGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     protected function setUp()
     {
-        $this->subject = new TcaGroup();
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
     }
 
@@ -74,7 +65,7 @@ class TcaGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ],
         ];
         $expected = $input;
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaGroup)->addData($input));
     }
 
     /**
@@ -83,6 +74,7 @@ class TcaGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function addDataThrowsExceptionWithTypeGroupAndNoValidInternalType()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -96,7 +88,7 @@ class TcaGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438780511);
-        $this->subject->addData($input);
+        (new TcaGroup)->addData($input);
     }
 
     /**
@@ -132,7 +124,7 @@ class TcaGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $clipboardProphecy->initializeClipboard()->shouldBeCalled();
         $clipboardProphecy->elFromTable('_FILE')->shouldBeCalled()->willReturn([]);
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaGroup)->addData($input));
     }
 
     /**
@@ -175,7 +167,7 @@ class TcaGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];
         $expected['processedTca']['columns']['aField']['config']['allowed'] = '*';
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaGroup)->addData($input));
     }
 
     /**
@@ -217,7 +209,7 @@ class TcaGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ]
         ];
         $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaGroup)->addData($input));
     }
 
     /**
@@ -246,6 +238,9 @@ class TcaGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
             ],
         ];
+
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
 
         $clipboardProphecy = $this->prophesize(Clipboard::class);
         GeneralUtility::addInstance(Clipboard::class, $clipboardProphecy->reveal());
@@ -285,6 +280,6 @@ class TcaGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaGroup)->addData($input));
     }
 }

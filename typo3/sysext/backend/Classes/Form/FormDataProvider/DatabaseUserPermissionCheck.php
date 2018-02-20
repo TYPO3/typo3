@@ -125,7 +125,7 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
                 }
             } else {
                 // A non page record is edited.
-                if (is_array($result['parentPageRow'])) {
+                if (isset($result['parentPageRow']) && is_array($result['parentPageRow'])) {
                     // If there is a parent page row, check content edit right of user
                     $userPermissionOnPage = $backendUser->calcPerms($result['parentPageRow']);
                     if ((bool)($userPermissionOnPage & Permission::CONTENT_EDIT)) {

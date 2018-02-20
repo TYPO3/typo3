@@ -17,31 +17,16 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaFlexPrepareTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaFlexPrepareTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TcaFlexPrepare
-     */
-    protected $subject;
-
-    /**
-     * @var BackendUserAuthentication|ObjectProphecy
-     */
-    protected $backendUserProphecy;
-
     /**
      * @var array A backup of registered singleton instances
      */
@@ -57,8 +42,6 @@ class TcaFlexPrepareTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache(Argument::cetera())->willReturn($cacheFrontendProphecy->reveal());
-
-        $this->subject = new TcaFlexPrepare();
     }
 
     protected function tearDown()
@@ -112,7 +95,7 @@ class TcaFlexPrepareTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ],
         ];
         $expected = $input;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexPrepare)->addData($input));
     }
 
     /**
@@ -183,7 +166,7 @@ class TcaFlexPrepareTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'meta' => [],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexPrepare)->addData($input));
     }
 
     /**
@@ -262,7 +245,7 @@ class TcaFlexPrepareTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'meta' => [],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexPrepare)->addData($input));
     }
 
     /**
@@ -306,6 +289,6 @@ class TcaFlexPrepareTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'meta' => []
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaFlexPrepare)->addData($input));
     }
 }

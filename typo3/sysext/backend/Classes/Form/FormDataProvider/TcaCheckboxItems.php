@@ -85,15 +85,12 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
                 $this->getLanguageService()->sL(trim($checkboxEntry[0])),
                 $checkboxEntry[1]
             ];
-            switch ($config['renderType']) {
-                case 'checkboxToggle':
-                    $newItems = $this->sanitizeToggleCheckbox($checkboxEntry, $itemKey, $newItems);
-                    break;
-                case 'checkboxLabeledToggle':
-                    $newItems = $this->sanitizeLabeledToggleCheckbox($checkboxEntry, $itemKey, $newItems);
-                    break;
-                default:
-                    $newItems = $this->sanitizeIconToggleCheckbox($checkboxEntry, $itemKey, $newItems);
+            if (isset($config['renderType']) && $config['renderType'] === 'checkboxToggle') {
+                $newItems = $this->sanitizeToggleCheckbox($checkboxEntry, $itemKey, $newItems);
+            } elseif (isset($config['renderType']) && $config['renderType'] === 'checkboxLabeledToggle') {
+                $newItems = $this->sanitizeLabeledToggleCheckbox($checkboxEntry, $itemKey, $newItems);
+            } else {
+                $newItems = $this->sanitizeIconToggleCheckbox($checkboxEntry, $itemKey, $newItems);
             }
         }
         return $newItems;

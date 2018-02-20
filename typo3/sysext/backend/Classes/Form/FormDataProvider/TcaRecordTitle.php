@@ -307,6 +307,9 @@ class TcaRecordTitle implements FormDataProviderInterface
         if (!isset($value)) {
             return '';
         }
+        if (!isset($fieldConfig['eval'])) {
+            return $value;
+        }
         $title = $value;
         $dateTimeFormats = QueryHelper::getDateTimeFormats();
         if (GeneralUtility::inList($fieldConfig['eval'], 'date')) {

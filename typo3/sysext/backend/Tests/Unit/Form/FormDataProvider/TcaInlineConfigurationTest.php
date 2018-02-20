@@ -15,27 +15,13 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaInlineConfigurationTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TcaInlineConfiguration
-     */
-    protected $subject;
-
-    protected function setUp()
-    {
-        $this->subject = new TcaInlineConfiguration();
-    }
-
     /**
      * @var array Set of default controls
      */
@@ -66,6 +52,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     public function addDataThrowsExceptionForInlineFieldWithoutForeignTableConfig()
     {
         $input = [
+            'tableName' => 'aTable',
             'databaseRow' => [],
             'processedTca' => [
                 'columns' => [
@@ -79,7 +66,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1443793404);
-        $this->subject->addData($input);
+        (new TcaInlineConfiguration)->addData($input);
     }
 
     /**
@@ -100,7 +87,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
             ],
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -123,7 +110,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['minitems'] = 23;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -146,7 +133,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['minitems'] = 0;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -169,7 +156,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['maxitems'] = 23;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -192,7 +179,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['maxitems'] = 1;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -221,7 +208,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'both';
         $expected['processedTca']['columns']['aField']['config']['appearance']['enabledControls']['dragdrop'] = false;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -262,7 +249,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
             'foreignTable' => 'anotherForeignTableName',
         ];
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'none';
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -305,7 +292,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $expected['processedTca']['columns']['aField']['config']['appearance']['useCombination'] = true;
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'both';
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -330,7 +317,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showPossibleLocalizationRecords'] = true;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -355,7 +342,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showPossibleLocalizationRecords'] = false;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -380,7 +367,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showRemovedLocalizationRecords'] = true;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -405,7 +392,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showRemovedLocalizationRecords'] = false;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -414,6 +401,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     public function addDataThrowsExceptionIfForeignSelectorAndForeignUniquePointToDifferentFields()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -429,7 +417,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444995464);
-        $this->subject->addData($input);
+        (new TcaInlineConfiguration)->addData($input);
     }
 
     /**
@@ -438,6 +426,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     public function addDataThrowsExceptionIfForeignSelectorPointsToANotExistingField()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -452,7 +441,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444996537);
-        $this->subject->addData($input);
+        (new TcaInlineConfiguration)->addData($input);
     }
 
     /**
@@ -461,6 +450,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     public function addDataThrowsExceptionIfForeignUniquePointsToANotExistingField()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -475,7 +465,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444996537);
-        $this->subject->addData($input);
+        (new TcaInlineConfiguration)->addData($input);
     }
 
     /**
@@ -484,6 +474,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     public function addDataThrowsExceptionIfForeignUniqueTargetIsNotTypeSelectOrGroup()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -501,7 +492,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444996537);
-        $this->subject->addData($input);
+        (new TcaInlineConfiguration)->addData($input);
     }
 
     /**
@@ -510,6 +501,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     public function addDataThrowsExceptionForForeignSelectorGroupWithoutInternalTypeDb()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -528,7 +520,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444999130);
-        $this->subject->addData($input);
+        (new TcaInlineConfiguration)->addData($input);
     }
 
     /**
@@ -537,6 +529,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     public function addDataThrowsExceptionIfForeignUniqueSelectDoesNotDefineForeignTable()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -554,7 +547,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1445078627);
-        $this->subject->addData($input);
+        (new TcaInlineConfiguration)->addData($input);
     }
 
     /**
@@ -563,6 +556,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     public function addDataThrowsExceptionIfForeignUniqueGroupDoesNotDefineForeignTable()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -581,7 +575,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1445078628);
-        $this->subject->addData($input);
+        (new TcaInlineConfiguration)->addData($input);
     }
 
     /**
@@ -618,7 +612,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
             ],
             'foreignTable' => 'anotherForeignTableName',
         ];
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -693,6 +687,6 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
             ],
             'foreignTable' => 'anotherForeignTableName',
         ];
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 }

@@ -29,11 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class PaletteAndSingleContainerTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @test
      */
     public function renderUsesPaletteLabelFromFieldArray()
@@ -54,6 +49,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
 
         $labelReference = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
         $input = [
+            'tableName' => 'aTable',
             'recordTypeValue' => 'aType',
             'processedTca' => [
                 'columns' => [
@@ -110,6 +106,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
 
         $labelReference = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
         $input = [
+            'tableName' => 'aTable',
             'recordTypeValue' => 'aType',
             'processedTca' => [
                 'columns' => [
@@ -168,6 +165,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $labelReferenceFieldArray = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
         $labelReferencePaletteArray = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
         $input = [
+            'tableName' => 'aTable',
             'recordTypeValue' => 'aType',
             'processedTca' => [
                 'columns' => [

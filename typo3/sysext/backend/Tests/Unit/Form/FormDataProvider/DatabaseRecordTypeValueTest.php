@@ -15,17 +15,13 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabaseRecordTypeValueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseRecordTypeValueTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var DatabaseRecordTypeValue|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -44,6 +40,7 @@ class DatabaseRecordTypeValueTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     public function addDataThrowsExceptionIfTcaTypesAreEmpty()
     {
         $input = [
+            'tableName' => 'aTable',
             'processedTca' => [
                 'types' => [],
             ],
@@ -133,6 +130,7 @@ class DatabaseRecordTypeValueTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     public function addDataThrowsExceptionIfTypePointsToANotExistingField()
     {
         $input = [
+            'tableName' => 'aTable',
             'recordTypeValue' => '',
             'processedTca' => [
                 'ctrl' => [
@@ -237,6 +235,7 @@ class DatabaseRecordTypeValueTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     public function addDataThrowsExceptionIfValueTypesNotExistsAndNoFallbackExists()
     {
         $input = [
+            'tableName' => 'aTable',
             'recordTypeValue' => '',
             'processedTca' => [
                 'ctrl' => [
@@ -293,6 +292,7 @@ class DatabaseRecordTypeValueTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     public function addDataThrowsExceptionForForeignTypeIfPointerConfigurationHasNoTable()
     {
         $input = [
+            'tableName' => 'aTable',
             'recordTypeValue' => '',
             'processedTca' => [
                 'ctrl' => [

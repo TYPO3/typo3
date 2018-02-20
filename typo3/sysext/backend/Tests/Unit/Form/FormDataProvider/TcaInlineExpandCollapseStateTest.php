@@ -15,27 +15,14 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaInlineExpandCollapseStateTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TcaInlineExpandCollapseState
-     */
-    protected $subject;
-
-    protected function setUp()
-    {
-        $this->subject = new TcaInlineExpandCollapseState();
-    }
-
     /**
      * @test
      */
@@ -47,6 +34,11 @@ class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit
             'databaseRow' => [
                 'uid' => 5,
             ],
+            'isInlineChildExpanded' => false,
+            'inlineParentConfig' => [
+                'foreign_table' => 'aTable',
+            ],
+            'isInlineAjaxOpeningContext' => false,
         ];
         $inlineState = [
             'aParentTable' => [
@@ -65,7 +57,7 @@ class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit
         ];
         $expected = $input;
         $expected['inlineExpandCollapseStateArray'] = $inlineState['aParentTable'][5];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaInlineExpandCollapseState)->addData($input));
     }
 
     /**
@@ -81,6 +73,11 @@ class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit
             ],
             'inlineTopMostParentTableName' => 'aParentTable',
             'inlineTopMostParentUid' => 5,
+            'isInlineChildExpanded' => false,
+            'inlineParentConfig' => [
+                'foreign_table' => 'aTable',
+            ],
+            'isInlineAjaxOpeningContext' => false,
         ];
         $inlineState = [
             'aParentTable' => [
@@ -104,7 +101,7 @@ class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit
         ];
         $expected = $input;
         $expected['inlineExpandCollapseStateArray'] = $inlineState['aParentTable'][5];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaInlineExpandCollapseState)->addData($input));
     }
 
     /**
@@ -151,6 +148,7 @@ class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit
             'Inline child is expanded because of ajax opening context' => [
                 [
                     'command' => 'edit',
+                    'tableName' => 'aParentTable',
                     'databaseRow' => [
                         'uid' => 42,
                     ],
@@ -185,6 +183,7 @@ class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit
             'Inline child is collapsed because of collapseAll' => [
                 [
                     'command' => 'edit',
+                    'tableName' => 'aParentTable',
                     'databaseRow' => [
                         'uid' => 42,
                     ],
@@ -211,6 +210,7 @@ class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit
                     ],
                     'isInlineChild' => true,
                     'isInlineChildExpanded' => false,
+                    'isInlineAjaxOpeningContext' => false,
                     'inlineExpandCollapseStateArray' => [],
                 ],
                 false
@@ -218,6 +218,7 @@ class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit
             'Inline child is expanded because of expandAll (inverse collapseAll setting)' => [
                 [
                     'command' => 'edit',
+                    'tableName' => 'aParentTable',
                     'databaseRow' => [
                         'uid' => 42,
                     ],
@@ -285,6 +286,7 @@ class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit
             'Inline child marked as expanded stays expanded (e.g. combination child)' => [
                 [
                     'command' => 'edit',
+                    'tableName' => 'aParentTable',
                     'databaseRow' => [
                         'uid' => 42,
                     ],
@@ -327,8 +329,11 @@ class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit
      */
     public function addDataAddsCorrectIsInlineChildExpanded(array $input, $expectedIsInlineChildExpanded)
     {
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+
         $expected = $input;
         $expected['isInlineChildExpanded'] = $expectedIsInlineChildExpanded;
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaInlineExpandCollapseState)->addData($input));
     }
 }

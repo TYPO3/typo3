@@ -15,27 +15,13 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseRowInitializeNewTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var DatabaseRowInitializeNew
-     */
-    protected $subject;
-
-    protected function setUp()
-    {
-        $this->subject = new DatabaseRowInitializeNew();
-    }
-
     /**
      * @test
      */
@@ -56,7 +42,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
                 ],
             ],
         ];
-        $this->assertSame($input, $this->subject->addData($input));
+        $this->assertSame($input, (new DatabaseRowInitializeNew)->addData($input));
     }
 
     /**
@@ -65,12 +51,13 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     public function addDataThrowsExceptionIfDatabaseRowIsNotArray()
     {
         $input = [
+            'tableName' => 'aTable',
             'command' => 'new',
             'databaseRow' => 'not-an-array',
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444431128);
-        $this->subject->addData($input);
+        (new DatabaseRowInitializeNew)->addData($input);
     }
 
     /**
@@ -82,13 +69,16 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [
                 'aField' => 42,
             ],
         ];
         $expected = $input;
         $expected['databaseRow']['pid'] = 23;
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new DatabaseRowInitializeNew)->addData($input));
     }
 
     /**
@@ -100,6 +90,9 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'userTsConfig' => [
                 'TCAdefaults.' => [
@@ -118,7 +111,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'aField' => 'userTsValue',
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -131,6 +124,9 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'userTsConfig' => [
                 'TCAdefaults.' => [
@@ -146,7 +142,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         $expected = [
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -159,6 +155,9 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'pageTsConfig' => [
                 'TCAdefaults.' => [
@@ -177,7 +176,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'aField' => 'pageTsValue',
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -190,6 +189,9 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'pageTsConfig' => [
                 'TCAdefaults.' => [
@@ -205,7 +207,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         $expected = [
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -218,6 +220,9 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'pageTsConfig' => [
                 'TCAdefaults.' => [
@@ -243,7 +248,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'aField' => 'pageTsValue',
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -256,6 +261,8 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'neighborRow' => [
                 'aField' => 'valueFromNeighbor',
@@ -273,7 +280,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'aField' => 'valueFromNeighbor',
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -286,6 +293,8 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'neighborRow' => [
                 'aField' => 'valueFromNeighbor',
@@ -317,7 +326,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'aField' => 'valueFromNeighbor',
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -330,6 +339,9 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'processedTca' => [
                 'columns' => [
@@ -348,7 +360,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'aField' => 'getValue',
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -361,6 +373,9 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'processedTca' => [
                 'columns' => [
@@ -379,7 +394,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'aField' => 'postValue',
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -392,6 +407,9 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'processedTca' => [
                 'columns' => [
@@ -417,7 +435,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'aField' => 'postValue',
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -430,6 +448,9 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'userTsConfig' => [
                 'TCAdefaults.' => [
@@ -459,7 +480,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         $expected = [
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -472,6 +493,8 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'neighborRow' => [
                 'aField' => 'valueFromNeighbor',
@@ -510,7 +533,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'aField' => 'postValue',
             'pid' => 23,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -521,12 +544,15 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     {
         $input = [
             'command' => 'new',
+            'tableName' => 'aTable',
+            'neighborRow' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'inlineChildChildUid' => 42,
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444434102);
-        $this->subject->addData($input);
+        (new DatabaseRowInitializeNew)->addData($input);
     }
 
     /**
@@ -536,12 +562,15 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     {
         $input = [
             'command' => 'new',
+            'tableName' => 'aTable',
+            'neighborRow' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'inlineChildChildUid' => '42',
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444434103);
-        $this->subject->addData($input);
+        (new DatabaseRowInitializeNew)->addData($input);
     }
 
     /**
@@ -552,6 +581,8 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         $input = [
             'command' => 'new',
             'tableName' => 'aTable',
+            'neighborRow' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'inlineChildChildUid' => 42,
             'inlineParentConfig' => [
@@ -566,11 +597,12 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
                     ],
                 ],
             ],
+            'vanillaUid' => 5,
         ];
         $expected = $input;
         $expected['databaseRow']['theForeignSelectorField'] = 42;
-        $expected['databaseRow']['pid'] = null;
-        $this->assertSame($expected, $this->subject->addData($input));
+        $expected['databaseRow']['pid'] = 5;
+        $this->assertSame($expected, (new DatabaseRowInitializeNew)->addData($input));
     }
 
     /**
@@ -581,6 +613,8 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         $input = [
             'command' => 'new',
             'tableName' => 'aTable',
+            'neighborRow' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'inlineChildChildUid' => 42,
             'inlineParentConfig' => [
@@ -598,7 +632,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444434104);
-        $this->subject->addData($input);
+        (new DatabaseRowInitializeNew)->addData($input);
     }
 
     /**
@@ -609,6 +643,9 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         $input = [
             'command' => 'new',
             'tableName' => 'aTable',
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'databaseRow' => [],
             'inlineParentConfig' => [
                 'inline' => [
@@ -625,7 +662,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1490360772);
-        $this->subject->addData($input);
+        (new DatabaseRowInitializeNew)->addData($input);
     }
 
     /**
@@ -636,6 +673,9 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         $input = [
             'command' => 'new',
             'tableName' => 'aTable',
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
             'vanillaUid' => 1,
             'databaseRow' => [],
             'inlineParentConfig' => [
@@ -656,7 +696,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'sys_language_uid' => 42,
             'pid' => 1,
         ];
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result);
     }
 
@@ -670,9 +710,12 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'tableName' => 'aTable',
             'vanillaUid' => 23,
             'databaseRow' => [],
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
         ];
         $expected['pid'] = 23;
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseRowInitializeNew)->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
     }
 
@@ -685,6 +728,8 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
             'databaseRow' => [],
             'pageTsConfig' => [
                 'TCAdefaults.' => [
@@ -697,7 +742,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         ];
         $expected = $input;
         $expected['databaseRow']['pid'] = 23;
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new DatabaseRowInitializeNew)->addData($input));
     }
 
     /**
@@ -709,6 +754,8 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
             'databaseRow' => [],
             'pageTsConfig' => [
                 'TCAdefaults.' => [
@@ -721,7 +768,7 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1461598332);
-        $this->subject->addData($input);
+        (new DatabaseRowInitializeNew)->addData($input);
     }
 
     /**
@@ -733,6 +780,8 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
             'command' => 'new',
             'tableName' => 'aTable',
             'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
             'databaseRow' => [],
             'pageTsConfig' => [
                 'TCAdefaults.' => [
@@ -745,6 +794,6 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         ];
         $expected = $input;
         $expected['databaseRow']['pid'] = 42;
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new DatabaseRowInitializeNew)->addData($input));
     }
 }

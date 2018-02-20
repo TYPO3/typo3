@@ -140,7 +140,7 @@ class NodeFactory
     {
         if (empty($data['renderType'])) {
             throw new Exception(
-                'Missing "renderType" in TCA of field "[' . $data['tableName'] . '][' . $data['fieldName'] . ']".',
+                'Missing "renderType" in TCA of field "[' . ($data['tableName'] ?? 'unknown') . '][' . ($data['fieldName'] ?? 'unknown') . ']".',
                 1431452406
             );
         }

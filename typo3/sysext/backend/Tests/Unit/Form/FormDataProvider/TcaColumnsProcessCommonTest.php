@@ -15,33 +15,20 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaColumnsProcessCommonTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TcaColumnsProcessCommon
-     */
-    protected $subject;
-
-    protected function setUp()
-    {
-        $this->subject = new TcaColumnsProcessCommon();
-    }
-
     /**
      * @test
      */
     public function addDataRegistersOrigUidColumn()
     {
         $input = [
+            'recordTypeValue' => 'aType',
             'columnsToProcess' => [],
             'processedTca' => [
                 'ctrl' => [
@@ -52,7 +39,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         $expected = $input;
         $expected['columnsToProcess'] = ['t3_origuid'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -61,6 +48,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     public function addDataRegistersRecordTypeColumn()
     {
         $input = [
+            'recordTypeValue' => 'aType',
             'columnsToProcess' => [],
             'processedTca' => [
                 'ctrl' => [
@@ -71,7 +59,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         $expected = $input;
         $expected['columnsToProcess'] = ['doktype'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -80,6 +68,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     public function addDataRegistersRecordTypeRelationColumn()
     {
         $input = [
+            'recordTypeValue' => 'aType',
             'columnsToProcess' => [],
             'processedTca' => [
                 'ctrl' => [
@@ -90,7 +79,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         $expected = $input;
         $expected['columnsToProcess'] = ['relation_field'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -99,6 +88,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     public function addDataRegistersLanguageFieldColumn()
     {
         $input = [
+            'recordTypeValue' => 'aType',
             'columnsToProcess' => [],
             'processedTca' => [
                 'ctrl' => [
@@ -109,7 +99,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         $expected = $input;
         $expected['columnsToProcess'] = ['sys_language_uid'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -118,6 +108,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     public function addDataRegistersTransOrigPointerColumn()
     {
         $input = [
+            'recordTypeValue' => 'aType',
             'columnsToProcess' => [],
             'processedTca' => [
                 'ctrl' => [
@@ -128,7 +119,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         $expected = $input;
         $expected['columnsToProcess'] = ['l10n_parent'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -137,6 +128,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     public function addDataRegistersTransOrigDiffSourceColumn()
     {
         $input = [
+            'recordTypeValue' => 'aType',
             'columnsToProcess' => [],
             'processedTca' => [
                 'ctrl' => [
@@ -147,7 +139,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         $expected = $input;
         $expected['columnsToProcess'] = ['l18n_diffsource'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -159,6 +151,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
             'recordTypeValue' => 'list',
             'columnsToProcess' => [],
             'processedTca' => [
+                'ctrl' => [],
                 'types' => [
                     'list' => [
                         'subtype_value_field' => 'list_type',
@@ -175,7 +168,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         $expected = $input;
         $expected['columnsToProcess'] = ['aField'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -187,6 +180,7 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
             'recordTypeValue' => 'aType',
             'columnsToProcess' => [],
             'processedTca' => [
+                'ctrl' => [],
                 'types' => [
                     'aType' => [
                         'subtype_value_field' => 'theSubtypeValueField',
@@ -203,6 +197,6 @@ class TcaColumnsProcessCommonTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         $expected = $input;
         $expected['columnsToProcess'] = ['aField', 'bField'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 }

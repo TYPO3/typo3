@@ -62,8 +62,8 @@ class TcaColumnsProcessFieldLabels implements FormDataProviderInterface
             $aShowItemFieldArray = GeneralUtility::trimExplode(';', $aShowItemFieldString);
             $aShowItemFieldArray = [
                 'fieldName' => $aShowItemFieldArray[0],
-                'fieldLabel' => $aShowItemFieldArray[1] ?: null,
-                'paletteName' => $aShowItemFieldArray[2] ?: null,
+                'fieldLabel' => !empty($aShowItemFieldArray[1]) ? $aShowItemFieldArray[1] : null,
+                'paletteName' => !empty($aShowItemFieldArray[2]) ? $aShowItemFieldArray[2] : null,
             ];
             if ($aShowItemFieldArray['fieldName'] === '--div--') {
                 // tabs are not of interest here

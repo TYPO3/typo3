@@ -1734,7 +1734,7 @@ class BackendUtility
     public static function getRecordTitle($table, $row, $prep = false, $forceResult = true)
     {
         $recordTitle = '';
-        if (is_array($GLOBALS['TCA'][$table])) {
+        if (isset($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table])) {
             // If configured, call userFunc
             if (!empty($GLOBALS['TCA'][$table]['ctrl']['label_userFunc'])) {
                 $params['table'] = $table;
@@ -2366,7 +2366,7 @@ class BackendUtility
             'title' => null,
             'moreInfo' => false
         ];
-        if (is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
+        if (isset($GLOBALS['TCA_DESCR'][$table]['columns'][$field]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
             $data = $GLOBALS['TCA_DESCR'][$table]['columns'][$field];
             // Add alternative title, if defined
             if ($data['alttitle']) {

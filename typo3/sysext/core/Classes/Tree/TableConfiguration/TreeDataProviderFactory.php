@@ -62,7 +62,7 @@ class TreeDataProviderFactory
             if (isset($tcaConfiguration['foreign_label'])) {
                 $dataProvider->setLabelField($tcaConfiguration['foreign_label']);
             } else {
-                $dataProvider->setLabelField($GLOBALS['TCA'][$tableName]['ctrl']['label']);
+                $dataProvider->setLabelField($GLOBALS['TCA'][$tableName]['ctrl']['label'] ?? '');
             }
             $dataProvider->setTreeId(md5($table . '|' . $field));
 

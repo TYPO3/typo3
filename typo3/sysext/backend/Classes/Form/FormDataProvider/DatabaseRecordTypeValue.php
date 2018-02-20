@@ -86,7 +86,7 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                 if (!empty($foreignUid)) {
                     // Determine table name to fetch record from
                     if ($relationType === 'select') {
-                        $foreignTable = $result['processedTca']['columns'][$pointerField]['config']['foreign_table'];
+                        $foreignTable = $result['processedTca']['columns'][$pointerField]['config']['foreign_table'] ?? '';
                     } else {
                         $allowedTables = explode(',', $result['processedTca']['columns'][$pointerField]['config']['allowed']);
                         // Always take the first configured table.

@@ -24,29 +24,21 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Tests for the TcaSelectTreeItems provider.
  *
- * This test only covers the renderTree() method. All other methods are covered TcaSelecItemsTest
+ * This test only covers the renderTree() method. All other methods are covered by TcaSelectItemsTest
  *
  * @see TcaSelecItemsTest
  */
-class TcaSelectTreeItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaSelectTreeItemsTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TcaSelectTreeItems
-     */
-    protected $subject;
-
     /**
      * @var array A backup of registered singleton instances
      */
@@ -58,7 +50,6 @@ class TcaSelectTreeItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     public function setUp()
     {
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
-        $this->subject = new TcaSelectTreeItems();
     }
 
     protected function tearDown()
@@ -145,6 +136,10 @@ class TcaSelectTreeItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(Argument::cetera())->willReturn(' 1=1');
 
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
         $this->mockDatabaseConnection();
 
         /** @var  DatabaseTreeDataProvider|ObjectProphecy $treeDataProviderProphecy */
@@ -160,7 +155,9 @@ class TcaSelectTreeItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 42,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => '1'
             ],
             'processedTca' => [
@@ -187,7 +184,7 @@ class TcaSelectTreeItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $expected['processedTca']['columns']['aField']['config']['items'] = [
             'fake', 'tree', 'data',
         ];
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new TcaSelectTreeItems)->addData($input));
     }
 
     /**
@@ -201,6 +198,10 @@ class TcaSelectTreeItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(Argument::cetera())->willReturn(' 1=1');
+
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
         $this->mockDatabaseConnection();
 
@@ -217,7 +218,9 @@ class TcaSelectTreeItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 42,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => '1'
             ],
             'processedTca' => [
@@ -257,7 +260,7 @@ class TcaSelectTreeItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             'selectTreeCompileItems' => true,
         ];
 
-        $this->subject->addData($input);
+        (new TcaSelectTreeItems)->addData($input);
 
         $treeDataProviderProphecy->setRootUid(42)->shouldHaveBeenCalled();
         $treeDataProviderProphecy->setExpandAll(true)->shouldHaveBeenCalled();

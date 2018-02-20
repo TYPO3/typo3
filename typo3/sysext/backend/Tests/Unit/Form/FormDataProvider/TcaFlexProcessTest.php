@@ -21,17 +21,13 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaFlexProcessTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var BackendUserAuthentication|ObjectProphecy
      */
@@ -146,7 +142,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],
@@ -225,7 +223,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],
@@ -304,7 +304,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],
@@ -383,7 +385,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],
@@ -462,7 +466,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],
@@ -525,7 +531,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],
@@ -596,7 +604,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],
@@ -667,7 +677,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],
@@ -740,7 +752,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],
@@ -846,7 +860,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],
@@ -1007,7 +1023,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [
                         'sDEF' => [
@@ -1354,7 +1372,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],
@@ -1413,7 +1433,9 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'selectTreeCompileItems' => false,
             'databaseRow' => [
+                'uid' => 5,
                 'aField' => [
                     'data' => [],
                 ],

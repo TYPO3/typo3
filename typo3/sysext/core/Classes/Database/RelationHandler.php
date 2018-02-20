@@ -404,8 +404,8 @@ class RelationHandler
                 if (MathUtility::canBeInterpretedAsInteger($theID)) {
                     // Get the table name: If a part of the exploded string, use that.
                     // Otherwise if the id number is LESS than zero, use the second table, otherwise the first table
-                    $theTable = trim($parts[1])
-                        ? strrev(trim($parts[1]))
+                    $theTable = trim($parts[1] ?? '')
+                        ? strrev(trim($parts[1] ?? ''))
                         : ($this->secondTable && $theID < 0 ? $this->secondTable : $this->firstTable);
                     // If the ID is not blank and the table name is among the names in the inputted tableList
                     if (

@@ -16,17 +16,13 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseDefaultLanguagePageRow;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabaseDefaultLanguagePageRowTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var DatabaseDefaultLanguagePageRow|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -55,7 +51,7 @@ class DatabaseDefaultLanguagePageRowTest extends \TYPO3\TestingFramework\Core\Un
         ];
         $result = $this->subject->addData($input);
 
-        $this->assertNull($result['defaultLanguagePageRow']);
+        $this->assertArrayNotHasKey('defaultLanguagePageRow', $result);
     }
 
     /**

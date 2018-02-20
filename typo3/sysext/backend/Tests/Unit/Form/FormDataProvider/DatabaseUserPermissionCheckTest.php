@@ -26,22 +26,13 @@ use TYPO3\CMS\Backend\Form\Exception\AccessDeniedTableModifyException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseUserPermissionCheckTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var DatabaseUserPermissionCheck
-     */
-    protected $subject;
-
     /**
      * @var BackendUserAuthentication | ObjectProphecy
      */
@@ -49,8 +40,6 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
 
     protected function setUp()
     {
-        $this->subject = new DatabaseUserPermissionCheck();
-
         $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $this->beUserProphecy->reveal();
         $GLOBALS['BE_USER']->user['uid'] = 42;
@@ -63,7 +52,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
     {
         $this->beUserProphecy->isAdmin()->willReturn(true);
 
-        $result = $this->subject->addData([]);
+        $result = (new DatabaseUserPermissionCheck)->addData([]);
 
         $this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
@@ -82,7 +71,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->expectException(AccessDeniedTableModifyException::class);
         $this->expectExceptionCode(1437683248);
 
-        $this->subject->addData($input);
+        (new DatabaseUserPermissionCheck)->addData($input);
     }
 
     /**
@@ -95,17 +84,18 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
             'command' => 'edit',
             'vanillaUid' => 123,
             'parentPageRow' => [
+                'uid' => 42,
                 'pid' => 321,
             ],
         ];
         $this->beUserProphecy->isAdmin()->willReturn(false);
         $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
-        $this->beUserProphecy->calcPerms(['pid' => 321])->willReturn(Permission::NOTHING);
+        $this->beUserProphecy->calcPerms(['uid' => 42, 'pid' => 321])->willReturn(Permission::NOTHING);
 
         $this->expectException(AccessDeniedContentEditException::class);
         $this->expectExceptionCode(1437679657);
 
-        $this->subject->addData($input);
+        (new DatabaseUserPermissionCheck)->addData($input);
     }
 
     /**
@@ -117,6 +107,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
             'tableName' => 'tt_content',
             'command' => 'edit',
             'vanillaUid' => 123,
+            'databaseRow' => [],
             'parentPageRow' => [
                 'pid' => 321,
             ],
@@ -126,7 +117,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->beUserProphecy->calcPerms(['pid' => 321])->willReturn(Permission::CONTENT_EDIT);
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::any())->willReturn(true);
 
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseUserPermissionCheck)->addData($input);
 
         $this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
@@ -152,7 +143,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->expectException(AccessDeniedPageEditException::class);
         $this->expectExceptionCode(1437679336);
 
-        $this->subject->addData($input);
+        (new DatabaseUserPermissionCheck)->addData($input);
     }
 
     /**
@@ -184,7 +175,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->expectException(AccessDeniedPageEditException::class);
         $this->expectExceptionCode(1437679336);
 
-        $this->subject->addData($input);
+        (new DatabaseUserPermissionCheck)->addData($input);
     }
 
     /**
@@ -213,7 +204,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->beUserProphecy->calcPerms($input['databaseRow'])->willReturn(Permission::PAGE_EDIT);
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseUserPermissionCheck)->addData($input);
 
         $this->assertSame(Permission::PAGE_EDIT, $result['userPermissionOnPage']);
     }
@@ -237,7 +228,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
         $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
 
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseUserPermissionCheck)->addData($input);
 
         $this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
@@ -263,7 +254,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->expectException(AccessDeniedRootNodeException::class);
         $this->expectExceptionCode(1437679856);
 
-        $this->subject->addData($input);
+        (new DatabaseUserPermissionCheck)->addData($input);
     }
 
     /**
@@ -275,6 +266,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
             'tableName' => 'tt_content',
             'command' => 'edit',
             'vanillaUid' => 123,
+            'databaseRow' => [],
             'parentPageRow' => [
                 'uid' => 123,
                 'pid' => 321,
@@ -288,7 +280,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->expectException(AccessDeniedEditInternalsException::class);
         $this->expectExceptionCode(1437687404);
 
-        $this->subject->addData($input);
+        (new DatabaseUserPermissionCheck)->addData($input);
     }
 
     /**
@@ -312,7 +304,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->expectException(AccessDeniedContentEditException::class);
         $this->expectExceptionCode(1437745759);
 
-        $this->subject->addData($input);
+        (new DatabaseUserPermissionCheck)->addData($input);
     }
 
     /**
@@ -324,6 +316,9 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
             'tableName' => 'pages',
             'command' => 'new',
             'vanillaUid' => 123,
+            'databaseRow' => [
+                'uid' => 'NEW123',
+            ],
             'parentPageRow' => [
                 'uid' => 123,
                 'pid' => 321,
@@ -336,7 +331,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->expectException(AccessDeniedPageNewException::class);
         $this->expectExceptionCode(1437745640);
 
-        $this->subject->addData($input);
+        (new DatabaseUserPermissionCheck)->addData($input);
     }
 
     /**
@@ -348,6 +343,9 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
             'tableName' => 'tt_content',
             'command' => 'edit',
             'vanillaUid' => 123,
+            'databaseRow' => [
+                'uid' => 5,
+            ],
             'parentPageRow' => [
                 'uid' => 123,
                 'pid' => 321,
@@ -367,7 +365,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->expectException(AccessDeniedHookException::class);
         $this->expectExceptionCode(1437689705);
 
-        $this->subject->addData($input);
+        (new DatabaseUserPermissionCheck)->addData($input);
     }
 
     /**
@@ -379,6 +377,9 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
             'tableName' => 'pages',
             'command' => 'new',
             'vanillaUid' => 123,
+            'databaseRow' => [
+                'uid' => 'NEW5',
+            ],
             'parentPageRow' => [
                 'uid' => 123,
                 'pid' => 321,
@@ -395,7 +396,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
             }
         ];
 
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseUserPermissionCheck)->addData($input);
 
         $this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
@@ -419,7 +420,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::PAGE_NEW);
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseUserPermissionCheck)->addData($input);
 
         $this->assertSame(Permission::PAGE_NEW, $result['userPermissionOnPage']);
     }
@@ -443,7 +444,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseUserPermissionCheck)->addData($input);
 
         $this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
@@ -464,7 +465,7 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
         $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
 
-        $result = $this->subject->addData($input);
+        $result = (new DatabaseUserPermissionCheck)->addData($input);
 
         $this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
@@ -487,6 +488,6 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->expectException(AccessDeniedRootNodeException::class);
         $this->expectExceptionCode(1437745221);
 
-        $this->subject->addData($input);
+        (new DatabaseUserPermissionCheck)->addData($input);
     }
 }

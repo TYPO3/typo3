@@ -14,27 +14,27 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\Element;
+use TYPO3\CMS\Backend\Form\Element\SelectSingleElement;
+use TYPO3\CMS\Backend\Form\Element\SelectTreeElement;
+use TYPO3\CMS\Backend\Form\Element\UnknownElement;
+use TYPO3\CMS\Backend\Form\Exception;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\NodeInterface;
 use TYPO3\CMS\Backend\Form\NodeResolverInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class NodeFactoryTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
     public function constructThrowsExceptionIfOverrideMissesNodeNameKey()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1432207533);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
             1433089391 => [
@@ -50,7 +50,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function constructThrowsExceptionIfOverrideMissesPriorityKey()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1432207533);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
             1433089393 => [
@@ -66,7 +66,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function constructThrowsExceptionIfOverrideMissesClassKey()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1432207533);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
             1433089392 => [
@@ -82,7 +82,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function constructThrowsExceptionIfOverridePriorityIsLowerThanZero()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1432223531);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
             1433089394 => [
@@ -98,7 +98,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function constructThrowsExceptionIfOverridePriorityIsHigherThanHundred()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1432223531);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
             1433089395 => [
@@ -115,7 +115,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function constructorThrowsExceptionIfOverrideTwoNodesWithSamePriorityAndSameNodeNameAreRegistered()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1432223893);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
             1433089396 => [
@@ -137,7 +137,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function constructThrowsExceptionIfResolverMissesNodeNameKey()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155522);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
             1433154905 => [
@@ -153,7 +153,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function constructThrowsExceptionIfResolverMissesPriorityKey()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155522);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
             1433154905 => [
@@ -169,7 +169,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function constructThrowsExceptionIfResolverMissesClassKey()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155522);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
             1433154906 => [
@@ -185,7 +185,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function constructThrowsExceptionIfResolverPriorityIsLowerThanZero()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155563);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
             1433154907 => [
@@ -201,7 +201,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function constructThrowsExceptionIfResolverPriorityIsHigherThanHundred()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155563);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
             1433154908 => [
@@ -218,7 +218,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function constructorThrowsExceptionIfResolverTwoNodesWithSamePriorityAndSameNodeNameAreRegistered()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155705);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
             1433154909 => [
@@ -260,7 +260,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function createThrowsExceptionIfRenderTypeIsNotGiven()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1431452406);
         $subject = new NodeFactory();
         $subject->create([]);
@@ -271,7 +271,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function createThrowsExceptionIfNodeDoesNotImplementNodeInterface()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1431872546);
         $mockNode = new \stdClass();
         /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
@@ -288,8 +288,11 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function createReturnsInstanceOfUnknownElementIfTypeIsNotRegistered()
     {
+        $unknownElementProphecy = $this->prophesize(UnknownElement::class);
+        $unknownElementRevelation = $unknownElementProphecy->reveal();
+        GeneralUtility::addInstance(UnknownElement::class, $unknownElementRevelation);
         $subject = new NodeFactory();
-        $this->assertInstanceOf(Element\UnknownElement::class, $subject->create(['renderType' => 'foo']));
+        $this->assertSame($unknownElementRevelation, $subject->create(['renderType' => 'foo']));
     }
 
     /**
@@ -301,8 +304,11 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'type' => 'select',
             'renderType' => 'selectTree',
         ];
+        $selectTreeElementProphecy = $this->prophesize(SelectTreeElement::class);
+        $selectTreeElementRevelation = $selectTreeElementProphecy->reveal();
+        GeneralUtility::addInstance(SelectTreeElement::class, $selectTreeElementRevelation);
         $subject = new NodeFactory();
-        $this->assertInstanceOf(Element\SelectTreeElement::class, $subject->create($data));
+        $this->assertSame($selectTreeElementRevelation, $subject->create($data));
     }
 
     /**
@@ -320,7 +326,10 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ],
         ];
         $subject = new NodeFactory();
-        $this->assertInstanceOf(Element\SelectSingleElement::class, $subject->create($data));
+        $selectSingleElementProphecy = $this->prophesize(SelectSingleElement::class);
+        $selectSingleElementRevelation = $selectSingleElementProphecy->reveal();
+        GeneralUtility::addInstance(SelectSingleElement::class, $selectSingleElementRevelation);
+        $this->assertSame($selectSingleElementRevelation, $subject->create($data));
     }
 
     /**
@@ -404,7 +413,7 @@ class NodeFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function createThrowsExceptionIfResolverDoesNotImplementNodeResolverInterface()
     {
-        $this->expectException(\TYPO3\CMS\Backend\Form\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1433157422);
         $data = ['renderType' => 'foo'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [

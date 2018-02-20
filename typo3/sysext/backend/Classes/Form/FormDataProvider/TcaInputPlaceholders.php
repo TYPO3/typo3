@@ -90,7 +90,6 @@ class TcaInputPlaceholders implements FormDataProviderInterface
         }
 
         $fieldName = array_shift($fieldNameArray);
-        $fieldConfig = $result['processedTca']['columns'][$fieldName]['config'];
 
         // Skip if a defined field was actually not present in the database row
         // Using array_key_exists here, since NULL values are valid as well.
@@ -99,6 +98,14 @@ class TcaInputPlaceholders implements FormDataProviderInterface
         }
 
         $value = $result['databaseRow'][$fieldName];
+
+        if (!isset($result['processedTca']['columns'][$fieldName]['config'])
+            || !is_array($result['processedTca']['columns'][$fieldName]['config'])
+        ) {
+            return (string)$value;
+        }
+
+        $fieldConfig = $result['processedTca']['columns'][$fieldName]['config'];
 
         switch ($fieldConfig['type']) {
             case 'select':

@@ -15,27 +15,13 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaColumnsProcessShowitemTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TcaColumnsProcessShowitem
-     */
-    protected $subject;
-
-    protected function setUp()
-    {
-        $this->subject = new TcaColumnsProcessShowitem();
-    }
-
     /**
      * @test
      */
@@ -43,6 +29,7 @@ class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\Un
     {
         $input = [
             'recordTypeValue' => 'aType',
+            'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -56,7 +43,7 @@ class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\Un
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438614542);
-        $this->subject->addData($input);
+        (new TcaColumnsProcessShowitem)->addData($input);
     }
 
     /**
@@ -68,6 +55,7 @@ class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\Un
             'columnsToProcess' => [],
             'databaseRow' => [],
             'recordTypeValue' => 'aType',
+            'isInlineChild' => false,
             'processedTca' => [
                 'types' => [
                     'aType' => [
@@ -92,7 +80,7 @@ class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\Un
         $expected = $input;
         $expected['columnsToProcess'] = ['keepMe'];
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 
     /**
@@ -104,6 +92,7 @@ class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\Un
             'columnsToProcess' => [],
             'databaseRow' => [],
             'recordTypeValue' => 'aType',
+            'isInlineChild' => false,
             'processedTca' => [
                 'types' => [
                     'aType' => [
@@ -133,7 +122,7 @@ class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\Un
         $expected = $input;
         $expected['columnsToProcess'] = ['keepMe'];
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 
     /**
@@ -144,6 +133,7 @@ class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\Un
         $input = [
             'databaseRow' => [],
             'recordTypeValue' => 'aType',
+            'isInlineChild' => false,
             'processedTca' => [
                 'types' => [
                     'aType' => [
@@ -178,7 +168,7 @@ class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\Un
         $expected = $input;
         $expected['columnsToProcess'] = ['aField', 'anotherField'];
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 
     /**
@@ -210,11 +200,12 @@ class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\Un
                 'foreign_table' => 'aTable',
             ],
             'isInlineChild' => true,
+            'isInlineChildExpanded' => false,
             'isInlineAjaxOpeningContext' => false,
             'inlineExpandCollapseStateArray' => [],
         ];
         $expected = $input;
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 
     /**
@@ -258,7 +249,7 @@ class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\Un
             ],
         ];
         $expected = $input;
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 
     /**
@@ -300,6 +291,6 @@ class TcaColumnsProcessShowitemTest extends \TYPO3\TestingFramework\Core\Unit\Un
         ];
         $expected = $input;
         $expected['columnsToProcess'] = ['aField'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 }

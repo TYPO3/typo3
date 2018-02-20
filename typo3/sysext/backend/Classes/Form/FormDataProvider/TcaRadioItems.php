@@ -39,7 +39,7 @@ class TcaRadioItems extends AbstractItemProvider implements FormDataProviderInte
                 continue;
             }
 
-            if (!is_array($fieldConfig['config']['items'])) {
+            if (!isset($fieldConfig['config']['items']) || !is_array($fieldConfig['config']['items'])) {
                 throw new \UnexpectedValueException(
                     'Radio field ' . $fieldName . ' of TCA table ' . $result['tableName'] . ' must have \'config\' \'items\' definition',
                     1438594829
