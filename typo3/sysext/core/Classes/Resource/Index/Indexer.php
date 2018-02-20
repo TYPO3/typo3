@@ -311,7 +311,10 @@ class Indexer
         $fileInfo = $this->transformFromDriverFileInfoArrayToFileObjectFormat($fileInfo);
         $fileInfo['type'] = $this->getFileType($fileInfo['mime_type']);
         $fileInfo['sha1'] = $this->storage->hashFileByIdentifier($identifier, 'sha1');
-        $fileInfo['extension'] = PathUtility::pathinfo($fileInfo['name'], PATHINFO_EXTENSION);
+        if (!isset($fileInfo['extension'])) {
+            trigger_error('Guessing FAL file extensions has been deprecated in v9.3 and will be removed in v10. The FAL (' . $this->storage->getDriverType() . ') driver method getFileInfoByIdentifier() should return the file extension', E_USER_DEPRECATED);
+            $fileInfo['extension'] = PathUtility::pathinfo($fileInfo['name'], PATHINFO_EXTENSION);
+        }
         $fileInfo['missing'] = 0;
 
         return $fileInfo;
