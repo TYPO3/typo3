@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
 /*
@@ -15,17 +16,19 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
  */
 
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
+use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
+use TYPO3\CMS\Form\Domain\Finishers\FinisherVariableProvider;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
-use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractFinisherTest extends UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances
@@ -101,27 +104,6 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsArrayOptionValuesAsArray()
-    {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
-        $mockAbstractFinisher->_set('options', [
-            'foo' => ['bar', 'foobar']
-        ]);
-
-        $expected = ['bar', 'foobar'];
-
-        $this->assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'foo'));
-    }
-
-    /**
-     * @test
-     */
     public function parseOptionReturnsBoolOptionValuesAsBool()
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -143,180 +125,26 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsValueFromFormRuntimeIfOptionNameReferenceAFormElementIdentifierWhoseValueIsAString()
-    {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
-
-        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
-            'translateFinisherOption'
-        ], [], '', false);
-
-        $mockTranslationService
-            ->expects($this->any())
-            ->method('translateFinisherOption')
-            ->willReturnArgument(3);
-
-        $objectMangerProphecy
-            ->get(TranslationService::class)
-            ->willReturn($mockTranslationService);
-
-        $expected = 'element-value';
-        $elementIdentifier = 'element-identifier-1';
-
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
-        $mockAbstractFinisher->_set('options', [
-            'subject' => '{' . $elementIdentifier . '}'
-        ]);
-
-        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
-
-        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
-        $formRuntimeProphecy->offsetExists(Argument::exact($elementIdentifier))->willReturn(true);
-        $formRuntimeProphecy->offsetGet(Argument::exact($elementIdentifier))->willReturn($expected);
-
-        $finisherContextProphecy->getFormRuntime(Argument::cetera())
-            ->willReturn($formRuntimeProphecy->reveal());
-
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
-
-        $this->assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
-    }
-
-    /**
-     * @test
-     */
-    public function parseOptionReturnsNoReplacedValueFromFormRuntimeIfOptionNameReferenceAFormElementIdentifierWhoseValueIsNotAString()
-    {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
-
-        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
-            'translateFinisherOption'
-        ], [], '', false);
-
-        $mockTranslationService
-            ->expects($this->any())
-            ->method('translateFinisherOption')
-            ->willReturnArgument(3);
-
-        $objectMangerProphecy
-            ->get(TranslationService::class)
-            ->willReturn($mockTranslationService);
-
-        $elementIdentifier = 'element-identifier-1';
-        $expected = '{' . $elementIdentifier . '}';
-
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
-        $mockAbstractFinisher->_set('options', [
-            'subject' => '{' . $elementIdentifier . '}'
-        ]);
-
-        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
-
-        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
-        $formRuntimeProphecy->offsetExists(Argument::exact($elementIdentifier))->willReturn(true);
-        $formElementValue = new \DateTime;
-        $formRuntimeProphecy->offsetGet(Argument::exact($elementIdentifier))->willReturn($formElementValue);
-
-        $finisherContextProphecy->getFormRuntime(Argument::cetera())
-            ->willReturn($formRuntimeProphecy->reveal());
-
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
-
-        $this->assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
-    }
-
-    /**
-     * @test
-     */
-    public function parseOptionReturnsNoReplacedValueFromFormRuntimeIfOptionNameReferenceANonExistingFormElement()
-    {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
-
-        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
-            'translateFinisherOption'
-        ], [], '', false);
-
-        $mockTranslationService
-            ->expects($this->any())
-            ->method('translateFinisherOption')
-            ->willReturnArgument(3);
-
-        $objectMangerProphecy
-            ->get(TranslationService::class)
-            ->willReturn($mockTranslationService);
-
-        $elementIdentifier = 'element-identifier-1';
-
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
-        $mockAbstractFinisher->_set('options', [
-            'subject' => '{' . $elementIdentifier . '}'
-        ]);
-
-        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
-
-        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
-        $formRuntimeProphecy->offsetExists(Argument::cetera())->willReturn(true);
-        $formRuntimeProphecy->offsetGet(Argument::cetera())->willReturn(false);
-
-        $finisherContextProphecy->getFormRuntime(Argument::cetera())
-            ->willReturn($formRuntimeProphecy->reveal());
-
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
-
-        $expected = '{' . $elementIdentifier . '}';
-        $this->assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
-    }
-
-    /**
-     * @test
-     */
     public function parseOptionReturnsDefaultOptionValueIfOptionNameNotExistsWithinOptionsButWithinDefaultOptions()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
-
-        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
-            'translateFinisherOption'
-        ], [], '', false);
-
-        $mockTranslationService
-            ->expects($this->any())
-            ->method('translateFinisherOption')
-            ->willReturnArgument(3);
-
-        $objectMangerProphecy
-            ->get(TranslationService::class)
-            ->willReturn($mockTranslationService);
-
         $expected = 'defaultValue';
 
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
             AbstractFinisher::class,
             [],
             '',
-            false
+            false,
+            false,
+            true,
+            [
+                'translateFinisherOption'
+            ]
         );
+
+        $mockAbstractFinisher
+            ->expects($this->any())
+            ->method('translateFinisherOption')
+            ->willReturnArgument(0);
 
         $mockAbstractFinisher->_set('options', []);
         $mockAbstractFinisher->_set('defaultOptions', [
@@ -327,10 +155,12 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 
         $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
         $formRuntimeProphecy->offsetExists(Argument::cetera())->willReturn(true);
-        $formRuntimeProphecy->offsetGet(Argument::cetera())->willReturn(false);
+        $formRuntimeProphecy->offsetGet(Argument::cetera())->willReturn(null);
 
         $finisherContextProphecy->getFormRuntime(Argument::cetera())
             ->willReturn($formRuntimeProphecy->reveal());
+        $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())
+            ->willReturn(new FinisherVariableProvider);
 
         $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
 
@@ -342,22 +172,6 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function parseOptionReturnsDefaultOptionValueIfOptionValueIsAFormElementReferenceAndTheFormElementValueIsEmpty()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
-
-        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
-            'translateFinisherOption'
-        ], [], '', false);
-
-        $mockTranslationService
-            ->expects($this->any())
-            ->method('translateFinisherOption')
-            ->willReturnArgument(3);
-
-        $objectMangerProphecy
-            ->get(TranslationService::class)
-            ->willReturn($mockTranslationService);
-
         $elementIdentifier = 'element-identifier-1';
         $expected = 'defaultValue';
 
@@ -365,8 +179,18 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             AbstractFinisher::class,
             [],
             '',
-            false
+            false,
+            false,
+            true,
+            [
+                'translateFinisherOption'
+            ]
         );
+
+        $mockAbstractFinisher
+            ->expects($this->any())
+            ->method('translateFinisherOption')
+            ->willReturnArgument(0);
 
         $mockAbstractFinisher->_set('options', [
             'subject' => '{' . $elementIdentifier . '}'
@@ -377,9 +201,9 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 
         $finisherContextProphecy = $this->prophesize(FinisherContext::class);
 
-        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
-        $formRuntimeProphecy->offsetExists(Argument::exact($elementIdentifier))->willReturn(true);
-        $formRuntimeProphecy->offsetGet(Argument::exact($elementIdentifier))->willReturn('');
+        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
+            $elementIdentifier => ''
+        ]);
 
         $finisherContextProphecy->getFormRuntime(Argument::cetera())
             ->willReturn($formRuntimeProphecy->reveal());
@@ -392,24 +216,55 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsTimestampIfOptionValueIsATimestampRequestTrigger()
+    public function parseOptionResolvesFormElementReferenceFromTranslation()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false,
+            false,
+            true,
+            [
+                'translateFinisherOption'
+            ]
+        );
 
-        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
-            'translateFinisherOption'
-        ], [], '', false);
+        $elementIdentifier = 'element-identifier-1';
+        $elementValue = 'element-value-1';
+        $elementReferenceName = '{' . $elementIdentifier . '}';
 
-        $mockTranslationService
+        $translationValue = 'subject: ' . $elementReferenceName;
+        $expected = 'subject: ' . $elementValue;
+
+        $mockAbstractFinisher
             ->expects($this->any())
             ->method('translateFinisherOption')
-            ->willReturnArgument(3);
+            ->willReturn($translationValue);
 
-        $objectMangerProphecy
-            ->get(TranslationService::class)
-            ->willReturn($mockTranslationService);
+        $mockAbstractFinisher->_set('options', [
+            'subject' => ''
+        ]);
 
+        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
+
+        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
+            $elementIdentifier => $elementValue
+        ]);
+
+        $finisherContextProphecy->getFormRuntime(Argument::cetera())
+            ->willReturn($formRuntimeProphecy->reveal());
+
+        $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
+
+        $this->assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
+    }
+
+    /**
+     * @test
+     */
+    public function substituteRuntimeReferencesReturnsArrayIfInputIsArray()
+    {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
             AbstractFinisher::class,
             [],
@@ -417,20 +272,244 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             false
         );
 
-        $mockAbstractFinisher->_set('options', [
-            'crdate' => '{__currentTimestamp}'
-        ]);
+        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
 
-        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
+        $input = ['bar', 'foobar', ['x', 'y']];
+        $expected = ['bar', 'foobar', ['x', 'y']];
+
+        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+    }
+
+    /**
+     * @test
+     */
+    public function substituteRuntimeReferencesReturnsStringIfInputIsString()
+    {
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
 
         $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
 
-        $finisherContextProphecy->getFormRuntime(Argument::cetera())
-            ->willReturn($formRuntimeProphecy->reveal());
+        $input = 'foobar';
+        $expected = 'foobar';
 
+        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+    }
+
+    /**
+     * @test
+     */
+    public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputReferenceAFormElementIdentifierWhoseValueIsAString()
+    {
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+
+        $elementIdentifier = 'element-identifier-1';
+        $input = '{' . $elementIdentifier . '}';
+        $expected = 'element-value';
+
+        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
+            $elementIdentifier => $expected
+        ]);
+
+        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+    }
+
+    /**
+     * @test
+     */
+    public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputReferenceMultipleFormElementIdentifierWhoseValueIsAString()
+    {
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+
+        $elementIdentifier1 = 'element-identifier-1';
+        $elementValue1 = 'element-value-1';
+        $elementIdentifier2 = 'element-identifier-2';
+        $elementValue2 = 'element-value-2';
+
+        $input = '{' . $elementIdentifier1 . '},{' . $elementIdentifier2 . '}';
+        $expected = $elementValue1 . ',' . $elementValue2;
+
+        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
+            $elementIdentifier1 => $elementValue1,
+            $elementIdentifier2 => $elementValue2
+        ]);
+
+        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+    }
+
+    /**
+     * @test
+     */
+    public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputReferenceAFormElementIdentifierWhoseValueIsAnArray()
+    {
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+
+        $elementIdentifier = 'element-identifier-1';
+        $input = '{' . $elementIdentifier . '}';
+        $expected = ['bar', 'foobar'];
+
+        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
+            $elementIdentifier => $expected
+        ]);
+
+        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+    }
+
+    /**
+     * @test
+     */
+    public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputIsArrayAndSomeItemsReferenceAFormElementIdentifierWhoseValueIsAnArray()
+    {
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+
+        $elementIdentifier1 = 'element-identifier-1';
+        $elementValue1 = ['klaus', 'fritz'];
+        $elementIdentifier2 = 'element-identifier-2';
+        $elementValue2 = ['stan', 'steve'];
+
+        $input = [
+            '{' . $elementIdentifier1 . '}',
+            'static value',
+            'norbert' => [
+                'lisa',
+                '{' . $elementIdentifier1 . '}',
+                '{' . $elementIdentifier2 . '}',
+            ],
+        ];
+        $expected = [
+            ['klaus', 'fritz'],
+            'static value',
+            'norbert' => [
+                'lisa',
+                ['klaus', 'fritz'],
+                ['stan', 'steve'],
+            ]
+        ];
+
+        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
+            $elementIdentifier1 => $elementValue1,
+            $elementIdentifier2 => $elementValue2
+        ]);
+
+        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+    }
+
+    /**
+     * @test
+     */
+    public function substituteRuntimeReferencesReturnsNoReplacedValueIfInputReferenceANonExistingFormElement()
+    {
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+
+        $elementIdentifier = 'element-identifier-1';
+        $input = '{' . $elementIdentifier . '}';
+        $expected = '{' . $elementIdentifier . '}';
+
+        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
+            $elementIdentifier => $expected
+        ]);
+
+        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
+        $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())->willReturn(new FinisherVariableProvider);
         $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
 
+        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+    }
+
+    /**
+     * @test
+     */
+    public function substituteRuntimeReferencesReturnsTimestampIfInputIsATimestampRequestTrigger()
+    {
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+
+        $input = '{__currentTimestamp}';
         $expected = '#^([0-9]{10})$#';
-        $this->assertEquals(1, preg_match($expected, $mockAbstractFinisher->_call('parseOption', 'crdate')));
+
+        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
+
+        $this->assertEquals(1, preg_match($expected, (string)$mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal())));
+    }
+
+    /**
+     * @test
+     */
+    public function substituteRuntimeReferencesThrowsExceptionOnMultipleVariablesResolvedAsArray()
+    {
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+
+        $elementIdentifier = 'element-identifier-1';
+        $input = 'BEFORE {' . $elementIdentifier . '} AFTER';
+
+        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
+            $elementIdentifier => ['value-1', 'value-2']
+        ]);
+
+        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
+        $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())->willReturn(new FinisherVariableProvider);
+        $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
+
+        $this->expectException(FinisherException::class);
+        $this->expectExceptionCode(1519239265);
+
+        $mockAbstractFinisher->_call(
+            'substituteRuntimeReferences',
+            $input,
+            $formRuntimeProphecy->reveal()
+        );
+    }
+
+    /**
+     * @param array $values Key/Value pairs to be retrievable
+     * @return ObjectProphecy|FormRuntime
+     */
+    protected function createFormRuntimeProphecy(array $values)
+    {
+        /** @var ObjectProphecy|FormRuntime $formRuntimeProphecy */
+        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
+        foreach ($values as $key => $value) {
+            $formRuntimeProphecy->offsetExists(Argument::exact($key))->willReturn(true);
+            $formRuntimeProphecy->offsetGet(Argument::exact($key))->willReturn($value);
+        }
+        return $formRuntimeProphecy;
     }
 }
