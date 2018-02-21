@@ -52,6 +52,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\Un
         $this->subject = $this->getMockForAbstractClass($proxyClassName);
         $GLOBALS['TSFE'] = $this->getMockBuilder(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class)
             ->setConstructorArgs([$GLOBALS['TYPO3_CONF_VARS'], 1, 1])
+            ->setMethods(['initCaches'])
             ->getMock();
         $GLOBALS['TSFE']->cObj = new ContentObjectRenderer();
         $GLOBALS['TSFE']->page = [];

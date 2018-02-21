@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -60,6 +62,15 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function setUp()
     {
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
+
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+
         $this->mockConfigurationManager = $this->getAccessibleMock(ConfigurationManager::class, [
             'getConfiguration'
         ], [], '', false);
@@ -79,11 +90,8 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             ->method('getConfigurationManager')
             ->willReturn($this->mockConfigurationManager);
 
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n')->flush();
         $this->store = GeneralUtility::makeInstance(LanguageStore::class);
         $this->store->initialize();
-
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
     }
 
     /**

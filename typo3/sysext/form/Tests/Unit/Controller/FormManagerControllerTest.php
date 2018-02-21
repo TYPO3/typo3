@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Form\Tests\Unit\Controller;
  */
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,11 +26,12 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormManagerController;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class FormManagerControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FormManagerControllerTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
@@ -255,6 +258,12 @@ class FormManagerControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      */
     public function getProcessedReferencesRowsReturnsProcessedArray()
     {
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        $iconProphecy = $this->prophesize(Icon::class);
+        $iconFactoryProphecy->getIconForRecord(Argument::cetera())->willReturn($iconProphecy->reveal());
+        $iconProphecy->render()->shouldBeCalled()->willReturn('');
+
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
             'getModuleUrl',
             'getRecord',
@@ -291,13 +300,7 @@ class FormManagerControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             0 => [
                 'recordPageTitle' => 'record title',
                 'recordTitle' => 'record title',
-                'recordIcon' =>
-'<span class="t3js-icon icon icon-size-small icon-state-default icon-default-not-found" data-identifier="default-not-found">
-	<span class="icon-markup">
-<img src="typo3/sysext/core/Resources/Public/Icons/T3Icons/default/default-not-found.svg" width="16" height="16" />
-	</span>
-	
-</span>',
+                'recordIcon' => '',
                 'recordUid' => -1,
                 'recordEditUrl' => '/typo3/index.php?some=param',
             ],

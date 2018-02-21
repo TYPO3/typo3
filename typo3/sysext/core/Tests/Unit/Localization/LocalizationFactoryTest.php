@@ -14,25 +14,44 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
+use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class LocalizationFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LocalizationFactoryTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
      */
     protected static $suppressNotices = true;
 
+    public function tearDown()
+    {
+        // Drop created singletons again
+        GeneralUtility::purgeInstances();
+        parent::tearDown();
+    }
+
     /**
      * @test
      */
     public function getParsedDataHandlesLocallangXMLOverride()
     {
-        /** @var $subject LocalizationFactory */
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+
         $subject = new LocalizationFactory;
 
         $unique = 'locallangXMLOverrideTest' . substr($this->getUniqueId(), 0, 10);
@@ -46,21 +65,21 @@ class LocalizationFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 			</T3locallang>';
         $file = PATH_site . 'typo3temp/var/tests/' . $unique . '.xml';
         GeneralUtility::writeFileToTypo3tempDir($file, $xml);
-        // Make sure there is no cached version of the label
-        GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();
+        $this->testFilesToDelete[] = $file;
+
         // Get default value
         $defaultLL = $subject->getParsedData('EXT:lang/Resources/Private/Language/locallang_core.xlf', 'default');
-        // Clear language cache again
-        GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();
+
         // Set override file
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/Resources/Private/Language/locallang_core.xlf'][$unique] = $file;
-        /** @var $store \TYPO3\CMS\Core\Localization\LanguageStore */
-        $store = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class);
+
+        /** @var $store LanguageStore */
+        $store = GeneralUtility::makeInstance(LanguageStore::class);
         $store->flushData('EXT:lang/Resources/Private/Language/locallang_core.xlf');
+
         // Get override value
         $overrideLL = $subject->getParsedData('EXT:lang/Resources/Private/Language/locallang_core.xlf', 'default');
-        // Clean up again
-        unlink($file);
+
         $this->assertNotEquals($overrideLL['default']['buttons.logout'][0]['target'], '');
         $this->assertNotEquals($defaultLL['default']['buttons.logout'][0]['target'], $overrideLL['default']['buttons.logout'][0]['target']);
         $this->assertEquals($overrideLL['default']['buttons.logout'][0]['target'], 'EXIT');
@@ -71,9 +90,12 @@ class LocalizationFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     public function getParsedDataCallsLocalizationOverrideIfFileNotFoundExceptionIsThrown()
     {
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+
         /** @var $subject LocalizationFactory */
         $localizationFactory = $this->getAccessibleMock(LocalizationFactory::class, ['localizationOverride']);
-        $languageStore = $this->getMockBuilder(\TYPO3\CMS\Core\Localization\LanguageStore::class)
+        $languageStore = $this->getMockBuilder(LanguageStore::class)
             ->setMethods(['hasData', 'setConfiguration', 'getData', 'setData'])
             ->getMock();
         $cacheInstance = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
@@ -84,7 +106,7 @@ class LocalizationFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $localizationFactory->_set('cacheInstance', $cacheInstance);
         $languageStore->method('hasData')->willReturn(false);
         $languageStore->method('getData')->willReturn([]);
-        $languageStore->method('setConfiguration')->willThrowException(new \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException('testing', 1476049512));
+        $languageStore->method('setConfiguration')->willThrowException(new FileNotFoundException('testing', 1476049512));
         $cacheInstance->method('get')->willReturn(false);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = ['foo' => 'bar'];
 

@@ -14,12 +14,16 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LocalizationUtilityTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
@@ -165,12 +169,16 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
             ],
         ];
 
-        $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
+        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $this->configurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class, ['getConfiguration']);
         $property = $reflectionClass->getProperty('configurationManager');
         $property->setAccessible(true);
         $property->setValue($this->configurationManager);
+
+        $localizationFactoryProphecy = $this->prophesize(LocalizationFactory::class);
+        GeneralUtility::setSingletonInstance(LocalizationFactory::class, $localizationFactoryProphecy->reveal());
+        $localizationFactoryProphecy->getParsedData(Argument::cetera())->willReturn([]);
     }
 
     /**
@@ -178,7 +186,7 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     protected function tearDown()
     {
-        $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
+        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $property = $reflectionClass->getProperty('configurationManager');
         $property->setAccessible(true);
@@ -187,6 +195,8 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
         $property->setValue([]);
+
+        GeneralUtility::purgeInstances();
 
         parent::tearDown();
     }
@@ -205,7 +215,7 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     public function implodeTypoScriptLabelArrayWorks()
     {
-        $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
+        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
         $method = $reflectionClass->getMethod('flattenTypoScriptLabelArray');
         $method->setAccessible(true);
 
@@ -293,7 +303,7 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     public function translateTestWithBackendUserLanguage($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null)
     {
-        $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
+        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
@@ -316,7 +326,7 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     public function translateTestWithExplicitLanguageParameters($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null)
     {
-        $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
+        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
@@ -429,7 +439,7 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     public function loadTypoScriptLabels(array $LOCAL_LANG, array $typoScriptLocalLang, $languageKey, array $expected)
     {
-        $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
+        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
@@ -454,7 +464,7 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     public function clearLabelWithTypoScript()
     {
-        $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
+        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
@@ -478,17 +488,6 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
         $this->assertNotNull($result);
         $this->assertEquals('', $result);
-    }
-
-    /**
-     * Tests whether method can be invoked without second parameter. Actual translation is not tested here.
-     *
-     * @test
-     */
-    public function translateWithFullyQualifiedKey()
-    {
-        $result = LocalizationUtility::translate('LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:fe_users.tx_extbase_type');
-        $this->assertNotEmpty($result);
     }
 
     /**

@@ -3994,7 +3994,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function addInstanceMakesMakeInstanceReturnThatInstance()
     {
-        $instance = $this->createMock('foo');
+        $instance = $this->createMock('stdClass');
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         $this->assertSame($instance, GeneralUtility::makeInstance($className));
@@ -4005,7 +4005,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function makeInstanceCalledTwoTimesAfterAddInstanceReturnTwoDifferentInstances()
     {
-        $instance = $this->createMock('foo');
+        $instance = $this->createMock('stdClass');
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         $this->assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
@@ -4016,7 +4016,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function addInstanceCalledTwoTimesMakesMakeInstanceReturnBothInstancesInAddingOrder()
     {
-        $instance1 = $this->createMock('foo');
+        $instance1 = $this->createMock('stdClass');
         $className = get_class($instance1);
         GeneralUtility::addInstance($className, $instance1);
         $instance2 = new $className();
@@ -4030,7 +4030,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function purgeInstancesDropsAddedInstance()
     {
-        $instance = $this->createMock('foo');
+        $instance = $this->createMock('stdClass');
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         GeneralUtility::purgeInstances();

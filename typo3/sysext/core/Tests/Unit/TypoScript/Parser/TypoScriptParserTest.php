@@ -14,12 +14,15 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Parser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case for \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
+ * Test case
  */
-class TypoScriptParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TypoScriptParserTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
@@ -27,7 +30,7 @@ class TypoScriptParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     protected static $suppressNotices = true;
 
     /**
-     * @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var TypoScriptParser|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $typoScriptParser = null;
 
@@ -36,8 +39,14 @@ class TypoScriptParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     protected function setUp()
     {
-        $accessibleClassName = $this->buildAccessibleProxy(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+        $accessibleClassName = $this->buildAccessibleProxy(TypoScriptParser::class);
         $this->typoScriptParser = new $accessibleClassName();
+    }
+
+    protected function tearDown()
+    {
+        GeneralUtility::purgeInstances();
+        parent::tearDown();
     }
 
     /**
@@ -272,6 +281,9 @@ class TypoScriptParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function invalidCharactersInObjectNamesAreReported()
     {
+        $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
+        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
+
         $typoScript = '$.10 = invalid';
         $this->typoScriptParser->parse($typoScript);
         $expected = 'Line 0: Object Name String, "$.10" contains invalid character "$". Must be alphanumeric or one of: "_:-\."';

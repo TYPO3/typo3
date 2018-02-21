@@ -16,42 +16,30 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
 
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for Pbkdf2Salt
+ * Test case
  */
-class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class Pbkdf2SaltTest extends UnitTestCase
 {
     /**
      * Keeps instance of object to test.
      *
      * @var Pbkdf2Salt
      */
-    protected $objectInstance = null;
+    protected $subject = null;
 
     /**
      * Sets up the fixtures for this testcase.
      */
     protected function setUp()
     {
-        $this->objectInstance = $this->getMockBuilder(Pbkdf2Salt::class)
-            ->setMethods(['dummy'])
-            ->getMock();
+        $this->subject = new Pbkdf2Salt();
         // Speed up the tests by reducing the iteration count
-        $this->objectInstance->setHashCount(1000);
-    }
-
-    /**
-     * @test
-     */
-    public function hasCorrectBaseClass()
-    {
-        $hasCorrectBaseClass = get_class($this->objectInstance) === Pbkdf2Salt::class;
-        // XCLASS ?
-        if (!$hasCorrectBaseClass && false != get_parent_class($this->objectInstance)) {
-            $hasCorrectBaseClass = is_subclass_of($this->objectInstance, Pbkdf2Salt::class);
-        }
-        $this->assertTrue($hasCorrectBaseClass);
+        $this->subject->setHashCount(1000);
+        $this->subject->setMinHashCount(1000);
+        $this->subject->setMaxHashCount(10000000);
     }
 
     /**
@@ -59,7 +47,7 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function nonZeroSaltLength()
     {
-        $this->assertTrue($this->objectInstance->getSaltLength() > 0);
+        $this->assertTrue($this->subject->getSaltLength() > 0);
     }
 
     /**
@@ -68,7 +56,7 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function emptyPasswordResultsInNullSaltedPassword()
     {
         $password = '';
-        $this->assertNull($this->objectInstance->getHashedPassword($password));
+        $this->assertNull($this->subject->getHashedPassword($password));
     }
 
     /**
@@ -77,7 +65,7 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function nonEmptyPasswordResultsInNonNullSaltedPassword()
     {
         $password = 'a';
-        $this->assertNotNull($this->objectInstance->getHashedPassword($password));
+        $this->assertNotNull($this->subject->getHashedPassword($password));
     }
 
     /**
@@ -86,8 +74,8 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function createdSaltedHashOfProperStructure()
     {
         $password = 'password';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword));
+        $saltedHashPassword = $this->subject->getHashedPassword($password);
+        $this->assertTrue($this->subject->isValidSaltedPW($saltedHashPassword));
     }
 
     /**
@@ -97,11 +85,11 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $password = 'password';
         // custom salt without setting
-        $randomBytes = (new Random())->generateRandomBytes($this->objectInstance->getSaltLength());
-        $salt = $this->objectInstance->base64Encode($randomBytes, $this->objectInstance->getSaltLength());
-        $this->assertTrue($this->objectInstance->isValidSalt($salt));
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password, $salt);
-        $this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword));
+        $randomBytes = (new Random())->generateRandomBytes($this->subject->getSaltLength());
+        $salt = $this->subject->base64Encode($randomBytes, $this->subject->getSaltLength());
+        $this->assertTrue($this->subject->isValidSalt($salt));
+        $saltedHashPassword = $this->subject->getHashedPassword($password, $salt);
+        $this->assertTrue($this->subject->isValidSaltedPW($saltedHashPassword));
     }
 
     /**
@@ -110,12 +98,12 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function createdSaltedHashOfProperStructureForMinimumHashCount()
     {
         $password = 'password';
-        $minHashCount = $this->objectInstance->getMinHashCount();
-        $this->objectInstance->setHashCount($minHashCount);
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword));
+        $minHashCount = $this->subject->getMinHashCount();
+        $this->subject->setHashCount($minHashCount);
+        $saltedHashPassword = $this->subject->getHashedPassword($password);
+        $this->assertTrue($this->subject->isValidSaltedPW($saltedHashPassword));
         // reset hashcount
-        $this->objectInstance->setHashCount(null);
+        $this->subject->setHashCount(null);
     }
 
     /**
@@ -130,7 +118,7 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $password = 'password';
         $saltedHashPassword = '$pbkdf2-sha256$1000$woPhT0yoWm3AXJXSjuxJ3w$iZ6EvTulMqXlzr0NO8z5EyrklFcJk5Uw2Fqje68FfaQ';
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $this->assertTrue($this->subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -142,7 +130,7 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $password = 'password';
         $saltedHashPassword = '$pbkdf2-sha256$1000$woPhT0yoWm3AXJXSjuxJ3w$iZ6EvTulMqXlzr0NO8z5EyrklFcJk5Uw2Fqje68Ffa';
-        $this->assertFalse($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $this->assertFalse($this->subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -156,8 +144,8 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function authenticationWithValidAlphaCharClassPassword()
     {
         $password = 'aEjOtY';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $saltedHashPassword = $this->subject->getHashedPassword($password);
+        $this->assertTrue($this->subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -171,8 +159,8 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function authenticationWithValidNumericCharClassPassword()
     {
         $password = '01369';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $saltedHashPassword = $this->subject->getHashedPassword($password);
+        $this->assertTrue($this->subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -186,8 +174,8 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function authenticationWithValidAsciiSpecialCharClassPassword()
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $saltedHashPassword = $this->subject->getHashedPassword($password);
+        $this->assertTrue($this->subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -205,8 +193,8 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $password .= chr($i);
         }
         $password .= chr(215) . chr(247);
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $saltedHashPassword = $this->subject->getHashedPassword($password);
+        $this->assertTrue($this->subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -229,8 +217,8 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         for ($i = 248; $i <= 255; $i++) {
             $password .= chr($i);
         }
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $saltedHashPassword = $this->subject->getHashedPassword($password);
+        $this->assertTrue($this->subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -240,8 +228,8 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $password = 'password';
         $password1 = $password . 'INVALID';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertFalse($this->objectInstance->checkPassword($password1, $saltedHashPassword));
+        $saltedHashPassword = $this->subject->getHashedPassword($password);
+        $this->assertFalse($this->subject->checkPassword($password1, $saltedHashPassword));
     }
 
     /**
@@ -252,11 +240,11 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $pad = 'a';
         $criticalPwLength = 0;
         // We're using a constant salt.
-        $saltedHashPasswordCurrent = $salt = $this->objectInstance->getHashedPassword($pad);
+        $saltedHashPasswordCurrent = $salt = $this->subject->getHashedPassword($pad);
         for ($i = 0; $i <= 128; $i += 8) {
             $password = str_repeat($pad, max($i, 1));
             $saltedHashPasswordPrevious = $saltedHashPasswordCurrent;
-            $saltedHashPasswordCurrent = $this->objectInstance->getHashedPassword($password, $salt);
+            $saltedHashPasswordCurrent = $this->subject->getHashedPassword($password, $salt);
             if ($i > 0 && $saltedHashPasswordPrevious === $saltedHashPasswordCurrent) {
                 $criticalPwLength = $i;
                 break;
@@ -270,11 +258,11 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function modifiedMinHashCount()
     {
-        $minHashCount = $this->objectInstance->getMinHashCount();
-        $this->objectInstance->setMinHashCount($minHashCount - 1);
-        $this->assertTrue($this->objectInstance->getMinHashCount() < $minHashCount);
-        $this->objectInstance->setMinHashCount($minHashCount + 1);
-        $this->assertTrue($this->objectInstance->getMinHashCount() > $minHashCount);
+        $minHashCount = $this->subject->getMinHashCount();
+        $this->subject->setMinHashCount($minHashCount - 1);
+        $this->assertTrue($this->subject->getMinHashCount() < $minHashCount);
+        $this->subject->setMinHashCount($minHashCount + 1);
+        $this->assertTrue($this->subject->getMinHashCount() > $minHashCount);
     }
 
     /**
@@ -282,11 +270,11 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function modifiedMaxHashCount()
     {
-        $maxHashCount = $this->objectInstance->getMaxHashCount();
-        $this->objectInstance->setMaxHashCount($maxHashCount + 1);
-        $this->assertTrue($this->objectInstance->getMaxHashCount() > $maxHashCount);
-        $this->objectInstance->setMaxHashCount($maxHashCount - 1);
-        $this->assertTrue($this->objectInstance->getMaxHashCount() < $maxHashCount);
+        $maxHashCount = $this->subject->getMaxHashCount();
+        $this->subject->setMaxHashCount($maxHashCount + 1);
+        $this->assertTrue($this->subject->getMaxHashCount() > $maxHashCount);
+        $this->subject->setMaxHashCount($maxHashCount - 1);
+        $this->assertTrue($this->subject->getMaxHashCount() < $maxHashCount);
     }
 
     /**
@@ -294,15 +282,15 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function modifiedHashCount()
     {
-        $hashCount = $this->objectInstance->getHashCount();
-        $this->objectInstance->setMaxHashCount($hashCount + 1);
-        $this->objectInstance->setHashCount($hashCount + 1);
-        $this->assertTrue($this->objectInstance->getHashCount() > $hashCount);
-        $this->objectInstance->setMinHashCount($hashCount - 1);
-        $this->objectInstance->setHashCount($hashCount - 1);
-        $this->assertTrue($this->objectInstance->getHashCount() < $hashCount);
+        $hashCount = $this->subject->getHashCount();
+        $this->subject->setMaxHashCount($hashCount + 1);
+        $this->subject->setHashCount($hashCount + 1);
+        $this->assertTrue($this->subject->getHashCount() > $hashCount);
+        $this->subject->setMinHashCount($hashCount - 1);
+        $this->subject->setHashCount($hashCount - 1);
+        $this->assertTrue($this->subject->getHashCount() < $hashCount);
         // reset hashcount
-        $this->objectInstance->setHashCount(null);
+        $this->subject->setHashCount(null);
     }
 
     /**
@@ -311,8 +299,8 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function updateNecessityForValidSaltedPassword()
     {
         $password = 'password';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertFalse($this->objectInstance->isHashUpdateNeeded($saltedHashPassword));
+        $saltedHashPassword = $this->subject->getHashedPassword($password);
+        $this->assertFalse($this->subject->isHashUpdateNeeded($saltedHashPassword));
     }
 
     /**
@@ -321,13 +309,13 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function updateNecessityForIncreasedHashcount()
     {
         $password = 'password';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $increasedHashCount = $this->objectInstance->getHashCount() + 1;
-        $this->objectInstance->setMaxHashCount($increasedHashCount);
-        $this->objectInstance->setHashCount($increasedHashCount);
-        $this->assertTrue($this->objectInstance->isHashUpdateNeeded($saltedHashPassword));
+        $saltedHashPassword = $this->subject->getHashedPassword($password);
+        $increasedHashCount = $this->subject->getHashCount() + 1;
+        $this->subject->setMaxHashCount($increasedHashCount);
+        $this->subject->setHashCount($increasedHashCount);
+        $this->assertTrue($this->subject->isHashUpdateNeeded($saltedHashPassword));
         // reset hashcount
-        $this->objectInstance->setHashCount(null);
+        $this->subject->setHashCount(null);
     }
 
     /**
@@ -336,13 +324,13 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function updateNecessityForDecreasedHashcount()
     {
         $password = 'password';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $decreasedHashCount = $this->objectInstance->getHashCount() - 1;
-        $this->objectInstance->setMinHashCount($decreasedHashCount);
-        $this->objectInstance->setHashCount($decreasedHashCount);
-        $this->assertFalse($this->objectInstance->isHashUpdateNeeded($saltedHashPassword));
+        $saltedHashPassword = $this->subject->getHashedPassword($password);
+        $decreasedHashCount = $this->subject->getHashCount() - 1;
+        $this->subject->setMinHashCount($decreasedHashCount);
+        $this->subject->setHashCount($decreasedHashCount);
+        $this->assertFalse($this->subject->isHashUpdateNeeded($saltedHashPassword));
         // reset hashcount
-        $this->objectInstance->setHashCount(null);
+        $this->subject->setHashCount(null);
     }
 
     /**
@@ -350,9 +338,8 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function isCompatibleWithPythonPasslibHashes()
     {
-        $this->objectInstance->setMinHashCount(1000);
         $passlibSaltedHash= '$pbkdf2-sha256$6400$.6UI/S.nXIk8jcbdHx3Fhg$98jZicV16ODfEsEZeYPGHU3kbrUrvUEXOPimVSQDD44';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword('password', $passlibSaltedHash);
+        $saltedHashPassword = $this->subject->getHashedPassword('password', $passlibSaltedHash);
 
         $this->assertSame($passlibSaltedHash, $saltedHashPassword);
     }

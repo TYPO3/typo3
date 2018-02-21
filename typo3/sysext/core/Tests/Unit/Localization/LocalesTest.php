@@ -15,24 +15,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization;
  */
 
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class LocalesTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LocalesTest extends UnitTestCase
 {
-    /**
-     * @var Locales
-     */
-    protected $subject;
-
-    protected function setUp()
-    {
-        $this->subject = GeneralUtility::makeInstance(Locales::class);
-        Locales::initialize();
-    }
-
     /**
      * @return array
      */
@@ -67,7 +56,7 @@ class LocalesTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function browserLanguageDetectionWorks(string $acceptLanguageHeader, string $expected)
     {
-        $detectedLanguage = $this->subject->getPreferredClientLanguage(
+        $detectedLanguage = (new Locales)->getPreferredClientLanguage(
             $acceptLanguageHeader
         );
         $this->assertSame($expected, $detectedLanguage);

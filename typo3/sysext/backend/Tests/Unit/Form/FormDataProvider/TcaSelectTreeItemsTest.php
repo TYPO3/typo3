@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree;
@@ -131,6 +132,10 @@ class TcaSelectTreeItemsTest extends UnitTestCase
     {
         $GLOBALS['TCA']['foreignTable'] = [];
 
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
@@ -193,6 +198,10 @@ class TcaSelectTreeItemsTest extends UnitTestCase
     public function addDataHandsPageTsConfigSettingsOverToTableConfigurationTree()
     {
         $GLOBALS['TCA']['foreignTable'] = [];
+
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Recordlist\Tests\UnitDeprecated\RecordList;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList;
 
 /**
@@ -35,7 +37,7 @@ class AbstractDatabaseRecordListTest extends \TYPO3\TestingFramework\Core\Unit\U
     public function setTableDisplayOrderConvertsStringInput(array $input, array $expected)
     {
         /** @var AbstractDatabaseRecordList|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(AbstractDatabaseRecordList::class, ['dummy']);
+        $subject = $this->getAccessibleMock(AbstractDatabaseRecordList::class, ['dummy'], [], '', false);
         $subject->setTableDisplayOrder($input);
         $this->assertSame($expected, $subject->_get('tableDisplayOrder'));
     }
@@ -96,6 +98,9 @@ class AbstractDatabaseRecordListTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     public function setTableDisplayOrderThrowsExceptionOnInvalidAfter()
     {
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1436195934);
         $test = [
@@ -110,6 +115,9 @@ class AbstractDatabaseRecordListTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     public function setTableDisplayOrderThrowsExceptionOnInvalidBefore()
     {
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1436195933);
         $test = [

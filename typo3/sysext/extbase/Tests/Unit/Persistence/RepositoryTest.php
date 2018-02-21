@@ -13,13 +13,16 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class RepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RepositoryTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
@@ -80,7 +83,7 @@ class RepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->mockQueryFactory->expects($this->any())->method('create')->will($this->returnValue($this->mockQuery));
         $this->mockSession = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class);
         $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
-        $this->mockBackend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, ['dummy'], [$this->mockConfigurationManager]);
+        $this->mockBackend = $this->getAccessibleMock(Backend::class, ['dummy'], [$this->mockConfigurationManager], '', false);
         $this->inject($this->mockBackend, 'session', $this->mockSession);
         $this->mockPersistenceManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, ['createQueryForType']);
         $this->inject($this->mockBackend, 'persistenceManager', $this->mockPersistenceManager);

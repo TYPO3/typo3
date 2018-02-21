@@ -19,7 +19,10 @@ use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\Element\InputDateTimeElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -116,6 +119,11 @@ class InputDateTimeElementTest extends UnitTestCase
             'additionalHiddenFields' => [],
             'stylesheetFiles' => [],
         ]);
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        $iconProphecy = $this->prophesize(Icon::class);
+        $iconProphecy->render()->willReturn('');
+        $iconFactoryProphecy->getIcon(Argument::cetera())->willReturn($iconProphecy->reveal());
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $nodeFactoryProphecy->create(Argument::cetera())->willReturn($abstractNode->reveal());
         $fieldInformationProphecy = $this->prophesize(FieldInformation::class);

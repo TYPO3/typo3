@@ -13,28 +13,20 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Localization\Parser\XliffParser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for class \TYPO3\CMS\Core\Localization\Parser\XliffParser.
+ * Test case
  */
-class XliffParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class XliffParserTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Core\Localization\Parser\XliffParser
-     */
-    protected $parser;
-
-    /**
-     * @var array
-     */
-    protected $locallangXMLOverride;
-
-    /**
-     * @var string
-     */
-    protected $l10nPriority;
-
     /**
      * @var array
      */
@@ -45,11 +37,6 @@ class XliffParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function setUp()
     {
-        // Backup locallangXMLOverride and localization format priority
-        $this->locallangXMLOverride = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'];
-        $this->l10nPriority = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'];
-        $this->parser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Parser\XliffParser::class);
-
         // We have to take the whole relative path as otherwise this test fails on Windows systems
         $fixturePath = PATH_site . 'typo3/sysext/core/Tests/Unit/Localization/Parser/Fixtures/';
         $this->xliffFileNames = [
@@ -58,9 +45,14 @@ class XliffParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'locallang_override_fr' => $fixturePath . 'fr.locallang_override.xlf'
         ];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xlf';
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class)->initialize();
-        // Clear localization cache
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();
+
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        $cacheFrontendProphecy->flush()->willReturn(null);
     }
 
     /**
@@ -68,10 +60,7 @@ class XliffParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function tearDown()
     {
-        // Restore locallangXMLOverride and localization format priority
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = $this->locallangXMLOverride;
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = $this->l10nPriority;
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class)->initialize();
+        GeneralUtility::purgeInstances();
         parent::tearDown();
     }
 
@@ -80,7 +69,7 @@ class XliffParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function canParseXliffInEnglish()
     {
-        $LOCAL_LANG = $this->parser->getParsedData($this->xliffFileNames['locallang'], 'default');
+        $LOCAL_LANG = (new XliffParser)->getParsedData($this->xliffFileNames['locallang'], 'default');
         $this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
         $expectedLabels = [
             'label1' => 'This is label #1',
@@ -97,7 +86,7 @@ class XliffParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function canParseXliffInFrench()
     {
-        $LOCAL_LANG = $this->parser->getParsedData($this->xliffFileNames['locallang'], 'fr');
+        $LOCAL_LANG = (new XliffParser)->getParsedData($this->xliffFileNames['locallang'], 'fr');
         $this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
         $expectedLabels = [
             'label1' => 'Ceci est le libellé no. 1',

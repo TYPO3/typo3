@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -3548,6 +3549,9 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      */
     public function notAllStdWrapProcessorsAreCallableWithEmptyConfiguration()
     {
+        $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
+        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
+
         $expectExceptions = ['numRows', 'split', 'bytes'];
         $count = 0;
         $processors = [];

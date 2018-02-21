@@ -16,12 +16,13 @@ namespace TYPO3\CMS\Core\Localization;
 
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Localization\Exception\InvalidParserException;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Language store.
  */
-class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface
+class LanguageStore implements SingletonInterface
 {
     /**
      * File extension supported by the localization parser

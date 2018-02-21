@@ -13,12 +13,20 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for class \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser.
+ * Test case
  */
-class LocallangXmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LocallangXmlParserTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
@@ -26,19 +34,29 @@ class LocallangXmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     protected static $suppressNotices = true;
 
     /**
-     * @var \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser
+     * Prepares the environment before running a test.
      */
-    protected $parser;
+    protected function setUp()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
 
-    /**
-     * @var array
-     */
-    protected $locallangXMLOverride;
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
 
+        GeneralUtility::makeInstance(LanguageStore::class)->initialize();
+    }
     /**
-     * @var string
+     * Cleans up the environment after running a test.
      */
-    protected $l10nPriority;
+    protected function tearDown()
+    {
+        GeneralUtility::purgeInstances();
+        parent::tearDown();
+    }
 
     protected static function getFixtureFilePath($filename)
     {
@@ -47,39 +65,11 @@ class LocallangXmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     }
 
     /**
-     * Prepares the environment before running a test.
-     */
-    protected function setUp()
-    {
-        // Backup locallangXMLOverride and localization format priority
-        $this->locallangXMLOverride = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'];
-        $this->l10nPriority = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'];
-        $this->parser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser::class);
-
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class)->initialize();
-        // Clear localization cache
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();
-    }
-
-    /**
-     * Cleans up the environment after running a test.
-     */
-    protected function tearDown()
-    {
-        // Restore locallangXMLOverride and localization format priority
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = $this->locallangXMLOverride;
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = $this->l10nPriority;
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class)->initialize();
-        parent::tearDown();
-    }
-
-    /**
      * @test
      */
     public function canParseLlxmlInEnglish()
     {
-        $LOCAL_LANG = $this->parser->getParsedData(self::getFixtureFilePath('locallang.xml'), 'default');
+        $LOCAL_LANG = (new LocallangXmlParser)->getParsedData(self::getFixtureFilePath('locallang.xml'), 'default');
         $this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
         $expectedLabels = [
             'label1' => 'This is label #1',
@@ -96,7 +86,7 @@ class LocallangXmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function canParseLlxmlInMd5Code()
     {
-        $LOCAL_LANG = $this->parser->getParsedData(self::getFixtureFilePath('locallang.xml'), 'md5');
+        $LOCAL_LANG = (new LocallangXmlParser)->getParsedData(self::getFixtureFilePath('locallang.xml'), 'md5');
         $this->assertArrayHasKey('md5', $LOCAL_LANG, 'md5 key not found in $LOCAL_LANG');
         $expectedLabels = [
             'label1' => '409a6edbc70dbeeccbfe5f1e569d6717',
@@ -113,7 +103,7 @@ class LocallangXmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function canParseLlxmlInFrenchAndReturnsNullLabelsIfNoTranslationIsFound()
     {
-        $LOCAL_LANG = $this->parser->getParsedData(self::getFixtureFilePath('locallangOnlyDefaultLanguage.xml'), 'fr');
+        $LOCAL_LANG = (new LocallangXmlParser)->getParsedData(self::getFixtureFilePath('locallangOnlyDefaultLanguage.xml'), 'fr');
         $expectedLabels = [
             'label1' => null,
             'label2' => null,
@@ -160,17 +150,28 @@ class LocallangXmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     public function numericKeysDataProvider()
     {
-        /** @var $factory LocalizationFactory */
-        $factory = new LocalizationFactory;
-
-        $LOCAL_LANG = $factory->getParsedData(self::getFixtureFilePath('locallangNumericKeys.xml'), 'default');
-        $translations = [];
-
-        foreach ($LOCAL_LANG['default'] as $key => $labelData) {
-            $translations['Numerical key ' . $key] = [$key, $labelData[0]['source'] . ' [FR]'];
-        }
-
-        return $translations;
+        return [
+            'Numeric key 1' => [
+                1,
+                'This is label #1 [FR]'
+            ],
+            'Numeric key 2' => [
+                2,
+                'This is label #2 [FR]'
+            ],
+            'Numeric key 3' => [
+                3,
+                'This is label #3 [FR]'
+            ],
+            'Numeric key 5' => [
+                5,
+                'This is label #5 [FR]'
+            ],
+            'Numeric key 10' => [
+                10,
+                'This is label #10 [FR]'
+            ],
+        ];
     }
 
     /**

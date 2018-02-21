@@ -13,11 +13,16 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class BackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class BackendTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
@@ -30,7 +35,7 @@ class BackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function insertRelationInRelationtableSetsMmMatchFieldsInRow()
     {
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Backend|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $fixture = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, ['dummy'], [], '', false);
+        $fixture = $this->getAccessibleMock(Backend::class, ['dummy'], [], '', false);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit_Framework_MockObject_MockObject */
         $dataMapper = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit_Framework_MockObject_MockObject */
@@ -80,20 +85,23 @@ class BackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getIdentifierByObjectReturnsIdentifierForNonlazyObject()
+    public function getIdentifierByObjectReturnsIdentifierForNonLazyObject()
     {
         $fakeUuid = 'fakeUuid';
-        $configurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $session = $this->getMockBuilder('stdClass')
             ->setMethods(['getIdentifierByObject'])
             ->disableOriginalConstructor()
             ->getMock();
         $object = new \stdClass();
 
+        $referenceIndexProphecy = $this->prophesize(ReferenceIndex::class);
+        GeneralUtility::addInstance(ReferenceIndex::class, $referenceIndexProphecy->reveal());
+
         $session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
 
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend $backend */
-        $backend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, ['dummy'], [$configurationManager]);
+        /** @var Backend $backend */
+        $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager]);
         $backend->_set('session', $session);
 
         $this->assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
@@ -105,7 +113,7 @@ class BackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getIdentifierByObjectReturnsIdentifierForLazyObject()
     {
         $fakeUuid = 'fakeUuid';
-        $configurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $parentObject = new \stdClass();
         $proxy = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class)
             ->setMethods(['_loadRealInstance'])
@@ -118,11 +126,14 @@ class BackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->getMock();
         $object = new \stdClass();
 
+        $referenceIndexProphecy = $this->prophesize(ReferenceIndex::class);
+        GeneralUtility::addInstance(ReferenceIndex::class, $referenceIndexProphecy->reveal());
+
         $proxy->expects($this->once())->method('_loadRealInstance')->will($this->returnValue($object));
         $session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
 
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend $backend */
-        $backend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, ['dummy'], [$configurationManager]);
+        /** @var Backend $backend */
+        $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager]);
         $backend->_set('session', $session);
 
         $this->assertEquals($backend->getIdentifierByObject($proxy), $fakeUuid);

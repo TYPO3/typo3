@@ -27,6 +27,9 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -315,6 +318,9 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
+
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1439298496);
 
@@ -358,6 +364,9 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
         $GLOBALS['TCA_DESCR']['aTable']['columns']['']['description'] = 'aDescription';
 
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
+
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
@@ -373,7 +382,7 @@ class TcaSelectItemsTest extends UnitTestCase
             0 => [
                 0 => 'aTitle',
                 1 => 'aTable',
-                2 => 'default-not-found',
+                2 => null,
                 3 => [
                     'description' => 'aDescription',
                 ],
@@ -424,6 +433,9 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
+
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
@@ -437,7 +449,7 @@ class TcaSelectItemsTest extends UnitTestCase
             0 => [
                 0 => 'aLabel',
                 1 => 'aValue',
-                2 => 'default-not-found',
+                2 => null,
                 3 => null,
             ]
         ];
@@ -474,7 +486,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     0 => [
                         0 => 'fooTableTitle',
                         1 => '--div--',
-                        2 => 'default-not-found',
+                        2 => null,
                         3 => null,
                     ],
                     1 => [
@@ -509,7 +521,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     0 => [
                         0 => 'fooTableTitle',
                         1 => '--div--',
-                        2 => 'default-not-found',
+                        2 => null,
                         3 => null,
                     ],
                     1 => [
@@ -586,6 +598,9 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
         $GLOBALS['TCA'] = $tca;
 
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
+
         $result = (new TcaSelectItems)->addData($input);
 
         $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
@@ -650,11 +665,14 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
+
         $expectedItems = [
             0 => [
                 0 => 'fooTableTitle aFlexFieldTitle dummy',
                 1 => '--div--',
-                2 => 'default-not-found',
+                2 => null,
                 3 => null,
             ],
             1 => [
@@ -714,6 +732,9 @@ class TcaSelectItemsTest extends UnitTestCase
                 ],
             ],
         ];
+
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
@@ -785,6 +806,9 @@ class TcaSelectItemsTest extends UnitTestCase
                 ],
             ],
         ];
+
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
@@ -871,6 +895,9 @@ class TcaSelectItemsTest extends UnitTestCase
                 ],
             ],
         ];
+
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
@@ -964,6 +991,9 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
+
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
@@ -1024,6 +1054,9 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
+
         $expectedItems = [
             0 => [
                 0 => 'aLangTitle [42]',
@@ -1075,6 +1108,9 @@ class TcaSelectItemsTest extends UnitTestCase
             ]
         ];
 
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
+
         $expectedItems = [
             0 => [
                 0 => 'aHeader',
@@ -1091,7 +1127,7 @@ class TcaSelectItemsTest extends UnitTestCase
             2 => [
                 0 => 'anotherTitle',
                 1 => 'aKey:anotherKey',
-                2 => 'status-status-permission-denied',
+                2 => 'empty-empty',
                 3 => [ 'description' => 'aDescription' ],
             ],
         ];
@@ -1123,6 +1159,9 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
 
         $GLOBALS['TBE_MODULES'] = [];
+
+        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         /** @var ModuleLoader|ObjectProphecy $moduleLoaderProphecy */
         $moduleLoaderProphecy = $this->prophesize(ModuleLoader::class);
@@ -1636,6 +1675,9 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $GLOBALS['TCA']['fTable'] = [];
 
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
         list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection();
 
         /** @var Statement|ObjectProphecy $statementProphet */
@@ -1722,6 +1764,9 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
 
         $GLOBALS['TCA']['fTable'] = [];
+
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
@@ -1869,6 +1914,9 @@ class TcaSelectItemsTest extends UnitTestCase
             'columns' => [],
         ];
 
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
@@ -1910,13 +1958,13 @@ class TcaSelectItemsTest extends UnitTestCase
             0 => [
                 0 => 'aPrefix[LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title]',
                 1 => 1,
-                2 => 'default-not-found',
+                2 => null,
                 3 => null,
             ],
             1 => [
                 0 => 'aPrefix[LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title]',
                 1 => 2,
-                2 => 'default-not-found',
+                2 => null,
                 3 => null,
             ],
         ];
@@ -1964,6 +2012,9 @@ class TcaSelectItemsTest extends UnitTestCase
                 'icon' => [],
             ],
         ];
+
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
@@ -2805,6 +2856,9 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $GLOBALS['TCA']['foreignTable'] = [];
 
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
@@ -2862,6 +2916,9 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $GLOBALS['TCA']['foreignTable'] = [];
 
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
@@ -2916,6 +2973,9 @@ class TcaSelectItemsTest extends UnitTestCase
     public function processSelectFieldValueRemovesInvalidDynamicValues()
     {
         $GLOBALS['TCA']['foreignTable'] = [];
+
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
@@ -3374,6 +3434,9 @@ class TcaSelectItemsTest extends UnitTestCase
         $fieldConfig = $input['processedTca']['columns']['aField']['config'];
 
         $GLOBALS['TCA'][$foreignTable] = [];
+
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);

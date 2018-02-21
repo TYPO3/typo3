@@ -13,6 +13,11 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -33,7 +38,17 @@ class AdminPanelViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected function setUp()
     {
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_pages')->willReturn($cacheFrontendProphecy->reveal());
         $GLOBALS['TSFE'] = new TypoScriptFrontendController([], 1, 1);
+    }
+
+    protected function tearDown()
+    {
+        GeneralUtility::purgeInstances();
+        parent::tearDown();
     }
 
     /**
@@ -97,6 +112,11 @@ class AdminPanelViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->setMethods(['extGetLL'])
             ->disableOriginalConstructor()
             ->getMock();
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        $iconProphecy = $this->prophesize(Icon::class);
+        $iconFactoryProphecy->getIcon(Argument::cetera())->willReturn($iconProphecy->reveal());
+        $iconProphecy->render(Argument::cetera())->willReturn('');
         $adminPanelMock->initialize();
         $hookMock->expects($this->once())->method('extendAdminPanel')->with($this->isType('string'), $this->isInstanceOf(\TYPO3\CMS\Frontend\View\AdminPanelView::class));
         $adminPanelMock->display();

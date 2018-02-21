@@ -72,17 +72,4 @@ class CoreUpdateServiceTest extends UnitTestCase
         putenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER=1');
         $this->assertFalse($instance->isCoreUpdateEnabled());
     }
-
-    /**
-     * @test
-     */
-    public function isCoreUpdateEnabledReturnsFalseFor_TYPO3_COMPOSER_MODE_EnvironmentVariableSet()
-    {
-        if (!defined('TYPO3_COMPOSER_MODE')) {
-            putenv('TYPO3_COMPOSER_MODE=1');
-        }
-        /** @var $instance \TYPO3\CMS\Install\Service\CoreUpdateService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreUpdateService::class, ['dummy'], [], '', false);
-        $this->assertFalse($instance->isCoreUpdateEnabled());
-    }
 }

@@ -14,12 +14,17 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for class \TYPO3\CMS\Core\Utility\RootlineUtility
+ * Test case
  */
-class RootlineUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RootlineUtilityTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
@@ -32,27 +37,28 @@ class RootlineUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $subject;
 
     /**
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var PageRepository|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $pageContextMock;
 
     protected function setUp()
     {
-        $this->pageContextMock = $this->createMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Utility\RootlineUtility::class, ['enrichWithRelationFields'], [1, '', $this->pageContextMock]);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_rootline')->willReturn($cacheFrontendProphecy->reveal());
+
+        $this->pageContextMock = $this->createMock(PageRepository::class);
+        $this->subject = $this->getAccessibleMock(RootlineUtility::class, ['enrichWithRelationFields'], [1, '', $this->pageContextMock]);
     }
 
     protected function tearDown()
     {
-        parent::tearDown();
         RootlineUtility::purgeCaches();
+        GeneralUtility::purgeInstances();
+        parent::tearDown();
     }
 
-    /***
-     *
-     * 		UTILITY FUNCTIONS
-     *
-     */
     /**
      * Tests that $subsetCandidate is completely part of $superset
      * and keys match.
@@ -66,11 +72,6 @@ class RootlineUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->assertSame($subsetCandidate, array_intersect_assoc($subsetCandidate, $superset));
     }
 
-    /***
-     *
-     * 		>TEST CASES
-     *
-     */
     /**
      * @test
      */
@@ -107,7 +108,7 @@ class RootlineUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->expectExceptionCode(1343464100);
 
         $this->subject->__construct(1, '1-99');
-        $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT]);
+        $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_DEFAULT]);
     }
 
     /**
@@ -116,7 +117,7 @@ class RootlineUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function processMountedPageWithMountedPageNotThrowsException()
     {
         $this->subject->__construct(1, '1-99');
-        $this->assertNotEmpty($this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]));
+        $this->assertNotEmpty($this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]));
     }
 
     /**
@@ -125,7 +126,7 @@ class RootlineUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function processMountedPageWithMountedPageAddsMountedFromParameter()
     {
         $this->subject->__construct(1, '1-99');
-        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]);
+        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]);
         $this->assertTrue(isset($result['_MOUNTED_FROM']));
         $this->assertSame(1, $result['_MOUNTED_FROM']);
     }
@@ -136,7 +137,7 @@ class RootlineUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function processMountedPageWithMountedPageAddsMountPointParameterToReturnValue()
     {
         $this->subject->__construct(1, '1-99');
-        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]);
+        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]);
         $this->assertTrue(isset($result['_MP_PARAM']));
         $this->assertSame('1-99', $result['_MP_PARAM']);
     }
@@ -147,7 +148,7 @@ class RootlineUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function processMountedPageForMountPageIsOverlayAddsMountOLParameter()
     {
         $this->subject->__construct(1, '1-99');
-        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1]);
+        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1]);
         $this->assertTrue(isset($result['_MOUNT_OL']));
         $this->assertSame(true, $result['_MOUNT_OL']);
     }
@@ -158,7 +159,7 @@ class RootlineUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function processMountedPageForMountPageIsOverlayAddsDataInformationAboutMountPage()
     {
         $this->subject->__construct(1, '1-99');
-        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1, 'pid' => 5, 'title' => 'TestCase']);
+        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1, 'pid' => 5, 'title' => 'TestCase']);
         $this->assertTrue(isset($result['_MOUNT_PAGE']));
         $this->assertSame(['uid' => 99, 'pid' => 5, 'title' => 'TestCase'], $result['_MOUNT_PAGE']);
     }
@@ -168,7 +169,7 @@ class RootlineUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function processMountedPageForMountPageWithoutOverlayReplacesMountedPageWithMountPage()
     {
-        $mountPointPageData = ['uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 0];
+        $mountPointPageData = ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 0];
         $this->subject->__construct(1, '1-99');
         $result = $this->subject->_call('processMountedPage', ['uid' => 1], $mountPointPageData);
         $this->assertIsSubset($mountPointPageData, $result);

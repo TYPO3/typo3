@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
@@ -56,6 +57,10 @@ class DataHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $GLOBALS['TCA'] = [];
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheFrontendProphecy->reveal());
         $this->backEndUser = $this->createMock(BackendUserAuthentication::class);
         $this->subject = $this->getAccessibleMock(DataHandler::class, ['dummy']);
         $this->subject->start([], '', $this->backEndUser);

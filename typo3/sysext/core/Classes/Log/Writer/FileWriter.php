@@ -168,7 +168,7 @@ class FileWriter extends AbstractWriter
      */
     protected function closeLogFile()
     {
-        if (is_resource(self::$logFileHandles[$this->logFile])) {
+        if (!empty(self::$logFileHandles[$this->logFile]) && is_resource(self::$logFileHandles[$this->logFile])) {
             fclose(self::$logFileHandles[$this->logFile]);
             unset(self::$logFileHandles[$this->logFile]);
         }

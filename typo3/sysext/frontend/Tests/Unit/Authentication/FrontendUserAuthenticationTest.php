@@ -241,7 +241,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             'newSessionId',
             [
                 'ses_id' => 'newSessionId',
-                'ses_iplock' => '',
+                'ses_iplock' => '[DISABLED]',
                 'ses_userid' => 0,
                 'ses_tstamp' => $currentTime,
                 'ses_data' => serialize(['foo' => 'bar']),
@@ -254,6 +254,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->setLogger(new NullLogger());
         $subject->gc_probability = -1;
         $subject->start();
+        $subject->lockIP = 0;
         $this->assertEmpty($subject->getSessionData($uniqueSessionId));
         $this->assertEmpty($subject->user);
         $subject->setSessionData('foo', 'bar');
