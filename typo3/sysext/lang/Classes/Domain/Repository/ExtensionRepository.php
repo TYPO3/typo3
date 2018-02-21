@@ -65,6 +65,9 @@ class ExtensionRepository
         if (empty($this->extensions)) {
             $extensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
             foreach ($extensions as $entry) {
+                if (empty($entry['installed']) || $entry['installed'] !== true) {
+                    continue;
+                }
                 /** @var $extension \TYPO3\CMS\Lang\Domain\Model\Extension */
                 $extension = $this->objectManager->get(
                     Extension::class,
