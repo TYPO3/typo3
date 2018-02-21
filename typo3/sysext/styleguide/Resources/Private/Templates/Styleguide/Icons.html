@@ -1,5 +1,8 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+			xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+			data-namespace-typo3-fluid="true">
+
 <f:layout name="Default" />
 
 <f:section name="content">
@@ -15,6 +18,7 @@
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="active"><a href="#iconprovider" aria-controls="iconprovider" role="tab" data-toggle="tab">IconProvider</a></li>
 			<li role="presentation"><a href="#all" aria-controls="all" role="tab" data-toggle="tab">All Icons</a></li>
+			<li role="presentation"><a href="#deprecated" aria-controls="deprecated" role="tab" data-toggle="tab">Deprecated Icons</a></li>
 			<li role="presentation"><a href="#overlays" aria-controls="overlays" role="tab" data-toggle="tab">All Overlays</a></li>
 			<li role="presentation"><a href="#examples" aria-controls="examples" role="tab" data-toggle="tab">Examples</a></li>
 		</ul>
@@ -111,6 +115,17 @@
 						<div class="col-md-2 icon-container" data-icon-identifier="{icon}">
 							<span class="icon-container-icon"><core:icon identifier="{icon}" size="large" /></span>
 							<span class="icon-container-label">{icon}</span>
+						</div>
+					</f:for>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="deprecated">
+				<div class="row">
+					<f:for each="{deprecatedIcons}" key="icon" as="alternativeIcon">
+						<div class="col-md-2 icon-container icon-deprecated-container" data-icon-identifier="{icon}">
+							<span class="icon-container-icon"><core:icon identifier="{icon}" size="large" /></span>
+							<span class="icon-container-label"><i class="fa fa-arrow-circle-left"></i> {icon}</span>
+							<span class="icon-container-label"><i class="fa fa-arrow-circle-right"></i> {alternativeIcon}</span>
 						</div>
 					</f:for>
 				</div>

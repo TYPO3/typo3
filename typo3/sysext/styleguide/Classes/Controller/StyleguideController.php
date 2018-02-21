@@ -177,15 +177,18 @@ class StyleguideController extends ActionController
     {
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $allIcons = $iconRegistry->getAllRegisteredIconIdentifiers();
-        $this->view->assign('allIcons', $allIcons);
-
-        $overlays = [];
-        foreach ($allIcons as $key) {
-            if (strpos($key, 'overlay') === 0) {
-                $overlays[] = $key;
+        $overlays = array_filter(
+            $allIcons,
+            function ($key) {
+                return strpos($key, 'overlay') === 0;
             }
-        }
-        $this->view->assign('overlays', $overlays);
+        );
+
+        $this->view->assignMultiple([
+            'allIcons' => $allIcons,
+            'deprecatedIcons' => $iconRegistry->getDeprecatedIcons(),
+            'overlays' => $overlays,
+        ]);
     }
 
     /**
