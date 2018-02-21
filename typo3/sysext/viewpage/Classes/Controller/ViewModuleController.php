@@ -14,45 +14,66 @@ namespace TYPO3\CMS\Viewpage\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Controller for viewing the frontend
  */
-class ViewModuleController extends ActionController
+class ViewModuleController
 {
-    /**
-     * @var string
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
 
     /**
-     * @var BackendTemplateView
+     * ModuleTemplate object
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
+    /**
+     * View
+     *
+     * @var ViewInterface
      */
     protected $view;
 
     /**
-     * Set up the doc header properly here
-     *
-     * @param ViewInterface $view
+     * Instantiate the form protection before a simulated user is initialized.
      */
-    protected function initializeView(ViewInterface $view)
+    public function __construct()
     {
-        /** @var BackendTemplateView $view */
-        parent::initializeView($view);
-        $this->registerDocHeader();
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->getLanguageService()->includeLLFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addInlineLanguageLabelFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
+    }
+
+    /**
+     * Initialize view
+     *
+     * @param string $templateName
+     */
+    protected function initializeView(string $templateName)
+    {
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->setTemplate($templateName);
+        $this->view->setTemplateRootPaths(['EXT:viewpage/Resources/Private/Templates/ViewModule']);
+        $this->view->setPartialRootPaths(['EXT:viewpage/Resources/Private/Partials']);
+        $this->view->setLayoutRootPaths(['EXT:viewpage/Resources/Private/Layouts']);
     }
 
     /**
@@ -62,7 +83,7 @@ class ViewModuleController extends ActionController
     {
         $languages = $this->getPreviewLanguages();
         if (count($languages) > 1) {
-            $languageMenu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+            $languageMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $languageMenu->setIdentifier('_langSelector');
             $languageUid = $this->getCurrentLanguage();
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
@@ -83,55 +104,46 @@ class ViewModuleController extends ActionController
                 }
                 $languageMenu->addMenuItem($menuItem);
             }
-            $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
+            $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
         }
 
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $showButton = $buttonBar->makeLinkButton()
             ->setHref($this->getTargetUrl())
             ->setOnClick('window.open(this.href, \'newTYPO3frontendWindow\').focus();return false;')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
         $buttonBar->addButton($showButton);
 
         $refreshButton = $buttonBar->makeLinkButton()
             ->setHref('javascript:document.getElementById(\'tx_viewpage_iframe\').contentWindow.location.reload(true);')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:refreshPage'))
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
-        $currentRequest = $this->request;
-        $moduleName = $currentRequest->getPluginName();
-        $getVars = $this->request->getArguments();
-        $extensionName = $currentRequest->getControllerExtensionName();
-        if (count($getVars) === 0) {
-            $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = ['id', 'route', $modulePrefix];
-        }
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($moduleName)
-            ->setGetVariables($getVars);
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
-    }
+        // Shortcut
+        $mayMakeShortcut = $this->getBackendUser()->mayMakeShortcut();
+        if ($mayMakeShortcut) {
+            $getVars = ['id', 'route'];
 
-    /**
-     * Gets called before each action
-     */
-    public function initializeAction()
-    {
-        $this->getLanguageService()->includeLLFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addInlineLanguageLabelFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
+            $shortcutButton = $buttonBar->makeShortcutButton()
+                ->setModuleName('web_ViewpageView')
+                ->setGetVariables($getVars);
+            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        }
     }
 
     /**
      * Show selected page from pagetree in iframe
      */
-    public function showAction()
+    public function showAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->view->getModuleTemplate()->setBodyTag('<body class="typo3-module-viewpage">');
-        $this->view->getModuleTemplate()->setModuleName('typo3-module-viewpage');
-        $this->view->getModuleTemplate()->setModuleId('typo3-module-viewpage');
+        $this->initializeView('show');
+        $this->registerDocHeader();
+
+        $this->moduleTemplate->setBodyTag('<body class="typo3-module-viewpage">');
+        $this->moduleTemplate->setModuleName('typo3-module-viewpage');
+        $this->moduleTemplate->setModuleId('typo3-module-viewpage');
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icons = [];
@@ -157,6 +169,9 @@ class ViewModuleController extends ActionController
         $this->view->assign('custom', $custom);
         $this->view->assign('presetGroups', $this->getPreviewPresets());
         $this->view->assign('url', $this->getTargetUrl());
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -171,7 +186,7 @@ class ViewModuleController extends ActionController
         $permissionClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $pageRecord = BackendUtility::readPageAccess($pageIdToShow, $permissionClause);
         if ($pageRecord) {
-            $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
 
             $adminCommand = $this->getAdminCommand($pageIdToShow);
             $domainName = $this->getDomainName($pageIdToShow);

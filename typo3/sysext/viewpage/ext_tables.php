@@ -1,18 +1,16 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-// Module Web->View
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'TYPO3.CMS.Viewpage',
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
     'web',
-    'view',
+    'ViewpageView',
     'after:layout',
+    null,
     [
-        'ViewModule' => 'show'
-    ],
-    [
+        'routeTarget' => \TYPO3\CMS\Viewpage\Controller\ViewModuleController::class . '::showAction',
+        'access' => 'user,group',
+        'name' => 'web_ViewpageView',
         'icon' => 'EXT:viewpage/Resources/Public/Icons/module-viewpage.svg',
         'labels' => 'LLL:EXT:viewpage/Resources/Private/Language/locallang_mod.xlf',
-        'access' => 'user,group'
     ]
 );
