@@ -184,7 +184,7 @@
 				<source>Exception: %s</source>
 			</trans-unit>
 			<trans-unit id="list.report.networkexception">
-				<source>Network error</source>
+				<source>Network error / invalid domain</source>
 			</trans-unit>
 			<trans-unit id="list.msg.ok">
 				<source>Ok</source>
