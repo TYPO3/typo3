@@ -96,8 +96,20 @@ class RenderViewHelper extends AbstractViewHelper
 
         $factory = $objectManager->get($factoryClass);
         $formDefinition = $factory->build($overrideConfiguration, $prototypeName);
-        $response = $objectManager->get(Response::class, $renderingContext->getControllerContext()->getResponse());
+        $response = $renderingContext->getControllerContext()->getResponse() ?? $objectManager->get(Response::class);
         $form = $formDefinition->bind($renderingContext->getControllerContext()->getRequest(), $response);
+
+        // If the controller context does not contain a response object, this viewhelper is used in a
+        // fluid template rendered by the FluidTemplateContentObject. Handle the StopActionException
+        // as there is no extbase dispatcher involved that catches that. */
+        if ($renderingContext->getControllerContext()->getResponse() === null) {
+            try {
+                return $form->render();
+            } catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $exception) {
+                return $response->shutdown();
+            }
+        }
+
         return $form->render();
     }
 }
