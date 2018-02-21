@@ -491,7 +491,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'fooTable' => [
                         'ctrl' => [
                             'title' => 'fooTableTitle',
-                            'rootLevel' => true,
+                            'rootLevel' => 1,
                             'security' => [
                                 'ignoreRootLevelRestriction' => true,
                             ],
@@ -526,7 +526,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'fooTable' => [
                         'ctrl' => [
                             'title' => 'fooTableTitle',
-                            'rootLevel' => true,
+                            'rootLevel' => 1,
                         ],
                         'columns' => [
                             'bar' => [

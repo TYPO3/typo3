@@ -5,7 +5,7 @@ return [
         'label' => 'tablename',
         'tstamp' => 'tstamp',
         'adminOnly' => true,
-        'rootLevel' => true,
+        'rootLevel' => 1,
         'hideTable' => true,
         'default_sortby' => 'uid DESC',
     ],

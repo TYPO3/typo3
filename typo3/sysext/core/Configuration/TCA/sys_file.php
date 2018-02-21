@@ -6,7 +6,7 @@ return [
         'tstamp' => 'tstamp',
         'type' => 'type',
         'hideTable' => true,
-        'rootLevel' => true,
+        'rootLevel' => 1,
         'default_sortby' => 'name ASC',
         'typeicon_column' => 'type',
         'typeicon_classes' => [

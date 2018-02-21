@@ -5,7 +5,7 @@ return [
         'label' => 'uid',
         'default_sortby' => '',
         'hideTable' => true,
-        'rootLevel' => true,
+        'rootLevel' => 1,
         'adminOnly' => true,
         'typeicon_classes' => [
             'default' => 'empty-icon'

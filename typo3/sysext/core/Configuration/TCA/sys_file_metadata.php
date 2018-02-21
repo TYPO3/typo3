@@ -8,7 +8,7 @@ return [
         'cruser_id' => 'cruser_id',
         'type' => 'file:type',
         'hideTable' => true,
-        'rootLevel' => true,
+        'rootLevel' => 1,
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',

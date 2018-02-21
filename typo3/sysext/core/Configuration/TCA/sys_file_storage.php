@@ -9,7 +9,7 @@ return [
         'default_sortby' => 'name',
         'delete' => 'deleted',
         'descriptionColumn' => 'description',
-        'rootLevel' => true,
+        'rootLevel' => 1,
         'versioningWS_alwaysAllowLiveEdit' => true, // Only have LIVE records of file storages
         'enablecolumns' => [],
         'typeicon_classes' => [
