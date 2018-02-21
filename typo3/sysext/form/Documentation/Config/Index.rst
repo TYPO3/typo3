@@ -13,6 +13,6 @@ It addresses your concerns as and integrator and developer.
 .. toctree::
 
    persistenceManager/Index
-   prototypes/Index
+   proto/Index
    formManager/Index
    configuration/Index
