@@ -130,7 +130,6 @@ class RedirectFinisher extends AbstractFinisher
             $this->response->setStatus($statusCode);
             $this->response->setHeader('Location', (string)$uri);
         }
-        echo $this->response->shutdown();
         throw new StopActionException('redirectToUri', 1477070964);
     }
 
