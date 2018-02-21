@@ -80,7 +80,11 @@ try {
 
 if (!severityObject) {
   severityObject = Severity;
+
+  // attach to global frame
+  if (typeof TYPO3 !== 'undefined') {
+    TYPO3.Severity = severityObject;
+  }
 }
 
-TYPO3.Storage = severityObject;
 export = severityObject;

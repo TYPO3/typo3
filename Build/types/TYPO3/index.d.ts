@@ -10,6 +10,7 @@ declare namespace TYPO3 {
   export let InfoWindow: any;
   export let Notification: any;
   export let Popover: any;
+  export let Severity: any;
   export let ShortcutMenu: any;
   export let Storage: any;
   export let Utility: any;
