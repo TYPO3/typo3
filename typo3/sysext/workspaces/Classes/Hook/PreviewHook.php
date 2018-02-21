@@ -293,8 +293,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                     // get initialized it shouldn't lead to situations where
                     // users can use those credentials.
                     if ($previewConfig['fullWorkspace']) {
-                        // Set the workspace preview value:
-                        GeneralUtility::_GETset($previewConfig['fullWorkspace'], 'ADMCMD_previewWS');
                         // If ADMCMD_prev is set the $inputCode value cannot come
                         // from a cookie and we set that cookie here. Next time it will
                         // be found from the cookie if ADMCMD_prev is not set again...
@@ -343,13 +341,13 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Set preview keyword, eg:
-     * $previewUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$this->compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);
+     * $previewUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$this->compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&', $GLOBALS['BE_USER']->user['uid'], 120);
      *
      * @todo for sys_preview:
      * - Add a comment which can be shown to previewer in frontend in some way (plus maybe ability to write back, take other action?)
      * - Add possibility for the preview keyword to work in the backend as well: So it becomes a quick way to a certain action of sorts?
      *
-     * @param string $getVarsStr Get variables to preview, eg. 'id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=8'
+     * @param string $getVarsStr Get variables to preview, eg. 'id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1'
      * @param string $backendUserUid 32 byte MD5 hash keyword for the URL: "?ADMCMD_prev=[keyword]
      * @param int $ttl Time-To-Live for keyword
      * @param int|null $fullWorkspace Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty

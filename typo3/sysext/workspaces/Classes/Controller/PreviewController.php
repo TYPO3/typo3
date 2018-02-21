@@ -127,7 +127,7 @@ class PreviewController extends AbstractController
         } else {
             $liveUrl = $wsBaseUrl . '&ADMCMD_noBeUser=1&ADMCMD_prev=IGNORE';
         }
-        $wsUrl = $wsBaseUrl . '&ADMCMD_prev=IGNORE&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $backendUser->workspace;
+        $wsUrl = $wsBaseUrl . '&ADMCMD_prev=IGNORE&ADMCMD_view=1&ADMCMD_editIcons=1';
         $backendDomain = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
         $splitPreviewTsConfig = BackendUtility::getModTSconfig($this->pageId, 'workspaces.splitPreviewModes');
         $splitPreviewModes = GeneralUtility::trimExplode(',', $splitPreviewTsConfig['value']);
