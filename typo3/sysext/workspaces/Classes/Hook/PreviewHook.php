@@ -36,13 +36,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
     protected $previewKey = 'ADMCMD_prev';
 
     /**
-     * instance of the \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController object
-     *
-     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected $tsfeObj;
-
-    /**
      * preview configuration
      *
      * @var array
@@ -66,24 +59,8 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function checkForPreview($params, &$pObj)
     {
-        $this->tsfeObj = $pObj;
         $this->previewConfiguration = $this->getPreviewConfiguration();
         if (is_array($this->previewConfiguration)) {
-            // In case of a keyword-authenticated preview,
-            // re-initialize the TSFE object:
-            // because the GET variables are taken from the preview
-            // configuration
-            $this->tsfeObj = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
-                null,
-                GeneralUtility::_GP('id'),
-                GeneralUtility::_GP('type'),
-                GeneralUtility::_GP('no_cache'),
-                GeneralUtility::_GP('cHash'),
-                null,
-                GeneralUtility::_GP('MP')
-            );
-            $GLOBALS['TSFE'] = $this->tsfeObj;
             // Configuration after initialization of TSFE object.
             // Basically this unsets the BE cookie if any and forces
             // the BE user set according to the preview configuration.
@@ -304,10 +281,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                         return $previewConfig;
                     }
                     if (GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?' . $this->previewKey . '=' . $inputCode === GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) {
-                        // Set GET variables
-                        $GET_VARS = '';
-                        parse_str($previewConfig['getVars'], $GET_VARS);
-                        GeneralUtility::_GETset($GET_VARS);
                         // Return preview keyword configuration
                         return $previewConfig;
                     }
@@ -341,19 +314,18 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Set preview keyword, eg:
-     * $previewUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$this->compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&', $GLOBALS['BE_USER']->user['uid'], 120);
+     * $previewUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$this->compilePreviewKeyword($GLOBALS['BE_USER']->user['uid'], 120);
      *
      * @todo for sys_preview:
      * - Add a comment which can be shown to previewer in frontend in some way (plus maybe ability to write back, take other action?)
      * - Add possibility for the preview keyword to work in the backend as well: So it becomes a quick way to a certain action of sorts?
      *
-     * @param string $getVarsStr Get variables to preview, eg. 'id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1'
      * @param string $backendUserUid 32 byte MD5 hash keyword for the URL: "?ADMCMD_prev=[keyword]
      * @param int $ttl Time-To-Live for keyword
      * @param int|null $fullWorkspace Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty
      * @return string Returns keyword to use in URL for ADMCMD_prev=
      */
-    public function compilePreviewKeyword($getVarsStr, $backendUserUid, $ttl = 172800, $fullWorkspace = null)
+    public function compilePreviewKeyword($backendUserUid, $ttl = 172800, $fullWorkspace = null)
     {
         $fieldData = [
             'keyword' => md5(uniqid(microtime(), true)),
@@ -361,7 +333,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
             'endtime' => $GLOBALS['EXEC_TIME'] + $ttl,
             'config' => serialize([
                 'fullWorkspace' => $fullWorkspace,
-                'getVars' => $getVarsStr,
                 'BEUSER_uid' => $backendUserUid
             ])
         ];

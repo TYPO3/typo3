@@ -836,7 +836,7 @@ class WorkspaceService implements SingletonInterface
     {
         $previewObject = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Hook\PreviewHook::class);
         $timeToLiveHours = $previewObject->getPreviewLinkLifetime();
-        $previewKeyword = $previewObject->compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], $timeToLiveHours * 3600, $this->getCurrentWorkspace());
+        $previewKeyword = $previewObject->compilePreviewKeyword($GLOBALS['BE_USER']->user['uid'], $timeToLiveHours * 3600, $this->getCurrentWorkspace());
         $linkParams = [
             'ADMCMD_prev' => $previewKeyword,
             'id' => $uid
