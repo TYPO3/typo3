@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\TooManyRedirectsException;
+use Mso\IdnaConvert\IdnaConvert;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -65,15 +66,14 @@ class ExternalLinktype extends AbstractLinktype
             }
             return $this->urlReports[$url];
         }
-
         $options = [
             'cookies' => GeneralUtility::makeInstance(CookieJar::class),
             'allow_redirects' => ['strict' => true]
         ];
 
-        /** @var RequestFactory $requestFactory */
         $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
         try {
+            $url = $this->preprocessUrl($url);
             $response = $requestFactory->request($url, 'HEAD', $options);
             // HEAD was not allowed or threw an error, now trying GET
             if ($response->getStatusCode() >= 400) {
@@ -100,6 +100,7 @@ class ExternalLinktype extends AbstractLinktype
             $errorParams['errorType'] = 'network';
             $errorParams['message'] = $this->getErrorMessage($errorParams);
         } catch (\Exception $e) {
+            // Generic catch for anything else that may go wrong
             $isValidUrl = false;
             $errorParams['errorType'] = 'exception';
             $errorParams['message'] = $e->getMessage();
@@ -165,5 +166,16 @@ class ExternalLinktype extends AbstractLinktype
             $type = 'external';
         }
         return $type;
+    }
+
+    /**
+     * Convert given URL to punycode to handle domains with non-ASCII characters
+     *
+     * @param string $url
+     * @return string
+     */
+    protected function preprocessUrl(string $url): string
+    {
+        return (new IdnaConvert())->encode($url);
     }
 }
