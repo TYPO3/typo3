@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Mvc\Property;
 
 /*
@@ -53,11 +53,21 @@ class PropertyMappingConfiguration
             /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
             $propertyMappingConfiguration = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier())->getPropertyMappingConfiguration();
 
-            $mimeTypeValidator = GeneralUtility::makeInstance(ObjectManager::class)
-                ->get(MimeTypeValidator::class, ['allowedMimeTypes' => $renderable->getProperties()['allowedMimeTypes']]);
+            $allowedMimeTypes = [];
+            $validators = [];
+
+            if (is_array($renderable->getProperties()['allowedMimeTypes'])) {
+                $allowedMimeTypes = array_filter($renderable->getProperties()['allowedMimeTypes']);
+            }
+
+            if (!empty($allowedMimeTypes)) {
+                $mimeTypeValidator = GeneralUtility::makeInstance(ObjectManager::class)
+                    ->get(MimeTypeValidator::class, ['allowedMimeTypes' => $renderable->getProperties()['allowedMimeTypes']]);
+                $validators = [$mimeTypeValidator];
+            }
 
             $uploadConfiguration = [
-                UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS => [$mimeTypeValidator],
+                UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS => $validators,
                 UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_CONFLICT_MODE => 'rename',
             ];
 
