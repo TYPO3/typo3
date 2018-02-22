@@ -54,11 +54,18 @@ class PropertyMappingConfiguration
             /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
             $propertyMappingConfiguration = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier())->getPropertyMappingConfiguration();
 
-            $mimeTypeValidator = GeneralUtility::makeInstance(ObjectManager::class)
-                ->get(MimeTypeValidator::class, ['allowedMimeTypes' => $renderable->getProperties()['allowedMimeTypes']]);
+            $allowedMimeTypes = [];
+            $validators = [];
+            if (is_array($renderable->getProperties()['allowedMimeTypes'])) {
+                $allowedMimeTypes = array_filter($renderable->getProperties()['allowedMimeTypes']);
+            }
+            if (!empty($allowedMimeTypes)) {
+                $mimeTypeValidator = GeneralUtility::makeInstance(ObjectManager::class)
+                    ->get(MimeTypeValidator::class, ['allowedMimeTypes' => $allowedMimeTypes]);
+                $validators = [$mimeTypeValidator];
+            }
 
             $processingRule = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier());
-            $validators = [$mimeTypeValidator];
             foreach ($processingRule->getValidators() as $validator) {
                 if (!($validator instanceof NotEmptyValidator)) {
                     $validators[] = $validator;
