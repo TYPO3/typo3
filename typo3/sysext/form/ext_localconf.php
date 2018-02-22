@@ -33,7 +33,7 @@ call_user_func(function () {
         = \TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration::class;
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(
-        \TYPO3\CMS\Form\Property\TypeConverter\FormDefinitionArrayConverter::class
+        \TYPO3\CMS\Form\Mvc\Property\TypeConverter\FormDefinitionArrayConverter::class
     );
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(
         \TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter::class

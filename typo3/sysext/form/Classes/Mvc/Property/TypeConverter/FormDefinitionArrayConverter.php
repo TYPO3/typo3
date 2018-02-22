@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Form\Property\TypeConverter;
+namespace TYPO3\CMS\Form\Mvc\Property\TypeConverter;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -63,7 +63,7 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
         }
 
         $rawFormDefinitionArray = ArrayUtility::stripTagsFromValuesRecursive($rawFormDefinitionArray);
-        $rawFormDefinitionArray = $this->convertJsonArrayToAssociativeArray($rawFormDefinitionArray);
+        $rawFormDefinitionArray = $this->transformMultiValueElementsForFormFramework($rawFormDefinitionArray);
         $formDefinitionArray = new FormDefinitionArray($rawFormDefinitionArray);
 
         return $formDefinitionArray;
@@ -88,7 +88,7 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
      * @param array $input
      * @return array
      */
-    protected function convertJsonArrayToAssociativeArray(array $input): array
+    protected function transformMultiValueElementsForFormFramework(array $input): array
     {
         $output = [];
 
@@ -99,7 +99,7 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
             }
 
             if (is_array($value)) {
-                $output[$key] = $this->convertJsonArrayToAssociativeArray($value);
+                $output[$key] = $this->transformMultiValueElementsForFormFramework($value);
             } else {
                 $output[$key] = $value;
             }
