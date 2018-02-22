@@ -127,7 +127,7 @@ translationFile
 
 :aspect:`Good to know`
       :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
-      
+
 :aspect:`Description`
       The translation file(s) which should be used to translate parts of the form manager.
 
@@ -316,7 +316,7 @@ selectablePrototypesConfiguration.*.newFormTemplates.*.templatePath
       - :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
 
 :aspect:`Description`
-      The filesystem path to the `Start template`` yaml file.
+      The filesystem path to the `Start template`` YAML file.
 
 
 .. _typo3.cms.form.formmanager.selectableprototypesconfiguration.*.newformtemplates.*.label:

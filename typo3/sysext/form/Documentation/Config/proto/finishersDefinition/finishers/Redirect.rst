@@ -371,7 +371,7 @@ FormEngine.elements
                    minitems: 1
                    maxitems: 1
                    fieldWizard:
-                     recordOverview:
+                     recordsOverview:
                        disabled: 1
                additionalParameters:
                  label: tt_content.finishersDefinition.Redirect.additionalParameters.label

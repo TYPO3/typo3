@@ -177,7 +177,7 @@ dynamicRequireJsModules.additionalViewModelModules
       - :ref:`"Register custom JavaScript modules"<concepts-formeditor-basicjavascriptconcepts-registercustomjavascriptmodules>`
 
 :aspect:`Description`
-      Array with RequireJS paths for custom JavaScript modules. 
+      Array with RequireJS paths for custom JavaScript modules.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.addinlinesettings:
@@ -653,7 +653,7 @@ formElementGroups
       - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.ContentElement.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.contentelement.formeditor.group>`
       - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.DatePicker.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.datepicker.formeditor.group>`
       - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Textarea.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.textarea.formeditor.group>`
-      
+
 :aspect:`Good to know`
       - :ref:`"Form editor"<concepts-formeditor>`
 

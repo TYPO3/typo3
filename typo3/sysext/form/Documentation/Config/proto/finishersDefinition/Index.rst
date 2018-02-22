@@ -346,7 +346,7 @@ FormEngine.label
 
 :aspect:`Good to know`
       - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
-      
+
 :aspect:`Description`
       .. include:: properties/formEngine/label.rst
 

@@ -44,7 +44,7 @@ allowedFileMounts
 
 :aspect:`Description`
       EXT:form stores the form definitions within the file system and thus needs
-      write access to this storage. By default, the filemount ``user_uploads`` is
+      write access to this storage. By default, the folder ``user_uploads`` is
       used. It is possible to configure a different and/ or an additional
       filemount which is then utilized for storing and reading forms.
 

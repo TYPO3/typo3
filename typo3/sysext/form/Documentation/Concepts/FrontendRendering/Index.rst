@@ -365,7 +365,7 @@ method.
 .. code-block:: php
 
     <?php
-    declare(strict_types=1);
+    declare(strict_types = 1);
     namespace VENDOR\MySitePackage\Domain\Finishers;
 
     class CustomFinisher extends \TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher
