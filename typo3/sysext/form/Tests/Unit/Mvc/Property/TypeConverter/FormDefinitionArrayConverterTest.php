@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Form\Tests\Unit\Property\TypeConverter;
+namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property\TypeConverter;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,12 +14,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Property\TypeConverter;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Form\Property\TypeConverter\FormDefinitionArrayConverter;
+use TYPO3\CMS\Form\Mvc\Property\TypeConverter\FormDefinitionArrayConverter;
 use TYPO3\CMS\Form\Type\FormDefinitionArray;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case for TYPO3\CMS\Form\Property\TypeConverter\FormDefinitionArrayConverter
+ * Test case for TYPO3\CMS\Form\Mvc\Property\TypeConverter\FormDefinitionArrayConverter
  */
 class FormDefinitionArrayConverterTest extends UnitTestCase
 {

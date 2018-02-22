@@ -83,6 +83,7 @@ class FormEditorController extends AbstractBackendController
         $configurationService = $this->objectManager->get(ConfigurationService::class);
         $this->prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
 
+        $formDefinition = $this->transformFormDefinitionForFormEditor($formDefinition);
         $formEditorDefinitions = $this->getFormEditorDefinitions();
 
         $formEditorAppInitialData = [
@@ -425,6 +426,97 @@ class FormEditorController extends AbstractBackendController
         ]);
 
         return $view->render();
+    }
+
+    /**
+     * @param array $formDefinition
+     * @return array
+     */
+    protected function transformFormDefinitionForFormEditor(array $formDefinition): array
+    {
+        $multiValueProperties = [];
+        foreach ($this->prototypeConfiguration['formElementsDefinition'] as $type => $configuration) {
+            if (!isset($configuration['formEditor']['editors'])) {
+                continue;
+            }
+            foreach ($configuration['formEditor']['editors'] as $editorConfiguration) {
+                if ($editorConfiguration['templateName'] === 'Inspector-PropertyGridEditor') {
+                    $multiValueProperties[$type][] = $editorConfiguration['propertyPath'];
+                }
+            }
+        }
+
+        return $this->transformMultiValueElementsForFormEditor($formDefinition, $multiValueProperties);
+    }
+
+    /**
+     * Some data needs a transformation before it can be used by the
+     * form editor. This rules for multivalue elements like select
+     * elements. To ensure the right sorting if the data goes into
+     * javascript, we need to do transformations:
+     *
+     * [
+     *   '5' => '5',
+     *   '4' => '4',
+     *   '3' => '3'
+     * ]
+     *
+     *
+     * This method transform this into:
+     *
+     * [
+     *   [
+     *     _label => '5'
+     *     _value => 5
+     *   ],
+     *   [
+     *     _label => '4'
+     *     _value => 4
+     *   ],
+     *   [
+     *     _label => '3'
+     *     _value => 3
+     *   ],
+     * ]
+     *
+     * @param array $formDefinition
+     * @param array $multiValueProperties
+     * @return array
+     */
+    protected function transformMultiValueElementsForFormEditor(
+        array $formDefinition,
+        array $multiValueProperties
+    ): array {
+        $output = $formDefinition;
+        foreach ($formDefinition as $key => $value) {
+            if (isset($value['type']) && array_key_exists($value['type'], $multiValueProperties)) {
+                $multiValuePropertiesForType = $multiValueProperties[$value['type']];
+                foreach ($multiValuePropertiesForType as $multiValueProperty) {
+                    if (!ArrayUtility::isValidPath($value, $multiValueProperty, '.')) {
+                        continue;
+                    }
+                    $multiValuePropertyData = ArrayUtility::getValueByPath($value, $multiValueProperty, '.');
+                    if (!is_array($multiValuePropertyData)) {
+                        continue;
+                    }
+                    $newMultiValuePropertyData = [];
+                    foreach ($multiValuePropertyData as $k => $v) {
+                        $newMultiValuePropertyData[] = [
+                            '_label' => $v,
+                            '_value' => $k
+                        ];
+                    }
+                    $value = ArrayUtility::setValueByPath($value, $multiValueProperty, $newMultiValuePropertyData, '.');
+                }
+            }
+
+            $output[$key] = $value;
+            if (is_array($value)) {
+                $output[$key] = $this->transformMultiValueElementsForFormEditor($value, $multiValueProperties);
+            }
+        }
+
+        return $output;
     }
 
     /**

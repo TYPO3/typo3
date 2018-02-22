@@ -395,4 +395,86 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
 
         $mockController->_call('renderFormEditorTemplates', []);
     }
+
+    /**
+     * @test
+     */
+    public function transformMultiValueElementsForFormEditorConvertMultiValueDataIntoMetaData()
+    {
+        $mockController = $this->getAccessibleMock(FormEditorController::class, [
+            'dummy'
+        ], [], '', false);
+
+        $input = [
+            0 => [
+                'bar' => 'baz',
+            ],
+            1 => [
+                'type' => 'SOMEELEMENT',
+                'properties' => [
+                    'options' => [
+                        5 => '5',
+                        4 => '4',
+                        3 => '3',
+                        2 => '2',
+                        1 => '1',
+                    ],
+                ],
+            ],
+            2 => [
+                0 => [
+                    'type' => 'TEST',
+                    'properties' => [
+                        'options' => [
+                            5 => '5',
+                            4 => '4',
+                            3 => '3',
+                            2 => '2',
+                            1 => '1',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $multiValueProperties = [
+            'TEST' => [
+                0 => 'properties.options',
+            ],
+        ];
+
+        $expected = [
+            0 => [
+                'bar' => 'baz',
+            ],
+            1 => [
+                'type' => 'SOMEELEMENT',
+                'properties' => [
+                    'options' => [
+                        5 => '5',
+                        4 => '4',
+                        3 => '3',
+                        2 => '2',
+                        1 => '1',
+                    ],
+                ],
+            ],
+            2 => [
+                0 => [
+                    'type' => 'TEST',
+                    'properties' => [
+                        'options' => [
+                            ['_label' => '5', '_value' => 5],
+                            ['_label' => '4', '_value' => 4],
+                            ['_label' => '3', '_value' => 3],
+                            ['_label' => '2', '_value' => 2],
+                            ['_label' => '1', '_value' => 1],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertSame($expected, $mockController->_call('transformMultiValueElementsForFormEditor', $input, $multiValueProperties));
+    }
 }
