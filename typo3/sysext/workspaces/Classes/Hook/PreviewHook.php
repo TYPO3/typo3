@@ -51,39 +51,22 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
     protected $forceReadPermissions = false;
 
     /**
-     * hook to check if the preview is activated
-     * right now, this hook is called at the end of "$TSFE->connectToDB"
-     *
-     * @param array $params (not needed right now)
-     * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $pObj
-     */
-    public function checkForPreview($params, &$pObj)
-    {
-        $this->previewConfiguration = $this->getPreviewConfiguration();
-        if (is_array($this->previewConfiguration)) {
-            // Configuration after initialization of TSFE object.
-            // Basically this unsets the BE cookie if any and forces
-            // the BE user set according to the preview configuration.
-            // @previouslyknownas TSFE->ADMCMD_preview_postInit
-            // Clear cookies:
-            unset($_COOKIE['be_typo_user']);
-        }
-    }
-
-    /**
-     * hook after the regular BE user has been initialized
-     * if there is no BE user login, but a preview configuration
-     * the BE user of the preview configuration gets initialized
+     * Hook after the regular BE user has been initialized
+     * if there is a preview configuration
+     * the BE user of the preview configuration gets initialized and
+     * is used instead for the current request, overriding any existing
+     * authenticated backend user.
      *
      * @param array $params holding the BE_USER object
      * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $pObj
      */
     public function initializePreviewUser(&$params, &$pObj)
     {
+        $this->previewConfiguration = $this->getPreviewConfiguration();
         // if there is a valid BE user, and the full workspace should be previewed, the workspacePreview option should be set
         $workspaceUid = $this->previewConfiguration['fullWorkspace'];
         $workspaceRecord = null;
-        if ((is_null($params['BE_USER']) || $params['BE_USER'] === false) && $this->previewConfiguration !== false && $this->previewConfiguration['BEUSER_uid'] > 0) {
+        if ($this->previewConfiguration['BEUSER_uid'] > 0) {
             // First initialize a temp user object and resolve usergroup information
             /** @var FrontendBackendUserAuthentication $tempBackendUser */
             $tempBackendUser = $this->createFrontendBackendUser();
