@@ -161,7 +161,7 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'max' => 80,
+                'max' => 255,
                 'softref' => 'email[subst]'
             ]
         ],
