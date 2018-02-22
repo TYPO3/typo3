@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Viewpage\Controller;
 
 /*
@@ -19,12 +20,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,7 +39,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class ViewModuleController
 {
-
     /**
      * ModuleTemplate object
      *
@@ -52,7 +54,7 @@ class ViewModuleController
     protected $view;
 
     /**
-     * Instantiate the form protection before a simulated user is initialized.
+     * Initialize module template and language service
      */
     public function __construct()
     {
@@ -78,28 +80,31 @@ class ViewModuleController
 
     /**
      * Registers the docheader
+     *
+     * @param int $pageId
+     * @param int $languageId
+     * @param string $targetUrl
      */
-    protected function registerDocHeader()
+    protected function registerDocHeader(int $pageId, int $languageId, string $targetUrl)
     {
-        $languages = $this->getPreviewLanguages();
+        $languages = $this->getPreviewLanguages($pageId);
         if (count($languages) > 1) {
             $languageMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $languageMenu->setIdentifier('_langSelector');
-            $languageUid = $this->getCurrentLanguage();
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             foreach ($languages as $value => $label) {
                 $href = (string)$uriBuilder->buildUriFromRoute(
                     'web_ViewpageView',
                     [
-                        'id' => (int)GeneralUtility::_GP('id'),
+                        'id' => $pageId,
                         'language' => (int)$value
                     ]
                 );
                 $menuItem = $languageMenu->makeMenuItem()
                     ->setTitle($label)
                     ->setHref($href);
-                if ($languageUid === (int)$value) {
+                if ($languageId === (int)$value) {
                     $menuItem->setActive(true);
                 }
                 $languageMenu->addMenuItem($menuItem);
@@ -109,7 +114,7 @@ class ViewModuleController
 
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $showButton = $buttonBar->makeLinkButton()
-            ->setHref($this->getTargetUrl())
+            ->setHref($targetUrl)
             ->setOnClick('window.open(this.href, \'newTYPO3frontendWindow\').focus();return false;')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
@@ -135,11 +140,20 @@ class ViewModuleController
 
     /**
      * Show selected page from pagetree in iframe
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
     public function showAction(ServerRequestInterface $request): ResponseInterface
     {
+        $pageId = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        $languageId = $this->getCurrentLanguage($pageId, $request->getParsedBody()['language'] ?? $request->getQueryParams()['language'] ?? null);
+        $isHttps = $request->getAttribute('normalizedParams')->isHttps();
+
         $this->initializeView('show');
-        $this->registerDocHeader();
+
+        $targetUrl = $this->getTargetUrl($pageId, $languageId, $isHttps);
+        $this->registerDocHeader($pageId, $languageId, $targetUrl);
 
         $this->moduleTemplate->setBodyTag('<body class="typo3-module-viewpage">');
         $this->moduleTemplate->setModuleName('typo3-module-viewpage');
@@ -167,8 +181,8 @@ class ViewModuleController
         $this->view->assign('icons', $icons);
         $this->view->assign('current', $current);
         $this->view->assign('custom', $custom);
-        $this->view->assign('presetGroups', $this->getPreviewPresets());
-        $this->view->assign('url', $this->getTargetUrl());
+        $this->view->assign('presetGroups', $this->getPreviewPresets($pageId));
+        $this->view->assign('url', $targetUrl);
 
         $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -177,27 +191,28 @@ class ViewModuleController
     /**
      * Determine the url to view
      *
+     * @param int $pageId
+     * @param int $languageId
+     * @param bool $isHttps
      * @return string
      */
-    protected function getTargetUrl()
+    protected function getTargetUrl(int $pageId, int $languageId, bool $isHttps): string
     {
-        $pageIdToShow = (int)GeneralUtility::_GP('id');
-
         $permissionClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-        $pageRecord = BackendUtility::readPageAccess($pageIdToShow, $permissionClause);
+        $pageRecord = BackendUtility::readPageAccess($pageId, $permissionClause);
         if ($pageRecord) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
 
-            $adminCommand = $this->getAdminCommand($pageIdToShow);
-            $domainName = $this->getDomainName($pageIdToShow);
-            $languageParameter = $this->getLanguageParameter();
+            $adminCommand = $this->getAdminCommand($pageId);
+            $domainName = $this->getDomainName($pageId);
+            $languageParameter = $languageId ? '&L=' . $languageId : '';
             // Mount point overlay: Set new target page id and mp parameter
             /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPage */
             $sysPage = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
             $sysPage->init(false);
             $mountPointMpParameter = '';
-            $finalPageIdToShow = $pageIdToShow;
-            $mountPointInformation = $sysPage->getMountPointInfo($pageIdToShow);
+            $finalPageIdToShow = $pageId;
+            $mountPointInformation = $sysPage->getMountPointInfo($pageId);
             if ($mountPointInformation && $mountPointInformation['overlay']) {
                 // New page id
                 $finalPageIdToShow = $mountPointInformation['mount_pid'];
@@ -210,7 +225,7 @@ class ViewModuleController
                 if (strpos($domainName, '://') !== false) {
                     $protocolAndHost = $domainName;
                 } else {
-                    $protocol = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
+                    $protocol = $isHttps ? 'https' : 'http';
                     $protocolAndHost = $protocol . '://' . $domainName;
                 }
             }
@@ -225,7 +240,7 @@ class ViewModuleController
      * @param int $pageId
      * @return string
      */
-    protected function getAdminCommand($pageId)
+    protected function getAdminCommand(int $pageId): string
     {
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $pageinfo = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
@@ -244,7 +259,7 @@ class ViewModuleController
      * @param int $pageId
      * @return string
      */
-    protected function getTypeParameterIfSet($pageId)
+    protected function getTypeParameterIfSet(int $pageId): string
     {
         $typeParameter = '';
         $modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
@@ -261,7 +276,7 @@ class ViewModuleController
      * @param int $pageId
      * @return string|null Domain name from first sys_domains-Record or from TCEMAIN.previewDomain, NULL if neither is configured
      */
-    protected function getDomainName($pageId)
+    protected function getDomainName(int $pageId)
     {
         $previewDomainConfig = $this->getBackendUser()->getTSConfig('TCEMAIN.previewDomain', BackendUtility::getPagesTSconfig($pageId));
         if ($previewDomainConfig['value']) {
@@ -273,13 +288,13 @@ class ViewModuleController
     }
 
     /**
-     * Get available presets for preview frame
+     * Get available presets for page id
      *
+     * @param int $pageId
      * @return array
      */
-    protected function getPreviewPresets()
+    protected function getPreviewPresets(int $pageId): array
     {
-        $pageId = (int)GeneralUtility::_GP('id');
         $modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
         $presetGroups = [
             'desktop' => [],
@@ -320,14 +335,14 @@ class ViewModuleController
     /**
      * Returns the preview languages
      *
+     * @param int $pageId
      * @return array
      */
-    protected function getPreviewLanguages()
+    protected function getPreviewLanguages(int $pageId): array
     {
         $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
         $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
-        $pageIdToShow = (int)GeneralUtility::_GP('id');
-        $modSharedTSconfig = BackendUtility::getModTSconfig($pageIdToShow, 'mod.SHARED');
+        $modSharedTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.SHARED');
         if ($modSharedTSconfig['properties']['view.']['disableLanguageSelector'] === '1') {
             return [];
         }
@@ -356,7 +371,7 @@ class ViewModuleController
             ->where(
                 $queryBuilder->expr()->eq(
                     'o.' . $localizationParentField,
-                    $queryBuilder->createNamedParameter($pageIdToShow, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                 )
             )
             ->groupBy('sys_language.uid', 'sys_language.title', 'sys_language.sorting')
@@ -374,51 +389,38 @@ class ViewModuleController
     /**
      * Returns the current language
      *
-     * @return string
+     * @param int $pageId
+     * @param string $languageParam
+     * @return int
      */
-    protected function getCurrentLanguage()
+    protected function getCurrentLanguage(int $pageId, string $languageParam = null): int
     {
-        $languageUid = GeneralUtility::_GP('language');
-        if ($languageUid === null) {
+        $languageId = (int)$languageParam;
+        if ($languageParam === null) {
             $states = $this->getBackendUser()->uc['moduleData']['web_view']['States'];
-            $languages = $this->getPreviewLanguages();
+            $languages = $this->getPreviewLanguages($pageId);
             if (isset($states['languageSelectorValue']) && isset($languages[$states['languageSelectorValue']])) {
-                $languageUid = $states['languageSelectorValue'];
+                $languageId = (int)$states['languageSelectorValue'];
             }
         } else {
-            $this->getBackendUser()->uc['moduleData']['web_view']['States']['languageSelectorValue'] = (int)$languageUid;
+            $this->getBackendUser()->uc['moduleData']['web_view']['States']['languageSelectorValue'] = $languageId;
             $this->getBackendUser()->writeUC($this->getBackendUser()->uc);
         }
-        return (int)$languageUid;
+        return $languageId;
     }
 
     /**
-     * Gets the L parameter from the user session
-     *
-     * @return string
+     * @return BackendUserAuthentication
      */
-    protected function getLanguageParameter()
-    {
-        $languageParameter = '';
-        $languageUid = $this->getCurrentLanguage();
-        if ($languageUid) {
-            $languageParameter = '&L=' . $languageUid;
-        }
-        return $languageParameter;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
