@@ -165,6 +165,7 @@ define(
         $.extend(this.settings, settings);
         var _this = this;
         this.wrapper = $wrapper;
+        this.setWrapperHeight();
         this.dispatch = d3.dispatch(
           'updateNodes',
           'updateSvg',
@@ -221,10 +222,13 @@ define(
           _this.update();
         });
 
+        $('#typo3-pagetree').on('isVisible', function() {
+          _this.updateWrapperHeight();
+        });
+
         this.wrapper.data('svgtree', this);
         this.wrapper.data('svgtree-initialized', true);
         this.wrapper.trigger('svgTree.initialized');
-        this.setWrapperHeight();
         this.resize();
         return true;
       },
@@ -234,12 +238,22 @@ define(
        */
       resize: function() {
         var _this = this;
-
         $(window).resize(function() {
-          _this.setWrapperHeight();
-          _this.updateScrollPosition();
-          _this.update();
+          if ($('#typo3-pagetree').is(':visible')) {
+            _this.updateWrapperHeight();
+          }
         });
+      },
+
+      /**
+       * Update svg wrapper height
+       */
+      updateWrapperHeight: function() {
+        var _this = this;
+
+        _this.setWrapperHeight();
+        _this.updateScrollPosition();
+        _this.update();
       },
 
       /**

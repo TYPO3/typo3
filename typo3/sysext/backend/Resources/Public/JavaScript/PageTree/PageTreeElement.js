@@ -50,6 +50,7 @@ define(['jquery',
         var $element = $(selector);
 
         if ($element.html().trim().length !== 0) {
+          $('#typo3-pagetree').trigger('isVisible');
           return;
         }
 
