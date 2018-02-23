@@ -82,7 +82,6 @@ CREATE TABLE be_users (
 	createdByAction int(11) DEFAULT '0' NOT NULL,
 	usergroup_cached_list text,
 	workspace_id int(11) DEFAULT '0' NOT NULL,
-	workspace_preview tinyint(3) DEFAULT '1' NOT NULL,
 	category_perms text,
 	PRIMARY KEY (uid),
 	KEY parent (pid),

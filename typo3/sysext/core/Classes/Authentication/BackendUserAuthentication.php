@@ -2226,21 +2226,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Setting workspace preview state for user:
-     *
-     * @param bool $previewState State of user preview.
-     */
-    public function setWorkspacePreview($previewState)
-    {
-        $this->user['workspace_preview'] = $previewState;
-        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users')->update(
-            'be_users',
-            ['workspace_preview_id' => $this->user['workspace_preview']],
-            ['uid' => (int)$this->user['uid']]
-        );
-    }
-
-    /**
      * Return default workspace ID for user,
      * if EXT:workspaces is not installed the user will be pushed to the
      * Live workspace, if he has access to. If no workspace is available for the user, the workspace ID is set to "-99"
