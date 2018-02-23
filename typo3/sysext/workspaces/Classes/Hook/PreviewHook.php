@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Hook for checking if the preview mode is activated
@@ -64,7 +63,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
     {
         $this->previewConfiguration = $this->getPreviewConfiguration();
         // if there is a valid BE user, and the full workspace should be previewed, the workspacePreview option should be set
-        $workspaceUid = $this->previewConfiguration['fullWorkspace'];
+        $workspaceUid = (int)$this->previewConfiguration['fullWorkspace'];
         $workspaceRecord = null;
         if ($this->previewConfiguration['BEUSER_uid'] > 0) {
             // First initialize a temp user object and resolve usergroup information
@@ -127,18 +126,16 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
         }
         if ($pObj->isBackendUserLoggedIn()
             && is_object($params['BE_USER'])
-            && MathUtility::canBeInterpretedAsInteger($workspaceUid)
+            && $workspaceUid > 0
         ) {
-            if ($workspaceUid == 0
-                || $workspaceUid >= -1
-                && $params['BE_USER']->checkWorkspace($workspaceRecord ?: $workspaceUid)
+            // Check Access to workspace
+            if ($params['BE_USER']->checkWorkspace($workspaceRecord ?: $workspaceUid)
                 && $params['BE_USER']->isInWebMount($pObj->id)
             ) {
-                // Check Access to workspace. Live (0) is OK to preview for all.
                 $pObj->workspacePreview = (int)$workspaceUid;
             } else {
-                // No preview, will default to "Live" at the moment
-                $pObj->workspacePreview = -99;
+                // No preview, will fallback to "Live" at the moment
+                $pObj->workspacePreview = 0;
             }
         }
     }
@@ -305,7 +302,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $backendUserUid 32 byte MD5 hash keyword for the URL: "?ADMCMD_prev=[keyword]
      * @param int $ttl Time-To-Live for keyword
-     * @param int|null $fullWorkspace Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty
+     * @param int|null $fullWorkspace Which workspace ID to preview.
      * @return string Returns keyword to use in URL for ADMCMD_prev=
      */
     public function compilePreviewKeyword($backendUserUid, $ttl = 172800, $fullWorkspace = null)

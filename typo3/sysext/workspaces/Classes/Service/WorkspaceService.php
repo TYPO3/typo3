@@ -145,7 +145,7 @@ class WorkspaceService implements SingletonInterface
     {
         $wsid = (int)$wsid;
         $cmd = [];
-        if ($wsid >= -1 && $wsid !== 0) {
+        if ($wsid > 0) {
             // Define stage to select:
             $stage = -99;
             if ($wsid > 0) {
@@ -180,7 +180,7 @@ class WorkspaceService implements SingletonInterface
     {
         $wsid = (int)$wsid;
         $cmd = [];
-        if ($wsid >= -1 && $wsid !== 0) {
+        if ($wsid > 0) {
             // Define stage to select:
             $stage = -99;
             // Select all versions to swap:

@@ -402,9 +402,6 @@
 			<trans-unit id="label_onlymychanges">
 				<source>Show only my changes</source>
 			</trans-unit>
-			<trans-unit id="label_offlineWSes">
-				<source>Draft workspaces</source>
-			</trans-unit>
 			<trans-unit id="label_allWSes">
 				<source>All workspaces</source>
 			</trans-unit>

@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -83,7 +84,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * User workspace.
      * -99 is ERROR (none available)
-     * -1 is offline
      * 0 is online
      * >0 is custom workspaces
      * @var int
@@ -2242,37 +2242,33 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * Return default workspace ID for user,
-     * If EXT:workspaces is not installed the user will be pushed the the
-     * Live workspace
+     * if EXT:workspaces is not installed the user will be pushed to the
+     * Live workspace, if he has access to. If no workspace is available for the user, the workspace ID is set to "-99"
      *
-     * @return int Default workspace id. If no workspace is available it will be "-99
+     * @return int Default workspace id.
      */
     public function getDefaultWorkspace()
     {
+        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
+            return 0;
+        }
+        // Online is default
+        if ($this->checkWorkspace(0)) {
+            return 0;
+        }
+        // Otherwise -99 is the fallback
         $defaultWorkspace = -99;
-        if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces') || $this->checkWorkspace(0)) {
-            // Check online
-            $defaultWorkspace = 0;
-        } elseif ($this->checkWorkspace(-1)) {
-            // Check offline
-            $defaultWorkspace = -1;
-        } elseif (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-            // Traverse custom workspaces:
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
-            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
-            $workspaces = $queryBuilder->select('uid', 'title', 'adminusers', 'members', 'reviewers')
-                ->from('sys_workspace')
-                ->orderBy('title')
-                ->execute()
-                ->fetchAll(\PDO::FETCH_ASSOC);
-
-            if ($workspaces !== false) {
-                foreach ($workspaces as $rec) {
-                    if ($this->checkWorkspace($rec)) {
-                        $defaultWorkspace = $rec['uid'];
-                        break;
-                    }
-                }
+        // Traverse all workspaces
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
+        $result = $queryBuilder->select('*')
+            ->from('sys_workspace')
+            ->orderBy('title')
+            ->execute();
+        while ($workspaceRecord = $result->fetch()) {
+            if ($this->checkWorkspace($workspaceRecord)) {
+                $defaultWorkspace = (int)$workspaceRecord['uid'];
+                break;
             }
         }
         return $defaultWorkspace;

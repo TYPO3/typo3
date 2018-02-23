@@ -72,9 +72,6 @@
 			<trans-unit id="shortcut_onlineWS">
 				<source>LIVE workspace</source>
 			</trans-unit>
-			<trans-unit id="shortcut_offlineWS">
-				<source>Draft workspace</source>
-			</trans-unit>
 			<trans-unit id="shortcut_active">
 				<source>active</source>
 			</trans-unit>
@@ -158,9 +155,6 @@
 			</trans-unit>
 			<trans-unit id="bookmark_onlineWS">
 				<source>LIVE workspace</source>
-			</trans-unit>
-			<trans-unit id="bookmark_offlineWS">
-				<source>Draft workspace</source>
 			</trans-unit>
 			<trans-unit id="bookmark_active">
 				<source>active</source>

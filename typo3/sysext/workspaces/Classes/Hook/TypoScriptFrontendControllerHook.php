@@ -68,13 +68,13 @@ class TypoScriptFrontendControllerHook
                 $content .= sprintf(
                     $pObj->config['config']['message_preview_workspace'],
                     $currentWorkspaceTitle,
-                    $currentWorkspaceId ?? -1
+                    $currentWorkspaceId ?? -99
                 );
             } else {
                 $text = LocalizationUtility::translate(
                     'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:previewText',
                     'workspaces',
-                    [$currentWorkspaceTitle, $currentWorkspaceId ?? -1]
+                    [$currentWorkspaceTitle, $currentWorkspaceId ?? -99]
                 );
                 if ($pObj->doWorkspacePreview()) {
                     $urlForStoppingPreview = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?ADMCMD_prev=LOGOUT&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));

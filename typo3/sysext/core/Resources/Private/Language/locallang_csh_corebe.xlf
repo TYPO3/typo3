@@ -914,7 +914,7 @@ You can name bookmarks, you can even group them and share them. If you want to e
 			<trans-unit id="workspaceSelector.details" xml:space="preserve">
 				<source>There are two basic workspace types in TYPO3: The "Live" workspace and a number of "Draft" workspaces.
 When working in the Live workspace all changes you make will take immediate effect. This is the default and traditional state of operation in TYPO3.
-When working in the default Draft workspace or any customly created workspaces changes are not applied to the live website but rather made through new versions of any element editable. Since versioning doesn't apply to all elements in TYPO3 there are limitations to what can be done in draft workspaces; Only elements with versioning support can be edited and everything else is read-only. Draft workspaces allow preview in the frontend. When changes are final in a draft workspace they can be published into the live workspace.</source>
+When working in a customly created workspaces changes are not applied to the live website but rather made through new versions of any element editable. Since versioning doesn't apply to all elements in TYPO3 there are limitations to what can be done in draft workspaces; Only elements with versioning support can be edited and everything else is read-only. Draft workspaces allow preview in the frontend. When changes are final in a draft workspace they can be published into the live workspace.</source>
 			</trans-unit>
 		</body>
 	</file>

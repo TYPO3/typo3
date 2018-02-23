@@ -1116,12 +1116,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     (
                         $backendUser->user['workspace_preview']
                         || GeneralUtility::_GP('ADMCMD_view')
-                        || $this->doWorkspacePreview()
                     )
-                    && (
-                        $this->whichWorkspace() === -1
-                        || $this->whichWorkspace() > 0
-                    )
+                    && $this->whichWorkspace() > 0
                     && !GeneralUtility::_GP('ADMCMD_noBeUser')
             ) {
                 // Will show special preview message.
@@ -1202,8 +1198,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             ->execute()
             ->fetch();
 
-        $workspace = $this->whichWorkspace();
-        if ($workspace !== 0 && $workspace !== false) {
+        if ($this->whichWorkspace() > 0) {
             // Fetch overlay of page if in workspace and check if it is hidden
             $pageSelectObject = GeneralUtility::makeInstance(PageRepository::class);
             $pageSelectObject->versioningPreview = true;
@@ -3180,8 +3175,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function setSysLastChanged()
     {
-        // Draft workspaces are always uid 1 or more. We do not update SYS_LASTCHANGED if we are browsing page from one of theses workspaces
-        if ((int)$this->whichWorkspace() < 1 && $this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
+        // We only update the info if browsing the live workspace
+        if ($this->whichWorkspace() === 0 && $this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('pages');
             $connection->update(
