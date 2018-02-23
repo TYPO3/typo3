@@ -130,11 +130,11 @@ define(['jquery',
 
       if (data.command === 'new') {
         params = '&data[pages][NEW_1][pid]=' + targetUid +
-          '&data[pages][NEW_1][title]=' + data.name +
+          '&data[pages][NEW_1][title]=' + encodeURIComponent(data.name) +
           '&data[pages][NEW_1][doktype]=' + data.type;
 
       } else if (data.command === 'edit') {
-        params = '&data[pages][' + data.uid + '][' + data.nameSourceField + ']=' + data.title;
+        params = '&data[pages][' + data.uid + '][' + data.nameSourceField + ']=' + encodeURIComponent(data.title);
       } else {
         if (data.command === 'delete') {
           params = '&cmd[pages][' + data.uid + '][delete]=1';
@@ -359,7 +359,7 @@ define(['jquery',
     PageTree.prototype.sendEditNodeLabelCommand = function(node) {
       var _this = this;
 
-      var params = '&data[pages][' + node.identifier + '][' + node.nameSourceField + ']=' + node.newName;
+      var params = '&data[pages][' + node.identifier + '][' + node.nameSourceField + ']=' + encodeURIComponent(node.newName);
 
       //remove old node from svg tree
       _this.nodesAddPlaceholder(node);
