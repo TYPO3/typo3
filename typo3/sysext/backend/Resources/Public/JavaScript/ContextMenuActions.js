@@ -92,7 +92,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 
   ContextMenuActions.openListModule = function(table, uid) {
     var pageId = table === 'pages' ? uid : $(this).data('page-uid');
-    top.TYPO3.ModuleMenu.App.showModule('web_list', 'id='.pageId);
+    top.TYPO3.ModuleMenu.App.showModule('web_list', 'id=' + pageId);
   };
 
   ContextMenuActions.disableRecord = function(table, uid) {
