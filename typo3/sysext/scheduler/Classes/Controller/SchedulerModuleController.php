@@ -733,7 +733,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     . '<div class="input-group" id="tceforms-datetimefield-task_start_row-wrapper">'
                         . '<input name="tx_scheduler[start]_hr" value="' . htmlspecialchars($value) . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="datetime" type="text" id="tceforms-datetimefield-task_start_row">'
                         . '<input name="tx_scheduler[start]" value="' . htmlspecialchars($taskInfo['start']) . '" type="hidden">'
-                        . '<span class="input-group-btn"><label class="btn btn-default" for="tceforms-datetimefield-task_start_row"><span class="fa fa-calendar"></span></label></span>'
+                        . '<span class="input-group-btn"><label class="btn btn-default" for="tceforms-datetimefield-task_start_row">' . $this->iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL)->render() . '</label></span>'
                     . '</div>'
                 . '</div>'
             . '</div>';
@@ -749,7 +749,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     . '<div class="input-group" id="tceforms-datetimefield-task_end_row-wrapper">'
                         . '<input name="tx_scheduler[end]_hr" value="' . htmlspecialchars($value) . '" class="form-control  t3js-datetimepicker t3js-clearable" data-date-type="datetime" type="text" id="tceforms-datetimefield-task_end_row">'
                         . '<input name="tx_scheduler[end]" value="' . htmlspecialchars($taskInfo['end']) . '" type="hidden">'
-                        . '<span class="input-group-btn"><label class="btn btn-default" for="tceforms-datetimefield-task_end_row"><span class="fa fa-calendar"></span></label></span>'
+                        . '<span class="input-group-btn"><label class="btn btn-default" for="tceforms-datetimefield-task_end_row">' . $this->iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL)->render() . '</label></span>'
                     . '</div>'
                 . '</div>'
             . '</div></div></div>';
