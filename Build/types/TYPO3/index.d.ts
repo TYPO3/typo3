@@ -50,6 +50,8 @@ interface Window {
   inline: {
     delayedImportElement: (objectId: number, table: string, uid: number, type: string) => void
   };
+  rawurlencode: Function;
+  list_frame: Window;
 }
 
 /**
