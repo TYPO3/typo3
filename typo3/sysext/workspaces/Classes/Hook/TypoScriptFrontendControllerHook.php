@@ -40,8 +40,7 @@ class TypoScriptFrontendControllerHook
      */
     public function renderPreviewInfo(array $params, \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $pObj)
     {
-        // 2 means preview of a non-live workspace
-        if ($pObj->fePreview !== 2) {
+        if (!$pObj->doWorkspacePreview()) {
             return '';
         }
 

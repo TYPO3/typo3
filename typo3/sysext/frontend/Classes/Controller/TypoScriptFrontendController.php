@@ -252,8 +252,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Flag indication that preview is active. This is based on the login of a
      * backend user and whether the backend user has read access to the current
-     * page. A value of 1 means ordinary preview, 2 means preview of a non-live
-     * workspace
+     * page.
      * @var int
      */
     public $fePreview = 0;
@@ -1111,10 +1110,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->fePreview = 1;
                 $this->showHiddenPage = true;
             }
-            // The preview flag will be set if a backend user is in an offline workspace
+            // The preview flag will be set if an offline workspace will be previewed
             if ($this->whichWorkspace() > 0) {
-                // Will show special preview message.
-                $this->fePreview = 2;
+                $this->fePreview = 1;
             }
             // If the front-end is showing a preview, caching MUST be disabled.
             if ($this->fePreview) {
@@ -1272,7 +1270,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $timeTracker->push('fetch_the_id initialize/', '');
         // Initialize the page-select functions.
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        $this->sys_page->versioningPreview = $this->fePreview === 2 || (int)$this->workspacePreview || (bool)GeneralUtility::_GP('ADMCMD_view');
+        $this->sys_page->versioningPreview = $this->whichWorkspace() > 0 || (bool)GeneralUtility::_GP('ADMCMD_view');
         $this->sys_page->versioningWorkspaceId = $this->whichWorkspace();
         $this->sys_page->init($this->showHiddenPage);
         // Set the valid usergroups for FE

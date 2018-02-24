@@ -29,7 +29,7 @@ class FrontendHooks
      */
     public function hook_previewInfo($params, $pObj)
     {
-        if ($pObj->fePreview !== 1) {
+        if (!$pObj->fePreview || $pObj->doWorkspacePreview()) {
             return '';
         }
         if ($pObj->config['config']['message_preview']) {
