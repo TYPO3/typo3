@@ -31,8 +31,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_acc
 
 // Register hook to check for the preview mode in the FE
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser']['version_preview'] = \TYPO3\CMS\Workspaces\Hook\PreviewHook::class . '->initializePreviewUser';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause']['version_preview'] = \TYPO3\CMS\Workspaces\Hook\PreviewHook::class . '->overridePagePermissionClause';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms']['version_preview'] = \TYPO3\CMS\Workspaces\Hook\PreviewHook::class . '->overridePermissionCalculation';
 
 // Register workspaces cache if not already done in localconf.php or a previously loaded extension.
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['workspaces_cache'] ?? false)) {

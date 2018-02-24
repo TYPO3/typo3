@@ -14,18 +14,15 @@ namespace TYPO3\CMS\Workspaces\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Workspaces\Authentication\PreviewUserAuthentication;
 
 /**
  * Hook for checking if the preview mode is activated
  * preview mode = show a page of a workspace without having to log in
  */
-class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
+class PreviewHook
 {
     /**
      * the GET parameter to be used
@@ -42,14 +39,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
     protected $previewConfiguration = false;
 
     /**
-     * Defines whether to force read permissions on pages.
-     *
-     * @var bool
-     * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getPagePermsClause
-     */
-    protected $forceReadPermissions = false;
-
-    /**
      * Hook after the regular BE user has been initialized
      * if there is a preview configuration
      * the BE user of the preview configuration gets initialized and
@@ -64,69 +53,19 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
         $this->previewConfiguration = $this->getPreviewConfiguration();
         // if there is a valid BE user, and the full workspace should be previewed, the workspacePreview option should be set
         $workspaceUid = (int)$this->previewConfiguration['fullWorkspace'];
-        $workspaceRecord = null;
-        if ($this->previewConfiguration['BEUSER_uid'] > 0) {
-            // First initialize a temp user object and resolve usergroup information
-            /** @var FrontendBackendUserAuthentication $tempBackendUser */
-            $tempBackendUser = $this->createFrontendBackendUser();
-            $tempBackendUser->userTS_dontGetCached = 1;
-            $tempBackendUser->setBeUserByUid($this->previewConfiguration['BEUSER_uid']);
-            if ($tempBackendUser->user['uid']) {
-                $tempBackendUser->unpack_uc();
-                $tempBackendUser->setTemporaryWorkspace($workspaceUid);
-                $tempBackendUser->user['workspace_id'] = $workspaceUid;
-                $tempBackendUser->fetchGroupData();
-                // Handle degradation of admin users
-                if ($tempBackendUser->isAdmin()) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable('sys_workspace');
-
-                    $queryBuilder->getRestrictions()
-                        ->removeAll()
-                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                        ->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
-
-                    $workspaceRecord = $queryBuilder
-                        ->select('uid', 'adminusers', 'reviewers', 'members', 'db_mountpoints')
-                        ->from('sys_workspace')
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                'uid',
-                                $queryBuilder->createNamedParameter($workspaceUid, \PDO::PARAM_INT)
-                            )
-                        )
-                        ->execute()
-                        ->fetch();
-
-                    // Either use configured workspace mount (of the workspace) or current page id
-                    if (empty($tempBackendUser->groupData['webmounts'])) {
-                        $tempBackendUser->groupData['webmounts'] = !empty($workspaceRecord['db_mountpoints']) ? $workspaceRecord['db_mountpoints'] : $pObj->id;
-                    }
-                    // Force add degraded admin user as member of this workspace
-                    $workspaceRecord['members'] = 'be_users_' . $this->previewConfiguration['BEUSER_uid'];
-                    // Force read permission for degraded admin user
-                    $this->forceReadPermissions = true;
-                }
-                // Store only needed information in the real simulate backend
-                $BE_USER = $this->createFrontendBackendUser();
-                $BE_USER->userTS_dontGetCached = 1;
-                $BE_USER->user = $tempBackendUser->user;
-                $BE_USER->user['admin'] = 0;
-                $BE_USER->groupData['webmounts'] = $tempBackendUser->groupData['webmounts'];
-                $BE_USER->groupList = $tempBackendUser->groupList;
-                $BE_USER->userGroups = $tempBackendUser->userGroups;
-                $BE_USER->userGroupsUID = $tempBackendUser->userGroupsUID;
-                $BE_USER->workspace = (int)$workspaceUid;
+        if ($workspaceUid > 0) {
+            $previewUser = GeneralUtility::makeInstance(PreviewUserAuthentication::class);
+            $previewUser->setWebmounts([$pObj->id]);
+            if ($previewUser->setTemporaryWorkspace($workspaceUid)) {
+                $params['BE_USER'] = $previewUser;
                 $pObj->beUserLogin = true;
             } else {
-                $BE_USER = null;
+                $params['BE_USER'] = null;
                 $pObj->beUserLogin = false;
             }
-            unset($tempBackendUser);
-            $params['BE_USER'] = $BE_USER;
         }
 
-        // Now, if "ADMCMD_noBeUser" is set, then ensure that there is no workspace preview and no BE User logged in.
+        // If "ADMCMD_noBeUser" is set, then ensure that there is no workspace preview and no BE User logged in.
         // This option is solely used to ensure that a be user can preview the live version of a page in the
         // workspace preview module.
         if (GeneralUtility::_GET('ADMCMD_noBeUser')) {
@@ -135,42 +74,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
             // Caching is disabled, because otherwise generated URLs could include the ADMCMD_noBeUser parameter
             $pObj->set_no_cache('GET Parameter ADMCMD_noBeUser was given', true);
         }
-    }
-
-    /**
-     * Overrides the page permission clause in case an admin
-     * user has been degraded to a regular user without any user
-     * group assignments. This method is used as hook callback.
-     *
-     * @param array $parameters
-     * @return string
-     * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getPagePermsClause
-     */
-    public function overridePagePermissionClause(array $parameters)
-    {
-        $clause = $parameters['currentClause'];
-        if ($parameters['perms'] & 1 && $this->forceReadPermissions) {
-            $clause = ' 1=1';
-        }
-        return $clause;
-    }
-
-    /**
-     * Overrides the row permission value in case an admin
-     * user has been degraded to a regular user without any user
-     * group assignments. This method is used as hook callback.
-     *
-     * @param array $parameters
-     * @return int
-     * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::calcPerms
-     */
-    public function overridePermissionCalculation(array $parameters)
-    {
-        $permissions = $parameters['outputPermissions'];
-        if (!($permissions & Permission::PAGE_SHOW) && $this->forceReadPermissions) {
-            $permissions |= Permission::PAGE_SHOW;
-        }
-        return $permissions;
     }
 
     /**
@@ -334,15 +237,5 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
     {
         $ttlHours = (int)$GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours');
         return $ttlHours ? $ttlHours : 24 * 2;
-    }
-
-    /**
-     * @return FrontendBackendUserAuthentication
-     */
-    protected function createFrontendBackendUser()
-    {
-        return GeneralUtility::makeInstance(
-            FrontendBackendUserAuthentication::class
-        );
     }
 }
