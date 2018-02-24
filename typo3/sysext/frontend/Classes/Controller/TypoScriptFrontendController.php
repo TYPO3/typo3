@@ -1112,7 +1112,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->showHiddenPage = true;
             }
             // The preview flag will be set if a backend user is in an offline workspace
-            if ($this->whichWorkspace() > 0 && !GeneralUtility::_GP('ADMCMD_noBeUser')) {
+            if ($this->whichWorkspace() > 0) {
                 // Will show special preview message.
                 $this->fePreview = 2;
             }

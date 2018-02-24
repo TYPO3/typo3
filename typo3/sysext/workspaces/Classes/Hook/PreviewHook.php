@@ -138,6 +138,17 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                 $pObj->workspacePreview = 0;
             }
         }
+
+        // Now, if "ADMCMD_noBeUser" is set, then ensure that there is no workspace preview and no BE User logged in.
+        // This option is solely used to ensure that a be user can preview the live version of a page in the
+        // workspace preview module.
+        if (GeneralUtility::_GET('ADMCMD_noBeUser')) {
+            $params['BE_USER'] = null;
+            $pObj->workspacePreview = 0;
+            $pObj->beUserLogin = false;
+            // Caching is disabled, because otherwise generated URLs could include the ADMCMD_noBeUser parameter
+            $pObj->set_no_cache('GET Parameter ADMCMD_noBeUser was given', true);
+        }
     }
 
     /**

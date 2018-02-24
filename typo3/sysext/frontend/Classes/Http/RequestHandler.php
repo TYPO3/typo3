@@ -78,12 +78,8 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $controller->determineId();
 
         // Now, if there is a backend user logged in and he has NO access to this page,
-        // then re-evaluate the id shown! _GP('ADMCMD_noBeUser') is placed here because
-        // \TYPO3\CMS\Version\Hook\PreviewHook might need to know if a backend user is logged in.
-        if (
-            $controller->isBackendUserLoggedIn()
-            && (!$GLOBALS['BE_USER']->extPageReadAccess($controller->page) || GeneralUtility::_GP('ADMCMD_noBeUser'))
-        ) {
+        // then re-evaluate the id shown!.
+        if ($controller->isBackendUserLoggedIn() && !$GLOBALS['BE_USER']->extPageReadAccess($controller->page)) {
             // Remove user
             unset($GLOBALS['BE_USER']);
             $controller->beUserLogin = false;
