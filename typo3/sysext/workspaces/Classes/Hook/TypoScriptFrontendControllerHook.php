@@ -96,7 +96,7 @@ class TypoScriptFrontendControllerHook
                 $styles[] = 'pointer-events:none';
                 $styles[] = 'text-align: center';
                 $styles[] = 'border-radius: 2px';
-                $content .= '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">PREVIEW</div>';
+                $content .= '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">' . $text . '</div>';
             }
         }
         return $content;
