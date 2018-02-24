@@ -70,7 +70,7 @@ class MediaceExtractionUpdate extends AbstractDownloadExtensionUpdate
                 ))
                 ->execute()
                 ->fetchColumn(0);
-            if ($numberOfRecords === 0) {
+            if ((int)$numberOfRecords === 0) {
                 $needsExecution = false;
             }
         }
