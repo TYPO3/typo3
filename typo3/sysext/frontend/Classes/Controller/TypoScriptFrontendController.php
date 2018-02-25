@@ -227,6 +227,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Integer, that indicates which workspace is being previewed.
+     * Not in use anymore, as this is part of the workspace preview functionality, use $TSFE->whichWorkspace() instead.
      * @var int
      */
     public $workspacePreview = 0;
@@ -3167,7 +3168,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function setSysLastChanged()
     {
         // We only update the info if browsing the live workspace
-        if ($this->whichWorkspace() === 0 && $this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
+        if (!$this->doWorkspacePreview() && $this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('pages');
             $connection->update(
@@ -3945,23 +3946,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function doWorkspacePreview()
     {
-        return $this->workspacePreview !== 0;
+        return $this->whichWorkspace() > 0;
     }
 
     /**
      * Returns the uid of the current workspace
      *
-     * @return int|null returns workspace integer for which workspace is being preview. NULL if none.
+     * @return int returns workspace integer for which workspace is being preview. 0 if none (= live workspace).
      */
     public function whichWorkspace()
     {
-        $ws = null;
-        if ($this->doWorkspacePreview()) {
-            $ws = (int)$this->workspacePreview;
-        } elseif ($this->beUserLogin) {
-            $ws = $this->getBackendUser()->workspace;
-        }
-        return $ws;
+        return $this->beUserLogin ? $this->getBackendUser()->workspace : 0;
     }
 
     /********************************************

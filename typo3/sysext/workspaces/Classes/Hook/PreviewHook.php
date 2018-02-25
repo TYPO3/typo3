@@ -116,6 +116,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                 $BE_USER->groupList = $tempBackendUser->groupList;
                 $BE_USER->userGroups = $tempBackendUser->userGroups;
                 $BE_USER->userGroupsUID = $tempBackendUser->userGroupsUID;
+                $BE_USER->workspace = (int)$workspaceUid;
                 $pObj->beUserLogin = true;
             } else {
                 $BE_USER = null;
@@ -124,27 +125,12 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
             unset($tempBackendUser);
             $params['BE_USER'] = $BE_USER;
         }
-        if ($pObj->isBackendUserLoggedIn()
-            && is_object($params['BE_USER'])
-            && $workspaceUid > 0
-        ) {
-            // Check Access to workspace
-            if ($params['BE_USER']->checkWorkspace($workspaceRecord ?: $workspaceUid)
-                && $params['BE_USER']->isInWebMount($pObj->id)
-            ) {
-                $pObj->workspacePreview = (int)$workspaceUid;
-            } else {
-                // No preview, will fallback to "Live" at the moment
-                $pObj->workspacePreview = 0;
-            }
-        }
 
         // Now, if "ADMCMD_noBeUser" is set, then ensure that there is no workspace preview and no BE User logged in.
         // This option is solely used to ensure that a be user can preview the live version of a page in the
         // workspace preview module.
         if (GeneralUtility::_GET('ADMCMD_noBeUser')) {
             $params['BE_USER'] = null;
-            $pObj->workspacePreview = 0;
             $pObj->beUserLogin = false;
             // Caching is disabled, because otherwise generated URLs could include the ADMCMD_noBeUser parameter
             $pObj->set_no_cache('GET Parameter ADMCMD_noBeUser was given', true);
