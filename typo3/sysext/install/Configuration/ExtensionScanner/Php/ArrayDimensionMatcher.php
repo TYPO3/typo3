@@ -149,4 +149,10 @@ return [
             'Deprecation-83740-CleanupOfAbstractRecordListBreaksHook.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_adminpanel.php\'][\'extendAdminPanel\']' => [
+        'restFiles' => [
+            'Deprecation-84045-AdminPanelHookDeprecated.rst',
+            'Feature-84045-NewAdminPanelModuleAPI.rst',
+        ],
+    ],
 ];

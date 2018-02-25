@@ -81,7 +81,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['move
 // Register hook to show preview info
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']['cms'] = \TYPO3\CMS\Frontend\Hooks\FrontendHooks::class . '->hook_previewInfo';
 
-// Register for hookss to show preview of tt_content elements in page module
+// Register for hooks to show preview of tt_content elements in page module
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['image'] =
     \TYPO3\CMS\Frontend\Hooks\PageLayoutView\ImagePreviewRenderer::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['textpic'] =
@@ -114,3 +114,26 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers']['front
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:frontend/Configuration/TSconfig/Page/TCEFORM.txt">'
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['frontend']['adminPanelModules'] = [
+    'preview' => [
+        'module' => \TYPO3\CMS\Frontend\AdminPanel\PreviewModule::class,
+        'before' => ['cache']
+    ],
+    'cache' => [
+        'module' => \TYPO3\CMS\Frontend\AdminPanel\CacheModule::class,
+        'after' => ['preview']
+    ],
+    'edit' => [
+        'module' => \TYPO3\CMS\Frontend\AdminPanel\EditModule::class,
+        'after' => ['cache']
+    ],
+    'tsdebug' => [
+        'module' => \TYPO3\CMS\Frontend\AdminPanel\TsDebugModule::class,
+        'after' => ['edit']
+    ],
+    'info' => [
+        'module' => \TYPO3\CMS\Frontend\AdminPanel\InfoModule::class,
+        'after' => ['tsdebug']
+    ]
+];

@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Frontend\View;
 
 /**
  * Interface for classes which hook into AdminPanelView
+ *
+ * @deprecated since v9 will be removed in v10 - see AdminPanelModuleInterface
  */
 interface AdminPanelViewHookInterface
 {

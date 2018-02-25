@@ -13,11 +13,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -74,51 +71,5 @@ class AdminPanelViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $timestampReturned = $adminPanelMock->extGetFeAdminValue('preview', 'simulateDate');
         $this->assertEquals($timestamp, $timestampReturned);
-    }
-
-    /////////////////////////////////////////////
-    // Test concerning extendAdminPanel hook
-    /////////////////////////////////////////////
-
-    /**
-     * @test
-     */
-    public function extendAdminPanelHookThrowsExceptionIfHookClassDoesNotImplementInterface()
-    {
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1311942539);
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'][] = \TYPO3\CMS\Frontend\Tests\Unit\Fixtures\AdminPanelHookWithoutInterfaceFixture::class;
-        /** @var $adminPanelMock \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\View\AdminPanelView */
-        $adminPanelMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\View\AdminPanelView::class)
-            ->setMethods(['dummy'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $adminPanelMock->display();
-    }
-
-    /**
-     * @test
-     */
-    public function extendAdminPanelHookCallsExtendAdminPanelMethodOfHook()
-    {
-        $hookClass = $this->getUniqueId('tx_coretest');
-        $hookMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\View\AdminPanelViewHookInterface::class)
-            ->setMockClassName($hookClass)
-            ->getMock();
-        GeneralUtility::addInstance($hookClass, $hookMock);
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'][] = $hookClass;
-        /** @var $adminPanelMock \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\View\AdminPanelView */
-        $adminPanelMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\View\AdminPanelView::class)
-            ->setMethods(['extGetLL'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-        $iconProphecy = $this->prophesize(Icon::class);
-        $iconFactoryProphecy->getIcon(Argument::cetera())->willReturn($iconProphecy->reveal());
-        $iconProphecy->render(Argument::cetera())->willReturn('');
-        $adminPanelMock->initialize();
-        $hookMock->expects($this->once())->method('extendAdminPanel')->with($this->isType('string'), $this->isInstanceOf(\TYPO3\CMS\Frontend\View\AdminPanelView::class));
-        $adminPanelMock->display();
     }
 }
