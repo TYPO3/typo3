@@ -54,17 +54,17 @@ return [
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->installToolPath' => [
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->availableRequestHandlers' => [
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->response' => [
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
 ];

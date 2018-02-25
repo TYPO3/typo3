@@ -214,7 +214,7 @@ class ClassLoadingInformation
      */
     protected static function isTestingContext()
     {
-        return Bootstrap::getInstance()->getApplicationContext()->isTesting();
+        return GeneralUtility::getApplicationContext()->isTesting();
     }
 
     /**

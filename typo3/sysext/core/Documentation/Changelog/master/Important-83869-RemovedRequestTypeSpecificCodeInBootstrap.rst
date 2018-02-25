@@ -1,8 +1,8 @@
 .. include:: ../../Includes.txt
 
-==================================================================
-Important: #83869 - Remove request type specific code in Bootstrap
-==================================================================
+===================================================================
+Important: #83869 - Removed request type specific code in Bootstrap
+===================================================================
 
 See :issue:`83869`
 
@@ -28,6 +28,8 @@ Methods:
 * :php:`shutdown()`
 * :php:`initializeBackendTemplate()`
 * :php:`endOutputBufferingAndCleanPreviousOutput()`
+* :php:`getApplicationContext()`
+* :php:`getRequestId()`
 
 Properties:
 

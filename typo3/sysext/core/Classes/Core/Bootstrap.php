@@ -107,18 +107,6 @@ class Bootstrap
     }
 
     /**
-     * Returns the application context this bootstrap was started in.
-     *
-     * @return \TYPO3\CMS\Core\Core\ApplicationContext The application context encapsulated in an object
-     * @internal This is not a public API method, do not use in own extensions.
-     * Use \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext() instead
-     */
-    public function getApplicationContext()
-    {
-        return $this->applicationContext;
-    }
-
-    /**
      * Prevent any unwanted output that may corrupt AJAX/compression.
      * This does not interfere with "die()" or "echo"+"exit()" messages!
      *
@@ -172,11 +160,11 @@ class Bootstrap
         if (!defined('TYPO3_REQUESTTYPE')) {
             throw new \RuntimeException('No Request Type was set, TYPO3 does not know in which context it is run.', 1450561838);
         }
+        GeneralUtility::presetApplicationContext($this->applicationContext);
         SystemEnvironmentBuilder::run($entryPointLevel);
         if (!self::$usesComposerClassLoading && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
             ClassLoadingInformation::registerClassLoadingInformation();
         }
-        GeneralUtility::presetApplicationContext($this->applicationContext);
         return $this;
     }
 

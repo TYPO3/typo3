@@ -1616,91 +1616,105 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->registerRequestHandlerImplementation' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->resolveRequestHandler' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->handleRequest' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->sendResponse' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->checkLockedBackendAndRedirectOrDie' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->checkBackendIpOrDie' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->checkSslBackendAndRedirectIfNeeded' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->initializeOutputCompression' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->sendHttpHeaders' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->shutdown' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->initializeBackendTemplate' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->endOutputBufferingAndCleanPreviousOutput' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Important-83869-RemoveRequestTypeSpecificCodeInBootstrap.rst',
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Bootstrap->getApplicationContext' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Bootstrap->getRequestId' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
 ];
