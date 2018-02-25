@@ -46,7 +46,7 @@
   dependencies:
     "@types/jquery" "*"
 
-"@types/nprogress@*":
+"@types/nprogress@^0.0.29":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/nprogress/-/nprogress-0.0.29.tgz#060bd510022a005f1840234030d3132fb9195471"
 

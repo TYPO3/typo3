@@ -15,7 +15,7 @@
     "@types/jasmine": "^2.5.53",
     "@types/jquery": "2.0.47",
     "@types/jqueryui": "^1.11.34",
-    "@types/nprogress": "*",
+    "@types/nprogress": "^0.0.29",
     "@types/requirejs": "*",
     "@typo3/icons": "^1.5.1",
     "autoprefixer": "^6.3.7",
