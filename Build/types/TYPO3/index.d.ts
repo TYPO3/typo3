@@ -8,6 +8,7 @@ declare namespace TYPO3 {
   export let DebugConsole: any;
   export let Icons: any;
   export let InfoWindow: any;
+  export let ModuleMenu: any;
   export let Notification: any;
   export let Popover: any;
   export let Severity: any;
