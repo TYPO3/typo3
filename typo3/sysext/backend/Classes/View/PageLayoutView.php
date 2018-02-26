@@ -863,7 +863,6 @@ class PageLayoutView implements LoggerAwareInterface
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', 'function(PageActions) {
                 PageActions.setPageId(' . (int)$this->id . ');
                 PageActions.setLanguageOverlayId(' . $languageOverlayId . ');
-                PageActions.initializePageTitleRenaming();
             }');
         }
         // Get labels for CTypes and tt_content element fields in general:

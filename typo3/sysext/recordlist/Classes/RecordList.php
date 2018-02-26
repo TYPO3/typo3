@@ -288,7 +288,6 @@ class RecordList
         if ($userCanEditPage) {
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', 'function(PageActions) {
                 PageActions.setPageId(' . (int)$this->id . ');
-                PageActions.initializePageTitleRenaming();
             }');
         }
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
