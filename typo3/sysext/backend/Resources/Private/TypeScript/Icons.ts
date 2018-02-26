@@ -56,9 +56,9 @@ class Icons {
    */
   public getIcon(identifier: string,
                  size: Sizes,
-                 overlayIdentifier: string,
-                 state: string,
-                 markupIdentifier: MarkupIdentifiers): JQueryPromise<any> {
+                 overlayIdentifier?: string,
+                 state?: string,
+                 markupIdentifier?: MarkupIdentifiers): JQueryPromise<any> {
     return $.when(this.fetch(identifier, size, overlayIdentifier, state, markupIdentifier));
   }
 
