@@ -42,7 +42,7 @@ class ExtdirectTreeCommands
         } catch (\Exception $exception) {
             $returnValue = [
                 'success' => false,
-                'error' => $exception->getMessage()
+                'message' => $exception->getMessage()
             ];
         }
         return $returnValue;
