@@ -50,11 +50,11 @@ class Viewport {
 
 let viewportObject;
 
-if (!TYPO3.Backend) {
+if (!top.TYPO3.Backend) {
   viewportObject = new Viewport();
-  TYPO3.Backend = viewportObject;
+  top.TYPO3.Backend = viewportObject;
 } else {
-  viewportObject = TYPO3.Backend;
+  viewportObject = top.TYPO3.Backend;
 }
 
 export = viewportObject;
