@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageGenerator;
@@ -79,7 +80,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
 
         // Now, if there is a backend user logged in and he has NO access to this page,
         // then re-evaluate the id shown!.
-        if ($controller->isBackendUserLoggedIn() && !$GLOBALS['BE_USER']->extPageReadAccess($controller->page)) {
+        if ($controller->isBackendUserLoggedIn() && !$GLOBALS['BE_USER']->doesUserHaveAccess($controller->page, Permission::PAGE_SHOW)) {
             // Remove user
             unset($GLOBALS['BE_USER']);
             $controller->beUserLogin = false;

@@ -1124,14 +1124,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Now, get the id, validate access etc:
         $this->fetch_the_id();
         // Check if backend user has read access to this page. If not, recalculate the id.
-        if ($this->beUserLogin && $this->fePreview) {
-            if (!$backendUser->doesUserHaveAccess($this->page, 1)) {
-                // Resetting
-                $this->clear_preview();
-                $this->fe_user->user = $originalFrontendUser;
-                // Fetching the id again, now with the preview settings reset.
-                $this->fetch_the_id();
-            }
+        if ($this->beUserLogin && $this->fePreview && !$backendUser->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
+            // Resetting
+            $this->clear_preview();
+            $this->fe_user->user = $originalFrontendUser;
+            // Fetching the id again, now with the preview settings reset.
+            $this->fetch_the_id();
         }
         // Checks if user logins are blocked for a certain branch and if so, will unset user login and re-fetch ID.
         $this->loginAllowedInBranch = $this->checkIfLoginAllowedInBranch();
