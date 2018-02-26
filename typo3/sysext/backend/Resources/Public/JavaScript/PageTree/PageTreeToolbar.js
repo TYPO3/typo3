@@ -177,9 +177,13 @@ define(['jquery',
       var d3Toolbar = d3.select('.svg-toolbar');
 
       $.each(this.tree.settings.doktypes, function(id, e) {
-        d3Toolbar
-          .selectAll('[data-tree-icon=' + e.icon + ']')
-          .call(_this.dragDrop.dragToolbar());
+        if (e.icon) {
+          d3Toolbar
+            .selectAll('[data-tree-icon=' + e.icon + ']')
+            .call(_this.dragDrop.dragToolbar());
+        } else {
+          console.warn('Missing icon definition for doktype: ' + e.nodeType);
+        }
       });
 
       $toolbar.find(this.settings.searchInput).on('input', function() {

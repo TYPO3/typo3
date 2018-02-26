@@ -676,6 +676,10 @@ define(
             });
 
           icons
+            .exit()
+            .remove();
+
+          icons
             .enter()
             .append('g')
             .attr('class', 'icon-def')
