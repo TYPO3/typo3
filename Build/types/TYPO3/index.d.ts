@@ -87,5 +87,6 @@ interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
  */
 interface JQuery {
   clearable(options?: any): JQuery;
+  datetimepicker(options?: any): JQuery;
   dragUploader(options?: DragUploaderOptions): JQuery;
 }
