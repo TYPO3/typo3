@@ -1851,7 +1851,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $pageUid = 0;
             $host = explode('.', GeneralUtility::getIndpEnv('HTTP_HOST'));
             while (count($host)) {
-                $pageUid = $this->sys_page->getDomainStartPage(implode('.', $host), GeneralUtility::getIndpEnv('SCRIPT_NAME'), GeneralUtility::getIndpEnv('REQUEST_URI'));
+                $pageUid = $this->sys_page->getDomainStartPage(implode('.', $host), GeneralUtility::getIndpEnv('SCRIPT_NAME'));
                 if ($pageUid) {
                     return $pageUid;
                 }
@@ -1859,7 +1859,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             return $pageUid;
         }
-        return $this->sys_page->getDomainStartPage(GeneralUtility::getIndpEnv('HTTP_HOST'), GeneralUtility::getIndpEnv('SCRIPT_NAME'), GeneralUtility::getIndpEnv('REQUEST_URI'));
+        return $this->sys_page->getDomainStartPage(GeneralUtility::getIndpEnv('HTTP_HOST'), GeneralUtility::getIndpEnv('SCRIPT_NAME'));
     }
 
     /**
