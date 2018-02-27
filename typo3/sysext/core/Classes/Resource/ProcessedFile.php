@@ -129,7 +129,6 @@ class ProcessedFile extends AbstractFile
      * Creates a ProcessedFile object from a database record.
      *
      * @param array $databaseRow
-     * @return ProcessedFile
      */
     protected function reconstituteFromDatabaseRecord(array $databaseRow)
     {
@@ -140,6 +139,10 @@ class ProcessedFile extends AbstractFile
         $this->identifier = $databaseRow['identifier'];
         $this->name = $databaseRow['name'];
         $this->properties = $databaseRow;
+
+        if (!empty($databaseRow['storage']) && (int)$this->storage->getUid() !== (int)$databaseRow['storage']) {
+            $this->storage = ResourceFactory::getInstance()->getStorageObject($databaseRow['storage']);
+        }
     }
 
     /********************************
