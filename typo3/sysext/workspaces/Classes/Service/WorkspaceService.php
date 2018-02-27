@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  */
 
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -757,7 +758,7 @@ class WorkspaceService implements SingletonInterface
 
         // Directly use pid value and consider move placeholders
         $previewPageId = (empty($movePlaceholder['pid']) ? $liveRecord['pid'] : $movePlaceholder['pid']);
-        $additionalParameters = '&tx_workspaces_web_workspacesworkspaces[previewWS]=' . $versionRecord['t3ver_wsid'];
+        $additionalParameters = '&previewWS=' . $versionRecord['t3ver_wsid'];
         // Add language parameter if record is a localization
         if (BackendUtility::isTableLocalizable($table)) {
             $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
@@ -857,14 +858,12 @@ class WorkspaceService implements SingletonInterface
         if ($uid > 0) {
             $uid = $this->getLivePageUid($uid);
         }
-        /** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
-        $uriBuilder = $this->getObjectManager()->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
-        $redirect = 'index.php?redirect_url=';
-        $viewScript = $uriBuilder
-            ->setArguments(['route' => '/web/WorkspacesWorkspaces/'])
-            ->uriFor('index', [], 'Preview', 'workspaces', 'web_workspacesworkspaces') . '&id=';
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        // the actual uid will be appended directly in BackendUtility Hook
+        $viewScript = $uriBuilder->buildUriFromRoute('workspace_previewcontrols', ['id' => '']);
         if ($addDomain === true) {
-            return BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
+            $viewScript = $uriBuilder->buildUriFromRoute('workspace_previewcontrols', ['id' => $uid]);
+            return BackendUtility::getViewDomain($uid) . 'index.php?redirect_url=' . urlencode($viewScript);
         }
         return $viewScript;
     }

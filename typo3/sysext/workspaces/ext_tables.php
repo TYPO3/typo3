@@ -9,8 +9,7 @@ defined('TYPO3_MODE') or die();
     'before:info',
     [
         // An array holding the controller-action-combinations that are accessible
-        'Review' => 'index,fullIndex,singleIndex',
-        'Preview' => 'index,newPage'
+        'Review' => 'index,fullIndex,singleIndex'
     ],
     [
         'access' => 'user,group',

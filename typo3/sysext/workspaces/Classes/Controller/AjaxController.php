@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
 /**
  * Implements the AJAX functionality for the various asynchronous calls
@@ -50,7 +51,7 @@ class AjaxController
                 ' AND pages.t3ver_wsid IN (0, ' . $workspaceId . ')'
             );
             if ($page) {
-                if ($this->getBackendUser()->doesUserHaveAccess($page, 1)) {
+                if ($this->getBackendUser()->doesUserHaveAccess($page, Permission::PAGE_SHOW)) {
                     break;
                 }
             } else {

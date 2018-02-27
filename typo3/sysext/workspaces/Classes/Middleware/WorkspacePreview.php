@@ -268,13 +268,10 @@ class WorkspacePreview implements MiddlewareInterface
     {
         $backendDomain = $GLOBALS['BE_USER']->getSessionData('workspaces.backend_domain') ?: $normalizedParams->getRequestHostOnly();
 
-        $content = $tsfe->cObj->cObjGetSingle('FLUIDTEMPLATE', [
-            'file' => 'EXT:workspaces/Resources/Private/Templates/Preview/Preview.html',
-            'variables.' => [
-                'backendDomain' => 'TEXT',
-                'backendDomain.' => ['value' => $backendDomain]
-            ]
-        ]);
+        $content = '<script type="text/javascript">
+	// having this is very important, otherwise the parent.resize call will fail
+	document.domain = ' . GeneralUtility::quoteJSvalue($backendDomain) . ';
+</script>';
 
         if (!isset($tsfe->config['config']['disablePreviewNotification']) || (int)$tsfe->config['config']['disablePreviewNotification'] !== 1) {
             // get the title of the current workspace
