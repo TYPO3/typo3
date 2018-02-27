@@ -1068,66 +1068,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $parameters = ['parentObject' => $this];
             GeneralUtility::callUserFunction($functionReference, $parameters, $this);
         }
-        // If there is a Backend login we are going to check for any preview settings:
-        $this->getTimeTracker()->push('beUserLogin', '');
-        $originalFrontendUser = null;
-        $backendUser = $this->getBackendUser();
-        if ($this->beUserLogin || $this->doWorkspacePreview()) {
-            // Backend user preview features:
-            if ($this->beUserLogin && $backendUser->adminPanel instanceof AdminPanelView) {
-                $this->fePreview = (int)$backendUser->adminPanel->extGetFeAdminValue('preview');
-                // If admin panel preview is enabled...
-                if ($this->fePreview) {
-                    if ($this->fe_user->user) {
-                        $originalFrontendUser = $this->fe_user->user;
-                    }
-                    $this->showHiddenPage = (bool)$backendUser->adminPanel->extGetFeAdminValue('preview', 'showHiddenPages');
-                    $this->showHiddenRecords = (bool)$backendUser->adminPanel->extGetFeAdminValue('preview', 'showHiddenRecords');
-                    // Simulate date
-                    $simTime = $backendUser->adminPanel->extGetFeAdminValue('preview', 'simulateDate');
-                    if ($simTime) {
-                        $GLOBALS['SIM_EXEC_TIME'] = $simTime;
-                        $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
-                    }
-                    // simulate user
-                    $simUserGroup = $backendUser->adminPanel->extGetFeAdminValue('preview', 'simulateUserGroup');
-                    $this->simUserGroup = $simUserGroup;
-                    if ($simUserGroup) {
-                        if ($this->fe_user->user) {
-                            $this->fe_user->user[$this->fe_user->usergroup_column] = $simUserGroup;
-                        } else {
-                            $this->fe_user->user = [
-                                $this->fe_user->usergroup_column => $simUserGroup
-                            ];
-                        }
-                    }
-                    if (!$simUserGroup && !$simTime && !$this->showHiddenPage && !$this->showHiddenRecords) {
-                        $this->fePreview = 0;
-                    }
-                }
-            }
-            if ($this->id && $this->determineIdIsHiddenPage()) {
-                // The preview flag is set only if the current page turns out to actually be hidden!
-                $this->fePreview = 1;
-                $this->showHiddenPage = true;
-            }
-            // The preview flag will be set if an offline workspace will be previewed
-            if ($this->whichWorkspace() > 0) {
-                $this->fePreview = 1;
-            }
-            // If the front-end is showing a preview, caching MUST be disabled.
-            if ($this->fePreview) {
-                $this->disableCache();
-            }
+        // If there is a Backend login we are going to check for any preview settings
+        $originalFrontendUserGroups = $this->applyPreviewSettings($this->getBackendUser());
+        // If the front-end is showing a preview, caching MUST be disabled.
+        if ($this->fePreview) {
+            $this->disableCache();
         }
-        $this->getTimeTracker()->pull();
         // Now, get the id, validate access etc:
         $this->fetch_the_id();
         // Check if backend user has read access to this page. If not, recalculate the id.
-        if ($this->beUserLogin && $this->fePreview && !$backendUser->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
+        if ($this->beUserLogin && $this->fePreview && !$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
             // Resetting
             $this->clear_preview();
-            $this->fe_user->user = $originalFrontendUser;
+            $this->fe_user->user[$this->fe_user->usergroup_column] = $originalFrontendUserGroups;
             // Fetching the id again, now with the preview settings reset.
             $this->fetch_the_id();
         }
@@ -1158,6 +1111,69 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
+    }
+
+    /**
+     * Evaluates admin panel or workspace settings to see if
+     * visibility settings like
+     * - $fePreview
+     * - $showHiddenPage
+     * - $showHiddenRecords
+     * - $simUserGroup
+     * should be applied to the current object.
+     *
+     * @param FrontendBackendUserAuthentication $backendUser
+     * @return string|null null if no changes to the current frontend usergroups have been made, otherwise the original list of frontend usergroups
+     * @private do not use this in your extension code.
+     */
+    protected function applyPreviewSettings($backendUser = null)
+    {
+        if (!$backendUser) {
+            return null;
+        }
+        $originalFrontendUser = null;
+        // Backend user preview features:
+        if ($backendUser->adminPanel instanceof AdminPanelView) {
+            $this->fePreview = (int)$backendUser->adminPanel->extGetFeAdminValue('preview');
+            // If admin panel preview is enabled...
+            if ($this->fePreview) {
+                if ($this->fe_user->user) {
+                    $originalFrontendUser = $this->fe_user->user[$this->fe_user->usergroup_column];
+                }
+                $this->showHiddenPage = (bool)$backendUser->adminPanel->extGetFeAdminValue('preview', 'showHiddenPages');
+                $this->showHiddenRecords = (bool)$backendUser->adminPanel->extGetFeAdminValue('preview', 'showHiddenRecords');
+                // Simulate date
+                $simTime = $backendUser->adminPanel->extGetFeAdminValue('preview', 'simulateDate');
+                if ($simTime) {
+                    $GLOBALS['SIM_EXEC_TIME'] = $simTime;
+                    $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
+                }
+                // simulate user
+                $this->simUserGroup = $backendUser->adminPanel->extGetFeAdminValue('preview', 'simulateUserGroup');
+                if ($this->simUserGroup) {
+                    if ($this->fe_user->user) {
+                        $this->fe_user->user[$this->fe_user->usergroup_column] = $this->simUserGroup;
+                    } else {
+                        $this->fe_user->user = [
+                            $this->fe_user->usergroup_column => $this->simUserGroup
+                        ];
+                    }
+                }
+                if (!$this->simUserGroup && !$simTime && !$this->showHiddenPage && !$this->showHiddenRecords) {
+                    $this->fePreview = 0;
+                }
+            }
+        }
+        // The preview flag is set if the current page turns out to be hidden
+        if ($this->id && $this->determineIdIsHiddenPage()) {
+            $this->fePreview = 1;
+            $this->showHiddenPage = true;
+        }
+        // The preview flag will be set if an offline workspace will be previewed
+        if ($this->whichWorkspace() > 0) {
+            $this->fePreview = 1;
+        }
+        return $this->simUserGroup ? $originalFrontendUser : null;
     }
 
     /**
