@@ -764,7 +764,10 @@ class ArrayUtility
                 $differenceArray[$key] = $value;
             } elseif (is_array($value)) {
                 if (is_array($array2[$key])) {
-                    $differenceArray[$key] = self::arrayDiffAssocRecursive($value, $array2[$key]);
+                    $recursiveResult = self::arrayDiffAssocRecursive($value, $array2[$key]);
+                    if (!empty($recursiveResult)) {
+                        $differenceArray[$key] = $recursiveResult;
+                    }
                 }
             }
         }
