@@ -456,8 +456,8 @@ module.exports = function (grunt) {
           /**
            * copy needed parts of jquery
            */
-          'jquery/jquery-3.2.1.js': 'jquery/dist/jquery.js',
-          'jquery/jquery-3.2.1.min.js': 'jquery/dist/jquery.min.js',
+          'jquery/jquery.js': 'jquery/dist/jquery.js',
+          'jquery/jquery.min.js': 'jquery/dist/jquery.min.js',
           /**
            * copy needed parts of jquery-ui
            */

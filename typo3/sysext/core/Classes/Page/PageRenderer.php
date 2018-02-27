@@ -36,7 +36,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     const PART_HEADER = 1;
     const PART_FOOTER = 2;
     // jQuery Core version that is shipped with TYPO3
-    const JQUERY_VERSION_LATEST = '3.2.1';
+    const JQUERY_VERSION_LATEST = '3.3.1';
     // jQuery namespace options
     const JQUERY_NAMESPACE_NONE = 'none';
 
@@ -1981,7 +1981,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 $jQueryFileName = sprintf($this->jQueryCdnUrls[$source], $version, $minifyPart);
                 break;
             case $source === 'local':
-                $jQueryFileName = $this->jQueryPath . 'jquery-' . rawurlencode($version);
+                $jQueryFileName = $this->jQueryPath . 'jquery';
                 if ($this->enableJqueryDebug) {
                     $jQueryFileName .= '.js';
                 } else {
