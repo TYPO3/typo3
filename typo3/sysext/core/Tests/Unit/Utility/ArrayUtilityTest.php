@@ -2102,7 +2102,7 @@ class ArrayUtilityTest extends UnitTestCase
             ]
         ];
         $array2 = [
-            'key1' => 'value1',
+            'key1' => 'valueDoesNotMatter',
             'key2' => [
                 'key21' => 'value21',
                 'key23' => [
@@ -2138,12 +2138,38 @@ class ArrayUtilityTest extends UnitTestCase
         $array2 = [
             'key1' => 'value1',
             'key2' => [
-                'key21' => 'value21'
+                'key21' => 'valueDoesNotMatter'
             ]
         ];
         $expectedResult = [
             'key3' => 'value3'
         ];
+        $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function arrayDiffAssocRecursiveReturnsEmptyIfEqual()
+    {
+        $array1 = [
+            'key1' => [
+                'key11' => 'value11',
+                'key12' => 'value12'
+            ],
+            'key2' => 'value2',
+            'key3' => 'value3'
+        ];
+        $array2 = [
+            'key1' => [
+                'key11' => 'valueDoesNotMatter',
+                'key12' => 'value12'
+            ],
+            'key2' => 'value2',
+            'key3' => 'value3'
+        ];
+        $expectedResult = [];
         $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         $this->assertEquals($expectedResult, $actualResult);
     }
