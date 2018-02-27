@@ -207,7 +207,7 @@ class PageGenerator
         }
         // Begin header section:
         if ($tsfe->config['config']['htmlTag_setParams'] !== 'none') {
-            $_attr = $tsfe->config['config']['htmlTag_setParams'] ? $tsfe->config['config']['htmlTag_setParams'] : GeneralUtility::implodeAttributes($htmlTagAttributes);
+            $_attr = $tsfe->config['config']['htmlTag_setParams'] ?: GeneralUtility::implodeAttributes($htmlTagAttributes);
         } else {
             $_attr = '';
         }
@@ -788,11 +788,9 @@ class PageGenerator
                 $script = 'typo3temp/assets/css/' . GeneralUtility::shortMD5($str) . '.css';
                 break;
         }
-        // Write file:
-        if ($script) {
-            if (!@is_file(PATH_site . $script)) {
-                GeneralUtility::writeFileToTypo3tempDir(PATH_site . $script, $str);
-            }
+        // Write file
+        if ($script && !@is_file(PATH_site . $script)) {
+            GeneralUtility::writeFileToTypo3tempDir(PATH_site . $script, $str);
         }
         return $script;
     }

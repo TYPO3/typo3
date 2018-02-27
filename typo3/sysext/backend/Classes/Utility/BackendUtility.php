@@ -603,9 +603,7 @@ class BackendUtility
             $id = (int)$id;
             if (!$id) {
                 if (static::getBackendUserAuthentication()->isAdmin()) {
-                    $path = '/';
-                    $pageinfo['_thePath'] = $path;
-                    return $pageinfo;
+                    return ['_thePath' => '/'];
                 }
             } else {
                 $pageinfo = self::getRecord('pages', $id, '*', $perms_clause);

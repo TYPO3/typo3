@@ -400,7 +400,7 @@ class BackendController
             'username' => htmlspecialchars($beUser->user['username']),
             'pageModule' => $pageModule,
             'inWorkspace' => $beUser->workspace !== 0,
-            'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false
+            'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false)
         ];
         $this->js .= '
 	TYPO3.configuration = ' . json_encode($t3Configuration) . ';

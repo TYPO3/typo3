@@ -4077,7 +4077,6 @@ class DataHandler implements LoggerAwareInterface
      */
     public function copyRecord_procFilesRefs($conf, $uid, $value)
     {
-        // Prepend absolute paths to files:
         if ($conf['type'] !== 'group' || ($conf['internal_type'] !== 'file' && $conf['internal_type'] !== 'file_reference')) {
             return $value;
         }
@@ -4098,6 +4097,7 @@ class DataHandler implements LoggerAwareInterface
         }
         // Traverse this array of files:
         $uploadFolder = $conf['internal_type'] === 'file' ? $conf['uploadfolder'] : '';
+        // Prepend absolute paths to files
         $dest = PATH_site . $uploadFolder;
         $newValue = [];
         foreach ($theFileValues as $file) {

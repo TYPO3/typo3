@@ -178,7 +178,7 @@ class FormProtectionFactory
      * Creates an instance for the requested class $className
      * and stores it internally.
      *
-     * @param array $className
+     * @param string $className
      * @param array<int, mixed> $constructorArguments
      * @throws \InvalidArgumentException
      * @return AbstractFormProtection

@@ -896,7 +896,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // See http://forge.typo3.org/issues/27740
                     $_SERVER['HTTP_COOKIE'] .= ';' . $cookieName . '=' . $fe_sParts[0];
                 }
-                $this->fe_user->forceSetCookie = 1;
+                $this->fe_user->forceSetCookie = true;
                 $this->fe_user->dontSetCookie = false;
                 unset($cookieName);
             }
@@ -1804,10 +1804,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->getPageAndRootline();
         // Checks if the $domain-startpage is in the rootLine. This is necessary so that references to page-id's from other domains are not possible.
         if ($domainStartPage && is_array($this->rootLine)) {
-            $idFound = 0;
+            $idFound = false;
             foreach ($this->rootLine as $key => $val) {
                 if ($val['uid'] == $domainStartPage) {
-                    $idFound = 1;
+                    $idFound = true;
                     break;
                 }
             }
