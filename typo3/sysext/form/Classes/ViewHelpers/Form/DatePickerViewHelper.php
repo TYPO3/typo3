@@ -81,7 +81,7 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
         $enableDatePicker = $this->arguments['enableDatePicker'];
         $dateFormat = $this->arguments['dateFormat'];
         $previewMode = (bool)$this->arguments['previewMode'];
-        $placeholder = $this->arguments['placeholder'] ?? $this->arguments['additionalAttributes']['placeholder'];
+        $placeholder = $this->arguments['additionalAttributes']['placeholder'] ?? $this->arguments['placeholder'];
 
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
