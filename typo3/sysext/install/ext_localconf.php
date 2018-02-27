@@ -73,3 +73,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['formLegacyEx
     = \TYPO3\CMS\Install\Updates\FormLegacyExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['rtehtmlareaExtension']
     = \TYPO3\CMS\Install\Updates\RteHtmlAreaExtractionUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLanguageSorting']
+    = \TYPO3\CMS\Install\Updates\LanguageSortingUpdate::class;
