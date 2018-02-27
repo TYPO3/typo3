@@ -6332,10 +6332,7 @@ class ContentObjectRenderer
             $searchWord = $queryBuilder->escapeLikeWildcards($searchWord);
             foreach ($searchFields as $field) {
                 $searchWordConstraint->add(
-                    $queryBuilder->expr()->like(
-                        $prefixTableName . $field,
-                        $queryBuilder->createNamedParameter('%' . $searchWord . '%', \PDO::PARAM_STR)
-                    )
+                    $queryBuilder->expr()->like($prefixTableName . $field, $queryBuilder->quote('%' . $searchWord . '%'))
                 );
             }
 
