@@ -9,8 +9,8 @@
     jquery ">= 1.7.x"
 
 "@types/bootstrap@^3.3.34":
-  version "3.3.36"
-  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-3.3.36.tgz#5ca0b81655427398fe7c8728bccdc395069093d0"
+  version "3.3.38"
+  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-3.3.38.tgz#1b7e4dcc90cf72682a0a279c0480d50b659b88da"
   dependencies:
     "@types/jquery" "*"
 
@@ -25,12 +25,12 @@
     "@types/jquery" "*"
 
 "@types/jasmine@^2.5.53":
-  version "2.8.3"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.8.3.tgz#f910edc67d69393d562d10f8f3d205ea3f3306bf"
+  version "2.8.6"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.8.6.tgz#14445b6a1613cf4e05dd61c3c3256d0e95c0421e"
 
 "@types/jquery@*":
-  version "3.2.17"
-  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.2.17.tgz#01df9805dd5cf83a14cf5bfd81adced7d4fbd970"
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.3.0.tgz#6316ac20a1a13c5d521a2dc661befc7184f73f5b"
 
 "@types/jquery@2.0.47":
   version "2.0.47"
@@ -41,8 +41,8 @@
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.48.tgz#3e90d8cde2d29015e5583017f7830cb3975b2eef"
 
 "@types/jqueryui@^1.11.34":
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/@types/jqueryui/-/jqueryui-1.12.0.tgz#69e6e6e2c1c7b97d0b6405c8f6036db09056bd87"
+  version "1.12.2"
+  resolved "https://registry.yarnpkg.com/@types/jqueryui/-/jqueryui-1.12.2.tgz#8daa7ffa16880c78b1662ff287df058a2aceb651"
   dependencies:
     "@types/jquery" "*"
 
