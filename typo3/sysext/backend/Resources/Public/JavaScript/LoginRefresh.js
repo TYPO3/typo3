@@ -164,7 +164,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
     LoginRefresh.$timeoutModal.modal(LoginRefresh.options.modalConfig);
     LoginRefresh.fillProgressbar(LoginRefresh.$timeoutModal);
 
-    if (typeof Notification !== 'undefined' && Notification.permission === 'granted' && !LoginRefresh.isPageActive()) {
+    if (document.location.protocol === 'https:' && typeof Notification !== 'undefined' && Notification.permission === 'granted' && !LoginRefresh.isPageActive()) {
       LoginRefresh.webNotification = new Notification(TYPO3.LLL.core.login_about_to_expire_title, {
         body: TYPO3.LLL.core.login_about_to_expire,
         icon: '/typo3/sysext/backend/Resources/Public/Images/Logo.png'
@@ -495,7 +495,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 
     LoginRefresh.startTask();
 
-    if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
+    if (document.location.protocol === 'https:' && typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
       Notification.requestPermission();
     }
   };
