@@ -591,7 +591,7 @@ class DatabaseIntegrityCheck
             if (@is_dir($path) && @is_readable($path)) {
                 $d = dir($path);
                 while ($entry = $d->read()) {
-                    if (@is_file(($path . '/' . $entry))) {
+                    if (@is_file($path . '/' . $entry)) {
                         if (isset($fileArr[$entry])) {
                             if ($fileArr[$entry] > 1) {
                                 $temp = $this->whereIsFileReferenced($folder, $entry);
@@ -604,7 +604,7 @@ class DatabaseIntegrityCheck
                             unset($fileArr[$entry]);
                         } else {
                             // Contains workaround for direct references
-                            if (!strstr($entry, 'index.htm') && !preg_match(('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/'), $folder)) {
+                            if (!strstr($entry, 'index.htm') && !preg_match('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/', $folder)) {
                                 $output['noReferences'][] = [$path, $entry];
                             }
                         }

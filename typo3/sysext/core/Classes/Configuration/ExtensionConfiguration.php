@@ -470,7 +470,7 @@ class ExtensionConfiguration
             if (strpos($line, '/*') === 0) {
                 $this->commentSet = 1;
             }
-            if (!$this->commentSet && ($line)) {
+            if (!$this->commentSet && $line) {
                 if ($line[0] !== '}' && $line[0] !== '#' && $line[0] !== '/') {
                     // If not brace-end or comment
                     // Find object name string until we meet an operator

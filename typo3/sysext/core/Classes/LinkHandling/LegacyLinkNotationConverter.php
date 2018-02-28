@@ -94,7 +94,7 @@ class LegacyLinkNotationConverter
                 list($rootFileDat) = explode('?', rawurldecode($linkParameter));
                 $containsSlash = strpos($rootFileDat, '/') !== false;
                 $pathInfo = pathinfo($rootFileDat);
-                $fileExtension = strtolower(($pathInfo['extension'] ?? ''));
+                $fileExtension = strtolower($pathInfo['extension'] ?? '');
                 if (!$containsSlash
                     && trim($rootFileDat)
                     && (

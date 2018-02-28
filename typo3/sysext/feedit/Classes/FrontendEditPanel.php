@@ -279,7 +279,7 @@ class FrontendEditPanel
             } else {
                 $cf1 = ($cf2 = '');
             }
-            $out = '<a href="#" class="typo3-editPanel-btn typo3-editPanel-btn-default" onclick="' . htmlspecialchars(($cf1 . 'document.' . $formName . '[\'TSFE_EDIT[cmd]\'].value=\'' . $cmd . '\'; document.' . $formName . '.submit();' . $cf2 . ' return false;')) . '">' . $string . '</a>';
+            $out = '<a href="#" class="typo3-editPanel-btn typo3-editPanel-btn-default" onclick="' . htmlspecialchars($cf1 . 'document.' . $formName . '[\'TSFE_EDIT[cmd]\'].value=\'' . $cmd . '\'; document.' . $formName . '.submit();' . $cf2 . ' return false;') . '">' . $string . '</a>';
         }
         return $out;
     }

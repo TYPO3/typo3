@@ -263,7 +263,7 @@ class GridDataService implements LoggerAwareInterface
         $end = ($start + $limit < $dataArrayCount ? $start + $limit : $dataArrayCount);
 
         // Ensure that there are numerical indexes
-        $this->dataArray = array_values(($this->dataArray));
+        $this->dataArray = array_values($this->dataArray);
         for ($i = $start; $i < $end; $i++) {
             $dataArrayPart[] = $this->dataArray[$i];
         }
@@ -541,7 +541,7 @@ class GridDataService implements LoggerAwareInterface
     {
         $fieldName = null;
 
-        if (!(empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'][$type]))) {
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'][$type])) {
             $fieldName = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'][$type];
         }
 

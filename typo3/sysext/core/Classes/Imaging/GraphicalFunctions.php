@@ -690,7 +690,7 @@ class GraphicalFunctions
                 $sign = cos($angle) < 0 ? -1 : 1;
                 $len1 = $sign * $factor * $straightBB[0];
                 $len2 = $sign * $BB[0];
-                $result[0] = $w - ceil(($len2 * $factor + (1 - $factor) * $len1));
+                $result[0] = $w - ceil($len2 * $factor + (1 - $factor) * $len1);
                 $factor = abs(sin($angle));
                 $sign = sin($angle) < 0 ? -1 : 1;
                 $len1 = $sign * $factor * $straightBB[0];
@@ -1343,13 +1343,13 @@ class GraphicalFunctions
         $res = [];
         if ($distance && $iterations) {
             for ($a = 0; $a < $iterations; $a++) {
-                $yOff = round(sin((2 * pi() / $iterations * ($a + 1))) * 100 * $distance);
+                $yOff = round(sin(2 * pi() / $iterations * ($a + 1)) * 100 * $distance);
                 if ($yOff) {
-                    $yOff = (int)(ceil(abs(($yOff / 100))) * ($yOff / abs($yOff)));
+                    $yOff = (int)(ceil(abs($yOff / 100)) * ($yOff / abs($yOff)));
                 }
-                $xOff = round(cos((2 * pi() / $iterations * ($a + 1))) * 100 * $distance);
+                $xOff = round(cos(2 * pi() / $iterations * ($a + 1)) * 100 * $distance);
                 if ($xOff) {
-                    $xOff = (int)(ceil(abs(($xOff / 100))) * ($xOff / abs($xOff)));
+                    $xOff = (int)(ceil(abs($xOff / 100)) * ($xOff / abs($xOff)));
                 }
                 $res[$a] = [$xOff, $yOff];
             }

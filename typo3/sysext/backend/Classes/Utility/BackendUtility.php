@@ -1239,7 +1239,7 @@ class BackendUtility
                 $fileReference = ResourceFactory::getInstance()->getFileReferenceObject(
                     $referenceUid,
                     [],
-                    ($workspaceId === 0)
+                    $workspaceId === 0
                 );
                 $fileReferences[$fileReference->getUid()] = $fileReference;
             } catch (\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException $e) {
@@ -2174,7 +2174,7 @@ class BackendUtility
                             ) {
                                 $ageSuffix = ' (' . ($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '')
                                     . self::calcAge(
-                                        abs(($GLOBALS['EXEC_TIME'] - $value)),
+                                        abs($GLOBALS['EXEC_TIME'] - $value),
                                         $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                                     )
                                     . ')';
@@ -3254,7 +3254,7 @@ class BackendUtility
                     $queryBuilder->expr()->gt(
                         'sys_lockedrecords.tstamp',
                         $queryBuilder->createNamedParameter(
-                            ($GLOBALS['EXEC_TIME'] - 2 * 3600),
+                            $GLOBALS['EXEC_TIME'] - 2 * 3600,
                             \PDO::PARAM_INT
                         )
                     )
@@ -4255,12 +4255,12 @@ class BackendUtility
             $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:extension.copyright') . ' ' .
             sprintf(
                 $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:details.link'),
-                ('<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>')
+                '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>'
             ) . ' ' .
             strip_tags($warrantyNote, '<a>') . ' ' .
             sprintf(
                 $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:free.software'),
-                ('<a href="' . TYPO3_URL_LICENSE . '" target="_blank">'),
+                '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">',
                 '</a> '
             )
             . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:keep.notice');

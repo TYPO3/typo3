@@ -1434,7 +1434,7 @@ class Import extends ImportExport
             if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/')) {
                 // RTE:
                 // First, find unique RTE file name:
-                if (@is_dir((PATH_site . $dirPrefix))) {
+                if (@is_dir(PATH_site . $dirPrefix)) {
                     // From the "original" RTE filename, produce a new "original" destination filename which is unused.
                     // Even if updated, the image should be unique. Currently the problem with this is that it leaves a lot of unused RTE images...
                     $fileProcObj = $this->getFileProcObj();
@@ -1628,8 +1628,8 @@ class Import extends ImportExport
             foreach ($filePathParts as $dirname) {
                 $pathAcc .= '/' . $dirname;
                 if (strlen($dirname)) {
-                    if (!@is_dir((PATH_site . $this->fileadminFolderName . $pathAcc))) {
-                        if (!GeneralUtility::mkdir((PATH_site . $this->fileadminFolderName . $pathAcc))) {
+                    if (!@is_dir(PATH_site . $this->fileadminFolderName . $pathAcc)) {
+                        if (!GeneralUtility::mkdir(PATH_site . $this->fileadminFolderName . $pathAcc)) {
                             $this->error('ERROR: Directory could not be created....B');
                             return false;
                         }

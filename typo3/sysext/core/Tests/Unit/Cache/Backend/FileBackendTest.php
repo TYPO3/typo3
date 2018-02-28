@@ -291,7 +291,13 @@ class FileBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $pathAndFilename = 'vfs://Foo/Cache/Data/UnitTestCache/' . $entryIdentifier;
         $this->assertFileExists($pathAndFilename);
-        $retrievedData = file_get_contents($pathAndFilename, null, null, (strlen($data) + \TYPO3\CMS\Core\Cache\Backend\FileBackend::EXPIRYTIME_LENGTH), 9);
+        $retrievedData = file_get_contents(
+            $pathAndFilename,
+            null,
+            null,
+            strlen($data) + \TYPO3\CMS\Core\Cache\Backend\FileBackend::EXPIRYTIME_LENGTH,
+            9
+        );
         $this->assertEquals('Tag1 Tag2', $retrievedData);
     }
 

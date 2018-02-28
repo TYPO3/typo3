@@ -302,7 +302,7 @@ class TreeController
             'backgroundColor' => htmlspecialchars($backgroundColor),
             'stopPageTree' => $stopPageTree,
             'class' => $this->resolvePageCssClassNames($page),
-            'readableRootline' => ($depth === 0 && $this->showMountPathAboveMounts ? $this->getMountPointPath($pageId) : ''),
+            'readableRootline' => $depth === 0 && $this->showMountPathAboveMounts ? $this->getMountPointPath($pageId) : '',
             'isMountPoint' => $depth === 0,
             'mountPoint' => $entryPoint,
             'workspaceId' => $page['t3ver_oid'] ?: $pageId,

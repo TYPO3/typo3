@@ -528,7 +528,7 @@ abstract class AbstractRecordList
         } else {
             $htmlCode = '<a href="#"';
             if ($launchViewParameter !== '') {
-                $htmlCode .= ' onclick="' . htmlspecialchars(('top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;')) . '"';
+                $htmlCode .= ' onclick="' . htmlspecialchars('top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;') . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references') . ' (' . $references . ')') . '">';
             $htmlCode .= $references;

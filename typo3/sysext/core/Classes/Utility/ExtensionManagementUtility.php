@@ -1660,7 +1660,7 @@ tt_content.' . $key . $suffix . ' {
                         && ($file !== '..')
                         && (substr($file, -4, 4) === '.php')
                     ) {
-                        $tcaOfTable = require($tcaConfigurationDirectory . '/' . $file);
+                        $tcaOfTable = require $tcaConfigurationDirectory . '/' . $file;
                         if (is_array($tcaOfTable)) {
                             // TCA table name is filename without .php suffix, eg 'sys_notes', not 'sys_notes.php'
                             $tcaTableName = substr($file, 0, -4);
@@ -1686,7 +1686,7 @@ tt_content.' . $key . $suffix . ' {
                         && ($file !== '..')
                         && (substr($file, -4, 4) === '.php')
                     ) {
-                        require($tcaOverridesPathForPackage . '/' . $file);
+                        require $tcaOverridesPathForPackage . '/' . $file;
                     }
                 }
             }

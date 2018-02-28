@@ -152,7 +152,7 @@ class NewMultiplePagesController
             $subPages = $this->getSubPagesOfPage($pageUid);
             $lastPage = end($subPages);
             if (isset($lastPage['uid']) && MathUtility::canBeInterpretedAsInteger($lastPage['uid'])) {
-                $firstPid = -(int)($lastPage['uid']);
+                $firstPid = -(int)$lastPage['uid'];
             }
         }
 

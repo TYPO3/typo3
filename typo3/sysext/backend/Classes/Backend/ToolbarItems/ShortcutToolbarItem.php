@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -273,7 +274,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                     if ($pageRow === null) {
                         continue;
                     }
-                    if (!$backendUser->doesUserHaveAccess($pageRow, ($perms = 1))) {
+                    if (!$backendUser->doesUserHaveAccess($pageRow, $perms = Permission::PAGE_SHOW)) {
                         continue;
                     }
                 }

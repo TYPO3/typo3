@@ -328,7 +328,7 @@ If you want to get more detailed information, use the --verbose option.')
                     $dirPrefix = dirname($fileName) . '/';
                     $rteOrigName = basename($fileInfo['original']);
                     // If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
-                    if ($rteOrigName && strpos($dirPrefix, 'uploads/') === 0 && @is_dir((PATH_site . $dirPrefix))) {
+                    if ($rteOrigName && strpos($dirPrefix, 'uploads/') === 0 && @is_dir(PATH_site . $dirPrefix)) {
                         // From the "original" RTE filename, produce a new "original" destination filename which is unused.
                         $origDestName = $fileProcObj->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
                         // Create copy file name

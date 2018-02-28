@@ -900,8 +900,8 @@ class TemplateService
                             $subrow = [
                                 'constants' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'constants'),
                                 'config' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'setup'),
-                                'include_static' => @file_exists(($ISF_filePath . 'include_static.txt')) ? implode(',', array_unique(GeneralUtility::intExplode(',', file_get_contents($ISF_filePath . 'include_static.txt')))) : '',
-                                'include_static_file' => @file_exists(($ISF_filePath . 'include_static_file.txt')) ? implode(',', array_unique(explode(',', file_get_contents($ISF_filePath . 'include_static_file.txt')))) : '',
+                                'include_static' => @file_exists($ISF_filePath . 'include_static.txt') ? implode(',', array_unique(GeneralUtility::intExplode(',', file_get_contents($ISF_filePath . 'include_static.txt')))) : '',
+                                'include_static_file' => @file_exists($ISF_filePath . 'include_static_file.txt') ? implode(',', array_unique(explode(',', file_get_contents($ISF_filePath . 'include_static_file.txt')))) : '',
                                 'title' => $ISF_file,
                                 'uid' => $mExtKey
                             ];

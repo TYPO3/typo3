@@ -33,7 +33,7 @@ class MiscUtility
         $_EXTKEY = $extensionKey;
         $EM_CONF = [];
         $extPath = ExtensionManagementUtility::extPath($extensionKey);
-        include($extPath . 'ext_emconf.php');
+        include $extPath . 'ext_emconf.php';
 
         $release = $EM_CONF[$_EXTKEY]['version'];
         list($major, $minor, $_) = explode('.', $release, 3);

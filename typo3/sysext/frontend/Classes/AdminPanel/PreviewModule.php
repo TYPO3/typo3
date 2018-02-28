@@ -121,7 +121,7 @@ class PreviewModule extends AbstractModule
                                 ($this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateUserGroup'] ===
                                  $row['uid'] ? ' selected="selected"' : '') .
                                 '>';
-                    $output[] = htmlspecialchars(($row['title'] . ' [' . $row['uid'] . ']'));
+                    $output[] = htmlspecialchars($row['title'] . ' [' . $row['uid'] . ']');
                     $output[] = '</option>';
                 }
                 $output[] = '  </select>';

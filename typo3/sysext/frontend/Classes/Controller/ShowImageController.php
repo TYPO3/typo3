@@ -155,7 +155,7 @@ EOF;
         ];
         $this->imageTag = str_replace(array_keys($imageTagMarkers), array_values($imageTagMarkers), $this->imageTag);
         $markerArray = [
-            '###TITLE###' => ($this->file->getProperty('title') ?: $this->title),
+            '###TITLE###' => $this->file->getProperty('title') ?: $this->title,
             '###IMAGE###' => $this->imageTag,
             '###BODY###' => $this->bodyTag
         ];

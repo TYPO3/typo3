@@ -703,7 +703,7 @@ class DatabaseRecordList
                 }
             }
             // Cache
-            $buttons['cache'] = '<a href="' . htmlspecialchars(($this->listURL() . '&clear_cache=1')) . '" title="'
+            $buttons['cache'] = '<a href="' . htmlspecialchars($this->listURL() . '&clear_cache=1') . '" title="'
                 . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache')) . '">'
                 . $this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL)->render() . '</a>';
             if ($this->table && (!isset($module->modTSconfig['properties']['noExportRecordsLinks'])
@@ -711,7 +711,7 @@ class DatabaseRecordList
                     && !$module->modTSconfig['properties']['noExportRecordsLinks']))
             ) {
                 // CSV
-                $buttons['csv'] = '<a href="' . htmlspecialchars(($this->listURL() . '&csv=1')) . '" title="'
+                $buttons['csv'] = '<a href="' . htmlspecialchars($this->listURL() . '&csv=1') . '" title="'
                     . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.csv')) . '">'
                     . $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL)->render() . '</a>';
                 // Export
@@ -1117,7 +1117,7 @@ class DatabaseRecordList
                 // Render collapse button if in multi table mode
                 $collapseIcon = '';
                 if (!$this->table) {
-                    $href = htmlspecialchars(($this->listURL() . '&collapse[' . $table . ']=' . ($tableCollapsed ? '0' : '1')));
+                    $href = htmlspecialchars($this->listURL() . '&collapse[' . $table . ']=' . ($tableCollapsed ? '0' : '1'));
                     $title = $tableCollapsed
                         ? htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.expandTable'))
                         : htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.collapseTable'));
@@ -1243,7 +1243,7 @@ class DatabaseRecordList
                         $hasMore = $this->totalItems > $this->itemsLimitSingleTable;
                         $colspan = $this->showIcon ? count($this->fieldArray) + 1 : count($this->fieldArray);
                         $rowOutput .= '<tr><td colspan="' . $colspan . '">
-								<a href="' . htmlspecialchars(($this->listURL() . '&table=' . rawurlencode($table))) . '" class="btn btn-default">'
+								<a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($table)) . '" class="btn btn-default">'
                             . '<span class="t3-icon fa fa-chevron-down"></span> <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>
 								</td></tr>';
                     }
@@ -1607,7 +1607,7 @@ class DatabaseRecordList
                             $lang->getLL('clip_deleteMarked')
                         );
                         // The "Select all" link:
-                        $onClick = htmlspecialchars(('checkOffCB(' . GeneralUtility::quoteJSvalue(implode(',', $this->CBnames)) . ', this); return false;'));
+                        $onClick = htmlspecialchars('checkOffCB(' . GeneralUtility::quoteJSvalue(implode(',', $this->CBnames)) . ', this); return false;');
                         $cells['markAll'] = '<a class="btn btn-default" rel="" href="#" onclick="' . $onClick . '" title="'
                             . htmlspecialchars($lang->getLL('clip_markRecords')) . '">'
                             . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1843,7 +1843,11 @@ class DatabaseRecordList
         } else {
             $lastElementNumber = $this->totalItems;
         }
-        $rangeIndicator = '<li><span>' . sprintf($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:rangeIndicator'), ($this->firstElementNumber + 1), $lastElementNumber) . '</span></li>';
+        $rangeIndicator = '<li><span>' . sprintf(
+            $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:rangeIndicator'),
+                $this->firstElementNumber + 1,
+            $lastElementNumber
+        ) . '</span></li>';
 
         $titleColumn = $this->fieldArray[0];
         $data = [
@@ -2228,7 +2232,13 @@ class DatabaseRecordList
                 }
 
                 $cells['copy'] = '<a class="btn btn-default" href="#" onclick="'
-                    . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 1, ($isSel === 'copy'), ['returnUrl' => ''])) . ');')
+                    . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB(
+                        $table,
+                        $row['uid'],
+                        1,
+                            $isSel === 'copy',
+                        ['returnUrl' => '']
+                    )) . ');')
                     . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy')) . '">'
                     . $copyIcon->render() . '</a>';
 
@@ -2245,7 +2255,13 @@ class DatabaseRecordList
                 if ($table === 'pages') {
                     if ($permsEdit) {
                         $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
-                        . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel === 'cut'), ['returnUrl' => ''])) . ');')
+                        . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB(
+                            $table,
+                            $row['uid'],
+                            0,
+                                    $isSel === 'cut',
+                            ['returnUrl' => '']
+                        )) . ');')
                         . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
                         . $cutIcon->render() . '</a>';
                     } else {
@@ -2254,7 +2270,13 @@ class DatabaseRecordList
                 } else {
                     if ($this->calcPerms & Permission::CONTENT_EDIT) {
                         $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
-                        . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel === 'cut'), ['returnUrl' => ''])) . ');')
+                        . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB(
+                            $table,
+                            $row['uid'],
+                            0,
+                                    $isSel === 'cut',
+                            ['returnUrl' => '']
+                        )) . ');')
                         . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
                         . $cutIcon->render() . '</a>';
                     } else {
@@ -3582,7 +3604,7 @@ class DatabaseRecordList
             case 'info':
                 // "Info": (All records)
                 $code = '<a href="#" onclick="' . htmlspecialchars(
-                        ('top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;')
+                        'top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;'
                     ) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
                 break;
             default:
@@ -4293,7 +4315,7 @@ class DatabaseRecordList
             $htmlCode = '<a href="#"';
             if ($launchViewParameter !== '') {
                 $htmlCode .= ' onclick="' . htmlspecialchars(
-                        ('top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;')
+                        'top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;'
                     ) . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars(

@@ -2966,7 +2966,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $baseDirectory = PATH_site . 'typo3temp/var/tests/';
         $existingDirectory = $this->getUniqueId('test_existing_') . '/';
         $newSubDirectory = $this->getUniqueId('test_new_');
-        @mkdir(($baseDirectory . $existingDirectory));
+        @mkdir($baseDirectory . $existingDirectory);
         $this->testFilesToDelete[] = $baseDirectory . $existingDirectory;
         chmod($baseDirectory . $existingDirectory, 482);
         GeneralUtility::mkdir_deep($baseDirectory . $existingDirectory . $newSubDirectory);

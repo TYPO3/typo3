@@ -249,7 +249,7 @@ class IndexSearchRepository
                 // or not (depends on possible right problems)
                 $row['show_resume'] = $this->checkResume($row);
                 $phashGr = !in_array($row['phash_grouping'], $grouping_phashes);
-                $chashGr = !in_array(($row['contentHash'] . '.' . $row['data_page_id']), $grouping_chashes);
+                $chashGr = !in_array($row['contentHash'] . '.' . $row['data_page_id'], $grouping_chashes);
                 if ($phashGr && $chashGr) {
                     // Only if the resume may be shown are we going to filter out duplicates...
                     if ($row['show_resume'] || $this->displayForbiddenRecords) {
@@ -749,7 +749,7 @@ class IndexSearchRepository
             ->from('index_fulltext', 'IFT')
             ->where(
                 QueryHelper::stripLogicalOperatorPrefix($likePart),
-                $queryBuilder->expr()->eq('ISEC.phash', $queryBuilder->quoteIdentifier(('IFT.phash'))),
+                $queryBuilder->expr()->eq('ISEC.phash', $queryBuilder->quoteIdentifier('IFT.phash')),
                 QueryHelper::stripLogicalOperatorPrefix($this->sectionTableWhere())
             )
             ->groupBy('ISEC.phash')

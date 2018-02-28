@@ -381,7 +381,7 @@ class HtmlParser
                     continue;
                 }
                 // Comment ends in the middle of the token: add comment and proceed with rest of the token
-                $newContent[$c++] = '<' . substr($tok, 0, ($eocPos + 3));
+                $newContent[$c++] = '<' . substr($tok, 0, $eocPos + 3);
                 $tok = substr($tok, $eocPos + 3);
                 $inComment = false;
                 $skipTag = true;
@@ -404,7 +404,7 @@ class HtmlParser
                     continue;
                 }
                 // Start and end of comment are both in the current token. Add comment and proceed with rest of the token
-                $newContent[$c++] = '<' . substr($tok, 0, ($eocPos + 3));
+                $newContent[$c++] = '<' . substr($tok, 0, $eocPos + 3);
                 $tok = substr($tok, $eocPos + 3);
                 $skipTag = true;
             } elseif (substr($tok, 0, 10) === '![CDATA[*/') {

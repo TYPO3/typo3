@@ -233,8 +233,8 @@ class FormResultCompiler
         if (!empty($rtePopupWindowSize)) {
             list($rtePopupWindowWidth, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
         }
-        $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : ($popupWindowWidth);
-        $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : ($popupWindowHeight);
+        $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : $popupWindowWidth;
+        $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : $popupWindowHeight;
 
         // Make textareas resizable and flexible ("autogrow" in height)
         $textareaSettings = [

@@ -604,7 +604,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 return $row['order_val'] . ' ' . LocalizationUtility::translate('result.ratingMatches', 'IndexedSearch');
                 break;
             case 'rank_first':
-                return ceil(MathUtility::forceIntegerInRange((255 - $row['order_val']), 1, 255) / 255 * 100) . '%';
+                return ceil(MathUtility::forceIntegerInRange(255 - $row['order_val'], 1, 255) / 255 * 100) . '%';
                 break;
             case 'rank_flag':
                 if ($this->firstRow['order_val2']) {
@@ -794,11 +794,17 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 } elseif ($summaryLgd > $summaryMax || !isset($parts[$k + 1])) {
                     // In case summary length is exceed OR if there are no more entries at all:
                     if ($strLen > $postPreLgd) {
-                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', GeneralUtility::fixed_lgd_cs($parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider;
+                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', GeneralUtility::fixed_lgd_cs(
+                            $parts[$k],
+                                $postPreLgd - $postPreLgd_offset
+                        )) . $divider;
                     }
                 } else {
                     if ($strLen > $postPreLgd * 2) {
-                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', GeneralUtility::fixed_lgd_cs($parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', GeneralUtility::fixed_lgd_cs($parts[$k], -($postPreLgd - $postPreLgd_offset)));
+                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', GeneralUtility::fixed_lgd_cs(
+                            $parts[$k],
+                                $postPreLgd - $postPreLgd_offset
+                        )) . $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', GeneralUtility::fixed_lgd_cs($parts[$k], -($postPreLgd - $postPreLgd_offset)));
                     }
                 }
                 $summaryLgd += mb_strlen($output[$k], 'utf-8');
@@ -1581,7 +1587,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $numberOfResults = (int)$numberOfResults;
 
-        return (in_array($numberOfResults, $this->availableResultsNumbers)) ?
+        return in_array($numberOfResults, $this->availableResultsNumbers) ?
             $numberOfResults : $this->defaultResultNumber;
     }
 

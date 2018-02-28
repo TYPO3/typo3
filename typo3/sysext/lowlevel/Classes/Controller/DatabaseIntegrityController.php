@@ -442,7 +442,7 @@ class DatabaseIntegrityController
                 if (is_array($admin->lRecords[$t])) {
                     foreach ($admin->lRecords[$t] as $data) {
                         if (!GeneralUtility::inList($admin->lostPagesList, $data['pid'])) {
-                            $lr .= '<div class="record"><a href="' . htmlspecialchars(((string)$uriBuilder->buildUriFromRoute('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '" title="' . htmlspecialchars($lang->getLL('fixLostRecord')) . '">' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
+                            $lr .= '<div class="record"><a href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid']) . '" title="' . htmlspecialchars($lang->getLL('fixLostRecord')) . '">' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
                         } else {
                             $lr .= '<div class="record-noicon">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
                         }

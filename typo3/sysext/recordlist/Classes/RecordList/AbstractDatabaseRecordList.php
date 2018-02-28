@@ -1085,7 +1085,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 break;
             case 'info':
                 // "Info": (All records)
-                $code = '<a href="#" onclick="' . htmlspecialchars(('top.TYPO3.InfoWindow.showItem(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
+                $code = '<a href="#" onclick="' . htmlspecialchars('top.TYPO3.InfoWindow.showItem(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;') . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
                 break;
             default:
                 // Output the label now:

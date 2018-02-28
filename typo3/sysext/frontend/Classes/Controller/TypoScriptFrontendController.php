@@ -889,7 +889,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (GeneralUtility::_GP('FE_SESSION_KEY')) {
             $fe_sParts = explode('-', GeneralUtility::_GP('FE_SESSION_KEY'));
             // If the session key hash check is OK:
-            if (md5(($fe_sParts[0] . '/' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) === (string)$fe_sParts[1]) {
+            if (md5($fe_sParts[0] . '/' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) === (string)$fe_sParts[1]) {
                 $cookieName = FrontendUserAuthentication::getCookieName();
                 $_COOKIE[$cookieName] = $fe_sParts[0];
                 if (isset($_SERVER['HTTP_COOKIE'])) {
@@ -2346,7 +2346,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if ($debugCacheTime) {
                         $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
                         $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-                        $this->content .= LF . '<!-- Cached page generated ' . date(($dateFormat . ' ' . $timeFormat), $row['tstamp']) . '. Expires ' . date(($dateFormat . ' ' . $timeFormat), $row['expires']) . ' -->';
+                        $this->content .= LF . '<!-- Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $row['tstamp']) . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $row['expires']) . ' -->';
                     }
                 }
                 $this->getTimeTracker()->pull();

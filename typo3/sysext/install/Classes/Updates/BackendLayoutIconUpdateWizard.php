@@ -277,13 +277,13 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate
                 $fields = [
                     'fieldname' => $this->fieldToMigrate,
                     'table_local' => 'sys_file',
-                    'pid' => ($this->table === 'pages' ? $row['uid'] : $row['pid']),
+                    'pid' => $this->table === 'pages' ? $row['uid'] : $row['pid'],
                     'uid_foreign' => $row['uid'],
                     'uid_local' => $fileUid,
                     'tablenames' => $this->table,
                     'crdate' => time(),
                     'tstamp' => time(),
-                    'sorting' => ($i + 256),
+                    'sorting' => $i + 256,
                     'sorting_foreign' => $i,
                 ];
 

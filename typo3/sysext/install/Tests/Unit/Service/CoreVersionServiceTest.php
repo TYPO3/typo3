@@ -123,7 +123,7 @@ class CoreVersionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             false
         );
         $instance->expects($this->any())->method('getMajorVersion')->will($this->returnValue('7'));
-        $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue(require($versionMatrixFixtureFile)));
+        $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue(require $versionMatrixFixtureFile));
         $this->assertSame('3dc156eed4b99577232f537d798a8691493f8a83', $instance->getTarGzSha1OfVersion('7.2.0'));
     }
 
@@ -448,7 +448,7 @@ class CoreVersionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             false
         );
         $instance->expects($this->once())->method('getMajorVersion')->will($this->returnValue('7'));
-        $instance->expects($this->once())->method('getVersionMatrix')->will($this->returnValue(require($versionMatrixFixtureFile)));
+        $instance->expects($this->once())->method('getVersionMatrix')->will($this->returnValue(require $versionMatrixFixtureFile));
         $this->assertSame(1398968665, $instance->_call('getReleaseTimestampOfVersion', '7.3.1'));
     }
 
@@ -469,7 +469,7 @@ class CoreVersionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             false
         );
         $instance->expects($this->once())->method('getMajorVersion')->will($this->returnValue('2'));
-        $instance->expects($this->once())->method('getVersionMatrix')->will($this->returnValue(require($versionMatrixFixtureFile)));
+        $instance->expects($this->once())->method('getVersionMatrix')->will($this->returnValue(require $versionMatrixFixtureFile));
         $instance->_call('ensureVersionExistsInMatrix', '2.0.42');
     }
 
@@ -490,7 +490,7 @@ class CoreVersionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             false
         );
         $instance->expects($this->once())->method('getMajorVersion')->will($this->returnValue('7'));
-        $instance->expects($this->once())->method('getVersionMatrix')->will($this->returnValue(require($versionMatrixFixtureFile)));
+        $instance->expects($this->once())->method('getVersionMatrix')->will($this->returnValue(require $versionMatrixFixtureFile));
         $instance->_call('ensureVersionExistsInMatrix', '7.2.5');
     }
 }

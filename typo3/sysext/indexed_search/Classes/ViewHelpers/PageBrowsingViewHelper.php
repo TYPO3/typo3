@@ -116,7 +116,7 @@ class PageBrowsingViewHelper extends AbstractViewHelper
         // next link
         if ($currentPage < $pageCount - 1) {
             $label = LocalizationUtility::translate('displayResults.next', 'IndexedSearch');
-            $content .= '<li>' . self::makecurrentPageSelector_link($label, ($currentPage + 1), $freeIndexUid) . '</li>';
+            $content .= '<li>' . self::makecurrentPageSelector_link($label, $currentPage + 1, $freeIndexUid) . '</li>';
         }
         return '<ul class="tx-indexedsearch-browsebox">' . $content . '</ul>';
     }

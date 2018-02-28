@@ -459,7 +459,7 @@ class ExtendedTemplateService extends TemplateService
                     $theValue = $arr[$key];
                     if ($this->fixedLgd) {
                         $imgBlocks = ceil(1 + strlen($depthData) / 77);
-                        $lgdChars = 68 - ceil(strlen(('[' . $key . ']')) * 0.8) - $imgBlocks * 3;
+                        $lgdChars = 68 - ceil(strlen('[' . $key . ']') * 0.8) - $imgBlocks * 3;
                         $theValue = $this->ext_fixed_lgd($theValue, $lgdChars);
                     }
                     // The value has matched the search string
@@ -765,7 +765,7 @@ class ExtendedTemplateService extends TemplateService
         if ($chars >= 4) {
             if (strlen($string) > $chars) {
                 if (strlen($string) > 24 && preg_match('/^##[a-z0-9]{6}_B##$/', substr($string, 0, 12))) {
-                    $string = GeneralUtility::fixed_lgd_cs(substr($string, 12, -12), ($chars - 3));
+                    $string = GeneralUtility::fixed_lgd_cs(substr($string, 12, -12), $chars - 3);
                     $marker = substr(md5($string), 0, 6);
                     return '##' . $marker . '_B##' . $string . '##' . $marker . '_E##';
                 }
@@ -801,7 +801,7 @@ class ExtendedTemplateService extends TemplateService
         foreach ($cArr as $k => $v) {
             $lln = $k + $this->ext_lineNumberOffset + 1;
             if ($ln) {
-                $lineNum = $this->ext_lnBreakPointWrap($lln, str_replace(' ', '&nbsp;', sprintf(('% ' . $n . 'd'), $lln))) . ':   ';
+                $lineNum = $this->ext_lnBreakPointWrap($lln, str_replace(' ', '&nbsp;', sprintf('% ' . $n . 'd', $lln))) . ':   ';
             }
             $v = htmlspecialchars($v);
             if ($crop) {
@@ -1490,9 +1490,9 @@ class ExtendedTemplateService extends TemplateService
                                         $col[] = hexdec($var[4]);
                                         $col[] = hexdec($var[5]);
                                     }
-                                    $var = substr(('0' . dechex($col[0])), -1) . substr(('0' . dechex($col[1])), -1) . substr(('0' . dechex($col[2])), -1);
+                                    $var = substr('0' . dechex($col[0]), -1) . substr('0' . dechex($col[1]), -1) . substr('0' . dechex($col[2]), -1);
                                     if ($useFulHex) {
-                                        $var .= substr(('0' . dechex($col[3])), -1) . substr(('0' . dechex($col[4])), -1) . substr(('0' . dechex($col[5])), -1);
+                                        $var .= substr('0' . dechex($col[3]), -1) . substr('0' . dechex($col[4]), -1) . substr('0' . dechex($col[5]), -1);
                                     }
                                     $var = '#' . strtoupper($var);
                                 }

@@ -100,7 +100,7 @@ class DispatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $arguments = [];
         $mockSlot = function () use (&$arguments) {
-            ($arguments = func_get_args());
+            $arguments = func_get_args();
         };
         $this->signalSlotDispatcher->connect('Foo', 'bar', $mockSlot, null, false);
         $this->signalSlotDispatcher->dispatch('Foo', 'bar', ['bar', 'quux']);
@@ -295,7 +295,7 @@ class DispatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $arguments = [];
         $mockSlot = function () use (&$arguments) {
-            ($arguments = func_get_args());
+            $arguments = func_get_args();
         };
         $mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, null, true);

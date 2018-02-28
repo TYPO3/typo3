@@ -858,7 +858,7 @@ abstract class ImportExport
             $cfg = $this->softrefCfg[$tokenID];
             if ($cfg['mode'] === 'editable') {
                 return (strlen($cfg['title']) ? '<strong>' . htmlspecialchars($cfg['title']) . '</strong><br/>' : '') . htmlspecialchars($cfg['description']) . '<br/>
-						<input type="text" name="tx_impexp[softrefInputValues][' . $tokenID . ']" value="' . htmlspecialchars(($this->softrefInputValues[$tokenID] ?? $cfg['defValue'])) . '" />';
+						<input type="text" name="tx_impexp[softrefInputValues][' . $tokenID . ']" value="' . htmlspecialchars($this->softrefInputValues[$tokenID] ?? $cfg['defValue']) . '" />';
             }
         }
 
@@ -885,7 +885,7 @@ abstract class ImportExport
             // Get current value:
             $value = $this->softrefCfg[$cfg['subst']['tokenID']]['mode'];
             // Render options selector:
-            $selectorbox = $this->renderSelectBox(('tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][mode]'), $value, $optValues) . '<br/>';
+            $selectorbox = $this->renderSelectBox('tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][mode]', $value, $optValues) . '<br/>';
             if ($value === 'editable') {
                 $descriptionField = '';
                 // Title:
@@ -1108,7 +1108,7 @@ abstract class ImportExport
             $opt[] = '<option value="' . htmlspecialchars($k) . '"' . $sel . '>' . htmlspecialchars($v) . '</option>';
         }
         if (!$isSelFlag && (string)$value !== '') {
-            $opt[] = '<option value="' . htmlspecialchars($value) . '" selected="selected">' . htmlspecialchars(('[\'' . $value . '\']')) . '</option>';
+            $opt[] = '<option value="' . htmlspecialchars($value) . '" selected="selected">' . htmlspecialchars('[\'' . $value . '\']') . '</option>';
         }
         return '<select name="' . $prefix . '">' . implode('', $opt) . '</select>';
     }
@@ -1163,7 +1163,7 @@ abstract class ImportExport
             } else {
                 $output = 'Match';
             }
-            return '<strong class="text-nowrap">[' . htmlspecialchars(($table . ':' . $importRecord['uid'] . ' => ' . $databaseRecord['uid'])) . ']:</strong> ' . $output;
+            return '<strong class="text-nowrap">[' . htmlspecialchars($table . ':' . $importRecord['uid'] . ' => ' . $databaseRecord['uid']) . ']:</strong> ' . $output;
         }
         return 'ERROR: One of the inputs were not an array!';
     }
@@ -1180,7 +1180,7 @@ abstract class ImportExport
         if (GeneralUtility::isFirstPartOfStr($string, 'RTEmagicC_')) {
             // Find original file:
             $pI = pathinfo(substr($string, strlen('RTEmagicC_')));
-            $filename = substr($pI['basename'], 0, -strlen(('.' . $pI['extension'])));
+            $filename = substr($pI['basename'], 0, -strlen('.' . $pI['extension']));
             $origFilePath = 'RTEmagicP_' . $filename;
             return $origFilePath;
         }

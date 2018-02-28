@@ -1061,7 +1061,7 @@ class ContentObjectRenderer
             'altParams' => $altParam,
             'border' =>  $this->getBorderAttr(' border="' . (int)$conf['border'] . '"'),
             'sourceCollection' => $sourceCollection,
-            'selfClosingTagSlash' => (!empty($tsfe->xhtmlDoctype) ? ' /' : ''),
+            'selfClosingTagSlash' => !empty($tsfe->xhtmlDoctype) ? ' /' : '',
         ];
 
         $theValue = $this->templateService->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
@@ -3248,9 +3248,9 @@ class ContentObjectRenderer
         $comment = htmlspecialchars($this->insertData($parts[1]));
         $output = LF
             . str_pad('', $indent, TAB) . '<!-- ' . $comment . ' [begin] -->' . LF
-            . str_pad('', ($indent + 1), TAB) . $content . LF
+            . str_pad('', $indent + 1, TAB) . $content . LF
             . str_pad('', $indent, TAB) . '<!-- ' . $comment . ' [end] -->' . LF
-            . str_pad('', ($indent + 1), TAB);
+            . str_pad('', $indent + 1, TAB);
         return $output;
     }
 
@@ -3555,7 +3555,7 @@ class ContentObjectRenderer
                 ? $this->stdWrap($conf['icon.']['ext'], $conf['icon.']['ext.'])
                 : $conf['icon.']['ext'];
             $iconExt = !empty($conf['icon.']['ext']) ? '.' . $conf['icon.']['ext'] : '.gif';
-            $icon = @is_file(($iconPath . $fI['fileext'] . $iconExt))
+            $icon = @is_file($iconPath . $fI['fileext'] . $iconExt)
                 ? $iconPath . $fI['fileext'] . $iconExt
                 : $iconPath . 'default' . $iconExt;
             $icon = PathUtility::stripPathSitePrefix($icon);
@@ -3835,7 +3835,7 @@ class ContentObjectRenderer
                     $modifiers = substr($search, $startModifiers + 1);
                     // remove "e" (eval-modifier), which would otherwise allow to run arbitrary PHP-code
                     $modifiers = str_replace('e', '', $modifiers);
-                    $search = substr($search, 0, ($startModifiers + 1)) . $modifiers;
+                    $search = substr($search, 0, $startModifiers + 1) . $modifiers;
                 }
                 if (empty($useOptionSplitReplace)) {
                     $content = preg_replace($search, $replace, $content);
@@ -4437,7 +4437,7 @@ class ContentObjectRenderer
 
                     $res = '<a href="' . htmlspecialchars($linkUrl) . '"'
                         . ($target !== '' ? ' target="' . htmlspecialchars($target) . '"' : '')
-                        . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
+                        . $aTagParams . $this->extLinkATagParams('http://' . $parts[0], 'url') . '>';
 
                     $wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
                     if ((string)$conf['ATagBeforeWrap'] !== '') {
@@ -6872,7 +6872,7 @@ class ContentObjectRenderer
         $matchEnd = '(\\s*,|\\s*$)/';
         $necessaryFields = ['uid', 'pid'];
         $wsFields = ['t3ver_state'];
-        if (isset($GLOBALS['TCA'][$table]) && !preg_match(($matchStart . '\\*' . $matchEnd), $selectPart) && !preg_match('/(count|max|min|avg|sum)\\([^\\)]+\\)/i', $selectPart)) {
+        if (isset($GLOBALS['TCA'][$table]) && !preg_match($matchStart . '\\*' . $matchEnd, $selectPart) && !preg_match('/(count|max|min|avg|sum)\\([^\\)]+\\)/i', $selectPart)) {
             foreach ($necessaryFields as $field) {
                 $match = $matchStart . $field . $matchEnd;
                 if (!preg_match($match, $selectPart)) {

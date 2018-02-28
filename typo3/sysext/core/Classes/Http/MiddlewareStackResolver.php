@@ -138,6 +138,6 @@ class MiddlewareStackResolver
      */
     protected function getCacheIdentifier(string $stackName): string
     {
-        return 'middlewares_' . $stackName . '_' . sha1((TYPO3_version . PATH_site));
+        return 'middlewares_' . $stackName . '_' . sha1(TYPO3_version . PATH_site);
     }
 }

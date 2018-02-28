@@ -98,7 +98,7 @@ class ConfirmationFinisher extends AbstractFinisher
             $lastSegment = array_pop($pathSegments);
             $setup = $this->typoScriptSetup;
             foreach ($pathSegments as $segment) {
-                if (!array_key_exists(($segment . '.'), $setup)) {
+                if (!array_key_exists($segment . '.', $setup)) {
                     throw new FinisherException(
                         sprintf('TypoScript object path "%s" does not exist', $typoscriptObjectPath),
                         1489238980

@@ -949,7 +949,7 @@ class QueryGenerator
                                     $webMountPageTreePrefix = ',';
                                 }
                                 $webMountPageTree .= $webMountPageTreePrefix
-                                    . $this->getTreeList($webMount, 999, ($begin = 0), $perms_clause);
+                                    . $this->getTreeList($webMount, 999, 0, $perms_clause);
                             }
                             if ($from_table === 'pages') {
                                 $queryBuilder->where(
@@ -1033,7 +1033,7 @@ class QueryGenerator
             }
             if (is_array($v['sub'])) {
                 $out[] = '<div class="' . $indent . '">';
-                $out[] = $this->printCodeArray($v['sub'], ($recursionLevel + 1));
+                $out[] = $this->printCodeArray($v['sub'], $recursionLevel + 1);
                 $out[] = '</div>';
             }
 
@@ -1277,7 +1277,10 @@ class QueryGenerator
             }
             switch ($conf['type']) {
                 case 'newlevel':
-                    $qs .= LF . $pad . trim($conf['operator']) . ' (' . $this->getQuery($queryConfig[$key]['nl'], ($pad . '   ')) . LF . $pad . ')';
+                    $qs .= LF . $pad . trim($conf['operator']) . ' (' . $this->getQuery(
+                        $queryConfig[$key]['nl'],
+                            $pad . '   '
+                    ) . LF . $pad . ')';
                     break;
                 case 'userdef':
                     $qs .= LF . $pad . $this->getUserDefQuery($conf, $first);
@@ -1637,7 +1640,7 @@ class QueryGenerator
                     $webMountPageTreePrefix = ',';
                 }
                 $webMountPageTree .= $webMountPageTreePrefix
-                    . $this->getTreeList($webMount, 999, ($begin = 0), $perms_clause);
+                    . $this->getTreeList($webMount, 999, $begin = 0, $perms_clause);
             }
             // createNamedParameter() is not used here because the SQL fragment will only include
             // the :dcValueX placeholder when the query is returned as a string. The value for the

@@ -98,7 +98,7 @@ class SeparateSysHistoryFromSysLogUpdate extends AbstractUpdate
                 'userid' => $row['userid'],
                 'sys_log_uid' => 0,
                 'history_data' => json_encode($row['history_data'] !== null ? unserialize($row['history_data'], ['allowed_classes' => false]) : []),
-                'originaluserid' => (empty($logData['originalUser']) ? null : $logData['originalUser'])
+                'originaluserid' => empty($logData['originalUser']) ? null : $logData['originalUser']
             ];
             $connection->update(
                 'sys_history',

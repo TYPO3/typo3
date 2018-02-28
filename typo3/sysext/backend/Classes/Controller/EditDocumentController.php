@@ -1437,7 +1437,7 @@ class EditDocumentController
                                 sprintf(
                                     $lang->getLL('undoLastChange'),
                                     BackendUtility::calcAge(
-                                        ($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']),
+                                        $GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp'],
                                         $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                                     )
                                 )

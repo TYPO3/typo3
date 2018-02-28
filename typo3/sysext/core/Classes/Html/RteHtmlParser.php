@@ -697,7 +697,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                     default:
                         // usually <hx> tags and <table> tags where no other block elements are within the tags
                         // Eliminate true linebreaks inside block element tags
-                        $blockSplit[$k] = preg_replace(('/[' . LF . ']+/'), ' ', $blockSplit[$k]);
+                        $blockSplit[$k] = preg_replace('/[' . LF . ']+/', ' ', $blockSplit[$k]);
                 }
             } else {
                 // NON-block:

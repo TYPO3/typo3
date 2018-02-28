@@ -506,7 +506,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
         foreach ($identifierToTagsKeys as $identifierToTagsKey) {
             list(, $identifier) = explode(':', $identifierToTagsKey);
             // Check if the data entry still exists
-            if (!$this->redis->exists((self::IDENTIFIER_DATA_PREFIX . $identifier))) {
+            if (!$this->redis->exists(self::IDENTIFIER_DATA_PREFIX . $identifier)) {
                 $tagsToRemoveIdentifierFrom = $this->redis->sMembers($identifierToTagsKey);
                 $queue = $this->redis->multi(\Redis::PIPELINE);
                 $queue->delete($identifierToTagsKey);

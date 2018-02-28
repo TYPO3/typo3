@@ -91,7 +91,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
      */
     public function main()
     {
-        $pageId = (int)(GeneralUtility::_GP('id'));
+        $pageId = (int)GeneralUtility::_GP('id');
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
@@ -338,7 +338,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
                 $line['title'] = 'ID: ' . $identifier;
                 $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($pageArray[$identifier], 30);
-                $line['includedFiles'] = ($pageArray[$identifier . '_']['includeLines'] === 0 ? '' : $pageArray[($identifier . '_')]['includeLines']);
+                $line['includedFiles'] = ($pageArray[$identifier . '_']['includeLines'] === 0 ? '' : $pageArray[$identifier . '_']['includeLines']);
                 $line['lines'] = ($pageArray[$identifier . '_']['writtenLines'] === 0 ? '' : $pageArray[$identifier . '_']['writtenLines']);
             } else {
                 $line['link'] = '';

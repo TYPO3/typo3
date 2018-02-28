@@ -169,7 +169,7 @@ If you want to get more detailed information, use the --verbose option.')
         // Traverse the references and check if the files exists
         while ($record = $result->fetch()) {
             $fileName = $record['ref_string'];
-            if (empty($record['softref_key']) && !@is_file((PATH_site . $fileName))) {
+            if (empty($record['softref_key']) && !@is_file(PATH_site . $fileName)) {
                 $missingReferences[$fileName][$record['hash']] = $this->formatReferenceIndexEntryToString($record);
             }
         }
@@ -202,7 +202,7 @@ If you want to get more detailed information, use the --verbose option.')
         // Traverse the references and check if the files exists
         while ($record = $result->fetch()) {
             $fileName = $record['ref_string'];
-            if (!@is_file((PATH_site . $fileName))) {
+            if (!@is_file(PATH_site . $fileName)) {
                 $missingReferences[] = $fileName . ' - ' . $record['hash'] . ' - ' . $this->formatReferenceIndexEntryToString($record);
             }
         }

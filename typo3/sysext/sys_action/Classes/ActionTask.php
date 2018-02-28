@@ -534,7 +534,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         $link = '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($username) . '</a>';
         // Link to delete the user record
         $link .= '
-				<a href="' . htmlspecialchars(($href . '&delete=1')) . '" class="t3js-confirm-trigger" data-title="' . htmlspecialchars($this->getLanguageService()->getLL('lDelete_warning_title')) . '" data-message="' . htmlspecialchars($this->getLanguageService()->getLL('lDelete_warning')) . '">'
+				<a href="' . htmlspecialchars($href . '&delete=1') . '" class="t3js-confirm-trigger" data-title="' . htmlspecialchars($this->getLanguageService()->getLL('lDelete_warning_title')) . '" data-message="' . htmlspecialchars($this->getLanguageService()->getLL('lDelete_warning')) . '">'
                     . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() .
                 '</a>';
         return $link;

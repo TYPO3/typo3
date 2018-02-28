@@ -48,7 +48,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      */
     protected function setUp()
     {
-        require_once('Fixtures/ConditionMatcherUserFuncs.php');
+        require_once 'Fixtures/ConditionMatcherUserFuncs.php';
 
         GeneralUtility::flushInternalRuntimeCaches();
 

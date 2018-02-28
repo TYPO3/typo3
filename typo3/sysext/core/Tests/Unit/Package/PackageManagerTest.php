@@ -136,7 +136,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $packageManager->_set('packages', []);
         $packageManager->_call('scanAvailablePackages');
 
-        $packageStates = require('vfs://Test/Configuration/PackageStates.php');
+        $packageStates = require 'vfs://Test/Configuration/PackageStates.php';
         $actualPackageKeys = array_keys($packageStates['packages']);
         $this->assertEquals(sort($expectedPackageKeys), sort($actualPackageKeys));
     }
@@ -190,7 +190,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $packageManager->_call('scanAvailablePackages');
         $packageManager->_call('sortAndSavePackageStates');
 
-        $packageStates = require('vfs://Test/Configuration/PackageStates.php');
+        $packageStates = require 'vfs://Test/Configuration/PackageStates.php';
         $this->assertEquals('Application/' . $packageKey . '/', $packageStates['packages'][$packageKey]['packagePath']);
     }
 

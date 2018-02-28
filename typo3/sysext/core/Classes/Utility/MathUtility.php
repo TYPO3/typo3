@@ -175,10 +175,10 @@ class MathUtility
             $valueLenC = strcspn($string, ')');
             if ($valueLenC == strlen($string) || $valueLenC < $valueLenO) {
                 $value = self::calculateWithPriorityToAdditionAndSubtraction(substr($string, 0, $valueLenC));
-                $string = $value . substr($string, ($valueLenC + 1));
+                $string = $value . substr($string, $valueLenC + 1);
                 return $string;
             }
-            $string = substr($string, 0, $valueLenO) . self::calculateWithParentheses(substr($string, ($valueLenO + 1)));
+            $string = substr($string, 0, $valueLenO) . self::calculateWithParentheses(substr($string, $valueLenO + 1));
 
             // Security:
             $securC--;

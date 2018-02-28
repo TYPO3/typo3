@@ -113,7 +113,7 @@ class T3editor implements SingletonInterface
                 $configurationPath = $package->getPackagePath() . 'Configuration/Backend/T3editor';
                 $modesFileNameForPackage = $configurationPath . '/Modes.php';
                 if (is_file($modesFileNameForPackage)) {
-                    $definedModes = require_once($modesFileNameForPackage);
+                    $definedModes = require_once $modesFileNameForPackage;
                     if (is_array($definedModes)) {
                         $this->configuration['modes'] = array_merge($this->configuration['modes'], $definedModes);
                     }
@@ -121,7 +121,7 @@ class T3editor implements SingletonInterface
 
                 $addonsFileNameForPackage = $configurationPath . '/Addons.php';
                 if (is_file($addonsFileNameForPackage)) {
-                    $definedAddons = require_once($addonsFileNameForPackage);
+                    $definedAddons = require_once $addonsFileNameForPackage;
                     if (is_array($definedAddons)) {
                         $this->configuration['addons'] = array_merge($this->configuration['addons'], $definedAddons);
                     }

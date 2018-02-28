@@ -387,7 +387,7 @@ class ElementHistoryController
                     );
                     $rollbackUrl = '';
                     if ($rollbackUid) {
-                        $rollbackUrl = $this->buildUrl(['rollbackFields' => ($table . ':' . $rollbackUid . ':' . $fN)]);
+                        $rollbackUrl = $this->buildUrl(['rollbackFields' => $table . ':' . $rollbackUid . ':' . $fN]);
                     }
                     $lines[] = [
                         'title' => $languageService->sL(BackendUtility::getItemLabel($table, $fN)),

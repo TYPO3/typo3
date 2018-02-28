@@ -91,7 +91,7 @@ class DataHandlerHook
             $commandIsProcessed = true;
             $action = (string)$value['action'];
             $comment = !empty($value['comment']) ? $value['comment'] : '';
-            $notificationAlternativeRecipients = (isset($value['notificationAlternativeRecipients'])) && is_array($value['notificationAlternativeRecipients']) ? $value['notificationAlternativeRecipients'] : [];
+            $notificationAlternativeRecipients = isset($value['notificationAlternativeRecipients']) && is_array($value['notificationAlternativeRecipients']) ? $value['notificationAlternativeRecipients'] : [];
             switch ($action) {
                 case 'new':
                     $dataHandler->versionizeRecord($table, $id, $value['label']);

@@ -118,7 +118,14 @@ class PreviewController
         $queryString = GeneralUtility::implodeArrayForUrl('', $queryParameters);
 
         // fetch the next and previous stage
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), 1, -99, $this->pageId, 0, 'tables_modify');
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
+            $this->stageService->getWorkspaceId(),
+            $filter = 1,
+            $stage = -99,
+            $this->pageId,
+            $recursionLevel = 0,
+            $selectionType = 'tables_modify'
+        );
         list(, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
         list(, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
         $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces();

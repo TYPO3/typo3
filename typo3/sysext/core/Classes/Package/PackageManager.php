@@ -225,7 +225,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     protected function loadPackageStates()
     {
         $forcePackageStatesRewrite = false;
-        $this->packageStatesConfiguration = @include($this->packageStatesPathAndFilename) ?: [];
+        $this->packageStatesConfiguration = @include $this->packageStatesPathAndFilename ?: [];
         if (!isset($this->packageStatesConfiguration['version']) || $this->packageStatesConfiguration['version'] < 4) {
             $this->packageStatesConfiguration = [];
         } elseif ($this->packageStatesConfiguration['version'] === 4) {

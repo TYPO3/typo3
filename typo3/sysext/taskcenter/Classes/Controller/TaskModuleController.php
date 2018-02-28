@@ -212,7 +212,7 @@ class TaskModuleController extends BaseScriptClass
 
         $assigns = [];
         $assigns['reports'] = $this->indexAction();
-        $assigns['taskClass'] = strtolower(str_replace('\\', '-', htmlspecialchars(($extKey . '-' . $taskClass))));
+        $assigns['taskClass'] = strtolower(str_replace('\\', '-', htmlspecialchars($extKey . '-' . $taskClass)));
         $assigns['actionContent'] = $actionContent;
 
         // Rendering of the output via fluid

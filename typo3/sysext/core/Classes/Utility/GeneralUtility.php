@@ -725,7 +725,10 @@ class GeneralUtility
                 // Keys shorter than block size are zero-padded
                 $key = str_pad($secret, $hashBlocksize, chr(0));
             }
-            $hmac = call_user_func($hashAlgorithm, ($key ^ $opad) . pack('H*', call_user_func($hashAlgorithm, (($key ^ $ipad) . $input))));
+            $hmac = call_user_func($hashAlgorithm, ($key ^ $opad) . pack('H*', call_user_func(
+                $hashAlgorithm,
+                    ($key ^ $ipad) . $input
+            )));
         }
         return $hmac;
     }
@@ -1516,10 +1519,10 @@ class GeneralUtility
                 if (empty($v)) {
                     $content = '';
                 } else {
-                    $content = $nl . self::array2xml($v, $NSprefix, ($level + 1), '', $spaceInd, $subOptions, [
+                    $content = $nl . self::array2xml($v, $NSprefix, $level + 1, '', $spaceInd, $subOptions, [
                             'parentTagName' => $tagName,
                             'grandParentTagName' => $stackData['parentTagName'],
-                            'path' => ($clearStackPath ? '' : $stackData['path'] . '/' . $tagName)
+                            'path' => $clearStackPath ? '' : $stackData['path'] . '/' . $tagName
                         ]) . ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '');
                 }
                 // Do not set "type = array". Makes prettier XML but means that empty arrays are not restored with xml2array
@@ -1942,9 +1945,9 @@ class GeneralUtility
                     while (($file = readdir($handle)) !== false) {
                         $recursionResult = null;
                         if ($file !== '.' && $file !== '..') {
-                            if (@is_file(($path . '/' . $file))) {
+                            if (@is_file($path . '/' . $file)) {
                                 $recursionResult = static::fixPermissions($path . '/' . $file);
-                            } elseif (@is_dir(($path . '/' . $file))) {
+                            } elseif (@is_dir($path . '/' . $file)) {
                                 $recursionResult = static::fixPermissions($path . '/' . $file, true);
                             }
                             if (isset($recursionResult) && !$recursionResult) {
@@ -2231,7 +2234,7 @@ class GeneralUtility
             foreach ($allowedFileExtensionArray as $allowedFileExtension) {
                 if (
                     ($extensionList === ',,' || stripos($extensionList, ',' . substr($entry, strlen($allowedFileExtension) * -1, strlen($allowedFileExtension)) . ',') !== false)
-                    && ($excludePattern === '' || !preg_match(('/^' . $excludePattern . '$/'), $entry))
+                    && ($excludePattern === '' || !preg_match('/^' . $excludePattern . '$/', $entry))
                 ) {
                     if ($order !== 'mtime') {
                         $files[] = $entry;
@@ -2279,7 +2282,7 @@ class GeneralUtility
         $dirs = self::get_dirs($path);
         if ($recursivityLevels > 0 && is_array($dirs)) {
             foreach ($dirs as $subdirs) {
-                if ((string)$subdirs !== '' && ($excludePattern === '' || !preg_match(('/^' . $excludePattern . '$/'), $subdirs))) {
+                if ((string)$subdirs !== '' && ($excludePattern === '' || !preg_match('/^' . $excludePattern . '$/', $subdirs))) {
                     $fileArr = self::getAllFilesAndFoldersInPath($fileArr, $path . $subdirs . '/', $extList, $regDirs, $recursivityLevels - 1, $excludePattern);
                 }
             }
@@ -2387,7 +2390,7 @@ class GeneralUtility
         // If the total amount of post data is smaller (!) than the upload_max_filesize directive,
         // then this is the real limit in PHP
         $phpUploadLimit = $phpPostLimit > 0 && $phpPostLimit < $phpUploadLimit ? $phpPostLimit : $phpUploadLimit;
-        return floor(($phpUploadLimit)) / 1024;
+        return floor($phpUploadLimit) / 1024;
     }
 
     /**
@@ -3922,7 +3925,7 @@ class GeneralUtility
     public static function getDeprecationLogFileName()
     {
         static::writeDeprecationLogFileEntry(__METHOD__ . ' is deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0');
-        return PATH_typo3conf . 'deprecation_' . self::shortMD5((PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) . '.log';
+        return PATH_typo3conf . 'deprecation_' . self::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
     }
 
     /**

@@ -93,7 +93,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
         $query->setLimit($this->numberOfRecordsInFixture+1);
         $query->setOffset(6);
 
-        $this->assertSame(($this->numberOfRecordsInFixture - 6), $query->count());
+        $this->assertSame($this->numberOfRecordsInFixture - 6, $query->count());
     }
 
     /**
@@ -104,7 +104,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
         $query = $this->postRepository->createQuery();
 
         $query->setLimit($this->numberOfRecordsInFixture+1);
-        $query->setOffset(($this->numberOfRecordsInFixture + 5));
+        $query->setOffset($this->numberOfRecordsInFixture + 5);
 
         $this->assertSame(0, $query->count());
     }
@@ -129,7 +129,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
         $query = $this->postRepository->createQuery();
 
         $query
-            ->setOffset(($this->numberOfRecordsInFixture - 3))
+            ->setOffset($this->numberOfRecordsInFixture - 3)
             ->setLimit(4);
 
         $this->assertSame(3, $query->count());

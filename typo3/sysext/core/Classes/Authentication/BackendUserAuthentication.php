@@ -666,7 +666,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // Checking value:
         switch ((string)$authMode) {
             case 'explicitAllow':
-                if (!GeneralUtility::inList($this->groupData['explicit_allowdeny'], ($testValue . ':ALLOW'))) {
+                if (!GeneralUtility::inList($this->groupData['explicit_allowdeny'], $testValue . ':ALLOW')) {
                     $out = false;
                 }
                 break;
@@ -683,7 +683,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                             if ((string)$iCfg[1] === (string)$value && $iCfg[4]) {
                                 switch ((string)$iCfg[4]) {
                                     case 'EXPL_ALLOW':
-                                        if (!GeneralUtility::inList($this->groupData['explicit_allowdeny'], ($testValue . ':ALLOW'))) {
+                                        if (!GeneralUtility::inList(
+                                            $this->groupData['explicit_allowdeny'],
+                                            $testValue . ':ALLOW'
+                                        )) {
                                             $out = false;
                                         }
                                         break;

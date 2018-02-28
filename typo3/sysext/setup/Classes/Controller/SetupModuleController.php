@@ -710,7 +710,7 @@ class SetupModuleController
         $languageCode = '
             <select id="field_lang" name="data[lang]" class="form-control">' . implode('', $languageOptions) . '
             </select>';
-        if ($controller->beUser->uc['lang'] && !@is_dir((PATH_typo3conf . 'l10n/' . $controller->beUser->uc['lang']))) {
+        if ($controller->beUser->uc['lang'] && !@is_dir(PATH_typo3conf . 'l10n/' . $controller->beUser->uc['lang'])) {
             // TODO: The text constants have to be moved into language files
             $languageUnavailableWarning = 'The selected language "' . htmlspecialchars($this->getLanguageService()->getLL('lang_' . $controller->beUser->uc['lang'])) . '" is not available before the language files are installed.&nbsp;&nbsp;<br />&nbsp;&nbsp;' . ($controller->beUser->isAdmin() ? 'You can use the Language module to easily download new language files.' : 'Please ask your system administrator to do this.');
             $languageCode = '<br /><span class="label label-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $languageCode;

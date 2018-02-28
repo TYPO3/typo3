@@ -250,7 +250,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
                 'label' => $stageRecord->getTitle(),
             ];
             if (!$stageRecord->isExecuteStage()) {
-                $stage['title'] = $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $stageRecord->getTitle() . '"';
+                $stage['title'] = $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' "' . $stageRecord->getTitle() . '"';
             } else {
                 $stage['title'] = $GLOBALS['LANG']->sL($this->pathToLocallang . ':publish_execute_action_option');
             }
@@ -316,7 +316,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
         $workspaceStageRecs = $this->getStagesForWS();
         if (is_array($workspaceStageRecs) && !empty($workspaceStageRecs)) {
             reset($workspaceStageRecs);
-            while (($workspaceStageRecKey = key($workspaceStageRecs)) !== null) {
+            while (!is_null($workspaceStageRecKey = key($workspaceStageRecs))) {
                 $workspaceStageRec = current($workspaceStageRecs);
                 if ($workspaceStageRec['uid'] == $stageId) {
                     $nextStage = next($workspaceStageRecs);
@@ -328,7 +328,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
         if ($nextStage === false) {
             $nextStage[] = [
                 'uid' => self::STAGE_EDIT_ID,
-                'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "'
+                'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' "'
                     . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing') . '"'
             ];
         }
@@ -383,7 +383,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
         $workspaceStageRecs = $this->getStagesForWS();
         if (is_array($workspaceStageRecs) && !empty($workspaceStageRecs)) {
             end($workspaceStageRecs);
-            while (($workspaceStageRecKey = key($workspaceStageRecs)) !== null) {
+            while (!is_null($workspaceStageRecKey = key($workspaceStageRecs))) {
                 $workspaceStageRec = current($workspaceStageRecs);
                 if ($workspaceStageRec['uid'] == $stageId) {
                     $prevStage = prev($workspaceStageRecs);

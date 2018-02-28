@@ -444,7 +444,7 @@ class InlineRecordContainer extends AbstractContainer
                 $cells['info'] = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
             } else {
                 $cells['info'] = '
-				<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . '); return false;')) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo')) . '">
+				<a class="btn btn-default" href="#" onclick="' . htmlspecialchars('top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . '); return false;') . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo')) . '">
 					' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '
 				</a>';
             }
@@ -460,7 +460,7 @@ class InlineRecordContainer extends AbstractContainer
                         $style = ' style="' . $inlineConfig['inline']['inlineNewButtonStyle'] . '"';
                     }
                     $cells['new'] = '
-                        <a class="btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'] . '" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($languageService->sL(('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record')))) . '" ' . $style . '>
+                        <a class="btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'] . '" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record'))) . '" ' . $style . '>
                             ' . $this->iconFactory->getIcon('actions-' . ($isPagesTable ? 'page-new' : 'add'), Icon::SIZE_SMALL)->render() . '
                         </a>';
                 }
@@ -547,14 +547,14 @@ class InlineRecordContainer extends AbstractContainer
                     GeneralUtility::quoteJSvalue($hiddenField) . ')';
                 $className = 't3js-' . $nameObjectFtId . '_disabled';
                 if ($rec[$hiddenField]) {
-                    $title = htmlspecialchars($languageService->sL(('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : ''))));
+                    $title = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')));
                     $cells['hide'] = '
                         <a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="
                             ' . htmlspecialchars($onClick) . '"' . 'title="' . $title . '">
                             ' . $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render() . '
                         </a>';
                 } else {
-                    $title = htmlspecialchars($languageService->sL(('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : ''))));
+                    $title = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')));
                     $cells['hide'] = '
                         <a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="
                             ' . htmlspecialchars($onClick) . '"' . 'title="' . $title . '">

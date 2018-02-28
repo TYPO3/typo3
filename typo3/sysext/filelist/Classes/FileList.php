@@ -947,7 +947,7 @@ class FileList
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $href = (string)$uriBuilder->buildUriFromRoute('file_FilelistList', ['id' => $folderObject->getCombinedIdentifier()]);
-        $onclick = ' onclick="' . htmlspecialchars(('top.document.getElementsByName("navigation")[0].contentWindow.Tree.highlightActiveItem("file","folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)')) . '"';
+        $onclick = ' onclick="' . htmlspecialchars('top.document.getElementsByName("navigation")[0].contentWindow.Tree.highlightActiveItem("file","folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)') . '"';
         // Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
         if ((string)$title === strip_tags($title)) {
             return '<a href="' . htmlspecialchars($href) . '"' . $onclick . ' title="' . htmlspecialchars($title) . '">' . $title . '</a>';
@@ -1256,10 +1256,18 @@ class FileList
                 $cutIcon = $this->iconFactory->getIcon('actions-edit-cut-release', Icon::SIZE_SMALL)->render();
             }
 
-            $cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 1, ($isSel === 'copy'))) . '" title="' . $copyTitle . '">' . $copyIcon . '</a>';
+            $cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->selUrlFile(
+                $fullIdentifier,
+                1,
+                    $isSel === 'copy'
+            )) . '" title="' . $copyTitle . '">' . $copyIcon . '</a>';
             // we can only cut if file can be moved
             if ($fileOrFolderObject->checkActionPermission('move')) {
-                $cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 0, ($isSel === 'cut'))) . '" title="' . $cutTitle . '">' . $cutIcon . '</a>';
+                $cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->selUrlFile(
+                    $fullIdentifier,
+                    0,
+                        $isSel === 'cut'
+                )) . '" title="' . $cutTitle . '">' . $cutIcon . '</a>';
             } else {
                 $cells[] = $this->spaceIcon;
             }
@@ -1546,7 +1554,7 @@ class FileList
             $htmlCode = '<a href="#"';
             if ($launchViewParameter !== '') {
                 $htmlCode .= ' onclick="' . htmlspecialchars(
-                        ('top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;')
+                        'top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;'
                     ) . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars(

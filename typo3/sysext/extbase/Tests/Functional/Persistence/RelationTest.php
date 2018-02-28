@@ -176,7 +176,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->from('tx_blogexample_domain_model_post')
             ->execute()
             ->fetchColumn(0);
-        $this->assertEquals(($countPostsOriginal - 1), $countPosts);
+        $this->assertEquals($countPostsOriginal - 1, $countPosts);
 
         $queryBuilder->resetQueryParts();
         $post = $queryBuilder

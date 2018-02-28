@@ -2354,7 +2354,7 @@ class DataHandler implements LoggerAwareInterface
                         if ($this->alternativeFilePath[$theFile]) {
                             // If alternative File Path is set for the file, then it was an import
                             // don't import the file if it already exists
-                            if (@is_file((PATH_site . $this->alternativeFilePath[$theFile]))) {
+                            if (@is_file(PATH_site . $this->alternativeFilePath[$theFile])) {
                                 $theFile = PATH_site . $this->alternativeFilePath[$theFile];
                             } elseif (@is_file($theFile)) {
                                 $dest = dirname(PATH_site . $this->alternativeFilePath[$theFile]);
@@ -3998,8 +3998,8 @@ class DataHandler implements LoggerAwareInterface
                         $this->versionizeRecord(
                             $v['table'],
                             $v['id'],
-                            ($workspaceOptions['label'] ?? 'Auto-created for WS #' . $this->BE_USER->workspace),
-                            ($workspaceOptions['delete'] ?? false)
+                            $workspaceOptions['label'] ?? 'Auto-created for WS #' . $this->BE_USER->workspace,
+                            $workspaceOptions['delete'] ?? false
                         );
                     // Otherwise just use plain copyRecord() to create placeholders etc.
                     } else {

@@ -99,7 +99,7 @@ class DebuggerUtility
         if (is_string($value)) {
             $croppedValue = strlen($value) > 2000 ? substr($value, 0, 2000) . '...' : $value;
             if ($plainText) {
-                $dump = self::ansiEscapeWrap(('"' . implode((PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, ($level + 1))), str_split($croppedValue, 76)) . '"'), '33', $ansiColors) . ' (' . strlen($value) . ' chars)';
+                $dump = self::ansiEscapeWrap('"' . implode(PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level + 1), str_split($croppedValue, 76)) . '"', '33', $ansiColors) . ' (' . strlen($value) . ' chars)';
             } else {
                 $lines = str_split($croppedValue, 76);
                 $lines = array_map('htmlspecialchars', $lines);
@@ -294,7 +294,7 @@ class DebuggerUtility
                 $domainObjectType = 'object';
             }
             if ($plainText) {
-                $dump .= ' ' . self::ansiEscapeWrap((($persistenceType ? $persistenceType . ' ' : '') . $domainObjectType), '42;30', $ansiColors);
+                $dump .= ' ' . self::ansiEscapeWrap(($persistenceType ? $persistenceType . ' ' : '') . $domainObjectType, '42;30', $ansiColors);
             } else {
                 $dump .= '<span class="extbase-debug-ptype">' . ($persistenceType ? $persistenceType . ' ' : '') . $domainObjectType . '</span>';
             }

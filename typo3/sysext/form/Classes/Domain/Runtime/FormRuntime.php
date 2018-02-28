@@ -304,7 +304,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             }
 
             $elementsCount = count($this->currentPage->getElements());
-            $randomElementNumber = mt_rand(0, ($elementsCount - 1));
+            $randomElementNumber = mt_rand(0, $elementsCount - 1);
             $honeypotName = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, mt_rand(5, 26));
 
             $referenceElement = $this->currentPage->getElements()[$randomElementNumber];

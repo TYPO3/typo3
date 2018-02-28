@@ -374,7 +374,7 @@ class ActionHandler extends AbstractHandler
                     $uc = (!empty($preselectedBackendUser['uc']) ? unserialize($preselectedBackendUser['uc']) : []);
                     $recipients[$preselectedBackendUser['email']] = [
                         'email' => $preselectedBackendUser['email'],
-                        'lang' => ($uc['lang'] ?? $preselectedBackendUser['lang'])
+                        'lang' => $uc['lang'] ?? $preselectedBackendUser['lang']
                     ];
                 }
             }
@@ -415,7 +415,14 @@ class ActionHandler extends AbstractHandler
         $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
         /** @var $stageService StagesService */
         $stageService = GeneralUtility::makeInstance(StagesService::class);
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $pageId, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
+        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
+            $stageService->getWorkspaceId(),
+            $filter = 1,
+            $stage = -99,
+            $pageId,
+            $recursionLevel = 0,
+            $selectionType = 'tables_modify'
+        );
         foreach ($workspaceItemsArray as $tableName => $items) {
             foreach ($items as $item) {
                 $cmdMapArray[$tableName][$item['uid']]['version']['action'] = 'clearWSID';
@@ -668,7 +675,7 @@ class ActionHandler extends AbstractHandler
         }
         $result['comments'] = [
             'type' => 'textarea',
-            'value' => ($nextStage->isInternal() ? '' : $nextStage->getDefaultComment())
+            'value' => $nextStage->isInternal() ? '' : $nextStage->getDefaultComment()
         ];
 
         return $result;
@@ -746,10 +753,24 @@ class ActionHandler extends AbstractHandler
     public function sendPageToPreviousStage($id)
     {
         $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
+        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
+            $this->stageService->getWorkspaceId(),
+            $filter = 1,
+            $stage = -99,
+            $id,
+            $recursionLevel = 0,
+            $selectionType = 'tables_modify'
+        );
         list($currentStage, $previousStage) = $this->getStageService()->getPreviousStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), $currentStage['uid'], $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
+        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
+            $this->stageService->getWorkspaceId(),
+            $filter = 1,
+            $currentStage['uid'],
+            $id,
+            $recursionLevel = 0,
+            $selectionType = 'tables_modify'
+        );
         $stageFormFields = $this->getSentToStageWindow($previousStage['uid']);
         $result = array_merge($stageFormFields, [
             'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $previousStage['title'],
@@ -767,10 +788,24 @@ class ActionHandler extends AbstractHandler
     public function sendPageToNextStage($id)
     {
         $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
+        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
+            $this->stageService->getWorkspaceId(),
+            $filter = 1,
+            $stage = -99,
+            $id,
+            $recursionLevel = 0,
+            $selectionType = 'tables_modify'
+        );
         list($currentStage, $nextStage) = $this->getStageService()->getNextStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), $currentStage['uid'], $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
+        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
+            $this->stageService->getWorkspaceId(),
+            $filter = 1,
+            $currentStage['uid'],
+            $id,
+            $recursionLevel = 0,
+            $selectionType = 'tables_modify'
+        );
         $stageFormFields = $this->getSentToStageWindow($nextStage['uid']);
         $result = array_merge($stageFormFields, [
             'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $nextStage['title'],
@@ -793,7 +828,14 @@ class ActionHandler extends AbstractHandler
         /** @var WorkspaceService $workspaceService */
         $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
         // fetch the next and previous stage
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
+        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
+            $stageService->getWorkspaceId(),
+            $filter = 1,
+            $stage = -99,
+            $id,
+            $recursionLevel = 0,
+            $selectionType = 'tables_modify'
+        );
         list(, $nextStage) = $stageService->getNextStageForElementCollection($workspaceItemsArray);
         list(, $previousStage) = $stageService->getPreviousStageForElementCollection($workspaceItemsArray);
 

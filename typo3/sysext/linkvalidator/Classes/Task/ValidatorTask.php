@@ -258,7 +258,7 @@ class ValidatorTask extends AbstractTask
         $this->setCliArguments();
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         $successfullyExecuted = true;
-        if (!file_exists(($file = GeneralUtility::getFileAbsFileName($this->emailTemplateFile)))
+        if (!file_exists($file = GeneralUtility::getFileAbsFileName($this->emailTemplateFile))
             && !empty($this->email)
         ) {
             if ($this->emailTemplateFile === 'EXT:linkvalidator/res/mailtemplate.html') {

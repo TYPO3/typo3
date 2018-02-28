@@ -108,11 +108,11 @@ class ArrayUtility
         // Write to $resultArray (by reference!) if types and value match
         $callback = function (&$value, $key) use ($needle, &$resultArray) {
             if ($value === $needle) {
-                ($resultArray[$key] = $value);
+                $resultArray[$key] = $value;
             } elseif (is_array($value)) {
-                ($subArrayMatches = static::filterByValueRecursive($needle, $value));
+                $subArrayMatches = static::filterByValueRecursive($needle, $value);
                 if (!empty($subArrayMatches)) {
-                    ($resultArray[$key] = $subArrayMatches);
+                    $resultArray[$key] = $subArrayMatches;
                 }
             }
         };
@@ -439,7 +439,7 @@ class ArrayUtility
                 throw new \RuntimeException('Objects are not supported', 1342294987);
             }
         }
-        $lines .= str_repeat('    ', ($level - 1)) . ']' . ($level - 1 == 0 ? '' : ',' . LF);
+        $lines .= str_repeat('    ', $level - 1) . ']' . ($level - 1 == 0 ? '' : ',' . LF);
         return $lines;
     }
 

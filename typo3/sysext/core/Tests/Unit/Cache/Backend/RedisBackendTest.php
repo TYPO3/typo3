@@ -515,7 +515,7 @@ class RedisBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->backend->set($identifier, $data);
         $uncompresedStoredData = '';
         try {
-            $uncompresedStoredData = @gzuncompress($this->redis->get(('identData:' . $identifier)));
+            $uncompresedStoredData = @gzuncompress($this->redis->get('identData:' . $identifier));
         } catch (\Exception $e) {
         }
         $this->assertEquals($data, $uncompresedStoredData, 'Original and compressed data don\'t match');

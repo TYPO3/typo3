@@ -795,7 +795,7 @@ abstract class AbstractItemProvider
                                 : $pluginFieldName;
                             $excludeArrayTable[] = [
                                 'labels' => trim($translatedTable . ' ' . $labelPrefix . ' ' . $extIdent, ': ') . ':' . $fieldLabel,
-                                'sectionHeader' => trim(($translatedTable . ' ' . $labelPrefix . ' ' . $extIdent), ':'),
+                                'sectionHeader' => trim($translatedTable . ' ' . $labelPrefix . ' ' . $extIdent, ':'),
                                 'table' => $table,
                                 'tableField' => $tableField,
                                 'extIdent' => $extIdent,

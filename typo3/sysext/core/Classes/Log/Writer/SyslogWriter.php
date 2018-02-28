@@ -68,7 +68,7 @@ class SyslogWriter extends AbstractWriter
             $this->facilities['local7'] = LOG_LOCAL7;
         }
         parent::__construct($options);
-        if (!openlog('TYPO3', (LOG_ODELAY | LOG_PID), $this->facility)) {
+        if (!openlog('TYPO3', LOG_ODELAY | LOG_PID, $this->facility)) {
             $facilityName = array_search($this->facility, $this->facilities);
             throw new \RuntimeException('Could not open syslog for facility ' . $facilityName, 1321722682);
         }

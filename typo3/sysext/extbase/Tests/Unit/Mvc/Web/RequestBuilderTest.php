@@ -101,7 +101,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->mockObjectManager->expects($this->any())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Web\Request::class)->will($this->returnValue($this->mockRequest));
         $this->requestBuilder->_set('objectManager', $this->mockObjectManager);
-        $pluginNamespace = 'tx_' . strtolower(($this->configuration['extensionName'] . '_' . $this->configuration['pluginName']));
+        $pluginNamespace = 'tx_' . strtolower($this->configuration['extensionName'] . '_' . $this->configuration['pluginName']);
         $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue($pluginNamespace));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
         $this->mockEnvironmentService->expects($this->any())->method('getServerRequestMethod')->will($this->returnValue('GET'));

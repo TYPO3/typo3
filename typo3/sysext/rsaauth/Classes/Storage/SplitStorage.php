@@ -137,7 +137,7 @@ class SplitStorage extends AbstractStorage
             ->where(
                 $queryBuilder->expr()->lt(
                     'crdate',
-                    $queryBuilder->createNamedParameter(($GLOBALS['EXEC_TIME'] - 30 * 60), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'] - 30 * 60, \PDO::PARAM_INT)
                 )
             )
             ->execute();

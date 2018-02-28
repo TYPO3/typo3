@@ -2104,10 +2104,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if (!empty($this->jsLibs)) {
             foreach ($this->jsLibs as $properties) {
                 $properties['file'] = $this->getStreamlinedFileName($properties['file']);
-                $async = ($properties['async']) ? ' async="async"' : '';
-                $defer = ($properties['defer']) ? ' defer="defer"' : '';
-                $integrity = ($properties['integrity']) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
-                $crossorigin = ($properties['crossorigin']) ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
+                $async = $properties['async'] ? ' async="async"' : '';
+                $defer = $properties['defer'] ? ' defer="defer"' : '';
+                $integrity = $properties['integrity'] ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
+                $crossorigin = $properties['crossorigin'] ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
                 $tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $defer . $integrity . $crossorigin . '></script>';
                 if ($properties['allWrap']) {
                     $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
@@ -2148,10 +2148,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if (!empty($this->jsFiles)) {
             foreach ($this->jsFiles as $file => $properties) {
                 $file = $this->getStreamlinedFileName($file);
-                $async = ($properties['async']) ? ' async="async"' : '';
-                $defer = ($properties['defer']) ? ' defer="defer"' : '';
-                $integrity = ($properties['integrity']) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
-                $crossorigin = ($properties['crossorigin']) ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
+                $async = $properties['async'] ? ' async="async"' : '';
+                $defer = $properties['defer'] ? ' defer="defer"' : '';
+                $integrity = $properties['integrity'] ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
+                $crossorigin = $properties['crossorigin'] ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
                 $tag = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $defer . $integrity . $crossorigin . '></script>';
                 if ($properties['allWrap']) {
                     $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);

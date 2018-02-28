@@ -110,7 +110,7 @@ class ArrayBrowser
             $output .= '<li' . ($isResult ? ' class="active"' : '') . '>';
             if ($isArray && !$this->expAll) {
                 $goto = 'a' . substr(md5($depth), 0, 6);
-                $output .= '<a class="list-tree-control' . ($isExpanded ? ' list-tree-control-open' : ' list-tree-control-closed') . '" id="' . $goto . '" href="' . htmlspecialchars(((string)$uriBuilder->buildUriFromRoutePath(GeneralUtility::_GP('route')) . '&node[' . $depth . ']=' . ($isExpanded ? 0 : 1) . '#' . $goto)) . '"><i class="fa"></i></a> ';
+                $output .= '<a class="list-tree-control' . ($isExpanded ? ' list-tree-control-open' : ' list-tree-control-closed') . '" id="' . $goto . '" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoutePath(GeneralUtility::_GP('route')) . '&node[' . $depth . ']=' . ($isExpanded ? 0 : 1) . '#' . $goto) . '"><i class="fa"></i></a> ';
             }
             $output .= '<span class="list-tree-group">';
             $output .= $this->wrapArrayKey($key, $depth, !$isArray ? $value : '');
@@ -151,8 +151,8 @@ class ArrayBrowser
                 . (!MathUtility::canBeInterpretedAsInteger($theValue) ? '\''
                 . addslashes($theValue) . '\'' : $theValue) . '; ';
             $label = '<a class="list-tree-label" href="'
-                . htmlspecialchars(((string)$uriBuilder->buildUriFromRoutePath(GeneralUtility::_GP('route'))
-                . '&varname=' . urlencode($variableName)))
+                . htmlspecialchars((string)$uriBuilder->buildUriFromRoutePath(GeneralUtility::_GP('route'))
+                . '&varname=' . urlencode($variableName))
                 . '#varname">' . $label . '</a>';
         }
         return '<span class="list-tree-label">' . $label . '</span>';

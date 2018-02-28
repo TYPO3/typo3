@@ -136,7 +136,7 @@ class DoubleMetaPhoneUtility
                     break;
                 case 'C':
                     // various gremanic
-                    if ($this->current > 1 && !$this->IsVowel($this->original, ($this->current - 2)) && $this->StringAt($this->original, $this->current - 1, 3, ['ACH']) && (substr($this->original, $this->current + 2, 1) !== 'I' && (substr($this->original, $this->current + 2, 1) !== 'E' || $this->StringAt($this->original, $this->current - 2, 6, ['BACHER', 'MACHER'])))) {
+                    if ($this->current > 1 && !$this->IsVowel($this->original, $this->current - 2) && $this->StringAt($this->original, $this->current - 1, 3, ['ACH']) && (substr($this->original, $this->current + 2, 1) !== 'I' && (substr($this->original, $this->current + 2, 1) !== 'E' || $this->StringAt($this->original, $this->current - 2, 6, ['BACHER', 'MACHER'])))) {
                         $this->primary .= 'K';
                         $this->secondary .= 'K';
                         $this->current += 2;
@@ -194,7 +194,12 @@ class DoubleMetaPhoneUtility
                         break;
                     }
                     // e.g. 'czerny'
-                    if ($this->StringAt($this->original, $this->current, 2, ['CZ']) && !$this->StringAt($this->original, ($this->current - 2), 4, ['WICZ'])) {
+                    if ($this->StringAt($this->original, $this->current, 2, ['CZ']) && !$this->StringAt(
+                        $this->original,
+                            $this->current - 2,
+                        4,
+                        ['WICZ']
+                    )) {
                         $this->primary .= 'S';
                         $this->secondary .= 'X';
                         $this->current += 2;
@@ -210,7 +215,12 @@ class DoubleMetaPhoneUtility
                     // double 'C', but not McClellan'
                     if ($this->StringAt($this->original, $this->current, 2, ['CC']) && !($this->current == 1 && $this->original[0] === 'M')) {
                         // 'bellocchio' but not 'bacchus'
-                        if ($this->StringAt($this->original, $this->current + 2, 1, ['I', 'E', 'H']) && !$this->StringAt($this->original, ($this->current + 2), 2, ['HU'])) {
+                        if ($this->StringAt($this->original, $this->current + 2, 1, ['I', 'E', 'H']) && !$this->StringAt(
+                            $this->original,
+                                $this->current + 2,
+                            2,
+                            ['HU']
+                        )) {
                             // 'accident', 'accede', 'succeed'
                             if ($this->current == 1 && substr($this->original, $this->current - 1, 1) === 'A' || $this->StringAt($this->original, $this->current - 1, 5, ['UCCEE', 'UCCES'])) {
                                 $this->primary .= 'KS';
@@ -253,7 +263,12 @@ class DoubleMetaPhoneUtility
                     if ($this->StringAt($this->original, $this->current + 1, 2, [' C', ' Q', ' G'])) {
                         $this->current += 3;
                     } else {
-                        if ($this->StringAt($this->original, $this->current + 1, 1, ['C', 'K', 'Q']) && !$this->StringAt($this->original, ($this->current + 1), 2, ['CE', 'CI'])) {
+                        if ($this->StringAt($this->original, $this->current + 1, 1, ['C', 'K', 'Q']) && !$this->StringAt(
+                            $this->original,
+                                $this->current + 1,
+                            2,
+                            ['CE', 'CI']
+                        )) {
                             $this->current += 2;
                         } else {
                             $this->current += 1;
@@ -297,7 +312,7 @@ class DoubleMetaPhoneUtility
                     break;
                 case 'G':
                     if (substr($this->original, $this->current + 1, 1) === 'H') {
-                        if ($this->current > 0 && !$this->IsVowel($this->original, ($this->current - 1))) {
+                        if ($this->current > 0 && !$this->IsVowel($this->original, $this->current - 1)) {
                             $this->primary .= 'K';
                             $this->secondary .= 'K';
                             $this->current += 2;
@@ -339,7 +354,7 @@ class DoubleMetaPhoneUtility
                             $this->secondary .= 'N';
                         } else {
                             // not e.g. 'cagney'
-                            if (!$this->StringAt($this->original, ($this->current + 2), 2, ['EY']) && substr($this->original, $this->current + 1) !== 'Y' && !$this->SlavoGermanic($this->original)) {
+                            if (!$this->StringAt($this->original, $this->current + 2, 2, ['EY']) && substr($this->original, $this->current + 1) !== 'Y' && !$this->SlavoGermanic($this->original)) {
                                 $this->primary .= 'N';
                                 $this->secondary .= 'KN';
                             } else {
@@ -377,7 +392,12 @@ class DoubleMetaPhoneUtility
                         break;
                     }
                     // -ger-, -gy-
-                    if (($this->StringAt($this->original, $this->current + 1, 2, ['ER']) || substr($this->original, $this->current + 1, 1) === 'Y') && !$this->StringAt($this->original, 0, 6, ['DANGER', 'RANGER', 'MANGER']) && !$this->StringAt($this->original, ($this->current - 1), 1, ['E', 'I']) && !$this->StringAt($this->original, ($this->current - 1), 3, ['RGY', 'OGY'])) {
+                    if (($this->StringAt($this->original, $this->current + 1, 2, ['ER']) || substr($this->original, $this->current + 1, 1) === 'Y') && !$this->StringAt($this->original, 0, 6, ['DANGER', 'RANGER', 'MANGER']) && !$this->StringAt(
+                        $this->original,
+                            $this->current - 1,
+                        1,
+                        ['E', 'I']
+                    ) && !$this->StringAt($this->original, $this->current - 1, 3, ['RGY', 'OGY'])) {
                         $this->primary .= 'K';
                         $this->secondary .= 'J';
                         $this->current += 2;
@@ -447,7 +467,12 @@ class DoubleMetaPhoneUtility
                                 $this->primary .= 'J';
                                 $this->secondary .= '';
                             } else {
-                                if (!$this->StringAt($this->original, ($this->current + 1), 1, ['L', 'T', 'K', 'S', 'N', 'M', 'B', 'Z']) && !$this->StringAt($this->original, ($this->current - 1), 1, ['S', 'K', 'L'])) {
+                                if (!$this->StringAt($this->original, $this->current + 1, 1, ['L', 'T', 'K', 'S', 'N', 'M', 'B', 'Z']) && !$this->StringAt(
+                                    $this->original,
+                                        $this->current - 1,
+                                    1,
+                                    ['S', 'K', 'L']
+                                )) {
                                     $this->primary .= 'J';
                                     $this->secondary .= 'J';
                                 }
@@ -536,7 +561,12 @@ class DoubleMetaPhoneUtility
                     break;
                 case 'R':
                     // french e.g. 'rogier', but exclude 'hochmeier'
-                    if ($this->current == $this->last && !$this->SlavoGermanic($this->original) && $this->StringAt($this->original, $this->current - 2, 2, ['IE']) && !$this->StringAt($this->original, ($this->current - 4), 2, ['ME', 'MA'])) {
+                    if ($this->current == $this->last && !$this->SlavoGermanic($this->original) && $this->StringAt($this->original, $this->current - 2, 2, ['IE']) && !$this->StringAt(
+                        $this->original,
+                            $this->current - 4,
+                        2,
+                        ['ME', 'MA']
+                    )) {
                         $this->primary .= '';
                         $this->secondary .= 'R';
                     } else {

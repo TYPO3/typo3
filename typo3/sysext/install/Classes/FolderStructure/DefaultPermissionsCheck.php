@@ -58,16 +58,16 @@ class DefaultPermissionsCheck
         $octal = '0' . $GLOBALS['TYPO3_CONF_VARS']['SYS'][$which];
         $dec = octdec($octal);
         $perms = [
-            'ox' => (($dec & 001) == 001),
-            'ow' => (($dec & 002) == 002),
-            'or' => (($dec & 004) == 004),
-            'gx' => (($dec & 010) == 010),
-            'gw' => (($dec & 020) == 020),
-            'gr' => (($dec & 040) == 040),
-            'ux' => (($dec & 0100) == 0100),
-            'uw' => (($dec & 0200) == 0200),
-            'ur' => (($dec & 0400) == 0400),
-            'setgid' => (($dec & 02000) == 02000),
+            'ox' => ($dec & 001) == 001,
+            'ow' => ($dec & 002) == 002,
+            'or' => ($dec & 004) == 004,
+            'gx' => ($dec & 010) == 010,
+            'gw' => ($dec & 020) == 020,
+            'gr' => ($dec & 040) == 040,
+            'ux' => ($dec & 0100) == 0100,
+            'uw' => ($dec & 0200) == 0200,
+            'ur' => ($dec & 0400) == 0400,
+            'setgid' => ($dec & 02000) == 02000,
         ];
         $extraMessage = '';
         $groupPermissions = false;

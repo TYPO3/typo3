@@ -121,7 +121,7 @@ class CObjectViewHelper extends AbstractViewHelper
         $lastSegment = array_pop($pathSegments);
         $setup = static::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         foreach ($pathSegments as $segment) {
-            if (!array_key_exists(($segment . '.'), $setup)) {
+            if (!array_key_exists($segment . '.', $setup)) {
                 throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist', 1253191023);
             }
             $setup = $setup[$segment . '.'];

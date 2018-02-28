@@ -95,7 +95,7 @@ class FileContentParser
                 // PDF
                 if ($indexerConfig['pdftools']) {
                     $pdfPath = rtrim($indexerConfig['pdftools'], '/') . '/';
-                    if (@is_file(($pdfPath . 'pdftotext' . $exe)) && @is_file(($pdfPath . 'pdfinfo' . $exe))) {
+                    if (@is_file($pdfPath . 'pdftotext' . $exe) && @is_file($pdfPath . 'pdfinfo' . $exe)) {
                         $this->app['pdfinfo'] = $pdfPath . 'pdfinfo' . $exe;
                         $this->app['pdftotext'] = $pdfPath . 'pdftotext' . $exe;
                         // PDF mode:
@@ -112,7 +112,7 @@ class FileContentParser
                 // Catdoc
                 if ($indexerConfig['catdoc']) {
                     $catdocPath = rtrim($indexerConfig['catdoc'], '/') . '/';
-                    if (@is_file(($catdocPath . 'catdoc' . $exe))) {
+                    if (@is_file($catdocPath . 'catdoc' . $exe)) {
                         $this->app['catdoc'] = $catdocPath . 'catdoc' . $exe;
                         $extOK = true;
                     } else {
@@ -128,7 +128,7 @@ class FileContentParser
                 // ppthtml
                 if ($indexerConfig['ppthtml']) {
                     $ppthtmlPath = rtrim($indexerConfig['ppthtml'], '/') . '/';
-                    if (@is_file(($ppthtmlPath . 'ppthtml' . $exe))) {
+                    if (@is_file($ppthtmlPath . 'ppthtml' . $exe)) {
                         $this->app['ppthtml'] = $ppthtmlPath . 'ppthtml' . $exe;
                         $extOK = true;
                     } else {
@@ -143,7 +143,7 @@ class FileContentParser
                 // Xlhtml
                 if ($indexerConfig['xlhtml']) {
                     $xlhtmlPath = rtrim($indexerConfig['xlhtml'], '/') . '/';
-                    if (@is_file(($xlhtmlPath . 'xlhtml' . $exe))) {
+                    if (@is_file($xlhtmlPath . 'xlhtml' . $exe)) {
                         $this->app['xlhtml'] = $xlhtmlPath . 'xlhtml' . $exe;
                         $extOK = true;
                     } else {
@@ -181,7 +181,7 @@ class FileContentParser
                 // Oasis OpenDocument Text
                 if ($indexerConfig['unzip']) {
                     $unzipPath = rtrim($indexerConfig['unzip'], '/') . '/';
-                    if (@is_file(($unzipPath . 'unzip' . $exe))) {
+                    if (@is_file($unzipPath . 'unzip' . $exe)) {
                         $this->app['unzip'] = $unzipPath . 'unzip' . $exe;
                         $extOK = true;
                     } else {
@@ -195,7 +195,7 @@ class FileContentParser
                 // Catdoc
                 if ($indexerConfig['unrtf']) {
                     $unrtfPath = rtrim($indexerConfig['unrtf'], '/') . '/';
-                    if (@is_file(($unrtfPath . 'unrtf' . $exe))) {
+                    if (@is_file($unrtfPath . 'unrtf' . $exe)) {
                         $this->app['unrtf'] = $unrtfPath . 'unrtf' . $exe;
                         $extOK = true;
                     } else {

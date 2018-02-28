@@ -514,9 +514,9 @@ class DataMapProcessor
         $foreignTableName = $configuration['config']['foreign_table'];
 
         $fieldNames = [
-            'language' => ($GLOBALS['TCA'][$foreignTableName]['ctrl']['languageField'] ?? null),
-            'parent' => ($GLOBALS['TCA'][$foreignTableName]['ctrl']['transOrigPointerField'] ?? null),
-            'source' => ($GLOBALS['TCA'][$foreignTableName]['ctrl']['translationSource'] ?? null),
+            'language' => $GLOBALS['TCA'][$foreignTableName]['ctrl']['languageField'] ?? null,
+            'parent' => $GLOBALS['TCA'][$foreignTableName]['ctrl']['transOrigPointerField'] ?? null,
+            'source' => $GLOBALS['TCA'][$foreignTableName]['ctrl']['translationSource'] ?? null,
         ];
         $isTranslatable = (!empty($fieldNames['language']) && !empty($fieldNames['parent']));
 

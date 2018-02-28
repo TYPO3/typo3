@@ -272,7 +272,7 @@ class TranslationService implements SingletonInterface
         }
 
         $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
-        $translatedValue = (empty($translatedValue)) ? $optionValue : $translatedValue;
+        $translatedValue = empty($translatedValue) ? $optionValue : $translatedValue;
 
         return $translatedValue;
     }
@@ -360,7 +360,7 @@ class TranslationService implements SingletonInterface
                 }
 
                 $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
-                $optionLabel = (empty($translatedValue)) ? $optionLabel : $translatedValue;
+                $optionLabel = empty($translatedValue) ? $optionLabel : $translatedValue;
             }
             $translatedValue = $defaultValue;
         } elseif ($property === 'fluidAdditionalAttributes' && is_array($defaultValue)) {
@@ -373,7 +373,7 @@ class TranslationService implements SingletonInterface
                 }
 
                 $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
-                $propertyValue = (empty($translatedValue)) ? $propertyValue : $translatedValue;
+                $propertyValue = empty($translatedValue) ? $propertyValue : $translatedValue;
             }
             $translatedValue = $defaultValue;
         } else {
@@ -385,7 +385,7 @@ class TranslationService implements SingletonInterface
             }
 
             $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
-            $translatedValue = (empty($translatedValue)) ? $defaultValue : $translatedValue;
+            $translatedValue = empty($translatedValue) ? $defaultValue : $translatedValue;
         }
 
         return $translatedValue;
@@ -447,7 +447,7 @@ class TranslationService implements SingletonInterface
         }
 
         $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
-        $translatedValue = (empty($translatedValue)) ? $defaultValue : $translatedValue;
+        $translatedValue = empty($translatedValue) ? $defaultValue : $translatedValue;
         return $translatedValue;
     }
 

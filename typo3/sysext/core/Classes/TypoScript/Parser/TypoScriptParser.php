@@ -1463,7 +1463,7 @@ class TypoScriptParser
         $nR = MathUtility::forceIntegerInRange(hexdec(substr($color, 1, 2)) + $R, 0, 255);
         $nG = MathUtility::forceIntegerInRange(hexdec(substr($color, 3, 2)) + $G, 0, 255);
         $nB = MathUtility::forceIntegerInRange(hexdec(substr($color, 5, 2)) + $B, 0, 255);
-        return '#' . substr(('0' . dechex($nR)), -2) . substr(('0' . dechex($nG)), -2) . substr(('0' . dechex($nB)), -2);
+        return '#' . substr('0' . dechex($nR), -2) . substr('0' . dechex($nG), -2) . substr('0' . dechex($nB), -2);
     }
 
     /**

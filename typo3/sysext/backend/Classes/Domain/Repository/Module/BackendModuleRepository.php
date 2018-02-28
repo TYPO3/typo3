@@ -349,7 +349,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getModuleIcon($moduleKey, $moduleData)
     {
-        $iconIdentifier = !(empty($moduleData['iconIdentifier']))
+        $iconIdentifier = !empty($moduleData['iconIdentifier'])
             ? $moduleData['iconIdentifier']
             : 'module-icon-' . $moduleKey;
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);

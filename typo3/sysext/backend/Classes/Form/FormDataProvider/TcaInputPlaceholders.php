@@ -136,7 +136,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
             }
             $relatedFormData = $this->getRelatedFormData($foreignTableName, $possibleUids[0], $fieldNameArray[0]);
             if (!empty($GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField'])
-                && (isset($result['databaseRow'][$GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField']]))
+                && isset($result['databaseRow'][$GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField']])
             ) {
                 $relatedFormData['currentSysLanguage'] = $result['databaseRow'][$GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField']][0];
             }

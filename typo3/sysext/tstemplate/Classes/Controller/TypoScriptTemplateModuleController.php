@@ -389,9 +389,9 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
         if ($onlyKey) {
-            $title = '<a href="' . htmlspecialchars(($aHref . '&e[' . $onlyKey . ']=1&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController')) . '">' . htmlspecialchars($title) . '</a>';
+            $title = '<a href="' . htmlspecialchars($aHref . '&e[' . $onlyKey . ']=1&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController') . '">' . htmlspecialchars($title) . '</a>';
         } else {
-            $title = '<a href="' . htmlspecialchars(($aHref . '&e[constants]=1&e[config]=1&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController')) . '">' . htmlspecialchars($title) . '</a>';
+            $title = '<a href="' . htmlspecialchars($aHref . '&e[constants]=1&e[config]=1&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController') . '">' . htmlspecialchars($title) . '</a>';
         }
         return $title;
     }

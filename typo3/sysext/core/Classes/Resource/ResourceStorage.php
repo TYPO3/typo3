@@ -2129,7 +2129,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function deleteFolder($folderObject, $deleteRecursively = false)
     {
         $isEmpty = $this->driver->isFolderEmpty($folderObject->getIdentifier());
-        $this->assureFolderDeletePermission($folderObject, ($deleteRecursively && !$isEmpty));
+        $this->assureFolderDeletePermission($folderObject, $deleteRecursively && !$isEmpty);
         if (!$isEmpty && !$deleteRecursively) {
             throw new \RuntimeException('Could not delete folder "' . $folderObject->getIdentifier() . '" because it is not empty.', 1325952534);
         }

@@ -1305,7 +1305,14 @@ class PageLayoutView implements LoggerAwareInterface
                 // "View page" icon is added:
                 $viewLink = '';
                 if (!VersionState::cast($this->getPageLayoutController()->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-                    $onClick = BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id), '', '', ('&L=' . $lP));
+                    $onClick = BackendUtility::viewOnClick(
+                        $this->id,
+                        '',
+                        BackendUtility::BEgetRootLine($this->id),
+                        '',
+                        '',
+                        '&L=' . $lP
+                    );
                     $viewLink = '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
                 }
                 // Language overlay page header:
@@ -1412,8 +1419,8 @@ class PageLayoutView implements LoggerAwareInterface
                         }
                         $out .= '
                         <tr>
-							<td valign="top" class="t3-grid-cell">' . implode(('</td>' . '
-							<td valign="top" class="t3-grid-cell">'), $cCont) . '</td>
+							<td valign="top" class="t3-grid-cell">' . implode('</td>' . '
+							<td valign="top" class="t3-grid-cell">', $cCont) . '</td>
 						</tr>';
                     }
                 }
@@ -3757,7 +3764,7 @@ class PageLayoutView implements LoggerAwareInterface
             case 'info':
                 // "Info": (All records)
                 $code = '<a href="#" onclick="' . htmlspecialchars(
-                        ('top.TYPO3.InfoWindow.showItem(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')
+                        'top.TYPO3.InfoWindow.showItem(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;'
                     ) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
                 break;
             default:
@@ -4458,7 +4465,7 @@ class PageLayoutView implements LoggerAwareInterface
             $htmlCode = '<a href="#"';
             if ($launchViewParameter !== '') {
                 $htmlCode .= ' onclick="' . htmlspecialchars(
-                        ('top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;')
+                        'top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;'
                     ) . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars(

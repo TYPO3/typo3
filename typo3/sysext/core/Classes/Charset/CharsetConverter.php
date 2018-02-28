@@ -370,7 +370,7 @@ class CharsetConverter implements SingletonInterface
                             $mByte = $this->parsedCharsets[$charset]['utf8'][$buf];
                             // If the local number is greater than 255 we will need to split the byte (16bit word assumed) in two chars.
                             if ($mByte > 255) {
-                                $outStr .= chr(($mByte >> 8 & 255)) . chr(($mByte & 255));
+                                $outStr .= chr($mByte >> 8 & 255) . chr($mByte & 255);
                             } else {
                                 $outStr .= chr($mByte);
                             }
@@ -604,12 +604,12 @@ class CharsetConverter implements SingletonInterface
                 $ord = $ord << 1;
                 // ... and with 8th bit - if that is set, then there are still bytes in sequence.
                 if ($ord & 128) {
-                    $binBuf .= substr('00000000' . decbin(ord(substr($str, ($b + 1), 1))), -6);
+                    $binBuf .= substr('00000000' . decbin(ord(substr($str, $b + 1, 1))), -6);
                 } else {
                     break;
                 }
             }
-            $binBuf = substr(('00000000' . decbin(ord($str[0]))), -(6 - $b)) . $binBuf;
+            $binBuf = substr('00000000' . decbin(ord($str[0])), -(6 - $b)) . $binBuf;
             $int = bindec($binBuf);
         } else {
             $int = $ord;

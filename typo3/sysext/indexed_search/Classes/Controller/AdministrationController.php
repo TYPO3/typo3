@@ -221,8 +221,8 @@ class AdministrationController extends ActionController
                 ->getQueryBuilderForTable('index_stat_word')
                 ->expr();
 
-            $last24hours = $expressionBuilder->gt('tstamp', ($GLOBALS['EXEC_TIME'] - 86400));
-            $last30days = $expressionBuilder->gt('tstamp', ($GLOBALS['EXEC_TIME'] - 30 * 86400));
+            $last24hours = $expressionBuilder->gt('tstamp', $GLOBALS['EXEC_TIME'] - 86400);
+            $last30days = $expressionBuilder->gt('tstamp', $GLOBALS['EXEC_TIME'] - 30 * 86400);
 
             $this->view->assignMultiple([
                 'pageUid' => $this->pageUid,

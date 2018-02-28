@@ -266,7 +266,7 @@ class PageRepository implements LoggerAwareInterface
             implode(
                 '-',
                 [
-                    ($disableGroupAccessCheck ? '' : $this->where_groupAccess),
+                    $disableGroupAccessCheck ? '' : $this->where_groupAccess,
                     $this->where_hid_del,
                     $this->sys_language_uid
                 ]

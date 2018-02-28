@@ -47,7 +47,7 @@ class TableManualRepository
 
         // Load descriptions for table $table
         $this->getLanguageService()->loadSingleTableDescription($table);
-        if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && ($this->accessService->checkAccess('tables_select', $table))) {
+        if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $this->accessService->checkAccess('tables_select', $table)) {
             // Reserved for header of table
             $parts[0] = '';
             // Traverse table columns as listed in TCA_DESCR

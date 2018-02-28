@@ -59,12 +59,12 @@ class RepositoryRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     {
         $mockModelOne = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class)->getMock();
         $mockModelOne
-            ->expects(($this->once()))
+            ->expects($this->once())
             ->method('getTitle')
             ->will($this->returnValue('foo'));
         $mockModelTwo = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class)->getMock();
         $mockModelTwo
-            ->expects(($this->once()))
+            ->expects($this->once())
             ->method('getTitle')
             ->will($this->returnValue('TYPO3.org Main Repository'));
 

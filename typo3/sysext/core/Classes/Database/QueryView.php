@@ -162,8 +162,8 @@ class QueryView
                 ->execute();
             $opt[] = '<option value="0">__Save to Action:__</option>';
             while ($row = $statement->fetch()) {
-                $opt[] = '<option value="-' . (int)$row['uid'] . '">' . htmlspecialchars(($row['title']
-                        . ' [' . (int)$row['uid'] . ']')) . '</option>';
+                $opt[] = '<option value="-' . (int)$row['uid'] . '">' . htmlspecialchars($row['title']
+                        . ' [' . (int)$row['uid'] . ']') . '</option>';
             }
         }
         $markup = [];
@@ -1088,7 +1088,7 @@ class QueryView
                                     $webMountPageTreePrefix = ',';
                                 }
                                 $webMountPageTree .= $webMountPageTreePrefix
-                                    . $this->getTreeList($webMount, 999, ($begin = 0), $perms_clause);
+                                    . $this->getTreeList($webMount, 999, $begin = 0, $perms_clause);
                             }
                             if ($from_table === 'pages') {
                                 $queryBuilder->where(

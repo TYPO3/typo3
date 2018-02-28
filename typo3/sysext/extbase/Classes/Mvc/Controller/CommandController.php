@@ -175,7 +175,7 @@ class CommandController implements CommandControllerInterface
                 throw new InvalidArgumentTypeException(sprintf('The argument type for parameter $%s of method %s->%s() could not be detected.', $parameterName, static::class, $this->commandMethodName), 1306755296);
             }
             $defaultValue = ($parameterInfo['defaultValue'] ?? null);
-            $this->arguments->addNewArgument($parameterName, $dataType, ($parameterInfo['optional'] === false), $defaultValue);
+            $this->arguments->addNewArgument($parameterName, $dataType, $parameterInfo['optional'] === false, $defaultValue);
         }
     }
 

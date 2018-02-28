@@ -1095,7 +1095,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     $dataHandler->process_datamap();
                     // Return errors if any:
                     if (!empty($dataHandler->errorLog)) {
-                        return LF . 'DataHandler:' . implode((LF . 'DataHandler:'), $dataHandler->errorLog);
+                        return LF . 'DataHandler:' . implode(LF . 'DataHandler:', $dataHandler->errorLog);
                     }
                 }
             }

@@ -277,7 +277,7 @@ class Rfc822AddressesParser
         // Now we have the first address, we can reliably check for a
         // group by searching for a colon that's not escaped or in
         // quotes or angle brackets.
-        if (count(($parts = explode(':', $string))) > 1) {
+        if (count($parts = explode(':', $string)) > 1) {
             $string2 = $this->_splitCheck($parts, ':');
             return $string2 !== $string;
         }
@@ -565,7 +565,7 @@ class Rfc822AddressesParser
                 $comment = $this->_splitCheck($parts, ')');
                 $comments[] = $comment;
                 // +2 is for the brackets
-                $_mailbox = substr($_mailbox, strpos($_mailbox, ('(' . $comment)) + strlen($comment) + 2);
+                $_mailbox = substr($_mailbox, strpos($_mailbox, '(' . $comment) + strlen($comment) + 2);
             } else {
                 break;
             }

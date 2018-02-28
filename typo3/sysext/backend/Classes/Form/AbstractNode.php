@@ -179,9 +179,9 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
             $validationRules[] = $newValidationRule;
         }
         if (!empty($config['maxitems']) || !empty($config['minitems'])) {
-            $minItems = (isset($config['minitems'])) ? (int)$config['minitems'] : 0;
-            $maxItems = (isset($config['maxitems'])) ? (int)$config['maxitems'] : 99999;
-            $type = ($config['type']) ?: 'range';
+            $minItems = isset($config['minitems']) ? (int)$config['minitems'] : 0;
+            $maxItems = isset($config['maxitems']) ? (int)$config['maxitems'] : 99999;
+            $type = $config['type'] ?: 'range';
             $validationRules[] = [
                 'type' => $type,
                 'minItems' => $minItems,

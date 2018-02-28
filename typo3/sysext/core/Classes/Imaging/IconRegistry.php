@@ -574,7 +574,7 @@ class IconRegistry implements SingletonInterface
      */
     protected function getCachedBackendIcons()
     {
-        $cacheIdentifier = 'BackendIcons_' . sha1((TYPO3_version . PATH_site . 'BackendIcons'));
+        $cacheIdentifier = 'BackendIcons_' . sha1(TYPO3_version . PATH_site . 'BackendIcons');
         /** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $assetsCache */
         $assetsCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
         $cacheEntry = $assetsCache->get($cacheIdentifier);

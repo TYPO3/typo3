@@ -88,7 +88,11 @@ class Lexer
             if ($len) {
                 $this->addWords($words, $wordString, $start, $len);
                 if ($this->debug) {
-                    $this->debugString .= '<span style="color:red">' . htmlspecialchars(substr($wordString, $pos, ($start - $pos))) . '</span>' . htmlspecialchars(substr($wordString, $start, $len));
+                    $this->debugString .= '<span style="color:red">' . htmlspecialchars(substr(
+                        $wordString,
+                        $pos,
+                            $start - $pos
+                    )) . '</span>' . htmlspecialchars(substr($wordString, $start, $len));
                 }
                 $pos = $start + $len;
             } else {

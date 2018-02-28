@@ -104,7 +104,7 @@ class FormEditorController extends AbstractBackendController
 
         $popupWindowWidth  = 700;
         $popupWindowHeight = 750;
-        $popupWindowSize = ($this->getBackendUser()->getTSConfigVal('options.popupWindowSize'))
+        $popupWindowSize = $this->getBackendUser()->getTSConfigVal('options.popupWindowSize')
             ? trim($this->getBackendUser()->getTSConfigVal('options.popupWindowSize'))
             : null;
         if (!empty($popupWindowSize)) {

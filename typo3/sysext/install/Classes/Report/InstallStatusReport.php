@@ -103,10 +103,13 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                     }
                 }
             } else {
-                if (!is_writable((PATH_site . $relPath))) {
+                if (!is_writable(PATH_site . $relPath)) {
                     switch ($requirementLevel) {
                         case 0:
-                            $message .= sprintf($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryShouldBeWritable'), (PATH_site . $relPath)) . '<br />';
+                            $message .= sprintf(
+                                $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryShouldBeWritable'),
+                                    PATH_site . $relPath
+                            ) . '<br />';
                             if ($severity < Status::WARNING) {
                                 $value = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_recommendedWritableDirectory');
                                 $severity = Status::WARNING;
@@ -114,7 +117,10 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                             break;
                         case 2:
                             $value = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_requiredWritableDirectory');
-                            $message .= sprintf($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryMustBeWritable'), (PATH_site . $relPath)) . '<br />';
+                            $message .= sprintf(
+                                $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryMustBeWritable'),
+                                    PATH_site . $relPath
+                            ) . '<br />';
                             $severity = Status::ERROR;
                             break;
                         default:

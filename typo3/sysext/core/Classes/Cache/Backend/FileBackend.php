@@ -183,7 +183,13 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
         if ($this->isCacheFileExpired($pathAndFilename)) {
             return false;
         }
-        $dataSize = (int)file_get_contents($pathAndFilename, null, null, (filesize($pathAndFilename) - self::DATASIZE_DIGITS), self::DATASIZE_DIGITS);
+        $dataSize = (int)file_get_contents(
+            $pathAndFilename,
+            null,
+            null,
+            filesize($pathAndFilename) - self::DATASIZE_DIGITS,
+            self::DATASIZE_DIGITS
+        );
         return file_get_contents($pathAndFilename, null, null, 0, $dataSize);
     }
 
@@ -203,7 +209,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
         if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073034);
         }
-        return !$this->isCacheFileExpired(($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension));
+        return !$this->isCacheFileExpired($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension);
     }
 
     /**
@@ -255,7 +261,13 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
                 continue;
             }
             $cacheEntryPathAndFilename = $directoryIterator->getPathname();
-            $index = (int)file_get_contents($cacheEntryPathAndFilename, null, null, (filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS), self::DATASIZE_DIGITS);
+            $index = (int)file_get_contents(
+                $cacheEntryPathAndFilename,
+                null,
+                null,
+                filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS,
+                self::DATASIZE_DIGITS
+            );
             $metaData = file_get_contents($cacheEntryPathAndFilename, null, null, $index);
             $expiryTime = (int)substr($metaData, 0, self::EXPIRYTIME_LENGTH);
             if ($expiryTime !== 0 && $expiryTime < $now) {
@@ -315,7 +327,13 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
         if (file_exists($cacheEntryPathAndFilename) === false) {
             return true;
         }
-        $index = (int)file_get_contents($cacheEntryPathAndFilename, null, null, (filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS), self::DATASIZE_DIGITS);
+        $index = (int)file_get_contents(
+            $cacheEntryPathAndFilename,
+            null,
+            null,
+            filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS,
+            self::DATASIZE_DIGITS
+        );
         $expiryTime = (int)file_get_contents($cacheEntryPathAndFilename, null, null, $index, self::EXPIRYTIME_LENGTH);
         return $expiryTime !== 0 && $expiryTime < $GLOBALS['EXEC_TIME'];
     }

@@ -1234,7 +1234,7 @@ class RelationHandler
                     }
                     $queryBuilder = $connection->createQueryBuilder();
                     $queryBuilder->getRestrictions()->removeAll();
-                    $queryBuilder->select(...(GeneralUtility::trimExplode(',', $fields, true)))
+                    $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
                         ->from($table)
                         ->where($queryBuilder->expr()->in(
                             'uid',
