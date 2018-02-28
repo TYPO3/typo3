@@ -767,7 +767,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         $row = [
             $columnMap->getParentKeyFieldName() => (int)$parentUid,
             $columnMap->getChildKeyFieldName() => (int)$object->getUid(),
-            $columnMap->getChildSortByFieldName() => !is_null($sortingPosition) ? (int)$sortingPosition : 0
+            $columnMap->getChildSortByFieldName() => $sortingPosition !== null ? (int)$sortingPosition : 0
         ];
         $relationTableName = $columnMap->getRelationTableName();
         if ($columnMap->getRelationTablePageIdColumnName() !== null) {

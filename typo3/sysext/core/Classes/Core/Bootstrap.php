@@ -97,7 +97,7 @@ class Bootstrap
      */
     public static function getInstance()
     {
-        if (is_null(static::$instance)) {
+        if (static::$instance === null) {
             $applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
             self::$instance = new static($applicationContext);
             self::$instance->defineTypo3RequestTypes();

@@ -209,7 +209,7 @@ abstract class AbstractNode
      */
     protected function getRelativePathBelowSiteRoot($path = null)
     {
-        if (is_null($path)) {
+        if ($path === null) {
             $path = $this->getAbsolutePath();
         }
         $pathSiteWithoutTrailingSlash = substr(PATH_site, 0, -1);

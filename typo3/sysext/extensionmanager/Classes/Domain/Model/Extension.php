@@ -337,7 +337,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getDefaultState($state = null)
     {
         $defaultState = '';
-        if (is_null($state)) {
+        if ($state === null) {
             $defaultState = self::$defaultStates;
         } else {
             if (is_string($state)) {

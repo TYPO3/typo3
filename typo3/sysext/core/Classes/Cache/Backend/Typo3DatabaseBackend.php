@@ -90,7 +90,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 1236518298
             );
         }
-        if (is_null($lifetime)) {
+        if ($lifetime === null) {
             $lifetime = $this->defaultLifetime;
         }
         if ($lifetime === 0 || $lifetime > $this->maximumLifetime) {

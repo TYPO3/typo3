@@ -1352,7 +1352,7 @@ class BackendUtility
             }
         } else {
             // Find uploaddir automatically
-            if (is_null($uploaddir)) {
+            if ($uploaddir === null) {
                 $uploaddir = $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'];
             }
             $uploaddir = rtrim($uploaddir, '/');
@@ -2770,7 +2770,7 @@ class BackendUtility
         $beUser = static::getBackendUserAuthentication();
         $pageTS_modOptions = $beUser->getTSConfig($TSref, static::getPagesTSconfig($id));
         $BE_USER_modOptions = $beUser->getTSConfig($TSref);
-        if (is_null($BE_USER_modOptions['value'])) {
+        if ($BE_USER_modOptions['value'] === null) {
             unset($BE_USER_modOptions['value']);
         }
         ArrayUtility::mergeRecursiveWithOverrule($pageTS_modOptions, $BE_USER_modOptions);
@@ -4130,7 +4130,7 @@ class BackendUtility
     {
         $whereClause = '';
         if (self::isTableWorkspaceEnabled($table)) {
-            if (is_null($workspaceId)) {
+            if ($workspaceId === null) {
                 $workspaceId = static::getBackendUserAuthentication()->workspace;
             }
             $workspaceId = (int)$workspaceId;

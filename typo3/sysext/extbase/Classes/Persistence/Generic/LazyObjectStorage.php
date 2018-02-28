@@ -174,7 +174,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
             $this->initialize();
             $numberOfElements = count($this->storage);
         }
-        if (is_null($numberOfElements)) {
+        if ($numberOfElements === null) {
             throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('The number of elements could not be determined.', 1252514486);
         }
         return $numberOfElements;

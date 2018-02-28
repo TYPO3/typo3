@@ -7007,7 +7007,7 @@ class ContentObjectRenderer
                     // Handle float
                     $markerValues[$marker] = (float)$tempValue;
                 }
-            } elseif (is_null($tempValue)) {
+            } elseif ($tempValue === null) {
                 // It represents NULL
                 $markerValues[$marker] = 'NULL';
             } elseif (!empty($conf['markers.'][$dottedMarker]['commaSeparatedList'])) {

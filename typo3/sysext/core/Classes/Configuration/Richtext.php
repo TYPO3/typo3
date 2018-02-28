@@ -129,7 +129,7 @@ class Richtext
                 }
                 $typoScriptArray[$key . '.'] = $this->convertPlainArrayToTypoScriptArray($value);
             } else {
-                $typoScriptArray[$key] = is_null($value) ? '' : $value;
+                $typoScriptArray[$key] = $value === null ? '' : $value;
             }
         }
         return $typoScriptArray;

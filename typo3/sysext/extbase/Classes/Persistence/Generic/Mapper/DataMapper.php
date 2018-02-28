@@ -699,7 +699,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
         } elseif (is_int($input)) {
             $parameter = $input;
         } elseif ($input instanceof \DateTime) {
-            if (!is_null($columnMap) && !is_null($columnMap->getDateTimeStorageFormat())) {
+            if ($columnMap !== null && $columnMap->getDateTimeStorageFormat() !== null) {
                 $storageFormat = $columnMap->getDateTimeStorageFormat();
                 $timeZoneToStore = clone $input;
                 // set to UTC to store in database

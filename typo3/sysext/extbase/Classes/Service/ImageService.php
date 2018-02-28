@@ -119,7 +119,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getImage($src, $image, $treatIdAsReference)
     {
-        if (is_null($image)) {
+        if ($image === null) {
             $image = $this->getImageFromSourceString($src, $treatIdAsReference);
         } elseif (is_callable([$image, 'getOriginalResource'])) {
             // We have a domain model, so we need to fetch the FAL resource object from there

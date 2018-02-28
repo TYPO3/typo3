@@ -97,7 +97,7 @@ class FormEngineUtility
     public static function getTSconfigForTableRow($table, $row, $field = '')
     {
         static $cache;
-        if (is_null($cache)) {
+        if ($cache === null) {
             $cache = [];
         }
         $cacheIdentifier = $table . ':' . $row['uid'];

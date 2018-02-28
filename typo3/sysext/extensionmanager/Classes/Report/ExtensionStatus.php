@@ -95,7 +95,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         /** @var $mainRepository \TYPO3\CMS\Extensionmanager\Domain\Model\Repository */
         $mainRepository = $this->repositoryRepository->findOneTypo3OrgRepository();
 
-        if (is_null($mainRepository) === true) {
+        if ($mainRepository === null) {
             $value = $this->languageService->getLL('report.status.mainRepository.notFound.value');
             $message = $this->languageService->getLL('report.status.mainRepository.notFound.message');
             $severity = \TYPO3\CMS\Reports\Status::ERROR;

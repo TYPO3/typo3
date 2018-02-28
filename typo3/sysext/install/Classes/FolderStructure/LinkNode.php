@@ -35,7 +35,7 @@ class LinkNode extends AbstractNode implements NodeInterface
      */
     public function __construct(array $structure, NodeInterface $parent = null)
     {
-        if (is_null($parent)) {
+        if ($parent === null) {
             throw new Exception\InvalidArgumentException(
                 'Link node must have parent',
                 1380485700

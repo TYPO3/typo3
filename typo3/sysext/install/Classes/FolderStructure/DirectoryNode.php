@@ -36,7 +36,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      */
     public function __construct(array $structure, NodeInterface $parent = null)
     {
-        if (is_null($parent)) {
+        if ($parent === null) {
             throw new Exception\InvalidArgumentException(
                 'Node must have parent',
                 1366222203

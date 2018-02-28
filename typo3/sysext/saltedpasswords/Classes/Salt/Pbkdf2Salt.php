@@ -294,7 +294,7 @@ class Pbkdf2Salt extends AbstractComposedSalt
         }
         // Check whether the iteration count used differs from the standard number.
         $iterationCount = $this->getIterationCount($saltedPW);
-        return !is_null($iterationCount) && $iterationCount < $this->getHashCount();
+        return $iterationCount !== null && $iterationCount < $this->getHashCount();
     }
 
     /**
@@ -355,7 +355,7 @@ class Pbkdf2Salt extends AbstractComposedSalt
      */
     public function setHashCount(int $hashCount = null)
     {
-        self::$hashCount = !is_null($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
+        self::$hashCount = $hashCount !== null && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
     }
 
     /**

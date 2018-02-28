@@ -4045,7 +4045,7 @@ class GeneralUtility
      */
     public static function presetApplicationContext(ApplicationContext $applicationContext)
     {
-        if (is_null(static::$applicationContext)) {
+        if (static::$applicationContext === null) {
             static::$applicationContext = $applicationContext;
         } else {
             throw new \RuntimeException('Trying to override applicationContext which has already been defined!', 1376084316);

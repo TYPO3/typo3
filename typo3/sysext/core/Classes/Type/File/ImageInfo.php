@@ -57,7 +57,7 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
      */
     protected function getImageSizes()
     {
-        if (is_null($this->imageSizes)) {
+        if ($this->imageSizes === null) {
             $this->imageSizes = getimagesize($this->getPathname());
 
             // Fallback to IM identify

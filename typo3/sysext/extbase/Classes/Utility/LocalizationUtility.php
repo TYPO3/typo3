@@ -286,7 +286,7 @@ class LocalizationUtility
      */
     protected static function getConfigurationManager()
     {
-        if (!is_null(static::$configurationManager)) {
+        if (static::$configurationManager !== null) {
             return static::$configurationManager;
         }
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);

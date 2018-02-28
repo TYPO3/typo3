@@ -1631,7 +1631,7 @@ class EditDocumentController
             && $languageField
             && $transOrigPointerField
         ) {
-            if (is_null($pid)) {
+            if ($pid === null) {
                 $row = BackendUtility::getRecord($table, $uid, 'pid');
                 $pid = $row['pid'];
             }

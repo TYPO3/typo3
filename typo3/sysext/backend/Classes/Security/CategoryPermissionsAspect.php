@@ -93,7 +93,7 @@ class CategoryPermissionsAspect
 
                 foreach ($categoryMountPoints as $categoryMountPoint) {
                     $treeNode = $this->lookUpCategoryMountPointInTreeNodes((int)$categoryMountPoint, $treeNodeCollection);
-                    if (!is_null($treeNode)) {
+                    if ($treeNode !== null) {
                         $securedTreeNodeCollection->append($treeNode);
                     }
                 }
@@ -128,7 +128,7 @@ class CategoryPermissionsAspect
 
                 /** @var TreeNode $node */
                 $node = $this->lookUpCategoryMountPointInTreeNodes($categoryMountPoint, $treeNode->getChildNodes());
-                if (!is_null($node)) {
+                if ($node !== null) {
                     $result = $node;
                     break;
                 }

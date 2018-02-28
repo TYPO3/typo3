@@ -103,7 +103,7 @@ class ImageViewHelper extends AbstractViewHelper
         $cropString = $arguments['crop'];
         $absolute = $arguments['absolute'];
 
-        if ((is_null($src) && is_null($image)) || (!is_null($src) && !is_null($image))) {
+        if (($src === null && $image === null) || ($src !== null && $image !== null)) {
             throw new Exception('You must either specify a string src or a File object.', 1460976233);
         }
 

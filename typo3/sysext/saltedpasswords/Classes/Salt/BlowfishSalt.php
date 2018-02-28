@@ -211,7 +211,7 @@ class BlowfishSalt extends Md5Salt
         }
         // Check whether the iteration count used differs from the standard number.
         $countLog2 = $this->getCountLog2($saltedPW);
-        return !is_null($countLog2) && $countLog2 < $this->getHashCount();
+        return $countLog2 !== null && $countLog2 < $this->getHashCount();
     }
 
     /**
@@ -272,7 +272,7 @@ class BlowfishSalt extends Md5Salt
      */
     public function setHashCount(int $hashCount = null)
     {
-        self::$hashCount = !is_null($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
+        self::$hashCount = $hashCount !== null && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
     }
 
     /**

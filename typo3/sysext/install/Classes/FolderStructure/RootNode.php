@@ -31,7 +31,7 @@ class RootNode extends DirectoryNode implements RootNodeInterface
      */
     public function __construct(array $structure, NodeInterface $parent = null)
     {
-        if (!is_null($parent)) {
+        if ($parent !== null) {
             throw new Exception\RootNodeException(
                 'Root node must not have parent',
                 1366140117

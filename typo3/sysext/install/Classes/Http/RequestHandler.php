@@ -130,7 +130,7 @@ class RequestHandler implements RequestHandlerInterface
                     'success' => true,
                 ]);
             } else {
-                if (is_null($password) || empty($password)) {
+                if ($password === null || empty($password)) {
                     $messageQueue = (new FlashMessageQueue('install'))->enqueue(
                         new FlashMessage('Please enter the install tool password', '', FlashMessage::ERROR)
                     );

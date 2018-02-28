@@ -104,7 +104,7 @@ class EidUtility
     {
         // Cached instance
         static $tsfe = null;
-        if (is_null($tsfe)) {
+        if ($tsfe === null) {
             $tsfe = GeneralUtility::makeInstance(TypoScriptFrontendController::class, null, 0, 0);
         }
         return $tsfe;

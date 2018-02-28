@@ -109,7 +109,7 @@ class DebuggerUtility
             $dump = sprintf('%s (%s)', self::ansiEscapeWrap($value, '35', $ansiColors), gettype($value));
         } elseif (is_bool($value)) {
             $dump = $value ? self::ansiEscapeWrap('TRUE', '32', $ansiColors) : self::ansiEscapeWrap('FALSE', '32', $ansiColors);
-        } elseif (is_null($value) || is_resource($value)) {
+        } elseif ($value === null || is_resource($value)) {
             $dump = gettype($value);
         } elseif (is_array($value)) {
             $dump = self::renderArray($value, $level + 1, $plainText, $ansiColors);

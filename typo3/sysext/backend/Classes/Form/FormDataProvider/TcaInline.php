@@ -93,13 +93,13 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
      */
     protected function addInlineFirstPid(array $result)
     {
-        if (is_null($result['inlineFirstPid'])) {
+        if ($result['inlineFirstPid'] === null) {
             $table = $result['tableName'];
             $row = $result['databaseRow'];
             // If the parent is a page, use the uid(!) of the (new?) page as pid for the child records:
             if ($table === 'pages') {
                 $liveVersionId = BackendUtility::getLiveVersionIdOfRecord('pages', $row['uid']);
-                $pid = is_null($liveVersionId) ? $row['uid'] : $liveVersionId;
+                $pid = $liveVersionId === null ? $row['uid'] : $liveVersionId;
             } elseif ($row['pid'] < 0) {
                 $prevRec = BackendUtility::getRecord($table, abs($row['pid']));
                 $pid = $prevRec['pid'];

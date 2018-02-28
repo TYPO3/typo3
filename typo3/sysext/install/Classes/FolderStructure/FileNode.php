@@ -40,7 +40,7 @@ class FileNode extends AbstractNode implements NodeInterface
      */
     public function __construct(array $structure, NodeInterface $parent = null)
     {
-        if (is_null($parent)) {
+        if ($parent === null) {
             throw new Exception\InvalidArgumentException(
                 'File node must have parent',
                 1366927513
@@ -129,7 +129,7 @@ class FileNode extends AbstractNode implements NodeInterface
             $resultCreateFile = $this->createFile();
             $result[] = $resultCreateFile;
             if ($resultCreateFile->getSeverity() === FlashMessage::OK
-                && !is_null($this->targetContent)
+                && $this->targetContent !== null
             ) {
                 $result[] = $this->setContent();
                 if (!$this->isPermissionCorrect()) {
@@ -250,7 +250,7 @@ class FileNode extends AbstractNode implements NodeInterface
             );
         }
         $result = false;
-        if (is_null($this->targetContent)) {
+        if ($this->targetContent === null) {
             $result = true;
         } else {
             $targetContentHash = md5($this->targetContent);
@@ -277,7 +277,7 @@ class FileNode extends AbstractNode implements NodeInterface
                 1367060201
             );
         }
-        if (is_null($this->targetContent)) {
+        if ($this->targetContent === null) {
             throw new Exception(
                 'Target content not defined for ' . $absolutePath,
                 1367060202

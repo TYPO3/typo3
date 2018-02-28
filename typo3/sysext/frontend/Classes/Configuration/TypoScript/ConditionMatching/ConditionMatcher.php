@@ -102,7 +102,7 @@ class ConditionMatcher extends AbstractConditionMatcher
     {
         $vars = explode(':', $var, 2);
         $val = $this->getVariableCommon($vars);
-        if (is_null($val)) {
+        if ($val === null) {
             $splitAgain = explode('|', $vars[1], 2);
             $k = trim($splitAgain[0]);
             if ($k) {

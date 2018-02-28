@@ -41,7 +41,7 @@ class WarningMessagePostProcessor
         /** @var Registry $registry */
         $registry = GeneralUtility::makeInstance(Registry::class);
         $highestSeverity = $registry->get('tx_reports', 'status.highestSeverity', null);
-        if (!is_null($highestSeverity)) {
+        if ($highestSeverity !== null) {
             if ($highestSeverity > ReportStatus::OK) {
                 // Display a message that there's something wrong and that
                 // the admin should take a look at the detailed status report

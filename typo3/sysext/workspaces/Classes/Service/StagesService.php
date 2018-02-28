@@ -316,7 +316,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
         $workspaceStageRecs = $this->getStagesForWS();
         if (is_array($workspaceStageRecs) && !empty($workspaceStageRecs)) {
             reset($workspaceStageRecs);
-            while (!is_null(($workspaceStageRecKey = key($workspaceStageRecs)))) {
+            while (($workspaceStageRecKey = key($workspaceStageRecs)) !== null) {
                 $workspaceStageRec = current($workspaceStageRecs);
                 if ($workspaceStageRec['uid'] == $stageId) {
                     $nextStage = next($workspaceStageRecs);
@@ -383,7 +383,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
         $workspaceStageRecs = $this->getStagesForWS();
         if (is_array($workspaceStageRecs) && !empty($workspaceStageRecs)) {
             end($workspaceStageRecs);
-            while (!is_null(($workspaceStageRecKey = key($workspaceStageRecs)))) {
+            while (($workspaceStageRecKey = key($workspaceStageRecs)) !== null) {
                 $workspaceStageRec = current($workspaceStageRecs);
                 if ($workspaceStageRec['uid'] == $stageId) {
                     $prevStage = prev($workspaceStageRecs);

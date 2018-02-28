@@ -424,7 +424,7 @@ class ArrayUtility
                 }
             } elseif (is_int($value) || is_float($value)) {
                 $lines .= $value . ',' . LF;
-            } elseif (is_null($value)) {
+            } elseif ($value === null) {
                 $lines .= 'null' . ',' . LF;
             } elseif (is_bool($value)) {
                 $lines .= $value ? 'true' : 'false';

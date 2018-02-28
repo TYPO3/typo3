@@ -143,7 +143,7 @@ class ExtensionListUtility implements \SplObserver
      */
     public function import($localExtensionListFile, $repositoryUid = null)
     {
-        if (!is_null($repositoryUid) && is_int($repositoryUid)) {
+        if ($repositoryUid !== null && is_int($repositoryUid)) {
             $this->repositoryUid = $repositoryUid;
         }
         $zlibStream = 'compress.zlib://';
@@ -192,11 +192,11 @@ class ExtensionListUtility implements \SplObserver
             0,
             (int)$subject->getAlldownloadcounter(),
             (int)$subject->getDownloadcounter(),
-            !is_null($subject->getTitle()) ? $subject->getTitle() : '',
+            $subject->getTitle() !== null ? $subject->getTitle() : '',
             $subject->getOwnerusername(),
-            !is_null($subject->getAuthorname()) ? $subject->getAuthorname() : '',
-            !is_null($subject->getAuthoremail()) ? $subject->getAuthoremail() : '',
-            !is_null($subject->getAuthorcompany()) ? $subject->getAuthorcompany() : '',
+            $subject->getAuthorname() !== null ? $subject->getAuthorname() : '',
+            $subject->getAuthoremail() !== null ? $subject->getAuthoremail() : '',
+            $subject->getAuthorcompany() !== null ? $subject->getAuthorcompany() : '',
             (int)$subject->getLastuploaddate(),
             $subject->getT3xfilemd5(),
             $this->repositoryUid,

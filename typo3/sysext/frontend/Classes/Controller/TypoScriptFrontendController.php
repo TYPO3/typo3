@@ -1721,7 +1721,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function checkPageGroupAccess($row, $groupList = null)
     {
-        if (is_null($groupList)) {
+        if ($groupList === null) {
             $groupList = $this->gr_list;
         }
         if (!is_array($groupList)) {

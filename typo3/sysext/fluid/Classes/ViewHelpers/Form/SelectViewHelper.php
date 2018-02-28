@@ -271,7 +271,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
             return true;
         }
         if ($this->hasArgument('multiple')) {
-            if (is_null($selectedValue) && $this->arguments['selectAllByDefault'] === true) {
+            if ($selectedValue === null && $this->arguments['selectAllByDefault'] === true) {
                 return true;
             }
             if (is_array($selectedValue) && in_array($value, $selectedValue)) {

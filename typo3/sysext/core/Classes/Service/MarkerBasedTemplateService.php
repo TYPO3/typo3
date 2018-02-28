@@ -351,15 +351,15 @@ class MarkerBasedTemplateService
     {
         $runtimeCache = $this->getRuntimeCache();
         // If not arrays then set them
-        if (is_null($markContentArray)) {
+        if ($markContentArray === null) {
             // Plain markers
             $markContentArray = [];
         }
-        if (is_null($subpartContentArray)) {
+        if ($subpartContentArray === null) {
             // Subparts being directly substituted
             $subpartContentArray = [];
         }
-        if (is_null($wrappedSubpartContentArray)) {
+        if ($wrappedSubpartContentArray === null) {
             // Subparts being wrapped
             $wrappedSubpartContentArray = [];
         }
