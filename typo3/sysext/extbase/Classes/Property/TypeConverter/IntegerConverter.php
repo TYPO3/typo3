@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * @api
  */
-class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface
+class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter
 {
     /**
      * @var array<string>

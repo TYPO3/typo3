@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\Dispatcher;
-use TYPO3\CMS\Core\Http\DispatcherInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -30,7 +29,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Dispatcher which resolves a route to call a controller and method (but also a callable)
  */
-class RouteDispatcher extends Dispatcher implements DispatcherInterface
+class RouteDispatcher extends Dispatcher
 {
     /**
      * Main method to resolve the route and checks the target of the route, and tries to call it.

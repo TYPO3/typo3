@@ -14,12 +14,10 @@ namespace TYPO3\CMS\Install\Configuration\Image;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\Configuration;
-
 /**
  * Preset for ImageMagick version 6 or higher
  */
-class ImageMagick6Preset extends AbstractImagePreset implements Configuration\PresetInterface
+class ImageMagick6Preset extends AbstractImagePreset
 {
     /**
      * @var string Name of preset

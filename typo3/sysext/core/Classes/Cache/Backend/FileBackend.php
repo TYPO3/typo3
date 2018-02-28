@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  * This file is a backport from FLOW3
  * @api
  */
-class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implements \TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface, \TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface, \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface
+class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implements \TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface, \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface
 {
     const SEPARATOR = '^';
     const EXPIRYTIME_FORMAT = 'YmdHis';

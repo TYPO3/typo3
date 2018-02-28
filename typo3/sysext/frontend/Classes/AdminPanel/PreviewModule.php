@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Admin Panel Preview Module
  */
-class PreviewModule extends AbstractModule implements AdminPanelModuleInterface
+class PreviewModule extends AbstractModule
 {
 
     /**

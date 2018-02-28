@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * @api experimental! This class is experimental and subject to change!
  */
-class StaticFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter implements \TYPO3\CMS\Core\SingletonInterface
+class StaticFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter
 {
     /**
      * @var array<string>

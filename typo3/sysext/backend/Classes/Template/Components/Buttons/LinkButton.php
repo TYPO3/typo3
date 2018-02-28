@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  *      ->setTitle('Save');
  * $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
  */
-class LinkButton extends AbstractButton implements ButtonInterface
+class LinkButton extends AbstractButton
 {
     /**
      * HREF attribute of the link

@@ -120,7 +120,7 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  * **This class is NOT meant to be sub classed by developers.**
  * @internal
  */
-class FluidFormRenderer extends AbstractElementRenderer implements RendererInterface
+class FluidFormRenderer extends AbstractElementRenderer
 {
 
     /**

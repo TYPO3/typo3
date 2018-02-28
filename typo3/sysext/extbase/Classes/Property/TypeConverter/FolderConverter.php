@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * @api experimental! This class is experimental and subject to change!
  */
-class FolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileFolderConverter implements \TYPO3\CMS\Core\SingletonInterface
+class FolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileFolderConverter
 {
     /**
      * @var array<string>

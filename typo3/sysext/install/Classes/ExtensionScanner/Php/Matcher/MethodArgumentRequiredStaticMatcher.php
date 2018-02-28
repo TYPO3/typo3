@@ -19,13 +19,12 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name\FullyQualified;
-use TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface;
 
 /**
  * Find usages of static method calls which gained new mandatory arguments.
  * This is a "strong" match if class name is given and "weak" if not.
  */
-class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher implements CodeScannerInterface
+class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
 {
     /**
      * Prepare $this->flatMatcherDefinitions once and validate config

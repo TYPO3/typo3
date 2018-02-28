@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
-use TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface;
 
 /**
  * Find usages of method calls which changed signature and dropped arguments,
@@ -25,7 +24,7 @@ use TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface;
  * This is a "weak" match since we're just testing for method name
  * but not connected class.
  */
-class MethodArgumentDroppedMatcher extends AbstractCoreMatcher implements CodeScannerInterface
+class MethodArgumentDroppedMatcher extends AbstractCoreMatcher
 {
     /**
      * Prepare $this->flatMatcherDefinitions once and validate config

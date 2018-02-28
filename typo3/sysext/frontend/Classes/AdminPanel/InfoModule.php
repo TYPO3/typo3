@@ -23,7 +23,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Admin Panel Info Module
  */
-class InfoModule extends AbstractModule implements AdminPanelModuleInterface
+class InfoModule extends AbstractModule
 {
     /**
      * Creates the content for the "info" section ("module") of the Admin Panel

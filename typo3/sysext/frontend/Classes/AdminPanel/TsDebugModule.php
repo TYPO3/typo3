@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Admin Panel TypoScript Debug Module
  */
-class TsDebugModule extends AbstractModule implements AdminPanelModuleInterface
+class TsDebugModule extends AbstractModule
 {
 
     /**

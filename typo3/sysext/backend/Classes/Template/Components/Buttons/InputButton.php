@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  *      ->setTitle('Save');
  * $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
  */
-class InputButton extends AbstractButton implements ButtonInterface
+class InputButton extends AbstractButton
 {
     /**
      * Name Attribute of the button

@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\MethodCall;
-use TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface;
 
 /**
  * Match method usages where arguments "in between" are unused but not given as "null":
@@ -27,7 +26,7 @@ use TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface;
  * but called with:
  * ->foo('arg1', 'notNull', null, 'arg4');
  */
-class MethodArgumentUnusedMatcher extends AbstractCoreMatcher implements CodeScannerInterface
+class MethodArgumentUnusedMatcher extends AbstractCoreMatcher
 {
     /**
      * Prepare $this->flatMatcherDefinitions once and validate config

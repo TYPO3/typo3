@@ -24,7 +24,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Admin Panel Edit Module
  */
-class EditModule extends AbstractModule implements AdminPanelModuleInterface
+class EditModule extends AbstractModule
 {
     /**
      * Creates the content for the "edit" section ("module") of the Admin Panel

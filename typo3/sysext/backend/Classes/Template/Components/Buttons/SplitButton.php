@@ -47,7 +47,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  *      ->addItem($saveAndCloseButton)
  *      ->addItem($saveAndShowPageButton);
  */
-class SplitButton extends AbstractButton implements ButtonInterface
+class SplitButton extends AbstractButton
 {
     /**
      * Internal var that determines whether the split button has received any primary

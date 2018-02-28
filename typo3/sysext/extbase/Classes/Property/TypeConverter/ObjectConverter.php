@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * @api
  */
-class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface
+class ObjectConverter extends AbstractTypeConverter
 {
     /**
      * @var int

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\AdminPanel;
 
-class CacheModule extends AbstractModule implements AdminPanelModuleInterface
+class CacheModule extends AbstractModule
 {
     /**
      * Creates the content for the "cache" section ("module") of the Admin Panel

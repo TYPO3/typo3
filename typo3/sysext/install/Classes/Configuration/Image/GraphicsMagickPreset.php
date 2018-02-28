@@ -14,12 +14,10 @@ namespace TYPO3\CMS\Install\Configuration\Image;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\Configuration;
-
 /**
  * Preset for GraphicsMagick
  */
-class GraphicsMagickPreset extends AbstractImagePreset implements Configuration\PresetInterface
+class GraphicsMagickPreset extends AbstractImagePreset
 {
     /**
      * @var string Name of preset
