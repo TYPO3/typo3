@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Exception;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -36,8 +38,10 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Script Class for rendering the login form
  */
-class LoginController
+class LoginController implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * The URL to redirect to after login.
      *
@@ -169,6 +173,12 @@ class LoginController
         // Background Image
         if (!empty($extConf['loginBackgroundImage'])) {
             $backgroundImage = $this->getUriForFileName($extConf['loginBackgroundImage']);
+            if ($backgroundImage === '') {
+                $this->logger->warning(
+                    'The configured TYPO3 backend login background image "' . htmlspecialchars($extConf['loginBackgroundImage']) .
+                    '" can\'t be resolved. Please check if the file exists and the extension is activated.'
+                );
+            }
             $this->getDocumentTemplate()->inDocStylesArray[] = '
 				.typo3-login-carousel-control.right,
 				.typo3-login-carousel-control.left,
@@ -201,6 +211,12 @@ class LoginController
 
         // Logo
         if (!empty($extConf['loginLogo'])) {
+            if ($this->getUriForFileName($extConf['loginLogo']) === '') {
+                $this->logger->warning(
+                    'The configured TYPO3 backend login logo "' . htmlspecialchars($extConf['loginLogo']) .
+                    '" can\'t be resolved. Please check if the file exists and the extension is activated.'
+                );
+            }
             $logo = $extConf['loginLogo'];
         } else {
             // Use TYPO3 logo depending on highlight color
@@ -402,20 +418,16 @@ class LoginController
      */
     private function getUriForFileName($filename)
     {
-        if (strpos($filename, '://')) {
+        // Check if it's already a URL
+        if (preg_match('/^(https?:)?\/\//', $filename)) {
             return $filename;
         }
-        $urlPrefix = '';
-        if (strpos($filename, 'EXT:') === 0) {
-            $absoluteFilename = GeneralUtility::getFileAbsFileName($filename);
-            $filename = '';
-            if ($absoluteFilename !== '') {
-                $filename = PathUtility::getAbsoluteWebPath($absoluteFilename);
-            }
-        } elseif (strpos($filename, '/') !== 0) {
-            $urlPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+        $absoluteFilename = GeneralUtility::getFileAbsFileName(ltrim($filename, '/'));
+        $filename = '';
+        if ($absoluteFilename !== '' && @is_file($absoluteFilename)) {
+            $filename = PathUtility::getAbsoluteWebPath($absoluteFilename);
         }
-        return $urlPrefix . $filename;
+        return $filename;
     }
 
     /**
