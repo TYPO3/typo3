@@ -200,13 +200,24 @@ define(['jquery',
        *
        * @param string
        * @param array
-       *              args[0] = html
+       *              args[0] = response
        * @return void
        * @subscribe core/ajax/saveFormDefinition/success
        */
       getPublisherSubscriber().subscribe('core/ajax/saveFormDefinition/success', function(topic, args) {
         getFormEditorApp().setUnsavedContent(false);
         getViewModel().showSaveSuccessMessage();
+
+        getFormEditorApp().setFormDefinition(args[0]['formDefinition']);
+
+        getViewModel().addStructureRootElementSelection();
+        getFormEditorApp().setCurrentlySelectedFormElement(getRootFormElement());
+        getViewModel().setStructureRootElementTitle();
+        getViewModel().setStageHeadline();
+        getViewModel().renderAbstractStageArea();
+        getViewModel().renewStructure();
+        getViewModel().renderPagination();
+        getViewModel().renderInspectorEditors();
       });
 
       /**
@@ -811,9 +822,6 @@ define(['jquery',
        * @subscribe core/formElement/somePropertyChanged
        */
       getPublisherSubscriber().subscribe('core/formElement/somePropertyChanged', function(topic, args) {
-        var hasError, validationElement, validationResults;
-
-        validationResults = [];
         if ('renderables' !== args[0]) {
           if (!getFormEditorApp().isRootFormElementSelected() && 'label' === args[0]) {
             getViewModel().getStructure().setTreeNodeTitle();
