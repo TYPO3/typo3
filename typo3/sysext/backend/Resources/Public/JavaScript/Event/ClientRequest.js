@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __extends=this&&this.__extends||function(){var a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(a,b){a.__proto__=b}||function(a,b){for(var c in b)b.hasOwnProperty(c)&&(a[c]=b[c])};return function(b,c){function d(){this.constructor=b}a(b,c),b.prototype=null===c?Object.create(c):(d.prototype=c.prototype,new d)}}();define(["require","exports","./InteractionRequest"],function(a,b,c){"use strict";var d=function(a){function b(b,c){void 0===c&&(c=null);var d=a.call(this,b)||this;return d.clientEvent=c,d}return __extends(b,a),b}(c);return d});
+var __extends=this&&this.__extends||function(){var t=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,n){t.__proto__=n}||function(t,n){for(var e in n)n.hasOwnProperty(e)&&(t[e]=n[e])};return function(n,e){function r(){this.constructor=n}t(n,e),n.prototype=null===e?Object.create(e):(r.prototype=e.prototype,new r)}}();define(["require","exports","./InteractionRequest"],function(t,n,e){"use strict";return function(t){function n(n,e){void 0===e&&(e=null);var r=t.call(this,n)||this;return r.clientEvent=e,r}return __extends(n,t),n}(e)});

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],function(a,b){"use strict";Object.defineProperty(b,"__esModule",{value:!0});var c;!function(a){a[a.notice=-2]="notice",a[a.info=-1]="info",a[a.ok=0]="ok",a[a.warning=1]="warning",a[a.error=2]="error"}(c=b.SeverityEnum||(b.SeverityEnum={}))});
+define(["require","exports"],function(e,r){"use strict";var n;Object.defineProperty(r,"__esModule",{value:!0}),(n=r.SeverityEnum||(r.SeverityEnum={}))[n.notice=-2]="notice",n[n.info=-1]="info",n[n.ok=0]="ok",n[n.warning=1]="warning",n[n.error=2]="error"});
