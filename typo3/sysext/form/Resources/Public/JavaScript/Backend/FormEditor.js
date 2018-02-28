@@ -132,6 +132,17 @@ define(['jquery',
       };
 
       /**
+       * @internal
+       *
+       * @return void
+       * @throws 1519855175
+       */
+      function setFormDefinition(formDefinition) {
+        assert('object' === $.type(formDefinition), 'Invalid parameter "formDefinition"', 1519855175);
+        _getApplicationStateStack().setCurrentState('formDefinition', _getFactory().createFormElement(formDefinition, undefined, undefined, true));
+      };
+
+      /**
        * @public
        *
        * @param string type
@@ -1119,6 +1130,7 @@ define(['jquery',
         getMaximalApplicationStates: getMaximalApplicationStates,
         getCurrentApplicationStates: getCurrentApplicationStates,
         getCurrentApplicationStatePosition: getCurrentApplicationStatePosition,
+        setFormDefinition: setFormDefinition,
 
         run: run
       };
