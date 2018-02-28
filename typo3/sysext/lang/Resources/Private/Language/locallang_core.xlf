@@ -158,7 +158,7 @@ Do you want to continue WITHOUT saving?</source>
 				<source>End</source>
 			</trans-unit>
 			<trans-unit id="labels.minutesHoursDaysYears">
-				<source> min| hrs| days| yrs| min| hour| day| year</source>
+				<source>min|hrs|days|yrs|min|hour|day|year</source>
 			</trans-unit>
 			<trans-unit id="labels.menu">
 				<source>Menu:</source>
