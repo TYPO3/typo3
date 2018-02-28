@@ -441,7 +441,7 @@ define(['jquery',
         text: TYPO3.lang['button.undo'],
         btnClass: 'btn-success',
         trigger: function() {
-          Recycler.callAjaxAction('undo', typeof records === 'object' ? records : [records], isMassUndo);
+          Recycler.callAjaxAction('undo', typeof records === 'object' ? records : [records], isMassUndo, $message.find('#undo-recursive').prop('checked') ? 1 : 0);
         }
       }
     ]);
@@ -452,8 +452,9 @@ define(['jquery',
    * @param {String} action
    * @param {Object} records
    * @param {Boolean} isMassAction
+   * @param {Boolean} recursive
    */
-  Recycler.callAjaxAction = function(action, records, isMassAction) {
+  Recycler.callAjaxAction = function(action, records, isMassAction, recursive) {
     var data = {
         records: records,
         action: ''
@@ -461,7 +462,7 @@ define(['jquery',
       reloadPageTree = false;
     if (action === 'undo') {
       data.action = 'undoRecords';
-      data.recursive = $('#undo-recursive').prop('checked') ? 1 : 0;
+      data.recursive = recursive ? 1 : 0;
       reloadPageTree = true;
     } else if (action === 'delete') {
       data.action = 'deleteRecords';
