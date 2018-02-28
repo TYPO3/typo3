@@ -270,7 +270,6 @@ class SoftReferenceIndex
                         if ($linkDetails['type'] === LinkService::TYPE_FILE && preg_match('/file\?uid=(\d+)/', $matches[1], $fileIdMatch)) {
                             $token = $this->makeTokenID($key);
                             $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $linkTags[$key]);
-                            $elements[$key] = $linkDetails;
                             $elements[$key]['subst'] = [
                                 'type' => 'db',
                                 'recordRef' => 'sys_file:' . $fileIdMatch[1],
@@ -280,7 +279,6 @@ class SoftReferenceIndex
                         } elseif ($linkDetails['type'] === LinkService::TYPE_PAGE && preg_match('/page\?uid=(\d+)#?(\d+)?/', $matches[1], $pageAndAnchorMatches)) {
                             $token = $this->makeTokenID($key);
                             $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $linkTags[$key]);
-                            $elements[$key] = $linkDetails;
                             $elements[$key]['subst'] = [
                                 'type' => 'db',
                                 'recordRef' => 'pages:' . $linkDetails['pageuid'] . (isset($pageAndAnchorMatches[2]) ? '#c' . $pageAndAnchorMatches[2] : ''),
@@ -290,7 +288,6 @@ class SoftReferenceIndex
                         } elseif ($linkDetails['type'] === LinkService::TYPE_URL) {
                             $token = $this->makeTokenID($key);
                             $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $linkTags[$key]);
-                            $elements[$key] = $linkDetails;
                             $elements[$key]['subst'] = [
                                 'type' => 'external',
                                 'tokenID' => $token,
