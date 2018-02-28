@@ -1045,6 +1045,20 @@ define([
       $('<p />').html(TYPO3.lang['tooltip.' + selectedAction + 'All'] + '<br><br>' + TYPO3.lang['tooltip.affectWholeWorkspace']),
       Severity.warning
     );
+
+    var sendRequestsUntilAllProcessed = function(response) {
+      var result = response[0].result;
+      // Make sure to process all items
+      if (result.processed < result.total) {
+        Workspaces.sendRemoteRequest(
+          Workspaces.generateRemoteMassActionsPayload(massAction, result)
+        ).done(sendRequestsUntilAllProcessed);
+      } else {
+        Backend.getWorkspaceInfos();
+        Wizard.dismiss();
+      }
+    }
+
     Wizard.addFinalProcessingSlide(function() {
       Workspaces.sendRemoteRequest(
         Workspaces.generateRemoteMassActionsPayload(massAction, {
@@ -1054,15 +1068,7 @@ define([
           language: Backend.settings.language,
           swap: doSwap
         })
-      ).done(function(response) {
-        var payload = response[0].result;
-        Workspaces.sendRemoteRequest(
-          Workspaces.generateRemoteMassActionsPayload(massAction, payload)
-        ).done(function() {
-          Backend.getWorkspaceInfos();
-          Wizard.dismiss();
-        });
-      });
+      ).done(sendRequestsUntilAllProcessed);
     }).done(function() {
       Wizard.show();
 
