@@ -332,9 +332,7 @@ class ConfigurationManager
             $localConfigurationFile,
             '<?php' . LF .
                 'return ' .
-                    ArrayUtility::arrayExport(
-                        ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($configuration)
-                    ) .
+                    ArrayUtility::arrayExport($configuration) .
                 ';' . LF,
             true
         );
