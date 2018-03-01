@@ -58,11 +58,6 @@ class Bootstrap
     protected $earlyInstances = [];
 
     /**
-     * @var bool
-     */
-    protected static $usesComposerClassLoading = false;
-
-    /**
      * Disable direct creation of this object.
      * Set unique requestId and the application context
      *
@@ -79,7 +74,7 @@ class Bootstrap
      */
     public static function usesComposerClassLoading()
     {
-        return self::$usesComposerClassLoading;
+        return Environment::isComposerMode();
     }
 
     /**
@@ -162,7 +157,8 @@ class Bootstrap
         }
         GeneralUtility::presetApplicationContext($this->applicationContext);
         SystemEnvironmentBuilder::run($entryPointLevel);
-        if (!self::$usesComposerClassLoading && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
+        SystemEnvironmentBuilder::initializeEnvironment($this->applicationContext);
+        if (!Environment::isComposerMode() && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
             ClassLoadingInformation::registerClassLoadingInformation();
         }
         return $this;
@@ -179,9 +175,6 @@ class Bootstrap
     {
         $this->setEarlyInstance(\Composer\Autoload\ClassLoader::class, $classLoader);
         ClassLoadingInformation::setClassLoader($classLoader);
-        if (defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE) {
-            self::$usesComposerClassLoading = true;
-        }
 
         /** @see initializeAnnotationRegistry */
         AnnotationRegistry::registerLoader([$classLoader, 'loadClass']);

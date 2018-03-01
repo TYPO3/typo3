@@ -18,8 +18,8 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -613,7 +613,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function registerTransientClassLoadingInformationForPackage(PackageInterface $package)
     {
-        if (Bootstrap::usesComposerClassLoading()) {
+        if (Environment::isComposerMode()) {
             return;
         }
         ClassLoadingInformation::registerTransientClassLoadingInformationForPackage($package);

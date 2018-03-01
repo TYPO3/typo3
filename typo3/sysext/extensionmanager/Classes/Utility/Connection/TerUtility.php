@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Connection;
  */
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
@@ -45,7 +45,7 @@ class TerUtility
     {
         if (
             (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode')
-            || Bootstrap::usesComposerClassLoading()
+            || Environment::isComposerMode()
         ) {
             throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078620);
         }

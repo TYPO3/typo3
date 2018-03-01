@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -117,7 +117,7 @@ class ListController extends AbstractModuleController
      */
     protected function addComposerModeNotification()
     {
-        if (Bootstrap::usesComposerClassLoading()) {
+        if (Environment::isComposerMode()) {
             $this->addFlashMessage(
                 LocalizationUtility::translate(
                     'composerMode.message',
@@ -253,7 +253,7 @@ class ListController extends AbstractModuleController
      */
     protected function registerDocheaderButtons()
     {
-        if (Bootstrap::usesComposerClassLoading()) {
+        if (Environment::isComposerMode()) {
             return;
         }
 

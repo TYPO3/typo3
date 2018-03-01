@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
@@ -180,7 +181,7 @@ class UpgradeController extends AbstractController
             'extensionCompatTesterUninstallToken' => $formProtection->generateToken('installTool', 'extensionCompatTesterUninstallExtension'),
 
             'coreUpdateEnabled' => $coreUpdateService->isCoreUpdateEnabled(),
-            'coreUpdateComposerMode' => Bootstrap::usesComposerClassLoading(),
+            'coreUpdateComposerMode' => Environment::isComposerMode(),
             'coreUpdateIsReleasedVersion' => $coreVersionService->isInstalledVersionAReleasedVersion(),
             'coreUpdateIsSymLinkedCore' => is_link(PATH_site . 'typo3_src'),
 

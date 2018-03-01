@@ -48,7 +48,7 @@ $signalSlotDispatcher->connect(
     'cleanupProcessedFilesPostFileReplace'
 );
 
-if (!\TYPO3\CMS\Core\Core\Bootstrap::usesComposerClassLoading()) {
+if (!\TYPO3\CMS\Core\Core\Environment::isComposerMode()) {
     $signalSlotDispatcher->connect(
         \TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
         'afterExtensionInstall',

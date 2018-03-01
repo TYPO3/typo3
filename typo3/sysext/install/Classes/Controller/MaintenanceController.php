@@ -18,8 +18,8 @@ namespace TYPO3\CMS\Install\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
@@ -143,7 +143,7 @@ class MaintenanceController extends AbstractController
     public function dumpAutoloadAction(): ResponseInterface
     {
         $messageQueue = new FlashMessageQueue('install');
-        if (Bootstrap::usesComposerClassLoading()) {
+        if (Environment::isComposerMode()) {
             $messageQueue->enqueue(new FlashMessage(
                 '',
                 'Skipped generating additional class loading information in composer mode.',

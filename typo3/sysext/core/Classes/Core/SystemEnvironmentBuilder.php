@@ -229,6 +229,29 @@ class SystemEnvironmentBuilder
     }
 
     /**
+     * Initialize the Environment class
+     *
+     * @param ApplicationContext $context
+     */
+    public static function initializeEnvironment(ApplicationContext $context)
+    {
+        $sitePath = rtrim(PATH_site, '/');
+        $projectRootPath = getenv('TYPO3_PATH_APP');
+        $isDifferentRootPath = ($projectRootPath && $projectRootPath !== $sitePath);
+        Environment::initialize(
+            $context,
+            PHP_SAPI === 'cli',
+            self::usesComposerClassLoading(),
+            $isDifferentRootPath ? $projectRootPath : $sitePath,
+            $sitePath,
+            $isDifferentRootPath ? $projectRootPath . '/var'    : $sitePath . '/typo3temp/var',
+            $isDifferentRootPath ? $projectRootPath . '/config' : $sitePath . '/typo3conf',
+            PATH_thisScript,
+            self::getTypo3Os() === 'WIN' ? 'WINDOWS' : 'UNIX'
+        );
+    }
+
+    /**
      * Initialize basic error reporting.
      *
      * There are a lot of extensions that have no strict / notice / deprecated free

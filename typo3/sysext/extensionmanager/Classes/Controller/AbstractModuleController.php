@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Backend\View\BackendTemplateView;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
@@ -66,7 +66,7 @@ class AbstractModuleController extends AbstractController
             ]
         ];
 
-        if (!$this->settings['offlineMode'] && !Bootstrap::usesComposerClassLoading()) {
+        if (!$this->settings['offlineMode'] && !Environment::isComposerMode()) {
             $menuItems['getExtensions'] = [
                 'controller' => 'List',
                 'action' => 'ter',

@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -165,7 +165,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function getComposerMode()
     {
-        if (!Bootstrap::usesComposerClassLoading()) {
+        if (!Environment::isComposerMode()) {
             return;
         }
 

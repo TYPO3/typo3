@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Command;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
@@ -85,7 +85,7 @@ class ExtensionCommandController extends CommandController
      */
     public function dumpClassLoadingInformationCommand()
     {
-        if (Bootstrap::usesComposerClassLoading()) {
+        if (Environment::isComposerMode()) {
             $this->output->outputLine('<error>Class loading information is managed by composer. Use "composer dump-autoload" command to update the information.</error>');
             $this->quit(1);
         } else {

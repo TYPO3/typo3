@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
@@ -663,7 +664,7 @@ class InstallerController
         $view = $this->initializeStandaloneView('Installer/ShowDefaultConfiguration.html');
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
-            'composerMode' => Bootstrap::usesComposerClassLoading(),
+            'composerMode' => Environment::isComposerMode(),
             'executeDefaultConfigurationToken' => $formProtection->generateToken('installTool', 'executeDefaultConfiguration'),
         ]);
         return new JsonResponse([

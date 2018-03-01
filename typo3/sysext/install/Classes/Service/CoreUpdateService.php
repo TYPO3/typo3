@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -87,7 +87,7 @@ class CoreUpdateService
     public function isCoreUpdateEnabled()
     {
         $coreUpdateDisabled = getenv('TYPO3_DISABLE_CORE_UPDATER') ?: (getenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER') ?: false);
-        return !Bootstrap::usesComposerClassLoading() && !$coreUpdateDisabled;
+        return !Environment::isComposerMode() && !$coreUpdateDisabled;
     }
 
     /**
