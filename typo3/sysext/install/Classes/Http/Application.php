@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Install\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -63,8 +62,6 @@ class Application extends AbstractApplication
         $this->bootstrap
             ->startOutputBuffering()
             ->loadConfigurationAndInitialize(false, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
-
-        $this->disableCachingFramework();
     }
 
     /**
@@ -81,26 +78,6 @@ class Application extends AbstractApplication
         }
 
         throw new \TYPO3\CMS\Core\Exception('No suitable request handler found.', 1518448686);
-    }
-
-    /**
-     * Set caching to NullBackend, install tool must not cache anything
-     */
-    protected function disableCachingFramework()
-    {
-        $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
-
-        $cacheConfigurationsWithCachesSetToNullBackend = [];
-        foreach ($cacheConfigurations as $cacheName => $cacheConfiguration) {
-            // cache_core is handled in bootstrap already
-            if (is_array($cacheConfiguration) && $cacheName !== 'cache_core') {
-                $cacheConfiguration['backend'] = NullBackend::class;
-                $cacheConfiguration['options'] = [];
-            }
-            $cacheConfigurationsWithCachesSetToNullBackend[$cacheName] = $cacheConfiguration;
-        }
-        $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
-        $cacheManager->setCacheConfigurations($cacheConfigurationsWithCachesSetToNullBackend);
     }
 
     /**

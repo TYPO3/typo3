@@ -279,11 +279,8 @@ class Bootstrap
     public function loadConfigurationAndInitialize($allowCaching = true, $packageManagerClassName = \TYPO3\CMS\Core\Package\PackageManager::class)
     {
         $this->populateLocalConfiguration()
-            ->initializeErrorHandling();
-        if (!$allowCaching) {
-            $this->disableCoreCache();
-        }
-        $this->initializeCachingFramework()
+            ->initializeErrorHandling()
+            ->initializeCachingFramework($allowCaching)
             ->initializePackageManagement($packageManagerClassName)
             ->initializeRuntimeActivatedPackagesFromConfiguration()
             ->setDefaultTimezone()
@@ -367,6 +364,7 @@ class Bootstrap
 
     /**
      * Set cache_core to null backend, effectively disabling eg. the cache for ext_localconf and PackageManager etc.
+     * Used in unit tests.
      *
      * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
@@ -383,12 +381,13 @@ class Bootstrap
      * Initialize caching framework, and re-initializes it (e.g. in the install tool) by recreating the instances
      * again despite the Singleton instance
      *
+     * @param bool $allowCaching
      * @return Bootstrap
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function initializeCachingFramework()
+    public function initializeCachingFramework(bool $allowCaching = true)
     {
-        $cacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
+        $cacheManager = new \TYPO3\CMS\Core\Cache\CacheManager(!$allowCaching);
         $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManager);
         $this->setEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManager);
