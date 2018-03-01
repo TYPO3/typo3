@@ -136,6 +136,10 @@ class LogManager implements SingletonInterface, LogManagerInterface
         $configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_WRITER, $logger->getName());
         foreach ($configuration as $severityLevel => $writer) {
             foreach ($writer as $logWriterClassName => $logWriterOptions) {
+                if ($logWriterOptions['disabled'] ?? false) {
+                    continue;
+                }
+                unset($logWriterOptions['disabled']);
                 try {
                     /** @var \TYPO3\CMS\Core\Log\Writer\WriterInterface $logWriter */
                     $logWriter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($logWriterClassName, $logWriterOptions);
