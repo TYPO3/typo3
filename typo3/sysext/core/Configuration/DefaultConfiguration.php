@@ -1426,7 +1426,8 @@ return [
                     'writerConfiguration' => [
                         \TYPO3\CMS\Core\Log\LogLevel::NOTICE => [
                             \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
-                                'logFileInfix' => 'deprecations'
+                                'logFileInfix' => 'deprecations',
+                                'disabled' => true,
                             ],
                         ]
                     ]

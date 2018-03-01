@@ -16,7 +16,8 @@
 namespace TYPO3\CMS\Install\Configuration\Context;
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Install\Configuration;
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\Writer\FileWriter;
 use TYPO3\CMS\Install\Configuration\AbstractPreset;
 
 /**
@@ -43,6 +44,8 @@ class DebugPreset extends AbstractPreset
         'FE/debug' => true,
         'SYS/devIPmask' => '*',
         'SYS/displayErrors' => 1,
+        // Values below are not available in UI
+        'LOG/TYPO3/CMS/deprecations/writerConfiguration/' . LogLevel::NOTICE . '/' . FileWriter::class . '/disabled' => false,
         // E_WARNING | E_RECOVERABLE_ERROR | E_DEPRECATED
         'SYS/exceptionalErrors' => 12290,
     ];
