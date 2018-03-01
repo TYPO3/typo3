@@ -26,21 +26,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SysNoteRepository
 {
+    const SYS_NOTE_POSITION_BOTTOM = 0;
+    const SYS_NOTE_POSITION_TOP = 1;
 
     /**
      * Find notes by given pids and author
      *
      * @param string $pids Single PID or comma separated list of PIDs
      * @param int $author author uid
+     * @param int|null $position null for no restriction, integer for defined position
      * @return array
      */
-    public function findByPidsAndAuthorId($pids, int $author): array
+    public function findByPidsAndAuthorId($pids, int $author, int $position = null): array
     {
         $pids = GeneralUtility::intExplode(',', (string)$pids);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_note');
-        $rows = $queryBuilder
+        $res = $queryBuilder
             ->select('sys_note.*', 'be_users.username', 'be_users.realName')
             ->from('sys_note')
             ->leftJoin(
@@ -57,9 +60,14 @@ class SysNoteRepository
                 )
             )
             ->orderBy('sorting', 'asc')
-            ->addOrderBy('crdate', 'desc')
-            ->execute()->fetchAll();
+            ->addOrderBy('crdate', 'desc');
 
-        return $rows;
+        if ($position !== null) {
+            $res->andWhere(
+                $queryBuilder->expr()->eq('sys_note.position', $queryBuilder->createNamedParameter($position, \PDO::PARAM_INT))
+            );
+        }
+
+        return $res->execute()->fetchAll();
     }
 }

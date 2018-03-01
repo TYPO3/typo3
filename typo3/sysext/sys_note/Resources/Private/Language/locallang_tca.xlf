@@ -27,6 +27,15 @@
 			<trans-unit id="sys_note.personal">
 				<source>Personal:</source>
 			</trans-unit>
+			<trans-unit id="sys_note.position">
+				<source>Position</source>
+			</trans-unit>
+			<trans-unit id="sys_note.position.top">
+				<source>Top</source>
+			</trans-unit>
+			<trans-unit id="sys_note.position.bottom">
+				<source>Bottom</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

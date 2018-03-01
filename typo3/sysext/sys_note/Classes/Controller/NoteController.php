@@ -40,15 +40,16 @@ class NoteController
      * Render notes by single PID or PID list
      *
      * @param string $pids Single PID or comma separated list of PIDs
+     * @param int|null $position null for no restriction, integer for defined position
      * @return string
      */
-    public function listAction($pids): string
+    public function listAction($pids, int $position = null): string
     {
         if (empty($pids) || empty($GLOBALS['BE_USER']->user['uid'])) {
             return '';
         }
 
-        $notes = $this->notesRepository->findByPidsAndAuthorId($pids, (int)$GLOBALS['BE_USER']->user['uid']);
+        $notes = $this->notesRepository->findByPidsAndAuthorId($pids, (int)$GLOBALS['BE_USER']->user['uid'], $position);
         if ($notes) {
             $view = GeneralUtility::makeInstance(StandaloneView::class);
             $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(

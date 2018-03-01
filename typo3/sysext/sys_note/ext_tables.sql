@@ -12,6 +12,7 @@ CREATE TABLE sys_note (
   message text,
   personal tinyint(3) unsigned DEFAULT '0' NOT NULL,
   category tinyint(3) unsigned DEFAULT '0' NOT NULL,
+  position int(11) DEFAULT '0' NOT NULL,
   sorting int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
