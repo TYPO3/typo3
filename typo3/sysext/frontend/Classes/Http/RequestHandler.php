@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageGenerator;
@@ -69,29 +68,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
         /** @var TypoScriptFrontendController $controller */
         $controller = $GLOBALS['TSFE'];
-
-        // Process the ID, type and other parameters.
-        // After this point we have an array, $page in TSFE, which is the page-record
-        // of the current page, $id.
-        $this->timeTracker->push('Process ID', '');
-        $controller->checkAlternativeIdMethods();
-        $controller->clear_preview();
-        $controller->determineId();
-
-        // Now, if there is a backend user logged in and he has NO access to this page,
-        // then re-evaluate the id shown!.
-        if ($controller->isBackendUserLoggedIn() && !$GLOBALS['BE_USER']->doesUserHaveAccess($controller->page, Permission::PAGE_SHOW)) {
-            // Remove user
-            unset($GLOBALS['BE_USER']);
-            $controller->beUserLogin = false;
-            // Re-evaluate the page-id.
-            $controller->checkAlternativeIdMethods();
-            $controller->clear_preview();
-            $controller->determineId();
-        }
-
-        $controller->makeCacheHash();
-        $this->timeTracker->pull();
 
         // Admin Panel & Frontend editing
         if ($controller->isBackendUserLoggedIn()) {
