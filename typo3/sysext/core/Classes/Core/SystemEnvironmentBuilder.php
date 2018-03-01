@@ -148,15 +148,13 @@ class SystemEnvironmentBuilder
      */
     protected static function definePaths($entryPointLevel = 0)
     {
+        $isCli = PHP_SAPI === 'cli';
         // Absolute path of the entry script that was called
-        $scriptPath = GeneralUtility::fixWindowsFilePath(self::getPathThisScript());
+        $scriptPath = GeneralUtility::fixWindowsFilePath(self::getPathThisScript($isCli));
         $rootPath = self::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
         // Check if the root path has been set in the environment (e.g. by the composer installer)
         if (getenv('TYPO3_PATH_ROOT')) {
-            if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)
-                && Bootstrap::usesComposerClassLoading()
-                && StringUtility::endsWith($scriptPath, 'typo3')
-            ) {
+            if ($isCli && self::usesComposerClassLoading() && StringUtility::endsWith($scriptPath, 'typo3')) {
                 // PATH_thisScript is used for various path calculations based on the document root
                 // Therefore we assume it is always a subdirectory of the document root, which is not the case
                 // in composer mode on cli, as the binary is in the composer bin directory.
@@ -270,11 +268,12 @@ class SystemEnvironmentBuilder
      * find out the script name that was called in the first place and to subtract the local
      * part from it to find the document root.
      *
+     * @param bool $isCli
      * @return string Absolute path to entry script
      */
-    protected static function getPathThisScript()
+    protected static function getPathThisScript(bool $isCli)
     {
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
+        if ($isCli) {
             return self::getPathThisScriptCli();
         }
         return self::getPathThisScriptNonCli();
@@ -410,5 +409,13 @@ class SystemEnvironmentBuilder
         }
 
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    protected static function usesComposerClassLoading(): bool
+    {
+        return defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE;
     }
 }
