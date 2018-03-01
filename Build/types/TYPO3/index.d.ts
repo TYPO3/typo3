@@ -31,6 +31,10 @@ declare namespace TYPO3 {
   }
 }
 
+declare namespace TBE_EDITOR {
+  export let fieldChanged: Function;
+}
+
 /**
  * Current AMD/RequireJS modules are returning *instances* of ad-hoc *classes*, make that known to TypeScript
  */
@@ -92,4 +96,7 @@ interface JQuery {
   clearable(options?: any): JQuery;
   datetimepicker(options?: any): JQuery;
   dragUploader(options?: DragUploaderOptions): JQuery;
+
+  // To be able to use twbs/bootstrap-slider we have to override the definition of jquerui
+  slider(options: { [key: string]: any }): any;
 }
