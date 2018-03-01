@@ -172,7 +172,10 @@ class DependencyResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
                     ],
                 ],
                 [
-                    'core', 'setup', 'openid', 'extbase'
+                    'core',
+                    'setup',
+                    'openid',
+                    'extbase'
                 ],
                 [
                     'core' => [
@@ -262,7 +265,9 @@ class DependencyResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
                     ],
                 ],
                 [
-                    'B', 'C', 'E'
+                    'B',
+                    'C',
+                    'E'
                 ],
                 [
                     'A' => [
@@ -378,7 +383,10 @@ class DependencyResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
                     ],
                 ],
                 [
-                    'core', 'setup', 'openid', 'extbase'
+                    'core',
+                    'setup',
+                    'openid',
+                    'extbase'
                 ],
                 [
                     'core',
@@ -412,7 +420,9 @@ class DependencyResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
                     ],
                 ],
                 [
-                    'B', 'C', 'E'
+                    'B',
+                    'C',
+                    'E'
                 ],
                 [
                     'E',

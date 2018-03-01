@@ -36,7 +36,9 @@ class ListUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->subject = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class)
             ->setMethods(['emitPackagesMayHaveChangedSignal'])
             ->getMock();
-        $packageManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Package\PackageManager::class)->getMock();
+        $packageManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Package\PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $packageManagerMock
                 ->expects($this->any())
                 ->method('getActivePackages')

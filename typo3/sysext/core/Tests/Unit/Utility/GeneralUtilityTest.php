@@ -4074,6 +4074,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['isPackageActive', 'getPackage'])
+            ->disableOriginalConstructor()
             ->getMock();
         $package->expects($this->any())
             ->method('getPackagePath')

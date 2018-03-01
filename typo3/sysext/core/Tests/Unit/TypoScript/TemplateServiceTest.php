@@ -136,6 +136,7 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $mockPackageManager = $this->getMockBuilder(\TYPO3\CMS\Core\Package\PackageManager::class)
             ->setMethods(['isPackageActive', 'getPackage'])
+            ->disableOriginalConstructor()
             ->getMock();
         $mockPackageManager->expects($this->any())->method('isPackageActive')->will($this->returnValue(true));
         $mockPackageManager->expects($this->any())->method('getPackage')->will($this->returnValue($mockPackage));

@@ -1786,5 +1786,12 @@ return [
         'restFiles' => [
             'Deprecation-84145-DeprecateExt_isLinkable.rst'
         ],
-    ]
+    ],
+    'TYPO3\CMS\Core\Package\PackageManager->injectDependencyResolver' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84109-DeprecateDependencyResolver.rst',
+        ],
+    ],
 ];

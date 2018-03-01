@@ -649,4 +649,9 @@ return [
             'Deprecation-83511-DeprecateAbstractValidatorTestcase.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Package\DependencyResolver' => [
+        'restFiles' => [
+            'Deprecation-84109-DeprecateDependencyResolver.rst',
+        ],
+    ],
 ];

@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,9 +33,9 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
-     * @var \TYPO3\CMS\Core\Package\DependencyResolver
+     * @var DependencyOrderingService
      */
-    protected $dependencyResolver;
+    protected $dependencyOrderingService;
 
     /**
      * @var FrontendInterface
@@ -102,11 +103,16 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     protected $packageStatesConfiguration = [];
 
     /**
-     * Constructor
+     * @param DependencyOrderingService $dependencyOrderingService
      */
-    public function __construct()
+    public function __construct(DependencyOrderingService $dependencyOrderingService = null)
     {
         $this->packageStatesPathAndFilename = PATH_typo3conf . 'PackageStates.php';
+        if ($dependencyOrderingService === null) {
+            trigger_error(self::class . ' without constructor based dependency injection has been deprecated in v9.2 and will not work in TYPO3 v10.', E_USER_DEPRECATED);
+            $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
+        }
+        $this->dependencyOrderingService = $dependencyOrderingService;
     }
 
     /**
@@ -119,10 +125,11 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param DependencyResolver $dependencyResolver
+     * @deprecated
      */
     public function injectDependencyResolver(DependencyResolver $dependencyResolver)
     {
-        $this->dependencyResolver = $dependencyResolver;
+        trigger_error(self::class . '::injectDependencyResolver() has been deprecated with v9.2 and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
     }
 
     /**
@@ -686,7 +693,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
 
         // sort the packages by key at first, so we get a stable sorting of "equivalent" packages afterwards
         ksort($packagesWithDependencies);
-        $sortedPackageKeys = $this->dependencyResolver->sortPackageStatesConfigurationByDependency($packagesWithDependencies);
+        $sortedPackageKeys = $this->sortPackageStatesConfigurationByDependency($packagesWithDependencies);
 
         // Reorder the packages according to the loading order
         $this->packageStatesConfiguration['packages'] = [];
@@ -1062,5 +1069,131 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     protected function hasSubDirectories(string $path): bool
     {
         return !empty(glob(rtrim($path, '/\\') . '/*', GLOB_ONLYDIR));
+    }
+
+    /**
+     * @param array $packageStatesConfiguration
+     * @return array Returns the packageStatesConfiguration sorted by dependencies
+     * @throws \UnexpectedValueException
+     */
+    protected function sortPackageStatesConfigurationByDependency(array $packageStatesConfiguration)
+    {
+        return $this->dependencyOrderingService->calculateOrder($this->buildDependencyGraph($packageStatesConfiguration));
+    }
+
+    /**
+     * Convert the package configuration into a dependency definition
+     *
+     * This converts "dependencies" and "suggestions" to "after" syntax for the usage in DependencyOrderingService
+     *
+     * @param array $packageStatesConfiguration
+     * @param array $packageKeys
+     * @return array
+     * @throws \UnexpectedValueException
+     */
+    protected function convertConfigurationForGraph(array $packageStatesConfiguration, array $packageKeys)
+    {
+        $dependencies = [];
+        foreach ($packageKeys as $packageKey) {
+            if (!isset($packageStatesConfiguration[$packageKey]['dependencies']) && !isset($packageStatesConfiguration[$packageKey]['suggestions'])) {
+                continue;
+            }
+            $dependencies[$packageKey] = [
+                'after' => []
+            ];
+            if (isset($packageStatesConfiguration[$packageKey]['dependencies'])) {
+                foreach ($packageStatesConfiguration[$packageKey]['dependencies'] as $dependentPackageKey) {
+                    if (!in_array($dependentPackageKey, $packageKeys, true)) {
+                        throw new \UnexpectedValueException(
+                            'The package "' . $packageKey . '" depends on "'
+                            . $dependentPackageKey . '" which is not present in the system.',
+                            1519931815
+                        );
+                    }
+                    $dependencies[$packageKey]['after'][] = $dependentPackageKey;
+                }
+            }
+            if (isset($packageStatesConfiguration[$packageKey]['suggestions'])) {
+                foreach ($packageStatesConfiguration[$packageKey]['suggestions'] as $suggestedPackageKey) {
+                    // skip suggestions on not existing packages
+                    if (in_array($suggestedPackageKey, $packageKeys, true)) {
+                        // Suggestions actually have never been meant to influence loading order.
+                        // We misuse this currently, as there is no other way to influence the loading order
+                        // for not-required packages (soft-dependency).
+                        // When considering suggestions for the loading order, we might create a cyclic dependency
+                        // if the suggested package already has a real dependency on this package, so the suggestion
+                        // has do be dropped in this case and must *not* be taken into account for loading order evaluation.
+                        $dependencies[$packageKey]['after-resilient'][] = $suggestedPackageKey;
+                    }
+                }
+            }
+        }
+        return $dependencies;
+    }
+
+    /**
+     * Adds all root packages of current dependency graph as dependency to all extensions
+     *
+     * This ensures that the framework extensions (aka sysext) are
+     * always loaded first, before any other external extension.
+     *
+     * @param array $packageStateConfiguration
+     * @param array $rootPackageKeys
+     * @return array
+     */
+    protected function addDependencyToFrameworkToAllExtensions(array $packageStateConfiguration, array $rootPackageKeys)
+    {
+        $frameworkPackageKeys = $this->findFrameworkPackages($packageStateConfiguration);
+        $extensionPackageKeys = array_diff(array_keys($packageStateConfiguration), $frameworkPackageKeys);
+        foreach ($extensionPackageKeys as $packageKey) {
+            // Remove framework packages from list
+            $packageKeysWithoutFramework = array_diff(
+                $packageStateConfiguration[$packageKey]['dependencies'],
+                $frameworkPackageKeys
+            );
+            // The order of the array_merge is crucial here,
+            // we want the framework first
+            $packageStateConfiguration[$packageKey]['dependencies'] = array_merge(
+                $rootPackageKeys,
+                $packageKeysWithoutFramework
+            );
+        }
+        return $packageStateConfiguration;
+    }
+
+    /**
+     * Builds the dependency graph for all packages
+     *
+     * This method also introduces dependencies among the dependencies
+     * to ensure the loading order is exactly as specified in the list.
+     *
+     * @param array $packageStateConfiguration
+     * @return array
+     */
+    protected function buildDependencyGraph(array $packageStateConfiguration)
+    {
+        $frameworkPackageKeys = $this->findFrameworkPackages($packageStateConfiguration);
+        $frameworkPackagesDependencyGraph = $this->dependencyOrderingService->buildDependencyGraph($this->convertConfigurationForGraph($packageStateConfiguration, $frameworkPackageKeys));
+        $packageStateConfiguration = $this->addDependencyToFrameworkToAllExtensions($packageStateConfiguration, $this->dependencyOrderingService->findRootIds($frameworkPackagesDependencyGraph));
+
+        $packageKeys = array_keys($packageStateConfiguration);
+        return $this->dependencyOrderingService->buildDependencyGraph($this->convertConfigurationForGraph($packageStateConfiguration, $packageKeys));
+    }
+
+    /**
+     * @param array $packageStateConfiguration
+     * @return array
+     */
+    protected function findFrameworkPackages(array $packageStateConfiguration)
+    {
+        $frameworkPackageKeys = [];
+        foreach ($packageStateConfiguration as $packageKey => $packageConfiguration) {
+            $package = $this->getPackage($packageKey);
+            if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
+                $frameworkPackageKeys[] = $packageKey;
+            }
+        }
+
+        return $frameworkPackageKeys;
     }
 }

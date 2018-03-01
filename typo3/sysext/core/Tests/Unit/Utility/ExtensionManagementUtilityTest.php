@@ -78,6 +78,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
                 ->getMock();
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['isPackageActive', 'getPackage', 'getActivePackages'])
+            ->disableOriginalConstructor()
             ->getMock();
         $package->expects($this->any())
                 ->method('getPackagePath')
@@ -127,6 +128,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['isPackageActive'])
+            ->disableOriginalConstructor()
             ->getMock();
         $packageManager->expects($this->once())
                 ->method('isPackageActive')
@@ -148,6 +150,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['isPackageActive', 'getPackage'])
+            ->disableOriginalConstructor()
             ->getMock();
         $package->expects($this->once())
                 ->method('getPackagePath')
@@ -1750,6 +1753,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['isPackageActive'])
+            ->disableOriginalConstructor()
             ->getMock();
         $packageManager->expects($this->once())
             ->method('isPackageActive')
@@ -1768,6 +1772,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['isPackageActive', 'deactivatePackage'])
+            ->disableOriginalConstructor()
             ->getMock();
         $packageManager->expects($this->any())
             ->method('isPackageActive')

@@ -14,11 +14,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
 use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Package\DependencyResolver;
 use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 
 /**
  * Testcase for the default package manager
@@ -55,7 +55,11 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $mockCache->expects($this->any())->method('set')->will($this->returnValue(true));
         $mockCache->expects($this->any())->method('getBackend')->will($this->returnValue($mockCacheBackend));
         $mockCacheBackend->expects($this->any())->method('getCacheDirectory')->will($this->returnValue('vfs://Test/Cache'));
-        $this->packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates', 'sortActivePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage']);
+        $this->packageManager = $this->getAccessibleMock(
+            PackageManager::class,
+            ['sortAndSavePackageStates', 'sortActivePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage'],
+            [new DependencyOrderingService]
+        );
 
         mkdir('vfs://Test/Packages/Application', 0700, true);
         mkdir('vfs://Test/Configuration');
@@ -129,7 +133,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-test"}');
         }
 
-        $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates']);
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates'], [new DependencyOrderingService]);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
 
@@ -164,19 +168,10 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         }
 
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager */
-        $packageManager = $this->getAccessibleMock(PackageManager::class, ['dummy']);
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['dummy'], [new DependencyOrderingService]);
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
-
-        /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject $dependencyResolver */
-        $dependencyResolver = $this->createMock(DependencyResolver::class);
-        $dependencyResolver
-            ->expects($this->any())
-            ->method('sortPackageStatesConfigurationByDependency')
-            ->willReturnCallback('array_keys');
-
-        $packageManager->injectDependencyResolver($dependencyResolver);
 
         $packageKey = $expectedPackageKeys[0];
         $packageManager->_set('packageStatesConfiguration', [
@@ -216,19 +211,10 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         }
 
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager */
-        $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates']);
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates', 'registerTransientClassLoadingInformationForPackage'], [new DependencyOrderingService]);
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
-
-        /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject $dependencyResolver */
-        $dependencyResolver = $this->createMock(DependencyResolver::class);
-        $dependencyResolver
-            ->expects($this->any())
-            ->method('sortPackageStatesConfigurationByDependency')
-            ->willReturnCallback('array_keys');
-
-        $packageManager->injectDependencyResolver($dependencyResolver);
 
         $packageManager->_set('packages', []);
         $packageManager->_call('scanAvailablePackages');
@@ -378,10 +364,420 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'imagine/imagine' => 'imagine.Imagine'
         ];
 
-        $packageManager = $this->getAccessibleMock(PackageManager::class, ['resolvePackageDependencies']);
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['resolvePackageDependencies'], [new DependencyOrderingService]);
         $packageManager->_set('packageStatesConfiguration', $packageStatesConfiguration);
         $packageManager->_set('composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
 
         $this->assertEquals($packageKey, $packageManager->_call('getPackageKeyFromComposerName', $composerName));
+    }
+
+    /**
+     * @return array
+     */
+    public function buildDependencyGraphBuildsCorrectGraphDataProvider()
+    {
+        return [
+            'TYPO3 Flow Packages' => [
+                [
+                    'TYPO3.Flow' => [
+                        'dependencies' => ['Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM']
+                    ],
+                    'Doctrine.ORM' => [
+                        'dependencies' => ['Doctrine.Common', 'Doctrine.DBAL']
+                    ],
+                    'Doctrine.Common' => [
+                        'dependencies' => []
+                    ],
+                    'Doctrine.DBAL' => [
+                        'dependencies' => ['Doctrine.Common']
+                    ],
+                    'Symfony.Component.Yaml' => [
+                        'dependencies' => []
+                    ],
+                ],
+                [
+                    'Doctrine.Common'
+                ],
+                [
+                    'TYPO3.Flow' => [
+                        'TYPO3.Flow' => false,
+                        'Doctrine.ORM' => true,
+                        'Doctrine.Common' => true,
+                        'Doctrine.DBAL' => true,
+                        'Symfony.Component.Yaml' => true,
+                    ],
+                    'Doctrine.ORM' => [
+                        'TYPO3.Flow' => false,
+                        'Doctrine.ORM' => false,
+                        'Doctrine.Common' => true,
+                        'Doctrine.DBAL' => true,
+                        'Symfony.Component.Yaml' => false,
+                    ],
+                    'Doctrine.Common' => [
+                        'TYPO3.Flow' => false,
+                        'Doctrine.ORM' => false,
+                        'Doctrine.Common' => false,
+                        'Doctrine.DBAL' => false,
+                        'Symfony.Component.Yaml' => false,
+                    ],
+                    'Doctrine.DBAL' => [
+                        'TYPO3.Flow' => false,
+                        'Doctrine.ORM' => false,
+                        'Doctrine.Common' => true,
+                        'Doctrine.DBAL' => false,
+                        'Symfony.Component.Yaml' => false,
+                    ],
+                    'Symfony.Component.Yaml' => [
+                        'TYPO3.Flow' => false,
+                        'Doctrine.ORM' => false,
+                        'Doctrine.Common' => true,
+                        'Doctrine.DBAL' => false,
+                        'Symfony.Component.Yaml' => false,
+                    ],
+                ],
+            ],
+            'TYPO3 CMS Extensions' => [
+                [
+                    'core' => [
+                        'dependencies' => [],
+                    ],
+                    'setup' => [
+                        'dependencies' => ['core'],
+                    ],
+                    'openid' => [
+                        'dependencies' => ['core', 'setup']
+                    ],
+                    'news' => [
+                        'dependencies' => ['extbase'],
+                    ],
+                    'extbase' => [
+                        'dependencies' => ['core'],
+                    ],
+                    'pt_extbase' => [
+                        'dependencies' => ['extbase'],
+                    ],
+                    'foo' => [
+                        'dependencies' => [],
+                    ],
+                ],
+                [
+                    'core',
+                    'setup',
+                    'openid',
+                    'extbase'
+                ],
+                [
+                    'core' => [
+                        'core' => false,
+                        'setup' => false,
+                        'openid' => false,
+                        'news' => false,
+                        'extbase' => false,
+                        'pt_extbase' => false,
+                        'foo' => false
+                    ],
+                    'setup' => [
+                        'core' => true,
+                        'setup' => false,
+                        'openid' => false,
+                        'news' => false,
+                        'extbase' => false,
+                        'pt_extbase' => false,
+                        'foo' => false
+                    ],
+                    'openid' => [
+                        'core' => true,
+                        'setup' => true,
+                        'openid' => false,
+                        'news' => false,
+                        'extbase' => false,
+                        'pt_extbase' => false,
+                        'foo' => false
+                    ],
+                    'news' => [
+                        'core' => false,
+                        'setup' => false,
+                        'openid' => true,
+                        'news' => false,
+                        'extbase' => true,
+                        'pt_extbase' => false,
+                        'foo' => false
+                    ],
+                    'extbase' => [
+                        'core' => true,
+                        'setup' => false,
+                        'openid' => false,
+                        'news' => false,
+                        'extbase' => false,
+                        'pt_extbase' => false,
+                        'foo' => false
+                    ],
+                    'pt_extbase' => [
+                        'core' => false,
+                        'setup' => false,
+                        'openid' => true,
+                        'news' => false,
+                        'extbase' => true,
+                        'pt_extbase' => false,
+                        'foo' => false
+                    ],
+                    'foo' => [
+                        'core' => false,
+                        'setup' => false,
+                        'openid' => true,
+                        'news' => false,
+                        'extbase' => true,
+                        'pt_extbase' => false,
+                        'foo' => false
+                    ],
+                ],
+            ],
+            'Dummy Packages' => [
+                [
+                    'A' => [
+                        'dependencies' => ['B', 'D', 'C'],
+                    ],
+                    'B' => [
+                        'dependencies' => []
+                    ],
+                    'C' => [
+                        'dependencies' => ['E']
+                    ],
+                    'D' => [
+                        'dependencies' => ['E'],
+                    ],
+                    'E' => [
+                        'dependencies' => [],
+                    ],
+                    'F' => [
+                        'dependencies' => [],
+                    ],
+                ],
+                [
+                    'B',
+                    'C',
+                    'E'
+                ],
+                [
+                    'A' => [
+                        'A' => false,
+                        'B' => true,
+                        'C' => true,
+                        'D' => true,
+                        'E' => false,
+                        'F' => false,
+                    ],
+                    'B' => [
+                        'A' => false,
+                        'B' => false,
+                        'C' => false,
+                        'D' => false,
+                        'E' => false,
+                        'F' => false,
+                    ],
+                    'C' => [
+                        'A' => false,
+                        'B' => false,
+                        'C' => false,
+                        'D' => false,
+                        'E' => true,
+                        'F' => false,
+                    ],
+                    'D' => [
+                        'A' => false,
+                        'B' => true,
+                        'C' => true,
+                        'D' => false,
+                        'E' => false,
+                        'F' => false,
+                    ],
+                    'E' => [
+                        'A' => false,
+                        'B' => false,
+                        'C' => false,
+                        'D' => false,
+                        'E' => false,
+                        'F' => false,
+                    ],
+                    'F' => [
+                        'A' => false,
+                        'B' => true,
+                        'C' => true,
+                        'D' => false,
+                        'E' => false,
+                        'F' => false,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @param array $unsortedPackageStatesConfiguration
+     * @param array $frameworkPackageKeys
+     * @param array $expectedGraph
+     * @dataProvider buildDependencyGraphBuildsCorrectGraphDataProvider
+     */
+    public function buildDependencyGraphBuildsCorrectGraph(array $unsortedPackageStatesConfiguration, array $frameworkPackageKeys, array $expectedGraph)
+    {
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService]);
+        $packageManager->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
+
+        $dependencyGraph = $packageManager->_call('buildDependencyGraph', $unsortedPackageStatesConfiguration);
+
+        $this->assertEquals($expectedGraph, $dependencyGraph);
+    }
+
+    /**
+     * @return array
+     */
+    public function packageSortingDataProvider()
+    {
+        return [
+            'TYPO3 Flow Packages' => [
+                [
+                    'TYPO3.Flow' => [
+                        'dependencies' => ['Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM']
+                    ],
+                    'Doctrine.ORM' => [
+                        'dependencies' => ['Doctrine.Common', 'Doctrine.DBAL']
+                    ],
+                    'Doctrine.Common' => [
+                        'dependencies' => []
+                    ],
+                    'Doctrine.DBAL' => [
+                        'dependencies' => ['Doctrine.Common']
+                    ],
+                    'Symfony.Component.Yaml' => [
+                        'dependencies' => []
+                    ],
+                ],
+                [
+                    'Doctrine.Common'
+                ],
+                [
+                    'Doctrine.Common',
+                    'Doctrine.DBAL',
+                    'Doctrine.ORM',
+                    'Symfony.Component.Yaml',
+                    'TYPO3.Flow',
+                ],
+            ],
+            'TYPO3 CMS Extensions' => [
+                [
+                    'core' => [
+                        'dependencies' => [],
+                    ],
+                    'setup' => [
+                        'dependencies' => ['core'],
+                    ],
+                    'openid' => [
+                        'dependencies' => ['core', 'setup']
+                    ],
+                    'news' => [
+                        'dependencies' => ['extbase'],
+                    ],
+                    'extbase' => [
+                        'dependencies' => ['core'],
+                    ],
+                    'pt_extbase' => [
+                        'dependencies' => ['extbase'],
+                    ],
+                    'foo' => [
+                        'dependencies' => [],
+                    ],
+                ],
+                [
+                    'core',
+                    'setup',
+                    'openid',
+                    'extbase'
+                ],
+                [
+                    'core',
+                    'setup',
+                    'openid',
+                    'extbase',
+                    'foo',
+                    'news',
+                    'pt_extbase',
+                ],
+            ],
+            'Dummy Packages' => [
+                [
+                    'A' => [
+                        'dependencies' => ['B', 'D', 'C'],
+                    ],
+                    'B' => [
+                        'dependencies' => []
+                    ],
+                    'C' => [
+                        'dependencies' => ['E']
+                    ],
+                    'D' => [
+                        'dependencies' => ['E'],
+                    ],
+                    'E' => [
+                        'dependencies' => [],
+                    ],
+                    'F' => [
+                        'dependencies' => [],
+                    ],
+                ],
+                [
+                    'B',
+                    'C',
+                    'E'
+                ],
+                [
+                    'E',
+                    'C',
+                    'B',
+                    'D',
+                    'A',
+                    'F',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider packageSortingDataProvider
+     * @param array $unsortedPackageStatesConfiguration
+     * @param array $frameworkPackageKeys
+     */
+    public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays($unsortedPackageStatesConfiguration, $frameworkPackageKeys, $expectedSortedPackageKeys)
+    {
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService]);
+        $packageManager->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
+
+        $sortedPackageKeys = $packageManager->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
+
+        $this->assertEquals($expectedSortedPackageKeys, $sortedPackageKeys, 'The package states configurations have not been ordered according to their dependencies!');
+    }
+
+    /**
+     * @test
+     */
+    public function sortPackageStatesConfigurationByDependencyThrowsExceptionWhenCycleDetected()
+    {
+        $unsortedPackageStatesConfiguration = [
+            'A' => [
+                'dependencies' => ['B'],
+            ],
+            'B' => [
+                'dependencies' => ['A']
+            ],
+        ];
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1381960494);
+
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService]);
+        $packageManager->expects($this->any())->method('findFrameworkPackages')->willReturn([]);
+
+        $packageManager->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
     }
 }
