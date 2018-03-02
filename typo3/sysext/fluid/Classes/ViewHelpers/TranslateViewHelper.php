@@ -107,14 +107,8 @@ class TranslateViewHelper extends AbstractViewHelper
     public function compile($argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler)
     {
         return sprintf(
-            '\\%s::translate(%s[\'key\'] ?? %s[\'id\'], %s[\'extensionName\'] ?? $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName(), %s[\'arguments\'], %s[\'languageKey\'], %s[\'alternativeLanguageKeys\']) ?? %s[\'default\'] ?? %s()',
+            '\\%1$s::translate(%2$s[\'key\'] ?? %2$s[\'id\'], %2$s[\'extensionName\'] ?? $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName(), %2$s[\'arguments\'], %2$s[\'languageKey\'], %2$s[\'alternativeLanguageKeys\']) ?? %2$s[\'default\'] ?? %3$s()',
             LocalizationUtility::class,
-            $argumentsName,
-            $argumentsName,
-            $argumentsName,
-            $argumentsName,
-            $argumentsName,
-            $argumentsName,
             $argumentsName,
             $closureName
         );
