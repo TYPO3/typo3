@@ -14,13 +14,13 @@
 						<f:translate key="author" />
 						<f:if condition="{note.realName}">
 							<f:then>{note.realName}</f:then>
-							<f:else>{note.userName}</f:else>
+							<f:else>{note.username}</f:else>
 						</f:if>
 					</span>
 					&nbsp; <span>&bull;</span> &nbsp;
 					<span class="date">
 						<f:translate key="date" />
-						<f:format.date>{note.modificationDate}</f:format.date>
+						<f:format.date>@{note.tstamp}</f:format.date>
 					</span>
 					<f:if condition="{note.personal}">
 						&middot;
