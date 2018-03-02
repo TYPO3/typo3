@@ -43,7 +43,6 @@ class PageResolver implements MiddlewareInterface
     {
         $GLOBALS['TSFE']->siteScript = $request->getAttribute('normalizedParams')->getSiteScript();
         $this->checkAlternativeIdMethods($GLOBALS['TSFE']);
-        $GLOBALS['TSFE']->clear_preview();
         $GLOBALS['TSFE']->determineId();
 
         // No access? Then remove user & Re-evaluate the page-id
@@ -51,7 +50,6 @@ class PageResolver implements MiddlewareInterface
             unset($GLOBALS['BE_USER']);
             $GLOBALS['TSFE']->beUserLogin = false;
             $this->checkAlternativeIdMethods($GLOBALS['TSFE']);
-            $GLOBALS['TSFE']->clear_preview();
             $GLOBALS['TSFE']->determineId();
         }
 

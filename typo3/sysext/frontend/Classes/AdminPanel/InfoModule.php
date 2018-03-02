@@ -37,7 +37,7 @@ class InfoModule extends AbstractModule
         $tsfe = $this->getTypoScriptFrontendController();
         if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_info']) {
             $tableArr = [];
-            if ($this->getBackendUser()->adminPanel->extGetFeAdminValue('cache', 'noCache')) {
+            if ($this->getConfigurationOption('noCache')) {
                 $theBytes = 0;
                 $count = 0;
                 if (!empty($tsfe->imagesOnPage)) {

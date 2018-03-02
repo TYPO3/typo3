@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
-
-namespace TYPO3\CMS\Frontend\AdminPanel;
+namespace TYPO3\CMS\Frontend\Tests\Unit\View\Fixtures;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,14 +14,11 @@ namespace TYPO3\CMS\Frontend\AdminPanel;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Frontend\AdminPanel\AdminPanelModuleInterface;
 
-/**
- * Interface for admin panel modules registered via EXTCONF
- *
- * @internal until API is stable
- */
-interface AdminPanelModuleInterface
+class AdminPanelEnabledShownOnSubmitInitializeModuleFixture implements AdminPanelModuleInterface
 {
+
     /**
      * Additional JavaScript code for this module
      * (you should only use vanilla JS here, as you cannot
@@ -30,14 +26,20 @@ interface AdminPanelModuleInterface
      *
      * @return string
      */
-    public function getAdditionalJavaScriptCode(): string;
+    public function getAdditionalJavaScriptCode(): string
+    {
+        return '';
+    }
 
     /**
      * Module content as rendered HTML
      *
      * @return string
      */
-    public function getContent(): string;
+    public function getContent(): string
+    {
+        return '';
+    }
 
     /**
      * Identifier for this module,
@@ -45,19 +47,28 @@ interface AdminPanelModuleInterface
      *
      * @return string
      */
-    public function getIdentifier(): string;
+    public function getIdentifier(): string
+    {
+        return '';
+    }
 
     /**
      * Module label
      *
      * @return string
      */
-    public function getLabel(): string;
+    public function getLabel(): string
+    {
+        return '';
+    }
 
     /**
      * Initialize the module - runs early in a TYPO3 request
      */
-    public function initializeModule(): void;
+    public function initializeModule(): void
+    {
+        throw new \RuntimeException('initialized.', 1519999273);
+    }
 
     /**
      * Module is enabled
@@ -68,7 +79,10 @@ interface AdminPanelModuleInterface
      *
      * @return bool
      */
-    public function isEnabled(): bool;
+    public function isEnabled(): bool
+    {
+        return true;
+    }
 
     /**
      * Module is open
@@ -77,7 +91,10 @@ interface AdminPanelModuleInterface
      *
      * @return bool
      */
-    public function isOpen(): bool;
+    public function isOpen(): bool
+    {
+        return true;
+    }
 
     /**
      * Module is shown
@@ -86,7 +103,10 @@ interface AdminPanelModuleInterface
      *
      * @return bool
      */
-    public function isShown(): bool;
+    public function isShown(): bool
+    {
+        return true;
+    }
 
     /**
      * Executed on saving / submit of the configuration form
@@ -95,12 +115,18 @@ interface AdminPanelModuleInterface
      *
      * @param array $input
      */
-    public function onSubmit(array $input): void;
+    public function onSubmit(array $input): void
+    {
+        throw new \RuntimeException('Catch me if you can!', 1519997815);
+    }
 
     /**
      * Does this module need a form submit?
      *
      * @return bool
      */
-    public function showFormSubmitButton(): bool;
+    public function showFormSubmitButton(): bool
+    {
+        return true;
+    }
 }

@@ -1717,4 +1717,67 @@ return [
             'Important-83869-RemovedRequestTypeSpecificCodeInBootstrap.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\View\AdminPanelView->getAdminPanelHeaderData' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\View\AdminPanelView->isAdminModuleEnabled' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\View\AdminPanelView->saveConfigOptions' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\View\AdminPanelView->extGetFeAdminValue' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\View\AdminPanelView->forcePreview' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\View\AdminPanelView->isAdminModuleOpen' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\View\AdminPanelView->extGetHead' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\View\AdminPanelView->linkSectionHeader' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\View\AdminPanelView->extGetItem' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+        ],
+    ],
 ];

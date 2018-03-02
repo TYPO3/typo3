@@ -55,7 +55,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Http\UrlHandlerInterface;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
-use TYPO3\CMS\Frontend\View\AdminPanelView;
 
 /**
  * Class for the built TypoScript based frontend. Instantiated in
@@ -1132,38 +1131,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             return null;
         }
         $originalFrontendUser = null;
-        // Backend user preview features:
-        if ($backendUser->adminPanel instanceof AdminPanelView) {
-            $this->fePreview = (int)$backendUser->adminPanel->extGetFeAdminValue('preview');
-            // If admin panel preview is enabled...
-            if ($this->fePreview) {
-                if ($this->fe_user->user) {
-                    $originalFrontendUser = $this->fe_user->user[$this->fe_user->usergroup_column];
-                }
-                $this->showHiddenPage = (bool)$backendUser->adminPanel->extGetFeAdminValue('preview', 'showHiddenPages');
-                $this->showHiddenRecords = (bool)$backendUser->adminPanel->extGetFeAdminValue('preview', 'showHiddenRecords');
-                // Simulate date
-                $simTime = $backendUser->adminPanel->extGetFeAdminValue('preview', 'simulateDate');
-                if ($simTime) {
-                    $GLOBALS['SIM_EXEC_TIME'] = $simTime;
-                    $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
-                }
-                // simulate user
-                $this->simUserGroup = $backendUser->adminPanel->extGetFeAdminValue('preview', 'simulateUserGroup');
-                if ($this->simUserGroup) {
-                    if ($this->fe_user->user) {
-                        $this->fe_user->user[$this->fe_user->usergroup_column] = $this->simUserGroup;
-                    } else {
-                        $this->fe_user->user = [
-                            $this->fe_user->usergroup_column => $this->simUserGroup
-                        ];
-                    }
-                }
-                if (!$this->simUserGroup && !$simTime && !$this->showHiddenPage && !$this->showHiddenRecords) {
-                    $this->fePreview = 0;
-                }
-            }
+        if ($this->fe_user->user) {
+            $originalFrontendUser = $this->fe_user->user[$this->fe_user->usergroup_column];
         }
+
         // The preview flag is set if the current page turns out to be hidden
         if ($this->id && $this->determineIdIsHiddenPage()) {
             $this->fePreview = 1;

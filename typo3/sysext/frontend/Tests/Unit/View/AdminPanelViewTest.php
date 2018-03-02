@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\View;
 
 /*
@@ -13,63 +14,63 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Localization\LanguageService;
+
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Tests\Unit\View\Fixtures\AdminPanelDisabledModuleFixture;
+use TYPO3\CMS\Frontend\Tests\Unit\View\Fixtures\AdminPanelEnabledShownOnSubmitInitializeModuleFixture;
+use TYPO3\CMS\Frontend\View\AdminPanelView;
 
 /**
  * Test case
  */
 class AdminPanelViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * Set up
-     */
-    protected function setUp()
+    public function setUp()
     {
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('cache_pages')->willReturn($cacheFrontendProphecy->reveal());
-        $GLOBALS['TSFE'] = new TypoScriptFrontendController([], 1, 1);
-    }
-
-    protected function tearDown()
-    {
-        GeneralUtility::purgeInstances();
-        parent::tearDown();
+        parent::setUp();
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        $beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
     }
 
     /**
      * @test
      */
-    public function extGetFeAdminValueReturnsTimestamp()
+    public function initializeCallsOnSubmitIfInputVarsAreSet()
     {
-        $strTime = '2013-01-01 01:00:00';
-        $timestamp = strtotime($strTime);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['frontend']['adminPanelModules'] = [
+            'fixtureOnSubmit' => [
+                'module' => AdminPanelEnabledShownOnSubmitInitializeModuleFixture::class
+            ]
+        ];
 
-        $backendUser = $this->getMockBuilder(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class)->getMock();
-        $backendUser->uc['TSFE_adminConfig']['preview_simulateDate'] = $timestamp;
-        unset($backendUser->extAdminConfig['override.']['preview.']);
-        unset($backendUser->extAdminConfig['override.']['preview']);
-        $GLOBALS['BE_USER'] = $backendUser;
+        $postVars = ['preview_showFluidDebug' => '1'];
+        $_GET['TSFE_ADMIN_PANEL'] = $postVars;
 
-        $adminPanelMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\View\AdminPanelView::class)
-            ->setMethods(['isAdminModuleEnabled', 'isAdminModuleOpen'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $adminPanelMock->expects($this->any())->method('isAdminModuleEnabled')->will($this->returnValue(true));
-        $adminPanelMock->expects($this->any())->method('isAdminModuleOpen')->will($this->returnValue(true));
+        $this->expectExceptionCode('1519997815');
 
-        $timestampReturned = $adminPanelMock->extGetFeAdminValue('preview', 'simulateDate');
-        $this->assertEquals($timestamp, $timestampReturned);
+        new AdminPanelView();
+    }
+
+    /**
+     * @test
+     */
+    public function initializeCallsInitializeModulesForEnabledModules()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['frontend']['adminPanelModules'] = [
+            'enabledModule' => [
+                'module' => AdminPanelEnabledShownOnSubmitInitializeModuleFixture::class
+            ],
+            'disabledModule' => [
+                'module' => AdminPanelDisabledModuleFixture::class,
+                'before' => ['enabledModule']
+            ]
+        ];
+
+        $this->expectExceptionCode(1519999273);
+        new AdminPanelView();
     }
 }

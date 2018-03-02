@@ -20,12 +20,28 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Admin Panel Preview Module
  */
 class PreviewModule extends AbstractModule
 {
+    /**
+     * Force the preview panel to be opened
+     *
+     * @var bool
+     */
+    protected $forceOpen = false;
+
+    /**
+     * @inheritdoc
+     */
+    public function getAdditionalJavaScriptCode(): string
+    {
+        return 'TSFEtypo3FormFieldSet("TSFE_ADMIN_PANEL[preview_simulateDate]", "datetime", "", 0, 0);';
+    }
 
     /**
      * Creates the content for the "preview" section ("module") of the Admin Panel
@@ -147,6 +163,57 @@ class PreviewModule extends AbstractModule
         return $this->extGetLL('preview');
     }
 
+    public function initializeModule(): void
+    {
+        $this->initializeFrontendPreview();
+        if (GeneralUtility::_GP('ADMCMD_simUser')) {
+            $this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateUserGroup'] = (int)GeneralUtility::_GP(
+                'ADMCMD_simUser'
+            );
+            $this->forceOpen = true;
+        }
+        if (GeneralUtility::_GP('ADMCMD_simTime')) {
+            $this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateDate'] = (int)GeneralUtility::_GP(
+                'ADMCMD_simTime'
+            );
+            $this->forceOpen = true;
+        }
+    }
+
+    /**
+     * Force module to be shown if either time or users/groups are simulated
+     *
+     * @return bool
+     */
+    public function isShown(): bool
+    {
+        if ($this->forceOpen) {
+            return true;
+        }
+        return parent::isShown();
+    }
+
+    /**
+     * Clear page cache if fluid debug output is enabled
+     *
+     * @param array $input
+     */
+    public function onSubmit(array $input): void
+    {
+        if ($input['preview_showFluidDebug'] ?? false) {
+            $theStartId = (int)$this->getTypoScriptFrontendController()->id;
+            $this->getTypoScriptFrontendController()
+                ->clearPageCacheContent_pidList(
+                    $this->getBackendUser()->extGetTreeList(
+                        $theStartId,
+                        0,
+                        0,
+                        $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+                    ) . $theStartId
+                );
+        }
+    }
+
     /**
      * @inheritdoc
      */
@@ -156,10 +223,44 @@ class PreviewModule extends AbstractModule
     }
 
     /**
-     * @inheritdoc
+     * @return TypoScriptFrontendController
      */
-    public function getAdditionalJavaScriptCode(): string
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
-        return 'TSFEtypo3FormFieldSet("TSFE_ADMIN_PANEL[preview_simulateDate]", "datetime", "", 0, 0);';
+        return $GLOBALS['TSFE'];
+    }
+
+    /**
+     * Initialize frontend preview functionality incl.
+     * simulation of users or time
+     */
+    protected function initializeFrontendPreview()
+    {
+        $tsfe = $this->getTypoScriptFrontendController();
+        $tsfe->clear_preview();
+        $tsfe->fePreview = 1;
+        $tsfe->showHiddenPage = (bool)$this->getConfigurationOption('showHiddenPages');
+        $tsfe->showHiddenRecords = (bool)$this->getConfigurationOption('showHiddenRecords');
+        // Simulate date
+        $simTime = $this->getConfigurationOption('simulateDate');
+        if ($simTime) {
+            $GLOBALS['SIM_EXEC_TIME'] = $simTime;
+            $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
+        }
+        // simulate user
+        $tsfe->simUserGroup = $this->getConfigurationOption('simulateUserGroup');
+        if ($tsfe->simUserGroup) {
+            if ($tsfe->fe_user->user) {
+                $tsfe->fe_user->user[$tsfe->fe_user->usergroup_column] = $tsfe->simUserGroup;
+            } else {
+                $tsfe->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
+                $tsfe->fe_user->user = [
+                    $tsfe->fe_user->usergroup_column => $tsfe->simUserGroup,
+                ];
+            }
+        }
+        if (!$tsfe->simUserGroup && !$simTime && !$tsfe->showHiddenPage && !$tsfe->showHiddenRecords) {
+            $tsfe->fePreview = 0;
+        }
     }
 }

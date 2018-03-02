@@ -16,8 +16,12 @@ namespace TYPO3\CMS\Frontend\AdminPanel;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 class CacheModule extends AbstractModule
 {
+
     /**
      * Creates the content for the "cache" section ("module") of the Admin Panel
      *
@@ -93,8 +97,48 @@ class CacheModule extends AbstractModule
     /**
      * @inheritdoc
      */
+    public function initializeModule(): void
+    {
+        if ($this->getConfigurationOption('noCache')) {
+            $this->getTypoScriptFrontendController()->set_no_cache('Admin Panel: No Caching', true);
+        }
+    }
+
+    /**
+     * Clear cache on saving if requested
+     *
+     * @param array $input
+     */
+    public function onSubmit(array $input): void
+    {
+        if (($input['action']['clearCache'] ?? false) ||
+            isset($input['preview_showFluidDebug'])) {
+            $theStartId = (int)$input['cache_clearCacheId'];
+            $this->getTypoScriptFrontendController()
+                ->clearPageCacheContent_pidList(
+                    $this->getBackendUser()->extGetTreeList(
+                        $theStartId,
+                        (int)$this->getConfigurationOption('clearCacheLevels'),
+                        0,
+                        $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+                    ) . $theStartId
+                );
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function showFormSubmitButton(): bool
     {
         return true;
+    }
+
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
+    {
+        return $GLOBALS['TSFE'];
     }
 }

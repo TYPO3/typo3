@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Frontend\View;
 
 /*
@@ -21,9 +22,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
-use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\AdminPanel\AdminPanelModuleInterface;
@@ -58,13 +57,6 @@ class AdminPanelView
     protected $iconFactory;
 
     /**
-     * Determines whether EXT:feedit is loaded
-     *
-     * @var bool
-     */
-    protected $extFeEditLoaded = false;
-
-    /**
      * Array of adminPanel modules
      *
      * @var AdminPanelModuleInterface[]
@@ -84,43 +76,24 @@ class AdminPanelView
      */
     public function initialize()
     {
+        $this->validateSortAndInitializeModules();
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->saveConfigOptions();
-        $typoScriptFrontend = $this->getTypoScriptFrontendController();
-        // Setting some values based on the admin panel
-        $this->extFeEditLoaded = ExtensionManagementUtility::isLoaded('feedit');
-        $this->validateSortAndInitiateModules();
-        $typoScriptFrontend->forceTemplateParsing = $this->extGetFeAdminValue('tsdebug', 'forceTemplateParsing');
-        $typoScriptFrontend->displayEditIcons = $this->extGetFeAdminValue('edit', 'displayIcons');
-        $typoScriptFrontend->displayFieldEditIcons = $this->extGetFeAdminValue('edit', 'displayFieldIcons');
-        if (GeneralUtility::_GP('ADMCMD_editIcons')) {
-            $typoScriptFrontend->displayFieldEditIcons = 1;
-        }
-        if (GeneralUtility::_GP('ADMCMD_simUser')) {
-            $this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateUserGroup'] = (int)GeneralUtility::_GP('ADMCMD_simUser');
-            $this->ext_forcePreview = true;
-        }
-        if (GeneralUtility::_GP('ADMCMD_simTime')) {
-            $this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateDate'] = (int)GeneralUtility::_GP('ADMCMD_simTime');
-            $this->ext_forcePreview = true;
-        }
-        if ($typoScriptFrontend->forceTemplateParsing) {
-            $typoScriptFrontend->set_no_cache('Admin Panel: Force template parsing', true);
-        } elseif ($this->extFeEditLoaded && $typoScriptFrontend->displayEditIcons) {
-            $typoScriptFrontend->set_no_cache('Admin Panel: Display edit icons', true);
-        } elseif ($this->extFeEditLoaded && $typoScriptFrontend->displayFieldEditIcons) {
-            $typoScriptFrontend->set_no_cache('Admin Panel: Display field edit icons', true);
-        } elseif (GeneralUtility::_GP('ADMCMD_view')) {
-            $typoScriptFrontend->set_no_cache('Admin Panel: Display preview', true);
+        $this->saveConfiguration();
+
+        foreach ($this->modules as $module) {
+            if ($module->isEnabled()) {
+                $module->initializeModule();
+            }
         }
     }
 
     /**
-     * Add an additional stylesheet
+     * Returns a link tag with the admin panel stylesheet
+     * defined using TBE_STYLES
      *
      * @return string
      */
-    public function getAdminPanelHeaderData()
+    protected function getAdminPanelStylesheet(): string
     {
         $result = '';
         if (!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
@@ -131,149 +104,25 @@ class AdminPanelView
     }
 
     /**
-     * Checks if an Admin Panel section ("module") is available for the user. If so, TRUE is returned.
+     * Render a single module with header panel
      *
-     * @param string $key The module key, eg. "edit", "preview", "info" etc.
-     * @return bool
-     */
-    public function isAdminModuleEnabled($key)
-    {
-        $result = false;
-        // Returns TRUE if the module checked is "preview" and the forcePreview flag is set.
-        if ($key === 'preview' && $this->ext_forcePreview) {
-            $result = true;
-        } elseif (!empty($this->getBackendUser()->extAdminConfig['enable.']['all'])) {
-            $result = true;
-        } elseif (!empty($this->getBackendUser()->extAdminConfig['enable.'][$key])) {
-            $result = true;
-        }
-        return $result;
-    }
-
-    /**
-     * Saves any change in settings made in the Admin Panel.
-     * Called from \TYPO3\CMS\Frontend\Http\RequestHandler right after access check for the Admin Panel
-     */
-    public function saveConfigOptions()
-    {
-        $input = GeneralUtility::_GP('TSFE_ADMIN_PANEL');
-        $beUser = $this->getBackendUser();
-        if (is_array($input)) {
-            // Setting
-            $beUser->uc['TSFE_adminConfig'] = array_merge(!is_array($beUser->uc['TSFE_adminConfig']) ? [] : $beUser->uc['TSFE_adminConfig'], $input);
-            unset($beUser->uc['TSFE_adminConfig']['action']);
-            // Actions:
-            if (($input['action']['clearCache'] && $this->isAdminModuleEnabled('cache')) || isset($input['preview_showFluidDebug'])) {
-                $theStartId = (int)$input['cache_clearCacheId'];
-                $this->getTypoScriptFrontendController()
-                    ->clearPageCacheContent_pidList(
-                        $beUser->extGetTreeList(
-                            $theStartId,
-                            $this->extGetFeAdminValue(
-                                'cache',
-                                'clearCacheLevels'
-                            ),
-                            0,
-                            $beUser->getPagePermsClause(Permission::PAGE_SHOW)
-                        ) . $theStartId
-                    );
-            }
-            // Saving
-            $beUser->writeUC();
-            // Flush fluid template cache
-            $cacheManager = new CacheManager();
-            $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-            $cacheManager->getCache('fluid_template')->flush();
-        }
-        $this->getTimeTracker()->LR = $this->extGetFeAdminValue('tsdebug', 'LR');
-        if ($this->extGetFeAdminValue('cache', 'noCache')) {
-            $this->getTypoScriptFrontendController()->set_no_cache('Admin Panel: No Caching', true);
-        }
-    }
-
-    /**
-     * Returns the value for an Admin Panel setting.
-     *
-     * @param string $sectionName Module key
-     * @param string $val Setting key
-     * @return mixed The setting value
-     */
-    public function extGetFeAdminValue($sectionName, $val = '')
-    {
-        if (!$this->isAdminModuleEnabled($sectionName)) {
-            return null;
-        }
-
-        $beUser = $this->getBackendUser();
-        // Exceptions where the values can be overridden (forced) from backend:
-        // deprecated
-        if (
-            $sectionName === 'edit' && (
-                $val === 'displayIcons' && $beUser->extAdminConfig['module.']['edit.']['forceDisplayIcons'] ||
-                $val === 'displayFieldIcons' && $beUser->extAdminConfig['module.']['edit.']['forceDisplayFieldIcons'] ||
-                $val === 'editNoPopup' && $beUser->extAdminConfig['module.']['edit.']['forceNoPopup']
-            )
-        ) {
-            return true;
-        }
-
-        // Override all settings with user TSconfig
-        if ($val && isset($beUser->extAdminConfig['override.'][$sectionName . '.'][$val])) {
-            return $beUser->extAdminConfig['override.'][$sectionName . '.'][$val];
-        }
-        if (!$val && isset($beUser->extAdminConfig['override.'][$sectionName])) {
-            return $beUser->extAdminConfig['override.'][$sectionName];
-        }
-
-        $returnValue = $val ? $beUser->uc['TSFE_adminConfig'][$sectionName . '_' . $val] : 1;
-
-        // Exception for preview
-        if ($sectionName === 'preview' && $this->ext_forcePreview) {
-            return !$val ? true : $returnValue;
-        }
-
-        // See if the menu is expanded!
-        return $this->isAdminModuleOpen($sectionName) ? $returnValue : null;
-    }
-
-    /**
-     * Enables the force preview option.
-     */
-    public function forcePreview()
-    {
-        $this->ext_forcePreview = true;
-    }
-
-    /**
-     * Returns TRUE if admin panel module is open
-     *
-     * @param string $key Module key
-     * @return bool TRUE, if the admin panel is open for the specified admin panel module key.
-     */
-    public function isAdminModuleOpen($key)
-    {
-        return $this->getBackendUser()->uc['TSFE_adminConfig']['display_top'] && $this->getBackendUser()->uc['TSFE_adminConfig']['display_' . $key];
-    }
-
-    /**
-     * @param string $key
-     * @param string $content
-     * @param string $label
-     *
+     * @param \TYPO3\CMS\Frontend\AdminPanel\AdminPanelModuleInterface $module
      * @return string
      */
-    protected function getModule($key, $content, $label = '')
+    protected function getModule(AdminPanelModuleInterface $module): string
     {
         $output = [];
 
-        if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_top'] && $this->isAdminModuleEnabled($key)) {
-            $output[] = '<div class="typo3-adminPanel-section typo3-adminPanel-section-' . ($this->isAdminModuleOpen($key) ? 'open' : 'closed') . '">';
+        if ($module->isEnabled()) {
+            $output[] = '<div class="typo3-adminPanel-section typo3-adminPanel-section-' .
+                        ($module->isOpen() ? 'open' : 'closed') .
+                        '">';
             $output[] = '  <div class="typo3-adminPanel-section-title">';
-            $output[] = '    ' . $this->linkSectionHeader($key, $label ?: $this->extGetLL($key));
+            $output[] = '    ' . $this->getSectionOpenerLink($module);
             $output[] = '  </div>';
-            if ($this->isAdminModuleOpen($key)) {
+            if ($module->isOpen()) {
                 $output[] = '<div class="typo3-adminPanel-section-body">';
-                $output[] = '  ' . $content;
+                $output[] = '  ' . $module->getContent();
                 $output[] = '</div>';
             }
             $output[] = '</div>';
@@ -294,30 +143,39 @@ class AdminPanelView
 
         $moduleContent = '';
 
-        foreach ($this->modules as $module) {
-            if ($this->isAdminModuleOpen($module->getIdentifier())) {
-                $this->extNeedUpdate = !$this->extNeedUpdate ? $module->showFormSubmitButton() : true;
-                $this->extJSCODE .= $module->getAdditionalJavaScriptCode();
+        if ($this->isAdminPanelActivated()) {
+            foreach ($this->modules as $module) {
+                if ($module->isOpen()) {
+                    $this->extNeedUpdate = !$this->extNeedUpdate ? $module->showFormSubmitButton() : true;
+                    $this->extJSCODE .= $module->getAdditionalJavaScriptCode();
+                }
+                $moduleContent .= $this->getModule($module);
             }
-            $moduleContent .= $this->getModule($module->getIdentifier(), $module->getContent(), $module->getLabel());
-        }
 
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'] ?? [] as $className) {
-            trigger_error(
-                'The hook $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_adminpanel.php\'][\'extendAdminPanel\'] is deprecated, register an AdminPanelModule instead.',
-                E_USER_DEPRECATED
-            );
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof AdminPanelViewHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . AdminPanelViewHookInterface::class, 1311942539);
-            }
-            $content = $hookObject->extendAdminPanel($moduleContent, $this);
-            if ($content) {
-                $moduleContent .= '<div class="typo3-adminPanel-section typo3-adminPanel-section-open">';
-                $moduleContent .= '  <div class="typo3-adminPanel-section-body">';
-                $moduleContent .= '    ' . $content;
-                $moduleContent .= '  </div>';
-                $moduleContent .= '</div>';
+            foreach (
+                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel']
+                ??
+                [] as $className
+            ) {
+                trigger_error(
+                    'The hook $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_adminpanel.php\'][\'extendAdminPanel\'] is deprecated, register an AdminPanelModule instead.',
+                    E_USER_DEPRECATED
+                );
+                $hookObject = GeneralUtility::makeInstance($className);
+                if (!$hookObject instanceof AdminPanelViewHookInterface) {
+                    throw new \UnexpectedValueException(
+                        $className . ' must implement interface ' . AdminPanelViewHookInterface::class,
+                        1311942539
+                    );
+                }
+                $content = $hookObject->extendAdminPanel($moduleContent, $this);
+                if ($content) {
+                    $moduleContent .= '<div class="typo3-adminPanel-section typo3-adminPanel-section-open">';
+                    $moduleContent .= '  <div class="typo3-adminPanel-section-body">';
+                    $moduleContent .= '    ' . $content;
+                    $moduleContent .= '  </div>';
+                    $moduleContent .= '</div>';
+                }
             }
         }
 
@@ -341,9 +199,13 @@ class AdminPanelView
             }
         }
         $output[] = '  <input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="0" />';
-        $output[] = '  <input id="typo3AdminPanelEnable" type="checkbox" onchange="document.TSFE_ADMIN_PANEL_FORM.submit();" name="TSFE_ADMIN_PANEL[display_top]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['display_top'] ? ' checked="checked"' : '') . '/>';
+        $output[] = '  <input id="typo3AdminPanelEnable" type="checkbox" onchange="document.TSFE_ADMIN_PANEL_FORM.submit();" name="TSFE_ADMIN_PANEL[display_top]" value="1"' .
+                    ($this->isAdminPanelActivated() ? ' checked="checked"' : '') .
+                    '/>';
         $output[] = '  <input id="typo3AdminPanelCollapse" type="checkbox" value="1" />';
-        $output[] = '  <div class="typo3-adminPanel typo3-adminPanel-state-' . ($this->getBackendUser()->uc['TSFE_adminConfig']['display_top'] ? 'open' : 'closed') . '">';
+        $output[] = '  <div class="typo3-adminPanel typo3-adminPanel-state-' .
+                    ($this->isAdminPanelActivated() ? 'open' : 'closed') .
+                    '">';
         $output[] = '    <div class="typo3-adminPanel-header">';
         $output[] = '      <span class="typo3-adminPanel-header-title">' . $this->extGetLL('adminPanelTitle') . '</span>';
         $output[] = '      <span class="typo3-adminPanel-header-user">' . htmlspecialchars($this->getBackendUser()->user['username']) . '</span>';
@@ -408,7 +270,7 @@ class AdminPanelView
         }
         $cssFileLocation = GeneralUtility::getFileAbsFileName('EXT:frontend/Resources/Public/Css/adminpanel.css');
         $output[] = '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($cssFileLocation)) . '" media="all" />';
-        $output[] = $this->getAdminPanelHeaderData();
+        $output[] = $this->getAdminPanelStylesheet();
         $output[] = '<!-- TYPO3 admin panel end -->';
 
         return implode('', $output);
@@ -437,11 +299,51 @@ class AdminPanelView
     }
 
     /**
+     * Returns true if admin panel was activated
+     * (switched "on" via GUI)
+     *
+     * @return bool
+     */
+    protected function isAdminPanelActivated(): bool
+    {
+        return $this->getBackendUser()->uc['TSFE_adminConfig']['display_top'] ?? false;
+    }
+
+    /**
+     * Save admin panel configuration to backend user UC
+     */
+    protected function saveConfiguration()
+    {
+        $input = GeneralUtility::_GP('TSFE_ADMIN_PANEL');
+        $beUser = $this->getBackendUser();
+        if (is_array($input)) {
+            // Setting
+            $beUser->uc['TSFE_adminConfig'] = array_merge(
+                !is_array($beUser->uc['TSFE_adminConfig']) ? [] : $beUser->uc['TSFE_adminConfig'],
+                $input
+            );
+            unset($beUser->uc['TSFE_adminConfig']['action']);
+
+            foreach ($this->modules as $module) {
+                if ($module->isEnabled() && $module->isOpen()) {
+                    $module->onSubmit($input);
+                }
+            }
+            // Saving
+            $beUser->writeUC();
+            // Flush fluid template cache
+            $cacheManager = new CacheManager();
+            $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+            $cacheManager->getCache('fluid_template')->flush();
+        }
+    }
+
+    /**
      * Validates, sorts and initiates the registered modules
      *
      * @throws \RuntimeException
      */
-    protected function validateSortAndInitiateModules(): void
+    protected function validateSortAndInitializeModules(): void
     {
         $modules = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['frontend']['adminPanelModules'] ?? [];
         if (empty($modules)) {
@@ -484,63 +386,34 @@ class AdminPanelView
     /*****************************************************
      * Admin Panel Layout Helper functions
      ****************************************************/
-    /**
-     * Returns a row (with colspan=4) which is a header for a section in the Admin Panel.
-     * It will have a plus/minus icon and a label which is linked so that it submits the form which surrounds the whole Admin Panel when clicked, alterting the TSFE_ADMIN_PANEL[display_' . $pre . '] value
-     * See the functions get*Module
-     *
-     * @param string $sectionSuffix The suffix to the display_ label. Also selects the label from the LOCAL_LANG array.
-     * @return string HTML table row.
-     * @see extGetItem()
-     */
-    public function extGetHead($sectionSuffix)
-    {
-        return  $this->linkSectionHeader($sectionSuffix, $this->extGetLL($sectionSuffix));
-    }
 
     /**
      * Wraps a string in a link which will open/close a certain part of the Admin Panel
      *
-     * @param string $sectionSuffix The code for the display_ label/key
-     * @param string $sectionTitle Title (HTML-escaped)
-     * @param string $className The classname for the <a> tag
-     * @return string $className Linked input string
-     * @see extGetHead()
+     * @param \TYPO3\CMS\Frontend\AdminPanel\AdminPanelModuleInterface $module
+     * @return string
      */
-    public function linkSectionHeader($sectionSuffix, $sectionTitle, $className = '')
+    protected function getSectionOpenerLink(AdminPanelModuleInterface $module): string
     {
-        $onclick = 'document.TSFE_ADMIN_PANEL_FORM[' . GeneralUtility::quoteJSvalue('TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']') . '].value=' . ($this->getBackendUser()->uc['TSFE_adminConfig']['display_' . $sectionSuffix] ? '0' : '1') . ';document.TSFE_ADMIN_PANEL_FORM.submit();return false;';
+        $identifier = $module->getIdentifier();
+        $onclick = 'document.TSFE_ADMIN_PANEL_FORM[' .
+                   GeneralUtility::quoteJSvalue('TSFE_ADMIN_PANEL[display_' . $identifier . ']') .
+                   '].value=' .
+                   ($this->getBackendUser()->uc['TSFE_adminConfig']['display_' . $identifier] ? '0' : '1') .
+                   ';document.TSFE_ADMIN_PANEL_FORM.submit();return false;';
 
         $output = [];
         $output[] = '<span class="typo3-adminPanel-section-title-identifier"></span>';
         $output[] = '<a href="javascript:void(0)" onclick="' . htmlspecialchars($onclick) . '">';
-        $output[] = '  ' . $sectionTitle;
+        $output[] = '  ' . htmlspecialchars($module->getLabel());
         $output[] = '</a>';
-        $output[] = '<input type="hidden" name="TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']" value="' . (int)$this->isAdminModuleOpen($sectionSuffix) . '" />';
+        $output[] = '<input type="hidden" name="TSFE_ADMIN_PANEL[display_' .
+                    $identifier .
+                    ']" value="' .
+                    (int)$module->isOpen() .
+                    '" />';
 
-        return  implode('', $output);
-    }
-
-    /**
-     * Returns a row (with 4 columns) for content in a section of the Admin Panel.
-     * It will take $pre as a key to a label to display and $element as the content to put into the forth cell.
-     *
-     * @param string $title Key to label
-     * @param string $content The HTML content for the forth table cell.
-     * @param string $checkbox The HTML for a checkbox or hidden fields.
-     * @param string $innerDivClass The Class attribute for the td element.
-     * @param string $outerDivClass The Class attribute for the tr element.
-     * @return string HTML table row.
-     * @see extGetHead()
-     */
-    public function extGetItem($title, $content = '', $checkbox = '', $outerDivClass = null, $innerDivClass = null)
-    {
-        $title = $title ? '<label for="' . htmlspecialchars($title) . '">' . $this->extGetLL($title) . '</label>' : '';
-        $out = '';
-        $out .= (string)$outerDivClass ? '<div class="' . htmlspecialchars($outerDivClass) . '">' : '<div>';
-        $out .= (string)$innerDivClass ? '<div class="' . htmlspecialchars($innerDivClass) . '">' : '<div>';
-        $out .= $checkbox . $title . $content . '</div></div>';
-        return $out;
+        return implode('', $output);
     }
 
     /**
@@ -750,11 +623,205 @@ class AdminPanelView
         return $GLOBALS['TSFE'];
     }
 
+    /*****************************************************
+     * Admin Panel: Deprecated API
+     ****************************************************/
+
     /**
-     * @return TimeTracker
+     * Add an additional stylesheet
+     *
+     * @return string
+     * @deprecated since TYPO3 v9 - implement AdminPanelModules via the new API (see AdminPanelModuleInterface)
      */
-    protected function getTimeTracker()
+    public function getAdminPanelHeaderData()
     {
-        return GeneralUtility::makeInstance(TimeTracker::class);
+        trigger_error(
+            'Deprecated since TYPO3 v9 - implement AdminPanelModules via the new API (see AdminPanelModuleInterface)',
+            E_USER_DEPRECATED
+        );
+        return $this->getAdminPanelStylesheet();
+    }
+
+    /**
+     * Checks if an Admin Panel section ("module") is available for the user. If so, TRUE is returned.
+     *
+     * @param string $key The module key, eg. "edit", "preview", "info" etc.
+     * @deprecated but still called in FrontendBackendUserAuthentication (will be refactored in a separate step)
+     * @return bool
+     */
+    public function isAdminModuleEnabled($key)
+    {
+        $result = false;
+        // Returns TRUE if the module checked is "preview" and the forcePreview flag is set.
+        if ($key === 'preview' && $this->ext_forcePreview) {
+            $result = true;
+        } elseif (!empty($this->getBackendUser()->extAdminConfig['enable.']['all'])) {
+            $result = true;
+        } elseif (!empty($this->getBackendUser()->extAdminConfig['enable.'][$key])) {
+            $result = true;
+        }
+        return $result;
+    }
+
+    /**
+     * Saves any change in settings made in the Admin Panel.
+     *
+     * @deprecated since TYPO3 v9 - implement AdminPanelModules via the new API (see AdminPanelModuleInterface)
+     */
+    public function saveConfigOptions()
+    {
+        trigger_error(
+            'Deprecated since TYPO3 v9 - implement AdminPanelModules via the new API (see AdminPanelModuleInterface)',
+            E_USER_DEPRECATED
+        );
+        $this->saveConfiguration();
+    }
+
+    /**
+     * Returns the value for an Admin Panel setting.
+     *
+     * @param string $sectionName Module key
+     * @param string $val Setting key
+     * @return mixed The setting value
+     * @deprecated Since TYPO3 v9 - implement AdminPanelModules via the new API (see AdminPanelModuleInterface)
+     */
+    public function extGetFeAdminValue($sectionName, $val = '')
+    {
+        trigger_error(
+            'Deprecated since TYPO3 v9 - implement AdminPanelModules via the new API (see AdminPanelModuleInterface)',
+            E_USER_DEPRECATED
+        );
+        if (!$this->isAdminModuleEnabled($sectionName)) {
+            return null;
+        }
+
+        $beUser = $this->getBackendUser();
+        // Exceptions where the values can be overridden (forced) from backend:
+        // deprecated
+        if (
+            $sectionName === 'edit' && (
+                $val === 'displayIcons' && $beUser->extAdminConfig['module.']['edit.']['forceDisplayIcons'] ||
+                $val === 'displayFieldIcons' && $beUser->extAdminConfig['module.']['edit.']['forceDisplayFieldIcons'] ||
+                $val === 'editNoPopup' && $beUser->extAdminConfig['module.']['edit.']['forceNoPopup']
+            )
+        ) {
+            return true;
+        }
+
+        // Override all settings with user TSconfig
+        if ($val && isset($beUser->extAdminConfig['override.'][$sectionName . '.'][$val])) {
+            return $beUser->extAdminConfig['override.'][$sectionName . '.'][$val];
+        }
+        if (!$val && isset($beUser->extAdminConfig['override.'][$sectionName])) {
+            return $beUser->extAdminConfig['override.'][$sectionName];
+        }
+
+        $returnValue = $val ? $beUser->uc['TSFE_adminConfig'][$sectionName . '_' . $val] : 1;
+
+        // Exception for preview
+        if ($sectionName === 'preview' && $this->ext_forcePreview) {
+            return !$val ? true : $returnValue;
+        }
+
+        // See if the menu is expanded!
+        return $this->isAdminModuleOpen($sectionName) ? $returnValue : null;
+    }
+
+    /**
+     * Enables the force preview option.
+     *
+     * @deprecated since TYPO3 v9 - see AdminPanelModule: Preview
+     */
+    public function forcePreview()
+    {
+        trigger_error('Deprecated since TYPO3 v9, see AdminPanelModule: Preview', E_USER_DEPRECATED);
+        $this->ext_forcePreview = true;
+    }
+
+    /**
+     * Returns TRUE if admin panel module is open
+     *
+     * @param string $key Module key
+     * @return bool TRUE, if the admin panel is open for the specified admin panel module key.
+     * @deprecated Since TYPO3 v9 - implement AdminPanelModules via the new API
+     */
+    public function isAdminModuleOpen($key)
+    {
+        trigger_error('since TYPO3 v9 - use new AdminPanel API instead', E_USER_DEPRECATED);
+        return $this->getBackendUser()->uc['TSFE_adminConfig']['display_top'] &&
+               $this->getBackendUser()->uc['TSFE_adminConfig']['display_' . $key];
+    }
+
+    /**
+     * Returns a row (with 4 columns) for content in a section of the Admin Panel.
+     * It will take $pre as a key to a label to display and $element as the content to put into the forth cell.
+     *
+     * @param string $title Key to label
+     * @param string $content The HTML content for the forth table cell.
+     * @param string $checkbox The HTML for a checkbox or hidden fields.
+     * @param string $innerDivClass The Class attribute for the td element.
+     * @param string $outerDivClass The Class attribute for the tr element.
+     * @return string HTML table row.
+     * @see extGetHead()
+     * @deprecated since TYPO3 v9 - use new AdminPanel API instead
+     */
+    public function extGetItem($title, $content = '', $checkbox = '', $outerDivClass = null, $innerDivClass = null)
+    {
+        trigger_error('since TYPO3 v9 - use new AdminPanel API instead', E_USER_DEPRECATED);
+        $title = $title ? '<label for="' . htmlspecialchars($title) . '">' . $this->extGetLL($title) . '</label>' : '';
+        $out = '';
+        $out .= (string)$outerDivClass ? '<div class="' . htmlspecialchars($outerDivClass) . '">' : '<div>';
+        $out .= (string)$innerDivClass ? '<div class="' . htmlspecialchars($innerDivClass) . '">' : '<div>';
+        $out .= $checkbox . $title . $content . '</div></div>';
+        return $out;
+    }
+
+    /**
+     * Returns a row (with colspan=4) which is a header for a section in the Admin Panel.
+     * It will have a plus/minus icon and a label which is linked so that it submits the form which surrounds the whole Admin Panel when clicked, alterting the TSFE_ADMIN_PANEL[display_' . $pre . '] value
+     * See the functions get*Module
+     *
+     * @param string $sectionSuffix The suffix to the display_ label. Also selects the label from the LOCAL_LANG array.
+     * @return string HTML table row.
+     * @see extGetItem()
+     * @deprecated since TYPO3 v9 - use new AdminPanel API instead
+     */
+    public function extGetHead($sectionSuffix)
+    {
+        trigger_error('since TYPO3 v9 - use new AdminPanel API instead', E_USER_DEPRECATED);
+        return $this->linkSectionHeader($sectionSuffix, $this->extGetLL($sectionSuffix));
+    }
+
+    /**
+     * Wraps a string in a link which will open/close a certain part of the Admin Panel
+     *
+     * @param string $sectionSuffix The code for the display_ label/key
+     * @param string $sectionTitle Title (HTML-escaped)
+     * @param string $className The classname for the <a> tag
+     * @return string $className Linked input string
+     * @see extGetHead()
+     * @deprecated  since TYPO3 v9 - use new AdminPanel API instead
+     */
+    public function linkSectionHeader($sectionSuffix, $sectionTitle, $className = '')
+    {
+        trigger_error('since TYPO3 v9 - use new AdminPanel API instead', E_USER_DEPRECATED);
+        $onclick = 'document.TSFE_ADMIN_PANEL_FORM[' .
+                   GeneralUtility::quoteJSvalue('TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']') .
+                   '].value=' .
+                   ($this->getBackendUser()->uc['TSFE_adminConfig']['display_' . $sectionSuffix] ? '0' : '1') .
+                   ';document.TSFE_ADMIN_PANEL_FORM.submit();return false;';
+
+        $output = [];
+        $output[] = '<span class="typo3-adminPanel-section-title-identifier"></span>';
+        $output[] = '<a href="javascript:void(0)" onclick="' . htmlspecialchars($onclick) . '">';
+        $output[] = '  ' . $sectionTitle;
+        $output[] = '</a>';
+        $output[] = '<input type="hidden" name="TSFE_ADMIN_PANEL[display_' .
+                    $sectionSuffix .
+                    ']" value="' .
+                    (int)$this->isAdminModuleOpen($sectionSuffix) .
+                    '" />';
+
+        return implode('', $output);
     }
 }

@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\AdminPanel;
 
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Admin Panel TypoScript Debug Module
@@ -97,10 +98,10 @@ class TsDebugModule extends AbstractModule
             $output[] = '</div>';
 
             $timeTracker = $this->getTimeTracker();
-            $timeTracker->printConf['flag_tree'] = $this->getBackendUser()->adminPanel->extGetFeAdminValue('tsdebug', 'tree');
-            $timeTracker->printConf['allTime'] = $this->getBackendUser()->adminPanel->extGetFeAdminValue('tsdebug', 'displayTimes');
-            $timeTracker->printConf['flag_messages'] = $this->getBackendUser()->adminPanel->extGetFeAdminValue('tsdebug', 'displayMessages');
-            $timeTracker->printConf['flag_content'] = $this->getBackendUser()->adminPanel->extGetFeAdminValue('tsdebug', 'displayContent');
+            $timeTracker->printConf['flag_tree'] = $this->getConfigurationOption('tree');
+            $timeTracker->printConf['allTime'] = $this->getConfigurationOption('displayTimes');
+            $timeTracker->printConf['flag_messages'] = $this->getConfigurationOption('displayMessages');
+            $timeTracker->printConf['flag_content'] = $this->getConfigurationOption('displayContent');
             $output[] = $timeTracker->printTSlog();
         }
         return implode('', $output);
@@ -125,6 +126,19 @@ class TsDebugModule extends AbstractModule
     /**
      * @inheritdoc
      */
+    public function initializeModule(): void
+    {
+        $typoScriptFrontend = $this->getTypoScriptFrontendController();
+        $typoScriptFrontend->forceTemplateParsing = (bool)$this->getConfigurationOption('forceTemplateParsing');
+        if ($typoScriptFrontend->forceTemplateParsing) {
+            $typoScriptFrontend->set_no_cache('Admin Panel: Force template parsing', true);
+        }
+        $this->getTimeTracker()->LR = (bool)$this->getConfigurationOption('LR');
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function showFormSubmitButton(): bool
     {
         return true;
@@ -136,5 +150,13 @@ class TsDebugModule extends AbstractModule
     protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
+    }
+
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
+    {
+        return $GLOBALS['TSFE'];
     }
 }

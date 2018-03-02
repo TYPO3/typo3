@@ -67,37 +67,35 @@ class EditModule extends AbstractModule
 
             $output[] = $this->getBackendUser()->adminPanel->ext_makeToolBar();
 
-            if (!GeneralUtility::_GP('ADMCMD_view')) {
-                $onClick = '
-                    if (parent.opener && parent.opener.top && parent.opener.top.TS) {
-                        parent.opener.top.fsMod.recentIds["web"]=' .
-                           (int)$this->getTypoScriptFrontendController()->page['uid'] .
-                           ';
-                        if (parent.opener.top && parent.opener.top.nav_frame && parent.opener.top.nav_frame.refresh_nav) {
-                            parent.opener.top.nav_frame.refresh_nav();
-                        }
-                        parent.opener.top.goToModule("' .
-                           $pageModule .
-                           '");
-                        parent.opener.top.focus();
-                    } else {
-                        vHWin=window.open(' .
-                           GeneralUtility::quoteJSvalue(BackendUtility::getBackendScript()) .
-                           ',\'' .
-                           md5('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) .
-                           '\');
-                        vHWin.focus();
+            $onClick = '
+                if (parent.opener && parent.opener.top && parent.opener.top.TS) {
+                    parent.opener.top.fsMod.recentIds["web"]=' .
+                       (int)$this->getTypoScriptFrontendController()->page['uid'] .
+                       ';
+                    if (parent.opener.top && parent.opener.top.nav_frame && parent.opener.top.nav_frame.refresh_nav) {
+                        parent.opener.top.nav_frame.refresh_nav();
                     }
-                    return false;
-                ';
-                $output[] = '<div class="typo3-adminPanel-form-group">';
-                $output[] = '  <a class="typo3-adminPanel-btn typo3-adminPanel-btn-default" href="#" onclick="' .
-                            htmlspecialchars($onClick) .
-                            '">';
-                $output[] = '    ' . $this->extGetLL('edit_openAB');
-                $output[] = '  </a>';
-                $output[] = '</div>';
-            }
+                    parent.opener.top.goToModule("' .
+                       $pageModule .
+                       '");
+                    parent.opener.top.focus();
+                } else {
+                    vHWin=window.open(' .
+                       GeneralUtility::quoteJSvalue(BackendUtility::getBackendScript()) .
+                       ',\'' .
+                       md5('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) .
+                       '\');
+                    vHWin.focus();
+                }
+                return false;
+            ';
+            $output[] = '<div class="typo3-adminPanel-form-group">';
+            $output[] = '  <a class="typo3-adminPanel-btn typo3-adminPanel-btn-default" href="#" onclick="' .
+                        htmlspecialchars($onClick) .
+                        '">';
+            $output[] = '    ' . $this->extGetLL('edit_openAB');
+            $output[] = '  </a>';
+            $output[] = '</div>';
         }
         return implode('', $output);
     }
@@ -116,6 +114,30 @@ class EditModule extends AbstractModule
     public function getLabel(): string
     {
         return $this->extGetLL('edit');
+    }
+
+    /**
+     * Initialize the edit module
+     * Includes the frontend edit initialization
+     *
+     * @todo move into fe_edit (including the module)
+     */
+    public function initializeModule(): void
+    {
+        $extFeEditLoaded = ExtensionManagementUtility::isLoaded('feedit');
+        $typoScriptFrontend = $this->getTypoScriptFrontendController();
+        $typoScriptFrontend->displayEditIcons = $this->getConfigurationOption('displayIcons');
+        $typoScriptFrontend->displayFieldEditIcons = $this->getConfigurationOption('displayFieldIcons');
+
+        if (GeneralUtility::_GP('ADMCMD_editIcons')) {
+            $typoScriptFrontend->displayFieldEditIcons = '1';
+        }
+        if ($extFeEditLoaded && $typoScriptFrontend->displayEditIcons) {
+            $typoScriptFrontend->set_no_cache('Admin Panel: Display edit icons', true);
+        }
+        if ($extFeEditLoaded && $typoScriptFrontend->displayFieldEditIcons) {
+            $typoScriptFrontend->set_no_cache('Admin Panel: Display field edit icons', true);
+        }
     }
 
     /**
