@@ -75,7 +75,6 @@ class ConnectionPool
      * @param string $connectionName
      * @return Connection
      * @throws \Doctrine\DBAL\DBALException
-     * @internal
      */
     public function getConnectionByName(string $connectionName): Connection
     {
