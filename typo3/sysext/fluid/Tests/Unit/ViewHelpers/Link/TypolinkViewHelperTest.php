@@ -86,6 +86,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
             'addQueryString' => $addQueryString,
             'addQueryStringMethod' => $addQueryStringMethod,
             'addQueryStringExclude' => $addQueryStringExclude,
+            'absolute' => false
         ]);
         $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
         $contentObjectRendererMock->expects($this->once())
@@ -102,6 +103,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
                             'method' => $addQueryStringMethod,
                             'exclude' => $addQueryStringExclude,
                         ],
+                        'forceAbsoluteUrl' => false,
                     ],
                 ]
             )

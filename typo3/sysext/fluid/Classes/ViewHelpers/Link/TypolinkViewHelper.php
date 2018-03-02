@@ -77,6 +77,7 @@ class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('addQueryString', 'bool', '', false, false);
         $this->registerArgument('addQueryStringMethod', 'string', '', false, 'GET');
         $this->registerArgument('addQueryStringExclude', 'string', '', false, '');
+        $this->registerArgument('absolute', 'bool', 'Ensure the resulting URL is an absolute URL', false, false);
     }
 
     /**
@@ -101,6 +102,7 @@ class TypolinkViewHelper extends AbstractViewHelper
         $addQueryString = $arguments['addQueryString'];
         $addQueryStringMethod = $arguments['addQueryStringMethod'];
         $addQueryStringExclude = $arguments['addQueryStringExclude'];
+        $absolute = $arguments['absolute'];
 
         // Merge the $parameter with other arguments
         $typolinkParameter = self::createTypolinkParameterArrayFromArguments($parameter, $target, $class, $title, $additionalParams);
@@ -130,7 +132,8 @@ class TypolinkViewHelper extends AbstractViewHelper
                         'addQueryString.' => [
                             'method' => $addQueryStringMethod,
                             'exclude' => $addQueryStringExclude
-                        ]
+                        ],
+                        'forceAbsoluteUrl' => $absolute
                     ]
                 ]
             );
