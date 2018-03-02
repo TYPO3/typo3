@@ -83,7 +83,7 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
                     1484066647
                 );
             }
-            $description .= '<br />' . htmlspecialchars($rowUpdater->getTitle());
+            $description .= LF . $rowUpdater->getTitle();
         }
 
         return $updateNeeded;
