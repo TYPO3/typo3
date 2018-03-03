@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Package;
 
 /**
  * Interface for a TYPO3 Package class
- * Adapted from FLOW for TYPO3 CMS
  */
 interface PackageInterface
 {

@@ -1,15 +1,18 @@
 <?php
 namespace TYPO3\CMS\Core\Cache\Backend;
 
-/*                                                                        *
- * This script belongs to the FLOW3 framework.                            *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- * of the License, or (at your option) any later version.                 *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,7 +38,6 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
     protected $cacheDirectory = '';
 
     /**
-     * TYPO3 v4 note: This variable is only available in v5
      * Temporary path to cache directory before setCache() was called. It is
      * set by setCacheDirectory() and used in setCache() method which calls
      * the directory creation if needed. The variable is not used afterwards,
@@ -65,10 +67,6 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
     /**
      * Sets a reference to the cache frontend which uses this backend and
      * initializes the default cache directory.
-     *
-     * TYPO3 v4 note: This method is different between TYPO3 v4 and FLOW3
-     * because the Environment class to get the path to a temporary directory
-     * does not exist in v4.
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The cache frontend
      * @throws \TYPO3\CMS\Core\Cache\Exception
@@ -101,8 +99,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
      * assumed that the directory is below the TYPO3_DOCUMENT_ROOT. However, an
      * absolute path can be selected, too.
      *
-     * This method does not exist in FLOW3 anymore, but it is needed in
-     * TYPO3 v4 to enable a cache path outside of document root. The final
+     * This method enables to use a cache path outside of document root. The final
      * cache path is checked and created in createFinalCachDirectory(),
      * called by setCache() method, which is done _after_ the cacheDirectory
      * option was handled.
@@ -174,8 +171,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
     }
 
     /**
-     * Create the final cache directory if it does not exist. This method
-     * exists in TYPO3 v4 only.
+     * Create the final cache directory if it does not exist.
      *
      * @param string $finalCacheDirectory Absolute path to final cache directory
      * @throws \TYPO3\CMS\Core\Cache\Exception If directory is not writable after creation

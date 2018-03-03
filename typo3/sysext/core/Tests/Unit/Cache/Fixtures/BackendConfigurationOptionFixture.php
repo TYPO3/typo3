@@ -22,7 +22,7 @@ class BackendConfigurationOptionFixture extends BackendFixture
     /**
      * Test if constructor receives backend options
      *
-     * @param string $context FLOW3's application context
+     * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options - depends on the actual backend
      */
     public function __construct($context, array $options = [])

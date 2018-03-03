@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * The default TYPO3 Package Manager
- * Adapted from FLOW for TYPO3 CMS
  */
 class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
 {

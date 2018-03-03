@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Package\Exception;
 
 /**
  * A "Protected Package Key" exception
- * Adapted from FLOW for TYPO3 CMS
  */
 class ProtectedPackageKeyException extends \TYPO3\CMS\Core\Package\Exception
 {

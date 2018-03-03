@@ -17,8 +17,6 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 
 /**
  * Testcase for the string cache frontend
- *
- * This file is a backport from FLOW3
  */
 class StringFrontendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {

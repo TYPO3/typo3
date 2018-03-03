@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Package;
 
 /**
  * The default TYPO3 Package MetaData implementation
- * Adapted from FLOW for TYPO3 CMS
  */
 class MetaData
 {

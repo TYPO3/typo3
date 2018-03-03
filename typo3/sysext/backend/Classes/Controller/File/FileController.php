@@ -32,8 +32,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
  * This script serves as the file administration part of the TYPO3 Core Engine.
  * Basically it includes two libraries which are used to manipulate files on the server.
- * Before TYPO3 4.3, it was located in typo3/tce_file.php and redirected back to a
- * $redirectURL. Since 4.3 this class is also used for accessing via AJAX
  */
 class FileController
 {

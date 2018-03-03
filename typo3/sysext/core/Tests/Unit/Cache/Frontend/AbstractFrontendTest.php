@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
 
 /**
  * Testcase for the abstract cache frontend
- *
- * This file is a backport from FLOW3
  */
 class AbstractFrontendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {

@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\Cache\Exception;
 /**
  * A "Duplicate Identifier" exception
  *
- * This file is a backport from FLOW3
- *
  * @api
  */
 class DuplicateIdentifierException extends \TYPO3\CMS\Core\Cache\Exception

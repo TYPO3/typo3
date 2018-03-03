@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Response;
 
 /**
  * Creates a request an dispatches it to the controller which was specified
- * by TS Setup, flexForm and returns the content to the v4 framework.
+ * by TS Setup, flexForm and returns the content.
  *
  * This class is the main entry point for extbase extensions.
  */

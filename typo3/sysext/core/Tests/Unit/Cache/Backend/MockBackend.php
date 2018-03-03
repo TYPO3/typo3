@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 /**
  * A caching backend which forgets everything immediately
  * Used in FactoryTest
- *
- * This file is a backport from FLOW3
  */
 class MockBackend extends \TYPO3\CMS\Core\Cache\Backend\NullBackend
 {

@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Database;
 
 /**
  * A helper class for handling PDO databases
- * Backport of FLOW3 class PdoHelper, last synced version: 3528
  */
 class PdoHelper
 {

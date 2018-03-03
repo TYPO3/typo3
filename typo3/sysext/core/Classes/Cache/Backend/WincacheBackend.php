@@ -46,7 +46,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
     /**
      * Constructs this backend
      *
-     * @param string $context FLOW3's application context
+     * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options
      * @throws \TYPO3\CMS\Core\Cache\Exception If wincache PHP extension is not loaded
      */

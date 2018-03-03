@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * TYPO3 pageRender class (new in TYPO3 4.3.0)
+ * TYPO3 pageRender class
  * This class render the HTML of a webpage, usable for BE and FE
  */
 class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface

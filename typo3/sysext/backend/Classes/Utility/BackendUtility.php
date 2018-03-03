@@ -2417,8 +2417,6 @@ class BackendUtility
     /**
      * API function that wraps the text / html in help text, so if a user hovers over it
      * the help text will show up
-     * This is the new help API function since TYPO3 4.5, and uses the new behaviour
-     * (hover over text, no icon, no fulltext option, no option to disable the help)
      *
      * @param string $table The table name for which the help should be shown
      * @param string $field The field name for which the help should be shown

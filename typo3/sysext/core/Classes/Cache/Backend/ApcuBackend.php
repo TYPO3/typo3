@@ -71,7 +71,7 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
     /**
      * Constructs this backend
      *
-     * @param string $context FLOW3's application context
+     * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options - unused here
      * @throws Cache\Exception
      */

@@ -34,7 +34,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * This prefix makes sure that keys from the different installations do not
  * conflict.
  *
- * This file is a backport from FLOW3
  * @api
  */
 class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface
@@ -69,7 +68,7 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     /**
      * Constructs this backend
      *
-     * @param string $context FLOW3's application context
+     * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options - unused here
      * @throws \TYPO3\CMS\Core\Cache\Exception
      */

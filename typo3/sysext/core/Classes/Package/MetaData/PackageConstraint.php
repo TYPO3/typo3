@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Package\MetaData;
 
 /**
  * Package constraint meta model
- * Adapted from FLOW for TYPO3 CMS
  */
 class PackageConstraint
 {

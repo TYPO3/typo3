@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Cache\Backend\ApcBackend;
  *
  * NOTE: If you want to execute these tests you need to enable apc in
  * cli context (apc.enable_cli = 1)
- *
- * This file is a backport from FLOW3
  */
 class ApcBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {

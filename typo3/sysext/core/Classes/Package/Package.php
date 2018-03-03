@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Package;
 
 /**
  * A Package representing the details of an extension and/or a composer package
- * Adapted from FLOW for TYPO3 CMS
  */
 class Package implements PackageInterface
 {

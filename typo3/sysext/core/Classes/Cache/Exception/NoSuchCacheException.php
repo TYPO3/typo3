@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\Cache\Exception;
 /**
  * A "No Such Cache" exception
  *
- * This file is a backport from FLOW3
- *
  * @api
  */
 class NoSuchCacheException extends \TYPO3\CMS\Core\Cache\Exception

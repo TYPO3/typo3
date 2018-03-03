@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\Cache\Exception;
 /**
  * An "Invalid Data" exception
  *
- * This file is a backport from FLOW3
- *
  * @api
  */
 class InvalidDataException extends \TYPO3\CMS\Core\Cache\Exception

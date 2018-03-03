@@ -29,12 +29,12 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
     protected $uid;
 
     /**
-     * @var int The uid of the localized record. In TYPO3 v4.x the property "uid" holds the uid of the record in default language (the translationOrigin).
+     * @var int The uid of the localized record. Holds the uid of the record in default language (the translationOrigin).
      */
     protected $_localizedUid;
 
     /**
-     * @var int The uid of the language of the object. In TYPO3 v4.x this is the uid of the language record in the table sys_language.
+     * @var int The uid of the language of the object. This is the uid of the language record in the table sys_language.
      */
     protected $_languageUid;
 

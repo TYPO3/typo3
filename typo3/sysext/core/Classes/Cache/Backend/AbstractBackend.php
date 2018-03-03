@@ -20,7 +20,6 @@ use Psr\Log\LoggerAwareTrait;
 /**
  * An abstract caching backend
  *
- * This file is a backport from FLOW3
  * @api
  */
 abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
@@ -44,9 +43,8 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
     /**
      * The current application context
      *
-     * TYPO3 v4 note: This variable is currently unused in v4 context and set to
-     * "production" always. It is only kept to stay in sync with
-     * FLOW3 code.
+     * This variable is currently unused and set to "production" always.
+     * It is only kept to keep backwards compatibility.
      *
      * @var string
      */
@@ -62,7 +60,7 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
     /**
      * Constructs this backend
      *
-     * @param string $context FLOW3's application context
+     * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options - depends on the actual backend
      * @throws \InvalidArgumentException
      * @api

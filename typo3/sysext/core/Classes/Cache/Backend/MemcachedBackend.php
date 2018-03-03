@@ -40,7 +40,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
  * Note: When using the Memcached backend to store values of more than ~1 MB,
  * the data will be split into chunks to make them fit into the memcached limits.
  *
- * This file is a backport from FLOW3 by Ingo Renner.
  * @api
  */
 class MemcachedBackend extends AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
@@ -91,7 +90,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     /**
      * Constructs this backend
      *
-     * @param string $context FLOW3's application context
+     * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options - depends on the actual backend
      * @throws Exception if memcache is not installed
      */

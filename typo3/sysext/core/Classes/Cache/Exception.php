@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\Cache;
 /**
  * A generic Cache exception
  *
- * This file is a backport from FLOW3
- *
  * @api
  */
 class Exception extends \Exception

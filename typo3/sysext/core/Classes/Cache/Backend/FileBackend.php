@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * A caching backend which stores cache entries in files
  *
- * This file is a backport from FLOW3
  * @api
  */
 class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implements \TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface, \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface
@@ -97,10 +96,6 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
      *
      * This method also detects if this backend is frozen and sets the internal
      * flag accordingly.
-     *
-     * TYPO3 v4 note: This method is different between TYPO3 v4 and FLOW3
-     * because the Environment class to get the path to a temporary directory
-     * does not exist in v4.
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The cache frontend
      */

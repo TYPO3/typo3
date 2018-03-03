@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 /**
  * A cache frontend tailored to PHP code.
  *
- * This file is a backport from FLOW3
  * @api
  */
 class PhpFrontend extends AbstractFrontend

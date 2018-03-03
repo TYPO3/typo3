@@ -88,7 +88,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
     ];
 
     /**
-     * Reversed mapping with codes used by TYPO3 4.5 and below
+     * Reversed mapping for backward compatibility codes
      *
      * @var array
      */
@@ -116,7 +116,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
     ];
 
     /**
-     * Mapping with codes used by TYPO3 4.5 and below
+     * Mapping for backward compatibility codes
      *
      * @var array
      */

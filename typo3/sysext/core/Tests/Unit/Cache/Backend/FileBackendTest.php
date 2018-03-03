@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for the File cache backend
- *
- * This file is a backport from FLOW3
  */
 class FileBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {

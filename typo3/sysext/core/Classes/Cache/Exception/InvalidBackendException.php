@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\Cache\Exception;
 /**
  * An "Invalid Backend" exception
  *
- * This file is a backport from FLOW3
- *
  * @api
  */
 class InvalidBackendException extends \TYPO3\CMS\Core\Cache\Exception

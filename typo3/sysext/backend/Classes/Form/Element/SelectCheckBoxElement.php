@@ -92,7 +92,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                         ];
                     } else {
                         // Check if some help text is available
-                        // Since TYPO3 4.5 help text is expected to be an associative array
+                        // Help text is expected to be an associative array
                         // with two key, "title" and "description"
                         // For the sake of backwards compatibility, we test if the help text
                         // is a string and use it as a description (this could happen if items

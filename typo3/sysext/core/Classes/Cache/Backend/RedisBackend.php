@@ -132,7 +132,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
     /**
      * Construct this backend
      *
-     * @param string $context FLOW3's application context
+     * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options
      * @throws \TYPO3\CMS\Core\Cache\Exception if php redis module is not loaded
      */
