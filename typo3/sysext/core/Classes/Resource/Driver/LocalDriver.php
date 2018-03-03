@@ -638,7 +638,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     {
         if (empty($propertiesToExtract)) {
             $propertiesToExtract = [
-                'size', 'atime', 'atime', 'mtime', 'ctime', 'mimetype', 'name',
+                'size', 'atime', 'mtime', 'ctime', 'mimetype', 'name',
                 'identifier', 'identifier_hash', 'storage', 'folder_hash'
             ];
         }
