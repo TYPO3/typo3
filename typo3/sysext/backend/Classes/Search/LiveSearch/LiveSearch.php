@@ -363,7 +363,7 @@ class LiveSearch
                     $queryBuilder->expr()->comparison(
                         'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
                         'LIKE',
-                        $queryBuilder->createNamedParameter(strtolower($like), \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter(mb_strtolower($like), \PDO::PARAM_STR)
                     )
                 );
 
