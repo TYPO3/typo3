@@ -27,12 +27,14 @@ use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\ClearCacheService;
 use TYPO3\CMS\Install\Service\ClearTableService;
+use TYPO3\CMS\Install\Service\LanguagePackService;
 use TYPO3\CMS\Install\Service\Typo3tempFileService;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
@@ -57,6 +59,10 @@ class MaintenanceController extends AbstractController
             'clearTypo3tempFilesToken' => $formProtection->generateToken('installTool', 'clearTypo3tempFiles'),
             'createAdminToken' => $formProtection->generateToken('installTool', 'createAdmin'),
             'databaseAnalyzerExecuteToken' => $formProtection->generateToken('installTool', 'databaseAnalyzerExecute'),
+            'languagePacksActivateLanguageToken' => $formProtection->generateToken('installTool', 'languagePacksActivateLanguage'),
+            'languagePacksDeactivateLanguageToken' => $formProtection->generateToken('installTool', 'languagePacksDeactivateLanguage'),
+            'languagePacksUpdatePackToken' => $formProtection->generateToken('installTool', 'languagePacksUpdatePack'),
+            'languagePacksUpdateIsoTimesToken' => $formProtection->generateToken('installTool', 'languagePacksUpdateIsoTimes'),
         ]);
         return new JsonResponse([
             'success' => true,
@@ -485,6 +491,196 @@ class MaintenanceController extends AbstractController
             'success' => true,
             'status' => $messages,
         ]);
+    }
+
+    /**
+     * Entry action of language packs module gets
+     * * list of available languages with details like active or not and last update
+     * * list of loaded extensions
+     *
+     * @return ResponseInterface
+     */
+    public function languagePacksGetDataAction(): ResponseInterface
+    {
+        // This action needs TYPO3_CONF_VARS for full GeneralUtility::getUrl() config
+        $this->loadExtLocalconfDatabaseAndExtTables();
+        $languagePacksService = GeneralUtility::makeInstance(LanguagePackService::class);
+        $languagePacksService->updateMirrorBaseUrl();
+        $extensions = $languagePacksService->getExtensionLanguagePackDetails();
+        return new JsonResponse([
+            'success' => true,
+            'languages' => $languagePacksService->getLanguageDetails(),
+            'extensions' => $extensions,
+            'activeLanguages' => $languagePacksService->getActiveLanguages(),
+            'activeExtensions' => array_column($extensions, 'key'),
+        ]);
+    }
+
+    /**
+     * Activate a language and any possible dependency it may have
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function languagePacksActivateLanguageAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $messageQueue = new FlashMessageQueue('install');
+        $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
+        $locales = GeneralUtility::makeInstance(Locales::class);
+        $availableLanguages = $languagePackService->getAvailableLanguages();
+        $activeLanguages = $languagePackService->getActiveLanguages();
+        $iso = $request->getParsedBody()['install']['iso'];
+        $activateArray = [];
+        foreach ($availableLanguages as $availableIso => $name) {
+            if ($availableIso === $iso && !in_array($availableIso, $activeLanguages, true)) {
+                $activateArray[] = $iso;
+                $dependencies = $locales->getLocaleDependencies($availableIso);
+                if (!empty($dependencies)) {
+                    foreach ($dependencies as $dependency) {
+                        if (!in_array($dependency, $activeLanguages, true)) {
+                            $activateArray[] = $dependency;
+                        }
+                    }
+                }
+            }
+        }
+        if (!empty($activateArray)) {
+            $activeLanguages = array_merge($activeLanguages, $activateArray);
+            sort($activeLanguages);
+            $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+            $configurationManager->setLocalConfigurationValueByPath(
+                'EXTCONF/lang',
+                ['availableLanguages' => $activeLanguages]
+            );
+            $activationArray = [];
+            foreach ($activateArray as $activateIso) {
+                $activationArray[] = $availableLanguages[$activateIso] . ' (' . $activateIso . ')';
+            }
+            $messageQueue->enqueue(
+                new FlashMessage(
+                    'These languages have been activated: ' . implode(', ', $activationArray)
+                )
+            );
+        } else {
+            $messageQueue->enqueue(
+                new FlashMessage('Language with ISO code "' . $iso . '" not found or already active.', '', FlashMessage::ERROR)
+            );
+        }
+        return new JsonResponse([
+            'success' => true,
+            'status' => $messageQueue,
+        ]);
+    }
+
+    /**
+     * Deactivate a language if no other active language depends on it
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @throws \RuntimeException
+     */
+    public function languagePacksDeactivateLanguageAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $messageQueue = new FlashMessageQueue('install');
+        $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
+        $locales = GeneralUtility::makeInstance(Locales::class);
+        $availableLanguages = $languagePackService->getAvailableLanguages();
+        $activeLanguages = $languagePackService->getActiveLanguages();
+        $iso = $request->getParsedBody()['install']['iso'];
+        if (empty($iso)) {
+            throw new \RuntimeException('No iso code given', 1520109807);
+        }
+        $otherActiveLanguageDependencies = [];
+        foreach ($activeLanguages as $activeLanguage) {
+            if ($activeLanguage === $iso) {
+                continue;
+            }
+            $dependencies = $locales->getLocaleDependencies($activeLanguage);
+            if (in_array($iso, $dependencies, true)) {
+                $otherActiveLanguageDependencies[] = $activeLanguage;
+            }
+        }
+        if (!empty($otherActiveLanguageDependencies)) {
+            // Error: Must disable dependencies first
+            $dependentArray = [];
+            foreach ($otherActiveLanguageDependencies as $dependency) {
+                $dependentArray[] = $availableLanguages[$dependency] . ' (' . $dependency . ')';
+            }
+            $messageQueue->enqueue(
+                new FlashMessage(
+                    'Language "' . $availableLanguages[$iso] . ' (' . $iso . ')" can not be deactivated. These'
+                    . ' other languages depend on it and need to be deactivated before:'
+                    . implode(', ', $dependentArray),
+                    '',
+                    FlashMessage::ERROR
+                )
+            );
+        } else {
+            if (in_array($iso, $activeLanguages, true)) {
+                // Deactivate this language
+                $newActiveLanguages = [];
+                foreach ($activeLanguages as $activeLanguage) {
+                    if ($activeLanguage === $iso) {
+                        continue;
+                    }
+                    $newActiveLanguages[] = $activeLanguage;
+                }
+                $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+                $configurationManager->setLocalConfigurationValueByPath(
+                    'EXTCONF/lang',
+                    ['availableLanguages' => $newActiveLanguages]
+                );
+                $messageQueue->enqueue(
+                    new FlashMessage(
+                        'Language "' . $availableLanguages[$iso] . ' (' . $iso . ')" has been deactivated'
+                    )
+                );
+            } else {
+                $messageQueue->enqueue(
+                    new FlashMessage(
+                        'Language "' . $availableLanguages[$iso] . ' (' . $iso . ')" has not been deactivated',
+                        '',
+                        FlashMessage::ERROR
+                    )
+                );
+            }
+        }
+        return new JsonResponse([
+            'success' => true,
+            'status' => $messageQueue,
+        ]);
+    }
+
+    /**
+     * Update a pack of one extension and one language
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @throws \RuntimeException
+     */
+    public function languagePacksUpdatePackAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $iso = $request->getParsedBody()['install']['iso'];
+        $key = $request->getParsedBody()['install']['extension'];
+        $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
+        return new JsonResponse([
+            'success' => true,
+            'packResult' => $languagePackService->languagePackDownload($key, $iso)
+        ]);
+    }
+
+    /**
+     * Set "last updated" time in registry for fully updated language packs.
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function languagePacksUpdateIsoTimesAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $isos = $request->getParsedBody()['install']['isos'];
+        $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
+        $languagePackService->setLastUpdatedIsoCode($isos);
+        return new JsonResponse(['success' => true]);
     }
 
     /**

@@ -22,6 +22,7 @@ $grid-float-breakpoint: $screen-md-min;
 @import "component/card";
 @import "component/colorpicker";
 @import "typo3/main_form";
+@import "typo3/icons";
 
 //
 // Include elements
@@ -29,6 +30,7 @@ $grid-float-breakpoint: $screen-md-min;
 
 @import "typo3/element_docheader";
 @import "typo3/element_message";
+@import "typo3/element_table";
 
 body.backend .module {
     background: $gray-lighter;
@@ -73,6 +75,10 @@ img.logo {
     pre {
         border-top: 0;
     }
+}
+
+.t3-languagePacks-inactive {
+    color: #aaa;
 }
 
 .bg-transparent-emulation {

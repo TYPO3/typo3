@@ -39,7 +39,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         'bs' => 'Bosnian',
         'bg' => 'Bulgarian',
         'ca' => 'Catalan',
-        'ch' => 'Chinese (Simpl.)',
+        'ch' => 'Chinese (Simple)',
         'cs' => 'Czech',
         'da' => 'Danish',
         'de' => 'German',
@@ -84,7 +84,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         'tr' => 'Turkish',
         'uk' => 'Ukrainian',
         'vi' => 'Vietnamese',
-        'zh' => 'Chinese (Trad.)'
+        'zh' => 'Chinese (Trad)'
     ];
 
     /**

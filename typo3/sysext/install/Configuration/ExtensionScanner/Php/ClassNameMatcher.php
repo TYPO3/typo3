@@ -517,6 +517,106 @@ return [
             'Breaking-84055-MigrateSys_notesAwayFromExtbase.rst',
         ],
     ],
+    'TYPO3\CMS\Lang\Command\LanguageUpdateCommand' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Controller\LanguageController' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Domain\Model\Extension' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Domain\Model\Language' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Domain\Repository\ExtensionRepository' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Domain\Repository\LanguageRepository' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Exception' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Exception\Language' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Exception\Ter' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Exception\XmlParser' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Service\RegistryService' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Service\TerService' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\Service\TranslationService' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\View\AbstractJsonView' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\View\Language\ActivateLanguageJson' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\View\Language\DeactivateLanguageJson' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\View\Language\GetTranslationsJson' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\View\Language\RemoveLanguageJson' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\View\Language\UpdateLanguageJson' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lang\View\Language\UpdateTranslationJson' => [
+        'restFiles' => [
+            'Breaking-84131-RemovedClassesOfLanguageExtension.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [

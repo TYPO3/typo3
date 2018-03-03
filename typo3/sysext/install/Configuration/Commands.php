@@ -9,6 +9,6 @@
  */
 return [
     'language:update' => [
-        'class' => \TYPO3\CMS\Lang\Command\LanguageUpdateCommand::class
+        'class' => \TYPO3\CMS\Install\Command\LanguagePackCommand::class
     ]
 ];

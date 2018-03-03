@@ -11,8 +11,7 @@
 		}],
 
 	"require": {
-		"typo3/cms-core": "9.2.*@dev",
-		"typo3/cms-extensionmanager": "9.2.*@dev"
+		"typo3/cms-core": "9.2.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -31,16 +30,6 @@
 				"partOfMinimalUsableSystem": true
 			},
 			"extension-key": "lang"
-		}
-	},
-	"autoload": {
-		"psr-4": {
-			"TYPO3\\CMS\\Lang\\": "Classes/"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Lang\\Tests\\": "Tests/"
 		}
 	}
 }

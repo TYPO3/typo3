@@ -18,8 +18,8 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Documentation\Exception\Document;
+use TYPO3\CMS\Documentation\Exception\XmlParser;
 use TYPO3\CMS\Documentation\Utility\MiscUtility;
-use TYPO3\CMS\Lang\Exception\XmlParser;
 
 /**
  * Service class to connect to docs.typo3.org.

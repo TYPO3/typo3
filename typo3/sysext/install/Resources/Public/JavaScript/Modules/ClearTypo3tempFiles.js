@@ -42,8 +42,10 @@ define([
     initialize: function() {
       var self = this;
       // Load stats on first open
-      $(document).on('cardlayout:card-opened', function() {
-        self.getStats();
+      $(document).on('cardlayout:card-opened', function(event, $card) {
+        if ($card.hasClass(self.selectorGridderOpener)) {
+          self.getStats();
+        }
       });
 
       $(document).on('click', this.selectorStatsTrigger, function(e) {
