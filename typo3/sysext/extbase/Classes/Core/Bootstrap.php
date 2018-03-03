@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Core;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 
 /**
@@ -63,7 +64,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      */
     public function initialize($configuration)
     {
-        if (!$this->isInCliMode()) {
+        if (!Environment::isCli()) {
             if (!isset($configuration['vendorName']) || $configuration['vendorName'] === '') {
                 throw new \RuntimeException('Invalid configuration: "vendorName" is not set', 1526629315);
             }
@@ -171,7 +172,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
             $content = $response->shutdown();
             $this->resetSingletons();
             $this->objectManager->get(\TYPO3\CMS\Extbase\Service\CacheService::class)->clearCachesOfRegisteredPageIds();
-            if ($this->isInCliMode() && $response->getExitCode()) {
+            if (Environment::isCli() && $response->getExitCode()) {
                 throw new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException('The request has been terminated as the response defined an exit code.', $response->getExitCode());
             }
         }
@@ -241,13 +242,5 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     protected function resetSingletons()
     {
         $this->persistenceManager->persistAll();
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isInCliMode()
-    {
-        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
     }
 }

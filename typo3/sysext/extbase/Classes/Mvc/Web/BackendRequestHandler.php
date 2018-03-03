@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * A request handler which can handle web requests invoked by the backend.
  */
@@ -40,6 +42,6 @@ class BackendRequestHandler extends AbstractRequestHandler
      */
     public function canHandleRequest()
     {
-        return $this->environmentService->isEnvironmentInBackendMode() && !$this->environmentService->isEnvironmentInCliMode();
+        return $this->environmentService->isEnvironmentInBackendMode() && !Environment::isCli();
     }
 }

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Mvc\Cli;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * The generic command line interface request handler for the MVC framework.
  *
@@ -37,11 +39,6 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface
     protected $requestBuilder;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
-     */
-    protected $environmentService;
-
-    /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
@@ -63,14 +60,6 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface
     public function injectRequestBuilder(\TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder $requestBuilder)
     {
         $this->requestBuilder = $requestBuilder;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
-     */
-    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
-    {
-        $this->environmentService = $environmentService;
     }
 
     /**
@@ -101,7 +90,7 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface
      */
     public function canHandleRequest()
     {
-        return $this->environmentService->isEnvironmentInCliMode();
+        return Environment::isCli();
     }
 
     /**

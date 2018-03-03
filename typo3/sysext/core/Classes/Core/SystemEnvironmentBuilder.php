@@ -267,7 +267,9 @@ class SystemEnvironmentBuilder
      */
     public static function initializeEnvironment(ApplicationContext $context)
     {
-        $isCli = PHP_SAPI === 'cli';
+        // TYPO3_CONTEXT is set in testing framework to check for frontend calls
+        // forked from a CLI process
+        $isCli = PHP_SAPI === 'cli' && (string)$context !== 'Testing/Frontend';
         // Absolute path of the entry script that was called
         $scriptPath = PATH_thisScript;
         $rootPath = rtrim(PATH_site, '/');

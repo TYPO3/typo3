@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * Service for determining environment params
  */
@@ -46,7 +48,7 @@ class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function isEnvironmentInCliMode()
     {
-        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
+        return Environment::isCli();
     }
 
     /**
