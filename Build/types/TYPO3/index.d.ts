@@ -56,6 +56,7 @@ interface Window {
   };
   rawurlencode: Function;
   list_frame: Window;
+  jump: Function;
 }
 
 /**
@@ -99,4 +100,6 @@ interface JQuery {
 
   // To be able to use twbs/bootstrap-slider we have to override the definition of jquerui
   slider(options: { [key: string]: any }): any;
+  // To be able to use jquery/autocomplete-slider we have to override the definition of jquerui
+  autocomplete(options?: { [key: string]: any }): any;
 }
