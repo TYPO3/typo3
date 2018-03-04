@@ -49,7 +49,7 @@ class Persistent {
    * @param {String} value
    * @returns {$}
    */
-  public set = (key: string, value: string): any => {
+  public set = (key: string, value: string|object): any => {
     if (this.data !== false) {
       this.data = this.setRecursiveDataByDeepKey(this.data, key.split('.'), value);
     }
@@ -164,7 +164,7 @@ class Persistent {
    * @param {string} value
    * @returns {*}
    */
-  private storeOnServer = (key: string, value: string): any => {
+  private storeOnServer = (key: string, value: string|object): any => {
     const me = this;
     return $.ajax(TYPO3.settings.ajaxUrls.usersettings_process, {
       data: {
@@ -205,7 +205,7 @@ class Persistent {
    * @param {string} value
    * @returns {any[]}
    */
-  private setRecursiveDataByDeepKey = (data: any, keyParts: any[], value: string): any[] => {
+  private setRecursiveDataByDeepKey = (data: any, keyParts: any[], value: string|object): any[] => {
     if (keyParts.length === 1) {
       data = data || {};
       data[keyParts[0]] = value;

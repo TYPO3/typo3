@@ -12,6 +12,7 @@
  */
 
 import * as $ from 'jquery';
+import ModuleMenu = require('./ModuleMenu');
 
 /**
  * Module: TYPO3/CMS/Backend/Toolbar
@@ -31,10 +32,8 @@ class Toolbar {
     });
     $(document).on('click', '.toolbar-item [data-modulename]', (evt: JQueryEventObject): void => {
       evt.preventDefault();
-      require(['TYPO3/CMS/Backend/ModuleMenu'], (): void => {
-        const moduleName = $(evt.target).closest('[data-modulename]').data('modulename');
-        TYPO3.ModuleMenu.App.showModule(moduleName);
-      });
+      const moduleName = $(evt.target).closest('[data-modulename]').data('modulename');
+      ModuleMenu.App.showModule(moduleName);
     });
     $(document).on('click', '.t3js-topbar-button-toolbar', (): void => {
       $('.scaffold')

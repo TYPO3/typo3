@@ -24,6 +24,7 @@ declare namespace TYPO3 {
       export class FormEngineValidation {
         public readonly errorClass: string;
       }
+
       export class FormEngine {
         public readonly Validation: FormEngineValidation;
       }
@@ -51,12 +52,17 @@ declare module 'TYPO3/CMS/Backend/FormEngine' {
 interface Window {
   TYPO3: any;
   $: any;
+  startInModule: Array<string>;
   inline: {
     delayedImportElement: (objectId: number, table: string, uid: number, type: string) => void
   };
   rawurlencode: Function;
   list_frame: Window;
   jump: Function;
+  currentSubScript: string;
+  currentModuleLoaded: string;
+  fsMod: { [key: string]: any };
+  nextLoadModuleUrl: string;
 }
 
 /**

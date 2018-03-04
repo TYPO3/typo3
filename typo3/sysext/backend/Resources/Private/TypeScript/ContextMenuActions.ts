@@ -14,6 +14,7 @@
 import * as $ from 'jquery';
 import InfoWindow = require('./InfoWindow');
 import Modal = require('./Modal');
+import ModuleMenu = require('./ModuleMenu');
 import Severity = require('./Severity');
 import Viewport = require('./Viewport');
 
@@ -116,7 +117,7 @@ class ContextMenuActions {
    */
   public static openListModule(table: string, uid: number): void {
     const pageId = table === 'pages' ? uid : $(this).data('page-uid');
-    top.TYPO3.ModuleMenu.App.showModule('web_list', 'id=' + pageId);
+    ModuleMenu.App.showModule('web_list', 'id=' + pageId);
   }
 
   /**
