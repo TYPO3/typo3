@@ -151,8 +151,8 @@ define(['jquery',
             ShortcutMenu.refreshMenu();
             $(ShortcutMenu.options.toolbarIconSelector, ShortcutMenu.options.containerSelector).replaceWith($existingIcon);
             if (typeof shortcutButton === 'object') {
-              Icons.getIcon('actions-system-shortcut-active', Icons.sizes.small).done(function(icons) {
-                $(shortcutButton).html(icons['actions-system-shortcut-active']);
+              Icons.getIcon('actions-system-shortcut-active', Icons.sizes.small).done(function(icon) {
+                $(shortcutButton).html(icon);
               });
               $(shortcutButton).addClass('active');
               $(shortcutButton).attr('title', null);
