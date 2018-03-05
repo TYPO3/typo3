@@ -430,14 +430,14 @@ class Modal {
     });
 
     // Remove modal from Modal.instances when hidden
-    currentModal.on('hidden.bs.modal', (): void => {
+    currentModal.on('hidden.bs.modal', (e: JQueryEventObject): void => {
       if (this.instances.length > 0) {
         const lastIndex = this.instances.length - 1;
         this.instances.splice(lastIndex, 1);
         this.currentModal = this.instances[lastIndex - 1];
       }
       currentModal.trigger('modal-destroyed');
-      $(this).remove();
+      $(e.currentTarget).remove();
       // Keep class modal-open on body tag as long as open modals exist
       if (this.instances.length > 0) {
         $('body').addClass('modal-open');
