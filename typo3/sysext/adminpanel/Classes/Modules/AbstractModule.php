@@ -119,7 +119,7 @@ abstract class AbstractModule implements AdminPanelModuleInterface
     /**
      * Translate given key
      *
-     * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/lang/Resources/Private/Language/locallang_tsfe.xlf
+     * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/core/Resources/Private/Language/locallang_tsfe.xlf
      * @param bool $convertWithHtmlspecialchars If TRUE the language-label will be sent through htmlspecialchars
      * @return string The value for the $key
      */

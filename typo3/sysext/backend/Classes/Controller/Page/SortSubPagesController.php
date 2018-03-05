@@ -81,7 +81,7 @@ class SortSubPagesController
             ->setFieldName('pages_sort');
         $viewButton = $buttonBar->makeLinkButton()
             ->setOnClick(BackendUtility::viewOnClick($parentPageUid, '', BackendUtility::BEgetRootLine($parentPageUid)))
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
             ->setHref('#');
         $shortcutButton = $buttonBar->makeShortcutButton()

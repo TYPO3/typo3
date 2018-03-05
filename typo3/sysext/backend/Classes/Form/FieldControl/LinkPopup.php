@@ -33,7 +33,7 @@ class LinkPopup extends AbstractNode
     {
         $options = $this->data['renderData']['fieldControlOptions'];
 
-        $title = $options['title'] ?? 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.link';
+        $title = $options['title'] ?? 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.link';
 
         $parameterArray = $this->data['parameterArray'];
         $itemName = $parameterArray['itemFormElName'];

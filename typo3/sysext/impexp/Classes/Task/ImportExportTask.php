@@ -119,7 +119,7 @@ class ImportExportTask implements TaskInterface
                     $description = [];
                     // Is public?
                     if ($presetCfg['public']) {
-                        $description[] = $lang->getLL('task.public') . ': ' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:yes');
+                        $description[] = $lang->getLL('task.public') . ': ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes');
                     }
                     // Owner
                     $description[] = $lang->getLL('task.owner') . ': '

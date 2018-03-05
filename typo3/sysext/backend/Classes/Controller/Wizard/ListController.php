@@ -73,7 +73,7 @@ class ListController extends AbstractWizardController
      */
     public function __construct()
     {
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_wizards.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
         $GLOBALS['SOBE'] = $this;
 
         // @deprecated since v9, will be obsolete in v10

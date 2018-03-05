@@ -7,7 +7,7 @@ return [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
-        'prependAtCopy' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
+        'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'enablecolumns' => [
             'disabled' => 'hidden'
         ],
@@ -23,7 +23,7 @@ return [
     ],
     'columns' => [
         'hidden' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disable',
             'exclude' => true,
             'config' => [
                 'type' => 'check',
@@ -65,7 +65,7 @@ return [
             ]
         ],
         'description' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.description',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
             'config' => [
                 'type' => 'text',
                 'rows' => 5,
@@ -74,7 +74,7 @@ return [
         ],
         'TSconfig' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:TSconfig',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,

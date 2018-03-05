@@ -1260,7 +1260,7 @@ class ExtendedTemplateService extends TemplateService
                             $userTyposcriptStyle = 'style="display:none;"';
                             $defaultTyposcriptStyle = '';
                         }
-                        $deleteTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle'));
+                        $deleteTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle'));
                         $deleteIcon = $iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render();
                         $deleteIconHTML =
                             '<button type="button" class="btn btn-default t3js-toggle" data-toggle="undo" rel="' . $idName . '">'
@@ -1268,7 +1268,7 @@ class ExtendedTemplateService extends TemplateService
                                     . $deleteIcon
                                 . '</span>'
                             . '</button>';
-                        $editTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.editTitle'));
+                        $editTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle'));
                         $editIcon = $iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render();
                         $editIconHTML =
                             '<button type="button" class="btn btn-default t3js-toggle" data-toggle="edit"  rel="' . $idName . '">'

@@ -2979,7 +2979,7 @@ class DataHandler implements LoggerAwareInterface
         /** @var FlashMessage $message */
         $message = GeneralUtility::makeInstance(
             FlashMessage::class,
-            sprintf($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value),
+            sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value),
             '', // header is optional
             FlashMessage::ERROR,
             true // whether message should be stored in session

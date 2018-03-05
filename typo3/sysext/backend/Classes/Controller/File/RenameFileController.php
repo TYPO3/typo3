@@ -224,7 +224,7 @@ class RenameFileController
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
@@ -236,17 +236,17 @@ class RenameFileController
             ->setShowLabelText(true)
             ->setClasses('t3js-submit-file-rename')
             ->setForm('RenameFileController')
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_edit.php.saveAndClose'))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_edit.php.saveAndClose'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
 
         $buttonBar->addButton($saveAndCloseButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
 
         $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelArray([
-            'file_rename.actions.cancel' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.actions.cancel'),
-            'file_rename.actions.rename' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.actions.rename'),
-            'file_rename.actions.override' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.actions.override'),
-            'file_rename.exists.title' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.exists.title'),
-            'file_rename.exists.description' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.exists.description'),
+            'file_rename.actions.cancel' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_rename.actions.cancel'),
+            'file_rename.actions.rename' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_rename.actions.rename'),
+            'file_rename.actions.override' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_rename.actions.override'),
+            'file_rename.exists.title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_rename.exists.title'),
+            'file_rename.exists.description' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_rename.exists.description'),
         ]);
 
         // Rendering of the output via fluid

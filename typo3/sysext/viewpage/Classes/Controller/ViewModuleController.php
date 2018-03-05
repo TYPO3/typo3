@@ -117,7 +117,7 @@ class ViewModuleController
         $showButton = $buttonBar->makeLinkButton()
             ->setHref($targetUrl)
             ->setOnClick('window.open(this.href, \'newTYPO3frontendWindow\').focus();return false;')
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
         $buttonBar->addButton($showButton);
 
@@ -349,8 +349,8 @@ class ViewModuleController
         }
         $languages = [
             0 => isset($modSharedTSconfig['properties']['defaultLanguageLabel'])
-                    ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
-                    : $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage')
+                    ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
+                    : $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage')
         ];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
         $queryBuilder->getRestrictions()

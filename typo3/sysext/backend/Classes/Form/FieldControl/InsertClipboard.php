@@ -49,7 +49,7 @@ class InsertClipboard extends AbstractNode
         $title = '';
         $clipboardOnClick = [];
         if ($internalType === 'file_reference' || $internalType === 'file') {
-            $title = sprintf($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clipInsert_file'), count($clipboardElements));
+            $title = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipInsert_file'), count($clipboardElements));
             foreach ($clipboardElements as $clipboardElement) {
                 $value = $clipboardElement['value'];
                 $title = 'unescape(' . GeneralUtility::quoteJSvalue(rawurlencode(basename($clipboardElement['title']))) . ')';
@@ -61,7 +61,7 @@ class InsertClipboard extends AbstractNode
                     . ');';
             }
         } elseif ($internalType === 'db') {
-            $title = sprintf($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clipInsert_db'), count($clipboardElements));
+            $title = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipInsert_db'), count($clipboardElements));
             foreach ($clipboardElements as $clipboardElement) {
                 $value = $clipboardElement['value'];
                 $title = GeneralUtility::quoteJSvalue($clipboardElement['title']);

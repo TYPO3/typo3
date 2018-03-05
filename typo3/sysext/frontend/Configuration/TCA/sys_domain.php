@@ -30,7 +30,7 @@ return [
             ]
         ],
         'hidden' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disable',
             'exclude' => true,
             'config' => [
                 'type' => 'check',

@@ -823,7 +823,7 @@ class PageLayoutController
         $dbList->setLMargin = 0;
         $dbList->doEdit = $this->EDIT_CONTENT;
         $dbList->ext_CALC_PERMS = $this->CALC_PERMS;
-        $dbList->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
+        $dbList->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
         $dbList->id = $this->id;
         $dbList->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 0, 10);
         $dbList->option_newWizard = empty($this->modTSconfig['properties']['disableNewContentElementWizard']);
@@ -924,7 +924,7 @@ class PageLayoutController
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
             $toggleSearchFormButton = $this->buttonBar->makeLinkButton()
                 ->setClasses('t3js-toggle-search-toolbox')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
                 ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL))
                 ->setHref('#');
             $this->buttonBar->addButton($toggleSearchFormButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
@@ -968,7 +968,7 @@ class PageLayoutController
         if (!VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
             $viewButton = $this->buttonBar->makeLinkButton()
                 ->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                 ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
                 ->setHref('#');
 
@@ -996,7 +996,7 @@ class PageLayoutController
         if (empty($this->modTSconfig['properties']['disableAdvanced'])) {
             $clearCacheButton = $this->buttonBar->makeLinkButton()
                 ->setHref((string)$uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->pageinfo['uid'], 'clear_cache' => '1']))
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
         }

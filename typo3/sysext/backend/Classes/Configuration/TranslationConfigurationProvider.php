@@ -245,9 +245,9 @@ class TranslationConfigurationProvider
     protected function getDefaultLanguageLabel(array $modSharedTSconfig)
     {
         if (strlen($modSharedTSconfig['properties']['defaultLanguageLabel'])) {
-            $defaultLanguageLabel = $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')';
+            $defaultLanguageLabel = $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')';
         } else {
-            $defaultLanguageLabel = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage');
+            $defaultLanguageLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage');
         }
         return $defaultLanguageLabel;
     }

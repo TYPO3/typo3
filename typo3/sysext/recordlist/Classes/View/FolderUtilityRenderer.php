@@ -68,7 +68,7 @@ class FolderUtilityRenderer
         $markup = [];
         $markup[] = '<form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
-        $markup[] = '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:create_folder.title')) . ':</h3>';
+        $markup[] = '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:create_folder.title')) . ':</h3>';
         $markup[] = '<p><strong>' . htmlspecialchars($lang->getLL('path')) . ':</strong>'
             . htmlspecialchars($folderObject->getIdentifier()) . '</p>';
 
@@ -78,7 +78,7 @@ class FolderUtilityRenderer
         $markup[] = '<input class="form-control" type="text" name="data[newfolder][' . $a . '][data]" />';
         $markup[] = '<span class="input-group-btn">';
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
-            . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:create_folder.submit')) . '" />';
+            . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:create_folder.submit')) . '" />';
         $markup[] = '</span>';
         $markup[] = '</div>';
         $markup[] = '<input type="hidden" name="data[newfolder][' . $a . '][target]" value="'
@@ -138,7 +138,7 @@ class FolderUtilityRenderer
         $markup = [];
         $markup[] = '<form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
-        $markup[] = '   <h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle')) . ':</h3>';
+        $markup[] = '   <h3>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle')) . ':</h3>';
         $markup[] = '   <p><strong>' . htmlspecialchars($lang->getLL('path')) . ':</strong>' . htmlspecialchars($header) . '</p>';
         // Traverse the number of upload fields:
         for ($a = 1; $a <= $count; $a++) {
@@ -160,7 +160,7 @@ class FolderUtilityRenderer
         if (!empty($fileExtList)) {
             $markup[] = '<div class="form-group">';
             $markup[] = '    <label>';
-            $markup[] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions')) . '<br/>';
+            $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions')) . '<br/>';
             $markup[] = '    </label>';
             $markup[] = '    <div>';
             $markup[] = implode(' ', $fileExtList);
@@ -171,11 +171,11 @@ class FolderUtilityRenderer
         $markup[] = '<div class="checkbox">';
         $markup[] = '    <label>';
         $markup[] = '    <input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" />';
-        $markup[] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:overwriteExistingFiles'));
+        $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:overwriteExistingFiles'));
         $markup[] = '    </label>';
         $markup[] = '</div>';
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
-            . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')) . '" />';
+            . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')) . '" />';
 
         $markup[] = '</form>';
 
@@ -199,7 +199,7 @@ class FolderUtilityRenderer
             $markup = [];
             $markup[] = '<form action="' . htmlspecialchars($formAction)
                 . '" method="post" name="editform1" id="typo3-addMediaForm" enctype="multipart/form-data">';
-            $markup[] = '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media')) . ':</h3>';
+            $markup[] = '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media')) . ':</h3>';
             $markup[] = '<p><strong>' . htmlspecialchars($lang->getLL('path')) . ':</strong>' . htmlspecialchars($header) . '</p>';
             $markup[] = '<div class="form-group">';
             $markup[] = '<input type="hidden" name="data[newMedia][0][target]" value="'
@@ -208,15 +208,15 @@ class FolderUtilityRenderer
                 . htmlspecialchars(implode(',', $allowedExtensions)) . '" />';
             $markup[] = '<div class="input-group">';
             $markup[] = '<input type="text" name="data[newMedia][0][url]" class="form-control" placeholder="'
-                . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')) . '" />';
+                . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')) . '" />';
             $markup[] = '<div class="input-group-btn">';
             $markup[] = '<button class="btn btn-default">'
-                . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit')) . '</button>';
+                . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit')) . '</button>';
             $markup[] = '</div>';
             $markup[] = '</div>';
             $markup[] = '<div class="form-group">';
             $markup[] = '<label>';
-            $markup[] = $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders') . '<br/>';
+            $markup[] = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders') . '<br/>';
             $markup[] = '</label>';
             $markup[] = '<div>';
             $markup[] = implode(' ', $fileExtList);

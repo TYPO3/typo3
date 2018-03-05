@@ -263,7 +263,7 @@ class TreeController
             $visibleText = $page['nav_title'];
         }
         if (trim($visibleText) === '') {
-            $visibleText = htmlspecialchars('[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']');
+            $visibleText = htmlspecialchars('[' . $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']');
         }
         $visibleText = GeneralUtility::fixed_lgd_cs($visibleText, (int)$this->getBackendUser()->uc['titleLen'] ?: 40);
 

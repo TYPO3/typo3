@@ -261,7 +261,7 @@ class FormResultCompiler
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
 
-        $pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_core.xlf', 'file_upload');
+        $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');
         if (!empty($this->additionalInlineLanguageLabelFiles)) {
             foreach ($this->additionalInlineLanguageLabelFiles as $additionalInlineLanguageLabelFile) {
                 $pageRenderer->addInlineLanguageLabelFile($additionalInlineLanguageLabelFile);
@@ -272,13 +272,13 @@ class FormResultCompiler
 
         // todo: change these things in JS
         $pageRenderer->addInlineLanguageLabelArray([
-            'FormEngine.noRecordTitle'          => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title',
-            'FormEngine.fieldsChanged'          => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.fieldsChanged',
-            'FormEngine.fieldsMissing'          => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.fieldsMissing',
-            'FormEngine.maxItemsAllowed'        => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.maxItemsAllowed',
-            'FormEngine.refreshRequiredTitle'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.title',
-            'FormEngine.refreshRequiredContent' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.content',
-            'FormEngine.remainingCharacters'    => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters',
+            'FormEngine.noRecordTitle'          => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title',
+            'FormEngine.fieldsChanged'          => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.fieldsChanged',
+            'FormEngine.fieldsMissing'          => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.fieldsMissing',
+            'FormEngine.maxItemsAllowed'        => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.maxItemsAllowed',
+            'FormEngine.refreshRequiredTitle'   => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.title',
+            'FormEngine.refreshRequiredContent' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.content',
+            'FormEngine.remainingCharacters'    => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters',
         ], true);
 
         $out = LF . 'TBE_EDITOR.doSaveFieldName = "' . ($this->doSaveFieldName ? addslashes($this->doSaveFieldName) : '') . '";';

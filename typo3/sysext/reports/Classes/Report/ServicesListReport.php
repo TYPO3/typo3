@@ -117,14 +117,14 @@ class ServicesListReport implements ReportInterface
             'OperatingSystem' => $serviceInformation['os'] ?: $this->getLanguageService()->getLL('any'),
             'RequiredExecutables' => $serviceInformation['exec'] ?: '-',
             'AvailabilityClass' => 'danger',
-            'Available' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:no'),
+            'Available' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no'),
         ];
 
         try {
             $serviceDetails = ExtensionManagementUtility::findServiceByKey($serviceKey);
             if ($serviceDetails['available']) {
                 $result['AvailabilityClass'] = 'success';
-                $result['Available'] = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:yes');
+                $result['Available'] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes');
             }
         } catch (Exception $e) {
         }
@@ -146,7 +146,7 @@ class ServicesListReport implements ReportInterface
             $searchPathData = $this->getServicePathStatus($isValid);
             $result[] = [
                 'class' => $searchPathData['statusCSSClass'],
-                'accessible' => 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:' . $searchPathData['accessible'],
+                'accessible' => 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:' . $searchPathData['accessible'],
                 'path' => GeneralUtility::fixWindowsFilePath($path),
             ];
         }

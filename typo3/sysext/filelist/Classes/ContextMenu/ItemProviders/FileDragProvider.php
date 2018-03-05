@@ -27,12 +27,12 @@ class FileDragProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abst
      */
     protected $itemsConfiguration = [
         'copyInto' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copyFolder_into',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copyFolder_into',
             'iconIdentifier' => 'apps-pagetree-drag-move-into',
             'callbackAction' => 'dropCopyInto'
         ],
         'moveInto' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.moveFolder_into',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.moveFolder_into',
             'iconIdentifier' => 'apps-pagetree-drag-move-into',
             'callbackAction' => 'dropMoveInto'
         ]

@@ -55,7 +55,7 @@ class RecordsOverview extends AbstractNode
         foreach ($selectedItems as $selectedItem) {
             $title = $selectedItem['title'];
             if (empty($title)) {
-                $title = '[' . $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']';
+                $title = '[' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']';
             }
             $shortenedTitle = GeneralUtility::fixed_lgd_cs($title, $maxTitleLength);
             $linkedIcon = BackendUtility::wrapClickMenuOnIcon(

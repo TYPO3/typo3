@@ -73,13 +73,13 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
             'systemLanguageRows' => [
                 -1 => [
                     'uid' => -1,
-                    'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages',
+                    'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages',
                     'iso' => 'DEF',
                     'flagIconIdentifier' => 'flags-multiple',
                 ],
                 0 => [
                     'uid' => 0,
-                    'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage',
+                    'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage',
                     'iso' => 'DEF',
                     'flagIconIdentifier' => 'empty-empty',
                 ],
@@ -160,13 +160,13 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $expected['systemLanguageRows'] = [
             -1 => [
                 'uid' => -1,
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages',
                 'iso' => 'DEF',
                 'flagIconIdentifier' => 'flags-multiple',
             ],
             0 => [
                 'uid' => 0,
-                'title' => 'foo (LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage)',
+                'title' => 'foo (LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage)',
                 'iso' => 'DEF',
                 'flagIconIdentifier' => 'empty-empty',
             ],
@@ -219,13 +219,13 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $expected['systemLanguageRows'] = [
             -1 => [
                 'uid' => -1,
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages',
                 'iso' => 'DEF',
                 'flagIconIdentifier' => 'flags-multiple',
             ],
             0 => [
                 'uid' => 0,
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage',
                 'iso' => 'DEF',
                 'flagIconIdentifier' => 'flags-uk',
             ],
@@ -282,13 +282,13 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
             'systemLanguageRows' => [
                 -1 => [
                     'uid' => -1,
-                    'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages',
+                    'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages',
                     'iso' => 'DEF',
                     'flagIconIdentifier' => 'flags-multiple',
                 ],
                 0 => [
                     'uid' => 0,
-                    'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage',
+                    'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage',
                     'iso' => 'DEF',
                     'flagIconIdentifier' => 'empty-empty',
                 ],
@@ -354,13 +354,13 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
             'systemLanguageRows' => [
                 -1 => [
                     'uid' => -1,
-                    'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages',
+                    'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages',
                     'iso' => 'DEF',
                     'flagIconIdentifier' => 'flags-multiple',
                 ],
                 0 => [
                     'uid' => 0,
-                    'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage',
+                    'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage',
                     'iso' => 'DEF',
                     'flagIconIdentifier' => 'empty-empty',
                 ],

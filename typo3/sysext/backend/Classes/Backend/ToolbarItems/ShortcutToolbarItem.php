@@ -91,7 +91,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         // Needed to get the correct icons when reloading the menu after saving it
         $this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
         $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
@@ -110,11 +110,11 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ShortcutMenu');
         $languageService = $this->getLanguageService();
         $this->getPageRenderer()->addInlineLanguageLabelArray([
-            'bookmark.delete' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksDelete'),
-            'bookmark.confirmDelete' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.confirmBookmarksDelete'),
-            'bookmark.create' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.createBookmark'),
-            'bookmark.savedTitle' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarkSavedTitle'),
-            'bookmark.savedMessage' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarkSavedMessage'),
+            'bookmark.delete' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksDelete'),
+            'bookmark.confirmDelete' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.confirmBookmarksDelete'),
+            'bookmark.create' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.createBookmark'),
+            'bookmark.savedTitle' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarkSavedTitle'),
+            'bookmark.savedMessage' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarkSavedMessage'),
         ]);
     }
 
@@ -416,7 +416,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             $groupId = (int)$groupId;
             $label = $groupLabel;
             if ($groupLabel == '1') {
-                $label = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:bookmark_group_' . abs($groupId)));
+                $label = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_group_' . abs($groupId)));
                 if (empty($label)) {
                     // Fallback label
                     $label = htmlspecialchars($languageService->getLL('bookmark_group')) . ' ' . abs($groupId);
@@ -424,7 +424,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             }
             if ($groupId < 0) {
                 // Global group
-                $label = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:bookmark_global')) . ': ' . (!empty($label) ? $label : abs($groupId));
+                $label = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_global')) . ': ' . (!empty($label) ? $label : abs($groupId));
                 if ($groupId === self::SUPERGLOBAL_GROUP) {
                     $label = htmlspecialchars($languageService->getLL('bookmark_global')) . ': ' . htmlspecialchars($languageService->getLL('bookmark_all'));
                 }

@@ -53,22 +53,22 @@ class RecordProvider extends AbstractProvider
      */
     protected $itemsConfiguration = [
         'view' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.view',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view',
             'iconIdentifier' => 'actions-view',
             'callbackAction' => 'viewRecord'
         ],
         'edit' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.edit',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit',
             'iconIdentifier' => 'actions-open',
             'callbackAction' => 'editRecord'
         ],
         'new' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.new',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new',
             'iconIdentifier' => 'actions-add',
             'callbackAction' => 'newRecord'
         ],
         'info' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info',
             'iconIdentifier' => 'actions-document-info',
             'callbackAction' => 'openInfoPopUp'
         ],
@@ -76,27 +76,27 @@ class RecordProvider extends AbstractProvider
             'type' => 'divider'
         ],
         'copy' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy',
             'callbackAction' => 'copy'
         ],
         'copyRelease' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy-release',
             'callbackAction' => 'clipboardRelease'
         ],
         'cut' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut',
             'iconIdentifier' => 'actions-edit-cut',
             'callbackAction' => 'cut'
         ],
         'cutRelease' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cutrelease',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cutrelease',
             'iconIdentifier' => 'actions-edit-cut-release',
             'callbackAction' => 'clipboardRelease'
         ],
         'pasteAfter' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.pasteafter',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteafter',
             'iconIdentifier' => 'actions-document-paste-after',
             'callbackAction' => 'pasteAfter'
         ],
@@ -105,17 +105,17 @@ class RecordProvider extends AbstractProvider
         ],
         'more' => [
             'type' => 'submenu',
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.more',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more',
             'iconIdentifier' => '',
             'callbackAction' => 'openSubmenu',
             'childItems' => [
                 'newWizard' => [
-                    'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_newWizard',
+                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_newWizard',
                     'iconIdentifier' => 'actions-add',
                     'callbackAction' => 'newContentWizard',
                 ],
                 'openListModule' => [
-                    'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_db_list',
+                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_db_list',
                     'iconIdentifier' => 'actions-system-list-open',
                     'callbackAction' => 'openListModule',
                 ],
@@ -125,22 +125,22 @@ class RecordProvider extends AbstractProvider
             'type' => 'divider'
         ],
         'enable' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable',
             'iconIdentifier' => 'actions-edit-unhide',
             'callbackAction' => 'enableRecord',
         ],
         'disable' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:disable',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable',
             'iconIdentifier' => 'actions-edit-hide',
             'callbackAction' => 'disableRecord',
         ],
         'delete' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.delete',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete',
             'iconIdentifier' => 'actions-edit-delete',
             'callbackAction' => 'deleteRecord',
         ],
         'history' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_history',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_history',
             'iconIdentifier' => 'actions-document-history-open',
             'callbackAction' => 'openHistoryPopUp',
         ],
@@ -350,10 +350,10 @@ class RecordProvider extends AbstractProvider
         $attributes = [];
         if ($this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
             $selItem = $this->clipboard->getSelectedRecord();
-            $title = $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste');
+            $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste');
 
             $confirmMessage = sprintf(
-                $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.'
+                $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.'
                     . ($this->clipboard->currentMode() === 'copy' ? 'copy' : 'move') . '_' . $type),
                 GeneralUtility::fixed_lgd_cs($selItem['_RECORD_TITLE'], $this->backendUser->uc['titleLen']),
                 GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), $this->backendUser->uc['titleLen'])
@@ -377,20 +377,20 @@ class RecordProvider extends AbstractProvider
         if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
             $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), $this->backendUser->uc['titleLen']);
 
-            $title = $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:delete');
+            $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete');
             $confirmMessage = sprintf(
-                $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.delete'),
+                $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'),
                 $recordTitle
             );
             $confirmMessage .= BackendUtility::referenceCount(
                 $this->table,
                 $this->record['uid'],
-                ' ' . $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord')
+                ' ' . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord')
             );
             $confirmMessage .= BackendUtility::translationCount(
                 $this->table,
                 $this->record['uid'],
-                ' ' . $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
+                ' ' . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
             );
             $attributes += [
                 'data-title' => htmlspecialchars($title),

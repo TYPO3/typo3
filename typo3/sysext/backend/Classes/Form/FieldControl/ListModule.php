@@ -35,7 +35,7 @@ class ListModule extends AbstractNode
         $parameterArray = $this->data['parameterArray'];
 
         // Handle options and fallback
-        $title = $options['title'] ?? 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.list';
+        $title = $options['title'] ?? 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.list';
 
         $table = '';
         if (isset($options['table'])) {

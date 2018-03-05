@@ -69,7 +69,7 @@ class DefaultLanguageDifferences extends AbstractNode
             );
             $html[] = '<div class="t3-form-original-language-diff">';
             $html[] =   '<div class="t3-form-original-language-diffheader">';
-            $html[] =       htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.changeInOrig'));
+            $html[] =       htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.changeInOrig'));
             $html[] =   '</div>';
             $html[] =   '<div class="t3-form-original-language-diffcontent">';
             $html[] =       '<div class="diff">';

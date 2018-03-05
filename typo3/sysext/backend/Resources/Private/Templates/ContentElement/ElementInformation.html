@@ -7,7 +7,7 @@
 			</f:if>
 		</h1>
 		<f:if condition="{missingFile}">
-			<f:be.infobox title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing')}" state="1">{missingFile}</f:be.infobox>
+			<f:be.infobox title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')}" state="1">{missingFile}</f:be.infobox>
 		</f:if>
 		<f:if condition="{fileRenderer}">
 			<p>
@@ -26,7 +26,7 @@
 			<p>
 				<a class="btn btn-default" href="{url}" target="_blank">
 					<core:icon identifier="actions-document-view" size="small" alternativeMarkupIdentifier="inline" />
-					<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.show" />
+					<f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.show" />
 				</a>
 			</p>
 		</f:if>
@@ -43,23 +43,23 @@
 		<f:if condition="{returnUrl}">
 			<a class="btn btn-primary" href="{returnUrl}">
 				<core:icon identifier="actions-view-go-back" size="small" />
-				<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:back" />
+				<f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back" />
 			</a>
 		</f:if>
 		<f:if condition="{refLines}">
-			<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesToThisItem" /></h3>
+			<h3><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesToThisItem" /></h3>
 			<div class="table-fit">
 				<table class="table table-striped table-hover">
 					<thead>
 					<tr>
 						<th class="col-icon"></th>
-						<th class="col-title"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.title" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.table" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.uid" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.field" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting" /></th>
+						<th class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.title" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.table" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.field" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting" /></th>
 						<th class="col-control"></th>
 					</tr>
 					</thead>
@@ -72,20 +72,20 @@
 			</div>
 		</f:if>
 		<f:if condition="{refFromLines}">
-			<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesFromThisItem" /></h3>
+			<h3><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesFromThisItem" /></h3>
 			<div class="table-fit">
 				<table class="table table-striped table-hover">
 					<thead>
 					<tr>
 						<th class="col-icon"></th>
-						<th class="col-title"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.title" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.table" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.uid" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.field" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting" /></th>
-						<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.refString" /></th>
+						<th class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.title" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.table" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.field" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.refString" /></th>
 						<th class="col-control"></th>
 					</tr>
 					</thead>
@@ -99,7 +99,7 @@
 		</f:if>
 	</f:then>
 	<f:else>
-		<f:be.infobox state="2">{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission')}</f:be.infobox>
+		<f:be.infobox state="2">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission')}</f:be.infobox>
 	</f:else>
 </f:if>
 
@@ -141,13 +141,13 @@
                 <td class="col-icon"><a href="{line.url}" title="id={line.record.uid}">{line.icon -> f:format.raw()}</a></td>
                 <td class="col-title"><a href="{line.url}" title="[id={line.record.uid}] {line.recordTitle}">{line.recordTitle -> f:format.crop(maxCharacters: maxTitleLength)}</a></td>
                 <td>{line.title}</td>
-                <td><span title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:page')}: {line.parentRecordTitle} (uid={line.record.pid})">
+                <td><span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:page')}: {line.parentRecordTitle} (uid={line.record.pid})">
                         {line.record.uid}
                     </span></td>
             </f:then>
             <f:else>
                 <td class="col-icon"></td>
-                <td class="col-title"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.missing_record" /> (uid={line.row.recuid}</td>
+                <td class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.missing_record" /> (uid={line.row.recuid}</td>
                 <td>{line.row.title}</td>
                 <td></td>
             </f:else>
@@ -173,7 +173,7 @@
             </f:then>
             <f:else>
                 <td class="col-icon"></td>
-                <td class="col-title"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.missing_record" /> (uid={line.row.recuid}</td>
+                <td class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.missing_record" /> (uid={line.row.recuid}</td>
                 <td>{line.row.title}</td>
                 <td></td>
             </f:else>
@@ -192,7 +192,7 @@
 <f:section name="action">
     <div class="btn-group" role="group">
         <f:if condition="{line.webListUrl}">
-            <a class="btn btn-default btn-sm" href="#" onclick="{line.viewOnClick}" title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')}">
+            <a class="btn btn-default btn-sm" href="#" onclick="{line.viewOnClick}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')}">
                 <core:icon identifier="actions-document-view" size="small" />
             </a>
         </f:if>
@@ -207,7 +207,7 @@
     </div>
     <f:if condition="{line.webListUrl}">
         <div class="btn-group" role="group">
-            <a class="btn btn-default btn-sm" href="{line.webListUrl}" title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showList')}">
+            <a class="btn btn-default btn-sm" href="{line.webListUrl}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showList')}">
                 <core:icon identifier="actions-system-list-open" size="small" />
             </a>
         </div>

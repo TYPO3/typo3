@@ -45,12 +45,12 @@
 									<div class="form-group">
 										<f:if condition="{cropVariant.allowedAspectRatios}">
 											<label for="ratio-{cropVariantIterator.cycle}">
-												<f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.aspect-ratio"/>
+												<f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.aspect-ratio"/>
 											</label>
 											<div id="ratio-{cropVariantIterator.cycle}" class="ratio-buttons t3js-ratio-buttons"
 														data-toggle="buttons">
 												<f:for each="{cropVariant.allowedAspectRatios}" as="ratio" iteration="ratioIterator">
-													<label class="btn btn-secondary" data-method="setAspectRatio" data-option="{ratio.id}" title="{f:translate(id:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.set-aspect-ratio')}">
+													<label class="btn btn-secondary" data-method="setAspectRatio" data-option="{ratio.id}" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.set-aspect-ratio')}">
 														<input
 															class="sr-only" id="aspectRatio-{cropVariantIterator.cycle}-{ratioIterator.cycle}"
 															name="aspectRatio-{cropVariantIterator.cycle}-{ratioIterator.cycle}" value="{cropVariant.id}"
@@ -59,7 +59,7 @@
 												</f:for>
 											</div>
 										</f:if>
-										<label><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.selection" /></label>
+										<label><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.selection" /></label>
 										<div class="table-fit-block">
 											<table class="table table-no-borders table-transparent">
 												<tr>
@@ -68,9 +68,9 @@
 											</table>
 										</div>
 										<button class="btn btn-secondary" data-method="reset" data-crop-variant="{cropVariant -> f:format.json()}"
-														title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.reset')}">
+														title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.reset')}">
 											<i class="fa fa-refresh"></i>
-											{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.reset')}
+											{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.reset')}
 										</button>
 									</div>
 								</form>

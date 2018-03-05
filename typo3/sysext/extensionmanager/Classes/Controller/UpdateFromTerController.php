@@ -106,7 +106,7 @@ class UpdateFromTerController extends AbstractController
         } else {
             $lastUpdatedSince = \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(
                 time() - $lastUpdateTime->format('U'),
-                $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
             );
             $lastUpdateTime = $lastUpdateTime->format($timeFormat);
         }

@@ -185,7 +185,7 @@ class SetupModuleController
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine');
         $pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
         $pageRenderer->addInlineLanguageLabelArray([
-            'FormEngine.remainingCharacters'    => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters',
+            'FormEngine.remainingCharacters'    => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters',
         ], true);
     }
 
@@ -452,7 +452,7 @@ class SetupModuleController
 
         $saveButton = $buttonBar->makeInputButton()
             ->setName('data[save]')
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
             ->setValue('1')
             ->setForm('SetupModuleController')
             ->setShowLabelText(true)

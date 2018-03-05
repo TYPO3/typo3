@@ -85,10 +85,10 @@ class ExtendedFileUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $GLOBALS['LANG']->expects($this->at(0))->method('sL')
-            ->with('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:message.description.folderNotDeletedHasFilesWithReferences')
+            ->with('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.folderNotDeletedHasFilesWithReferences')
             ->will($this->returnValue('folderNotDeletedHasFilesWithReferences'));
         $GLOBALS['LANG']->expects($this->at(1))->method('sL')
-            ->with('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:message.header.folderNotDeletedHasFilesWithReferences')
+            ->with('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.folderNotDeletedHasFilesWithReferences')
             ->will($this->returnValue('folderNotDeletedHasFilesWithReferences'));
 
         $result = $subject->folderHasFilesInUse($folder);

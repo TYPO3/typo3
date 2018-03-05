@@ -5,7 +5,7 @@ return [
         'descriptionColumn' => 'description',
         'tstamp' => 'tstamp',
         'sortby' => 'sorting',
-        'prependAtCopy' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
+        'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'title' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -25,7 +25,7 @@ return [
     ],
     'columns' => [
         'title' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.title',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.title',
             'config' => [
                 'type' => 'input',
                 'size' => 25,
@@ -34,7 +34,7 @@ return [
             ]
         ],
         'description' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.description',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
             'config' => [
                 'type' => 'text',
                 'rows' => 10,
@@ -48,7 +48,7 @@ return [
             ]
         ],
         'type' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.type',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',

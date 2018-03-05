@@ -131,7 +131,7 @@ class SelectSingleBoxElement extends AbstractFormElement
             $html[] =   '</div>';
 
             $html[] =   '<p>';
-            $html[] =       '<em>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.holdDownCTRL')) . '</em>';
+            $html[] =       '<em>' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.holdDownCTRL')) . '</em>';
             $html[] =   '</p>';
             $html[] =   '<div class="form-wizards-items-bottom">';
             $html[] =       $fieldWizardHtml;

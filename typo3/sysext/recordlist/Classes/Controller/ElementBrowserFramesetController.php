@@ -87,7 +87,7 @@ class ElementBrowserFramesetController
 		');
 
         // build the header part
-        $documentTemplate->startPage($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:TYPO3_Element_Browser'));
+        $documentTemplate->startPage($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:TYPO3_Element_Browser'));
 
         // URL for the inner main frame:
         $url = $moduleUrl . rawurlencode($mode) . '&bparams=' . rawurlencode($bparams);

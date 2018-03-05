@@ -159,7 +159,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                     $value = $languageService->getLL('status_updateIncomplete');
                     $severity = Status::WARNING;
                     $url = (string)$uriBuilder->buildUriFromRoute('tools_toolsupgrade');
-                    $message = sprintf($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
+                    $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
                     break;
                 }
             }

@@ -160,7 +160,7 @@ class GroupElement extends AbstractFormElement
                 $listOfSelectedValues[] = $tableWithUid;
                 $title = $selectedItem['title'];
                 if (empty($title)) {
-                    $title = '[' . $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']';
+                    $title = '[' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']';
                 }
                 $shortenedTitle = GeneralUtility::fixed_lgd_cs($title, $maxTitleLength);
                 $selectorOptionsHtml[] =
@@ -311,7 +311,7 @@ class GroupElement extends AbstractFormElement
             $html[] =                   $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render();
             $html[] =               '</span>';
             $html[] =               '<input type="search" class="t3-form-suggest form-control"';
-            $html[] =                   ' placeholder="' . $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.findRecord') . '"';
+            $html[] =                   ' placeholder="' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.findRecord') . '"';
             $html[] =                   ' data-fieldname="' . htmlspecialchars($fieldName) . '"';
             $html[] =                   ' data-tablename="' . htmlspecialchars($table) . '"';
             $html[] =                   ' data-field="' . htmlspecialchars($elementName) . '"';
@@ -341,7 +341,7 @@ class GroupElement extends AbstractFormElement
             $html[] =           '<a href="#"';
             $html[] =               ' class="btn btn-default t3js-btn-moveoption-top"';
             $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
+            $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
             $html[] =           '>';
             $html[] =               $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render();
             $html[] =           '</a>';
@@ -350,14 +350,14 @@ class GroupElement extends AbstractFormElement
             $html[] =           '<a href="#"';
             $html[] =               ' class="btn btn-default t3js-btn-moveoption-up"';
             $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
+            $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
             $html[] =           '>';
             $html[] =               $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render();
             $html[] =           '</a>';
             $html[] =           '<a href="#"';
             $html[] =               ' class="btn btn-default t3js-btn-moveoption-down"';
             $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
+            $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
             $html[] =           '>';
             $html[] =               $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render();
             $html[] =           '</a>';
@@ -366,7 +366,7 @@ class GroupElement extends AbstractFormElement
             $html[] =           '<a href="#"';
             $html[] =               ' class="btn btn-default t3js-btn-moveoption-bottom"';
             $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
+            $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
             $html[] =           '>';
             $html[] =               $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render();
             $html[] =           '</a>';
@@ -375,7 +375,7 @@ class GroupElement extends AbstractFormElement
             $html[] =           '<a href="#"';
             $html[] =               ' class="btn btn-default t3js-btn-removeoption"';
             $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
+            $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
             $html[] =               ' onClick="' . $deleteControlOnClick . '"';
             $html[] =           '>';
             $html[] =               $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render();

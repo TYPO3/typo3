@@ -55,7 +55,7 @@ class ResetSelection extends AbstractNode
 
         return [
             'iconIdentifier' => 'actions-edit-undo',
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.revertSelection',
+            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.revertSelection',
             'linkAttributes' => [
                 'onClick' => implode('', $resetCode),
             ],

@@ -106,7 +106,7 @@ class AddController extends AbstractWizardController
      */
     public function __construct()
     {
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_wizards.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
         // @deprecated since v9, will be moved out of __construct() in v10
         $this->init($GLOBALS['TYPO3_REQUEST']);
     }

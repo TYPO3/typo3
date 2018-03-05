@@ -549,10 +549,10 @@ class SiteConfigurationController
         $closeButton = $buttonBar->makeLinkButton()
             ->setHref('#')
             ->setClasses('t3js-editform-close')
-            ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
+            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
             ->setIcon($iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
         $saveButton = $buttonBar->makeInputButton()
-            ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
+            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
             ->setName('_savedok')
             ->setValue('1')
             ->setForm('siteConfigurationController')
@@ -562,7 +562,7 @@ class SiteConfigurationController
             ->setClasses('t3js-editform-submitButton')
             ->setValue('1')
             ->setForm('siteConfigurationController')
-            ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
+            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
             ->setIcon($iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
         $saveSplitButton = $buttonBar->makeSplitButton();
         $saveSplitButton->addItem($saveButton, true);
@@ -580,7 +580,7 @@ class SiteConfigurationController
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref(GeneralUtility::getIndpEnv('REQUEST_URI'))
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.reload'))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
         if ($this->getBackendUser()->mayMakeShortcut()) {

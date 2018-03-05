@@ -323,7 +323,7 @@ class ImportExportController extends BaseScriptClass
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
-                ->setTitle($this->lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setTitle($this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
@@ -339,7 +339,7 @@ class ImportExportController extends BaseScriptClass
                         BackendUtility::BEgetRootLine($this->pageinfo['uid'])
                     );
                     $viewButton = $buttonBar->makeLinkButton()
-                        ->setTitle($this->lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                        ->setTitle($this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                         ->setHref('#')
                         ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
                         ->setOnClick($onClick);
@@ -711,12 +711,12 @@ class ImportExportController extends BaseScriptClass
             $opt = [
                 '-2' => $this->lang->getLL('makeconfig_tablesOnThisPage'),
                 '-1' => $this->lang->getLL('makeconfig_expandedTree'),
-                '0' => $this->lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
-                '1' => $this->lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
-                '2' => $this->lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
-                '3' => $this->lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
-                '4' => $this->lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
-                '999' => $this->lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_infi'),
+                '0' => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
+                '1' => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
+                '2' => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
+                '3' => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
+                '4' => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
+                '999' => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi'),
             ];
             $this->standaloneView->assign('levelSelectOptions', $opt);
             $this->standaloneView->assign('tableSelectOptions', $this->getTableSelectOptions('pages'));

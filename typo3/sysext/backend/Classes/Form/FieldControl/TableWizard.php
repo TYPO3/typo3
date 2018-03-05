@@ -42,7 +42,7 @@ class TableWizard extends AbstractNode
         }
 
         // Handle options and fallback
-        $title = $options['title'] ?? 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.tableWizard';
+        $title = $options['title'] ?? 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.tableWizard';
         $xmlOutput = isset($options['xmlOutput']) ? (int)$options['xmlOutput'] : 0;
         $numNewRows = isset($options['numNewRows']) ? (int)$options['numNewRows'] : 5;
 

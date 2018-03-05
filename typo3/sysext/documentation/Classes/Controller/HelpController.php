@@ -189,7 +189,7 @@ class HelpController
         if ($action !== 'index') {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $backButton = $buttonBar->makeLinkButton()
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:back'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
                 ->setHref((string)$uriBuilder->buildUriFromRoute('help_cshmanual'));
             $buttonBar->addButton($backButton);

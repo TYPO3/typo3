@@ -246,7 +246,7 @@ class TcaSelectItemsTest extends UnitTestCase
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
 
         $languageService->sL('aLabel')->shouldBeCalled()->willReturn('translated');
 
@@ -369,7 +369,7 @@ class TcaSelectItemsTest extends UnitTestCase
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
         $languageService->sL(Argument::containingString('INVALID VALUE'))->willReturnArgument(0);
 
         $languageService->sL('aTitle')->shouldBeCalled()->willReturnArgument(0);
@@ -438,7 +438,7 @@ class TcaSelectItemsTest extends UnitTestCase
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
 
         $languageService->sL('aLabel')->shouldBeCalled()->willReturnArgument(0);
 
@@ -738,7 +738,7 @@ class TcaSelectItemsTest extends UnitTestCase
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.allow')->shouldBeCalled()->willReturn('allowMe');
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.allow')->shouldBeCalled()->willReturn('allowMe');
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
         $expectedItems = [
@@ -812,7 +812,7 @@ class TcaSelectItemsTest extends UnitTestCase
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.deny')->shouldBeCalled()->willReturn('denyMe');
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deny')->shouldBeCalled()->willReturn('denyMe');
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
         $expectedItems = [
@@ -901,7 +901,7 @@ class TcaSelectItemsTest extends UnitTestCase
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.allow')->shouldBeCalled()->willReturn('allowMe');
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.allow')->shouldBeCalled()->willReturn('allowMe');
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
         $expectedItems = [
@@ -996,7 +996,7 @@ class TcaSelectItemsTest extends UnitTestCase
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.deny')->shouldBeCalled()->willReturn('denyMe');
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deny')->shouldBeCalled()->willReturn('denyMe');
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
         $expectedItems = [
@@ -1955,13 +1955,13 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'] = [
             0 => [
-                0 => 'aPrefix[LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title]',
+                0 => 'aPrefix[LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title]',
                 1 => 1,
                 2 => null,
                 3 => null,
             ],
             1 => [
-                0 => 'aPrefix[LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title]',
+                0 => 'aPrefix[LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title]',
                 1 => 2,
                 2 => null,
                 3 => null,
@@ -2450,7 +2450,7 @@ class TcaSelectItemsTest extends UnitTestCase
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
@@ -2839,7 +2839,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL('aLabel')->willReturnArgument(0);
         $languageService->sL('labelOverride')->shouldBeCalled()->willReturnArgument(0);
-        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
 
         $expected = $input;
         $expected['databaseRow']['aField'] = ['aValue'];
@@ -3165,7 +3165,7 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
         $relationHandlerProphecy = $this->prophesize(RelationHandler::class);

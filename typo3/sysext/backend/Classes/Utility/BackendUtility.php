@@ -1157,7 +1157,7 @@ class BackendUtility
      * Returns the "age" in minutes / hours / days / years of the number of $seconds inputted.
      *
      * @param int $seconds Seconds could be the difference of a certain timestamp and time()
-     * @param string $labels Labels should be something like ' min| hrs| days| yrs| min| hour| day| year'. This value is typically delivered by this function call: $GLOBALS["LANG"]->sL("LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears")
+     * @param string $labels Labels should be something like ' min| hrs| days| yrs| min| hour| day| year'. This value is typically delivered by this function call: $GLOBALS["LANG"]->sL("LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears")
      * @return string Formatted time
      */
     public static function calcAge($seconds, $labels = 'min|hrs|days|yrs|min|hour|day|year')
@@ -1195,7 +1195,7 @@ class BackendUtility
         if (!$tstamp) {
             return '';
         }
-        $label = static::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
+        $label = static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
         $age = ' (' . self::calcAge($prefix * ($GLOBALS['EXEC_TIME'] - $tstamp), $label) . ')';
         return ($date === 'date' ? self::date($tstamp) : self::datetime($tstamp)) . $age;
     }
@@ -1313,7 +1313,7 @@ class BackendUtility
                 if ($fileObject->isMissing()) {
                     $thumbData .= '<span class="label label-danger">'
                         . htmlspecialchars(
-                            static::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing')
+                            static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')
                         )
                         . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />';
                     continue;
@@ -1377,13 +1377,13 @@ class BackendUtility
                         }
                         if ($fileObject->isMissing()) {
                             $thumbData .= '<span class="label label-danger">'
-                                . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
+                                . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                                 . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />';
                             continue;
                         }
                     } catch (ResourceDoesNotExistException $exception) {
                         $thumbData .= '<span class="label label-danger">'
-                            . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
+                            . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                             . '</span>&nbsp;' . htmlspecialchars($fileName) . '<br />';
                         continue;
                     }
@@ -1492,7 +1492,7 @@ class BackendUtility
             $parts[] = rtrim($lang->sL($GLOBALS['TCA']['pages']['columns']['nav_hide']['label']), ':');
         }
         if ($row['hidden']) {
-            $parts[] = $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.hidden');
+            $parts[] = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden');
         }
         if ($row['starttime']) {
             $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['starttime']['label'])
@@ -1581,15 +1581,15 @@ class BackendUtility
             // Hidden
             $lang = static::getLanguageService();
             if ($ctrl['disabled']) {
-                $out .= $row[$ctrl['disabled']] ? ' - ' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.hidden') : '';
+                $out .= $row[$ctrl['disabled']] ? ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden') : '';
             }
             if ($ctrl['starttime']) {
                 if ($row[$ctrl['starttime']] > $GLOBALS['EXEC_TIME']) {
-                    $out .= ' - ' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.starttime') . ':' . self::date($row[$ctrl['starttime']]) . ' (' . self::daysUntil($row[$ctrl['starttime']]) . ' ' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
+                    $out .= ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.starttime') . ':' . self::date($row[$ctrl['starttime']]) . ' (' . self::daysUntil($row[$ctrl['starttime']]) . ' ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
                 }
             }
             if ($row[$ctrl['endtime']]) {
-                $out .= ' - ' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.endtime') . ': ' . self::date($row[$ctrl['endtime']]) . ' (' . self::daysUntil($row[$ctrl['endtime']]) . ' ' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
+                $out .= ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.endtime') . ': ' . self::date($row[$ctrl['endtime']]) . ' (' . self::daysUntil($row[$ctrl['endtime']]) . ' ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
             }
         }
         return htmlspecialchars($out);
@@ -1830,7 +1830,7 @@ class BackendUtility
     public static function getNoRecordTitle($prep = false)
     {
         $noTitle = '[' .
-            htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title'))
+            htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title'))
             . ']';
         if ($prep) {
             $noTitle = '<em>' . $noTitle . '</em>';
@@ -2150,7 +2150,7 @@ class BackendUtility
                 break;
             case 'check':
                 if (!is_array($theColConf['items']) || count($theColConf['items']) === 1) {
-                    $l = $value ? $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:yes') : $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:no');
+                    $l = $value ? $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes') : $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no');
                 } else {
                     $lA = [];
                     foreach ($theColConf['items'] as $key => $val) {
@@ -2186,7 +2186,7 @@ class BackendUtility
                                 $ageSuffix = ' (' . ($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '')
                                     . self::calcAge(
                                         abs($GLOBALS['EXEC_TIME'] - $value),
-                                        $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                                        $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                                     )
                                     . ')';
                             }
@@ -3293,31 +3293,31 @@ class BackendUtility
                 } else {
                     $userTypeLabel = 'user';
                 }
-                $userType = $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.' . $userTypeLabel);
+                $userType = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $userTypeLabel);
                 // Get the username (if available):
                 if ($row['username']) {
                     $userName = $row['username'];
                 } else {
-                    $userName = $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.unknownUser');
+                    $userName = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.unknownUser');
                 }
                 $lockedRecords[$row['record_table'] . ':' . $row['record_uid']] = $row;
                 $lockedRecords[$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf(
-                    $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.lockedRecordUser'),
+                    $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.lockedRecordUser'),
                     $userType,
                     $userName,
                     self::calcAge(
                         $GLOBALS['EXEC_TIME'] - $row['tstamp'],
-                        $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                        $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                     )
                 );
                 if ($row['record_pid'] && !isset($lockedRecords[$row['record_table'] . ':' . $row['record_pid']])) {
                     $lockedRecords['pages:' . $row['record_pid']]['msg'] = sprintf(
-                        $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.lockedRecordUser_content'),
+                        $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.lockedRecordUser_content'),
                         $userType,
                         $userName,
                         self::calcAge(
                             $GLOBALS['EXEC_TIME'] - $row['tstamp'],
-                            $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                         )
                     );
                 }
@@ -4258,34 +4258,34 @@ class BackendUtility
 
         if (strlen($loginCopyrightWarrantyProvider) >= 2 && strlen($loginCopyrightWarrantyURL) >= 10) {
             $warrantyNote = sprintf(
-                $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:warranty.by'),
+                $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:warranty.by'),
                 htmlspecialchars($loginCopyrightWarrantyProvider),
                 '<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank">',
                 '</a>'
             );
         } else {
             $warrantyNote = sprintf(
-                $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:no.warranty'),
+                $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:no.warranty'),
                 '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">',
                 '</a>'
             );
         }
         $cNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' .
-            $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:typo3.cms') . '</a>. ' .
-            $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:copyright') . ' &copy; '
+            $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.cms') . '</a>. ' .
+            $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:copyright') . ' &copy; '
             . htmlspecialchars(TYPO3_copyright_year) . ' Kasper Sk&aring;rh&oslash;j. ' .
-            $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:extension.copyright') . ' ' .
+            $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:extension.copyright') . ' ' .
             sprintf(
-                $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:details.link'),
+                $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:details.link'),
                 '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>'
             ) . ' ' .
             strip_tags($warrantyNote, '<a>') . ' ' .
             sprintf(
-                $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:free.software'),
+                $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:free.software'),
                 '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">',
                 '</a> '
             )
-            . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:keep.notice');
+            . $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:keep.notice');
         return $cNotice;
     }
 

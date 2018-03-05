@@ -45,9 +45,9 @@ class ElementBrowser extends AbstractNode
         }
 
         if ($internalType === 'db') {
-            $title = 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.browse_db';
+            $title = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db';
         } else {
-            $title = 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.browse_file';
+            $title = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_file';
         }
 
         // Check against inline uniqueness - Create some onclick js for delete control and element browser

@@ -122,12 +122,12 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
         // input for depth
         $fieldId = 'task_depth';
         $fieldValueArray = [
-            '0' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
-            '1' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
-            '2' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
-            '3' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
-            '4' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
-            '999' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
+            '0' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
+            '1' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
+            '2' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
+            '3' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
+            '4' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
+            '999' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
         ];
         $fieldCode = '<select class="form-control" name="tx_scheduler[linkvalidator][depth]" id="' . $fieldId . '">';
         foreach ($fieldValueArray as $depth => $label) {

@@ -297,7 +297,7 @@ class ElementInformationController
             'title' => BackendUtility::getRecordTitle($this->table, $this->row, false)
         ];
         if ($this->type === 'folder') {
-            $pageTitle['table'] = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:folder');
+            $pageTitle['table'] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder');
             $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->folderObject, Icon::SIZE_SMALL)->render();
         } elseif ($this->type === 'file') {
             $pageTitle['table'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
@@ -367,24 +367,24 @@ class ElementInformationController
         $lang = $this->getLanguageService();
 
         $extraFields = [
-            'uid' => htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.uid'))
+            'uid' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid'))
         ];
 
         if (in_array($this->type, ['folder', 'file'], true)) {
             if ($this->type === 'file') {
-                $extraFields['creation_date'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.creationDate'));
-                $extraFields['modification_date'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.timestamp'));
+                $extraFields['creation_date'] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationDate'));
+                $extraFields['modification_date'] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.timestamp'));
                 if ($this->fileObject->getType() === AbstractFile::FILETYPE_IMAGE) {
-                    $extraFields['width'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.width'));
-                    $extraFields['height'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.height'));
+                    $extraFields['width'] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.width'));
+                    $extraFields['height'] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.height'));
                 }
             }
-            $extraFields['storage'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file.storage'));
-            $extraFields['folder'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:folder'));
+            $extraFields['storage'] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.storage'));
+            $extraFields['folder'] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder'));
         } else {
-            $extraFields['crdate'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.creationDate'));
-            $extraFields['cruser_id'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.creationUserId'));
-            $extraFields['tstamp'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.timestamp'));
+            $extraFields['crdate'] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationDate'));
+            $extraFields['cruser_id'] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationUserId'));
+            $extraFields['tstamp'] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.timestamp'));
 
             // check if the special fields are defined in the TCA ctrl section of the table
             foreach ($extraFields as $fieldName => $fieldLabel) {
@@ -449,7 +449,7 @@ class ElementInformationController
 
             // format file size as bytes/kilobytes/megabytes
             if ($this->type === 'file' && $name === 'size') {
-                $this->row[$name] = GeneralUtility::formatSize($this->row[$name], htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:byteSizeUnits')));
+                $this->row[$name] = GeneralUtility::formatSize($this->row[$name], htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:byteSizeUnits')));
             }
 
             $isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));

@@ -166,7 +166,7 @@ class PermissionController extends ActionController
             if (!empty($this->returnUrl)) {
                 $closeButton = $buttonBar->makeLinkButton()
                     ->setHref($this->returnUrl)
-                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                     ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon(
                         'actions-close',
                         Icon::SIZE_SMALL
@@ -176,7 +176,7 @@ class PermissionController extends ActionController
 
             // SAVE button:
             $saveButton = $buttonBar->makeInputButton()
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
                 ->setName('tx_beuser_system_beusertxpermission[submit]')
                 ->setValue('Save')
                 ->setForm('PermissionControllerEdit')

@@ -2,7 +2,7 @@
 	<f:render partial="Logo" arguments="{_all}" />
 
 	<f:if condition="{warnings}">
-		<f:be.infobox title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.header')}" state="2">
+		<f:be.infobox title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.header')}" state="2">
 			<f:if condition="{f:count(subject: warnings)} > 1">
 				<f:then>
 					<ul>
@@ -32,7 +32,7 @@
 
 	<p>
 		<em class="text-muted">
-			<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_alt_intro.xlf:endText" />
+			<f:translate key="LLL:EXT:about/Resources/Private/Language/Modules/locallang_alt_intro.xlf:endText" />
 		</em>
 	</p>
 	<p>{copyRightNotice -> f:format.raw()}</p>

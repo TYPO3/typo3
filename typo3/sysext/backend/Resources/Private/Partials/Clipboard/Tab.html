@@ -1,18 +1,18 @@
 <tr>
 	<td colspan="3"><a href="{tab.url}#clip_head"
-										 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:{tab.description}')}">
+										 title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:{tab.description}')}">
 		<f:if condition="{current} == {tab.id}">
 			<f:then>
 				<span class="t3-icon fa fa-check-circle"></span><strong>
 				<f:format.printf
-					arguments="{1: '{tab.number}'}" value="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:{tab.label}')}">{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:{tab.label}')}
+					arguments="{1: '{tab.number}'}" value="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:{tab.label}')}">{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:{tab.label}')}
 				</f:format.printf>
 				{tab.padding}
 			</strong>
 			</f:then>
 			<f:else>
 				<span class="t3-icon fa fa-circle-o"></span><span class="text-muted"><f:format.printf
-				arguments="{1: '{tab.number}'}" value="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:{tab.label}')}">{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:{tab.label}')}
+				arguments="{1: '{tab.number}'}" value="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:{tab.label}')}">{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:{tab.label}')}
 			</f:format.printf>{tab.padding}</span>
 			</f:else>
 		</f:if>

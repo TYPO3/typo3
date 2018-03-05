@@ -35,7 +35,7 @@ class EditPopup extends AbstractNode
         $languageService = $this->getLanguageService();
         $options = $this->data['renderData']['fieldControlOptions'];
 
-        $title = $options['title'] ?? 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.edit';
+        $title = $options['title'] ?? 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit';
 
         $parameterArray = $this->data['parameterArray'];
         $itemName = $parameterArray['itemFormElName'];
@@ -58,8 +58,8 @@ class EditPopup extends AbstractNode
         $onClick[] = 'this.blur();';
         $onClick[] = 'if (!TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName) . ')) {';
         $onClick[] =    'top.TYPO3.Modal.confirm(';
-        $onClick[] =        '"' . $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.header') . '",';
-        $onClick[] =        '"' . $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.noSelItemForEdit') . '",';
+        $onClick[] =        '"' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.header') . '",';
+        $onClick[] =        '"' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.noSelItemForEdit') . '",';
         $onClick[] =        'top.TYPO3.Severity.notice, [{text: TYPO3.lang[\'button.ok\'] || \'OK\', btnClass: \'btn-notice\', name: \'ok\'}]';
         $onClick[] =    ')';
         $onClick[] =    '.on("button.clicked", function(e) {';

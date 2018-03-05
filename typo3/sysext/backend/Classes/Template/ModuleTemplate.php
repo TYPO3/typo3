@@ -540,7 +540,7 @@ class ModuleTemplate
             $motherModule = '\'\'';
         }
         $confirmationText = GeneralUtility::quoteJSvalue(
-            $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark')
+            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark')
         );
 
         $shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
@@ -556,7 +556,7 @@ class ModuleTemplate
             ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this, ' . GeneralUtility::quoteJSvalue($displayName) . ');return false;';
 
         return '<a href="#" class="' . htmlspecialchars($classes) . '" onclick="' . htmlspecialchars($onClick) . '" title="' .
-        htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark')) . '">' .
+        htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark')) . '">' .
         $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
     }
 

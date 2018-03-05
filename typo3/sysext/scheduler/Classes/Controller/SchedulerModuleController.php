@@ -616,7 +616,7 @@ class SchedulerModuleController
 
         // Disable checkbox
         $this->view->assign('task_disable', ($taskInfo['disable'] ? ' checked="checked"' : ''));
-        $this->view->assign('task_disable_label', 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:disable');
+        $this->view->assign('task_disable_label', 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable');
 
         // Task class selector
         // On editing, don't allow changing of the task class, unless it was not valid
@@ -718,7 +718,7 @@ class SchedulerModuleController
                 'wizard_element_browser',
                 ['mode' => 'db', 'bparams' => $fieldID . '|||pages|']
             );
-            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.browse_db'));
+            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db'));
             return '
                 <div><a href="#" data-url=' . htmlspecialchars($url) . ' class="btn btn-default t3js-pageBrowser" title="' . $title . '">
                     <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-insert-record" data-identifier="actions-insert-record">
@@ -947,9 +947,9 @@ class SchedulerModuleController
                     $tasks[$taskIndex]['tasks'][$recordIndex]['frequency'] = $frequency;
                     // Get multiple executions setting
                     if ($task->getExecution()->getMultiple()) {
-                        $multiple = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:yes');
+                        $multiple = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes');
                     } else {
-                        $multiple = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:no');
+                        $multiple = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no');
                     }
                     $tasks[$taskIndex]['tasks'][$recordIndex]['multiple'] = $multiple;
 
@@ -1294,7 +1294,7 @@ class SchedulerModuleController
         // Add and Reload
         if (empty($this->CMD) || $this->CMD === 'list' || $this->CMD === 'delete' || $this->CMD === 'stop' || $this->CMD === 'toggleHidden' || $this->CMD === 'setNextExecutionTime') {
             $reloadButton = $buttonBar->makeLinkButton()
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.reload'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL))
                 ->setHref($this->moduleUri);
             $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
@@ -1310,7 +1310,7 @@ class SchedulerModuleController
         if ($this->CMD === 'add' || $this->CMD === 'edit') {
             // Close
             $closeButton = $buttonBar->makeLinkButton()
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:cancel'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL))
                 ->setOnClick('document.location=' . GeneralUtility::quoteJSvalue($this->moduleUri))
                 ->setHref('#');
@@ -1322,7 +1322,7 @@ class SchedulerModuleController
                 ->setValue('save')
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:save'));
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:save'));
             $saveButtonDropdown->addItem($saveButton);
             $saveAndNewButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
@@ -1336,7 +1336,7 @@ class SchedulerModuleController
                 ->setValue('saveclose')
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:saveAndClose'));
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:saveAndClose'));
             $saveButtonDropdown->addItem($saveAndCloseButton);
             $buttonBar->addButton($saveButtonDropdown, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
@@ -1347,7 +1347,7 @@ class SchedulerModuleController
                 ->setValue('delete')
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:delete'));
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'));
             $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
         }
         // Shortcut

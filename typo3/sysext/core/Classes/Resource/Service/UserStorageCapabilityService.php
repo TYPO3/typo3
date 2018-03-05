@@ -58,8 +58,8 @@ class UserStorageCapabilityService
             } catch (InvalidPathException $e) {
                 $message = GeneralUtility::makeInstance(
                     FlashMessage::class,
-                    $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:filestorage.invalidpathexception.message'),
-                    $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:filestorage.invalidpathexception.title'),
+                    $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:filestorage.invalidpathexception.message'),
+                    $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:filestorage.invalidpathexception.title'),
                     FlashMessage::ERROR
                 );
                 $defaultFlashMessageQueue->enqueue($message);
@@ -69,8 +69,8 @@ class UserStorageCapabilityService
             if ($storageRecord['is_public'] && !$storage->isPublic()) {
                 $message = GeneralUtility::makeInstance(
                     FlashMessage::class,
-                    $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.message.storage_is_no_public'),
-                    $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.header.storage_is_no_public'),
+                    $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.message.storage_is_no_public'),
+                    $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.header.storage_is_no_public'),
                     FlashMessage::WARNING
                 );
                 $defaultFlashMessageQueue->enqueue($message);

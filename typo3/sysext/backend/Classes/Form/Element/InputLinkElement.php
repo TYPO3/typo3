@@ -200,7 +200,7 @@ class InputLinkElement extends AbstractFormElement
 
         $linkExplanation = $this->getLinkExplanation($itemValue ?: '');
         $explanation = htmlspecialchars($linkExplanation['text']);
-        $toggleButtonTitle = $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.toggleLinkExplanation');
+        $toggleButtonTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.toggleLinkExplanation');
 
         $expansionHtml = [];
         $expansionHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
@@ -241,7 +241,7 @@ class InputLinkElement extends AbstractFormElement
             $fullElement[] =     '<label for="' . $nullControlNameEscaped . '">';
             $fullElement[] =         '<input type="hidden" name="' . $nullControlNameEscaped . '" value="0" />';
             $fullElement[] =         '<input type="checkbox" name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1"' . $checked . ' />';
-            $fullElement[] =         $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.nullCheckbox');
+            $fullElement[] =         $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.nullCheckbox');
             $fullElement[] =     '</label>';
             $fullElement[] = '</div>';
             $fullElement[] = $expansionHtml;
@@ -255,12 +255,12 @@ class InputLinkElement extends AbstractFormElement
                 $shortenedPlaceholder = GeneralUtility::fixed_lgd_cs($placeholder, 20);
                 if ($placeholder !== $shortenedPlaceholder) {
                     $overrideLabel = sprintf(
-                        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
+                        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
                         '<span title="' . htmlspecialchars($placeholder) . '">' . htmlspecialchars($shortenedPlaceholder) . '</span>'
                     );
                 } else {
                     $overrideLabel = sprintf(
-                        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
+                        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
                         htmlspecialchars($placeholder)
                     );
                 }
@@ -269,7 +269,7 @@ class InputLinkElement extends AbstractFormElement
                 $checked = ' checked="checked"';
                 $disabled = ' disabled="disabled"';
                 $overrideLabel = $languageService->sL(
-                    'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override_not_available'
+                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override_not_available'
                 );
             }
             $fullElement = [];
@@ -330,13 +330,13 @@ class InputLinkElement extends AbstractFormElement
             if ($value) {
                 switch ($key) {
                     case 'class':
-                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:class');
+                        $label = $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:class');
                         break;
                     case 'title':
-                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:title');
+                        $label = $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:title');
                         break;
                     case 'additionalParams':
-                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:params');
+                        $label = $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:params');
                         break;
                     default:
                         $label = $key;

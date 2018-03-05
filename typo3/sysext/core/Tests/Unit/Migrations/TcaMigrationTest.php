@@ -5857,7 +5857,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                                     'type' => 'imageManipulation',
                                     'cropVariants' => [
                                         'default' => [
-                                            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
+                                            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
                                             'allowedAspectRatios' => [
                                                 '1.33' => [
                                                     'title' => '4:3',

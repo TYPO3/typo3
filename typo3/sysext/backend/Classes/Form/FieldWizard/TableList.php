@@ -53,7 +53,7 @@ class TableList extends AbstractNode
         $allowedTablesHtml = [];
         foreach ($allowed as $tableName) {
             if ($allowed === '*') {
-                $label = $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.allTables');
+                $label = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.allTables');
                 $allowedTablesHtml[] = '<span>';
                 $allowedTablesHtml[] =  htmlspecialchars($label);
                 $allowedTablesHtml[] = '</span>';

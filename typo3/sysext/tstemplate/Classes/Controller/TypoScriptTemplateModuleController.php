@@ -310,7 +310,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     '',
                     BackendUtility::BEgetRootLine($this->pageinfo['uid'])
                 ))
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
             $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
 
@@ -325,7 +325,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
                 $newButton = $buttonBar->makeLinkButton()
                     ->setHref((string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
-                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-add',
                         Icon::SIZE_SMALL
@@ -338,7 +338,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     ->setName('_savedok')
                     ->setValue('1')
                     ->setForm('TypoScriptTemplateModuleController')
-                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-document-save',
                         Icon::SIZE_SMALL
@@ -356,7 +356,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     $backButton = $buttonBar->makeLinkButton()
                         ->setHref((string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
                         ->setClasses('typo3-goBack')
-                        ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                        ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                             'actions-view-go-back',
                             Icon::SIZE_SMALL

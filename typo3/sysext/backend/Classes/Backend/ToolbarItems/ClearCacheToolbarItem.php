@@ -53,8 +53,8 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.pages')) {
             $this->cacheActions[] = [
                 'id' => 'pages',
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesTitle',
-                'description' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesDescription',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushPageCachesTitle',
+                'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushPageCachesDescription',
                 'href' => (string)$uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'pages']),
                 'iconIdentifier' => 'actions-system-cache-clear-impact-low'
             ];
@@ -67,8 +67,8 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         if ($backendUser->getTSConfigVal('options.clearCache.all') || ($backendUser->isAdmin() && $backendUser->getTSConfigVal('options.clearCache.all') !== '0')) {
             $this->cacheActions[] = [
                 'id' => 'all',
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesTitle2',
-                'description' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesDescription2',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushAllCachesTitle2',
+                'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushAllCachesDescription2',
                 'href' => (string)$uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'all']),
                 'iconIdentifier' => 'actions-system-cache-clear-impact-high'
             ];

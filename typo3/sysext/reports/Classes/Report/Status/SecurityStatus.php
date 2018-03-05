@@ -98,7 +98,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
             $value = $this->getLanguageService()->getLL('status_insecure');
             $severity = ReportStatus::ERROR;
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_trustedhosts');
+            $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_trustedhosts');
         }
 
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_trustedHostsPattern'), $value, $message, $severity);
@@ -158,7 +158,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
                     ]
                 );
                 $message = sprintf(
-                    $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.backend_admin'),
+                    $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.backend_admin'),
                     '<a href="' . htmlspecialchars($editUserAccountUrl) . '">',
                     '</a>'
                 );
@@ -186,7 +186,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
             $value = $this->getLanguageService()->getLL('status_insecure');
             $severity = ReportStatus::ERROR;
             $message = sprintf(
-                $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_deny_pattern_partsNotPresent'),
+                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_deny_pattern_partsNotPresent'),
                 '<br /><pre>' . htmlspecialchars(FILE_DENY_PATTERN_DEFAULT) . '</pre><br />'
             );
         }
@@ -210,7 +210,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
             && GeneralUtility::verifyFilenameAgainstDenyPattern('.htaccess')) {
             $value = $this->getLanguageService()->getLL('status_insecure');
             $severity = ReportStatus::ERROR;
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_deny_htaccess');
+            $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_deny_htaccess');
         }
 
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_htaccessUploadProtection'), $value, $message, $severity);

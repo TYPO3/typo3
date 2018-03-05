@@ -215,7 +215,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =           '<div class="form-multigroup-wrap t3js-formengine-field-group">';
         $html[] =               '<div class="form-multigroup-item form-multigroup-element">';
         $html[] =                   '<label>';
-        $html[] =                       htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.selected'));
+        $html[] =                       htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selected'));
         $html[] =                   '</label>';
         $html[] =                   '<div class="form-wizards-wrap form-wizards-aside">';
         $html[] =                       '<div class="form-wizards-element">';
@@ -235,7 +235,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             $html[] =                           '<a href="#"';
             $html[] =                               ' class="btn btn-default t3js-btn-moveoption-top"';
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
+            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
             $html[] =                           '>';
             $html[] =                               $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render();
             $html[] =                           '</a>';
@@ -244,14 +244,14 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             $html[] =                           '<a href="#"';
             $html[] =                               ' class="btn btn-default t3js-btn-moveoption-up"';
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
+            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
             $html[] =                           '>';
             $html[] =                               $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render();
             $html[] =                           '</a>';
             $html[] =                           '<a href="#"';
             $html[] =                               ' class="btn btn-default t3js-btn-moveoption-down"';
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
+            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
             $html[] =                           '>';
             $html[] =                               $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render();
             $html[] =                           '</a>';
@@ -260,7 +260,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             $html[] =                           '<a href="#"';
             $html[] =                               ' class="btn btn-default t3js-btn-moveoption-bottom"';
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
+            $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
             $html[] =                           '>';
             $html[] =                               $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render();
             $html[] =                           '</a>';
@@ -268,7 +268,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                               '<a href="#"';
         $html[] =                                   ' class="btn btn-default t3js-btn-removeoption"';
         $html[] =                                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-        $html[] =                                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
+        $html[] =                                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
         $html[] =                               '>';
         $html[] =                                   $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render();
         $html[] =                               '</a>';
@@ -278,7 +278,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =               '</div>';
         $html[] =               '<div class="form-multigroup-item form-multigroup-element">';
         $html[] =                   '<label>';
-        $html[] =                       htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.items'));
+        $html[] =                       htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.items'));
         $html[] =                   '</label>';
         $html[] =                   '<div class="form-wizards-wrap form-wizards-aside">';
         $html[] =                       '<div class="form-wizards-element">';
@@ -368,7 +368,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =   '<div class="form-wizards-wrap">';
         $html[] =       '<div class="form-wizards-element">';
         $html[] =           '<label>';
-        $html[] =               htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.selected'));
+        $html[] =               htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selected'));
         $html[] =           '</label>';
         $html[] =           '<div class="form-wizards-wrap form-wizards-aside">';
         $html[] =               '<div class="form-wizards-element">';

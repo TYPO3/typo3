@@ -59,7 +59,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'csh' => 'passwordCurrent',
         ],
         'avatar' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.avatar',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.avatar',
             'type' => 'avatar',
             'table' => 'be_users',
             'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']

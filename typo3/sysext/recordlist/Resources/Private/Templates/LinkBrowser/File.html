@@ -1,14 +1,14 @@
 <div class="element-browser-panel element-browser-main">
 	<div class="element-browser-main-sidebar">
 		<div class="element-browser-body">
-			<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:folderTree" /></h3>
+			<h3><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:folderTree" /></h3>
 			{tree -> f:format.raw()}
 		</div>
 	</div>
 	<div class="element-browser-main-content">
 		<div class="element-browser-body">
 			<f:if condition="{selectedFolder}">
-				<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:files" /></h3>
+				<h3><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:files" /></h3>
 				<span title="{selectedFolder.identifier}">
 					{selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}
 				</span>

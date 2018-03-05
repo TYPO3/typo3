@@ -353,7 +353,7 @@ function jumpToUrl(URL) {
         } else {
             $motherModule = '\'\'';
         }
-        $confirmationText = GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark'));
+        $confirmationText = GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark'));
 
         $shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
         $shortcutExist = BackendUtility::shortcutExists($shortcutUrl);
@@ -367,7 +367,7 @@ function jumpToUrl(URL) {
             ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this);return false;';
 
         return '<a href="#" class="' . htmlspecialchars($classes) . '" onclick="' . htmlspecialchars($onClick) . '" title="' .
-        htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark')) . '">' .
+        htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark')) . '">' .
         $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
     }
 
@@ -879,7 +879,7 @@ function jumpToUrl(URL) {
             $title = '';
         }
         // Setting the path of the page
-        $pagePath = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
+        $pagePath = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
         // crop the title to title limit (or 50, if not defined)
         $cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
         $croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);

@@ -16,7 +16,7 @@ return [
     ],
     'columns' => [
         'title' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.title',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.title',
             'config' => [
                 'type' => 'input',
                 'size' => 20,

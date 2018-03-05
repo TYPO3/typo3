@@ -27,7 +27,7 @@ class CropVariantCollectionTest extends UnitTestCase
      * @var array
      */
     private static $tca = [
-        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
+        'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
         'cropArea' => [
             'x' => 0.0,
             'y' => 0.0,
@@ -36,19 +36,19 @@ class CropVariantCollectionTest extends UnitTestCase
         ],
         'allowedAspectRatios' => [
             '16:9' => [
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.16_9',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.16_9',
                 'value' => 1.777777777777777
             ],
             '4:3' => [
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
                 'value' => 1.333333333333333
             ],
             '1:1' => [
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.1_1',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.1_1',
                 'value' => 1.0
             ],
             'free' => [
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
                 'value' => 0.0
             ],
         ],

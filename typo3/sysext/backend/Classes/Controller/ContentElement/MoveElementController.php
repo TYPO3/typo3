@@ -116,7 +116,7 @@ class MoveElementController
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
 
         // @deprecated since v9, will be obsolete in v10 with removal of init()
         $request = $GLOBALS['TYPO3_REQUEST'];

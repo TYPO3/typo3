@@ -192,7 +192,7 @@ class ElementHistoryController
         if ($returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($returnUrl)
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
@@ -338,7 +338,7 @@ class ElementHistoryController
             // Add time
             $singleLine['time'] = BackendUtility::datetime($entry['tstamp']);
             // Add age
-            $singleLine['age'] = BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears'));
+            $singleLine['age'] = BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears'));
 
             $singleLine['title'] = $this->generateTitle($entry['tablename'], $entry['recuid']);
             $singleLine['elementUrl'] = $this->buildUrl(['element' => $entry['tablename'] . ':' . $entry['recuid']]);

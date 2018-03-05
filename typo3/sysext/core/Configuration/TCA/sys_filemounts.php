@@ -5,8 +5,8 @@ return [
         'descriptionColumn' => 'description',
         'tstamp' => 'tstamp',
         'sortby' => 'sorting',
-        'prependAtCopy' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
-        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_filemounts',
+        'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
+        'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts',
         'adminOnly' => true,
         'rootLevel' => 1,
         'delete' => 'deleted',
@@ -25,7 +25,7 @@ return [
     ],
     'columns' => [
         'title' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.title',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.title',
             'config' => [
                 'type' => 'input',
                 'size' => 50,
@@ -34,13 +34,13 @@ return [
             ]
         ],
         'hidden' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disable',
             'config' => [
                 'type' => 'check'
             ]
         ],
         'description' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.description',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
             'config' => [
                 'type' => 'text',
                 'rows' => 5,
@@ -49,7 +49,7 @@ return [
             ]
         ],
         'base' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.baseStorage',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.baseStorage',
             'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
@@ -68,7 +68,7 @@ return [
             ]
         ],
         'path' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.folder',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.folder',
             'displayCond' => 'FIELD:base:>:0',
             'config' => [
                 'type' => 'select',
@@ -78,7 +78,7 @@ return [
             ]
         ],
         'read_only' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.read_only',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.read_only',
             'config' => [
                 'type' => 'check'
             ],

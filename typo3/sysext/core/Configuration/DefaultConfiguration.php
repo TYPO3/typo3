@@ -1106,12 +1106,12 @@ return [
                 sys_category.after = tt_content
             }
             mod.web_list.searchLevel.items {
-                -1 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.infinite
-                0 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.0
-                1 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.1
-                2 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.2
-                3 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.3
-                4 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.4
+                -1 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.infinite
+                0 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.0
+                1 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.1
+                2 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.2
+                3 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.3
+                4 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.4
             }
             mod.wizards.newRecord.pages.show.pageInside=1
             mod.wizards.newRecord.pages.show.pageAfter=1

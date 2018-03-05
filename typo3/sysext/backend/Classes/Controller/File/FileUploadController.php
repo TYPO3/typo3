@@ -91,7 +91,7 @@ class FileUploadController
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
 
         // @deprecated since v9, will be moved out of __construct() in v10
         $this->init($GLOBALS['TYPO3_REQUEST']);
@@ -192,13 +192,13 @@ class FileUploadController
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
         // set page title
-        $this->moduleTemplate->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle'));
+        $this->moduleTemplate->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle'));
 
         $pageContent = '<form action="'
             . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_file'))
             . '" method="post" id="FileUploadController" name="editform" enctype="multipart/form-data">';
         // Make page header:
-        $pageContent .= '<h1>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle') . '</h1>';
+        $pageContent .= '<h1>' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle') . '</h1>';
         $pageContent .= $this->renderUploadFormInternal();
 
         // Header Buttons
@@ -214,7 +214,7 @@ class FileUploadController
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
@@ -255,7 +255,7 @@ class FileUploadController
         $content .= '
             <div id="c-submit">
                 <input type="hidden" name="data[upload][1][redirect]" value="' . $this->returnUrl . '" /><br />
-                <input class="btn btn-default" type="submit" value="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')) . '" />
+                <input class="btn btn-default" type="submit" value="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')) . '" />
             </div>
         ';
 

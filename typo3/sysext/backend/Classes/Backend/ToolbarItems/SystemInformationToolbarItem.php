@@ -234,7 +234,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getTypo3Version()
     {
         $this->systemInformation[] = [
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version',
+            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version',
             'value' => VersionNumberUtility::getCurrentTypo3Version(),
             'iconIdentifier' => 'information-typo3-version'
         ];
@@ -246,7 +246,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getWebServer()
     {
         $this->systemInformation[] = [
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.webserver',
+            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.webserver',
             'value' => $_SERVER['SERVER_SOFTWARE'],
             'iconIdentifier' => 'information-webserver'
         ];
@@ -258,7 +258,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getPhpVersion()
     {
         $this->systemInformation[] = [
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.phpversion',
+            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.phpversion',
             'value' => PHP_VERSION,
             'iconIdentifier' => 'information-php-version'
         ];
@@ -271,7 +271,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     {
         foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
             $this->systemInformation[] = [
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.database',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.database',
                 'titleAddition' => $connectionName,
                 'value' => GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionByName($connectionName)
@@ -288,7 +288,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     {
         $applicationContext = GeneralUtility::getApplicationContext();
         $this->systemInformation[] = [
-            'title'  => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext',
+            'title'  => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext',
             'value'  => (string)$applicationContext,
             'status' => $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING,
             'iconIdentifier' => 'information-application-context'
@@ -305,8 +305,8 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         }
 
         $this->systemInformation[] = [
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode',
-            'value' => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled'),
+            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode',
+            'value' => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'),
             'iconIdentifier' => 'information-composer-mode'
         ];
     }
@@ -330,7 +330,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $branch = trim(CommandUtility::exec('git rev-parse --abbrev-ref HEAD'));
         if (!empty($revision) && !empty($branch)) {
             $this->systemInformation[] = [
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.gitrevision',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.gitrevision',
                 'value' => sprintf('%s [%s]', $revision, $branch),
                 'iconIdentifier' => 'information-git'
             ];
@@ -354,7 +354,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
                 $icon = 'windows';
         }
         $this->systemInformation[] = [
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem',
+            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem',
             'value' => $kernelName . ' ' . php_uname('r'),
             'iconIdentifier' => 'information-os-' . $icon
         ];

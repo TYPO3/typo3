@@ -261,7 +261,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         $this->subject->applyTcaForPreRegisteredTables();
 
         foreach ($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
-            $this->assertContains('--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
+            $this->assertContains('--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
         }
     }
 
@@ -274,7 +274,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         $this->subject->applyTcaForPreRegisteredTables();
 
         foreach ($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
-            $this->assertNotContains('--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
+            $this->assertNotContains('--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
         }
     }
 
@@ -300,7 +300,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         foreach ($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
             $this->assertSame(
                 1,
-                substr_count($typeConfig['showitem'], '--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category')
+                substr_count($typeConfig['showitem'], '--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category')
             );
         }
     }
@@ -325,7 +325,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories1', [], true);
         $this->assertSame(
             1,
-            substr_count($GLOBALS['TCA'][$this->tables['first']]['types']['newtypeafterfirstadd']['showitem'], '--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category')
+            substr_count($GLOBALS['TCA'][$this->tables['first']]['types']['newtypeafterfirstadd']['showitem'], '--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category')
         );
     }
 

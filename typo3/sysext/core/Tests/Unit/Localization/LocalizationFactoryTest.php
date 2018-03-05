@@ -64,17 +64,17 @@ class LocalizationFactoryTest extends UnitTestCase
         $this->testFilesToDelete[] = $file;
 
         // Get default value
-        $defaultLL = $subject->getParsedData('EXT:lang/Resources/Private/Language/locallang_core.xlf', 'default');
+        $defaultLL = $subject->getParsedData('EXT:core/Resources/Private/Language/locallang_core.xlf', 'default');
 
         // Set override file
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/Resources/Private/Language/locallang_core.xlf'][$unique] = $file;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:core/Resources/Private/Language/locallang_core.xlf'][$unique] = $file;
 
         /** @var $store LanguageStore */
         $store = GeneralUtility::makeInstance(LanguageStore::class);
-        $store->flushData('EXT:lang/Resources/Private/Language/locallang_core.xlf');
+        $store->flushData('EXT:core/Resources/Private/Language/locallang_core.xlf');
 
         // Get override value
-        $overrideLL = $subject->getParsedData('EXT:lang/Resources/Private/Language/locallang_core.xlf', 'default');
+        $overrideLL = $subject->getParsedData('EXT:core/Resources/Private/Language/locallang_core.xlf', 'default');
 
         $this->assertNotEquals($overrideLL['default']['buttons.logout'][0]['target'], '');
         $this->assertNotEquals($defaultLL['default']['buttons.logout'][0]['target'], $overrideLL['default']['buttons.logout'][0]['target']);

@@ -25,7 +25,7 @@ class ItemProvider extends PageProvider
     protected $itemsConfiguration = [
         'permissions' => [
             'type' => 'item',
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_perms',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_perms',
             'iconIdentifier' => 'actions-lock',
             'callbackAction' => 'openPermissionsModule'
         ],

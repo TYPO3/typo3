@@ -140,7 +140,7 @@ class TableController extends AbstractWizardController
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_wizards.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
         $GLOBALS['SOBE'] = $this;
 
         // @deprecated since v9, will be moved out of __construct() in v10
@@ -354,7 +354,7 @@ class TableController extends AbstractWizardController
             // Close
             $closeButton = $buttonBar->makeLinkButton()
                 ->setHref($this->P['returnUrl'])
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
             $buttonBar->addButton($closeButton);
             // Save
@@ -363,13 +363,13 @@ class TableController extends AbstractWizardController
                 ->setValue('1')
                 ->setForm('TableController')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'));
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'));
             // Save & Close
             $saveAndCloseButton = $buttonBar->makeInputButton()
                 ->setName('_saveandclosedok')
                 ->setValue('1')
                 ->setForm('TableController')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                     'actions-document-save-close',
                     Icon::SIZE_SMALL

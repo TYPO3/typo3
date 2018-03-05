@@ -37,27 +37,27 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
      */
     protected $itemsConfiguration = [
         'edit' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.edit',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit',
             'iconIdentifier' => 'actions-page-open',
             'callbackAction' => 'editFile'
         ],
         'rename' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.rename',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename',
             'iconIdentifier' => 'actions-edit-rename',
             'callbackAction' => 'renameFile'
         ],
         'upload' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.upload',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload',
             'iconIdentifier' => 'actions-edit-upload',
             'callbackAction' => 'uploadFile'
         ],
         'new' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.new',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new',
             'iconIdentifier' => 'actions-document-new',
             'callbackAction' => 'createFile'
         ],
         'info' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info',
             'iconIdentifier' => 'actions-document-info',
             'callbackAction' => 'openInfoPopUp'
         ],
@@ -65,27 +65,27 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
             'type' => 'divider'
         ],
         'copy' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy',
             'callbackAction' => 'copyFile'
         ],
         'copyRelease' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy-release',
             'callbackAction' => 'copyReleaseFile'
         ],
         'cut' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut',
             'iconIdentifier' => 'actions-edit-cut',
             'callbackAction' => 'cutFile'
         ],
         'cutRelease' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cutrelease',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cutrelease',
             'iconIdentifier' => 'actions-edit-cut-release',
             'callbackAction' => 'cutReleaseFile'
         ],
         'pasteInto' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.pasteinto',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteinto',
             'iconIdentifier' => 'actions-document-paste-into',
             'callbackAction' => 'pasteFileInto'
         ],
@@ -93,7 +93,7 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
             'type' => 'divider'
         ],
         'delete' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.delete',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete',
             'iconIdentifier' => 'actions-edit-delete',
             'callbackAction' => 'deleteFile'
         ],
@@ -324,26 +324,26 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
         if ($itemName === 'delete' && $this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
             $recordTitle = GeneralUtility::fixed_lgd_cs($this->record->getName(), $this->backendUser->uc['titleLen']);
 
-            $title = $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:delete');
+            $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete');
             $confirmMessage = sprintf(
-                $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.delete'),
+                $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'),
                 $recordTitle
             );
             if ($this->isFolder()) {
                 $confirmMessage .= BackendUtility::referenceCount(
                     '_FILE',
                     $this->record->getIdentifier(),
-                    ' ' . $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.referencesToFolder')
+                    ' ' . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFolder')
                 );
             } else {
                 $confirmMessage .= BackendUtility::referenceCount(
                     'sys_file',
                     $this->record->getUid(),
-                    ' ' . $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile')
+                    ' ' . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile')
                 );
             }
-            $closeText = $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:button.cancel');
-            $deleteText = $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:button.delete');
+            $closeText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:button.cancel');
+            $deleteText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:button.delete');
             $attributes += [
                 'data-title' => htmlspecialchars($title),
                 'data-message' => htmlspecialchars($confirmMessage),
@@ -356,10 +356,10 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
             $selItem = reset($elArr);
             $fileOrFolderInClipBoard = ResourceFactory::getInstance()->retrieveFileOrFolderObject($selItem);
 
-            $title = $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste');
+            $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste');
 
             $confirmMessage = sprintf(
-                $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.'
+                $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.'
                     . ($this->clipboard->currentMode() === 'copy' ? 'copy' : 'move') . '_into'),
                 $fileOrFolderInClipBoard->getName(),
                 $this->record->getName()

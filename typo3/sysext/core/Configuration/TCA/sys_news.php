@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_news',
+        'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_news',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -24,7 +24,7 @@ return [
     ],
     'columns' => [
         'hidden' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disable',
             'exclude' => true,
             'config' => [
                 'type' => 'check',
@@ -33,7 +33,7 @@ return [
         ],
         'starttime' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -43,7 +43,7 @@ return [
         ],
         'endtime' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -52,7 +52,7 @@ return [
             ]
         ],
         'title' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.title',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -61,7 +61,7 @@ return [
             ]
         ],
         'content' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.text',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.text',
             'config' => [
                 'type' => 'text',
                 'cols' => 48,

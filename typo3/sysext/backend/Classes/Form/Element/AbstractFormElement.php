@@ -211,7 +211,7 @@ abstract class AbstractFormElement extends AbstractNode
                 if (isset($formatOptions['appendAge']) && $formatOptions['appendAge']) {
                     $age = BackendUtility::calcAge(
                         $GLOBALS['EXEC_TIME'] - $itemValue,
-                        $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                     );
                     $value .= ' (' . $age . ')';
                 }

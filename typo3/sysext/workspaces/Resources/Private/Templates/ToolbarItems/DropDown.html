@@ -1,6 +1,6 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
 <h3 class="dropdown-headline">
-	<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace" />
+	<f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace" />
 </h3>
 
 <hr>
@@ -16,7 +16,7 @@
 					</div>
 					<div class="dropdown-table-column">
 						<a href="#" target="list_frame" data-module="web_WorkspacesWorkspaces" class="t3js-workspaces-modulelink">
-							<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:bookmark_workspace" />
+							<f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_workspace" />
 						</a>
 					</div>
 				</div>
@@ -29,7 +29,7 @@
 					<f:render section="uncheckedIcon" />
 				</div>
 				<div class="dropdown-table-column">
-					<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:bookmark_noWSfound" />
+					<f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_noWSfound" />
 				</div>
 			</div>
 		</f:else>
@@ -64,7 +64,7 @@
 </f:section>
 
 <f:section name="uncheckedIcon">
-	<span title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:bookmark_inactive')}">
+	<span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_inactive')}">
 		<core:icon identifier="empty-empty" size="small" />
 	</span>
 </f:section>

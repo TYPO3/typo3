@@ -83,7 +83,7 @@ class LocalizationStateSelector extends AbstractNode
         $html[] = '<div class="t3js-l10n-state-container">';
         $html[] =   '<div>';
         $html[] =       '<strong>';
-        $html[] =           $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.header');
+        $html[] =           $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.header');
         $html[] =       '</strong>';
         $html[] =   '</div>';
         $html[] =   '<div class="radio radio-inline">';
@@ -96,7 +96,7 @@ class LocalizationStateSelector extends AbstractNode
         $html[] =               $localizationState->isCustomState($fieldName) ? ' checked="checked"' : '';
         $html[] =               ' data-original-language-value=""';
         $html[] =           '>';
-        $html[] =           $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.customValue');
+        $html[] =           $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.customValue');
         $html[] =       '</label>';
         $html[] =   '</div>';
         $html[] =   '<div class="radio radio-inline">';
@@ -108,7 +108,7 @@ class LocalizationStateSelector extends AbstractNode
         $html[] =               $localizationState->isParentState($fieldName) ? ' checked="checked"' : '';
         $html[] =               ' data-original-language-value="' . htmlspecialchars((string)$fieldValueInParentRow) . '"';
         $html[] =           '>';
-        $html[] =           $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.defaultLanguageValue');
+        $html[] =           $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.defaultLanguageValue');
         $html[] =       '</label>';
         $html[] =   '</div>';
         if ($fieldValueInSourceRow !== null) {
@@ -121,7 +121,7 @@ class LocalizationStateSelector extends AbstractNode
             $html[] =           $localizationState->isSourceState($fieldName) ? ' checked="checked"' : '';
             $html[] =           ' data-original-language-value="' . htmlspecialchars((string)$fieldValueInSourceRow) . '"';
             $html[] =       '>';
-            $html[] =       sprintf($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.sourceLanguageValue'), htmlspecialchars($sourceLanguageTitle));
+            $html[] =       sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.sourceLanguageValue'), htmlspecialchars($sourceLanguageTitle));
             $html[] =   '</label>';
             $html[] = '</div>';
         }

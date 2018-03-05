@@ -38,12 +38,12 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         $menu = [
             'pages' => [],
             'depth' => [
-                0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
-                1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
-                2 => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
-                3 => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
-                4 => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
-                999 => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
+                0 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
+                1 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
+                2 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
+                3 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
+                4 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
+                999 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
             ]
         ];
 
@@ -71,7 +71,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         $dblist->script = (string)$uriBuilder->buildUriFromRoute('web_info');
         $dblist->showIcon = 0;
         $dblist->setLMargin = 0;
-        $dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
+        $dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
         $dblist->pI_showUser = true;
 
         if (isset($this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']])) {

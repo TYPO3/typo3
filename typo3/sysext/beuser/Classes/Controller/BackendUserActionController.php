@@ -145,7 +145,7 @@ class BackendUserActionController extends ActionController
             }
             if ($this->request->getControllerActionName() === 'compare') {
                 $addUserLink = (string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser');
-                $title = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack');
+                $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack');
                 $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
                 $addUserButton = $buttonBar->makeLinkButton()
                     ->setHref($addUserLink)

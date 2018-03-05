@@ -42,9 +42,9 @@
 									<td>
 										<f:alias map="{
 											disable: '{f:translate(key: \'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:record_disabled\')}',
-											onlystart: '{f:translate(key: \'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'d.m.Y H:i:s\')}',
-											onlyend: '{f:translate(key: \'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'d.m.Y H:i:s\')}',
-											startend: '{f:translate(key: \'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'d.m.Y H:i:s\')} - {f:translate(key: \'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'d.m.Y H:i:s\')}'
+											onlystart: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'d.m.Y H:i:s\')}',
+											onlyend: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'d.m.Y H:i:s\')}',
+											startend: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'d.m.Y H:i:s\')} - {f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'d.m.Y H:i:s\')}'
 										}">
 										<f:if condition="{redirect.disabled}"><f:then><span title="{disable}"></f:then>
 										<f:else if="{redirect.starttime} && !{redirect.endtime}"><span title="{onlystart}"></f:else>
@@ -54,7 +54,7 @@
 										</f:if>
 										<core:iconForRecord table="sys_redirect" row="{redirect}" /></span>
 										</f:alias>
-										<a href="{rd:editRecord(command: 'edit', uid: redirect.uid)}" title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">{redirect.source_path}</a>
+										<a href="{rd:editRecord(command: 'edit', uid: redirect.uid)}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">{redirect.source_path}</a>
 									</td>
 									<td><f:link.typolink parameter="{redirect.target}" target="_blank"><f:uri.typolink parameter="{redirect.target}"></f:uri.typolink></f:link.typolink> (<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination_status_code"/>: {redirect.target_statuscode})</td>
 									<f:if condition="{showHitCounter}">
@@ -67,7 +67,7 @@
 													   title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset')}"
 													   data-title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.title')}"
 													   data-content="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.content')}"
-													   data-button-close-text="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
+													   data-button-close-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
 													<core:icon identifier="actions-edit-restore" /></a>
 												</f:if>
 											</f:if>
@@ -92,24 +92,24 @@
 											</f:if>
 											<a class="btn btn-default"
 												 href="{rd:editRecord(command: 'edit', uid: redirect.uid)}"
-												 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">
+												 title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">
 												<core:icon identifier="actions-open" />
 											</a>
 											<f:if condition="{redirect.disabled} == 1">
 												<f:then>
-													<a class="btn btn-default" href="{rd:editRecord(command: 'unhide', uid: redirect.uid)}" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"><core:icon identifier="actions-edit-unhide" /></a>
+													<a class="btn btn-default" href="{rd:editRecord(command: 'unhide', uid: redirect.uid)}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"><core:icon identifier="actions-edit-unhide" /></a>
 												</f:then>
 												<f:else>
-													<a class="btn btn-default" href="{rd:editRecord(command: 'hide', uid: redirect.uid)}" title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:hide')}"><core:icon identifier="actions-edit-hide" /></a>
+													<a class="btn btn-default" href="{rd:editRecord(command: 'hide', uid: redirect.uid)}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide')}"><core:icon identifier="actions-edit-hide" /></a>
 												</f:else>
 											</f:if>
 											<a class="btn btn-default t3js-modal-trigger"
 												 href="{rd:editRecord(command: 'delete', uid: redirect.uid)}"
-												 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:delete')}"
+												 title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete')}"
 												 data-severity="warning"
-												 data-title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
-												 data-content="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
-												 data-button-close-text="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
+												 data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
+												 data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
+												 data-button-close-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
 												<core:icon identifier="actions-delete" />
 											</a>
 										</div>

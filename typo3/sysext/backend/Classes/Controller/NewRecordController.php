@@ -196,7 +196,7 @@ class NewRecordController
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
 
         // @see \TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView::expandNext()
         $GLOBALS['SOBE'] = $this;
@@ -373,7 +373,7 @@ class NewRecordController
         // Creating content
         $this->content = '';
         $this->content .= '<h1>'
-            . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle')
+            . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle')
             . '</h1>';
         // Id a positive id is supplied, ask for the page record with permission information contained:
         if ($this->id > 0) {
@@ -515,7 +515,7 @@ class NewRecordController
         if ($this->returnUrl) {
             $returnButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($returnButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
@@ -545,7 +545,7 @@ class NewRecordController
                         '',
                         BackendUtility::BEgetRootLine($this->pageinfo['uid'])
                     ))
-                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-view-page',
                         Icon::SIZE_SMALL
@@ -646,7 +646,7 @@ class NewRecordController
             // Create link to new page inside:
             $recordIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
             $newPageLinks[] = $this->renderLink(
-                $recordIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')',
+                $recordIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')',
                 $table,
                 $this->id
             );
@@ -658,7 +658,7 @@ class NewRecordController
             && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')
         ) {
             $newPageLinks[] = $this->renderLink(
-                $pageIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')',
+                $pageIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')',
                 'pages',
                 -$this->id
             );

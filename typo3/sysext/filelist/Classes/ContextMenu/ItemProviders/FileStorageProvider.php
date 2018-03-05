@@ -25,22 +25,22 @@ class FileStorageProvider extends FileProvider
      */
     protected $itemsConfiguration = [
         'edit' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.edit',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit',
             'iconIdentifier' => 'actions-open',
             'callbackAction' => 'editFileStorage'
         ],
         'upload' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.upload',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload',
             'iconIdentifier' => 'actions-edit-upload',
             'callbackAction' => 'uploadFile'
         ],
         'new' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.new',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new',
             'iconIdentifier' => 'actions-document-new',
             'callbackAction' => 'createFile'
         ],
         'info' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info',
             'iconIdentifier' => 'actions-document-info',
             'callbackAction' => 'openInfoPopUp'
         ],
@@ -48,7 +48,7 @@ class FileStorageProvider extends FileProvider
             'type' => 'divider'
         ],
         'pasteInto' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.pasteinto',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteinto',
             'iconIdentifier' => 'actions-document-paste-into',
             'callbackAction' => 'pasteFileInto'
         ],

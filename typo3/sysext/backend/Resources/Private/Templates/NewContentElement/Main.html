@@ -15,13 +15,13 @@
 						<div class="carousel-inner" role="listbox">
 							<div class="item active" data-slide="next">
 								<div class="t3-new-content-element-wizard-title">
-									<h2>{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:1_selectType')}</h2>
+									<h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:1_selectType')}</h2>
 								</div>
 								{renderedTabs -> f:format.raw()}
 							</div>
 							<div class="item">
 								<div class="t3-new-content-element-wizard-title">
-									<h2>{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:2_selectPosition') -> f:format.htmlspecialchars()}</h2>
+									<h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:2_selectPosition') -> f:format.htmlspecialchars()}</h2>
 								</div>
 								<div class="t3-new-content-element-wizard-body">
 									{posMap -> f:format.raw()}
@@ -34,7 +34,7 @@
 		</f:form>
 	</f:then>
 	<f:else>
-		<h1>{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:newContentElement')}</h1>
+		<h1>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement')}</h1>
 	</f:else>
 </f:if>
 </html>

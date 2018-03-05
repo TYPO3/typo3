@@ -474,7 +474,7 @@ class EditDocumentController
         $this->moduleTemplate->setUiBlock(true);
         // @todo Used by TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching
         $GLOBALS['SOBE'] = $this;
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
     }
 
     /**
@@ -830,7 +830,7 @@ class EditDocumentController
             // Inform the user of the duplication
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
-                $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.recordDuplicated'),
+                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordDuplicated'),
                 '',
                 FlashMessage::OK
             );
@@ -908,7 +908,7 @@ class EditDocumentController
         $this->doc = $GLOBALS['TBE_TEMPLATE'];
 
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf');
+        $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // override the default jumpToUrl
@@ -1327,7 +1327,7 @@ class EditDocumentController
                                     // Create message from exception.
                                     $message = $e->getMessage() . ' ' . $e->getCode();
                                 }
-                                $editForm .= htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission'))
+                                $editForm .= htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission'))
                                     . '<br /><br />' . htmlspecialchars($message) . '<br /><br />';
                             } catch (DatabaseRecordException $e) {
                                 $editForm = '<div class="alert alert-warning">' . htmlspecialchars($e->getMessage()) . '</div>';
@@ -1374,7 +1374,7 @@ class EditDocumentController
             $saveSplitButton = $buttonBar->makeSplitButton();
             // SAVE button:
             $saveButton = $buttonBar->makeInputButton()
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
                 ->setName('_savedok')
                 ->setValue('1')
                 ->setForm('EditDocumentController')
@@ -1402,7 +1402,7 @@ class EditDocumentController
                     || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'] . '.']['previewPageId'])
                 ) {
                     $saveAndOpenButton = $buttonBar->makeInputButton()
-                        ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDocShow'))
+                        ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDocShow'))
                         ->setName('_savedokview')
                         ->setValue('1')
                         ->setForm('EditDocumentController')
@@ -1435,7 +1435,7 @@ class EditDocumentController
                     ->setClasses('t3js-editform-submitButton')
                     ->setValue('1')
                     ->setForm('EditDocumentController')
-                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveNewDoc'))
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveNewDoc'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-document-save-new',
                         Icon::SIZE_SMALL
@@ -1448,7 +1448,7 @@ class EditDocumentController
                 ->setClasses('t3js-editform-submitButton')
                 ->setValue('1')
                 ->setForm('EditDocumentController')
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                     'actions-document-save-close',
                     Icon::SIZE_SMALL
@@ -1460,7 +1460,7 @@ class EditDocumentController
         $closeButton = $buttonBar->makeLinkButton()
             ->setHref('#')
             ->setClasses('t3js-editform-close')
-            ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
+            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                 'actions-close',
                 Icon::SIZE_SMALL
@@ -1491,7 +1491,7 @@ class EditDocumentController
                 ->setHref('#')
                 ->setClasses('t3js-editform-duplicate')
                 ->setShowLabelText(true)
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.duplicateDoc'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.duplicateDoc'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                     'actions-document-duplicates-select',
                     Icon::SIZE_SMALL
@@ -1577,7 +1577,7 @@ class EditDocumentController
                                     $lang->getLL('undoLastChange'),
                                     BackendUtility::calcAge(
                                         $GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp'],
-                                        $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                                        $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                                     )
                                 )
                             )
@@ -1652,7 +1652,7 @@ class EditDocumentController
             $openInNewWindowButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()
                 ->makeLinkButton()
                 ->setHref('#')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.openInNewWindow'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openInNewWindow'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-window-open', Icon::SIZE_SMALL))
                 ->setOnClick($aOnClick);
             $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton(
@@ -1852,7 +1852,7 @@ class EditDocumentController
             $openInNewWindowButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()
                 ->makeLinkButton()
                 ->setHref('#')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.openInNewWindow'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openInNewWindow'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-window-open', Icon::SIZE_SMALL))
                 ->setOnClick($aOnClick);
             $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton(
@@ -2007,7 +2007,7 @@ class EditDocumentController
                     $languageMenu->setIdentifier('_langSelector');
                     foreach ($langRows as $lang) {
                         if ($this->getBackendUser()->checkLanguageAccess($lang['uid'])) {
-                            $newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
+                            $newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
                             // Create url for creating a localized record
                             $addOption = true;
                             $href = '';
@@ -2161,8 +2161,8 @@ class EditDocumentController
                 'pid' => 0,
                 'hidden' => 0,
                 'title' => $modSharedTSconfig['properties']['defaultLanguageLabel'] !== ''
-                        ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
-                        : $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage'),
+                        ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
+                        : $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage'),
                 'flag' => $modSharedTSconfig['properties']['defaultLanguageFlag']
             ]
         ];

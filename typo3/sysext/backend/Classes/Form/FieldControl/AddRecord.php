@@ -36,7 +36,7 @@ class AddRecord extends AbstractNode
         $itemName = $parameterArray['itemFormElName'];
 
         // Handle options and fallback
-        $title = $options['title'] ?? 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.createNew';
+        $title = $options['title'] ?? 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.createNew';
         $setValue = $options['setValue'] ?? 'append';
 
         $table = '';

@@ -82,7 +82,7 @@ class NewMultiplePagesController
             ->setFieldName('pages_new');
         $viewButton = $buttonBar->makeLinkButton()
             ->setOnClick(BackendUtility::viewOnClick($pageUid, '', BackendUtility::BEgetRootLine($pageUid)))
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
             ->setHref('#');
         $shortcutButton = $buttonBar->makeShortcutButton()

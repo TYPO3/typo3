@@ -34,22 +34,22 @@ class PageProvider extends RecordProvider
      */
     protected $itemsConfiguration = [
         'view' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.view',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view',
             'iconIdentifier' => 'actions-view-page',
             'callbackAction' => 'viewRecord'
         ],
         'edit' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.edit',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit',
             'iconIdentifier' => 'actions-page-open',
             'callbackAction' => 'editRecord'
         ],
         'new' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.new',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new',
             'iconIdentifier' => 'actions-page-new',
             'callbackAction' => 'newRecord'
         ],
         'info' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info',
             'iconIdentifier' => 'actions-document-info',
             'callbackAction' => 'openInfoPopUp'
         ],
@@ -57,32 +57,32 @@ class PageProvider extends RecordProvider
             'type' => 'divider'
         ],
         'copy' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy',
             'callbackAction' => 'copy'
         ],
         'copyRelease' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy-release',
             'callbackAction' => 'clipboardRelease'
         ],
         'cut' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut',
             'iconIdentifier' => 'actions-edit-cut',
             'callbackAction' => 'cut'
         ],
         'cutRelease' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cutrelease',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cutrelease',
             'iconIdentifier' => 'actions-edit-cut-release',
             'callbackAction' => 'clipboardRelease'
         ],
         'pasteAfter' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.pasteafter',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteafter',
             'iconIdentifier' => 'actions-document-paste-after',
             'callbackAction' => 'pasteAfter'
         ],
         'pasteInto' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.pasteinto',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteinto',
             'iconIdentifier' => 'actions-document-paste-into',
             'callbackAction' => 'pasteInto'
         ],
@@ -91,12 +91,12 @@ class PageProvider extends RecordProvider
         ],
         'more' => [
             'type' => 'submenu',
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.more',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more',
             'iconIdentifier' => '',
             'callbackAction' => 'openSubmenu',
             'childItems' => [
                 'newWizard' => [
-                    'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_newWizard',
+                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_newWizard',
                     'iconIdentifier' => 'actions-page-new',
                     'callbackAction' => 'newPageWizard',
                 ],
@@ -111,12 +111,12 @@ class PageProvider extends RecordProvider
                     'callbackAction' => 'pagesNewMultiple',
                 ],
                 'openListModule' => [
-                    'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_db_list',
+                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_db_list',
                     'iconIdentifier' => 'actions-system-list-open',
                     'callbackAction' => 'openListModule',
                 ],
                 'mountAsTreeRoot' => [
-                    'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.tempMountPoint',
+                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.tempMountPoint',
                     'iconIdentifier' => 'actions-pagetree-mountroot',
                     'callbackAction' => 'mountAsTreeRoot',
                 ],
@@ -126,27 +126,27 @@ class PageProvider extends RecordProvider
             'type' => 'divider'
         ],
         'enable' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable',
             'iconIdentifier' => 'actions-edit-unhide',
             'callbackAction' => 'enableRecord',
         ],
         'disable' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:disable',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable',
             'iconIdentifier' => 'actions-edit-hide',
             'callbackAction' => 'disableRecord',
         ],
         'delete' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.delete',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete',
             'iconIdentifier' => 'actions-edit-delete',
             'callbackAction' => 'deleteRecord',
         ],
         'history' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_history',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_history',
             'iconIdentifier' => 'actions-document-history-open',
             'callbackAction' => 'openHistoryPopUp',
         ],
         'clearCache' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache',
             'iconIdentifier' => 'actions-system-cache-clear',
             'callbackAction' => 'clearCache',
         ],

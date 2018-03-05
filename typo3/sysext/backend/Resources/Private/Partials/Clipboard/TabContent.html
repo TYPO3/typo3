@@ -8,10 +8,10 @@
 			<strong>(
 				<f:if condition="{currentMode} == 'copy'">
 					<f:then>
-						{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy')}
+						{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy')}
 					</f:then>
 					<f:else>
-						{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')}
+						{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')}
 					</f:else>
 				</f:if>
 				)</strong>
@@ -25,7 +25,7 @@
 		<f:if condition="{content.infoLink}">
 			<div class="btn-group">
 				<a class="btn btn-default" href="#" onclick="{content.infoLink}"
-					 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info')}">
+					 title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info')}">
 					<f:format.raw>
 						<core:icon identifier="actions-document-info" alternativeMarkupIdentifier="inline"/>
 					</f:format.raw>
@@ -35,7 +35,7 @@
 		<f:if condition="{content.removeLink}">
 			<div class="btn-group">
 				<a class="btn btn-default" href="{content.removeLink}#clip_head"
-					 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.removeItem')}">
+					 title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.removeItem')}">
 					<f:format.raw>
 						<core:icon identifier="actions-remove" alternativeMarkupIdentifier="inline"/>
 					</f:format.raw>

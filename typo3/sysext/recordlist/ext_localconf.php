@@ -11,29 +11,29 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['folder'] =  \TYPO3
     TCEMAIN.linkHandler {
         page {
             handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\PageLinkHandler
-            label = LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:page
+            label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:page
         }
         file {
             handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\FileLinkHandler
-            label = LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:file
+            label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:file
             displayAfter = page
             scanAfter = page
         }
         folder {
             handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\FolderLinkHandler
-            label = LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:folder
+            label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:folder
             displayAfter = file
             scanAfter = file
         }
         url {
             handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\UrlLinkHandler
-            label = LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:extUrl
+            label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:extUrl
             displayAfter = folder
             scanAfter = mail
         }
         mail {
             handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\MailLinkHandler
-            label = LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:email
+            label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:email
             displayAfter = url
         }
     }

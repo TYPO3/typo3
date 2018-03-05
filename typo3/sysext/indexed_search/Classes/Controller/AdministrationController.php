@@ -506,7 +506,7 @@ class AdministrationController extends ActionController
         $allLines = $this->administrationRepository->getTree($this->pageUid, $depth, $mode);
 
         $this->view->assignMultiple([
-            'levelTranslations' => explode('|', $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enterSearchLevels')),
+            'levelTranslations' => explode('|', $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchLevels')),
             'tree' => $allLines,
             'pageUid' => $this->pageUid,
             'mode' => $mode,

@@ -33,7 +33,7 @@ class ContextMenuController
      */
     public function __construct()
     {
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
     }
 
     /**

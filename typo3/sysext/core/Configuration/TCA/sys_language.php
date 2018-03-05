@@ -4,7 +4,7 @@ return [
         'label' => 'title',
         'tstamp' => 'tstamp',
         'sortby' => 'sorting',
-        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_language',
+        'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_language',
         'adminOnly' => true,
         'rootLevel' => 1,
         'enablecolumns' => [
@@ -22,7 +22,7 @@ return [
     ],
     'columns' => [
         'title' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'input',
                 'size' => 35,
@@ -31,7 +31,7 @@ return [
             ]
         ],
         'hidden' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disable',
             'exclude' => true,
             'config' => [
                 'type' => 'check',
@@ -40,7 +40,7 @@ return [
         ],
         'language_isocode' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_language.language_isocode',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_language.language_isocode',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -52,7 +52,7 @@ return [
             ]
         ],
         'flag' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_language.flag',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_language.flag',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',

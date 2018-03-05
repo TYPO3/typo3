@@ -62,7 +62,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
             $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             $changeInstallToolPasswordUrl = (string)$uriBuilder->buildUriFromRoute('tools_toolssettings');
             $message = sprintf(
-                $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.installtool_default_password'),
+                $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.installtool_default_password'),
                 '<a href="' . htmlspecialchars($changeInstallToolPasswordUrl) . '">',
                 '</a>'
             );
@@ -93,11 +93,11 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
                 $value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_enabledPermanently');
                 $message = sprintf(
-                    $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_enabled'),
+                    $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_enabled'),
                     '<code style="white-space: nowrap;">' . $enableInstallToolFile . '</code>'
                 );
                 $message .= ' <a href="' . htmlspecialchars($disableInstallToolUrl) . '">' .
-                    $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
+                    $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
             } else {
                 if (EnableFileService::installToolEnableFileLifetimeExpired()) {
                     EnableFileService::removeInstallToolEnableFile();
@@ -111,7 +111,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                         floor((@filemtime($enableInstallToolFile) + EnableFileService::INSTALL_TOOL_ENABLE_FILE_LIFETIME - time()) / 60)
                     );
                     $message .= ' <a href="' . htmlspecialchars($disableInstallToolUrl) . '">' .
-                        $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
+                        $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
                 }
             }
         }

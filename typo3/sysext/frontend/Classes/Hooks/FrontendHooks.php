@@ -38,7 +38,7 @@ class FrontendHooks
         if ($pObj->config['config']['message_preview']) {
             $message = $pObj->config['config']['message_preview'];
         } else {
-            $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_tsfe.xlf:preview');
+            $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_tsfe.xlf:preview');
             $styles = [];
             $styles[] = 'position: fixed';
             $styles[] = 'top: 15px';

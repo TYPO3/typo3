@@ -110,7 +110,7 @@ class BackendController
      */
     public function __construct()
     {
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
 
         $this->backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -166,8 +166,8 @@ class BackendController
         // load debug console
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DebugConsole');
 
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_core.xlf');
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/debugger.xlf');
@@ -484,7 +484,7 @@ class BackendController
             // Warning about page editing:
             require(["TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Severity"], function(Modal, Severity) {
                 Modal.show("", ' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->getLL('noEditPage'), $editId)) . ', Severity.notice, [{
-                    text: ' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:close')) . ',
+                    text: ' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:close')) . ',
                     active: true,
                     btnClass: "btn-info",
                     name: "cancel",

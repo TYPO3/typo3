@@ -1,6 +1,6 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
 <h3 class="dropdown-headline">
-	{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.user')}
+	{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}
 </h3>
 <hr>
 <f:if condition="{modules}">
@@ -53,10 +53,10 @@
 	<core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
 	<f:if condition="{switchUserMode}">
 		<f:then>
-			{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.exit') -> f:format.raw()}
+			{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.exit') -> f:format.raw()}
 		</f:then>
 		<f:else>
-			{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.logout') -> f:format.raw()}
+			{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout') -> f:format.raw()}
 		</f:else>
 	</f:if>
 </a>
