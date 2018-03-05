@@ -284,7 +284,8 @@ class RootlineUtility
 
         // @todo Remove this special interpretation of relations by consequently using RelationHandler
         foreach ($GLOBALS['TCA']['pages']['columns'] as $column => $configuration) {
-            if ($this->columnHasRelationToResolve($configuration)) {
+            // Ensure that only fields defined in $rootlineFields (and "addRootLineFields") are actually evaluated
+            if (array_key_exists($column, $pageRecord) && $this->columnHasRelationToResolve($configuration)) {
                 $configuration = $configuration['config'];
                 if ($configuration['MM']) {
                     /** @var $loadDBGroup \TYPO3\CMS\Core\Database\RelationHandler */
