@@ -33,4 +33,4 @@ Impact
 
 It's now possible to set a reply-to address for notification mails from TYPO3. Extensions can also use this system reply-to address by calling :php:`MailUtility::getSystemReplyTo()`.
 
-.. index:: LocalConfiguration, NotScanned
+.. index:: LocalConfiguration, PHP-API

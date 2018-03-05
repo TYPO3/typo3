@@ -74,6 +74,11 @@ return [
             'Breaking-82639-LoggingActivatedForAuthenticationAndServiceClasses.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'doNotCheckReferer\']' => [
+        'restFiles' => [
+            'Important-83768-RemoveReferrerCheck.rst',
+        ],
+    ],
 
     // Hooks
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_befunc.php\'][\'getFlexFormDSClass\']' => [

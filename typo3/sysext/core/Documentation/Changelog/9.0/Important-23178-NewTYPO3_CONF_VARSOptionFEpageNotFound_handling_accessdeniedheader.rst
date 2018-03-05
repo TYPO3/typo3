@@ -16,4 +16,4 @@ a new option :php:`pageNotFound_handling_accessdeniedheader` has been introduced
 The option :php:`$GLOBALS['FE']['pageNotFound_handling_accessdeniedheader']` allows to configure the
 header which defaults to :php:`HTTP/1.0 403 Access denied`.
 
-.. index:: Frontend, LocalConfiguration, NotScanned
+.. index:: Frontend, LocalConfiguration

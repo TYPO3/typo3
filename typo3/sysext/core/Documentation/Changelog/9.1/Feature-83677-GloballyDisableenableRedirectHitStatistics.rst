@@ -30,4 +30,4 @@ Redirect hit counting can be enabled by setting
 
 Be aware that every hit on a redirect will result in an additional SQL `UPDATE` query.
 
-.. index:: Database, Frontend, LocalConfiguration, NotScanned
+.. index:: Database, Frontend, LocalConfiguration

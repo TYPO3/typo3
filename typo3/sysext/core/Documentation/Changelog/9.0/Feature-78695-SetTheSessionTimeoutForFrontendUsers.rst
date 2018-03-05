@@ -16,4 +16,4 @@ for backend user sessions.
 Setting the option :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['sessionTimeout']` is now possible
 (via the Install Tool) to configure a global timeout for frontend sessions on the server-side.
 
-.. index:: Frontend, LocalConfiguration, NotScanned
+.. index:: Frontend, LocalConfiguration

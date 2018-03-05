@@ -12,4 +12,4 @@ Description
 A reference to a previously deleted task is now kept in the database with a :sql:`deleted=1` flag,
 in order to check historic calls on scheduler tasks.
 
-.. index:: Backend, NotScanned, Database, ext:scheduler
+.. index:: Backend, Database, ext:scheduler

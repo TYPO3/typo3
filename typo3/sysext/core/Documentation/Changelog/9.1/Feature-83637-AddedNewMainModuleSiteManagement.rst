@@ -39,4 +39,4 @@ To add a new module to the Site main module, register a module within an extensi
         ]
     );
 
-.. index:: Backend, NotScanned
+.. index:: Backend

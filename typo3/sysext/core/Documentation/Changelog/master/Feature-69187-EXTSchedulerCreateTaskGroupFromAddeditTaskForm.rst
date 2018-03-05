@@ -17,4 +17,4 @@ Impact
 
 It is no longer needed to switch to the list module and create a new task group on page 0 before editing or creating a scheduler task.
 
-.. index:: Backend, NotScanned
+.. index:: Backend, ext:scheduler

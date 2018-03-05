@@ -17,4 +17,4 @@ Impact
 
 Validation may be used by adding the annotation :php`@validate Url`.
 
-.. index:: PHP-API, NotScanned, ext:extbase
+.. index:: PHP-API, ext:extbase

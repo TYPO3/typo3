@@ -19,4 +19,4 @@ Impact
 
 Extension developers can use this hook to e.g. hide custom credentials in the Configuration module.
 
-.. index:: NotScanned
+.. index:: PHP-API

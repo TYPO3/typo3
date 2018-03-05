@@ -22,4 +22,4 @@ Searching for the term "elements+basic" will find the following results:
 * elements rte basic
 * basic rte elements
 
-.. index:: Backend, TCA, NotScanned
+.. index:: Backend, TCA

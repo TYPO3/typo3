@@ -24,4 +24,4 @@ Impact
 
 When inside the list module, page translations are always shown as first table listing on top of the module.
 
-.. index:: Backend, NotScanned
+.. index:: Backend

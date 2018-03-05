@@ -33,4 +33,4 @@ Migration
 Use SSL / HTTPS for the installation and the Notification API will work just like before.
 
 
-.. index:: Backend, JavaScript, NotScanned, ext:backend
+.. index:: Backend, JavaScript

@@ -74,4 +74,4 @@ You can also set the time limit in seconds:
 Of course you will not want to run this manually in reality. Instead, the console command should be triggered by a cron
 job or scheduled task and run at a regular interval.
 
-.. index:: PHP-API, NotScanned
+.. index:: PHP-API

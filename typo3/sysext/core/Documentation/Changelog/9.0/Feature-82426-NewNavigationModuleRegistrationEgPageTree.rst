@@ -42,4 +42,4 @@ Should be changed to new configuration:
     );
 
 
-.. index:: Backend, JavaScript, PHP-API, NotScanned
+.. index:: Backend, JavaScript, PHP-API

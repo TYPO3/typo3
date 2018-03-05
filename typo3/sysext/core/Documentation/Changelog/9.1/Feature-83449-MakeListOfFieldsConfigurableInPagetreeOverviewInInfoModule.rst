@@ -39,4 +39,4 @@ table name with `table_` and adding it to the list of fields.
 The string `###ALL_TABLES###` is replaced with a list of all table names an editor has access to.
 
 
-.. index:: Backend, NotScanned
+.. index:: Backend

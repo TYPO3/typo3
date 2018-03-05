@@ -24,4 +24,4 @@ npm should not be used to ensure installing the correct versions.
 
 .. _yarn: https://yarnpkg.com/lang/en/
 
-.. index:: JavaScript, NotScanned
+.. index:: JavaScript

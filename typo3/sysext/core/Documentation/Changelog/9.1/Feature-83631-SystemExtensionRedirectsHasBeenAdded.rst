@@ -47,4 +47,4 @@ The default settings of TYPO3s cache backend allow for about 65.000 redirects.
 If you have more (or in the future might have more) than 65.000 redirects it is advised to switch to a different cache
 backend like redis.
 
-.. index:: Backend, Frontend, NotScanned
+.. index:: Backend, Frontend

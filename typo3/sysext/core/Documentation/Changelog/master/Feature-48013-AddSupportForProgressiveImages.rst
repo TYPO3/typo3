@@ -22,4 +22,4 @@ Possible values by the time of writing are:
 * Plane
 * Partition
 
-.. index:: Frontend, Backend, NotScanned
+.. index:: Frontend, Backend

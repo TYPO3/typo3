@@ -26,4 +26,4 @@ But a get parameter like tracking[blue] will not be kept.
 
 The value constraint in round brackets works in the same way as for not nested GET parameters.
 
-.. index:: Frontend, TypoScript, NotScanned
+.. index:: Frontend, TypoScript

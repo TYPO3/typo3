@@ -42,4 +42,4 @@ TYPO3 core developers as well as extension developers can develop functions whic
 when a backend user successfully logs in to the backend of TYPO3.
 A typical use case would be any type of notification service.
 
-.. index:: NotScanned
+.. index:: PHP-API, LocalConfiguration

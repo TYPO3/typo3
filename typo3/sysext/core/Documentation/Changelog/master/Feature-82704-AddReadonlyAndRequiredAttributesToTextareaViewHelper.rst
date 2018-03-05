@@ -27,4 +27,4 @@ Example:
 	<!-- Set readonly attribute -->
 	<f:form.textarea name="foobar" readonly="1" />
 
-.. index:: Fluid, NotScanned
+.. index:: Fluid

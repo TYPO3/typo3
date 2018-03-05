@@ -25,4 +25,4 @@ Impact
 
 Arrays can be filtered recursive using the new method.
 
-.. index:: PHP-API, NotScanned
+.. index:: PHP-API

@@ -23,4 +23,4 @@ permissions or configuration using TsConfig.
 Instead of looking into the source code of the browser, it is now possible to display those name by enabling the debug
 mode for the backend.
 
-.. index:: Backend, NotScanned
+.. index:: Backend

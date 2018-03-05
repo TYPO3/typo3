@@ -21,10 +21,12 @@ The protected method :php:`linkPage()` returns an array with the "uri" and "targ
 To build an ATag outside of the fluid template, you have to use the introduced wrapper :php:`linkPageATagWrap()`.
 
 Using the keys in your fluid template:
+
 .. code-block:: html
-<div class="path">{row.path}</div>
-<div class="path-title">{row.pathTitle}</div>
-<div class="path-uri">{row.pathUri}</div>
+
+    <div class="path">{row.path}</div>
+    <div class="path-title">{row.pathTitle}</div>
+    <div class="path-uri">{row.pathUri}</div>
 
 
-.. index:: Frontend, ext:indexed_search, NotScanned
+.. index:: Frontend, ext:indexed_search
