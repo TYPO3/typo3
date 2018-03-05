@@ -818,7 +818,7 @@ abstract public class AbstractCoreSpec {
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                "kill `cat phpserver.pid`\n" +
+                "kill -9 `cat phpserver.pid`\n" +
                 "kill `cat chromedriver.pid`\n"
             );
     }
