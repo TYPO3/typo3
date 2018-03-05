@@ -109,7 +109,6 @@ class FileSystemNavigationFrameController
         if (!empty($this->scopeData)) {
             $this->foldertree = GeneralUtility::makeInstance($this->scopeData['class']);
             $this->foldertree->thisScript = $this->scopeData['script'];
-            $this->foldertree->ext_noTempRecyclerDirs = $this->scopeData['ext_noTempRecyclerDirs'];
             if ($this->foldertree instanceof ElementBrowserFolderTreeView) {
                 // create a fake provider to pass link data along properly
                 $linkParamProvider = GeneralUtility::makeInstance(

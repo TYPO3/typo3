@@ -1780,4 +1780,11 @@ return [
             'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView->ext_isLinkable' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84145-DeprecateExt_isLinkable.rst'
+        ],
+    ]
 ];

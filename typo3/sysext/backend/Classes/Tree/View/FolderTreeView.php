@@ -63,12 +63,6 @@ class FolderTreeView extends AbstractTreeView
     protected $iconFactory;
 
     /**
-     * If file-drag mode is set, temp and recycler folders are filtered out.
-     * @var bool
-     */
-    public $ext_noTempRecyclerDirs = false;
-
-    /**
      * override to not use a title attribute
      * @var string
      */
@@ -136,7 +130,6 @@ class FolderTreeView extends AbstractTreeView
             $this->scope = [
                 'class' => static::class,
                 'script' => $this->thisScript,
-                'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs
             ];
         }
 

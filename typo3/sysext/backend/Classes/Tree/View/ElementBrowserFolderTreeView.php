@@ -62,7 +62,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView
         $theFolderIcon = '';
 
         // Wrap icon in link (in ElementBrowser only the "titlelink" is used).
-        if ($this->ext_IconMode === 'titlelink' && $this->ext_isLinkable($folderObject)) {
+        if ($this->ext_IconMode === 'titlelink') {
             $parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()]));
             $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim($parameters, '&')) . ');';
             $theFolderIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
@@ -81,23 +81,21 @@ class ElementBrowserFolderTreeView extends FolderTreeView
      */
     public function wrapTitle($title, $folderObject, $bank = 0)
     {
-        if ($this->ext_isLinkable($folderObject)) {
-            $parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()]));
-            return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim($parameters, '&'))) . ');">' . $title . '</a>';
-        }
-        return '<span class="text-muted">' . $title . '</span>';
+        $parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()]));
+        return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim($parameters, '&'))) . ');">' . $title . '</a>';
     }
 
     /**
      * Returns TRUE if the input "record" contains a folder which can be linked.
      *
      * @param Folder $folderObject Object with information about the folder element. Contains keys like title, uid, path, _title
-     * @return bool TRUE is returned if the path is found in the web-part of the server and is NOT a recycler or temp folder AND if ->ext_noTempRecyclerDirs is not set.
+     * @return bool TRUE
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function ext_isLinkable(Folder $folderObject)
     {
-        $identifier = $folderObject->getIdentifier();
-        return !$this->ext_noTempRecyclerDirs || substr($identifier, -7) !== '_temp_/' && substr($identifier, -11) !== '_recycler_/';
+        trigger_error('This method is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        return true;
     }
 
     /**
@@ -148,7 +146,6 @@ class ElementBrowserFolderTreeView extends FolderTreeView
             $this->scope = [
                 'class' => static::class,
                 'script' => $this->thisScript,
-                'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs,
                 'browser' => $this->linkParameterProvider->getUrlParameters([]),
             ];
         }
