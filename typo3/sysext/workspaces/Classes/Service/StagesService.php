@@ -15,8 +15,10 @@ namespace TYPO3\CMS\Workspaces\Service;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
@@ -25,7 +27,7 @@ use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
 /**
  * Stages service
  */
-class StagesService implements \TYPO3\CMS\Core\SingletonInterface
+class StagesService implements SingletonInterface
 {
     const TABLE_STAGE = 'sys_workspace_stage';
     // if a record is in the "ready to publish" stage STAGE_PUBLISH_ID the nextStage is STAGE_PUBLISH_EXECUTE_ID, this id wont be saved at any time in db
@@ -560,17 +562,15 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
     private function fetchGroups($grList, $idList = '')
     {
         $cacheKey = md5($grList . $idList);
-        $groupList = [];
         if (isset($this->fetchGroupsCache[$cacheKey])) {
-            $groupList = $this->fetchGroupsCache[$cacheKey];
-        } else {
-            if ($idList === '') {
-                // we're at the beginning of the recursion and therefore we need to reset the userGroups member
-                $this->userGroups = [];
-            }
-            $groupList = $this->fetchGroupsRecursive($grList);
-            $this->fetchGroupsCache[$cacheKey] = $groupList;
+            return $this->fetchGroupsCache[$cacheKey];
         }
+        if ($idList === '') {
+            // we're at the beginning of the recursion and therefore we need to reset the userGroups member
+            $this->userGroups = [];
+        }
+        $groupList = $this->fetchGroupsRecursive($grList);
+        $this->fetchGroupsCache[$cacheKey] = $groupList;
         return $groupList;
     }
 
@@ -743,13 +743,11 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
     protected function isStageAllowedForUser($stageId)
     {
         $cacheKey = $this->getWorkspaceId() . '_' . $stageId;
-        $isAllowed = false;
         if (isset($this->workspaceStageAllowedCache[$cacheKey])) {
-            $isAllowed = $this->workspaceStageAllowedCache[$cacheKey];
-        } else {
-            $isAllowed = $GLOBALS['BE_USER']->workspaceCheckStageForCurrent($stageId);
-            $this->workspaceStageAllowedCache[$cacheKey] = $isAllowed;
+            return $this->workspaceStageAllowedCache[$cacheKey];
         }
+        $isAllowed = $GLOBALS['BE_USER']->workspaceCheckStageForCurrent($stageId);
+        $this->workspaceStageAllowedCache[$cacheKey] = $isAllowed;
         return $isAllowed;
     }
 
@@ -784,7 +782,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser()
     {

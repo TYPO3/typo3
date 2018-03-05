@@ -17,11 +17,13 @@ namespace TYPO3\CMS\Workspaces\Hook;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -29,7 +31,9 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Workspaces\DataHandler\CommandMap;
 use TYPO3\CMS\Workspaces\Service\StagesService;
+use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Contains some parts for staging, versioning and workspaces
@@ -54,7 +58,7 @@ class DataHandlerHook
     protected $remappedIds = [];
 
     /**
-     * @var \TYPO3\CMS\Workspaces\Service\WorkspaceService
+     * @var WorkspaceService
      */
     protected $workspaceService;
 
@@ -101,7 +105,7 @@ class DataHandlerHook
                         $table,
                         $id,
                         $value['swapWith'],
-                        $value['swapIntoWS'],
+                        (bool)$value['swapIntoWS'],
                         $dataHandler,
                         $comment,
                         true,
@@ -285,14 +289,14 @@ class DataHandlerHook
      * @param string $table
      * @param string $id
      * @param string $value
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler
+     * @param DataHandler $dataHandler
      */
-    public function processCmdmap_postProcess($command, $table, $id, $value, \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler)
+    public function processCmdmap_postProcess($command, $table, $id, $value, DataHandler $dataHandler)
     {
         if ($command === 'delete') {
             if ($table === StagesService::TABLE_STAGE) {
                 $this->resetStageOfElements($id);
-            } elseif ($table === \TYPO3\CMS\Workspaces\Service\WorkspaceService::TABLE_WORKSPACE) {
+            } elseif ($table === WorkspaceService::TABLE_WORKSPACE) {
                 $this->flushWorkspaceElements($id);
             }
         }
@@ -480,7 +484,7 @@ class DataHandlerHook
         }
 
         // Get the new stage title
-        $stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
+        $stageService = GeneralUtility::makeInstance(StagesService::class);
         $newStage = $stageService->getStageTitle((int)$stageId);
         if (empty($notificationAlternativeRecipients)) {
             // Compile list of recipients:
@@ -593,7 +597,7 @@ class DataHandlerHook
                 '###USER_USERNAME###' => $dataHandler->BE_USER->user['username']
             ];
             // add marker for preview links if workspace extension is loaded
-            $this->workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+            $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
             // only generate the link if the marker is in the template - prevents database from getting to much entries
             if (GeneralUtility::isFirstPartOfStr($emailConfig['message'], 'LLL:')) {
                 $tempEmailMessage = $this->getLanguageService()->sL($emailConfig['message']);
@@ -634,8 +638,7 @@ class DataHandlerHook
                     if (!isset($languageObjects[$recipientLanguage])) {
                         // a LANG object in this language hasn't been
                         // instantiated yet, so this is done here
-                        /** @var $languageObject \TYPO3\CMS\Core\Localization\LanguageService */
-                        $languageObject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
+                        $languageObject = GeneralUtility::makeInstance(LanguageService::class);
                         $languageObject->init($recipientLanguage);
                         $languageObjects[$recipientLanguage] = $languageObject;
                     } else {
@@ -777,7 +780,7 @@ class DataHandlerHook
      * @param bool $notificationEmailInfo Accumulate state changes in memory for compiled notification email?
      * @param array $notificationAlternativeRecipients comma separated list of recipients to notificate instead of normal be_users
      */
-    protected function version_swap($table, $id, $swapWith, $swapIntoWS = 0, DataHandler $dataHandler, $comment = '', $notificationEmailInfo = false, $notificationAlternativeRecipients = [])
+    protected function version_swap($table, $id, $swapWith, $swapIntoWS = false, DataHandler $dataHandler, $comment = '', $notificationEmailInfo = false, $notificationAlternativeRecipients = [])
     {
 
         // Check prerequisites before start swapping
@@ -1073,11 +1076,11 @@ class DataHandlerHook
     /**
      * Writes remapped foreign field (IRRE).
      *
-     * @param \TYPO3\CMS\Core\Database\RelationHandler $dbAnalysis Instance that holds the sorting order of child records
+     * @param RelationHandler $dbAnalysis Instance that holds the sorting order of child records
      * @param array $configuration The TCA field configuration
      * @param int $parentId The uid of the parent record
      */
-    public function writeRemappedForeignField(\TYPO3\CMS\Core\Database\RelationHandler $dbAnalysis, array $configuration, $parentId)
+    public function writeRemappedForeignField(RelationHandler $dbAnalysis, array $configuration, $parentId)
     {
         foreach ($dbAnalysis->itemArray as &$item) {
             if (isset($this->remappedIds[$item['table']][$item['id']])) {
@@ -1319,11 +1322,11 @@ class DataHandlerHook
     }
 
     /**
-     * @return \TYPO3\CMS\Core\DataHandling\DataHandler
+     * @return DataHandler
      */
     protected function getDataHandler()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        return GeneralUtility::makeInstance(DataHandler::class);
     }
 
     /**
@@ -1333,9 +1336,9 @@ class DataHandlerHook
      */
     protected function flushWorkspaceCacheEntriesByWorkspaceId($workspaceId)
     {
-        $workspacesCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('workspaces_cache');
+        $workspacesCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('workspaces_cache');
         $workspacesCache->flushByTag($workspaceId);
-        $workspacesCache->flushByTag(\TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES);
+        $workspacesCache->flushByTag(WorkspaceService::SELECT_ALL_WORKSPACES);
     }
 
     /*******************************
@@ -1658,12 +1661,12 @@ class DataHandlerHook
      * Gets an instance of the command map helper.
      *
      * @param DataHandler $dataHandler DataHandler object
-     * @return \TYPO3\CMS\Workspaces\DataHandler\CommandMap
+     * @return CommandMap
      */
     public function getCommandMap(DataHandler $dataHandler)
     {
         return GeneralUtility::makeInstance(
-            \TYPO3\CMS\Workspaces\DataHandler\CommandMap::class,
+            CommandMap::class,
             $this,
             $dataHandler,
             $dataHandler->cmdmap,
@@ -1695,11 +1698,11 @@ class DataHandlerHook
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Database\RelationHandler
+     * @return RelationHandler
      */
     protected function createRelationHandlerInstance()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+        return GeneralUtility::makeInstance(RelationHandler::class);
     }
 
     /**

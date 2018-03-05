@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Workspaces\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Database record class
  */
@@ -39,11 +42,11 @@ class DatabaseRecord
      *
      * @param string $table Name of the database table
      * @param int $uid Id of the datbase record row
-     * @return \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord
+     * @return DatabaseRecord
      */
     public static function create($table, $uid)
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::class, $table, $uid);
+        return GeneralUtility::makeInstance(DatabaseRecord::class, $table, $uid);
     }
 
     /**
@@ -51,11 +54,11 @@ class DatabaseRecord
      *
      * @param string $table Name of the database table
      * @param array $row The relevant database record row
-     * @return \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord
+     * @return DatabaseRecord
      */
     public static function createFromArray($table, array $row)
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::class, $table, $row['uid'], $row);
+        return GeneralUtility::makeInstance(DatabaseRecord::class, $table, $row['uid'], $row);
     }
 
     /**
@@ -149,7 +152,7 @@ class DatabaseRecord
     protected function loadRow()
     {
         if ($this->row === null) {
-            $this->row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($this->getTable(), $this->getUid());
+            $this->row = BackendUtility::getRecord($this->getTable(), $this->getUid());
         }
     }
 }

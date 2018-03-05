@@ -15,13 +15,17 @@ namespace TYPO3\CMS\Workspaces\Service;
  */
 
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
+use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service for history
  */
-class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
+class HistoryService implements SingletonInterface
 {
     /**
      * @var array
@@ -34,7 +38,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
     protected $historyEntries = [];
 
     /**
-     * @var \TYPO3\CMS\Core\Utility\DiffUtility
+     * @var DiffUtility
      */
     protected $differencesObject;
 
@@ -82,7 +86,6 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
             $differences = $this->getDifferences($entry);
         }
 
-        /** @var Avatar $avatar */
         $avatar = GeneralUtility::makeInstance(Avatar::class);
         $beUserRecord = BackendUtility::getRecord('be_users', $entry['userid']);
 
@@ -151,8 +154,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
     protected function getHistoryEntries($table, $id)
     {
         if (!isset($this->historyEntries[$table][$id])) {
-            /** @var $historyObject \TYPO3\CMS\Backend\History\RecordHistory */
-            $historyObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\History\RecordHistory::class);
+            $historyObject = GeneralUtility::makeInstance(RecordHistory::class);
             $this->historyEntries[$table][$id] = $historyObject->getHistoryDataForRecord($table, $id);
         }
         return $this->historyEntries[$table][$id];
@@ -161,19 +163,19 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Gets an instance of the record differences utility.
      *
-     * @return \TYPO3\CMS\Core\Utility\DiffUtility
+     * @return DiffUtility
      */
     protected function getDifferencesObject()
     {
         if (!isset($this->differencesObject)) {
-            $this->differencesObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
+            $this->differencesObject = GeneralUtility::makeInstance(DiffUtility::class);
             $this->differencesObject->stripTags = false;
         }
         return $this->differencesObject;
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
     protected function getLanguageService()
     {

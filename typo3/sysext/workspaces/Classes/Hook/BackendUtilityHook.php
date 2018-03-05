@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Workspaces\Hook;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -26,18 +25,8 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 /**
  * Befunc service
  */
-class BackendUtilityHook implements SingletonInterface
+class BackendUtilityHook
 {
-    /**
-     * Gets a singleton instance of this object.
-     *
-     * @return BackendUtilityHook
-     */
-    public static function getInstance()
-    {
-        return GeneralUtility::makeInstance(__CLASS__);
-    }
-
     /**
      * Hooks into the \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick and redirects to the workspace preview
      * only if we're in a workspace and if the frontend-preview is disabled.

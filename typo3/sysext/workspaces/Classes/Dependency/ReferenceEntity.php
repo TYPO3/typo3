@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Workspaces\Dependency;
 class ReferenceEntity
 {
     /**
-     * @var \TYPO3\CMS\Workspaces\Dependency\ElementEntity
+     * @var ElementEntity
      */
     protected $element;
 
@@ -32,10 +32,10 @@ class ReferenceEntity
     /**
      * Creates this object.
      *
-     * @param \TYPO3\CMS\Workspaces\Dependency\ElementEntity $element
+     * @param ElementEntity $element
      * @param string $field
      */
-    public function __construct(\TYPO3\CMS\Workspaces\Dependency\ElementEntity $element, $field)
+    public function __construct(ElementEntity $element, $field)
     {
         $this->element = $element;
         $this->field = $field;
@@ -44,7 +44,7 @@ class ReferenceEntity
     /**
      * Gets the elements.
      *
-     * @return \TYPO3\CMS\Workspaces\Dependency\ElementEntity
+     * @return ElementEntity
      */
     public function getElement()
     {

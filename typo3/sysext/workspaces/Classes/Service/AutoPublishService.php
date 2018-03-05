@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Workspaces\Service;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -79,7 +80,7 @@ class AutoPublishService
             )
             ->execute();
 
-        $workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+        $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
         while ($rec = $result->fetch()) {
             // First, clear start/end time so it doesn't get select once again:
             $fieldArray = $rec['publish_time'] != 0
@@ -98,7 +99,7 @@ class AutoPublishService
             $cmd = $workspaceService->getCmdArrayForPublishWS($rec['uid'], $rec['swap_modes'] == 1);
             // $rec['swap_modes']==1 means that auto-publishing will swap versions, not just publish and empty the workspace.
             // Execute CMD array:
-            $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+            $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->start([], $cmd);
             $tce->process_cmdmap();
         }

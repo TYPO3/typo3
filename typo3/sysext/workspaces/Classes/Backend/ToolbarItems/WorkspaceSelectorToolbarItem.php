@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -78,8 +79,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
         $backendUser = $this->getBackendUser();
         $view = $this->getFluidTemplateObject('DropDown.html');
         $activeWorkspace = (int)$backendUser->workspace;
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($this->availableWorkspaces as $workspaceId => $label) {
             $workspaceId = (int)$workspaceId;
             $item = [

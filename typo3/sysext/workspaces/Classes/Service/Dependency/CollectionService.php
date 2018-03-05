@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Workspaces\Service\Dependency;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Dependency;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
@@ -21,7 +22,7 @@ use TYPO3\CMS\Workspaces\Service\GridDataService;
 /**
  * Service to collect dependent elements.
  */
-class CollectionService implements \TYPO3\CMS\Core\SingletonInterface
+class CollectionService implements SingletonInterface
 {
     /**
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
@@ -54,7 +55,7 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface
     public function getDependencyResolver()
     {
         if (!isset($this->dependencyResolver)) {
-            $this->dependencyResolver = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Dependency\DependencyResolver::class);
+            $this->dependencyResolver = GeneralUtility::makeInstance(Dependency\DependencyResolver::class);
             $this->dependencyResolver->setOuterMostParentsRequireReferences(true);
             $this->dependencyResolver->setWorkspace($this->getWorkspace());
 
@@ -87,7 +88,7 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface
     protected function getDependencyCallback($method, array $targetArguments = [])
     {
         return GeneralUtility::makeInstance(
-            \TYPO3\CMS\Workspaces\Dependency\EventCallback::class,
+            Dependency\EventCallback::class,
             $this->getElementEntityProcessor(),
             $method,
             $targetArguments

@@ -23,11 +23,13 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+use TYPO3\CMS\Core\Database\QueryView;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Workspaces\Hook\PreviewHook;
 
 /**
  * Workspace service
@@ -66,7 +68,6 @@ class WorkspaceService implements SingletonInterface
             $availableWorkspaces[self::LIVE_WORKSPACE_ID] = self::getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
         }
         // add custom workspaces (selecting all, filtering by BE_USER check):
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
         $queryBuilder->getRestrictions()
             ->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
@@ -152,7 +153,7 @@ class WorkspaceService implements SingletonInterface
             if ($wsid > 0) {
                 $workspaceRec = BackendUtility::getRecord('sys_workspace', $wsid);
                 if ($workspaceRec['publish_access'] & 1) {
-                    $stage = \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_ID;
+                    $stage = StagesService::STAGE_PUBLISH_ID;
                 }
             }
             // Select all versions to swap:
@@ -522,8 +523,7 @@ class WorkspaceService implements SingletonInterface
         // Reusing existing functionality with the drawback that
         // mount points are not covered yet
         $perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
-        /** @var $searchObj \TYPO3\CMS\Core\Database\QueryView */
-        $searchObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryView::class);
+        $searchObj = GeneralUtility::makeInstance(QueryView::class);
         if ($pageId > 0) {
             $pageList = $searchObj->getTreeList($pageId, $recursionLevel, 0, $perms_clause);
         } else {
@@ -835,7 +835,7 @@ class WorkspaceService implements SingletonInterface
      */
     public function generateWorkspacePreviewLink($uid)
     {
-        $previewObject = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Hook\PreviewHook::class);
+        $previewObject = GeneralUtility::makeInstance(PreviewHook::class);
         $timeToLiveHours = $previewObject->getPreviewLinkLifetime();
         $previewKeyword = $previewObject->compilePreviewKeyword($GLOBALS['BE_USER']->user['uid'], $timeToLiveHours * 3600, $this->getCurrentWorkspace());
         $linkParams = [
@@ -1105,14 +1105,6 @@ class WorkspaceService implements SingletonInterface
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-    }
-
-    /**
      * Get the available languages of a certain page
      *
      * @param int $pageId
@@ -1121,7 +1113,6 @@ class WorkspaceService implements SingletonInterface
     public function getAvailableLanguages($pageId)
     {
         $languageOptions = [];
-        /** @var \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider $translationConfigurationProvider */
         $translationConfigurationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $systemLanguages = $translationConfigurationProvider->getSystemLanguages($pageId);
 

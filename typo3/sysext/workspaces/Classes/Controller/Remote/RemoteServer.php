@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
 use TYPO3\CMS\Workspaces\Service\HistoryService;
@@ -119,7 +118,6 @@ class RemoteServer extends AbstractHandler
         $diffReturnArray = [];
         $liveReturnArray = [];
         $diffUtility = $this->getDifferenceHandler();
-        /** @var $parseObj RteHtmlParser */
         $parseObj = GeneralUtility::makeInstance(RteHtmlParser::class);
         $liveRecord = BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
         $versionRecord = BackendUtility::getRecord($parameter->table, $parameter->uid);
@@ -503,13 +501,5 @@ class RemoteServer extends AbstractHandler
             $this->differenceHandler->stripTags = false;
         }
         return $this->differenceHandler;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 }

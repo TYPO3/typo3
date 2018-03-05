@@ -145,7 +145,6 @@ class ReviewController extends ActionController
         $backendUser = $this->getBackendUser();
         $moduleTemplate = $this->view->getModuleTemplate();
 
-        /** @var WorkspaceService $wsService */
         $wsService = GeneralUtility::makeInstance(WorkspaceService::class);
         if (GeneralUtility::_GP('id')) {
             $pageRecord = BackendUtility::getRecord('pages', GeneralUtility::_GP('id'));
@@ -324,7 +323,6 @@ class ReviewController extends ActionController
             $this->uriBuilder->reset()->uriFor('fullIndex');
             $parameters = array_merge($parameters, $this->uriBuilder->getArguments());
         }
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', $parameters);
     }

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Workspaces\Controller\Remote;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Workspaces\Service\WorkspaceService;
+
 /**
  * Class MassActionHandler
  * Class encapsulates all actions which are triggered for all elements within the current workspace.
@@ -41,7 +43,7 @@ class MassActionHandler extends AbstractHandler
         $currentWorkspace = $this->getCurrentWorkspace();
         $massActionsEnabled = $GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.enableMassActions') !== '0';
         // in case we're working within "All Workspaces" we can't provide Mass Actions
-        if ($currentWorkspace != \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES && $massActionsEnabled) {
+        if ($currentWorkspace != WorkspaceService::SELECT_ALL_WORKSPACES && $massActionsEnabled) {
             $publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess($currentWorkspace);
             if ($publishAccess && !($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1)) {
                 $actions[] = ['action' => 'publish', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_publish')];
@@ -49,7 +51,7 @@ class MassActionHandler extends AbstractHandler
                     $actions[] = ['action' => 'swap', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_swap')];
                 }
             }
-            if ($currentWorkspace !== \TYPO3\CMS\Workspaces\Service\WorkspaceService::LIVE_WORKSPACE_ID) {
+            if ($currentWorkspace !== WorkspaceService::LIVE_WORKSPACE_ID) {
                 $actions[] = ['action' => 'discard', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_discard')];
             }
         }

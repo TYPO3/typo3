@@ -15,8 +15,12 @@ namespace TYPO3\CMS\Workspaces\Controller\Remote;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
 use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
@@ -216,7 +220,7 @@ class ActionHandler extends AbstractHandler
      */
     public function saveLanguageSelection($language)
     {
-        if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($language) === false && $language !== 'all') {
+        if (MathUtility::canBeInterpretedAsInteger($language) === false && $language !== 'all') {
             $language = 'all';
         }
         $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['language'] = $language;
@@ -362,7 +366,7 @@ class ActionHandler extends AbstractHandler
         }
 
         if ($stageRecord->hasPreselection() && !$stageRecord->isPreselectionChangeable()) {
-            $preselectedBackendUsers = $this->getStageService()->getBackendUsers(
+            $preselectedBackendUsers = $this->stageService->getBackendUsers(
                 implode(',', $this->stageService->getPreselectedRecipients($stageRecord))
             );
 
@@ -411,12 +415,9 @@ class ActionHandler extends AbstractHandler
     public function discardStagesFromPage($pageId)
     {
         $cmdMapArray = [];
-        /** @var $workspaceService WorkspaceService */
         $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-        /** @var $stageService StagesService */
-        $stageService = GeneralUtility::makeInstance(StagesService::class);
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
-            $stageService->getWorkspaceId(),
+            $this->stageService->getWorkspaceId(),
             $filter = 1,
             $stage = -99,
             $pageId,
@@ -453,7 +454,7 @@ class ActionHandler extends AbstractHandler
         $cmdMapArray = [];
         $comment = $parameters->comments;
         $stageId = $parameters->stageId;
-        if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId) === false) {
+        if (MathUtility::canBeInterpretedAsInteger($stageId) === false) {
             throw new \InvalidArgumentException('Missing "stageId" in $parameters array.', 1319488194);
         }
         if (!is_object($parameters->affects) || empty($parameters->affects)) {
@@ -500,8 +501,7 @@ class ActionHandler extends AbstractHandler
             return $result;
         }
 
-        /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
-        $dataHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmdMapArray);
         $dataHandler->process_cmdmap();
 
@@ -694,7 +694,7 @@ class ActionHandler extends AbstractHandler
         }
 
         $result = [];
-        $allRecipients = $this->getStageService()->getResponsibleBeUser($stageRecord);
+        $allRecipients = $this->stageService->getResponsibleBeUser($stageRecord);
         $preselectedRecipients = $this->stageService->getPreselectedRecipients($stageRecord);
         $isPreselectionChangeable = $stageRecord->isPreselectionChangeable();
 
@@ -727,21 +727,8 @@ class ActionHandler extends AbstractHandler
      */
     protected function getDefaultCommentOfStage($stage)
     {
-        $result = $this->getStageService()->getPropertyOfCurrentWorkspaceStage($stage, 'default_mailcomment');
+        $result = $this->stageService->getPropertyOfCurrentWorkspaceStage($stage, 'default_mailcomment');
         return $result;
-    }
-
-    /**
-     * Gets an instance of the Stage service.
-     *
-     * @return StagesService
-     */
-    protected function getStageService()
-    {
-        if (!isset($this->stageService)) {
-            $this->stageService = GeneralUtility::makeInstance(StagesService::class);
-        }
-        return $this->stageService;
     }
 
     /**
@@ -761,7 +748,7 @@ class ActionHandler extends AbstractHandler
             $recursionLevel = 0,
             $selectionType = 'tables_modify'
         );
-        list($currentStage, $previousStage) = $this->getStageService()->getPreviousStageForElementCollection($workspaceItemsArray);
+        list($currentStage, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
@@ -796,7 +783,7 @@ class ActionHandler extends AbstractHandler
             $recursionLevel = 0,
             $selectionType = 'tables_modify'
         );
-        list($currentStage, $nextStage) = $this->getStageService()->getNextStageForElementCollection($workspaceItemsArray);
+        list($currentStage, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
@@ -823,9 +810,7 @@ class ActionHandler extends AbstractHandler
      */
     public function updateStageChangeButtons($id)
     {
-        /** @var StagesService $stageService */
         $stageService = GeneralUtility::makeInstance(StagesService::class);
-        /** @var WorkspaceService $workspaceService */
         $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
         // fetch the next and previous stage
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
@@ -839,7 +824,6 @@ class ActionHandler extends AbstractHandler
         list(, $nextStage) = $stageService->getNextStageForElementCollection($workspaceItemsArray);
         list(, $previousStage) = $stageService->getPreviousStageForElementCollection($workspaceItemsArray);
 
-        /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $extensionPath = ExtensionManagementUtility::extPath('workspaces');
         $view->setPartialRootPaths(['default' => $extensionPath . 'Resources/Private/Partials']);
@@ -862,7 +846,7 @@ class ActionHandler extends AbstractHandler
     /**
      * @param int $workspaceId
      * @return int Id of the original workspace
-     * @throws \TYPO3\CMS\Core\Exception
+     * @throws Exception
      */
     protected function setTemporaryWorkspace($workspaceId)
     {
@@ -871,7 +855,7 @@ class ActionHandler extends AbstractHandler
 
         if ($currentWorkspace !== $workspaceId) {
             if (!$this->getBackendUser()->setTemporaryWorkspace($workspaceId)) {
-                throw new \TYPO3\CMS\Core\Exception(
+                throw new Exception(
                     'Cannot set temporary workspace to "' . $workspaceId . '"',
                     1371484524
                 );
@@ -882,7 +866,7 @@ class ActionHandler extends AbstractHandler
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser()
     {

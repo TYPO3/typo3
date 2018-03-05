@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Workspaces\Dependency;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -54,7 +55,7 @@ class ElementEntity
     protected $record;
 
     /**
-     * @var \TYPO3\CMS\Workspaces\Dependency\DependencyResolver
+     * @var DependencyResolver
      */
     protected $dependency;
 
@@ -74,7 +75,7 @@ class ElementEntity
     protected $traversingParents = false;
 
     /**
-     * @var \TYPO3\CMS\Workspaces\Dependency\ElementEntity
+     * @var ElementEntity
      */
     protected $outerMostParent;
 
@@ -89,9 +90,9 @@ class ElementEntity
      * @param string $table
      * @param int $id
      * @param array $data (optional)
-     * @param \TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency
+     * @param DependencyResolver $dependency
      */
-    public function __construct($table, $id, array $data = [], \TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency)
+    public function __construct($table, $id, array $data = [], DependencyResolver $dependency)
     {
         $this->table = $table;
         $this->id = (int)$id;
@@ -206,7 +207,7 @@ class ElementEntity
     /**
      * Gets the parent dependency object.
      *
-     * @return \TYPO3\CMS\Workspaces\Dependency\DependencyResolver
+     * @return DependencyResolver
      */
     public function getDependency()
     {
@@ -361,10 +362,10 @@ class ElementEntity
                 $this->outerMostParent = $this;
             } else {
                 $this->outerMostParent = false;
-                /** @var $parent \TYPO3\CMS\Workspaces\Dependency\ReferenceEntity */
+                /** @var $parent ReferenceEntity */
                 foreach ($parents as $parent) {
                     $outerMostParent = $parent->getElement()->getOuterMostParent();
-                    if ($outerMostParent instanceof \TYPO3\CMS\Workspaces\Dependency\ElementEntity) {
+                    if ($outerMostParent instanceof ElementEntity) {
                         $this->outerMostParent = $outerMostParent;
                         break;
                     }
@@ -387,7 +388,7 @@ class ElementEntity
         if (!isset($this->nestedChildren)) {
             $this->nestedChildren = [];
             $children = $this->getChildren();
-            /** @var $child \TYPO3\CMS\Workspaces\Dependency\ReferenceEntity */
+            /** @var $child ReferenceEntity */
             foreach ($children as $child) {
                 $this->nestedChildren = array_merge($this->nestedChildren, [$child->getElement()->__toString() => $child->getElement()], $child->getElement()->getNestedChildren());
             }

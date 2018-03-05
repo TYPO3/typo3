@@ -14,6 +14,12 @@ namespace TYPO3\CMS\Workspaces\Controller\Remote;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
+use TYPO3\CMS\Workspaces\Service\IntegrityService;
+use TYPO3\CMS\Workspaces\Service\WorkspaceService;
+
 /**
  * Class AbstractHandler
  */
@@ -53,11 +59,11 @@ abstract class AbstractHandler
     /**
      * Gets an instance of the workspaces service.
      *
-     * @return \TYPO3\CMS\Workspaces\Service\WorkspaceService
+     * @return WorkspaceService
      */
     protected function getWorkspaceService()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+        return GeneralUtility::makeInstance(WorkspaceService::class);
     }
 
     /**
@@ -70,7 +76,7 @@ abstract class AbstractHandler
     protected function validateLanguageParameter(\stdClass $parameters)
     {
         $language = null;
-        if (isset($parameters->language) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($parameters->language)) {
+        if (isset($parameters->language) && MathUtility::canBeInterpretedAsInteger($parameters->language)) {
             $language = $parameters->language;
         }
         return $language;
@@ -90,13 +96,13 @@ abstract class AbstractHandler
         $affectedElements = [];
         if ($parameters->type === 'selection') {
             foreach ((array)$parameters->selection as $element) {
-                $affectedElements[] = \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::create($element->table, $element->liveId, $element->versionId);
+                $affectedElements[] = CombinedRecord::create($element->table, $element->liveId, $element->versionId);
             }
         } elseif ($parameters->type === 'all') {
             $versions = $this->getWorkspaceService()->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, -1, 0, 'tables_select', $this->validateLanguageParameter($parameters));
             foreach ($versions as $table => $tableElements) {
                 foreach ($tableElements as $element) {
-                    $affectedElement = \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::create($table, $element['t3ver_oid'], $element['uid']);
+                    $affectedElement = CombinedRecord::create($table, $element['t3ver_oid'], $element['uid']);
                     $affectedElement->getVersionRecord()->setRow($element);
                     $affectedElements[] = $affectedElement;
                 }
@@ -109,14 +115,13 @@ abstract class AbstractHandler
      * Creates a new instance of the integrity service for the
      * given set of affected elements.
      *
-     * @param \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord[] $affectedElements
-     * @return \TYPO3\CMS\Workspaces\Service\IntegrityService
+     * @param CombinedRecord[] $affectedElements
+     * @return IntegrityService
      * @see getAffectedElements
      */
     protected function createIntegrityService(array $affectedElements)
     {
-        /** @var $integrityService \TYPO3\CMS\Workspaces\Service\IntegrityService */
-        $integrityService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\IntegrityService::class);
+        $integrityService = GeneralUtility::makeInstance(IntegrityService::class);
         $integrityService->setAffectedElements($affectedElements);
         return $integrityService;
     }

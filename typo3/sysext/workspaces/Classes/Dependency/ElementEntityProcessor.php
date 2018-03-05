@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Workspaces\Dependency;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -29,7 +30,7 @@ class ElementEntityProcessor
     protected $workspace;
 
     /**
-     * @var \TYPO3\CMS\Core\DataHandling\DataHandler
+     * @var DataHandler
      */
     protected $dataHandler;
 
@@ -54,12 +55,12 @@ class ElementEntityProcessor
     }
 
     /**
-     * @return \TYPO3\CMS\Core\DataHandling\DataHandler
+     * @return DataHandler
      */
     public function getDataHandler()
     {
         if (!isset($this->dataHandler)) {
-            $this->dataHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+            $this->dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         }
         return $this->dataHandler;
     }
@@ -105,7 +106,7 @@ class ElementEntityProcessor
      *
      * @param array $callerArguments
      * @param array $targetArgument
-     * @param \TYPO3\CMS\Workspaces\Dependency\ElementEntity $caller
+     * @param ElementEntity $caller
      * @param string $eventName
      * @return string|null Skip response (if required)
      */

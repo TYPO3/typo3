@@ -42,7 +42,7 @@ class AjaxDispatcher
      */
     public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
-        $callStack = \GuzzleHttp\json_decode($request->getBody()->getContents());
+        $callStack = json_decode($request->getBody()->getContents());
         if (!is_array($callStack)) {
             $callStack = [$callStack];
         }

@@ -16,10 +16,15 @@ namespace TYPO3\CMS\Workspaces\Service;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 
 /**
  * Grid data service
@@ -78,7 +83,7 @@ class GridDataService implements LoggerAwareInterface
     protected $systemLanguages;
 
     /**
-     * @var \TYPO3\CMS\Workspaces\Service\IntegrityService
+     * @var IntegrityService
      */
     protected $integrityService;
 
@@ -121,15 +126,13 @@ class GridDataService implements LoggerAwareInterface
     protected function generateDataArray(array $versions, $filterTxt)
     {
         $workspaceAccess = $GLOBALS['BE_USER']->checkWorkspace($GLOBALS['BE_USER']->workspace);
-        $swapStage = $workspaceAccess['publish_access'] & 1 ? \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_ID : 0;
+        $swapStage = $workspaceAccess['publish_access'] & 1 ? StagesService::STAGE_PUBLISH_ID : 0;
         $swapAccess = $GLOBALS['BE_USER']->workspacePublishAccess($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspaceSwapAccess();
         $this->initializeWorkspacesCachingFramework();
-        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         // check for dataArray in cache
         if ($this->getDataArrayFromCache($versions, $filterTxt) === false) {
-            /** @var $stagesObj \TYPO3\CMS\Workspaces\Service\StagesService */
-            $stagesObj = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
+            $stagesObj = GeneralUtility::makeInstance(StagesService::class);
             $defaultGridColumns = [
                 self::GridColumn_Collection => 0,
                 self::GridColumn_CollectionLevel => 0,
@@ -144,7 +147,7 @@ class GridDataService implements LoggerAwareInterface
                 foreach ($records as $record) {
                     $origRecord = BackendUtility::getRecord($table, $record['t3ver_oid']);
                     $versionRecord = BackendUtility::getRecord($table, $record['uid']);
-                    $combinedRecord = \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
+                    $combinedRecord = CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
                     $this->getIntegrityService()->checkElement($combinedRecord);
 
                     if ($hiddenField !== null) {
@@ -154,7 +157,7 @@ class GridDataService implements LoggerAwareInterface
                     }
 
                     $isDeletedPage = $table === 'pages' && $recordState === 'deleted';
-                    $viewUrl = \TYPO3\CMS\Workspaces\Service\WorkspaceService::viewSingleRecord($table, $record['uid'], $origRecord, $versionRecord);
+                    $viewUrl = WorkspaceService::viewSingleRecord($table, $record['uid'], $origRecord, $versionRecord);
                     $versionArray = [];
                     $versionArray['table'] = $table;
                     $versionArray['id'] = $table . ':' . $record['uid'];
@@ -172,7 +175,7 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['value_prevStage'] = (int)$tempStage['uid'];
                     $versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
                     $versionArray['path_Workspace'] = htmlspecialchars(BackendUtility::getRecordPath($record['wspid'], '', 999));
-                    $versionArray['workspace_Title'] = htmlspecialchars(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($versionRecord['t3ver_wsid']));
+                    $versionArray['workspace_Title'] = htmlspecialchars(WorkspaceService::getWorkspaceTitle($versionRecord['t3ver_wsid']));
                     $versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
                     $versionArray['workspace_Formated_Tstamp'] = BackendUtility::datetime($versionRecord['tstamp']);
                     $versionArray['t3ver_wsid'] = $versionRecord['t3ver_wsid'];
@@ -287,7 +290,7 @@ class GridDataService implements LoggerAwareInterface
      */
     protected function initializeWorkspacesCachingFramework()
     {
-        $this->workspacesCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('workspaces_cache');
+        $this->workspacesCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('workspaces_cache');
     }
 
     /**
@@ -594,8 +597,7 @@ class GridDataService implements LoggerAwareInterface
     public function getSystemLanguages()
     {
         if (!isset($this->systemLanguages)) {
-            /** @var $translateTools \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider */
-            $translateTools = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
+            $translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
             $this->systemLanguages = $translateTools->getSystemLanguages();
         }
         return $this->systemLanguages;
@@ -604,12 +606,12 @@ class GridDataService implements LoggerAwareInterface
     /**
      * Gets an instance of the integrity service.
      *
-     * @return \TYPO3\CMS\Workspaces\Service\IntegrityService
+     * @return IntegrityService
      */
     protected function getIntegrityService()
     {
         if (!isset($this->integrityService)) {
-            $this->integrityService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\IntegrityService::class);
+            $this->integrityService = GeneralUtility::makeInstance(IntegrityService::class);
         }
         return $this->integrityService;
     }
@@ -626,39 +628,39 @@ class GridDataService implements LoggerAwareInterface
         // Arguments are always ($this, [method argument], [method argument], ...)
         $signalArguments = $arguments;
         array_unshift($signalArguments, $this);
-        $slotReturn = $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Workspaces\Service\GridDataService::class, $signalName, $signalArguments);
+        $slotReturn = $this->getSignalSlotDispatcher()->dispatch(GridDataService::class, $signalName, $signalArguments);
         return array_slice($slotReturn, 1);
     }
 
     /**
-     * @return \TYPO3\CMS\Workspaces\Service\Dependency\CollectionService
+     * @return Dependency\CollectionService
      */
     protected function getDependencyCollectionService()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\Dependency\CollectionService::class);
+        return GeneralUtility::makeInstance(Dependency\CollectionService::class);
     }
 
     /**
-     * @return \TYPO3\CMS\Workspaces\Service\AdditionalColumnService
+     * @return AdditionalColumnService
      */
     protected function getAdditionalColumnService()
     {
-        return $this->getObjectManager()->get(\TYPO3\CMS\Workspaces\Service\AdditionalColumnService::class);
+        return $this->getObjectManager()->get(AdditionalColumnService::class);
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @return Dispatcher
      */
     protected function getSignalSlotDispatcher()
     {
-        return $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+        return $this->getObjectManager()->get(Dispatcher::class);
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @return ObjectManager
      */
     protected function getObjectManager()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 }

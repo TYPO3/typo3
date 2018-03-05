@@ -17,8 +17,10 @@ namespace TYPO3\CMS\Workspaces\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Implements the AJAX functionality for the various asynchronous calls
@@ -65,7 +67,7 @@ class AjaxController
         }
 
         $ajaxResponse = [
-            'title'       => \TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($workspaceId),
+            'title'       => WorkspaceService::getWorkspaceTitle($workspaceId),
             'workspaceId' => $workspaceId,
             'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid
         ];
@@ -73,7 +75,7 @@ class AjaxController
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser()
     {

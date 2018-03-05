@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Implements the preview controller of the workspace module.
@@ -55,7 +56,7 @@ class PreviewController
     protected $moduleTemplate;
 
     /**
-     * @var \TYPO3Fluid\Fluid\View\ViewInterface
+     * @var ViewInterface
      */
     protected $view;
 

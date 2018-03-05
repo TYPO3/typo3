@@ -15,13 +15,14 @@ namespace TYPO3\CMS\Workspaces\Service;
  */
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord;
 
 /**
  * Service for records
  */
-class RecordService implements \TYPO3\CMS\Core\SingletonInterface
+class RecordService implements SingletonInterface
 {
     /**
      * @var DatabaseRecord[]
