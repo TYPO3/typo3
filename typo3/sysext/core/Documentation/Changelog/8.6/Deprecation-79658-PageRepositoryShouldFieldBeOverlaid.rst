@@ -1,10 +1,10 @@
 .. include:: ../../Includes.txt
 
 ============================================================
-Deprecation: #51291 - PageRepository shouldFieldBeOverlaid()
+Deprecation: #79658 - PageRepository shouldFieldBeOverlaid()
 ============================================================
 
-See :issue:`51291`
+See :issue:`79658`
 
 Description
 ===========

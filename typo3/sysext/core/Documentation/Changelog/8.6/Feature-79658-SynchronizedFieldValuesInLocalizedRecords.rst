@@ -1,10 +1,10 @@
 .. include:: ../../Includes.txt
 
 ================================================================
-Feature: #51291 - Synchronized field values in localized records
+Feature: #79658 - Synchronized field values in localized records
 ================================================================
 
-See :issue:`51291`
+See :issue:`79658`
 
 Description
 ===========
