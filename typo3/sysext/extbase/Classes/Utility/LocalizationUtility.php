@@ -127,7 +127,7 @@ class LocalizationUtility
             // This unrolls arguments from $arguments - instead of calling vsprintf which receives arguments as an array.
             // The reason is that only sprintf() will return an error message if the number of arguments does not match
             // the number of placeholders in the format string. Whereas, vsprintf would silently return nothing.
-            return sprintf($value, ...$arguments) ?: sprintf('Error: could not translate key "%s" with value "%s" and %d argument(s)!', $key, $value, count($arguments));
+            return sprintf($value, ...array_values($arguments)) ?: sprintf('Error: could not translate key "%s" with value "%s" and %d argument(s)!', $key, $value, count($arguments));
         }
         return $value;
     }
