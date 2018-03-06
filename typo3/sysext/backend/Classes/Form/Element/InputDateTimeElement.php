@@ -148,10 +148,10 @@ class InputDateTimeElement extends AbstractFormElement
                 $itemValue = gmdate('c', $adjustedValue);
             }
             if (isset($config['range']['lower'])) {
-                $attributes['data-date-minDate'] = (int)$config['range']['lower'];
+                $attributes['data-date-min-date'] = (int)$config['range']['lower'] * 1000;
             }
             if (isset($config['range']['upper'])) {
-                $attributes['data-date-maxDate'] = (int)$config['range']['upper'];
+                $attributes['data-date-max-date'] = (int)$config['range']['upper'] * 1000;
             }
         }
         if (($format === 'time' || $format === 'timesec') && MathUtility::canBeInterpretedAsInteger($itemValue) && $itemValue != 0) {

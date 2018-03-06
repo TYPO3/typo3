@@ -204,12 +204,20 @@ class DataHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 '0',
                 0
             ],
-            '"-1999999" is interpreted correctly as -1999999 and is lot lower than -200000' => [
-                '-1999999',
-                -1999999
+            '"-2000001" is interpreted correctly as -2000001 but is lower than -2000000 and set to -2000000' => [
+                '-2000001',
+                -2000000
             ],
-            '"3000000" is interpreted correctly as 3000000 but is higher then 200000 and set to 200000' => [
-                '3000000',
+            '"-2000000" is interpreted correctly as -2000000 and is equal to -2000000' => [
+                '-2000000',
+                -2000000
+            ],
+            '"2000000" is interpreted correctly as 2000000 and is equal to 2000000' => [
+                '2000000',
+                2000000
+            ],
+            '"2000001" is interpreted correctly as 2000001 but is greater then 2000000 and set to 2000000' => [
+                '2000001',
                 2000000
             ],
         ];
@@ -233,6 +241,62 @@ class DataHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         ];
         $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
         $this->assertSame($returnValue['value'], $expectedReturnValue);
+    }
+
+    /**
+     * @return array
+     */
+    public function inputValuesDataTimeDataProvider()
+    {
+        return [
+            'undershot date adjusted' => [
+                '2018-02-28T00:00:00Z',
+                1519862400,
+            ],
+            'exact lower date accepted' => [
+                '2018-03-01T00:00:00Z',
+                1519862400,
+            ],
+            'exact upper date accepted' => [
+                '2018-03-31T23:59:59Z',
+                1522540799,
+            ],
+            'exceeded date adjusted' => [
+                '2018-04-01T00:00:00Z',
+                1522540799,
+            ],
+        ];
+    }
+
+    /**
+     * @param string $value
+     * @param int $expected
+     *
+     * @test
+     * @dataProvider inputValuesDataTimeDataProvider
+     */
+    public function inputValueCheckRecognizesDateTimeValuesAsIntegerValuesCorrectly($value, int $expected)
+    {
+        $tcaFieldConf = [
+            'input' => [],
+            'eval' => 'datetime',
+            'range' => [
+                // unix timestamp: 1519862400
+                'lower' => gmmktime(0, 0, 0, 3, 1, 2018),
+                // unix timestamp: 1522540799
+                'upper' => gmmktime(23, 59, 59, 3, 31, 2018),
+            ]
+        ];
+
+        // @todo Switch to UTC since otherwise DataHandler removes timezone offset
+        $previousTimezone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+
+        $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
+
+        date_default_timezone_set($previousTimezone);
+
+        $this->assertSame($returnValue['value'], $expected);
     }
 
     /**
