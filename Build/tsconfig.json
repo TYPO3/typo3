@@ -50,10 +50,6 @@
                 "../typo3/sysext/install/Resources/Public/JavaScript/*",
                 "../typo3/sysext/install/Resources/Private/TypeScript/*"
             ],
-            "TYPO3/CMS/Lang/*": [
-                "../typo3/sysext/lang/Resources/Public/JavaScript/*",
-                "../typo3/sysext/lang/Resources/Private/TypeScript/*"
-            ],
             "TYPO3/CMS/Linkvalidator/*": [
                 "../typo3/sysext/linkvalidator/Resources/Public/JavaScript/*",
                 "../typo3/sysext/linkvalidator/Resources/Private/TypeScript/*"

@@ -22,8 +22,7 @@ define(
     'TYPO3/CMS/Backend/Modal',
     'TYPO3/CMS/Backend/Severity',
     'TYPO3/CMS/Backend/Notification',
-    'TYPO3/CMS/Backend/Icons',
-    'TYPO3/CMS/Lang/Lang'
+    'TYPO3/CMS/Backend/Icons'
   ],
   function($, d3, ContextMenu, Modal, Severity, Notification, Icons) {
     'use strict';

@@ -19,8 +19,7 @@ define(['jquery',
     'd3',
     'TYPO3/CMS/Backend/PageTree/PageTreeDragDrop',
     'TYPO3/CMS/Backend/Tooltip',
-    'TYPO3/CMS/Backend/SvgTree',
-    'TYPO3/CMS/Lang/Lang'
+    'TYPO3/CMS/Backend/SvgTree'
   ],
   function($, Icons, d3, PageTreeDragDrop) {
     'use strict';

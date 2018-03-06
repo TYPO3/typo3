@@ -311,4 +311,48 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $expectedResult = [];
         $this->assertSame($expectedResult, $actualResult);
     }
+
+    /**
+     * @test
+     */
+    public function parseLanguageLabelsForJavaScriptReturnsEmptyStringIfEmpty()
+    {
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['dummy'], [], '', false);
+        $inlineLanguageLabels = [];
+        $subject->_set('inlineLanguageLabels', $inlineLanguageLabels);
+        $actual = $subject->_call('parseLanguageLabelsForJavaScript');
+        $this->assertEmpty($actual);
+    }
+
+    /**
+     * @test
+     */
+    public function parseLanguageLabelsForJavaScriptReturnsFlatArray()
+    {
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['dummy'], [], '', false);
+        $inlineLanguageLabels = [
+            'key' => 'label',
+            'foo' => 'bar',
+            'husel' => [
+                [
+                    'source' => 'pusel',
+                ]
+            ],
+            'hello' => [
+                [
+                    'source' => 'world',
+                    'target' => 'welt',
+                ]
+            ],
+        ];
+        $subject->_set('inlineLanguageLabels', $inlineLanguageLabels);
+        $expected = [
+            'key' => 'label',
+            'foo' => 'bar',
+            'husel' => 'pusel',
+            'hello' => 'welt',
+        ];
+        $actual = $subject->_call('parseLanguageLabelsForJavaScript');
+        $this->assertSame($expected, $actual);
+    }
 }

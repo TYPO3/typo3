@@ -1887,20 +1887,44 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if (TYPO3_MODE === 'BE') {
             $this->addAjaxUrlsToInlineSettings();
         }
-        $inlineSettings = $this->inlineLanguageLabels ? 'TYPO3.lang = ' . json_encode($this->inlineLanguageLabels) . ';' : '';
+        $inlineSettings = '';
+        $languageLabels = $this->parseLanguageLabelsForJavaScript();
+        if (!empty($languageLabels)) {
+            $inlineSettings .= 'TYPO3.lang = ' . json_encode($languageLabels) . ';';
+        }
         $inlineSettings .= $this->inlineSettings ? 'TYPO3.settings = ' . json_encode($this->inlineSettings) . ';' : '';
 
         if ($inlineSettings !== '') {
             // make sure the global TYPO3 is available
             $inlineSettings = 'var TYPO3 = TYPO3 || {};' . CRLF . $inlineSettings;
             $out .= $this->inlineJavascriptWrap[0] . $inlineSettings . $this->inlineJavascriptWrap[1];
-            // Add language module only if also jquery is guaranteed to be there
-            if (TYPO3_MODE === 'BE' && !empty($this->jQueryVersions)) {
-                $this->loadRequireJsModule('TYPO3/CMS/Lang/Lang');
-            }
         }
 
         return $out;
+    }
+
+    /**
+     * Converts the language labels for usage in JavaScript
+     *
+     * @return array
+     */
+    protected function parseLanguageLabelsForJavaScript(): array
+    {
+        if (empty($this->inlineLanguageLabels)) {
+            return [];
+        }
+
+        $labels = [];
+        foreach ($this->inlineLanguageLabels as $key => $translationUnit) {
+            if (is_array($translationUnit)) {
+                $translationUnit = current($translationUnit);
+                $labels[$key] = $translationUnit['target'] ?? $translationUnit['source'];
+            } else {
+                $labels[$key] = $translationUnit;
+            }
+        }
+
+        return $labels;
     }
 
     /**
