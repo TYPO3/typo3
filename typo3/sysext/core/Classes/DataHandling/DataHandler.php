@@ -1855,16 +1855,6 @@ class DataHandler implements LoggerAwareInterface
         if ((int)$tcaFieldConf['max'] > 0) {
             $value = mb_substr((string)$value, 0, (int)$tcaFieldConf['max'], 'utf-8');
         }
-        // Checking range of value:
-        // @todo: The "checkbox" option was removed for type=input, this check could be probably relaxed?
-        if ($tcaFieldConf['range'] && $value != $tcaFieldConf['checkbox'] && (int)$value !== (int)$tcaFieldConf['default']) {
-            if (isset($tcaFieldConf['range']['upper']) && (int)$value > (int)$tcaFieldConf['range']['upper']) {
-                $value = $tcaFieldConf['range']['upper'];
-            }
-            if (isset($tcaFieldConf['range']['lower']) && (int)$value < (int)$tcaFieldConf['range']['lower']) {
-                $value = $tcaFieldConf['range']['lower'];
-            }
-        }
 
         if (empty($tcaFieldConf['eval'])) {
             $res = ['value' => $value];
@@ -1892,6 +1882,17 @@ class DataHandler implements LoggerAwareInterface
                 if ($res['value'] && in_array('unique', $evalCodesArray, true)) {
                     $res['value'] = $this->getUnique($table, $field, $res['value'], $id);
                 }
+            }
+        }
+
+        // Checking range of value:
+        // @todo: The "checkbox" option was removed for type=input, this check could be probably relaxed?
+        if ($tcaFieldConf['range'] && $res['value'] != $tcaFieldConf['checkbox'] && (int)$res['value'] !== (int)$tcaFieldConf['default']) {
+            if (isset($tcaFieldConf['range']['upper']) && (int)$res['value'] > (int)$tcaFieldConf['range']['upper']) {
+                $res['value'] = (int)$tcaFieldConf['range']['upper'];
+            }
+            if (isset($tcaFieldConf['range']['lower']) && (int)$res['value'] < (int)$tcaFieldConf['range']['lower']) {
+                $res['value'] = (int)$tcaFieldConf['range']['lower'];
             }
         }
 
