@@ -294,8 +294,6 @@ define(['jquery',
               setTimeout(function() {
                 if (clicks === 1) {
                   _this.clickOnLabel(node, this);
-                  _this.nodeBgEvents().click(node, this);
-                  _this.selectNode(node);
                 } else {
                   _this.editNodeLabel(node);
                 }
@@ -305,8 +303,6 @@ define(['jquery',
             }
           } else {
             _this.clickOnLabel(node, this);
-            _this.nodeBgEvents().click(node, this);
-            _this.selectNode(node);
           }
         });
     };

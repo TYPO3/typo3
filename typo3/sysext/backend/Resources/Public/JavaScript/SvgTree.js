@@ -769,8 +769,6 @@ define(
           .attr('class', 'node-name')
           .on('click', function(node) {
             _this.clickOnLabel(node, this);
-            _this.nodeBgEvents().click(node, this);
-            _this.selectNode(node);
           });
       },
 
