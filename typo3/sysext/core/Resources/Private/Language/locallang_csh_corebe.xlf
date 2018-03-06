@@ -533,16 +533,6 @@ EXT:core/Resources/Public/Images/cshimages/core_31.png,</source>
 				<source>This is how a typical record is edited in TYPO3. The form display is standardized for all types of records. You will always see the same buttons in the top for saving or closing. In the blue bar you will see the type of record (table name) and the ID number that each record has (uid). Here the record is a page with ID "2" and the title "Content Elements".
 The "additional fields" from the example above is located in a so called "palette". This is an example of three content elements being edited at the same time. You can edit multiple records by using the links from the Web&gt;List module in single-table mode. Notice that not only are three records shown at the same time - it is also a limited number of fields shown for editing, here "Header" and "Hide". You can combine this almost any way you like. This is of course very useful if you need to edit only the header of multiple records.</source>
 			</trans-unit>
-			<trans-unit id="TCEforms_docSelector.alttitle">
-				<source>Document Selector</source>
-			</trans-unit>
-			<trans-unit id="TCEforms_docSelector.description">
-				<source>Here you can switch between "open documents" in TYPO3.</source>
-			</trans-unit>
-			<trans-unit id="_TCEforms_docSelector.image">
-				<source>EXT:core/Resources/Public/Images/cshimages/core_35.png,</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
 			<trans-unit id="TCEforms_cacheSelector.alttitle">
 				<source>Forms Menu</source>
 			</trans-unit>

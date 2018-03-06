@@ -1794,4 +1794,116 @@ return [
             'Deprecation-84109-DeprecateDependencyResolver.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->preInit' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->doProcessData' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->processData' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->makeEditForm' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->compileForm' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->shortCutLink' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->openInNewWindowLink' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->languageSwitch' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->localizationRedirect' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->getLanguages' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->fixWSversioningInEditConf' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->getRecordForEdit' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->compileStoreDat' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->getNewIconMode' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->closeDocument' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\EditDocumentController->setDocument' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+        ],
+    ],
 ];

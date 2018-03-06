@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller;
 
 /*
@@ -23,18 +24,20 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -47,104 +50,171 @@ use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
- * Script Class: Drawing the editing form for editing records in TYPO3.
- * Notice: It does NOT use tce_db.php to submit data to, rather it handles submissions itself
+ * Main backend controller almost always used if some database record is edited in the backend.
+ *
+ * Main job of this controller is to evaluate and sanitize $request parameters,
+ * call the DataHandler if records should be created or updated and
+ * execute FormEngine for record rendering.
  */
 class EditDocumentController
 {
-    const DOCUMENT_CLOSE_MODE_DEFAULT = 0;
-    const DOCUMENT_CLOSE_MODE_REDIRECT = 1; // works like DOCUMENT_CLOSE_MODE_DEFAULT
-    const DOCUMENT_CLOSE_MODE_CLEAR_ALL = 3;
-    const DOCUMENT_CLOSE_MODE_NO_REDIRECT = 4;
+    use PublicPropertyDeprecationTrait;
 
     /**
-     * GPvar "edit": Is an array looking approx like [tablename][list-of-ids]=command, eg.
-     * "&edit[pages][123]=edit". See \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(). Value can be seen
-     * modified internally (converting NEW keyword to id, workspace/versioning etc).
+     * @deprecated since v9. These constants will be set to protected in v10
+     */
+    public const DOCUMENT_CLOSE_MODE_DEFAULT = 0;
+    public const DOCUMENT_CLOSE_MODE_REDIRECT = 1; // works like DOCUMENT_CLOSE_MODE_DEFAULT
+    public const DOCUMENT_CLOSE_MODE_CLEAR_ALL = 3;
+    public const DOCUMENT_CLOSE_MODE_NO_REDIRECT = 4;
+
+    /**
+     * Properties which have been moved to protected status from public
      *
      * @var array
      */
-    public $editconf;
+    protected $deprecatedPublicProperties = [
+        'editconf' => 'Using $editconf of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'defVals' => 'Using $defVals of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'overrideVals' => 'Using $overrideVals of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'columnsOnly' => 'Using $columnsOnly of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'returnUrl' => 'Using $returnUrl of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'closeDoc' => 'Using $closeDoc of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'doSave' => 'Using $doSave of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'returnEditConf' => 'Using $returnEditConf of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'uc' => 'Using $uc of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'retUrl' => 'Using $retUrl of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'R_URL_parts' => 'Using $R_URL_parts of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'R_URL_getvars' => 'Using $R_URL_getvars of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'storeArray' => 'Using $storeArray of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'storeUrl' => 'Using $storeUrl of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'storeUrlMd5' => 'Using $storeUrlMd5 of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'docDat' => 'Using $docDat of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'docHandler' => 'Using $docHandler of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'cmd' => 'Using $cmd of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'mirror' => 'Using $mirror of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'cacheCmd' => 'Using $cacheCmd of class EditDocumentTemplate from the outside is discouraged, the variable will be removed.',
+        'redirect' => 'Using $redirect of class EditDocumentTemplate from the outside is discouraged, the variable will be removed.',
+        'returnNewPageId' => 'Using $returnNewPageId of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'popViewId' => 'Using $popViewId of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'popViewId_addParams' => 'Using $popViewId_addParams of class EditDocumentTemplate from the outside is discouraged, the variable will be removed.',
+        'viewUrl' => 'Using $viewUrl of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'recTitle' => 'Using $recTitle of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'noView' => 'Using $noView of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'MCONF' => 'Using $MCONF of class EditDocumentTemplate from the outside is discouraged, the variable will be removed.',
+        'doc' => 'Using $doc of class EditDocumentTemplate from the outside is discouraged, the variable will be removed.',
+        'perms_clause' => 'Using $perms_clause of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'template' => 'Using $template of class EditDocumentTemplate from the outside is discouraged, the variable will be removed.',
+        'content' => 'Using $content of class EditDocumentTemplate from the outside is discouraged, the variable will be removed.',
+        'R_URI' => 'Using $R_URI of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'pageinfo' => 'Using $pageinfo of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'storeTitle' => 'Using $storeTitle of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'firstEl' => 'Using $firstEl of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'errorC' => 'Using $errorC of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'newC' => 'Using $newC of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'viewId' => 'Using $viewId of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'viewId_addParams' => 'Using $viewId_addParams of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'modTSconfig' => 'Using $modTSconfig of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'dontStoreDocumentRef' => 'Using $dontStoreDocumentRef of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+    ];
 
     /**
-     * Commalist of fieldnames to edit. The point is IF you specify this list, only those
-     * fields will be rendered in the form. Otherwise all (available) fields in the record
-     * is shown according to the types configuration in $GLOBALS['TCA']
+     * An array looking approx like [tablename][list-of-ids]=command, eg. "&edit[pages][123]=edit".
      *
-     * @var bool
-     */
-    public $columnsOnly;
-
-    /**
-     * Default values for fields (array with tablenames, fields etc. as keys).
-     * Can be seen modified internally.
-     *
+     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick()
      * @var array
      */
-    public $defVals;
+    protected $editconf = [];
 
     /**
-     * Array of values to force being set (as hidden fields). Will be set as $this->defVals
-     * IF defVals does not exist.
+     * Comma list of field names to edit. If specified, only those fields will be rendered.
+     * Otherwise all (available) fields in the record are shown according to the TCA type.
      *
-     * @var array
+     * @var string|null
      */
-    public $overrideVals;
+    protected $columnsOnly;
 
     /**
-     * If set, this value will be set in $this->retUrl (which is used quite many places
-     * as the return URL). If not set, "dummy.php" will be set in $this->retUrl
+     * Default values for fields
+     *
+     * @var array|null [table][field]
+     */
+    protected $defVals;
+
+    /**
+     * Array of values to force being set as hidden fields in FormEngine
+     *
+     * @var array|null [table][field]
+     */
+    protected $overrideVals;
+
+    /**
+     * If set, this value will be set in $this->retUrl as "returnUrl", if not,
+     * $this->retUrl will link to dummy controller
+     *
+     * @var string|null
+     */
+    protected $returnUrl;
+
+    /**
+     * Prepared return URL. Contains the URL that we should return to from FormEngine if
+     * close button is clicked. Usually passed along as 'returnUrl', but falls back to
+     * "dummy" controller.
      *
      * @var string
      */
-    public $returnUrl;
+    protected $retUrl;
 
     /**
-     * Close-document command. Not really sure of all options...
+     * Close document command. One of the DOCUMENT_CLOSE_MODE_* constants above
      *
      * @var int
      */
-    public $closeDoc;
+    protected $closeDoc;
 
     /**
-     * Quite simply, if this variable is set, then the processing of incoming data will be performed
-     * as if a save-button is pressed. Used in the forms as a hidden field which can be set through
-     * JavaScript if the form is somehow submitted by JavaScript).
+     * If true, the processing of incoming data will be performed as if a save-button is pressed.
+     * Used in the forms as a hidden field which can be set through
+     * JavaScript if the form is somehow submitted by JavaScript.
      *
      * @var bool
      */
-    public $doSave;
+    protected $doSave;
 
     /**
-     * The data array from which the data comes...
+     * Main DataHandler datamap array
      *
      * @var array
+     * @todo: Will be set protected later, still used by ConditionMatcher
+     * @internal Will be removed / protected in v10 without further notice
      */
     public $data;
 
     /**
-     * @var string
-     */
-    public $cmd;
-
-    /**
+     * Main DataHandler cmdmap array
+     *
      * @var array
      */
-    public $mirror;
+    protected $cmd;
 
     /**
-     * Clear-cache cmd.
+     * DataHandler 'mirror' input
      *
-     * @var string
+     * @var array
      */
-    public $cacheCmd;
+    protected $mirror;
 
     /**
-     * Redirect (not used???)
-     *
      * @var string
+     * @deprecated since v9, will be removed in v10, unused
      */
-    public $redirect;
+    protected $cacheCmd;
+
+    /**
+     * @var string
+     * @deprecated since v9, will be removed in v10, unused
+     */
+    protected $redirect;
 
     /**
      * Boolean: If set, then the GET var "&id=" will be added to the
@@ -152,185 +222,171 @@ class EditDocumentController
      *
      * @var bool
      */
-    public $returnNewPageId;
+    protected $returnNewPageId = false;
 
     /**
-     * update BE_USER->uc
+     * Updated values for backendUser->uc. Used for new inline records to mark them
+     * as expanded: uc[inlineView][...]
      *
-     * @var array
+     * @var array|null
      */
-    public $uc;
+    protected $uc;
 
     /**
-     * ID for displaying the page in the frontend (used for SAVE/VIEW operations)
+     * ID for displaying the page in the frontend, "save and view"
      *
      * @var int
      */
-    public $popViewId;
+    protected $popViewId;
 
     /**
-     * Additional GET vars for the link, eg. "&L=xxx"
-     *
      * @var string
+     * @deprecated since v9, will be removed in v10, unused
      */
-    public $popViewId_addParams;
+    protected $popViewId_addParams;
 
     /**
      * Alternative URL for viewing the frontend pages.
      *
      * @var string
      */
-    public $viewUrl;
+    protected $viewUrl;
 
     /**
      * Alternative title for the document handler.
      *
      * @var string
      */
-    public $recTitle;
+    protected $recTitle;
 
     /**
-     * If set, then no SAVE/VIEW button is printed
+     * If set, then no save & view button is printed
      *
      * @var bool
      */
-    public $noView;
+    protected $noView;
 
     /**
      * @var string
      */
-    public $perms_clause;
+    protected $perms_clause;
 
     /**
-     * If set, the $this->editconf array is returned to the calling script
-     * (used by wizard_add.php for instance)
+     * If true, $this->editconf array is added a redirect response, used by Wizard/AddController
      *
      * @var bool
      */
-    public $returnEditConf;
+    protected $returnEditConf;
 
     /**
      * Workspace used for the editing action.
      *
-     * @var int|null
+     * @var string|null
      */
     protected $workspace;
 
     /**
-     * document template object
-     *
      * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @deprecated since v9, will be removed in v10, unused
      */
-    public $doc;
+    protected $doc;
 
     /**
-     * a static HTML template, usually in templates/alt_doc.html
-     *
-     * @var string
+     * @deprecated since v9, will be removed in v10, unused
      */
-    public $template;
+    protected $template;
 
     /**
-     * Content accumulation
-     *
-     * @var string
+     * @deprecated since v9, will be removed in v10, unused
      */
-    public $content;
+    protected $content;
 
     /**
-     * Return URL script, processed. This contains the script (if any) that we should
-     * RETURN TO from the FormEngine script IF we press the close button. Thus this
-     * variable is normally passed along from the calling script so we can properly return if needed.
-     *
-     * @var string
-     */
-    public $retUrl;
-
-    /**
-     * Contains the parts of the REQUEST_URI (current url). By parts we mean the result of resolving
-     * REQUEST_URI (current url) by the parse_url() function. The result is an array where eg. "path"
-     * is the script path and "query" is the parameters...
+     * parse_url() of current requested URI, contains ['path'] and ['query'] parts.
      *
      * @var array
      */
-    public $R_URL_parts;
+    protected $R_URL_parts;
 
     /**
-     * Contains the current GET vars array; More specifically this array is the foundation for creating
-     * the R_URI internal var (which becomes the "url of this script" to which we submit the forms etc.)
+     * Contains $request query parameters. This array is the foundation for creating
+     * the R_URI internal var which becomes the url to which forms are submitted
      *
      * @var array
      */
-    public $R_URL_getvars;
+    protected $R_URL_getvars;
 
     /**
-     * Set to the URL of this script including variables which is needed to re-display the form. See main()
+     * Set to the URL of this script including variables which is needed to re-display the form.
      *
      * @var string
      */
-    public $R_URI;
+    protected $R_URI;
+
+    /**
+     * @var array
+     * @deprecated since v9, will be removed in v10, unused
+     */
+    protected $MCONF;
 
     /**
      * @var array
      */
-    public $MCONF;
+    protected $pageinfo;
 
     /**
-     * @var array
-     */
-    public $pageinfo;
-
-    /**
-     * Is loaded with the "title" of the currently "open document" - this is used in the
-     * Document Selector box. (see makeDocSel())
+     * Is loaded with the "title" of the currently "open document"
+     * used for the open document toolbar
      *
      * @var string
      */
-    public $storeTitle = '';
+    protected $storeTitle = '';
 
     /**
      * Contains an array with key/value pairs of GET parameters needed to reach the
-     * current document displayed - used in the Document Selector box. (see compileStoreDat())
+     * current document displayed - used in the 'open documents' toolbar.
      *
      * @var array
      */
-    public $storeArray;
+    protected $storeArray;
 
     /**
-     * Contains storeArray, but imploded into a GET parameter string (see compileStoreDat())
+     * $this->storeArray imploded to url
      *
      * @var string
      */
-    public $storeUrl;
+    protected $storeUrl;
 
     /**
-     * Hashed value of storeURL (see compileStoreDat())
+     * md5 hash of storeURL, used to identify a single open document in backend user uc
      *
      * @var string
      */
-    public $storeUrlMd5;
+    protected $storeUrlMd5;
 
     /**
-     * Module session data
+     * Backend user session data of this module
      *
      * @var array
      */
-    public $docDat;
+    protected $docDat;
 
     /**
      * An array of the "open documents" - keys are md5 hashes (see $storeUrlMd5) identifying
      * the various documents on the GET parameter list needed to open it. The values are
-     * arrays with 0,1,2 keys with information about the document (see compileStoreDat()).
+     * arrays with 0,1,2 keys with information about the document (see compileStoreData()).
      * The docHandler variable is stored in the $docDat session data, key "0".
      *
      * @var array
      */
-    public $docHandler;
+    protected $docHandler;
 
     /**
      * Array of the elements to create edit forms for.
      *
      * @var array
+     * @todo: Will be set protected later, still used by ConditionMatcher
+     * @internal Will be removed / protected in v10 without further notice
      */
     public $elementsData;
 
@@ -339,21 +395,21 @@ class EditDocumentController
      *
      * @var array
      */
-    public $firstEl;
+    protected $firstEl;
 
     /**
      * Counter, used to count the number of errors (when users do not have edit permissions)
      *
      * @var int
      */
-    public $errorC;
+    protected $errorC;
 
     /**
      * Counter, used to count the number of new record forms displayed
      *
      * @var int
      */
-    public $newC;
+    protected $newC;
 
     /**
      * Is set to the pid value of the last shown record - thus indicating which page to
@@ -361,21 +417,21 @@ class EditDocumentController
      *
      * @var int
      */
-    public $viewId;
+    protected $viewId;
 
     /**
      * Is set to additional parameters (like "&L=xxx") if the record supports it.
      *
      * @var string
      */
-    public $viewId_addParams;
+    protected $viewId_addParams;
 
     /**
      * Module TSconfig, loaded from main() based on the page id value of viewId
      *
      * @var array
      */
-    public $modTSconfig;
+    protected $modTSconfig;
 
     /**
      * @var FormResultCompiler
@@ -387,7 +443,7 @@ class EditDocumentController
      *
      * @var bool
      */
-    public $dontStoreDocumentRef = 0;
+    protected $dontStoreDocumentRef = 0;
 
     /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
@@ -415,80 +471,110 @@ class EditDocumentController
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->moduleTemplate->setUiBlock(true);
+        // @todo Used by TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching
         $GLOBALS['SOBE'] = $this;
         $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf');
     }
 
     /**
-     * Get the SignalSlot dispatcher
+     * Main dispatcher entry method registered as "record_edit" end point
      *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
      */
-    protected function getSignalSlotDispatcher()
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        if (!isset($this->signalSlotDispatcher)) {
-            $this->signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+        // Unlock all locked records
+        BackendUtility::lockRecords();
+        if ($response = $this->preInit($request)) {
+            return $response;
         }
-        return $this->signalSlotDispatcher;
+
+        // Process incoming data via DataHandler?
+        $parsedBody = $request->getParsedBody();
+        if ($this->doSave
+            || isset($parsedBody['_savedok'])
+            || isset($parsedBody['_saveandclosedok'])
+            || isset($parsedBody['_savedokview'])
+            || isset($parsedBody['_savedoknew'])
+            || isset($parsedBody['_duplicatedoc'])
+            || isset($parsedBody['_translation_savedok'])
+            || isset($parsedBody['_translation_savedokclear'])
+        ) {
+            if ($response = $this->processData($request)) {
+                return $response;
+            }
+        }
+
+        $this->init($request);
+        $this->main($request);
+
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
-     * Emits a signal after a function was executed
+     * First initialization, always called, even before processData() executes DataHandler processing.
      *
-     * @param string $signalName
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface|null Possible redirect response
      */
-    protected function emitFunctionAfterSignal($signalName)
+    public function preInit(ServerRequestInterface $request = null): ?ResponseInterface
     {
-        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, $signalName . 'After', [$this]);
-    }
-
-    /**
-     * First initialization.
-     */
-    public function preInit()
-    {
-        if (GeneralUtility::_GP('justLocalized')) {
-            $this->localizationRedirect(GeneralUtility::_GP('justLocalized'));
+        if ($request === null) {
+            // Missing argument? This method must have been called from outside.
+            // Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+            // New v10 signature: "protected function preInit(ServerRequestInterface $request): ?ResponseInterface"
+            // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
+            trigger_error('Method preInit() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            $request = $GLOBALS['TYPO3_REQUEST'];
         }
-        // Setting GPvars:
-        $this->editconf = GeneralUtility::_GP('edit');
-        $this->defVals = GeneralUtility::_GP('defVals');
-        $this->overrideVals = GeneralUtility::_GP('overrideVals');
-        $this->columnsOnly = GeneralUtility::_GP('columnsOnly');
-        $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-        $this->closeDoc = (int)GeneralUtility::_GP('closeDoc');
-        $this->doSave = (bool)GeneralUtility::_GP('doSave');
-        $this->returnEditConf = GeneralUtility::_GP('returnEditConf');
-        $this->workspace = GeneralUtility::_GP('workspace');
-        $this->uc = GeneralUtility::_GP('uc');
-        // Setting override values as default if defVals does not exist.
+
+        if ($response = $this->localizationRedirect($request)) {
+            return $response;
+        }
+
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
+        $this->editconf = $parsedBody['edit'] ?? $queryParams['edit'] ?? [];
+        $this->defVals = $parsedBody['defVals'] ?? $queryParams['defVals'] ?? null;
+        $this->overrideVals = $parsedBody['overrideVals'] ?? $queryParams['overrideVals'] ?? null;
+        $this->columnsOnly = $parsedBody['columnsOnly'] ?? $queryParams['columnsOnly'] ?? null;
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? null);
+        $this->closeDoc = (int)($parsedBody['closeDoc'] ?? $queryParams['closeDoc'] ?? self::DOCUMENT_CLOSE_MODE_DEFAULT);
+        $this->doSave = (bool)($parsedBody['doSave'] ?? $queryParams['doSave'] ?? false);
+        $this->returnEditConf = (bool)($parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? false);
+        $this->workspace = $parsedBody['workspace'] ?? $queryParams['workspace'] ?? null;
+        $this->uc = $parsedBody['uc'] ?? $queryParams['uc'] ?? null;
+
+        // Set overrideVals as default values if defVals does not exist.
         if (!is_array($this->defVals) && is_array($this->overrideVals)) {
             $this->defVals = $this->overrideVals;
         }
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        // Setting return URL
+
+        // Set final return URL
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->retUrl = $this->returnUrl ?: (string)$uriBuilder->buildUriFromRoute('dummy');
-        // Fix $this->editconf if versioning applies to any of the records
+
+        // Change $this->editconf if versioning applies to any of the records
         $this->fixWSversioningInEditConf();
-        // Make R_URL (request url) based on input GETvars:
-        $this->R_URL_parts = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
-        $this->R_URL_getvars = GeneralUtility::_GET();
+
+        // Prepare R_URL (request url)
+        $this->R_URL_parts = parse_url($request->getAttribute('normalizedParams')->getRequestUri());
+        $this->R_URL_getvars = $queryParams;
         $this->R_URL_getvars['edit'] = $this->editconf;
-        // MAKE url for storing
-        $this->compileStoreDat();
-        // Get session data for the module:
+
+        // Prepare 'open documents' url, this is later modified again various times
+        $this->compileStoreData();
+        // Backend user session data of this module
         $this->docDat = $this->getBackendUser()->getModuleData('FormEngine', 'ses');
         $this->docHandler = $this->docDat[0];
-        // If a request for closing the document has been sent, act accordingly:
+
+        // Close document if a request for closing the document has been sent
         if ((int)$this->closeDoc > self::DOCUMENT_CLOSE_MODE_DEFAULT) {
-            $this->closeDocument($this->closeDoc);
-        }
-        // If NO vars are sent to the script, try to read first document:
-        // Added !is_array($this->editconf) because editConf must not be set either.
-        // Anyways I can't figure out when this situation here will apply...
-        if (is_array($this->R_URL_getvars) && count($this->R_URL_getvars) < 2 && !is_array($this->editconf)) {
-            $this->setDocument($this->docDat[1]);
+            if ($response = $this->closeDocument($this->closeDoc, $request)) {
+                return $response;
+            }
         }
 
         // Sets a temporary workspace, this request is based on
@@ -496,16 +582,21 @@ class EditDocumentController
             $this->getBackendUser()->setTemporaryWorkspace($this->workspace);
         }
 
-        $this->emitFunctionAfterSignal(__FUNCTION__);
+        $this->emitFunctionAfterSignal('preInit', $request);
+
+        return null;
     }
 
     /**
      * Detects, if a save command has been triggered.
      *
      * @return bool TRUE, then save the document (data submitted)
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function doProcessData()
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+
         $out = $this->doSave
             || isset($_POST['_savedok'])
             || isset($_POST['_saveandclosedok'])
@@ -518,44 +609,62 @@ class EditDocumentController
     }
 
     /**
-     * Do processing of data, submitting it to DataHandler.
+     * Do processing of data, submitting it to DataHandler. May return a RedirectResponse
+     *
+     * @param $request ServerRequestInterface
+     * @return ResponseInterface|null
      */
-    public function processData()
+    public function processData(ServerRequestInterface $request = null): ?ResponseInterface
     {
+        // @deprecated Variable can be removed in v10
+        $deprecatedCaller = false;
+        if ($request === null) {
+            // Missing argument? This method must have been called from outside.
+            // Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+            // New v10 signature: "protected function processData(ServerRequestInterface $request): ?ResponseInterface"
+            // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
+            trigger_error('Method processData() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            $request = $GLOBALS['TYPO3_REQUEST'];
+            $deprecatedCaller = true;
+        }
+
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
         $beUser = $this->getBackendUser();
-        // GPvars specifically for processing:
-        $control = GeneralUtility::_GP('control');
-        $this->data = GeneralUtility::_GP('data');
-        $this->cmd = GeneralUtility::_GP('cmd');
-        $this->mirror = GeneralUtility::_GP('mirror');
-        $this->cacheCmd = GeneralUtility::_GP('cacheCmd');
-        $this->redirect = GeneralUtility::_GP('redirect');
-        $this->returnNewPageId = GeneralUtility::_GP('returnNewPageId');
-        // See tce_db.php for relevate options here:
-        // Only options related to $this->data submission are included here.
-        /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
+
+        // Processing related GET / POST vars
+        $this->data = $parsedBody['data'] ?? $queryParams['data'] ?? [];
+        $this->cmd = $parsedBody['cmd'] ?? $queryParams['cmd'] ?? [];
+        $this->mirror = $parsedBody['mirror'] ?? $queryParams['mirror'] ?? [];
+        // @deprecated property cacheCmd is unused and can be removed in v10
+        $this->cacheCmd = $parsedBody['cacheCmd'] ?? $queryParams['cacheCmd'] ?? null;
+        // @deprecated property redirect is unused and can be removed in v10
+        $this->redirect = $parsedBody['redirect'] ?? $queryParams['redirect'] ?? null;
+        $this->returnNewPageId = (bool)($parsedBody['returnNewPageId'] ?? $queryParams['returnNewPageId'] ?? false);
+
+        // Only options related to $this->data submission are included here
         $tce = GeneralUtility::makeInstance(DataHandler::class);
 
-        if (!empty($control)) {
-            $tce->setControl($control);
-        }
-        if (isset($_POST['_translation_savedok'])) {
+        $tce->setControl($parsedBody['control'] ?? $queryParams['control'] ?? []);
+
+        if (isset($parsedBody['_translation_savedok'])) {
             $tce->updateModeL10NdiffData = 'FORCE_FFUPD';
         }
-        if (isset($_POST['_translation_savedokclear'])) {
+        if (isset($parsedBody['_translation_savedokclear'])) {
             $tce->updateModeL10NdiffData = 'FORCE_FFUPD';
             $tce->updateModeL10NdiffDataClear = true;
         }
-        // Setting default values specific for the user:
+        // Set default values specific for the user
         $TCAdefaultOverride = $beUser->getTSConfigProp('TCAdefaults');
         if (is_array($TCAdefaultOverride)) {
             $tce->setDefaultsFromUserTS($TCAdefaultOverride);
         }
-        // Setting internal vars:
-        if ($beUser->uc['neverHideAtCopy']) {
+        // Set internal vars
+        if (isset($beUser->uc['neverHideAtCopy']) && $beUser->uc['neverHideAtCopy']) {
             $tce->neverHideAtCopy = 1;
         }
-        // Loading DataHandler with data:
+        // Load DataHandler with data
         $tce->start($this->data, $this->cmd);
         if (is_array($this->mirror)) {
             $tce->setMirror($this->mirror);
@@ -563,6 +672,7 @@ class EditDocumentController
 
         // Perform the saving operation with DataHandler:
         if ($this->doSave === true) {
+            // @todo: Make DataHandler understand UploadedFileInterface and submit $request->getUploadedFiles() instead of $_FILES here
             $tce->process_uploads($_FILES);
             $tce->process_datamap();
             $tce->process_cmdmap();
@@ -575,7 +685,7 @@ class EditDocumentController
         }
         // If there was saved any new items, load them:
         if (!empty($tce->substNEWwithIDs_table)) {
-            // save the expanded/collapsed states for new inline records, if any
+            // Save the expanded/collapsed states for new inline records, if any
             FormEngineUtility::updateInlineView($this->uc, $tce);
             $newEditConf = [];
             foreach ($this->editconf as $tableName => $tableCmds) {
@@ -587,7 +697,7 @@ class EditDocumentController
                         if (!(is_array($tce->newRelatedIDs[$tableName])
                             && in_array($editId, $tce->newRelatedIDs[$tableName]))
                         ) {
-                            // Translate new id to the workspace version:
+                            // Translate new id to the workspace version
                             if ($versionRec = BackendUtility::getWorkspaceVersionOfRecord(
                                 $beUser->workspace,
                                 $tableName,
@@ -598,10 +708,8 @@ class EditDocumentController
                             }
                             $newEditConf[$tableName][$editId] = 'edit';
                         }
-                        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-                        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-                        // Traverse all new records and forge the content of ->editconf so we can continue to EDIT
-                        // these records!
+                        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                        // Traverse all new records and forge the content of ->editconf so we can continue to edit these records!
                         if ($tableName === 'pages'
                             && $this->retUrl != (string)$uriBuilder->buildUriFromRoute('dummy')
                             && $this->returnNewPageId
@@ -613,25 +721,27 @@ class EditDocumentController
                     $newEditConf[$tableName] = $tableCmds;
                 }
             }
-            // Resetting editconf if newEditConf has values:
+            // Reset editconf if newEditConf has values
             if (!empty($newEditConf)) {
                 $this->editconf = $newEditConf;
             }
             // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
             $this->R_URL_getvars['edit'] = $this->editconf;
-            // Unsetting default values since we don't need them anymore.
+            // Unset default values since we don't need them anymore.
             unset($this->R_URL_getvars['defVals']);
-            // Re-compile the store* values since editconf changed...
-            $this->compileStoreDat();
+            // Recompile the store* values since editconf changed
+            $this->compileStoreData();
         }
         // See if any records was auto-created as new versions?
         if (!empty($tce->autoVersionIdMap)) {
             $this->fixWSversioningInEditConf($tce->autoVersionIdMap);
         }
         // If a document is saved and a new one is created right after.
-        if (isset($_POST['_savedoknew']) && is_array($this->editconf)) {
-            $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT);
-            // Finding the current table:
+        if (isset($parsedBody['_savedoknew']) && is_array($this->editconf)) {
+            if ($redirect = $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT, $request)) {
+                return $redirect;
+            }
+            // Find the current table
             reset($this->editconf);
             $nTable = key($this->editconf);
             // Finding the first id, getting the records pid+uid
@@ -642,9 +752,9 @@ class EditDocumentController
                 $recordFields .= ',t3ver_oid';
             }
             $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
-            // Determine insertion mode ('top' is self-explaining,
-            // otherwise new elements are inserted after one using a negative uid)
-            $insertRecordOnTop = ($this->getNewIconMode($nTable) === 'top');
+            // Determine insertion mode: 'top' is self-explaining,
+            // otherwise new elements are inserted after one using a negative uid
+            $insertRecordOnTop = ($this->getTsConfigOption($nTable, 'saveDocNew') === 'top');
             // Setting a blank editconf array for a new record:
             $this->editconf = [];
             // Determine related page ID for regular live context
@@ -668,16 +778,16 @@ class EditDocumentController
             $this->editconf[$nTable][$relatedPageId] = 'new';
             // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
             $this->R_URL_getvars['edit'] = $this->editconf;
-            // Re-compile the store* values since editconf changed...
-            $this->compileStoreDat();
+            // Recompile the store* values since editconf changed...
+            $this->compileStoreData();
         }
         // If a document should be duplicated.
-        if (isset($_POST['_duplicatedoc']) && is_array($this->editconf)) {
-            $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT);
-            // Finding the current table:
+        if (isset($parsedBody['_duplicatedoc']) && is_array($this->editconf)) {
+            $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT, $request);
+            // Find current table
             reset($this->editconf);
             $nTable = key($this->editconf);
-            // Finding the first id, getting the records pid+uid
+            // Find the first id, getting the records pid+uid
             reset($this->editconf[$nTable]);
             $nUid = key($this->editconf[$nTable]);
             if (!MathUtility::canBeInterpretedAsInteger($nUid)) {
@@ -723,25 +833,22 @@ class EditDocumentController
             $this->editconf[$nTable][$duplicateUid] = 'edit';
             // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
             $this->R_URL_getvars['edit'] = $this->editconf;
-            // Re-compile the store* values since editconf changed...
-            $this->compileStoreDat();
+            // Recompile the store* values since editconf changed...
+            $this->compileStoreData();
 
             // Inform the user of the duplication
-            /** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.recordDuplicated'),
                 '',
                 FlashMessage::OK
             );
-            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var $defaultFlashMessageQueue FlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
         // If a preview is requested
-        if (isset($_POST['_savedokview'])) {
+        if (isset($parsedBody['_savedokview'])) {
             // Get the first table and id of the data array from DataHandler
             $table = reset(array_keys($this->data));
             $id = reset(array_keys($this->data[$table]));
@@ -754,28 +861,49 @@ class EditDocumentController
         }
         $tce->printLogErrorMessages();
 
-        //  || count($tce->substNEWwithIDs)... If any new items has been save, the document is CLOSED
-        // because if not, we just get that element re-listed as new. And we don't want that!
         if ((int)$this->closeDoc < self::DOCUMENT_CLOSE_MODE_DEFAULT
-            || isset($_POST['_saveandclosedok'])
-            || isset($_POST['_translation_savedok'])
+            || isset($parsedBody['_saveandclosedok'])
+            || isset($parsedBody['_translation_savedok'])
         ) {
-            $this->closeDocument(abs($this->closeDoc));
+            // Redirect if element should be closed after save
+            $possibleRedirect = $this->closeDocument(abs($this->closeDoc), $request);
+            if ($deprecatedCaller && $possibleRedirect) {
+                // @deprecated fall back if method has been called from outside. This if can be removed in v10
+                HttpUtility::redirect($possibleRedirect->getHeaders()['location'][0]);
+            }
+            return $possibleRedirect;
         }
+        return null;
     }
 
     /**
-     * Initialize the normal module operation
+     * Initialize the view part of the controller logic.
+     *
+     * @param $request ServerRequestInterface
      */
-    public function init()
+    public function init(ServerRequestInterface $request = null): void
     {
+        if ($request === null) {
+            // Missing argument? This method must have been called from outside.
+            // Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+            // New v10 signature: "protected function init(ServerRequestInterface $request): void
+            // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
+            trigger_error('Method init() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        }
+
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
         $beUser = $this->getBackendUser();
-        // Setting more GPvars:
-        $this->popViewId = GeneralUtility::_GP('popViewId');
-        $this->popViewId_addParams = GeneralUtility::_GP('popViewId_addParams');
-        $this->viewUrl = GeneralUtility::_GP('viewUrl');
-        $this->recTitle = GeneralUtility::_GP('recTitle');
-        $this->noView = GeneralUtility::_GP('noView');
+
+        // @deprecated since v9, will be removed in v10, unused, remove call in v10
+        $this->popViewId_addParams = $parsedBody['popViewId_addParams'] ?? $queryParams['popViewId_addParams'] ?? '';
+
+        $this->popViewId = (int)($parsedBody['popViewId'] ?? $queryParams['popViewId'] ?? 0);
+        $this->viewUrl = (string)($parsedBody['viewUrl'] ?? $queryParams['viewUrl'] ?? '');
+        $this->recTitle = (string)($parsedBody['recTitle'] ?? $queryParams['recTitle'] ?? '');
+        $this->noView = (bool)($parsedBody['noView'] ?? $queryParams['noView'] ?? false);
         $this->perms_clause = $beUser->getPagePermsClause(Permission::PAGE_SHOW);
         // Set other internal variables:
         $this->R_URL_getvars['returnUrl'] = $this->retUrl;
@@ -783,54 +911,54 @@ class EditDocumentController
             '',
             $this->R_URL_getvars
         ), '&');
-        // Setting virtual document name
-        $this->MCONF['name'] = 'xMOD_alt_doc.php';
 
-        // Create an instance of the document template object
+        // @deprecated since v9, will be removed in v10, unused
+        $this->MCONF['name'] = 'xMOD_alt_doc.php';
+        // @deprecated since v9, will be removed in v10, unused
         $this->doc = $GLOBALS['TBE_TEMPLATE'];
+
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf');
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // override the default jumpToUrl
         $this->moduleTemplate->addJavaScriptCode(
             'jumpToUrl',
             '
-			function jumpToUrl(URL,formEl) {
-				if (!TBE_EDITOR.isFormChanged()) {
-					window.location.href = URL;
-				} else if (formEl && formEl.type=="checkbox") {
-					formEl.checked = formEl.checked ? 0 : 1;
-				}
-			}
-
-				// Info view:
-			function launchView(table,uid) {
-				console.warn(\'Calling launchView() has been deprecated in v9 and will be removed in v10.0\');
-				var thePreviewWindow = window.open(
-					' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('show_item') . '&table=') . ' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
-					"ShowItem" + Math.random().toString(16).slice(2),
-					"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0"
-				);
-				if (thePreviewWindow && thePreviewWindow.focus) {
-					thePreviewWindow.focus();
-				}
-			}
-			function deleteRecord(table,id,url) {
-				window.location.href = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url);
-			}
-		' . (isset($_POST['_savedokview']) && $this->popViewId ? $this->generatePreviewCode() : '')
+            function jumpToUrl(URL,formEl) {
+                if (!TBE_EDITOR.isFormChanged()) {
+                    window.location.href = URL;
+                } else if (formEl && formEl.type=="checkbox") {
+                    formEl.checked = formEl.checked ? 0 : 1;
+                }
+            }
+            // Info view:
+            function launchView(table,uid) {
+                console.warn(\'Calling launchView() has been deprecated in v9 and will be removed in v10.0\');
+                var thePreviewWindow = window.open(
+                    ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('show_item') . '&table=') . ' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
+                    "ShowItem" + Math.random().toString(16).slice(2),
+                    "height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0"
+                );
+                if (thePreviewWindow && thePreviewWindow.focus) {
+                    thePreviewWindow.focus();
+                }
+            }
+            function deleteRecord(table,id,url) {
+                window.location.href = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url);
+            }
+        ' . (isset($parsedBody['_savedokview']) && $this->popViewId ? $this->generatePreviewCode() : '')
         );
-        // Setting up the context sensitive menu:
+        // Set context sensitive menu
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
-        $this->emitFunctionAfterSignal(__FUNCTION__);
+        $this->emitFunctionAfterSignal('init', $request);
     }
 
     /**
      * @return string
      */
-    protected function generatePreviewCode()
+    protected function generatePreviewCode(): string
     {
         $table = $this->previewData['table'];
         $recordId = $this->previewData['id'];
@@ -913,7 +1041,6 @@ class EditDocumentController
         }
 
         if (!empty($previewConfiguration['useCacheHash'])) {
-            /** @var CacheHashCalculator */
             $cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
             $fullLinkParameters = GeneralUtility::implodeArrayForUrl('', array_merge($linkParameters, ['id' => $previewPageId]));
             $cacheHashParameters = $cacheHashCalculator->getRelevantParameters($fullLinkParameters);
@@ -923,35 +1050,35 @@ class EditDocumentController
         }
 
         $this->popViewId = $previewPageId;
-        $this->popViewId_addParams = GeneralUtility::implodeArrayForUrl('', $linkParameters, '', false, true);
+        $popViewId_addParams = GeneralUtility::implodeArrayForUrl('', $linkParameters, '', false, true);
         $anchorSection = $table === 'tt_content' ? '#c' . $recordId : '';
 
-        $previewPageRootline = BackendUtility::BEgetRootLine($this->popViewId);
+        $previewPageRootLine = BackendUtility::BEgetRootLine($this->popViewId);
         return '
-				if (window.opener) {
-				'
-            . BackendUtility::viewOnClick(
-                $this->popViewId,
-                '',
-                $previewPageRootline,
-                $anchorSection,
-                $this->viewUrl,
-                $this->popViewId_addParams,
-                false
-            )
+            if (window.opener) {
+                '
+                . BackendUtility::viewOnClick(
+                    $this->popViewId,
+                    '',
+                    $previewPageRootLine,
+                    $anchorSection,
+                    $this->viewUrl,
+                    $popViewId_addParams,
+                    false
+                )
             . '
-				} else {
-				'
-            . BackendUtility::viewOnClick(
-                $this->popViewId,
-                '',
-                $previewPageRootline,
-                $anchorSection,
-                $this->viewUrl,
-                $this->popViewId_addParams
-            )
+            } else {
+            '
+                . BackendUtility::viewOnClick(
+                    $this->popViewId,
+                    '',
+                    $previewPageRootLine,
+                    $anchorSection,
+                    $this->viewUrl,
+                    $popViewId_addParams
+                )
             . '
-				}';
+            }';
     }
 
     /**
@@ -978,13 +1105,20 @@ class EditDocumentController
 
     /**
      * Main module operation
+     *
+     * @param $request ServerRequestInterface
      */
-    public function main()
+    public function main(ServerRequestInterface $request = null): void
     {
+        if ($request === null) {
+            // Set method signature in v10 to: "protected function main(ServerRequestInterface $request): void"
+            trigger_error('@deprecated since v9, this method will be set to protected in v10', E_USER_DEPRECATED);
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        }
+
         $body = '';
-        // Begin edit:
+        // Begin edit
         if (is_array($this->editconf)) {
-            /** @var FormResultCompiler formResultCompiler */
             $this->formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
 
             // Creating the editing form, wrap it with buttons, document selector etc.
@@ -992,8 +1126,7 @@ class EditDocumentController
             if ($editForm) {
                 $this->firstEl = reset($this->elementsData);
                 // Checking if the currently open document is stored in the list of "open documents" - if not, add it:
-                if (($this->docDat[1] !== $this->storeUrlMd5
-                        || !isset($this->docHandler[$this->storeUrlMd5]))
+                if (($this->docDat[1] !== $this->storeUrlMd5 || !isset($this->docHandler[$this->storeUrlMd5]))
                     && !$this->dontStoreDocumentRef
                 ) {
                     $this->docHandler[$this->storeUrlMd5] = [
@@ -1006,10 +1139,12 @@ class EditDocumentController
                     BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
                 }
                 // Module configuration
-                $this->modTSconfig = $this->viewId ? BackendUtility::getModTSconfig(
-                    $this->viewId,
-                    'mod.xMOD_alt_doc'
-                ) : [];
+                $this->modTSconfig = $this->viewId
+                    ? BackendUtility::getModTSconfig(
+                        $this->viewId,
+                        'mod.xMOD_alt_doc'
+                    )
+                    : [];
                 $body = $this->formResultCompiler->addCssFiles();
                 $body .= $this->compileForm($editForm);
                 $body .= $this->formResultCompiler->printNeededJSFunctions();
@@ -1022,36 +1157,41 @@ class EditDocumentController
         if ($this->pageinfo) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
-        // Setting up the buttons and markers for docheader
-        $this->getButtons();
-        $this->languageSwitch($this->firstEl['table'], $this->firstEl['uid'], $this->firstEl['pid']);
+        // Setting up the buttons and markers for doc header
+        $this->getButtons($request);
+        $this->languageSwitch(
+            (string)($this->firstEl['table'] ?? ''),
+            (int)($this->firstEl['uid'] ?? 0),
+            isset($this->firstEl['pid']) ? (int)$this->firstEl['pid'] : null
+        );
         $this->moduleTemplate->setContent($body);
     }
 
-    /***************************
-     *
-     * Sub-content functions, rendering specific parts of the module content.
-     *
-     ***************************/
     /**
-     * Creates the editing form with FormEnigne, based on the input from GPvars.
+     * Creates the editing form with FormEngine, based on the input from GPvars.
      *
      * @return string HTML form elements wrapped in tables
      */
-    public function makeEditForm()
+    public function makeEditForm(): string
     {
-        // Initialize variables:
+        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if (end($backtrace)['class'] !== __CLASS__) {
+            // @deprecated since TYPO3 v9, this method will be set to protected in v10
+            trigger_error('Method makeEditForm() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        }
+
+        // Initialize variables
         $this->elementsData = [];
         $this->errorC = 0;
         $this->newC = 0;
         $editForm = '';
         $trData = null;
         $beUser = $this->getBackendUser();
-        // Traverse the GPvar edit array
-        // Tables:
+        // Traverse the GPvar edit array tables
         foreach ($this->editconf as $table => $conf) {
             if (is_array($conf) && $GLOBALS['TCA'][$table] && $beUser->check('tables_modify', $table)) {
-                // Traverse the keys/comments of each table (keys can be a commalist of uids)
+                // Traverse the keys/comments of each table (keys can be a comma list of uids)
                 foreach ($conf as $cKey => $command) {
                     if ($command === 'edit' || $command === 'new') {
                         // Get the ids:
@@ -1116,20 +1256,17 @@ class EditDocumentController
                                     }
                                 }
 
-                                // Display "is-locked" message:
+                                // Display "is-locked" message
                                 if ($command === 'edit') {
                                     $lockInfo = BackendUtility::isRecordLocked($table, $formData['databaseRow']['uid']);
                                     if ($lockInfo) {
-                                        /** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
                                         $flashMessage = GeneralUtility::makeInstance(
                                             FlashMessage::class,
                                             $lockInfo['msg'],
                                             '',
                                             FlashMessage::WARNING
                                         );
-                                        /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
                                         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                                        /** @var $defaultFlashMessageQueue FlashMessageQueue */
                                         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                                         $defaultFlashMessageQueue->enqueue($flashMessage);
                                     }
@@ -1213,15 +1350,15 @@ class EditDocumentController
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      *
-     * @return array All available buttons as an assoc. array
+     * @param $request ServerRequestInterface
      */
-    protected function getButtons()
+    protected function getButtons(ServerRequestInterface $request): void
     {
         $lang = $this->getLanguageService();
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // Render SAVE type buttons:
-        // The action of each button is decided by its name attribute. (See doProcessData())
+        // The action of each button is decided by its name attribute.
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         if (!$this->errorC && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']) {
             $saveSplitButton = $buttonBar->makeSplitButton();
@@ -1235,7 +1372,7 @@ class EditDocumentController
             $saveSplitButton->addItem($saveButton, true);
 
             // SAVE / VIEW button:
-            if ($this->viewId && !$this->noView && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
+            if ($this->viewId && !$this->noView && !empty($this->firstEl['table']) && $this->getTsConfigOption($this->firstEl['table'], 'saveDocView')) {
                 $pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
                 if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
                     $excludeDokTypes = GeneralUtility::intExplode(
@@ -1268,7 +1405,7 @@ class EditDocumentController
                 }
             }
             // SAVE / NEW button:
-            if (count($this->elementsData) === 1 && $this->getNewIconMode($this->firstEl['table'])) {
+            if (count($this->elementsData) === 1 && !empty($this->firstEl['table']) && $this->getTsConfigOption($this->firstEl['table'], 'saveDocNew')) {
                 $saveAndNewButton = $buttonBar->makeInputButton()
                     ->setName('_savedoknew')
                     ->setClasses('t3js-editform-submitButton')
@@ -1398,7 +1535,7 @@ class EditDocumentController
                     $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
                 }
                 // Undo:
-                if ($this->getNewIconMode($this->firstEl['table'], 'showHistory')) {
+                if (!empty($this->firstEl['table']) && $this->getTsConfigOption($this->firstEl['table'], 'showHistory')) {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable('sys_history');
                     $undoButtonR = $queryBuilder->select('tstamp')
@@ -1449,7 +1586,7 @@ class EditDocumentController
                         $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
                     }
                 }
-                if ($this->getNewIconMode($this->firstEl['table'], 'showHistory')) {
+                if (!empty($this->firstEl['table']) && $this->getTsConfigOption($this->firstEl['table'], 'showHistory')) {
                     $aOnClick = 'window.location.href=' .
                         GeneralUtility::quoteJSvalue(
                             (string)$uriBuilder->buildUriFromRoute(
@@ -1486,8 +1623,39 @@ class EditDocumentController
         }
         $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('TCEforms');
         $buttonBar->addButton($cshButton);
-        $this->shortCutLink();
-        $this->openInNewWindowLink();
+
+        if ($this->returnUrl !== $this->getCloseUrl()) {
+            $shortCutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
+            $shortCutButton->setModuleName('xMOD_alt_doc.php')
+                ->setGetVariables([
+                    'returnUrl',
+                    'edit',
+                    'defVals',
+                    'overrideVals',
+                    'columnsOnly',
+                    'returnNewPageId',
+                    'noView']);
+            $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($shortCutButton);
+        }
+
+        $closeUrl = $this->getCloseUrl();
+        if ($this->returnUrl !== $closeUrl) {
+            $scriptName = $request->getAttribute('normalizedParams')->getScriptName();
+            $aOnClick = 'vHWin=window.open('
+                . GeneralUtility::quoteJSvalue($scriptName . '?returnUrl=' . $closeUrl) . ','
+                . GeneralUtility::quoteJSvalue(md5($this->R_URI))
+                . ',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
+            $openInNewWindowButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()
+                ->makeLinkButton()
+                ->setHref('#')
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.openInNewWindow'))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-window-open', Icon::SIZE_SMALL))
+                ->setOnClick($aOnClick);
+            $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton(
+                $openInNewWindowButton,
+                ButtonBar::BUTTON_POSITION_RIGHT
+            );
+        }
     }
 
     /**
@@ -1496,44 +1664,53 @@ class EditDocumentController
      * @param string $editForm HTML form.
      * @return string Composite HTML
      */
-    public function compileForm($editForm)
+    public function compileForm(string $editForm): string
     {
-        $formContent = '
-			<!-- EDITING FORM -->
-			<form
-            action="' . htmlspecialchars($this->R_URI) . '"
-            method="post"
-            enctype="multipart/form-data"
-            name="editform"
-            id="EditDocumentController"
-            onsubmit="TBE_EDITOR.checkAndDoSubmit(1); return false;">
-			' . $editForm . '
+        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if (end($backtrace)['class'] !== __CLASS__) {
+            // @deprecated since TYPO3 v9, this method will be set to protected in v10
+            trigger_error('Method compileForm() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        }
 
-			<input type="hidden" name="returnUrl" value="' . htmlspecialchars($this->retUrl) . '" />
-			<input type="hidden" name="viewUrl" value="' . htmlspecialchars($this->viewUrl) . '" />';
+        $formContent = '
+            <form
+                action="' . htmlspecialchars($this->R_URI) . '"
+                method="post"
+                enctype="multipart/form-data"
+                name="editform"
+                id="EditDocumentController"
+                onsubmit="TBE_EDITOR.checkAndDoSubmit(1); return false;"
+            >
+            ' . $editForm . '
+            <input type="hidden" name="returnUrl" value="' . htmlspecialchars($this->retUrl) . '" />
+            <input type="hidden" name="viewUrl" value="' . htmlspecialchars($this->viewUrl) . '" />
+            <input type="hidden" name="popViewId" value="' . htmlspecialchars((string)$this->viewId) . '" />
+            <input type="hidden" name="closeDoc" value="0" />
+            <input type="hidden" name="doSave" value="0" />
+            <input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
+            <input type="hidden" name="_scrollPosition" value="" />';
         if ($this->returnNewPageId) {
             $formContent .= '<input type="hidden" name="returnNewPageId" value="1" />';
         }
-        $formContent .= '<input type="hidden" name="popViewId" value="' . htmlspecialchars($this->viewId) . '" />';
         if ($this->viewId_addParams) {
             $formContent .= '<input type="hidden" name="popViewId_addParams" value="' . htmlspecialchars($this->viewId_addParams) . '" />';
         }
-        $formContent .= '
-			<input type="hidden" name="closeDoc" value="0" />
-			<input type="hidden" name="doSave" value="0" />
-			<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
-			<input type="hidden" name="_scrollPosition" value="" />';
         return $formContent;
     }
 
     /**
      * Create shortcut icon
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function shortCutLink()
     {
+        trigger_error('Method shortCutLink() will be removed in v10', E_USER_DEPRECATED);
+
         if ($this->returnUrl !== $this->getCloseUrl()) {
             $shortCutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
-            $shortCutButton->setModuleName($this->MCONF['name'])
+            $shortCutButton->setModuleName('xMOD_alt_doc.php')
                 ->setGetVariables([
                     'returnUrl',
                     'edit',
@@ -1548,9 +1725,13 @@ class EditDocumentController
 
     /**
      * Creates open-in-window link
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function openInNewWindowLink()
     {
+        trigger_error('Method openInNewWindowLink() will be removed in v10', E_USER_DEPRECATED);
+
         $closeUrl = $this->getCloseUrl();
         if ($this->returnUrl !== $closeUrl) {
             $aOnClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(
@@ -1588,7 +1769,7 @@ class EditDocumentController
                 $disableDelete = true;
             }
         } else {
-            $disableDelete = (bool)$this->getNewIconMode($this->firstEl['table'], 'disableDelete');
+            $disableDelete = (bool)$this->getTsConfigOption($this->firstEl['table'] ?? '', 'disableDelete');
         }
         return $disableDelete;
     }
@@ -1617,14 +1798,21 @@ class EditDocumentController
      *
      * @param string $table Table name
      * @param int $uid Uid for which to create a new language
-     * @param int $pid Pid of the record
+     * @param int $pid|null Pid of the record
      */
-    public function languageSwitch($table, $uid, $pid = null)
+    public function languageSwitch(string $table, int $uid, $pid = null)
     {
+        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if (end($backtrace)['class'] !== __CLASS__) {
+            // @deprecated since TYPO3 v9, this method will be set to protected in v10
+            trigger_error('Method fixWSversioningInEditConf() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        }
+
         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         // Table editable and activated for languages?
         if ($this->getBackendUser()->check('tables_modify', $table)
@@ -1640,9 +1828,9 @@ class EditDocumentController
             if ($table === 'pages') {
                 $row = BackendUtility::getRecord($table, $uid, $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']);
                 // Ensure the check is always done against the default language page
-                $langRows = $this->getLanguages($row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] ?: $uid);
+                $langRows = $this->getLanguages((int)($row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] ?: $uid));
             } else {
-                $langRows = $this->getLanguages($pid);
+                $langRows = $this->getLanguages((int)$pid);
             }
             // Page available in other languages than default language?
             if (is_array($langRows) && count($langRows) > 1) {
@@ -1713,6 +1901,7 @@ class EditDocumentController
                             $newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
                             // Create url for creating a localized record
                             $addOption = true;
+                            $href = '';
                             if ($newTranslation) {
                                 $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                                     'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $lang['uid'],
@@ -1753,25 +1942,41 @@ class EditDocumentController
     /**
      * Redirects to FormEngine with new parameters to edit a just created localized record
      *
-     * @param string $justLocalized String passed by GET &justLocalized=
+     * @param ServerRequestInterface $request Incoming request object
+     * @return ResponseInterface|null Possible redirect response
      */
-    public function localizationRedirect($justLocalized)
+    public function localizationRedirect(ServerRequestInterface $request = null): ?ResponseInterface
     {
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $deprecatedCaller = false;
+        if (!$request instanceof ServerRequestInterface) {
+            // @deprecated since TYPO3 v9
+            // Method signature in v10: protected function localizationRedirect(ServerRequestInterface $request): ?ResponseInterface
+            trigger_error('Method localizationRedirect() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            $justLocalized = $request;
+            $request = $GLOBALS['TYPO3_REQUEST'];
+            $deprecatedCaller = true;
+        } else {
+            $justLocalized = $request->getQueryParams()['justLocalized'];
+        }
+
+        if (empty($justLocalized)) {
+            return null;
+        }
 
         list($table, $origUid, $language) = explode(':', $justLocalized);
+
         if ($GLOBALS['TCA'][$table]
             && $GLOBALS['TCA'][$table]['ctrl']['languageField']
             && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
         ) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($table);
+            $parsedBody = $request->getParsedBody();
+            $queryParams = $request->getQueryParams();
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
             $localizedRecord = $queryBuilder->select('uid')
                 ->from($table)
                 ->where(
@@ -1786,16 +1991,32 @@ class EditDocumentController
                 )
                 ->execute()
                 ->fetch();
-
+            $returnUrl = $parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '';
             if (is_array($localizedRecord)) {
-                // Create parameters and finally run the classic page module for creating a new page translation
-                $location = (string)$uriBuilder->buildUriFromRoute('record_edit', [
-                    'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
-                    'returnUrl' => GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'))
-                ]);
-                HttpUtility::redirect($location);
+                if ($deprecatedCaller) {
+                    // @deprecated fall back if method has been called from outside. This if can be removed in v10
+                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                    $location = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+                        'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
+                        'returnUrl' => GeneralUtility::sanitizeLocalUrl($returnUrl)
+                    ]);
+                    HttpUtility::redirect($location);
+                }
+                // Create redirect response to self to edit just created record
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                return new RedirectResponse(
+                    (string)$uriBuilder->buildUriFromRoute(
+                        'record_edit',
+                        [
+                            'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
+                            'returnUrl' => GeneralUtility::sanitizeLocalUrl($returnUrl)
+                        ]
+                    ),
+                    303
+                );
             }
         }
+        return null;
     }
 
     /**
@@ -1806,11 +2027,19 @@ class EditDocumentController
      *                translation record on that page (and is not hidden, unless you are admin user)
      * @return array Language records including faked record for default language
      */
-    public function getLanguages($id)
+    public function getLanguages(int $id): array
     {
+        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if (end($backtrace)['class'] !== __CLASS__) {
+            // @deprecated since TYPO3 v9, this method will be set to protected in v10
+            trigger_error('Method getLanguages() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        }
+
+        $languageService = $this->getLanguageService();
         $modSharedTSconfig = BackendUtility::getModTSconfig($id, 'mod.SHARED');
         // Fallback non sprite-configuration
-        if (preg_match('/\\.gif$/', $modSharedTSconfig['properties']['defaultLanguageFlag'])) {
+        if (preg_match('/\\.gif$/', $modSharedTSconfig['properties']['defaultLanguageFlag'] ?? '')) {
             $modSharedTSconfig['properties']['defaultLanguageFlag'] = str_replace(
                 '.gif',
                 '',
@@ -1823,8 +2052,8 @@ class EditDocumentController
                 'pid' => 0,
                 'hidden' => 0,
                 'title' => $modSharedTSconfig['properties']['defaultLanguageLabel'] !== ''
-                        ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
-                        : $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage'),
+                        ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
+                        : $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage'),
                 'flag' => $modSharedTSconfig['properties']['defaultLanguageFlag']
             ]
         ];
@@ -1863,24 +2092,26 @@ class EditDocumentController
         return $languages;
     }
 
-    /***************************
-     *
-     * Other functions
-     *
-     ***************************/
     /**
      * Fix $this->editconf if versioning applies to any of the records
      *
      * @param array|bool $mapArray Mapping between old and new ids if auto-versioning has been performed.
      */
-    public function fixWSversioningInEditConf($mapArray = false)
+    public function fixWSversioningInEditConf($mapArray = false): void
     {
+        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if (end($backtrace)['class'] !== __CLASS__) {
+            // @deprecated since TYPO3 v9, this method will be set to protected in v10
+            trigger_error('Method fixWSversioningInEditConf() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        }
+
         // Traverse the editConf array
         if (is_array($this->editconf)) {
             // Tables:
             foreach ($this->editconf as $table => $conf) {
                 if (is_array($conf) && $GLOBALS['TCA'][$table]) {
-                    // Traverse the keys/comments of each table (keys can be a commalist of uids)
+                    // Traverse the keys/comments of each table (keys can be a comma list of uids)
                     $newConf = [];
                     foreach ($conf as $cKey => $cmd) {
                         if ($cmd === 'edit') {
@@ -1893,7 +2124,7 @@ class EditDocumentController
                                     }
                                 } else {
                                     // Default, look for versions in workspace for record:
-                                    $calcPRec = $this->getRecordForEdit($table, $theUid);
+                                    $calcPRec = $this->getRecordForEdit((string)$table, (int)$theUid);
                                     if (is_array($calcPRec)) {
                                         // Setting UID again if it had changed, eg. due to workspace versioning.
                                         $ids[$idKey] = $calcPRec['uid'];
@@ -1918,10 +2149,17 @@ class EditDocumentController
      *
      * @param string $table Table name
      * @param int $theUid Record UID
-     * @return array|false Returns record to edit, FALSE if none
+     * @return array|false Returns record to edit, false if none
      */
-    public function getRecordForEdit($table, $theUid)
+    public function getRecordForEdit(string $table, int $theUid)
     {
+        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if (end($backtrace)['class'] !== __CLASS__) {
+            // @deprecated since TYPO3 v9, this method will be set to protected in v10
+            trigger_error('Method getRecordForEdit() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        }
+
         // Fetch requested record:
         $reqRecord = BackendUtility::getRecord($table, $theUid, 'uid,pid');
         if (is_array($reqRecord)) {
@@ -1960,10 +2198,21 @@ class EditDocumentController
     /**
      * Populates the variables $this->storeArray, $this->storeUrl, $this->storeUrlMd5
      *
-     * @see makeDocSel()
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function compileStoreDat()
     {
+        trigger_error('Method compileStoreDat() will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        $this->compileStoreData();
+    }
+
+    /**
+     * Populates the variables $this->storeArray, $this->storeUrl, $this->storeUrlMd5
+     * to prepare 'open documents' urls
+     */
+    protected function compileStoreData(): void
+    {
+        // @todo: Refactor in v10: This GeneralUtility method fiddles with _GP()
         $this->storeArray = GeneralUtility::compileSelectedGetVarsFromArray(
             'edit,defVals,overrideVals,columnsOnly,noView,workspace',
             $this->R_URL_getvars
@@ -1979,12 +2228,25 @@ class EditDocumentController
      * @param string $table The table for which the configuration may be specific
      * @param string $key The option for look for. Default is checking if the saveDocNew button should be displayed.
      * @return string Return value fetched from USER TSconfig
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function getNewIconMode($table, $key = 'saveDocNew')
     {
-        $TSconfig = $this->getBackendUser()->getTSConfig('options.' . $key);
-        $output = trim($TSconfig['properties'][$table] ?? $TSconfig['value']);
-        return $output;
+        trigger_error('Method getNewIconMode() will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        return $this->getTsConfigOption($table, $key);
+    }
+
+    /**
+     * Get a TSConfig 'option.' array, possibly for a specific table.
+     *
+     * @param string $table Table name
+     * @param string $key Options key
+     * @return string
+     */
+    protected function getTsConfigOption(string $table, string $key): string
+    {
+        $TsConfig = $this->getBackendUser()->getTSConfig('options.' . $key);
+        return trim((string)($TsConfig['properties'][$table] ?? $TsConfig['value']));
     }
 
     /**
@@ -1996,9 +2258,20 @@ class EditDocumentController
      * - other values will call setDocument with ->retUrl
      *
      * @param int $mode the close mode: one of self::DOCUMENT_CLOSE_MODE_*
+     * @param $request ServerRequestInterface Incoming request
+     * @return ResponseInterface|null Redirect response if needed
      */
-    public function closeDocument($mode = self::DOCUMENT_CLOSE_MODE_DEFAULT)
+    public function closeDocument($mode = self::DOCUMENT_CLOSE_MODE_DEFAULT, ServerRequestInterface $request = null): ?ResponseInterface
     {
+        // Foreign class call or missing argument? Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+        $deprecatedCaller = false;
+        if ($request === null) {
+            // Set method signature in v10 to: "protected function closeDocument($mode, ServerRequestInterface $request): ?ResponseInterface"
+            trigger_error('@deprecated since v9, this method will be set to protected in v10', E_USER_DEPRECATED);
+            $request = $GLOBALS['TYPO3_REQUEST'];
+            $deprecatedCaller = true;
+        }
+
         $mode = (int)$mode;
         // If current document is found in docHandler,
         // then unset it, possibly unset it ALL and finally, write it to the session data
@@ -2023,41 +2296,55 @@ class EditDocumentController
             $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->docDat[1]]);
             BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
         }
-        if ($mode !== self::DOCUMENT_CLOSE_MODE_NO_REDIRECT) {
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-            // If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: (used by
-            // other scripts, like wizard_add, to know which records was created or so...)
-            if ($this->returnEditConf && $this->retUrl != (string)$uriBuilder->buildUriFromRoute('dummy')) {
-                $this->retUrl .= '&returnEditConf=' . rawurlencode(json_encode($this->editconf));
-            }
-
-            // If mode is NOT set (means 0) OR set to 1, then make a header location redirect to $this->retUrl
-            if ($mode === self::DOCUMENT_CLOSE_MODE_DEFAULT || $mode === self::DOCUMENT_CLOSE_MODE_REDIRECT) {
+        if ($mode === self::DOCUMENT_CLOSE_MODE_NO_REDIRECT) {
+            return null;
+        }
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        // If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: used by
+        // other scripts, like wizard_add, to know which records was created or so...
+        if ($this->returnEditConf && $this->retUrl != (string)$uriBuilder->buildUriFromRoute('dummy')) {
+            $this->retUrl .= '&returnEditConf=' . rawurlencode(json_encode($this->editconf));
+        }
+        // If mode is NOT set (means 0) OR set to 1, then make a header location redirect to $this->retUrl
+        if ($mode === self::DOCUMENT_CLOSE_MODE_DEFAULT || $mode === self::DOCUMENT_CLOSE_MODE_REDIRECT) {
+            if ($deprecatedCaller) {
+                // @deprecated fall back if method has been called from outside. This if can be removed in v10
                 HttpUtility::redirect($this->retUrl);
-            } else {
-                $this->setDocument('', $this->retUrl);
+            }
+            return new RedirectResponse($this->returnUrl, 303);
+        }
+        if ($this->retUrl === '') {
+            return null;
+        }
+        $retUrl = $this->returnUrl;
+        if (is_array($this->docHandler) && !empty($this->docHandler)) {
+            if (!empty($setupArr[2])) {
+                $sParts = parse_url($request->getAttribute('normalizedParams')->getRequestUri());
+                $retUrl = $sParts['path'] . '?' . $setupArr[2] . '&returnUrl=' . rawurlencode($retUrl);
             }
         }
+        if ($deprecatedCaller) {
+            // @deprecated fall back if method has been called from outside. This if can be removed in v10
+            HttpUtility::redirect($retUrl);
+        }
+        return new RedirectResponse($retUrl, 303);
     }
 
     /**
-     * Redirects to the document pointed to by $currentDocFromHandlerMD5 OR $retUrl (depending on some internal
-     * calculations).
-     * Most likely you will get a header-location redirect from this function.
+     * Redirects to the document pointed to by $currentDocFromHandlerMD5 OR $retUrl,
+     * depending on some internal calculations.
      *
      * @param string $currentDocFromHandlerMD5 Pointer to the document in the docHandler array
      * @param string $retUrl Alternative/Default retUrl
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function setDocument($currentDocFromHandlerMD5 = '', $retUrl = '')
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         if ($retUrl === '') {
             return;
         }
-        if (!$this->modTSconfig['properties']['disableDocSelector']
-            && is_array($this->docHandler)
-            && !empty($this->docHandler)
-        ) {
+        if (is_array($this->docHandler) && !empty($this->docHandler)) {
             if (isset($this->docHandler[$currentDocFromHandlerMD5])) {
                 $setupArr = $this->docHandler[$currentDocFromHandlerMD5];
             } else {
@@ -2072,27 +2359,27 @@ class EditDocumentController
     }
 
     /**
-     * Injects the request object for the current request or subrequest
+     * Emits a signal after a function was executed
      *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
+     * @param string $signalName
+     * @param ServerRequestInterface $request
      */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    protected function emitFunctionAfterSignal($signalName, ServerRequestInterface $request): void
     {
-        BackendUtility::lockRecords();
+        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, $signalName . 'After', [$this, 'request' => $request]);
+    }
 
-        // Preprocessing, storing data if submitted to
-        $this->preInit();
-
-        // Checks, if a save button has been clicked (or the doSave variable is sent)
-        if ($this->doProcessData()) {
-            $this->processData();
+    /**
+     * Get the SignalSlot dispatcher
+     *
+     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     */
+    protected function getSignalSlotDispatcher()
+    {
+        if (!isset($this->signalSlotDispatcher)) {
+            $this->signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         }
-
-        $this->init();
-        $this->main();
-
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->signalSlotDispatcher;
     }
 
     /**

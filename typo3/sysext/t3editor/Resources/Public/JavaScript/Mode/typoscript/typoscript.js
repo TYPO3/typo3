@@ -265,7 +265,6 @@
         'disableCharsetHeader': kw('disableCharsetHeader'),
         'disabled': kw('disabled'),
         'disableDelete': kw('disableDelete'),
-        'disableDocSelector': kw('disableDocSelector'),
         'disableHideAtCopy': kw('disableHideAtCopy'),
         'disableItems': kw('disableItems'),
         'disableNewContentElementWizard': kw('disableNewContentElementWizard'),
