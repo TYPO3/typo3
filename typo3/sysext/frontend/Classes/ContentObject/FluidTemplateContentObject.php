@@ -84,14 +84,12 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
+        $parentView = $this->view;
+        $this->initializeStandaloneViewInstance();
+
         if (!is_array($conf)) {
             $conf = [];
         }
-        $variables = $this->getContentObjectVariables($conf);
-        $variables = $this->contentDataProcessor->process($this->cObj, $conf, $variables);
-
-        $parentView = $this->view;
-        $this->initializeStandaloneViewInstance();
 
         $this->setFormat($conf);
         $this->setTemplate($conf);
@@ -99,6 +97,8 @@ class FluidTemplateContentObject extends AbstractContentObject
         $this->setPartialRootPath($conf);
         $this->setExtbaseVariables($conf);
         $this->assignSettings($conf);
+        $variables = $this->getContentObjectVariables($conf);
+        $variables = $this->contentDataProcessor->process($this->cObj, $conf, $variables);
 
         $this->view->assignMultiple($variables);
 
