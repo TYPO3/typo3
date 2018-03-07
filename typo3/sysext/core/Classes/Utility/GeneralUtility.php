@@ -1799,6 +1799,12 @@ class GeneralUtility
             /** @var RequestFactory $requestFactory */
             $requestFactory = static::makeInstance(RequestFactory::class);
             if (is_array($requestHeaders)) {
+                // Check is $requestHeaders is an associative array or not
+                if (count(array_filter(array_keys($requestHeaders), 'is_string')) === 0) {
+                    trigger_error('Request headers as colon-separated string are deprecated, use an associative array instead.', E_USER_DEPRECATED);
+                    // Convert cURL style lines of headers to Guzzle key/value(s) pairs.
+                    $requestHeaders = static::splitHeaderLines($requestHeaders);
+                }
                 $configuration = ['headers' => $requestHeaders];
             } else {
                 $configuration = [];
@@ -1868,6 +1874,38 @@ class GeneralUtility
             }
         }
         return $content;
+    }
+
+    /**
+     * Split an array of MIME header strings into an associative array.
+     * Multiple headers with the same name have their values merged as an array.
+     *
+     * @static
+     * @param array $headers List of headers, eg. ['Foo: Bar', 'Foo: Baz']
+     * @return array Key/Value(s) pairs of headers, eg. ['Foo' => ['Bar', 'Baz']]
+     */
+    protected static function splitHeaderLines(array $headers): array
+    {
+        $newHeaders = [];
+        foreach ($headers as $header) {
+            $parts = preg_split('/:[ \t]*/', $header, 2, PREG_SPLIT_NO_EMPTY);
+            if (count($parts) !== 2) {
+                continue;
+            }
+            $key = &$parts[0];
+            $value = &$parts[1];
+            if (array_key_exists($key, $newHeaders)) {
+                if (is_array($newHeaders[$key])) {
+                    $newHeaders[$key][] = $value;
+                } else {
+                    $prevValue = &$newHeaders[$key];
+                    $newHeaders[$key] = [$prevValue, $value];
+                }
+            } else {
+                $newHeaders[$key] = $value;
+            }
+        }
+        return $newHeaders;
     }
 
     /**

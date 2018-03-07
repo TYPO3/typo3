@@ -182,8 +182,8 @@ class ErrorController
             }
             // Prepare headers
             $requestHeaders = [
-                'User-agent: ' . GeneralUtility::getIndpEnv('HTTP_USER_AGENT'),
-                'Referer: ' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')
+                'User-agent' => GeneralUtility::getIndpEnv('HTTP_USER_AGENT'),
+                'Referer' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')
             ];
             $report = [];
             $res = GeneralUtility::getUrl($errorHandler, 1, $requestHeaders, $report);
