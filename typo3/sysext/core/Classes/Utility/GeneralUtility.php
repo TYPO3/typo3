@@ -2080,7 +2080,6 @@ class GeneralUtility
                 $content .= $response->getBody()->getContents();
             }
             if (isset($report)) {
-                $report['lib'] = 'http';
                 if ($response->getStatusCode() >= 300 && $response->getStatusCode() < 400) {
                     $report['http_code'] = $response->getStatusCode();
                     $report['content_type'] = $response->getHeaderLine('Content-Type');
