@@ -2086,7 +2086,7 @@ class GeneralUtility
                     $report['content_type'] = $response->getHeader('Content-Type');
                     $report['error'] = $response->getStatusCode();
                     $report['message'] = $response->getReasonPhrase();
-                } elseif (!empty($content)) {
+                } elseif (empty($content)) {
                     $report['error'] = $response->getStatusCode();
                     $report['message'] = $response->getReasonPhrase();
                 } elseif ($includeHeader) {
