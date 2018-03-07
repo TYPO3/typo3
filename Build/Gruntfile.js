@@ -52,6 +52,7 @@ module.exports = function (grunt) {
       sysext: '<%= paths.root %>typo3/sysext/',
       form: '<%= paths.sysext %>form/Resources/',
       frontend: '<%= paths.sysext %>frontend/Resources/',
+      adminpanel: '<%= paths.sysext %>adminpanel/Resources/',
       install: '<%= paths.sysext %>install/Resources/',
       linkvalidator: '<%= paths.sysext %>linkvalidator/Resources/',
       backend: '<%= paths.sysext %>backend/Resources/',
@@ -104,9 +105,9 @@ module.exports = function (grunt) {
           "<%= paths.form %>Public/Css/form.css": "<%= paths.sass %>form.scss"
         }
       },
-      frontend: {
+      adminpanel: {
         files: {
-          "<%= paths.frontend %>Public/Css/adminpanel.css": "<%= paths.sass %>adminpanel.scss"
+          "<%= paths.adminpanel %>Public/Css/adminpanel.css": "<%= paths.sass %>adminpanel.scss"
         }
       },
       install: {
@@ -169,6 +170,9 @@ module.exports = function (grunt) {
             inline: false
           })
         ]
+      },
+      adminpanel: {
+        src: '<%= paths.adminpanel %>Public/Css/*.css'
       },
       backend: {
         src: '<%= paths.backend %>Public/Css/*.css'
@@ -271,6 +275,10 @@ module.exports = function (grunt) {
           {
             dest: '<%= paths.sysext %>about/Resources/Public/Icons/module-about.svg',
             src: '<%= paths.t3icons %>module/module-about.svg'
+          },
+          {
+            dest: '<%= paths.sysext %>about/Resources/Public/Icons/module-adminpanel.svg',
+            src: '<%= paths.t3icons %>module/module-adminpanel.svg'
           },
           {
             dest: '<%= paths.sysext %>belog/Resources/Public/Icons/module-belog.svg',

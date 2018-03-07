@@ -114,26 +114,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers']['front
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:frontend/Configuration/TSconfig/Page/TCEFORM.txt">'
 );
-
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['frontend']['adminPanelModules'] = [
-    'preview' => [
-        'module' => \TYPO3\CMS\Frontend\AdminPanel\PreviewModule::class,
-        'before' => ['cache']
-    ],
-    'cache' => [
-        'module' => \TYPO3\CMS\Frontend\AdminPanel\CacheModule::class,
-        'after' => ['preview']
-    ],
-    'edit' => [
-        'module' => \TYPO3\CMS\Frontend\AdminPanel\EditModule::class,
-        'after' => ['cache']
-    ],
-    'tsdebug' => [
-        'module' => \TYPO3\CMS\Frontend\AdminPanel\TsDebugModule::class,
-        'after' => ['edit']
-    ],
-    'info' => [
-        'module' => \TYPO3\CMS\Frontend\AdminPanel\InfoModule::class,
-        'after' => ['tsdebug']
-    ]
-];

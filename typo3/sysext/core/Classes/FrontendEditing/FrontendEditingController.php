@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\FrontendEditing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Adminpanel\View\AdminPanelView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
@@ -21,7 +22,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\View\AdminPanelView;
 
 /**
  * Controller class for frontend editing.

@@ -73,7 +73,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
     public $extAdmEnabled = false;
 
     /**
-     * @var \TYPO3\CMS\Frontend\View\AdminPanelView Instance of admin panel
+     * @var \TYPO3\CMS\Adminpanel\View\AdminPanelView Instance of admin panel
      */
     public $adminPanel = null;
 
@@ -96,7 +96,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
         if (isset($this->extAdminConfig['enable.'])) {
             foreach ($this->extAdminConfig['enable.'] as $value) {
                 if ($value) {
-                    $this->adminPanel = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\View\AdminPanelView::class);
+                    $this->adminPanel = GeneralUtility::makeInstance(\TYPO3\CMS\Adminpanel\View\AdminPanelView::class);
                     $this->extAdmEnabled = true;
                     break;
                 }

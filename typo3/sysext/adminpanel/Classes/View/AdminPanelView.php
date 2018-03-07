@@ -1,6 +1,6 @@
 <?php
 
-namespace TYPO3\CMS\Frontend\View;
+namespace TYPO3\CMS\Adminpanel\View;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -25,7 +26,6 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Frontend\AdminPanel\AdminPanelModuleInterface;
 
 /**
  * View class for the admin panel in frontend editing.
@@ -268,7 +268,7 @@ class AdminPanelView
 				}') . '/*]]>*/</script>';
             $output[] = '<script language="javascript" type="text/javascript">' . $this->extJSCODE . '</script>';
         }
-        $cssFileLocation = GeneralUtility::getFileAbsFileName('EXT:frontend/Resources/Public/Css/adminpanel.css');
+        $cssFileLocation = GeneralUtility::getFileAbsFileName('EXT:adminpanel/Resources/Public/Css/adminpanel.css');
         $output[] = '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($cssFileLocation)) . '" media="all" />';
         $output[] = $this->getAdminPanelStylesheet();
         $output[] = '<!-- TYPO3 admin panel end -->';
@@ -345,7 +345,7 @@ class AdminPanelView
      */
     protected function validateSortAndInitializeModules(): void
     {
-        $modules = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['frontend']['adminPanelModules'] ?? [];
+        $modules = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
         if (empty($modules)) {
             return;
         }

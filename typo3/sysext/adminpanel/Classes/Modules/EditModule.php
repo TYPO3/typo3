@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Frontend\AdminPanel;
+namespace TYPO3\CMS\Adminpanel\Modules;
 
 /*
  * This file is part of the TYPO3 CMS project.

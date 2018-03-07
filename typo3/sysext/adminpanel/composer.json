@@ -1,0 +1,49 @@
+{
+	"name": "typo3/cms-adminpanel",
+	"type": "typo3-cms-framework",
+	"description": "The TYPO3 admin panel provides a panel with additional functionality in the frontend (Debugging, Caching, Preview...)",
+	"homepage": "https://typo3.org",
+	"license": ["GPL-2.0-or-later"],
+	"authors": [{
+			"name": "TYPO3 Core Team",
+			"email": "typo3cms@typo3.org",
+			"role": "Developer"
+		}],
+
+	"require": {
+		"typo3/cms-core": "9.2.*@dev",
+		"typo3/cms-frontend": "9.2.*@dev"
+	},
+	"conflict": {
+		"typo3/cms": "*"
+	},
+	"replace": {
+		"adminpanel": "*"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "9.2.x-dev"
+		},
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			},
+			"extension-key": "adminpanel"
+		},
+		"typo3/class-alias-loader": {
+			"class-alias-maps": [
+				"Migrations/Code/ClassAliasMap.php"
+			]
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Adminpanel\\": "Classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Adminpanel\\Tests\\": "Tests/"
+		}
+	}
+}

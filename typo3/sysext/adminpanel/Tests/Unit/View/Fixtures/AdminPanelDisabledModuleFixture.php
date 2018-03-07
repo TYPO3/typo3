@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace TYPO3\CMS\Frontend\Tests\Unit\View\Fixtures;
+namespace TYPO3\CMS\Adminpanel\Tests\Unit\View\Fixtures;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,9 +14,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\View\Fixtures;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Frontend\AdminPanel\AdminPanelModuleInterface;
+use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
 
-class AdminPanelEnabledShownOnSubmitInitializeModuleFixture implements AdminPanelModuleInterface
+class AdminPanelDisabledModuleFixture implements AdminPanelModuleInterface
 {
 
     /**
@@ -67,7 +67,7 @@ class AdminPanelEnabledShownOnSubmitInitializeModuleFixture implements AdminPane
      */
     public function initializeModule(): void
     {
-        throw new \RuntimeException('initialized.', 1519999273);
+        throw new \RuntimeException('I should not be initialized.', 1519999375);
     }
 
     /**
@@ -81,7 +81,7 @@ class AdminPanelEnabledShownOnSubmitInitializeModuleFixture implements AdminPane
      */
     public function isEnabled(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -117,7 +117,6 @@ class AdminPanelEnabledShownOnSubmitInitializeModuleFixture implements AdminPane
      */
     public function onSubmit(array $input): void
     {
-        throw new \RuntimeException('Catch me if you can!', 1519997815);
     }
 
     /**

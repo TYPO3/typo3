@@ -77,6 +77,7 @@
 		"typo3/class-alias-loader": {
 			"always-add-alias-loader": true,
 			"class-alias-maps": [
+				"typo3/sysext/adminpanel/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/backend/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/core/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/documentation/Migrations/Code/ClassAliasMap.php",
@@ -98,6 +99,7 @@
 	],
 	"replace": {
 		"typo3/cms-about": "self.version",
+		"typo3/cms-adminpanel": "self.version",
 		"typo3/cms-backend": "self.version",
 		"typo3/cms-belog": "self.version",
 		"typo3/cms-beuser": "self.version",
@@ -143,6 +145,7 @@
 	"autoload": {
 		"psr-4": {
 			"TYPO3\\CMS\\About\\": "typo3/sysext/about/Classes/",
+			"TYPO3\\CMS\\Adminpanel\\": "typo3/sysext/adminpanel/Classes/",
 			"TYPO3\\CMS\\Backend\\": "typo3/sysext/backend/Classes/",
 			"TYPO3\\CMS\\Belog\\": "typo3/sysext/belog/Classes/",
 			"TYPO3\\CMS\\Beuser\\": "typo3/sysext/beuser/Classes/",
@@ -190,6 +193,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
+			"TYPO3\\CMS\\Adminpanel\\Tests\\": "typo3/sysext/adminpanel/Tests/",
 			"TYPO3\\CMS\\Backend\\Tests\\": "typo3/sysext/backend/Tests/",
 			"TYPO3\\CMS\\Belog\\Tests\\": "typo3/sysext/belog/Tests/",
 			"TYPO3\\CMS\\Beuser\\Tests\\": "typo3/sysext/beuser/Tests/",

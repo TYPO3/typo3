@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Feedit;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Adminpanel\View\AdminPanelView;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -21,7 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\View\AdminPanelView;
 
 /**
  * View class for the edit panels in frontend editing.

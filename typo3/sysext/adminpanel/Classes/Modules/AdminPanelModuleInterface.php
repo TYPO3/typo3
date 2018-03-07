@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
-namespace TYPO3\CMS\Frontend\Tests\Unit\View\Fixtures;
+
+namespace TYPO3\CMS\Adminpanel\Modules;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,11 +15,14 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\View\Fixtures;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Frontend\AdminPanel\AdminPanelModuleInterface;
 
-class AdminPanelDisabledModuleFixture implements AdminPanelModuleInterface
+/**
+ * Interface for admin panel modules registered via EXTCONF
+ *
+ * @internal until API is stable
+ */
+interface AdminPanelModuleInterface
 {
-
     /**
      * Additional JavaScript code for this module
      * (you should only use vanilla JS here, as you cannot
@@ -26,20 +30,14 @@ class AdminPanelDisabledModuleFixture implements AdminPanelModuleInterface
      *
      * @return string
      */
-    public function getAdditionalJavaScriptCode(): string
-    {
-        return '';
-    }
+    public function getAdditionalJavaScriptCode(): string;
 
     /**
      * Module content as rendered HTML
      *
      * @return string
      */
-    public function getContent(): string
-    {
-        return '';
-    }
+    public function getContent(): string;
 
     /**
      * Identifier for this module,
@@ -47,28 +45,19 @@ class AdminPanelDisabledModuleFixture implements AdminPanelModuleInterface
      *
      * @return string
      */
-    public function getIdentifier(): string
-    {
-        return '';
-    }
+    public function getIdentifier(): string;
 
     /**
      * Module label
      *
      * @return string
      */
-    public function getLabel(): string
-    {
-        return '';
-    }
+    public function getLabel(): string;
 
     /**
      * Initialize the module - runs early in a TYPO3 request
      */
-    public function initializeModule(): void
-    {
-        throw new \RuntimeException('I should not be initialized.', 1519999375);
-    }
+    public function initializeModule(): void;
 
     /**
      * Module is enabled
@@ -79,10 +68,7 @@ class AdminPanelDisabledModuleFixture implements AdminPanelModuleInterface
      *
      * @return bool
      */
-    public function isEnabled(): bool
-    {
-        return false;
-    }
+    public function isEnabled(): bool;
 
     /**
      * Module is open
@@ -91,10 +77,7 @@ class AdminPanelDisabledModuleFixture implements AdminPanelModuleInterface
      *
      * @return bool
      */
-    public function isOpen(): bool
-    {
-        return true;
-    }
+    public function isOpen(): bool;
 
     /**
      * Module is shown
@@ -103,10 +86,7 @@ class AdminPanelDisabledModuleFixture implements AdminPanelModuleInterface
      *
      * @return bool
      */
-    public function isShown(): bool
-    {
-        return true;
-    }
+    public function isShown(): bool;
 
     /**
      * Executed on saving / submit of the configuration form
@@ -115,17 +95,12 @@ class AdminPanelDisabledModuleFixture implements AdminPanelModuleInterface
      *
      * @param array $input
      */
-    public function onSubmit(array $input): void
-    {
-    }
+    public function onSubmit(array $input): void;
 
     /**
      * Does this module need a form submit?
      *
      * @return bool
      */
-    public function showFormSubmitButton(): bool
-    {
-        return true;
-    }
+    public function showFormSubmitButton(): bool;
 }

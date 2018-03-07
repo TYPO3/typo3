@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
-namespace TYPO3\CMS\Frontend\Tests\Unit\View;
+
+namespace TYPO3\CMS\Adminpanel\Tests\Unit\View;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,17 +16,18 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Adminpanel\Tests\Unit\View\Fixtures\AdminPanelDisabledModuleFixture;
+use TYPO3\CMS\Adminpanel\Tests\Unit\View\Fixtures\AdminPanelEnabledShownOnSubmitInitializeModuleFixture;
+use TYPO3\CMS\Adminpanel\View\AdminPanelView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Tests\Unit\View\Fixtures\AdminPanelDisabledModuleFixture;
-use TYPO3\CMS\Frontend\Tests\Unit\View\Fixtures\AdminPanelEnabledShownOnSubmitInitializeModuleFixture;
-use TYPO3\CMS\Frontend\View\AdminPanelView;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class AdminPanelViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AdminPanelViewTest extends UnitTestCase
 {
     public function setUp()
     {
@@ -41,10 +43,10 @@ class AdminPanelViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function initializeCallsOnSubmitIfInputVarsAreSet()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['frontend']['adminPanelModules'] = [
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] = [
             'fixtureOnSubmit' => [
-                'module' => AdminPanelEnabledShownOnSubmitInitializeModuleFixture::class
-            ]
+                'module' => AdminPanelEnabledShownOnSubmitInitializeModuleFixture::class,
+            ],
         ];
 
         $postVars = ['preview_showFluidDebug' => '1'];
@@ -60,14 +62,14 @@ class AdminPanelViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function initializeCallsInitializeModulesForEnabledModules()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['frontend']['adminPanelModules'] = [
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] = [
             'enabledModule' => [
-                'module' => AdminPanelEnabledShownOnSubmitInitializeModuleFixture::class
+                'module' => AdminPanelEnabledShownOnSubmitInitializeModuleFixture::class,
             ],
             'disabledModule' => [
                 'module' => AdminPanelDisabledModuleFixture::class,
-                'before' => ['enabledModule']
-            ]
+                'before' => ['enabledModule'],
+            ],
         ];
 
         $this->expectExceptionCode(1519999273);

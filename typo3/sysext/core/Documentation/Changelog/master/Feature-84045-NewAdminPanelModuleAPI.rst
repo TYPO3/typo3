@@ -17,17 +17,17 @@ A new API has been introduced, providing more flexible options to add custom mod
 Impact
 ======
 
-Custom admin panel modules can now be registered via `$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['frontend']['adminPanelModules']`.
+Custom admin panel modules can now be registered via `$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules']`.
 
 .. code-block:: php
 
-	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['frontend']['adminPanelModules']['yourmodulename'] = [
+	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules']['yourmodulename'] = [
 	    'module' => \Vendor\Package\AdminPanel\YourModule::class,
 	    'after' => ['preview']
 	]
 
-To implement a custom module your module class has to implement the `\TYPO3\CMS\Frontend\AdminPanel\AdminPanelModuleInterface`.
+To implement a custom module your module class has to implement the `\TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface`.
 
-Be aware that the `\TYPO3\CMS\Frontend\AdminPanel\AdminPanelModuleInterface` is not final yet and may change until v9 LTS.
+Be aware that the `\TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface` is not final yet and may change until v9 LTS.
 
 .. index:: Frontend, PHP-API, ext:frontend

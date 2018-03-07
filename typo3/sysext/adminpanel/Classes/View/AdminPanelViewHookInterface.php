@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\View;
+namespace TYPO3\CMS\Adminpanel\View;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -25,7 +25,7 @@ interface AdminPanelViewHookInterface
      * Extend the adminPanel
      *
      * @param string $moduleContent Content of the admin panel
-     * @param \TYPO3\CMS\Frontend\View\AdminPanelView $obj The adminPanel object
+     * @param \TYPO3\CMS\Adminpanel\View\AdminPanelView $obj The adminPanel object
      * @return string Returns content of admin panel
      */
     public function extendAdminPanel($moduleContent, AdminPanelView $obj);
