@@ -197,7 +197,7 @@ class ArrayUtility
                 $value = $value[$segment];
             } else {
                 // Throw specific exception if there is no such path
-                throw new MissingArrayPathException('Segment ' . $segment . ' of path ' . $path . ' does not exist in array', 1341397869);
+                throw new MissingArrayPathException('Segment ' . $segment . ' of path ' . implode($delimiter, $path) . ' does not exist in array', 1341397869);
             }
         }
         return $value;
