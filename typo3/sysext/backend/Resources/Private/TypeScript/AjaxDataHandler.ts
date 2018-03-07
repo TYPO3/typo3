@@ -12,6 +12,8 @@
  */
 
 import {SeverityEnum} from './Enum/Severity';
+import MessageInterface from './AjaxDataHandler/MessageInterface';
+import ResponseInterface from './AjaxDataHandler/ResponseInterface';
 import * as $ from 'jquery';
 import Icons = require('./Icons');
 import Modal = require('./Modal');
@@ -22,18 +24,6 @@ enum Identifiers {
   hide = '.t3js-record-hide',
   delete = '.t3js-record-delete',
   icon = '.t3js-icon'
-}
-
-interface Message {
-  title: string;
-  message: string;
-  severity: SeverityEnum;
-}
-
-interface Response {
-  redirect: string;
-  messages: Array<Message>;
-  hasErrors: boolean;
 }
 
 /**
@@ -63,7 +53,7 @@ class AjaxDataHandler {
    * @returns {JQueryPromise<any>}
    */
   public process(parameters: Object): JQueryPromise<any> {
-    return this._call(parameters).done((result: Response): void => {
+    return this._call(parameters).done((result: ResponseInterface): void => {
       if (result.hasErrors) {
         this.handleErrors(result);
       }
@@ -83,7 +73,7 @@ class AjaxDataHandler {
       this._showSpinnerIcon($iconElement);
 
       // make the AJAX call to toggle the visibility
-      this._call(params).done((result: Response): void => {
+      this._call(params).done((result: ResponseInterface): void => {
         // print messages on errors
         if (result.hasErrors) {
           this.handleErrors(result);
@@ -193,7 +183,7 @@ class AjaxDataHandler {
     this._showSpinnerIcon($iconElement);
 
     // make the AJAX call to toggle the visibility
-    this._call(params).done((result: Response): void => {
+    this._call(params).done((result: ResponseInterface): void => {
       // revert to the old class
       Icons.getIcon('actions-edit-delete', Icons.sizes.small).done((icon: string): void => {
         $iconElement = $anchorElement.find(Identifiers.icon);
@@ -237,8 +227,8 @@ class AjaxDataHandler {
    *
    * @param {Object} result
    */
-  private handleErrors(result: Response): void {
-    $.each(result.messages, (position: number, message: Message): void => {
+  private handleErrors(result: ResponseInterface): void {
+    $.each(result.messages, (position: number, message: MessageInterface): void => {
       Notification.error(message.title, message.message);
     });
   }
