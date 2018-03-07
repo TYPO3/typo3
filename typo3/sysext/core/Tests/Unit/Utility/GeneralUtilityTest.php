@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 /*
@@ -17,6 +18,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
+use Prophecy\Argument;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
@@ -241,7 +246,11 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'Target key and string input data' => ['lie', 'cake', ['cake' => 'lie']],
             'Replace existing GET data' => ['lie', 'cake', ['cake' => 'lie'], ['cake' => 'is a lie']],
             'Target key pointing to sublevels and string input data' => ['lie', 'cake|is', ['cake' => ['is' => 'lie']]],
-            'Target key pointing to sublevels and array input data' => [['a' => 'lie'], 'cake|is', ['cake' => ['is' => ['a' => 'lie']]]]
+            'Target key pointing to sublevels and array input data' => [
+                ['a' => 'lie'],
+                'cake|is',
+                ['cake' => ['is' => ['a' => 'lie']]]
+            ]
         ];
     }
 
@@ -263,7 +272,10 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             '/8 subnet' => ['127.0.0.1', '127.1.1.1/8'],
             '/32 subnet (match only name)' => ['127.0.0.1', '127.0.0.1/32'],
             '/30 subnet' => ['10.10.3.1', '10.10.3.3/30'],
-            'host with wildcard in list with IPv4/IPv6 addresses' => ['192.168.1.1', '127.0.0.1, 1234:5678::/126, 192.168.*'],
+            'host with wildcard in list with IPv4/IPv6 addresses' => [
+                '192.168.1.1',
+                '127.0.0.1, 1234:5678::/126, 192.168.*'
+            ],
             'host in list with IPv4/IPv6 addresses' => ['192.168.1.1', '::1, 1234:5678::/126, 192.168.1.1'],
         ];
     }
@@ -377,7 +389,10 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         return [
             'empty 1' => ['::', str_pad('', 16, "\x00")],
             'empty 2, already normalized' => ['0000:0000:0000:0000:0000:0000:0000:0000', str_pad('', 16, "\x00")],
-            'already normalized' => ['0102:0304:0000:0000:0000:0000:0506:0078', "\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78"],
+            'already normalized' => [
+                '0102:0304:0000:0000:0000:0000:0506:0078',
+                "\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78"
+            ],
             'expansion in middle 1' => ['1::2', "\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02"],
             'expansion in middle 2' => ['beef::fefa', "\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa"],
         ];
@@ -565,8 +580,14 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public static function cmpFqdnInvalidDataProvider()
     {
         return [
-            'num-parts of hostname to check can only be less or equal than hostname, 1' => ['aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.ddd.eee.fff'],
-            'num-parts of hostname to check can only be less or equal than hostname, 2' => ['aaa.bbb.ccc.ddd.eee', 'aaa.*.bbb.ccc.ddd.eee']
+            'num-parts of hostname to check can only be less or equal than hostname, 1' => [
+                'aaa.bbb.ccc.ddd.eee',
+                'aaa.bbb.ccc.ddd.eee.fff'
+            ],
+            'num-parts of hostname to check can only be less or equal than hostname, 2' => [
+                'aaa.bbb.ccc.ddd.eee',
+                'aaa.*.bbb.ccc.ddd.eee'
+            ]
         ];
     }
 
@@ -667,7 +688,10 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'List contains removeme multiple times nothing else 2x' => ['removeme,removeme', ''],
             'List contains removeme multiple times nothing else 3x' => ['removeme,removeme,removeme', ''],
             'List contains removeme multiple times nothing else 4x' => ['removeme,removeme,removeme,removeme', ''],
-            'List contains removeme multiple times nothing else 5x' => ['removeme,removeme,removeme,removeme,removeme', ''],
+            'List contains removeme multiple times nothing else 5x' => [
+                'removeme,removeme,removeme,removeme,removeme',
+                ''
+            ],
         ];
     }
 
@@ -964,8 +988,16 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'Empty string is not changed' => ['', false, ''],
             'Normal string is not changed' => ['The cake is a lie √', false, 'The cake is a lie √'],
             'String with single quotes' => ['The \'cake\' is a lie', false, 'The \\\'cake\\\' is a lie'],
-            'String with single quotes and backslashes - just escape single quotes' => ['The \\\'cake\\\' is a lie', false, 'The \\\\\'cake\\\\\' is a lie'],
-            'String with single quotes and backslashes - escape both' => ['The \\\'cake\\\' is a lie', true, 'The \\\\\\\'cake\\\\\\\' is a lie']
+            'String with single quotes and backslashes - just escape single quotes' => [
+                'The \\\'cake\\\' is a lie',
+                false,
+                'The \\\\\'cake\\\\\' is a lie'
+            ],
+            'String with single quotes and backslashes - escape both' => [
+                'The \\\'cake\\\' is a lie',
+                true,
+                'The \\\\\\\'cake\\\\\\\' is a lie'
+            ]
         ];
     }
 
@@ -1337,7 +1369,6 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      * @dataProvider trimExplodeReturnsCorrectResultDataProvider
-     *
      * @param string $delimiter
      * @param string $testString
      * @param bool $removeEmpty
@@ -1486,7 +1517,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'Hello all   together     all      there all       all   are  all    none',
                 true,
                 5,
-                ['Hello', 'together', 'there', 'are' , 'none']
+                ['Hello', 'together', 'there', 'are', 'none']
             ],
             'can use words as delimiter and do not remove empty' => [
                 'all  there',
@@ -1528,7 +1559,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'Helloall  theretogether  all  there    all  there    are   all  there     none',
                 true,
                 4,
-                ['Hello', 'together', 'are' , 'none']
+                ['Hello', 'together', 'are', 'none']
             ],
             'can use new line as delimiter' => [
                 LF,
@@ -1681,8 +1712,14 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         return [
             'hostname without port matching' => ['lolli.did.this', '.*\.did\.this'],
             'other hostname without port matching' => ['helmut.did.this', '.*\.did\.this'],
-            'two different hostnames without port matching 1st host' => ['helmut.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
-            'two different hostnames without port matching 2nd host' => ['lolli.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
+            'two different hostnames without port matching 1st host' => [
+                'helmut.is.secure',
+                '(helmut\.is\.secure|lolli\.is\.secure)'
+            ],
+            'two different hostnames without port matching 2nd host' => [
+                'lolli.is.secure',
+                '(helmut\.is\.secure|lolli\.is\.secure)'
+            ],
             'hostname with port matching' => ['lolli.did.this:42', '.*\.did\.this:42'],
             'hostnames are case insensitive 1' => ['lolli.DID.this:42', '.*\.did.this:42'],
             'hostnames are case insensitive 2' => ['lolli.did.this:42', '.*\.DID.this:42'],
@@ -1697,10 +1734,22 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         return [
             'hostname without port' => ['lolli.did.this', 'helmut\.did\.this'],
             'hostname with port, but port not allowed' => ['lolli.did.this:42', 'helmut\.did\.this'],
-            'two different hostnames in pattern but host header starts with different value #1' => ['sub.helmut.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
-            'two different hostnames in pattern but host header starts with different value #2' => ['sub.lolli.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
-            'two different hostnames in pattern but host header ends with different value #1' => ['helmut.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'],
-            'two different hostnames in pattern but host header ends with different value #2' => ['lolli.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'],
+            'two different hostnames in pattern but host header starts with different value #1' => [
+                'sub.helmut.is.secure',
+                '(helmut\.is\.secure|lolli\.is\.secure)'
+            ],
+            'two different hostnames in pattern but host header starts with different value #2' => [
+                'sub.lolli.is.secure',
+                '(helmut\.is\.secure|lolli\.is\.secure)'
+            ],
+            'two different hostnames in pattern but host header ends with different value #1' => [
+                'helmut.is.secure.tld',
+                '(helmut\.is\.secure|lolli\.is\.secure)'
+            ],
+            'two different hostnames in pattern but host header ends with different value #2' => [
+                'lolli.is.secure.tld',
+                '(helmut\.is\.secure|lolli\.is\.secure)'
+            ],
         ];
     }
 
@@ -1813,12 +1862,16 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param bool $isAllowed
      * @param string $serverPort
      * @param string $ssl
-     *
      * @test
      * @dataProvider serverNamePatternDataProvider
      */
-    public function isAllowedHostHeaderValueWorksCorrectlyWithWithServerNamePattern($httpHost, $serverName, $isAllowed, $serverPort = '80', $ssl = 'Off')
-    {
+    public function isAllowedHostHeaderValueWorksCorrectlyWithWithServerNamePattern(
+        $httpHost,
+        $serverName,
+        $isAllowed,
+        $serverPort = '80',
+        $ssl = 'Off'
+    ) {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME;
         $_SERVER['SERVER_NAME'] = $serverName;
         $_SERVER['SERVER_PORT'] = $serverPort;
@@ -2277,7 +2330,9 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function unlink_tempfileReturnsNullIfFileDoesNotExist()
     {
-        $returnValue = GeneralUtility::unlink_tempfile(PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('i_do_not_exist'));
+        $returnValue = GeneralUtility::unlink_tempfile(
+            PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('i_do_not_exist')
+        );
         $this->assertNull($returnValue);
     }
 
@@ -2620,11 +2675,14 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $_GET = [];
         $GLOBALS['HTTP_GET_VARS'] = [];
         GeneralUtility::_GETset(['key1' => 'value1', 'key2' => 'value2'], 'parentKey|childKey');
-        $this->assertEquals([
-            'parentKey' => [
-                'childKey' => ['key1' => 'value1', 'key2' => 'value2']
-            ]
-        ], $GLOBALS['HTTP_GET_VARS']);
+        $this->assertEquals(
+            [
+                'parentKey' => [
+                    'childKey' => ['key1' => 'value1', 'key2' => 'value2']
+                ]
+            ],
+            $GLOBALS['HTTP_GET_VARS']
+        );
     }
 
     ///////////////////////////
@@ -2658,7 +2716,9 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
-        $minifyHookMock->expects($this->once())->method('minify')->will($this->returnCallback([$this, 'isMinifyJavaScriptHookCalledCallback']));
+        $minifyHookMock->expects($this->once())->method('minify')->will(
+            $this->returnCallback([$this, 'isMinifyJavaScriptHookCalledCallback'])
+        );
         GeneralUtility::minifyJavaScript('foo');
     }
 
@@ -2695,7 +2755,9 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
-        $minifyHookMock->expects($this->any())->method('minify')->will($this->returnCallback([$this, 'minifyJavaScriptErroneousCallback']));
+        $minifyHookMock->expects($this->any())->method('minify')->will(
+            $this->returnCallback([$this, 'minifyJavaScriptErroneousCallback'])
+        );
         $error = '';
         GeneralUtility::minifyJavaScript('string to compress', $error);
         $this->assertSame('Error minifying java script: foo', $error);
@@ -2719,7 +2781,9 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
-        $minifyHookMock->expects($this->any())->method('minify')->will($this->returnCallback([$this, 'minifyJavaScriptErroneousCallback']));
+        $minifyHookMock->expects($this->any())->method('minify')->will(
+            $this->returnCallback([$this, 'minifyJavaScriptErroneousCallback'])
+        );
         $this->expectException(\RuntimeException::class);
         GeneralUtilityMinifyJavaScriptFixture::minifyJavaScript('string to compress');
     }
@@ -2751,7 +2815,9 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $this->markTestSkipped('Function posix_getegid() not available, fixPermissionsSetsGroup() tests skipped');
         }
         if (posix_getegid() === -1) {
-            $this->markTestSkipped('The fixPermissionsSetsGroup() is not available on Mac OS because posix_getegid() always returns -1 on Mac OS.');
+            $this->markTestSkipped(
+                'The fixPermissionsSetsGroup() is not available on Mac OS because posix_getegid() always returns -1 on Mac OS.'
+            );
         }
         // Create and prepare test file
         $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -3092,7 +3158,9 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         }
         $groups = posix_getgroups();
         if (count($groups) <= 1) {
-            $this->markTestSkipped($methodName . '() test cannot be done when the web server user is only member of 1 group.');
+            $this->markTestSkipped(
+                $methodName . '() test cannot be done when the web server user is only member of 1 group.'
+            );
             return false;
         }
         $secondaryGroups = array_diff($groups, [posix_getegid()]);
@@ -3125,6 +3193,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * Data provider for mkdirDeepCreatesDirectoryWithDoubleSlashes.
+     *
      * @return array
      */
     public function mkdirDeepCreatesDirectoryWithAndWithoutDoubleSlashesDataProvider()
@@ -3264,7 +3333,9 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function mkdirDeepCreatesDirectoryInVfsStream()
     {
         if (!class_exists('org\\bovigo\\vfs\\vfsStreamWrapper')) {
-            $this->markTestSkipped('mkdirDeepCreatesDirectoryInVfsStream() test not available with this phpunit version.');
+            $this->markTestSkipped(
+                'mkdirDeepCreatesDirectoryInVfsStream() test not available with this phpunit version.'
+            );
         }
         vfsStreamWrapper::register();
         $baseDirectory = $this->getUniqueId('test_');
@@ -3582,7 +3653,16 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $this->assertSame(
             array_values(GeneralUtility::getFilesInDir($vfsStreamUrl, '', false)),
-            ['.secret.txt', 'double.setup.typoscript', 'excludeMe.txt', 'test.css', 'test.js', 'testA.txt', 'testB.txt', 'testC.txt']
+            [
+                '.secret.txt',
+                'double.setup.typoscript',
+                'excludeMe.txt',
+                'test.css',
+                'test.js',
+                'testA.txt',
+                'testB.txt',
+                'testC.txt'
+            ]
         );
     }
 
@@ -3821,7 +3901,11 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $actualQuoted = GeneralUtility::unQuoteFilenames($source);
         $actualUnquoted = GeneralUtility::unQuoteFilenames($source, true);
         $this->assertEquals($expectedQuoted, $actualQuoted, 'The exploded command does not match the expected');
-        $this->assertEquals($expectedUnquoted, $actualUnquoted, 'The exploded and unquoted command does not match the expected');
+        $this->assertEquals(
+            $expectedUnquoted,
+            $actualUnquoted,
+            'The exploded and unquoted command does not match the expected'
+        );
     }
 
     ///////////////////////////////
@@ -3925,7 +4009,10 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'consecutive ../' => ['dir1/dir2/dir3/../../../dir4', 'dir4'],
             'distrubuted ../ with trailing /' => ['dir1/../dir2/dir3/../', 'dir2/'],
             'distributed ../ without trailing /' => ['dir1/../dir2/dir3/..', 'dir2'],
-            'multiple distributed and consecutive ../ together' => ['dir1/dir2/dir3/dir4/../../dir5/dir6/dir7/../dir8/', 'dir1/dir2/dir5/dir6/dir8/'],
+            'multiple distributed and consecutive ../ together' => [
+                'dir1/dir2/dir3/dir4/../../dir5/dir6/dir7/../dir8/',
+                'dir1/dir2/dir5/dir6/dir8/'
+            ],
             'dirname with leading ..' => ['dir1/..dir2/dir3/', 'dir1/..dir2/dir3/'],
             'dirname with trailing ..' => ['dir1/dir2../dir3/', 'dir1/dir2../dir3/'],
             'more times upwards than downwards in directory' => ['dir1/../../', '../'],
@@ -4027,9 +4114,21 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function makeInstancePassesParametersToConstructor()
     {
-        $instance = GeneralUtility::makeInstance(TwoParametersConstructorFixture::class, 'one parameter', 'another parameter');
-        $this->assertEquals('one parameter', $instance->constructorParameter1, 'The first constructor parameter has not been set.');
-        $this->assertEquals('another parameter', $instance->constructorParameter2, 'The second constructor parameter has not been set.');
+        $instance = GeneralUtility::makeInstance(
+            TwoParametersConstructorFixture::class,
+            'one parameter',
+            'another parameter'
+        );
+        $this->assertEquals(
+            'one parameter',
+            $instance->constructorParameter1,
+            'The first constructor parameter has not been set.'
+        );
+        $this->assertEquals(
+            'another parameter',
+            $instance->constructorParameter2,
+            'The second constructor parameter has not been set.'
+        );
     }
 
     /**
@@ -4039,7 +4138,10 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         GeneralUtilityFixture::resetFinalClassNameCache();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = ['className' => ReplacementClassFixture::class];
-        $this->assertInstanceOf(ReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
+        $this->assertInstanceOf(
+            ReplacementClassFixture::class,
+            GeneralUtility::makeInstance(OriginalClassFixture::class)
+        );
     }
 
     /**
@@ -4050,7 +4152,10 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         GeneralUtilityFixture::resetFinalClassNameCache();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = ['className' => ReplacementClassFixture::class];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][ReplacementClassFixture::class] = ['className' => OtherReplacementClassFixture::class];
-        $this->assertInstanceOf(OtherReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
+        $this->assertInstanceOf(
+            OtherReplacementClassFixture::class,
+            GeneralUtility::makeInstance(OriginalClassFixture::class)
+        );
     }
 
     /**
@@ -4245,8 +4350,16 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         GeneralUtility::addInstance($className, $instance1);
         $instance2 = new $className();
         GeneralUtility::addInstance($className, $instance2);
-        $this->assertSame($instance1, GeneralUtility::makeInstance($className), 'The first returned instance does not match the first added instance.');
-        $this->assertSame($instance2, GeneralUtility::makeInstance($className), 'The second returned instance does not match the second added instance.');
+        $this->assertSame(
+            $instance1,
+            GeneralUtility::makeInstance($className),
+            'The first returned instance does not match the first added instance.'
+        );
+        $this->assertSame(
+            $instance2,
+            GeneralUtility::makeInstance($className),
+            'The second returned instance does not match the second added instance.'
+        );
     }
 
     /**
@@ -4267,17 +4380,40 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getFileAbsFileNameDateprovider()
     {
         return [
-            'typo3/sysext/core/Resources/Public/Icons/Extension.png' => ['typo3/sysext/core/Resources/Public/Icons/Extension.png', PATH_site . 'typo3/sysext/core/Resources/Public/Icons/Extension.png'],
-            'sysext/core/Resources/Public/Icons/Extension.png' => ['sysext/core/Resources/Public/Icons/Extension.png', PATH_site . 'sysext/core/Resources/Public/Icons/Extension.png'],
-            './typo3/sysext/core/Resources/Public/Icons/Extension.png' => ['./typo3/sysext/core/Resources/Public/Icons/Extension.png', PATH_site . './typo3/sysext/core/Resources/Public/Icons/Extension.png'],
+            'typo3/sysext/core/Resources/Public/Icons/Extension.png' => [
+                'typo3/sysext/core/Resources/Public/Icons/Extension.png',
+                PATH_site . 'typo3/sysext/core/Resources/Public/Icons/Extension.png'
+            ],
+            'sysext/core/Resources/Public/Icons/Extension.png' => [
+                'sysext/core/Resources/Public/Icons/Extension.png',
+                PATH_site . 'sysext/core/Resources/Public/Icons/Extension.png'
+            ],
+            './typo3/sysext/core/Resources/Public/Icons/Extension.png' => [
+                './typo3/sysext/core/Resources/Public/Icons/Extension.png',
+                PATH_site . './typo3/sysext/core/Resources/Public/Icons/Extension.png'
+            ],
             'fileadmin/foo.txt' => ['fileadmin/foo.txt', PATH_site . 'fileadmin/foo.txt'],
             './fileadmin/foo.txt' => ['./fileadmin/foo.txt', PATH_site . './fileadmin/foo.txt'],
-            '../sysext/core/Resources/Public/Icons/Extension.png' => ['../sysext/core/Resources/Public/Icons/Extension.png', ''],
+            '../sysext/core/Resources/Public/Icons/Extension.png' => [
+                '../sysext/core/Resources/Public/Icons/Extension.png',
+                ''
+            ],
             '../fileadmin/foo.txt' => ['../fileadmin/foo.txt', ''],
-            'PATH_site . ../sysext/core/Resources/Public/Icons/Extension.png' => [PATH_site . '../sysext/core/Resources/Public/Icons/Extension.png', ''],
+            'PATH_site . ../sysext/core/Resources/Public/Icons/Extension.png' => [
+                PATH_site .
+                '../sysext/core/Resources/Public/Icons/Extension.png',
+                ''
+            ],
             'PATH_site . fileadmin/foo.txt' => [PATH_site . 'fileadmin/foo.txt', PATH_site . 'fileadmin/foo.txt'],
-            'PATH_site . typo3/sysext/core/Resources/Public/Icons/Extension.png' => [PATH_site . 'typo3/sysext/core/Resources/Public/Icons/Extension.png', PATH_site . 'typo3/sysext/core/Resources/Public/Icons/Extension.png'],
-            'EXT:foo/Resources/Public/Icons/Extension.png' => ['EXT:foo/Resources/Public/Icons/Extension.png', PATH_site . 'typo3/sysext/foo/Resources/Public/Icons/Extension.png']
+            'PATH_site . typo3/sysext/core/Resources/Public/Icons/Extension.png' => [
+                PATH_site .
+                'typo3/sysext/core/Resources/Public/Icons/Extension.png',
+                PATH_site . 'typo3/sysext/core/Resources/Public/Icons/Extension.png'
+            ],
+            'EXT:foo/Resources/Public/Icons/Extension.png' => [
+                'EXT:foo/Resources/Public/Icons/Extension.png',
+                PATH_site . 'typo3/sysext/foo/Resources/Public/Icons/Extension.png'
+            ]
         ];
     }
 
@@ -4572,9 +4708,14 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function callUserFunctionCanCallFunction()
     {
         $inputData = ['foo' => 'bar'];
-        $result = GeneralUtility::callUserFunction(function () {
-            return 'Worked fine';
-        }, $inputData, $this, '');
+        $result = GeneralUtility::callUserFunction(
+            function () {
+                return 'Worked fine';
+            },
+            $inputData,
+            $this,
+            ''
+        );
         $this->assertEquals('Worked fine', $result);
     }
 
@@ -4602,7 +4743,11 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function callUserFunctionCanPrefixFuncNameWithFilePath()
     {
         $inputData = ['foo' => 'bar'];
-        $result = GeneralUtility::callUserFunction('typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php:TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\GeneralUtilityTest->user_calledUserFunction', $inputData, $this);
+        $result = GeneralUtility::callUserFunction(
+            'typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php:TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\GeneralUtilityTest->user_calledUserFunction',
+            $inputData,
+            $this
+        );
         $this->assertEquals('Worked fine', $result);
     }
 
@@ -4612,8 +4757,16 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function callUserFunctionCanPersistObjectsBetweenCalls()
     {
         $inputData = ['called' => []];
-        GeneralUtility::callUserFunction('&TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\\GeneralUtilityTest->user_calledUserFunctionCountCallers', $inputData, $this);
-        GeneralUtility::callUserFunction('&TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\\GeneralUtilityTest->user_calledUserFunctionCountCallers', $inputData, $this);
+        GeneralUtility::callUserFunction(
+            '&TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\\GeneralUtilityTest->user_calledUserFunctionCountCallers',
+            $inputData,
+            $this
+        );
+        GeneralUtility::callUserFunction(
+            '&TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\\GeneralUtilityTest->user_calledUserFunctionCountCallers',
+            $inputData,
+            $this
+        );
         $this->assertEquals(1, count($inputData['called']));
     }
 
@@ -4648,7 +4801,11 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function callUserFunctionTrimsSpaces()
     {
         $inputData = ['foo' => 'bar'];
-        $result = GeneralUtility::callUserFunction("\t" . self::class . '->user_calledUserFunction ', $inputData, $this);
+        $result = GeneralUtility::callUserFunction(
+            "\t" . self::class . '->user_calledUserFunction ',
+            $inputData,
+            $this
+        );
         $this->assertEquals('Worked fine', $result);
     }
 
@@ -4684,9 +4841,12 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $output = GeneralUtility::array2xml($input);
 
-        $this->assertEquals('<phparray>
+        $this->assertEquals(
+            '<phparray>
 	<el type="array"></el>
-</phparray>', $output);
+</phparray>',
+            $output
+        );
     }
 
     /**
@@ -4817,5 +4977,49 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'joe.doe@xn--dmin-moa0i.de'
             ]
         ];
+    }
+
+    public function splitHeaderLinesDataProvider(): array
+    {
+        return [
+            'one-line, single header' => [
+                ['Content-Security-Policy:default-src \'self\'; img-src https://*; child-src \'none\';'],
+                ['Content-Security-Policy' => 'default-src \'self\'; img-src https://*; child-src \'none\';']
+            ],
+            'one-line, multiple headers' => [
+                [
+                    'Content-Security-Policy:default-src \'self\'; img-src https://*; child-src \'none\';',
+                    'Content-Security-Policy-Report-Only:default-src https:; report-uri /csp-violation-report-endpoint/'
+                ],
+                [
+                    'Content-Security-Policy' => 'default-src \'self\'; img-src https://*; child-src \'none\';',
+                    'Content-Security-Policy-Report-Only' => 'default-src https:; report-uri /csp-violation-report-endpoint/'
+                ]
+            ],
+            'multi-line headers' => [
+                ['Content-Type' => 'multipart/form-data; boundary=something', 'Content-Language' => 'de-DE, en-CA'],
+                ['Content-Type' => 'multipart/form-data; boundary=something', 'Content-Language' => 'de-DE, en-CA'],
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider splitHeaderLinesDataProvider
+     * @param array $headers
+     * @param array $expectedHeaders
+     */
+    public function splitHeaderLines(array $headers, array $expectedHeaders)
+    {
+        $stream = $this->prophesize(StreamInterface::class);
+        $response = $this->prophesize(ResponseInterface::class);
+        $response->getBody()->willReturn($stream);
+        $requestFactory = $this->prophesize(RequestFactory::class);
+        $requestFactory->request(Argument::cetera())->willReturn($response);
+
+        GeneralUtility::addInstance(RequestFactory::class, $requestFactory->reveal());
+        GeneralUtility::getUrl('http://example.com', 0, $headers);
+
+        $requestFactory->request(Argument::any(), Argument::any(), ['headers' => $expectedHeaders])->shouldHaveBeenCalled();
     }
 }
