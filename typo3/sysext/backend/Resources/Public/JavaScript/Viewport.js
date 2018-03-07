@@ -67,7 +67,7 @@ define(
         },
         cleanup: function() {
           $('.t3js-scaffold-modulemenu').removeAttr('style');
-          $('t3js-scaffold-content').removeAttr('style');
+          $('.t3js-scaffold-content').removeAttr('style');
         },
         hide: function() {
           $('.t3js-topbar-button-navigationcomponent').attr('disabled', true);
