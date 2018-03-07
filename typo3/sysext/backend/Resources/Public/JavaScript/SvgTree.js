@@ -422,6 +422,9 @@ define(
           if (_this.settings.showIcons) {
             _this.fetchIcon(n.icon);
             _this.fetchIcon(n.overlayIcon);
+            if (n.locked) {
+              _this.fetchIcon('warning-in-use');
+            }
           }
         });
 
@@ -532,6 +535,12 @@ define(
           nodes
             .select('use.node-icon-overlay')
             .attr('xlink:href', this.getIconOverlayId);
+          nodes
+            .select('use.node-icon-locked')
+            .attr('xlink:href', function (node) {
+              return '#icon-' + (node.locked ? 'warning-in-use' : '');
+            });
+
         }
 
         // dispatch event
@@ -739,6 +748,12 @@ define(
             .on('click', function(node) {
               _this.clickOnIcon(node, this);
             });
+
+          nodeEnter
+            .append('use')
+            .attr('x', 27)
+            .attr('y', -7)
+            .attr('class', 'node-icon-locked');
         }
 
         this.dispatch.call('updateSvg', this, nodeEnter);
@@ -763,7 +778,9 @@ define(
 
         return node
           .append('text')
-          .attr('dx', this.textPosition)
+          .attr('dx', function (node) {
+            return _this.textPosition + (node.locked ? 15 : 0);
+          })
           .attr('dy', 5)
           .attr('class', 'node-name')
           .on('click', function(node) {

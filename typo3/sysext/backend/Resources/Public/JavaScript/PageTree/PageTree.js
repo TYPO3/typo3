@@ -280,11 +280,16 @@ define(['jquery',
 
       _super_.appendTextElement.call(this, node)
         .attr('dx', function(node) {
+          var position = _this.textPosition;
           if (node.stopPageTree && node.depth !== 0) {
-            return _this.textPosition + 15;
+            position += 15;
           }
 
-          return _this.textPosition;
+          if (node.locked) {
+            position += 15;
+          }
+
+          return position;
         })
         .on('click', function(node) {
           if (node.identifier !== 0) {

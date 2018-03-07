@@ -275,10 +275,9 @@ class TreeController
         $lockInfo = BackendUtility::isRecordLocked('pages', $pageId);
         if (is_array($lockInfo)) {
             $tooltip .= ' - ' . $lockInfo['msg'];
-            $prefix = '<span class="typo3-pagetree-status">' . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>';
         }
         if ($this->addIdAsPrefix) {
-            $prefix .= htmlspecialchars('[' . $pageId . '] ');
+            $prefix = htmlspecialchars('[' . $pageId . '] ');
         }
 
         $items = [];
@@ -295,6 +294,7 @@ class TreeController
             'alias' => htmlspecialchars($page['alias'] ?: ''),
             'prefix' => htmlspecialchars($prefix),
             'suffix' => htmlspecialchars($suffix),
+            'locked' => is_array($lockInfo),
             'overlayIcon' => $icon->getOverlayIcon() ? $icon->getOverlayIcon()->getIdentifier() : '',
             'selectable' => true,
             'expanded' => (bool)$expanded,
