@@ -1273,7 +1273,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 continue;
             }
             $hrefInformation = $linkService->resolve($attributes['href']);
-            if ($hrefInformation['type'] === LinkService::TYPE_PAGE) {
+            if ($hrefInformation['type'] === LinkService::TYPE_PAGE && $hrefInformation['pageuid'] !== 'current') {
                 $pageRecord = BackendUtility::getRecord('pages', $hrefInformation['pageuid']);
                 if (!is_array($pageRecord)) {
                     // Page does not exist
