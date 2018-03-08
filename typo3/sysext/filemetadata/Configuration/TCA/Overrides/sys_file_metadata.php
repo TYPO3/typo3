@@ -363,7 +363,7 @@ $tca = [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
-                'eval' => 'date',
+                'eval' => 'date,int',
                 'default' => time()
             ],
         ],
@@ -375,7 +375,7 @@ $tca = [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
-                'eval' => 'date',
+                'eval' => 'date,int',
                 'default' => time()
             ],
         ],
