@@ -54,8 +54,7 @@ class RedirectCacheService
     {
         $redirects = $this->cache->get('redirects');
         if (!is_array($redirects)) {
-            $this->rebuild();
-            $redirects = $this->cache->get('redirects');
+            $redirects = $this->rebuild();
         }
         return $redirects;
     }
@@ -64,7 +63,7 @@ class RedirectCacheService
      * Rebuilds the cache for all redirects, grouped by host and by regular expressions.
      * Does not include deleted redirects, but includes the ones with dynamic starttime/endtime.
      */
-    public function rebuild()
+    public function rebuild(): array
     {
         $redirects = [];
         $this->flush();
@@ -85,6 +84,7 @@ class RedirectCacheService
             }
         }
         $this->cache->set('redirects', $redirects, ['redirects']);
+        return $redirects;
     }
 
     /**
