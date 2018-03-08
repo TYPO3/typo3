@@ -1,10 +1,10 @@
 .. include:: ../../Includes.txt
 
 ==================================================================
-Feature: #54849 - Add button to select all records in EXT:recycler
+Feature: #81310 - Add button to select all records in EXT:recycler
 ==================================================================
 
-See :issue:`54849`
+See :issue:`81310`
 
 Description
 ===========
