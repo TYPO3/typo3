@@ -52,7 +52,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         // Requirement level
         // -1 = not required, but if it exists may be writable or not
         //  0 = not required, if it exists the dir should be writable
-        //  1 = required, don't has to be writable
+        //  1 = required, doesn't have to be writable
         //  2 = required, has to be writable
         $checkWritable = [
             'typo3temp/' => 2,
