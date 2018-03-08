@@ -20,13 +20,14 @@ define([
     'TYPO3/CMS/Install/FlashMessage',
     'TYPO3/CMS/Install/ProgressBar',
     'TYPO3/CMS/Install/InfoBox',
-    'TYPO3/CMS/Install/Severity'
+    'TYPO3/CMS/Install/Severity',
+    'TYPO3/CMS/Backend/Notification'
   ],
-  function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+  function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
     'use strict';
 
     return {
-      selectorGridderOpener: 't3js-upgradeWizards-open',
+      selectorModalBody: '.t3js-modal-body',
       selectorMarkUndoneToken: '#t3js-upgradeWizards-markUndone-token',
       selectorOutputWizardsContainer: '.t3js-upgradeWizards-wizards-output',
       selectorOutputDoneContainer: '.t3js-upgradeWizards-done-output',
@@ -37,17 +38,17 @@ define([
       selectorWizardsBlockingCharsetFix: '.t3js-upgradeWizards-blocking-charset-fix',
       selectorWizardsDoneBodyTemplate: '.t3js-upgradeWizards-done-body-template',
       selectorWizardsDoneRows: '.t3js-upgradeWizards-done-rows',
-      selectorWizardsDoneRowTemplate: '.t3js-upgradeWizards-done-row-template table tbody',
+      selectorWizardsDoneRowTemplate: '.t3js-upgradeWizards-done-row-template table tr',
       selectorWizardsDoneRowMarkUndone: '.t3js-upgradeWizards-done-markUndone',
       selectorWizardsDoneRowTitle: '.t3js-upgradeWizards-done-title',
-      selectorWizardsListTemplate: '.gridder-show .t3js-upgradeWizards-list-template',
+      selectorWizardsListTemplate: '.t3js-upgradeWizards-list-template',
       selectorWizardsListRows: '.t3js-upgradeWizards-list-rows',
-      selectorWizardsListRowTemplate: '.gridder-show .t3js-upgradeWizards-list-row-template',
+      selectorWizardsListRowTemplate: '.t3js-upgradeWizards-list-row-template',
       selectorWizardsListRowTitle: '.t3js-upgradeWizards-list-row-title',
       selectorWizardsListRowExplanation: '.t3js-upgradeWizards-list-row-explanation',
       selectorWizardsListRowExecute: '.t3js-upgradeWizards-list-row-execute',
       selectorWizardsInputToken: '#t3js-upgradeWizards-input-token',
-      selectorWizardsInputTemplate: '.gridder-show .t3js-upgradeWizards-input',
+      selectorWizardsInputTemplate: '.t3js-upgradeWizards-input',
       selectorWizardsInputTitle: '.t3js-upgradeWizards-input-title',
       selectorWizardsInputHtml: '.t3js-upgradeWizards-input-html',
       selectorWizardsInputPerform: '.t3js-upgradeWizards-input-perform',
@@ -55,67 +56,81 @@ define([
 
       loadingMessage: ProgressBar.render(Severity.loading, 'Loading...', ''),
 
-      initialize: function() {
+      initialize: function(currentModal) {
         var self = this;
+        this.currentModal = currentModal;
 
-        // Load main content on first open
-        $(document).on('cardlayout:card-opened', function(event, $card) {
-          if ($card.hasClass(self.selectorGridderOpener) && !$card.data('isInitialized')) {
-            $card.data('isInitialized', true);
-            self.silentUpgrades();
-            self.doneUpgrades();
-          }
-        });
+        self.getData();
+        self.doneUpgrades();
 
         // Mark a done wizard undone
-        $(document).on('click', this.selectorWizardsDoneRowMarkUndone, function(event) {
-          var identifier = $(event.target).data('identifier');
+        currentModal.on('click', this.selectorWizardsDoneRowMarkUndone, function(e) {
+          var identifier = $(e.target).data('identifier');
           self.markUndone(identifier);
         });
 
         // Execute "fix default mysql connection db charset" blocking wizard
-        $(document).on('click', this.selectorWizardsBlockingCharsetFix, function(event) {
+        currentModal.on('click', this.selectorWizardsBlockingCharsetFix, function(e) {
           self.blockingUpgradesDatabaseCharsetFix();
         });
 
         // Execute "add required fields + tables" blocking wizard
-        $(document).on('click', this.selectorWizardsBlockingAddsExecute, function(event) {
+        currentModal.on('click', this.selectorWizardsBlockingAddsExecute, function(e) {
           self.blockingUpgradesDatabaseAddsExecute();
         });
 
         // Get user input of a single upgrade wizard
-        $(document).on('click', this.selectorWizardsListRowExecute, function(event) {
-          var identifier = $(event.target).data('identifier');
+        currentModal.on('click', this.selectorWizardsListRowExecute, function(e) {
+          var identifier = $(e.target).data('identifier');
           self.wizardInput(identifier);
         });
 
         // Execute one upgrade wizard
-        $(document).on('click', this.selectorWizardsInputPerform, function(event) {
-          var identifier = $(event.target).data('identifier');
+        currentModal.on('click', this.selectorWizardsInputPerform, function(e) {
+          var identifier = $(e.target).data('identifier');
           self.wizardExecute(identifier);
+        });
+      },
+
+      getData: function() {
+        var self = this;
+        var modalContent = this.currentModal.find(self.selectorModalBody);
+        $.ajax({
+          url: Router.getUrl('upgradeWizardsGetData'),
+          cache: false,
+          success: function(data) {
+            if (data.success === true) {
+              modalContent.empty().append(data.html);
+              self.silentUpgrades();
+            } else {
+              Notification.error('Something went wrong');
+            }
+          },
+          error: function(xhr) {
+            Router.handleAjaxError(xhr);
+          }
         });
       },
 
       silentUpgrades: function() {
         var self = this;
-        var $outputContainer = $(this.selectorOutputWizardsContainer);
+        var $outputContainer = self.currentModal.find(self.selectorOutputWizardsContainer);
         $outputContainer.empty().html(self.loadingMessage);
         $.ajax({
           url: Router.getUrl('upgradeWizardsSilentUpgrades'),
           cache: false,
           success: function(data) {
-            $outputContainer.empty();
             if (data.success === true && Array.isArray(data.status)) {
               if (data.status.length > 0) {
                 data.status.forEach((function(element) {
                   var message = InfoBox.render(element.severity, element.title, element.message);
                   $outputContainer.append(message);
+                  // Notification.success(element.message);
                 }));
               }
               self.blockingUpgradesDatabaseCharsetTest();
             } else {
-              var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-              $outputContainer.empty().html(message);
+              Notification.error('Something went wrong');
             }
           },
           error: function(xhr) {
@@ -126,8 +141,8 @@ define([
 
       blockingUpgradesDatabaseCharsetTest: function() {
         var self = this;
-        var $outputContainer = $(this.selectorOutputWizardsContainer);
-        var charsetTemplate = $(this.selectorWizardsBlockingCharsetTemplate).html();
+        var modalContent = this.currentModal.find(self.selectorModalBody);
+        var $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
         $outputContainer.append().html(self.loadingMessage);
         $.ajax({
           url: Router.getUrl('upgradeWizardsBlockingDatabaseCharsetTest'),
@@ -136,7 +151,7 @@ define([
             self.removeLoadingMessage($outputContainer);
             if (data.success === true) {
               if (data.needsUpdate === true) {
-                $outputContainer.append($(charsetTemplate).clone());
+                modalContent.find(self.selectorOutputWizardsContainer).append(modalContent.find(self.selectorWizardsBlockingCharsetTemplate)).clone();
               } else {
                 self.blockingUpgradesDatabaseAdds();
               }
@@ -178,8 +193,8 @@ define([
 
       blockingUpgradesDatabaseAdds: function() {
         var self = this;
-        var $outputContainer = $(this.selectorOutputWizardsContainer);
-        var breakingAddsTemplate = $(this.selectorWizardsBlockingAddsTemplate).html();
+        var modalContent = this.currentModal.find(self.selectorModalBody);
+        var $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
         $outputContainer.append().html(self.loadingMessage);
         $.ajax({
           url: Router.getUrl('upgradeWizardsBlockingDatabaseAdds'),
@@ -188,7 +203,7 @@ define([
             self.removeLoadingMessage($outputContainer);
             if (data.success === true) {
               if (data.needsUpdate === true) {
-                var adds = $(breakingAddsTemplate).clone();
+                var adds = modalContent.find(self.selectorWizardsBlockingAddsTemplate).clone();
                 if (typeof(data.adds.tables) === 'object') {
                   data.adds.tables.forEach(function(element) {
                     adds.find(self.selectorWizardsBlockingAddsRows).append('Table: ' + element.table + '<br>');
@@ -204,14 +219,12 @@ define([
                     adds.find(self.selectorWizardsBlockingAddsRows).append('Table: ' + element.table + ', Index: ' + element.index + '<br>');
                   });
                 }
-                $outputContainer.append(adds);
+                modalContent.find(self.selectorOutputWizardsContainer).append(adds);
               } else {
                 self.wizardsList();
               }
             } else {
-              var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-              self.removeLoadingMessage($outputContainer);
-              $outputContainer.append(message);
+              Notification.error('Something went wrong');
             }
           },
           error: function(xhr) {
@@ -222,7 +235,7 @@ define([
 
       blockingUpgradesDatabaseAddsExecute: function() {
         var self = this;
-        var $outputContainer = $(this.selectorOutputWizardsContainer);
+        var $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
         $outputContainer.empty().html(self.loadingMessage);
         $.ajax({
           url: Router.getUrl('upgradeWizardsBlockingDatabaseExecute'),
@@ -251,16 +264,16 @@ define([
 
       wizardsList: function() {
         var self = this;
-        var listTemplate = $(this.selectorWizardsListTemplate);
-        var wizardTemplate = $(this.selectorWizardsListRowTemplate);
-        var $outputContainer = $(this.selectorOutputWizardsContainer);
+        var modalContent = this.currentModal.find(self.selectorModalBody);
+        var $outputContainer = self.currentModal.find(self.selectorOutputWizardsContainer);
         $outputContainer.append(self.loadingMessage);
+
         $.ajax({
           url: Router.getUrl('upgradeWizardsList'),
           cache: false,
           success: function(data) {
             self.removeLoadingMessage($outputContainer);
-            var list = $(listTemplate).clone();
+            var list = modalContent.find(self.selectorWizardsListTemplate).clone();
             list.removeClass('t3js-upgradeWizards-list-template');
             if (data.success === true) {
               var numberOfWizardsTodo = 0;
@@ -269,12 +282,12 @@ define([
                 numberOfWizards = data.wizards.length;
                 data.wizards.forEach(function(element) {
                   if (element.shouldRenderWizard === true) {
-                    var aRow = $(wizardTemplate).clone();
+                    var aRow = modalContent.find(self.selectorWizardsListRowTemplate).clone();
                     numberOfWizardsTodo = numberOfWizardsTodo + 1;
                     aRow.removeClass('t3js-upgradeWizards-list-row-template');
                     aRow.find(self.selectorWizardsListRowTitle).empty().text(element.title);
                     aRow.find(self.selectorWizardsListRowExplanation).empty().text(element.explanation);
-                    aRow.find(self.selectorWizardsListRowExecute).data('identifier', element.identifier);
+                    aRow.find(self.selectorWizardsListRowExecute).attr('data-identifier', element.identifier);
                     list.find(self.selectorWizardsListRows).append(aRow);
                   }
                 });
@@ -289,11 +302,10 @@ define([
                 .attr('aria-valuenow', percent)
                 .find('span')
                 .text(parseInt(percent) + '%');
-              $outputContainer.append(list);
+              modalContent.find(self.selectorOutputWizardsContainer).append(list);
+              self.currentModal.find(self.selectorWizardsDoneRowMarkUndone).prop("disabled", false);
             } else {
-              var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-              self.removeLoadingMessage($outputContainer);
-              $outputContainer.append(message);
+              Notification.error('Something went wrong');
             }
           },
           error: function(xhr) {
@@ -304,8 +316,9 @@ define([
 
       wizardInput: function(identifier) {
         var self = this;
-        var $outputContainer = $(this.selectorOutputWizardsContainer);
-        var inputTemplate = $(this.selectorWizardsInputTemplate);
+        var executeToken = self.currentModal.find(this.selectorWizardsInputToken).text();
+        var modalContent = this.currentModal.find(self.selectorModalBody);
+        var $outputContainer = self.currentModal.find(self.selectorOutputWizardsContainer);
         $outputContainer.empty().html(this.loadingMessage);
         $.ajax({
           url: Router.getUrl(),
@@ -313,14 +326,14 @@ define([
           data: {
             'install': {
               'action': 'upgradeWizardsInput',
-              'token': $(this.selectorWizardsInputToken).text(),
+              'token': executeToken,
               'identifier': identifier
             }
           },
           cache: false,
           success: function(data) {
-            $outputContainer.empty();
-            var input = $(inputTemplate).clone();
+            modalContent.find(self.selectorOutputWizardsContainer).empty();
+            var input = modalContent.find(self.selectorWizardsInputTemplate).clone();
             input.removeClass('t3js-upgradeWizards-input');
             if (data.success === true) {
               if (Array.isArray(data.status)) {
@@ -333,9 +346,9 @@ define([
                 input.find(self.selectorWizardsInputHtml).html(data.userInput.wizardHtml);
               }
               input.find(self.selectorWizardsInputTitle).text(data.userInput.title);
-              input.find(self.selectorWizardsInputPerform).data('identifier', data.userInput.identifier);
+              input.find(self.selectorWizardsInputPerform).attr('data-identifier', data.userInput.identifier);
             }
-            $outputContainer.append(input);
+            modalContent.find(self.selectorOutputWizardsContainer).append(input);
           },
           error: function(xhr) {
             Router.handleAjaxError(xhr);
@@ -345,17 +358,21 @@ define([
 
       wizardExecute: function(identifier) {
         var self = this;
+        var executeToken = self.currentModal.find(this.selectorWizardsExecuteToken).text();
+        var modalContent = this.currentModal.find(self.selectorModalBody);
+        console.log(identifier);
         var postData = {
           'install[action]': 'upgradeWizardsExecute',
-          'install[token]': $(this.selectorWizardsExecuteToken).text(),
+          'install[token]': executeToken,
           'install[identifier]': identifier
         };
-        $($(this.selectorOutputWizardsContainer + ' form').serializeArray()).each(function() {
+        $(self.currentModal.find(this.selectorOutputWizardsContainer + ' form').serializeArray()).each(function() {
           postData[this.name] = this.value;
         });
-        var $outputContainer = $(this.selectorOutputWizardsContainer);
-        var $outputDoneContainer = $(this.selectorOutputDoneContainer);
+        var $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
+        // modalContent.find(self.selectorOutputWizardsContainer).empty();
         $outputContainer.empty().html(this.loadingMessage);
+        self.currentModal.find(self.selectorWizardsDoneRowMarkUndone).prop("disabled", true);
         $.ajax({
           method: 'POST',
           data: postData,
@@ -371,11 +388,10 @@ define([
                 });
               }
               self.wizardsList();
-              $outputDoneContainer.empty();
+              modalContent.find(self.selectorOutputDoneContainer).empty();
               self.doneUpgrades();
             } else {
-              var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-              $outputContainer.empty().html(message);
+              Notification.error('Something went wrong');
             }
           },
           error: function(xhr) {
@@ -386,10 +402,10 @@ define([
 
       doneUpgrades: function() {
         var self = this;
-        var $outputContainer = $(this.selectorOutputDoneContainer);
-        var rowTemplate = $(this.selectorWizardsDoneRowTemplate).html();
-        var bodyTemplate = $(this.selectorWizardsDoneBodyTemplate).html();
-        $outputContainer.append(this.loadingMessage);
+        var modalContent = this.currentModal.find(self.selectorModalBody);
+        var $outputContainer = self.currentModal.find(self.selectorOutputDoneContainer);
+        $outputContainer.empty().html(self.loadingMessage);
+
         $.ajax({
           url: Router.getUrl('upgradeWizardsDoneUpgrades'),
           cache: false,
@@ -402,14 +418,14 @@ define([
                   $outputContainer.append(message);
                 });
               }
-              var body = $(bodyTemplate).clone();
+              var body = modalContent.find(self.selectorWizardsDoneBodyTemplate).clone();
               var hasBodyContent = false;
               var $wizardsDoneContainer = body.find(self.selectorWizardsDoneRows);
               if (Array.isArray(data.wizardsDone) && data.wizardsDone.length > 0) {
                 data.wizardsDone.forEach(function(element) {
                   hasBodyContent = true;
-                  var aRow = $(rowTemplate).clone();
-                  aRow.find(self.selectorWizardsDoneRowMarkUndone).data('identifier', element.identifier);
+                  var aRow = modalContent.find(self.selectorWizardsDoneRowTemplate).clone();
+                  aRow.find(self.selectorWizardsDoneRowMarkUndone).attr('data-identifier', element.identifier);
                   aRow.find(self.selectorWizardsDoneRowTitle).text(element.title);
                   $wizardsDoneContainer.append(aRow);
                 });
@@ -417,19 +433,18 @@ define([
               if (Array.isArray(data.rowUpdatersDone) && data.rowUpdatersDone.length > 0) {
                 data.rowUpdatersDone.forEach(function(element) {
                   hasBodyContent = true;
-                  var aRow = $(rowTemplate).clone();
-                  aRow.find(self.selectorWizardsDoneRowMarkUndone).data('identifier', element.identifier);
+                  var aRow = modalContent.find(self.selectorWizardsDoneRowTemplate).clone();
+                  aRow.find(self.selectorWizardsDoneRowMarkUndone).attr('data-identifier', element.identifier);
                   aRow.find(self.selectorWizardsDoneRowTitle).text(element.title);
                   $wizardsDoneContainer.append(aRow);
                 });
               }
               if (hasBodyContent === true) {
-                $outputContainer.append(body);
+                modalContent.find(self.selectorOutputDoneContainer).append(body);
+                self.currentModal.find(self.selectorWizardsDoneRowMarkUndone).prop("disabled", true);
               }
             } else {
-              var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-              self.removeLoadingMessage($outputContainer);
-              $outputContainer.append(message);
+              Notification.error('Something went wrong');
             }
           },
           error: function(xhr) {
@@ -440,7 +455,9 @@ define([
 
       markUndone: function(identifier) {
         var self = this;
-        var $outputContainer = $(this.selectorOutputDoneContainer);
+        var executeToken = self.currentModal.find(this.selectorMarkUndoneToken).text();
+        var modalContent = this.currentModal.find(self.selectorModalBody);
+        var $outputContainer = this.currentModal.find(this.selectorOutputDoneContainer);
         $outputContainer.empty().html(this.loadingMessage);
         $.ajax({
           url: Router.getUrl(),
@@ -448,23 +465,22 @@ define([
           data: {
             'install': {
               'action': 'upgradeWizardsMarkUndone',
-              'token': $(this.selectorMarkUndoneToken).text(),
+              'token': executeToken,
               'identifier': identifier
             }
           },
           cache: false,
           success: function(data) {
             $outputContainer.empty();
+            modalContent.find(self.selectorOutputDoneContainer).empty();
             if (data.success === true && Array.isArray(data.status)) {
               data.status.forEach(function(element) {
-                var message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.append(message);
+                Notification.success(element.message);
                 self.doneUpgrades();
                 self.blockingUpgradesDatabaseCharsetTest();
               });
             } else {
-              var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-              $outputContainer.empty().html(message);
+              Notification.error('Something went wrong');
             }
           },
           error: function(xhr) {

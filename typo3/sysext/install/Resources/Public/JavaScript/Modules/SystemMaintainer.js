@@ -21,56 +21,55 @@ define([
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification',
   'bootstrap',
   'chosen'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
-    selectorGridderOpener: 't3js-systemMaintainer-open',
+    selectorModalBody: '.t3js-modal-body',
     selectorWriteTrigger: '.t3js-systemMaintainer-write',
     selectorWriteToken: '#t3js-systemMaintainer-write-token',
     selectorOutputContainer: '.t3js-systemMaintainer-output',
     selectorChosenContainer: '.t3js-systemMaintainer-chosen',
     selectorChosenField: '.t3js-systemMaintainer-chosen-select',
+    currentModal: {},
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
-
-      // Get current system maintainer list on card open
-      $(document).on('cardlayout:card-opened', function(event, $card) {
-        if ($card.hasClass(self.selectorGridderOpener)) {
+      this.currentModal = currentModal;
+      var isInIframe = window.location !== window.parent.location;
+      if (isInIframe) {
+        top.require(['TYPO3/CMS/Install/chosen.jquery.min'], function () {
           self.getList();
-        }
-      });
+        });
+      }
+      else {
+        self.getList();
+      }
 
-      $(document).on('click', this.selectorWriteTrigger, function(e) {
+      currentModal.on('click', this.selectorWriteTrigger, function(e) {
         e.preventDefault();
         self.write();
       });
+
     },
 
     getList: function() {
       var self = this;
-      var $chosenContainer = $(this.selectorChosenContainer);
-      var $outputContainer = $(this.selectorOutputContainer);
-      var $chosenField = $(self.selectorChosenField);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.empty().append(message);
-      $chosenContainer.hide();
-      $chosenField.empty();
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       $.ajax({
         url: Router.getUrl('systemMaintainerGetList'),
         cache: false,
         success: function(data) {
           if (data.success === true) {
-            $outputContainer.find('.alert-loading').remove();
             if (Array.isArray(data.status)) {
               data.status.forEach(function(element) {
-                var message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.append(message);
+                Notification.success(element.title, element.message);
               });
             }
+            modalContent.html((data.html));
             if (Array.isArray(data.users)) {
               data.users.forEach(function(element) {
                 var name = element.username;
@@ -81,56 +80,53 @@ define([
                 if (element.isSystemMaintainer) {
                   selected = 'selected="selected"';
                 }
-                $chosenField.append(
+                modalContent.find(self.selectorChosenField).append(
                   '<option value="' + element.uid + '" ' + selected + '>' + name + '</option>'
                 );
               });
             }
             var config = {
-              '.chosen-select': {width: "100%", placeholder_text_multiple: "users"},
-              '.chosen-select-deselect': {allow_single_deselect: true},
-              '.chosen-select-width': {width: "100%"}
+              '.t3js-systemMaintainer-chosen-select': {width: "100%", placeholder_text_multiple: "users"}
             };
+
             for (var selector in config) {
-              $(selector).chosen(config[selector]);
+              modalContent.find(selector).chosen(config[selector]);
             }
-            $chosenContainer.show();
-            $chosenField.trigger('chosen:updated');
+            modalContent.find(self.selectorChosenContainer).show();
+            modalContent.find(self.selectorChosenField).trigger('chosen:updated');
           }
         },
         error: function(xhr) {
           Router.handleAjaxError(xhr);
         }
       });
+
+
     },
 
     write: function() {
-      var $outputContainer = $(this.selectorOutputContainer);
-      var selectedUsers = $(this.selectorChosenField).val();
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.append(message);
+      var self = this;
+      var executeToken = self.currentModal.find(this.selectorWriteToken).text();
+      var selectedUsers = self.currentModal.find(this.selectorChosenField).val();
       $.ajax({
         method: 'POST',
         url: Router.getUrl(),
         data: {
           'install': {
             'users': selectedUsers,
-            'token': $(this.selectorWriteToken).text(),
+            'token': executeToken,
             'action': 'systemMaintainerWrite'
           }
         },
         success: function(data) {
           if (data.success === true) {
-            $outputContainer.find('.alert-loading').remove();
             if (Array.isArray(data.status)) {
               data.status.forEach(function(element) {
-                var message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.empty().append(message);
+                Notification.success(element.title, element.message);
               });
             }
           } else {
-            var message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().html(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {

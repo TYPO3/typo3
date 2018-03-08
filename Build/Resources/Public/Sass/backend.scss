@@ -34,6 +34,11 @@
 @import "bootstrap-datetimepicker";
 
 //
+// Include chosen CSS file
+//
+@import "libs/chosen";
+
+//
 // Image Manipulation Wizard base styles
 //
 @import "cropper/cropper";
@@ -80,6 +85,7 @@
 @import "typo3/main_form";
 @import "typo3/main_new_content_element_wizard";
 @import "typo3/module_database";
+@import "typo3/module_install";
 @import "typo3/module_recycler";
 @import "typo3/module_scheduler";
 @import "typo3/module_tstemplate";

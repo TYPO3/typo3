@@ -21,26 +21,52 @@ define([
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification',
   'bootstrap'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
+    selectorModalBody: '.t3js-modal-body',
     selectorSendToken: '#t3js-mailTest-token',
     selectorForm: '#t3js-mailTest-form',
     selectorEmail: '.t3js-mailTest-email',
     selectorOutputContainer: '.t3js-mailTest-output',
+    currentModal: {},
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
-      $(this.selectorForm).submit(function(e) {
+      this.currentModal = currentModal;
+      this.getData();
+      currentModal.on('submit', this.selectorForm, function(e) {
         e.preventDefault();
         self.send();
       });
     },
 
+    getData: function() {
+      var self = this;
+      var modalContent = this.currentModal.find(self.selectorModalBody);
+      $.ajax({
+        url: Router.getUrl('mailTestGetData'),
+        cache: false,
+        success: function(data) {
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        error: function(xhr) {
+          Router.handleAjaxError(xhr);
+        }
+      });
+    },
+
     send: function() {
-      var $outputContainer = $(this.selectorOutputContainer);
+      var self = this;
+      var executeToken = self.currentModal.find(this.selectorSendToken).text();
+      var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().html(message);
       $.ajax({
@@ -49,8 +75,8 @@ define([
         data: {
           'install': {
             'action': 'mailTest',
-            'token': $(this.selectorSendToken).text(),
-            'email': $('.t3js-mailTest-email').val()
+            'token': executeToken,
+            'email': self.currentModal.find('.t3js-mailTest-email').val()
           }
         },
         cache: false,
@@ -62,14 +88,12 @@ define([
               $outputContainer.html(message);
             });
           } else {
-            var message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().html(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {
           // 500 can happen here if the mail configuration is broken
-          var message = InfoBox.render(Severity.error, 'Please check your mail settings', 'Sending test mail failed');
-          $outputContainer.empty().html(message);
+          Notification.error('Something went wrong');
         }
       });
     }

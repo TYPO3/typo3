@@ -69,6 +69,25 @@ class SettingsController extends AbstractController
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
+    public function changeInstallToolPasswordGetDataAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initializeStandaloneView($request, 'Settings/ChangeInstallToolPassword.html');
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view->assignMultiple([
+            'changeInstallToolPasswordToken' => $formProtection->generateToken('installTool', 'changeInstallToolPassword'),
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
+        ]);
+    }
+
+    /**
+     * Change install tool password
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
     public function changeInstallToolPasswordAction(ServerRequestInterface $request): ResponseInterface
     {
         $password = $request->getParsedBody()['install']['password'] ?? '';
@@ -105,10 +124,17 @@ class SettingsController extends AbstractController
     /**
      * Return a list of possible and active system maintainers
      *
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function systemMaintainerGetListAction(): ResponseInterface
+    public function systemMaintainerGetListAction(ServerRequestInterface $request): ResponseInterface
     {
+        $view = $this->initializeStandaloneView($request, 'Settings/SystemMaintainer.html');
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view->assignMultiple([
+            'systemMaintainerWriteToken' => $formProtection->generateToken('installTool', 'systemMaintainerWrite'),
+        ]);
+
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         // We have to respect the enable fields here by our own because no TCA is loaded
@@ -141,6 +167,7 @@ class SettingsController extends AbstractController
             'success' => true,
             'status' => [],
             'users' => $users,
+            'html' => $view->render(),
         ]);
     }
 
@@ -232,6 +259,7 @@ class SettingsController extends AbstractController
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws \RuntimeException
      */
     public function localConfigurationWriteAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -298,7 +326,7 @@ class SettingsController extends AbstractController
                 $messageBody[] = '\'' . $configurationKey . '\' => \'' . $configurationValue . '\'';
             }
             $messages->enqueue(new FlashMessage(
-                implode('<br>', $messageBody),
+                implode(', ', $messageBody),
                 'Configuration written'
             ));
         } else {
@@ -364,8 +392,8 @@ class SettingsController extends AbstractController
         (new ExtensionConfiguration())->set($extensionKey, '', $nestedConfiguration);
         $messages = [
             new FlashMessage(
-                '',
                 'Successfully saved configuration for extension "' . $extensionKey . '"',
+                '',
                 FlashMessage::OK
             )
         ];

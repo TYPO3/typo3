@@ -170,7 +170,6 @@ class UpgradeController extends AbstractController
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeStandaloneView($request, 'Upgrade/Cards.html');
-        $extensionsInTypo3conf = (new Finder())->directories()->in(PATH_site . 'typo3conf/ext')->depth('== 0')->sortByName();
         $coreUpdateService = GeneralUtility::makeInstance(CoreUpdateService::class);
         $coreVersionService = GeneralUtility::makeInstance(CoreVersionService::class);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
@@ -183,11 +182,6 @@ class UpgradeController extends AbstractController
             'coreUpdateComposerMode' => Environment::isComposerMode(),
             'coreUpdateIsReleasedVersion' => $coreVersionService->isInstalledVersionAReleasedVersion(),
             'coreUpdateIsSymLinkedCore' => is_link(PATH_site . 'typo3_src'),
-
-            'extensionScannerExtensionList' => $extensionsInTypo3conf,
-            'extensionScannerFilesToken' => $formProtection->generateToken('installTool', 'extensionScannerFiles'),
-            'extensionScannerScanFileToken' => $formProtection->generateToken('installTool', 'extensionScannerScanFile'),
-            'extensionScannerMarkFullyScannedRestFilesToken' => $formProtection->generateToken('installTool', 'extensionScannerMarkFullyScannedRestFiles'),
 
             'upgradeWizardsMarkUndoneToken' => $formProtection->generateToken('installTool', 'upgradeWizardsMarkUndone'),
             'upgradeWizardsInputToken' => $formProtection->generateToken('installTool', 'upgradeWizardsInput'),
@@ -241,6 +235,21 @@ class UpgradeController extends AbstractController
         return new JsonResponse([
             'success' => $this->coreUpdateService->downloadVersion($this->coreUpdateGetVersionToHandle($request)),
             'status' => $this->coreUpdateService->getMessages(),
+        ]);
+    }
+
+    /**
+     * Core Update Get Data Action
+     *
+     * @param $request ServerRequestInterface
+     * @return ResponseInterface
+     */
+    public function coreUpdateGetDataAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initializeStandaloneView($request, 'Upgrade/CoreUpdate.html');
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
         ]);
     }
 
@@ -354,13 +363,23 @@ class UpgradeController extends AbstractController
     /**
      * Get list of loaded extensions
      *
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function extensionCompatTesterLoadedExtensionListAction(): ResponseInterface
+    public function extensionCompatTesterLoadedExtensionListAction(ServerRequestInterface $request): ResponseInterface
     {
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view = $this->initializeStandaloneView($request, 'Upgrade/ExtensionCompatTester.html');
+        $view->assignMultiple([
+            'extensionCompatTesterLoadExtLocalconfToken' => $formProtection->generateToken('installTool', 'extensionCompatTesterLoadExtLocalconf'),
+            'extensionCompatTesterLoadExtTablesToken' => $formProtection->generateToken('installTool', 'extensionCompatTesterLoadExtTables'),
+            'extensionCompatTesterUninstallToken' => $formProtection->generateToken('installTool', 'extensionCompatTesterUninstallExtension'),
+        ]);
+
         return new JsonResponse([
             'success' => true,
             'extensions' => array_keys($GLOBALS['TYPO3_LOADED_EXT']),
+            'html' => $view->render(),
         ]);
     }
 
@@ -413,6 +432,7 @@ class UpgradeController extends AbstractController
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws \RuntimeException
      */
     public function extensionCompatTesterUninstallExtensionAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -443,6 +463,29 @@ class UpgradeController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'status' => $messageQueue,
+        ]);
+    }
+
+    /**
+     * Create Extension Scanner Data action
+     *
+     * @param $request ServerRequestInterface
+     * @return ResponseInterface
+     */
+    public function extensionScannerGetDataAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $extensionsInTypo3conf = (new Finder())->directories()->in(PATH_site . 'typo3conf/ext')->depth(0)->sortByName();
+        $view = $this->initializeStandaloneView($request, 'Upgrade/ExtensionScanner.html');
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view->assignMultiple([
+            'extensionScannerExtensionList' => $extensionsInTypo3conf,
+            'extensionScannerFilesToken' => $formProtection->generateToken('installTool', 'extensionScannerFiles'),
+            'extensionScannerScanFileToken' => $formProtection->generateToken('installTool', 'extensionScannerScanFile'),
+            'extensionScannerMarkFullyScannedRestFilesToken' => $formProtection->generateToken('installTool', 'extensionScannerMarkFullyScannedRestFiles'),
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
         ]);
     }
 
@@ -646,10 +689,12 @@ class UpgradeController extends AbstractController
     /**
      * Check if loading ext_tables.php files still changes TCA
      *
+     * @param $request ServerRequestInterface
      * @return ResponseInterface
      */
-    public function tcaExtTablesCheckAction(): ResponseInterface
+    public function tcaExtTablesCheckAction(ServerRequestInterface $request): ResponseInterface
     {
+        $view = $this->initializeStandaloneView($request, 'Upgrade/TcaExtTablesCheck.html');
         $messageQueue = new FlashMessageQueue('install');
         $loadTcaService = GeneralUtility::makeInstance(LoadTcaService::class);
         $loadTcaService->loadExtensionTablesWithoutMigration();
@@ -673,16 +718,19 @@ class UpgradeController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'status' => $messageQueue,
+            'html' => $view->render(),
         ]);
     }
 
     /**
      * Check TCA for needed migrations
      *
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function tcaMigrationsCheckAction(): ResponseInterface
+    public function tcaMigrationsCheckAction(ServerRequestInterface $request): ResponseInterface
     {
+        $view = $this->initializeStandaloneView($request, 'Upgrade/TcaMigrationsCheck.html');
         $messageQueue = new FlashMessageQueue('install');
         GeneralUtility::makeInstance(LoadTcaService::class)->loadExtensionTablesWithoutMigration();
         $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
@@ -698,6 +746,7 @@ class UpgradeController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'status' => $messageQueue,
+            'html' => $view->render(),
         ]);
     }
 
@@ -876,7 +925,8 @@ class UpgradeController extends AbstractController
         $this->loadExtLocalconfDatabaseAndExtTables();
         $upgradeWizardsService = new UpgradeWizardsService();
         $identifier = $request->getParsedBody()['install']['identifier'];
-        $messages = $upgradeWizardsService->executeWizard($identifier);
+        $showDatabaseQueries = (int)$request->getParsedBody()['install']['values']['showDatabaseQueries'];
+        $messages = $upgradeWizardsService->executeWizard($identifier, $showDatabaseQueries);
         return new JsonResponse([
             'success' => true,
             'status' => $messages,
@@ -936,19 +986,39 @@ class UpgradeController extends AbstractController
         $messages = new FlashMessageQueue('install');
         if ($result) {
             $messages->enqueue(new FlashMessage(
-                '',
                 'Wizard has been marked undone'
             ));
         } else {
             $messages->enqueue(new FlashMessage(
-                '',
                 'Wizard has not been marked undone',
+                '',
                 FlashMessage::ERROR
             ));
         }
         return new JsonResponse([
             'success' => true,
             'status' => $messages,
+        ]);
+    }
+
+    /**
+     * Change install tool password
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function upgradeWizardsGetDataAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initializeStandaloneView($request, 'Upgrade/UpgradeWizards.html');
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view->assignMultiple([
+            'upgradeWizardsMarkUndoneToken' => $formProtection->generateToken('installTool', 'upgradeWizardsMarkUndone'),
+            'upgradeWizardsInputToken' => $formProtection->generateToken('installTool', 'upgradeWizardsInput'),
+            'upgradeWizardsExecuteToken' => $formProtection->generateToken('installTool', 'upgradeWizardsExecute'),
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
         ]);
     }
 

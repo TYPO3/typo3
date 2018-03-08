@@ -15,6 +15,11 @@ $grid-float-breakpoint: $screen-md-min;
 @import "minimal";
 
 //
+// Components
+//
+@import "component/modal";
+
+//
 // Include chosen CSS file
 //
 @import "libs/chosen";
@@ -27,10 +32,14 @@ $grid-float-breakpoint: $screen-md-min;
 //
 // Include elements
 //
-
 @import "typo3/element_docheader";
 @import "typo3/element_message";
 @import "typo3/element_table";
+
+//
+// Include modules
+//
+@import "typo3/module_install";
 
 body.backend .module {
     background: $gray-lighter;
@@ -107,32 +116,6 @@ h1:first-child {
     &-functions,
     &-buttons {
         min-height: 20px;
-    }
-}
-
-.item {
-    margin: 1em;
-    border: 1px solid $panel-default-heading-bg;
-}
-
-.item .item-heading {
-    padding: 1em;
-    background-color: $panel-default-heading-bg;
-}
-
-.item .item-body {
-    padding: 1em;
-}
-
-.list-group-item {
-    a {
-        display: block;
-    }
-
-    &.active {
-        a {
-            color: #fff;
-        }
     }
 }
 
@@ -297,145 +280,8 @@ hr {
     }
 }
 
-@mixin panel-risk-levels($high-color, $medium-color) {
-    &.risk-high > .panel-heading {
-        background: $high-color;
-        color: $gray-lighter;
-    }
-
-    &.risk-medium > .panel-heading {
-        background: $medium-color;
-        color: $gray-darker;
-    }
-
-    &.risk-low > .panel-heading {
-        background: white;
-        color: $gray-darker;
-    }
-}
-
 a[data-toggle="collapse"] {
     text-decoration: none;
-}
-
-.panel-group-flat,
-.panel-group-rst {
-    .panel-body {
-        padding-right: 0;
-    }
-}
-
-.panel-flat,
-.panel-rst,
-.panel-version {
-    border: 0;
-    border-left: 2px solid $gray-light;
-    border-radius: 0;
-    margin: 0;
-
-    .panel-collapse {
-        position: relative;
-    }
-
-    &.panel-default .panel-heading {
-        background: $gray-lighter;
-    }
-
-    &.panel-breaking,
-    &.panel-danger {
-        @include panel-variant($brand-danger, #fff, $brand-danger, $brand-danger);
-        @include panel-risk-levels($brand-danger, lighten($brand-danger, 40));
-
-        .panel-progress .panel-progress-bar {
-            background-color: $brand-danger;
-        }
-
-        .label {
-            @include label-variant($label-danger-bg);
-        }
-    }
-
-    &.panel-deprecation,
-    &.panel-warning {
-        @include panel-variant($brand-warning, #fff, $brand-warning, $brand-warning);
-        @include panel-risk-levels($brand-warning, lighten($brand-warning, 30));
-
-        .panel-progress .panel-progress-bar {
-            background-color: $brand-warning;
-        }
-
-        .label {
-            @include label-variant($label-warning-bg);
-        }
-    }
-
-    &.panel-feature,
-    &.panel-success {
-        @include panel-variant($brand-success, #fff, $brand-success, $brand-success);
-        @include panel-risk-levels($brand-success, lighten($brand-success, 40));
-
-        .panel-progress .panel-progress-bar {
-            background-color: $brand-success;
-        }
-
-        .label {
-            @include label-variant($label-success-bg);
-        }
-    }
-
-    &.panel-important,
-    &.panel-info {
-        @include panel-variant($brand-info, #fff, $brand-info, $brand-info);
-        @include panel-risk-levels($brand-info, lighten($brand-info, 30));
-
-        .panel-progress .panel-progress-bar {
-            background-color: $brand-info;
-        }
-
-        .label {
-            @include label-variant($label-info-bg);
-        }
-    }
-
-    .panel-heading {
-        position: relative;
-
-        a.link-action {
-            cursor: pointer;
-        }
-
-        strong {
-            line-height: 1.5em;
-        }
-    }
-
-    .rst-tags {
-        position: absolute;
-        top: 0.75em;
-        right: 1em;
-
-        .label {
-            margin: 0 0.25em;
-
-            &:first-child {
-                margin-left: 0;
-            }
-
-            &:last-child {
-                margin-right: 0;
-            }
-        }
-    }
-
-    pre {
-        margin: 0;
-        border-radius: 0;
-        border: 0;
-        border-top: 1px solid $gray-light;
-        white-space: pre-wrap;
-        word-break: normal;
-        word-wrap: normal;
-    }
 }
 
 .upgrade_analysis_item_to_filter pre a {

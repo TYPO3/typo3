@@ -21,39 +21,37 @@ define([
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification',
   'bootstrap'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
-    selectorGridderOpener: 't3js-localConfiguration-open',
+    selectorModalBody: '.t3js-modal-body',
     selectorToggleAllTrigger: '.t3js-localConfiguration-toggleAll',
     selectorWriteTrigger: '.t3js-localConfiguration-write',
     selectorSearchTrigger: '.t3js-localConfiguration-search',
     selectorWriteToken: '#t3js-localConfiguration-write-token',
     selectorContentContainer: '.t3js-localConfiguration-content',
     selectorOutputContainer: '.t3js-localConfiguration-output',
+    currentModal: {},
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
-
-      // Get configuration list on card open
-      $(document).on('cardlayout:card-opened', function(event, $card) {
-        if ($card.hasClass(self.selectorGridderOpener)) {
-          self.getContent();
-        }
-      });
+      this.currentModal = currentModal;
+      self.getContent();
 
       // Write out new settings
-      $(document).on('click', this.selectorWriteTrigger, function() {
+      currentModal.on('click', this.selectorWriteTrigger, function() {
         self.write();
       });
 
       // Expand / collapse "Toggle all" button
-      $(document).on('click', this.selectorToggleAllTrigger, function() {
-        var $panels = $('.t3js-localConfiguration .panel-collapse');
-        var action = ($panels.eq(0).hasClass('in')) ? 'hide' : 'show';
-        $panels.collapse(action);
+      currentModal.on('click', this.selectorToggleAllTrigger, function() {
+        var modalContent = self.currentModal.find(self.selectorModalBody);
+        var panels = modalContent.find('.panel-collapse');
+        var action = (panels.eq(0).hasClass('in')) ? 'hide' : 'show';
+        panels.collapse(action);
       });
 
       // Make jquerys "contains" work case-insensitive
@@ -64,8 +62,8 @@ define([
       });
 
       // Focus search field on certain user interactions
-      $(document).on('keydown', function(e) {
-        var $searchInput = $(self.selectorSearchTrigger);
+      currentModal.on('keydown', function(e) {
+        var $searchInput = currentModal.find(self.selectorSearchTrigger);
         if (e.ctrlKey || e.metaKey) {
           // Focus search field on ctrl-f
           switch (String.fromCharCode(e.which).toLowerCase()) {
@@ -82,10 +80,10 @@ define([
       });
 
       // Perform expand collapse on search matches
-      $(document).on('keyup', this.selectorSearchTrigger, function() {
-        var typedQuery = $(this).val();
-        var $searchInput = $(self.selectorSearchTrigger);
-        $('div.item').each(function() {
+      currentModal.on('keyup', this.selectorSearchTrigger, function(e) {
+        var typedQuery = $(e.target).val();
+        var $searchInput = currentModal.find((self.selectorSearchTrigger));
+        currentModal.find('div.item').each(function() {
           var $item = $(this);
           if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
             $item.removeClass('hidden').addClass('searchhit');
@@ -93,7 +91,7 @@ define([
             $item.removeClass('searchhit').addClass('hidden');
           }
         });
-        $('.searchhit').parent().collapse('show');
+        currentModal.find('.searchhit').parent().collapse('show');
         self.handleButtonScrolling();
         // Make search field clearable
         require(['jquery.clearable'], function() {
@@ -101,29 +99,22 @@ define([
           $searchInput.clearable().focus();
         });
       });
-
-      // Trigger fixed button calculation on collapse / expand
-      $(document).on('shown.bs.collapse', '.gridder-show .collapse', function() {
-        self.handleButtonScrolling();
-      });
-      $(document).on('hidden.bs.collapse', '.gridder-show .collapse', function() {
-        self.handleButtonScrolling();
-      });
     },
 
     getContent: function() {
-      var outputContainer = $(this.selectorContentContainer);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      outputContainer.empty().html(message);
+      var self = this;
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       $.ajax({
         url: Router.getUrl('localConfigurationGetContent'),
         cache: false,
         success: function(data) {
-          if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
-            outputContainer.empty().append(data.html);
-          } else {
-            var message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            outputContainer.empty().append(message);
+          if (data.success === true) {
+            if (Array.isArray(data.status)) {
+              data.status.forEach(function(element) {
+                Notification.success(element.title, element.message);
+              });
+            }
+            modalContent.html(data.html);
           }
         },
         error: function(xhr) {
@@ -133,8 +124,10 @@ define([
     },
 
     write: function() {
+      var self = this;
+      var executeToken = self.currentModal.find(this.selectorWriteToken).text();
       var configurationValues = {};
-      $('.gridder-show .t3js-localConfiguration-pathValue').each(function(i, element) {
+      self.currentModal.find('.t3js-localConfiguration-pathValue').each(function(i, element) {
         var $element = $(element);
         if ($element.attr('type') === 'checkbox') {
           if (element.checked) {
@@ -146,30 +139,24 @@ define([
           configurationValues[$element.data('path')] = $element.val();
         }
       });
-      var $outputContainer = $(this.selectorOutputContainer);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.empty().html(message);
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',
         data: {
           'install': {
             'action': 'localConfigurationWrite',
-            'token': $(this.selectorWriteToken).text(),
+            'token': executeToken,
             'configurationValues': configurationValues
           }
         },
         cache: false,
         success: function(data) {
-          $outputContainer.empty();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach(function(element) {
-              var message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.append(message);
+              Notification.showMessage(element.title, element.message, element.severity);
             });
           } else {
-            var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().html(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {

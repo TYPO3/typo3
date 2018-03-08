@@ -74,12 +74,49 @@ class EnvironmentController extends AbstractController
     }
 
     /**
-     * Get environment status
+     * System Information Get Data action
      *
+     * @param $request ServerRequestInterface
      * @return ResponseInterface
      */
-    public function environmentCheckGetStatusAction(): ResponseInterface
+    public function systemInformationGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
+        $view = $this->initializeStandaloneView($request, 'Environment/SystemInformation.html');
+        $view->assignMultiple([
+            'systemInformationCgiDetected', GeneralUtility::isRunningOnCgiServerApi(),
+            'systemInformationDatabaseConnections' => $this->getDatabaseConnectionInformation(),
+            'systemInformationOperatingSystem' => TYPO3_OS === 'WIN' ? 'Windows' : 'Unix',
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
+        ]);
+    }
+
+    /**
+     * System Information Get Data action
+     *
+     * @param $request ServerRequestInterface
+     * @return ResponseInterface
+     */
+    public function phpInfoGetDataAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initializeStandaloneView($request, 'Environment/PhpInfo.html');
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
+        ]);
+    }
+
+    /**
+     * Get environment status
+     *
+     * @param $request ServerRequestInterface
+     * @return ResponseInterface
+     */
+    public function environmentCheckGetStatusAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initializeStandaloneView($request, 'Environment/EnvironmentCheck.html');
         $messageQueue = new FlashMessageQueue('install');
         $checkMessages = (new Check())->getStatus();
         foreach ($checkMessages as $message) {
@@ -102,16 +139,19 @@ class EnvironmentController extends AbstractController
                 'information' => $messageQueue->getAllMessages(FlashMessage::INFO),
                 'notice' => $messageQueue->getAllMessages(FlashMessage::NOTICE),
             ],
+            'html' => $view->render(),
         ]);
     }
 
     /**
      * Get folder structure status
      *
+     * @param $request ServerRequestInterface
      * @return ResponseInterface
      */
-    public function folderStructureGetStatusAction(): ResponseInterface
+    public function folderStructureGetStatusAction(ServerRequestInterface $request): ResponseInterface
     {
+        $view = $this->initializeStandaloneView($request, 'Environment/FolderStructure.html');
         $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
         $structureFacade = $folderStructureFactory->getStructure();
 
@@ -136,6 +176,7 @@ class EnvironmentController extends AbstractController
             'okStatus' => $okQueue,
             'folderStructureFilePermissionStatus' => $permissionCheck->getMaskStatus('fileCreateMask'),
             'folderStructureDirectoryPermissionStatus' => $permissionCheck->getMaskStatus('folderCreateMask'),
+            'html' => $view->render(),
         ]);
     }
 
@@ -152,6 +193,26 @@ class EnvironmentController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'fixedStatus' => $fixedStatusObjects,
+        ]);
+    }
+
+    /**
+     * System Information Get Data action
+     *
+     * @param $request ServerRequestInterface
+     * @return ResponseInterface
+     */
+    public function mailTestGetDataAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initializeStandaloneView($request, 'Environment/MailTest.html');
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view->assignMultiple([
+            'mailTestToken' => $formProtection->generateToken('installTool', 'mailTest'),
+            'mailTestSenderAddress' => $this->getSenderEmailAddress(),
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
         ]);
     }
 
@@ -187,6 +248,31 @@ class EnvironmentController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'status' => $messages,
+        ]);
+    }
+
+    /**
+     * System Information Get Data action
+     *
+     * @param $request ServerRequestInterface
+     * @return ResponseInterface
+     */
+    public function imageProcessingGetDataAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initializeStandaloneView($request, 'Environment/ImageProcessing.html');
+        $view->assignMultiple([
+            'imageProcessingProcessor' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'GraphicsMagick' ? 'GraphicsMagick' : 'ImageMagick',
+            'imageProcessingEnabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'],
+            'imageProcessingPath' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'],
+            'imageProcessingVersion' => $this->determineImageMagickVersion(),
+            'imageProcessingEffects' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_effects'],
+            'imageProcessingGdlibEnabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'],
+            'imageProcessingGdlibPng' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'],
+            'imageProcessingFileFormats' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
         ]);
     }
 

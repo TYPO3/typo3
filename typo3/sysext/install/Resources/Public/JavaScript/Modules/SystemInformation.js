@@ -12,7 +12,7 @@
  */
 
 /**
- * Module: TYPO3/CMS/Install/DumpAutoload
+ * Module: TYPO3/CMS/Install/LanguagePacks
  */
 define([
   'jquery',
@@ -21,36 +21,37 @@ define([
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
-  'TYPO3/CMS/Backend/Notification'
+  'TYPO3/CMS/Backend/Notification',
+  'bootstrap'
 ], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
-    selectorOutputContainer: '.t3js-resetBackendUserUc-output',
+    selectorModalBody: '.t3js-modal-body',
+    currentModal: {},
 
-    initialize: function($trigger) {
+
+    initialize: function(currentModal) {
+      var self = this;
+      this.currentModal = currentModal;
+      self.getData();
+    },
+
+    getData: function() {
+      var self = this;
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       $.ajax({
-        url: Router.getUrl('resetBackendUserUc'),
+        url: Router.getUrl('systemInformationGetData'),
         cache: false,
-        beforeSend: function() {
-          $trigger.addClass('disabled');
-        },
         success: function(data) {
-          if (data.success === true && Array.isArray(data.status)) {
-            if (data.status.length > 0) {
-              data.status.forEach(function(element) {
-                Notification.success(element.message);
-              });
-            }
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
           } else {
-            Notification.error('Something went wrong ...');
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {
           Router.handleAjaxError(xhr);
-        },
-        complete: function() {
-          $trigger.removeClass('disabled');
         }
       });
     }

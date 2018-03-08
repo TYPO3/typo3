@@ -26,9 +26,9 @@ define([
   'use strict';
 
   return {
-    selectorGridderOpener: 't3js-languagePacks-open',
+    selectorModalBody: '.t3js-modal-body',
     selectorOutputContainer: '.t3js-languagePacks-output',
-    selectorContentContainer: '.t3js-languagePacks-content',
+    selectorContentContainer: '.t3js-languagePacks-mainContent',
     selectorActivateLanguage: '.t3js-languagePacks-activateLanguage',
     selectorActivateLanguageToken: '#t3js-languagePacks-activateLanguage-token',
     selectorActivateLanguageIcon: '#t3js-languagePacks-activate-icon',
@@ -42,6 +42,9 @@ define([
     selectorLanguageUpdateIcon: '#t3js-languagePacks-languageUpdate-icon',
     selectorExtensionPackMissesIcon: '#t3js-languagePacks-extensionPack-misses-icon',
     selectorUpdateIsoTimesToken: '#t3js-languagePacks-updateIsoTimes-token',
+    selectorNotifications: '.t3js-languagePacks-notifications',
+
+    currentModal: {},
 
     activeLanguages: [],
     activeExtensions: [],
@@ -54,33 +57,32 @@ define([
       failed: 0
     },
 
-    initialize: function() {
+    notifications: [],
+
+    initialize: function(currentModal) {
       var self = this;
+      this.currentModal = currentModal;
 
-      // Get configuration list on card open
-      $(document).on('cardlayout:card-opened', function(event, $card) {
-        if ($card.hasClass(self.selectorGridderOpener)) {
-          self.getData();
-        }
+      // Get configuration list on modal open
+      self.getData();
+
+      currentModal.on('click', this.selectorAddLanguageToggle, function(e) {
+        currentModal.find(self.selectorContentContainer + ' ' + self.selectorLanguageInactive).toggle();
       });
 
-      $(document).on('click', this.selectorAddLanguageToggle, function(e) {
-        $(document).find(self.selectorContentContainer + ' ' + self.selectorLanguageInactive).toggle();
-      });
-
-      $(document).on('click', this.selectorActivateLanguage, function(e) {
+      currentModal.on('click', this.selectorActivateLanguage, function(e) {
         var iso = $(e.target).closest(self.selectorActivateLanguage).data('iso');
         e.preventDefault();
         self.activateLanguage(iso);
       });
 
-      $(document).on('click', this.selectorDeactivateLanguage, function(e) {
+      currentModal.on('click', this.selectorDeactivateLanguage, function(e) {
         var iso = $(e.target).closest(self.selectorDeactivateLanguage).data('iso');
         e.preventDefault();
         self.deactivateLanguage(iso);
       });
 
-      $(document).on('click', this.selectorUpdate, function(e) {
+      currentModal.on('click', this.selectorUpdate, function(e) {
         var iso = $(e.target).closest(self.selectorUpdate).data('iso');
         var extension = $(e.target).closest(self.selectorUpdate).data('extension');
         e.preventDefault();
@@ -90,9 +92,7 @@ define([
 
     getData: function() {
       var self = this;
-      var contentContainer = $(this.selectorContentContainer);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      contentContainer.empty().html(message);
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       $.ajax({
         url: Router.getUrl('languagePacksGetData'),
         cache: false,
@@ -100,14 +100,18 @@ define([
           if (data.success === true) {
             self.activeLanguages = data.activeLanguages;
             self.activeExtensions = data.activeExtensions;
+            modalContent.empty().append(data.html);
+            var contentContainer = modalContent.parent().find(self.selectorContentContainer);
             contentContainer.empty();
             contentContainer.append(self.languageMatrixHtml(data));
             contentContainer.append(self.extensionMatrixHtml(data));
             $('[data-toggle="tooltip"]').tooltip({container: contentContainer});
           } else {
             var message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            contentContainer.empty().append(message);
+            self.addNotification(message);
           }
+
+          self.renderNotifications();
         },
         error: function(xhr) {
           Router.handleAjaxError(xhr);
@@ -116,9 +120,11 @@ define([
     },
 
     activateLanguage: function(iso) {
-      var $outputContainer = $(this.selectorOutputContainer);
+      var self = this;
+      var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().append(message);
+
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',
@@ -126,21 +132,24 @@ define([
         data: {
           'install': {
             'action': 'languagePacksActivateLanguage',
-            'token': $(this.selectorActivateLanguageToken).text(),
+            'token': self.currentModal.find(this.selectorActivateLanguageToken).text(),
             'iso': iso
           }
         },
         cache: false,
+        beforeSend: function() {
+          self.getNotificationBox().empty();
+        },
         success: function(data) {
           $outputContainer.empty();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach(function(element) {
               var message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.append(message);
+              self.addNotification(message);
             });
           } else {
             var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.append(message);
+            self.addNotification(message);
           }
           this.getData();
         },
@@ -151,7 +160,8 @@ define([
     },
 
     deactivateLanguage: function(iso) {
-      var $outputContainer = $(this.selectorOutputContainer);
+      var self = this;
+      var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().append(message);
       $.ajax({
@@ -161,21 +171,24 @@ define([
         data: {
           'install': {
             'action': 'languagePacksDeactivateLanguage',
-            'token': $(this.selectorDeactivateLanguageToken).text(),
+            'token': self.currentModal.find(this.selectorDeactivateLanguageToken).text(),
             'iso': iso
           }
         },
         cache: false,
+        beforeSend: function() {
+          self.getNotificationBox().empty();
+        },
         success: function(data) {
           $outputContainer.empty();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach(function(element) {
               var message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.append(message);
+              self.addNotification(message);
             });
           } else {
             var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.append(message);
+            self.addNotification(message);
           }
           this.getData();
         },
@@ -187,8 +200,8 @@ define([
 
     updatePacks: function(iso, extension) {
       var self = this;
-      var $outputContainer = $(this.selectorOutputContainer);
-      var $contentContainer = $(this.selectorContentContainer);
+      var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
+      var $contentContainer = this.currentModal.find(this.selectorContentContainer);
       var updateIsoTimes = true;
       var isos = iso === undefined ? this.activeLanguages : [ iso ];
       var extensions = this.activeExtensions;
@@ -223,12 +236,15 @@ define([
             data: {
               'install': {
                 'action': 'languagePacksUpdatePack',
-                'token': $(self.selectorUpdatePackToken).text(),
+                'token': self.currentModal.find(self.selectorUpdatePackToken).text(),
                 'iso': iso,
                 'extension': extension
               }
             },
             cache: false,
+            beforeSend: function() {
+              self.getNotificationBox().empty();
+            },
             success: function(data) {
               if (data.success === true) {
                 self.packsUpdateDetails.handled++;
@@ -258,7 +274,7 @@ define([
 
     packUpdateDone: function(updateIsoTimes, isos) {
       var self = this;
-      var $outputContainer = $(this.selectorOutputContainer);
+      var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       if (this.packsUpdateDetails.handled === this.packsUpdateDetails.toHandle) {
         // All done - create summary, update 'last update' of iso list, render main view
         var message = InfoBox.render(
@@ -268,7 +284,7 @@ define([
           this.packsUpdateDetails.updated + ' language packs updated, ' +
           this.packsUpdateDetails.failed + ' language packs not available'
         );
-        $outputContainer.empty().append(message);
+        this.addNotification(message);
         if (updateIsoTimes === true) {
           $.ajax({
             url: Router.getUrl(),
@@ -277,7 +293,7 @@ define([
             data: {
               'install': {
                 'action': 'languagePacksUpdateIsoTimes',
-                'token': $(self.selectorUpdateIsoTimesToken).text(),
+                'token': self.currentModal.find(self.selectorUpdateIsoTimesToken).text(),
                 'isos': isos
               }
             },
@@ -287,7 +303,7 @@ define([
                 self.getData();
               } else {
                 var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-                $outputContainer.append(message);
+                self.addNotification(message);
               }
             },
             error: function(xhr) {
@@ -309,9 +325,9 @@ define([
     },
 
     languageMatrixHtml: function(data) {
-      var activateIcon = $(this.selectorActivateLanguageIcon).html();
-      var deactivateIcon = $(this.selectorDeactivateLanguageIcon).html();
-      var updateIcon = $(this.selectorLanguageUpdateIcon).html();
+      var activateIcon = this.currentModal.find(this.selectorActivateLanguageIcon).html();
+      var deactivateIcon = this.currentModal.find(this.selectorDeactivateLanguageIcon).html();
+      var updateIcon = this.currentModal.find(this.selectorLanguageUpdateIcon).html();
       var html = '<h3>Active languages</h3>' +
         '<table class="table table-striped table-bordered">' +
         '<thead><tr>' +
@@ -363,8 +379,8 @@ define([
     },
 
     extensionMatrixHtml: function(data) {
-      var packMissesIcon = $(this.selectorExtensionPackMissesIcon).html();
-      var updateIcon = $(this.selectorLanguageUpdateIcon).html();
+      var packMissesIcon = this.currentModal.find(this.selectorExtensionPackMissesIcon).html();
+      var updateIcon = this.currentModal.find(this.selectorLanguageUpdateIcon).html();
       var tooltip = '';
       var extensionTitle = '';
       var allPackagesExist = true;
@@ -423,6 +439,19 @@ define([
         return InfoBox.render(Severity.ok, 'Language packs have been found for every installed extension.', 'To download the latest changes, use the refresh button in the list above.');
       }
       return html;
+    },
+    getNotificationBox: function() {
+      return this.currentModal.find(this.selectorNotifications);
+    },
+    addNotification: function(notification) {
+      this.notifications.push(notification);
+    },
+    renderNotifications: function() {
+      var $notificationBox = this.getNotificationBox();
+      for (var i = 0; i < this.notifications.length; ++i) {
+        $notificationBox.append(this.notifications[i]);
+      }
+      this.notifications = [];
     }
   };
 });

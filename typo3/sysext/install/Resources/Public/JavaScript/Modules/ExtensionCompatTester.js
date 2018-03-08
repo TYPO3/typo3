@@ -21,11 +21,13 @@ define([
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
-  'TYPO3/CMS/Install/Cache'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Cache) {
+  'TYPO3/CMS/Install/Cache',
+  'TYPO3/CMS/Backend/Notification'
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Cache, Notification) {
   'use strict';
 
   return {
+    selectorModalBody: '.t3js-modal-body',
     selectorLoadExtLocalconfToken: '#t3js-extensionCompatTester-loadExtLocalconf-token',
     selectorLoadExtTablesToken: '#t3js-extensionCompatTester-loadExtTables-token',
     selectorUninstallExtensionToken: '#t3js-extensionCompatTester-uninstallExtension-token',
@@ -33,31 +35,35 @@ define([
     selectorUninstallTrigger: '.t3js-extensionCompatTester-uninstall',
     selectorOutputContainer: '.t3js-extensionCompatTester-output',
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
-      $(document).on('click', this.selectorCheckTrigger, function(e) {
-        $(self.selectorUninstallTrigger).hide();
-        $(self.selectorOutputContainer).empty();
+      this.currentModal = currentModal;
+      self.getLoadedExtensionList();
+
+      currentModal.on('click', this.selectorCheckTrigger, function(e) {
+        currentModal.find(self.selectorUninstallTrigger).hide();
+        currentModal.find(self.selectorOutputContainer).empty();
         self.getLoadedExtensionList();
       });
-      $(document).on('click', this.selectorUninstallTrigger, function(e) {
+      currentModal.on('click', this.selectorUninstallTrigger, function(e) {
         self.uninstallExtension($(e.target).data('extension'));
       });
     },
 
     getLoadedExtensionList: function() {
       var self = this;
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       var $outputContainer = $(this.selectorOutputContainer);
-      var $uninstallButton = $(this.selectorUninstallTrigger);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
+      modalContent.append(message);
       $outputContainer.append(message);
       var loadResult = false;
       $.ajax({
         url: Router.getUrl('extensionCompatTesterLoadedExtensionList'),
         cache: false,
         success: function(data) {
+          modalContent.empty().append(data.html);
           if (data.success === true && Array.isArray(data.extensions)) {
-            var extension;
             try {
               data.extensions.forEach(function(extension) {
                 loadResult = self.loadExtLocalconf(extension);
@@ -78,23 +84,21 @@ define([
                   }
                 });
                 message = InfoBox.render(Severity.OK, 'ext_tables.php of all loaded extensions successfully loaded', '');
-                $outputContainer.find('.alert-loading').remove();
-                $outputContainer.append(message);
+                modalContent.append(message);
               } catch (extension) {
                 message = InfoBox.render(Severity.error, 'Loading ext_tables.php of extension "' + extension + '" failed');
-                $outputContainer.find('.alert-loading').remove();
-                $outputContainer.append(message);
-                $uninstallButton.text('Unload extension "' + extension + '"').data('extension', extension).show();
+                modalContent.append(message);
+                modalContent.find(self.selectorUninstallTrigger).text('Unload extension "' + extension + '"').attr('data-extension', extension).show();
               }
             } catch (extension) {
               message = InfoBox.render(Severity.error, 'Loading ext_localconf.php of extension "' + extension + '" failed');
-              $outputContainer.find('.alert-loading').remove();
-              $outputContainer.append(message);
-              $uninstallButton.text('Unload extension "' + extension + '"').data('extension', extension).show();
+              // $outputContainer.find('.alert-loading').remove();
+              // $outputContainer.append(message);
+              modalContent.append(message);
+              modalContent.find(self.selectorUninstallTrigger).text('Unload extension "' + extension + '"').attr('data-extension', extension).show();
             }
           } else {
-            message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().html(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {
@@ -105,6 +109,7 @@ define([
 
     loadExtLocalconf: function(extension) {
       var self = this;
+      var executeToken = self.currentModal.find(this.selectorLoadExtLocalconfToken).text();
       var result = false;
       $.ajax({
         url: Router.getUrl(),
@@ -114,7 +119,7 @@ define([
         data: {
           'install': {
             'action': 'extensionCompatTesterLoadExtLocalconf',
-            'token': $(self.selectorLoadExtLocalconfToken).text(),
+            'token': executeToken,
             'extension': extension
           }
         },
@@ -130,6 +135,7 @@ define([
 
     loadExtTables: function(extension) {
       var self = this;
+      var executeToken = self.currentModal.find(this.selectorLoadExtTablesToken).text();
       var result = false;
       $.ajax({
         url: Router.getUrl(),
@@ -139,7 +145,7 @@ define([
         data: {
           'install': {
             'action': 'extensionCompatTesterLoadExtTables',
-            'token': $(self.selectorLoadExtTablesToken).text(),
+            'token': executeToken,
             'extension': extension
           }
         },
@@ -160,9 +166,12 @@ define([
      */
     uninstallExtension: function(extension) {
       var self = this;
+      var executeToken = self.currentModal.find(self.selectorUninstallExtensionToken).text();
+      var modalContent = self.currentModal.find(self.selectorModalBody);
       var $outputContainer = $(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.append(message);
+      console.log('ExtensionCompatTester.js@174', extension, executeToken);
       $.ajax({
         url: Router.getUrl(),
         cache: false,
@@ -170,7 +179,7 @@ define([
         data: {
           'install': {
             'action': 'extensionCompatTesterUninstallExtension',
-            'token': $(self.selectorUninstallExtensionToken).text(),
+            'token': executeToken,
             'extension': extension
           }
         },
@@ -179,15 +188,14 @@ define([
             if (Array.isArray(data.status)) {
               data.status.forEach(function(element) {
                 var message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.empty().append(message);
+                modalContent.find(self.selectorOutputContainer).empty().append(message);
               });
             }
             $(self.selectorUninstallTrigger).hide();
-            Cache.clearAll();
+            //Cache.clearAll();
             self.getLoadedExtensionList();
           } else {
-            message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().html(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {

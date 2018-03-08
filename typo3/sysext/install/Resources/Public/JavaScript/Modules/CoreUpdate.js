@@ -18,8 +18,9 @@ define([
   'jquery',
   'TYPO3/CMS/Install/Router',
   'TYPO3/CMS/Install/FlashMessage',
-  'TYPO3/CMS/Install/Severity'
-], function($, Router, FlashMessage, Severity) {
+  'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification'
+], function($, Router, FlashMessage, Severity, Notification) {
   'use strict';
 
   return {
@@ -69,6 +70,7 @@ define([
       }
     },
 
+    selectorModalBody: '.t3js-modal-body',
     selectorOutput: '.t3js-coreUpdate-output',
     selectorTemplate: '.t3js-coreUpdate-buttonTemplate',
 
@@ -80,8 +82,11 @@ define([
     /**
      * Fetching the templates out of the DOM
      */
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
+      this.currentModal = currentModal;
+      self.getData();
+
       var buttonTemplateSection = $(self.selectorTemplate);
       this.buttonTemplate = buttonTemplateSection.children().clone();
 
@@ -90,6 +95,25 @@ define([
         var action = $(e.target).data('action');
         $(document).find(self.selectorOutput).empty();
         self[action]();
+      });
+    },
+
+    getData: function() {
+      var self = this;
+      var modalContent = this.currentModal.find(self.selectorModalBody);
+      $.ajax({
+        url: Router.getUrl('coreUpdateGetData'),
+        cache: false,
+        success: function(data) {
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        error: function(xhr) {
+          Router.handleAjaxError(xhr);
+        }
       });
     },
 

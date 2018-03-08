@@ -20,30 +20,37 @@ define([
   'TYPO3/CMS/Install/FlashMessage',
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
-  'TYPO3/CMS/Install/Severity'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+  'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification'
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
+    selectorModalBody: '.t3js-modal-body',
     selectorCheckTrigger: '.t3js-tcaMigrationsCheck-check',
     selectorOutputContainer: '.t3js-tcaMigrationsCheck-output',
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
-      $(document).on('click', this.selectorCheckTrigger, function(e) {
+      this.currentModal = currentModal;
+      self.check();
+      currentModal.on('click',  this.selectorCheckTrigger, function(e) {
         e.preventDefault();
         self.check();
       });
     },
 
     check: function() {
+      var self = this;
       var $outputContainer = $(this.selectorOutputContainer);
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().html(message);
       $.ajax({
         url: Router.getUrl('tcaMigrationsCheck'),
         cache: false,
         success: function(data) {
+          modalContent.empty().append(data.html);
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
               var message = InfoBox.render(
@@ -51,19 +58,19 @@ define([
                 'TCA migrations need to be applied',
                 'Check the following list and apply needed changes.'
               );
-              $outputContainer.empty();
-              $outputContainer.append(message);
+              modalContent.find(self.selectorOutputContainer).empty();
+              modalContent.find(self.selectorOutputContainer).append(message);
               data.status.forEach(function(element) {
                 var message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.append(message);
+                modalContent.find(self.selectorOutputContainer).append(message);
               });
             } else {
               var message = InfoBox.render(Severity.ok, 'No TCA migrations need to be applied', 'Your TCA looks good.');
-              $outputContainer.empty().html(message);
+              modalContent.find(self.selectorOutputContainer).append(message);
             }
           } else {
             var message = FlashMessage.render(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"');
-            $outputContainer.empty().html(message);
+            modalContent.find(self.selectorOutputContainer).append(message);
           }
         },
         error: function(xhr) {

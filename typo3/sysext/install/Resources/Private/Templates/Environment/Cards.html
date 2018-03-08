@@ -1,75 +1,77 @@
 <div>
 	<h1>Environment</h1>
 </div>
-
-<f:alias map="{actions: {
-	0: {partial: 'Environment/SystemInformation',
-		require: '',
-		baseClass: 't3js-system',
-		title: 'Main System Information',
-		category: 'Environment',
-		description: 'Gives a short overview of your system environment, webserver, PHP and database information.'
-	},
-	1: {partial: 'Environment/EnvironmentCheck',
-		require: 'TYPO3/CMS/Install/EnvironmentCheck',
-		baseClass: 't3js-environmentCheck',
-		title: 'Check Environment',
-		category: 'PHP',
-		description: 'Performs various checks if there are problems within the server to have TYPO3 running properly.'
-	},
-	2: {partial: 'Environment/FolderStructure',
-		require: 'TYPO3/CMS/Install/FolderStructure',
-		baseClass: 't3js-folderStructure',
-		title: 'Check Folder Structure',
-		category: 'Permissions',
-		description: 'Analyzes your folder structure by checking the permissions and whether files or folders are missing.'
-	},
-	3: {partial: 'Environment/PhpInfo',
-		require: '',
-		baseClass: 't3js-phpinfo',
-		title: 'PHP Info',
-		category: 'PHP',
-		description: 'Outputs a large amount of information about the current state of PHP.'
-	},
-	4: {partial: 'Environment/MailTest',
-		require: 'TYPO3/CMS/Install/MailTest',
-		baseClass: 't3js-mailTest',
-		title: 'Test Mail Setup',
-		category: 'Mail',
-		description: 'Checks if TYPO3 can send out emails properly by sending a test email.'
-	},
-	5: {partial: 'Environment/ImageProcessing',
-		require: 'TYPO3/CMS/Install/ImageProcessing',
-		baseClass: 't3js-imageProcessing',
-		title: 'Image Processing',
-		category: 'Image Processing',
-		description: 'Creates test images and compares with a reference to ensure that Image Processing works correctly in the current environment.'
-	}
-}}">
-	<div class="gridder">
-		<f:for each="{actions}" as="card" iteration="iterator">
-			<div
-				class="gridder-list {card.baseClass}-open {f:if(condition: '{card.require}', then: 't3js-require')}"
-				{f:if(condition: '{card.require}', then: 'data-require="{card.require}"')}
-			>
-				<div class="gridder-item">
-					<h3>
-						{card.title} <span class="label label-warning {card.baseClass}-badge" style="display:none"></span>
-						<br>
-						<small class="text-muted">{card.category}</small>
-						<br>
-					</h3>
-					<p>{card.description}</p>
-				</div>
-			</div>
-			<div class="gridder-content {f:if(condition: '{card.baseClass}', then: '{card.baseClass}')}">
-				<div class="gridder-padding">
-					<div class="gridder-title clearfix">
-						<h3 class="pull-left">{card.title}</h3>
-					</div>
-					<f:render partial="{card.partial}" arguments="{_all}" />
-				</div>
-			</div>
-		</f:for>
+<div class="card-container">
+	<div class="card card-size-fixed-small">
+		<div class="card-header">
+			<h1 class="card-title">Main System Information</h1>
+			<span class="card-subtitle">Environment</span>
+		</div>
+		<div class="card-content">
+			<p class="card-text">Gives a short overview of your system environment, webserver, PHP and database information.</p>
+		</div>
+		<div class="card-footer">
+			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/SystemInformation">Show System Information</a>
+		</div>
 	</div>
-</f:alias>
+	<div class="card card-size-fixed-small">
+		<div class="card-header">
+			<h1 class="card-title">Check Environment</h1>
+			<span class="card-subtitle">PHP</span>
+		</div>
+		<div class="card-content">
+			<p class="card-text">Performs various checks if there are problems within the server to have TYPO3 running properly.</p>
+		</div>
+		<div class="card-footer">
+			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/EnvironmentCheck">Check Environment</a>
+		</div>
+	</div>
+	<div class="card card-size-fixed-small">
+		<div class="card-header">
+			<h1 class="card-title">Check Folder Structure</h1>
+			<span class="card-subtitle">Permissions</span>
+		</div>
+		<div class="card-content">
+			<p class="card-text">Analyzes your folder structure by checking the permissions and whether files or folders are missing.</p>
+		</div>
+		<div class="card-footer">
+			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/FolderStructure">Check Folder Structure</a>
+		</div>
+	</div>
+	<div class="card card-size-fixed-small">
+		<div class="card-header">
+			<h1 class="card-title">PHP Info</h1>
+			<span class="card-subtitle">PHP</span>
+		</div>
+		<div class="card-content">
+			<p class="card-text">Outputs a large amount of information about the current state of PHP.</p>
+		</div>
+		<div class="card-footer">
+			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/PhpInfo">Show PHP Info</a>
+		</div>
+	</div>
+	<div class="card card-size-fixed-small">
+		<div class="card-header">
+			<h1 class="card-title">Test Mail Setup</h1>
+			<span class="card-subtitle">Mail</span>
+		</div>
+		<div class="card-content">
+			<p class="card-text">Checks if TYPO3 can send out emails properly by sending a test email.</p>
+		</div>
+		<div class="card-footer">
+			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/MailTest">Test Mail Setup</a>
+		</div>
+	</div>
+	<div class="card card-size-fixed-small">
+		<div class="card-header">
+			<h1 class="card-title">Image Processing</h1>
+			<span class="card-subtitle">Image Processing</span>
+		</div>
+		<div class="card-content">
+			<p class="card-text">Creates test images and compares with a reference to ensure that Image Processing works correctly in the current environment.</p>
+		</div>
+		<div class="card-footer">
+			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/ImageProcessing">Test Images</a>
+		</div>
+	</div>
+</div>

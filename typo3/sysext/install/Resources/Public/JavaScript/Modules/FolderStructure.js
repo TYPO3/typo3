@@ -20,11 +20,13 @@ define(['jquery',
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification',
   'bootstrap'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
+    selectorModalBody: '.t3js-modal-body',
     selectorGridderBadge: '.t3js-folderStructure-badge',
     selectorFixTrigger: '.t3js-folderStructure-errors-fix',
     selectorOutputContainer: '.t3js-folderStructure-output',
@@ -34,14 +36,16 @@ define(['jquery',
     selectorOkContainer: '.t3js-folderStructure-ok',
     selectorOkList: '.t3js-folderStructure-ok-list',
     selectorPermissionContainer: '.t3js-folderStructure-permissions',
+    currentModal: {},
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
+      this.currentModal = currentModal;
 
       // Get status on initialize to have the badge and content ready
       self.getStatus();
 
-      $(document).on('click', this.selectorErrorFixTrigger, function(e) {
+      currentModal.on('click', this.selectorErrorFixTrigger, function(e) {
         e.preventDefault();
         self.fix();
       });
@@ -49,54 +53,49 @@ define(['jquery',
 
     getStatus: function() {
       var self = this;
-      var $outputContainer = $(this.selectorOutputContainer);
-      var $errorContainer = $(this.selectorErrorContainer);
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       var $errorBadge = $(this.selectorGridderBadge);
       $errorBadge.text('').hide();
-      var $errorList = $(this.selectorErrorList);
-      var $okContainer = $(this.selectorOkContainer);
-      var $okList = $(this.selectorOkList);
-      var $permissionContainer = $(this.selectorPermissionContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.append(message);
+      modalContent.find(self.selectorOutputContainer).empty().append(message);
       $.ajax({
         url: Router.getUrl('folderStructureGetStatus'),
         cache: false,
         success: function(data) {
-          self.removeLoadingMessage($outputContainer);
+          modalContent.empty().append(data.html);
           if (data.success === true && Array.isArray(data.errorStatus)) {
             var errorCount = 0;
             if (data.errorStatus.length > 0) {
-              $errorContainer.show();
-              $errorList.empty();
+              modalContent.find(self.selectorErrorContainer).show();
+              modalContent.find(self.selectorErrorList).empty();
               data.errorStatus.forEach((function(element) {
                 errorCount += 1;
                 $errorBadge.text(errorCount).show();
                 var message = InfoBox.render(element.severity, element.title, element.message);
-                $errorList.append(message);
+                modalContent.find(self.selectorErrorList).append(message);
               }));
             } else {
-              $errorContainer.hide();
+              modalContent.find(self.selectorErrorContainer).hide();
             }
           }
           if (data.success === true && Array.isArray(data.okStatus)) {
             if (data.okStatus.length > 0) {
-              $okContainer.show();
-              $okList.empty();
+              modalContent.find(self.selectorOkContainer).show();
+              modalContent.find(self.selectorOkList).empty();
               data.okStatus.forEach((function(element) {
                 var message = InfoBox.render(element.severity, element.title, element.message);
-                $okList.append(message);
+                modalContent.find(self.selectorOkList).append(message);
               }));
             } else {
-              $okList.hide();
+              modalContent.find(self.selectorOkContainer).hide();
             }
           }
           var element = data.folderStructureFilePermissionStatus;
           message = InfoBox.render(element.severity, element.title, element.message);
-          $permissionContainer.empty().append(message);
+          modalContent.find(self.selectorPermissionContainer).empty().append(message);
           element = data.folderStructureDirectoryPermissionStatus;
           message = InfoBox.render(element.severity, element.title, element.message);
-          $permissionContainer.append(message);
+          modalContent.find(self.selectorPermissionContainer).append(message);
         },
         error: function(xhr) {
           Router.handleAjaxError(xhr);
@@ -106,7 +105,7 @@ define(['jquery',
 
     fix: function() {
       var self = this;
-      var $outputContainer = $(this.selectorOutputContainer);
+      var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().html(message);
       $.ajax({
@@ -126,8 +125,7 @@ define(['jquery',
             }
             self.getStatus();
           } else {
-            message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().html(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {

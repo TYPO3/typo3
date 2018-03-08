@@ -20,40 +20,57 @@ define(['jquery',
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification',
   'bootstrap'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
-    selectorGridderOpener: 't3js-imageProcessing-open',
+    selectorModalBody: '.t3js-modal-body',
     selectorExecuteTrigger: '.t3js-imageProcessing-execute',
     selectorTestContainer: '.t3js-imageProcessing-twinContainer',
     selectorTwinImageTemplate: '.t3js-imageProcessing-twinImage-template',
     selectorCommandContainer: '.t3js-imageProcessing-command',
     selectorCommandText: '.t3js-imageProcessing-command-text',
     selectorTwinImages: '.t3js-imageProcessing-images',
+    currentModal: {},
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
+      this.currentModal = currentModal;
+      this.getData();
 
-      // Load main content on first open
-      $(document).on('cardlayout:card-opened', function(event, $card) {
-        if ($card.hasClass(self.selectorGridderOpener) && !$card.data('isInitialized')) {
-          $card.data('isInitialized', true);
-          self.runTests();
-        }
-      });
-
-      $(document).on('click', this.selectorExecuteTrigger, function(e) {
+      currentModal.on('click', this.selectorExecuteTrigger, function(e) {
         e.preventDefault();
         self.runTests();
       });
     },
 
+    getData: function() {
+      var self = this;
+      var modalContent = this.currentModal.find(self.selectorModalBody);
+      $.ajax({
+        url: Router.getUrl('imageProcessingGetData'),
+        cache: false,
+        success: function(data) {
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
+            self.runTests();
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        error: function(xhr) {
+          Router.handleAjaxError(xhr);
+        }
+      });
+    },
+
     runTests: function() {
       var self = this;
-      var $twinImageTemplate = $(this.selectorTwinImageTemplate);
-      $(this.selectorTestContainer).each(function() {
+      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var $twinImageTemplate = this.currentModal.find(this.selectorTwinImageTemplate);
+      modalContent.find(this.selectorTestContainer).each(function() {
         var $container = $(this);
         var testType = $container.data('test');
         var message = InfoBox.render(Severity.loading, 'Loading...', '');

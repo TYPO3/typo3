@@ -317,11 +317,11 @@ class UpgradeWizardsService
      * Execute a single update wizard
      *
      * @param string $identifier
-     * @param array $postValues
+     * @param int $showDatabaseQueries
      * @return FlashMessageQueue
      * @throws \RuntimeException
      */
-    public function executeWizard(string $identifier, array $postValues = []): FlashMessageQueue
+    public function executeWizard(string $identifier, int $showDatabaseQueries = null): FlashMessageQueue
     {
         if (empty($identifier)
             || !array_key_exists($identifier, $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])
@@ -333,11 +333,6 @@ class UpgradeWizardsService
         }
         $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
         $updateObject = GeneralUtility::makeInstance($class);
-
-        $wizardData = [
-            'identifier' => $identifier,
-            'title' => $updateObject->getTitle(),
-        ];
 
         $messages = new FlashMessageQueue('install');
         // $wizardInputErrorMessage is given as reference to wizard object!
@@ -357,9 +352,9 @@ class UpgradeWizardsService
             }
 
             // Both variables are used by reference in performUpdate()
-            $customOutput = '';
+            $message = '';
             $databaseQueries = [];
-            $performResult = $updateObject->performUpdate($databaseQueries, $customOutput);
+            $performResult = $updateObject->performUpdate($databaseQueries, $message);
 
             if ($performResult) {
                 $messages->enqueue(new FlashMessage(
@@ -368,17 +363,21 @@ class UpgradeWizardsService
                 ));
             } else {
                 $messages->enqueue(new FlashMessage(
-                    $customOutput,
+                    '',
                     'Update failed!',
                     FlashMessage::ERROR
                 ));
             }
-
-            if ($postValues['values']['showDatabaseQueries'] == 1) {
-                $wizardData['queries'] = $databaseQueries;
+            if ($showDatabaseQueries) {
+                foreach ($databaseQueries as $query) {
+                    $messages->enqueue(new FlashMessage(
+                        $query,
+                        '',
+                        FlashMessage::INFO
+                    ));
+                }
             }
         }
-
         return $messages;
     }
 }

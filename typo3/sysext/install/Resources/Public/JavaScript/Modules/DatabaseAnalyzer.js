@@ -20,57 +20,54 @@ define([
   'TYPO3/CMS/Install/FlashMessage',
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
-  'TYPO3/CMS/Install/Severity'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+  'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification'
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
-    selectorGridderOpener: 't3js-databaseAnalyzer-open',
+
+    selectorModalBody: '.t3js-modal-body',
     selectorAnalyzeTrigger: '.t3js-databaseAnalyzer-analyze',
     selectorExecuteTrigger: '.t3js-databaseAnalyzer-execute',
     selectorOutputContainer: '.t3js-databaseAnalyzer-output',
     selectorSuggestionBlock: '.t3js-databaseAnalyzer-suggestion-block',
     selectorSuggestionLine: '.t3js-databaseAnalyzer-suggestion-line',
+    currentModal: {},
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
-
-      // Load main content on first open
-      $(document).on('cardlayout:card-opened', function(event, $card) {
-        if ($card.hasClass(self.selectorGridderOpener) && !$card.data('isInitialized')) {
-          $card.data('isInitialized', true);
-          self.analyze();
-        }
-      });
+      this.currentModal = currentModal;
+      self.analyzeAjax();
 
       // Select / deselect all checkboxes
-      $(document).on('click', '.t3js-databaseAnalyzer-suggestion-block-checkbox', function() {
+      currentModal.on('click', '.t3js-databaseAnalyzer-suggestion-block-checkbox', function(e) {
         $(this).closest('fieldset').find(':checkbox').prop('checked', this.checked);
       });
-      $(document).on('click', this.selectorAnalyzeTrigger, function(e) {
+      currentModal.on('click', this.selectorAnalyzeTrigger, function(e) {
         e.preventDefault();
         self.analyze();
       });
-      $(document).on('click', this.selectorExecuteTrigger, function(e) {
+      currentModal.on('click', this.selectorExecuteTrigger, function(e) {
         e.preventDefault();
         self.execute();
       });
+
     },
 
     analyze: function() {
-      $(this.selectorOutputContainer).empty();
+      this.currentModal.find(this.selectorOutputContainer).empty();
       this.analyzeAjax();
     },
 
     analyzeAjax: function() {
       var self = this;
-      var $outputContainer = $(this.selectorOutputContainer);
-      var blockTemplate = $(this.selectorSuggestionBlock).html();
-      var lineTemplate = $(this.selectorSuggestionLine).html();
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.append(message);
+      modalContent.find(self.selectorOutputContainer).append(message);
       $(this.selectorExecuteTrigger).prop('disabled', true);
       $(this.selectorAnalyzeTrigger).prop('disabled', true);
+
       $.ajax({
         url: Router.getUrl('databaseAnalyzerAnalyze'),
         cache: false,
@@ -79,13 +76,14 @@ define([
             if (Array.isArray(data.status)) {
               data.status.forEach(function(element) {
                 var message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.find('.alert-loading').remove();
-                $outputContainer.append(message);
+                modalContent.find(self.selectorOutputContainer).find('.alert-loading').remove();
+                modalContent.find(self.selectorOutputContainer).append(message);
               });
             }
+            modalContent.empty().append(data.html);
             if (Array.isArray(data.suggestions)) {
               data.suggestions.forEach(function(element) {
-                var aBlock = $(blockTemplate).clone();
+                var aBlock = modalContent.find(self.selectorSuggestionBlock).clone();
                 var key = element.key;
                 aBlock.find('.t3js-databaseAnalyzer-suggestion-block-legend').text(element.label);
                 aBlock.find('.t3js-databaseAnalyzer-suggestion-block-checkbox').attr('id', 't3-install-' + key + '-checkbox');
@@ -94,10 +92,10 @@ define([
                 }
                 aBlock.find('.t3js-databaseAnalyzer-suggestion-block-label').attr('for', 't3-install-' + key + '-checkbox');
                 element.children.forEach(function(line) {
-                  var aLine = $(lineTemplate).clone();
+                  var aLine = modalContent.find(self.selectorSuggestionLine).clone();
                   var hash = line.hash;
                   aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox').attr('id', 't3-install-db-' + hash);
-                  aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox').data('hash', hash);
+                  aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox').attr('data-hash', hash);
                   if (element.enabled) {
                     aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox').attr('checked', 'checked');
                   }
@@ -113,14 +111,13 @@ define([
                   }
                   aBlock.find('.t3js-databaseAnalyzer-suggestion-block-line').append(aLine);
                 });
-                $outputContainer.append(aBlock);
+                modalContent.find(self.selectorOutputContainer).append(aBlock.html());
               });
-              $(self.selectorExecuteTrigger).prop('disabled', false);
-              $(self.selectorAnalyzeTrigger).prop('disabled', false);
+              self.currentModal.find(self.selectorExecuteTrigger).prop('disabled', false);
+              self.currentModal.find(self.selectorAnalyzeTrigger).prop('disabled', false);
             }
           } else {
-            var message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().html(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {
@@ -131,14 +128,11 @@ define([
 
     execute: function() {
       var self = this;
-      var executeToken = $('#t3js-databaseAnalyzer-execute-token').text();
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      var $outputContainer = $('.t3js-databaseAnalyzer-output');
+      var executeToken = self.currentModal.find('#t3js-databaseAnalyzer-execute-token').text();
       var selectedHashes = [];
-      $('.gridder-show .t3js-databaseAnalyzer-output .t3js-databaseAnalyzer-suggestion-block-line input:checked').each(function() {
+      self.currentModal.find('.t3js-databaseAnalyzer-output .t3js-databaseAnalyzer-suggestion-block-line input:checked').each(function() {
         selectedHashes.push($(this).data('hash'));
       });
-      $outputContainer.empty().html(message);
       $(this.selectorExecuteTrigger).prop('disabled', true);
       $(this.selectorAnalyzeTrigger).prop('disabled', true);
       $.ajax({
@@ -156,9 +150,7 @@ define([
           if (data.success === true) {
             if (Array.isArray(data.status)) {
               data.status.forEach(function(element) {
-                var message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.find('.alert-loading').remove();
-                $outputContainer.append(message);
+                Notification.showMessage(element.title, element.message, element.severity);
               });
             }
           }

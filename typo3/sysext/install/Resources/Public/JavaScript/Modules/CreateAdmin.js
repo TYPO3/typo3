@@ -21,62 +21,92 @@ define([
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
-  'TYPO3/CMS/Install/PasswordStrength'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, PasswordStrength) {
+  'TYPO3/CMS/Install/PasswordStrength',
+  'TYPO3/CMS/Backend/Notification'
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, PasswordStrength, Notification) {
   'use strict';
 
   return {
+    selectorModalBody: '.t3js-modal-body',
     selectorCreateForm: '#t3js-createAdmin-form',
     selectorCreateToken: '#t3js-createAdmin-token',
     selectorCreateTrigger: '.t3js-createAdmin-create',
     selectorOutputContainer: '.t3js-createAdmin-output',
+    currentModal: {},
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
-      $(document).on('submit', this.selectorCreateForm, function(e) {
+      this.currentModal = currentModal;
+      self.getData();
+
+      currentModal.on('click', this.selectorCreateTrigger, function(e) {
         e.preventDefault();
         self.create();
       });
-      $(document).on('keyup', '.t3-install-form-password-strength', function() {
+
+      currentModal.on('click', '.t3-install-form-password-strength', function(e) {
         PasswordStrength.initialize('.t3-install-form-password-strength');
       });
     },
 
-    create: function() {
+    getData: function() {
       var self = this;
-      var $outputContainer = $(this.selectorOutputContainer);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.empty().html(message);
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       $.ajax({
-        url: Router.getUrl(),
-        method: 'POST',
-        data: {
-          'install': {
-            'action': 'createAdmin',
-            'token': $(self.selectorCreateToken).text(),
-            'userName': $('.t3js-createAdmin-user').val(),
-            'userPassword': $('.t3js-createAdmin-password').val(),
-            'userPasswordCheck': $('.t3js-createAdmin-password-check').val(),
-            'userSystemMaintainer': ($('.t3js-createAdmin-system-maintainer').is(':checked')) ? 1 : 0
-          }
-        },
+        url: Router.getUrl('createAdminGetData'),
         cache: false,
         success: function(data) {
-          $outputContainer.empty();
-          if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach(function(element) {
-              var message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.html(message);
-            });
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
           } else {
-            var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().html(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {
           Router.handleAjaxError(xhr);
         }
       });
+    },
+
+    create: function() {
+      var self = this;
+      var executeToken = self.currentModal.find(this.selectorCreateToken).text();
+      $.ajax({
+        url: Router.getUrl(),
+        method: 'POST',
+        data: {
+          'install': {
+            'action': 'createAdmin',
+            'token': executeToken,
+            'userName': self.currentModal.find('.t3js-createAdmin-user').val(),
+            'userPassword': self.currentModal.find('.t3js-createAdmin-password').val(),
+            'userPasswordCheck': self.currentModal.find('.t3js-createAdmin-password-check').val(),
+            'userSystemMaintainer': (self.currentModal.find('.t3js-createAdmin-system-maintainer').is(':checked')) ? 1 : 0
+          }
+        },
+        cache: false,
+        success: function(data) {
+          if (data.success === true && Array.isArray(data.status)) {
+            data.status.forEach(function(element) {
+              if (element.severity == 2) {
+                Notification.error(element.message);
+              }
+              else {
+                Notification.success(element.title);
+              }
+            });
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        error: function(xhr) {
+          Router.handleAjaxError(xhr);
+        }
+      });
+      self.currentModal.find('.t3js-createAdmin-user').val('');
+      self.currentModal.find('.t3js-createAdmin-password').val('');
+      self.currentModal.find('.t3js-createAdmin-password-check').val('');
+      self.currentModal.find('.t3js-createAdmin-system-maintainer').prop('checked', false);
     }
   };
 });

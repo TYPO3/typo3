@@ -91,14 +91,21 @@ class MaintenanceController extends AbstractController
     /**
      * Clear typo3temp files statistics action
      *
+     * @param $request ServerRequestInterface
      * @return ResponseInterface
      */
-    public function clearTypo3tempFilesStatsAction(): ResponseInterface
+    public function clearTypo3tempFilesStatsAction(ServerRequestInterface $request): ResponseInterface
     {
+        $view = $this->initializeStandaloneView($request, 'Maintenance/ClearTypo3tempFiles.html');
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view->assignMultiple([
+            'clearTypo3tempFilesToken' => $formProtection->generateToken('installTool', 'clearTypo3tempFiles'),
+        ]);
         return new JsonResponse(
             [
                 'success' => true,
                 'stats' => (new Typo3tempFileService())->getDirectoryStatistics(),
+                'html' => $view->render(),
             ]
         );
     }
@@ -152,7 +159,6 @@ class MaintenanceController extends AbstractController
         } else {
             ClassLoadingInformation::dumpClassLoadingInformation();
             $messageQueue->enqueue(new FlashMessage(
-                '',
                 'Successfully dumped class loading information for extensions.'
             ));
         }
@@ -165,10 +171,16 @@ class MaintenanceController extends AbstractController
     /**
      * Analyze current database situation
      *
+     * @param $request ServerRequestInterface
      * @return ResponseInterface
      */
-    public function databaseAnalyzerAnalyzeAction(): ResponseInterface
+    public function databaseAnalyzerAnalyzeAction(ServerRequestInterface $request): ResponseInterface
     {
+        $view = $this->initializeStandaloneView($request, 'Maintenance/DatabaseAnalyzer.html');
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view->assignMultiple([
+            'databaseAnalyzerExecuteToken' => $formProtection->generateToken('installTool', 'databaseAnalyzerExecute'),
+        ]);
         $this->loadExtLocalconfDatabaseAndExtTables();
         $messageQueue = new FlashMessageQueue('install');
 
@@ -320,6 +332,7 @@ class MaintenanceController extends AbstractController
             'success' => true,
             'status' => $messageQueue,
             'suggestions' => $suggestions,
+            'html' => $view->render(),
         ]);
     }
 
@@ -355,7 +368,7 @@ class MaintenanceController extends AbstractController
                 ));
             }
             $messageQueue->enqueue(new FlashMessage(
-                '',
+                'Executed database updates',
                 'Executed database updates'
             ));
         }
@@ -368,13 +381,20 @@ class MaintenanceController extends AbstractController
     /**
      * Clear table overview statistics action
      *
+     * @param $request ServerRequestInterface
      * @return ResponseInterface
      */
-    public function clearTablesStatsAction(): ResponseInterface
+    public function clearTablesStatsAction(ServerRequestInterface $request): ResponseInterface
     {
+        $view = $this->initializeStandaloneView($request, 'Maintenance/ClearTables.html');
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view->assignMultiple([
+            'clearTablesClearToken' => $formProtection->generateToken('installTool', 'clearTablesClear'),
+        ]);
         return new JsonResponse([
             'success' => true,
             'stats' => (new ClearTableService())->getTableStatistics(),
+            'html' => $view->render(),
         ]);
     }
 
@@ -383,6 +403,7 @@ class MaintenanceController extends AbstractController
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws \RuntimeException
      */
     public function clearTablesClearAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -400,6 +421,24 @@ class MaintenanceController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'status' => $messageQueue
+        ]);
+    }
+    /**
+     * Create Admin Get Data action
+     *
+     * @param $request ServerRequestInterface
+     * @return ResponseInterface
+     */
+    public function createAdminGetDataAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initializeStandaloneView($request, 'Maintenance/CreateAdmin.html');
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view->assignMultiple([
+            'createAdminToken' => $formProtection->generateToken('installTool', 'createAdmin'),
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
         ]);
     }
 
@@ -498,10 +537,19 @@ class MaintenanceController extends AbstractController
      * * list of available languages with details like active or not and last update
      * * list of loaded extensions
      *
+     * @param $request ServerRequestInterface
      * @return ResponseInterface
      */
-    public function languagePacksGetDataAction(): ResponseInterface
+    public function languagePacksGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
+        $view = $this->initializeStandaloneView($request, 'Maintenance/LanguagePacks.html');
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view->assignMultiple([
+            'languagePacksActivateLanguageToken' => $formProtection->generateToken('installTool', 'languagePacksActivateLanguage'),
+            'languagePacksDeactivateLanguageToken' => $formProtection->generateToken('installTool', 'languagePacksDeactivateLanguage'),
+            'languagePacksUpdatePackToken' => $formProtection->generateToken('installTool', 'languagePacksUpdatePack'),
+            'languagePacksUpdateIsoTimesToken' => $formProtection->generateToken('installTool', 'languagePacksUpdateIsoTimes'),
+        ]);
         // This action needs TYPO3_CONF_VARS for full GeneralUtility::getUrl() config
         $this->loadExtLocalconfDatabaseAndExtTables();
         $languagePacksService = GeneralUtility::makeInstance(LanguagePackService::class);
@@ -513,6 +561,7 @@ class MaintenanceController extends AbstractController
             'extensions' => $extensions,
             'activeLanguages' => $languagePacksService->getActiveLanguages(),
             'activeExtensions' => array_column($extensions, 'key'),
+            'html' => $view->render(),
         ]);
     }
 
@@ -708,7 +757,7 @@ class MaintenanceController extends AbstractController
             ->execute();
         $messageQueue = new FlashMessageQueue('install');
         $messageQueue->enqueue(new FlashMessage(
-            '',
+            'All backend users preferences has been reseted',
             'Reset all backend users preferences'
         ));
         return new JsonResponse([

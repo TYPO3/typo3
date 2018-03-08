@@ -21,38 +21,43 @@ define([
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification',
   'bootstrap'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
+    selectorModalBody: '.t3js-modal-body',
     selectorGridderBadge: '.t3js-environmentCheck-badge',
     selectorExecuteTrigger: '.t3js-environmentCheck-execute',
     selectorOutputContainer: '.t3js-environmentCheck-output',
+    currentModal: {},
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
+      this.currentModal = currentModal;
 
       // Get status on initialize to have the badge and content ready
       self.runTests();
 
-      $(document).on('click', this.selectorExecuteTrigger, function(e) {
+      currentModal.on('click', this.selectorExecuteTrigger, function(e) {
         e.preventDefault();
         self.runTests();
       });
     },
 
     runTests: function() {
-      var $outputContainer = $(this.selectorOutputContainer);
+      var self = this;
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       var $errorBadge = $(this.selectorGridderBadge);
       $errorBadge.text('').hide();
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.empty().append(message);
+      modalContent.find(self.selectorOutputContainer).empty().append(message);
       $.ajax({
         url: Router.getUrl('environmentCheckGetStatus'),
         cache: false,
         success: function(data) {
-          $outputContainer.empty();
+          modalContent.empty().append(data.html);
           var warningCount = 0;
           var errorCount = 0;
           if (data.success === true && typeof(data.status) === 'object') {
@@ -66,7 +71,7 @@ define([
                     errorCount += 1;
                   }
                   var message = InfoBox.render(aStatus.severity, aStatus.title, aStatus.message);
-                  $outputContainer.append(message);
+                  modalContent.find(self.selectorOutputContainer).append(message);
                 });
               }
             });
@@ -76,8 +81,7 @@ define([
               $errorBadge.removeClass('label-error').addClass('label-warning').text(warningCount).show();
             }
           } else {
-            var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().append(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {

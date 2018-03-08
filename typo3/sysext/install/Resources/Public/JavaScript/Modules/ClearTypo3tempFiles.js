@@ -20,16 +20,17 @@ define([
   'TYPO3/CMS/Install/FlashMessage',
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
-  'TYPO3/CMS/Install/Severity'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+  'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification'
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
-    selectorGridderOpener: 't3js-clearTypo3temp-open',
+    selectorModalBody: '.t3js-modal-body',
     selectorDeleteToken: '#t3js-clearTypo3temp-delete-token',
     selectorDeleteTrigger: '.t3js-clearTypo3temp-delete',
     selectorOutputContainer: '.t3js-clearTypo3temp-output',
-    selectorStatContainer: 't3js-clearTypo3temp-stat-container',
+    selectorStatContainer: '.t3js-clearTypo3temp-stat-container',
     selectorStatsTrigger: '.t3js-clearTypo3temp-stats',
     selectorStatTemplate: '.t3js-clearTypo3temp-stat-template',
     selectorStatDescription: '.t3js-clearTypo3temp-stat-description',
@@ -37,24 +38,20 @@ define([
     selectorStatDirectory: '.t3js-clearTypo3temp-stat-directory',
     selectorStatName: '.t3js-clearTypo3temp-stat-name',
     selectorStatLastRuler: '.t3js-clearTypo3temp-stat-lastRuler',
+    currentModal: {},
 
-
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
-      // Load stats on first open
-      $(document).on('cardlayout:card-opened', function(event, $card) {
-        if ($card.hasClass(self.selectorGridderOpener)) {
-          self.getStats();
-        }
-      });
+      this.currentModal = currentModal;
+      self.getStats();
 
-      $(document).on('click', this.selectorStatsTrigger, function(e) {
+      currentModal.on('click', this.selectorStatsTrigger, function(e) {
         e.preventDefault();
         $(self.selectorOutputContainer).empty();
         self.getStats();
       });
-      $(document).on('click', this.selectorDeleteTrigger, function(e) {
-        var folder = $(e.target).data('folder');
+      currentModal.on('click', this.selectorDeleteTrigger, function(e) {
+        var folder = $(this).data('folder');
         e.preventDefault();
         self.delete(folder);
       });
@@ -62,33 +59,26 @@ define([
 
     getStats: function() {
       var self = this;
-      var $outputContainer = $(this.selectorOutputContainer);
-      var $statContainer = $('.' + this.selectorStatContainer);
-      $statContainer.empty();
-      var $statTemplate = $(this.selectorStatTemplate);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.append(message);
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       $.ajax({
         url: Router.getUrl('clearTypo3tempFilesStats'),
         cache: false,
         success: function(data) {
           if (data.success === true) {
-            $outputContainer.find('.alert-loading').remove();
+            modalContent.empty().append(data.html);
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach(function(element) {
                 if (element.numberOfFiles > 0) {
-                  var $aStat = $statTemplate.clone();
-                  $aStat.find(self.selectorStatNumberOfFiles).text(element.numberOfFiles);
-                  $aStat.find(self.selectorStatDirectory).text(element.directory);
-                  $aStat.find(self.selectorDeleteTrigger).data('folder', element.directory);
-                  $statContainer.append($aStat);
+                  var aStat = modalContent.find(self.selectorStatTemplate).clone();
+                  aStat.find(self.selectorStatNumberOfFiles).text(element.numberOfFiles);
+                  aStat.find(self.selectorStatDirectory).text(element.directory);
+                  aStat.find(self.selectorDeleteTrigger).attr('data-folder', element.directory);
+                  modalContent.find(self.selectorStatContainer).append(aStat.html());
                 }
               });
-              $statContainer.find(self.selectorStatLastRuler + ':last').remove();
             }
           } else {
-            var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.append(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {
@@ -98,9 +88,8 @@ define([
     },
 
     delete: function(folder) {
-      var $outputContainer = $(this.selectorOutputContainer);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.empty().append(message);
+      var self = this;
+      var executeToken = self.currentModal.find(this.selectorDeleteToken).text();
       $.ajax({
         method: 'POST',
         url: Router.getUrl(),
@@ -108,22 +97,19 @@ define([
         data: {
           'install': {
             'action': 'clearTypo3tempFiles',
-            'token': $(this.selectorDeleteToken).text(),
+            'token': executeToken,
             'folder': folder
           }
         },
         cache: false,
         success: function(data) {
-          $outputContainer.empty();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach(function(element) {
-              var message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.html(message);
+              Notification.success(element.message);
             });
             this.getStats();
           } else {
-            var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().html(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {

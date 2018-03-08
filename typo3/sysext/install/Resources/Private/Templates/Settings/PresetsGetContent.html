@@ -19,14 +19,15 @@
 <div style="display:none;">
 	<div id="t3js-presets-activate-token">{presetsActivateToken}</div>
 </div>
-
-<form method="post" class="form-horizontal">
-	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-		<f:for each="{presetFeatures}" as="feature">
-			<f:render partial="Settings/Presets/{feature.name}" arguments="{_all}"/>
-		</f:for>
-	</div>
-</form>
+<div class="t3js-presets-content">
+	<form method="post" class="form-horizontal">
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			<f:for each="{presetFeatures}" as="feature">
+				<f:render partial="Settings/Presets/{feature.name}" arguments="{_all}"/>
+			</f:for>
+		</div>
+	</form>
+</div>
 <div class="t3js-presets-output"></div>
 
 <button

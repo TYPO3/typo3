@@ -20,41 +20,37 @@ define([
   'TYPO3/CMS/Install/FlashMessage',
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
-  'TYPO3/CMS/Install/Severity'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+  'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification'
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
-    selectorGridderOpener: 't3js-clearTables-open',
+    selectorModalBody: '.t3js-modal-body',
     selectorClearToken: '#t3js-clearTables-clear-token',
     selectorClearTrigger: '.t3js-clearTables-clear',
     selectorStatsTrigger: '.t3js-clearTables-stats',
     selectorOutputContainer: '.t3js-clearTables-output',
-    selectorStatContainer: 't3js-clearTables-stat-container',
+    selectorStatContainer: '.t3js-clearTables-stat-container',
     selectorStatTemplate: '.t3js-clearTables-stat-template',
     selectorStatDescription: '.t3js-clearTables-stat-description',
     selectorStatRows: '.t3js-clearTables-stat-rows',
     selectorStatName: '.t3js-clearTables-stat-name',
     selectorStatLastRuler: '.t3js-clearTables-stat-lastRuler',
+    currentModal: {},
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
+      this.currentModal = currentModal;
+      self.getStats();
 
-      // Load stats on first open
-      $(document).on('cardlayout:card-opened', function(event, $card) {
-        if ($card.hasClass(self.selectorGridderOpener) && !$card.data('isInitialized')) {
-          $card.data('isInitialized', true);
-          self.getStats();
-        }
-      });
-
-      $(document).on('click', this.selectorStatsTrigger, function(e) {
+      currentModal.on('click', this.selectorStatsTrigger, function(e) {
         e.preventDefault();
         $(self.selectorOutputContainer).empty();
         self.getStats();
       });
 
-      $(document).on('click', this.selectorClearTrigger, function(e) {
+      currentModal.on('click', this.selectorClearTrigger, function(e) {
         var table = $(e.target).closest(self.selectorClearTrigger).data('table');
         e.preventDefault();
         self.clear(table);
@@ -63,34 +59,27 @@ define([
 
     getStats: function() {
       var self = this;
-      var $outputContainer = $(this.selectorOutputContainer);
-      var $statContainer = $('.' + this.selectorStatContainer);
-      $statContainer.empty();
-      var $statTemplate = $(this.selectorStatTemplate);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.append(message);
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       $.ajax({
         url: Router.getUrl('clearTablesStats'),
         cache: false,
         success: function(data) {
           if (data.success === true) {
-            $outputContainer.find('.alert-loading').remove();
+            modalContent.empty().append(data.html);
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach(function(element) {
                 if (element.rowCount > 0) {
-                  var $aStat = $statTemplate.clone();
-                  $aStat.find(self.selectorStatDescription).text(element.description);
-                  $aStat.find(self.selectorStatName).text(element.name);
-                  $aStat.find(self.selectorStatRows).text(element.rowCount);
-                  $aStat.find(self.selectorClearTrigger).data('table', element.name);
-                  $statContainer.append($aStat);
+                  var aStat = modalContent.find(self.selectorStatTemplate).clone();
+                  aStat.find(self.selectorStatDescription).text(element.description);
+                  aStat.find(self.selectorStatName).text(element.name);
+                  aStat.find(self.selectorStatRows).text(element.rowCount);
+                  aStat.find(self.selectorClearTrigger).attr('data-table', element.name);
+                  modalContent.find(self.selectorStatContainer).append(aStat.html());
                 }
               });
-              $statContainer.find(self.selectorStatLastRuler + ':last').remove();
             }
           } else {
-            var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.append(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {
@@ -100,9 +89,8 @@ define([
     },
 
     clear: function(table) {
-      var $outputContainer = $(this.selectorOutputContainer);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.empty().append(message);
+      var self = this;
+      var executeToken = self.currentModal.find(this.selectorClearToken).text();
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',
@@ -110,21 +98,18 @@ define([
         data: {
           'install': {
             'action': 'clearTablesClear',
-            'token': $(this.selectorClearToken).text(),
+            'token': executeToken,
             'table': table
           }
         },
         cache: false,
         success: function(data) {
-          $outputContainer.empty();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach(function(element) {
-              var message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.append(message);
+              Notification.success(element.message);
             });
           } else {
-            var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.append(message);
+            Notification.error('Something went wrong');
           }
           this.getStats();
         },

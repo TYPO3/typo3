@@ -21,6 +21,7 @@ define(['jquery',
   'use strict';
 
   return {
+    selectorModalBody: '.t3js-modal-body',
     listOfAffectedRestFileHashes: [],
     selectorFilesToken: '#t3js-extensionScanner-files-token',
     selectorScanFileToken: '#t3js-extensionScanner-scan-file-token',
@@ -29,27 +30,44 @@ define(['jquery',
     selectorNumberOfFiles: '.t3js-extensionScanner-number-of-files',
     selectorScanSingleTrigger: '.t3js-extensionScanner-scan-single',
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
-      $(document).on('click', this.selectorScanSingleTrigger, function(e) {
+      this.currentModal = currentModal;
+      self.getData();
+
+      currentModal.on('click', this.selectorScanSingleTrigger, function(e) {
         // Scan a single extension
         var extension = $(e.target).data('extension');
         e.preventDefault();
         self.scanSingleExtension(extension);
         return false;
       });
-      $(document).on('show.bs.collapse', this.selectorExtensionContainer, function(e) {
-        // Trigger extension scan on opening a extension collapsible
-        if ($(e.target).closest(self.selectorExtensionContainer).data('hasRun') !== 'true') {
-          $(this).find(self.selectorScanSingleTrigger).click();
-        }
-      });
-      $(document).on('click', '.t3js-extensionScanner-scan-all', function(e) {
-        // Scann all button
+
+      currentModal.on('click', '.t3js-extensionScanner-scan-all', function(e) {
+        // Scan all button
         e.preventDefault();
-        var $extensions = $(self.selectorExtensionContainer);
+        var $extensions = currentModal.find(self.selectorExtensionContainer);
         self.scanAll($extensions);
         return false;
+      });
+    },
+
+    getData: function() {
+      var self = this;
+      var modalContent = this.currentModal.find(self.selectorModalBody);
+      $.ajax({
+        url: Router.getUrl('extensionScannerGetData'),
+        cache: false,
+        success: function(data) {
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        error: function(xhr) {
+          Router.handleAjaxError(xhr);
+        }
       });
     },
 
@@ -66,7 +84,7 @@ define(['jquery',
      */
     scanAll: function($extensions) {
       var self = this;
-      $(this.selectorExtensionContainer)
+      self.currentModal.find(this.selectorExtensionContainer)
         .removeClass('panel-danger panel-warning panel-success')
         .find('.panel-progress-bar')
         .css('width', 0)
@@ -86,7 +104,7 @@ define(['jquery',
      * @param {number} numberOfFiles
      */
     setStatusMessageForScan: function(extension, doneFiles, numberOfFiles) {
-      $(this.getExtensionSelector(extension))
+      this.currentModal.find(this.getExtensionSelector(extension))
         .find(this.selectorNumberOfFiles)
         .text('Checked ' + doneFiles + ' of ' + numberOfFiles + ' files');
     },
@@ -98,7 +116,7 @@ define(['jquery',
      */
     setProgressForScan: function(extension, doneFiles, numberOfFiles) {
       var percent = (doneFiles / numberOfFiles) * 100;
-      $(this.getExtensionSelector(extension))
+      this.currentModal.find(this.getExtensionSelector(extension))
         .find('.panel-progress-bar')
         .css('width', percent + '%')
         .attr('aria-valuenow', percent)
@@ -111,17 +129,19 @@ define(['jquery',
      */
     setProgressForAll: function() {
       var self = this;
-      var numberOfExtensions = $(this.selectorExtensionContainer).length;
-      var numberOfSuccess = $(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-success').length;
-      var numberOfWarning = $(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-warning').length;
-      var numberOfError = $(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-danger').length;
+      // var numberOfExtensions = $(this.selectorExtensionContainer).length;
+      var numberOfExtensions = self.currentModal.find(this.selectorExtensionContainer).length;
+      var numberOfSuccess = self.currentModal.find(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-success').length;
+      var numberOfWarning = self.currentModal.find(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-warning').length;
+      var numberOfError = self.currentModal.find(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-danger').length;
       var numberOfScannedExtensions = numberOfSuccess + numberOfWarning + numberOfError;
       var percent = (numberOfScannedExtensions / numberOfExtensions) * 100;
-      $('.t3js-extensionScanner-progress-all-extension .progress-bar')
+      self.currentModal.find('.t3js-extensionScanner-progress-all-extension .progress-bar')
         .css('width', percent + '%')
         .attr('aria-valuenow', percent)
         .find('span')
         .text(numberOfScannedExtensions + ' of ' + numberOfExtensions + ' scanned');
+
       if (numberOfScannedExtensions === numberOfExtensions) {
         Notification.success('Scan finished', 'All extensions have been scanned');
         $.ajax({
@@ -130,7 +150,7 @@ define(['jquery',
           data: {
             'install': {
               'action': 'extensionScannerMarkFullyScannedRestFiles',
-              'token': $(self.selectorMarkFullyScannedRestFilesToken).text(),
+              'token': self.currentModal.find(self.selectorMarkFullyScannedRestFilesToken).text(),
               'hashes': self.uniqueArray(this.listOfAffectedRestFileHashes)
             }
           },
@@ -166,9 +186,11 @@ define(['jquery',
      */
     scanSingleExtension: function(extension) {
       var self = this;
-      var $extensionContainer = $(this.getExtensionSelector(extension));
-      var hitTemplate = $('#t3js-extensionScanner-file-hit-template').html();
-      var restTemplate = $('#t3js-extensionScanner-file-hit-rest-template').html();
+      var executeToken = self.currentModal.find(this.selectorFilesToken).text();
+      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var $extensionContainer = this.currentModal.find(this.getExtensionSelector(extension));
+      var hitTemplate = '#t3js-extensionScanner-file-hit-template';
+      var restTemplate = '#t3js-extensionScanner-file-hit-rest-template';
       var hitFound = false;
       $extensionContainer.removeClass('panel-danger panel-warning panel-success t3js-extensionscan-finished');
       $extensionContainer.data('hasRun', 'true');
@@ -183,7 +205,7 @@ define(['jquery',
         data: {
           'install': {
             'action': 'extensionScannerFiles',
-            'token': $(self.selectorFilesToken).text(),
+            'token': executeToken,
             'extension': extension
           }
         },
@@ -201,7 +223,7 @@ define(['jquery',
                   data: {
                     'install': {
                       'action': 'extensionScannerScanFile',
-                      'token': $(self.selectorScanFileToken).text(),
+                      'token': self.currentModal.find(self.selectorScanFileToken).text(),
                       'extension': extension,
                       'file': file
                     }
@@ -216,7 +238,7 @@ define(['jquery',
                       $(fileData.matches).each(function() {
                         hitFound = true;
                         var match = this;
-                        var aMatch = $(hitTemplate).clone();
+                        var aMatch = modalContent.find(hitTemplate).clone();
                         aMatch.find('.t3js-extensionScanner-hit-file-panel-head').attr('href', '#collapse' + match.uniqueId);
                         aMatch.find('.t3js-extensionScanner-hit-file-panel-body').attr('id', 'collapse' + match.uniqueId);
                         aMatch.find('.t3js-extensionScanner-hit-filename').text(file);
@@ -237,7 +259,7 @@ define(['jquery',
                         if ($.isArray(match.restFiles)) {
                           $(match.restFiles).each(function() {
                             var restFile = this;
-                            var aRest = $(restTemplate).clone();
+                            var aRest = modalContent.find(restTemplate).clone();
                             aRest.find('.t3js-extensionScanner-hit-rest-panel-head').attr('href', '#collapse' + restFile.uniqueId);
                             aRest.find('.t3js-extensionScanner-hit-rest-panel-head .badge').empty().text(restFile.version);
                             aRest.find('.t3js-extensionScanner-hit-rest-panel-body').attr('id', 'collapse' + restFile.uniqueId);

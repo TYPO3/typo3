@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Authentication\AuthenticationService;
 use TYPO3\CMS\Install\Controller\AbstractController;
 use TYPO3\CMS\Install\Controller\EnvironmentController;
+use TYPO3\CMS\Install\Controller\IconController;
 use TYPO3\CMS\Install\Controller\LayoutController;
 use TYPO3\CMS\Install\Controller\LoginController;
 use TYPO3\CMS\Install\Controller\MaintenanceController;
@@ -52,6 +53,7 @@ class RequestHandler implements RequestHandlerInterface
      * @var array List of valid controllers
      */
     protected $controllers = [
+        'icon' => IconController::class,
         'layout' => LayoutController::class,
         'login' => LoginController::class,
         'maintenance' => MaintenanceController::class,

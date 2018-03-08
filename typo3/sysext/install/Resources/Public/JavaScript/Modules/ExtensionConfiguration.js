@@ -21,31 +21,27 @@ define([
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Backend/Notification',
   'bootstrap'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
   return {
-    selectorGridderOpener: 't3js-extensionConfiguration-open',
+    selectorModalBody: '.t3js-modal-body',
     selectorContentContainer: '.t3js-extensionConfiguration-content',
     selectorFormListener: '.t3js-extensionConfiguration-form',
     selectorWriteToken: '#t3js-extensionConfiguration-write-token',
     selectorOutputContainer: '.t3js-extensionConfiguration-output',
     selectorSearchInput: '.t3js-extensionConfiguration-search',
 
-    initialize: function() {
+    initialize: function(currentModal) {
       var self = this;
-
-      // Get extension configuration list on card open
-      $(document).on('cardlayout:card-opened', function(event, $card) {
-        if ($card.hasClass(self.selectorGridderOpener)) {
-          self.getContent();
-        }
-      });
+      this.currentModal = currentModal;
+      self.getContent();
 
       // Focus search field on certain user interactions
-      $(document).on('keydown', function(e) {
-        var $searchInput = $(self.selectorSearchInput);
+      currentModal.on('keydown', function(e) {
+        var $searchInput = currentModal.find(self.selectorSearchInput);
         if (e.ctrlKey || e.metaKey) {
           // Focus search field on ctrl-f
           switch (String.fromCharCode(e.which).toLowerCase()) {
@@ -62,10 +58,10 @@ define([
       });
 
       // Perform expand collapse on search matches
-      $(document).on('keyup', this.selectorSearchInput, function() {
-        var typedQuery = $(this).val();
-        var $searchInput = $(self.selectorSearchInput);
-        $('.search-item').each(function() {
+      currentModal.on('keyup', this.selectorSearchInput, function(e) {
+        var typedQuery = $(e.target).val();
+        var $searchInput = currentModal.find(self.selectorSearchInput);
+        currentModal.find('.search-item').each(function() {
           var $item = $(this);
           if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
             $item.removeClass('hidden').addClass('searchhit');
@@ -73,14 +69,14 @@ define([
             $item.removeClass('searchhit').addClass('hidden');
           }
         });
-        $('.searchhit').collapse('show');
+        currentModal.find('.searchhit').collapse('show');
         // Make search field clearable
         require(['jquery.clearable'], function() {
           $searchInput.clearable().focus();
         });
       });
 
-      $(document).on('submit', this.selectorFormListener, function(e) {
+      currentModal.on('submit', this.selectorFormListener, function(e) {
         e.preventDefault();
         self.write($(this));
       });
@@ -88,19 +84,19 @@ define([
 
     getContent: function() {
       var self = this;
-      var outputContainer = $(this.selectorContentContainer);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      outputContainer.empty().html(message);
+      var modalContent = this.currentModal.find(self.selectorModalBody);
       $.ajax({
         url: Router.getUrl('extensionConfigurationGetContent'),
         cache: false,
         success: function(data) {
-          if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
-            outputContainer.empty().append(data.html);
+          if (data.success === true) {
+            if (Array.isArray(data.status)) {
+              data.status.forEach(function(element) {
+                Notification.success(element.title, element.message);
+              });
+            }
+            modalContent.html(data.html);
             self.initializeWrap();
-          } else {
-            var message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            outputContainer.empty().append(message);
           }
         },
         error: function(xhr) {
@@ -115,19 +111,19 @@ define([
      * @param {jQuery} $form The form of the current extension
      */
     write: function($form) {
-      var $outputContainer = $(this.selectorOutputContainer);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.append(message);
+      var self = this;
+      var executeToken = self.currentModal.find(this.selectorWriteToken).text();
       var extensionConfiguration = {};
       $.each($form.serializeArray(), function() {
         extensionConfiguration[this.name] = this.value;
       });
+
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',
         data: {
           'install': {
-            'token': $(this.selectorWriteToken).text(),
+            'token': executeToken,
             'action': 'extensionConfigurationWrite',
             'extensionKey': $form.attr('data-extensionKey'),
             'extensionConfiguration': extensionConfiguration
@@ -136,19 +132,17 @@ define([
         success: function(data) {
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach(function(element) {
-              var message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.empty().append(message);
+              Notification.showMessage(element.title, element.message, element.severity);
             });
           } else {
-            var message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().html(message);
+            Notification.error('Something went wrong');
           }
         },
         error: function(xhr) {
           Router.handleAjaxError(xhr);
         }
       }).always(function() {
-        $outputContainer.find('.alert-loading').remove();
+
       });
     },
 
@@ -156,7 +150,7 @@ define([
      * configuration properties
      */
     initializeWrap: function() {
-      $('.t3js-emconf-offset').each(function() {
+      this.currentModal.find('.t3js-emconf-offset').each(function() {
         var $me = $(this),
           $parent = $me.parent(),
           id = $me.attr('id'),
@@ -193,7 +187,7 @@ define([
         });
       });
 
-      $('.t3js-emconf-wrap').each(function() {
+      this.currentModal.find('.t3js-emconf-wrap').each(function() {
         var $me = $(this),
           $parent = $me.parent(),
           id = $me.attr('id'),

@@ -18,9 +18,10 @@ define([
   'jquery',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
-  'TYPO3/CMS/Install/CardLayout',
-  'TYPO3/CMS/Install/ProgressBar'
-], function($, InfoBox, Severity, CardLayout, ProgressBar) {
+  'TYPO3/CMS/Install/ProgressBar',
+  'TYPO3/CMS/Backend/Modal',
+  'TYPO3/CMS/Backend/Icons'
+], function($, InfoBox, Severity, ProgressBar, Modal, Icons) {
   'use strict';
 
   return {
@@ -29,6 +30,8 @@ define([
 
     initialize: function() {
       var self = this;
+
+      this.registerInstallToolRoutes();
 
       $(document).on('click', '.t3js-login-lockInstallTool', function(e) {
         e.preventDefault();
@@ -45,7 +48,54 @@ define([
         }
       });
 
+      $(document).on('click', '.card [data-inline]', function(e) {
+        e.preventDefault();
+        var $me = $(e.currentTarget);
+        var requireModule = $me.closest('[data-inline]').data('require');
+        require([requireModule], function(aModule) {
+          if (typeof aModule.initialize !== 'undefined') {
+            aModule.initialize($me);
+          }
+        });
+      });
+
+      $(document).on('click', '.t3js-install-open-modal', function (e) {
+        e.preventDefault();
+
+        var modaltitle = $(this).closest('.card').find('.card-title').html();
+        var requireModule = $(this).data('require');
+
+        Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done(function(icon) {
+          var configuration = {
+            type: Modal.types.default,
+            title: modaltitle,
+            size: Modal.sizes.large,
+            content: '<div class="modal-loading">' + icon + '</div>',
+            callback: function (currentModal) {
+              require([requireModule], function(aModule) {
+                if (typeof aModule.initialize !== 'undefined') {
+                  aModule.initialize(currentModal);
+                }
+              });
+            }
+
+          };
+          Modal.advanced(configuration);
+        });
+      });
+
       this.executeSilentConfigurationUpdate();
+    },
+
+    registerInstallToolRoutes: function() {
+      if (typeof TYPO3.settings === 'undefined') {
+        TYPO3.settings = {
+          ajaxUrls: {
+            icons: '?install[controller]=icon&install[action]=getIcon',
+            icons_cache: '?install[controller]=icon&install[action]=getCacheIdentifier'
+          }
+        }
+      }
     },
 
     getUrl: function(action, controller) {
@@ -290,7 +340,8 @@ define([
         success: function(data) {
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             outputContainer.empty().append(data.html);
-            CardLayout.initialize();
+
+            /**
             // Each card head can have a t3js-require class and a data-require attribute
             // with the name of a requireJS module. Those are loaded here and initialize()
             // is executed if exists.
@@ -302,6 +353,7 @@ define([
                 }
               });
             });
+*/
           } else {
             var message = InfoBox.render(Severity.error, 'Something went wrong', '');
             outputContainer.empty().append(message);
