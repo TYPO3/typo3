@@ -33,7 +33,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
-                'eval' => 'date',
+                'eval' => 'date,int',
                 'default' => 0,
             ]
         ],
@@ -182,7 +182,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
+                'eval' => 'datetime,int',
                 'default' => 0,
             ]
         ],
@@ -191,7 +191,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
-                'eval' => 'time',
+                'eval' => 'time,int',
                 'default' => 3600
             ]
         ],

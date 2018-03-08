@@ -68,7 +68,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
+                'eval' => 'datetime,int',
                 'default' => 0
             ]
         ],
@@ -78,7 +78,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
+                'eval' => 'datetime,int',
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038)
@@ -185,7 +185,7 @@ return [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.lasthiton',
             'config' => [
                 'type' => 'input',
-                'eval' => 'datetime',
+                'eval' => 'datetime,int',
                 'renderType' => 'inputDateTime',
                 'readOnly' => true
             ],
