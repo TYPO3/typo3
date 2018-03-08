@@ -230,6 +230,9 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
             ->getConnectionForTable($this->table);
         $dbConnection->insert($this->table, $field_values);
 
+        // Flush local resourceStorage cache so the storage can be accessed during the same request right away
+        $this->storageRowCache = null;
+
         return (int)$dbConnection->lastInsertId($this->table);
     }
 
