@@ -501,7 +501,7 @@ X-TYPO3-Additional-Header: Banana Stand';
         $prefixPageResponseProphecy->getHeaders()->willReturn([]);
         $prefixPageResponseProphecy->getBody()->willReturn($streamProphecy);
         $prefixPageResponseProphecy->getStatusCode()->willReturn(200);
-        $prefixPageResponseProphecy->getHeader('Content-Type')->willReturn(['text/html; charset=utf-8']);
+        $prefixPageResponseProphecy->getHeaderLine('Content-Type')->willReturn('text/html; charset=utf-8');
         $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
         $requestFactoryProphecy->request(Argument::cetera())->willReturn($prefixPageResponseProphecy->reveal());
         GeneralUtility::addInstance(RequestFactory::class, $requestFactoryProphecy->reveal());

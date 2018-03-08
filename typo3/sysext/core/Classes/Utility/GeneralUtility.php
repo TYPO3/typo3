@@ -1846,7 +1846,7 @@ class GeneralUtility
                 $report['lib'] = 'http';
                 if ($response->getStatusCode() >= 300 && $response->getStatusCode() < 400) {
                     $report['http_code'] = $response->getStatusCode();
-                    $report['content_type'] = $response->getHeader('Content-Type');
+                    $report['content_type'] = $response->getHeaderLine('Content-Type');
                     $report['error'] = $response->getStatusCode();
                     $report['message'] = $response->getReasonPhrase();
                 } elseif (empty($content)) {
@@ -1855,7 +1855,7 @@ class GeneralUtility
                 } elseif ($includeHeader) {
                     // Set only for $includeHeader to work exactly like PHP variant
                     $report['http_code'] = $response->getStatusCode();
-                    $report['content_type'] = $response->getHeader('Content-Type');
+                    $report['content_type'] = $response->getHeaderLine('Content-Type');
                 }
             }
         } else {
