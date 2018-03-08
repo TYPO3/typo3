@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Report;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception;
 use TYPO3\CMS\Lang\LanguageService;
@@ -59,7 +60,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         // Requirement level
         // -1 = not required, but if it exists may be writable or not
         //  0 = not required, if it exists the dir should be writable
-        //  1 = required, don't has to be writable
+        //  1 = required, doesn't have to be writable
         //  2 = required, has to be writable
         $checkWritable = [
             'typo3temp/' => 2,
@@ -149,9 +150,11 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         // check if there are update wizards left to perform
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
             $versionAsInt = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
+            $registry = GeneralUtility::makeInstance(Registry::class);
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
                 $updateObject = GeneralUtility::makeInstance($className, $identifier, $versionAsInt, null, $this);
-                if ($updateObject->shouldRenderWizard()) {
+                $markedDoneInRegistry = $registry->get('installUpdate', $className, false);
+                if (!$markedDoneInRegistry && $updateObject->shouldRenderWizard()) {
                     // at least one wizard was found
                     $value = $languageService->getLL('status_updateIncomplete');
                     $severity = Status::WARNING;
