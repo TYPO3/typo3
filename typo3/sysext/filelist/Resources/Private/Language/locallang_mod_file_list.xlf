@@ -27,20 +27,14 @@
 			<trans-unit id="displayThumbs" resname="displayThumbs">
 				<source>Display thumbnails</source>
 			</trans-unit>
-			<trans-unit id="c_file" resname="c_file">
-				<source>File Name</source>
-			</trans-unit>
-			<trans-unit id="c_filepath" resname="c_filepath">
-				<source>File Path</source>
+			<trans-unit id="c_name" resname="c_name">
+				<source>Name</source>
 			</trans-unit>
 			<trans-unit id="c_size" resname="c_size">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="c_fileext" resname="c_fileext">
+			<trans-unit id="c_record_type" resname="c_record_type">
 				<source>Type</source>
-			</trans-unit>
-			<trans-unit id="c_tstamp" resname="c_tstamp">
-				<source>Last Modified</source>
 			</trans-unit>
 			<trans-unit id="c_rw" resname="c_rw">
 				<source>RW</source>

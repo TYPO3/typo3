@@ -76,14 +76,38 @@
                     </div>
                 </f:if>
             </div>
-            <f:if condition="{listHtml} && {displayThumbs.enabled}">
+            <f:if condition="{listHtml}">
                 <div class="col-auto">
-                    <div class="form-check form-switch">
-                        {displayThumbs.html -> f:format.raw()}
-                        <label for="checkDisplayThumbs" class="form-check-label">
-                            {displayThumbs.label}
-                        </label>
-                    </div>
+                    <f:if condition="{columnSelector} || {displayThumbs.enabled}">
+                        <div class="row row-cols-auto align-items-center gx-3">
+                            <f:if condition="{columnSelector}">
+                                <div class="col">
+                                    <typo3-recordlist-column-selector-button
+                                        url="{columnSelector.url}"
+                                        target="{listUrl}"
+                                        title="{columnSelector.title}"
+                                        ok="{f:translate(key: 'LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView')}"
+                                        close="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')}"
+                                        error="{f:translate(key: 'LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView.error')}">
+                                        <button type="button" class="btn btn-default btn-sm" title="{columnSelector.title}">
+                                            <core:icon identifier="actions-options" size="small" />
+                                            <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:showColumns" />
+                                        </button>
+                                    </typo3-recordlist-column-selector-button>
+                                </div>
+                            </f:if>
+                            <f:if condition="{displayThumbs.enabled}">
+                                <div class="col">
+                                    <div class="form-check form-switch mb-0">
+                                        {displayThumbs.html -> f:format.raw()}
+                                        <label for="checkDisplayThumbs" class="form-check-label">
+                                            {displayThumbs.label}
+                                        </label>
+                                    </div>
+                                </div>
+                            </f:if>
+                        </div>
+                    </f:if>
                 </div>
             </f:if>
         </div>

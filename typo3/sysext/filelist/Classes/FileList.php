@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Filelist;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -137,7 +139,7 @@ class FileList
         '_CONTROL_' => 'col-control',
         '_SELECTOR_' => 'col-selector',
         'icon' => 'col-icon',
-        'file' => 'col-title col-responsive',
+        'name' => 'col-title col-responsive',
         '_LOCALIZATION_' => 'col-localizationa',
     ];
 
@@ -180,6 +182,12 @@ class FileList
 
     protected array $selectedElements = [];
 
+    /**
+     * A runtime first-level cache to avoid unneeded calls to BackendUtility::getRecord()
+     * @var array
+     */
+    protected array $backendUserCache = [];
+
     public function __construct(?ServerRequestInterface $request = null)
     {
         // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
@@ -217,8 +225,13 @@ class FileList
         $this->sortRev = $sortRev;
         $this->firstElementNumber = $pointer;
         $this->fieldArray = [
-            '_SELECTOR_', 'icon', 'file', '_LOCALIZATION_', '_CONTROL_', 'fileext', 'tstamp', 'size', 'rw', '_REF_'
+            '_SELECTOR_', 'icon', 'name', '_LOCALIZATION_', '_CONTROL_', 'record_type', 'size', 'rw', '_REF_'
         ];
+    }
+
+    public function setColumnsToRender(array $additionalFields = []): void
+    {
+        $this->fieldArray = array_unique(array_merge($this->fieldArray, $additionalFields));
     }
 
     /**
@@ -327,16 +340,16 @@ class FileList
 
         // Header line is drawn
         $theData = [];
-        foreach ($this->fieldArray as $v) {
-            if ($v === '_SELECTOR_') {
-                $theData[$v] = $this->renderCheckboxActions();
-            } elseif ($v === '_REF_') {
-                $theData[$v] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._REF_'));
-            } elseif ($v === '_PATH_') {
-                $theData[$v] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._PATH_'));
-            } elseif ($v !== 'icon') {
-                // Normal row - except "icon", which does not need a table header col
-                $theData[$v]  = $this->linkWrapSort($v);
+        foreach ($this->fieldArray as $fieldName) {
+            if ($fieldName === '_SELECTOR_') {
+                $theData[$fieldName] = $this->renderCheckboxActions();
+            } elseif ($specialLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName)) {
+                $theData[$fieldName] = htmlspecialchars($specialLabel);
+            } elseif ($customLabel = $this->getLanguageService()->getLL('c_' . $fieldName)) {
+                $theData[$fieldName] = $this->linkWrapSort($fieldName, $customLabel);
+            } elseif ($fieldName !== 'icon') {
+                // Normal database field
+                $theData[$fieldName] = $this->linkWrapSort($fieldName);
             }
         }
 
@@ -409,7 +422,7 @@ class FileList
                 // 	Reverse
                 $theData = [];
                 $href = $this->listURL(['pointer' => ($currentItemCount - $this->iLimit)]);
-                $theData['file'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
+                $theData['name'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                     'actions-move-up',
                     Icon::SIZE_SMALL
                 )->render() . ' <i>[' . (max(0, $currentItemCount - $this->iLimit) + 1) . ' - ' . $currentItemCount . ']</i></a>';
@@ -421,7 +434,7 @@ class FileList
             // 	Forward
             $theData = [];
             $href = $this->listURL(['pointer' => $currentItemCount]);
-            $theData['file'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
+            $theData['name'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                 'actions-move-down',
                 Icon::SIZE_SMALL
             )->render() . ' <i>[' . ($currentItemCount + 1) . ' - ' . $this->totalItems . ']</i></a>';
@@ -494,7 +507,7 @@ class FileList
                     $theData[$field] = '';
                 }
                 $theData['icon'] = $theIcon;
-                $theData['file'] = $displayName;
+                $theData['name'] = $displayName;
             } else {
                 foreach ($this->fieldArray as $field) {
                     switch ($field) {
@@ -509,17 +522,13 @@ class FileList
                         case 'rw':
                             $theData[$field] = '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('read')) . '</strong>' . (!$isWritable ? '' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('write')) . '</strong>');
                             break;
-                        case 'fileext':
+                        case 'record_type':
                             $theData[$field] = htmlspecialchars($this->getLanguageService()->getLL('folder'));
-                            break;
-                        case 'tstamp':
-                            $tstamp = $folderObject->getModificationTime();
-                            $theData[$field] = $tstamp ? BackendUtility::date($tstamp) : '-';
                             break;
                         case 'icon':
                             $theData[$field] = (string)BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $folderObject->getCombinedIdentifier());
                             break;
-                        case 'file':
+                        case 'name':
                             $theData[$field] = $this->linkWrapDir($displayName, $folderObject);
                             break;
                         case '_CONTROL_':
@@ -666,11 +675,8 @@ class FileList
                     case 'rw':
                         $theData[$field] = '' . (!$fileObject->checkActionPermission('read') ? ' ' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('read')) . '</strong>') . (!$fileObject->checkActionPermission('write') ? '' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('write')) . '</strong>');
                         break;
-                    case 'fileext':
-                        $theData[$field] = htmlspecialchars(strtoupper($ext));
-                        break;
-                    case 'tstamp':
-                        $theData[$field] = BackendUtility::date($fileObject->getModificationTime());
+                    case 'record_type':
+                        $theData[$field] = htmlspecialchars($this->getLanguageService()->getLL('file') . ($ext ? ' (' . strtoupper($ext) . ')' : ''));
                         break;
                     case '_CONTROL_':
                         $theData[$field] = $this->makeEdit($fileObject);
@@ -733,7 +739,7 @@ class FileList
                     case 'icon':
                         $theData[$field] = (string)BackendUtility::wrapClickMenuOnIcon($this->getFileOrFolderIcon($fileName, $fileObject), 'sys_file', $fileObject->getCombinedIdentifier());
                         break;
-                    case 'file':
+                    case 'name':
                         // Edit metadata of file
                         $theData[$field] = $this->linkWrapFile(htmlspecialchars($fileName), $fileObject);
 
@@ -759,7 +765,33 @@ class FileList
                     default:
                         $theData[$field] = '';
                         if ($fileObject->hasProperty($field)) {
-                            $theData[$field] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getProperty($field), $this->fixedL));
+                            $concreteTableName = $this->getConcreteTableName($field);
+                            if ($field === ($GLOBALS['TCA'][$concreteTableName]['ctrl']['cruser_id'] ?? '')) {
+                                // Handle cruser_id by adding the avatar along with the username
+                                $theData[$field] = $this->getBackendUserInformation((int)$fileObject->getProperty($field));
+                            } elseif ($field === ($GLOBALS['TCA'][$concreteTableName]['ctrl']['crdate'] ?? '')) {
+                                // This special case is needed since crdate is defined as "passthrough"
+                                // in sys_file_metadata due to the file search API and will therefore not
+                                // be processed by getProcessedValue.
+                                $theData[$field] = htmlspecialchars(BackendUtility::datetime((int)$fileObject->getProperty($field)));
+                            } elseif ($field === 'storage') {
+                                // Fetch storage name of the current file
+                                $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$fileObject->getProperty($field));
+                                if ($storage !== null) {
+                                    $theData[$field] = htmlspecialchars($storage->getName());
+                                }
+                            } else {
+                                $theData[$field] = htmlspecialchars(
+                                    BackendUtility::getProcessedValueExtra(
+                                        $this->getConcreteTableName($field),
+                                        $field,
+                                        $fileObject->getProperty($field),
+                                        $this->fixedL,
+                                        $fileObject->getMetaData()->offsetGet('uid'),
+                                        true
+                                    )
+                                );
+                            }
                         }
                 }
             }
@@ -801,17 +833,33 @@ class FileList
     }
 
     /**
-     * Wraps the directory-titles ($code) in a link to filelist/Modules/Filelist/index.php (id=$path) and sorting commands...
+     * Wraps a field label for the header row into a link to the filelist with sorting commands
      *
-     * @param string $col Sorting column
-     * @return string HTML
+     * @param string $fieldName The field to sort
+     * @param string $label The label to be wrapped - will be determined if not given
+     * @return string The constructed link - HTML
      */
-    public function linkWrapSort($col)
+    public function linkWrapSort(string $fieldName, string $label = ''): string
     {
-        $code = htmlspecialchars($this->getLanguageService()->getLL('c_' . $col));
-        $params = ['SET' => ['sort' => $col], 'pointer' => 0];
+        // Determine label if not given
+        if ($label === '') {
+            $lang = $this->getLanguageService();
+            $concreteTableName = $this->getConcreteTableName($fieldName);
+            $label = $lang->sL(BackendUtility::getItemLabel($concreteTableName, $fieldName) ?? '');
+            if ($label !== '') {
+                // In case global TSconfig exists we have to check if the label is overridden there
+                $tsConfig = BackendUtility::getPagesTSconfig(0);
+                if (!empty($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'][$lang->lang])) {
+                    $label = $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'][$lang->lang];
+                } elseif (!empty($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'])) {
+                    $label = $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'];
+                }
+            }
+        }
 
-        if ($this->sort === $col) {
+        $params = ['SET' => ['sort' => $fieldName], 'pointer' => 0];
+
+        if ($this->sort === $fieldName) {
             // Check reverse sorting
             $params['SET']['reverse'] = ($this->sortRev ? '0' : '1');
             $sortArrow = $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL)->render();
@@ -820,7 +868,8 @@ class FileList
             $sortArrow = '';
         }
         $href = $this->listURL($params);
-        return '<a href="' . htmlspecialchars($href) . '">' . $code . ' ' . $sortArrow . '</a>';
+
+        return '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($label) . ' ' . $sortArrow . '</a>';
     }
 
     /**
@@ -1271,6 +1320,38 @@ class FileList
                     ' . implode(PHP_EOL, $dropdownItems) . '
                 </ul>
             </div>';
+    }
+
+    /**
+     * Helper method around fetching a "cruser_id" information for a record, with a cache, so the same information
+     * does not have to be processed for the same user over and over again.
+     */
+    protected function getBackendUserInformation(int $backendUserId): string
+    {
+        if (!isset($this->backendUserCache[$backendUserId])) {
+            $beUserRecord = BackendUtility::getRecord('be_users', $backendUserId);
+            if (is_array($beUserRecord)) {
+                $avatar = GeneralUtility::makeInstance(Avatar::class);
+                $label = htmlspecialchars(BackendUtility::getRecordTitle('be_users', $beUserRecord));
+                $content = $avatar->render($beUserRecord) . '<strong>' . $label . '</strong>';
+            } else {
+                $content = '<strong>&ndash;</strong>';
+            }
+            $this->backendUserCache[$backendUserId] = $content;
+        }
+        return $this->backendUserCache[$backendUserId];
+    }
+
+    /**
+     * Determine the concrete table name by checking if
+     * the field exists, while sys_file takes precedence.
+     *
+     * @param string $fieldName
+     * @return string
+     */
+    protected function getConcreteTableName(string $fieldName): string
+    {
+        return ($GLOBALS['TCA']['sys_file']['columns'][$fieldName] ?? false) ? 'sys_file' : 'sys_file_metadata';
     }
 
     /**

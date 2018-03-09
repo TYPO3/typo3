@@ -36,6 +36,18 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 class ColumnSelectorController
 {
     private const PSEUDO_FIELDS = ['_REF_', '_PATH_'];
+    private const EXCLUDE_FILE_FIELDS = [
+        'pid', // Not relevant as all records are on pid=0
+        'identifier', // Handled manually in listing
+        'name', // Handled manually in listing
+        'metadata', // The reference to the meta data is not relevant
+        'file', // The reference to the file is not relevant
+        'sys_language_uid', // Not relevant in listing since only defualt is displayed
+        'l10n_parent', // Not relevant in listing
+        't3ver_state', // Not relevant in listing
+        't3ver_wsid', // Not relevant in listing
+        't3ver_oid' // Not relevant in listing
+    ];
 
     protected ResponseFactoryInterface $responseFactory;
 
@@ -56,7 +68,7 @@ class ColumnSelectorController
         $table = (string)($parsedBody['table'] ?? '');
         $selectedColumns = $parsedBody['selectedColumns'] ?? [];
 
-        if ($table === '' || !is_array($selectedColumns) || $selectedColumns === []) {
+        if ($table === '' || !is_array($selectedColumns)) {
             return $this->jsonResponse([
                 'success' => false,
                 'message' => htmlspecialchars(
@@ -115,29 +127,42 @@ class ColumnSelectorController
         // Current fields selection
         $displayFields = $this->getBackendUserAuthentication()->getModuleData('list/displayFields')[$table] ?? [];
 
-        // Request fields from table and add pseudo fields
-        $fields = array_merge(
-            GeneralUtility::makeInstance(DatabaseRecordList::class)->makeFieldList($table, false, true),
-            self::PSEUDO_FIELDS
-        );
+        if ($table === '_FILE') {
+            // Special handling for _FILE (merging sys_file and sys_file_metadata together)
+            $fields = $this->getFileFields();
+        } else {
+            // Request fields from table and add pseudo fields
+            $fields = array_merge(
+                GeneralUtility::makeInstance(DatabaseRecordList::class)->makeFieldList($table, false, true),
+                self::PSEUDO_FIELDS
+            );
+        }
 
         $columns = $specialColumns = $disabledColumns = [];
         foreach ($fields as $fieldName) {
+            $concreteTableName = $table;
+
+            // In case we deal with _FILE, the field name is prefixed with the
+            // concrete table name, which is either sys_file or sys_file_metadata.
+            if ($table === '_FILE') {
+                [$concreteTableName, $fieldName] = explode('|', $fieldName);
+            }
+
             // Hide field if disabled
-            if ($tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['disabled'] ?? false) {
+            if ($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['disabled'] ?? false) {
                 continue;
             }
 
             // Determine if the column should be disabled (Meaning it is always selected and can not be turned off)
-            $isDisabled = $fieldName === ($GLOBALS['TCA'][$table]['ctrl']['label'] ?? false);
+            $isDisabled = $fieldName === ($GLOBALS['TCA'][$concreteTableName]['ctrl']['label'] ?? false);
 
             // Determine field label
-            $label = BackendUtility::getItemLabel($table, $fieldName);
+            $label = BackendUtility::getItemLabel($concreteTableName, $fieldName);
             if ($label) {
-                if (!empty($tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['label.'][$this->getLanguageService()->lang])) {
-                    $label = $tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['label.'][$this->getLanguageService()->lang];
-                } elseif (!empty($tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['label'])) {
-                    $label = $tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['label'];
+                if (!empty($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'][$this->getLanguageService()->lang])) {
+                    $label = $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'][$this->getLanguageService()->lang];
+                } elseif (!empty($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'])) {
+                    $label = $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'];
                 }
             } elseif ($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName)) {
                 $label = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName;
@@ -170,6 +195,36 @@ class ColumnSelectorController
         // Disabled columns go first, followed by standard columns
         // and special columns, which do not have a label.
         return array_merge($disabledColumns, $columns, $specialColumns);
+    }
+
+    /**
+     * Get file related fields by merging sys_file and sys_file_metadata together
+     * and adding the corresponding table as prefix (needed for labels processing).
+     *
+     * @return array
+     */
+    protected function getFileFields(): array
+    {
+        // Get all sys_file fields expect excluded ones
+        $fileFields = array_filter(
+            GeneralUtility::makeInstance(DatabaseRecordList::class)->makeFieldList('sys_file', false, true),
+            static fn (string $field): bool => !in_array($field, self::EXCLUDE_FILE_FIELDS, true)
+        );
+
+        // Update the exclude fields with the fields, already added through sys_file, since those take precedence
+        $excludeFields = array_merge($fileFields, self::EXCLUDE_FILE_FIELDS);
+
+        // Get all sys_file_metadata fields expect excluded ones
+        $fileMetaDataFields = array_filter(
+            GeneralUtility::makeInstance(DatabaseRecordList::class)->makeFieldList('sys_file_metadata', false, true),
+            static fn (string $field): bool => !in_array($field, $excludeFields, true)
+        );
+
+        // Merge sys_file and sys_file_metadata fields together, while adding the table name as prefix
+        return array_merge(
+            array_map(static fn (string $value): string => 'sys_file|' . $value, $fileFields),
+            array_map(static fn (string $value): string => 'sys_file_metadata|' . $value, $fileMetaDataFields),
+        );
     }
 
     protected function htmlResponse(ViewInterface $view): ResponseInterface
