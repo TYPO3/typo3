@@ -122,8 +122,8 @@ class FormManagerControllerTest extends UnitTestCase
      */
     public function getFormManagerAppInitialDataReturnsProcessedArray()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
             'translateValuesRecursive'
@@ -134,7 +134,7 @@ class FormManagerControllerTest extends UnitTestCase
             ->method('translateValuesRecursive')
             ->willReturnArgument(0);
 
-        $objectMangerProphecy
+        $objectManagerProphecy
             ->get(TranslationService::class)
             ->willReturn($mockTranslationService);
 

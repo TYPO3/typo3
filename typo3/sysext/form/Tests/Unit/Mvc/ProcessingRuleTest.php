@@ -71,11 +71,11 @@ class ProcessingRuleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function processNoPropertyMappingReturnsNotModifiedValue()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
         $resultProphecy = $this->prophesize(Result::class);
 
-        $objectMangerProphecy
+        $objectManagerProphecy
             ->get(Result::class)
             ->willReturn($resultProphecy->reveal());
 
@@ -96,10 +96,10 @@ class ProcessingRuleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function processNoPropertyMappingAndHasErrorsIfValidatorContainsErrors()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
-        $objectMangerProphecy
+        $objectManagerProphecy
             ->get(Result::class)
             ->willReturn(new Result);
 

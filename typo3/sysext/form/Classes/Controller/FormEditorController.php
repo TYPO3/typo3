@@ -72,11 +72,10 @@ class FormEditorController extends AbstractBackendController
             throw new PersistenceManagerException('Edit a extension formDefinition is not allowed.', 1478265661);
         }
 
+        $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
         $formDefinition = $this->formPersistenceManager->load($formPersistenceIdentifier);
         $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
-        if (empty($prototypeName)) {
-            $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
-        }
+
         $formDefinition['prototypeName'] = $prototypeName;
 
         $configurationService = $this->objectManager->get(ConfigurationService::class);
@@ -152,6 +151,7 @@ class FormEditorController extends AbstractBackendController
     public function saveFormAction(string $formPersistenceIdentifier, FormDefinitionArray $formDefinition)
     {
         $formDefinition = $formDefinition->getArrayCopy();
+
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
             if (method_exists($hookObj, 'beforeFormSave')) {
@@ -196,15 +196,14 @@ class FormEditorController extends AbstractBackendController
      */
     public function renderFormPageAction(FormDefinitionArray $formDefinition, int $pageIndex, string $prototypeName = null): string
     {
-        if (empty($prototypeName)) {
-            $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
-        }
+        $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
 
         $formFactory = $this->objectManager->get(ArrayFormFactory::class);
         $formDefinition = $formFactory->build($formDefinition->getArrayCopy(), $prototypeName);
         $formDefinition->setRenderingOption('previewMode', true);
         $form = $formDefinition->bind($this->request, $this->response);
         $form->overrideCurrentPage($pageIndex);
+
         return $form->render();
     }
 
@@ -217,7 +216,6 @@ class FormEditorController extends AbstractBackendController
      */
     protected function getInsertRenderablesPanelConfiguration(array $formElementsDefinition): array
     {
-        $formElementGroups = $this->prototypeConfiguration['formEditor']['formElementGroups'] ?? [];
         $formElementsByGroup = [];
 
         foreach ($formElementsDefinition as $formElementName => $formElementConfiguration) {
@@ -243,7 +241,7 @@ class FormEditorController extends AbstractBackendController
         }
 
         $formGroups = [];
-        foreach ($formElementGroups as $groupName => $groupConfiguration) {
+        foreach ($this->prototypeConfiguration['formEditor']['formElementGroups'] ?? [] as $groupName => $groupConfiguration) {
             if (!isset($formElementsByGroup[$groupName])) {
                 continue;
             }

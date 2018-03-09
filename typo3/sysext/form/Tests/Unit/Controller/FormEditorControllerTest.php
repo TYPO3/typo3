@@ -61,8 +61,8 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
             'dummy'
         ], [], '', false);
 
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
             'translate'
@@ -73,7 +73,7 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
             ->method('translate')
             ->willReturnArgument(4);
 
-        $objectMangerProphecy
+        $objectManagerProphecy
             ->get(TranslationService::class)
             ->willReturn($mockTranslationService);
 
@@ -159,8 +159,8 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
             'dummy'
         ], [], '', false);
 
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
             'translateValuesRecursive'
@@ -171,7 +171,7 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
             ->method('translateValuesRecursive')
             ->willReturnArgument(0);
 
-        $objectMangerProphecy
+        $objectManagerProphecy
             ->get(TranslationService::class)
             ->willReturn($mockTranslationService);
 

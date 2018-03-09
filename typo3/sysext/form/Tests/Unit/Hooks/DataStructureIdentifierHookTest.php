@@ -183,10 +183,10 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
      */
     public function parseDataStructureByIdentifierPostProcessAddsExistingFormItems(array $formDefinition, array $expectedItem)
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
         $formPersistenceManagerProphecy = $this->prophesize(FormPersistenceManager::class);
-        $objectMangerProphecy->get(FormPersistenceManagerInterface::class)
+        $objectManagerProphecy->get(FormPersistenceManagerInterface::class)
             ->willReturn($formPersistenceManagerProphecy->reveal());
 
         $formPersistenceManagerProphecy->listForms()->shouldBeCalled()->willReturn([$formDefinition]);

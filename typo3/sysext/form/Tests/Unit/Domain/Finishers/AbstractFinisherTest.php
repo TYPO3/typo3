@@ -150,8 +150,8 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function parseOptionReturnsValueFromFormRuntimeIfOptionNameReferenceAFormElementIdentifierWhoseValueIsAString()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
             'translateFinisherOption'
@@ -162,7 +162,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             ->method('translateFinisherOption')
             ->willReturnArgument(3);
 
-        $objectMangerProphecy
+        $objectManagerProphecy
             ->get(TranslationService::class)
             ->willReturn($mockTranslationService);
 
@@ -199,8 +199,8 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function parseOptionReturnsNoReplacedValueFromFormRuntimeIfOptionNameReferenceAFormElementIdentifierWhoseValueIsNotAString()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
             'translateFinisherOption'
@@ -211,7 +211,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             ->method('translateFinisherOption')
             ->willReturnArgument(3);
 
-        $objectMangerProphecy
+        $objectManagerProphecy
             ->get(TranslationService::class)
             ->willReturn($mockTranslationService);
 
@@ -249,8 +249,8 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function parseOptionReturnsNoReplacedValueFromFormRuntimeIfOptionNameReferenceANonExistingFormElement()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
             'translateFinisherOption'
@@ -261,7 +261,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             ->method('translateFinisherOption')
             ->willReturnArgument(3);
 
-        $objectMangerProphecy
+        $objectManagerProphecy
             ->get(TranslationService::class)
             ->willReturn($mockTranslationService);
 
@@ -298,8 +298,8 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function parseOptionReturnsDefaultOptionValueIfOptionNameNotExistsWithinOptionsButWithinDefaultOptions()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
             'translateFinisherOption'
@@ -310,7 +310,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             ->method('translateFinisherOption')
             ->willReturnArgument(3);
 
-        $objectMangerProphecy
+        $objectManagerProphecy
             ->get(TranslationService::class)
             ->willReturn($mockTranslationService);
 
@@ -347,8 +347,8 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function parseOptionReturnsDefaultOptionValueIfOptionValueIsAFormElementReferenceAndTheFormElementValueIsEmpty()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
             'translateFinisherOption'
@@ -359,7 +359,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             ->method('translateFinisherOption')
             ->willReturnArgument(3);
 
-        $objectMangerProphecy
+        $objectManagerProphecy
             ->get(TranslationService::class)
             ->willReturn($mockTranslationService);
 
@@ -399,8 +399,8 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function parseOptionReturnsTimestampIfOptionValueIsATimestampRequestTrigger()
     {
-        $objectMangerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
             'translateFinisherOption'
@@ -411,7 +411,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             ->method('translateFinisherOption')
             ->willReturnArgument(3);
 
-        $objectMangerProphecy
+        $objectManagerProphecy
             ->get(TranslationService::class)
             ->willReturn($mockTranslationService);
 
