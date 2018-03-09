@@ -127,7 +127,7 @@ class ConnectionPool
     {
         // Default to UTF-8 connection charset
         if (empty($connectionParams['charset'])) {
-            $connectionParams['charset'] = 'utf-8';
+            $connectionParams['charset'] = 'utf8';
         }
 
         // Force consistent handling of binary objects across datbase platforms
