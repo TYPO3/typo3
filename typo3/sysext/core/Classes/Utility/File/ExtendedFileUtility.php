@@ -846,8 +846,13 @@ class ExtendedFileUtility extends BasicFileUtility
             try {
                 // Try to rename the File
                 $resultObject = $sourceFileObject->rename($targetFile, $this->existingFilesConflictMode);
-                $this->writeLog(5, 0, 1, 'File renamed from "%s" to "%s"', [$sourceFile, $targetFile]);
-                if ($sourceFile === $targetFile) {
+                if ($resultObject->getName() !== $targetFile) {
+                    $this->writeLog(5, 1, 1, 'File renamed from "%s" to "%s". Filename had to be sanitized!', [$sourceFile, $targetFile]);
+                    $this->addMessageToFlashMessageQueue('FileUtility.FileNameSanitized', [$targetFile, $resultObject->getName()], FlashMessage::WARNING);
+                } else {
+                    $this->writeLog(5, 0, 1, 'File renamed from "%s" to "%s"', [$sourceFile, $targetFile]);
+                }
+                if ($sourceFile === $resultObject->getName()) {
                     $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedSameName', [$sourceFile], FlashMessage::INFO);
                 } else {
                     $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedFromTo', [$sourceFile, $resultObject->getName()], FlashMessage::OK);
@@ -961,7 +966,10 @@ class ExtendedFileUtility extends BasicFileUtility
         try {
             $resultObject = $targetFolderObject->createFile($fileName);
             $this->writeLog(8, 0, 1, 'File created: "%s"', [$fileName]);
-            $this->addMessageToFlashMessageQueue('FileUtility.FileCreated', [$fileName], FlashMessage::OK);
+            if ($resultObject->getName() !== $fileName) {
+                $this->addMessageToFlashMessageQueue('FileUtility.FileNameSanitized', [$fileName, $resultObject->getName()], FlashMessage::WARNING);
+            }
+            $this->addMessageToFlashMessageQueue('FileUtility.FileCreated', [$resultObject->getName()], FlashMessage::OK);
         } catch (IllegalFileExtensionException $e) {
             $this->writeLog(8, 1, 106, 'Extension of file "%s" was not allowed!', [$fileName]);
             $this->addMessageToFlashMessageQueue('FileUtility.ExtensionOfFileWasNotAllowed', [$fileName]);
@@ -1099,6 +1107,9 @@ class ExtendedFileUtility extends BasicFileUtility
                 }
                 $resultObjects[] = $fileObject;
                 $this->internalUploadMap[$uploadPosition] = $fileObject->getCombinedIdentifier();
+                if ($fileObject->getName() !== $fileInfo['name']) {
+                    $this->addMessageToFlashMessageQueue('FileUtility.FileNameSanitized', [$fileInfo['name'], $fileObject->getName()], FlashMessage::WARNING);
+                }
                 $this->writeLog(1, 0, 1, 'Uploading file "%s" to "%s"', [$fileInfo['name'], $targetFolderObject->getIdentifier()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.UploadingFileTo', [$fileInfo['name'], $targetFolderObject->getIdentifier()], FlashMessage::OK);
             } catch (InsufficientFileWritePermissionsException $e) {
