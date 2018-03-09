@@ -1299,20 +1299,14 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * @param string $fileName
      * @param string $parentFolderIdentifier
      * @return string
-     * @throws Exception\InvalidFileNameException
      * @throws \RuntimeException
      */
     public function createFile($fileName, $parentFolderIdentifier)
     {
-        if (!$this->isValidFilename($fileName)) {
-            throw new Exception\InvalidFileNameException(
-                'Invalid characters in fileName "' . $fileName . '"',
-                1320572272
-            );
-        }
+        $fileName = $this->sanitizeFileName(ltrim($fileName, '/'));
         $parentFolderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($parentFolderIdentifier);
         $fileIdentifier = $this->canonicalizeAndCheckFileIdentifier(
-            $parentFolderIdentifier . $this->sanitizeFileName(ltrim($fileName, '/'))
+            $parentFolderIdentifier . $fileName
         );
         $absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
         $result = touch($absoluteFilePath);

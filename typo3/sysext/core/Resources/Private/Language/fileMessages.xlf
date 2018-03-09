@@ -75,6 +75,9 @@
 			<trans-unit id="FileUtility.FileCreated">
 				<source>File created: "%s".</source>
 			</trans-unit>
+			<trans-unit id="FileUtility.FileNameSanitized">
+				<source>The file name "%s" is invalid, the file was automatically renamed to "%s".</source>
+			</trans-unit>
 			<trans-unit id="FileUtility.FileExistedAlreadyIn">
 				<source>File existed already in "%s"!</source>
 			</trans-unit>
