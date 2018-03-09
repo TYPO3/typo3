@@ -633,7 +633,6 @@ class PageLayoutView implements LoggerAwareInterface
         $this->getTranslateTools();
         $this->determineScriptUrl();
         $this->localizationController = GeneralUtility::makeInstance(LocalizationController::class);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
