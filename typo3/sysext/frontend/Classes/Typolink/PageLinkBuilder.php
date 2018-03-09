@@ -193,7 +193,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $LD = $tsfe->tmpl->linkData($page, $target, $conf['no_cache'], '', '', $addQueryParams, $pageType, $targetDomain);
             if ($targetDomain !== '') {
                 // We will add domain only if URL does not have it already.
-                if ($enableLinksAcrossDomains && $targetDomain !== $currentDomain) {
+                if ($enableLinksAcrossDomains && $targetDomain !== $currentDomain && isset($tsfe->config['config']['absRefPrefix'])) {
                     // Get rid of the absRefPrefix if necessary. absRefPrefix is applicable only
                     // to the current web site. If we have domain here it means we link across
                     // domains. absRefPrefix can contain domain name, which will screw up
