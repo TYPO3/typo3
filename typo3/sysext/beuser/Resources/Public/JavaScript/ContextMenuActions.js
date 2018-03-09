@@ -37,9 +37,14 @@ define(function() {
         top.TYPO3.settings.AccessPermissions.moduleUrl +
         '&id=' + uid +
         '&tx_beuser_system_beusertxpermission[action]=edit' +
-        '&tx_beuser_system_beusertxpermission[controller]=Permission'
+        '&tx_beuser_system_beusertxpermission[controller]=Permission' +
+        '&returnUrl=' + ContextMenuActions.getReturnUrl()
       );
     }
+  };
+
+  ContextMenuActions.getReturnUrl = function() {
+    return top.rawurlencode(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
   };
 
   return ContextMenuActions;
