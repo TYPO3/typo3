@@ -173,7 +173,7 @@ The default module is "About Modules".</source>
 				<source>Change password</source>
 			</trans-unit>
 			<trans-unit id="option_newPassword.description">
-				<source>Enter a new password for your backend account:</source>
+				<source>Enter a new password for your backend account</source>
 			</trans-unit>
 			<trans-unit id="option_newPassword.details">
 				<source>The passwords are encrypted to an MD5 hash when you leave the field so no plain text password is sent over the wire.</source>

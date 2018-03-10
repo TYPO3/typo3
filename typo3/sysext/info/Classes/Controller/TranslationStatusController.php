@@ -268,7 +268,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
         }
         // Put together HEADER:
         $tCells = [];
-        $tCells[] = '<td>' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . ':</td>';
+        $tCells[] = '<td>' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . '</td>';
         if (is_array($langRecUids[0])) {
             $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
@@ -288,7 +288,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
         }
         $tCells[] = '<td class="col-border-left" colspan="2">' . $lang->sL(
                 'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_default'
-            ) . ':' . $editIco . '</td>';
+            ) . '&nbsp;' . $editIco . '</td>';
         foreach ($languages as $langRow) {
             if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int)$this->pObj->MOD_SETTINGS['lang'] === (int)$langRow['uid']) {
                 // Title:

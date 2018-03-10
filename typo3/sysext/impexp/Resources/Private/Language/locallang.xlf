@@ -43,7 +43,7 @@
 				<source>Messages</source>
 			</trans-unit>
 			<trans-unit id="execlistqu_structureToBeExported">
-				<source>Structure to be exported:</source>
+				<source>Structure to be exported</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_toggle_all_disabled_records">
 				<source>Toggle disabled records</source>
@@ -55,13 +55,13 @@
 				<source>An SQL query returned exactly the amount of records specified by the limit value (%s) - that could indicate an incomplete selection of records! Make sure this is on purpose.</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_exportPagetreeConfiguration">
-				<source>Export pagetree configuration:</source>
+				<source>Export pagetree configuration</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_pageId">
-				<source>Page ID:</source>
+				<source>Page ID</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_tree">
-				<source>Tree:</source>
+				<source>Tree</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_noTreeExportedOnly">
 				<source>No tree exported - only tables on the page.</source>
@@ -73,43 +73,43 @@
 				<source>Expanded tree</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_levels">
-				<source>Levels:</source>
+				<source>Levels</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_includeTables">
-				<source>Include tables:</source>
+				<source>Include tables</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_exportSingleRecord">
-				<source>Export single record:</source>
+				<source>Export single record</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_record">
-				<source>Record:</source>
+				<source>Record</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_exportTablesFromPages">
-				<source>Export tables from pages:</source>
+				<source>Export tables from pages</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_tablePids">
-				<source>Table/Pids:</source>
+				<source>Table/Pids</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_tableListEntry">
             	<source>Table "%s" from %s</source>
             </trans-unit>
 			<trans-unit id="makeconfig_relationsAndExclusions">
-				<source>Relations and Exclusions:</source>
+				<source>Relations and Exclusions</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_includeRelationsToTables">
-				<source>Include relations to tables:</source>
+				<source>Include relations to tables</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_useStaticRelationsFor">
-				<source>Use static relations for tables:</source>
+				<source>Use static relations for tables</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_showStaticRelations">
-				<source>Show static relations:</source>
+				<source>Show static relations</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_excludeElements">
-				<source>Exclude elements:</source>
+				<source>Exclude elements</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_clearAllManualExclusions">
-				<source>Clear all manual exclusions:</source>
+				<source>Clear all manual exclusions</source>
 			</trans-unit>
 			<trans-unit id="makeconfig_noManuallyExcludedElementsYet">
 				<source>No manually excluded elements yet. Exclude by setting checkboxes below in the element display.</source>
@@ -121,34 +121,34 @@
 				<source>Update</source>
 			</trans-unit>
 			<trans-unit id="makeadvanc_softReferences">
-				<source>Soft References:</source>
+				<source>Soft References</source>
 			</trans-unit>
 			<trans-unit id="makeadvanc_excludeHtmlCssFile">
-				<source>Exclude HTML/CSS file resources:</source>
+				<source>Exclude HTML/CSS file resources</source>
 			</trans-unit>
 			<trans-unit id="makeadvanc_files">
-				<source>Files:</source>
+				<source>Files</source>
 			</trans-unit>
 			<trans-unit id="makeadvanc_saveFilesOutsideExportFile">
-				<source>Save files in extra folder beside the export file:</source>
+				<source>Save files in extra folder beside the export file</source>
 			</trans-unit>
 			<trans-unit id="makeadvanc_saveFilesOutsideExportFile_limit">
 				<source>(supported for "Save to filename" only)</source>
 			</trans-unit>
 			<trans-unit id="makeadvanc_extensionDependencies">
-				<source>Extension dependencies:</source>
+				<source>Extension dependencies</source>
 			</trans-unit>
 			<trans-unit id="makeadvanc_selectExtensionsThatThe">
-				<source>Select extensions that the exported content depends on:</source>
+				<source>Select extensions that the exported content depends on</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_update">
 				<source>Update</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_presets">
-				<source>Presets:</source>
+				<source>Presets</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_selectPreset">
-				<source>Select preset:</source>
+				<source>Select preset</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_load">
 				<source>Load</source>
@@ -169,25 +169,25 @@
 				<source>Merge</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_titleOfNewPreset">
-				<source>Title of new preset:</source>
+				<source>Title of new preset</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_public">
-				<source>Public:</source>
+				<source>Public</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_outputOptions">
-				<source>Output options:</source>
+				<source>Output options</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_metaData">
-				<source>Meta data:</source>
+				<source>Meta data</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_title">
-				<source>Title:</source>
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_description">
-				<source>Description:</source>
+				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_notes">
-				<source>Notes:</source>
+				<source>Notes</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_t3dFileCompressed">
 				<source>T3D file / compressed</source>
@@ -199,10 +199,10 @@
 				<source>XML</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_fileFormat">
-				<source>File format:</source>
+				<source>File format</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_filenameSavedInS">
-				<source>Filename (saved in "%s"):</source>
+				<source>Filename (saved in "%s")</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_downloadExport">
 				<source>Download export</source>
@@ -211,10 +211,10 @@
 				<source>Save to filename</source>
 			</trans-unit>
 			<trans-unit id="importdata_selectFileToImport">
-				<source>Select file to import:</source>
+				<source>Select file to import</source>
 			</trans-unit>
 			<trans-unit id="importdata_file">
-				<source>File:</source>
+				<source>File</source>
 			</trans-unit>
 			<trans-unit id="importdata_fromPathS">
 				<source>(From path: %s)</source>
@@ -223,10 +223,10 @@
 				<source>NOTE: No decompressor available for compressed files!</source>
 			</trans-unit>
 			<trans-unit id="importdata_importOptions">
-				<source>Import Options:</source>
+				<source>Import Options</source>
 			</trans-unit>
 			<trans-unit id="importdata_update">
-				<source>Update:</source>
+				<source>Update</source>
 			</trans-unit>
 			<trans-unit id="importdata_updateRecords">
 				<source>Update records</source>
@@ -247,7 +247,7 @@
 				<source>With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</source>
 			</trans-unit>
 			<trans-unit id="importdata_options">
-				<source>Options:</source>
+				<source>Options</source>
 			</trans-unit>
 			<trans-unit id="importdata_doNotShowDifferences">
 				<source>Do not show differences in records</source>
@@ -259,7 +259,7 @@
 				<source>Allow to write banned file extensions (eg. PHP scripts), if any</source>
 			</trans-unit>
 			<trans-unit id="importdata_action">
-				<source>Action:</source>
+				<source>Action</source>
 			</trans-unit>
 			<trans-unit id="importdata_preview">
 				<source>Preview</source>
@@ -277,7 +277,7 @@
 				<source>New import</source>
 			</trans-unit>
 			<trans-unit id="importdata_enableLogging">
-				<source>Enable logging:</source>
+				<source>Enable logging</source>
 			</trans-unit>
 			<trans-unit id="importdata_writeIndividualDbActions">
 				<source>Write individual DB actions during import to the log</source>
@@ -286,16 +286,16 @@
 				<source>This is disabled by default since there may be hundred of entries generated.</source>
 			</trans-unit>
 			<trans-unit id="importdata_uploadFileFromLocal">
-				<source>Upload file from local computer:</source>
+				<source>Upload file from local computer</source>
 			</trans-unit>
 			<trans-unit id="importdata_browse">
-				<source>Browse:</source>
+				<source>Browse</source>
 			</trans-unit>
 			<trans-unit id="importdata_uploadStatus">
-				<source>Upload status:</source>
+				<source>Upload status</source>
 			</trans-unit>
 			<trans-unit id="importdata_success">
-				<source>Success:</source>
+				<source>Success</source>
 			</trans-unit>
 			<trans-unit id="importdata_failureNoFileUploaded">
 				<source>Failure: No file uploaded - was it too big? Check system log.</source>
@@ -310,25 +310,25 @@
 				<source>The import module hasn't received any data. This may occur due to a file upload with a large file. Please check the file size of your uploaded file with the server's post_max_size and upload_max_filesize configuration.</source>
 			</trans-unit>
 			<trans-unit id="importdata_metaData">
-				<source>Meta data:</source>
+				<source>Meta data</source>
 			</trans-unit>
 			<trans-unit id="importdata_title">
-				<source>Title:</source>
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="importdata_description">
-				<source>Description:</source>
+				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="importdata_notes">
-				<source>Notes:</source>
+				<source>Notes</source>
 			</trans-unit>
 			<trans-unit id="importdata_packager">
-				<source>Packager:</source>
+				<source>Packager</source>
 			</trans-unit>
 			<trans-unit id="importdata_email">
-				<source>Email:</source>
+				<source>Email</source>
 			</trans-unit>
 			<trans-unit id="importdata_icon">
-				<source>Icon:</source>
+				<source>Icon</source>
 			</trans-unit>
 			<trans-unit id="importdata_metaData_1387">
 				<source>Meta data</source>
@@ -337,7 +337,7 @@
 				<source>Messages</source>
 			</trans-unit>
 			<trans-unit id="importdata_structureHasBeenImported">
-				<source>Structure has been imported, here is the result:</source>
+				<source>Structure has been imported, here is the result</source>
 			</trans-unit>
 			<trans-unit id="importdata_no_accessible_file_mount">
 				<source>No accessible filemount</source>
@@ -346,37 +346,37 @@
 				<source>No default upload folder</source>
 			</trans-unit>
 			<trans-unit id="filterpage_structureToBeImported">
-				<source>Structure to be imported:</source>
+				<source>Structure to be imported</source>
 			</trans-unit>
 			<trans-unit id="ALL_tables">
 				<source>ALL tables</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_displaycon_controls">
-				<source>Controls:</source>
+				<source>Controls</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_displaycon_title">
-				<source>Title:</source>
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_displaycon_message">
-				<source>Message:</source>
+				<source>Message</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_displaycon_updateMode">
-				<source>Update Mode:</source>
+				<source>Update Mode</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_displaycon_currentPath">
-				<source>Current Path:</source>
+				<source>Current Path</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_displaycon_result">
-				<source>Result:</source>
+				<source>Result</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_displaycon_insidePagetree">
-				<source>Inside pagetree:</source>
+				<source>Inside pagetree</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_singlereco_outsidePagetree">
-				<source>Outside pagetree:</source>
+				<source>Outside pagetree</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_singlereco_softReferencesFiles">
-				<source>Soft References Files:</source>
+				<source>Soft References Files</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_singlereco_update">
 				<source>Update</source>
@@ -400,19 +400,19 @@
 				<source>Exclude</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_singlereco_title">
-				<source>Title:</source>
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_singlereco_descr">
-				<source>Descr:</source>
+				<source>Descr</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_singlereco_filename">
-				<source>Filename:</source>
+				<source>Filename</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_singlereco_value">
-				<source>Value:</source>
+				<source>Value</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_softrefsel_record">
-				<source>Record:</source>
+				<source>Record</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_softrefsel_editable">
 				<source>Editable</source>
@@ -421,7 +421,7 @@
 				<source>Exclude</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_printerror_description">
-				<source>Description:</source>
+				<source>Description</source>
 			</trans-unit>
 		</body>
 	</file>

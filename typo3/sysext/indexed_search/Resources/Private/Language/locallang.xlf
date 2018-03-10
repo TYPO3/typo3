@@ -117,13 +117,13 @@ All search words are converted to lowercase.
 				<source>Level 2 and out</source>
 			</trans-unit>
 			<trans-unit id="sections.rootLevel1">
-				<source>Level 1:</source>
+				<source>Level 1</source>
 			</trans-unit>
 			<trans-unit id="sections.rootLevel1All">
 				<source>All pages on level 1</source>
 			</trans-unit>
 			<trans-unit id="sections.rootLevel2">
-				<source>- Level 2:</source>
+				<source>- Level 2</source>
 			</trans-unit>
 			<trans-unit id="sections.rootLevel2All">
 				<source>- All pages on level 2</source>
@@ -202,22 +202,22 @@ All search words are converted to lowercase.
 				<source>Other</source>
 			</trans-unit>
 			<trans-unit id="result.otherMatching">
-				<source>Other matching pages in the same document:</source>
+				<source>Other matching pages in the same document</source>
 			</trans-unit>
 			<trans-unit id="result.otherPageAsWell">
 				<source>INFO: There was another page indexed as well. Probably indexed with another or no usergroup.</source>
 			</trans-unit>
 			<trans-unit id="result.path">
-				<source>Path:</source>
+				<source>Path</source>
 			</trans-unit>
 			<trans-unit id="result.modified">
-				<source>Modified:</source>
+				<source>Modified</source>
 			</trans-unit>
 			<trans-unit id="result.created">
-				<source>Created:</source>
+				<source>Created</source>
 			</trans-unit>
 			<trans-unit id="result.size">
-				<source>Size:</source>
+				<source>Size</source>
 			</trans-unit>
 			<trans-unit id="result.noResume">
 				<source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
@@ -236,10 +236,10 @@ All search words are converted to lowercase.
 				<source>in the section</source>
 			</trans-unit>
 			<trans-unit id="result.inNsection">
-				<source>in %s section:</source>
+				<source>in %s section</source>
 			</trans-unit>
 			<trans-unit id="result.inNsections">
-				<source>in %s sections:</source>
+				<source>in %s sections</source>
 			</trans-unit>
 
 			<trans-unit id="searchFor">

@@ -4,10 +4,10 @@
 		<header/>
 		<body>
 			<trans-unit id="delete">
-				<source>Delete:</source>
+				<source>Delete</source>
 			</trans-unit>
 			<trans-unit id="toTop">
-				<source>To top:</source>
+				<source>To top</source>
 			</trans-unit>
 			<trans-unit id="fileChanged">
 				<source>File changed</source>
@@ -28,10 +28,10 @@
 				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="allowedExtensions">
-				<source>Allowed extensions:</source>
+				<source>Allowed extensions</source>
 			</trans-unit>
 			<trans-unit id="maxFilesize">
-				<source>Max filesize:</source>
+				<source>Max filesize</source>
 			</trans-unit>
 			<trans-unit id="uploadResource">
 				<source>Upload resource</source>
@@ -40,7 +40,7 @@
 				<source>New text resource (enter name)</source>
 			</trans-unit>
 			<trans-unit id="copyResource">
-				<source>Make a copy of resource:</source>
+				<source>Make a copy of resource</source>
 			</trans-unit>
 			<trans-unit id="updateResourceList">
 				<source>Update resource list</source>
@@ -49,10 +49,10 @@
 				<source>Constants</source>
 			</trans-unit>
 			<trans-unit id="file">
-				<source>File:</source>
+				<source>File</source>
 			</trans-unit>
 			<trans-unit id="editResource">
-				<source>Edit Resource:</source>
+				<source>Edit Resource</source>
 			</trans-unit>
 			<trans-unit id="filesizeExceeded">
 				<source>Filesize exceeded %s KBytes</source>

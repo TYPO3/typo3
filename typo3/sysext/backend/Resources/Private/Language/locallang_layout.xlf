@@ -154,7 +154,7 @@
 				<source>Create new content element</source>
 			</trans-unit>
 			<trans-unit id="CEonThisPage">
-				<source>Content elements on this page:</source>
+				<source>Content elements on this page</source>
 			</trans-unit>
 			<trans-unit id="newPage">
 				<source>Create new page</source>

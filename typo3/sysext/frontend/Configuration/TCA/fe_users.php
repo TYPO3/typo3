@@ -259,7 +259,7 @@ return [
         ],
         'TSconfig' => [
             'exclude' => true,
-            'label' => 'TSconfig:',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:TSconfig',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,

@@ -7,19 +7,19 @@
 				<source>Staging</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.custom_stages">
-				<source>Custom stages:</source>
+				<source>Custom stages</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace_stage.responsible_persons">
-				<source>Responsible persons:</source>
+				<source>Responsible persons</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace_stage.default_mailcomment">
-				<source>Default mail comment:</source>
+				<source>Default mail comment</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace_stage.parentid">
-				<source>UID of parent record:</source>
+				<source>UID of parent record</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace_stage.parenttable">
-				<source>Parent table:</source>
+				<source>Parent table</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace_stage">
 				<source>Workspace Stage</source>
@@ -52,13 +52,13 @@
 				<source>Allow notification settings during stage change</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.palette.stage.edit">
-				<source>Stage "editing":</source>
+				<source>Stage "editing"</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.palette.stage.publish">
-				<source>Stage "ready to publish":</source>
+				<source>Stage "ready to publish"</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.palette.stage.execute">
-				<source>Stage "publishing execute":</source>
+				<source>Stage "publishing execute"</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.settingsDialog">
 				<source>Settings dialog</source>

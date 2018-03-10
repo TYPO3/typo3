@@ -49,13 +49,13 @@
 				<source>Crop lines</source>
 			</trans-unit>
 			<trans-unit id="variable">
-				<source>Variable:</source>
+				<source>Variable</source>
 			</trans-unit>
 			<trans-unit id="copyPaste">
 				<source>(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</source>
 			</trans-unit>
 			<trans-unit id="enterSearchPhrase">
-				<source>Enter search phrase:</source>
+				<source>Enter search phrase</source>
 			</trans-unit>
 			<trans-unit id="search">
 				<source>Search</source>

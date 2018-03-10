@@ -46,13 +46,13 @@
 				<source>Update</source>
 			</trans-unit>
 			<trans-unit id="editProperty">
-				<source>Edit object/property value:</source>
+				<source>Edit object/property value</source>
 			</trans-unit>
 			<trans-unit id="addButton">
 				<source>Add</source>
 			</trans-unit>
 			<trans-unit id="addProperty">
-				<source>Add object property:</source>
+				<source>Add object property</source>
 			</trans-unit>
 			<trans-unit id="clear">
 				<source>Clear?</source>
@@ -61,10 +61,10 @@
 				<source>Clear</source>
 			</trans-unit>
 			<trans-unit id="clearObject">
-				<source>Clear object:</source>
+				<source>Clear object</source>
 			</trans-unit>
 			<trans-unit id="edit">
-				<source>Edit:</source>
+				<source>Edit</source>
 			</trans-unit>
 			<trans-unit id="noCurrentTemplate">
 				<source>You cannot edit properties and values, if there's no current template.</source>
@@ -76,13 +76,13 @@
 				<source>Back</source>
 			</trans-unit>
 			<trans-unit id="browse">
-				<source>Browse:</source>
+				<source>Browse</source>
 			</trans-unit>
 			<trans-unit id="objectList">
-				<source>Object List:</source>
+				<source>Object List</source>
 			</trans-unit>
 			<trans-unit id="search">
-				<source>Search:</source>
+				<source>Search</source>
 			</trans-unit>
 			<trans-unit id="regExp">
 				<source>Regular expressions</source>
@@ -112,7 +112,7 @@
 				<source>Crop lines</source>
 			</trans-unit>
 			<trans-unit id="displayConstants">
-				<source>Display constants:</source>
+				<source>Display constants</source>
 			</trans-unit>
 			<trans-unit id="displayOptions">
 				<source>Display options</source>

@@ -118,7 +118,7 @@
 				<source>Layout 3</source>
 			</trans-unit>
 			<trans-unit id="colPos">
-				<source>Columns:</source>
+				<source>Columns</source>
 			</trans-unit>
 			<trans-unit id="colPos_formlabel">
 				<source>Column</source>
@@ -145,7 +145,7 @@
 				<source>Date</source>
 			</trans-unit>
 			<trans-unit id="header">
-				<source>Header:</source>
+				<source>Header</source>
 			</trans-unit>
 			<trans-unit id="header_formlabel">
 				<source>Header</source>
@@ -163,7 +163,7 @@
 				<source>Name (not visible in frontend)</source>
 			</trans-unit>
 			<trans-unit id="header_position">
-				<source>Align:</source>
+				<source>Align</source>
 			</trans-unit>
 			<trans-unit id="header_position_formlabel">
 				<source>Alignment</source>
@@ -178,7 +178,7 @@
 				<source>Left</source>
 			</trans-unit>
 			<trans-unit id="header_link">
-				<source>Link:</source>
+				<source>Link</source>
 			</trans-unit>
 			<trans-unit id="header_link_formlabel">
 				<source>Link</source>
@@ -220,19 +220,19 @@
 				<source>Forms wizard</source>
 			</trans-unit>
 			<trans-unit id="imagewidth">
-				<source>Width (pixels):</source>
+				<source>Width (pixels)</source>
 			</trans-unit>
 			<trans-unit id="imagewidth_formlabel">
 				<source>Width (px)</source>
 			</trans-unit>
 			<trans-unit id="imageheight">
-				<source>Height (pixels):</source>
+				<source>Height (pixels)</source>
 			</trans-unit>
 			<trans-unit id="imageheight_formlabel">
 				<source>Height (px)</source>
 			</trans-unit>
 			<trans-unit id="imageorient">
-				<source>Position:</source>
+				<source>Position</source>
 			</trans-unit>
 			<trans-unit id="imageorient_formlabel">
 				<source>Position and Alignment</source>
@@ -271,25 +271,25 @@
 				<source>Beside Text, Left</source>
 			</trans-unit>
 			<trans-unit id="imageborder">
-				<source>Border:</source>
+				<source>Border</source>
 			</trans-unit>
 			<trans-unit id="imageborder_formlabel">
 				<source>Border</source>
 			</trans-unit>
 			<trans-unit id="image_link">
-				<source>Link:</source>
+				<source>Link</source>
 			</trans-unit>
 			<trans-unit id="image_link_formlabel">
 				<source>Links (one per line, one link per image)</source>
 			</trans-unit>
 			<trans-unit id="image_zoom">
-				<source>Click-enlarge:</source>
+				<source>Click-enlarge</source>
 			</trans-unit>
 			<trans-unit id="image_zoom_formlabel">
 				<source>Enlarge on Click</source>
 			</trans-unit>
 			<trans-unit id="image_frames">
-				<source>Frames:</source>
+				<source>Frames</source>
 			</trans-unit>
 			<trans-unit id="image_frames_formlabel">
 				<source>Graphical Frames</source>
@@ -322,25 +322,25 @@
 				<source>Frame 8</source>
 			</trans-unit>
 			<trans-unit id="imagecols">
-				<source>Columns:</source>
+				<source>Columns</source>
 			</trans-unit>
 			<trans-unit id="imagecols_formlabel">
 				<source>Number of Columns</source>
 			</trans-unit>
 			<trans-unit id="image_altText">
-				<source>Alternative Text:</source>
+				<source>Alternative Text</source>
 			</trans-unit>
 			<trans-unit id="altText_formlabel">
 				<source>Alternative Labels (one per line)</source>
 			</trans-unit>
 			<trans-unit id="image_titleText">
-				<source>Title Text:</source>
+				<source>Title Text</source>
 			</trans-unit>
 			<trans-unit id="titleText_formlabel">
 				<source>Titles (one per line)</source>
 			</trans-unit>
 			<trans-unit id="image_longdescURL">
-				<source>Long Description URL:</source>
+				<source>Long Description URL</source>
 			</trans-unit>
 			<trans-unit id="images.addFileReference">
 				<source>Add image</source>
@@ -412,7 +412,7 @@
 				<source>Content elements for selected categories</source>
 			</trans-unit>
 			<trans-unit id="list_type">
-				<source>Plugin:</source>
+				<source>Plugin</source>
 			</trans-unit>
 			<trans-unit id="list_type_formlabel">
 				<source>Selected Plugin</source>
@@ -436,7 +436,7 @@
 				<source>Add file</source>
 			</trans-unit>
 			<trans-unit id="multimedia">
-				<source>File:</source>
+				<source>File</source>
 			</trans-unit>
 			<trans-unit id="multimedia_formlabel">
 				<source>Selected Media File</source>
@@ -448,10 +448,10 @@
 				<source>Select file collections</source>
 			</trans-unit>
 			<trans-unit id="filelink_size">
-				<source>Show File Size:</source>
+				<source>Show File Size</source>
 			</trans-unit>
 			<trans-unit id="filelink_sorting">
-				<source>Sort file list:</source>
+				<source>Sort file list</source>
 			</trans-unit>
 			<trans-unit id="filelink_sorting.none">
 					<source>no sorting</source>
@@ -475,7 +475,7 @@
 					<source>by file modification date</source>
 			</trans-unit>
 			<trans-unit id="filelink_sorting_direction">
-				<source>Sorting direction:</source>
+				<source>Sorting direction</source>
 			</trans-unit>
 			<trans-unit id="filelink_sorting_direction.ascending">
 					<source>Ascending (default)</source>
@@ -487,25 +487,25 @@
 				<source>Display File Size Information</source>
 			</trans-unit>
 			<trans-unit id="target">
-				<source>Target:</source>
+				<source>Target</source>
 			</trans-unit>
 			<trans-unit id="target.I.1">
 				<source>New window</source>
 			</trans-unit>
 			<trans-unit id="records">
-				<source>Items:</source>
+				<source>Items</source>
 			</trans-unit>
 			<trans-unit id="records_formlabel">
 				<source>Records</source>
 			</trans-unit>
 			<trans-unit id="spaceBefore">
-				<source>Before:</source>
+				<source>Before</source>
 			</trans-unit>
 			<trans-unit id="spaceBefore_formlabel">
 				<source>Top Margin</source>
 			</trans-unit>
 			<trans-unit id="spaceAfter">
-				<source>After:</source>
+				<source>After</source>
 			</trans-unit>
 			<trans-unit id="spaceAfter_formlabel">
 				<source>Bottom Margin</source>
@@ -568,7 +568,7 @@
 				<source>No Frame</source>
 			</trans-unit>
 			<trans-unit id="splash_layout">
-				<source>Textbox Type:</source>
+				<source>Textbox Type</source>
 			</trans-unit>
 			<trans-unit id="splash_layout_formlabel">
 				<source>Type</source>
@@ -589,19 +589,19 @@
 				<source>Postit 1</source>
 			</trans-unit>
 			<trans-unit id="sectionIndex">
-				<source>Index:</source>
+				<source>Index</source>
 			</trans-unit>
 			<trans-unit id="sectionIndex_formlabel">
 				<source>Show in Section Menus</source>
 			</trans-unit>
 			<trans-unit id="linkToTop">
-				<source>To top:</source>
+				<source>To top</source>
 			</trans-unit>
 			<trans-unit id="linkToTop_formlabel">
 				<source>Append with Link to Top of Page</source>
 			</trans-unit>
 			<trans-unit id="rte_enabled">
-				<source>Disable Rich Text Editor:</source>
+				<source>Disable Rich Text Editor</source>
 			</trans-unit>
 			<trans-unit id="rte_enabled_formlabel">
 				<source>Rich Text Editor</source>
@@ -640,7 +640,7 @@
 				<source>Plugin Mode</source>
 			</trans-unit>
 			<trans-unit id="select_key.ALT.uploads">
-				<source>Read from Path:</source>
+				<source>Read from Path</source>
 			</trans-unit>
 			<trans-unit id="select_key.ALT.uploads_formlabel">
 				<source>Path</source>
@@ -649,16 +649,16 @@
 				<source>PHP Code</source>
 			</trans-unit>
 			<trans-unit id="imagecaption.ALT.uploads">
-				<source>Descriptions:</source>
+				<source>Descriptions</source>
 			</trans-unit>
 			<trans-unit id="imagecaption.ALT.uploads_formlabel">
 				<source>File Descriptions (one per line)</source>
 			</trans-unit>
 			<trans-unit id="imagecaption.ALT.script">
-				<source>Comments:</source>
+				<source>Comments</source>
 			</trans-unit>
 			<trans-unit id="bodytext.ALT.mailform">
-				<source>Configuration:</source>
+				<source>Configuration</source>
 			</trans-unit>
 			<trans-unit id="bodytext.ALT.mailform_formlabel">
 				<source>Form Structure</source>
@@ -673,10 +673,10 @@
 				<source>Selected pages: Target (1st), Frontend user container (2nd)</source>
 			</trans-unit>
 			<trans-unit id="pages.ALT.search">
-				<source>Send to Page:</source>
+				<source>Send to Page</source>
 			</trans-unit>
 			<trans-unit id="pages.ALT.login">
-				<source>Send to Page:</source>
+				<source>Send to Page</source>
 			</trans-unit>
 			<trans-unit id="pages.ALT.menu_formlabel">
 				<source>Selected Pages</source>
@@ -688,13 +688,13 @@
 				<source>Starting Point for This Script</source>
 			</trans-unit>
 			<trans-unit id="subheader.ALT.mailform">
-				<source>Recipient Email:</source>
+				<source>Recipient Email</source>
 			</trans-unit>
 			<trans-unit id="subheader.ALT.mailform_formlabel">
 				<source>Recipient Email</source>
 			</trans-unit>
 			<trans-unit id="bodytext.ALT.html">
-				<source>HTML:</source>
+				<source>HTML</source>
 			</trans-unit>
 			<trans-unit id="menu.ALT.accessibility_title_formlabel">
 				<source>Menu block title</source>

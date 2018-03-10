@@ -13,7 +13,7 @@
 				<source>File</source>
 			</trans-unit>
 			<trans-unit id="delimiter">
-				<source>:</source>
+				<source></source>
 			</trans-unit>
 			<trans-unit id="constants">
 				<source>Constants</source>
@@ -22,7 +22,7 @@
 				<source>Setup</source>
 			</trans-unit>
 			<trans-unit id="unknownContentType">
-				<source>Unknown content type:</source>
+				<source>Unknown content type</source>
 			</trans-unit>
 			<trans-unit id="pageIDInteger">
 				<source>Syntax error: Parameter pageID must be a valid integer.</source>

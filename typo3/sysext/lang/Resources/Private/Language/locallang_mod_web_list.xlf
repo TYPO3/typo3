@@ -139,7 +139,7 @@
 				<source>All languages</source>
 			</trans-unit>
 			<trans-unit id="Localize">
-				<source>Localize to:</source>
+				<source>Localize to</source>
 			</trans-unit>
 			<trans-unit id="viewRecords">
 				<source>Viewing records of</source>

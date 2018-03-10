@@ -22,22 +22,22 @@
 				<source>Total amounts in tt_content</source>
 			</trans-unit>
 			<trans-unit id="overview.all.records">
-				<source>Records with ext. links:</source>
+				<source>Records with ext. links</source>
 			</trans-unit>
 			<trans-unit id="overview.all.links">
-				<source>External links:</source>
+				<source>External links</source>
 			</trans-unit>
 			<trans-unit id="overview.branch.header">
 				<source>Amounts from actual branch in tt_content</source>
 			</trans-unit>
 			<trans-unit id="overview.branch.records">
-				<source>Records with ext. links:</source>
+				<source>Records with ext. links</source>
 			</trans-unit>
 			<trans-unit id="overview.branch.links">
-				<source>External links:</source>
+				<source>External links</source>
 			</trans-unit>
 			<trans-unit id="overview.attention.header">
-				<source>Attention:</source>
+				<source>Attention</source>
 			</trans-unit>
 			<trans-unit id="overview.attention.text">
 				<source>Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</source>
@@ -61,19 +61,19 @@
 				<source>Check this level</source>
 			</trans-unit>
 			<trans-unit id="overviews.nbtotal">
-				<source>Broken links total:</source>
+				<source>Broken links total</source>
 			</trans-unit>
 			<trans-unit id="hooks.db">
-				<source>Internal Links:</source>
+				<source>Internal Links</source>
 			</trans-unit>
 			<trans-unit id="hooks.file">
-				<source>File Links:</source>
+				<source>File Links</source>
 			</trans-unit>
 			<trans-unit id="hooks.external">
-				<source>External Links:</source>
+				<source>External Links</source>
 			</trans-unit>
 			<trans-unit id="hooks.linkhandler">
-				<source>Linkhandler Links:</source>
+				<source>Linkhandler Links</source>
 			</trans-unit>
 			<trans-unit id="label_refresh">
 				<source>Refresh display</source>

@@ -7,31 +7,31 @@
 				<source>Action</source>
 			</trans-unit>
 			<trans-unit id="sys_action.hidden">
-				<source>Deactivated:</source>
+				<source>Deactivated</source>
 			</trans-unit>
 			<trans-unit id="sys_action.assign_to_groups">
-				<source>Assign action to groups:</source>
+				<source>Assign action to groups</source>
 			</trans-unit>
 			<trans-unit id="sys_action.t1_userprefix">
-				<source>User prefix:</source>
+				<source>User prefix</source>
 			</trans-unit>
 			<trans-unit id="sys_action.t1_allowed_groups">
-				<source>Groups which may be assigned through the action:</source>
+				<source>Groups which may be assigned through the action</source>
 			</trans-unit>
 			<trans-unit id="sys_action.t1_create_user_dir">
-				<source>Create User Home Directory:</source>
+				<source>Create User Home Directory</source>
 			</trans-unit>
 			<trans-unit id="sys_action.t1_copy_of_user">
-				<source>Template user:</source>
+				<source>Template user</source>
 			</trans-unit>
 			<trans-unit id="sys_action.t3_listPid">
-				<source>List pid:</source>
+				<source>List pid</source>
 			</trans-unit>
 			<trans-unit id="sys_action.t3_tables">
-				<source>List only table:</source>
+				<source>List only table</source>
 			</trans-unit>
 			<trans-unit id="sys_action.t4_recordsToEdit">
-				<source>Records to edit:</source>
+				<source>Records to edit</source>
 			</trans-unit>
 			<trans-unit id="sys_action.type.1">
 				<source>Create Backend User</source>

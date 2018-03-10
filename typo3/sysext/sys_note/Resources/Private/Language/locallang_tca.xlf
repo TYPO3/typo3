@@ -19,13 +19,13 @@
 				<source>To-do</source>
 			</trans-unit>
 			<trans-unit id="sys_note.subject">
-				<source>Subject:</source>
+				<source>Subject</source>
 			</trans-unit>
 			<trans-unit id="sys_note.message">
-				<source>Message:</source>
+				<source>Message</source>
 			</trans-unit>
 			<trans-unit id="sys_note.personal">
-				<source>Personal:</source>
+				<source>Personal</source>
 			</trans-unit>
 			<trans-unit id="sys_note.position">
 				<source>Position</source>

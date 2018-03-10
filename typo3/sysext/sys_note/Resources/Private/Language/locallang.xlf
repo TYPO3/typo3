@@ -7,13 +7,13 @@
 				<source>Internal notes</source>
 			</trans-unit>
 			<trans-unit id="author">
-				<source>Author:</source>
+				<source>Author</source>
 			</trans-unit>
 			<trans-unit id="date">
-				<source>Date:</source>
+				<source>Date</source>
 			</trans-unit>
 			<trans-unit id="personal">
-				<source>Personal:</source>
+				<source>Personal</source>
 			</trans-unit>
 			<trans-unit id="category.1">
 				<source>Instructions</source>

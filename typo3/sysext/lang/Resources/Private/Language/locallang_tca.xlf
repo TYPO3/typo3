@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="file_mountpoints">
-				<source>File Mounts:</source>
+				<source>File Mounts</source>
 			</trans-unit>
 			<trans-unit id="file_mountpoints_edit_title">
 				<source>Edit filemount</source>
@@ -16,19 +16,19 @@
 				<source>List filemounts</source>
 			</trans-unit>
 			<trans-unit id="db_mountpoints">
-				<source>DB Mounts:</source>
+				<source>DB Mounts</source>
 			</trans-unit>
 			<trans-unit id="userMods">
-				<source>Modules:</source>
+				<source>Modules</source>
 			</trans-unit>
 			<trans-unit id="allowed_languages">
-				<source>Limit to languages:</source>
+				<source>Limit to languages</source>
 			</trans-unit>
 			<trans-unit id="category_perms">
-				<source>Category Mounts:</source>
+				<source>Category Mounts</source>
 			</trans-unit>
 			<trans-unit id="workspace_perms">
-				<source>Workspace permissions:</source>
+				<source>Workspace permissions</source>
 			</trans-unit>
 			<trans-unit id="workspace_perms_live">
 				<source>Edit Live (Online)</source>
@@ -40,25 +40,25 @@
 				<source>Create new workspace projects</source>
 			</trans-unit>
 			<trans-unit id="TSconfig">
-				<source>TSconfig:</source>
+				<source>TSconfig</source>
 			</trans-unit>
 			<trans-unit id="TSconfig_title">
 				<source>TSconfig QuickReference</source>
 			</trans-unit>
 			<trans-unit id="lockToDomain">
-				<source>Lock to domain:</source>
+				<source>Lock to domain</source>
 			</trans-unit>
 			<trans-unit id="be_users.username">
-				<source>Username:</source>
+				<source>Username</source>
 			</trans-unit>
 			<trans-unit id="be_users.password">
-				<source>Password:</source>
+				<source>Password</source>
 			</trans-unit>
 			<trans-unit id="be_users.avatar">
 				<source>Avatar</source>
 			</trans-unit>
 			<trans-unit id="be_users.usergroup">
-				<source>Group:</source>
+				<source>Group</source>
 			</trans-unit>
 			<trans-unit id="be_users.usergroup_edit_title">
 				<source>Edit usergroup</source>
@@ -70,13 +70,13 @@
 				<source>List groups</source>
 			</trans-unit>
 			<trans-unit id="be_users.disableIPlock">
-				<source>Disable IP lock for user:</source>
+				<source>Disable IP lock for user</source>
 			</trans-unit>
 			<trans-unit id="be_users.admin">
-				<source>Admin(!):</source>
+				<source>Admin (!)</source>
 			</trans-unit>
 			<trans-unit id="be_users.options">
-				<source>Mount from groups:</source>
+				<source>Mount from groups</source>
 			</trans-unit>
 			<trans-unit id="be_users.options_db_mounts">
 				<source>DB Mounts</source>
@@ -85,10 +85,10 @@
 				<source>File Mounts</source>
 			</trans-unit>
 			<trans-unit id="be_users.fileoper_perms">
-				<source>Fileoperation permissions:</source>
+				<source>Fileoperation permissions</source>
 			</trans-unit>
 			<trans-unit id="be_users.file_permissions.files">
-				<source>Files:</source>
+				<source>Files</source>
 			</trans-unit>
 			<trans-unit id="be_users.file_permissions.files_read">
 				<source>Files: Read</source>
@@ -130,7 +130,7 @@
 				<source>Directory: Delete recursively (rm -Rf)</source>
 			</trans-unit>
 			<trans-unit id="be_users.lang">
-				<source>Default Language:</source>
+				<source>Default Language</source>
 			</trans-unit>
 			<trans-unit id="be_users.tabs.rights">
 				<source>Access Rights</source>
@@ -148,31 +148,31 @@
 				<source>Access</source>
 			</trans-unit>
 			<trans-unit id="be_groups.title">
-				<source>Grouptitle:</source>
+				<source>Grouptitle</source>
 			</trans-unit>
 			<trans-unit id="be_groups.pagetypes_select">
-				<source>Page types:</source>
+				<source>Page types</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tables_modify">
-				<source>Tables (modify):</source>
+				<source>Tables (modify)</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tables_select">
-				<source>Tables (listing):</source>
+				<source>Tables (listing)</source>
 			</trans-unit>
 			<trans-unit id="be_groups.non_exclude_fields">
-				<source>Allowed excludefields:</source>
+				<source>Allowed excludefields</source>
 			</trans-unit>
 			<trans-unit id="be_groups.explicit_allowdeny">
-				<source>Explicitly allow/deny field values:</source>
+				<source>Explicitly allow/deny field values</source>
 			</trans-unit>
 			<trans-unit id="be_groups.custom_options">
-				<source>Custom module options:</source>
+				<source>Custom module options</source>
 			</trans-unit>
 			<trans-unit id="be_groups.inc_access_lists">
-				<source>Include Access Lists:</source>
+				<source>Include Access Lists</source>
 			</trans-unit>
 			<trans-unit id="be_groups.subgroup">
-				<source>Inherit settings from groups:</source>
+				<source>Inherit settings from groups</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tabs.base_rights">
 				<source>Access Lists</source>
@@ -181,10 +181,10 @@
 				<source>Mounts and Workspaces</source>
 			</trans-unit>
 			<trans-unit id="be_groups.fileoper_perms">
-				<source>Fileoperation permissions:</source>
+				<source>Fileoperation permissions</source>
 			</trans-unit>
 			<trans-unit id="be_groups.file_permissions.folder">
-				<source>Directory:</source>
+				<source>Directory</source>
 			</trans-unit>
 			<trans-unit id="be_groups.file_permissions.folder_read">
 				<source>Directory: Read</source>
@@ -211,7 +211,7 @@
 				<source>Directory: Delete recursively</source>
 			</trans-unit>
 			<trans-unit id="be_groups.file_permissions.files">
-				<source>Files:</source>
+				<source>Files</source>
 			</trans-unit>
 			<trans-unit id="be_groups.file_permissions.files_read">
 				<source>Files: Read</source>
@@ -271,16 +271,16 @@
 				<source>Other</source>
 			</trans-unit>
 			<trans-unit id="sys_filemounts.title">
-				<source>Label:</source>
+				<source>Label</source>
 			</trans-unit>
 			<trans-unit id="sys_filemounts.path">
-				<source>Path:</source>
+				<source>Path</source>
 			</trans-unit>
 			<trans-unit id="sys_filemounts.base">
-				<source>Base:</source>
+				<source>Base</source>
 			</trans-unit>
 			<trans-unit id="sys_filemounts.read_only">
-				<source>Read-only:</source>
+				<source>Read-only</source>
 			</trans-unit>
 			<trans-unit id="sys_filemounts.base_absolute">
 				<source>absolute (root) / </source>
@@ -301,19 +301,19 @@
 				<source>Access</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.adminusers">
-				<source>Owners:</source>
+				<source>Owners</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.members">
-				<source>Members:</source>
+				<source>Members</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.reviewers">
-				<source>Reviewers:</source>
+				<source>Reviewers</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.publish_time">
-				<source>Publish:</source>
+				<source>Publish</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.unpublish_time">
-				<source>Un-Publish:</source>
+				<source>Un-Publish</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.freeze">
 				<source>Freeze Editing</source>
@@ -331,13 +331,13 @@
 				<source>Swap modes</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.vtypes">
-				<source>Disable Versioning Types for members and reviewers:</source>
+				<source>Disable Versioning Types for members and reviewers</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.publish_access">
-				<source>Publish access:</source>
+				<source>Publish access</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.stagechg_notification">
-				<source>Stage change notification by email:</source>
+				<source>Stage change notification by email</source>
 			</trans-unit>
 			<trans-unit id="pages">
 				<source>Page</source>
@@ -355,13 +355,13 @@
 				<source>Recycler</source>
 			</trans-unit>
 			<trans-unit id="title">
-				<source>Pagetitle:</source>
+				<source>Pagetitle</source>
 			</trans-unit>
 			<trans-unit id="php_tree_stop">
-				<source>Stop page tree:</source>
+				<source>Stop page tree</source>
 			</trans-unit>
 			<trans-unit id="is_siteroot">
-				<source>Is root of website:</source>
+				<source>Is root of website</source>
 			</trans-unit>
 			<trans-unit id="be_users">
 				<source>Backend user</source>
@@ -604,19 +604,19 @@
 				<source>Website Language</source>
 			</trans-unit>
 			<trans-unit id="sys_language.isocode">
-				<source>Select Official Language (ISO code):</source>
+				<source>Select Official Language (ISO code)</source>
 			</trans-unit>
 			<trans-unit id="sys_language.language_isocode">
-				<source>Select language:</source>
+				<source>Select language</source>
 			</trans-unit>
 			<trans-unit id="sys_language.flag">
-				<source>Select flag icon:</source>
+				<source>Select flag icon</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace">
 				<source>Workspace</source>
 			</trans-unit>
 			<trans-unit id="editlock">
-				<source>Restrict editing by non-Admins:</source>
+				<source>Restrict editing by non-Admins</source>
 			</trans-unit>
 			<trans-unit id="sys_category">
 				<source>Category</source>

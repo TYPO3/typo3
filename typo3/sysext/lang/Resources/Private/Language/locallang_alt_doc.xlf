@@ -31,7 +31,7 @@
 				<source>You can go to %s to find the page or the record you wish to edit.</source>
 			</trans-unit>
 			<trans-unit id="noDocuments_msg3">
-				<source>You can select one of your most recently edited records from this list:</source>
+				<source>You can select one of your most recently edited records from this list</source>
 			</trans-unit>
 			<trans-unit id="noDocuments_pagemodule">
 				<source>the Web&gt;Page module</source>

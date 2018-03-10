@@ -94,7 +94,7 @@
 				<source>Processing...</source>
 			</trans-unit>
 			<trans-unit id="table.search">
-				<source>Search:</source>
+				<source>Search</source>
 			</trans-unit>
 			<trans-unit id="table.loadingRecords">
 				<source>Loading...</source>

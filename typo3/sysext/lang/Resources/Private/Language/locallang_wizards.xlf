@@ -193,16 +193,16 @@
 				<source>Save and Close</source>
 			</trans-unit>
 			<trans-unit id="colorpicker_colorValue">
-				<source>Selected Color:</source>
+				<source>Selected Color</source>
 			</trans-unit>
 			<trans-unit id="colorpicker_fromImage">
-				<source>Capture color from image (click on image):</source>
+				<source>Capture color from image (click on image)</source>
 			</trans-unit>
 			<trans-unit id="colorpicker_fromMatrix">
-				<source>Select color from matrix (websafe colors):</source>
+				<source>Select color from matrix (websafe colors)</source>
 			</trans-unit>
 			<trans-unit id="colorpicker_fromList">
-				<source>Select HTML color name:</source>
+				<source>Select HTML color name</source>
 			</trans-unit>
 			<trans-unit id="colorpicker_black">
 				<source>BLACK</source>
@@ -262,7 +262,7 @@
 				<source>Open Editor</source>
 			</trans-unit>
 			<trans-unit id="imwizard.supported-types-message">
-				<source>Image manipulation is only available for supported types:</source>
+				<source>Image manipulation is only available for supported types</source>
 			</trans-unit>
 			<trans-unit id="imwizard.no-image-dimensions">
 				<source>No image dimensions could be determined.</source>
@@ -319,10 +319,10 @@
 				<source>Selected Size</source>
 			</trans-unit>
 			<trans-unit id="imwizard.crop-width">
-				<source>width:</source>
+				<source>width</source>
 			</trans-unit>
 			<trans-unit id="imwizard.crop-height">
-				<source>height:</source>
+				<source>height</source>
 			</trans-unit>
 			<trans-unit id="localizationStateSelector.header">
 			    <source>Translation behavior</source>

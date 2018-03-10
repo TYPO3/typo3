@@ -40,7 +40,7 @@
 				<source>Show diff. popups (branches)</source>
 			</trans-unit>
 			<trans-unit id="label_errors">
-				<source>Errors:</source>
+				<source>Errors</source>
 			</trans-unit>
 			<trans-unit id="workspace_description_live">
 				<source>The LIVE workspace allows changes to take effect immediately on the website. However versioning can be applied inside the live workspace and this overview shows you draft and archive versions from the various workspaces, including the LIVE workspace.</source>
@@ -82,37 +82,37 @@
 				<source>You are not permitted to publish from this workspace</source>
 			</trans-unit>
 			<trans-unit id="label_workspace">
-				<source>Workspace:</source>
+				<source>Workspace</source>
 			</trans-unit>
 			<trans-unit id="label_description">
-				<source>Description:</source>
+				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="label_options">
-				<source>Options:</source>
+				<source>Options</source>
 			</trans-unit>
 			<trans-unit id="label_status">
-				<source>Status:</source>
+				<source>Status</source>
 			</trans-unit>
 			<trans-unit id="label_pagetree">
-				<source>Pagetree:</source>
+				<source>Pagetree</source>
 			</trans-unit>
 			<trans-unit id="label_live_version">
-				<source>Live Version:</source>
+				<source>Live Version</source>
 			</trans-unit>
 			<trans-unit id="label_draft_versions">
-				<source>Workspace Versions:</source>
+				<source>Workspace Versions</source>
 			</trans-unit>
 			<trans-unit id="label_stage">
-				<source>Stage:</source>
+				<source>Stage</source>
 			</trans-unit>
 			<trans-unit id="label_publish">
-				<source>Publish:</source>
+				<source>Publish</source>
 			</trans-unit>
 			<trans-unit id="label_lifecycle">
-				<source>Lifecycle:</source>
+				<source>Lifecycle</source>
 			</trans-unit>
 			<trans-unit id="label_access_level">
-				<source>Access level:</source>
+				<source>Access level</source>
 			</trans-unit>
 			<trans-unit id="img_title_publish">
 				<source>Publish</source>
@@ -136,10 +136,10 @@
 				<source>Show Log</source>
 			</trans-unit>
 			<trans-unit id="diffview_label_field_name">
-				<source>Fieldname:</source>
+				<source>Fieldname</source>
 			</trans-unit>
 			<trans-unit id="diffview_label_colored_diff_view">
-				<source>Colored diff-view:</source>
+				<source>Colored diff-view</source>
 			</trans-unit>
 			<trans-unit id="diffview_complete_match">
 				<source>Complete match on editable fields.</source>
@@ -169,22 +169,22 @@
 				<source>Create new workspace</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_current_workspace">
-				<source>Current:</source>
+				<source>Current</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_workspace_title">
-				<source>Title:</source>
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_workspace_description">
-				<source>Description:</source>
+				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_owners">
-				<source>Owners:</source>
+				<source>Owners</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_members">
-				<source>Members:</source>
+				<source>Members</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_reviewers">
-				<source>Reviewers:</source>
+				<source>Reviewers</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_access_admins_only">
 				<source>Admins only</source>
@@ -193,25 +193,25 @@
 				<source>no restrictions</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_file_mountpoints">
-				<source>File mountpoints:</source>
+				<source>File mountpoints</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_db_mountpoints">
-				<source>Database mountpoints:</source>
+				<source>Database mountpoints</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_frozen">
-				<source>Frozen:</source>
+				<source>Frozen</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_publish_date">
-				<source>Publish date:</source>
+				<source>Publish date</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_unpublish_date">
-				<source>Unpublish date:</source>
+				<source>Unpublish date</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_your_access">
-				<source>Your access:</source>
+				<source>Your access</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_workspace_users">
-				<source>Workspace users:</source>
+				<source>Workspace users</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_label_frozen_yes">
 				<source>Yes</source>
@@ -268,7 +268,7 @@
 				<source>[undefined]</source>
 			</trans-unit>
 			<trans-unit id="stage_label_user_comment">
-				<source>User Comment:</source>
+				<source>User Comment</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_mount_point_inaccessible">
 				<source>This mount point is defined for workspace but not accessible to you. If you need access to this mount point, ask your system administrator to give you access to it.</source>
@@ -355,10 +355,10 @@
 				<source>Sub elements, click for details</source>
 			</trans-unit>
 			<trans-unit id="label_commentforreviewer">
-				<source>Comment for Reviewer:</source>
+				<source>Comment for Reviewer</source>
 			</trans-unit>
 			<trans-unit id="label_commentforpublisher">
-				<source>Comment for Publisher:</source>
+				<source>Comment for Publisher</source>
 			</trans-unit>
 			<trans-unit id="label_resetstage">
 				<source>Reset stage</source>
@@ -367,7 +367,7 @@
 				<source>Undefined</source>
 			</trans-unit>
 			<trans-unit id="explain_reject">
-				<source>Please explain why you reject:</source>
+				<source>Please explain why you reject</source>
 			</trans-unit>
 			<trans-unit id="label_element">
 				<source>Element</source>
@@ -385,7 +385,7 @@
 				<source>Deleted element</source>
 			</trans-unit>
 			<trans-unit id="label_otherversions">
-				<source>Other version(s) in workspace(s):</source>
+				<source>Other version(s) in workspace(s)</source>
 			</trans-unit>
 			<trans-unit id="label_multipleversions">
 				<source>Multiple versions in same workspace!</source>
@@ -409,13 +409,13 @@
 				<source>n/a</source>
 			</trans-unit>
 			<trans-unit id="label_percentchange">
-				<source>%%% change:</source>
+				<source>%%% change</source>
 			</trans-unit>
 			<trans-unit id="label_percentChange">
-				<source>%d%% change:</source>
+				<source>%d%% change</source>
 			</trans-unit>
 			<trans-unit id="label_doaction_default">
-				<source>Do:</source>
+				<source>Do</source>
 			</trans-unit>
 			<trans-unit id="label_doaction_publish">
 				<source>Publish</source>

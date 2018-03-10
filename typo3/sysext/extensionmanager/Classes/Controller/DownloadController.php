@@ -252,8 +252,11 @@ class DownloadController extends AbstractController
         } else {
             // FlashMessage that extension is installed
             $this->addFlashMessage(
-                \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('distribution.welcome.message', 'extensionmanager')
-                    . $extension->getExtensionKey(),
+                \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+                    'distribution.welcome.message',
+                    'extensionmanager',
+                    [$extension->getExtensionKey()]
+                ),
                 \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('distribution.welcome.headline', 'extensionmanager')
             );
 

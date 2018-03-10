@@ -106,7 +106,7 @@
 				<source>Usergroup Access Rights</source>
 			</trans-unit>
 			<trans-unit id="pages.hidden">
-				<source>Hide page:</source>
+				<source>Hide page</source>
 			</trans-unit>
 			<trans-unit id="pages.hidden_formlabel">
 				<source>Page</source>
@@ -127,19 +127,19 @@
 				<source>Layout 3</source>
 			</trans-unit>
 			<trans-unit id="pages.extendToSubpages">
-				<source>Include Subpages:</source>
+				<source>Include Subpages</source>
 			</trans-unit>
 			<trans-unit id="pages.extendToSubpages_formlabel">
 				<source>Extend to Subpages</source>
 			</trans-unit>
 			<trans-unit id="pages.nav_title">
-				<source>Navigation Title:</source>
+				<source>Navigation Title</source>
 			</trans-unit>
 			<trans-unit id="pages.nav_title_formlabel">
 				<source>Alternative Navigation Title</source>
 			</trans-unit>
 			<trans-unit id="pages.nav_hide">
-				<source>Hide in Menu:</source>
+				<source>Hide in Menu</source>
 			</trans-unit>
 			<trans-unit id="pages.nav_hide_formlabel">
 				<source>In Menus</source>
@@ -148,43 +148,43 @@
 				<source>Hide</source>
 			</trans-unit>
 			<trans-unit id="pages.subtitle">
-				<source>Subtitle:</source>
+				<source>Subtitle</source>
 			</trans-unit>
 			<trans-unit id="pages.subtitle_formlabel">
 				<source>Subtitle</source>
 			</trans-unit>
 			<trans-unit id="pages.target">
-				<source>Target:</source>
+				<source>Target</source>
 			</trans-unit>
 			<trans-unit id="pages.target_formlabel">
 				<source>Link Target</source>
 			</trans-unit>
 			<trans-unit id="pages.alias">
-				<source>Alias:</source>
+				<source>Alias</source>
 			</trans-unit>
 			<trans-unit id="pages.alias_formlabel">
 				<source>URL Alias</source>
 			</trans-unit>
 			<trans-unit id="pages.url">
-				<source>URL:</source>
+				<source>URL</source>
 			</trans-unit>
 			<trans-unit id="pages.url_formlabel">
 				<source>URL</source>
 			</trans-unit>
 			<trans-unit id="pages.lastUpdated">
-				<source>Last Updated:</source>
+				<source>Last Updated</source>
 			</trans-unit>
 			<trans-unit id="pages.lastUpdated_formlabel">
 				<source>Last Update</source>
 			</trans-unit>
 			<trans-unit id="pages.newUntil">
-				<source>'New' Until:</source>
+				<source>'New' Until</source>
 			</trans-unit>
 			<trans-unit id="pages.newUntil_formlabel">
 				<source>Mark as 'New' Until</source>
 			</trans-unit>
 			<trans-unit id="pages.cache_timeout">
-				<source>Cache Expires:</source>
+				<source>Cache Expires</source>
 			</trans-unit>
 			<trans-unit id="pages.cache_timeout_formlabel">
 				<source>Cache Lifetime</source>
@@ -220,7 +220,7 @@
 				<source>1 month</source>
 			</trans-unit>
 			<trans-unit id="pages.cache_tags">
-				<source>Cache Tags:</source>
+				<source>Cache Tags</source>
 			</trans-unit>
 			<trans-unit id="pages.editlock_formlabel">
 				<source>Editable for Admins Only</source>
@@ -259,7 +259,7 @@
 				<source>Behaviour</source>
 			</trans-unit>
 			<trans-unit id="pages.no_search">
-				<source>No Search:</source>
+				<source>No Search</source>
 			</trans-unit>
 			<trans-unit id="pages.no_search_formlabel">
 				<source>Include in Search</source>
@@ -268,7 +268,7 @@
 				<source>Disable</source>
 			</trans-unit>
 			<trans-unit id="pages.shortcut_mode">
-				<source>Shortcut Mode:</source>
+				<source>Shortcut Mode</source>
 			</trans-unit>
 			<trans-unit id="pages.shortcut_mode_formlabel">
 				<source>Shortcut Mode</source>
@@ -289,13 +289,13 @@
 				<source>Shortcut Target</source>
 			</trans-unit>
 			<trans-unit id="pages.content_from_pid">
-				<source>Show content from this page instead:</source>
+				<source>Show content from this page instead</source>
 			</trans-unit>
 			<trans-unit id="pages.content_from_pid_formlabel">
 				<source>Show Content from Page</source>
 			</trans-unit>
 			<trans-unit id="pages.mount_pid">
-				<source>Mount Point of:</source>
+				<source>Mount Point of</source>
 			</trans-unit>
 			<trans-unit id="pages.mount_pid_formlabel">
 				<source>Mounted page</source>
@@ -313,7 +313,7 @@
 				<source>Show the mounted page</source>
 			</trans-unit>
 			<trans-unit id="pages.abstract">
-				<source>Abstract:</source>
+				<source>Abstract</source>
 			</trans-unit>
 			<trans-unit id="pages.abstract_formlabel">
 				<source>Abstract</source>
@@ -331,7 +331,7 @@
 				<source>Author Email</source>
 			</trans-unit>
 			<trans-unit id="pages.media">
-				<source>Files:</source>
+				<source>Files</source>
 			</trans-unit>
 			<trans-unit id="pages.media_formlabel">
 				<source>Media</source>
@@ -340,13 +340,13 @@
 				<source>Stop Page Tree</source>
 			</trans-unit>
 			<trans-unit id="pages.is_siteroot">
-				<source>Is Root of Website:</source>
+				<source>Is Root of Website</source>
 			</trans-unit>
 			<trans-unit id="pages.is_siteroot_formlabel">
 				<source>Use as Root Page</source>
 			</trans-unit>
 			<trans-unit id="pages.module">
-				<source>Contains Plugin:</source>
+				<source>Contains Plugin</source>
 			</trans-unit>
 			<trans-unit id="pages.module_formlabel">
 				<source>Contains Plugin</source>
@@ -370,7 +370,7 @@
 				<source>Approvals</source>
 			</trans-unit>
 			<trans-unit id="pages.l18n_cfg">
-				<source>Localization Settings:</source>
+				<source>Localization Settings</source>
 			</trans-unit>
 			<trans-unit id="pages.l18n_cfg_formlabel">
 				<source>Localization</source>
@@ -385,7 +385,7 @@
 				<source>Show page even if no translation exists</source>
 			</trans-unit>
 			<trans-unit id="pages.fe_login_mode">
-				<source>Login Mode:</source>
+				<source>Login Mode</source>
 			</trans-unit>
 			<trans-unit id="pages.fe_login_mode_formlabel">
 				<source>Login Behaviour</source>
@@ -424,7 +424,7 @@
 				<source>Default</source>
 			</trans-unit>
 			<trans-unit id="pages.tsconfig_includes">
-				<source>Include Page TSConfig (from extensions):</source>
+				<source>Include Page TSConfig (from extensions)</source>
 			</trans-unit>
 			<trans-unit id="tt_content">
 				<source>Page Content</source>
@@ -433,16 +433,16 @@
 				<source>Website User</source>
 			</trans-unit>
 			<trans-unit id="fe_users.username">
-				<source>Username:</source>
+				<source>Username</source>
 			</trans-unit>
 			<trans-unit id="fe_users.password">
-				<source>Password:</source>
+				<source>Password</source>
 			</trans-unit>
 			<trans-unit id="fe_users.usergroup">
-				<source>Groups:</source>
+				<source>Groups</source>
 			</trans-unit>
 			<trans-unit id="fe_users.lockToDomain">
-				<source>Lock to Domain:</source>
+				<source>Lock to Domain</source>
 			</trans-unit>
 			<trans-unit id="fe_users.tabs.personelData">
 				<source>Personal Data</source>
@@ -460,13 +460,13 @@
 				<source>Website Usergroup</source>
 			</trans-unit>
 			<trans-unit id="fe_groups.title">
-				<source>Group Title:</source>
+				<source>Group Title</source>
 			</trans-unit>
 			<trans-unit id="fe_groups.lockToDomain">
-				<source>Lock to Domain:</source>
+				<source>Lock to Domain</source>
 			</trans-unit>
 			<trans-unit id="fe_groups.subgroup">
-				<source>Subgroups:</source>
+				<source>Subgroups</source>
 			</trans-unit>
 			<trans-unit id="fe_groups.tabs.options">
 				<source>Options</source>
@@ -478,52 +478,52 @@
 				<source>Domain</source>
 			</trans-unit>
 			<trans-unit id="sys_domain.domainName">
-				<source>Domain:</source>
+				<source>Domain</source>
 			</trans-unit>
 			<trans-unit id="sys_template">
 				<source>Template</source>
 			</trans-unit>
 			<trans-unit id="sys_template.title">
-				<source>Template Title:</source>
+				<source>Template Title</source>
 			</trans-unit>
 			<trans-unit id="sys_template.root">
-				<source>Rootlevel:</source>
+				<source>Rootlevel</source>
 			</trans-unit>
 			<trans-unit id="sys_template.clear">
-				<source>Clear:</source>
+				<source>Clear</source>
 			</trans-unit>
 			<trans-unit id="sys_template.sitetitle">
-				<source>Website Title:</source>
+				<source>Website Title</source>
 			</trans-unit>
 			<trans-unit id="sys_template.constants">
-				<source>Constants:</source>
+				<source>Constants</source>
 			</trans-unit>
 			<trans-unit id="sys_template.resources">
-				<source>Resources:</source>
+				<source>Resources</source>
 			</trans-unit>
 			<trans-unit id="sys_template.nextLevel">
-				<source>Template on Next Level:</source>
+				<source>Template on Next Level</source>
 			</trans-unit>
 			<trans-unit id="sys_template.include_static_file">
-				<source>Include static (from extensions):</source>
+				<source>Include static (from extensions)</source>
 			</trans-unit>
 			<trans-unit id="sys_template.basedOn">
-				<source>Include Basis Template:</source>
+				<source>Include Basis Template</source>
 			</trans-unit>
 			<trans-unit id="sys_template.includeStaticAfterBasedOn">
-				<source>Include Static Templates After Basis Templates:</source>
+				<source>Include Static Templates After Basis Templates</source>
 			</trans-unit>
 			<trans-unit id="sys_template.config">
-				<source>Setup:</source>
+				<source>Setup</source>
 			</trans-unit>
 			<trans-unit id="sys_template.editorcfg">
-				<source>Backend Editor Configuration:</source>
+				<source>Backend Editor Configuration</source>
 			</trans-unit>
 			<trans-unit id="sys_template.description">
-				<source>Description:</source>
+				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="sys_template.static_file_mode">
-				<source>Static Template Files from TYPO3 Extensions:</source>
+				<source>Static Template Files from TYPO3 Extensions</source>
 			</trans-unit>
 			<trans-unit id="sys_template.static_file_mode.0">
 				<source>Default (include before if root flag is set)</source>

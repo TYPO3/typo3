@@ -145,7 +145,7 @@
 				<source>Search extensions</source>
 			</trans-unit>
 			<trans-unit id="extensionList.search">
-				<source>Search:</source>
+				<source>Search</source>
 			</trans-unit>
 			<trans-unit id="searchTemplate.submitButton">
 				<source>Go</source>
@@ -175,7 +175,7 @@
 				<source>Update?</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateConfirmation.message">
-				<source>Update Comments:</source>
+				<source>Update Comments</source>
 			</trans-unit>
 			<trans-unit id="extensionList.databaseImport">
 				<source>The static database data has changed. You should re-import the data.</source>
@@ -221,7 +221,7 @@
 				<source>The following errors were found while trying to install "%s"</source>
 			</trans-unit>
 			<trans-unit id="dependencyCheck.requiredExtension">
-				<source>Required extension "%s":</source>
+				<source>Required extension "%s"</source>
 			</trans-unit>
 			<trans-unit id="downloadExtension.dependencies.headline">
 				<source>The following dependencies have to be resolved before installation:
@@ -246,7 +246,7 @@
 				<source>Dependencies could not be resolved</source>
 			</trans-unit>
 			<trans-unit id="downloadExtension.dependencies.errorMessage">
-				<source>The dependencies of the following Extensions could not be resolved:</source>
+				<source>The dependencies of the following Extensions could not be resolved</source>
 			</trans-unit>
 			<trans-unit id="downloadExtension.dependencyType.download">
 				<source>download</source>
@@ -330,22 +330,22 @@
 				<source>Extension "%s" was removed successfully!</source>
 			</trans-unit>
 			<trans-unit id="extensionList.distribution.key">
-				<source>Key:</source>
+				<source>Key</source>
 			</trans-unit>
 			<trans-unit id="extensionList.distribution.author">
-				<source>Author:</source>
+				<source>Author</source>
 			</trans-unit>
 			<trans-unit id="extensionList.distribution.title">
-				<source>Title:</source>
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="extensionList.distribution.version">
-				<source>Version:</source>
+				<source>Version</source>
 			</trans-unit>
 			<trans-unit id="extensionList.distribution.downloads">
 				<source>Downloads</source>
 			</trans-unit>
 			<trans-unit id="extensionList.distribution.lastUpdated">
-				<source>Last Update:</source>
+				<source>Last Update</source>
 			</trans-unit>
 			<trans-unit id="extensionList.showUnsuitableDistributions">
 				<source>Show also distributions that are not suitable for this TYPO3 version</source>
@@ -372,10 +372,10 @@
 				<source>Update now</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateFromTer.lastUpdate.label">
-				<source>Last update:</source>
+				<source>Last update</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateFromTer.lastUpdate.timeSinceLastUpdateLabel">
-				<source>Time since last update:</source>
+				<source>Time since last update</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo">
 				<source>unknown</source>
@@ -402,10 +402,10 @@
 				<source>Congratulations...</source>
 			</trans-unit>
 			<trans-unit id="distribution.welcome.message">
-				<source>You successfully installed the distribution:</source>
+				<source>You successfully installed the distribution '%s'</source>
 			</trans-unit>
 			<trans-unit id="distribution.welcome.nextSteps">
-				<source>Now you can:</source>
+				<source>Now you can</source>
 			</trans-unit>
 			<trans-unit id="distribution.welcome.openViewModule">
 				<source>View your website</source>
@@ -414,7 +414,7 @@
 				<source>Start editing your website</source>
 			</trans-unit>
 			<trans-unit id="distribution.dependency.headline">
-				<source>Dependencies, conflics and suggestions</source>
+				<source>Dependencies, conflicts and suggestions</source>
 			</trans-unit>
 			<trans-unit id="distribution.dependency.identifier">
 				<source>Identifier</source>
@@ -510,7 +510,7 @@
 				<source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
 			</trans-unit>
 			<trans-unit id="fileHandling.couldNotRemoveDirectory">
-				<source>ERROR: Could not remove extension directory "%s". Reasons:</source>
+				<source>ERROR: Could not remove extension directory "%s". Reasons</source>
 			</trans-unit>
 			<trans-unit id="fileHandling.couldNotCreateDirectory">
 				<source>ERROR: Could not create extension directory "%s"!</source>

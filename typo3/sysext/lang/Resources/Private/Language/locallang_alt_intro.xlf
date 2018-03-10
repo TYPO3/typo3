@@ -13,7 +13,7 @@
 				<source>Features may vary depending on your website and permissions</source>
 			</trans-unit>
 			<trans-unit id="userInfo">
-				<source>You're logged in as user:</source>
+				<source>You're logged in as user</source>
 			</trans-unit>
 		</body>
 	</file>

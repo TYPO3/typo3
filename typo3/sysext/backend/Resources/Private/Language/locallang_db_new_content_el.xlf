@@ -4,10 +4,10 @@
 		<header/>
 		<body>
 			<trans-unit id="sel1">
-				<source>Please select the type of page content you wish to create:</source>
+				<source>Please select the type of page content you wish to create</source>
 			</trans-unit>
 			<trans-unit id="sel2">
-				<source>Now, click the position where you wish to place the element on the page:</source>
+				<source>Now, click the position where you wish to place the element on the page</source>
 			</trans-unit>
 			<trans-unit id="common">
 				<source>Typical page content</source>

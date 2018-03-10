@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="legend.label">
-				<source>Legend:</source>
+				<source>Legend</source>
 			</trans-unit>
 			<trans-unit id="legend.edited">
 				<source>edited</source>

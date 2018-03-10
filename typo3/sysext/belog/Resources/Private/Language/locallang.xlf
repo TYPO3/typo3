@@ -25,7 +25,7 @@
 				<source>Self</source>
 			</trans-unit>
 			<trans-unit id="userGroup">
-				<source>Group:</source>
+				<source>Group</source>
 			</trans-unit>
 			<trans-unit id="thisWeek">
 				<source>This week</source>
@@ -94,19 +94,19 @@
 				<source>Errors</source>
 			</trans-unit>
 			<trans-unit id="group">
-				<source>Group:</source>
+				<source>Group</source>
 			</trans-unit>
 			<trans-unit id="user">
-				<source>User:</source>
+				<source>User</source>
 			</trans-unit>
 			<trans-unit id="users">
-				<source>Users:</source>
+				<source>Users</source>
 			</trans-unit>
 			<trans-unit id="time">
-				<source>Time:</source>
+				<source>Time</source>
 			</trans-unit>
 			<trans-unit id="max">
-				<source>Max:</source>
+				<source>Max</source>
 			</trans-unit>
 			<trans-unit id="changesInFields">
 				<source>Changes in fields: %s.</source>
@@ -115,13 +115,13 @@
 				<source>Show History</source>
 			</trans-unit>
 			<trans-unit id="action">
-				<source>Action:</source>
+				<source>Action</source>
 			</trans-unit>
 			<trans-unit id="workspace">
-				<source>Workspace:</source>
+				<source>Workspace</source>
 			</trans-unit>
 			<trans-unit id="groupByPage">
-				<source>Group by page:</source>
+				<source>Group by page</source>
 			</trans-unit>
 			<trans-unit id="pagenameWithUID">
 				<source>%s" [UID: %s]</source>
@@ -361,7 +361,7 @@
 				<source>Users</source>
 			</trans-unit>
 			<trans-unit id="chLog_menuDepth">
-				<source>Depth:</source>
+				<source>Depth</source>
 			</trans-unit>
 			<trans-unit id="chLog_menuTime">
 				<source>Time</source>

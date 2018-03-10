@@ -794,7 +794,7 @@ class PageLayoutView implements LoggerAwareInterface
                             . '</strong>';
                         break;
                     case 'uid':
-                        $theData[$field] = '&nbsp;<strong>ID:</strong>';
+                        $theData[$field] = '&nbsp;<strong>ID</strong>';
                         break;
                     default:
                         if (substr($field, 0, 6) === 'table_') {

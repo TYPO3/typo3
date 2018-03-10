@@ -144,7 +144,7 @@ return [
         'TSconfig' => [
             'exclude' => true,
             'l10n_mode' => 'exclude',
-            'label' => 'TSconfig:',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:TSconfig',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,

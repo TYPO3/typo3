@@ -136,7 +136,7 @@
 				<source>Backend user password hashes</source>
 			</trans-unit>
 			<trans-unit id="status_saltedPasswords_infoText">
-				<source>During the configuration check of saltedpasswords the following issues have been found:</source>
+				<source>During the configuration check of saltedpasswords the following issues have been found</source>
 			</trans-unit>
 			<trans-unit id="status_saltedPasswords_notAllPasswordsHashed">
 				<source>Some backend user passwords are found to be only md5 hashed. Run the scheduler task to convert all passwords to salted hashes.</source>
@@ -205,7 +205,7 @@
 				<source>Web Server</source>
 			</trans-unit>
 			<trans-unit id="status_webServer_infoText">
-				<source>For your Web Server some notifications have been found:</source>
+				<source>For your Web Server some notifications have been found</source>
 			</trans-unit>
 			<trans-unit id="status_webServer_threadStackSize" xml:space="preserve">
 				<source><![CDATA[Fluid uses complex regular expressions which require a lot of stack space during the first processing.

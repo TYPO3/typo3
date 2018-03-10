@@ -85,7 +85,7 @@
 				<source>Settings</source>
 			</trans-unit>
 			<trans-unit id="maxSteps">
-				<source>Show entries:</source>
+				<source>Show entries</source>
 			</trans-unit>
 			<trans-unit id="maxSteps_all">
 				<source>ALL</source>
@@ -94,7 +94,7 @@
 				<source>marked</source>
 			</trans-unit>
 			<trans-unit id="showDiff">
-				<source>Show differences:</source>
+				<source>Show differences</source>
 			</trans-unit>
 			<trans-unit id="showDiff_no">
 				<source>No</source>
@@ -103,7 +103,7 @@
 				<source>Inline</source>
 			</trans-unit>
 			<trans-unit id="showSubElements">
-				<source>Show sub elements:</source>
+				<source>Show sub elements</source>
 			</trans-unit>
 			<trans-unit id="no">
 				<source>No</source>
@@ -112,7 +112,7 @@
 				<source>Yes</source>
 			</trans-unit>
 			<trans-unit id="showInsertDelete">
-				<source>Show inserts/deletes of records:</source>
+				<source>Show inserts/deletes of records</source>
 			</trans-unit>
 			<trans-unit id="noDifferences">
 				<source>There are no differences to the current page!</source>

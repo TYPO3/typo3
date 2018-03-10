@@ -124,7 +124,7 @@
 				<source>%1$s with priority %2$d</source>
 			</trans-unit>
 			<trans-unit id="label.fileStorageExtraction.registeredExtractors.with_extractors">
-				<source>Following extractors have been registered and will be used when running this task:</source>
+				<source>Following extractors have been registered and will be used when running this task</source>
 			</trans-unit>
 			<trans-unit id="label.fileStorageExtraction.registeredExtractors.without_extractors">
 				<source>There currently is no extractor registered. This task will have no effect!</source>

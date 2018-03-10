@@ -31,7 +31,7 @@
 				<source>Loading page</source>
 			</trans-unit>
 			<trans-unit id="shortcut_searchFor">
-				<source>Search for:</source>
+				<source>Search for</source>
 			</trans-unit>
 			<trans-unit id="shortcut_notEditable">
 				<source>No editable page found!</source>
@@ -115,7 +115,7 @@
 				<source>Loading page</source>
 			</trans-unit>
 			<trans-unit id="bookmark_searchFor">
-				<source>Search for:</source>
+				<source>Search for</source>
 			</trans-unit>
 			<trans-unit id="bookmark_notEditable">
 				<source>No editable page found!</source>
@@ -289,7 +289,7 @@
 				<source>Switch to User</source>
 			</trans-unit>
 			<trans-unit id="switchtousershort">
-				<source>SU:</source>
+				<source>SU</source>
 			</trans-unit>
 			<trans-unit id="fileUpload_windowTitle">
 				<source>File Upload Progress</source>
@@ -409,7 +409,7 @@
 				<source>How to use advanced search tags</source>
 			</trans-unit>
 			<trans-unit id="liveSearch_helpDescription">
-				<source>Search in certain tables:</source>
+				<source>Search in certain tables</source>
 			</trans-unit>
 			<trans-unit id="liveSearch_helpDescriptionPages">
 				<source>#page:Home will search for all pages with the title "Home"</source>

@@ -109,13 +109,13 @@
 				<source>Lowest first</source>
 			</trans-unit>
 			<trans-unit id="opt_RL1">
-				<source>Level 1:</source>
+				<source>Level 1</source>
 			</trans-unit>
 			<trans-unit id="opt_RL1ALL">
 				<source>All pages on level 1</source>
 			</trans-unit>
 			<trans-unit id="opt_RL2">
-				<source>- Level 2:</source>
+				<source>- Level 2</source>
 			</trans-unit>
 			<trans-unit id="opt_RL2ALL">
 				<source>- All pages on level 2</source>
@@ -124,7 +124,7 @@
 				<source>Search form</source>
 			</trans-unit>
 			<trans-unit id="form_searchFor">
-				<source>Search for:</source>
+				<source>Search for</source>
 			</trans-unit>
 			<trans-unit id="form_extResume">
 				<source>Extended resume</source>
@@ -133,25 +133,25 @@
 				<source>at a time</source>
 			</trans-unit>
 			<trans-unit id="form_orderBy">
-				<source>Order by:</source>
+				<source>Order by</source>
 			</trans-unit>
 			<trans-unit id="form_fromSection">
-				<source>From section:</source>
+				<source>From section</source>
 			</trans-unit>
 			<trans-unit id="form_freeIndexUid">
-				<source>Category:</source>
+				<source>Category</source>
 			</trans-unit>
 			<trans-unit id="form_searchIn">
-				<source>Search in:</source>
+				<source>Search in</source>
 			</trans-unit>
 			<trans-unit id="form_match">
-				<source>Match:</source>
+				<source>Match</source>
 			</trans-unit>
 			<trans-unit id="form_style">
-				<source>Style:</source>
+				<source>Style</source>
 			</trans-unit>
 			<trans-unit id="rules_header">
-				<source>Rules:</source>
+				<source>Rules</source>
 			</trans-unit>
 			<trans-unit id="rules_text" xml:space="preserve">
 				<source>Only words with 2 or more characters are accepted
@@ -180,10 +180,10 @@ All search words are converted to lowercase.</source>
 				<source>in the section</source>
 			</trans-unit>
 			<trans-unit id="inNsection">
-				<source>in %s section:</source>
+				<source>in %s section</source>
 			</trans-unit>
 			<trans-unit id="inNsections">
-				<source>in %s sections:</source>
+				<source>in %s sections</source>
 			</trans-unit>
 			<trans-unit id="word_page">
 				<source>page</source>
@@ -201,22 +201,22 @@ All search words are converted to lowercase.</source>
 				<source>Advanced search</source>
 			</trans-unit>
 			<trans-unit id="res_path">
-				<source>Path:</source>
+				<source>Path</source>
 			</trans-unit>
 			<trans-unit id="res_modified">
-				<source>Modified:</source>
+				<source>Modified</source>
 			</trans-unit>
 			<trans-unit id="res_created">
-				<source>Created:</source>
+				<source>Created</source>
 			</trans-unit>
 			<trans-unit id="res_size">
-				<source>Size:</source>
+				<source>Size</source>
 			</trans-unit>
 			<trans-unit id="res_noResume">
 				<source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
 			</trans-unit>
 			<trans-unit id="res_otherMatching">
-				<source>Other matching pages in the same document:</source>
+				<source>Other matching pages in the same document</source>
 			</trans-unit>
 			<trans-unit id="res_otherPageAsWell">
 				<source>INFO: There was another page indexed as well... Probably indexed with another or no usergroup.</source>

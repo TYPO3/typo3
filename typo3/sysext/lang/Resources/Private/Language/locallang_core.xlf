@@ -125,13 +125,13 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Search</source>
 			</trans-unit>
 			<trans-unit id="labels.author">
-				<source>Author:</source>
+				<source>Author</source>
 			</trans-unit>
 			<trans-unit id="labels.note">
-				<source>Note:</source>
+				<source>Note</source>
 			</trans-unit>
 			<trans-unit id="labels.category">
-				<source>Category:</source>
+				<source>Category</source>
 			</trans-unit>
 			<trans-unit id="labels.reload">
 				<source>Reload</source>
@@ -161,7 +161,7 @@ Do you want to continue WITHOUT saving?</source>
 				<source>min|hrs|days|yrs|min|hour|day|year</source>
 			</trans-unit>
 			<trans-unit id="labels.menu">
-				<source>Menu:</source>
+				<source>Menu</source>
 			</trans-unit>
 			<trans-unit id="labels.showPage">
 				<source>View webpage</source>
@@ -305,10 +305,10 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Insert %s record(s) from the clipboard</source>
 			</trans-unit>
 			<trans-unit id="labels.generalOptions">
-				<source>General options:</source>
+				<source>General options</source>
 			</trans-unit>
 			<trans-unit id="labels.generalOptions_more">
-				<source>General options (continued):</source>
+				<source>General options (continued)</source>
 			</trans-unit>
 			<trans-unit id="labels.allTables">
 				<source>[All tables]</source>
@@ -377,10 +377,10 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Expand all</source>
 			</trans-unit>
 			<trans-unit id="labels.new_section">
-				<source>Create new:</source>
+				<source>Create new</source>
 			</trans-unit>
 			<trans-unit id="labels.count">
-				<source>Quantity:</source>
+				<source>Quantity</source>
 			</trans-unit>
 			<trans-unit id="labels.findRecord">
 				<source>Find records</source>
@@ -422,7 +422,7 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Version Management</source>
 			</trans-unit>
 			<trans-unit id="ver.selVer">
-				<source>Select version:</source>
+				<source>Select version</source>
 			</trans-unit>
 			<trans-unit id="ver.swap">
 				<source>Swap/Publish</source>
@@ -449,10 +449,10 @@ Do you want to continue WITHOUT saving?</source>
 				<source>View Item</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.referencesToThisItem">
-				<source>References to this item:</source>
+				<source>References to this item</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.referencesFromThisItem">
-				<source>References from this item:</source>
+				<source>References from this item</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.file">
 				<source>File</source>
@@ -473,34 +473,34 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Sorry, TYPO3_CONF_VARS[BE][disable_exec_function] was set, so cannot display content of archive file.</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.table">
-				<source>Table:</source>
+				<source>Table</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.uid">
-				<source>Uid:</source>
+				<source>Uid</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.title">
-				<source>Title:</source>
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.field">
-				<source>Field:</source>
+				<source>Field</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.flexpointer">
-				<source>Flexpointer:</source>
+				<source>Flexpointer</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.softrefKey">
-				<source>Softref Key:</source>
+				<source>Softref Key</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.sorting">
-				<source>Sorting:</source>
+				<source>Sorting</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.refTable">
-				<source>Ref Table:</source>
+				<source>Ref Table</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.refUid">
-				<source>Ref Uid:</source>
+				<source>Ref Uid</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.refString">
-				<source>Ref String:</source>
+				<source>Ref String</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.ftp_area">
 				<source>FTP AREA</source>
@@ -587,7 +587,7 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Use existing file</source>
 			</trans-unit>
 			<trans-unit id="file_upload.actions.all.label">
-				<source>Alternatively, choose a mass action:</source>
+				<source>Alternatively, choose a mass action</source>
 			</trans-unit>
 			<trans-unit id="file_upload.actions.all.empty">
 				<source>Please choose</source>
@@ -611,7 +611,7 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Continue with selected actions</source>
 			</trans-unit>
 			<trans-unit id="file_upload.php.number_of_files">
-				<source>Number of files:</source>
+				<source>Number of files</source>
 			</trans-unit>
 			<trans-unit id="file_rename.exists.title">
 				<source>File exists already</source>
@@ -696,19 +696,19 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Create new textfile</source>
 			</trans-unit>
 			<trans-unit id="file_newfolder.php.label_newfile">
-				<source>File name:</source>
+				<source>File name</source>
 			</trans-unit>
 			<trans-unit id="file_newfolder.php.number_of_folders">
-				<source>Number of folders:</source>
+				<source>Number of folders</source>
 			</trans-unit>
 			<trans-unit id="online_media.new_media">
 				<source>Add new media asset</source>
 			</trans-unit>
 			<trans-unit id="online_media.new_media.label">
-				<source>Url of remote source:</source>
+				<source>Url of remote source</source>
 			</trans-unit>
 			<trans-unit id="online_media.new_media.allowedProviders">
-				<source>Allowed media providers:</source>
+				<source>Allowed media providers</source>
 			</trans-unit>
 			<trans-unit id="online_media.new_media.button">
 				<source>Add media by URL</source>
@@ -928,7 +928,7 @@ Do you want to refresh it now?</source>
 				<source>File not deleted</source>
 			</trans-unit>
 			<trans-unit id="message.description.fileNotDeletedHasReferences">
-				<source>The file cannot be deleted since it is still used at the following places:</source>
+				<source>The file cannot be deleted since it is still used at the following places</source>
 			</trans-unit>
 			<trans-unit id="message.header.folderNotDeletedHasFilesWithReferences">
 				<source>Folder not deleted</source>
@@ -1109,10 +1109,10 @@ Do you want to refresh it now?</source>
 				<source>More options...</source>
 			</trans-unit>
 			<trans-unit id="cm.allowedFileExtensions">
-				<source>Allowed file extensions:</source>
+				<source>Allowed file extensions</source>
 			</trans-unit>
 			<trans-unit id="cm.allowEmbedSources">
-				<source>Allowed media sources:</source>
+				<source>Allowed media sources</source>
 			</trans-unit>
 			<trans-unit id="sortable.dragmove">
 				<source>Drag to move</source>
@@ -1172,13 +1172,13 @@ Do you want to refresh it now?</source>
 				<source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. The Reference Index was last updated on %3$s. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
 			</trans-unit>
 			<trans-unit id="warning.memcache_not_usable">
-				<source>Memcache is configured, but connection to memcached failed with these configuration(s):</source>
+				<source>Memcache is configured, but connection to memcached failed with these configuration(s)</source>
 			</trans-unit>
 			<trans-unit id="warning.file_missing">
 				<source>File is missing!</source>
 			</trans-unit>
 			<trans-unit id="warning.file_missing_text">
-				<source>This file is marked as missing:</source>
+				<source>This file is marked as missing</source>
 			</trans-unit>
 			<trans-unit id="warning.header.storage_is_no_public">
 				<source>Storage is not public</source>
