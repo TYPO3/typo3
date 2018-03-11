@@ -222,7 +222,10 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
         // Attach extension to install queue
         $this->downloadQueue->addExtensionToInstallQueue($extension);
         $installQueue += $this->downloadQueue->resetExtensionInstallStorage();
-        $installedDependencies = $this->installDependencies($installQueue);
+        $installedDependencies = [];
+        if ($this->automaticInstallationEnabled) {
+            $installedDependencies = $this->installDependencies($installQueue);
+        }
 
         return array_merge($downloadedDependencies, $updatedDependencies, $installedDependencies);
     }
