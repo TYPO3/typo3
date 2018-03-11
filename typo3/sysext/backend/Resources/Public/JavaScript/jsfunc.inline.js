@@ -28,7 +28,15 @@ var inline = {
   sourcesLoaded: {},
   data: {},
   isLoading: false,
-
+  methodRequestMap: {
+    'details': 'record_inline_details',
+    'create': 'record_inline_create',
+    'synchronizelocalize': 'record_inline_synchronizelocalize',
+    'expandcollapse': 'record_inline_expandcollapse'
+  },
+  addMethod: function(method, route) {
+    this.methodRequestMap[method] = route;
+  },
   addToDataArray: function(object) {
     $.each(object, function(key, value) {
       if (!inline.data[key]) {
@@ -147,7 +155,7 @@ var inline = {
 
   getRecordDetails: function(objectId) {
     var context = this.getContext(this.parseObjectId('full', objectId, 0, 1));
-    inline.makeAjaxCall('details', [objectId], true, context);
+    inline.makeAjaxCall(this.methodRequestMap.details, [objectId], true, context);
     return false;
   },
 
@@ -157,7 +165,7 @@ var inline = {
       if (recordUid) {
         objectId += this.structureSeparator + recordUid;
       }
-      this.makeAjaxCall('create', [objectId], true, context);
+      this.makeAjaxCall(this.methodRequestMap.create, [objectId], true, context);
     } else {
       var message = TYPO3.lang['FormEngine.maxItemsAllowed'].replace('{0}', this.data.config[objectId].max);
       var matches = objectId.match(/^(data-\d+-.*?-\d+-.*?)-(.*?)$/);
@@ -172,19 +180,19 @@ var inline = {
 
   synchronizeLocalizeRecords: function(objectId, type) {
     var context = this.getContext(objectId);
-    this.makeAjaxCall('synchronizelocalize', [objectId, type], true, context);
+    this.makeAjaxCall(this.methodRequestMap.synchronizelocalize, [objectId, type], true, context);
     return false;
   },
 
   setExpandedCollapsedState: function(objectId, expand, collapse) {
     var context = this.getContext(objectId);
-    this.makeAjaxCall('expandcollapse', [objectId, expand, collapse], false, context);
+    this.makeAjaxCall(this.methodRequestMap.expandcollapse, [objectId, expand, collapse], false, context);
   },
 
   makeAjaxCall: function(method, params, lock, context) {
     var url = '', urlParams = '', options = {};
     if (method && params && params.length && this.lockAjaxMethod(method, lock)) {
-      url = TYPO3.settings.ajaxUrls['record_inline_' + method];
+      url = TYPO3.settings.ajaxUrls[method];
       urlParams = '';
       for (var i = 0; i < params.length; i++) {
         urlParams += '&ajax[' + i + ']=' + encodeURIComponent(params[i]);
@@ -1250,3 +1258,7 @@ $(function() {
     inline.toggleEvent(event);
   });
 });
+
+// Expose to public
+// @internal
+TYPO3.inline = inline;
