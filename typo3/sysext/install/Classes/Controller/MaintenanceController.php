@@ -311,7 +311,7 @@ class MaintenanceController extends AbstractController
             ));
         } catch (StatementException $e) {
             $messageQueue->enqueue(new FlashMessage(
-                '',
+                $e->getMessage(),
                 'Database analysis failed',
                 FlashMessage::ERROR
             ));
