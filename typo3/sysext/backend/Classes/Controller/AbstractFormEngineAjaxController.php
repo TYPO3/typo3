@@ -36,7 +36,7 @@ abstract class AbstractFormEngineAjaxController
      * @param array $result
      * @return array
      */
-    public function createExecutableStringRepresentationOfRegisteredRequireJsModules(array $result): array
+    protected function createExecutableStringRepresentationOfRegisteredRequireJsModules(array $result): array
     {
         if (empty($result['requireJsModules'])) {
             return [];
