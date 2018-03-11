@@ -47,12 +47,10 @@ class DeletedRecordsController
      * Transforms the rows for the deleted records
      *
      * @param array $deletedRowsArray Array with table as key and array with all deleted rows
-     * @param int $totalDeleted Number of deleted records in total
      * @return array JSON array
      */
-    public function transform($deletedRowsArray, $totalDeleted)
+    public function transform($deletedRowsArray)
     {
-        $total = 0;
         $jsonArray = [
             'rows' => []
         ];
@@ -62,7 +60,6 @@ class DeletedRecordsController
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
             foreach ($deletedRowsArray as $table => $rows) {
-                $total += count($deletedRowsArray[$table]);
                 foreach ($rows as $row) {
                     $pageTitle = $this->getPageTitle((int)$row['pid']);
                     $backendUser = BackendUtility::getRecord('be_users', $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']], 'username', '', false);
@@ -84,7 +81,6 @@ class DeletedRecordsController
                 }
             }
         }
-        $jsonArray['total'] = $totalDeleted;
         return $jsonArray;
     }
 

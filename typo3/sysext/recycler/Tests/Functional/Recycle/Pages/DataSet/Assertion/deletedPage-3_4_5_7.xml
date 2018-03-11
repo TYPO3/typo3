@@ -17,20 +17,21 @@
 		<perms_everybody>15</perms_everybody>
 	</pages>
 	<pages>
-		<uid>7</uid>
-		<pid>1</pid>
-		<title>Dummy 1-7 (deleted)</title>
-		<doktype>1</doktype>
-		<deleted>1</deleted>
-		<perms_everybody>0</perms_everybody>
-	</pages>
-	<pages>
 		<uid>5</uid>
 		<pid>4</pid>
 		<title>Dummy 1-4-5 (deleted)</title>
 		<doktype>1</doktype>
 		<deleted>1</deleted>
 		<perms_everybody>15</perms_everybody>
+	</pages>
+
+	<pages>
+		<uid>7</uid>
+		<pid>1</pid>
+		<title>Dummy 1-7 (deleted)</title>
+		<doktype>1</doktype>
+		<deleted>1</deleted>
+		<perms_everybody>0</perms_everybody>
 	</pages>
 </dataset>
 

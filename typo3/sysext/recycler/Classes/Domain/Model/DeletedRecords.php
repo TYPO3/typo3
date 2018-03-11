@@ -244,8 +244,6 @@ class DeletedRecords
 
             if ($recordsToCheck !== false) {
                 $this->checkRecordAccess($table, $recordsToCheck);
-                $pidList = $this->getTreeList($id, $depth);
-                $this->sortDeletedRowsByPidList($pidList);
             }
         }
         $this->label[$table] = $tcaCtrl['label'];
@@ -339,27 +337,6 @@ class DeletedRecords
 
         if ($table === 'pages') {
             $GLOBALS['TCA'][$table]['ctrl']['delete'] = $deleteField;
-        }
-    }
-
-    /**
-     * @param array $pidList
-     */
-    protected function sortDeletedRowsByPidList(array $pidList)
-    {
-        foreach ($this->deletedRows as $table => $rows) {
-            // Reset array of deleted rows for current table
-            $this->deletedRows[$table] = [];
-
-            // Get rows for current pid
-            foreach ($pidList as $pid) {
-                $rowsForCurrentPid = array_filter($rows, function ($row) use ($pid) {
-                    return (int)$row['pid'] === (int)$pid;
-                });
-
-                // Append sorted records to the array again
-                $this->deletedRows[$table] = array_merge($this->deletedRows[$table], $rowsForCurrentPid);
-            }
         }
     }
 

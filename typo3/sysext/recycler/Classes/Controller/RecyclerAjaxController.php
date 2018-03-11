@@ -98,7 +98,7 @@ class RecyclerAjaxController
 
                 /* @var $controller DeletedRecordsController */
                 $controller = GeneralUtility::makeInstance(DeletedRecordsController::class);
-                $recordsArray = $controller->transform($deletedRowsArray, $totalDeleted);
+                $recordsArray = $controller->transform($deletedRowsArray);
 
                 $modTS = $this->getBackendUser()->getTSConfig('mod.recycler');
                 $allowDelete = $this->getBackendUser()->isAdmin() ? true : (bool)$modTS['properties']['allowDelete'];
@@ -106,10 +106,9 @@ class RecyclerAjaxController
                 $view->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/Ajax/RecordsTable.html');
                 $view->assign('records', $recordsArray['rows']);
                 $view->assign('allowDelete', $allowDelete);
-                $view->assign('total', $recordsArray['total']);
                 $content = [
                     'rows' => $view->render(),
-                    'totalItems' => $recordsArray['total']
+                    'totalItems' => $totalDeleted
                 ];
                 break;
             case 'undoRecords':
