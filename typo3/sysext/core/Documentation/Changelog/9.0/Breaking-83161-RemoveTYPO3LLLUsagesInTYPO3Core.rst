@@ -34,4 +34,3 @@ in your backend controller.
 The class typo3/sysext/feedit/Classes/FrontendEditAssetLoader.php was removed, so if you used it in your code you have to remove the dependency.
 
 .. index:: Backend, JavaScript, PHP-API, NotScanned
-

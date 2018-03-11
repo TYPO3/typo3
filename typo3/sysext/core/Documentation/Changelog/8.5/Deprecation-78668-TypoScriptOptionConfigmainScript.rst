@@ -25,4 +25,3 @@ Affected Installations
 Any installation using this TypoScript option.
 
 .. index:: TypoScript, Frontend
-
