@@ -42,9 +42,7 @@ class RouteDispatcher extends Dispatcher
      */
     public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
     {
-        /** @var Router $router */
         $router = GeneralUtility::makeInstance(Router::class);
-        /** @var Route $route */
         $route = $router->matchRequest($request);
         $request = $request->withAttribute('route', $route);
         $request = $request->withAttribute('target', $route->getOption('target'));
