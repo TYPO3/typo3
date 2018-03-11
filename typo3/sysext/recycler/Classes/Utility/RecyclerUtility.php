@@ -34,12 +34,20 @@ class RecyclerUtility
      * as well as the table access rights of the user.
      *
      * @param string $table The table to check access for
-     * @param string $row Record array
+     * @param array $row Record array
      * @return bool Returns TRUE is the user has access, or FALSE if not
      */
     public static function checkAccess($table, $row)
     {
         $backendUser = static::getBackendUser();
+
+        if ($backendUser->isAdmin()) {
+            return true;
+        }
+
+        if (!$backendUser->check('tables_modify', $table)) {
+            return false;
+        }
 
         // Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
         // First, resetting flags.
@@ -59,9 +67,6 @@ class RecyclerUtility
             if ($hasAccess) {
                 $hasAccess = $backendUser->recordEditAccessInternals($table, $calcPRec);
             }
-        }
-        if (!$backendUser->check('tables_modify', $table)) {
-            $hasAccess = false;
         }
         return $hasAccess;
     }

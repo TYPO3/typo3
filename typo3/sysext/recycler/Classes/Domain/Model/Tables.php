@@ -36,6 +36,7 @@ class Tables
         $lang = $this->getLanguageService();
         $tables = [];
         $connection = GeneralUtility::makeInstance(ConnectionPool::class);
+
         foreach (RecyclerUtility::getModifyableTables() as $tableName) {
             $deletedField = RecyclerUtility::getDeletedField($tableName);
             if ($deletedField) {
