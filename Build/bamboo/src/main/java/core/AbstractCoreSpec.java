@@ -469,7 +469,7 @@ abstract public class AbstractCoreSpec {
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "./Build/Scripts/validateRstFiles.sh"
+                        "./Build/Scripts/validateRstFiles.php"
                     ),
                 new ScriptTask()
                     .description("Run path length check")
