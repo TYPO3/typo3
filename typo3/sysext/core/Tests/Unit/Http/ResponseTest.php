@@ -224,9 +224,21 @@ class ResponseTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider headersWithInjectionVectorsDataProvider
      */
-    public function cnstructorRaisesExceptionForHeadersWithCRLFVectors($name, $value)
+    public function constructorRaisesExceptionForHeadersWithCRLFVectors($name, $value)
     {
         $this->expectException(\InvalidArgumentException::class);
         new Response('php://memory', 200, [$name => $value]);
+    }
+
+    /**
+     * @test
+     */
+    public function getHeaderReturnsHeaderSetByConstructorArgument()
+    {
+        $subject = new Response('php://memory', 200, ['location' => 'foo']);
+        $expected = [
+            0 => 'foo',
+        ];
+        $this->assertSame($expected, $subject->getHeader('location'));
     }
 }
