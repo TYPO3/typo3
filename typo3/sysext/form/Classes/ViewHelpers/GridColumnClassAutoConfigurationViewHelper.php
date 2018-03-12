@@ -59,7 +59,7 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
 
         $gridRowElement = $formElement->getParentRenderable();
         $gridContainerElement = $gridRowElement->getParentRenderable();
-        $gridRowEChildElements = $gridRowElement->getElementsRecursively();
+        $gridRowEChildElements = $gridRowElement->getElements();
 
         if ($gridContainerElement instanceof GridContainerInterface) {
             $gridViewPortConfiguration = $gridContainerElement->getProperties()['gridColumnClassAutoConfiguration'];
@@ -110,7 +110,7 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
                 $restElements = (int)$columnsToCalculate[$viewPortName]['elements'];
 
                 if ($restColumnsToDivide < 1) {
-                    $restColumnsToDivide = 1;
+                    $restColumnsToDivide = $gridSize;
                 }
                 if ($restElements < 1) {
                     $restElements = 1;
