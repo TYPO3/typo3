@@ -101,7 +101,10 @@ define([
       $(this.selectorRestFileItem).each(function() {
         tagString += $(this).data('item-tags') + ',';
       });
-      var tagArray = this.trimExplodeAndUnique(',', tagString);
+      var tagArray = this.trimExplodeAndUnique(',', tagString).sort(function(a, b) {
+        // Sort case-insensitive by name
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+      });
       $.each(tagArray, function(i, tag) {
         self.chosenField.append('<option>' + tag + '</option>');
       });
