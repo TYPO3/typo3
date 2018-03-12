@@ -326,7 +326,7 @@ var inline = {
       if (!this.data.unique || !this.data.unique[objectId]) {
         $selector.find('option').eq(selectedIndex).prop('selected', false);
       }
-      this.makeAjaxCall('create', [objectId, selectedValue], true, context);
+      this.makeAjaxCall(this.methodRequestMap.create, [objectId, selectedValue], true, context);
     }
     return false;
   },
@@ -334,7 +334,7 @@ var inline = {
   // foreign_selector: used by element browser (type='group/db')
   importElement: function(objectId, table, uid) {
     var context = this.getContext(objectId);
-    inline.makeAjaxCall('create', [objectId, uid], true, context);
+    inline.makeAjaxCall(this.methodRequestMap.create, [objectId, uid], true, context);
   },
 
   importElementMultiple: function(objectId, table, uidArray, type) {
@@ -343,7 +343,7 @@ var inline = {
     });
   },
   delayedImportElement: function(objectId, table, uid, type) {
-    if (inline.lockedAjaxMethod['create'] == true) {
+    if (inline.lockedAjaxMethod[this.methodRequestMap.create] == true) {
       window.setTimeout("inline.delayedImportElement('" + objectId + "','" + table + "'," + uid + ", null );",
         300);
     } else {
