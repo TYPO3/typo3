@@ -3964,10 +3964,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (!is_array($this->pagesTSconfig)) {
             $TSdataArray = [];
             foreach ($this->rootLine as $k => $v) {
+                // add TSconfig first, as $TSdataArray is reversed below and it shall be included last
+                $TSdataArray[] = $v['TSconfig'];
                 if (trim($v['tsconfig_includes'])) {
                     $includeTsConfigFileList = GeneralUtility::trimExplode(',', $v['tsconfig_includes'], true);
+                    // reverse the includes first to make sure their order is preserved when $TSdataArray is reversed
+                    $includeTsConfigFileList = array_reverse($includeTsConfigFileList);
                     // Traversing list
-                    foreach ($includeTsConfigFileList as $key => $includeTsConfigFile) {
+                    foreach ($includeTsConfigFileList as $includeTsConfigFile) {
                         if (strpos($includeTsConfigFile, 'EXT:') === 0) {
                             list($includeTsConfigFileExtensionKey, $includeTsConfigFilename) = explode(
                                 '/',
@@ -3987,7 +3991,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         }
                     }
                 }
-                $TSdataArray[] = $v['TSconfig'];
             }
             // Adding the default configuration:
             $TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
