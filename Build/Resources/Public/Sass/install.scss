@@ -333,6 +333,10 @@ a[data-toggle="collapse"] {
     border-radius: 0;
     margin: 0;
 
+    .panel-collapse {
+        position: relative;
+    }
+
     &.panel-default .panel-heading {
         background: $gray-lighter;
     }
@@ -345,6 +349,10 @@ a[data-toggle="collapse"] {
         .panel-progress .panel-progress-bar {
             background-color: $brand-danger;
         }
+
+        .label {
+            @include label-variant($label-danger-bg);
+        }
     }
 
     &.panel-deprecation,
@@ -354,6 +362,10 @@ a[data-toggle="collapse"] {
 
         .panel-progress .panel-progress-bar {
             background-color: $brand-warning;
+        }
+
+        .label {
+            @include label-variant($label-warning-bg);
         }
     }
 
@@ -365,6 +377,10 @@ a[data-toggle="collapse"] {
         .panel-progress .panel-progress-bar {
             background-color: $brand-success;
         }
+
+        .label {
+            @include label-variant($label-success-bg);
+        }
     }
 
     &.panel-important,
@@ -374,6 +390,10 @@ a[data-toggle="collapse"] {
 
         .panel-progress .panel-progress-bar {
             background-color: $brand-info;
+        }
+
+        .label {
+            @include label-variant($label-info-bg);
         }
     }
 
@@ -386,6 +406,24 @@ a[data-toggle="collapse"] {
 
         strong {
             line-height: 1.5em;
+        }
+    }
+
+    .rst-tags {
+        position: absolute;
+        top: 0.75em;
+        right: 1em;
+
+        .label {
+            margin: 0 0.25em;
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
         }
     }
 

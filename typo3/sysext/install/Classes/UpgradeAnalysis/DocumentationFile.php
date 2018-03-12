@@ -143,6 +143,7 @@ class DocumentationFile
         $tags = $this->extractTagsFromFile($file);
         // Headline starting with the category like Breaking, Important or Feature
         $tags[] = $this->extractCategoryFromHeadline($file);
+        natcasesort($tags);
 
         return $tags;
     }

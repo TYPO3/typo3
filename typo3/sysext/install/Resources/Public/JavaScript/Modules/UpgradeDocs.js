@@ -84,6 +84,7 @@ define([
             self.fulltextSearchField.on('keyup', function() {
               self.combinedFilterSearch();
             });
+            self.renderTags();
           } else {
             var message = InfoBox.render(Severity.error, 'Something went wrong', '');
             outputContainer.empty().append(message);
@@ -181,6 +182,17 @@ define([
         if ($(this).find('.searchhit', '.filterhit').length < 1) {
           $(this).find(' > .panel-collapse').collapse('hide');
         }
+      });
+    },
+
+    renderTags: function() {
+      $.each($(this.selectorRestFileItem), function() {
+        var $me = $(this);
+        var tags = $me.data('item-tags').split(',');
+        var $tagContainer = $me.find('.t3js-tags');
+        tags.forEach(function(value) {
+          $tagContainer.append($('<span />', {'class': 'label'}).text(value));
+        });
       });
     },
 
