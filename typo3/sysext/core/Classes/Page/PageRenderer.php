@@ -2482,7 +2482,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         } elseif (TYPO3_MODE === 'FE') {
             $filename = GeneralUtility::createVersionNumberedFilename($filename);
         }
-        return PathUtility::getAbsoluteWebPath($filename);
+        return $this->getAbsoluteWebPath($filename);
     }
 
     /**
@@ -2509,9 +2509,26 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         }
         if ($prepareForOutput) {
             $file = GeneralUtility::createVersionNumberedFilename($file);
-            $file = PathUtility::getAbsoluteWebPath($file);
+            $file = $this->getAbsoluteWebPath($file);
         }
         return $file;
+    }
+
+    /**
+     * Gets absolute web path of filename for backend disposal.
+     * Resolving the absolute path in the frontend with conflict with
+     * applying config.absRefPrefix in frontend rendering process.
+     *
+     * @param string $file
+     * @return string
+     * @see TypoScriptFrontendController::setAbsRefPrefix()
+     */
+    protected function getAbsoluteWebPath(string $file): string
+    {
+        if (TYPO3_MODE === 'FE') {
+            return $file;
+        }
+        return PathUtility::getAbsoluteWebPath($file);
     }
 
     /**
