@@ -610,6 +610,9 @@
             <trans-unit id="formEditor.elements.FormElement.editor.label.label" xml:space="preserve">
                 <source>Label</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.FormElement.editor.elementDescription.label" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.label" xml:space="preserve">
                 <source>Required field</source>
             </trans-unit>

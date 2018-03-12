@@ -311,6 +311,7 @@ TYPO3:
                 editors:
                   200:
                     label: 'formEditor.elements.Fieldset.editor.label.label'
+                  230: null
                   800: null
 
             GridContainer:
@@ -322,6 +323,7 @@ TYPO3:
                 editors:
                   200:
                     label: 'formEditor.elements.GridContainer.editor.label.label'
+                  230: null
                   800: null
 
             GridRow:
@@ -335,6 +337,7 @@ TYPO3:
                 editors:
                   200:
                     label: 'formEditor.elements.GridRow.editor.label.label'
+                  230: null
                   800: null
 
             ### FORM ELEMENTS: PAGE TYPES ###
@@ -435,6 +438,7 @@ TYPO3:
                 predefinedDefaults:
                   defaultValue: ''
                 editors:
+                  230: null
                   300:
                     identifier: 'defaultValue'
                     templateName: 'Inspector-TextEditor'
@@ -890,6 +894,12 @@ TYPO3:
               editors:
                 200:
                   label: 'formEditor.elements.FormElement.editor.label.label'
+
+                230:
+                  identifier: 'elementDescription'
+                  templateName: 'Inspector-TextEditor'
+                  label: 'formEditor.elements.FormElement.editor.elementDescription.label'
+                  propertyPath: 'properties.elementDescription'
 
                 700:
                   identifier: 'gridColumnViewPortConfiguration'
