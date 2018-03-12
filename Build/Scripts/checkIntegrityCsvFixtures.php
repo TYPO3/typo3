@@ -46,15 +46,15 @@ class checkIntegrityCsvFixtures
         foreach ($filesToProcess as $csvFixture) {
             $fullFilePath = $csvFixture->getRealPath();
             $singleFileScanResult = $this->validateCsvFile($fullFilePath);
-            if ($singleFileScanResult === false) {
+            if ($singleFileScanResult !== '') {
                 $resultAcrossAllFiles = 1;
                 $failureCount++;
                 $scanResult[$this->getRelativePath($fullFilePath)] = $singleFileScanResult;
             }
         }
         if (!empty($scanResult)) {
-            foreach ($scanResult as $key => $_item) {
-                $output->writeln('The file "' . $this->formatOutputString($key) . '" is not in valid CSV format');
+            foreach ($scanResult as $key => $reason) {
+                $output->writeln('The file "' . $this->formatOutputString($key) . '" is not in valid CSV format: ' . $reason);
             }
         }
         return $resultAcrossAllFiles;
@@ -80,9 +80,9 @@ class checkIntegrityCsvFixtures
      * lines in that file
      *
      * @param string $csvFixture
-     * @return bool
+     * @return string
      */
-    private function validateCsvFile(string $csvFixture): bool
+    private function validateCsvFile(string $csvFixture): string
     {
         // Load file content into array split by line
         $lines = file($csvFixture);
@@ -94,11 +94,11 @@ class checkIntegrityCsvFixtures
                 $columnCount = count($columns);
             } else {
                 if (count($columns) !== $columnCount) {
-                    return false;
+                    return 'Line ' . ($index + 1) . '; Expected column count: ' . $columnCount . '; Actual: ' . count($columns);
                 }
             }
         }
-        return true;
+        return '';
     }
 
     private function getRelativePath(string $fullPath): string
@@ -115,9 +115,12 @@ class checkIntegrityCsvFixtures
      */
     private function formatOutputString(string $filename): string
     {
-        $pattern = '/typo3\/sysext\/(?<extName>[a-z].+?)\/Tests\/Functional\/(?<file>.*)/';
+        $pattern = '#typo3[\\\\/]sysext[\\\\/](?<extName>[a-z].+?)[\\\\/]Tests[\\\\/]Functional[\\\\/](?<file>.*)#';
         preg_match_all($pattern, $filename, $matches, PREG_SET_ORDER, 0);
-        return 'EXT:' . $matches[0]['extName'] . ' > ' . $matches[0]['file'];
+        if (isset($matches[0])) {
+            return 'EXT:' . $matches[0]['extName'] . ' > ' . $matches[0]['file'];
+        }
+        return $filename;
     }
 }
 
