@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file t3:id="1520862804" source-language="en" datatype="plaintext" original="messages" date="2018-03-12T13:52:00Z"
+          product-name="adminpanel">
+        <header/>
+        <body>
+            <trans-unit id="module.label">
+                <source>Cache</source>
+            </trans-unit>
+            <trans-unit id="cache_noCache">
+                <source>No caching</source>
+            </trans-unit>
+            <trans-unit id="cache_doit">
+                <source>Clear cache now!</source>
+            </trans-unit>
+            <trans-unit id="cache_clearLevels">
+                <source>Clear levels</source>
+            </trans-unit>
+            <trans-unit id="div_Levels_0">
+                <source>This page</source>
+            </trans-unit>
+            <trans-unit id="div_Levels_1">
+                <source>+ 1 sublevel</source>
+            </trans-unit>
+            <trans-unit id="div_Levels_2">
+                <source>+ 2 sublevels</source>
+            </trans-unit>
+            <trans-unit id="update">
+                <source>Update</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

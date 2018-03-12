@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TYPO3\CMS\Adminpanel\Modules;
 
@@ -17,10 +17,16 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  */
 
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class CacheModule extends AbstractModule
 {
+    /**
+     * @var string
+     */
+    private $extResources = 'EXT:adminpanel/Resources/Private';
 
     /**
      * Creates the content for the "cache" section ("module") of the Admin Panel
@@ -29,53 +35,19 @@ class CacheModule extends AbstractModule
      */
     public function getContent(): string
     {
-        $output = [];
-        if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_cache']) {
-            $output[] = '<div class="typo3-adminPanel-form-group">';
-            $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
-            $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[cache_noCache]" value="0" />';
-            $output[] = '    <label for="cache_noCache">';
-            $output[] = '      <input type="checkbox" id="cache_noCache" name="TSFE_ADMIN_PANEL[cache_noCache]" value="1"' .
-                        ($this->getBackendUser()->uc['TSFE_adminConfig']['cache_noCache'] ? ' checked="checked"' : '') .
-                        ' />';
-            $output[] = '      ' . $this->extGetLL('cache_noCache');
-            $output[] = '    </label>';
-            $output[] = '  </div>';
-            $output[] = '</div>';
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $templateNameAndPath = $this->extResources . '/Templates/Modules/Cache.html';
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
+        $view->setPartialRootPaths([$this->extResources . '/Partials']);
 
-            $levels = $this->getBackendUser()->uc['TSFE_adminConfig']['cache_clearCacheLevels'];
-            $output[] = '<div class="typo3-adminPanel-form-group">';
-            $output[] = '  <label for="cache_clearCacheLevels">';
-            $output[] = '    ' . $this->extGetLL('cache_clearLevels');
-            $output[] = '  </label>';
-            $output[] = '  <select id="cache_clearCacheLevels" name="TSFE_ADMIN_PANEL[cache_clearCacheLevels]">';
-            $output[] = '    <option value="0"' . ((int)$levels === 0 ? ' selected="selected"' : '') . '>';
-            $output[] = '      ' . $this->extGetLL('div_Levels_0');
-            $output[] = '    </option>';
-            $output[] = '    <option value="1"' . ($levels == 1 ? ' selected="selected"' : '') . '>';
-            $output[] = '      ' . $this->extGetLL('div_Levels_1');
-            $output[] = '    </option>';
-            $output[] = '    <option value="2"' . ($levels == 2 ? ' selected="selected"' : '') . '>';
-            $output[] = '      ' . $this->extGetLL('div_Levels_2');
-            $output[] = '    </option>';
-            $output[] = '  </select>';
-            $output[] = '</div>';
+        $view->assignMultiple([
+            'isEnabled' => $this->getBackendUser()->uc['TSFE_adminConfig']['display_cache'],
+            'noCache' => $this->getBackendUser()->uc['TSFE_adminConfig']['cache_noCache'],
+            'cacheLevels' => $this->getBackendUser()->uc['TSFE_adminConfig']['cache_clearCacheLevels'],
+            'currentId' => $this->getTypoScriptFrontendController()->id
+        ]);
 
-            $output[] = '<div class="typo3-adminPanel-form-group">';
-            $output[] = '  <input type="hidden" name="TSFE_ADMIN_PANEL[cache_clearCacheId]" value="' .
-                        $GLOBALS['TSFE']->id .
-                        '" />';
-            $output[] = '  <input class="typo3-adminPanel-btn typo3-adminPanel-btn-default" type="submit" value="' .
-                        $this->extGetLL('update') .
-                        '" />';
-            $output[] = '</div>';
-            $output[] = '<div class="typo3-adminPanel-form-group">';
-            $output[] = '  <input class="typo3-adminPanel-btn typo3-adminPanel-btn-default" type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="' .
-                        $this->extGetLL('cache_doit') .
-                        '" />';
-            $output[] = '</div>';
-        }
-        return implode('', $output);
+        return $view->render();
     }
 
     /**
@@ -91,7 +63,8 @@ class CacheModule extends AbstractModule
      */
     public function getLabel(): string
     {
-        return $this->extGetLL('cache');
+        $locallangFileAndPath = 'LLL:' . $this->extResources . '/Language/locallang_cache.xlf:module.label';
+        return $this->getLanguageService()->sL($locallangFileAndPath);
     }
 
     /**
@@ -111,8 +84,7 @@ class CacheModule extends AbstractModule
      */
     public function onSubmit(array $input): void
     {
-        if (($input['action']['clearCache'] ?? false) ||
-            isset($input['preview_showFluidDebug'])) {
+        if (($input['action']['clearCache'] ?? false) || isset($input['preview_showFluidDebug'])) {
             $theStartId = (int)$input['cache_clearCacheId'];
             $this->getTypoScriptFrontendController()
                 ->clearPageCacheContent_pidList(
