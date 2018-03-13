@@ -19,13 +19,13 @@ Impact
 
 All form element names within the frontend will change from e.g.
 
-.. code-block:: typoscript
+.. code-block:: html
 
     <textarea name="tx_form_formframework[myForm][message]"></textarea>
 
 to
 
-.. code-block:: typoscript
+.. code-block:: html
 
     <textarea name="tx_form_formframework[myForm-65][message]"></textarea>
 

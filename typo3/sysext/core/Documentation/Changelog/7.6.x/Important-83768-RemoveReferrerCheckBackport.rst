@@ -14,15 +14,14 @@ links are followed or forms are submitted due to privacy reasons. TYPO3 used the
 for the backend. However, this has been replaced by proper CSRF protection tokens for every backend action and therefore,
 the referrer check became obsolete and has been removed.
 
-The configuration option :php:`[SYS][doNotCheckReferer]` has been also removed as this is not needed anymore.
+Usages of the configuration option :php:`[SYS][doNotCheckReferer]` within TYPO3 Core have been removed, as this is not
+needed anymore. However, the option can still be set for extensions implementing this option.
 
 
 Impact
 ======
 
 Backend users will not notice any differences.
-
-TYPO3 extensions will not longer be able to use :php:`[SYS][doNotCheckReferer]`.
 
 
 Affected Installations

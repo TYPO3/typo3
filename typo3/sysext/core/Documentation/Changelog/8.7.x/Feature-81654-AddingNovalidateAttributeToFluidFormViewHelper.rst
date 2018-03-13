@@ -10,7 +10,7 @@ Description
 ===========
 
 Adding novalidate attribute to fluid form viewHelper to disable the browser form validation.
-The attribute :html:`novalidate` is optional and can set with novalidate="1".The argument will
-converted to :html:`<form novalidate="novalidate">...</form>`.
+The attribute novalidate is optional and can set with novalidate="1".The argument will
+converted to <form novalidate="novalidate">...</form>.
 
 .. index:: Fluid
