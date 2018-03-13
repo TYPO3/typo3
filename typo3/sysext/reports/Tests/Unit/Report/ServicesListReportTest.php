@@ -19,6 +19,7 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Reports\Controller\ReportController;
 use TYPO3\CMS\Reports\Report\ServicesListReport;
@@ -70,7 +71,10 @@ class ServicesListReportTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $templatePath = GeneralUtility::getFileAbsFileName(
             'EXT:reports/Resources/Private/Templates/ServicesListReport.html'
         );
+        $serverRequestProphecy = $this->prophesize(Request::class);
+        /** @var ObjectProphecy $standaloneViewProphecy */
         $standaloneViewProphecy = $this->prophesize(StandaloneView::class);
+        $standaloneViewProphecy->getRequest()->willReturn($serverRequestProphecy->reveal());
         $standaloneViewProphecy->setTemplatePathAndFilename($templatePath)->shouldBeCalled();
         $standaloneViewProphecy->assignMultiple(Argument::any())->willReturn($standaloneViewProphecy->reveal());
         $standaloneViewProphecy->render()->willReturn('<p>Template output</p>');

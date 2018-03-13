@@ -52,6 +52,7 @@ class ServicesListReport implements ReportInterface
     {
         // Rendering of the output via fluid
         $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->getRequest()->setControllerExtensionName('Reports');
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
             'EXT:reports/Resources/Private/Templates/ServicesListReport.html'
         ));

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Reports\Controller;
 
 /*
@@ -13,30 +14,35 @@ namespace TYPO3\CMS\Reports\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Backend\View\BackendTemplateView;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Reports\ReportInterface;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Reports controller
  */
-class ReportController extends ActionController
+class ReportController
 {
     /**
-     * @var BackendTemplateView
+     * ModuleTemplate object
+     *
+     * @var ModuleTemplate
      */
-    protected $view;
+    protected $moduleTemplate;
 
     /**
-     * BackendTemplateView Container
-     *
-     * @var BackendTemplateView
+     * @var ViewInterface
      */
-    protected $defaultViewObjectName = BackendTemplateView::class;
+    protected $view;
 
     /**
      * Module name for the shortcut
@@ -46,37 +52,65 @@ class ReportController extends ActionController
     protected $shortcutName;
 
     /**
-     * Redirect to the saved report
+     * Instantiate the report controller
      */
-    public function initializeAction()
+    public function __construct()
     {
-        $vars = GeneralUtility::_GET('tx_reports_system_reportstxreportsm1');
-        if (!isset($vars['redirect']) && $vars['action'] !== 'index' && !isset($vars['extension']) && is_array($GLOBALS['BE_USER']->uc['reports']['selection'])) {
-            $previousSelection = $GLOBALS['BE_USER']->uc['reports']['selection'];
-            if (!empty($previousSelection['extension']) && !empty($previousSelection['report'])) {
-                $this->redirect('detail', 'Report', null, [
-                    'extension' => $previousSelection['extension'],
-                    'report' => $previousSelection['report'],
-                    'redirect' => 1,
-                ]);
-            } else {
-                $this->redirect('index');
-            }
-        }
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
     }
 
     /**
-     * Initialize the view
+     * Injects the request object for the current request, and renders correct action
      *
-     * @param ViewInterface $view The view
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
      */
-    protected function initializeView(ViewInterface $view)
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var BackendTemplateView $view */
-        parent::initializeView($view);
-        $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
-        $this->generateMenu();
+        $actionDefault = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'];
+        $action = $actionDefault ?: 'index';
+        $extension = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'];
+        $isRedirect = $request->getQueryParams()['redirect'] ?? $request->getParsedBody()['redirect'] ?? false;
+
+        if ($actionDefault !== 'index' && !$isRedirect && !$extension
+            && is_array($GLOBALS['BE_USER']->uc['reports']['selection'])) {
+            $previousSelection = $GLOBALS['BE_USER']->uc['reports']['selection'];
+            if (!empty($previousSelection['extension']) && !empty($previousSelection['report'])) {
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                return new RedirectResponse((string)$uriBuilder->buildUriFromRoute('system_reports', [
+                    'action' => 'detail',
+                    'extension' => $previousSelection['extension'],
+                    'report' => $previousSelection['report'],
+                    'redirect' => 1,
+                ]), 303);
+            }
+        }
+
+        $this->initializeView($action);
+
+        $result = call_user_func_array([$this, $action . 'Action'], [$request]);
+        if ($result instanceof ResponseInterface) {
+            return $result;
+        }
+
+        $this->generateMenu($request);
         $this->generateButtons();
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    /**
+     * @param string $templateName
+     */
+    protected function initializeView(string $templateName)
+    {
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->setTemplate($templateName);
+        $this->view->setTemplateRootPaths(['EXT:reports/Resources/Private/Templates/Report']);
+        $this->view->setPartialRootPaths(['EXT:reports/Resources/Private/Partials']);
+        $this->view->setLayoutRootPaths(['EXT:reports/Resources/Private/Layouts']);
+        $this->view->getRequest()->setControllerExtensionName('Reports');
     }
 
     /**
@@ -91,13 +125,15 @@ class ReportController extends ActionController
     /**
      * Display a single report
      *
-     * @param string $extension Extension
-     * @param string $report Report
+     * @param ServerRequestInterface $request
      */
-    public function detailAction($extension, $report)
+    public function detailAction(ServerRequestInterface $request)
     {
-        $content = ($error = '');
-        $reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['report'] ?? $this->redirect('index');
+        $content = $error = '';
+        $extension = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'];
+        $report = $request->getQueryParams()['report'] ?? $request->getParsedBody()['report'];
+
+        $reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['report'] ?? null;
 
         $reportInstance = GeneralUtility::makeInstance($reportClass, $this);
         if ($reportInstance instanceof ReportInterface) {
@@ -115,57 +151,58 @@ class ReportController extends ActionController
 
     /**
      * Generates the menu
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function generateMenu()
+    protected function generateMenu(ServerRequestInterface $request)
     {
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $lang = $this->getLanguageService();
         $lang->includeLLFile('EXT:reports/Resources/Private/Language/locallang.xlf');
-        $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('WebFuncJumpMenu');
         $menuItem = $menu
             ->makeMenuItem()
             ->setHref(
-                $this->uriBuilder->reset()->uriFor('index', null, 'Report')
+                $uriBuilder->buildUriFromRoute('system_reports', ['action' => 'index'])
             )
             ->setTitle($lang->getLL('reports_overview'));
         $menu->addMenuItem($menuItem);
         $this->shortcutName = $lang->getLL('reports_overview');
+
+        $extensionParam = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'];
+        $reportParam = $request->getQueryParams()['report'] ?? $request->getParsedBody()['report'];
+
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'] as $extKey => $reports) {
             foreach ($reports as $reportName => $report) {
                 $menuItem = $menu
                     ->makeMenuItem()
-                    ->setHref($this->uriBuilder->reset()->uriFor('detail', ['extension' => $extKey, 'report' => $reportName], 'Report'))
+                    ->setHref($uriBuilder->buildUriFromRoute(
+                        'system_reports',
+                        ['action' => 'detail', 'extension' => $extKey, 'report' => $reportName]
+                    ))
                     ->setTitle($this->getLanguageService()->sL($report['title']));
-                if ($this->arguments->hasArgument('extension') && $this->arguments->hasArgument('report')) {
-                    if ($this->arguments->getArgument('extension')->getValue() === $extKey && $this->arguments->getArgument('report')->getValue() === $reportName) {
-                        $menuItem->setActive(true);
-                        $this->shortcutName = $menuItem->getTitle();
-                    }
+                if ($extensionParam === $extKey && $reportParam === $reportName) {
+                    $menuItem->setActive(true);
+                    $this->shortcutName = $menuItem->getTitle();
                 }
                 $menu->addMenuItem($menuItem);
             }
         }
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
     /**
-     * Gets all buttons for the docheader
+     * Gets all buttons for the docHeader
      */
     protected function generateButtons()
     {
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $moduleName = $this->request->getPluginName();
-        $getVars = $this->request->hasArgument('getVars') ? $this->request->getArgument('getVars') : [];
-        $setVars = $this->request->hasArgument('setVars') ? $this->request->getArgument('setVars') : [];
-        if (count($getVars) === 0) {
-            $modulePrefix = strtolower('tx_' . $this->request->getControllerExtensionName() . '_' . $moduleName);
-            $getVars = ['id', 'route', $modulePrefix];
-        }
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($moduleName)
-            ->setGetVariables($getVars)
-            ->setDisplayName($this->shortcutName)
-            ->setSetVariables($setVars);
+            ->setModuleName('system_reports')
+            ->setGetVariables(['action', 'extension', 'report'])
+            ->setDisplayName($this->shortcutName);
         $buttonBar->addButton($shortcutButton);
     }
 
@@ -175,7 +212,7 @@ class ReportController extends ActionController
      * @param string $extension Extension name
      * @param string $report Report name
      */
-    protected function saveState($extension = '', $report = '')
+    protected function saveState(string $extension = '', string $report = '')
     {
         $this->getBackendUser()->uc['reports']['selection'] = [
             'extension' => $extension,
@@ -187,7 +224,7 @@ class ReportController extends ActionController
     /**
      * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
@@ -195,7 +232,7 @@ class ReportController extends ActionController
     /**
      * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
