@@ -193,7 +193,7 @@ class LocalConfigurationValueService
                 if (is_bool($value)) {
                     $messageBody = 'New value = ' . ($value ? 'true' : 'false');
                 } elseif (empty($value)) {
-                    $messageBody = 'New value = <i>none</i>';
+                    $messageBody = 'New value = none';
                 } elseif (is_array($value)) {
                     $messageBody = "New value = ['" . implode("', '", $value) . "']";
                 } else {
