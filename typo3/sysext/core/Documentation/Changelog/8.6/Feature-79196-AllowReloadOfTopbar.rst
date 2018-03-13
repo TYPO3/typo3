@@ -30,7 +30,7 @@ Reloading the topbar via JavaScript requires the following code:
    // Or: old-fashioned JavaScript
    if (top && top.TYPO3.Backend && top.TYPO3.Backend.Topbar) {
       top.TYPO3.Backend.Topbar.refresh();
-   }';
+   };
 
 
 In case a toolbar item registers to the `load` event of the page, the registration must be changed. Reason is that the
@@ -42,7 +42,7 @@ Example:
 
    define(['jquery', 'TYPO3/CMS/Backend/Viewport'], function($, Viewport) {
       // old registration
-      $(MyAwesomeItem.doStuff)
+      $(MyAwesomeItem.doStuff);
 
       // new registration
       Viewport.Topbar.Toolbar.registerEvent(MyAwesomeItem.doStuff);

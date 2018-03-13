@@ -41,11 +41,11 @@ In case of the Uri.Typolink Viewhelper, only the first and the fourth parameter 
 the tag related properties are discarded.
 For the given examples, the output is:
 
-.. code-block:: HTML
+.. code-block:: html
 
-	<a href="index.php?id=19&X=y&b=u" title="some title" target="_blank" class="ico-class" type="button">
-	index.php?id=19&X=y&b=u
-	</a>
+    <a href="index.php?id=19&X=y&b=u" title="some title" target="_blank" class="ico-class" type="button">
+    index.php?id=19&X=y&b=u
+    </a>
 
 Impact
 ======
