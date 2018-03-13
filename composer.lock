@@ -2076,16 +2076,16 @@
         },
         {
             "name": "enm1989/chromedriver",
-            "version": "2.33",
+            "version": "2.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ENM1989/chromedriver.git",
-                "reference": "bc0026117556f9550f91d11de4c7746ee589075f"
+                "reference": "f269e7f58e3e0c8b52a1396b64b679949973f76a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/bc0026117556f9550f91d11de4c7746ee589075f",
-                "reference": "bc0026117556f9550f91d11de4c7746ee589075f",
+                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/f269e7f58e3e0c8b52a1396b64b679949973f76a",
+                "reference": "f269e7f58e3e0c8b52a1396b64b679949973f76a",
                 "shasum": ""
             },
             "bin": [
@@ -2094,7 +2094,7 @@
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache License Version 2.0"
+                "Apache-2.0"
             ],
             "authors": [
                 {
@@ -2110,7 +2110,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2017-10-05T07:03:48+00:00"
+            "time": "2018-04-20T19:02:08+00:00"
         },
         {
             "name": "facebook/webdriver",
