@@ -226,8 +226,6 @@ class QueryGeneratorTest extends FunctionalTestCase
      */
     public function getTreeListReturnsListOfPageIdsOfABranchedTreeWithBeginSetToOne(): void
     {
-        $this->markTestSkipped('Test describes a bug in QueryGenerator::getTreeList, thus this test would fail.');
-
         $id = 1;
         $depth = 3;
         $begin = 1;
@@ -238,11 +236,6 @@ class QueryGeneratorTest extends FunctionalTestCase
         $treeList = $queryGenerator->getTreeList($id, $depth, $begin);
 
         static::assertSame('2,3,4,5', $treeList);
-        // --- Expected
-        // +++ Actual
-        // @@ @@
-        // -'2,3,4,5'
-        // +'2,34,5'
     }
 
     /**
@@ -250,8 +243,6 @@ class QueryGeneratorTest extends FunctionalTestCase
      */
     public function getTreeListReturnsListOfPageIdsOfABranchedTreeWithBeginSetToTwo(): void
     {
-        $this->markTestSkipped('Test describes a bug in QueryGenerator::getTreeList, thus this test would fail.');
-
         $id = 1;
         $depth = 3;
         $begin = 2;
@@ -262,10 +253,5 @@ class QueryGeneratorTest extends FunctionalTestCase
         $treeList = $queryGenerator->getTreeList($id, $depth, $begin);
 
         static::assertSame('3,5', $treeList);
-        // --- Expected
-        // +++ Actual
-        // @@ @@
-        // -'3,5'
-        // +'35'
     }
 }
