@@ -21,13 +21,13 @@ Example
 
 .. code-block:: typoscript
 
-	<INCLUDE_TYPOSCRIPT: source="FILE:EXT:my_extension/Configuration/TypoScript/firefox.ts" condition="[loginUser = *]">
+   <INCLUDE_TYPOSCRIPT: source="FILE:EXT:my_extension/Configuration/TypoScript/firefox.ts" condition="[loginUser = *]">
 
 Condition with square brackets. File will only be included if a frontend user is logged in.
 
 .. code-block:: typoscript
 
-	<INCLUDE_TYPOSCRIPT: source="FILE:EXT:my_extension/Configuration/TypoScript/staging.ts" condition="applicationContext = /^Production\\/Staging\\/Server\\d+$/">
+   <INCLUDE_TYPOSCRIPT: source="FILE:EXT:my_extension/Configuration/TypoScript/staging.ts" condition="applicationContext = /^Production\\/Staging\\/Server\\d+$/">
 
 Condition without square brackets, backslashes doubled inside the condition. File will only be included in application context
 Production/Staging/Server followed by at least one digit.
