@@ -1560,7 +1560,11 @@ class QueryGenerator
                     $theList .= ',' . $row['uid'];
                 }
                 if ($depth > 1) {
-                    $theList .= $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
+                    $theSubList = $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
+                    if (!empty($theList) && !empty($theSubList) && ($theSubList[0] !== ',')) {
+                        $theList .= ',';
+                    }
+                    $theList .= $theSubList;
                 }
             }
             $databaseConnection->sql_free_result($res);
