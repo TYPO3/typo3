@@ -304,9 +304,6 @@ BE:
         compressionLevel:
             type: text
             description: 'Determines output compression of BE output. Makes output smaller but slows down the page generation depending on the compression level. Requires a) zlib in your PHP installation and b) special rewrite rules for .css.gzip and .js.gzip (please see <code>_.htacces</code> for an example). Range 1-9, where 1 is least compression and 9 is greatest compression. ''true'' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.'
-        installToolPassword:
-            type: text
-            description: 'This is the md5-hashed, salted password for the Install Tool. Set this to '''' and access will be totally denied. You may consider to externally protect the typo3/sysext/install/ folder, eg. with a .htaccess file.'
         checkStoredRecords:
             type: bool
             description: 'If set, values of the record are validated after saving in DataHandler. Disable only if using a database in strict mode.'
