@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -371,10 +372,36 @@ abstract class AbstractFormElement extends AbstractNode
     }
 
     /**
+     * Append the value of a form field to its label
+     *
+     * @param string|int $label The label which can also be an integer
+     * @param string|int $value The value which can also be an integer
+     * @return string|int
+     */
+    protected function appendValueToLabelInDebugMode($label, $value)
+    {
+        if ($value !== '' && $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
+            return $label . ' [' . $value . ']';
+        }
+
+        return $label;
+    }
+
+    /**
      * @return LanguageService
      */
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Returns the current BE user.
+     *
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

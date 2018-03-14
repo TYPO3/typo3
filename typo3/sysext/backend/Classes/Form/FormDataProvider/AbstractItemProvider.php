@@ -277,7 +277,7 @@ abstract class AbstractItemProvider
                 foreach ($result['systemLanguageRows'] as $language) {
                     if ($language['uid'] !== -1) {
                         $items[] = [
-                            0 => $language['title'] . ' [' . $language['uid'] . ']',
+                            0 => $language['title'],
                             1 => $language['uid'],
                             2 => $language['flagIconIdentifier']
                         ];

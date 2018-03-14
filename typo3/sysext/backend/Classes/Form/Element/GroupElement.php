@@ -142,7 +142,7 @@ class GroupElement extends AbstractFormElement
                 $shortenedTitle = GeneralUtility::fixed_lgd_cs($title, $maxTitleLength);
                 $selectorOptionsHtml[] =
                     '<option value="' . htmlspecialchars($uidOrPath) . '" title="' . htmlspecialchars($title) . '">'
-                        . htmlspecialchars($shortenedTitle)
+                        . htmlspecialchars($this->appendValueToLabelInDebugMode($shortenedTitle, $uidOrPath))
                     . '</option>';
             }
         } elseif ($internalType === 'folder') {
@@ -165,7 +165,7 @@ class GroupElement extends AbstractFormElement
                 $shortenedTitle = GeneralUtility::fixed_lgd_cs($title, $maxTitleLength);
                 $selectorOptionsHtml[] =
                     '<option value="' . htmlspecialchars($tableWithUid) . '" title="' . htmlspecialchars($title) . '">'
-                        . htmlspecialchars($shortenedTitle)
+                        . htmlspecialchars($this->appendValueToLabelInDebugMode($shortenedTitle, $tableWithUid))
                     . '</option>';
             }
         } else {

@@ -87,7 +87,7 @@ class RadioElement extends AbstractFormElement
             $html[] =                       $disabled;
             $html[] =                       ' onclick="' . htmlspecialchars(implode('', $this->data['parameterArray']['fieldChangeFunc'])) . '"';
             $html[] =                   '/>';
-            $html[] =                       htmlspecialchars($label);
+            $html[] =                       htmlspecialchars($this->appendValueToLabelInDebugMode($label, $value));
             $html[] =               '</label>';
             $html[] =           '</div>';
             $html[] =       '</div>';

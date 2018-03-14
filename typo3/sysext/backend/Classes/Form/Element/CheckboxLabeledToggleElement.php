@@ -190,7 +190,7 @@ class CheckboxLabeledToggleElement extends AbstractFormElement
                             ' . $config['items'][$itemCounter]['labelUnchecked'] . '
                         </span>
                     </span>
-                    <span class="checkbox-label-text">' . ($label ? htmlspecialchars($label) : '&nbsp;') . '</span>
+                    <span class="checkbox-label-text">' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '</span>
                 </label>
             </div>';
     }

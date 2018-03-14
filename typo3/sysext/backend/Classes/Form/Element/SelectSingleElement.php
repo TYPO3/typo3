@@ -140,7 +140,7 @@ class SelectSingleElement extends AbstractFormElement
                 }
 
                 $selectItemGroups[$selectItemGroupCount]['items'][] = [
-                    'title' => $item[0],
+                    'title' => $this->appendValueToLabelInDebugMode($item[0], $item[1]),
                     'value' => $item[1],
                     'icon' => $icon,
                     'selected' => $selected,

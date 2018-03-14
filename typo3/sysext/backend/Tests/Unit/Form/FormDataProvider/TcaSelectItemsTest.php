@@ -1058,7 +1058,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $expectedItems = [
             0 => [
-                0 => 'aLangTitle [42]',
+                0 => 'aLangTitle',
                 1 => 42,
                 2 => 'aFlag.gif',
                 3 => null,
