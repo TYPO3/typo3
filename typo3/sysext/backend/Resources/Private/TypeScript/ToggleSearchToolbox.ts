@@ -50,3 +50,5 @@ class ToggleSearchToolbox {
     });
   }
 }
+
+export = new ToggleSearchToolbox();
