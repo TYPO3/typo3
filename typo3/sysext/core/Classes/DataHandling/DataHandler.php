@@ -2765,24 +2765,35 @@ class DataHandler implements LoggerAwareInterface
      */
     public function getUnique($table, $field, $value, $id, $newPid = 0)
     {
-        // If the field is configured in TCA, proceed:
-        if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
-            $newValue = $value;
-            $statement = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid);
-            // For as long as records with the test-value existing, try again (with incremented numbers appended)
-            if ($statement->fetchColumn()) {
-                for ($counter = 0; $counter <= 100; $counter++) {
-                    $newValue = $value . $counter;
-                    $statement->bindValue(1, $newValue);
-                    $statement->execute();
-                    if (!$statement->fetchColumn()) {
-                        break;
-                    }
+        if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
+            // Field is not configured in TCA
+            return $value;
+        }
+
+        if ((string)$GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'] === 'exclude') {
+            $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+            $l10nParent = (int)$this->checkValue_currentRecord[$transOrigPointerField];
+            if ($l10nParent > 0) {
+                // Current record is a translation and l10n_mode "exclude" just copies the value from source language
+                return $value;
+            }
+        }
+
+        $newValue = $value;
+        $statement = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid);
+        // For as long as records with the test-value existing, try again (with incremented numbers appended)
+        if ($statement->fetchColumn()) {
+            for ($counter = 0; $counter <= 100; $counter++) {
+                $newValue = $value . $counter;
+                $statement->bindValue(1, $newValue);
+                $statement->execute();
+                if (!$statement->fetchColumn()) {
+                    break;
                 }
             }
-            $value = $newValue;
         }
-        return $value;
+
+        return $newValue;
     }
 
     /**
