@@ -120,7 +120,7 @@ define(['jquery', './RsaLibrary'], function($) {
       // Try to fetch the field which submitted the form
       var $currentField = RsaEncryption.$currentForm.find('input[type=submit]:focus,input[type=image]:focus,button:focus');
       if ($currentField.length === 1) {
-        $currentField.trigger('click');
+        RsaEncryption.$currentForm.trigger('submit');
       } else {
         // Create a hidden input field to fake pressing the submit button
         var name = 'commandLI',
