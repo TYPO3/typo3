@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller\File;
 
 /*
@@ -16,10 +17,13 @@ namespace TYPO3\CMS\Backend\Controller\File;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -34,29 +38,44 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class CreateFolderController
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'number' => 'Using $number of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
+        'folderNumber' => 'Using $folderNumber of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
+        'target' => 'Using $target of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
+        'content' => 'Using $content of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
+        'returnUrl' => 'Using $content of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
+        'title' => 'Using $content of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
+    ];
+
     /**
      * @var int
      */
-    public $folderNumber = 10;
+    protected $folderNumber = 10;
 
     /**
      * Name of the filemount
      *
      * @var string
+     * @deprecated since v9, will be removed in v10, unused
      */
-    public $title;
+    protected $title;
 
     /**
      * @var int
      */
-    public $number;
+    protected $number;
 
     /**
      * Set with the target path inputted in &target
      *
      * @var string
      */
-    public $target;
+    protected $target;
 
     /**
      * The folder object which is  the target directory
@@ -70,7 +89,7 @@ class CreateFolderController
      *
      * @var string
      */
-    public $returnUrl;
+    protected $returnUrl;
 
     /**
      * @var array
@@ -81,8 +100,9 @@ class CreateFolderController
      * Accumulating content
      *
      * @var string
+     * @deprecated since v9, will be removed in v10, unused
      */
-    public $content;
+    protected $content;
 
     /**
      * ModuleTemplate object
@@ -98,19 +118,36 @@ class CreateFolderController
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $GLOBALS['SOBE'] = $this;
-        $this->init();
+        // @deprecated since v9, will be moved out of __construct() in v10
+        $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
     /**
+     * Processes the request, currently everything is handled and put together via "main()"
+     *
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->main();
+        return new HtmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    /**
+     * @param ServerRequestInterface|null $request
+     *
      * @throws InsufficientFolderAccessPermissionsException
      * @throws \RuntimeException
      */
-    protected function init()
+    protected function init(ServerRequestInterface $request): void
     {
-        // Initialize GPvars:
-        $this->number = GeneralUtility::_GP('number');
-        $this->target = ($combinedIdentifier = GeneralUtility::_GP('target'));
-        $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
+        $this->number = $parsedBody['number'] ?? $queryParams['number'] ?? 0;
+        $this->target = ($combinedIdentifier = $parsedBody['target'] ?? $queryParams['target'] ?? '');
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         // create the folder object
         if ($combinedIdentifier) {
             $this->folderObject = ResourceFactory::getInstance()
@@ -132,8 +169,7 @@ class CreateFolderController
         $pathInfo = [
             'combined_identifier' => $this->folderObject->getCombinedIdentifier(),
         ];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
@@ -178,12 +214,18 @@ class CreateFolderController
      */
     public function main()
     {
+        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if (end($backtrace)['class'] !== __CLASS__) {
+            // @deprecated since TYPO3 v9, this method will be set to protected in v10
+            trigger_error('Method main() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        }
+
         $lang = $this->getLanguageService();
         $assigns = [];
         $assigns['target'] = $this->target;
         if ($this->folderObject->checkActionPermission('add')) {
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
             $assigns['cshFileNewFolder'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder');
             // Making the selector box for the number of concurrent folder-creations
@@ -206,8 +248,7 @@ class CreateFolderController
         }
 
         if ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File')) {
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $assigns['moduleUrlOnlineMedia'] = (string)$uriBuilder->buildUriFromRoute('online_media');
             $assigns['cshFileNewMedia'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia');
             // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
@@ -257,28 +298,15 @@ class CreateFolderController
             'EXT:backend/Resources/Private/Templates/File/CreateFolder.html'
         ));
         $view->assignMultiple($assigns);
-        $this->content = $view->render();
-        $this->moduleTemplate->setContent($this->content);
-    }
-
-    /**
-     * Processes the request, currently everything is handled and put together via "main()"
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->main();
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        $this->moduleTemplate->setContent($view->render());
     }
 
     /**
      * Returns LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

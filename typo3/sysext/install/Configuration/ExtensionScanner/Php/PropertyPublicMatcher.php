@@ -341,4 +341,24 @@ return [
             'Deprecation-83904-ArrayHandlingInAbstractTreeView.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\File\CreateFolderController->number' => [
+        'restFiles' => [
+            'Deprecation-84289-UseServerRequestInterfaceInFileCreateFolderController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\CreateFolderController->folderNumber' => [
+        'restFiles' => [
+            'Deprecation-84289-UseServerRequestInterfaceInFileCreateFolderController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\CreateFolderController->target' => [
+        'restFiles' => [
+            'Deprecation-84289-UseServerRequestInterfaceInFileCreateFolderController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\CreateFolderController->content' => [
+        'restFiles' => [
+            'Deprecation-84289-UseServerRequestInterfaceInFileCreateFolderController.rst',
+        ],
+    ],
 ];
