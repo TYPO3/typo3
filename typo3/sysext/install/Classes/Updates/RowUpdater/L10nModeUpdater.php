@@ -178,7 +178,7 @@ class L10nModeUpdater implements RowUpdaterInterface
      */
     protected function getL10nModePayloadForTable(string $tableName): array
     {
-        if (!is_array($GLOBALS['TCA'][$tableName])) {
+        if (!isset($GLOBALS['TCA'][$tableName]) || !\is_array($GLOBALS['TCA'][$tableName])) {
             throw new \RuntimeException(
                 'Globals TCA of given table name must exist',
                 1484176136

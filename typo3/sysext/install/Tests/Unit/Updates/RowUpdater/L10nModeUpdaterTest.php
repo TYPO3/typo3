@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\Updates\RowUpdater;
 
 /*
@@ -29,17 +30,24 @@ use TYPO3\CMS\Install\Updates\RowUpdater\L10nModeUpdater;
 class L10nModeUpdaterTest extends BaseTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
+     * @test
      */
-    protected static $suppressNotices = true;
+    public function hasPotentialUpdateForTableThrowsExceptionIfGlobalsTcaTableArrayIsNotSet()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1484176136);
+        $GLOBALS['TCA'] = [];
+        (new L10nModeUpdater())->hasPotentialUpdateForTable('someTable');
+    }
 
     /**
      * @test
      */
-    public function hasPotentialUpdateForTableThrowsExceptionIfGlobalsTcaIsNoArray()
+    public function hasPotentialUpdateForTableThrowsExceptionIfGlobalsTcaTableArrayIsNotAnArray()
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1484176136);
+        $GLOBALS['TCA'] = ['someTable' => ''];
         (new L10nModeUpdater())->hasPotentialUpdateForTable('someTable');
     }
 
