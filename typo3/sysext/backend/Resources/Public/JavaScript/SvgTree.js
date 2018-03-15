@@ -680,7 +680,7 @@ define(
           var icons = this.iconsContainer
             .selectAll('.icon-def')
             .data(iconsArray, function(i) {
-              return i.stateIdentifier;
+              return i.identifier;
             });
 
           icons
