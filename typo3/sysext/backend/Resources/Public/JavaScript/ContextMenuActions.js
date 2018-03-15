@@ -98,7 +98,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
   ContextMenuActions.disableRecord = function(table, uid) {
     top.TYPO3.Backend.ContentContainer.setUrl(
       top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=1&prErr=1&redirect=' + ContextMenuActions.getReturnUrl()
-    ).on('load', function() {
+    ).one('load', function() {
       top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
     });
   };
@@ -106,7 +106,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
   ContextMenuActions.enableRecord = function(table, uid) {
     top.TYPO3.Backend.ContentContainer.setUrl(
       top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=0&prErr=1&redirect=' + ContextMenuActions.getReturnUrl()
-    ).on('load', function() {
+    ).one('load', function() {
       top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
     });
   };
@@ -134,7 +134,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
       if (e.target.name === 'delete') {
         top.TYPO3.Backend.ContentContainer.setUrl(
           top.TYPO3.settings.RecordCommit.moduleUrl + '&redirect=' + ContextMenuActions.getReturnUrl() + '&cmd[' + table + '][' + uid + '][delete]=1&prErr=1'
-        ).on('load', function() {
+        ).one('load', function() {
           if (table === 'pages' && top.TYPO3.Backend.NavigationContainer.PageTree) {
             top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
           }
@@ -206,7 +206,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 
       top.TYPO3.Backend.ContentContainer.setUrl(
         top.TYPO3.settings.RecordCommit.moduleUrl + url
-      ).on('load', function() {
+      ).one('load', function() {
         if (table === 'pages' && top.TYPO3.Backend.NavigationContainer.PageTree) {
           top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
         }
