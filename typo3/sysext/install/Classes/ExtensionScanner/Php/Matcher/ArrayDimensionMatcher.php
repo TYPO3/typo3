@@ -48,6 +48,7 @@ class ArrayDimensionMatcher extends AbstractCoreMatcher
         if (!$this->isFileIgnored($node)
             && !$this->isLineIgnored($node)
             && $node instanceof ArrayDimFetch
+            && isset($node->dim->value)
             && in_array($node->dim->value, array_keys($this->flatMatcherDefinitions), true)
         ) {
             $match = [

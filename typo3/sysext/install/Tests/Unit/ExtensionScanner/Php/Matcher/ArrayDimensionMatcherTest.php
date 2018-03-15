@@ -27,11 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ArrayDimensionMatcherTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @test
      */
     public function hitsFromFixtureAreFound()
@@ -68,7 +63,7 @@ class ArrayDimensionMatcherTest extends UnitTestCase
     /**
      * @return array
      */
-    public function matchesReturnsExpectedRestFilesDataProvider()
+    public function matchesReturnsExpectedRestFilesDataProvider(): array
     {
         return [
             'two candidates' => [
@@ -130,6 +125,9 @@ class ArrayDimensionMatcherTest extends UnitTestCase
     /**
      * @test
      * @dataProvider matchesReturnsExpectedRestFilesDataProvider
+     * @param array $configuration
+     * @param string $phpCode
+     * @param array $expected
      */
     public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected)
     {
