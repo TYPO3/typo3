@@ -27,11 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class MethodArgumentDroppedStaticMatcherTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @test
      */
     public function hitsFromFixtureAreFound()
@@ -70,7 +65,7 @@ class MethodArgumentDroppedStaticMatcherTest extends UnitTestCase
     /**
      * @return array
      */
-    public function matchesReturnsExpectedRestFilesDataProvider()
+    public function matchesReturnsExpectedRestFilesDataProvider(): array
     {
         return [
             'two rest candidates with same number of arguments' => [
@@ -234,6 +229,9 @@ class MethodArgumentDroppedStaticMatcherTest extends UnitTestCase
     /**
      * @test
      * @dataProvider matchesReturnsExpectedRestFilesDataProvider
+     * @param array $configuration
+     * @param string $phpCode
+     * @param array $expected
      */
     public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected)
     {
@@ -247,6 +245,10 @@ class MethodArgumentDroppedStaticMatcherTest extends UnitTestCase
         $traverser->traverse($statements);
 
         $result = $subject->getMatches();
-        $this->assertEquals($expected[0]['restFiles'], $result[0]['restFiles']);
+        if (isset($expected[0], $result[0])) {
+            $this->assertEquals($expected[0]['restFiles'], $result[0]['restFiles']);
+        } else {
+            $this->assertEquals($expected, $result);
+        }
     }
 }
