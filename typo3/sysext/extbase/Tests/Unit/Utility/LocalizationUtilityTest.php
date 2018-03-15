@@ -15,8 +15,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  */
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -26,16 +28,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class LocalizationUtilityTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * Instance of configurationManager, injected to subject
+     * Instance of configurationManagerInterface, injected to subject
      *
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
+     * @var ConfigurationManagerInterface
      */
-    protected $configurationManagerMock;
+    protected $configurationManagerInterfaceProphecy;
 
     /**
      * LOCAL_LANG array fixture
@@ -171,14 +168,14 @@ class LocalizationUtilityTest extends UnitTestCase
 
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
-        $this->configurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class, ['getConfiguration']);
+        $this->configurationManagerInterfaceProphecy = $this->prophesize(ConfigurationManagerInterface::class);
         $property = $reflectionClass->getProperty('configurationManager');
         $property->setAccessible(true);
-        $property->setValue($this->configurationManager);
+        $property->setValue($this->configurationManagerInterfaceProphecy->reveal());
 
         $localizationFactoryProphecy = $this->prophesize(LocalizationFactory::class);
         GeneralUtility::setSingletonInstance(LocalizationFactory::class, $localizationFactoryProphecy->reveal());
-        $localizationFactoryProphecy->getParsedData(Argument::cetera())->willReturn([]);
+        $localizationFactoryProphecy->getParsedData(Argument::cetera(), 'foo')->willReturn([]);
     }
 
     /**
@@ -260,7 +257,7 @@ class LocalizationUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function translateDataProvider()
+    public function translateDataProvider(): array
     {
         return [
             'get translated key' =>
@@ -309,10 +306,14 @@ class LocalizationUtilityTest extends UnitTestCase
         $property->setAccessible(true);
         $property->setValue($this->LOCAL_LANG);
 
-        $oldBackendUserLanguage = $GLOBALS['BE_USER']->uc['lang'];
-        $GLOBALS['BE_USER']->uc['lang'] = $languageKey;
+        $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserAuthenticationProphecy->reveal();
+        $backendUserAuthenticationProphecy->uc = [
+            'lang' => $languageKey,
+        ];
+        $GLOBALS['LANG'] = $this->LOCAL_LANG;
+
         $this->assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, null, $altLanguageKeys));
-        $GLOBALS['BE_USER']->uc['lang'] = $oldBackendUserLanguage;
     }
 
     /**
@@ -331,14 +332,14 @@ class LocalizationUtilityTest extends UnitTestCase
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
         $property->setValue($this->LOCAL_LANG);
-
+        $GLOBALS['LANG'] = $this->LOCAL_LANG;
         $this->assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, $languageKey, $altLanguageKeys));
     }
 
     /**
      * @return array
      */
-    public function loadTypoScriptLabelsProvider()
+    public function loadTypoScriptLabelsProvider(): array
     {
         return [
             'override labels with typoscript' => [
@@ -445,8 +446,11 @@ class LocalizationUtilityTest extends UnitTestCase
         $property->setAccessible(true);
         $property->setValue($LOCAL_LANG);
 
-        $configurationType = \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $this->configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'core', null)->will($this->returnValue($typoScriptLocalLang));
+        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
+        $this->configurationManagerInterfaceProphecy
+            ->getConfiguration($configurationType, 'core', null)
+            ->shouldBeCalled()
+            ->willReturn($typoScriptLocalLang);
 
         $method = $reflectionClass->getMethod('loadTypoScriptLabels');
         $method->setAccessible(true);
@@ -478,12 +482,17 @@ class LocalizationUtilityTest extends UnitTestCase
             ]
         ];
 
-        $configurationType = \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $this->configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'core', null)->will($this->returnValue($typoScriptLocalLang));
+        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
+        $this->configurationManagerInterfaceProphecy
+            ->getConfiguration($configurationType, 'core', null)
+            ->shouldBeCalled()
+            ->willReturn($typoScriptLocalLang);
 
         $method = $reflectionClass->getMethod('loadTypoScriptLabels');
         $method->setAccessible(true);
         $method->invoke(null, 'core', $this->languageFilePath);
+
+        $GLOBALS['LANG'] = $this->LOCAL_LANG;
 
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
         $this->assertNotNull($result);
