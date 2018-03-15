@@ -1458,6 +1458,9 @@ tt_content.' . $key . $suffix . ' {
             // If 'content (default)' is targeted (static uid 43),
             // the content is added after typoscript of type contentRendering, eg. fluid_styled_content, see EXT:frontend/TemplateService for more information on how the code is parsed
             if ($afterStaticUid === 'defaultContentRendering' || $afterStaticUid == 43) {
+                if (!isset($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'])) {
+                    $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] = '';
+                }
                 $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] .= $content;
             } else {
                 $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] .= $content;
