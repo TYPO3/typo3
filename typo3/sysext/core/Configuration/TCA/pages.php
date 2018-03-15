@@ -655,7 +655,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 23,
-                'eval' => 'trim',
+                'eval' => 'trim,email',
                 'max' => 255,
                 'softref' => 'email[subst]',
                 'behaviour' => [
