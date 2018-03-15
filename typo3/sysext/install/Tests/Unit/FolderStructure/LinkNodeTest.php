@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 /*
@@ -17,6 +18,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\LinkNode;
+use TYPO3\CMS\Install\FolderStructure\NodeInterface;
+use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -25,11 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LinkNodeTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
@@ -49,7 +47,7 @@ class LinkNodeTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380546061);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
+        $parent = $this->createMock(NodeInterface::class);
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['dummy'], [], '', false);
         $structure = [
@@ -63,7 +61,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function constructorSetsParent()
     {
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
+        $parent = $this->createMock(NodeInterface::class);
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['dummy'], [], '', false);
         $structure = [
@@ -80,7 +78,7 @@ class LinkNodeTest extends UnitTestCase
     {
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['dummy'], [], '', false);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
+        $parent = $this->createMock(RootNodeInterface::class);
         $name = $this->getUniqueId('test_');
         $node->__construct(['name' => $name], $parent);
         $this->assertSame($name, $node->getName());
@@ -89,13 +87,14 @@ class LinkNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsTarget()
+    public function constructorSetsNameAndTarget()
     {
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['dummy'], [], '', false);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
+        $parent = $this->createMock(RootNodeInterface::class);
+        $name = $this->getUniqueId('test_');
         $target = '../' . $this->getUniqueId('test_');
-        $node->__construct(['target' => $target], $parent);
+        $node->__construct(['name' => $name, 'target' => $target], $parent);
         $this->assertSame($target, $node->_call('getTarget'));
     }
 
@@ -171,7 +170,7 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue(''));
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->once())->method('isLink')->will($this->returnValue(false));
         $statusArray = $node->getStatus();
@@ -191,7 +190,7 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue(''));
         $node->expects($this->any())->method('getCurrentTarget')->will($this->returnValue(''));
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->any())->method('isLink')->will($this->returnValue(true));
@@ -213,7 +212,7 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue(''));
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->once())->method('isLink')->will($this->returnValue(true));
         $node->expects($this->once())->method('isTargetCorrect')->will($this->returnValue(true));
