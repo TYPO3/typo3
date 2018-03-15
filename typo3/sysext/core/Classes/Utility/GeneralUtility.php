@@ -3114,7 +3114,7 @@ class GeneralUtility
      */
     public static function isAbsPath($path)
     {
-        return $path[0] === '/' || TYPO3_OS === 'WIN' && (strpos($path, ':/') === 1 || strpos($path, ':\\') === 1);
+        return isset($path[0]) && $path[0] === '/' || TYPO3_OS === 'WIN' && (strpos($path, ':/') === 1 || strpos($path, ':\\') === 1);
     }
 
     /**
