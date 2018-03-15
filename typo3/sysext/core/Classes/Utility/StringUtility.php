@@ -31,13 +31,13 @@ class StringUtility
     public static function beginsWith($haystack, $needle)
     {
         // Sanitize $haystack and $needle
-        if (is_object($haystack) || $haystack === null || (string)$haystack != $haystack) {
+        if (is_array($haystack) || is_object($haystack) || $haystack === null || (string)$haystack != $haystack) {
             throw new \InvalidArgumentException(
                 '$haystack can not be interpreted as string',
                 1347135546
             );
         }
-        if (is_object($needle) || (string)$needle != $needle || strlen($needle) < 1) {
+        if (is_array($needle) || is_object($needle) || (string)$needle != $needle || strlen($needle) < 1) {
             throw new \InvalidArgumentException(
                 '$needle can not be interpreted as string or has zero length',
                 1347135547
@@ -60,13 +60,13 @@ class StringUtility
     public static function endsWith($haystack, $needle)
     {
         // Sanitize $haystack and $needle
-        if (is_object($haystack) || $haystack === null || (string)$haystack != $haystack) {
+        if (is_array($haystack) || is_object($haystack) || $haystack === null || (string)$haystack != $haystack) {
             throw new \InvalidArgumentException(
                 '$haystack can not be interpreted as string',
                 1347135544
             );
         }
-        if (is_object($needle) || (string)$needle != $needle || strlen($needle) < 1) {
+        if (is_array($needle) || is_object($needle) || (string)$needle != $needle || strlen($needle) < 1) {
             throw new \InvalidArgumentException(
                 '$needle can not be interpreted as string or has no length',
                 1347135545
