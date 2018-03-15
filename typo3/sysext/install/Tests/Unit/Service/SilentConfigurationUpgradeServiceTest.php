@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
 /*
@@ -22,17 +23,13 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -75,7 +72,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
      *
      * @return array
      */
-    public function configureBackendLoginSecurityLocalconfiguration()
+    public function configureBackendLoginSecurityLocalconfiguration(): array
     {
         return [
             ['', 'rsa', true, false],
@@ -295,7 +292,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
      *
      * @return array
      */
-    public function httpSettingsMappingDataProvider()
+    public function httpSettingsMappingDataProvider(): array
     {
         return [
             'No changes overridden in Local Configuration' => [
