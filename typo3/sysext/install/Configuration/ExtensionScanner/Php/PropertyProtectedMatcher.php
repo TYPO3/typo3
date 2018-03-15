@@ -257,4 +257,19 @@ return [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->foldertree' => [
+        'restFiles' => [
+            'Deprecation-84273-ProtectedMethodsAndPropertiesInFileSystemNavigationFrameController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->currentSubScript' => [
+        'restFiles' => [
+            'Deprecation-84273-ProtectedMethodsAndPropertiesInFileSystemNavigationFrameController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->cMR' => [
+        'restFiles' => [
+            'Deprecation-84273-ProtectedMethodsAndPropertiesInFileSystemNavigationFrameController.rst',
+        ],
+    ],
 ];

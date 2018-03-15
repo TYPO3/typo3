@@ -1906,4 +1906,11 @@ return [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->initPage' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84273-ProtectedMethodsAndPropertiesInFileSystemNavigationFrameController.rst',
+        ],
+    ],
 ];

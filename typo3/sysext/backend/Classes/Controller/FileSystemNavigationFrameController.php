@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller;
 
 /*
@@ -20,10 +21,13 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\FileListFolderTree;
 use TYPO3\CMS\Recordlist\Tree\View\DummyLinkParameterProvider;
@@ -33,27 +37,41 @@ use TYPO3\CMS\Recordlist\Tree\View\DummyLinkParameterProvider;
  */
 class FileSystemNavigationFrameController
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * Properties which have been moved to protected status from public
+     *
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'content' => 'Using $content of class FileSystemNavigationFrameController from the outside is discouraged, as this variable is only used for internal storage.',
+        'foldertree' => 'Using $foldertree of class FileSystemNavigationFrameController from the outside is discouraged, as this variable is only used for internal storage.',
+        'currentSubScript' => 'Using $currentSubScript of class FileSystemNavigationFrameController from the outside is discouraged, as this variable is only used for internal storage.',
+        'cMR' => 'Using $cMR of class FileSystemNavigationFrameController from the outside is discouraged, as this variable is only used for internal storage.',
+    ];
+
     /**
      * Content accumulates in this variable.
      *
      * @var string
      */
-    public $content;
+    protected $content;
 
     /**
      * @var \TYPO3\CMS\Backend\Tree\View\FolderTreeView
      */
-    public $foldertree;
+    protected $foldertree;
 
     /**
      * @var string
      */
-    public $currentSubScript;
+    protected $currentSubScript;
 
     /**
      * @var bool
      */
-    public $cMR;
+    protected $cMR;
 
     /**
      * @var array
@@ -72,8 +90,11 @@ class FileSystemNavigationFrameController
      */
     public function __construct()
     {
+        // @deprecated since v9, will be obsolete in v10 with removal of init()
+        $request = $GLOBALS['TYPO3_REQUEST'];
         $GLOBALS['SOBE'] = $this;
-        $this->init();
+        // @deprecated since v9, will be moved out of __construct() in v10
+        $this->init($request);
     }
 
     /**
@@ -82,24 +103,49 @@ class FileSystemNavigationFrameController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->initPage();
-        $this->main();
+        $this->initializePageTemplate();
+        $this->renderFolderTree();
         return new HtmlResponse($this->content);
     }
 
     /**
-     * Initialiation of the script class
+     * Makes the AJAX call to expand or collapse the foldertree.
+     * Called by an AJAX Route, see AjaxRequestHandler
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    protected function init()
+    public function ajaxExpandCollapse(ServerRequestInterface $request): ResponseInterface
     {
+        $tree = $this->foldertree->getBrowsableTree();
+        if ($this->foldertree->getAjaxStatus() === false) {
+            return new JsonResponse(null, 500);
+        }
+        return new JsonResponse([$tree]);
+    }
+
+    /**
+     * Initialization of the script class
+     *
+     * @param ServerRequestInterface $request the current request
+     */
+    protected function init(ServerRequestInterface $request = null)
+    {
+        if ($request === null) {
+            // Method signature in v10: protected function init(ServerRequestInterface $request)
+            trigger_error('Method init() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        }
+
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
 
-        // Setting GPvars:
-        $this->currentSubScript = GeneralUtility::_GP('currentSubScript');
-        $this->cMR = GeneralUtility::_GP('cMR');
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
 
-        $scopeData = (string)GeneralUtility::_GP('scopeData');
-        $scopeHash = (string)GeneralUtility::_GP('scopeHash');
+        $this->currentSubScript = $parsedBody['currentSubScript'] ?? $queryParams['currentSubScript'] ?? null;
+        $this->cMR = (bool)($parsedBody['cMR'] ?? $queryParams['cMR'] ?? false);
+        $scopeData = $parsedBody['scopeData'] ?? $queryParams['scopeData'] ?? '';
+        $scopeHash = $parsedBody['scopeHash'] ?? $queryParams['scopeHash'] ?? '';
 
         if (!empty($scopeData) && hash_equals(GeneralUtility::hmac($scopeData), $scopeHash)) {
             $this->scopeData = unserialize($scopeData);
@@ -128,45 +174,57 @@ class FileSystemNavigationFrameController
     /**
      * initialization for the visual parts of the class
      * Use template rendering only if this is a non-AJAX call
+     *
+     * @deprecated since v9, will be removed in v10
      */
     public function initPage()
+    {
+        trigger_error('Method initPage() will be replaced by protected method initializePageTemplate() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->initializePageTemplate();
+    }
+
+    /**
+     * Initialization for the visual parts of the class
+     * Use template rendering only if this is a non-AJAX call
+     */
+    protected function initializePageTemplate(): void
     {
         $this->moduleTemplate->setBodyTag('<body id="ext-backend-Modules-FileSystemNavigationFrame-index-php">');
 
         // Adding javascript code for drag&drop and the file tree as well as the click menu code
         $hlClass = $this->getBackendUser()->workspace === 0 ? 'active' : 'active active-ws wsver' . $GLOBALS['BE_USER']->workspace;
         $dragDropCode = '
-		Tree.highlightClass = "' . $hlClass . '";
-		Tree.highlightActiveItem("", top.fsMod.navFrameHighlightedID["file"]);
-		';
+            Tree.highlightClass = "' . $hlClass . '";
+            Tree.highlightActiveItem("", top.fsMod.navFrameHighlightedID["file"]);
+        ';
 
         // Adding javascript for drag & drop activation and highlighting
         $pageRenderer = $this->moduleTemplate->getPageRenderer();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function() {
             DragDrop.table = "folders";
-			Tree.registerDragDropHandlers();
+            Tree.registerDragDropHandlers();
             ' . $dragDropCode . '
         }');
 
         // Setting JavaScript for menu.
         $inlineJs = ($this->currentSubScript ? 'top.currentSubScript=unescape("' . rawurlencode($this->currentSubScript) . '");' : '') . '
-		// Function, loading the list frame from navigation tree:
-		function jumpTo(id, linkObj, highlightID, bank) {
-			var theUrl = top.currentSubScript;
-			if (theUrl.indexOf("?") != -1) {
-				theUrl += "&id=" + id
-			} else {
-				theUrl += "?id=" + id
-			}
-			top.fsMod.currentBank = bank;
-			top.TYPO3.Backend.ContentContainer.setUrl(theUrl);
+        // Function, loading the list frame from navigation tree:
+        function jumpTo(id, linkObj, highlightID, bank) {
+            var theUrl = top.currentSubScript;
+            if (theUrl.indexOf("?") != -1) {
+                theUrl += "&id=" + id
+            } else {
+                theUrl += "?id=" + id
+            }
+            top.fsMod.currentBank = bank;
+            top.TYPO3.Backend.ContentContainer.setUrl(theUrl);
 
-			Tree.highlightActiveItem("file", highlightID + "_" + bank);
-			if (linkObj) { linkObj.blur(); }
-			return false;
-		}
-		' . ($this->cMR ? ' jumpTo(top.fsMod.recentIds[\'file\'],\'\');' : '');
+            Tree.highlightActiveItem("file", highlightID + "_" + bank);
+            if (linkObj) { linkObj.blur(); }
+            return false;
+        }
+        ' . ($this->cMR ? ' jumpTo(top.fsMod.recentIds[\'file\'],\'\');' : '');
 
         $this->moduleTemplate->getPageRenderer()->addJsInlineCode(
             'FileSystemNavigationFrame',
@@ -176,8 +234,19 @@ class FileSystemNavigationFrameController
 
     /**
      * Main function, rendering the folder tree
+     *
+     * @deprecated since v9, will be removed in v10
      */
     public function main()
+    {
+        trigger_error('Method main() will be replaced by protected method renderFolderTree() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->renderFolderTree();
+    }
+
+    /**
+     * Main function, rendering the folder tree
+     */
+    protected function renderFolderTree(): void
     {
         // Produce browse-tree:
         $tree = $this->foldertree->getBrowsableTree();
@@ -193,7 +262,7 @@ class FileSystemNavigationFrameController
     /**
      * Register docHeader buttons
      */
-    protected function getButtons()
+    protected function getButtons(): void
     {
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -215,30 +284,10 @@ class FileSystemNavigationFrameController
         $buttonBar->addButton($cshButton);
     }
 
-    /**********************************
-     * AJAX Calls
-     **********************************/
     /**
-     * Makes the AJAX call to expand or collapse the foldertree.
-     * Called by an AJAX Route, see AjaxRequestHandler
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
+     * @return BackendUserAuthentication
      */
-    public function ajaxExpandCollapse(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->init();
-        $tree = $this->foldertree->getBrowsableTree();
-        if ($this->foldertree->getAjaxStatus() === false) {
-            return new JsonResponse(null, 500);
-        }
-        return new JsonResponse([$tree]);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
@@ -246,9 +295,9 @@ class FileSystemNavigationFrameController
     /**
      * Returns an instance of LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
