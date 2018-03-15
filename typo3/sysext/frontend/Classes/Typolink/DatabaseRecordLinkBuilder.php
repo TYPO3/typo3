@@ -62,7 +62,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         // Unset the parameter part of the given TypoScript configuration while keeping
         // config that has been set in addition.
         unset($conf['parameter.']);
-        $typoScriptConfiguration = array_merge_recursive($typoScriptConfiguration, $conf);
+        $typoScriptConfiguration = array_replace_recursive($conf, $typoScriptConfiguration);
 
         // Build the full link to the record
         $localContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
