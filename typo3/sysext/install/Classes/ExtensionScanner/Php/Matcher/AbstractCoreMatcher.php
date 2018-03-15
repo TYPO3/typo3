@@ -107,7 +107,7 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
             // Config broken if not all required array keys are specified in config
             $sharedArrays = array_intersect(array_keys($matcherDefinition), $requiredArrayKeys);
             if ($sharedArrays !== $requiredArrayKeys) {
-                $missingKeys = array_diff($requiredArrayKeys, $matcherDefinition);
+                $missingKeys = array_diff($requiredArrayKeys, array_keys($matcherDefinition));
                 throw new \InvalidArgumentException(
                     'Required matcher definitions missing: ' . implode(', ', $missingKeys) . ' offending key: ' . $key,
                     1500492001
