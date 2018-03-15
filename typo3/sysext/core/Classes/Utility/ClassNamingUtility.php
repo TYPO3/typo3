@@ -105,6 +105,6 @@ class ClassNamingUtility
             );
         }
 
-        return $matches;
+        return array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
     }
 }

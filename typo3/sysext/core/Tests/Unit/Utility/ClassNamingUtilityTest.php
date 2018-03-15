@@ -14,15 +14,15 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\ClassNamingUtility
  */
-class ClassNamingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ClassNamingUtilityTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
 
     /**
      * DataProvider for translateModelNameToRepositoryName
@@ -31,7 +31,7 @@ class ClassNamingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      *
      * @return array
      */
-    public function repositoryAndModelClassNames()
+    public function repositoryAndModelClassNames(): array
     {
         return [
             [
@@ -116,7 +116,7 @@ class ClassNamingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function translateModelNameToRepositoryName($expectedRepositoryName, $modelName, $dummyValidatorName)
     {
-        $translatedRepositoryName = \TYPO3\CMS\Core\Utility\ClassNamingUtility::translateModelNameToRepositoryName($modelName);
+        $translatedRepositoryName = ClassNamingUtility::translateModelNameToRepositoryName($modelName);
         $this->assertSame($expectedRepositoryName, $translatedRepositoryName);
     }
 
@@ -129,7 +129,7 @@ class ClassNamingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function translateRepositoryNameToModelName($repositoryName, $expectedModelName, $dummyValidatorName)
     {
-        $translatedModelName = \TYPO3\CMS\Core\Utility\ClassNamingUtility::translateRepositoryNameToModelName($repositoryName);
+        $translatedModelName = ClassNamingUtility::translateRepositoryNameToModelName($repositoryName);
         $this->assertSame($expectedModelName, $translatedModelName);
     }
 
@@ -142,7 +142,7 @@ class ClassNamingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function translateModelNameToValidatorName($repositoryName, $modelName, $expectedValidatorName)
     {
-        $translatedModelName = \TYPO3\CMS\Core\Utility\ClassNamingUtility::translateModelNameToValidatorName($modelName);
+        $translatedModelName = ClassNamingUtility::translateModelNameToValidatorName($modelName);
         $this->assertSame($expectedValidatorName, $translatedModelName);
     }
 
@@ -151,7 +151,7 @@ class ClassNamingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      *
      * @return array
      */
-    public function controllerObjectNamesAndMatches()
+    public function controllerObjectNamesAndMatches(): array
     {
         return [
             [
@@ -173,7 +173,7 @@ class ClassNamingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
                 ]
             ],
             [
-                \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class,
+                PaginateController::class,
                 [
                     'vendorName' => 'TYPO3\\CMS',
                     'extensionName' => 'Fluid',
@@ -212,7 +212,6 @@ class ClassNamingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             [
                 'Tx_Ext_Controller_FooController',
                 [
-                    'vendorName' => null,
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'Foo',
@@ -221,7 +220,6 @@ class ClassNamingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             [
                 'Tx_Ext_Command_FooCommandController',
                 [
-                    'vendorName' => null,
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'FooCommand',
@@ -230,7 +228,6 @@ class ClassNamingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             [
                 'Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController',
                 [
-                    'vendorName' => null,
                     'extensionName' => 'Fluid',
                     'subpackageKey' => 'ViewHelpers_Widget',
                     'controllerName' => 'Paginate',
@@ -248,15 +245,7 @@ class ClassNamingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function explodeObjectControllerName($controllerObjectName, $expectedMatches)
     {
-        $matches = \TYPO3\CMS\Core\Utility\ClassNamingUtility::explodeObjectControllerName($controllerObjectName);
-
-        $actualMatches = [
-            'vendorName' => $matches['vendorName'],
-            'extensionName' => $matches['extensionName'],
-            'subpackageKey' => $matches['subpackageKey'],
-            'controllerName' => $matches['controllerName'],
-        ];
-
+        $actualMatches = ClassNamingUtility::explodeObjectControllerName($controllerObjectName);
         $this->assertSame($expectedMatches, $actualMatches);
     }
 }
