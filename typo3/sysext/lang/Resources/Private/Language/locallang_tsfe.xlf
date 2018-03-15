@@ -78,27 +78,6 @@
 			<trans-unit id="edit_db_list">
 				<source>Web&gt;List module</source>
 			</trans-unit>
-			<trans-unit id="tsdebug">
-				<source>TypoScript</source>
-			</trans-unit>
-			<trans-unit id="tsdebug_tree">
-				<source>Tree display</source>
-			</trans-unit>
-			<trans-unit id="tsdebug_LR">
-				<source>Track content rendering</source>
-			</trans-unit>
-			<trans-unit id="tsdebug_forceTemplateParsing">
-				<source>Force TS Rendering</source>
-			</trans-unit>
-			<trans-unit id="tsdebug_displayTimes">
-				<source>Display all times</source>
-			</trans-unit>
-			<trans-unit id="tsdebug_displayMessages">
-				<source>Display messages</source>
-			</trans-unit>
-			<trans-unit id="tsdebug_displayContent">
-				<source>Display content</source>
-			</trans-unit>
 			<trans-unit id="info">
 				<source>Info</source>
 			</trans-unit>

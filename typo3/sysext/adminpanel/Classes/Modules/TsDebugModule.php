@@ -1,6 +1,5 @@
 <?php
-declare(strict_types=1);
-
+declare(strict_types = 1);
 namespace TYPO3\CMS\Adminpanel\Modules;
 
 /*
@@ -18,6 +17,7 @@ namespace TYPO3\CMS\Adminpanel\Modules;
 
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -25,7 +25,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class TsDebugModule extends AbstractModule
 {
-
     /**
      * Creates the content for the "tsdebug" section ("module") of the Admin Panel
      *
@@ -33,78 +32,26 @@ class TsDebugModule extends AbstractModule
      */
     public function getContent(): string
     {
-        $output = [];
-        $beuser = $this->getBackendUser();
-        if ($beuser->uc['TSFE_adminConfig']['display_tsdebug']) {
-            $output[] = '<div class="typo3-adminPanel-form-group">';
-            $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
-            $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="0" />';
-            $output[] = '    <label for="tsdebug_tree">';
-            $output[] = '      <input type="checkbox" id="tsdebug_tree" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="1"' .
-                        ($this->getBackendUser()->uc['TSFE_adminConfig']['tsdebug_tree'] ? ' checked="checked"' : '') .
-                        ' />';
-            $output[] = '      ' . $this->extGetLL('tsdebug_tree');
-            $output[] = '    </label>';
-            $output[] = '  </div>';
-            $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
-            $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="0" />';
-            $output[] = '    <label for="tsdebug_displayTimes">';
-            $output[] = '      <input type="checkbox" id="tsdebug_displayTimes" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="1"' .
-                        ($this->getBackendUser(
-                        )->uc['TSFE_adminConfig']['tsdebug_displayTimes'] ? ' checked="checked"' : '') .
-                        ' />';
-            $output[] = '      ' . $this->extGetLL('tsdebug_displayTimes');
-            $output[] = '    </label>';
-            $output[] = '  </div>';
-            $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
-            $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="0" />';
-            $output[] = '    <label for="tsdebug_displayMessages">';
-            $output[] = '      <input type="checkbox" id="tsdebug_displayMessages" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="1"' .
-                        ($this->getBackendUser(
-                        )->uc['TSFE_adminConfig']['tsdebug_displayMessages'] ? ' checked="checked"' : '') .
-                        ' />';
-            $output[] = '      ' . $this->extGetLL('tsdebug_displayMessages');
-            $output[] = '    </label>';
-            $output[] = '  </div>';
-            $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
-            $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="0" />';
-            $output[] = '    <label for="tsdebug_LR">';
-            $output[] = '      <input type="checkbox" id="tsdebug_LR" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="1"' .
-                        ($this->getBackendUser()->uc['TSFE_adminConfig']['tsdebug_LR'] ? ' checked="checked"' : '') .
-                        ' />';
-            $output[] = '      ' . $this->extGetLL('tsdebug_LR');
-            $output[] = '    </label>';
-            $output[] = '  </div>';
-            $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
-            $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="0" />';
-            $output[] = '    <label for="tsdebug_displayContent">';
-            $output[] = '      <input type="checkbox" id="tsdebug_displayContent" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="1"' .
-                        ($this->getBackendUser(
-                        )->uc['TSFE_adminConfig']['tsdebug_displayContent'] ? ' checked="checked"' : '') .
-                        ' />';
-            $output[] = '      ' . $this->extGetLL('tsdebug_displayContent');
-            $output[] = '    </label>';
-            $output[] = '  </div>';
-            $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
-            $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="0" />';
-            $output[] = '    <label for="tsdebug_forceTemplateParsing">';
-            $output[] = '      <input type="checkbox" id="tsdebug_forceTemplateParsing" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="1"' .
-                        ($this->getBackendUser(
-                        )->uc['TSFE_adminConfig']['tsdebug_forceTemplateParsing'] ? ' checked="checked"' : '') .
-                        ' />';
-            $output[] = '      ' . $this->extGetLL('tsdebug_forceTemplateParsing');
-            $output[] = '    </label>';
-            $output[] = '  </div>';
-            $output[] = '</div>';
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $templateNameAndPath = $this->extResources . '/Templates/Modules/TsDebug.html';
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
+        $view->setPartialRootPaths([$this->extResources . '/Partials']);
 
-            $timeTracker = $this->getTimeTracker();
-            $timeTracker->printConf['flag_tree'] = $this->getConfigurationOption('tree');
-            $timeTracker->printConf['allTime'] = $this->getConfigurationOption('displayTimes');
-            $timeTracker->printConf['flag_messages'] = $this->getConfigurationOption('displayMessages');
-            $timeTracker->printConf['flag_content'] = $this->getConfigurationOption('displayContent');
-            $output[] = $timeTracker->printTSlog();
-        }
-        return implode('', $output);
+        $tsfeAdminConfig = $this->getBackendUser()->uc['TSFE_adminConfig'];
+        $view->assignMultiple([
+            'isEnabled' => (int)$tsfeAdminConfig['display_tsdebug'],
+            'tree' => (int)$tsfeAdminConfig['tsdebug_tree'],
+            'display' => [
+                'times' => (int)$tsfeAdminConfig['tsdebug_displayTimes'],
+                'messages' => (int)$tsfeAdminConfig['tsdebug_displayMessages'],
+                'content' => (int)$tsfeAdminConfig['tsdebug_displayContent'],
+            ],
+            'trackContentRendering' => (int)$tsfeAdminConfig['tsdebug_LR'],
+            'forceTemplateParsing' => (int)$tsfeAdminConfig['tsdebug_forceTemplateParsing'],
+            'typoScriptLog' => $this->renderTypoScriptLog()
+        ]);
+
+        return $view->render();
     }
 
     /**
@@ -120,7 +67,8 @@ class TsDebugModule extends AbstractModule
      */
     public function getLabel(): string
     {
-        return $this->extGetLL('tsdebug');
+        $locallangFileAndPath = 'LLL:' . $this->extResources . '/Language/locallang_tsdebug.xlf:module.label';
+        return $this->getLanguageService()->sL($locallangFileAndPath);
     }
 
     /**
@@ -158,5 +106,21 @@ class TsDebugModule extends AbstractModule
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
+    }
+
+    /**
+     * Renders the TypoScript log as string
+     *
+     * @param $output
+     * @return string
+     */
+    private function renderTypoScriptLog(): string
+    {
+        $timeTracker = $this->getTimeTracker();
+        $timeTracker->printConf['flag_tree'] = $this->getConfigurationOption('tree');
+        $timeTracker->printConf['allTime'] = $this->getConfigurationOption('displayTimes');
+        $timeTracker->printConf['flag_messages'] = $this->getConfigurationOption('displayMessages');
+        $timeTracker->printConf['flag_content'] = $this->getConfigurationOption('displayContent');
+        return $timeTracker->printTSlog();
     }
 }

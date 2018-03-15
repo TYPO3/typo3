@@ -24,11 +24,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class CacheModule extends AbstractModule
 {
     /**
-     * @var string
-     */
-    private $extResources = 'EXT:adminpanel/Resources/Private';
-
-    /**
      * Creates the content for the "cache" section ("module") of the Admin Panel
      *
      * @return string HTML content for the section. Consists of a string with table-rows with four columns.

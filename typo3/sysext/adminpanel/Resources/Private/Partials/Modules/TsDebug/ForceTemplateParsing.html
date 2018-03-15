@@ -1,0 +1,11 @@
+<div class="typo3-adminPanel-form-group-checkbox">
+    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="0"/>
+    <label for="tsdebug_forceTemplateParsing">
+        <input type="checkbox"
+               id="tsdebug_forceTemplateParsing"
+               name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]"
+               value="1"
+               {f:if(condition:'{forceTemplateParsing}', then:' checked="checked"')} />
+        <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf:forceTemplateParsing"/>
+    </label>
+</div>

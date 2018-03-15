@@ -26,6 +26,10 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  */
 abstract class AbstractModule implements AdminPanelModuleInterface
 {
+    /**
+     * @var string
+     */
+    protected $extResources = 'EXT:adminpanel/Resources/Private';
 
     /**
      * @inheritdoc
