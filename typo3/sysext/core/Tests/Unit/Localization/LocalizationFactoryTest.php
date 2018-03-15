@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -28,11 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LocalizationFactoryTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     public function tearDown()
     {
         // Drop created singletons again
@@ -98,14 +94,14 @@ class LocalizationFactoryTest extends UnitTestCase
         $languageStore = $this->getMockBuilder(LanguageStore::class)
             ->setMethods(['hasData', 'setConfiguration', 'getData', 'setData'])
             ->getMock();
-        $cacheInstance = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
+        $cacheInstance = $this->getMockBuilder(VariableFrontend::class)
             ->setMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
         $localizationFactory->_set('store', $languageStore);
         $localizationFactory->_set('cacheInstance', $cacheInstance);
         $languageStore->method('hasData')->willReturn(false);
-        $languageStore->method('getData')->willReturn([]);
+        $languageStore->method('getData')->willReturn(['default' => []]);
         $languageStore->method('setConfiguration')->willThrowException(new FileNotFoundException('testing', 1476049512));
         $cacheInstance->method('get')->willReturn(false);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = ['foo' => 'bar'];
