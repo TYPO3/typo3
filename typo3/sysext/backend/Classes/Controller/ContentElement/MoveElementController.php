@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
 /*
@@ -20,8 +21,11 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap;
 use TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -31,54 +35,73 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class MoveElementController
 {
+    use PublicPropertyDeprecationTrait;
+
     /**
-     * @var int
+     * Properties which have been moved to protected status from public
+     *
+     * @var array
      */
-    public $sys_language = 0;
+    protected $deprecatedPublicProperties = [
+        'sys_language' => 'Using $sys_language of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
+        'page_id' => 'Using $page_id of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
+        'table' => 'Using $table of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
+        'R_URI' => 'Using $R_URI of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
+        'input_moveUid' => 'Using $input_moveUid of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
+        'moveUid' => 'Using $moveUid of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
+        'makeCopy' => 'Using $makeCopy of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
+        'perms_clause' => 'Using $perms_clause of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
+        'content' => 'Using $content of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
+    ];
 
     /**
      * @var int
      */
-    public $page_id;
+    protected $sys_language = 0;
+
+    /**
+     * @var int
+     */
+    protected $page_id;
 
     /**
      * @var string
      */
-    public $table;
+    protected $table;
 
     /**
      * @var string
      */
-    public $R_URI;
+    protected $R_URI;
 
     /**
      * @var int
      */
-    public $input_moveUid;
+    protected $input_moveUid;
 
     /**
      * @var int
      */
-    public $moveUid;
+    protected $moveUid;
 
     /**
      * @var int
      */
-    public $makeCopy;
+    protected $makeCopy;
 
     /**
      * Pages-select clause
      *
      * @var string
      */
-    public $perms_clause;
+    protected $perms_clause;
 
     /**
      * Content for module accumulated here.
      *
      * @var string
      */
-    public $content;
+    protected $content;
 
     /**
      * ModuleTemplate object
@@ -94,25 +117,11 @@ class MoveElementController
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
-        $GLOBALS['SOBE'] = $this;
-        $this->init();
-    }
 
-    /**
-     * Constructor, initializing internal variables.
-     */
-    public function init()
-    {
-        // Setting internal vars:
-        $this->sys_language = (int)GeneralUtility::_GP('sys_language');
-        $this->page_id = (int)GeneralUtility::_GP('uid');
-        $this->table = GeneralUtility::_GP('table');
-        $this->R_URI = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-        $this->input_moveUid = GeneralUtility::_GP('moveUid');
-        $this->moveUid = $this->input_moveUid ? $this->input_moveUid : $this->page_id;
-        $this->makeCopy = GeneralUtility::_GP('makeCopy');
-        // Select-pages where clause for read-access:
-        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        // @deprecated since v9, will be obsolete in v10 with removal of init()
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        // @deprecated since v9, will be moved out of __construct() in v10
+        $this->init($request);
     }
 
     /**
@@ -124,17 +133,46 @@ class MoveElementController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->main();
-        $this->moduleTemplate->setContent($this->content);
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        $this->renderContent();
+
+        return new HtmlResponse($this->content);
+    }
+
+    /**
+     * Constructor, initializing internal variables.
+     *
+     * @param ServerRequestInterface|null $request
+     */
+    public function init(ServerRequestInterface $request = null)
+    {
+        if ($request === null) {
+            // Method signature in v10: protected function init(ServerRequestInterface $request)
+            trigger_error('Method init() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        }
+
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
+        // Setting internal vars:
+        $this->sys_language = (int)($parsedBody['sys_language'] ?? $queryParams['sys_language'] ?? 0);
+        $this->page_id = (int)($parsedBody['uid'] ?? $queryParams['uid'] ?? 0);
+        $this->table = $parsedBody['table'] ?? $queryParams['table'] ?? null;
+        $this->R_URI = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
+        $this->input_moveUid = $parsedBody['moveUid'] ?? $queryParams['moveUid'] ?? null;
+        $this->moveUid = $this->input_moveUid ? $this->input_moveUid : $this->page_id;
+        $this->makeCopy = $parsedBody['makeCopy'] ?? $queryParams['makeCopy'] ?? 0;
+        // Select-pages where clause for read-access:
+        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
     }
 
     /**
      * Creating the module output.
      */
-    public function main()
+    protected function renderContent(): void
     {
         $lang = $this->getLanguageService();
+
         if ($this->page_id) {
             $assigns = [];
             $backendUser = $this->getBackendUser();
@@ -158,6 +196,7 @@ class MoveElementController
                     // Initialize the position map:
                     $posMap = GeneralUtility::makeInstance(PageMovingPagePositionMap::class);
                     $posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
+                    $posMap->moveUid = $this->moveUid;
                     // Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
                     if ($pageInfo['pid']) {
                         $pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
@@ -191,6 +230,7 @@ class MoveElementController
                     // Initialize the position map:
                     $posMap = GeneralUtility::makeInstance(ContentMovingPagePositionMap::class);
                     $posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
+                    $posMap->moveUid = $this->moveUid;
                     $posMap->cur_sys_language = $this->sys_language;
                     // Headerline for the parent page: Icon, record title:
                     $assigns['ttContent']['pageInfo'] = $pageInfo;
@@ -237,10 +277,25 @@ class MoveElementController
             $view->assignMultiple($assigns);
             $this->content .= $view->render();
         }
+
         // Setting up the buttons and markers for docheader
         $this->getButtons();
         // Build the <body> for the module
         $this->moduleTemplate->setTitle($lang->getLL('movingElement'));
+        $this->moduleTemplate->setContent($this->content);
+
+        $this->content = $this->moduleTemplate->renderContent();
+    }
+
+    /**
+     * Creating the module output.
+     *
+     * @deprecated since v9, will be removed in v10
+     */
+    public function main()
+    {
+        trigger_error('Method main() will be replaced by protected method renderContent() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->renderContent();
     }
 
     /**
@@ -276,21 +331,17 @@ class MoveElementController
     }
 
     /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
     /**
-     * Returns the current BE user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

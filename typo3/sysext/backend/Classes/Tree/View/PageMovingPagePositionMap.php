@@ -46,7 +46,7 @@ class PageMovingPagePositionMap extends PagePositionMap
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return 'window.location.href=' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('tce_db', [
-            'cmd[pages][' . $GLOBALS['SOBE']->moveUid . '][' . $this->moveOrCopy . ']' => $pid,
+            'cmd[pages][' . $this->moveUid . '][' . $this->moveOrCopy . ']' => $pid,
             'redirect' => $this->R_URI,
         ])) . ';return false;';
     }
@@ -60,7 +60,7 @@ class PageMovingPagePositionMap extends PagePositionMap
      */
     public function linkPageTitle($str, $rec)
     {
-        $url = GeneralUtility::linkThisScript(['uid' => (int)$rec['uid'], 'moveUid' => $GLOBALS['SOBE']->moveUid]);
+        $url = GeneralUtility::linkThisScript(['uid' => (int)$rec['uid'], 'moveUid' => $this->moveUid]);
         return '<a href="' . htmlspecialchars($url) . '">' . $str . '</a>';
     }
 
@@ -74,6 +74,6 @@ class PageMovingPagePositionMap extends PagePositionMap
      */
     public function boldTitle($t_code, $dat, $id)
     {
-        return parent::boldTitle($t_code, $dat, $GLOBALS['SOBE']->moveUid);
+        return parent::boldTitle($t_code, $dat, $this->moveUid);
     }
 }

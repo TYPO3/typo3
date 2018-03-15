@@ -272,4 +272,39 @@ return [
             'Deprecation-84273-ProtectedMethodsAndPropertiesInFileSystemNavigationFrameController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->sys_language' => [
+        'restFiles' => [
+            'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->page_id' => [
+        'restFiles' => [
+            'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->R_URI' => [
+        'restFiles' => [
+            'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->input_moveUid' => [
+        'restFiles' => [
+            'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->moveUid' => [
+        'restFiles' => [
+            'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->perms_clause' => [
+        'restFiles' => [
+            'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->makeCopy' => [
+        'restFiles' => [
+            'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+        ],
+    ],
 ];
