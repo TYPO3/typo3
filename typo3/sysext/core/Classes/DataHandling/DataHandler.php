@@ -9123,8 +9123,38 @@ class DataHandler implements LoggerAwareInterface
             // Return the actual ID we forced on insert as a surrogate.
             return $suggestedUid;
         }
+        if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
+            return $this->postProcessSqlServerInsert($connection, $tableName);
+        }
+        $id = $connection->lastInsertId($tableName);
+        return (int)$id;
+    }
 
-        return $connection->lastInsertId($tableName);
+    /**
+     * Get the last insert ID from sql server
+     *
+     * - first checks whether doctrine might be able to fetch the ID from the
+     * sequence table
+     * - if that does not succeed it manually selects the current IDENTITY value
+     * from a table
+     * - returns 0 if both fail
+     *
+     * @param \TYPO3\CMS\Core\Database\Connection $connection
+     * @param string $tableName
+     * @return int
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    protected function postProcessSqlServerInsert(Connection $connection, string $tableName): int
+    {
+        $id = $connection->lastInsertId($tableName);
+        if (!((int)$id > 0)) {
+            $table = $connection->quoteIdentifier($tableName);
+            $result = $connection->executeQuery('SELECT IDENT_CURRENT(\'' . $table . '\') AS id')->fetch();
+            if (isset($result['id']) && $result['id'] > 0) {
+                $id = $result['id'];
+            }
+        }
+        return (int)$id;
     }
 
     /**
