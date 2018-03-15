@@ -1913,4 +1913,11 @@ return [
             'Deprecation-84273-ProtectedMethodsAndPropertiesInFileSystemNavigationFrameController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\LogoutController->logout' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84275-ProtectedMethodInLogoutController.rst',
+        ],
+    ],
 ];

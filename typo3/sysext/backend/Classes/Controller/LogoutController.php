@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller;
 
 /*
@@ -37,7 +38,7 @@ class LogoutController
      */
     public function logoutAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->logout();
+        $this->processLogout();
 
         $redirectUrl = $request->getParsedBody()['redirect'] ?? $request->getQueryParams()['redirect'];
         $redirectUrl = GeneralUtility::sanitizeLocalUrl($redirectUrl);
@@ -50,8 +51,19 @@ class LogoutController
 
     /**
      * Performs the logout processing
+     *
+     * @deprecated since v9, will be removed in v10
      */
     public function logout()
+    {
+        trigger_error('Method logout() will be replaced by protected method processLogout() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->processLogout();
+    }
+
+    /**
+     * Performs the logout processing
+     */
+    protected function processLogout(): void
     {
         if (empty($this->getBackendUser()->user['username'])) {
             return;
