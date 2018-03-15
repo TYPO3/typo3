@@ -317,4 +317,34 @@ return [
             'Deprecation-84284-ProtectedMethodsAndPropertiesInContentElementElementInformationController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->sys_language' => [
+        'restFiles' => [
+            'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->R_URI' => [
+        'restFiles' => [
+            'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->colPos' => [
+        'restFiles' => [
+            'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->uid_pid' => [
+        'restFiles' => [
+            'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->access' => [
+        'restFiles' => [
+            'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->config' => [
+        'restFiles' => [
+            'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
+        ],
+    ],
 ];

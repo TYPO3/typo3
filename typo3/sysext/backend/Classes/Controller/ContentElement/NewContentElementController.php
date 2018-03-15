@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
 /*
@@ -22,8 +23,11 @@ use TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -35,73 +39,91 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class NewContentElementController
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'id' => 'Using $id of NewContentElementController from the outside is discouraged as this variable is used for internal storage.',
+        'sys_language' => 'Using $sys_language of NewContentElementController from the outside is discouraged as this variable is used for internal storage.',
+        'R_URI' => 'Using $R_URI of NewContentElementController from the outside is discouraged as this variable is used for internal storage.',
+        'colPos' => 'Using $colPos of NewContentElementController from the outside is discouraged as this variable is used for internal storage.',
+        'uid_pid' => 'Using $uid_pid of NewContentElementController from the outside is discouraged as this variable is used for internal storage.',
+        'modTSconfig' => 'Using $modTSconfig of NewContentElementController from the outside is discouraged as this variable is used for internal storage.',
+        'doc' => 'Using $doc of NewContentElementController from the outside is discouraged as this variable is used for internal storage.',
+        'content' => 'Using $content of NewContentElementController from the outside is discouraged as this variable is used for internal storage.',
+        'access' => 'Using $access of NewContentElementController from the outside is discouraged as this variable is used for internal storage.',
+        'config' => 'Using $config of NewContentElementController from the outside is discouraged as this variable is used for internal storage.',
+    ];
+
     /**
      * Page id
      *
      * @var int
      */
-    public $id;
+    protected $id;
 
     /**
      * Sys language
      *
      * @var int
      */
-    public $sys_language = 0;
+    protected $sys_language = 0;
 
     /**
      * Return URL.
      *
      * @var string
      */
-    public $R_URI = '';
+    protected $R_URI = '';
 
     /**
      * If set, the content is destined for a specific column.
      *
      * @var int|null
      */
-    public $colPos;
+    protected $colPos;
 
     /**
      * @var int
      */
-    public $uid_pid;
+    protected $uid_pid;
 
     /**
      * Module TSconfig.
      *
      * @var array
      */
-    public $modTSconfig = [];
+    protected $modTSconfig = [];
 
     /**
      * Internal backend template object
      *
      * @var DocumentTemplate
      */
-    public $doc;
+    protected $doc;
 
     /**
      * Used to accumulate the content of the module.
      *
      * @var string
      */
-    public $content;
+    protected $content;
 
     /**
      * Access boolean.
      *
      * @var bool
      */
-    public $access;
+    protected $access;
 
     /**
      * config of the wizard
      *
      * @var array
      */
-    public $config;
+    protected $config;
 
     /**
      * @var array
@@ -144,14 +166,26 @@ class NewContentElementController
         $GLOBALS['SOBE'] = $this;
         $this->view = $this->getFluidTemplateObject();
         $this->menuItemView = $this->getFluidTemplateObject('MenuItem.html');
-        $this->init();
+
+        // @deprecated since v9, will be obsolete in v10 with removal of init()
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        // @deprecated since v9, will be moved out of __construct() in v10
+        $this->init($request);
     }
 
     /**
      * Constructor, initializing internal variables.
+     *
+     * @param ServerRequestInterface|null $request
      */
-    public function init()
+    public function init(ServerRequestInterface $request = null)
     {
+        if ($request === null) {
+            // Method signature in v10: protected function init(ServerRequestInterface $request)
+            trigger_error('Method init() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        }
+
         $lang = $this->getLanguageService();
         $lang->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
         $LOCAL_LANG_orig = $GLOBALS['LOCAL_LANG'];
@@ -159,12 +193,16 @@ class NewContentElementController
         ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $GLOBALS['LOCAL_LANG']);
         $GLOBALS['LOCAL_LANG'] = $LOCAL_LANG_orig;
 
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
         // Setting internal vars:
-        $this->id = (int)GeneralUtility::_GP('id');
-        $this->sys_language = (int)GeneralUtility::_GP('sys_language_uid');
-        $this->R_URI = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-        $this->colPos = GeneralUtility::_GP('colPos') === null ? null : (int)GeneralUtility::_GP('colPos');
-        $this->uid_pid = (int)GeneralUtility::_GP('uid_pid');
+        $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
+        $this->sys_language = (int)($parsedBody['sys_language_uid'] ?? $queryParams['sys_language_uid'] ?? 0);
+        $this->R_URI = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
+        $colPos = $parsedBody['colPos'] ?? $queryParams['colPos'] ?? null;
+        $this->colPos = $colPos === null ? null : (int)$colPos;
+        $this->uid_pid = (int)($parsedBody['uid_pid'] ?? $queryParams['uid_pid'] ?? 0);
         $this->MCONF['name'] = 'xMOD_db_new_content_el';
         $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.wizards.newContentElement');
         $config = BackendUtility::getPagesTSconfig($this->id);
@@ -210,12 +248,71 @@ class NewContentElementController
     /**
      * Creating the module output.
      *
-     * @throws \UnexpectedValueException
-     * @deprecated since TYPO3 v10 (not used since v9) without substitute
+     * @deprecated since TYPO3 v9, will be removed in TYPO3v10 without substitute
      */
     public function main()
     {
+        trigger_error('Method main() will be replaced by protected method prepareContent() in v10. Do not call from other extension', E_USER_DEPRECATED);
         $this->prepareContent('window');
+    }
+
+    /**
+     * Returns the array of elements in the wizard display.
+     * For the plugin section there is support for adding elements there from a global variable.
+     *
+     * @return array
+     */
+    public function wizardArray()
+    {
+        trigger_error('Method wizardArray() will be replaced by protected method getWizards() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        return $this->getWizards();
+    }
+
+    /**
+     * @param mixed $wizardElements
+     * @return array
+     */
+    public function wizard_appendWizards($wizardElements)
+    {
+        trigger_error('Method wizard_appendWizards() will be replaced by protected method getAppendWizards() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        return $this->getAppendWizards($wizardElements);
+    }
+
+    /**
+     * @param string $groupKey Not used
+     * @param string $itemKey Not used
+     * @param array $itemConf
+     * @return array
+     */
+    public function wizard_getItem($groupKey, $itemKey, $itemConf)
+    {
+        trigger_error('Method wizard_getItem() will be replaced by protected method getWizardItem() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        return $this->getWizardItem($groupKey, $itemKey, $itemConf);
+    }
+
+    /**
+     * @param string $groupKey Not used
+     * @param array $wizardGroup
+     * @return array
+     */
+    public function wizard_getGroupHeader($groupKey, $wizardGroup)
+    {
+        trigger_error('Method wizard_getGroupHeader() will be replaced by protected method getWizardGroupHeader() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        return $this->getWizardGroupHeader($wizardGroup);
+    }
+
+    /**
+     * Checks the array for elements which might contain unallowed default values and will unset them!
+     * Looks for the "tt_content_defValues" key in each element and if found it will traverse that array as fieldname /
+     * value pairs and check.
+     * The values will be added to the "params" key of the array (which should probably be unset or empty by default).
+     *
+     * @param array $wizardItems Wizard items, passed by reference
+     */
+    public function removeInvalidElements(&$wizardItems)
+    {
+        trigger_error('Method removeInvalidElements() will be replaced by protected method removeInvalidWizardItems() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->removeInvalidWizardItems($wizardItems);
     }
 
     /**
@@ -227,7 +324,7 @@ class NewContentElementController
      *
      * @throws \UnexpectedValueException
      */
-    protected function prepareContent(string $clientContext)
+    protected function prepareContent(string $clientContext): void
     {
         $hasAccess = true;
         if ($this->id && $this->access) {
@@ -261,7 +358,7 @@ class NewContentElementController
             // Creating content
             // ***************************
             // Wizard
-            $wizardItems = $this->wizardArray();
+            $wizardItems = $this->getWizards();
             // Wrapper for wizards
             // Hook for manipulating wizardItems, wrapper, onClickEvent etc.
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] ?? [] as $className) {
@@ -366,24 +463,18 @@ class NewContentElementController
         $buttonBar->addButton($cshButton);
     }
 
-    /***************************
-     *
-     * OTHER FUNCTIONS:
-     *
-     ***************************/
-
     /**
      * Returns the array of elements in the wizard display.
      * For the plugin section there is support for adding elements there from a global variable.
      *
      * @return array
      */
-    public function wizardArray()
+    protected function getWizards(): array
     {
         $wizardItems = [];
         if (is_array($this->config)) {
             $wizards = $this->config['wizardItems.'] ?? [];
-            $appendWizards = $this->wizard_appendWizards($wizards['elements.']);
+            $appendWizards = $this->getAppendWizards($wizards['elements.'] ?? []);
             if (is_array($wizards)) {
                 foreach ($wizards as $groupKey => $wizardGroup) {
                     $this->prepareDependencyOrdering($wizards[$groupKey], 'before');
@@ -405,7 +496,7 @@ class NewContentElementController
                         foreach ($wizardElements as $itemKey => $itemConf) {
                             $itemKey = rtrim($itemKey, '.');
                             if ($showAll || in_array($itemKey, $showItems)) {
-                                $tmpItem = $this->wizard_getItem($groupKey, $itemKey, $itemConf);
+                                $tmpItem = $this->getWizardItem($groupKey, $itemKey, $itemConf);
                                 if ($tmpItem) {
                                     $groupItems[$groupKey . '_' . $itemKey] = $tmpItem;
                                 }
@@ -413,22 +504,22 @@ class NewContentElementController
                         }
                     }
                     if (!empty($groupItems)) {
-                        $wizardItems[$groupKey] = $this->wizard_getGroupHeader($groupKey, $wizardGroup);
+                        $wizardItems[$groupKey] = $this->getWizardGroupHeader($wizardGroup);
                         $wizardItems = array_merge($wizardItems, $groupItems);
                     }
                 }
             }
         }
         // Remove elements where preset values are not allowed:
-        $this->removeInvalidElements($wizardItems);
+        $this->removeInvalidWizardItems($wizardItems);
         return $wizardItems;
     }
 
     /**
-     * @param mixed $wizardElements
+     * @param array $wizardElements
      * @return array
      */
-    public function wizard_appendWizards($wizardElements)
+    protected function getAppendWizards(array $wizardElements): array
     {
         if (!is_array($wizardElements)) {
             $wizardElements = [];
@@ -459,7 +550,7 @@ class NewContentElementController
      * @param array $itemConf
      * @return array
      */
-    public function wizard_getItem($groupKey, $itemKey, $itemConf)
+    protected function getWizardItem(string $groupKey, string $itemKey, array $itemConf): array
     {
         $itemConf['title'] = $this->getLanguageService()->sL($itemConf['title']);
         $itemConf['description'] = $this->getLanguageService()->sL($itemConf['description']);
@@ -469,11 +560,10 @@ class NewContentElementController
     }
 
     /**
-     * @param string $groupKey Not used
      * @param array $wizardGroup
      * @return array
      */
-    public function wizard_getGroupHeader($groupKey, $wizardGroup)
+    protected function getWizardGroupHeader(array $wizardGroup): array
     {
         return [
             'header' => $this->getLanguageService()->sL($wizardGroup['header'])
@@ -488,7 +578,7 @@ class NewContentElementController
      *
      * @param array $wizardItems Wizard items, passed by reference
      */
-    public function removeInvalidElements(&$wizardItems)
+    protected function removeInvalidWizardItems(array &$wizardItems): void
     {
         // Get TCEFORM from TSconfig of current page
         $row = ['pid' => $this->id];
@@ -577,32 +667,26 @@ class NewContentElementController
     }
 
     /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
     /**
-     * Returns the current BE user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
     /**
-     * returns a new standalone view, shorthand function
-     *
      * @param string $filename
      * @return StandaloneView
      */
-    protected function getFluidTemplateObject(string $filename = 'Main.html'):StandaloneView
+    protected function getFluidTemplateObject(string $filename = 'Main.html'): StandaloneView
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
