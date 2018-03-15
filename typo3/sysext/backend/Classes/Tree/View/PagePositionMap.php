@@ -574,13 +574,13 @@ class PagePositionMap
         if (is_array($row)) {
             $location = $uriBuilder->buildUriFromRoute('tce_db', [
                 'cmd[tt_content][' . $moveUid . '][' . $this->moveOrCopy . ']' => '-' . $row['uid'],
-                'redirect' => rawurlencode($this->R_URI)
+                'redirect' => $this->R_URI,
             ]);
         } else {
             $location = $uriBuilder->buildUriFromRoute('tce_db', [
                 'cmd[tt_content][' . $moveUid . '][' . $this->moveOrCopy . ']' => $pid,
                 'data[tt_content][' . $moveUid . '][colPos]' => $vv,
-                'redirect' => rawurlencode($this->R_URI)
+                'redirect' => $this->R_URI,
             ]);
         }
         // returns to prev. page

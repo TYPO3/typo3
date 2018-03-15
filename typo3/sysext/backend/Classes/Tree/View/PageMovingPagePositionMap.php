@@ -47,7 +47,7 @@ class PageMovingPagePositionMap extends PagePositionMap
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return 'window.location.href=' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('tce_db', [
             'cmd[pages][' . $GLOBALS['SOBE']->moveUid . '][' . $this->moveOrCopy . ']' => $pid,
-            'redirect' => rawurlencode($this->R_URI)
+            'redirect' => $this->R_URI,
         ])) . ';return false;';
     }
 

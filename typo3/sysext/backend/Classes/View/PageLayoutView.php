@@ -2467,7 +2467,7 @@ class PageLayoutView implements LoggerAwareInterface
                 'colPos' => $colPos,
                 'sys_language_uid' => $sys_language,
                 'uid_pid' => $id,
-                'returnUrl' => rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))
+                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
             ]);
             $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . ';';
         } else {
