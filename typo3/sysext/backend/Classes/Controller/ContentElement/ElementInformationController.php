@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
 /*
@@ -19,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -36,19 +38,34 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class ElementInformationController
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * Properties which have been moved to protected status from public
+     *
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'table' => 'Using $table of class ElementInformationController from the outside is discouraged, as this variable is only used for internal storage.',
+        'uid' => 'Using $uid of class ElementInformationController from the outside is discouraged, as this variable is only used for internal storage.',
+        'access' => 'Using $access of class ElementInformationController from the outside is discouraged, as this variable is only used for internal storage.',
+        'type' => 'Using $type of class ElementInformationController from the outside is discouraged, as this variable is only used for internal storage.',
+        'pageInfo' => 'Using $pageInfo of class ElementInformationController from the outside is discouraged, as this variable is only used for internal storage.',
+    ];
+
     /**
      * Record table name
      *
      * @var string
      */
-    public $table;
+    protected $table;
 
     /**
      * Record uid
      *
      * @var int
      */
-    public $uid;
+    protected $uid;
 
     /**
      * @var string
@@ -58,7 +75,7 @@ class ElementInformationController
     /**
      * @var bool
      */
-    public $access = false;
+    protected $access = false;
 
     /**
      * Which type of element:
@@ -67,7 +84,7 @@ class ElementInformationController
      *
      * @var string
      */
-    public $type = '';
+    protected $type = '';
 
     /**
      * @var ModuleTemplate
@@ -80,7 +97,7 @@ class ElementInformationController
      *
      * @var array
      */
-    public $pageInfo;
+    protected $pageInfo;
 
     /**
      * Database records identified by table/uid
@@ -112,17 +129,46 @@ class ElementInformationController
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $GLOBALS['SOBE'] = $this;
 
-        $this->init();
+        // @deprecated since v9, will be obsolete in v10 with removal of init()
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        // @deprecated since v9, will be moved out of __construct() in v10
+        $this->init($request);
+    }
+
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     *
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->main($request);
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
      * Determines if table/uid point to database record or file and
      * if user has access to view information
+     *
+     * @param ServerRequestInterface|null $request
      */
-    public function init()
+    public function init(ServerRequestInterface $request = null): void
     {
-        $this->table = GeneralUtility::_GET('table');
-        $this->uid = GeneralUtility::_GET('uid');
+        if ($request === null) {
+            // Missing argument? This method must have been called from outside.
+            // Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+            // New v10 signature: "protected function init(ServerRequestInterface $request): void"
+            // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
+            trigger_error('Method init() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        }
+
+        $queryParams = $request->getQueryParams();
+
+        $this->table = $queryParams['table'] ?? null;
+        $this->uid = $queryParams['uid'] ?? null;
 
         $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
@@ -185,24 +231,20 @@ class ElementInformationController
     }
 
     /**
-     * Injects the request object for the current request or subrequest
-     * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->main();
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
      * Compiles the whole content to be outputted, which is then set as content to the moduleTemplate
      * There is a hook to do a custom rendering of a record.
+     *
+     * @param ServerRequestInterface $request
      */
-    public function main()
+    public function main(ServerRequestInterface $request = null): void
     {
+        if ($request === null) {
+            // Missing argument? This method must have been called from outside.
+            // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
+            trigger_error('Method main() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        }
+
         $content = '';
 
         // Rendering of the output via fluid
@@ -232,8 +274,8 @@ class ElementInformationController
                 $view->assignMultiple($this->getPageTitle());
                 $view->assignMultiple($this->getPreview());
                 $view->assignMultiple($this->getPropertiesForTable());
-                $view->assignMultiple($this->getReferences());
-                $view->assignMultiple($this->getBackButton());
+                $view->assignMultiple($this->getReferences($request));
+                $view->assign('returnUrl', GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl']));
                 $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
                 $content .= $view->render();
             }
@@ -425,36 +467,27 @@ class ElementInformationController
     /**
      * Get references section (references from and references to current record)
      *
+     * @param ServerRequestInterface $request
      * @return array
      */
-    protected function getReferences() : array
+    protected function getReferences(ServerRequestInterface $request) : array
     {
         $references = [];
         switch ($this->type) {
             case 'db': {
-                $references['refLines'] = $this->makeRef($this->table, $this->row['uid']);
-                $references['refFromLines'] = $this->makeRefFrom($this->table, $this->row['uid']);
+                $references['refLines'] = $this->makeRef($this->table, $this->row['uid'], $request);
+                $references['refFromLines'] = $this->makeRefFrom($this->table, $this->row['uid'], $request);
                 break;
             }
 
             case 'file': {
                 if ($this->fileObject && $this->fileObject->isIndexed()) {
-                    $references['refLines'] = $this->makeRef('_FILE', $this->fileObject);
+                    $references['refLines'] = $this->makeRef('_FILE', $this->fileObject, $request);
                 }
                 break;
             }
         }
         return $references;
-    }
-
-    /**
-     * Get a back button, if a returnUrl was provided
-     *
-     * @return array
-     */
-    protected function getBackButton() : array
-    {
-        return ['returnUrl' => GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GET('returnUrl'))];
     }
 
     /**
@@ -466,6 +499,13 @@ class ElementInformationController
      */
     public function getLabelForTableColumn($tableName, $fieldName)
     {
+        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if (end($backtrace)['class'] !== __CLASS__) {
+            // @deprecated since TYPO3 v9, this method will be set to protected in v10
+            trigger_error('Method getLabelForTableColumn() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        }
+
         if ($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] !== null) {
             $field = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
             if (trim($field) === '') {
@@ -482,9 +522,10 @@ class ElementInformationController
      *
      * @param string $table
      * @param int $uid
+     * @param ServerRequestInterface $request
      * @return array
      */
-    protected function getRecordActions($table, $uid)
+    protected function getRecordActions($table, $uid, ServerRequestInterface $request): array
     {
         if ($table === '' || $uid < 0) {
             return [];
@@ -498,7 +539,7 @@ class ElementInformationController
                     $uid => 'edit'
                 ]
             ],
-            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
         ];
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
@@ -507,13 +548,13 @@ class ElementInformationController
         // History button
         $urlParameters = [
             'element' => $table . ':' . $uid,
-            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
         ];
         $actions['recordHistoryUrl'] = (string)$uriBuilder->buildUriFromRoute('record_history', $urlParameters);
 
         if ($table === 'pages') {
             // Recordlist button
-            $actions['webListUrl'] = (string)$uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
+            $actions['webListUrl'] = (string)$uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]);
 
             // View page button
             $actions['viewOnClick'] = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
@@ -527,9 +568,10 @@ class ElementInformationController
      *
      * @param string $table Table name
      * @param string|\TYPO3\CMS\Core\Resource\File $ref Filename or uid
+     * @param ServerRequestInterface $request
      * @return array
      */
-    protected function makeRef($table, $ref)
+    protected function makeRef($table, $ref, ServerRequestInterface $request)
     {
         $refLines = [];
         $lang = $this->getLanguageService();
@@ -585,7 +627,7 @@ class ElementInformationController
                             $row['recuid'] => 'edit'
                         ]
                     ],
-                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                 ];
                 /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
                 $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
@@ -598,7 +640,7 @@ class ElementInformationController
                 $line['parentRecordTitle'] = $parentRecordTitle;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']);
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($row['tablename'], $row['field']);
-                $line['actions'] = $this->getRecordActions($row['tablename'], $row['recuid']);
+                $line['actions'] = $this->getRecordActions($row['tablename'], $row['recuid'], $request->getAttribute('normalizedParams')->getRequestUri());
             } else {
                 $line['row'] = $row;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']) ?: $row['tablename'];
@@ -614,9 +656,10 @@ class ElementInformationController
      *
      * @param string $table Table name
      * @param string $ref Filename or uid
+     * @param ServerRequestInterface $request
      * @return array
      */
-    protected function makeRefFrom($table, $ref) : array
+    protected function makeRefFrom($table, $ref, ServerRequestInterface $request): array
     {
         $refFromLines = [];
         $lang = $this->getLanguageService();
@@ -651,7 +694,7 @@ class ElementInformationController
                             $row['ref_uid'] => 'edit'
                         ]
                     ],
-                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                 ];
                 /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
                 $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
@@ -663,7 +706,7 @@ class ElementInformationController
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record, false, true);
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title']);
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($table, $row['field']);
-                $line['actions'] = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
+                $line['actions'] = $this->getRecordActions($row['ref_table'], $row['ref_uid'], $request->getAttribute('normalizedParams')->getRequestUri());
             } else {
                 $line['row'] = $row;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title']);

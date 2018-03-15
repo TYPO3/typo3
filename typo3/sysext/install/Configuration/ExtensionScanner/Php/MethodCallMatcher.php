@@ -1920,4 +1920,11 @@ return [
             'Deprecation-84275-ProtectedMethodInLogoutController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->getLabelForTableColumn' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-84284-ProtectedMethodsAndPropertiesInContentElementElementInformationController.rst',
+        ],
+    ],
 ];

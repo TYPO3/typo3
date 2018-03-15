@@ -307,4 +307,14 @@ return [
             'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->access' => [
+        'restFiles' => [
+            'Deprecation-84284-ProtectedMethodsAndPropertiesInContentElementElementInformationController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->pageInfo' => [
+        'restFiles' => [
+            'Deprecation-84284-ProtectedMethodsAndPropertiesInContentElementElementInformationController.rst',
+        ],
+    ],
 ];
