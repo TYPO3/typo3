@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TYPO3\CMS\Adminpanel\Modules;
 
@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Adminpanel\Modules;
 
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -33,69 +34,30 @@ class InfoModule extends AbstractModule
      */
     public function getContent(): string
     {
-        $output = [];
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $templateNameAndPath = $this->extResources . '/Templates/Modules/Info.html';
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
+        $view->setPartialRootPaths([$this->extResources . '/Partials']);
         $tsfe = $this->getTypoScriptFrontendController();
-        if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_info']) {
-            $tableArr = [];
-            if ($this->getConfigurationOption('noCache')) {
-                $theBytes = 0;
-                $count = 0;
-                if (!empty($tsfe->imagesOnPage)) {
-                    $tableArr[] = [$this->extGetLL('info_imagesOnPage'), count($tsfe->imagesOnPage), true];
-                    foreach ($GLOBALS['TSFE']->imagesOnPage as $file) {
-                        $fs = @filesize($file);
-                        $tableArr[] = [TAB . $file, GeneralUtility::formatSize($fs)];
-                        $theBytes += $fs;
-                        $count++;
-                    }
-                }
-                // Add an empty line
-                $tableArr[] = [$this->extGetLL('info_imagesSize'), GeneralUtility::formatSize($theBytes), true];
-                $tableArr[] = [
-                    $this->extGetLL('info_DocumentSize'),
-                    GeneralUtility::formatSize(strlen($tsfe->content)),
-                    true,
-                ];
-                $tableArr[] = ['', ''];
-            }
-            $tableArr[] = [$this->extGetLL('info_id'), $tsfe->id];
-            $tableArr[] = [$this->extGetLL('info_type'), $tsfe->type];
-            $tableArr[] = [$this->extGetLL('info_groupList'), $tsfe->gr_list];
-            $tableArr[] = [
-                $this->extGetLL('info_noCache'),
-                $this->extGetLL('info_noCache_' . ($tsfe->no_cache ? 'no' : 'yes')),
-            ];
-            $tableArr[] = [$this->extGetLL('info_countUserInt'), count($tsfe->config['INTincScript'] ?? [])];
 
-            if (!empty($tsfe->fe_user->user['uid'])) {
-                $tableArr[] = [$this->extGetLL('info_feuserName'), htmlspecialchars($tsfe->fe_user->user['username'])];
-                $tableArr[] = [$this->extGetLL('info_feuserId'), htmlspecialchars($tsfe->fe_user->user['uid'])];
-            }
+        $view->assignMultiple([
+            'info' => [
+                'pageUid' => $tsfe->id,
+                'pageType' => $tsfe->type,
+                'groupList' => $tsfe->gr_list,
+                'noCache' => $this->isNoCacheEnabled(),
+                'countUserInt' => \count($tsfe->config['INTincScript'] ?? []),
+                'totalParsetime' => $this->getTimeTracker()->getParseTime(),
+                'feUser' => [
+                    'uid' => $tsfe->fe_user->user['uid'] ?? 0,
+                    'username' => $tsfe->fe_user->user['username'] ?? ''
+                ],
+                'imagesOnPage' => $this->collectImagesOnPage(),
+                'documentSize' => $this->collectDocumentSize()
+            ]
+        ]);
 
-            $tableArr[] = [
-                $this->extGetLL('info_totalParsetime'),
-                $this->getTimeTracker()->getParseTime() . ' ms',
-                true,
-            ];
-            $table = '';
-            foreach ($tableArr as $key => $arr) {
-                $label = (isset($arr[2]) ? '<strong>' . $arr[0] . '</strong>' : $arr[0]);
-                $value = (string)$arr[1] !== '' ? $arr[1] : '';
-                $table .= '
-                    <tr>
-                        <td>' . $label . '</td>
-                        <td>' . htmlspecialchars((string)$value) . '</td>
-                    </tr>';
-            }
-
-            $output[] = '<div class="typo3-adminPanel-table-overflow">';
-            $output[] = '  <table class="typo3-adminPanel-table">';
-            $output[] = '    ' . $table;
-            $output[] = '  </table>';
-            $output[] = '</div>';
-        }
-
-        return implode('', $output);
+        return $view->render();
     }
 
     /**
@@ -111,7 +73,8 @@ class InfoModule extends AbstractModule
      */
     public function getLabel(): string
     {
-        return $this->extGetLL('info');
+        $locallangFileAndPath = 'LLL:' . $this->extResources . '/Language/locallang_info.xlf:module.label';
+        return $this->getLanguageService()->sL($locallangFileAndPath);
     }
 
     /**
@@ -128,5 +91,65 @@ class InfoModule extends AbstractModule
     protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
+    }
+
+    /**
+     * Collects images from TypoScriptFrontendController and calculates the total size.
+     * Returns human readable image sizes for fluid template output
+     *
+     * @return array
+     */
+    private function collectImagesOnPage(): array
+    {
+        $imagesOnPage = [
+            'files' => [],
+            'total' => 0,
+            'totalSize' => 0,
+            'totalSizeHuman' => GeneralUtility::formatSize(0)
+        ];
+
+        if ($this->isNoCacheEnabled() === false) {
+            return $imagesOnPage;
+        }
+
+        $count = 0;
+        $totalImageSize = 0;
+        if (!empty($this->getTypoScriptFrontendController()->imagesOnPage)) {
+            foreach ($this->getTypoScriptFrontendController()->imagesOnPage as $file) {
+                $fileSize = @filesize($file);
+                $imagesOnPage['files'][] = [
+                    'name' => $file,
+                    'size' => $fileSize,
+                    'sizeHuman' => GeneralUtility::formatSize($fileSize)
+                ];
+                $totalImageSize += $fileSize;
+                $count++;
+            }
+        }
+        $imagesOnPage['totalSize'] = GeneralUtility::formatSize($totalImageSize);
+        $imagesOnPage['total'] = $count;
+        return $imagesOnPage;
+    }
+
+    /**
+     * Gets the document size from the current page in a human readable format
+     * @return string
+     */
+    private function collectDocumentSize(): string
+    {
+        $documentSize = 0;
+        if ($this->isNoCacheEnabled() === true) {
+            $documentSize = \mb_strlen($this->getTypoScriptFrontendController()->content, 'UTF-8');
+        }
+
+        return GeneralUtility::formatSize($documentSize);
+    }
+
+    /**
+     * @return bool
+     */
+    private function isNoCacheEnabled(): bool
+    {
+        return (bool)$this->getTypoScriptFrontendController()->no_cache;
     }
 }

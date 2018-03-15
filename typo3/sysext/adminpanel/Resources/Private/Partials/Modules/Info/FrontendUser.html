@@ -1,0 +1,14 @@
+<f:if condition="{info.feUser.uid} > 0">
+    <tr>
+        <td>
+            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:feuserName"/>
+        </td>
+        <td>{info.feUser.username}</td>
+    </tr>
+    <tr>
+        <td>
+            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:feuserId"/>
+        </td>
+        <td>{info.feUser.uid}</td>
+    </tr>
+</f:if>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file t3:id="1520862805" source-language="en" datatype="plaintext" original="messages" date="2018-03-12T13:52:01Z" product-name="adminpanel">
+        <header/>
+        <body>
+            <trans-unit id="module.label">
+                <source>Info</source>
+            </trans-unit>
+            <trans-unit id="imagesOnPage">
+                <source>Images on this page</source>
+            </trans-unit>
+            <trans-unit id="imagesSize">
+                <source>Total image file sizes</source>
+            </trans-unit>
+            <trans-unit id="DocumentSize">
+                <source>Document size</source>
+            </trans-unit>
+            <trans-unit id="pageUid">
+                <source>Page Uid</source>
+            </trans-unit>
+            <trans-unit id="pageType">
+                <source>Page type</source>
+            </trans-unit>
+            <trans-unit id="groupList">
+                <source>Frontenduser group combination</source>
+            </trans-unit>
+            <trans-unit id="noCache">
+                <source>Page cached</source>
+            </trans-unit>
+            <trans-unit id="noCache_yes">
+                <source>Yes</source>
+            </trans-unit>
+            <trans-unit id="noCache_no">
+                <source>No</source>
+            </trans-unit>
+            <trans-unit id="countUserInt">
+                <source>Count of USER_INT objects</source>
+            </trans-unit>
+            <trans-unit id="feuserName">
+                <source>Name of logged in FE-User</source>
+            </trans-unit>
+            <trans-unit id="feuserId">
+                <source>Id of logged in FE-User</source>
+            </trans-unit>
+            <trans-unit id="totalParsetime">
+                <source>Total parsetime</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

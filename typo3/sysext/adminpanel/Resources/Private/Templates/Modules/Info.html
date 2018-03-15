@@ -1,0 +1,18 @@
+<div class="typo3-adminPanel-table-overflow">
+    <table class="typo3-adminPanel-table">
+        <f:if condition="{info.noCache}">
+            <f:render partial="Modules/Info/ImagesOnPage" arguments="{_all}" debug="false" />
+            <f:render partial="Modules/Info/DocumentSize" arguments="{_all}" debug="false" />
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </f:if>
+        <f:render partial="Modules/Info/Page" arguments="{_all}" debug="false" />
+        <f:render partial="Modules/Info/FeUserGroupList" arguments="{_all}" debug="false" />
+        <f:render partial="Modules/Info/PageCache" arguments="{_all}" debug="false" />
+        <f:render partial="Modules/Info/UserIntObjects" arguments="{_all}" debug="false" />
+        <f:render partial="Modules/Info/FrontendUser" arguments="{_all}" debug="false" />
+        <f:render partial="Modules/Info/TotalParsetime" arguments="{_all}" debug="false" />
+    </table>
+</div>
