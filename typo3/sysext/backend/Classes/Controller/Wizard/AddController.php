@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 /*
@@ -19,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -32,54 +34,71 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class AddController extends AbstractWizardController
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * Properties which have been moved to protected status from public
+     *
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'content' => 'Using $content of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
+        'processDataFlag' => 'Using $processDataFlag of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
+        'pid' => 'Using $pid of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
+        'table' => 'Using $table of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
+        'id' => 'Using $id of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
+        'P' => 'Using $P of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
+        'returnEditConf' => 'Using $returnEditConf of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
+    ];
     /**
      * Content accumulation for the module.
      *
      * @var string
+     * @deprecated since v9, will be removed in v10, unused
      */
-    public $content;
+    protected $content;
 
     /**
      * If set, the DataHandler class is loaded and used to add the returning ID to the parent record.
      *
      * @var int
      */
-    public $processDataFlag = 0;
+    protected $processDataFlag = 0;
 
     /**
      * Create new record -pid (pos/neg). If blank, return immediately
      *
      * @var int
      */
-    public $pid;
+    protected $pid;
 
     /**
      * The parent table we are working on.
      *
      * @var string
      */
-    public $table;
+    protected $table;
 
     /**
      * Loaded with the created id of a record FormEngine returns ...
      *
      * @var int
      */
-    public $id;
+    protected $id;
 
     /**
      * Wizard parameters, coming from TCEforms linking to the wizard.
      *
      * @var array
      */
-    public $P;
+    protected $P;
 
     /**
      * Information coming back from the FormEngine script, telling what the table/id was of the newly created record.
      *
-     * @var array
+     * @var string
      */
-    public $returnEditConf;
+    protected $returnEditConf;
 
     /**
      * Constructor
@@ -87,19 +106,46 @@ class AddController extends AbstractWizardController
     public function __construct()
     {
         $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_wizards.xlf');
-        $GLOBALS['SOBE'] = $this;
+        // @deprecated since v9, will be moved out of __construct() in v10
+        $this->init($GLOBALS['TYPO3_REQUEST']);
+    }
 
-        $this->init();
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->processRequest();
+        return new HtmlResponse('');
+    }
+
+    /**
+     * Main function
+     * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
+     *
+     * @deprecated since v9, will be removed in v10
+     */
+    public function main()
+    {
+        trigger_error('Method main() will be replaced by protected method processRequest() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->processRequest();
     }
 
     /**
      * Initialization of the class.
+     * @param ServerRequestInterface $request
      */
-    protected function init()
+    protected function init(ServerRequestInterface $request): void
     {
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
         // Init GPvars:
-        $this->P = GeneralUtility::_GP('P');
-        $this->returnEditConf = GeneralUtility::_GP('returnEditConf');
+        $this->P = $parsedBody['P'] ?? $queryParams['P'] ?? [];
+        $this->returnEditConf = $parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? null;
         // Get this record
         $record = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
         // Set table:
@@ -152,23 +198,10 @@ class AddController extends AbstractWizardController
     }
 
     /**
-     * Injects the request object for the current request or subrequest
-     * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->main();
-        return new HtmlResponse('');
-    }
-
-    /**
      * Main function
      * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
      */
-    public function main()
+    protected function processRequest(): void
     {
         if ($this->returnEditConf) {
             if ($this->processDataFlag) {

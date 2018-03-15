@@ -382,4 +382,19 @@ return [
             'Deprecation-84334-ProtectedMethodsAndPropertiesInReplaceFileController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\Wizard\AddController->processDataFlag' => [
+        'restFiles' => [
+            'Deprecation-84321-ProtectedMethodsAndPropertiesInAddController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\AddController->P' => [
+        'restFiles' => [
+            'Deprecation-84321-ProtectedMethodsAndPropertiesInAddController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\AddController->returnEditConf' => [
+        'restFiles' => [
+            'Deprecation-84321-ProtectedMethodsAndPropertiesInAddController.rst',
+        ],
+    ],
 ];
