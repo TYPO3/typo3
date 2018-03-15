@@ -27,11 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class MethodArgumentUnusedMatcherTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @test
      */
     public function hitsFromFixtureAreFound()
@@ -233,6 +228,10 @@ class MethodArgumentUnusedMatcherTest extends UnitTestCase
         $traverser->traverse($statements);
 
         $result = $subject->getMatches();
-        $this->assertEquals($expected[0]['restFiles'], $result[0]['restFiles']);
+        if (isset($expected[0], $result[0])) {
+            $this->assertEquals($expected[0]['restFiles'], $result[0]['restFiles']);
+        } else {
+            $this->assertEquals($expected, $result);
+        }
     }
 }
