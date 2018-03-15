@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
 
 /*
@@ -28,11 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LocallangXmlParserTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * Prepares the environment before running a test.
      */
@@ -103,15 +99,16 @@ class LocallangXmlParserTest extends UnitTestCase
      */
     public function canParseLlxmlInFrenchAndReturnsNullLabelsIfNoTranslationIsFound()
     {
-        $LOCAL_LANG = (new LocallangXmlParser)->getParsedData(self::getFixtureFilePath('locallangOnlyDefaultLanguage.xml'), 'fr');
-        $expectedLabels = [
-            'label1' => null,
-            'label2' => null,
-            'label3' => null
-        ];
-        foreach ($expectedLabels as $key => $expectedLabel) {
-            $this->assertEquals($expectedLabel, $LOCAL_LANG['fr'][$key][0]['target']);
-        }
+        $localLang = (new LocallangXmlParser)->getParsedData(
+            self::getFixtureFilePath('locallangOnlyDefaultLanguage.xml'),
+            'fr'
+        );
+        // This test case is odd: The system under test does NOT
+        // return 'target' at all if there is no such translation.
+        // @todo: Either change / fix subject, or adapt test and test name!
+        $this->assertNull($localLang['fr']['label1'][0]['target'] ?? null);
+        $this->assertNull($localLang['fr']['label2'][0]['target'] ?? null);
+        $this->assertNull($localLang['fr']['label3'][0]['target'] ?? null);
     }
 
     /**
