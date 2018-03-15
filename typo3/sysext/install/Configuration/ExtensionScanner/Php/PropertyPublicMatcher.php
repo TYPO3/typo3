@@ -361,4 +361,19 @@ return [
             'Deprecation-84289-UseServerRequestInterfaceInFileCreateFolderController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\File\EditFileController->origTarget' => [
+        'restFiles' => [
+            'Deprecation-84295-UseServerRequestInterfaceInFileEditFileController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\EditFileController->target' => [
+        'restFiles' => [
+            'Deprecation-84295-UseServerRequestInterfaceInFileEditFileController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\EditFileController->doc' => [
+        'restFiles' => [
+            'Deprecation-84295-UseServerRequestInterfaceInFileEditFileController.rst',
+        ],
+    ],
 ];

@@ -1927,4 +1927,11 @@ return [
             'Deprecation-84284-ProtectedMethodsAndPropertiesInContentElementElementInformationController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\File\EditFileController->target' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84295-UseServerRequestInterfaceInFileEditFileController.rst',
+        ],
+    ],
 ];

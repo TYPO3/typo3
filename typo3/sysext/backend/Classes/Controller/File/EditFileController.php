@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller\File;
 
 /*
@@ -18,11 +19,16 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
@@ -36,45 +42,59 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class EditFileController
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'origTarget' => 'Using $origTarget of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
+        'target' => 'Using $target of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
+        'returnUrl' => 'Using $returnUrl of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
+        'content' => 'Using $content of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
+        'title' => 'Using $title of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
+        'doc' => 'Using $doc of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
+    ];
     /**
      * Module content accumulated.
      *
      * @var string
      */
-    public $content;
+    protected $content;
 
     /**
      * @var string
      */
-    public $title;
+    protected $title;
 
     /**
      * Document template object
      *
      * @var DocumentTemplate
+     * @deprecated since v9, will be removed in v10, unused
      */
-    public $doc;
+    protected $doc;
 
     /**
      * Original input target
      *
      * @var string
      */
-    public $origTarget;
+    protected $origTarget;
 
     /**
      * The original target, but validated.
      *
      * @var string
      */
-    public $target;
+    protected $target;
 
     /**
      * Return URL of list module.
      *
      * @var string
      */
-    public $returnUrl;
+    protected $returnUrl;
 
     /**
      * the file that is being edited on
@@ -97,25 +117,43 @@ class EditFileController
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $GLOBALS['SOBE'] = $this;
-        $this->init();
+        // @deprecated since v9, will be moved out of __construct() in v10
+        $this->init($GLOBALS['TYPO3_REQUEST']);
+    }
+
+    /**
+     * Processes the request, currently everything is handled and put together via "main()"
+     *
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    {
+        if ($response = $this->main()) {
+            return $response;
+        }
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
      * Initialize script class
      *
+     * @param ServerRequestInterface $request
+     *
      * @throws InsufficientFileAccessPermissionsException
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
      */
-    protected function init()
+    protected function init(ServerRequestInterface $request): void
     {
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
         // Setting target, which must be a file reference to a file within the mounts.
-        $this->target = ($this->origTarget = ($fileIdentifier = GeneralUtility::_GP('target')));
-        $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
+        $this->target = $this->origTarget = $parsedBody['target'] ?? $queryParams['target'] ?? '';
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         // create the file object
-        if ($fileIdentifier) {
+        if ($this->target) {
             $this->fileObject = ResourceFactory::getInstance()
-                ->retrieveFileOrFolderObject($fileIdentifier);
+                ->retrieveFileOrFolderObject($this->target);
         }
         // Cleaning and checking target directory
         if (!$this->fileObject) {
@@ -140,7 +178,6 @@ class EditFileController
             );
 
         // Setting template object
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->moduleTemplate->addJavaScriptCode(
             'FileEditBackToList',
             'function backToList() {
@@ -151,9 +188,21 @@ class EditFileController
 
     /**
      * Main function, rendering the actual content of the editing page
+     *
+     * @return ResponseInterface|null Possible redirect response
      */
-    public function main()
+    public function main(): ?ResponseInterface
     {
+        // @deprecated Variable can be removed in v10
+        $deprecatedCaller = false;
+        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if (end($backtrace)['class'] !== __CLASS__) {
+            // @deprecated since TYPO3 v9, this method will be set to protected in v10
+            trigger_error('Method main() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            $deprecatedCaller = true;
+        }
+
         $dataColumnDefinition = [
             'label' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:file'))
                 . ' ' . htmlspecialchars($this->target),
@@ -177,14 +226,14 @@ class EditFileController
         }
 
         $assigns = [];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
         $assigns['fileName'] = $this->fileObject->getName();
 
         $extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
         try {
             if (!$extList || !GeneralUtility::inList($extList, $this->fileObject->getExtension())) {
+                // @todo throw a minor exception here, not the global one
                 throw new \Exception('Files with that extension are not editable. Allowed extensions are: ' . $extList, 1476050135);
             }
 
@@ -239,13 +288,18 @@ class EditFileController
 
             $assigns['form'] = $form;
         } catch (\Exception $e) {
+            // @todo catch dedicated exceptions, not the global one, if possible
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', FlashMessage::ERROR, true);
 
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
 
-            HttpUtility::redirect($this->returnUrl, HttpUtility::HTTP_STATUS_500);
+            if ($deprecatedCaller === true) {
+                HttpUtility::redirect($this->returnUrl, HttpUtility::HTTP_STATUS_500);
+            } else {
+                return new RedirectResponse($this->returnUrl, HttpUtility::HTTP_STATUS_500);
+            }
         }
 
         // Rendering of the output via fluid
@@ -269,25 +323,18 @@ class EditFileController
 
         $this->content .= $pageContent;
         $this->moduleTemplate->setContent($this->content);
+        return null;
     }
 
     /**
-     * Processes the request, currently everything is handled and put together via "main()"
+     * Builds the buttons for the docheader and returns them as an
      *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
+     * @deprecated since TYPO3 v9, will be set protected in TYPO3 v10
      */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    public function getButtons(): void
     {
-        $this->main();
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
+        trigger_error('Method getButtons() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
 
-    /**
-     * Builds the buttons for the docheader and returns them as an array
-     */
-    public function getButtons()
-    {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         $lang = $this->getLanguageService();
@@ -344,9 +391,9 @@ class EditFileController
     /**
      * Returns LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
@@ -354,9 +401,9 @@ class EditFileController
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
