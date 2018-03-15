@@ -1,0 +1,13 @@
+<div class="typo3-adminPanel-form-group-checkbox">
+    <input type="hidden" name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]" value="0"/>
+    <label for="preview_showHiddenRecords">
+        <input type="checkbox"
+               id="preview_showHiddenRecords"
+               name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]"
+               value="1"
+               {f:if(condition: '{showHiddenRecords}', then:'checked="checked"')}
+        />
+        <f:translate
+                key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:showHiddenRecords"/>
+    </label>
+</div>

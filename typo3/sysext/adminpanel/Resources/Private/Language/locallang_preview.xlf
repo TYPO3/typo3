@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file t3:id="1520838433" source-language="en" datatype="plaintext" original="messages" date="2018-03-13T08:08:00Z"
+          product-name="adminpanel">
+        <header/>
+
+        <body>
+            <trans-unit id="module.label">
+                <source>Preview</source>
+            </trans-unit>
+            <trans-unit id="showHiddenPages">
+                <source>Show hidden pages</source>
+            </trans-unit>
+            <trans-unit id="showHiddenRecords">
+                <source>Show hidden records</source>
+            </trans-unit>
+            <trans-unit id="showFluidDebug">
+                <source>Show fluid debug output</source>
+            </trans-unit>
+            <trans-unit id="simulateDate">
+                <source>Simulate time</source>
+            </trans-unit>
+            <trans-unit id="simulateUserGroup">
+                <source>Simulate user group</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -9,24 +9,6 @@
 			<trans-unit id="adminPanelTitle">
 				<source>TYPO3 ADMIN PANEL</source>
 			</trans-unit>
-			<trans-unit id="preview">
-				<source>Preview</source>
-			</trans-unit>
-			<trans-unit id="preview_showHiddenPages">
-				<source>Show hidden pages</source>
-			</trans-unit>
-			<trans-unit id="preview_showHiddenRecords">
-				<source>Show hidden records</source>
-			</trans-unit>
-			<trans-unit id="preview_showFluidDebug">
-				<source>Show fluid debug output</source>
-			</trans-unit>
-			<trans-unit id="preview_simulateDate">
-				<source>Simulate time</source>
-			</trans-unit>
-			<trans-unit id="preview_simulateUserGroup">
-				<source>Simulate user group</source>
-			</trans-unit>
 			<trans-unit id="publish">
 				<source>Publish</source>
 			</trans-unit>
