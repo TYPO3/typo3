@@ -27,11 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class MethodCallMatcherTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @test
      */
     public function hitsFromFixtureAreFound()
@@ -112,7 +107,7 @@ EOC;
     /**
      * @return array
      */
-    public function matchesReturnsExpectedRestFilesDataProvider()
+    public function matchesReturnsExpectedRestFilesDataProvider(): array
     {
         return [
             'two rest candidates with same number of arguments' => [
@@ -314,6 +309,9 @@ EOC;
     /**
      * @test
      * @dataProvider matchesReturnsExpectedRestFilesDataProvider
+     * @param array $configuration
+     * @param string $phpCode
+     * @param array $expected
      */
     public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected)
     {
@@ -327,6 +325,10 @@ EOC;
         $traverser->traverse($statements);
 
         $result = $subject->getMatches();
-        $this->assertEquals($expected[0]['restFiles'], $result[0]['restFiles']);
+        if (isset($expected[0], $result[0])) {
+            $this->assertEquals($expected[0]['restFiles'], $result[0]['restFiles']);
+        } else {
+            $this->assertEquals($expected, $result);
+        }
     }
 }
