@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller;
 
 /*
@@ -21,6 +22,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Exception;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -28,6 +30,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -96,22 +99,26 @@ class LoginController implements LoggerAwareInterface
      */
     public function __construct()
     {
+        // @deprecated since v9, will be obsolete in v10
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
         $this->validateAndSortLoginProviders();
 
         // We need a PHP session session for most login levels
         session_start();
-        $this->redirectUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect_url'));
-        $this->loginProviderIdentifier = $this->detectLoginProvider();
+        $this->redirectUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['redirect_url'] ?? $queryParams['redirect_url'] ?? null);
+        $this->loginProviderIdentifier = $this->detectLoginProvider($request);
 
-        $this->loginRefresh = (bool)GeneralUtility::_GP('loginRefresh');
+        $this->loginRefresh = (bool)($parsedBody['loginRefresh'] ?? $queryParams['loginRefresh'] ?? false);
         // Value of "Login" button. If set, the login button was pressed.
-        $this->submitValue = GeneralUtility::_GP('commandLI');
-
+        $this->submitValue = $parsedBody['commandLI'] ?? $queryParams['commandLI'] ?? null;
         // Try to get the preferred browser language
         /** @var Locales $locales */
         $locales = GeneralUtility::makeInstance(Locales::class);
+        $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'];
         $preferredBrowserLanguage = $locales
-            ->getPreferredClientLanguage(GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
+            ->getPreferredClientLanguage($httpAcceptLanguage);
 
         // If we found a $preferredBrowserLanguage and it is not the default language and no be_user is logged in
         // initialize $this->getLanguageService() again with $preferredBrowserLanguage
@@ -131,7 +138,7 @@ class LoginController implements LoggerAwareInterface
         }
 
         // If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
-        if (GeneralUtility::_GP('L') === 'OUT' && is_object($this->getBackendUserAuthentication())) {
+        if (($parsedBody['L'] ?? $queryParams['L'] ?? null) === 'OUT' && is_object($this->getBackendUserAuthentication())) {
             $this->getBackendUserAuthentication()->logoff();
             HttpUtility::redirect($this->redirectUrl);
         }
@@ -148,7 +155,7 @@ class LoginController implements LoggerAwareInterface
      */
     public function formAction(ServerRequestInterface $request): ResponseInterface
     {
-        return new HtmlResponse($this->main());
+        return new HtmlResponse($this->createLoginLogoutForm($request));
     }
 
     /**
@@ -156,8 +163,22 @@ class LoginController implements LoggerAwareInterface
      *
      * @throws Exception
      * @return string The content to output
+     * @deprecated since v9, will be removed in v10
      */
-    public function main()
+    public function main(): string
+    {
+        trigger_error('Method main() will be replaced by protected method createLoginLogoutForm() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        return $this->createLoginLogoutForm($GLOBALS['TYPO3_REQUEST']);
+    }
+
+    /**
+     * Main function - creating the login/logout form
+     *
+     * @param ServerRequestInterface $request
+     * @return string $content
+     * @throws Exception
+     */
+    protected function createLoginLogoutForm(ServerRequestInterface $request): string
     {
         /** @var $pageRenderer PageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -165,7 +186,7 @@ class LoginController implements LoggerAwareInterface
 
         // Checking, if we should make a redirect.
         // Might set JavaScript in the header to close window.
-        $this->checkRedirect();
+        $this->checkRedirect($request);
 
         // Extension Configuration
         $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend');
@@ -235,7 +256,7 @@ class LoginController implements LoggerAwareInterface
         $formType = empty($this->getBackendUserAuthentication()->user['uid']) ? 'LoginForm' : 'LogoutForm';
         $this->view->assignMultiple([
             'backendUser' => $this->getBackendUserAuthentication()->user,
-            'hasLoginError' => $this->isLoginInProgress(),
+            'hasLoginError' => $this->isLoginInProgress($request),
             'formType' => $formType,
             'logo' => $logo,
             'images' => [
@@ -250,7 +271,7 @@ class LoginController implements LoggerAwareInterface
         ]);
 
         // Initialize interface selectors:
-        $this->makeInterfaceSelectorBox();
+        $this->makeInterfaceSelector($request);
 
         /** @var LoginProviderInterface $loginProvider */
         $loginProvider = GeneralUtility::makeInstance($this->loginProviders[$this->loginProviderIdentifier]['provider']);
@@ -272,14 +293,15 @@ class LoginController implements LoggerAwareInterface
      *   a) if either the login is just done (isLoginInProgress) or
      *   b) a loginRefresh is done
      *
+     * @param ServerRequestInterface $request
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      */
-    protected function checkRedirect()
+    protected function checkRedirect(ServerRequestInterface $request): void
     {
         if (
             empty($this->getBackendUserAuthentication()->user['uid'])
-            && ($this->isLoginInProgress() || !$this->loginRefresh)
+            && ($this->isLoginInProgress($request) || !$this->loginRefresh)
         ) {
             return;
         }
@@ -305,18 +327,17 @@ class LoginController implements LoggerAwareInterface
         $redirectToUrl = (string)$this->getBackendUserAuthentication()->getTSConfigVal('auth.BE.redirectToURL');
         if (empty($redirectToUrl)) {
             // Based on the interface we set the redirect script
-            switch (GeneralUtility::_GP('interface')) {
+            $parsedBody = $request->getParsedBody();
+            $queryParams = $request->getQueryParams();
+            $interface = $parsedBody['interface'] ?? $queryParams['interface'] ?? '';
+            switch ($interface) {
                 case 'frontend':
-                    $interface = 'frontend';
                     $this->redirectToURL = '../';
                     break;
                 case 'backend':
-                    $interface = 'backend';
                     $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                     $this->redirectToURL = (string)$uriBuilder->buildUriFromRoute('main');
                     break;
-                default:
-                    $interface = '';
             }
         } else {
             $this->redirectToURL = $redirectToUrl;
@@ -346,12 +367,24 @@ class LoginController implements LoggerAwareInterface
     }
 
     /**
-     * Making interface selector:
+     * Making interface selector
+     *
+     * @deprecated since v9, will be removed in v10
      */
-    public function makeInterfaceSelectorBox()
+    public function makeInterfaceSelectorBox(): void
+    {
+        trigger_error('Method makeInterfaceSelectorBox() will be replaced by protected method makeInterfaceSelector() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->makeInterfaceSelector($GLOBALS['TYPO3_REQUEST']);
+    }
+
+    /**
+     * Making interface selector
+     * @param ServerRequestInterface $request
+     */
+    protected function makeInterfaceSelector(ServerRequestInterface $request): void
     {
         // If interfaces are defined AND no input redirect URL in GET vars:
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->isLoginInProgress() || !$this->redirectUrl)) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->isLoginInProgress($request) || !$this->redirectUrl)) {
             $parts = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
             if (count($parts) > 1) {
                 // Only if more than one interface is defined we will show the selector
@@ -385,7 +418,7 @@ class LoginController implements LoggerAwareInterface
      *
      * @return array An array of login news.
      */
-    protected function getSystemNews()
+    protected function getSystemNews(): array
     {
         $systemNewsTable = 'sys_news';
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -416,7 +449,7 @@ class LoginController implements LoggerAwareInterface
      * @return string Returns the filename of $filename if valid, otherwise blank string.
      * @internal
      */
-    private function getUriForFileName($filename)
+    private function getUriForFileName($filename): string
     {
         // Check if it's already a URL
         if (preg_match('/^(https?:)?\/\//', $filename)) {
@@ -433,11 +466,14 @@ class LoginController implements LoggerAwareInterface
     /**
      * Checks if login credentials are currently submitted
      *
+     * @param ServerRequestInterface $request
      * @return bool
      */
-    protected function isLoginInProgress()
+    protected function isLoginInProgress(ServerRequestInterface $request): bool
     {
-        $username = GeneralUtility::_GP('username');
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        $username = $parsedBody['username'] ?? $queryParams['username'] ?? null;
         return !empty($username) || !empty($this->submitValue);
     }
 
@@ -497,11 +533,14 @@ class LoginController implements LoggerAwareInterface
      * Detect the login provider, get from request or choose the
      * first one as default
      *
+     * @param ServerRequestInterface $request
      * @return string
      */
-    protected function detectLoginProvider()
+    protected function detectLoginProvider(ServerRequestInterface $request): string
     {
-        $loginProvider = GeneralUtility::_GP('loginProvider');
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        $loginProvider = $parsedBody['loginProvider'] ?? $queryParams['loginProvider'] ?? '';
         if ((empty($loginProvider) || !isset($this->loginProviders[$loginProvider])) && !empty($_COOKIE['be_lastLoginProvider'])) {
             $loginProvider = $_COOKIE['be_lastLoginProvider'];
         }
@@ -510,9 +549,11 @@ class LoginController implements LoggerAwareInterface
             $loginProvider = key($this->loginProviders);
         }
         // Use the secure option when the current request is served by a secure connection:
-        $cookieSecure = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] && GeneralUtility::getIndpEnv('TYPO3_SSL');
-        setcookie('be_lastLoginProvider', $loginProvider, $GLOBALS['EXEC_TIME'] + 7776000, null, null, $cookieSecure, true); // 90 days
-        return $loginProvider;
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        $isHttps = $normalizedParams->isHttps();
+        $cookieSecure = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] && $isHttps;
+        setcookie('be_lastLoginProvider', (string)$loginProvider, $GLOBALS['EXEC_TIME'] + 7776000, '', '', $cookieSecure, true); // 90 days
+        return (string)$loginProvider;
     }
 
     /**
@@ -526,9 +567,9 @@ class LoginController implements LoggerAwareInterface
     /**
      * Returns LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
@@ -536,7 +577,7 @@ class LoginController implements LoggerAwareInterface
     /**
      * @return BackendUserAuthentication
      */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
@@ -544,9 +585,9 @@ class LoginController implements LoggerAwareInterface
     /**
      * Returns an instance of DocumentTemplate
      *
-     * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @return DocumentTemplate
      */
-    protected function getDocumentTemplate()
+    protected function getDocumentTemplate(): DocumentTemplate
     {
         return $GLOBALS['TBE_TEMPLATE'];
     }

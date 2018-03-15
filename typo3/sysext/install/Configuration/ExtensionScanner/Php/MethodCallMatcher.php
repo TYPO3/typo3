@@ -1934,4 +1934,11 @@ return [
             'Deprecation-84295-UseServerRequestInterfaceInFileEditFileController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\LoginController->makeInterfaceSelectorBox' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84274-ProtectedMethodsAndPropertiesInLoginController.rst',
+        ],
+    ],
 ];
