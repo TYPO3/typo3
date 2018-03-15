@@ -1,11 +1,11 @@
 <f:if condition="{isEnabled} == 1">
     <div class="typo3-adminPanel-form-group">
-        <f:render partial="Modules/TsDebug/Tree" arguments="{_all}"/>
-        <f:render partial="Modules/TsDebug/DisplayTimes" arguments="{_all}"/>
-        <f:render partial="Modules/TsDebug/DisplayMessages" arguments="{_all}"/>
-        <f:render partial="Modules/TsDebug/TrackContentRendering" arguments="{_all}"/>
-        <f:render partial="Modules/TsDebug/DisplayContent" arguments="{_all}"/>
-        <f:render partial="Modules/TsDebug/ForceTemplateParsing" arguments="{_all}"/>
-        <f:render partial="Modules/TsDebug/TypoScriptLog" arguments="{_all}"/>
+        <f:render partial="Modules/TsDebug/Tree" debug="false" arguments="{_all}"/>
+        <f:render partial="Modules/TsDebug/DisplayTimes" debug="false" arguments="{_all}"/>
+        <f:render partial="Modules/TsDebug/DisplayMessages" debug="false" arguments="{_all}"/>
+        <f:render partial="Modules/TsDebug/TrackContentRendering" debug="false" arguments="{_all}"/>
+        <f:render partial="Modules/TsDebug/DisplayContent" debug="false" arguments="{_all}"/>
+        <f:render partial="Modules/TsDebug/ForceTemplateParsing" debug="false" arguments="{_all}"/>
+        <f:render partial="Modules/TsDebug/TypoScriptLog" debug="false" arguments="{_all}"/>
     </div>
 </f:if>

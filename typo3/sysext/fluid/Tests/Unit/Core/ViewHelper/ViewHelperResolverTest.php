@@ -17,7 +17,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesViewHelper;
-use TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper;
 
 /**
  * Test case

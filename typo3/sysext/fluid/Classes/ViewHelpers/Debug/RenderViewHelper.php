@@ -43,6 +43,7 @@ class RenderViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerArgument('debug', 'boolean', 'If true, the admin panel shows debug information if activated,', false, true);
         $this->registerArgument('section', 'string', 'Section to render - combine with partial to render section in partial', false, null);
         $this->registerArgument('partial', 'string', 'Partial to render, with or without section', false, null);
         $this->registerArgument('arguments', 'array', 'Array of variables to be transferred. Use {_all} for all variables', false, []);
@@ -59,6 +60,7 @@ class RenderViewHelper extends AbstractViewHelper
      */
     public function render()
     {
+        $isDebug = $this->arguments['debug'];
         $section = $this->arguments['section'];
         $partial = $this->arguments['partial'];
         $arguments = (array)$this->arguments['arguments'];
@@ -81,6 +83,11 @@ class RenderViewHelper extends AbstractViewHelper
         // outside of this ViewHelper.
         if ($content === '') {
             $content = $this->arguments['default'] ?? $tagContent;
+        }
+
+        // if debug is disabled, return content
+        if (!$isDebug) {
+            return $content;
         }
 
         $cssRules = [];

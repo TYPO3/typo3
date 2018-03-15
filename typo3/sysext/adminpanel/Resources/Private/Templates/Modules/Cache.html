@@ -1,6 +1,6 @@
 <f:if condition="{isEnabled} == 1">
-    <f:render partial="Modules/Cache/NoCache" arguments="{_all}"/>
-    <f:render partial="Modules/Cache/ClearLevels" arguments="{_all}"/>
-    <f:render partial="Modules/Cache/UpdateButton" arguments="{_all}"/>
-    <f:render partial="Modules/Cache/ClearCacheButton"/>
+    <f:render partial="Modules/Cache/NoCache" debug="false" arguments="{_all}"/>
+    <f:render partial="Modules/Cache/ClearLevels" debug="false" arguments="{_all}"/>
+    <f:render partial="Modules/Cache/UpdateButton" debug="false" arguments="{_all}"/>
+    <f:render partial="Modules/Cache/ClearCacheButton" debug="false"/>
 </f:if>
