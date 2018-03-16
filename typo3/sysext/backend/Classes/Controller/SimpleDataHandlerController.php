@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller;
 
 /*
@@ -18,6 +19,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -37,19 +40,37 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class SimpleDataHandlerController
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * Properties which have been moved to protected status from public
+     *
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'flags' => 'Using $flags of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
+        'data' => 'Using $data of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
+        'cmd' => 'Using $cmd of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
+        'mirror' => 'Using $mirror of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
+        'cacheCmd' => 'Using $cacheCmd of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
+        'redirect' => 'Using $redirect of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
+        'CB' => 'Using $CB of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
+        'tce' => 'Using $tce of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
+    ];
+
     /**
      * Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (bool).
      *
      * @var array
      */
-    public $flags;
+    protected $flags;
 
     /**
      * Data array on the form [tablename][uid][fieldname] = value
      *
      * @var array
      */
-    public $data;
+    protected $data;
 
     /**
      * Command array on the form [tablename][uid][command] = value.
@@ -57,149 +78,66 @@ class SimpleDataHandlerController
      *
      * @var array
      */
-    public $cmd;
+    protected $cmd;
 
     /**
      * Array passed to ->setMirror.
      *
      * @var array
      */
-    public $mirror;
+    protected $mirror;
 
     /**
      * Cache command sent to ->clear_cacheCmd
      *
      * @var string
      */
-    public $cacheCmd;
+    protected $cacheCmd;
 
     /**
      * Redirect URL. Script will redirect to this location after performing operations (unless errors has occurred)
      *
      * @var string
      */
-    public $redirect;
+    protected $redirect;
 
     /**
      * Clipboard command array. May trigger changes in "cmd"
      *
      * @var array
      */
-    public $CB;
+    protected $CB;
 
     /**
      * TYPO3 Core Engine
      *
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
      */
-    public $tce;
+    protected $tce;
 
     /**
      * Constructor
      */
     public function __construct()
     {
+        // @deprecated since v9, will be obsolete in v10 with removal of init()
+        $request = $GLOBALS['TYPO3_REQUEST'];
         $GLOBALS['SOBE'] = $this;
-        $this->init();
-    }
-
-    /**
-     * Initialization of the class
-     */
-    public function init()
-    {
-        $beUser = $this->getBackendUser();
-        // GPvars:
-        $this->flags = GeneralUtility::_GP('flags');
-        $this->data = GeneralUtility::_GP('data');
-        $this->cmd = GeneralUtility::_GP('cmd');
-        $this->mirror = GeneralUtility::_GP('mirror');
-        $this->cacheCmd = GeneralUtility::_GP('cacheCmd');
-        $this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
-        $this->CB = GeneralUtility::_GP('CB');
-        // Creating DataHandler object
-        $this->tce = GeneralUtility::makeInstance(DataHandler::class);
-        // Configuring based on user prefs.
-        if ($beUser->uc['recursiveDelete']) {
-            // TRUE if the delete Recursive flag is set.
-            $this->tce->deleteTree = 1;
-        }
-        if ($beUser->uc['copyLevels']) {
-            // Set to number of page-levels to copy.
-            $this->tce->copyTree = MathUtility::forceIntegerInRange($beUser->uc['copyLevels'], 0, 100);
-        }
-        if ($beUser->uc['neverHideAtCopy']) {
-            $this->tce->neverHideAtCopy = 1;
-        }
-        $TCAdefaultOverride = $beUser->getTSConfigProp('TCAdefaults');
-        if (is_array($TCAdefaultOverride)) {
-            $this->tce->setDefaultsFromUserTS($TCAdefaultOverride);
-        }
-        // Reverse order.
-        if ($this->flags['reverseOrder']) {
-            $this->tce->reverseOrder = 1;
-        }
-    }
-
-    /**
-     * Clipboard pasting and deleting.
-     */
-    public function initClipboard()
-    {
-        if (is_array($this->CB)) {
-            $clipObj = GeneralUtility::makeInstance(Clipboard::class);
-            $clipObj->initializeClipboard();
-            if ($this->CB['paste']) {
-                $clipObj->setCurrentPad($this->CB['pad']);
-                $this->cmd = $clipObj->makePasteCmdArray(
-                    $this->CB['paste'],
-                    $this->cmd,
-                    $this->CB['update'] ?? null
-                );
-            }
-            if ($this->CB['delete']) {
-                $clipObj->setCurrentPad($this->CB['pad']);
-                $this->cmd = $clipObj->makeDeleteCmdArray($this->cmd);
-            }
-        }
-    }
-
-    /**
-     * Executing the posted actions ...
-     */
-    public function main()
-    {
-        // LOAD DataHandler with data and cmd arrays:
-        $this->tce->start($this->data, $this->cmd);
-        if (is_array($this->mirror)) {
-            $this->tce->setMirror($this->mirror);
-        }
-        // Register uploaded files
-        $this->tce->process_uploads($_FILES);
-        // Execute actions:
-        $this->tce->process_datamap();
-        $this->tce->process_cmdmap();
-        // Clearing cache:
-        if (!empty($this->cacheCmd)) {
-            $this->tce->clear_cacheCmd($this->cacheCmd);
-        }
-        // Update page tree?
-        if (isset($this->data['pages']) || isset($this->cmd['pages'])) {
-            BackendUtility::setUpdateSignal('updatePageTree');
-        }
+        // @deprecated since v9, will be moved out of __construct() in v10
+        $this->init($request);
     }
 
     /**
      * Injects the request object for the current request or subrequest
-     * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
+     * As this controller goes only through the processRequest() method, it just redirects to the given URL afterwards.
      *
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->initClipboard();
-        $this->main();
+        $this->initializeClipboard();
+        $this->processRequest();
 
         // Write errors to flash message queue
         $this->tce->printLogErrorMessages();
@@ -218,8 +156,8 @@ class SimpleDataHandlerController
     public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
         // do the regular / main logic
-        $this->initClipboard();
-        $this->main();
+        $this->initializeClipboard();
+        $this->processRequest();
 
         /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
@@ -250,11 +188,132 @@ class SimpleDataHandlerController
     }
 
     /**
+     * Initialization of the class
+     *
+     * @param ServerRequestInterface $request
+     */
+    public function init(ServerRequestInterface $request = null): void
+    {
+        if ($request === null) {
+            // Method signature in v10: protected function init(ServerRequestInterface $request)
+            trigger_error('Method init() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        }
+
+        $beUser = $this->getBackendUser();
+
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
+        // GPvars:
+        $this->flags = $parsedBody['flags'] ?? $queryParams['flags'] ?? null;
+        $this->data = $parsedBody['data'] ?? $queryParams['data'] ?? null;
+        $this->cmd = $parsedBody['cmd'] ?? $queryParams['cmd'] ?? null;
+        $this->mirror = $parsedBody['mirror'] ?? $queryParams['mirror'] ?? null;
+        $this->cacheCmd = $parsedBody['cacheCmd'] ?? $queryParams['cacheCmd'] ?? null;
+        $redirect = $parsedBody['redirect'] ?? $queryParams['redirect'] ?? '';
+        $this->redirect = GeneralUtility::sanitizeLocalUrl($redirect);
+        $this->CB = $parsedBody['CB'] ?? $queryParams['CB'] ?? null;
+        // Creating DataHandler object
+        $this->tce = GeneralUtility::makeInstance(DataHandler::class);
+        // Configuring based on user prefs.
+        if ($beUser->uc['recursiveDelete']) {
+            // TRUE if the delete Recursive flag is set.
+            $this->tce->deleteTree = 1;
+        }
+        if ($beUser->uc['copyLevels']) {
+            // Set to number of page-levels to copy.
+            $this->tce->copyTree = MathUtility::forceIntegerInRange($beUser->uc['copyLevels'], 0, 100);
+        }
+        if ($beUser->uc['neverHideAtCopy']) {
+            $this->tce->neverHideAtCopy = 1;
+        }
+        $TCAdefaultOverride = $beUser->getTSConfigProp('TCAdefaults');
+        if (is_array($TCAdefaultOverride)) {
+            $this->tce->setDefaultsFromUserTS($TCAdefaultOverride);
+        }
+        // Reverse order.
+        if ($this->flags['reverseOrder']) {
+            $this->tce->reverseOrder = 1;
+        }
+    }
+
+    /**
+     * Clipboard pasting and deleting.
+     *
+     * @deprecated since v9, will be removed in v10
+     */
+    public function initClipboard()
+    {
+        trigger_error('Method initClipboard() will be replaced by protected method initializeClipboard() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->initializeClipboard();
+    }
+
+    /**
+     * Executing the posted actions ...
+     *
+     * @deprecated since v9, will be removed in v10
+     */
+    public function main()
+    {
+        trigger_error('Method main() will be replaced by protected method processRequest() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->processRequest();
+    }
+
+    /**
+     * Clipboard pasting and deleting.
+     */
+    protected function initializeClipboard(): void
+    {
+        if (is_array($this->CB)) {
+            $clipObj = GeneralUtility::makeInstance(Clipboard::class);
+            $clipObj->initializeClipboard();
+            if ($this->CB['paste']) {
+                $clipObj->setCurrentPad($this->CB['pad']);
+                $this->cmd = $clipObj->makePasteCmdArray(
+                    $this->CB['paste'],
+                    $this->cmd,
+                    $this->CB['update'] ?? null
+                );
+            }
+            if ($this->CB['delete']) {
+                $clipObj->setCurrentPad($this->CB['pad']);
+                $this->cmd = $clipObj->makeDeleteCmdArray($this->cmd);
+            }
+        }
+    }
+
+    /**
+     * Executing the posted actions ...
+     */
+    protected function processRequest(): void
+    {
+        // LOAD DataHandler with data and cmd arrays:
+        $this->tce->start($this->data, $this->cmd);
+        if (is_array($this->mirror)) {
+            $this->tce->setMirror($this->mirror);
+        }
+        // Register uploaded files
+        $this->tce->process_uploads($_FILES);
+        // Execute actions:
+        $this->tce->process_datamap();
+        $this->tce->process_cmdmap();
+        // Clearing cache:
+        if (!empty($this->cacheCmd)) {
+            $this->tce->clear_cacheCmd($this->cacheCmd);
+        }
+        // Update page tree?
+        if (isset($this->data['pages']) || isset($this->cmd['pages'])) {
+            BackendUtility::setUpdateSignal('updatePageTree');
+        }
+    }
+
+    /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

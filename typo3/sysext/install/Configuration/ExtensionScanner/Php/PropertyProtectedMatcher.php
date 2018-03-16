@@ -492,4 +492,24 @@ return [
             'Deprecation-84327-DeprecatedPublicMethodsAndPropertiesInWizardEditController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->flags' => [
+        'restFiles' => [
+            'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->mirror' => [
+        'restFiles' => [
+            'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->cacheCmd' => [
+        'restFiles' => [
+            'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->CB' => [
+        'restFiles' => [
+            'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
+        ],
+    ],
 ];

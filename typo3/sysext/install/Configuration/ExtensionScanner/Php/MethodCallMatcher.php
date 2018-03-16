@@ -1962,4 +1962,11 @@ return [
             'Deprecation-84324-UseServerRequestInterfaceInFileFileController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->initClipboard' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
+        ],
+    ],
 ];
