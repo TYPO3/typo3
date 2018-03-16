@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 
 /*
@@ -14,16 +15,17 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Backend\PdoBackend;
+use TYPO3\CMS\Core\Cache\Exception;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for the PDO cache backend
  */
-class PdoBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class PdoBackendTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * Sets up this testcase
      */
@@ -39,10 +41,10 @@ class PdoBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function setThrowsExceptionIfNoFrontEndHasBeenSet()
     {
-        $this->expectException(\TYPO3\CMS\Core\Cache\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1259515600);
 
-        $backend = new \TYPO3\CMS\Core\Cache\Backend\PdoBackend('Testing');
+        $backend = new PdoBackend('Testing');
         $data = 'Some data';
         $identifier = 'MyIdentifier';
         $backend->set($identifier, $data);
@@ -218,11 +220,11 @@ class PdoBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function flushRemovesOnlyOwnEntries()
     {
-        $thisCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
+        $thisCache = $this->createMock(FrontendInterface::class);
         $thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
         $thisBackend = $this->setUpBackend();
         $thisBackend->setCache($thisCache);
-        $thatCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
+        $thatCache = $this->createMock(FrontendInterface::class);
         $thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
         $thatBackend = $this->setUpBackend();
         $thatBackend->setCache($thatCache);
@@ -279,9 +281,9 @@ class PdoBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function setUpBackend()
     {
-        $mockCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
+        $mockCache = $this->createMock(FrontendInterface::class);
         $mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('TestCache'));
-        $backend = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\Backend\PdoBackend::class, 'Testing');
+        $backend = GeneralUtility::makeInstance(PdoBackend::class, 'Testing');
         $backend->setCache($mockCache);
         $backend->setDataSourceName('sqlite::memory:');
         $backend->initializeObject();
