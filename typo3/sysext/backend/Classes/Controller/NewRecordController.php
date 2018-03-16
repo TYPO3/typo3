@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller;
 
 /*
@@ -22,10 +23,14 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView;
 use TYPO3\CMS\Backend\Tree\View\PagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,15 +43,41 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class NewRecordController
 {
-    /**
-     * @var array
-     */
-    public $pageinfo;
+    use PublicPropertyDeprecationTrait;
 
     /**
      * @var array
      */
-    public $pidInfo;
+    protected $deprecatedPublicProperties = [
+        'pageinfo' => 'Using $pageinfo of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'pidInfo' => 'Using $pidInfo of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'newPagesInto' => 'Using $newPagesInto of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'newContentInto' => 'Using $newContentInto of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'newPagesAfter' => 'Using $newPagesAfter of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'web_list_modTSconfig' => 'Using $web_list_modTSconfig of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'allowedNewTables' => 'Using $allowedNewTables of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'deniedNewTables' => 'Using $deniedNewTables of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'web_list_modTSconfig_pid' => 'Using $web_list_modTSconfig_pid of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'allowedNewTables_pid' => 'Using $allowedNewTables_pid of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'deniedNewTables_pid' => 'Using $deniedNewTables_pid of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'code' => 'Using $code of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'R_URI' => 'Using $R_URI of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'returnUrl' => 'Using $returnUrl of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'pagesOnly' => 'Using $pagesOnly of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'perms_clause' => 'Using $perms_clause of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'content' => 'Using $content of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+        'tRows' => 'Using $tRows of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $pageinfo = [];
+
+    /**
+     * @var array
+     */
+    protected $pidInfo = [];
 
     /**
      * @var array
@@ -56,17 +87,17 @@ class NewRecordController
     /**
      * @var int
      */
-    public $newPagesInto;
+    protected $newPagesInto;
 
     /**
      * @var int
      */
-    public $newContentInto;
+    protected $newContentInto;
 
     /**
      * @var int
      */
-    public $newPagesAfter;
+    protected $newPagesAfter;
 
     /**
      * Determines, whether "Select Position" for new page should be shown
@@ -78,76 +109,79 @@ class NewRecordController
     /**
      * @var array
      */
-    public $web_list_modTSconfig;
+    protected $web_list_modTSconfig;
 
     /**
      * @var array
      */
-    public $allowedNewTables;
+    protected $allowedNewTables;
 
     /**
      * @var array
      */
-    public $deniedNewTables;
+    protected $deniedNewTables;
 
     /**
      * @var array
      */
-    public $web_list_modTSconfig_pid;
+    protected $web_list_modTSconfig_pid;
 
     /**
      * @var array
      */
-    public $allowedNewTables_pid;
+    protected $allowedNewTables_pid;
 
     /**
      * @var array
      */
-    public $deniedNewTables_pid;
+    protected $deniedNewTables_pid;
 
     /**
      * @var string
      */
-    public $code;
+    protected $code;
 
     /**
      * @var string
      */
-    public $R_URI;
+    protected $R_URI;
 
     /**
      * @var int
+     *
+     * @see \TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView::expandNext()
+     * @internal
      */
     public $id;
 
     /**
      * @var string
      */
-    public $returnUrl;
+    protected $returnUrl;
 
     /**
      * pagesOnly flag.
      *
      * @var int
      */
-    public $pagesOnly;
+    protected $pagesOnly;
 
     /**
      * @var string
      */
-    public $perms_clause;
+    protected $perms_clause;
 
     /**
      * Accumulated HTML output
      *
      * @var string
      */
-    public $content;
+    protected $content;
 
     /**
      * @var array
      */
-    public $tRows;
+    protected $tRows;
 
     /**
      * ModuleTemplate object
@@ -162,15 +196,142 @@ class NewRecordController
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $GLOBALS['SOBE'] = $this;
         $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
-        $this->init();
+
+        // @see \TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView::expandNext()
+        $GLOBALS['SOBE'] = $this;
+
+        // @deprecated since v9, will be moved out of __construct() in v10
+        $this->init($GLOBALS['TYPO3_REQUEST']);
+    }
+
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     *
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $response = $this->renderContent();
+
+        if (empty($response)) {
+            $response = new HtmlResponse($this->moduleTemplate->renderContent());
+        }
+
+        return $response;
+    }
+
+    /**
+     * Main processing, creating the list of new record tables to select from
+     *
+     * @deprecated since v9, will be removed in v10
+     */
+    public function main()
+    {
+        trigger_error('Method main() will be replaced by protected method renderContent() in v10. Do not call from other extension', E_USER_DEPRECATED);
+
+        $response = $this->renderContent();
+
+        if ($response instanceof RedirectResponse) {
+            HttpUtility::redirect($response->getHeaders()['location'][0]);
+        }
+    }
+
+    /**
+     * Creates the position map for pages wizard
+     *
+     * @deprecated since v9, will be removed in v10
+     */
+    public function pagesOnly()
+    {
+        trigger_error('Method pagesOnly() will be replaced by protected method renderPositionTree() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->renderPositionTree();
+    }
+
+    /**
+     * Create a regular new element (pages and records)
+     *
+     * @deprecated since v9, will be removed in v10
+     */
+    public function regularNew()
+    {
+        trigger_error('Method regularNew() will be replaced by protected method renderNewRecordControls() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->renderNewRecordControls();
+    }
+
+    /**
+     * User array sort function used by renderNewRecordControls
+     *
+     * @param string $a First array element for compare
+     * @param string $b First array element for compare
+     * @return int -1 for lower, 0 for equal, 1 for greater
+     * @deprecated since v9, will be removed in v10
+     */
+    public function sortNewRecordsByConfig($a, $b)
+    {
+        trigger_error('Method sortNewRecordsByConfig() will be replaced by protected method sortTableRows() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        return $this->sortTableRows($a, $b);
+    }
+
+    /**
+     * Links the string $code to a create-new form for a record in $table created on page $pid
+     *
+     * @param string $linkText Link text
+     * @param string $table Table name (in which to create new record)
+     * @param int $pid PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
+     * @param bool $addContentTable If $addContentTable is set, then a new tt_content record is created together with pages
+     * @return string The link.
+     * @deprecated since v9, will be removed in v10
+     */
+    public function linkWrap($linkText, $table, $pid, $addContentTable = false)
+    {
+        trigger_error('Method linkWrap() will be replaced by protected method renderLink() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        return $this->renderLink($linkText, $table, $pid, $addContentTable);
+    }
+
+    /**
+     * Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
+     *
+     * @param array $pid_row Record for parent page.
+     * @param string $checkTable Table name to check
+     * @return bool Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
+     * @deprecated since v9, will be removed in v10
+     */
+    public function isTableAllowedForThisPage($pid_row, $checkTable)
+    {
+        trigger_error('Method isTableAllowedForThisPage() will be replaced by protected method isTableAllowedOnPage() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        return $this->isTableAllowedOnPage($checkTable, $pid_row);
+    }
+
+    /**
+     * Returns TRUE if:
+     * - $allowedNewTables and $deniedNewTables are empty
+     * - the table is not found in $deniedNewTables and $allowedNewTables is not set or the $table tablename is found in
+     *   $allowedNewTables
+     *
+     * If $table tablename is found in $allowedNewTables and $deniedNewTables, $deniedNewTables
+     * has priority over $allowedNewTables.
+     *
+     * @param string $table Table name to test if in allowedTables
+     * @param array $allowedNewTables Array of new tables that are allowed.
+     * @param array $deniedNewTables Array of new tables that are not allowed.
+     * @return bool Returns TRUE if a link for creating new records should be displayed for $table
+     * @deprecated since v9, will be removed in v10
+     */
+    public function showNewRecLink($table, array $allowedNewTables = [], array $deniedNewTables = [])
+    {
+        trigger_error('Method showNewRecLink() will be replaced by protected method isRecordCreationAllowedForTable() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        return $this->isRecordCreationAllowedForTable($table, $allowedNewTables, $deniedNewTables);
     }
 
     /**
      * Constructor function for the class
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function init()
+    protected function init(ServerRequestInterface $request): void
     {
         $beUser = $this->getBackendUserAuthentication();
         // Page-selection permission clause (reading)
@@ -187,10 +348,12 @@ class NewRecordController
             }
         }
         // Setting GPvars:
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
         // The page id to operate from
-        $this->id = (int)GeneralUtility::_GP('id');
-        $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-        $this->pagesOnly = GeneralUtility::_GP('pagesOnly');
+        $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
+        $this->pagesOnly = $parsedBody['pagesOnly'] ?? $queryParams['pagesOnly'] ?? null;
         // Setting up the context sensitive menu:
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
@@ -219,7 +382,7 @@ class NewRecordController
         // If a page-record was returned, the user had read-access to the page.
         if ($this->pageinfo['uid']) {
             // Get record of parent page
-            $this->pidInfo = BackendUtility::getRecord('pages', $this->pageinfo['pid']);
+            $this->pidInfo = BackendUtility::getRecord('pages', $this->pageinfo['pid']) ?: [];
             // Checking the permissions for the user with regard to the parent page: Can he create new pages, new
             // content record, new page after?
             if ($beUser->doesUserHaveAccess($this->pageinfo, 8)) {
@@ -228,7 +391,7 @@ class NewRecordController
             if ($beUser->doesUserHaveAccess($this->pageinfo, 16)) {
                 $this->newContentInto = 1;
             }
-            if (($beUser->isAdmin() || is_array($this->pidInfo)) && $beUser->doesUserHaveAccess($this->pidInfo, 8)) {
+            if (($beUser->isAdmin() || !empty($this->pidInfo)) && $beUser->doesUserHaveAccess($this->pidInfo, 8)) {
                 $this->newPagesAfter = 1;
             }
         } elseif ($beUser->isAdmin()) {
@@ -245,22 +408,11 @@ class NewRecordController
     }
 
     /**
-     * Injects the request object for the current request or subrequest
-     * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->main();
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
      * Main processing, creating the list of new record tables to select from
+     *
+     * @return ResponseInterface|null
      */
-    public function main()
+    protected function renderContent(): ?ResponseInterface
     {
         // If there was a page - or if the user is admin (admins has access to the root) we proceed:
         if (!empty($this->pageinfo['uid']) || $this->getBackendUserAuthentication()->isAdmin()) {
@@ -295,10 +447,10 @@ class NewRecordController
                 true
             );
             // More init:
-            if (!$this->showNewRecLink('pages')) {
+            if (!$this->isRecordCreationAllowedForTable('pages')) {
                 $this->newPagesInto = 0;
             }
-            if (!$this->showNewRecLink('pages', $this->allowedNewTables_pid, $this->deniedNewTables_pid)) {
+            if (!$this->isRecordCreationAllowedForTable('pages', $this->allowedNewTables_pid, $this->deniedNewTables_pid)) {
                 $this->newPagesAfter = 0;
             }
             // Set header-HTML and return_url
@@ -311,10 +463,14 @@ class NewRecordController
             // GENERATE the HTML-output depending on mode (pagesOnly is the page wizard)
             // Regular new element:
             if (!$this->pagesOnly) {
-                $this->regularNew();
-            } elseif ($this->showNewRecLink('pages')) {
+                $this->renderNewRecordControls();
+            } elseif ($this->isRecordCreationAllowedForTable('pages')) {
                 // Pages only wizard
-                $this->pagesOnly();
+                $response = $this->renderPositionTree();
+
+                if (!empty($response)) {
+                    return $response;
+                }
             }
             // Add all the content to an output section
             $this->content .= '<div>' . $this->code . '</div>';
@@ -323,19 +479,21 @@ class NewRecordController
             // Build the <body> for the module
             $this->moduleTemplate->setContent($this->content);
         }
+
+        return null;
     }
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getButtons()
+    protected function getButtons(): void
     {
         $lang = $this->getLanguageService();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // Regular new element:
         if (!$this->pagesOnly) {
             // New page
-            if ($this->showNewRecLink('pages')) {
+            if ($this->isRecordCreationAllowedForTable('pages')) {
                 $newPageButton = $buttonBar->makeLinkButton()
                     ->setHref(GeneralUtility::linkThisScript(['pagesOnly' => '1']))
                     ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'))
@@ -345,7 +503,7 @@ class NewRecordController
             // CSH
             $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('new_regular');
             $buttonBar->addButton($cshButton);
-        } elseif ($this->showNewRecLink('pages')) {
+        } elseif ($this->isRecordCreationAllowedForTable('pages')) {
             // Pages only wizard
             // CSH
             $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_pages');
@@ -397,9 +555,11 @@ class NewRecordController
     }
 
     /**
-     * Creates the position map for pages wizard
+     * Renders the position map for pages wizard
+     *
+     * @return ResponseInterface|null
      */
-    public function pagesOnly()
+    protected function renderPositionTree(): ?ResponseInterface
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_language');
@@ -414,8 +574,8 @@ class NewRecordController
 
         if ($numberOfPages > 0) {
             $this->code .= '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('selectPosition')) . ':</h3>';
-            $positionMap = GeneralUtility::makeInstance(PagePositionMap::class, NewRecordPageTreeView::class);
             /** @var $positionMap \TYPO3\CMS\Backend\Tree\View\PagePositionMap */
+            $positionMap = GeneralUtility::makeInstance(PagePositionMap::class, NewRecordPageTreeView::class);
             $this->code .= $positionMap->positionTree(
                 $this->id,
                 $this->pageinfo,
@@ -437,14 +597,17 @@ class NewRecordController
             ];
             $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             @ob_end_clean();
-            HttpUtility::redirect($url);
+
+            return new RedirectResponse($url);
         }
+
+        return null;
     }
 
     /**
-     * Create a regular new element (pages and records)
+     * Render controls for creating a regular new element (pages or records)
      */
-    public function regularNew()
+    protected function renderNewRecordControls(): void
     {
         $lang = $this->getLanguageService();
         // Initialize array for accumulating table rows:
@@ -473,13 +636,13 @@ class NewRecordController
         // New pages INSIDE this pages
         $newPageLinks = [];
         if ($displayNewPagesIntoLink
-            && $this->isTableAllowedForThisPage($this->pageinfo, 'pages')
+            && $this->isTableAllowedOnPage('pages', $this->pageinfo)
             && $this->getBackendUserAuthentication()->check('tables_modify', 'pages')
             && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')
         ) {
             // Create link to new page inside:
             $recordIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
-            $newPageLinks[] = $this->linkWrap(
+            $newPageLinks[] = $this->renderLink(
                 $recordIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')',
                 $table,
                 $this->id
@@ -487,14 +650,18 @@ class NewRecordController
         }
         // New pages AFTER this pages
         if ($displayNewPagesAfterLink
-            && $this->isTableAllowedForThisPage($this->pidInfo, 'pages')
+            && $this->isTableAllowedOnPage('pages', $this->pidInfo)
             && $this->getBackendUserAuthentication()->check('tables_modify', 'pages')
             && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')
         ) {
-            $newPageLinks[] = $this->linkWrap($pageIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')', 'pages', -$this->id);
+            $newPageLinks[] = $this->renderLink(
+                $pageIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')',
+                'pages',
+                -$this->id
+            );
         }
         // New pages at selection position
-        if ($this->newPagesSelectPosition && $this->showNewRecLink('pages')) {
+        if ($this->newPagesSelectPosition && $this->isRecordCreationAllowedForTable('pages')) {
             // Link to page-wizard:
             $newPageLinks[] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['pagesOnly' => 1])) . '">' . $pageIcon . htmlspecialchars($lang->getLL('pageSelectPosition')) . '</a>';
         }
@@ -503,14 +670,14 @@ class NewRecordController
         for ($i = 0; $i < $numPageLinks; $i++) {
             $rowContent .= '<li>' . $newPageLinks[$i] . '</li>';
         }
-        if ($this->showNewRecLink('pages')) {
+        if ($this->isRecordCreationAllowedForTable('pages')) {
             $rowContent = '<ul class="list-tree"><li>' . $newPageIcon . '<strong>' .
                 $lang->getLL('createNewPage') . '</strong><ul>' . $rowContent . '</ul></li>';
         } else {
             $rowContent = '<ul class="list-tree"><li><ul>' . $rowContent . '</li></ul>';
         }
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // Compile table row
         $startRows = [$rowContent];
         $iconFile = [];
@@ -523,8 +690,8 @@ class NewRecordController
                 foreach ($GLOBALS['TCA'] as $table => $v) {
                     $rootLevelConfiguration = isset($v['ctrl']['rootLevel']) ? (int)$v['ctrl']['rootLevel'] : 0;
                     if ($table !== 'pages'
-                        && $this->showNewRecLink($table)
-                        && $this->isTableAllowedForThisPage($this->pageinfo, $table)
+                        && $this->isRecordCreationAllowedForTable($table)
+                        && $this->isTableAllowedOnPage($table, $this->pageinfo)
                         && $this->getBackendUserAuthentication()->check('tables_modify', $table)
                         && ($rootLevelConfiguration === -1 || ($this->id xor $rootLevelConfiguration))
                         && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), $table)
@@ -533,7 +700,11 @@ class NewRecordController
                         $rowContent = '';
                         $thisTitle = '';
                         // Create new link for record:
-                        $newLink = $this->linkWrap($newRecordIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])), $table, $this->id);
+                        $newLink = $this->renderLink(
+                            $newRecordIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])),
+                            $table,
+                            $this->id
+                        );
                         // If the table is 'tt_content', create link to wizard
                         if ($table === 'tt_content') {
                             $groupName = $lang->getLL('createNewContent');
@@ -615,7 +786,7 @@ class NewRecordController
         if (isset($pageTS['mod.']['wizards.']['newRecord.']['order'])) {
             $this->newRecordSortList = GeneralUtility::trimExplode(',', $pageTS['mod.']['wizards.']['newRecord.']['order'], true);
         }
-        uksort($this->tRows, [$this, 'sortNewRecordsByConfig']);
+        uksort($this->tRows, [$this, 'sortTableRows']);
         // Compile table row:
         $finalRows = [];
         $finalRows[] = implode('', $startRows);
@@ -634,13 +805,13 @@ class NewRecordController
     }
 
     /**
-     * User array sort function used by regularNew
+     * User array sort function used by renderNewRecordControls
      *
      * @param string $a First array element for compare
      * @param string $b First array element for compare
      * @return int -1 for lower, 0 for equal, 1 for greater
      */
-    public function sortNewRecordsByConfig($a, $b)
+    protected function sortTableRows(string $a, string $b): int
     {
         if (!empty($this->newRecordSortList)) {
             if (in_array($a, $this->newRecordSortList) && in_array($b, $this->newRecordSortList)) {
@@ -672,7 +843,7 @@ class NewRecordController
      * @param bool $addContentTable If $addContentTable is set, then a new tt_content record is created together with pages
      * @return string The link.
      */
-    public function linkWrap($linkText, $table, $pid, $addContentTable = false)
+    protected function renderLink(string $linkText, string $table, int $pid, bool $addContentTable = false): string
     {
         $urlParameters = [
             'edit' => [
@@ -682,40 +853,43 @@ class NewRecordController
             ],
             'returnUrl' => $this->returnUrl
         ];
+
         if ($table === 'pages' && $addContentTable) {
             $urlParameters['tt_content']['prev'] = 'new';
             $urlParameters['returnNewPageId'] = 1;
         } elseif ($table === 'pages') {
             $urlParameters['overrideVals']['pages']['doktype'] = (int)$this->pageinfo['doktype'];
         }
+
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+
         return '<a href="' . htmlspecialchars($url) . '">' . $linkText . '</a>';
     }
 
     /**
      * Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
      *
-     * @param array $pid_row Record for parent page.
-     * @param string $checkTable Table name to check
-     * @return bool Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
+     * @param string $table Table name to check
+     * @param array $page Potential parent page
+     * @return bool Returns TRUE if the tablename $table is allowed to be created on the $page
      */
-    public function isTableAllowedForThisPage($pid_row, $checkTable)
+    protected function isTableAllowedOnPage(string $table, array $page): bool
     {
-        if (!is_array($pid_row)) {
+        if (empty($page)) {
             return $this->getBackendUserAuthentication()->isAdmin();
         }
         // be_users and be_groups may not be created anywhere but in the root.
-        if ($checkTable === 'be_users' || $checkTable === 'be_groups') {
+        if ($table === 'be_users' || $table === 'be_groups') {
             return false;
         }
         // Checking doktype:
-        $doktype = (int)$pid_row['doktype'];
+        $doktype = (int)$page['doktype'];
         if (!($allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'])) {
             $allowedTableList = $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
         }
         // If all tables or the table is listed as an allowed type, return TRUE
-        if (strstr($allowedTableList, '*') || GeneralUtility::inList($allowedTableList, $checkTable)) {
+        if (strstr($allowedTableList, '*') || GeneralUtility::inList($allowedTableList, $table)) {
             return true;
         }
 
@@ -723,21 +897,22 @@ class NewRecordController
     }
 
     /**
+     * Returns whether the record link should be shown for a table
+     *
      * Returns TRUE if:
      * - $allowedNewTables and $deniedNewTables are empty
      * - the table is not found in $deniedNewTables and $allowedNewTables is not set or the $table tablename is found in
      *   $allowedNewTables
      *
-     * If $table tablename is found in $allowedNewTables and $deniedNewTables, $deniedNewTables
-     * has priority over $allowedNewTables.
+     * If $table tablename is found in $allowedNewTables and $deniedNewTables,
+     * $deniedNewTables has priority over $allowedNewTables.
      *
      * @param string $table Table name to test if in allowedTables
      * @param array $allowedNewTables Array of new tables that are allowed.
      * @param array $deniedNewTables Array of new tables that are not allowed.
-     *
      * @return bool Returns TRUE if a link for creating new records should be displayed for $table
      */
-    public function showNewRecLink($table, array $allowedNewTables = [], array $deniedNewTables = [])
+    protected function isRecordCreationAllowedForTable(string $table, array $allowedNewTables = [], array $deniedNewTables = []): bool
     {
         if (!$this->getBackendUserAuthentication()->check('tables_modify', $table)) {
             return false;
@@ -758,7 +933,7 @@ class NewRecordController
      *
      * @return bool
      */
-    protected function checkIfLanguagesExist()
+    protected function checkIfLanguagesExist(): bool
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_language');
@@ -773,21 +948,17 @@ class NewRecordController
     }
 
     /**
-     * Return language service instance
-     *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
     /**
-     * Returns the global BackendUserAuthentication object.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

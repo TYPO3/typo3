@@ -16,7 +16,9 @@ namespace TYPO3\CMS\Backend\Tree\View;
 
 /**
  * Extension for the tree class that generates the tree of pages in the page-wizard mode
- * see typo3/sysext/backend/Classes/Tree/View/NewRecordPageTreeView.php
+ *
+ * @see \TYPO3\CMS\Backend\Controller\NewRecordController
+ * @internal
  */
 class NewRecordPageTreeView extends PageTreeView
 {
