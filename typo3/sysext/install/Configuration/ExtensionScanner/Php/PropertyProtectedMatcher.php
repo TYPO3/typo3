@@ -487,4 +487,9 @@ return [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\Wizard\EditController->doClose' => [
+        'restFiles' => [
+            'Deprecation-84327-DeprecatedPublicMethodsAndPropertiesInWizardEditController.rst',
+        ],
+    ],
 ];
