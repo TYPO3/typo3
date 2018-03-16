@@ -195,7 +195,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function getExtensionDir($extensionKey, $pathType = 'Local')
     {
         $paths = Extension::returnInstallPaths();
-        $path = $paths[$pathType];
+        $path = $paths[$pathType] ?? '';
         if (!$path || !is_dir($path) || !$extensionKey) {
             throw new ExtensionManagerException(
                 sprintf($this->languageService->getLL('fileHandling.installPathWasNoDirectory'), $this->getRelativePath($path)),
