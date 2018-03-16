@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 
 /*
@@ -14,24 +15,32 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Log\Processor\WebProcessor;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class WebProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class WebProcessorTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
     public function webProcessorAddsWebDataToLogRecord()
     {
-        $environmentVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('_ARRAY');
-        $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
-        $processor = new \TYPO3\CMS\Core\Log\Processor\WebProcessor();
+        $_SERVER['PATH_INFO'] = '';
+        $_SERVER['REQUEST_URI'] = '';
+        $_SERVER['ORIG_SCRIPT_NAME'] = '';
+        $_SERVER['REMOTE_ADDR'] = '';
+        $_SERVER['QUERY_STRING'] = '';
+        $_SERVER['SSL_SESSION_ID'] = '';
+
+        $environmentVariables = GeneralUtility::getIndpEnv('_ARRAY');
+        $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
+        $processor = new WebProcessor();
         $logRecord = $processor->processLogRecord($logRecord);
         foreach ($environmentVariables as $key => $value) {
             $this->assertEquals($value, $logRecord['data'][$key]);
