@@ -213,7 +213,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $extensions = $this->enrichExtensionsWithEmConfInformation($extensions);
         foreach ($extensions as $extensionKey => $properties) {
-            $terObject = $this->getExtensionTerData($extensionKey, $extensions[$extensionKey]['version']);
+            $terObject = $this->getExtensionTerData($extensionKey, $extensions[$extensionKey]['version'] ?? '');
             if ($terObject !== null) {
                 $extensions[$extensionKey]['terObject'] = $terObject;
                 $extensions[$extensionKey]['updateAvailable'] = false;

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
 /*
@@ -14,18 +15,20 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
+use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
+use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * List utility test
  */
-class ListUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ListUtilityTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
+     * @var ListUtility
      */
     protected $subject;
 
@@ -33,20 +36,20 @@ class ListUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function setUp()
     {
-        $this->subject = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class)
+        $this->subject = $this->getMockBuilder(ListUtility::class)
             ->setMethods(['emitPackagesMayHaveChangedSignal'])
             ->getMock();
-        $packageManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Package\PackageManager::class)
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
             ->disableOriginalConstructor()
             ->getMock();
         $packageManagerMock
                 ->expects($this->any())
                 ->method('getActivePackages')
                 ->will($this->returnValue([
-                    'lang' => $this->getMockBuilder(\TYPO3\CMS\Core\Package::class)->disableOriginalConstructor()->getMock(),
-                    'news' => $this->getMockBuilder(\TYPO3\CMS\Core\Package::class)->disableOriginalConstructor()->getMock(),
-                    'saltedpasswords' => $this->getMockBuilder(\TYPO3\CMS\Core\Package::class)->disableOriginalConstructor()->getMock(),
-                    'rsaauth' => $this->getMockBuilder(\TYPO3\CMS\Core\Package::class)->disableOriginalConstructor()->getMock(),
+                    'lang' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
+                    'news' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
+                    'saltedpasswords' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
+                    'rsaauth' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                 ]));
         $this->inject($this->subject, 'packageManager', $packageManagerMock);
     }
@@ -54,7 +57,7 @@ class ListUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function getAvailableAndInstalledExtensionsDataProvider()
+    public function getAvailableAndInstalledExtensionsDataProvider(): array
     {
         return [
             'same extension lists' => [
@@ -136,7 +139,7 @@ class ListUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function enrichExtensionsWithEmConfInformationDataProvider()
+    public function enrichExtensionsWithEmConfInformationDataProvider(): array
     {
         return [
             'simple key value array emconf' => [
@@ -168,8 +171,8 @@ class ListUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function enrichExtensionsWithEmConfInformation($extensions, $emConf, $expectedResult)
     {
-        $this->inject($this->subject, 'extensionRepository', $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class, ['findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'], [], '', false));
-        $emConfUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility::class)->getMock();
+        $this->inject($this->subject, 'extensionRepository', $this->getAccessibleMock(ExtensionRepository::class, ['findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'], [], '', false));
+        $emConfUtilityMock = $this->getMockBuilder(EmConfUtility::class)->getMock();
         $emConfUtilityMock->expects($this->any())->method('includeEmConf')->will($this->returnValue($emConf));
         $this->inject($this->subject, 'emConfUtility', $emConfUtilityMock);
         $this->assertEquals($expectedResult, $this->subject->enrichExtensionsWithEmConfAndTerInformation($extensions));
