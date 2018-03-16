@@ -23,12 +23,6 @@ services:
   - redis-server
 
 notifications:
-  irc:
-    channels:
-      - "irc.freenode.net#typo3-cms"
-    on_success: change
-    on_failure: always
-    use_notice: true
   slack:
     rooms:
       secure: nHWVTPyG3CQWIcYA1LASS11dD0/NBcmrAyr3xxQW0XYtH47ZUKRlEtxrVLuL7ptciNwMbfZgsiRQ1QGWDerHUlBkg0iwRxpUZgeylzWaiXsHFVAp2IBfEX54KrWeYm9gewIBDDtnp+sLgpXGgmpIs2bAGkZe5129UsUExoWh0+g=
