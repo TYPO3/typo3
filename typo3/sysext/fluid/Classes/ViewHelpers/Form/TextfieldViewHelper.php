@@ -65,8 +65,8 @@ class TextfieldViewHelper extends AbstractFormFieldViewHelper
      */
     public function render()
     {
-        $required = $this->arguments['required'];
-        $type = $this->arguments['type'];
+        $required = $this->arguments['required'] ?? false;
+        $type = $this->arguments['type'] ?? null;
 
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);

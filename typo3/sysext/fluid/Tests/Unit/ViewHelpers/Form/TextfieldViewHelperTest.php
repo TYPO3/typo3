@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 
 /*
@@ -23,11 +24,6 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
  */
 class TextfieldViewHelperTest extends ViewHelperBaseTestcase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var TextfieldViewHelper
      */

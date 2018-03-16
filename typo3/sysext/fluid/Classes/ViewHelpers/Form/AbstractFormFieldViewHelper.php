@@ -118,17 +118,17 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
                 'formObjectName'
             );
             if (!empty($formObjectName)) {
-                $propertySegments = explode('.', $this->arguments['property']);
+                $propertySegments = explode('.', $this->arguments['property'] ?? '');
                 $propertyPath = '';
                 foreach ($propertySegments as $segment) {
                     $propertyPath .= '[' . $segment . ']';
                 }
                 $name = $formObjectName . $propertyPath;
             } else {
-                $name = $this->arguments['property'];
+                $name = $this->arguments['property'] ?? '';
             }
         } else {
-            $name = $this->arguments['name'];
+            $name = $this->arguments['name'] ?? '';
         }
         if ($this->hasArgument('value') && is_object($this->arguments['value'])) {
             // @todo Use  $this->persistenceManager->isNewObject() once it is implemented
