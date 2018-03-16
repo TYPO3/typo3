@@ -50,7 +50,7 @@ class LinkService implements SingletonInterface
     {
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['linkHandler'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['linkHandler'] as $type => $handler) {
-                if (!is_object($this->handlers[$type])) {
+                if (!isset($this->handlers[$type]) || !is_object($this->handlers[$type])) {
                     $this->handlers[$type] = GeneralUtility::makeInstance($handler);
                 }
             }
