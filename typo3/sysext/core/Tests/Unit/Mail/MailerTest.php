@@ -15,26 +15,25 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Controller\ErrorPageController;
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeTransportFixture;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the TYPO3\CMS\Core\Mail\Mailer class.
  */
-class MailerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class MailerTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var \TYPO3\CMS\Core\Mail\Mailer
+     * @var Mailer
      */
     protected $subject;
 
     protected function setUp()
     {
-        $this->subject = $this->getMockBuilder(\TYPO3\CMS\Core\Mail\Mailer::class)
+        $this->subject = $this->getMockBuilder(Mailer::class)
             ->setMethods(['emitPostInitializeMailerSignal'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -76,7 +75,7 @@ class MailerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'smtp but no host' => [['transport' => 'smtp']],
             'sendmail but no command' => [['transport' => 'sendmail']],
             'mbox but no file' => [['transport' => 'mbox']],
-            'no instance of Swift_Transport' => [['transport' => \TYPO3\CMS\Core\Controller\ErrorPageController::class]]
+            'no instance of Swift_Transport' => [['transport' => ErrorPageController::class]]
         ];
     }
 
@@ -87,7 +86,7 @@ class MailerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function wrongConfigurationThrowsException($settings)
     {
-        $this->expectException(\TYPO3\CMS\Core\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1291068569);
 
         $this->subject->injectMailSettings($settings);

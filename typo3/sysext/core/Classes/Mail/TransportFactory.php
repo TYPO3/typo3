@@ -53,22 +53,30 @@ class TransportFactory implements SingletonInterface
                 break;
             case 'smtp':
                 // Get settings to be used when constructing the transport object
-                list($host, $port) = preg_split('/:/', $mailSettings['transport_smtp_server'] ?? '');
+                if (isset($mailSettings['transport_smtp_server']) && strpos($mailSettings['transport_smtp_server'], ':') > 0) {
+                    $parts = GeneralUtility::trimExplode(':', $mailSettings['transport_smtp_server'], true);
+                    $host = $parts[0];
+                    $port = $parts[1] ?? null;
+                } else {
+                    $host = (string)$mailSettings['transport_smtp_server'] ?? null;
+                    $port = null;
+                }
+
                 if ($host === '') {
                     throw new Exception('$GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'transport_smtp_server\'] needs to be set when transport is set to "smtp".', 1291068606);
                 }
                 if ($port === null || $port === '') {
                     $port = 25;
                 }
-                $useEncryption = $mailSettings['transport_smtp_encrypt'] ?: null;
+                $useEncryption = $mailSettings['transport_smtp_encrypt'] ?? null;
                 // Create our transport
                 $transport = \Swift_SmtpTransport::newInstance($host, $port, $useEncryption);
                 // Need authentication?
-                $username = $mailSettings['transport_smtp_username'];
+                $username = (string)($mailSettings['transport_smtp_username'] ?? '');
                 if ($username !== '') {
                     $transport->setUsername($username);
                 }
-                $password = $mailSettings['transport_smtp_password'];
+                $password = (string)($mailSettings['transport_smtp_password'] ?? '');
                 if ($password !== '') {
                     $transport->setPassword($password);
                 }
