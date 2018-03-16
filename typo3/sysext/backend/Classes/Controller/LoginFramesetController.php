@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller;
 
 /*
@@ -16,6 +17,8 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -47,20 +50,30 @@ class LoginFramesetController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->main();
+        $this->createFrameset();
         return new HtmlResponse($this->content);
     }
-
+    /**
+     * Main function.
+     * Creates the header code and the frameset for the two frames.
+     *
+     * @deprecated since v9, will be removed in v10
+     */
+    public function main()
+    {
+        trigger_error('Method main() will be replaced by protected method createFrameset() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->createFrameset();
+    }
     /**
      * Main function.
      * Creates the header code and the frameset for the two frames.
      */
-    public function main()
+    protected function createFrameset(): void
     {
         $title = 'TYPO3 Re-Login (' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
         $this->getDocumentTemplate()->startPage($title);
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // Create the frameset for the window
         $this->content = $this->getPageRenderer()->render(PageRenderer::PART_HEADER) . '
 			<frameset rows="*,1">
@@ -73,9 +86,9 @@ class LoginFramesetController
     /**
      * Returns an instance of DocumentTemplate
      *
-     * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @return DocumentTemplate
      */
-    protected function getDocumentTemplate()
+    protected function getDocumentTemplate(): DocumentTemplate
     {
         return $GLOBALS['TBE_TEMPLATE'];
     }
@@ -83,7 +96,7 @@ class LoginFramesetController
     /**
      * @return PageRenderer
      */
-    protected function getPageRenderer()
+    protected function getPageRenderer(): PageRenderer
     {
         return GeneralUtility::makeInstance(PageRenderer::class);
     }
