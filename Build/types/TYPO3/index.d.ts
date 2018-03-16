@@ -19,7 +19,7 @@ declare namespace TYPO3 {
   export let Storage: any;
   export let Tooltip: any;
   export let Utility: any;
-  export const lang: any;
+  export const lang: { [key: string]: string };
   export const settings: any;
   export const configuration: any;
   export namespace CMS {
@@ -27,6 +27,8 @@ declare namespace TYPO3 {
       export class FormEngineValidation {
         public readonly errorClass: string;
         public markFieldAsChanged($field: JQuery): void;
+        public initializeInputFields(): void;
+        public validate(): void;
       }
 
       export class FormEngine {
@@ -40,6 +42,7 @@ declare namespace TYPO3 {
           exclusiveValues?: string,
           $optionEl?: JQuery
         ): void;
+        public reinitialize(): void;
       }
 
       export class Wizard {
@@ -120,6 +123,8 @@ interface JQuery {
   datetimepicker(options?: any): JQuery;
 
   dragUploader(options?: any): JQuery;
+
+  t3FormEngineFlexFormElement(options?: any): JQuery;
 
   // To be able to use twbs/bootstrap-slider we have to override the definition of jquerui
   slider(options: { [key: string]: any }): any;
