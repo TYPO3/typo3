@@ -140,13 +140,13 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
     public function render()
     {
         $this->setFormActionUri();
-        if (strtolower($this->arguments['method']) === 'get') {
+        if (isset($this->arguments['method']) && strtolower($this->arguments['method']) === 'get') {
             $this->tag->addAttribute('method', 'get');
         } else {
             $this->tag->addAttribute('method', 'post');
         }
 
-        if ($this->arguments['novalidate'] === true) {
+        if (isset($this->arguments['novalidate']) && $this->arguments['novalidate'] === true) {
             $this->tag->addAttribute('novalidate', 'novalidate');
         }
 
@@ -156,13 +156,13 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         $this->addFormFieldNamesToViewHelperVariableContainer();
         $formContent = $this->renderChildren();
 
-        if ($this->arguments['hiddenFieldClassName'] !== null) {
+        if (isset($this->arguments['hiddenFieldClassName']) && $this->arguments['hiddenFieldClassName'] !== null) {
             $content = LF . '<div class="' . htmlspecialchars($this->arguments['hiddenFieldClassName']) . '">';
         } else {
             $content = LF . '<div>';
         }
 
-        $content .= $this->renderHiddenIdentityField($this->arguments['object'], $this->getFormObjectName());
+        $content .= $this->renderHiddenIdentityField($this->arguments['object'] ?? null, $this->getFormObjectName());
         $content .= $this->renderAdditionalIdentityFields();
         $content .= $this->renderHiddenReferrerFields();
 
@@ -188,27 +188,27 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         if ($this->hasArgument('actionUri')) {
             $formActionUri = $this->arguments['actionUri'];
         } else {
-            $pageUid = (int)$this->arguments['pageUid'] > 0 ? (int)$this->arguments['pageUid'] : null;
+            $pageUid = (isset($this->arguments['pageUid']) && (int)$this->arguments['pageUid'] > 0) ? (int)$this->arguments['pageUid'] : null;
             $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
             $formActionUri = $uriBuilder
                 ->reset()
                 ->setTargetPageUid($pageUid)
-                ->setTargetPageType($this->arguments['pageType'])
-                ->setNoCache($this->arguments['noCache'])
-                ->setUseCacheHash(!$this->arguments['noCacheHash'])
-                ->setSection($this->arguments['section'])
-                ->setCreateAbsoluteUri($this->arguments['absolute'])
-                ->setArguments((array)$this->arguments['additionalParams'])
-                ->setAddQueryString($this->arguments['addQueryString'])
-                ->setAddQueryStringMethod($this->arguments['addQueryStringMethod'])
-                ->setArgumentsToBeExcludedFromQueryString((array)$this->arguments['argumentsToBeExcludedFromQueryString'])
-                ->setFormat($this->arguments['format'])
+                ->setTargetPageType($this->arguments['pageType'] ?? 0)
+                ->setNoCache($this->arguments['noCache'] ?? false)
+                ->setUseCacheHash(isset($this->arguments['noCacheHash']) ? !$this->arguments['noCacheHash'] : true)
+                ->setSection($this->arguments['section'] ?? '')
+                ->setCreateAbsoluteUri($this->arguments['absolute'] ?? false)
+                ->setArguments(isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [])
+                ->setAddQueryString($this->arguments['addQueryString'] ?? false)
+                ->setAddQueryStringMethod($this->arguments['addQueryStringMethod'] ?? null)
+                ->setArgumentsToBeExcludedFromQueryString(isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [])
+                ->setFormat($this->arguments['format'] ?? '')
                 ->uriFor(
-                    $this->arguments['action'],
-                    $this->arguments['arguments'],
-                    $this->arguments['controller'],
-                    $this->arguments['extensionName'],
-                    $this->arguments['pluginName']
+                    $this->arguments['action'] ?? null,
+                    $this->arguments['arguments'] ?? [],
+                    $this->arguments['controller'] ?? null,
+                    $this->arguments['extensionName'] ?? null,
+                    $this->arguments['pluginName'] ?? null
                 );
             $this->formActionUriArguments = $uriBuilder->getArguments();
         }
