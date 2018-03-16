@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller\File;
 
 /*
@@ -16,7 +17,9 @@ namespace TYPO3\CMS\Backend\Controller\File;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -31,26 +34,39 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class ReplaceFileController
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'doc' => 'Using $doc of class ReplaceFileController from outside is discouraged as this variable is only used for internal storage.',
+        'title' => 'Using $title of class ReplaceFileController from outside is discouraged as this variable is only used for internal storage.',
+        'uid' => 'Using $uid of class ReplaceFileController from outside is discouraged as this variable is only used for internal storage.',
+        'returnUrl' => 'Using $returnUrl of class ReplaceFileController from outside is discouraged as this variable is only used for internal storage.',
+        'content' => 'Using $content of class ReplaceFileController from outside is discouraged as this variable is only used for internal storage.',
+    ];
+
     /**
      * Document template object
      *
      * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
      */
-    public $doc;
+    protected $doc;
 
     /**
      * Name of the filemount
      *
      * @var string
      */
-    public $title;
+    protected $title;
 
     /**
      * sys_file uid
      *
      * @var int
      */
-    public $uid;
+    protected $uid;
 
     /**
      * The file or folder object that should be renamed
@@ -64,14 +80,14 @@ class ReplaceFileController
      *
      * @var string
      */
-    public $returnUrl;
+    protected $returnUrl;
 
     /**
      * Accumulating content
      *
      * @var string
      */
-    public $content;
+    protected $content;
 
     /**
      * ModuleTemplate object
@@ -87,22 +103,49 @@ class ReplaceFileController
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $GLOBALS['SOBE'] = $this;
-        $this->init();
+
+        // @deprecated since v9, will be moved out of __construct() in v10
+        $this->init($GLOBALS['TYPO3_REQUEST']);
+    }
+
+    /**
+     * Processes the request, currently everything is handled and put together via "main()"
+     *
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->renderContent();
+        return new HtmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    /**
+     * Main function, rendering the content of the replace form
+     */
+    public function main()
+    {
+        trigger_error('Method main() will be replaced by protected method renderContent() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->renderContent();
     }
 
     /**
      * Init
      *
+     * @param ServerRequestInterface $request
      * @throws \RuntimeException
      * @throws InsufficientFileAccessPermissionsException
      */
-    protected function init()
+    protected function init(ServerRequestInterface $request): void
     {
-        // Initialize GPvars:
-        $this->uid = (int)GeneralUtility::_GP('uid');
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
         $lang = $this->getLanguageService();
 
-        $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
+        // Initialize GPvars:
+        $this->uid = (int)($parsedBody['uid'] ?? $queryParams['uid'] ?? 0);
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
+
         // Cleaning and checking uid
         if ($this->uid > 0) {
             $this->fileOrFolderObject = ResourceFactory::getInstance()
@@ -148,14 +191,14 @@ class ReplaceFileController
     }
 
     /**
-     * Main function, rendering the content of the rename form
+     * Render module content
      */
-    public function main()
+    protected function renderContent(): void
     {
         // Assign variables used by the fluid template
         $assigns = [];
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
         $assigns['uid'] = $this->uid;
         $assigns['returnUrl'] = $this->returnUrl;
@@ -190,21 +233,9 @@ class ReplaceFileController
     }
 
     /**
-     * Processes the request, currently everything is handled and put together via "main()"
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->main();
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
      * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

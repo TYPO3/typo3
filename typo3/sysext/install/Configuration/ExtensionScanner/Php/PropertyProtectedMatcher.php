@@ -362,4 +362,24 @@ return [
             'Deprecation-84326-ProtectedMethodsAndPropertiesInFileUploadController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\File\ReplaceFileController->doc' => [
+        'restFiles' => [
+            'Deprecation-84334-ProtectedMethodsAndPropertiesInReplaceFileController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\ReplaceFileController->title' => [
+        'restFiles' => [
+            'Deprecation-84334-ProtectedMethodsAndPropertiesInReplaceFileController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\ReplaceFileController->uid' => [
+        'restFiles' => [
+            'Deprecation-84334-ProtectedMethodsAndPropertiesInReplaceFileController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\ReplaceFileController->returnUrl' => [
+        'restFiles' => [
+            'Deprecation-84334-ProtectedMethodsAndPropertiesInReplaceFileController.rst',
+        ],
+    ],
 ];
