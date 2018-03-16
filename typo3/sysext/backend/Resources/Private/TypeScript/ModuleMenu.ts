@@ -35,11 +35,6 @@ class ModuleMenu {
   private loadedModule: string = null;
   private loadedNavigationComponentId: string = '';
 
-  public static reloadFrames(): void {
-    Viewport.NavigationContainer.refresh();
-    Viewport.ContentContainer.refresh();
-  }
-
   /**
    * Fetches all module menu elements in the local storage that should be collapsed
    *
@@ -172,7 +167,15 @@ class ModuleMenu {
     });
   }
 
-
+  /**
+   * Reloads the frames
+   *
+   * Hint: This method can't be static (yet), as this must be bound to the ModuleMenu instance.
+   */
+  public reloadFrames(): void {
+    Viewport.NavigationContainer.refresh();
+    Viewport.ContentContainer.refresh();
+  }
 
   /**
    * Event handler called after clicking on the module menu item
@@ -432,14 +435,11 @@ class ModuleMenu {
   }
 }
 
-let moduleMenuApp;
-
 if (!top.TYPO3.ModuleMenu) {
-  moduleMenuApp = top.TYPO3.ModuleMenu = {
+  top.TYPO3.ModuleMenu = {
     App: new ModuleMenu()
   };
-} else {
-  moduleMenuApp = top.TYPO3.ModuleMenu;
 }
+const moduleMenuApp = top.TYPO3.ModuleMenu;
 
 export = moduleMenuApp;
