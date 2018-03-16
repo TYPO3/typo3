@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 /*
@@ -23,11 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ArrayUtilityTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     ///////////////////////
     // Tests concerning filterByValueRecursive
     ///////////////////////
