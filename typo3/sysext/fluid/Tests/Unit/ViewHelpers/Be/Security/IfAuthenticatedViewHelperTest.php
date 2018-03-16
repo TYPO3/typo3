@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Be\Security;
 
 /*
@@ -14,6 +15,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Be\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\ViewHelpers\Be\Security\IfAuthenticatedViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
@@ -22,12 +24,7 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var \TYPO3\CMS\Fluid\ViewHelpers\Be\Security\IfAuthenticatedViewHelper
+     * @var IfAuthenticatedViewHelper
      */
     protected $viewHelper;
 
@@ -35,7 +32,7 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
     {
         parent::setUp();
         $GLOBALS['BE_USER'] = new \stdClass();
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Be\Security\IfAuthenticatedViewHelper::class, ['renderThenChild', 'renderElseChild']);
+        $this->viewHelper = $this->getAccessibleMock(IfAuthenticatedViewHelper::class, ['renderThenChild', 'renderElseChild']);
         $this->viewHelper->expects($this->any())->method('renderThenChild')->will($this->returnValue('then child'));
         $this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue('else child'));
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
@@ -57,6 +54,7 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperRendersElseChildIfBeUserIsNotLoggedIn()
     {
+        $GLOBALS['BE_USER']->user = ['uid' => 0];
         $actualResult = $this->viewHelper->render();
         $this->assertEquals('else child', $actualResult);
     }
