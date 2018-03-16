@@ -14,15 +14,14 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class EmConfUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class EmConfUtilityTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
 
     /**
      * @test
@@ -33,7 +32,7 @@ class EmConfUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'extKey' => 'key',
             'EM_CONF' => [],
         ];
-        $fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
+        $fixture = new EmConfUtility();
         $emConf = $fixture->constructEmConf($extensionData);
         $this->assertContains('Extension Manager/Repository config file for ext', $emConf);
     }
@@ -57,7 +56,7 @@ class EmConfUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'suggests' => [],
             ],
         ];
-        $fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
+        $fixture = new EmConfUtility();
         $this->assertEquals($expected, $fixture->fixEmConf($input));
     }
 
@@ -81,7 +80,7 @@ class EmConfUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'suggests' => [],
             ],
         ];
-        $fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
+        $fixture = new EmConfUtility();
         $this->assertEquals($expected, $fixture->fixEmConf($input));
     }
 }
