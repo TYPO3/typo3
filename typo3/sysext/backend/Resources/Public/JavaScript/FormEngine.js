@@ -1031,7 +1031,9 @@ define(['jquery',
     }
     if ($('.t3-form-suggest').length) {
       require(['TYPO3/CMS/Backend/FormEngineSuggest'], function(Suggest) {
-        Suggest($('.t3-form-suggest'));
+        $('.t3-form-suggest').each(function(index, suggestElement) {
+          new Suggest(suggestElement);
+        });
       });
     }
     // Apply DatePicker to all date time fields
