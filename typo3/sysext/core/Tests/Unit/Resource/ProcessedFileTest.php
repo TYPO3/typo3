@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 /*
@@ -18,17 +19,13 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the ProcessedFile class of the TYPO3 FAL
  */
-class ProcessedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ProcessedFileTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Folder
      */
@@ -62,6 +59,8 @@ class ProcessedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'identifier' => 'dummy.txt',
             'name' => $this->getUniqueId('dummy_'),
             'storage' => $this->storageMock->getUid(),
+            'configuration' => null,
+            'originalfilesha1' => null,
         ];
     }
 
