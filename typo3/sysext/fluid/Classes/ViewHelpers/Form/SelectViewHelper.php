@@ -119,11 +119,11 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
      */
     public function render()
     {
-        if ($this->arguments['required']) {
+        if (isset($this->arguments['required']) && $this->arguments['required']) {
             $this->tag->addAttribute('required', 'required');
         }
         $name = $this->getName();
-        if ($this->arguments['multiple']) {
+        if (isset($this->arguments['multiple']) && $this->arguments['multiple']) {
             $this->tag->addAttribute('multiple', 'multiple');
             $name .= '[]';
         }
@@ -136,7 +136,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         // register field name for token generation.
         // in case it is a multi-select, we need to register the field name
         // as often as there are elements in the box
-        if ($this->arguments['multiple']) {
+        if (isset($this->arguments['multiple']) && $this->arguments['multiple']) {
             $content .= $this->renderHiddenFieldForEmptyValue();
             for ($i = 0; $i < count($options); $i++) {
                 $this->registerFieldNameForFormTokenGeneration($name);
@@ -158,7 +158,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         $childContent = $this->renderChildren();
         $this->viewHelperVariableContainer->remove(static::class, 'selectedValue');
         $this->viewHelperVariableContainer->remove(static::class, 'registerFieldNameForFormTokenGeneration');
-        if ($this->arguments['optionsAfterContent']) {
+        if (isset($this->arguments['optionsAfterContent']) && $this->arguments['optionsAfterContent']) {
             $tagContent = $childContent . $tagContent;
         } else {
             $tagContent .= $childContent;
