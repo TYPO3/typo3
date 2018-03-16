@@ -1941,4 +1941,11 @@ return [
             'Deprecation-84274-ProtectedMethodsAndPropertiesInLoginController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\File\FileUploadController->renderUploadForm' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84326-ProtectedMethodsAndPropertiesInFileUploadController.rst',
+        ],
+    ],
 ];

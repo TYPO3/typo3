@@ -347,4 +347,19 @@ return [
             'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\File\FileUploadController->title' => [
+        'restFiles' => [
+            'Deprecation-84326-ProtectedMethodsAndPropertiesInFileUploadController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\FileUploadController->target' => [
+        'restFiles' => [
+            'Deprecation-84326-ProtectedMethodsAndPropertiesInFileUploadController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\FileUploadController->returnUrl' => [
+        'restFiles' => [
+            'Deprecation-84326-ProtectedMethodsAndPropertiesInFileUploadController.rst',
+        ],
+    ],
 ];
