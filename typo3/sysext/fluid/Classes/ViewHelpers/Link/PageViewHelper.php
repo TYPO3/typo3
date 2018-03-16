@@ -79,17 +79,17 @@ class PageViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        $pageUid = (int)$this->arguments['pageUid'] ?: null;
-        $pageType = (int)$this->arguments['pageType'];
-        $noCache = (bool)$this->arguments['noCache'];
-        $noCacheHash = (bool)$this->arguments['noCacheHash'];
-        $section = (string)$this->arguments['section'];
-        $linkAccessRestrictedPages = (bool)$this->arguments['linkAccessRestrictedPages'];
-        $additionalParams = (array)$this->arguments['additionalParams'];
-        $absolute = (bool)$this->arguments['absolute'];
-        $addQueryString = (bool)$this->arguments['addQueryString'];
-        $argumentsToBeExcludedFromQueryString = (array)$this->arguments['argumentsToBeExcludedFromQueryString'];
-        $addQueryStringMethod = $this->arguments['addQueryStringMethod'];
+        $pageUid = isset($this->arguments['pageUid']) ? (int)$this->arguments['pageUid'] : null;
+        $pageType = isset($this->arguments['pageType']) ? (int)$this->arguments['pageType'] : 0;
+        $noCache = isset($this->arguments['noCache']) ? (bool)$this->arguments['noCache'] : false;
+        $noCacheHash = isset($this->arguments['noCacheHash']) ? (bool)$this->arguments['noCacheHash'] : false;
+        $section = isset($this->arguments['section']) ? (string)$this->arguments['section'] : '';
+        $linkAccessRestrictedPages = isset($this->arguments['linkAccessRestrictedPages']) ? (bool)$this->arguments['linkAccessRestrictedPages'] : false;
+        $additionalParams = isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [];
+        $absolute = isset($this->arguments['absolute']) ? (bool)$this->arguments['absolute'] : false;
+        $addQueryString = isset($this->arguments['addQueryString']) ? (bool)$this->arguments['addQueryString'] : false;
+        $argumentsToBeExcludedFromQueryString = isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [];
+        $addQueryStringMethod = $this->arguments['addQueryStringMethod'] ?? null;
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uri = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
 
 /*
@@ -16,17 +17,13 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
 
 use TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test-case for Link\PageViewHelper
  */
 class PageViewHelperTest extends ViewHelperBaseTestcase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var PageViewHelper
      */
@@ -38,10 +35,10 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper::class, ['renderChildren']);
+        $this->viewHelper = $this->getAccessibleMock(PageViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
-        $this->tagBuilder = $this->createMock(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class);
+        $this->tagBuilder = $this->createMock(TagBuilder::class);
         $this->viewHelper->_set('tag', $this->tagBuilder);
     }
 
