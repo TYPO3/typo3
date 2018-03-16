@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
 
 /*
@@ -16,6 +17,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
@@ -25,11 +27,6 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
  */
 class TypolinkViewHelperTest extends ViewHelperBaseTestcase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
@@ -42,7 +39,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['renderChildren']);
         /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
+        $renderingContext = $this->createMock(RenderingContextFixture::class);
         $this->subject->setRenderingContext($renderingContext);
     }
 

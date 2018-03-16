@@ -92,17 +92,17 @@ class TypolinkViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $parameter = $arguments['parameter'];
-        $target = $arguments['target'];
-        $class = $arguments['class'];
-        $title = $arguments['title'];
-        $additionalParams = $arguments['additionalParams'];
-        $additionalAttributes = $arguments['additionalAttributes'];
-        $useCacheHash = $arguments['useCacheHash'];
-        $addQueryString = $arguments['addQueryString'];
-        $addQueryStringMethod = $arguments['addQueryStringMethod'];
-        $addQueryStringExclude = $arguments['addQueryStringExclude'];
-        $absolute = $arguments['absolute'];
+        $parameter = $arguments['parameter'] ?? '';
+        $target = $arguments['target'] ?? '';
+        $class = $arguments['class'] ?? '';
+        $title = $arguments['title'] ?? '';
+        $additionalParams = $arguments['additionalParams'] ?? '';
+        $additionalAttributes = $arguments['additionalAttributes'] ?? [];
+        $useCacheHash = $arguments['useCacheHash'] ?? false;
+        $addQueryString = $arguments['addQueryString'] ?? false;
+        $addQueryStringMethod = $arguments['addQueryStringMethod'] ?? 'GET';
+        $addQueryStringExclude = $arguments['addQueryStringExclude'] ?? '';
+        $absolute = $arguments['absolute'] ?? false;
 
         // Merge the $parameter with other arguments
         $typolinkParameter = self::createTypolinkParameterArrayFromArguments($parameter, $target, $class, $title, $additionalParams);
