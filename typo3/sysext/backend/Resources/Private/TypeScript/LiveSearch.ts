@@ -173,7 +173,6 @@ class LiveSearch {
 
   private registerEvents(): void {
     const $searchField = $(Identifiers.searchFieldSelector);
-    const $autocompleteContainer = $('.' + $searchField.autocomplete().options.containerClass);
 
     $(Identifiers.containerSelector).on('click', '.t3js-live-search-show-all', (evt: JQueryEventObject): void => {
       evt.preventDefault();
@@ -182,6 +181,7 @@ class LiveSearch {
       $searchField.val('').trigger('change');
     });
     if ($searchField.length) {
+      const $autocompleteContainer = $('.' + $searchField.autocomplete().options.containerClass);
       $autocompleteContainer.on('click.autocomplete', '.dropdown-list-link', (evt: JQueryEventObject): void => {
         evt.preventDefault();
 
