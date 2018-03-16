@@ -154,7 +154,7 @@ class RedirectService implements LoggerAwareInterface
         $linkDetails = $this->resolveLinkDetailsFromLinkTarget((string)$matchedRedirect['target']);
         $this->logger->debug('Resolved link details for redirect', $linkDetails);
         // Do this for files, folders, external URLs
-        if ($linkDetails['url']) {
+        if (!empty($linkDetails['url'])) {
             $url = new Uri($linkDetails['url']);
             if ($matchedRedirect['force_https']) {
                 $url = $url->withScheme('https');

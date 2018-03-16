@@ -31,11 +31,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class RedirectServiceTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @var RedirectCacheService|ObjectProphecy
      */
     protected $redirectCacheServiceProphecy;
@@ -55,6 +50,8 @@ class RedirectServiceTest extends UnitTestCase
         $this->redirectCacheServiceProphecy = $this->prophesize(RedirectCacheService::class);
         $this->redirectService = new RedirectService();
         $this->redirectService->setLogger($loggerProphecy->reveal());
+
+        $GLOBALS['SIM_ACCESS_TIME'] = 42;
     }
 
     /**
@@ -79,7 +76,10 @@ class RedirectServiceTest extends UnitTestCase
             'target' => 'https://example.com',
             'force_https' => '0',
             'keep_query_parameters' => '0',
-            'target_statuscode' => '307'
+            'target_statuscode' => '307',
+            'disabled' => '0',
+            'starttime' => '0',
+            'endtime' => '0'
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -108,13 +108,19 @@ class RedirectServiceTest extends UnitTestCase
             'target' => 'https://example.com',
             'force_https' => '0',
             'keep_query_parameters' => '0',
-            'target_statuscode' => '307'
+            'target_statuscode' => '307',
+            'disabled' => '0',
+            'starttime' => '0',
+            'endtime' => '0'
         ];
         $row2 = [
             'target' => 'https://example.net',
             'force_https' => '0',
             'keep_query_parameters' => '0',
-            'target_statuscode' => '307'
+            'target_statuscode' => '307',
+            'disabled' => '0',
+            'starttime' => '0',
+            'endtime' => '0'
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -150,7 +156,10 @@ class RedirectServiceTest extends UnitTestCase
             'target' => 'https://example.com',
             'force_https' => '0',
             'keep_query_parameters' => '0',
-            'target_statuscode' => '307'
+            'target_statuscode' => '307',
+            'disabled' => '0',
+            'starttime' => '0',
+            'endtime' => '0'
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -180,6 +189,8 @@ class RedirectServiceTest extends UnitTestCase
             'force_https' => '0',
             'keep_query_parameters' => '0',
             'target_statuscode' => '307',
+            'starttime' => '0',
+            'endtime' => '0',
             'disabled' => '1'
         ];
         $row2 = [
@@ -187,6 +198,8 @@ class RedirectServiceTest extends UnitTestCase
             'force_https' => '0',
             'keep_query_parameters' => '0',
             'target_statuscode' => '307',
+            'starttime' => '0',
+            'endtime' => '0',
             'disabled' => '0'
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
@@ -230,6 +243,8 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy = $this->prophesize(LinkService::class);
         $redirectTargetMatch = [
             'target' => 'https://example.com',
+            'force_https' => '0',
+            'keep_query_parameters' => '0'
         ];
         $linkDetails = [
             'type' => LinkService::TYPE_URL,
@@ -254,6 +269,8 @@ class RedirectServiceTest extends UnitTestCase
         $fileProphecy->getPublicUrl()->willReturn('https://example.com/file.txt');
         $redirectTargetMatch = [
             'target' => 'https://example.com',
+            'force_https' => '0',
+            'keep_query_parameters' => '0',
         ];
         $linkDetails = [
             'type' => LinkService::TYPE_FILE,
@@ -278,6 +295,8 @@ class RedirectServiceTest extends UnitTestCase
         $folderProphecy->getPublicUrl()->willReturn('https://example.com/folder/');
         $redirectTargetMatch = [
             'target' => 'https://example.com',
+            'force_https' => '0',
+            'keep_query_parameters' => '0',
         ];
         $folder = $folderProphecy->reveal();
         $linkDetails = [
@@ -301,7 +320,8 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy = $this->prophesize(LinkService::class);
         $redirectTargetMatch = [
             'target' => 'https://example.com',
-            'force_https' => '1'
+            'keep_query_parameters' => '0',
+            'force_https' => '1',
         ];
         $linkDetails = [
             'type' => LinkService::TYPE_URL,
@@ -324,6 +344,7 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy = $this->prophesize(LinkService::class);
         $redirectTargetMatch = [
             'target' => 'https://example.com',
+            'force_https' => '0',
             'keep_query_parameters' => '1'
         ];
         $linkDetails = [
