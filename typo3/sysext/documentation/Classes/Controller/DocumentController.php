@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Documentation\Domain\Repository\DocumentRepository;
 use TYPO3\CMS\Documentation\Service\DocumentationService;
-use TYPO3\CMS\Documentation\Utility\LanguageUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -45,11 +44,6 @@ class DocumentController extends ActionController
      * @var DocumentationService
      */
     protected $documentationService;
-
-    /**
-     * @var LanguageUtility
-     */
-    protected $languageUtility;
 
     /**
      * @var Dispatcher
@@ -132,14 +126,6 @@ class DocumentController extends ActionController
     }
 
     /**
-     * @param LanguageUtility $languageUtility
-     */
-    public function injectLanguageUtility(LanguageUtility $languageUtility)
-    {
-        $this->languageUtility = $languageUtility;
-    }
-
-    /**
      * @param Dispatcher $signalSlotDispatcher
      */
     public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher)
@@ -200,7 +186,7 @@ class DocumentController extends ActionController
      */
     public function getDocuments()
     {
-        $language = $this->languageUtility->getDocumentationLanguage();
+        $language =  $this->getBackendUser()->uc['lang'] ?: 'default';
         $documents = $this->documentRepository->findByLanguage($language);
 
         $documents = $this->emitAfterInitializeDocumentsSignal($language, $documents);
@@ -262,7 +248,7 @@ class DocumentController extends ActionController
             $this->redirect('list');
         }
 
-        $language = $this->languageUtility->getDocumentationLanguage();
+        $language = $this->getBackendUser()->uc['lang'] ?: 'default';
         try {
             $result = $this->documentationService->fetchNearestDocument($url, $key, $version ?: 'latest', $language);
             if ($result) {

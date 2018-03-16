@@ -125,8 +125,8 @@ class ContextHelp {
     try {
       const cshWindow = window.open(
         this.helpModuleUrl +
-        '&tx_documentation_help_documentationcshmanual[table]=' + $trigger.data('table') +
-        '&tx_documentation_help_documentationcshmanual[field]=' + $trigger.data('field'),
+        '&table=' + $trigger.data('table') +
+        '&field=' + $trigger.data('field'),
         'ContextHelpWindow',
         'height=400,width=600,status=0,menubar=0,scrollbars=1'
       );

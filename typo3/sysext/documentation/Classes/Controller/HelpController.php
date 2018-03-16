@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Documentation\Controller;
 
 /*
@@ -14,21 +15,25 @@ namespace TYPO3\CMS\Documentation\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Documentation\Domain\Repository\TableManualRepository;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Main help module controller
  */
-class HelpController extends ActionController
+class HelpController
 {
     /**
      * Section identifiers
@@ -45,32 +50,66 @@ class HelpController extends ActionController
      */
     protected $tableManualRepository;
 
-    /**
-     * Default View Container
-     *
-     * @var BackendTemplateView
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
+    /** @var ModuleTemplate */
+    protected $moduleTemplate;
+
+    /** @var ViewInterface */
+    protected $view;
 
     /**
-     * Initialize the controller
+     * Instantiate the report controller
      */
-    public function initializeAction()
+    public function __construct()
     {
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->tableManualRepository = GeneralUtility::makeInstance(TableManualRepository::class);
     }
 
     /**
-     * Initialize the view
+     * Injects the request object for the current request, and renders correct action
      *
-     * @param ViewInterface $view The view
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
      */
-    public function initializeView(ViewInterface $view)
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var BackendTemplateView $view */
-        parent::initializeView($view);
-        $this->registerDocheaderButtons();
-        $view->assign('copyright', BackendUtility::TYPO3_copyRightNotice());
+        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index';
+
+        if ($action === 'detail') {
+            $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'];
+            if (!$table) {
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                return new RedirectResponse((string)$uriBuilder->buildUriFromRoute('help_cshmanual', [
+                    'action' => 'index',
+                ]), 303);
+            }
+        }
+
+        $this->initializeView($action);
+
+        $result = call_user_func_array([$this, $action . 'Action'], [$request]);
+        if ($result instanceof ResponseInterface) {
+            return $result;
+        }
+
+        $this->registerDocheaderButtons($request);
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    /**
+     * @param string $templateName
+     */
+    protected function initializeView(string $templateName)
+    {
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->setTemplate($templateName);
+        $this->view->setTemplateRootPaths(['EXT:documentation/Resources/Private/Templates/Help']);
+        $this->view->setPartialRootPaths(['EXT:documentation/Resources/Private/Partials']);
+        $this->view->setLayoutRootPaths(['EXT:documentation/Resources/Private/Layouts']);
+        $this->view->getRequest()->setControllerExtensionName('Documentation');
+        $this->view->assign('copyright', BackendUtility::TYPO3_copyRightNotice());
     }
 
     /**
@@ -92,14 +131,12 @@ class HelpController extends ActionController
     /**
      * Show a single manual
      *
-     * @param string $table
-     * @param string $field
+     * @param ServerRequestInterface $request
      */
-    public function detailAction($table = '', $field = '*')
+    public function detailAction(ServerRequestInterface $request)
     {
-        if (empty($table)) {
-            $this->forward('index');
-        }
+        $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'];
+        $field = $request->getQueryParams()['field'] ?? $request->getParsedBody()['field'] ?? '*';
 
         $mainKey = $table;
         $identifierParts = GeneralUtility::trimExplode('.', $field);
@@ -135,37 +172,26 @@ class HelpController extends ActionController
     /**
      * Registers the Icons into the docheader
      *
-     * @throws \InvalidArgumentException
+     * @param ServerRequestInterface $request
      */
-    protected function registerDocheaderButtons()
+    protected function registerDocheaderButtons(ServerRequestInterface $request)
     {
-        /** @var ButtonBar $buttonBar */
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $currentRequest = $this->request;
-        $moduleName = $currentRequest->getPluginName();
-        $getVars = $this->request->getArguments();
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
-        $mayMakeShortcut = $this->getBackendUser()->mayMakeShortcut();
-
-        if ($mayMakeShortcut) {
-            $extensionName = $currentRequest->getControllerExtensionName();
-            if (count($getVars) === 0) {
-                $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-                $getVars = ['id', 'route', $modulePrefix];
-            }
+        if ($this->getBackendUser()->mayMakeShortcut()) {
             $shortcutButton = $buttonBar->makeShortcutButton()
-                ->setModuleName($moduleName)
-                ->setGetVariables($getVars);
+                ->setModuleName('help_cshmanual')
+                ->setGetVariables(['table', 'field', 'route']);
             $buttonBar->addButton($shortcutButton);
         }
 
-        if (isset($getVars['action']) && $getVars['action'] !== 'index') {
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index';
+        if ($action !== 'index') {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $backButton = $buttonBar->makeLinkButton()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:back'))
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
-                ->setHref((string)$uriBuilder->buildUriFromRoute($moduleName));
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
+                ->setHref((string)$uriBuilder->buildUriFromRoute('help_cshmanual'));
             $buttonBar->addButton($backButton);
         }
     }
@@ -175,7 +201,7 @@ class HelpController extends ActionController
      *
      * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
@@ -185,7 +211,7 @@ class HelpController extends ActionController
      *
      * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

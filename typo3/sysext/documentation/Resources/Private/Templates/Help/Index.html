@@ -1,3 +1,5 @@
+<html xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers">
+
 <f:layout name="ContextSensitiveHelp" />
 
 <f:section name="docheader">
@@ -6,7 +8,8 @@
 <f:section name="content">
 	<f:render partial="TableOfContents" arguments="{toc:toc,all:0}" />
 
-	<f:link.action action="all">
+	<a href="{be:moduleLink(route:'help_cshmanual',arguments:{action:'all'})}">
 		<f:translate key="LLL:EXT:documentation/Resources/Private/Language/locallang_view_help.xlf:full_manual" />
-	</f:link.action>
+	</a>
 </f:section>
+</html>

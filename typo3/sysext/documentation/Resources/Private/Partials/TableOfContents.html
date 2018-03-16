@@ -1,3 +1,5 @@
+<html xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers">
+
 <h1>
 	<f:translate key="LLL:EXT:documentation/Resources/Private/Language/locallang_view_help.xlf:manual_title" />
 </h1>
@@ -23,7 +25,9 @@
 									<a href="#{module}">{module}</a>
 								</f:then>
 								<f:else>
-									<f:link.action action="detail" arguments="{table:module,field:'*'}">{title}</f:link.action>
+									<a href="{be:moduleLink(route:'help_cshmanual',arguments:{action:'detail', table:module,field:'*'})}">
+										{title}
+									</a>
 								</f:else>
 							</f:if>
 						</li>
@@ -33,3 +37,5 @@
 		</f:for>
 	</ul>
 </f:if>
+
+</html>

@@ -39,11 +39,8 @@ class JavaScriptService
             $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
-            $pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('help_DocumentationCshmanual', [
-                'tx_documentation_help_documentationcshmanual' => [
-                    'controller' => 'Help',
-                    'action' => 'detail'
-                ]
+            $pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('help_cshmanual', [
+                'action' => 'detail'
             ]));
         }
     }
