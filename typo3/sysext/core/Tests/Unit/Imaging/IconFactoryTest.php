@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 /*
@@ -18,18 +19,17 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * TestCase for \TYPO3\CMS\Core\Imaging\IconFactory
  */
-class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class IconFactoryTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconFactory
      */
@@ -82,7 +82,7 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function setUp()
     {
-        $this->iconRegistryMock = $this->prophesize(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+        $this->iconRegistryMock = $this->prophesize(IconRegistry::class);
         $this->subject = new IconFactory($this->iconRegistryMock->reveal());
 
         $this->iconRegistryMock->isRegistered('tcarecords--default')->willReturn(false);
@@ -453,6 +453,7 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconForRecordWithNullTableReturnsMissingIcon()
     {
+        $GLOBALS['TCA']['']['ctrl'] = [];
         $this->assertContains(
             '<span class="t3js-icon icon icon-size-default icon-state-default icon-default-not-found" data-identifier="default-not-found">',
             $this->subject->getIconForRecord('', [])->render()
@@ -492,6 +493,7 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'ctrl' => [
                     'typeicon_column' => 'CType',
                     'typeicon_classes' => [
+                        'default' => '',
                         'text' => 'mimetypes-x-content-text',
                     ],
                 ],
@@ -513,6 +515,7 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'ctrl' => [
                     'typeicon_column' => 'CType',
                     'typeicon_classes' => [
+                        'default' => '',
                         'list' => 'mimetypes-x-content-plugin',
                     ],
                 ],
@@ -539,6 +542,7 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     ],
                     'typeicon_column' => 'CType',
                     'typeicon_classes' => [
+                        'default' => '',
                         'text' => 'mimetypes-x-content-text',
                     ],
                 ],
@@ -560,9 +564,9 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function getTestSubjectFileObject($extension, $mimeType = '')
     {
-        $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
-        $mockedFile = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\File::class)
-            ->setConstructorArgs([[], $mockedStorage])
+        $mockedStorage = $this->createMock(ResourceStorage::class);
+        $mockedFile = $this->getMockBuilder(File::class)
+            ->setConstructorArgs([['identifier' => '', 'name' => ''], $mockedStorage])
             ->getMock();
         $mockedFile->expects($this->atMost(1))->method('getExtension')->will($this->returnValue($extension));
         $mockedFile->expects($this->atLeastOnce())->method('getMimeType')->will($this->returnValue($mimeType));
@@ -577,12 +581,12 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function getTestSubjectFolderObject($identifier)
     {
-        $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
+        $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage->expects($this->any())->method('getRootLevelFolder')->will($this->returnValue(
-            new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, '/', '/')
+            new Folder($mockedStorage, '/', '/')
         ));
         $mockedStorage->expects($this->any())->method('checkFolderActionPermission')->will($this->returnValue(true));
         $mockedStorage->expects($this->any())->method('isBrowsable')->will($this->returnValue(true));
-        return new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, $identifier, $identifier);
+        return new Folder($mockedStorage, $identifier, $identifier);
     }
 }
