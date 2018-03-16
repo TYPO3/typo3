@@ -397,4 +397,19 @@ return [
             'Deprecation-84321-ProtectedMethodsAndPropertiesInAddController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\File\RenameFileController->title' => [
+        'restFiles' => [
+            'Deprecation-84332-ProtectedMethodsAndPropertiesInRenameFileController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\RenameFileController->target' => [
+        'restFiles' => [
+            'Deprecation-84332-ProtectedMethodsAndPropertiesInRenameFileController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\RenameFileController->returnUrl' => [
+        'restFiles' => [
+            'Deprecation-84332-ProtectedMethodsAndPropertiesInRenameFileController.rst',
+        ],
+    ],
 ];
