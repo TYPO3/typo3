@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
 /*
@@ -19,14 +20,10 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FileLinkHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FileLinkHandlerTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * testing folders
      */
@@ -85,7 +82,7 @@ class FileLinkHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->getMock();
 
         // fake methods to return proper objects
-        $fileObject = new File(['identifier' => $expected['file']], $storage);
+        $fileObject = new File(['identifier' => $expected['file'], 'name' => 'foobar.txt'], $storage);
         $factory->expects($this->any())->method('getFileObject')->with($expected['file'])->willReturn($fileObject);
         $expected['file'] = $fileObject;
 
