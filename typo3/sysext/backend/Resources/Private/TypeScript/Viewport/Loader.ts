@@ -12,19 +12,16 @@
  */
 
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
+import NProgress = require('nprogress');
 
 class Loader {
   public static start(): void {
-    require(['nprogress'], (NProgress: NProgressStatic): void => {
-      NProgress.configure({parent: ScaffoldIdentifierEnum.contentModule, showSpinner: false});
-      NProgress.start();
-    });
+    NProgress.configure({parent: ScaffoldIdentifierEnum.contentModule, showSpinner: false});
+    NProgress.start();
   }
 
   public static finish(): void {
-    require(['nprogress'], (NProgress: NProgressStatic): void => {
-      NProgress.done();
-    });
+    NProgress.done();
   }
 }
 
