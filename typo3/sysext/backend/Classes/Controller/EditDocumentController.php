@@ -2311,7 +2311,7 @@ class EditDocumentController
                 // @deprecated fall back if method has been called from outside. This if can be removed in v10
                 HttpUtility::redirect($this->retUrl);
             }
-            return new RedirectResponse($this->returnUrl, 303);
+            return new RedirectResponse($this->retUrl, 303);
         }
         if ($this->retUrl === '') {
             return null;
