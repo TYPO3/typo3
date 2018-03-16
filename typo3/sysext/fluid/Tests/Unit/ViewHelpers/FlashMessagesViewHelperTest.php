@@ -25,11 +25,6 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper
      */
     protected $viewHelper;
@@ -57,6 +52,12 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderReturnsEmptyStringIfNoFlashMessagesAreInQueue()
     {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'as' => null
+            ]
+        );
         $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn();
         $this->assertEmpty($this->viewHelper->initializeArgumentsAndRender());
     }
