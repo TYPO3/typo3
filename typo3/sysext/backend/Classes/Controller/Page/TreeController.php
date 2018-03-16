@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Controller\Page;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Controller\UserSettingsController;
+use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -178,8 +178,8 @@ class TreeController
         $this->addIdAsPrefix = (bool)$this->getBackendUser()->getTSConfigVal('options.pageTree.showPageIdWithTitle');
         $this->addDomainName = (bool)$this->getBackendUser()->getTSConfigVal('options.pageTree.showDomainNameWithTitle');
         $this->showMountPathAboveMounts = (bool)$this->getBackendUser()->getTSConfigVal('options.pageTree.showPathAboveMounts');
-        $userSettingsController = GeneralUtility::makeInstance(UserSettingsController::class);
-        $this->expandedState = $userSettingsController->process('get', 'BackendComponents.States.Pagetree');
+        $backendUserConfiguration = GeneralUtility::makeInstance(BackendUserConfiguration::class);
+        $this->expandedState = $backendUserConfiguration->get('BackendComponents.States.Pagetree');
         if (is_object($this->expandedState->stateHash)) {
             $this->expandedState = (array)$this->expandedState->stateHash;
         } else {
