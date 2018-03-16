@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 /*
@@ -17,17 +18,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Http\ServerRequestFactory
  */
-class ServerRequestFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ServerRequestFactoryTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * Set up
      */
@@ -43,6 +40,8 @@ class ServerRequestFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REQUEST_URI'] = '/index.php';
+        $_SERVER['REMOTE_ADDR'] = '';
+        $_SERVER['SSL_SESSION_ID'] = '';
         $_FILES = [
             'tx_uploadexample_piexample' => [
                 'name' => [
@@ -103,6 +102,8 @@ class ServerRequestFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REQUEST_URI'] = '/index.php';
+        $_SERVER['REMOTE_ADDR'] = '';
+        $_SERVER['SSL_SESSION_ID'] = '';
         $_FILES = [];
 
         $uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();
@@ -117,6 +118,8 @@ class ServerRequestFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REQUEST_URI'] = '/index.php';
+        $_SERVER['REMOTE_ADDR'] = '';
+        $_SERVER['SSL_SESSION_ID'] = '';
         $_FILES = [
             'tx_uploadexample_piexample' => [
                 'name' => '',
