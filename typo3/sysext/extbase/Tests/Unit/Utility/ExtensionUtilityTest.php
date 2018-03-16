@@ -341,7 +341,8 @@ class ExtensionUtilityTest extends UnitTestCase
     {
         $typeConverterClassName = \TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter::class;
 
-        $this->assertEmpty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']);
+        // the Extbase EXTCONF is not set at all at this point
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] = [];
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter($typeConverterClassName);
 
