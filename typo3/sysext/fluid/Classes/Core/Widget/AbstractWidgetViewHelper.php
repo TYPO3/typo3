@@ -218,7 +218,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
     private function initializeWidgetIdentifier()
     {
         $widgetCounter = $this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, 'nextWidgetNumber', 0);
-        $widgetIdentifier = '@widget_' . ($this->arguments['customWidgetId'] !== null ? $this->arguments['customWidgetId'] . '_' : '') . $widgetCounter;
+        $widgetIdentifier = '@widget_' . ((isset($this->arguments['customWidgetId']) && $this->arguments['customWidgetId'] !== null) ? $this->arguments['customWidgetId'] . '_' : '') . $widgetCounter;
         $this->viewHelperVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, 'nextWidgetNumber', $widgetCounter + 1);
         $this->widgetContext->setWidgetIdentifier($widgetIdentifier);
     }
