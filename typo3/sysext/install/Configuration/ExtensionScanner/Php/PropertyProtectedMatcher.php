@@ -512,4 +512,39 @@ return [
             'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->inputStyle' => [
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->xmlStorage' => [
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->numNewRows' => [
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->colsFieldsName' => [
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->TABLECFG' => [
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->tableParsing_quote' => [
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->tableParsing_delimiter' => [
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
 ];

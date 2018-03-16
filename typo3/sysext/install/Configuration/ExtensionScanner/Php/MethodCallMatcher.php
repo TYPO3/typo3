@@ -1969,4 +1969,46 @@ return [
             'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->tableWizard' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->getConfigCode' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->getTableHTML' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->changeFunc' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->cfgArray2CfgString' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\Wizard\TableController->cfgString2CfgArray' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+        ],
+    ],
 ];
