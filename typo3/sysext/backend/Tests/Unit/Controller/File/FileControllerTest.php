@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
  */
 
 use Prophecy\Argument;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\File\FileController;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -74,6 +75,9 @@ class FileControllerTest extends UnitTestCase
         $this->fileResourceMock->expects($this->any())->method('toArray')->will($this->returnValue(['id' => 'foo']));
         $this->fileResourceMock->expects($this->any())->method('getModificationTime')->will($this->returnValue(123456789));
         $this->fileResourceMock->expects($this->any())->method('getExtension')->will($this->returnValue('html'));
+
+        $serverRequest = $this->prophesize(ServerRequestInterface::class);
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest->reveal();
 
         $this->request = new ServerRequest();
         $this->response = new Response();

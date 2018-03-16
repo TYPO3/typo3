@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller\File;
 
 /*
@@ -16,17 +17,23 @@ namespace TYPO3\CMS\Backend\Controller\File;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
@@ -85,79 +92,8 @@ class FileController
     public function __construct()
     {
         $GLOBALS['SOBE'] = $this;
-        $this->init();
-    }
-
-    /**
-     * Registering incoming data
-     */
-    protected function init()
-    {
-        // Set the GPvars from outside
-        $this->file = GeneralUtility::_GP('data');
-        if ($this->file === null) {
-            // This happens in clipboard mode only
-            $this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
-        } else {
-            $mode = key($this->file);
-            $elementKey = key($this->file[$mode]);
-            $this->redirect = GeneralUtility::sanitizeLocalUrl($this->file[$mode][$elementKey]['redirect']);
-        }
-        $this->CB = GeneralUtility::_GP('CB');
-
-        if (isset($this->file['rename'][0]['conflictMode'])) {
-            $conflictMode = $this->file['rename'][0]['conflictMode'];
-            unset($this->file['rename'][0]['conflictMode']);
-            $this->overwriteExistingFiles = DuplicationBehavior::cast($conflictMode);
-        } else {
-            $this->overwriteExistingFiles = DuplicationBehavior::cast(GeneralUtility::_GP('overwriteExistingFiles'));
-        }
-        $this->initClipboard();
-        $this->fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
-    }
-
-    /**
-     * Initialize the Clipboard. This will fetch the data about files to paste/delete if such an action has been sent.
-     */
-    public function initClipboard()
-    {
-        if (is_array($this->CB)) {
-            $clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
-            $clipObj->initializeClipboard();
-            if ($this->CB['paste']) {
-                $clipObj->setCurrentPad($this->CB['pad']);
-                $this->file = $clipObj->makePasteCmdArray_file($this->CB['paste'], $this->file);
-            }
-            if ($this->CB['delete']) {
-                $clipObj->setCurrentPad($this->CB['pad']);
-                $this->file = $clipObj->makeDeleteCmdArray_file($this->file);
-            }
-        }
-    }
-
-    /**
-     * Performing the file admin action:
-     * Initializes the objects, setting permissions, sending data to object.
-     */
-    public function main()
-    {
-        // Initializing:
-        $this->fileProcessor->setActionPermissions();
-        $this->fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
-        $this->fileProcessor->start($this->file);
-        $this->fileData = $this->fileProcessor->processData();
-    }
-
-    /**
-     * Redirecting the user after the processing has been done.
-     * Might also display error messages directly, if any.
-     */
-    public function finish()
-    {
-        BackendUtility::setUpdateSignal('updateFolderTree');
-        if ($this->redirect) {
-            \TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->redirect);
-        }
+        // @deprecated since v9, will be moved out of __construct() in v10
+        $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
     /**
@@ -175,7 +111,7 @@ class FileController
 
         // go and edit the new created file
         if ($request->getParsedBody()['edit'] ?? '') {
-            /** @var \TYPO3\CMS\Core\Resource\File $file */
+            /** @var File $file */
             $file = $this->fileData['newfile'][0];
             $properties = $file->getProperties();
             $urlParameters = [
@@ -184,8 +120,7 @@ class FileController
             if ($this->redirect) {
                 $urlParameters['returnUrl'] = $this->redirect;
             }
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $this->redirect = (string)$uriBuilder->buildUriFromRoute('file_edit', $urlParameters);
         }
         if ($this->redirect) {
@@ -237,11 +172,10 @@ class FileController
      */
     public function fileExistsInFolderAction(ServerRequestInterface $request): ResponseInterface
     {
-        $fileName = $request->getParsedBody()['fileName'] ?? $request->getQueryParams()['fileName'];
-        $fileTarget = $request->getParsedBody()['fileTarget'] ?? $request->getQueryParams()['fileTarget'];
+        $fileName = $request->getParsedBody()['fileName'] ?? $request->getQueryParams()['fileName'] ?? null;
+        $fileTarget = $request->getParsedBody()['fileTarget'] ?? $request->getQueryParams()['fileTarget'] ?? null;
 
         $fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        /** @var Folder $fileTargetObject */
         $fileTargetObject = $fileFactory->retrieveFileOrFolderObject($fileTarget);
         $processedFileName = $fileTargetObject->getStorage()->sanitizeFileName($fileName, $fileTargetObject);
 
@@ -253,19 +187,111 @@ class FileController
     }
 
     /**
+     * Registering incoming data
+     *
+     * @param ServerRequestInterface $request
+     */
+    protected function init(ServerRequestInterface $request): void
+    {
+        // Set the GPvars from outside
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        $this->file = $parsedBody['data'] ?? $queryParams['data'] ?? null;
+        if ($this->file === null) {
+            // This happens in clipboard mode only
+            $this->redirect = GeneralUtility::sanitizeLocalUrl($parsedBody['redirect'] ?? $queryParams['redirect'] ?? '');
+        } else {
+            $mode = key($this->file);
+            $elementKey = key($this->file[$mode]);
+            $this->redirect = GeneralUtility::sanitizeLocalUrl($this->file[$mode][$elementKey]['redirect']);
+        }
+        $this->CB = $parsedBody['CB'] ?? $queryParams['CB'] ?? null;
+
+        if (isset($this->file['rename'][0]['conflictMode'])) {
+            $conflictMode = $this->file['rename'][0]['conflictMode'];
+            unset($this->file['rename'][0]['conflictMode']);
+            $this->overwriteExistingFiles = DuplicationBehavior::cast($conflictMode);
+        } else {
+            $this->overwriteExistingFiles = DuplicationBehavior::cast($parsedBody['overwriteExistingFiles'] ?? $queryParams['overwriteExistingFiles'] ?? null);
+        }
+        $this->initClipboard();
+        $this->fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
+    }
+
+    /**
+     * Initialize the Clipboard. This will fetch the data about files to paste/delete if such an action has been sent.
+     */
+    public function initClipboard(): void
+    {
+        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if (end($backtrace)['class'] !== __CLASS__) {
+            // @deprecated since TYPO3 v9, this method will be set to protected in v10
+            trigger_error('Method initClipboard() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        }
+        if (is_array($this->CB)) {
+            $clipObj = GeneralUtility::makeInstance(Clipboard::class);
+            $clipObj->initializeClipboard();
+            if ($this->CB['paste']) {
+                $clipObj->setCurrentPad($this->CB['pad']);
+                $this->file = $clipObj->makePasteCmdArray_file($this->CB['paste'], $this->file);
+            }
+            if ($this->CB['delete']) {
+                $clipObj->setCurrentPad($this->CB['pad']);
+                $this->file = $clipObj->makeDeleteCmdArray_file($this->file);
+            }
+        }
+    }
+
+    /**
+     * Performing the file admin action:
+     * Initializes the objects, setting permissions, sending data to object.
+     */
+    public function main(): void
+    {
+        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if (end($backtrace)['class'] !== __CLASS__) {
+            // @deprecated since TYPO3 v9, this method will be set to protected in v10
+            trigger_error('Method main() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        }
+        // Initializing:
+        $this->fileProcessor->setActionPermissions();
+        $this->fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
+        $this->fileProcessor->start($this->file);
+        $this->fileData = $this->fileProcessor->processData();
+    }
+
+    /**
+     * Redirecting the user after the processing has been done.
+     * Might also display error messages directly, if any.
+     *
+     * @deprecated since TYPO3 v9. Will be removed in v10.
+     */
+    public function finish()
+    {
+        trigger_error('Method finish() will be removed in v10. Do not call from other extension', E_USER_DEPRECATED);
+        BackendUtility::setUpdateSignal('updateFolderTree');
+        if ($this->redirect) {
+            HttpUtility::redirect($this->redirect);
+        }
+    }
+
+    /**
      * Flatten result value from FileProcessor
      *
      * The value can be a File, Folder or boolean
      *
-     * @param bool|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder $result
+     * @param bool|File|Folder $result
+     *
      * @return bool|string|array
      */
     protected function flattenResultDataValue($result)
     {
-        if ($result instanceof \TYPO3\CMS\Core\Resource\File) {
+        if ($result instanceof File) {
             $thumbUrl = '';
             if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $result->getExtension())) {
-                $processedFile = $result->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, []);
+                $processedFile = $result->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, []);
                 if ($processedFile) {
                     $thumbUrl = $processedFile->getPublicUrl(true);
                 }
@@ -279,7 +305,7 @@ class FileController
                     'thumbUrl' => $thumbUrl
                 ]
             );
-        } elseif ($result instanceof \TYPO3\CMS\Core\Resource\Folder) {
+        } elseif ($result instanceof Folder) {
             $result = $result->getIdentifier();
         }
 
@@ -289,9 +315,9 @@ class FileController
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

@@ -1948,4 +1948,18 @@ return [
             'Deprecation-84326-ProtectedMethodsAndPropertiesInFileUploadController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\File\FileController->initClipboard' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84324-UseServerRequestInterfaceInFileFileController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\FileController->finish' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84324-UseServerRequestInterfaceInFileFileController.rst',
+        ],
+    ],
 ];
