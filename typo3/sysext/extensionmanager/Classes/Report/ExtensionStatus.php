@@ -77,10 +77,10 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         $status['mainRepositoryStatus'] = $this->getMainRepositoryStatus();
 
         $extensionStatus = $this->getSecurityStatusOfExtensions();
-        $status['extensionsSecurityStatusInstalled'] = $extensionStatus->loaded;
-        $status['extensionsSecurityStatusNotInstalled'] = $extensionStatus->existing;
-        $status['extensionsOutdatedStatusInstalled'] = $extensionStatus->loadedoutdated;
-        $status['extensionsOutdatedStatusNotInstalled'] = $extensionStatus->existingoutdated;
+        $status['extensionsSecurityStatusInstalled'] = $extensionStatus->loaded ?? [];
+        $status['extensionsSecurityStatusNotInstalled'] = $extensionStatus->existing ?? [];
+        $status['extensionsOutdatedStatusInstalled'] = $extensionStatus->loadedoutdated ?? [];
+        $status['extensionsOutdatedStatusNotInstalled'] = $extensionStatus->existingoutdated ?? [];
 
         return $status;
     }
