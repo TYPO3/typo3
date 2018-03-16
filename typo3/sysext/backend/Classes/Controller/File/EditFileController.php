@@ -214,7 +214,7 @@ class EditFileController
             'defaultExtras' => 'fixed-font: enable-tab'
         ];
 
-        $this->getButtons();
+        $this->getButtonsInternal();
         // Hook: before compiling the output
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'] ?? [] as $hookFunction) {
             $hookParameters = [
@@ -331,10 +331,17 @@ class EditFileController
      *
      * @deprecated since TYPO3 v9, will be set protected in TYPO3 v10
      */
-    public function getButtons(): void
+    public function getButtons()
     {
-        trigger_error('Method getButtons() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('Method getButtons() will be replaced by protected method getButtonsInternal() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        $this->getButtonsInternal();
+    }
 
+    /**
+     * Builds the buttons for the docheader
+     */
+    protected function getButtonsInternal(): void
+    {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         $lang = $this->getLanguageService();
