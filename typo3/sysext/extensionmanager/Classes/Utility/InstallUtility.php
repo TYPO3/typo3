@@ -177,7 +177,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $extension = $this->enrichExtensionWithDetails($extensionKey, false);
         $this->ensureConfiguredDirectoriesExist($extension);
-        $this->importInitialFiles($extension['siteRelPath'], $extensionKey);
+        $this->importInitialFiles($extension['siteRelPath'] ?? '', $extensionKey);
         $this->processDatabaseUpdates($extension);
         $this->processRuntimeDatabaseUpdates($extensionKey);
     }
