@@ -96,6 +96,7 @@ class CObjectViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        $content = '';
         $data = $renderChildrenClosure();
         $typoscriptObjectPath = $arguments['typoscriptObjectPath'];
         $currentValueKey = $arguments['currentValueKey'];
@@ -120,13 +121,18 @@ class CObjectViewHelper extends AbstractViewHelper
         $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
         $lastSegment = array_pop($pathSegments);
         $setup = static::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-        foreach ($pathSegments as $segment) {
-            if (!array_key_exists($segment . '.', $setup)) {
-                throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist', 1253191023);
+        if (!empty($pathSegments) && \is_array($pathSegments)) {
+            foreach ($pathSegments as $segment) {
+                if (!array_key_exists($segment . '.', $setup)) {
+                    throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(
+                        'TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist',
+                        1253191023
+                    );
+                }
+                $setup = $setup[$segment . '.'];
             }
-            $setup = $setup[$segment . '.'];
+            $content = $contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
         }
-        $content = $contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
         if (TYPO3_MODE === 'BE') {
             static::resetFrontendEnvironment();
         }

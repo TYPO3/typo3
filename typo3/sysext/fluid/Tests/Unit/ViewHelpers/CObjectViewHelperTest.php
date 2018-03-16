@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
 /*
@@ -27,11 +28,6 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
  */
 class CObjectViewHelperTest extends ViewHelperBaseTestcase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var CObjectViewHelper
      */
@@ -114,6 +110,7 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
                 'typoscriptObjectPath' => 'test.path',
             ]
         );
+
         $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
         $this->expectExceptionCode(1253191023);
         $this->viewHelper->initializeArgumentsAndRender();
@@ -127,7 +124,7 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
         $this->setArgumentsUnderTest(
             $this->viewHelper,
             [
-                'typoscriptObjectPath' => 'test',
+                'typoscriptObjectPath' => 'plugin.test',
                 'data' => 'foo',
                 'table' => 'table',
             ]
@@ -139,8 +136,12 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
         ];
 
         $configArray = [
-            'test' => 'TEXT',
-            'test.' => $subConfigArray,
+            'olugin' => 'COA',
+            'plugin.' => [
+                'test' => 'TEXT',
+                'test.' => $subConfigArray,
+
+            ]
         ];
 
         $this->configurationManager->getConfiguration(Argument::any())->willReturn($configArray);
@@ -152,7 +153,7 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
         $objectManager = $this->prophesize(ObjectManager::class);
         $objectManager->get(ConfigurationManagerInterface::class)->willReturn($this->configurationManager->reveal());
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
-        $GLOBALS['TSFE'] = (object) ['cObj' => $this->contentObjectRenderer->reveal()];
+        $GLOBALS['TSFE'] = (object)['cObj' => $this->contentObjectRenderer->reveal()];
 
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $expectedResult = 'Hello World';
@@ -170,6 +171,6 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
         $objectManager = $this->prophesize(ObjectManager::class);
         $objectManager->get(ConfigurationManagerInterface::class)->willReturn($this->configurationManager->reveal());
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
-        $GLOBALS['TSFE'] = (object) ['cObj' => $this->contentObjectRenderer->reveal()];
+        $GLOBALS['TSFE'] = (object)['cObj' => $this->contentObjectRenderer->reveal()];
     }
 }
