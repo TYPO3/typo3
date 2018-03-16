@@ -17,6 +17,7 @@ declare namespace TYPO3 {
   export let Severity: any;
   export let ShortcutMenu: any;
   export let Storage: any;
+  export let Tooltip: any;
   export let Utility: any;
   export const lang: any;
   export const settings: any;
