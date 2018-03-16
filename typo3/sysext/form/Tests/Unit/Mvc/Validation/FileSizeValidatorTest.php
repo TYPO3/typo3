@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
 
 /*
@@ -18,17 +19,13 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class FileSizeValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FileSizeValidatorTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
@@ -78,7 +75,7 @@ class FileSizeValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             ->disableOriginalConstructor()
             ->getMock();
 
-        $file = new File(['identifier' => '/foo', 'size' => '1'], $mockedStorage);
+        $file = new File(['identifier' => '/foo', 'name'=> 'bar.txt', 'size' => '1'], $mockedStorage);
         $this->assertTrue($validator->validate($file)->hasErrors());
     }
 
@@ -97,7 +94,7 @@ class FileSizeValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             ->disableOriginalConstructor()
             ->getMock();
 
-        $file = new File(['identifier' => '/foo', 'size' => '1048577'], $mockedStorage);
+        $file = new File(['identifier' => '/foo', 'name' => 'bar.txt', 'size' => '1048577'], $mockedStorage);
         $this->assertTrue($validator->validate($file)->hasErrors());
     }
 
