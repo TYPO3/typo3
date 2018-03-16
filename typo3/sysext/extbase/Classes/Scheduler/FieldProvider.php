@@ -15,13 +15,14 @@ namespace TYPO3\CMS\Extbase\Scheduler;
  */
 
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
+use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Field provider for Extbase CommandController Scheduler task
  */
-class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+class FieldProvider implements AdditionalFieldProviderInterface
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager

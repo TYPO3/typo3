@@ -17,15 +17,16 @@ namespace TYPO3\CMS\Reports\Task;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
+use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * Additional field to set the notification email address(es) for system health
  * issue notifications.
  */
-class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldProviderInterface
+class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFieldProvider
 {
     /**
      * Additional fields
@@ -51,7 +52,9 @@ class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldPro
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
-        if ($schedulerModule->CMD === 'edit') {
+        $currentSchedulerModuleAction = $schedulerModule->getCurrentAction();
+
+        if ($currentSchedulerModuleAction->equals(Action::EDIT)) {
             $taskInfo[$this->fieldPrefix . 'NotificationEmail'] = $task->getNotificationEmail();
             $taskInfo[$this->fieldPrefix . 'NotificationAll'] = $task->getNotificationAll();
         }
@@ -100,8 +103,8 @@ class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldPro
                 break;
             }
         }
-        if (empty($submittedData[$this->fieldPrefix . 'NotificationEmail']) || !$validInput) {
-            $schedulerModule->addMessage($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails_invalid'), FlashMessage::ERROR);
+        if (!$validInput || empty($submittedData[$this->fieldPrefix . 'NotificationEmail'])) {
+            $this->addMessage($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails_invalid'), FlashMessage::ERROR);
             $validInput = false;
         }
         return $validInput;
@@ -112,6 +115,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldPro
      *
      * @param array $submittedData An array containing the data submitted by the add/edit task form
      * @param AbstractTask $task Reference to the scheduler backend module
+     * @throws \InvalidArgumentException
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {

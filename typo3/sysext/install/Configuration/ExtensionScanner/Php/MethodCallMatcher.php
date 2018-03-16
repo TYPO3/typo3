@@ -2431,4 +2431,11 @@ return [
             'Deprecation-85451-ContentObjectRenderer-calcIntExplodeDeprecated.rst'
         ],
     ],
+    'TYPO3\CMS\Scheduler\Classes\Controller\SchedulerModuleController->addMessage' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-84387-DeprecatedMethodAndPropertyInSchedulerModuleController.rst',
+        ],
+    ],
 ];

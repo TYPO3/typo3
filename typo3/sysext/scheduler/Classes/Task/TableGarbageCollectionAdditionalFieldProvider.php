@@ -14,10 +14,15 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
+use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
+
 /**
  * Additional BE fields for sys log table garbage collection task.
  */
-class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
     /**
      * @var array Default number of days by table
@@ -29,16 +34,16 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
      * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+     * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
-    public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
         $this->initDefaultNumberOfDays();
         $additionalFields = [];
-        $additionalFields['task_tableGarbageCollection_allTables'] = $this->getAllTablesAdditionalField($taskInfo, $task, $parentObject);
-        $additionalFields['task_tableGarbageCollection_table'] = $this->getTableAdditionalField($taskInfo, $task, $parentObject);
-        $additionalFields['task_tableGarbageCollection_numberOfDays'] = $this->getNumberOfDaysAdditionalField($taskInfo, $task, $parentObject);
+        $additionalFields['task_tableGarbageCollection_allTables'] = $this->getAllTablesAdditionalField($taskInfo, $task, $schedulerModule);
+        $additionalFields['task_tableGarbageCollection_table'] = $this->getTableAdditionalField($taskInfo, $task, $schedulerModule);
+        $additionalFields['task_tableGarbageCollection_numberOfDays'] = $this->getNumberOfDaysAdditionalField($taskInfo, $task, $schedulerModule);
         return $additionalFields;
     }
 
@@ -47,7 +52,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
      */
     protected function initDefaultNumberOfDays()
     {
-        $tableConfiguration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'];
+        $tableConfiguration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageCollectionTask::class]['options']['tables'];
         foreach ($tableConfiguration as $tableName => $configuration) {
             if (isset($configuration['expirePeriod'])) {
                 $this->defaultNumberOfDays[$tableName] = $configuration['expirePeriod'];
@@ -60,16 +65,19 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
      * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+     * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
-    protected function getAllTablesAdditionalField(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    protected function getAllTablesAdditionalField(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
-        if ($parentObject->CMD === 'edit') {
+        $currentSchedulerModuleAction = $schedulerModule->getCurrentAction();
+
+        if ($currentSchedulerModuleAction->equals(Action::EDIT)) {
             $checked = $task->allTables === true ? 'checked="checked" ' : '';
         } else {
             $checked = '';
         }
+
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_allTables]';
         $fieldId = 'task_tableGarbageCollection_allTables';
         $fieldHtml = '<div class="checkbox"><label><input type="checkbox" ' . $checked . ' name="' . $fieldName . '" ' . 'id="' . $fieldId . '"></label></div>';
@@ -79,6 +87,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId
         ];
+
         return $fieldConfiguration;
     }
 
@@ -87,20 +96,21 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
      * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+     * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
-    protected function getTableAdditionalField(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    protected function getTableAdditionalField(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
-        $tableConfiguration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'];
+        $currentSchedulerModuleAction = $schedulerModule->getCurrentAction();
+        $tableConfiguration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageCollectionTask::class]['options']['tables'];
         $options = [];
         // Add an empty option on top if an existing task is configured
         // with a table that can not be found in configuration anymore
-        if ($parentObject->CMD === 'edit' && !array_key_exists($task->table, $tableConfiguration)) {
+        if (!array_key_exists($task->table, $tableConfiguration) && $currentSchedulerModuleAction->equals(Action::EDIT)) {
             $options[] = '<option value="" selected="selected"></option>';
         }
         foreach ($tableConfiguration as $tableName => $configuration) {
-            if ($parentObject->CMD === 'add' && empty($options)) {
+            if ($currentSchedulerModuleAction->equals(Action::ADD) && empty($options)) {
                 // Select first table by default if adding a new task
                 $options[] = '<option value="' . $tableName . '" selected="selected">' . $tableName . '</option>';
             } elseif ($task->table === $tableName) {
@@ -134,18 +144,19 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
      * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+     * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
-    protected function getNumberOfDaysAdditionalField(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    protected function getNumberOfDaysAdditionalField(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
+        $currentSchedulerModuleAction = $schedulerModule->getCurrentAction();
         // Initialize selected fields
         $disabled = '';
         if (empty($taskInfo['scheduler_tableGarbageCollection_numberOfDays'])) {
-            if ($parentObject->CMD === 'add') {
+            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
                 // In case of new task, set to 180 days
                 $taskInfo['scheduler_tableGarbageCollection_numberOfDays'] = 180;
-            } elseif ($parentObject->CMD === 'edit') {
+            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 // In case of editing the task, set to currently selected value
                 $taskInfo['scheduler_tableGarbageCollection_numberOfDays'] = $task->numberOfDays;
                 if ($task->numberOfDays === 0 && !isset($this->defaultNumberOfDays[$task->table])) {
@@ -172,14 +183,14 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
      * Validate additional fields
      *
      * @param array $submittedData Reference to the array containing the data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+     * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return bool True if validation was ok (or selected class is not relevant), false otherwise
      */
-    public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
-        $validData = $this->validateAllTablesAdditionalField($submittedData, $parentObject);
-        $validData &= $this->validateTableAdditionalField($submittedData, $parentObject);
-        $validData &= $this->validateNumberOfDaysAdditionalField($submittedData, $parentObject);
+        $validData = $this->validateAllTablesAdditionalField($submittedData);
+        $validData &= $this->validateTableAdditionalField($submittedData);
+        $validData &= $this->validateNumberOfDaysAdditionalField($submittedData);
         return $validData;
     }
 
@@ -187,10 +198,9 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
      * Checks if all table field is correct
      *
      * @param array $submittedData Reference to the array containing the data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
      * @return bool True if data is valid
      */
-    public function validateAllTablesAdditionalField(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function validateAllTablesAdditionalField(array &$submittedData)
     {
         $validData = false;
         if (!isset($submittedData['scheduler_tableGarbageCollection_allTables'])) {
@@ -205,13 +215,12 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
      * Checks given table for existence in configuration array
      *
      * @param array $submittedData Reference to the array containing the data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
      * @return bool True if table exists in configuration, false otherwise
      */
-    public function validateTableAdditionalField(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function validateTableAdditionalField(array &$submittedData)
     {
         $validData = false;
-        $tableConfiguration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'];
+        $tableConfiguration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageCollectionTask::class]['options']['tables'];
         if (!isset($submittedData['scheduler_tableGarbageCollection_table'])) {
             $validData = true;
         } elseif (array_key_exists($submittedData['scheduler_tableGarbageCollection_table'], $tableConfiguration)) {
@@ -224,10 +233,9 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
      * Checks if given number of days is a positive integer
      *
      * @param array $submittedData Reference to the array containing the data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
      * @return bool True if validation was ok (or selected class is not relevant), false otherwise
      */
-    public function validateNumberOfDaysAdditionalField(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function validateNumberOfDaysAdditionalField(array &$submittedData)
     {
         $validData = false;
         if (!isset($submittedData['scheduler_tableGarbageCollection_numberOfDays'])) {
@@ -236,7 +244,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
             $validData = true;
         } else {
             // Issue error message
-            $parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidNumberOfDays'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+            $this->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidNumberOfDays'), FlashMessage::ERROR);
         }
         return $validData;
     }
@@ -247,7 +255,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
      * @param array $submittedData Contains data submitted by the user
      * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
      */
-    public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
         $task->allTables = $submittedData['scheduler_tableGarbageCollection_allTables'] === 'on';
         $task->table = $submittedData['scheduler_tableGarbageCollection_table'];

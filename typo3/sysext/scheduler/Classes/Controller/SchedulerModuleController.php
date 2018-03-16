@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Scheduler\Controller;
 
 /*
@@ -16,9 +17,13 @@ namespace TYPO3\CMS\Scheduler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -38,12 +43,30 @@ use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\ProgressProviderInterface;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * Module 'TYPO3 Scheduler administration module' for the 'scheduler' extension.
  */
 class SchedulerModuleController
 {
+    use PublicMethodDeprecationTrait;
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'addMessage' => 'Using SchedulerModuleController::addMessage() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicProperties = [
+        'CMD' => 'Using SchedulerModuleController::$CMD is deprecated and will not be possible anymore in TYPO3 v10. Use SchedulerModuleController::getCurrentAction() instead.',
+    ];
+
     /**
      * Array containing submitted data when editing or adding a task
      *
@@ -99,15 +122,18 @@ class SchedulerModuleController
     /**
      * The value of GET/POST var, 'CMD'
      *
-     * @see init()
      * @var mixed
      */
-    public $CMD;
+    protected $CMD;
+
+    /**
+     * @var Action
+     */
+    protected $action;
 
     /**
      * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
      *
-     * @see init()
      * @var array
      */
     protected $MOD_MENU = [
@@ -133,8 +159,7 @@ class SchedulerModuleController
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->getRequest()->setControllerExtensionName('scheduler');
         $this->view->setPartialRootPaths([ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Partials/Backend/SchedulerModule/']);
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->moduleUri = (string)$uriBuilder->buildUriFromRoute('system_txschedulerM1');
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->scheduler = GeneralUtility::makeInstance(Scheduler::class);
@@ -145,14 +170,16 @@ class SchedulerModuleController
 
     /**
      * Injects the request object for the current request or subrequest
-     * Simply calls main() and init() and outputs the content
      *
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->CMD = GeneralUtility::_GP('CMD');
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
+        $this->setCurrentAction(Action::cast($parsedBody['CMD'] ?? $queryParams['CMD'] ?? null));
         $this->MOD_MENU = [
             'function' => [
                 'scheduler' => $this->getLanguageService()->getLL('function.scheduler'),
@@ -160,14 +187,16 @@ class SchedulerModuleController
                 'info' => $this->getLanguageService()->getLL('function.info')
             ]
         ];
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'system_txschedulerM1', '', '', '');
+        $settings = $parsedBody['SET'] ?? $queryParams['SET'] ?? null;
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $settings, 'system_txschedulerM1', '', '', '');
 
         // Set the form
         $content = '<form name="tx_scheduler_form" id="tx_scheduler_form" method="post" action="">';
 
         // Prepare main content
         $content .= '<h1>' . $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']) . '</h1>';
-        $content .= $this->getModuleContent();
+        $previousCMD = Action::cast($parsedBody['previousCMD'] ?? $queryParams['previousCMD'] ?? null);
+        $content .= $this->getModuleContent($previousCMD);
         $content .= '<div id="extraFieldsSection"></div></form><div id="extraFieldsHidden"></div>';
 
         $this->getButtons();
@@ -178,14 +207,24 @@ class SchedulerModuleController
     }
 
     /**
+     * Get the current action
+     *
+     * @return Action
+     */
+    public function getCurrentAction(): Action
+    {
+        return $this->action;
+    }
+
+    /**
      * Generates the action menu
      */
-    protected function getModuleMenu()
+    protected function getModuleMenu(): void
     {
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('SchedulerJumpMenu');
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
@@ -212,9 +251,10 @@ class SchedulerModuleController
     /**
      * Generate the module's content
      *
+     * @param Action $previousAction
      * @return string HTML of the module's main content
      */
-    protected function getModuleContent()
+    protected function getModuleContent(Action $previousAction): string
     {
         $content = '';
         $sectionTitle = '';
@@ -222,30 +262,31 @@ class SchedulerModuleController
         $this->submittedData = GeneralUtility::_GPmerged('tx_scheduler');
         $this->submittedData['uid'] = (int)$this->submittedData['uid'];
         // If a save command was submitted, handle saving now
-        if ($this->CMD === 'save' || $this->CMD === 'saveclose' || $this->CMD === 'savenew') {
-            $previousCMD = GeneralUtility::_GP('previousCMD');
+        if (in_array((string)$this->getCurrentAction(), [Action::SAVE, Action::SAVE_CLOSE, Action::SAVE_NEW], true)) {
             // First check the submitted data
             $result = $this->preprocessData();
+
             // If result is ok, proceed with saving
             if ($result) {
                 $this->saveTask();
-                if ($this->CMD === 'saveclose') {
-                    // Unset command, so that default screen gets displayed
-                    unset($this->CMD);
-                } elseif ($this->CMD === 'save') {
+
+                if ($this->action->equals(Action::SAVE_CLOSE)) {
+                    // Display default screen
+                    $this->setCurrentAction(Action::cast(Action::LIST));
+                } elseif ($this->action->equals(Action::SAVE)) {
                     // After saving a "add form", return to edit
-                    $this->CMD = 'edit';
-                } elseif ($this->CMD === 'savenew') {
+                    $this->setCurrentAction(Action::cast(Action::EDIT));
+                } elseif ($this->action->equals(Action::SAVE_NEW)) {
                     // Unset submitted data, so that empty form gets displayed
                     unset($this->submittedData);
                     // After saving a "add/edit form", return to add
-                    $this->CMD = 'add';
+                    $this->setCurrentAction(Action::cast(Action::ADD));
                 } else {
                     // Return to edit form
-                    $this->CMD = $previousCMD;
+                    $this->setCurrentAction($previousAction);
                 }
             } else {
-                $this->CMD = $previousCMD;
+                $this->setCurrentAction($previousAction);
             }
         }
 
@@ -254,13 +295,13 @@ class SchedulerModuleController
             case 'scheduler':
                 $this->executeTasks();
 
-                switch ($this->CMD) {
-                    case 'add':
-                    case 'edit':
+                switch ((string)$this->getCurrentAction()) {
+                    case Action::ADD:
+                    case Action::EDIT:
                         try {
                             // Try adding or editing
                             $content .= $this->editTaskAction();
-                            $sectionTitle = $this->getLanguageService()->getLL('action.' . $this->CMD);
+                            $sectionTitle = $this->getLanguageService()->getLL('action.' . $this->getCurrentAction());
                         } catch (\Exception $e) {
                             if ($e->getCode() === 1305100019) {
                                 // Invalid controller class name exception
@@ -273,25 +314,23 @@ class SchedulerModuleController
                             $content .= $this->listTasksAction();
                         }
                         break;
-                    case 'delete':
+                    case Action::DELETE:
                         $this->deleteTask();
                         $content .= $this->listTasksAction();
                         break;
-                    case 'stop':
+                    case Action::STOP:
                         $this->stopTask();
                         $content .= $this->listTasksAction();
                         break;
-                    case 'toggleHidden':
+                    case Action::TOGGLE_HIDDEN:
                         $this->toggleDisableAction();
                         $content .= $this->listTasksAction();
                         break;
-                    case 'setNextExecutionTime':
+                    case Action::SET_NEXT_EXECUTION_TIME:
                         $this->setNextExecutionTimeAction();
                         $content .= $this->listTasksAction();
                         break;
-                    case 'list':
-
-                    default:
+                    case Action::LIST:
                         $content .= $this->listTasksAction();
                 }
                 break;
@@ -317,7 +356,7 @@ class SchedulerModuleController
      *
      * @return string Further information
      */
-    protected function checkScreenAction()
+    protected function checkScreenAction(): string
     {
         $this->view->setTemplatePathAndFilename($this->backendTemplatePath . 'CheckScreen.html');
 
@@ -378,7 +417,7 @@ class SchedulerModuleController
      *
      * @return string html
      */
-    protected function infoScreenAction()
+    protected function infoScreenAction(): string
     {
         $registeredClasses = $this->getRegisteredClasses();
         // No classes available, display information message
@@ -396,7 +435,7 @@ class SchedulerModuleController
     /**
      * Delete a task from the execution queue
      */
-    protected function deleteTask()
+    protected function deleteTask(): void
     {
         try {
             // Try to fetch the task and delete it
@@ -435,7 +474,7 @@ class SchedulerModuleController
      * all executions.
      * @todo find a way to really kill the running task
      */
-    protected function stopTask()
+    protected function stopTask(): void
     {
         try {
             // Try to fetch the task and stop it
@@ -461,7 +500,7 @@ class SchedulerModuleController
     /**
      * Toggles the disabled state of the submitted task
      */
-    protected function toggleDisableAction()
+    protected function toggleDisableAction(): void
     {
         $task = $this->scheduler->fetchTask($this->submittedData['uid']);
         $task->setDisabled(!$task->isDisabled());
@@ -476,7 +515,7 @@ class SchedulerModuleController
     /**
      * Sets the next execution time of the submitted task to now
      */
-    protected function setNextExecutionTimeAction()
+    protected function setNextExecutionTimeAction(): void
     {
         $task = $this->scheduler->fetchTask($this->submittedData['uid']);
         $task->setRunOnNextCronJob(true);
@@ -488,7 +527,7 @@ class SchedulerModuleController
      *
      * @return string HTML form to add or edit a task
      */
-    protected function editTaskAction()
+    protected function editTaskAction(): string
     {
         $this->view->setTemplatePathAndFilename($this->backendTemplatePath . 'EditTask.html');
 
@@ -608,8 +647,8 @@ class SchedulerModuleController
         ');
 
         // Start rendering the add/edit form
-        $this->view->assign('uid', htmlspecialchars($this->submittedData['uid']));
-        $this->view->assign('cmd', htmlspecialchars($this->CMD));
+        $this->view->assign('uid', htmlspecialchars((string)$this->submittedData['uid']));
+        $this->view->assign('cmd', htmlspecialchars((string)$this->getCurrentAction()));
         $this->view->assign('csh', $this->cshKey);
         $this->view->assign('lang', 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:');
 
@@ -711,11 +750,10 @@ class SchedulerModuleController
      * @param array $fieldInfo The array with the field info, contains the page title shown beside the button
      * @return string HTML code for the browse button
      */
-    protected function getBrowseButton($fieldID, array $fieldInfo)
+    protected function getBrowseButton($fieldID, array $fieldInfo): string
     {
         if (isset($fieldInfo['browser']) && ($fieldInfo['browser'] === 'page')) {
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = (string)$uriBuilder->buildUriFromRoute(
                 'wizard_element_browser',
                 ['mode' => 'db', 'bparams' => $fieldID . '|||pages|']
@@ -737,7 +775,7 @@ class SchedulerModuleController
     /**
      * Execute all selected tasks
      */
-    protected function executeTasks()
+    protected function executeTasks(): void
     {
         // Continue if some elements have been chosen for execution
         if (isset($this->submittedData['execute']) && !empty($this->submittedData['execute'])) {
@@ -776,7 +814,7 @@ class SchedulerModuleController
             // Record the run in the system registry
             $this->scheduler->recordLastRun('manual');
             // Make sure to switch to list view after execution
-            $this->CMD = 'list';
+            $this->setCurrentAction(Action::cast(Action::LIST));
         }
     }
 
@@ -785,7 +823,7 @@ class SchedulerModuleController
      *
      * @return string Table of pending tasks
      */
-    protected function listTasksAction()
+    protected function listTasksAction(): string
     {
         $this->view->setTemplatePathAndFilename($this->backendTemplatePath . 'ListTasks.html');
 
@@ -997,7 +1035,7 @@ class SchedulerModuleController
      * @param array $labels
      * @return string
      */
-    protected function makeStatusLabel(array $labels)
+    protected function makeStatusLabel(array $labels): string
     {
         $htmlLabels = [];
         foreach ($labels as $label) {
@@ -1013,7 +1051,7 @@ class SchedulerModuleController
     /**
      * Saves a task specified in the backend form to the database
      */
-    protected function saveTask()
+    protected function saveTask(): void
     {
         // If a task is being edited fetch old task data
         if (!empty($this->submittedData['uid'])) {
@@ -1230,7 +1268,7 @@ class SchedulerModuleController
      * @param string $message The message itself
      * @param int $severity Message level (according to FlashMessage class constants)
      */
-    public function addMessage($message, $severity = FlashMessage::OK)
+    protected function addMessage($message, $severity = FlashMessage::OK)
     {
         $this->moduleTemplate->addFlashMessage($message, '', $severity);
     }
@@ -1248,7 +1286,7 @@ class SchedulerModuleController
      *
      * @return array List of registered classes
      */
-    protected function getRegisteredClasses()
+    protected function getRegisteredClasses(): array
     {
         $list = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'] ?? [] as $class => $registrationInformation) {
@@ -1269,7 +1307,7 @@ class SchedulerModuleController
      *
      * @return array List of registered groups
      */
-    protected function getRegisteredTaskGroups()
+    protected function getRegisteredTaskGroups(): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_scheduler_task_group');
@@ -1285,7 +1323,7 @@ class SchedulerModuleController
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getButtons()
+    protected function getButtons(): void
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // CSH
@@ -1293,8 +1331,9 @@ class SchedulerModuleController
             ->setModuleName('_MOD_system_txschedulerM1')
             ->setFieldName('');
         $buttonBar->addButton($helpButton);
+
         // Add and Reload
-        if (empty($this->CMD) || $this->CMD === 'list' || $this->CMD === 'delete' || $this->CMD === 'stop' || $this->CMD === 'toggleHidden' || $this->CMD === 'setNextExecutionTime') {
+        if (in_array((string)$this->getCurrentAction(), [Action::LIST, Action::DELETE, Action::STOP, Action::TOGGLE_HIDDEN, Action::SET_NEXT_EXECUTION_TIME], true)) {
             $reloadButton = $buttonBar->makeLinkButton()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL))
@@ -1304,12 +1343,13 @@ class SchedulerModuleController
                 $addButton = $buttonBar->makeLinkButton()
                     ->setTitle($this->getLanguageService()->getLL('action.add'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL))
-                    ->setHref($this->moduleUri . '&CMD=add');
+                    ->setHref($this->moduleUri . '&CMD=' . Action::ADD);
                 $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             }
         }
+
         // Close and Save
-        if ($this->CMD === 'add' || $this->CMD === 'edit') {
+        if (in_array((string)$this->getCurrentAction(), [Action::ADD, Action::EDIT], true)) {
             // Close
             $closeButton = $buttonBar->makeLinkButton()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'))
@@ -1321,37 +1361,39 @@ class SchedulerModuleController
             $saveButtonDropdown = $buttonBar->makeSplitButton();
             $saveButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
-                ->setValue('save')
+                ->setValue(Action::SAVE)
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:save'));
             $saveButtonDropdown->addItem($saveButton);
             $saveAndNewButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
-                ->setValue('savenew')
+                ->setValue(Action::SAVE_NEW)
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-new', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.saveAndCreateNewTask'));
             $saveButtonDropdown->addItem($saveAndNewButton);
             $saveAndCloseButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
-                ->setValue('saveclose')
+                ->setValue(Action::SAVE_CLOSE)
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:saveAndClose'));
             $saveButtonDropdown->addItem($saveAndCloseButton);
             $buttonBar->addButton($saveButtonDropdown, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
+
         // Edit
-        if ($this->CMD === 'edit') {
+        if ($this->getCurrentAction()->equals(Action::EDIT)) {
             $deleteButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
-                ->setValue('delete')
+                ->setValue(Action::DELETE)
                 ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'));
             $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
         }
+
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName('system_txschedulerM1')
@@ -1361,9 +1403,21 @@ class SchedulerModuleController
     }
 
     /**
+     * Set the current action
+     *
+     * @param Action $action
+     */
+    protected function setCurrentAction(Action $action): void
+    {
+        $this->action = $action;
+        // @deprecated since TYPO3 v9, will be removed with TYPO3 v10
+        $this->CMD = (string)$action;
+    }
+
+    /**
      * @return string
      */
-    protected function getServerTime()
+    protected function getServerTime(): string
     {
         $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' T (e';
         return date($dateFormat) . ', GMT ' . date('P') . ')';
@@ -1373,7 +1427,7 @@ class SchedulerModuleController
      * Returns the Language Service
      * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
@@ -1383,7 +1437,7 @@ class SchedulerModuleController
      *
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
@@ -1391,7 +1445,7 @@ class SchedulerModuleController
     /**
      * @return PageRenderer
      */
-    protected function getPageRenderer()
+    protected function getPageRenderer(): PageRenderer
     {
         return GeneralUtility::makeInstance(PageRenderer::class);
     }

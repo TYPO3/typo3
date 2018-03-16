@@ -14,13 +14,18 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
+use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
+
 /**
  * Additional BE fields for recycler garbage collection task.
  *
  * Creates an integer input field for difference between scheduler run time
  * and file modification time in days to select from.
  */
-class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
     /**
      * Default period in days to remove a recycled file
@@ -35,15 +40,17 @@ class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Sch
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
      * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+     * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
-    public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
+        $currentSchedulerModuleAction = $schedulerModule->getCurrentAction();
+
         // Initialize selected fields
         if (!isset($taskInfo['scheduler_recyclerGarbageCollection_numberOfDays'])) {
             $taskInfo['scheduler_recyclerGarbageCollection_numberOfDays'] = $this->defaultNumberOfDays;
-            if ($parentObject->CMD === 'edit') {
+            if ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 $taskInfo['scheduler_recyclerGarbageCollection_numberOfDays'] = $task->numberOfDays;
             }
         }
@@ -64,17 +71,17 @@ class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Sch
      * Checks if the given value is an integer
      *
      * @param array $submittedData Reference to the array containing the data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+     * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return bool TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
      */
-    public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
         $result = true;
         // Check if number of days is indeed a number and greater or equals to 0
         // If not, fail validation and issue error message
         if (!is_numeric($submittedData['scheduler_recyclerGarbageCollection_numberOfDays']) || (int)$submittedData['scheduler_recyclerGarbageCollection_numberOfDays'] < 0) {
             $result = false;
-            $parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidNumberOfDays'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+            $this->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidNumberOfDays'), FlashMessage::ERROR);
         }
         return $result;
     }
@@ -83,9 +90,9 @@ class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Sch
      * Saves given integer value in task object
      *
      * @param array $submittedData Contains data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
+     * @param AbstractTask $task Reference to the current task object
      */
-    public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
         $task->numberOfDays = (int)$submittedData['scheduler_recyclerGarbageCollection_numberOfDays'];
     }

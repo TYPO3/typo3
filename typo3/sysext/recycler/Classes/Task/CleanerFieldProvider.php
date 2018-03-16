@@ -15,14 +15,16 @@ namespace TYPO3\CMS\Recycler\Task;
  */
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * A task that should be run regularly that deletes
  * datasets flagged as "deleted" from the DB.
  */
-class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+class CleanerFieldProvider extends AbstractAdditionalFieldProvider
 {
     /**
      * Gets additional fields to render in the form to add/edit a task
@@ -34,7 +36,9 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
-        if ($schedulerModule->CMD === 'edit') {
+        $currentSchedulerModuleAction = $schedulerModule->getCurrentAction();
+
+        if ($currentSchedulerModuleAction->equals(Action::EDIT)) {
             $taskInfo['RecyclerCleanerTCA'] = $task->getTcaTables();
             $taskInfo['RecyclerCleanerPeriod'] = $task->getPeriod();
         }
@@ -94,8 +98,8 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
      */
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
-        $validPeriod = $this->validateAdditionalFieldPeriod($submittedData['RecyclerCleanerPeriod'], $schedulerModule);
-        $validTca = $this->validateAdditionalFieldTca($submittedData['RecyclerCleanerTCA'], $schedulerModule);
+        $validPeriod = $this->validateAdditionalFieldPeriod($submittedData['RecyclerCleanerPeriod']);
+        $validTca = $this->validateAdditionalFieldTca($submittedData['RecyclerCleanerTCA']);
 
         return $validPeriod && $validTca;
     }
@@ -104,27 +108,25 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
      * Validates the selected Tables
      *
      * @param array $tca The given TCA-tables as array
-     * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      * @return bool TRUE if validation was ok, FALSE otherwise
      */
-    protected function validateAdditionalFieldTca($tca, SchedulerModuleController $schedulerModule)
+    protected function validateAdditionalFieldTca($tca)
     {
-        return $this->checkTcaIsNotEmpty($tca, $schedulerModule) && $this->checkTcaIsValid($tca, $schedulerModule);
+        return $this->checkTcaIsNotEmpty($tca) && $this->checkTcaIsValid($tca);
     }
 
     /**
      * Checks if the array is empty
      *
      * @param array $tca The given TCA-tables as array
-     * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      * @return bool TRUE if validation was ok, FALSE otherwise
      */
-    protected function checkTcaIsNotEmpty($tca, SchedulerModuleController $schedulerModule)
+    protected function checkTcaIsNotEmpty($tca)
     {
         if (is_array($tca) && !empty($tca)) {
             $validTca = true;
         } else {
-            $schedulerModule->addMessage(
+            $this->addMessage(
                 $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorTCAempty'),
                 FlashMessage::ERROR
             );
@@ -138,16 +140,15 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
      * Checks if the given tables are in the TCA
      *
      * @param array $tca The given TCA-tables as array
-     * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      * @return bool TRUE if validation was ok, FALSE otherwise
      */
-    protected function checkTcaIsValid(array $tca, SchedulerModuleController $schedulerModule)
+    protected function checkTcaIsValid(array $tca)
     {
         $checkTca = false;
         foreach ($tca as $tcaTable) {
             if (!isset($GLOBALS['TCA'][$tcaTable])) {
                 $checkTca = false;
-                $schedulerModule->addMessage(
+                $this->addMessage(
                     sprintf($this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorTCANotSet'), $tcaTable),
                     FlashMessage::ERROR
                 );
@@ -163,15 +164,14 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
      * Validates the input of period
      *
      * @param int $period The given period as integer
-     * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      * @return bool TRUE if validation was ok, FALSE otherwise
      */
-    protected function validateAdditionalFieldPeriod($period, SchedulerModuleController $schedulerModule)
+    protected function validateAdditionalFieldPeriod($period)
     {
         if (!empty($period) && filter_var($period, FILTER_VALIDATE_INT) !== false) {
             $validPeriod = true;
         } else {
-            $schedulerModule->addMessage(
+            $this->addMessage(
                 $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorPeriod'),
                 FlashMessage::ERROR
             );
@@ -192,7 +192,7 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
     {
         if (!$task instanceof CleanerTask) {
             throw new \InvalidArgumentException(
-                'Expected a task of type \TYPO3\CMS\Recycler\Task\CleanerTask, but got ' . get_class($task),
+                'Expected a task of type ' . CleanerTask::class . ', but got ' . get_class($task),
                 1329219449
             );
         }

@@ -41,7 +41,7 @@ class CleanerFieldProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
             ->getMock();
         $languageServiceMock->expects($this->any())->method('sL')->will($this->returnValue('titleTest'));
         $this->subject = $this->getMockBuilder(CleanerFieldProvider::class)
-            ->setMethods(['getLanguageService'])
+            ->setMethods(['getLanguageService', 'addMessage'])
             ->getMock();
         $this->subject->expects($this->any())->method('getLanguageService')->willReturn($languageServiceMock);
     }
@@ -95,8 +95,8 @@ class CleanerFieldProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
             'RecyclerCleanerTCA' => ['pages']
         ];
 
-        $scheduleModuleControllerMock = $this->getScheduleModuleControllerMock(['addMessage']);
-        $scheduleModuleControllerMock->expects($this->atLeastOnce())
+        $scheduleModuleControllerMock = $this->getScheduleModuleControllerMock();
+        $this->subject->expects($this->atLeastOnce())
             ->method('addMessage')
             ->with($this->equalTo('titleTest'), FlashMessage::ERROR);
 
@@ -128,7 +128,7 @@ class CleanerFieldProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
             'RecyclerCleanerTCA' => $table
         ];
 
-        $this->subject->validateAdditionalFields($submittedData, $this->getScheduleModuleControllerMock(['addMessage']));
+        $this->subject->validateAdditionalFields($submittedData, $this->getScheduleModuleControllerMock());
     }
 
     /**

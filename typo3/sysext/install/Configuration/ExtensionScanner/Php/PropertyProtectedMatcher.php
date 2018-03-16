@@ -637,4 +637,9 @@ return [
             'Deprecation-85196-ProtectSetupModuleController.rst'
         ],
     ],
+    'TYPO3\CMS\Scheduler\Controller\SchedulerModuleController->CMD' => [
+        'restFiles' => [
+            'Deprecation-84387-DeprecatedMethodAndPropertyInSchedulerModuleController.rst'
+        ],
+    ],
 ];

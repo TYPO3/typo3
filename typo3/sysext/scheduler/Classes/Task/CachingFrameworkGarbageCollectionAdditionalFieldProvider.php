@@ -14,31 +14,39 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
+use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
+
 /**
  * Additional BE fields for caching framework garbage collection task.
  * Creates a multi selectbox with all available cache backends to select from.
  */
-class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
     /**
      * Add a multi select box with all available cache backends.
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
      * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+     * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
-    public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
+        $currentSchedulerModuleAction = $schedulerModule->getCurrentAction();
+
         // Initialize selected fields
         if (empty($taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'])) {
             $taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'] = [];
-            if ($parentObject->CMD === 'add') {
+            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
                 // In case of new task, set to dbBackend if it's available
-                if (in_array(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, $this->getRegisteredBackends())) {
-                    $taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'][] = \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class;
+                if (in_array(Typo3DatabaseBackend::class, $this->getRegisteredBackends())) {
+                    $taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'][] = Typo3DatabaseBackend::class;
                 }
-            } elseif ($parentObject->CMD === 'edit') {
+            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 // In case of editing the task, set to currently selected value
                 $taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'] = $task->selectedBackends;
             }
@@ -60,21 +68,21 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
      * Checks that all selected backends exist in available backend list
      *
      * @param array $submittedData Reference to the array containing the data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+     * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return bool TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
      */
-    public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
         $validData = true;
         $availableBackends = $this->getRegisteredBackends();
         if (is_array($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'])) {
             $invalidBackends = array_diff($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'], $availableBackends);
             if (!empty($invalidBackends)) {
-                $parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.selectionOfNonExistingCacheBackends'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+                $this->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.selectionOfNonExistingCacheBackends'), FlashMessage::ERROR);
                 $validData = false;
             }
         } else {
-            $parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noCacheBackendSelected'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+            $this->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noCacheBackendSelected'), FlashMessage::ERROR);
             $validData = false;
         }
         return $validData;
@@ -86,7 +94,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
      * @param array $submittedData Contains data submitted by the user
      * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
      */
-    public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
         $task->selectedBackends = $submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'];
     }
