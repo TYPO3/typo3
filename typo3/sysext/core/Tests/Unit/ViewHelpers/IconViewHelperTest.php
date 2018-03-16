@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\ViewHelpers;
 
 /*
@@ -28,11 +29,6 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 class IconViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @var IconViewHelper
      */
     protected $viewHelper;
@@ -59,7 +55,10 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
 
         $this->viewHelper->setArguments([
             'identifier' => 'myIdentifier',
-            'size' => Icon::SIZE_SMALL
+            'size' => Icon::SIZE_SMALL,
+            'overlay' => null,
+            'state' => IconState::cast(IconState::STATE_DEFAULT),
+            'alternativeMarkupIdentifier' => null
         ]);
 
         $this->assertSame('htmlFoo', $this->viewHelper->render());
@@ -79,7 +78,10 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
 
         $this->viewHelper->setArguments([
             'identifier' => 'myIdentifier',
-            'size' => Icon::SIZE_LARGE
+            'size' => Icon::SIZE_LARGE,
+            'overlay' => null,
+            'state' => IconState::cast(IconState::STATE_DEFAULT),
+            'alternativeMarkupIdentifier' => null
         ]);
 
         $this->assertSame('htmlFoo', $this->viewHelper->render());
@@ -101,7 +103,8 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
             'identifier' => 'myIdentifier',
             'size' => Icon::SIZE_SMALL,
             'overlay' => null,
-            'state' => IconState::cast(IconState::STATE_DISABLED)
+            'state' => IconState::cast(IconState::STATE_DISABLED),
+            'alternativeMarkupIdentifier' => null
         ]);
 
         $this->assertSame('htmlFoo', $this->viewHelper->render());
@@ -122,7 +125,9 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->setArguments([
             'identifier' => 'myIdentifier',
             'size' => Icon::SIZE_LARGE,
-            'overlay' => 'overlayString'
+            'overlay' => 'overlayString',
+            'state' => IconState::cast(IconState::STATE_DEFAULT),
+            'alternativeMarkupIdentifier' => null
         ]);
         $this->assertSame('htmlFoo', $this->viewHelper->render());
     }
