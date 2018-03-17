@@ -861,10 +861,10 @@ class HtmlParser
     public function HTMLparserConfig($TSconfig, $keepTags = [])
     {
         // Allow tags (base list, merged with incoming array)
-        $alTags = array_flip(GeneralUtility::trimExplode(',', strtolower($TSconfig['allowTags']), true));
+        $alTags = array_flip(GeneralUtility::trimExplode(',', strtolower($TSconfig['allowTags'] ?? ''), true));
         $keepTags = array_merge($alTags, $keepTags);
         // Set config properties.
-        if (is_array($TSconfig['tags.'])) {
+        if (isset($TSconfig['tags.']) && is_array($TSconfig['tags.'])) {
             foreach ($TSconfig['tags.'] as $key => $tagC) {
                 if (!is_array($tagC) && $key == strtolower($key)) {
                     if ((string)$tagC === '0') {
@@ -908,7 +908,7 @@ class HtmlParser
             }
         }
         // LocalNesting
-        if ($TSconfig['localNesting']) {
+        if (!empty($TSconfig['localNesting'])) {
             $lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['localNesting']), true);
             foreach ($lN as $tn) {
                 if (isset($keepTags[$tn])) {
@@ -919,7 +919,7 @@ class HtmlParser
                 }
             }
         }
-        if ($TSconfig['globalNesting']) {
+        if (!empty($TSconfig['globalNesting'])) {
             $lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['globalNesting']), true);
             foreach ($lN as $tn) {
                 if (isset($keepTags[$tn])) {
@@ -930,7 +930,7 @@ class HtmlParser
                 }
             }
         }
-        if ($TSconfig['rmTagIfNoAttrib']) {
+        if (!empty($TSconfig['rmTagIfNoAttrib'])) {
             $lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['rmTagIfNoAttrib']), true);
             foreach ($lN as $tn) {
                 if (isset($keepTags[$tn])) {
@@ -944,7 +944,7 @@ class HtmlParser
                 }
             }
         }
-        if ($TSconfig['noAttrib']) {
+        if (!empty($TSconfig['noAttrib'])) {
             $lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['noAttrib']), true);
             foreach ($lN as $tn) {
                 if (isset($keepTags[$tn])) {
@@ -955,7 +955,7 @@ class HtmlParser
                 }
             }
         }
-        if ($TSconfig['removeTags']) {
+        if (!empty($TSconfig['removeTags'])) {
             $lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags']), true);
             foreach ($lN as $tn) {
                 $keepTags[$tn] = [];
@@ -973,8 +973,8 @@ class HtmlParser
         }
         return [
             $keepTags,
-            '' . $TSconfig['keepNonMatchedTags'],
-            (int)$TSconfig['htmlSpecialChars'],
+            '' . ($TSconfig['keepNonMatchedTags'] ?? ''),
+            (int)($TSconfig['htmlSpecialChars'] ?? 0),
             $addConfig
         ];
     }

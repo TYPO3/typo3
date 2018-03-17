@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Html;
 
 /*
@@ -14,16 +15,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Html;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Html\RteHtmlParser;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for \TYPO3\CMS\Core\Html\RteHtmlParser
  */
-class RteHtmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RteHtmlParserTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var \TYPO3\CMS\Core\Html\RteHtmlParser
      */
@@ -31,10 +30,10 @@ class RteHtmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     protected function setUp()
     {
-        $this->subject = new \TYPO3\CMS\Core\Html\RteHtmlParser();
+        $this->subject = new RteHtmlParser();
         $this->subject->procOptions = [
             'allowTagsOutside' => 'hr, address',
-            'overruleMode' => 'default'
+            'overruleMode' => 'default',
         ];
     }
 

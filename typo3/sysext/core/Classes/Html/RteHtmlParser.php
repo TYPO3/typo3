@@ -169,11 +169,11 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         if (isset($this->procOptions['allowedClasses.'])) {
             $this->allowedClasses = (array)$this->procOptions['allowedClasses.'];
         } else {
-            $this->allowedClasses = GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], true);
+            $this->allowedClasses = GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'] ?? '', true);
         }
 
         // Dynamic configuration of blockElementList
-        if ($this->procOptions['blockElementList']) {
+        if (!empty($this->procOptions['blockElementList'])) {
             $this->blockElementList = $this->procOptions['blockElementList'];
         }
 
@@ -209,8 +209,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         foreach ($modes as $cmd) {
             if ($direction === 'db') {
                 // Checking for user defined transformation:
-                if ($className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]) {
-                    $_procObj = GeneralUtility::makeInstance($className);
+                if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])) {
+                    $_procObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]);
                     $_procObj->pObj = $this;
                     $_procObj->transformationKey = $cmd;
                     $value = $_procObj->transform_db($value, $this);
@@ -239,8 +239,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 }
             } elseif ($direction === 'rte') {
                 // Checking for user defined transformation:
-                if ($className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]) {
-                    $_procObj = GeneralUtility::makeInstance($className);
+                if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])) {
+                    $_procObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]);
                     $_procObj->pObj = $this;
                     $value = $_procObj->transform_rte($value, $this);
                 } else {
@@ -311,7 +311,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      */
     protected function runHtmlParserIfConfigured($content, $configurationDirective)
     {
-        if ($this->procOptions[$configurationDirective]) {
+        if (!empty($this->procOptions[$configurationDirective])) {
             list($keepTags, $keepNonMatchedTags, $hscMode, $additionalConfiguration) = $this->HTMLparserConfig($this->procOptions[$configurationDirective . '.']);
             $content = $this->HTMLcleaner($content, $keepTags, $keepNonMatchedTags, $hscMode, $additionalConfiguration);
         }
@@ -787,7 +787,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 $blockSplit[$k + 1] = preg_replace('/^[ ]*' . LF . '/', '', $blockSplit[$k + 1]);
             } else {
                 // NON-block:
-                $nextFTN = $this->getFirstTagName($blockSplit[$k + 1]);
+                $nextFTN = $this->getFirstTagName($blockSplit[$k + 1] ?? '');
                 $onlyLineBreaks = (preg_match('/^[ ]*' . LF . '+[ ]*$/', $blockSplit[$k]) == 1);
                 // If the line is followed by a block or is the last line:
                 if (GeneralUtility::inList($this->blockElementList, $nextFTN) || !isset($blockSplit[$k + 1])) {
@@ -829,7 +829,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     {
         $keepTags = $this->getKeepTags('db');
         // Default: remove unknown tags.
-        $keepUnknownTags = (bool)$this->procOptions['dontRemoveUnknownTags_db'];
+        $keepUnknownTags = (bool)($this->procOptions['dontRemoveUnknownTags_db'] ?? false);
         return $this->HTMLcleaner($content, $keepTags, $keepUnknownTags);
     }
 
@@ -843,18 +843,18 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      */
     public function getKeepTags($direction = 'rte')
     {
-        if (!is_array($this->getKeepTags_cache[$direction])) {
+        if (!isset($this->getKeepTags_cache[$direction]) || !is_array($this->getKeepTags_cache[$direction])) {
             // Setting up allowed tags:
             // Default is to get allowed/denied tags from internal array of processing options:
             // Construct default list of tags to keep:
-            if (is_array($this->procOptions['allowTags.'])) {
+            if (isset($this->procOptions['allowTags.']) && is_array($this->procOptions['allowTags.'])) {
                 $keepTags = implode(',', $this->procOptions['allowTags.']);
             } else {
-                $keepTags = $this->procOptions['allowTags'];
+                $keepTags = $this->procOptions['allowTags'] ?? '';
             }
             $keepTags = array_flip(GeneralUtility::trimExplode(',', $this->defaultAllowedTagsList . ',' . strtolower($keepTags), true));
             // For tags to deny, remove them from $keepTags array:
-            $denyTags = GeneralUtility::trimExplode(',', $this->procOptions['denyTags'], true);
+            $denyTags = GeneralUtility::trimExplode(',', $this->procOptions['denyTags'] ?? '', true);
             foreach ($denyTags as $dKe) {
                 unset($keepTags[$dKe]);
             }
@@ -863,7 +863,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 case 'rte':
                     // Transforming keepTags array so it can be understood by the HTMLcleaner function.
                     // This basically converts the format of the array from TypoScript (having dots) to plain multi-dimensional array.
-                    list($keepTags) = $this->HTMLparserConfig($this->procOptions['HTMLparser_rte.'], $keepTags);
+                    list($keepTags) = $this->HTMLparserConfig($this->procOptions['HTMLparser_rte.'] ?? [], $keepTags);
                     break;
                 case 'db':
                     // Setting up span tags if they are allowed:
@@ -882,11 +882,11 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                         }
                     }
                     // Setting further options, getting them from the processing options
-                    $TSc = $this->procOptions['HTMLparser_db.'];
-                    if (!$TSc['globalNesting']) {
+                    $TSc = $this->procOptions['HTMLparser_db.'] ?? [];
+                    if (empty($TSc['globalNesting'])) {
                         $TSc['globalNesting'] = 'b,i,u,a,center,font,sub,sup,strong,em,strike,span';
                     }
-                    if (!$TSc['noAttrib']) {
+                    if (empty($TSc['noAttrib'])) {
                         $TSc['noAttrib'] = 'b,i,u,br,center,hr,sub,sup,strong,em,li,ul,ol,blockquote,strike';
                     }
                     // Transforming the array from TypoScript to regular array:
@@ -1023,7 +1023,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             $tagAttributes = array_intersect_key($tagAttributes, array_flip($this->allowedAttributesForParagraphTags));
 
             // Only allow classes that are whitelisted in $this->allowedClasses
-            if (trim($tagAttributes['class']) !== '' && !empty($this->allowedClasses) && !in_array($tagAttributes['class'], $this->allowedClasses, true)) {
+            if (isset($tagAttributes['class']) && trim($tagAttributes['class']) !== '' && !empty($this->allowedClasses) && !in_array($tagAttributes['class'], $this->allowedClasses, true)) {
                 $classes = GeneralUtility::trimExplode(' ', $tagAttributes['class'], true);
                 $classes = array_intersect($classes, $this->allowedClasses);
                 if (!empty($classes)) {
