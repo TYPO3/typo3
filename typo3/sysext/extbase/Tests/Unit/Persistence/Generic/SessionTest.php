@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
 /*
@@ -13,20 +14,20 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
  *
  * The TYPO3 project - inspiring people to share!
  */
-class SessionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
-{
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\Generic\Session;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
+class SessionTest extends UnitTestCase
+{
     /**
      * @test
      */
     public function objectRegisteredWithRegisterReconstitutedEntityCanBeRetrievedWithGetReconstitutedEntities()
     {
         $someObject = new \ArrayObject([]);
-        $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+        $session = new Session();
         $session->registerReconstitutedEntity($someObject, ['identifier' => 'fakeUuid']);
 
         $ReconstitutedEntities = $session->getReconstitutedEntities();
@@ -39,7 +40,7 @@ class SessionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function unregisterReconstitutedEntityRemovesObjectFromSession()
     {
         $someObject = new \ArrayObject([]);
-        $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+        $session = new Session();
         $session->registerObject($someObject, 'fakeUuid');
         $session->registerReconstitutedEntity($someObject, ['identifier' => 'fakeUuid']);
         $session->unregisterReconstitutedEntity($someObject);
@@ -55,7 +56,7 @@ class SessionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
-        $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+        $session = new Session();
         $session->registerObject($object1, 12345);
 
         $this->assertTrue($session->hasObject($object1), 'Session claims it does not have registered object.');
@@ -67,7 +68,7 @@ class SessionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function hasIdentifierReturnsTrueForRegisteredObject()
     {
-        $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+        $session = new Session();
         $session->registerObject(new \stdClass(), 12345);
 
         $this->assertTrue($session->hasIdentifier('12345', 'stdClass'), 'Session claims it does not have registered object.');
@@ -80,7 +81,7 @@ class SessionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getIdentifierByObjectReturnsRegisteredUUIDForObject()
     {
         $object = new \stdClass();
-        $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+        $session = new Session();
         $session->registerObject($object, 12345);
 
         $this->assertEquals($session->getIdentifierByObject($object), 12345, 'Did not get UUID registered for object.');
@@ -92,7 +93,7 @@ class SessionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getObjectByIdentifierReturnsRegisteredObjectForUUID()
     {
         $object = new \stdClass();
-        $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+        $session = new Session();
         $session->registerObject($object, 12345);
 
         $this->assertSame($session->getObjectByIdentifier('12345', 'stdClass'), $object, 'Did not get object registered for UUID.');
@@ -105,7 +106,7 @@ class SessionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
-        $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+        $session = new Session();
         $session->registerObject($object1, 12345);
         $session->registerObject($object2, 67890);
 
@@ -127,7 +128,7 @@ class SessionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function newSessionIsEmpty()
     {
-        $persistenceSession = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+        $persistenceSession = new Session();
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
         $this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
     }
@@ -137,9 +138,9 @@ class SessionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function objectCanBeRegisteredAsReconstituted()
     {
-        $persistenceSession = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
-        $entity = $this->createMock(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class);
-        $persistenceSession->registerReconstitutedEntity($entity);
+        $persistenceSession = new Session();
+        $entity = $this->createMock(AbstractEntity::class);
+        $persistenceSession->registerReconstitutedEntity($entity, ['identifier' => 'fakeUuid']);
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
         $this->assertTrue($reconstitutedObjects->contains($entity), 'The object was not registered as reconstituted.');
     }
@@ -149,9 +150,9 @@ class SessionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function objectCanBeUnregisteredAsReconstituted()
     {
-        $persistenceSession = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
-        $entity = $this->createMock(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class);
-        $persistenceSession->registerReconstitutedEntity($entity);
+        $persistenceSession = new Session();
+        $entity = $this->createMock(AbstractEntity::class);
+        $persistenceSession->registerReconstitutedEntity($entity, ['identifier' => 'fakeUuid']);
         $persistenceSession->unregisterReconstitutedEntity($entity);
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
         $this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
