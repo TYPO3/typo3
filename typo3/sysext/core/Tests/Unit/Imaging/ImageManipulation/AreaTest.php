@@ -24,14 +24,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class AreaTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @test
      */
-    public function makeRelativeToFileReducesSizes()
+    public function makeRelativeToFileReducesSizes(): void
     {
         $imageArea = new Area(50.0, 50.0, 100.0, 100.0);
         $imageFixture = new File(
@@ -49,7 +44,7 @@ class AreaTest extends UnitTestCase
         $this->assertSame($expectedResult, $relativeArea->asArray());
     }
 
-    public function applyRatioRestrictsAreaToRespectRatioDataProvider()
+    public function applyRatioRestrictsAreaToRespectRatioDataProvider(): array
     {
         return [
             [
@@ -77,7 +72,7 @@ class AreaTest extends UnitTestCase
      * @test
      * @dataProvider applyRatioRestrictsAreaToRespectRatioDataProvider
      */
-    public function applyRatioRestrictsAreaToRespectRatio(array $areaSize, $ratio)
+    public function applyRatioRestrictsAreaToRespectRatio(array $areaSize, $ratio): void
     {
         $area = new Area(...$areaSize);
         $ratioFixture = new Ratio('dummy', 'dummy', $ratio);
@@ -88,7 +83,7 @@ class AreaTest extends UnitTestCase
     /**
      * @test
      */
-    public function applyRatioDoesNothingForFreeRatio()
+    public function applyRatioDoesNothingForFreeRatio(): void
     {
         $area = new Area(0.1, 0.1, 0.2, 0.4);
         $ratioFixture = new Ratio('dummy', 'dummy', 0.0);
