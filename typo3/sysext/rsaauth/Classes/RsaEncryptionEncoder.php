@@ -89,9 +89,13 @@ class RsaEncryptionEncoder implements SingletonInterface
      * Gets RSA Public Key.
      *
      * @return Keypair|null
+     *
+     * @deprecated since TYPO3 v9. Will be removed in v10.
      */
     public function getRsaPublicKey()
     {
+        trigger_error('Method getRsaPublicKey() will be removed in v10.', E_USER_DEPRECATED);
+
         $keyPair = null;
         $backend = Backend\BackendFactory::getBackend();
         if ($backend !== null) {
@@ -108,9 +112,13 @@ class RsaEncryptionEncoder implements SingletonInterface
      * Ajax handler to return a RSA public key.
      *
      * @return ResponseInterface
+     *
+     * @deprecated since TYPO3 v9. Will be removed in v10.
      */
     public function getRsaPublicKeyAjaxHandler(): ResponseInterface
     {
+        trigger_error('Method getRsaPublicKeyAjaxHandler() will be removed in v10.', E_USER_DEPRECATED);
+
         $keyPair = $this->getRsaPublicKey();
         if ($keyPair !== null) {
             return new HtmlResponse(

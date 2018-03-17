@@ -2011,4 +2011,18 @@ return [
             'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
         ],
     ],
+    'TYPO3\CMS\Rsaauth\RsaEncryptionEncoder->getRsaPublicKey' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84407-AJAXRequestMethodsInRsaEncryptionEncoder.rst',
+        ],
+    ],
+    'TYPO3\CMS\Rsaauth\RsaEncryptionEncoder->getRsaPublicKeyAjaxHandler' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84407-AJAXRequestMethodsInRsaEncryptionEncoder.rst',
+        ],
+    ],
 ];

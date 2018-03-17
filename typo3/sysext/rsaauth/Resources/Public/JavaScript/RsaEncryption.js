@@ -46,7 +46,15 @@
           TYPO3RsaEncryptionPublicKeyUrl, // defined in PHP
           rsaEncryption,
           function(response) {
-            rsaEncryption.handlePublicKeyResponse(response, rsaEncryption);
+            var keyData = null;
+
+            try {
+              keyData = JSON.parse(response.responseText);
+            } catch (e) {
+              // Nothing to do here, error will be handled by callback
+            }
+
+            rsaEncryption.handlePublicKeyResponse(keyData, rsaEncryption);
           }
         );
 
@@ -91,18 +99,19 @@
       };
 
       rsaEncryption.xhr.open('GET', url, true);
+      rsaEncryption.xhr.setRequestHeader('Content-Type', 'application/json');
       rsaEncryption.xhr.send('');
     };
 
-    this.handlePublicKeyResponse = function(response, rsaEncryption) {
-      var publicKey = response.responseText.split(':');
-      if (!publicKey[0] || !publicKey[1]) {
+    this.handlePublicKeyResponse = function(keyData, rsaEncryption) {
+      if (!keyData) {
         alert('No public key could be generated. Please inform your TYPO3 administrator to check the OpenSSL settings.');
         return false;
       }
 
       var rsa = new RSAKey();
-      rsa.setPublic(publicKey[0], publicKey[1]);
+      rsa.setPublic(keyData.publicKeyModulus, keyData.exponent);
+
       for (var i = rsaEncryption.fields.length; i--;) {
         var field = rsaEncryption.fields[i];
         var encryptedValue = rsa.encrypt(field.value);

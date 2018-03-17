@@ -75,7 +75,9 @@ define(['jquery', './RsaLibrary'], function($) {
 
         $.ajax({
           url: TYPO3.settings.ajaxUrls['rsa_publickey'],
-          success: RsaEncryption.handlePublicKeyResponse
+          contentType: 'application/json',
+          success: RsaEncryption.handlePublicKeyResponse,
+          error: RsaEncryption.handlePublicKeyError,
         });
 
         return false;
@@ -87,19 +89,14 @@ define(['jquery', './RsaLibrary'], function($) {
     },
 
     /**
-     * Parses the Json response and triggers submission of the form
+     * Triggers submission of the form
      *
-     * @param {Object} response Ajax response object
+     * @param {Object} key data object
      */
-    handlePublicKeyResponse: function(response) {
-      var publicKey = response.split(':');
-      if (!publicKey[0] || !publicKey[1]) {
-        alert('No public key could be generated. Please inform your TYPO3 administrator to check the OpenSSL settings.');
-        return;
-      }
-
+    handlePublicKeyResponse: function(keyData) {
       var rsa = new RSAKey();
-      rsa.setPublic(publicKey[0], publicKey[1]);
+      rsa.setPublic(keyData.publicKeyModulus, keyData.exponent);
+
       RsaEncryption.$currentForm.find(':input[data-rsa-encryption]').each(function() {
         var $this = $(this);
         var encryptedValue = rsa.encrypt($this.val());
@@ -144,6 +141,15 @@ define(['jquery', './RsaLibrary'], function($) {
         // Submit the form
         RsaEncryption.$currentForm.trigger('submit');
       }
+    },
+
+    /**
+     * Handles errors on public key retrieval
+     *
+     * @param {Object} response Ajax response object
+     */
+    handlePublicKeyError: function() {
+      alert('No public key could be generated. Please inform your TYPO3 administrator to check the OpenSSL settings.');
     }
   };
 
