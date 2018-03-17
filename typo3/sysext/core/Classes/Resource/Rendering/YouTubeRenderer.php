@@ -133,10 +133,10 @@ class YouTubeRenderer implements FileRendererInterface
         );
 
         $attributes = ['allowfullscreen'];
-        if (is_array($options['additionalAttributes'])) {
+        if (isset($options['additionalAttributes']) && is_array($options['additionalAttributes'])) {
             $attributes[] = GeneralUtility::implodeAttributes($options['additionalAttributes'], true, true);
         }
-        if (is_array($options['data'])) {
+        if (isset($options['data']) && is_array($options['data'])) {
             array_walk($options['data'], function (&$value, $key) {
                 $value = 'data-' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
             });
@@ -148,7 +148,7 @@ class YouTubeRenderer implements FileRendererInterface
         if ((int)$height > 0) {
             $attributes[] = 'height="' . (int)$height . '"';
         }
-        if (is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->config['config']['doctype'] !== 'html5') {
+        if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->config['config']['doctype'] !== 'html5') {
             $attributes[] = 'frameborder="0"';
         }
         foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick', 'poster', 'preload'] as $key) {

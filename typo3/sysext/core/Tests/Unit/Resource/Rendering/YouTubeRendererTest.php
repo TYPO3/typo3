@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
 /*
@@ -19,17 +20,13 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
 use TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class YouTubeRendererTest
  */
-class YouTubeRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class YouTubeRendererTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var YouTubeRenderer|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -99,7 +96,7 @@ class YouTubeRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $this->assertSame(
             '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;loop=1&amp;playlist=7331&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['loop' => 1])
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 2, 'loop' => 1])
         );
     }
 
@@ -113,7 +110,7 @@ class YouTubeRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $this->assertSame(
             '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 2, 'autoplay' => 1])
         );
     }
 
@@ -132,7 +129,7 @@ class YouTubeRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $this->assertSame(
             '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileReferenceMock, '300m', '200')
+            $this->subject->render($fileReferenceMock, '300m', '200', ['controls' => 2])
         );
     }
 
@@ -245,7 +242,7 @@ class YouTubeRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $this->assertSame(
             '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;rel=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['relatedVideos' => 0])
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 2, 'relatedVideos' => 0])
         );
     }
 
