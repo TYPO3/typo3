@@ -56,7 +56,7 @@ class PropertyMappingConfiguration
 
             $allowedMimeTypes = [];
             $validators = [];
-            if (is_array($renderable->getProperties()['allowedMimeTypes'])) {
+            if (isset($renderable->getProperties()['allowedMimeTypes']) && \is_array($renderable->getProperties()['allowedMimeTypes'])) {
                 $allowedMimeTypes = array_filter($renderable->getProperties()['allowedMimeTypes']);
             }
             if (!empty($allowedMimeTypes)) {

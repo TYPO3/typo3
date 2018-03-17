@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
 
 /*
@@ -16,17 +17,13 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
 
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
 use TYPO3\CMS\Form\Mvc\Configuration\InheritancesResolverService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class InheritancesResolverServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class InheritancesResolverServiceTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var InheritancesResolverService
      */
@@ -41,7 +38,7 @@ class InheritancesResolverServiceTest extends \TYPO3\TestingFramework\Core\Unit\
      * @test
      * Test for the explicit example in service class comment
      */
-    public function getDocExampleInheritance()
+    public function getDocExampleInheritance(): void
     {
         $input = [
             'Form' => [
@@ -80,7 +77,7 @@ class InheritancesResolverServiceTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getMergedConfigurationSimpleInheritance()
+    public function getMergedConfigurationSimpleInheritance(): void
     {
         $input = [
             'Form' => [
@@ -121,7 +118,7 @@ class InheritancesResolverServiceTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getMergedConfigurationSimpleInheritanceOverrideValue()
+    public function getMergedConfigurationSimpleInheritanceOverrideValue(): void
     {
         $input = [
             'Form' => [
@@ -154,7 +151,7 @@ class InheritancesResolverServiceTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getMergedConfigurationSimpleInheritanceRemoveValue()
+    public function getMergedConfigurationSimpleInheritanceRemoveValue(): void
     {
         $input = [
             'Form' => [
@@ -219,7 +216,7 @@ class InheritancesResolverServiceTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getMergedConfigurationSimpleMixin()
+    public function getMergedConfigurationSimpleMixin(): void
     {
         $input = [
             'Form' => [
@@ -263,7 +260,7 @@ class InheritancesResolverServiceTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getMergedConfigurationAdvancedMixin()
+    public function getMergedConfigurationAdvancedMixin(): void
     {
         $input = [
             'Form' => [
@@ -356,7 +353,7 @@ class InheritancesResolverServiceTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getResolvedConfigurationThrowsExceptionIfCycleDepenciesOnSameLevelIsFound()
+    public function getResolvedConfigurationThrowsExceptionIfCycleDepenciesOnSameLevelIsFound(): void
     {
         $input = [
             'TYPO3' => [
@@ -386,7 +383,7 @@ class InheritancesResolverServiceTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getResolvedConfigurationThrowsExceptionIfCycleDepenciesOnSameLevelWithGapIsFound()
+    public function getResolvedConfigurationThrowsExceptionIfCycleDepenciesOnSameLevelWithGapIsFound(): void
     {
         $input = [
             'TYPO3' => [
@@ -426,7 +423,7 @@ class InheritancesResolverServiceTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getResolvedConfigurationThrowsExceptionIfCycleDepenciesOnHigherLevelIsFound()
+    public function getResolvedConfigurationThrowsExceptionIfCycleDepenciesOnHigherLevelIsFound(): void
     {
         $input = [
             'TYPO3' => [

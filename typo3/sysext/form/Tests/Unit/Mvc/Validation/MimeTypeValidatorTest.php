@@ -75,7 +75,7 @@ class MimeTypeValidatorTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $file = new File(['identifier' => '/foo', 'mime_type' => 'image/png'], $mockedStorage);
+        $file = new File(['name' => 'foo', 'identifier' => '/foo', 'mime_type' => 'image/png'], $mockedStorage);
         $this->assertTrue($validator->validate($file)->hasErrors());
     }
 
