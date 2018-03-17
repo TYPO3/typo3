@@ -159,7 +159,7 @@ class CommandUtility
             return -1;
         }
         // Already checked and valid
-        if (self::$applications[$cmd]['valid']) {
+        if (self::$applications[$cmd]['valid'] ?? false) {
             return true;
         }
         // Is set but was (above) not TRUE

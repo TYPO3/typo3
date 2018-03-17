@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Rsaauth\Tests\Unit\Backend;
 
 /*
@@ -15,17 +16,13 @@ namespace TYPO3\CMS\Rsaauth\Tests\Unit\Backend;
  */
 
 use TYPO3\CMS\Rsaauth\Backend\CommandLineBackend;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case.
  */
-class CommandLineBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CommandLineBackendTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var CommandLineBackend
      */
