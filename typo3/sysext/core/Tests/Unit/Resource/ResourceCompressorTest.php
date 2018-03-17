@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 /*
@@ -22,11 +23,6 @@ use TYPO3\CMS\Core\Resource\ResourceCompressor;
 class ResourceCompressorTest extends BaseTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @var ResourceCompressor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
@@ -34,7 +30,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * Set up the test
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
@@ -43,7 +39,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @return array
      */
-    public function cssFixStatementsDataProvider()
+    public function cssFixStatementsDataProvider(): array
     {
         return [
             'nothing to do - no charset/import/namespace' => [
@@ -87,7 +83,7 @@ class ResourceCompressorTest extends BaseTestCase
      * @param string $input
      * @param string $expected
      */
-    public function cssFixStatementsMovesStatementsToTopIfNeeded($input, $expected)
+    public function cssFixStatementsMovesStatementsToTopIfNeeded($input, $expected): void
     {
         $result = $this->subject->_call('cssFixStatements', $input);
         $resultWithReadableLinefeed = str_replace(LF, 'LF', $result);
@@ -97,7 +93,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @test
      */
-    public function compressedCssFileIsFlaggedToNotCompressAgain()
+    public function compressedCssFileIsFlaggedToNotCompressAgain(): void
     {
         $fileName = 'fooFile.css';
         $compressedFileName = $fileName . '.gzip';
@@ -122,7 +118,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @test
      */
-    public function compressedJsFileIsFlaggedToNotCompressAgain()
+    public function compressedJsFileIsFlaggedToNotCompressAgain(): void
     {
         $fileName = 'fooFile.js';
         $compressedFileName = $fileName . '.gzip';
@@ -147,7 +143,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @test
      */
-    public function concatenatedCssFileIsFlaggedToNotConcatenateAgain()
+    public function concatenatedCssFileIsFlaggedToNotConcatenateAgain(): void
     {
         $fileName = 'fooFile.css';
         $concatenatedFileName = 'merged_' . $fileName;
@@ -172,7 +168,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @test
      */
-    public function concatenatedCssFilesAreSeparatedByMediaType()
+    public function concatenatedCssFilesAreSeparatedByMediaType(): void
     {
         $allFileName = 'allFile.css';
         $screenFileName1 = 'screenFile.css';
@@ -215,7 +211,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @test
      */
-    public function concatenatedCssFilesObeyForceOnTopOption()
+    public function concatenatedCssFilesObeyForceOnTopOption(): void
     {
         $screen1FileName = 'screen1File.css';
         $screen2FileName = 'screen2File.css';
@@ -250,7 +246,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @test
      */
-    public function concatenatedCssFilesObeyExcludeFromConcatenation()
+    public function concatenatedCssFilesObeyExcludeFromConcatenation(): void
     {
         $screen1FileName = 'screen1File.css';
         $screen2FileName = 'screen2File.css';
@@ -290,7 +286,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @test
      */
-    public function concatenatedJsFileIsFlaggedToNotConcatenateAgain()
+    public function concatenatedJsFileIsFlaggedToNotConcatenateAgain(): void
     {
         $fileName = 'fooFile.js';
         $concatenatedFileName = 'merged_' . $fileName;
@@ -315,7 +311,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @return array
      */
-    public function calcStatementsDataProvider()
+    public function calcStatementsDataProvider(): array
     {
         return [
             'simple calc' => [
@@ -343,7 +339,7 @@ class ResourceCompressorTest extends BaseTestCase
      * @param string $input
      * @param string $expected
      */
-    public function calcFunctionMustRetainWhitespaces($input, $expected)
+    public function calcFunctionMustRetainWhitespaces($input, $expected): void
     {
         $result = $this->subject->_call('compressCssString', $input);
         $this->assertSame($expected, trim($result));
@@ -352,7 +348,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @return array
      */
-    public function compressCssFileContentDataProvider()
+    public function compressCssFileContentDataProvider(): array
     {
         $path = dirname(__FILE__) . '/ResourceCompressorTest/Fixtures/';
         return [
@@ -392,7 +388,7 @@ class ResourceCompressorTest extends BaseTestCase
      * @param string $cssFile
      * @param string $expected
      */
-    public function compressCssFileContent($cssFile, $expected)
+    public function compressCssFileContent($cssFile, $expected): void
     {
         $cssContent = file_get_contents($cssFile);
         $compressedCss = $this->subject->_call('compressCssString', $cssContent);

@@ -130,7 +130,7 @@ class ResourceCompressor
                 if (!isset($filesToIncludeByType[$type])) {
                     $filesToIncludeByType[$type] = [];
                 }
-                if ($fileOptions['forceOnTop']) {
+                if (!empty($fileOptions['forceOnTop'])) {
                     array_unshift($filesToIncludeByType[$type], $filenameFromMainDir);
                 } else {
                     $filesToIncludeByType[$type][] = $filenameFromMainDir;
@@ -179,7 +179,7 @@ class ResourceCompressor
                 $filesToInclude[$fileOptions['section']] = [];
             }
             $filenameFromMainDir = $this->getFilenameFromMainDir($fileOptions['file']);
-            if ($fileOptions['forceOnTop']) {
+            if (!empty($fileOptions['forceOnTop'])) {
                 array_unshift($filesToInclude[$fileOptions['section']], $filenameFromMainDir);
             } else {
                 $filesToInclude[$fileOptions['section']][] = $filenameFromMainDir;
