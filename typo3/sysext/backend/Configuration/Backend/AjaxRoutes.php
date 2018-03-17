@@ -219,7 +219,7 @@ return [
     // Get icon from IconFactory
     'icons' => [
         'path' => '/icons',
-        'target' => \TYPO3\CMS\Core\Imaging\IconFactory::class . '::processAjaxRequest'
+        'target' => \TYPO3\CMS\Core\Controller\IconController::class . '::getIcon'
     ],
 
     // Encode typolink parts on demand

@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Core\Imaging;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
@@ -68,28 +65,6 @@ class IconFactory
         $this->iconRegistry = $iconRegistry ? $iconRegistry : GeneralUtility::makeInstance(IconRegistry::class);
         $this->recordStatusMapping = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['recordStatusMapping'];
         $this->overlayPriorities = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['overlayPriorities'];
-    }
-
-    /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @internal
-     */
-    public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
-    {
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-        $requestedIcon = json_decode(
-            $parsedBody['icon'] ?? $queryParams['icon'],
-            true
-        );
-
-        list($identifier, $size, $overlayIdentifier, $iconState, $alternativeMarkupIdentifier) = $requestedIcon;
-        if (empty($overlayIdentifier)) {
-            $overlayIdentifier = null;
-        }
-        $iconState = IconState::cast($iconState);
-        return new HtmlResponse($this->getIcon($identifier, $size, $overlayIdentifier, $iconState)->render($alternativeMarkupIdentifier));
     }
 
     /**
