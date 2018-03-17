@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 /*
@@ -17,21 +18,17 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the abstract file class of the TYPO3 FAL
  */
-class AbstractFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractFileTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
-    public function getParentFolderGetsParentFolderFromStorage()
+    public function getParentFolderGetsParentFolderFromStorage(): void
     {
         $parentIdentifier = '/parent/';
         $currentIdentifier = '/parent/current/';
@@ -66,7 +63,7 @@ class AbstractFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function storageIsNotAskedForMimeTypeForPersistedRecord()
+    public function storageIsNotAskedForMimeTypeForPersistedRecord(): void
     {
         /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorage */
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();

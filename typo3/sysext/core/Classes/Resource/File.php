@@ -57,7 +57,7 @@ class File extends AbstractFile
     public function __construct(array $fileData, ResourceStorage $storage, array $metaData = [])
     {
         $this->identifier = $fileData['identifier'];
-        $this->name = $fileData['name'];
+        $this->name = $fileData['name'] ?? '';
         $this->properties = $fileData;
         $this->storage = $storage;
         if (!empty($metaData)) {
