@@ -35,11 +35,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class ElementHistoryController
 {
     /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
-
-    /**
      * @var StandaloneView
      */
     protected $view;
@@ -86,13 +81,14 @@ class ElementHistoryController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->request = $request;
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
 
-        $lastHistoryEntry = (int)($request->getParsedBody()['historyEntry'] ?: $request->getQueryParams()['historyEntry']);
-        $rollbackFields = $request->getParsedBody()['rollbackFields'] ?: $request->getQueryParams()['rollbackFields'];
-        $element = $request->getParsedBody()['element'] ?: $request->getQueryParams()['element'];
-        $displaySettings = $this->prepareDisplaySettings();
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        $lastHistoryEntry = (int)($parsedBody['historyEntry'] ?? $queryParams['historyEntry'] ?? 0);
+        $rollbackFields = $parsedBody['rollbackFields'] ?? $queryParams['rollbackFields'] ?? null;
+        $element = $parsedBody['element'] ?? $queryParams['element'] ?? null;
+        $displaySettings = $this->prepareDisplaySettings($request);
         $this->view->assign('currentSelection', $displaySettings);
 
         $this->showDiff = (int)$displaySettings['showDiff'];
@@ -122,6 +118,8 @@ class ElementHistoryController
             }
         }
 
+        /** @var \TYPO3\CMS\Core\Http\NormalizedParams $normalizedParams */
+        $normalizedParams = $request->getAttribute('normalizedParams');
         $elementData = $this->historyObject->getElementData();
         if ($elementData) {
             $this->setPagePath($elementData[0], $elementData[1]);
@@ -133,16 +131,16 @@ class ElementHistoryController
                     $this->view->assign('fullHistoryUrl', $this->buildUrl([
                         'element' => 'pages:' . $parentPage['pid'],
                         'historyEntry' => '',
-                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                        'returnUrl' => $normalizedParams->getRequestUri(),
                     ]));
                 }
             }
         }
 
-        $this->view->assign('TYPO3_REQUEST_URI', GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+        $this->view->assign('TYPO3_REQUEST_URI', $normalizedParams->getRequestUrl());
 
         // Setting up the buttons and markers for docheader
-        $this->getButtons();
+        $this->getButtons($request);
         // Build the <body> for the module
         $this->moduleTemplate->setContent($this->view->render());
 
@@ -174,8 +172,10 @@ class ElementHistoryController
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function getButtons()
+    protected function getButtons(ServerRequestInterface $request)
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
@@ -185,7 +185,10 @@ class ElementHistoryController
         $buttonBar->addButton($helpButton);
 
         // Get returnUrl parameter
-        $returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        $returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
+
         if ($returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($returnUrl)
@@ -197,19 +200,25 @@ class ElementHistoryController
 
     /**
      * Displays settings evaluation
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function prepareDisplaySettings()
+    protected function prepareDisplaySettings(ServerRequestInterface $request)
     {
         // Get current selection from UC, merge data, write it back to UC
         $currentSelection = is_array($this->getBackendUser()->uc['moduleData']['history'])
             ? $this->getBackendUser()->uc['moduleData']['history']
             : ['maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1];
-        $currentSelectionOverride = $this->request->getParsedBody()['settings'] ? $this->request->getParsedBody()['settings'] : $this->request->getQueryParams()['settings'];
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        $currentSelectionOverride = $parsedBody['settings'] ?? $queryParams['settings'] ?? null;
+
         if (is_array($currentSelectionOverride) && !empty($currentSelectionOverride)) {
             $currentSelection = array_merge($currentSelection, $currentSelectionOverride);
             $this->getBackendUser()->uc['moduleData']['history'] = $currentSelection;
             $this->getBackendUser()->writeUC($this->getBackendUser()->uc);
         }
+
         // Display selector for number of history entries
         $selector['maxSteps'] = [
             10 => [
