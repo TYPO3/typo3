@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\T3editor;
+namespace TYPO3\CMS\T3editor\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Loads TSref information from a XML file an responds to an AJAX call.
  */
-class TypoScriptReferenceLoader
+class TypoScriptReferenceController
 {
     /**
      * @var \DOMDocument
@@ -37,13 +37,12 @@ class TypoScriptReferenceLoader
     }
 
     /**
-     * General processor for AJAX requests.
-     * Called by AjaxRequestHandler
+     * Load TypoScript reference
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
+    public function loadReference(ServerRequestInterface $request): ResponseInterface
     {
         // Load the TSref XML information:
         $this->loadFile(GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Private/tsref.xml'));

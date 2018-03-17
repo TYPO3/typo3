@@ -10,4 +10,11 @@ namespace TYPO3\CMS\T3editor {
     class CodeCompletion extends \TYPO3\CMS\T3editor\Controller\CodeCompletionController
     {
     }
+
+    /**
+     * @deprecated since v9, will be removed in v10
+     */
+    class TypoScriptReferenceLoader extends \TYPO3\CMS\T3editor\Controller\TypoScriptReferenceController
+    {
+    }
 }

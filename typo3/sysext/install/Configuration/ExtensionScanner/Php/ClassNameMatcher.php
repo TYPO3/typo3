@@ -669,4 +669,9 @@ return [
             'Deprecation-84409-ImageManipulationWizardRenamedToImageManipulationController.rst',
         ],
     ],
+    'TYPO3\CMS\T3editor\TypoScriptReferenceLoader' => [
+        'restFiles' => [
+            'Deprecation-84411-TypoScriptReferenceLoaderRenamedToTypoScriptReferenceController.rst',
+        ],
+    ],
 ];

@@ -7,7 +7,7 @@ return [
     // Get TSRef
     't3editor_tsref' => [
         'path' => '/t3editor/tsref',
-        'target' => \TYPO3\CMS\T3editor\TypoScriptReferenceLoader::class . '::processAjaxRequest'
+        'target' => \TYPO3\CMS\T3editor\Controller\TypoScriptReferenceController::class . '::loadReference'
     ],
 
     // Load code completion templates
