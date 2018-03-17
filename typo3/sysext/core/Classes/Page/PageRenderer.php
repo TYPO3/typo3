@@ -1415,7 +1415,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
             'd3' => $corePath . 'd3/d3'
         ];
-
+        $requireJsConfig['waitSeconds']  = 30;
         foreach ($loadedExtensions as $packageName) {
             $fullJsPath = 'EXT:' . $packageName . '/Resources/Public/JavaScript/';
             $fullJsPath = GeneralUtility::getFileAbsFileName($fullJsPath);
