@@ -43,9 +43,7 @@ abstract class AbstractFormProtection
      */
     protected function getSessionToken()
     {
-        if ($this->sessionToken === null) {
-            $this->sessionToken = $this->retrieveSessionToken();
-        }
+        $this->sessionToken = $this->sessionToken ?? $this->retrieveSessionToken();
         return $this->sessionToken;
     }
 

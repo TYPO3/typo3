@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
 /*
@@ -14,24 +15,22 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase
  */
-class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractFormProtectionTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting
+     * @var FormProtectionTesting
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->subject = new \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting();
+        $this->subject = new FormProtectionTesting();
     }
 
     /////////////////////////////////////////
@@ -40,9 +39,9 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function generateTokenRetrievesTokenOnce()
+    public function generateTokenRetrievesTokenOnce(): void
     {
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+        $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['retrieveSessionToken'])
             ->getMock();
         $subject->expects($this->once())->method('retrieveSessionToken')->will($this->returnValue('token'));
@@ -53,9 +52,9 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenRetrievesTokenOnce()
+    public function validateTokenRetrievesTokenOnce(): void
     {
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+        $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['retrieveSessionToken'])
             ->getMock();
         $subject->expects($this->once())->method('retrieveSessionToken')->will($this->returnValue('token'));
@@ -66,7 +65,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function cleanMakesTokenInvalid()
+    public function cleanMakesTokenInvalid(): void
     {
         $formName = 'foo';
         $tokenId = $this->subject->generateToken($formName);
@@ -77,9 +76,9 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function cleanPersistsToken()
+    public function cleanPersistsToken(): void
     {
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+        $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['persistSessionToken'])
             ->getMock();
         $subject->expects($this->once())->method('persistSessionToken');
@@ -92,7 +91,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function generateTokenFormForEmptyFormNameThrowsException()
+    public function generateTokenFormForEmptyFormNameThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1294586643);
@@ -102,7 +101,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function generateTokenFormForEmptyActionNotThrowsException()
+    public function generateTokenFormForEmptyActionNotThrowsException(): void
     {
         $this->subject->generateToken('foo', '', '42');
     }
@@ -110,7 +109,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function generateTokenFormForEmptyFormInstanceNameNotThrowsException()
+    public function generateTokenFormForEmptyFormInstanceNameNotThrowsException(): void
     {
         $this->subject->generateToken('foo', 'edit', '');
     }
@@ -118,7 +117,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function generateTokenFormForOmittedActionAndFormInstanceNameNotThrowsException()
+    public function generateTokenFormForOmittedActionAndFormInstanceNameNotThrowsException(): void
     {
         $this->subject->generateToken('foo');
     }
@@ -126,7 +125,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function generateTokenReturns32CharacterHexToken()
+    public function generateTokenReturns32CharacterHexToken(): void
     {
         $this->assertRegExp('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
     }
@@ -134,7 +133,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function generateTokenCalledTwoTimesWithSameParametersReturnsSameTokens()
+    public function generateTokenCalledTwoTimesWithSameParametersReturnsSameTokens(): void
     {
         $this->assertEquals($this->subject->generateToken('foo', 'edit', 'bar'), $this->subject->generateToken('foo', 'edit', 'bar'));
     }
@@ -145,7 +144,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenWithFourEmptyParametersNotThrowsException()
+    public function validateTokenWithFourEmptyParametersNotThrowsException(): void
     {
         $this->subject->validateToken('', '', '', '');
     }
@@ -153,7 +152,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenWithTwoEmptyAndTwoMissingParametersNotThrowsException()
+    public function validateTokenWithTwoEmptyAndTwoMissingParametersNotThrowsException(): void
     {
         $this->subject->validateToken('', '');
     }
@@ -161,7 +160,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenWithDataFromGenerateTokenWithFormInstanceNameReturnsTrue()
+    public function validateTokenWithDataFromGenerateTokenWithFormInstanceNameReturnsTrue(): void
     {
         $formName = 'foo';
         $action = 'edit';
@@ -172,7 +171,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenWithDataFromGenerateTokenWithMissingActionAndFormInstanceNameReturnsTrue()
+    public function validateTokenWithDataFromGenerateTokenWithMissingActionAndFormInstanceNameReturnsTrue(): void
     {
         $formName = 'foo';
         $this->assertTrue($this->subject->validateToken($this->subject->generateToken($formName), $formName));
@@ -181,7 +180,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenWithValidDataCalledTwoTimesReturnsTrueOnSecondCall()
+    public function validateTokenWithValidDataCalledTwoTimesReturnsTrueOnSecondCall(): void
     {
         $formName = 'foo';
         $action = 'edit';
@@ -194,7 +193,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenWithMismatchingTokenIdReturnsFalse()
+    public function validateTokenWithMismatchingTokenIdReturnsFalse(): void
     {
         $formName = 'foo';
         $action = 'edit';
@@ -206,7 +205,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenWithMismatchingFormNameReturnsFalse()
+    public function validateTokenWithMismatchingFormNameReturnsFalse(): void
     {
         $formName = 'foo';
         $action = 'edit';
@@ -218,7 +217,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenWithMismatchingActionReturnsFalse()
+    public function validateTokenWithMismatchingActionReturnsFalse(): void
     {
         $formName = 'foo';
         $action = 'edit';
@@ -230,7 +229,7 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenWithMismatchingFormInstanceNameReturnsFalse()
+    public function validateTokenWithMismatchingFormInstanceNameReturnsFalse(): void
     {
         $formName = 'foo';
         $action = 'edit';
@@ -242,10 +241,10 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenForValidTokenNotCallsCreateValidationErrorMessage()
+    public function validateTokenForValidTokenNotCallsCreateValidationErrorMessage(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting $subject */
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+        /** @var \PHPUnit_Framework_MockObject_MockObject|FormProtectionTesting $subject */
+        $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['createValidationErrorMessage'])
             ->getMock();
         $subject->expects($this->never())->method('createValidationErrorMessage');
@@ -260,10 +259,10 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenForInvalidTokenCallsCreateValidationErrorMessage()
+    public function validateTokenForInvalidTokenCallsCreateValidationErrorMessage(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting $subject */
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+        /** @var \PHPUnit_Framework_MockObject_MockObject|FormProtectionTesting $subject */
+        $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['createValidationErrorMessage'])
             ->getMock();
         $subject->expects($this->once())->method('createValidationErrorMessage');
@@ -278,10 +277,10 @@ class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function validateTokenForInvalidFormNameCallsCreateValidationErrorMessage()
+    public function validateTokenForInvalidFormNameCallsCreateValidationErrorMessage(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting $subject */
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+        /** @var \PHPUnit_Framework_MockObject_MockObject|FormProtectionTesting $subject */
+        $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['createValidationErrorMessage'])
             ->getMock();
         $subject->expects($this->once())->method('createValidationErrorMessage');
