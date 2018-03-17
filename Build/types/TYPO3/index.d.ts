@@ -89,6 +89,11 @@ interface Window {
   currentModuleLoaded: string;
   fsMod: { [key: string]: any };
   nextLoadModuleUrl: string;
+
+  // required for Paste.ts
+  // TODO these should be passed as data attributes
+  pasteAfterLinkTemplate: string;
+  pasteIntoLinkTemplate: string;
 }
 
 /**

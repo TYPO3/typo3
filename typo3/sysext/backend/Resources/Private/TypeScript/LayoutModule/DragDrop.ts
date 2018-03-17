@@ -19,7 +19,7 @@
 import * as $ from 'jquery';
 import 'jquery-ui/droppable';
 import DataHandler = require('../AjaxDataHandler');
-import ResponseInterface from 'TYPO3/CMS/Backend/AjaxDataHandler/ResponseInterface';
+import ResponseInterface from '../AjaxDataHandler/ResponseInterface';
 
 
 interface Parameters {

@@ -199,8 +199,8 @@ class Modal {
                  severity: SeverityEnum = SeverityEnum.info,
                  buttons: Array<Object>,
                  url: string,
-                 callback: Function,
-                 target: string
+                 callback?: Function,
+                 target?: string
   ): JQuery {
     return this.advanced({
       type: Types.ajax,
