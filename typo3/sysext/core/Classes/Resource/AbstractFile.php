@@ -258,7 +258,7 @@ abstract class AbstractFile implements FileInterface
     {
         $pathinfo = PathUtility::pathinfo($this->getName());
 
-        $extension = strtolower($pathinfo['extension']);
+        $extension = strtolower($pathinfo['extension'] ?? '');
 
         return $extension;
     }

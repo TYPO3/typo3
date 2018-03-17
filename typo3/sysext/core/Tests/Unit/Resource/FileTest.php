@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 /*
@@ -14,18 +15,17 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the file class of the TYPO3 FAL
  */
-class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FileTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var array A backup of registered singleton instances
      */
@@ -36,43 +36,43 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected $storageMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-        $this->storageMock = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
+        $this->storageMock = $this->createMock(ResourceStorage::class);
         $this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
 
-        $mockedMetaDataRepository = $this->createMock(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
+        $mockedMetaDataRepository = $this->createMock(MetaDataRepository::class);
         $mockedMetaDataRepository->expects($this->any())->method('findByFile')->will($this->returnValue(['file' => 1]));
-        \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, $mockedMetaDataRepository);
+        GeneralUtility::setSingletonInstance(MetaDataRepository::class, $mockedMetaDataRepository);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Resource\File
+     * @return File
      */
-    protected function prepareFixture()
+    protected function prepareFixture(): File
     {
-        $fixture = new \TYPO3\CMS\Core\Resource\File(['testfile'], $this->storageMock);
+        $fixture = new File(['testfile'], $this->storageMock);
         return $fixture;
     }
 
     /**
      * @test
      */
-    public function commonPropertiesAreAvailableWithOwnGetters()
+    public function commonPropertiesAreAvailableWithOwnGetters(): void
     {
         $properties = [
             'name' => $this->getUniqueId(),
             'storage' => $this->storageMock,
             'size' => 1024
         ];
-        $fixture = new \TYPO3\CMS\Core\Resource\File($properties, $this->storageMock);
+        $fixture = new File($properties, $this->storageMock);
         foreach ($properties as $key => $value) {
             $this->assertEquals($value, call_user_func([$fixture, 'get' . $key]));
         }
@@ -83,19 +83,19 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function fileIndexStatusIsTrueIfUidIsSet()
+    public function fileIndexStatusIsTrueIfUidIsSet(): void
     {
-        $fixture = new \TYPO3\CMS\Core\Resource\File(['uid' => 1], $this->storageMock);
+        $fixture = new File(['uid' => 1], $this->storageMock);
         $this->assertTrue($fixture->isIndexed());
     }
 
     /**
      * @test
      */
-    public function updatePropertiesUpdatesFileProperties()
+    public function updatePropertiesUpdatesFileProperties(): void
     {
         $identifier = '/' . $this->getUniqueId();
-        $fixture = new \TYPO3\CMS\Core\Resource\File(['uid' => 1, 'identifier' => '/test'], $this->storageMock);
+        $fixture = new File(['uid' => 1, 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['identifier' => $identifier]);
         $this->assertEquals($identifier, $fixture->getIdentifier());
     }
@@ -103,9 +103,9 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function updatePropertiesLeavesPropertiesUntouchedIfNotSetInNewProperties()
+    public function updatePropertiesLeavesPropertiesUntouchedIfNotSetInNewProperties(): void
     {
-        $fixture = new \TYPO3\CMS\Core\Resource\File(['uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'], $this->storageMock);
+        $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['foo' => 'foobar']);
         $this->assertEquals('/test', $fixture->getIdentifier());
         $this->assertEquals('/test', $fixture->getProperty('identifier'));
@@ -114,9 +114,9 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function updatePropertiesDiscardsUidIfAlreadySet()
+    public function updatePropertiesDiscardsUidIfAlreadySet(): void
     {
-        $fixture = new \TYPO3\CMS\Core\Resource\File(['uid' => 1, 'identifier' => '/test'], $this->storageMock);
+        $fixture = new File(['uid' => 1, 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['uid' => 3]);
         $this->assertEquals(1, $fixture->getUid());
     }
@@ -124,9 +124,9 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function updatePropertiesRecordsNamesOfChangedProperties()
+    public function updatePropertiesRecordsNamesOfChangedProperties(): void
     {
-        $fixture = new \TYPO3\CMS\Core\Resource\File(['uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'], $this->storageMock);
+        $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['foo' => 'foobar', 'baz' => 'foobaz']);
         $this->assertEquals(['foo', 'baz'], $fixture->getUpdatedProperties());
     }
@@ -134,9 +134,9 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function updatePropertiesDoesNotRecordPropertyNameIfSameValueIsProvided()
+    public function updatePropertiesDoesNotRecordPropertyNameIfSameValueIsProvided(): void
     {
-        $fixture = new \TYPO3\CMS\Core\Resource\File(['uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'], $this->storageMock);
+        $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['foo' => 'asdf']);
         $this->assertEmpty($fixture->getUpdatedProperties());
     }
@@ -144,9 +144,9 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function updatePropertiesMarksPropertyAsChangedOnlyOnce()
+    public function updatePropertiesMarksPropertyAsChangedOnlyOnce(): void
     {
-        $fixture = new \TYPO3\CMS\Core\Resource\File(['uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'], $this->storageMock);
+        $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['foo' => 'foobar', 'baz' => 'foobaz']);
         $fixture->updateProperties(['foo' => 'fdsw', 'baz' => 'asdf']);
         $this->assertEquals(['foo', 'baz'], $fixture->getUpdatedProperties());
@@ -155,13 +155,13 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function updatePropertiesReloadsStorageObjectIfStorageChanges()
+    public function updatePropertiesReloadsStorageObjectIfStorageChanges(): void
     {
         $fileProperties = [
             'uid' => 1,
             'storage' => 'first',
         ];
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\File::class)
+        $subject = $this->getMockBuilder(File::class)
             ->setMethods(['loadStorage'])
             ->setConstructorArgs([$fileProperties, $this->storageMock])
             ->getMock();
@@ -171,7 +171,7 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->expects($this->once())
             ->method('getStorageObject')
             ->will($this->returnValue($mockedNewStorage));
-        \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class, $mockedResourceFactory);
+        GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class, $mockedResourceFactory);
 
         $subject->updateProperties(['storage' => 'different']);
         $this->assertSame($mockedNewStorage, $subject->getStorage());
@@ -180,12 +180,12 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function copyToCallsCopyOperationOnTargetFolderStorage()
+    public function copyToCallsCopyOperationOnTargetFolderStorage(): void
     {
         $targetStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $targetFolder = $this->createMock(\TYPO3\CMS\Core\Resource\Folder::class);
         $targetFolder->expects($this->any())->method('getStorage')->will($this->returnValue($targetStorage));
-        $fixture = new \TYPO3\CMS\Core\Resource\File([], $this->storageMock);
+        $fixture = new File([], $this->storageMock);
         $targetStorage->expects($this->once())->method('copyFile')->with($this->equalTo($fixture), $this->equalTo($targetFolder));
         $fixture->copyTo($targetFolder);
     }
@@ -193,17 +193,17 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function moveToCallsMoveOperationOnTargetFolderStorage()
+    public function moveToCallsMoveOperationOnTargetFolderStorage(): void
     {
         $targetStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $targetFolder = $this->createMock(\TYPO3\CMS\Core\Resource\Folder::class);
         $targetFolder->expects($this->any())->method('getStorage')->will($this->returnValue($targetStorage));
-        $fixture = new \TYPO3\CMS\Core\Resource\File([], $this->storageMock);
+        $fixture = new File([], $this->storageMock);
         $targetStorage->expects($this->once())->method('moveFile')->with($this->equalTo($fixture), $this->equalTo($targetFolder));
         $fixture->moveTo($targetFolder);
     }
 
-    public function filenameExtensionDataProvider()
+    public function filenameExtensionDataProvider(): array
     {
         return [
             ['somefile.jpg', 'somefile', 'jpg'],
@@ -218,9 +218,9 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider filenameExtensionDataProvider
      */
-    public function getNameWithoutExtensionReturnsCorrectName($originalFilename, $expectedBasename)
+    public function getNameWithoutExtensionReturnsCorrectName($originalFilename, $expectedBasename): void
     {
-        $fixture = new \TYPO3\CMS\Core\Resource\File(
+        $fixture = new File(
             [
             'name' => $originalFilename,
             'identifier' => '/' . $originalFilename
@@ -234,9 +234,9 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider filenameExtensionDataProvider
      */
-    public function getExtensionReturnsCorrectExtension($originalFilename, $expectedBasename, $expectedExtension)
+    public function getExtensionReturnsCorrectExtension($originalFilename, $expectedBasename, $expectedExtension): void
     {
-        $fixture = new \TYPO3\CMS\Core\Resource\File([
+        $fixture = new File([
             'name' => $originalFilename,
             'identifier' => '/' . $originalFilename
         ], $this->storageMock);
@@ -246,18 +246,18 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function hasPropertyReturnsTrueFilePropertyExists()
+    public function hasPropertyReturnsTrueFilePropertyExists(): void
     {
-        $fixture = new \TYPO3\CMS\Core\Resource\File(['testproperty' => 'testvalue'], $this->storageMock);
+        $fixture = new File(['testproperty' => 'testvalue'], $this->storageMock);
         $this->assertTrue($fixture->hasProperty('testproperty'));
     }
 
     /**
      * @test
      */
-    public function hasPropertyReturnsTrueIfMetadataPropertyExists()
+    public function hasPropertyReturnsTrueIfMetadataPropertyExists(): void
     {
-        $fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\File::class, ['dummy'], [[], $this->storageMock]);
+        $fixture = $this->getAccessibleMock(File::class, ['dummy'], [[], $this->storageMock]);
         $fixture->_set('metaDataLoaded', true);
         $fixture->_set('metaDataProperties', ['testproperty' => 'testvalue']);
         $this->assertTrue($fixture->hasProperty('testproperty'));
