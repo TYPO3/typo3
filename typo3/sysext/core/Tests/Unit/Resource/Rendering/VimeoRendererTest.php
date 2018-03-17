@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
 /*
@@ -18,17 +19,13 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper;
 use TYPO3\CMS\Core\Resource\Rendering\VimeoRenderer;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class VimeoRendererTest
  */
-class VimeoRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class VimeoRendererTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var VimeoRenderer|\PHPUnit_Framework_MockObject_MockObject
      */
