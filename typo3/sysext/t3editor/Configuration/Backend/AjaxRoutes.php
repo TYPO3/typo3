@@ -13,6 +13,6 @@ return [
     // Load code completion templates
     't3editor_codecompletion_loadtemplates' => [
         'path' => '/t3editor/codecompletion/load-templates',
-        'target' => \TYPO3\CMS\T3editor\CodeCompletion::class . '::processAjaxRequest'
+        'target' => \TYPO3\CMS\T3editor\Controller\CodeCompletionController::class . '::loadCompletions'
     ]
 ];

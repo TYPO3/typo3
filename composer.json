@@ -89,6 +89,7 @@
 				"typo3/sysext/recordlist/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/reports/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/saltedpasswords/Migrations/Code/ClassAliasMap.php",
+				"typo3/sysext/t3editor/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/workspaces/Migrations/Code/ClassAliasMap.php"
 			]
 		},

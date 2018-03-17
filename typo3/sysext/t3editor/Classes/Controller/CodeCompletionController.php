@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\T3editor;
+namespace TYPO3\CMS\T3editor\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 /**
  * Code completion for t3editor
  */
-class CodeCompletion
+class CodeCompletionController
 {
     /**
      * @var \TYPO3\CMS\Core\Http\AjaxRequestHandler
@@ -43,7 +43,7 @@ class CodeCompletion
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
+    public function loadCompletions(ServerRequestInterface $request): ResponseInterface
     {
         $pageId = (int)($request->getParsedBody()['pageId'] ?? $request->getQueryParams()['pageId']);
         return $this->loadTemplates($pageId);

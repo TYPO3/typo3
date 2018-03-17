@@ -659,4 +659,9 @@ return [
             'Deprecation-84399-ClassRecordListRenamedToRecordListController.rst',
         ],
     ],
+    'TYPO3\CMS\T3editor\CodeCompletion' => [
+        'restFiles' => [
+            'Deprecation-84410-CodeCompletionRenamedToCodeCompletionController.rst',
+        ],
+    ],
 ];
