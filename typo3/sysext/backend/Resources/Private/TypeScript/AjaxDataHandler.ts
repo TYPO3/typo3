@@ -257,4 +257,4 @@ class AjaxDataHandler {
   }
 }
 
-export = new AjaxDataHandler();
+export default new AjaxDataHandler();

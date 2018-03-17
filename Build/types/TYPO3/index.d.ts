@@ -95,3 +95,4 @@ interface JQuery {
   // To be able to use jquery/autocomplete-slider we have to override the definition of jquerui
   autocomplete(options?: { [key: string]: any }): any;
 }
+
