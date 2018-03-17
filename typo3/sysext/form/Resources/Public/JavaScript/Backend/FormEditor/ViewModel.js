@@ -213,18 +213,27 @@ define(['jquery',
       });
 
       getFormEditorApp().addPropertyValidationValidator('IntegerOrEmpty', function(formElement, propertyPath) {
+        if (getUtility().isUndefinedOrNull(formElement.get(propertyPath))) {
+          return;
+        }
         if (formElement.get(propertyPath).length > 0 && !$.isNumeric(formElement.get(propertyPath))) {
           return getFormEditorApp().getFormElementPropertyValidatorDefinition('Integer')['errorMessage'] || 'invalid value';
         }
       });
 
       getFormEditorApp().addPropertyValidationValidator('NaiveEmail', function(formElement, propertyPath) {
+        if (getUtility().isUndefinedOrNull(formElement.get(propertyPath))) {
+          return;
+        }
         if (!formElement.get(propertyPath).match(/\S+@\S+\.\S+/)) {
           return getFormEditorApp().getFormElementPropertyValidatorDefinition('NaiveEmail')['errorMessage'] || 'invalid value';
         }
       });
 
       getFormEditorApp().addPropertyValidationValidator('NaiveEmailOrEmpty', function(formElement, propertyPath) {
+        if (getUtility().isUndefinedOrNull(formElement.get(propertyPath))) {
+          return;
+        }
         if (formElement.get(propertyPath).length > 0 && !formElement.get(propertyPath).match(/\S+@\S+\.\S+/)) {
           return getFormEditorApp().getFormElementPropertyValidatorDefinition('NaiveEmailOrEmpty')['errorMessage'] || 'invalid value';
         }
@@ -232,6 +241,11 @@ define(['jquery',
 
       getFormEditorApp().addPropertyValidationValidator('FormElementIdentifierWithinCurlyBracesInclusive', function(formElement, propertyPath) {
         var match, regex;
+
+        if (getUtility().isUndefinedOrNull(formElement.get(propertyPath))) {
+          return;
+        }
+
         regex = /\{([a-z0-9-_]+)?\}/gi;
         match = regex.exec(formElement.get(propertyPath));
         if (match && ((match[1] && !getFormEditorApp().isFormElementIdentifierUsed(match[1])) || !match[1])) {
@@ -241,6 +255,11 @@ define(['jquery',
 
       getFormEditorApp().addPropertyValidationValidator('FormElementIdentifierWithinCurlyBracesExclusive', function(formElement, propertyPath) {
         var match, regex;
+
+        if (getUtility().isUndefinedOrNull(formElement.get(propertyPath))) {
+          return;
+        }
+
         regex = /^\{([a-z0-9-_]+)?\}$/i;
         match = regex.exec(formElement.get(propertyPath));
         if (!match || ((match[1] && !getFormEditorApp().isFormElementIdentifierUsed(match[1])) || !match[1])) {
@@ -249,6 +268,9 @@ define(['jquery',
       });
 
       getFormEditorApp().addPropertyValidationValidator('FileSize', function(formElement, propertyPath) {
+        if (getUtility().isUndefinedOrNull(formElement.get(propertyPath))) {
+          return;
+        }
         if (!formElement.get(propertyPath).match(/^(\d*\.?\d+)(B|K|M|G)$/i)) {
           return getFormEditorApp().getFormElementPropertyValidatorDefinition('FileSize')['errorMessage'] || 'invalid value';
         }
