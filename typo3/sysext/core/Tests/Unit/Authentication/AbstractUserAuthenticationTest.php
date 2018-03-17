@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
 /*
@@ -14,30 +15,30 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
  */
-class AbstractUserAuthenticationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractUserAuthenticationTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
     public function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGiven()
     {
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+
         /** @var Connection|ObjectProphecy $connection */
         $connection = $this->prophesize(Connection::class);
         $connection->getDatabasePlatform()->willReturn(new MockPlatform());
@@ -48,7 +49,7 @@ class AbstractUserAuthenticationTest extends \TYPO3\TestingFramework\Core\Unit\U
         $queryBuilder = new QueryBuilder(
             $connection->reveal(),
             null,
-            $this->prophesize(\Doctrine\DBAL\Query\QueryBuilder::class)->reveal()
+            $this->prophesize(DoctrineQueryBuilder::class)->reveal()
         );
 
         /** @var ConnectionPool|ObjectProphecy $connection */
@@ -58,7 +59,7 @@ class AbstractUserAuthenticationTest extends \TYPO3\TestingFramework\Core\Unit\U
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
 
         /** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
-        $mock = $this->getMockBuilder(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class)
+        $mock = $this->getMockBuilder(AbstractUserAuthentication::class)
             ->setMethods(['dummy'])
             ->getMock();
         $mock->checkPid = true;
