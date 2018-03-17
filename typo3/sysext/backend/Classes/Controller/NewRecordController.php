@@ -214,7 +214,7 @@ class NewRecordController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $response = $this->renderContent();
+        $response = $this->renderContent($request);
 
         if (empty($response)) {
             $response = new HtmlResponse($this->moduleTemplate->renderContent());
@@ -232,7 +232,7 @@ class NewRecordController
     {
         trigger_error('Method main() will be replaced by protected method renderContent() in v10. Do not call from other extension', E_USER_DEPRECATED);
 
-        $response = $this->renderContent();
+        $response = $this->renderContent($GLOBALS['TYPO3_REQUEST']);
 
         if ($response instanceof RedirectResponse) {
             HttpUtility::redirect($response->getHeaders()['location'][0]);
@@ -258,7 +258,7 @@ class NewRecordController
     public function regularNew()
     {
         trigger_error('Method regularNew() will be replaced by protected method renderNewRecordControls() in v10. Do not call from other extension', E_USER_DEPRECATED);
-        $this->renderNewRecordControls();
+        $this->renderNewRecordControls($GLOBALS['TYPO3_REQUEST']);
     }
 
     /**
@@ -410,9 +410,10 @@ class NewRecordController
     /**
      * Main processing, creating the list of new record tables to select from
      *
+     * @param ServerRequestInterface $request
      * @return ResponseInterface|null
      */
-    protected function renderContent(): ?ResponseInterface
+    protected function renderContent(ServerRequestInterface $request): ?ResponseInterface
     {
         // If there was a page - or if the user is admin (admins has access to the root) we proceed:
         if (!empty($this->pageinfo['uid']) || $this->getBackendUserAuthentication()->isAdmin()) {
@@ -463,7 +464,7 @@ class NewRecordController
             // GENERATE the HTML-output depending on mode (pagesOnly is the page wizard)
             // Regular new element:
             if (!$this->pagesOnly) {
-                $this->renderNewRecordControls();
+                $this->renderNewRecordControls($request);
             } elseif ($this->isRecordCreationAllowedForTable('pages')) {
                 // Pages only wizard
                 $response = $this->renderPositionTree();
@@ -606,8 +607,10 @@ class NewRecordController
 
     /**
      * Render controls for creating a regular new element (pages or records)
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function renderNewRecordControls(): void
+    protected function renderNewRecordControls(ServerRequestInterface $request): void
     {
         $lang = $this->getLanguageService();
         // Initialize array for accumulating table rows:
@@ -705,7 +708,7 @@ class NewRecordController
                             $table,
                             $this->id
                         );
-                        // If the table is 'tt_content', create link to wizard
+                        // If the table is 'tt_content', add link to wizard
                         if ($table === 'tt_content') {
                             $groupName = $lang->getLL('createNewContent');
                             $rowContent = $newContentIcon
@@ -714,7 +717,9 @@ class NewRecordController
                             // If mod.newContentElementWizard.override is set, use that extension's wizard instead:
                             $tsConfig = BackendUtility::getModTSconfig($this->id, 'mod');
                             $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
-                            $url = (string)$uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
+                            /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
+                            $normalizedParams = $request->getAttribute('normalizedParams');
+                            $url = (string)$uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => $normalizedParams->getRequestUri()]);
                             $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li>'
                                 . '<li>'
                                 . '<a href="#" data-url="' . htmlspecialchars($url) . '" data-title="' . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="t3js-toggle-new-content-element-wizard">'
