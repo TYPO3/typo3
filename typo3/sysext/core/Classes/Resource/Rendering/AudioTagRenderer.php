@@ -77,10 +77,10 @@ class AudioTagRenderer implements FileRendererInterface
         }
 
         $additionalAttributes = [];
-        if (is_array($options['additionalAttributes'])) {
+        if (isset($options['additionalAttributes']) && is_array($options['additionalAttributes'])) {
             $additionalAttributes[] = GeneralUtility::implodeAttributes($options['additionalAttributes'], true, true);
         }
-        if (is_array($options['data'])) {
+        if (isset($options['data']) && is_array($options['data'])) {
             array_walk($options['data'], function (&$value, $key) {
                 $value = 'data-' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
             });
