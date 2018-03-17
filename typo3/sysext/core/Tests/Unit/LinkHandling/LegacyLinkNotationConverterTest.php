@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
 /*
@@ -21,20 +22,16 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LegacyLinkNotationConverterTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LegacyLinkNotationConverterTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
      *
      * @return array
      */
-    public function resolveParametersForNonFilesDataProvider()
+    public function resolveParametersForNonFilesDataProvider(): array
     {
         return [
             'simple page - old style' => [
@@ -98,7 +95,7 @@ class LegacyLinkNotationConverterTest extends \TYPO3\TestingFramework\Core\Unit\
      *
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
-    public function resolveReturnsSplitParameters($input, $expected, $finalString)
+    public function resolveReturnsSplitParameters($input, $expected, $finalString): void
     {
         $subject = new LegacyLinkNotationConverter();
         $this->assertEquals($expected, $subject->resolve($input));
@@ -113,7 +110,7 @@ class LegacyLinkNotationConverterTest extends \TYPO3\TestingFramework\Core\Unit\
      *
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
-    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected)
+    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected): void
     {
         $subject = new LinkService();
         $this->assertEquals($expected, $subject->asString($parameters));
@@ -132,7 +129,7 @@ class LegacyLinkNotationConverterTest extends \TYPO3\TestingFramework\Core\Unit\
      *
      * @return array
      */
-    public function resolveParametersForFilesDataProvider()
+    public function resolveParametersForFilesDataProvider(): array
     {
         return [
             'file without FAL - VERY old style' => [
@@ -189,7 +186,7 @@ class LegacyLinkNotationConverterTest extends \TYPO3\TestingFramework\Core\Unit\
      *
      * @dataProvider resolveParametersForFilesDataProvider
      */
-    public function resolveFileReferencesToSplitParameters($input, $expected, $finalString)
+    public function resolveFileReferencesToSplitParameters($input, $expected, $finalString): void
     {
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
@@ -239,7 +236,7 @@ class LegacyLinkNotationConverterTest extends \TYPO3\TestingFramework\Core\Unit\
      *
      * @dataProvider resolveParametersForFilesDataProvider
      */
-    public function splitParametersToUnifiedIdentifierForFiles($input, $parameters, $expected)
+    public function splitParametersToUnifiedIdentifierForFiles($input, $parameters, $expected): void
     {
         // fake methods to return proper objects
         if ($parameters['type'] === LinkService::TYPE_FILE) {
