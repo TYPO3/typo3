@@ -630,7 +630,7 @@ class BackendUtility
      */
     public static function getTCAtypes($table, $rec, $useFieldNameAsKey = false)
     {
-        if ($GLOBALS['TCA'][$table]) {
+        if (isset($GLOBALS['TCA'][$table])) {
             // Get type value:
             $fieldValue = self::getTCAtypeValue($table, $rec);
             $cacheIdentifier = $table . '-type-' . $fieldValue . '-fnk-' . $useFieldNameAsKey;
@@ -641,7 +641,7 @@ class BackendUtility
             }
 
             // Get typesConf
-            $typesConf = $GLOBALS['TCA'][$table]['types'][$fieldValue];
+            $typesConf = $GLOBALS['TCA'][$table]['types'][$fieldValue] ?? null;
             // Get fields list and traverse it
             $fieldList = explode(',', $typesConf['showitem']);
 
@@ -658,7 +658,9 @@ class BackendUtility
             // Add palette fields e.g. for a valid RTE transformation
             $paletteFieldList = [];
             foreach ($fieldList as $fieldData) {
-                list($pFieldName, $pAltTitle, $pPalette) = GeneralUtility::trimExplode(';', $fieldData);
+                $fieldDataArray = GeneralUtility::trimExplode(';', $fieldData);
+                // first two entries would be fieldname and altTitle, they are not used here.
+                $pPalette = $fieldDataArray[2] ?? null;
                 if ($pPalette
                     && isset($GLOBALS['TCA'][$table]['palettes'][$pPalette])
                     && is_array($GLOBALS['TCA'][$table]['palettes'][$pPalette])
@@ -673,15 +675,14 @@ class BackendUtility
                 }
             }
             $fieldList = array_merge($fieldList, $paletteFieldList);
-
             $altFieldList = [];
             // Traverse fields in types config and parse the configuration into a nice array:
             foreach ($fieldList as $k => $v) {
-                list($pFieldName, $pAltTitle, $pPalette) = GeneralUtility::trimExplode(';', $v);
+                $vArray = GeneralUtility::trimExplode(';', $v);
                 $fieldList[$k] = [
-                    'field' => $pFieldName,
-                    'title' => $pAltTitle,
-                    'palette' => $pPalette,
+                    'field' => $vArray[0],
+                    'title' => $vArray[1] ?? null,
+                    'palette' => $vArray[2] ?? null,
                     'spec' => [],
                     'origString' => $v
                 ];
@@ -761,8 +762,8 @@ class BackendUtility
             }
         }
         // If current typeNum doesn't exist, set it to 0 (or to 1 for historical reasons, if 0 doesn't exist)
-        if (!$GLOBALS['TCA'][$table]['types'][$typeNum]) {
-            $typeNum = $GLOBALS['TCA'][$table]['types']['0'] ? 0 : 1;
+        if (!isset($GLOBALS['TCA'][$table]['types'][$typeNum]) || !$GLOBALS['TCA'][$table]['types'][$typeNum]) {
+            $typeNum = isset($GLOBALS['TCA'][$table]['types']['0']) ? 0 : 1;
         }
         // Force to string. Necessary for eg '-1' to be recognized as a type value.
         $typeNum = (string)$typeNum;
@@ -1627,15 +1628,16 @@ class BackendUtility
     {
         $pageTsConfig = static::getPagesTSconfig($pageId);
         $label = '';
-        if (is_array($pageTsConfig['TCEFORM.'])
-            && is_array($pageTsConfig['TCEFORM.'][$table . '.'])
-            && is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.'])
+        if (isset($pageTsConfig['TCEFORM.'])
+            && \is_array($pageTsConfig['TCEFORM.'])
+            && \is_array($pageTsConfig['TCEFORM.'][$table . '.'])
+            && \is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.'])
         ) {
-            if (is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'])
+            if (\is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'])
                 && isset($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'][$key])
             ) {
                 $label = $pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'][$key];
-            } elseif (is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['altLabels.'])
+            } elseif (\is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['altLabels.'])
                 && isset($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['altLabels.'][$key])
             ) {
                 $label = $pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['altLabels.'][$key];
@@ -1897,8 +1899,14 @@ class BackendUtility
                             $MMfields[] = $theColConf['foreign_table'] . '.uid';
                         } else {
                             $MMfields = [$theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']];
-                            foreach (GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'], true) as $f) {
-                                $MMfields[] = $theColConf['foreign_table'] . '.' . $f;
+                            if (isset($GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'])) {
+                                foreach (GeneralUtility::trimExplode(
+                                    ',',
+                                    $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'],
+                                    true
+                                ) as $f) {
+                                    $MMfields[] = $theColConf['foreign_table'] . '.' . $f;
+                                }
                             }
                         }
                         /** @var $dbGroup RelationHandler */
@@ -2038,8 +2046,8 @@ class BackendUtility
                 break;
             case 'group':
                 // resolve the titles for DB records
-                if ($theColConf['internal_type'] === 'db') {
-                    if ($theColConf['MM']) {
+                if (isset($theColConf['internal_type']) && $theColConf['internal_type'] === 'db') {
+                    if (isset($theColConf['MM']) && $theColConf['MM']) {
                         if ($uid) {
                             // Display the title of MM related records in lists
                             if ($noRecordLookup) {
@@ -2155,7 +2163,7 @@ class BackendUtility
                 if (isset($value)) {
                     $dateTimeFormats = QueryHelper::getDateTimeFormats();
 
-                    if (GeneralUtility::inList($theColConf['eval'], 'date')) {
+                    if (GeneralUtility::inList($theColConf['eval'] ?? '', 'date')) {
                         // Handle native date field
                         if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'date') {
                             $value = $value === $dateTimeFormats['date']['empty'] ? 0 : (int)strtotime($value);
@@ -2182,7 +2190,7 @@ class BackendUtility
 
                             $l = self::date($value) . $ageSuffix;
                         }
-                    } elseif (GeneralUtility::inList($theColConf['eval'], 'time')) {
+                    } elseif (GeneralUtility::inList($theColConf['eval'] ?? '', 'time')) {
                         // Handle native time field
                         if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'time') {
                             $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value);
@@ -2192,7 +2200,7 @@ class BackendUtility
                         if (!empty($value)) {
                             $l = gmdate('H:i', (int)$value);
                         }
-                    } elseif (GeneralUtility::inList($theColConf['eval'], 'timesec')) {
+                    } elseif (GeneralUtility::inList($theColConf['eval'] ?? '', 'timesec')) {
                         // Handle native time field
                         if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'time') {
                             $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value);
@@ -2202,7 +2210,7 @@ class BackendUtility
                         if (!empty($value)) {
                             $l = gmdate('H:i:s', (int)$value);
                         }
-                    } elseif (GeneralUtility::inList($theColConf['eval'], 'datetime')) {
+                    } elseif (GeneralUtility::inList($theColConf['eval'] ?? '', 'datetime')) {
                         // Handle native datetime field
                         if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'datetime') {
                             $value = $value === $dateTimeFormats['datetime']['empty'] ? 0 : (int)strtotime($value);

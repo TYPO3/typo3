@@ -37,11 +37,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     ///////////////////////////////////////
     // Tests concerning calcAge
     ///////////////////////////////////////
@@ -156,6 +151,7 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
             ],
         ];
+        $GLOBALS['LANG'] = [];
         $this->assertEquals('0', BackendUtility::getProcessedValue('tt_content', 'header', '0'));
     }
 
@@ -175,6 +171,7 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
             ],
         ];
+        $GLOBALS['LANG'] = [];
         $this->assertSame('1, 2', BackendUtility::getProcessedValue('tt_content', 'multimedia', '1,2'));
     }
 
@@ -199,7 +196,7 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
             ],
         ];
-
+        $GLOBALS['LANG'] = [];
         $this->assertSame('Page 1, Page 2', ProcessedValueForGroupWithOneAllowedTableFixture::getProcessedValue('tt_content', 'pages', '1,2'));
     }
 
@@ -222,7 +219,7 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
             ],
         ];
-
+        $GLOBALS['LANG'] = [];
         $this->assertSame('Page 1, Configuration 2', ProcessedValueForGroupWithMultipleAllowedTablesFixture::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
     }
 
@@ -334,6 +331,7 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
             ],
         ];
+        $GLOBALS['LANG'] = [];
 
         $this->assertSame(
             'Category 1; Category 2',
