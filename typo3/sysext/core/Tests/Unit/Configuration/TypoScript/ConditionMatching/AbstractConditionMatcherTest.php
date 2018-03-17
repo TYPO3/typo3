@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\TypoScript\ConditionMatching;
 
 /*
@@ -17,19 +18,15 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\TypoScript\ConditionMatching;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test cases
  */
-class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractConditionMatcherTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var \TYPO3\CMS\Core\Core\ApplicationContext
+     * @var ApplicationContext
      */
     protected $backupApplicationContext = null;
 
@@ -46,7 +43,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         require_once 'Fixtures/ConditionMatcherUserFuncs.php';
 
@@ -61,7 +58,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * Tear down
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Fixtures\GeneralUtilityFixture::setApplicationContext($this->backupApplicationContext);
         parent::tearDown();
@@ -70,9 +67,9 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * Data provider with matching applicationContext conditions.
      *
-     * @return array[]
+     * @return array
      */
-    public function matchingApplicationContextConditionsDataProvider()
+    public function matchingApplicationContextConditionsDataProvider(): array
     {
         return [
             ['Production*'],
@@ -87,9 +84,9 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      * @test
      * @dataProvider matchingApplicationContextConditionsDataProvider
      */
-    public function evaluateConditionCommonReturnsTrueForMatchingContexts($matchingContextCondition)
+    public function evaluateConditionCommonReturnsTrueForMatchingContexts($matchingContextCondition): void
     {
-        /** @var \TYPO3\CMS\Core\Core\ApplicationContext $applicationContext */
+        /** @var ApplicationContext $applicationContext */
         $applicationContext = new ApplicationContext('Production/Staging/Server2');
         Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
 
@@ -101,9 +98,9 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * Data provider with not matching applicationContext conditions.
      *
-     * @return array[]
+     * @return array
      */
-    public function notMatchingApplicationContextConditionsDataProvider()
+    public function notMatchingApplicationContextConditionsDataProvider(): array
     {
         return [
             ['Production'],
@@ -119,9 +116,9 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      * @test
      * @dataProvider notMatchingApplicationContextConditionsDataProvider
      */
-    public function evaluateConditionCommonReturnsNullForNotMatchingApplicationContexts($notMatchingApplicationContextCondition)
+    public function evaluateConditionCommonReturnsNullForNotMatchingApplicationContexts($notMatchingApplicationContextCondition): void
     {
-        /** @var \TYPO3\CMS\Core\Core\ApplicationContext $applicationContext */
+        /** @var ApplicationContext $applicationContext */
         $applicationContext = new ApplicationContext('Production/Staging/Server2');
         Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
 
@@ -133,9 +130,9 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * Data provider for evaluateConditionCommonEvaluatesIpAddressesCorrectly
      *
-     * @return array[]
+     * @return array
      */
-    public function evaluateConditionCommonDevIpMaskDataProvider()
+    public function evaluateConditionCommonDevIpMaskDataProvider(): array
     {
         return [
             // [0] $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']
@@ -188,7 +185,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      * @test
      * @dataProvider evaluateConditionCommonDevIpMaskDataProvider
      */
-    public function evaluateConditionCommonEvaluatesIpAddressesCorrectly($devIpMask, $actualIp, $expectedResult)
+    public function evaluateConditionCommonEvaluatesIpAddressesCorrectly($devIpMask, $actualIp, $expectedResult): void
     {
         // Do not trigger proxy stuff of GeneralUtility::getIndPEnv
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']);
@@ -203,7 +200,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncIsCalled()
+    public function testUserFuncIsCalled(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -216,7 +213,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithSingleArgument()
+    public function testUserFuncWithSingleArgument(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -229,7 +226,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithIntegerZeroArgument()
+    public function testUserFuncWithIntegerZeroArgument(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -242,7 +239,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithWhitespaceArgument()
+    public function testUserFuncWithWhitespaceArgument(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -255,7 +252,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleArguments()
+    public function testUserFuncWithMultipleArguments(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -268,7 +265,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsNullBoolString()
+    public function testUserFuncWithMultipleDifferentArgumentsNullBoolString(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -281,7 +278,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsNullStringBool()
+    public function testUserFuncWithMultipleDifferentArgumentsNullStringBool(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -294,7 +291,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsStringBoolNull()
+    public function testUserFuncWithMultipleDifferentArgumentsStringBoolNull(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -307,7 +304,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsStringNullBool()
+    public function testUserFuncWithMultipleDifferentArgumentsStringNullBool(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -320,7 +317,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsBoolNullString()
+    public function testUserFuncWithMultipleDifferentArgumentsBoolNullString(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -333,7 +330,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsBoolStringNull()
+    public function testUserFuncWithMultipleDifferentArgumentsBoolStringNull(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -346,7 +343,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsNullBoolStringSingleQuotes()
+    public function testUserFuncWithMultipleDifferentArgumentsNullBoolStringSingleQuotes(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -359,7 +356,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsNullStringBoolSingleQuotes()
+    public function testUserFuncWithMultipleDifferentArgumentsNullStringBoolSingleQuotes(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -372,7 +369,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsStringBoolNullSingleQuotes()
+    public function testUserFuncWithMultipleDifferentArgumentsStringBoolNullSingleQuotes(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -385,7 +382,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsStringNullBoolSingleQuotes()
+    public function testUserFuncWithMultipleDifferentArgumentsStringNullBoolSingleQuotes(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -398,7 +395,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsBoolNullStringSingleQuotes()
+    public function testUserFuncWithMultipleDifferentArgumentsBoolNullStringSingleQuotes(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -411,7 +408,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleDifferentArgumentsBoolStringNullSingleQuotes()
+    public function testUserFuncWithMultipleDifferentArgumentsBoolStringNullSingleQuotes(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -424,7 +421,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleSingleQuotedArguments()
+    public function testUserFuncWithMultipleSingleQuotedArguments(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -437,7 +434,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleSoubleQuotedArguments()
+    public function testUserFuncWithMultipleSoubleQuotedArguments(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -450,7 +447,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncReturnsFalse()
+    public function testUserFuncReturnsFalse(): void
     {
         $this->assertFalse(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -463,7 +460,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleArgumentsAndQuotes()
+    public function testUserFuncWithMultipleArgumentsAndQuotes(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -476,7 +473,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleArgumentsAndQuotesAndSpaces()
+    public function testUserFuncWithMultipleArgumentsAndQuotesAndSpaces(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -489,7 +486,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleArgumentsAndQuotesAndSpacesStripped()
+    public function testUserFuncWithMultipleArgumentsAndQuotesAndSpacesStripped(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -502,7 +499,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithSpacesInQuotes()
+    public function testUserFuncWithSpacesInQuotes(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -515,7 +512,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithMultipleArgumentsAndQuotesAndSpacesStrippedAndEscapes()
+    public function testUserFuncWithMultipleArgumentsAndQuotesAndSpacesStrippedAndEscapes(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -528,7 +525,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithQuoteMissing()
+    public function testUserFuncWithQuoteMissing(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -541,7 +538,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithQuotesInside()
+    public function testUserFuncWithQuotesInside(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
@@ -554,7 +551,7 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function testUserFuncWithClassMethodCall()
+    public function testUserFuncWithClassMethodCall(): void
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(

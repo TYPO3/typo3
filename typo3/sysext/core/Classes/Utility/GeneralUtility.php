@@ -2677,7 +2677,7 @@ class GeneralUtility
                 break;
             case 'REMOTE_ADDR':
                 $retVal = $_SERVER['REMOTE_ADDR'];
-                if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+                if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] ?? '')) {
                     $ip = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
                     // Choose which IP in list to use
                     if (!empty($ip)) {
