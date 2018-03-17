@@ -14,14 +14,12 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -87,6 +85,130 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     }
 
     /**
+     * Add a system message.
+     * This is a callback method for signal receivers.
+     *
+     * @param string $text The text to be displayed
+     * @param string $status The status of this system message
+     * @param int $count Will be added to the total count
+     * @param string $module The associated module
+     * @param string $params Query string with additional parameters
+     */
+    public function addSystemMessage($text, $status = InformationStatus::STATUS_OK, $count = 0, $module = '', $params = '')
+    {
+        $this->totalCount += (int)$count;
+
+        /** @var InformationStatus $messageSeverity */
+        $messageSeverity = InformationStatus::cast($status);
+        // define the severity for the badge
+        if ($messageSeverity->isGreaterThan($this->highestSeverity)) {
+            $this->highestSeverity = $messageSeverity;
+        }
+
+        $this->systemMessages[] = [
+            'module' => $module,
+            'params' => $params,
+            'count' => (int)$count,
+            'status' => $messageSeverity,
+            'text' => $text
+        ];
+    }
+
+    /**
+     * Add a system information.
+     * This is a callback method for signal receivers.
+     *
+     * @param string $title The title of this system information
+     * @param string $value The associated value
+     * @param string $iconIdentifier The icon identifier
+     * @param string $status The status of this system information
+     */
+    public function addSystemInformation($title, $value, $iconIdentifier, $status = InformationStatus::STATUS_NOTICE)
+    {
+        $this->systemInformation[] = [
+            'title' => $title,
+            'value' => $value,
+            'iconIdentifier' => $iconIdentifier,
+            'status' => $status
+        ];
+    }
+
+    /**
+     * Checks whether the user has access to this toolbar item
+     *
+     * @return bool TRUE if user has access, FALSE if not
+     */
+    public function checkAccess()
+    {
+        return $this->getBackendUserAuthentication()->isAdmin();
+    }
+
+    /**
+     * Render system information dropdown
+     *
+     * @return string Icon HTML
+     */
+    public function getItem()
+    {
+        return $this->getFluidTemplateObject('SystemInformationToolbarItem.html')->render();
+    }
+
+    /**
+     * Render drop down
+     *
+     * @return string Drop down HTML
+     */
+    public function getDropDown()
+    {
+        if (!$this->checkAccess()) {
+            return '';
+        }
+
+        $this->collectInformation();
+
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $view = $this->getFluidTemplateObject('SystemInformationDropDown.html');
+        $view->assignMultiple([
+            'environmentToolUrl' => (string)$uriBuilder->buildUriFromRoute('tools_toolsenvironment'),
+            'messages' => $this->systemMessages,
+            'count' => $this->totalCount > $this->maximumCountInBadge ? $this->maximumCountInBadge . '+' : $this->totalCount,
+            'severityBadgeClass' => $this->severityBadgeClass,
+            'systemInformation' => $this->systemInformation
+        ]);
+        return $view->render();
+    }
+
+    /**
+     * No additional attributes needed.
+     *
+     * @return array
+     */
+    public function getAdditionalAttributes()
+    {
+        return [];
+    }
+
+    /**
+     * This item has a drop down
+     *
+     * @return bool
+     */
+    public function hasDropDown()
+    {
+        return true;
+    }
+
+    /**
+     * Position relative to others
+     *
+     * @return int
+     */
+    public function getIndex()
+    {
+        return 75;
+    }
+
+    /**
      * Collect the information for the menu
      */
     protected function collectInformation()
@@ -107,14 +229,27 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Renders the menu for AJAX calls
-     *
-     * @return ResponseInterface
+     * Gets the TYPO3 version
      */
-    public function renderMenuAction(): ResponseInterface
+    protected function getTypo3Version()
     {
-        $this->collectInformation();
-        return new HtmlResponse($this->getDropDown());
+        $this->systemInformation[] = [
+            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version',
+            'value' => VersionNumberUtility::getCurrentTypo3Version(),
+            'iconIdentifier' => 'sysinfo-typo3-version'
+        ];
+    }
+
+    /**
+     * Gets the webserver software
+     */
+    protected function getWebServer()
+    {
+        $this->systemInformation[] = [
+            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.webserver',
+            'value' => $_SERVER['SERVER_SOFTWARE'],
+            'iconIdentifier' => 'sysinfo-webserver'
+        ];
     }
 
     /**
@@ -226,30 +361,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Gets the webserver software
-     */
-    protected function getWebServer()
-    {
-        $this->systemInformation[] = [
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.webserver',
-            'value' => $_SERVER['SERVER_SOFTWARE'],
-            'iconIdentifier' => 'sysinfo-webserver'
-        ];
-    }
-
-    /**
-     * Gets the TYPO3 version
-     */
-    protected function getTypo3Version()
-    {
-        $this->systemInformation[] = [
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version',
-            'value' => VersionNumberUtility::getCurrentTypo3Version(),
-            'iconIdentifier' => 'sysinfo-typo3-version'
-        ];
-    }
-
-    /**
      * Emits the "getSystemInformation" signal
      */
     protected function emitGetSystemInformation()
@@ -266,125 +377,22 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Add a system message.
-     * This is a callback method for signal receivers.
+     * Returns a new standalone view, shorthand function
      *
-     * @param string $text The text to be displayed
-     * @param string $status The status of this system message
-     * @param int $count Will be added to the total count
-     * @param string $module The associated module
-     * @param string $params Query string with additional parameters
+     * @param string $filename Which templateFile should be used.
+     * @return StandaloneView
      */
-    public function addSystemMessage($text, $status = InformationStatus::STATUS_OK, $count = 0, $module = '', $params = '')
+    protected function getFluidTemplateObject(string $filename): StandaloneView
     {
-        $this->totalCount += (int)$count;
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/ToolbarItems']);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ToolbarItems']);
 
-        /** @var InformationStatus $messageSeverity */
-        $messageSeverity = InformationStatus::cast($status);
-        // define the severity for the badge
-        if ($messageSeverity->isGreaterThan($this->highestSeverity)) {
-            $this->highestSeverity = $messageSeverity;
-        }
+        $view->setTemplate($filename);
 
-        $this->systemMessages[] = [
-            'module' => $module,
-            'params' => $params,
-            'count' => (int)$count,
-            'status' => $messageSeverity,
-            'text' => $text
-        ];
-    }
-
-    /**
-     * Add a system information.
-     * This is a callback method for signal receivers.
-     *
-     * @param string $title The title of this system information
-     * @param string $value The associated value
-     * @param string $iconIdentifier The icon identifier
-     * @param string $status The status of this system information
-     */
-    public function addSystemInformation($title, $value, $iconIdentifier, $status = InformationStatus::STATUS_NOTICE)
-    {
-        $this->systemInformation[] = [
-            'title' => $title,
-            'value' => $value,
-            'iconIdentifier' => $iconIdentifier,
-            'status' => $status
-        ];
-    }
-
-    /**
-     * Checks whether the user has access to this toolbar item
-     *
-     * @return bool TRUE if user has access, FALSE if not
-     */
-    public function checkAccess()
-    {
-        return $this->getBackendUserAuthentication()->isAdmin();
-    }
-
-    /**
-     * Render system information dropdown
-     *
-     * @return string Icon HTML
-     */
-    public function getItem()
-    {
-        return $this->getFluidTemplateObject('SystemInformationToolbarItem.html')->render();
-    }
-
-    /**
-     * Render drop down
-     *
-     * @return string Drop down HTML
-     */
-    public function getDropDown()
-    {
-        if (!$this->checkAccess()) {
-            return '';
-        }
-
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $view = $this->getFluidTemplateObject('SystemInformationDropDown.html');
-        $view->assignMultiple([
-            'environmentToolUrl' => (string)$uriBuilder->buildUriFromRoute('tools_toolsenvironment'),
-            'messages' => $this->systemMessages,
-            'count' => $this->totalCount > $this->maximumCountInBadge ? $this->maximumCountInBadge . '+' : $this->totalCount,
-            'severityBadgeClass' => $this->severityBadgeClass,
-            'systemInformation' => $this->systemInformation
-        ]);
-        return $view->render();
-    }
-
-    /**
-     * No additional attributes needed.
-     *
-     * @return array
-     */
-    public function getAdditionalAttributes()
-    {
-        return [];
-    }
-
-    /**
-     * This item has a drop down
-     *
-     * @return bool
-     */
-    public function hasDropDown()
-    {
-        return true;
-    }
-
-    /**
-     * Position relative to others
-     *
-     * @return int
-     */
-    public function getIndex()
-    {
-        return 75;
+        $view->getRequest()->setControllerExtensionName('Backend');
+        return $view;
     }
 
     /**
@@ -418,24 +426,5 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             $this->signalSlotDispatcher = GeneralUtility::makeInstance(ObjectManager::class)->get(Dispatcher::class);
         }
         return $this->signalSlotDispatcher;
-    }
-
-    /**
-     * Returns a new standalone view, shorthand function
-     *
-     * @param string $filename Which templateFile should be used.
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject(string $filename): StandaloneView
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/ToolbarItems']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ToolbarItems']);
-
-        $view->setTemplate($filename);
-
-        $view->getRequest()->setControllerExtensionName('Backend');
-        return $view;
     }
 }

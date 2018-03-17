@@ -122,7 +122,7 @@ return [
     // Render systeminformtion toolbar item
     'systeminformation_render' => [
         'path' => '/system-information/render',
-        'target' => \TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem::class . '::renderMenuAction',
+        'target' => \TYPO3\CMS\Backend\Controller\SystemInformationController::class . '::renderMenuAction',
         'parameters' => [
             'skipSessionUpdate' => 1
         ]
