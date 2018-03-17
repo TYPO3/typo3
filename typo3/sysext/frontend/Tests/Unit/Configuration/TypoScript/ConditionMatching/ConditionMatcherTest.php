@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching;
 
 /*
@@ -20,28 +21,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures\TestConditionException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ConditionMatcherTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var string Name of a key in $GLOBALS for this test
-     */
-    protected $testGlobalNamespace;
-
     /**
      * @var \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher Class under test
      */
     protected $matchCondition;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->testGlobalNamespace = $this->getUniqueId('TEST');
         GeneralUtility::flushInternalRuntimeCaches();
@@ -61,7 +53,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function simulateDisabledMatchAllConditionsFailsOnFaultyExpression()
+    public function simulateDisabledMatchAllConditionsFailsOnFaultyExpression(): void
     {
         $this->matchCondition->matchAll = false;
         $this->assertFalse($this->matchCondition->match('[nullCondition = This expression would return FALSE in general]'));
@@ -72,7 +64,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function simulateEnabledMatchAllConditionsSucceeds()
+    public function simulateEnabledMatchAllConditionsSucceeds(): void
     {
         $this->matchCondition->setSimulateMatchResult(true);
         $this->assertTrue($this->matchCondition->match('[nullCondition = This expression would return FALSE in general]'));
@@ -83,7 +75,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function simulateEnabledMatchSpecificConditionsSucceeds()
+    public function simulateEnabledMatchSpecificConditionsSucceeds(): void
     {
         $testCondition = '[' . $this->getUniqueId('test') . ' = Any condition to simulate a positive match]';
         $this->matchCondition->setSimulateMatchConditions([$testCondition]);
@@ -95,7 +87,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function languageConditionMatchesSingleLanguageExpression()
+    public function languageConditionMatchesSingleLanguageExpression(): void
     {
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
         $this->assertTrue($this->matchCondition->match('[language = *de*]'));
@@ -107,7 +99,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function languageConditionMatchesMultipleLanguagesExpression()
+    public function languageConditionMatchesMultipleLanguagesExpression(): void
     {
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
         $this->assertTrue($this->matchCondition->match('[language = *en*,*de*]'));
@@ -119,7 +111,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function languageConditionMatchesCompleteLanguagesExpression()
+    public function languageConditionMatchesCompleteLanguagesExpression(): void
     {
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
         $this->assertTrue($this->matchCondition->match('[language = de-de,de;q=0.8,en-us;q=0.5,en;q=0.3]'));
@@ -130,7 +122,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function usergroupConditionMatchesSingleGroupId()
+    public function usergroupConditionMatchesSingleGroupId(): void
     {
         $GLOBALS['TSFE']->gr_list = '13,14,15';
         $this->assertTrue($this->matchCondition->match('[usergroup = 13]'));
@@ -141,7 +133,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function usergroupConditionMatchesMultipleUserGroupId()
+    public function usergroupConditionMatchesMultipleUserGroupId(): void
     {
         $GLOBALS['TSFE']->gr_list = '13,14,15';
         $this->assertTrue($this->matchCondition->match('[usergroup = 999,15,14,13]'));
@@ -152,7 +144,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function usergroupConditionDoesNotMatchDefaulUserGroupIds()
+    public function usergroupConditionDoesNotMatchDefaulUserGroupIds(): void
     {
         $GLOBALS['TSFE']->gr_list = '0,-1';
         $this->assertFalse($this->matchCondition->match('[usergroup = 0,-1]'));
@@ -163,7 +155,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function loginUserConditionMatchesAnyLoggedInUser()
+    public function loginUserConditionMatchesAnyLoggedInUser(): void
     {
         $GLOBALS['TSFE']->loginUser = true;
         $GLOBALS['TSFE']->fe_user->user['uid'] = 13;
@@ -175,7 +167,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function loginUserConditionMatchesSingleLoggedInUser()
+    public function loginUserConditionMatchesSingleLoggedInUser(): void
     {
         $GLOBALS['TSFE']->loginUser = true;
         $GLOBALS['TSFE']->fe_user->user['uid'] = 13;
@@ -187,7 +179,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function loginUserConditionMatchesMultipleLoggedInUsers()
+    public function loginUserConditionMatchesMultipleLoggedInUsers(): void
     {
         $GLOBALS['TSFE']->loginUser = true;
         $GLOBALS['TSFE']->fe_user->user['uid'] = 13;
@@ -199,7 +191,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function loginUserConditionDoesNotMatchIfNotUserIsLoggedId()
+    public function loginUserConditionDoesNotMatchIfNotUserIsLoggedId(): void
     {
         $GLOBALS['TSFE']->loginUser = false;
         $GLOBALS['TSFE']->fe_user->user['uid'] = 13;
@@ -212,7 +204,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function loginUserConditionMatchIfUserIsNotLoggedIn()
+    public function loginUserConditionMatchIfUserIsNotLoggedIn(): void
     {
         $GLOBALS['TSFE']->loginUser = false;
         $this->assertTrue($this->matchCondition->match('[loginUser = ]'));
@@ -223,7 +215,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionMatchesOnEqualExpression()
+    public function globalVarConditionMatchesOnEqualExpression(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 = 10]'));
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 = 10.1]'));
@@ -236,7 +228,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionMatchesOnEqualExpressionWithMultipleValues()
+    public function globalVarConditionMatchesOnEqualExpressionWithMultipleValues(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 = 10|20|30]'));
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 = 10.1|20.2|30.3]'));
@@ -253,7 +245,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionMatchesOnNotEqualExpression()
+    public function globalVarConditionMatchesOnNotEqualExpression(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 != 20]'));
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 != 10.2]'));
@@ -264,7 +256,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionDoesNotMatchOnNotEqualExpression()
+    public function globalVarConditionDoesNotMatchOnNotEqualExpression(): void
     {
         $this->assertFalse($this->matchCondition->match('[globalVar = LIT:10 != 10]'));
     }
@@ -274,7 +266,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionMatchesOnNotEqualExpressionWithMultipleValues()
+    public function globalVarConditionMatchesOnNotEqualExpressionWithMultipleValues(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 != 20|30]'));
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 != 10.2|20.3]'));
@@ -285,7 +277,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionMatchesOnLowerThanExpression()
+    public function globalVarConditionMatchesOnLowerThanExpression(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 < 20]'));
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 < 10.2]'));
@@ -296,7 +288,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionMatchesOnLowerThanOrEqualExpression()
+    public function globalVarConditionMatchesOnLowerThanOrEqualExpression(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 <= 10]'));
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 <= 20]'));
@@ -309,7 +301,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionMatchesOnGreaterThanExpression()
+    public function globalVarConditionMatchesOnGreaterThanExpression(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 > 10]'));
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.2 > 10.1]'));
@@ -320,7 +312,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionMatchesOnGreaterThanOrEqualExpression()
+    public function globalVarConditionMatchesOnGreaterThanOrEqualExpression(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 >= 10]'));
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 >= 10]'));
@@ -333,7 +325,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionMatchesOnEmptyExpressionWithNoValueSet()
+    public function globalVarConditionMatchesOnEmptyExpressionWithNoValueSet(): void
     {
         $testKey = $this->getUniqueId('test');
         $this->assertTrue($this->matchCondition->match('[globalVar = GP:' . $testKey . '=]'));
@@ -345,7 +337,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionDoesNotMatchOnEmptyExpressionWithValueSetToZero()
+    public function globalVarConditionDoesNotMatchOnEmptyExpressionWithValueSetToZero(): void
     {
         $testKey = $this->getUniqueId('test');
         $_GET = [];
@@ -359,7 +351,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalVarConditionMatchesOnArrayExpressionWithZeroAsKey()
+    public function globalVarConditionMatchesOnArrayExpressionWithZeroAsKey(): void
     {
         $testKey = $this->getUniqueId('test');
         $testValue = '1';
@@ -373,7 +365,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalStringConditionMatchesOnEqualExpression()
+    public function globalStringConditionMatchesOnEqualExpression(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3.Test.Condition]'));
         $this->assertFalse($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3]'));
@@ -384,7 +376,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalStringConditionMatchesOnEmptyExpressionWithValueSetToEmptyString()
+    public function globalStringConditionMatchesOnEmptyExpressionWithValueSetToEmptyString(): void
     {
         $testKey = $this->getUniqueId('test');
         $_GET = [];
@@ -398,7 +390,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalStringConditionMatchesOnEmptyLiteralExpressionWithValueSetToEmptyString()
+    public function globalStringConditionMatchesOnEmptyLiteralExpressionWithValueSetToEmptyString(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalString = LIT:=]'));
         $this->assertTrue($this->matchCondition->match('[globalString = LIT: = ]'));
@@ -409,7 +401,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalStringConditionMatchesWildcardExpression()
+    public function globalStringConditionMatchesWildcardExpression(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3?Test?Condition]'));
         $this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3.T*t.Condition]'));
@@ -421,7 +413,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalStringConditionMatchesRegularExpression()
+    public function globalStringConditionMatchesRegularExpression(): void
     {
         $this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = /^[A-Za-z3.]+$/]'));
         $this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = /^TYPO3\\..+Condition$/]'));
@@ -433,7 +425,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function globalStringConditionMatchesEmptyRegularExpression()
+    public function globalStringConditionMatchesEmptyRegularExpression(): void
     {
         $testKey = $this->getUniqueId('test');
         $_SERVER[$testKey] = '';
@@ -445,7 +437,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function treeLevelConditionMatchesSingleValue()
+    public function treeLevelConditionMatchesSingleValue(): void
     {
         $this->assertTrue($this->matchCondition->match('[treeLevel = 2]'));
     }
@@ -455,7 +447,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function treeLevelConditionMatchesMultipleValues()
+    public function treeLevelConditionMatchesMultipleValues(): void
     {
         $this->assertTrue($this->matchCondition->match('[treeLevel = 999,998,2]'));
     }
@@ -465,7 +457,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function treeLevelConditionDoesNotMatchFaultyValue()
+    public function treeLevelConditionDoesNotMatchFaultyValue(): void
     {
         $this->assertFalse($this->matchCondition->match('[treeLevel = 999]'));
     }
@@ -475,7 +467,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function PIDupinRootlineConditionMatchesSinglePageIdInRootline()
+    public function PIDupinRootlineConditionMatchesSinglePageIdInRootline(): void
     {
         $GLOBALS['TSFE']->id = 121;
         $this->assertTrue($this->matchCondition->match('[PIDupinRootline = 111]'));
@@ -486,7 +478,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function PIDupinRootlineConditionMatchesMultiplePageIdsInRootline()
+    public function PIDupinRootlineConditionMatchesMultiplePageIdsInRootline(): void
     {
         $GLOBALS['TSFE']->id = 121;
         $this->assertTrue($this->matchCondition->match('[PIDupinRootline = 999,111,101]'));
@@ -497,7 +489,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function PIDupinRootlineConditionDoesNotMatchPageIdNotInRootline()
+    public function PIDupinRootlineConditionDoesNotMatchPageIdNotInRootline(): void
     {
         $GLOBALS['TSFE']->id = 121;
         $this->assertFalse($this->matchCondition->match('[PIDupinRootline = 999]'));
@@ -508,7 +500,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function PIDupinRootlineConditionDoesNotMatchLastPageIdInRootline()
+    public function PIDupinRootlineConditionDoesNotMatchLastPageIdInRootline(): void
     {
         $GLOBALS['TSFE']->id = 121;
         $this->assertFalse($this->matchCondition->match('[PIDupinRootline = 121]'));
@@ -519,7 +511,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function PIDinRootlineConditionMatchesSinglePageIdInRootline()
+    public function PIDinRootlineConditionMatchesSinglePageIdInRootline(): void
     {
         $GLOBALS['TSFE']->id = 121;
         $this->assertTrue($this->matchCondition->match('[PIDinRootline = 111]'));
@@ -530,7 +522,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function PIDinRootlineConditionMatchesMultiplePageIdsInRootline()
+    public function PIDinRootlineConditionMatchesMultiplePageIdsInRootline(): void
     {
         $GLOBALS['TSFE']->id = 121;
         $this->assertTrue($this->matchCondition->match('[PIDinRootline = 999,111,101]'));
@@ -541,7 +533,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function PIDinRootlineConditionMatchesLastPageIdInRootline()
+    public function PIDinRootlineConditionMatchesLastPageIdInRootline(): void
     {
         $GLOBALS['TSFE']->id = 121;
         $this->assertTrue($this->matchCondition->match('[PIDinRootline = 121]'));
@@ -552,7 +544,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function PIDinRootlineConditionDoesNotMatchPageIdNotInRootline()
+    public function PIDinRootlineConditionDoesNotMatchPageIdNotInRootline(): void
     {
         $GLOBALS['TSFE']->id = 121;
         $this->assertFalse($this->matchCondition->match('[PIDinRootline = 999]'));
@@ -564,7 +556,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function compatVersionConditionMatchesOlderRelease()
+    public function compatVersionConditionMatchesOlderRelease(): void
     {
         $this->assertTrue($this->matchCondition->match('[compatVersion = 7.0]'));
     }
@@ -575,7 +567,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function compatVersionConditionMatchesSameRelease()
+    public function compatVersionConditionMatchesSameRelease(): void
     {
         $this->assertTrue($this->matchCondition->match('[compatVersion = ' . TYPO3_branch . ']'));
     }
@@ -586,7 +578,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function compatVersionConditionDoesNotMatchNewerRelease()
+    public function compatVersionConditionDoesNotMatchNewerRelease(): void
     {
         $this->assertFalse($this->matchCondition->match('[compatVersion = 15.0]'));
     }
@@ -596,7 +588,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function genericGetVariablesSucceedsWithNamespaceGP()
+    public function genericGetVariablesSucceedsWithNamespaceGP(): void
     {
         $_GET = ['testGet' => 'getTest'];
         $_POST = ['testPost' => 'postTest'];
@@ -609,7 +601,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function genericGetVariablesSucceedsWithNamespaceTSFE()
+    public function genericGetVariablesSucceedsWithNamespaceTSFE(): void
     {
         $GLOBALS['TSFE']->id = 1234567;
         $GLOBALS['TSFE']->testSimpleObject = new \stdClass();
@@ -624,7 +616,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function genericGetVariablesSucceedsWithNamespaceSession()
+    public function genericGetVariablesSucceedsWithNamespaceSession(): void
     {
         $prophecy = $this->prophesize(FrontendUserAuthentication::class);
         $prophecy->getSessionData(Argument::exact('foo'))->willReturn(['bar' => 1234567]);
@@ -638,7 +630,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function genericGetVariablesSucceedsWithNamespaceENV()
+    public function genericGetVariablesSucceedsWithNamespaceENV(): void
     {
         $testKey = $this->getUniqueId('test');
         putenv($testKey . '=testValue');
@@ -650,7 +642,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function genericGetVariablesSucceedsWithNamespaceIENV()
+    public function genericGetVariablesSucceedsWithNamespaceIENV(): void
     {
         $_SERVER['HTTP_HOST'] = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') . ':1234567';
         $this->assertTrue($this->matchCondition->match('[globalString = IENV:TYPO3_PORT = 1234567]'));
@@ -661,7 +653,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      *
      * @test
      */
-    public function genericGetVariablesSucceedsWithAnyGlobalNamespace()
+    public function genericGetVariablesSucceedsWithAnyGlobalNamespace(): void
     {
         $GLOBALS[$this->testGlobalNamespace] = [
             'first' => 'testFirst',
@@ -674,7 +666,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function matchThrowsExceptionIfConditionClassDoesNotInheritFromAbstractCondition()
+    public function matchThrowsExceptionIfConditionClassDoesNotInheritFromAbstractCondition(): void
     {
         $this->expectException(InvalidTypoScriptConditionException::class);
         $this->expectExceptionCode(1410286153);
@@ -684,7 +676,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function matchCallsTestConditionAndHandsOverParameters()
+    public function matchCallsTestConditionAndHandsOverParameters(): void
     {
         $this->expectException(TestConditionException::class);
         $this->expectExceptionCode(1411581139);

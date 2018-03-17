@@ -172,7 +172,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     protected function determinePageId()
     {
-        return (int)$this->getTypoScriptFrontendController()->id;
+        return (int)($this->getTypoScriptFrontendController()->id ?? 0);
     }
 
     /**
