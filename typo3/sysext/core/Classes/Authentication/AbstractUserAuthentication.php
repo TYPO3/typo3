@@ -613,8 +613,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
         if ($haveSession) {
             $this->logger->debug('User session found', [
-                $this->userid_column => $authInfo['userSession'][$this->userid_column],
-                $this->username_column => $authInfo['userSession'][$this->username_column],
+                $this->userid_column => $authInfo['userSession'][$this->userid_column] ?? null,
+                $this->username_column => $authInfo['userSession'][$this->username_column] ?? null,
             ]);
         } else {
             $this->logger->debug('No user session found');
@@ -639,13 +639,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                         $this->username_column => $row[$this->username_column],
                     ]);
                     // User found, just stop to search for more if not configured to go on
-                    if (!$this->svConfig['setup'][$this->loginType . '_fetchAllUsers']) {
+                    if (empty($this->svConfig['setup'][$this->loginType . '_fetchAllUsers'])) {
                         break;
                     }
                 }
             }
 
-            if ($this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']) {
+            if (!empty($this->svConfig['setup'][$this->loginType . '_alwaysFetchUser'])) {
                 $this->logger->debug($this->loginType . '_alwaysFetchUser option is enabled');
             }
             if (empty($tempuserArr)) {

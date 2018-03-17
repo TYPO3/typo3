@@ -39,11 +39,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FrontendUserAuthenticationTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @var array A backup of registered singleton instances
      */
     protected $singletonInstances = [];
@@ -347,6 +342,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     public function canLogUserInWithoutAnonymousSession()
     {
+        $GLOBALS['BE_USER'] = [];
         // This setup fakes the "getAuthInfoArray() db call
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
         $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);

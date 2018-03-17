@@ -2676,8 +2676,8 @@ class GeneralUtility
                 $retVal = self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']);
                 break;
             case 'REMOTE_ADDR':
-                $retVal = $_SERVER['REMOTE_ADDR'];
-                if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] ?? '')) {
+                $retVal = $_SERVER['REMOTE_ADDR'] ?? null;
+                if (self::cmpIP($retVal, $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] ?? '')) {
                     $ip = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
                     // Choose which IP in list to use
                     if (!empty($ip)) {
@@ -2741,9 +2741,7 @@ class GeneralUtility
             case 'REMOTE_HOST':
 
             case 'QUERY_STRING':
-                if (isset($_SERVER[$getEnvName])) {
-                    $retVal = $_SERVER[$getEnvName];
-                }
+                $retVal = $_SERVER[$getEnvName] ?? '';
                 break;
             case 'TYPO3_DOCUMENT_ROOT':
                 // Get the web root (it is not the root of the TYPO3 installation)
