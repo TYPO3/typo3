@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Log;
 
 /*
@@ -14,16 +15,19 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Log\Processor\NullProcessor;
+use TYPO3\CMS\Core\Log\Writer\NullWriter;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class LogManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LogManagerTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var \TYPO3\CMS\Core\Log\LogManager
      */
@@ -31,12 +35,12 @@ class LogManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     protected function setUp()
     {
-        $this->logManagerInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
+        $this->logManagerInstance = GeneralUtility::makeInstance(LogManager::class);
     }
 
     protected function tearDown()
     {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->reset();
+        GeneralUtility::makeInstance(LogManager::class)->reset();
         parent::tearDown();
     }
 
@@ -45,7 +49,7 @@ class LogManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function logManagerReturnsLoggerWhenRequestedWithGetLogger()
     {
-        $this->assertInstanceOf(\TYPO3\CMS\Core\Log\Logger::class, $this->logManagerInstance->getLogger('test'));
+        $this->assertInstanceOf(Logger::class, $this->logManagerInstance->getLogger('test'));
     }
 
     /**
@@ -82,8 +86,8 @@ class LogManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function configuresLoggerWithConfiguredWriter()
     {
         $component = 'test';
-        $writer = \TYPO3\CMS\Core\Log\Writer\NullWriter::class;
-        $level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
+        $writer = NullWriter::class;
+        $level = LogLevel::DEBUG;
         $GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['writerConfiguration'] = [
             $level => [
                 $writer => []
@@ -101,8 +105,8 @@ class LogManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function configuresLoggerWithConfiguredProcessor()
     {
         $component = 'test';
-        $processor = \TYPO3\CMS\Core\Log\Processor\NullProcessor::class;
-        $level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
+        $processor = NullProcessor::class;
+        $level = LogLevel::DEBUG;
         $GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['processorConfiguration'] = [
             $level => [
                 $processor => []
