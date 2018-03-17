@@ -106,7 +106,7 @@ firstset:
 options:
     - option1
     - option2
-betterthanbefore: %firstset.myinitialversion%
+betterthanbefore: \'%firstset.myinitialversion%\'
 ';
 
         $expected = [
