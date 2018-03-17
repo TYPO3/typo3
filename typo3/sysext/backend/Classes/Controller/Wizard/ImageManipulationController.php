@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Backend\Form\Wizard;
+namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -27,7 +27,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Wizard for rendering image manipulation view
  */
-class ImageManipulationWizard
+class ImageManipulationController
 {
     /**
      * @var StandaloneView
@@ -54,7 +54,7 @@ class ImageManipulationWizard
      * @param ServerRequestInterface $request
      * @return ResponseInterface $response
      */
-    public function getWizardAction(ServerRequestInterface $request): ResponseInterface
+    public function getWizardContent(ServerRequestInterface $request): ResponseInterface
     {
         if ($this->isSignatureValid($request)) {
             $queryParams = json_decode($request->getQueryParams()['arguments'], true);
@@ -82,7 +82,7 @@ class ImageManipulationWizard
      * @param ServerRequestInterface $request the request with the GET parameters
      * @return bool
      */
-    protected function isSignatureValid(ServerRequestInterface $request)
+    protected function isSignatureValid(ServerRequestInterface $request): bool
     {
         $token = GeneralUtility::hmac($request->getQueryParams()['arguments'], 'ajax_wizard_image_manipulation');
         return hash_equals($token, $request->getQueryParams()['signature']);

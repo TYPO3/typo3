@@ -4,7 +4,19 @@ namespace {
 }
 
 namespace TYPO3\CMS\Backend {
+    /**
+     * @deprecated since v9, will be removed in v10
+     */
     class AjaxLoginHandler extends \TYPO3\CMS\Backend\Controller\AjaxLoginController
+    {
+    }
+}
+
+namespace TYPO3\CMS\Backend\Form\Wizard {
+    /**
+     * @deprecated since v9, will be removed in v10
+     */
+    class ImageManipulationWizard extends \TYPO3\CMS\Backend\Controller\Wizard\ImageManipulationController
     {
     }
 }

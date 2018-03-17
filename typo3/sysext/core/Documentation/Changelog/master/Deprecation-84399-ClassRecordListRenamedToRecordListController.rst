@@ -17,7 +17,7 @@ Impact
 ======
 
 The old class name has been registered as class alias and will still work.
-Old class name usage however is discouraged and should be avoided since, the
+Old class name usage however is discouraged and should be avoided, the
 alias will vanish with core version 10.
 
 

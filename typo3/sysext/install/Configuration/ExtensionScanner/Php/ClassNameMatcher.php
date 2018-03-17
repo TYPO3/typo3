@@ -664,4 +664,9 @@ return [
             'Deprecation-84410-CodeCompletionRenamedToCodeCompletionController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Form\Wizard\ImageManipulationWizard' => [
+        'restFiles' => [
+            'Deprecation-84409-ImageManipulationWizardRenamedToImageManipulationController.rst',
+        ],
+    ],
 ];

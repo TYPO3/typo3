@@ -201,7 +201,7 @@ return [
     // Open the image manipulation wizard
     'wizard_image_manipulation' => [
         'path' => '/wizard/image-manipulation',
-        'target' => \TYPO3\CMS\Backend\Form\Wizard\ImageManipulationWizard::class . '::getWizardAction'
+        'target' => \TYPO3\CMS\Backend\Controller\Wizard\ImageManipulationController::class . '::getWizardContent'
     ],
 
     // Save a newly added online media

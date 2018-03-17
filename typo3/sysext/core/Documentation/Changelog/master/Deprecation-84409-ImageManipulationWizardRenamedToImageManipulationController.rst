@@ -1,16 +1,16 @@
 .. include:: ../../Includes.txt
 
-========================================================================
-Deprecation: #84410 - CodeCompletion renamed to CodeCompletionController
-========================================================================
+====================================================================================
+Deprecation: #84409 - ImageManipulationWizard renamed to ImageManipulationController
+====================================================================================
 
-See :issue:`84410`
+See :issue:`84409`
 
 Description
 ===========
 
-The PHP class :php:`TYPO3\CMS\T3editor\CodeCompletion` has been renamed to
-:php:`TYPO3\CMS\T3editor\Controller\CodeCompletionController`.
+The PHP class :php:`TYPO3\CMS\Backend\Form\Wizard\ImageManipulationWizard` has been renamed to
+:php:`TYPO3\CMS\Backend\Controller\Wizard\ImageManipulationController`.
 
 
 Impact
@@ -32,4 +32,4 @@ Migration
 
 Use new class name instead.
 
-.. index:: Backend, PHP-API, FullyScanned, ext:t3editor
+.. index:: Backend, PHP-API, FullyScanned
