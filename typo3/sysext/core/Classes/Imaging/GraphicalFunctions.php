@@ -781,6 +781,10 @@ class GraphicalFunctions
         }
         // Set original lineHeight (used by line breaks):
         $theBBoxInfo['lineHeight'] = $y;
+        if (!empty($conf['lineHeight'])) {
+            $theBBoxInfo['lineHeight'] = (int)$conf['lineHeight'];
+        }
+
         // If any kind of spacing applys, we use this function:
         if ($spacing || $wordSpacing) {
             $x = 0;
