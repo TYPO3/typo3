@@ -104,7 +104,7 @@ class FileSystemNavigationFrameController
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->initializePageTemplate();
-        $this->renderFolderTree();
+        $this->renderFolderTree($request);
         return new HtmlResponse($this->content);
     }
 
@@ -240,20 +240,22 @@ class FileSystemNavigationFrameController
     public function main()
     {
         trigger_error('Method main() will be replaced by protected method renderFolderTree() in v10. Do not call from other extension', E_USER_DEPRECATED);
-        $this->renderFolderTree();
+        $this->renderFolderTree($GLOBALS['TYPO3_REQUEST']);
     }
 
     /**
      * Main function, rendering the folder tree
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function renderFolderTree(): void
+    protected function renderFolderTree(ServerRequestInterface $request): void
     {
         // Produce browse-tree:
         $tree = $this->foldertree->getBrowsableTree();
         // Outputting page tree:
         $this->moduleTemplate->setContent($tree);
         // Setting up the buttons
-        $this->getButtons();
+        $this->getButtons($request);
         // Build the <body> for the module
         $this->moduleTemplate->setTitle('TYPO3 Folder Tree');
         $this->content = $this->moduleTemplate->renderContent();
@@ -261,18 +263,21 @@ class FileSystemNavigationFrameController
 
     /**
      * Register docHeader buttons
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function getButtons(): void
+    protected function getButtons(ServerRequestInterface $request): void
     {
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
         /** @var IconFactory $iconFactory */
         $iconFactory = $this->moduleTemplate->getIconFactory();
+        /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
+        $normalizedParams = $request->getAttribute('normalizedParams');
 
         // Refresh
         $refreshButton = $buttonBar->makeLinkButton()
-            ->setHref(GeneralUtility::getIndpEnv('REQUEST_URI'))
+            ->setHref($normalizedParams->getRequestUri())
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT);
