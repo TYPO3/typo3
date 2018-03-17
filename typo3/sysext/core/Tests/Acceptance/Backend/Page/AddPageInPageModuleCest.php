@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\SkippedTestError;
 use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 
 /**
@@ -116,10 +117,10 @@ class AddPageInPageModuleCest
     }
 
     /**
-     * @throws \PHPUnit_Framework_SkippedTestError
+     * @throws SkippedTestError
      */
     protected function skipUnstable()
     {
-        throw new \PHPUnit_Framework_SkippedTestError('Test unstable, skipped for now.');
+        throw new SkippedTestError('Test unstable, skipped for now.');
     }
 }
