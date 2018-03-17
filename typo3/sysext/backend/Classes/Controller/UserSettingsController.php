@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller;
 
 /*
@@ -49,10 +49,10 @@ class UserSettingsController
     public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
         // do the regular / main logic, depending on the action parameter
-        $action = $request->getParsedBody()['action'] ?? $request->getQueryParams()['action'];
-        $key = $request->getParsedBody()['key'] ?? $request->getQueryParams()['key'];
-        $value = $request->getParsedBody()['value'] ?? $request->getQueryParams()['value'];
-        $data = $this->process($action, $key, $value);
+        $action = $request->getParsedBody()['action'] ?? $request->getQueryParams()['action'] ?? '';
+        $key = $request->getParsedBody()['key'] ?? $request->getQueryParams()['key'] ?? '';
+        $value = $request->getParsedBody()['value'] ?? $request->getQueryParams()['value'] ?? '';
+        $data = $this->processRequest($action, $key, $value);
 
         return (new JsonResponse())->setPayload($data);
     }
@@ -64,8 +64,24 @@ class UserSettingsController
      * @param string $key
      * @param string $value
      * @return mixed
+     *
+     * @deprecated since v9, will be removed in v10
      */
     public function process($action, $key = '', $value = '')
+    {
+        trigger_error('Method process() will be replaced by protected method processRequest() in v10. Do not call from other extensions', E_USER_DEPRECATED);
+        return $this->processRequest($action, $key, $value);
+    }
+
+    /**
+     * Process data
+     *
+     * @param string $action
+     * @param string $key
+     * @param mixed $value
+     * @return mixed
+     */
+    protected function processRequest(string $action, string $key = '', $value = '')
     {
         switch ($action) {
             case 'get':
