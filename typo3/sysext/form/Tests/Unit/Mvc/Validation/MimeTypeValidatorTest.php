@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
 
 /*
@@ -18,21 +19,17 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class MimeTypeValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class MimeTypeValidatorTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
-    public function MimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsString()
+    public function MimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsString(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1471713296);
@@ -49,7 +46,7 @@ class MimeTypeValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
-    public function MimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsEmptyArray()
+    public function MimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsEmptyArray(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1471713296);
@@ -66,7 +63,7 @@ class MimeTypeValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
-    public function MimeTypeValidatorReturnsTrueIfFileResourceIsNotAllowedMimeType()
+    public function MimeTypeValidatorReturnsTrueIfFileResourceIsNotAllowedMimeType(): void
     {
         $options = ['allowedMimeTypes' => ['image/jpeg']];
         $validator = $this->getMockBuilder(MimeTypeValidator::class)
@@ -85,7 +82,7 @@ class MimeTypeValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
-    public function MimeTypeValidatorReturnsFalseIfInputIsEmptyString()
+    public function MimeTypeValidatorReturnsFalseIfInputIsEmptyString(): void
     {
         $options = ['allowedMimeTypes' => ['fake']];
         $validator = $this->getMockBuilder(MimeTypeValidator::class)
@@ -99,7 +96,7 @@ class MimeTypeValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
-    public function MimeTypeValidatorReturnsTrueIfInputIsNoFileResource()
+    public function MimeTypeValidatorReturnsTrueIfInputIsNoFileResource(): void
     {
         $options = ['allowedMimeTypes' => ['fake']];
         $validator = $this->getMockBuilder(MimeTypeValidator::class)
