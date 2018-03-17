@@ -160,21 +160,15 @@ class SchedulerModuleController
             ]
         ];
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'system_txschedulerM1', '', '', '');
-        // Access check!
-        // The page will show only if user has admin rights
-        if ($this->getBackendUser()->isAdmin()) {
-            // Set the form
-            $content = '<form name="tx_scheduler_form" id="tx_scheduler_form" method="post" action="">';
 
-            // Prepare main content
-            $content .= '<h1>' . $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']) . '</h1>';
-            $content .= $this->getModuleContent();
-            $content .= '<div id="extraFieldsSection"></div></form><div id="extraFieldsHidden"></div>';
-        } else {
-            // If no access, only display the module's title
-            $content = '<h1>' . $this->getLanguageService()->getLL('title.') . '</h1>';
-            $content .= '<div style="padding-top: 5px;"></div>';
-        }
+        // Set the form
+        $content = '<form name="tx_scheduler_form" id="tx_scheduler_form" method="post" action="">';
+
+        // Prepare main content
+        $content .= '<h1>' . $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']) . '</h1>';
+        $content .= $this->getModuleContent();
+        $content .= '<div id="extraFieldsSection"></div></form><div id="extraFieldsHidden"></div>';
+
         $this->getButtons();
         $this->getModuleMenu();
 
