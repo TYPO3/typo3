@@ -119,7 +119,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
                 $object = $slotInformation['object'];
             } else {
                 if (!isset($this->objectManager)) {
-                    throw new Exception\InvalidSlotException(sprintf('Cannot dispatch %s::%s to class %s. The object manager is not yet available in the Signal Slot Dispatcher and therefore it cannot dispatch classes.', $signalClassName, $signalName, $slotInformation['class']), 1298113624);
+                    throw new Exception\InvalidSlotException(sprintf('Cannot dispatch %s::%s to class %s. The object manager is not yet available in the Signal Slot Dispatcher and therefore it cannot dispatch classes.', $signalClassName, $signalName, $slotInformation['class'] ?? ''), 1298113624);
                 }
                 if (!$this->objectManager->isRegistered($slotInformation['class'])) {
                     throw new Exception\InvalidSlotException('The given class "' . $slotInformation['class'] . '" is not a registered object.', 1245673367);
