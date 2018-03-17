@@ -323,7 +323,7 @@ class FormManagerController extends AbstractBackendController
         $formManagerAppInitialData = ArrayUtility::reIndexNumericArrayKeysRecursive($formManagerAppInitialData);
         $formManagerAppInitialData = TranslationService::getInstance()->translateValuesRecursive(
             $formManagerAppInitialData,
-            $this->formSettings['formManager']['translationFile']
+            $this->formSettings['formManager']['translationFile'] ?? null
         );
         return json_encode($formManagerAppInitialData);
     }

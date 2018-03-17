@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 
 /*
@@ -34,11 +35,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FormManagerControllerTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @var array A backup of registered singleton instances
      */
     protected $singletonInstances = [];
@@ -54,7 +50,7 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * Tear down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
@@ -63,7 +59,7 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAccessibleFormStorageFoldersReturnsProcessedArray()
+    public function getAccessibleFormStorageFoldersReturnsProcessedArray(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
             'dummy'
@@ -120,7 +116,7 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFormManagerAppInitialDataReturnsProcessedArray()
+    public function getFormManagerAppInitialDataReturnsProcessedArray(): void
     {
         $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
@@ -193,7 +189,7 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAvailableFormDefinitionsReturnsProcessedArray()
+    public function getAvailableFormDefinitionsReturnsProcessedArray(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
             'getReferences'
@@ -241,7 +237,7 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessedReferencesRowsThrowsExceptionIfPersistenceIdentifierIsEmpty()
+    public function getProcessedReferencesRowsThrowsExceptionIfPersistenceIdentifierIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1477071939);
@@ -312,7 +308,7 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function isValidTemplatePathReturnsTrueIfTemplateIsDefinedAndExists()
+    public function isValidTemplatePathReturnsTrueIfTemplateIsDefinedAndExists(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
             'dummy'
@@ -345,7 +341,7 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function isValidTemplatePathReturnsFalseIfTemplateIsDefinedButNotExists()
+    public function isValidTemplatePathReturnsFalseIfTemplateIsDefinedButNotExists(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
             'dummy'
@@ -378,7 +374,7 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function isValidTemplatePathReturnsFalseIfTemplateIsNotDefinedAndExists()
+    public function isValidTemplatePathReturnsFalseIfTemplateIsNotDefinedAndExists(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
             'dummy'
@@ -421,7 +417,7 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFormNameToIdentifierRemoveSpaces()
+    public function convertFormNameToIdentifierRemoveSpaces(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
             'dummy'
@@ -435,7 +431,7 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFormNameToIdentifierRemoveSpecialChars()
+    public function convertFormNameToIdentifierRemoveSpecialChars(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
             'dummy'
