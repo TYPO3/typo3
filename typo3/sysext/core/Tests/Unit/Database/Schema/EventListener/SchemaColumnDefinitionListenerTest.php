@@ -1,6 +1,5 @@
 <?php
 declare(strict_types = 1);
-
 namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
 /*
@@ -26,17 +25,13 @@ use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class SchemaColumnDefinitionListenerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SchemaColumnDefinitionListenerTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var SchemaColumnDefinitionListener
      */
@@ -50,7 +45,7 @@ class SchemaColumnDefinitionListenerTest extends \TYPO3\TestingFramework\Core\Un
     /**
      * Set up the test subject
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->subject = GeneralUtility::makeInstance(SchemaColumnDefinitionListener::class);
@@ -60,7 +55,7 @@ class SchemaColumnDefinitionListenerTest extends \TYPO3\TestingFramework\Core\Un
     /**
      * @test
      */
-    public function isInactiveForStandardColumnTypes()
+    public function isInactiveForStandardColumnTypes(): void
     {
         $event = new SchemaColumnDefinitionEventArgs(
             ['Type' => 'int(11)'],
@@ -77,7 +72,7 @@ class SchemaColumnDefinitionListenerTest extends \TYPO3\TestingFramework\Core\Un
     /**
      * @test
      */
-    public function buildsColumnForEnumDataType()
+    public function buildsColumnForEnumDataType(): void
     {
         if (Type::hasType('enum')) {
             Type::overrideType('enum', EnumType::class);
@@ -105,7 +100,7 @@ class SchemaColumnDefinitionListenerTest extends \TYPO3\TestingFramework\Core\Un
     /**
      * @test
      */
-    public function buildsColumnForSetDataType()
+    public function buildsColumnForSetDataType(): void
     {
         if (Type::hasType('set')) {
             Type::overrideType('set', SetType::class);

@@ -65,21 +65,21 @@ class SchemaColumnDefinitionListener
     protected function getEnumerationTableColumnDefinition(array $tableColumn, AbstractPlatform $platform): Column
     {
         $options = [
-            'length' => $tableColumn['length'] ?: null,
+            'length' => $tableColumn['length'] ?? null,
             'unsigned' => false,
             'fixed' => false,
-            'default' => $tableColumn['default'] ?: null,
-            'notnull' => (bool)($tableColumn['null'] !== 'YES'),
+            'default' => $tableColumn['default'] ?? null,
+            'notnull' => ($tableColumn['null'] ?? '') !== 'YES',
             'scale' => null,
             'precision' => null,
             'autoincrement' => false,
-            'comment' => $tableColumn['comment'] ?: null,
+            'comment' => $tableColumn['comment'] ?? null,
         ];
 
         $dbType = $this->getDatabaseType($tableColumn['type']);
         $doctrineType = $platform->getDoctrineTypeMapping($dbType);
 
-        $column = new Column($tableColumn['field'], Type::getType($doctrineType), $options);
+        $column = new Column($tableColumn['field'] ?? null, Type::getType($doctrineType), $options);
         $column->setPlatformOption('unquotedValues', $this->getUnquotedEnumerationValues($tableColumn['type']));
 
         return $column;
