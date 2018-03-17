@@ -67,7 +67,7 @@ class DataStructureIdentifierHook
     ): array {
         if ($tableName === 'tt_content' && $fieldName === 'pi_flexform' && $row['CType'] === 'form_formframework') {
             $currentFlexData = [];
-            if (!is_array($row['pi_flexform']) && !empty($row['pi_flexform'])) {
+            if (!empty($row['pi_flexform']) && !\is_array($row['pi_flexform'])) {
                 $currentFlexData = GeneralUtility::xml2array($row['pi_flexform']);
             }
 
@@ -111,7 +111,7 @@ class DataStructureIdentifierHook
                         $formIsAccessible = true;
                     }
 
-                    if ($form['invalid']) {
+                    if (isset($form['invalid']) && $form['invalid']) {
                         $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
                             $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
                             $form['persistenceIdentifier'],

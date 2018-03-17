@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Tests\Unit\Hooks;
 
 /*
@@ -19,17 +20,13 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Hooks\DataStructureIdentifierHook;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DataStructureIdentifierHookTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var array A backup of registered singleton instances
      */
@@ -46,7 +43,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * Tear down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
@@ -55,7 +52,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getDataStructureIdentifierPostProcessReturnsIdentifierForNotMatchingScenario()
+    public function getDataStructureIdentifierPostProcessReturnsIdentifierForNotMatchingScenario(): void
     {
         $givenIdentifier = ['aKey' => 'aValue'];
         $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
@@ -71,7 +68,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getDataStructureIdentifierPostProcessAddDefaultValuesForNewRecord()
+    public function getDataStructureIdentifierPostProcessAddDefaultValuesForNewRecord(): void
     {
         $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
             [],
@@ -89,7 +86,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getDataStructureIdentifierPostProcessAddsGivenPersistenceIdentifier()
+    public function getDataStructureIdentifierPostProcessAddsGivenPersistenceIdentifier(): void
     {
         $row = [
             'CType' => 'form_formframework',
@@ -128,7 +125,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function getDataStructureIdentifierPostProcessAddsOverrideFinisherValue()
+    public function getDataStructureIdentifierPostProcessAddsOverrideFinisherValue(): void
     {
         $row = [
             'CType' => 'form_formframework',
@@ -163,7 +160,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierPostProcessReturnsDataStructureUnchanged()
+    public function parseDataStructureByIdentifierPostProcessReturnsDataStructureUnchanged(): void
     {
         $dataStructure = ['foo' => 'bar'];
         $expected = $dataStructure;
@@ -181,7 +178,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
      * @param array $formDefinition
      * @param array $expectedItem
      */
-    public function parseDataStructureByIdentifierPostProcessAddsExistingFormItems(array $formDefinition, array $expectedItem)
+    public function parseDataStructureByIdentifierPostProcessAddsExistingFormItems(array $formDefinition, array $expectedItem): void
     {
         $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
@@ -284,7 +281,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
      *
      * @return array
      */
-    public function implodeArrayKeysReturnsStringDataProvider()
+    public function implodeArrayKeysReturnsStringDataProvider(): array
     {
         return [
             'One string' => [
@@ -351,8 +348,10 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
     /**
      * @dataProvider implodeArrayKeysReturnsStringDataProvider
      * @test
+     * @param array $array
+     * @param string $expectation
      */
-    public function implodeArrayKeysReturnsString($array, $expectation)
+    public function implodeArrayKeysReturnsString(array $array, string $expectation): void
     {
         $hookMock = $this->getAccessibleMock(DataStructureIdentifierHook::class, [ 'dummy' ], [], '', false);
         $this->assertEquals($expectation, $hookMock->_call('implodeArrayKeys', $array));
