@@ -1,0 +1,14 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
+<formvh:renderRenderable renderable="{element}">
+	<f:render partial="Field/Field" arguments="{element: element}" contentAs="elementContent">
+		<f:form.textfield
+				type="date"
+				property="{element.identifier}"
+				id="{element.uniqueIdentifier}"
+				class="{element.properties.elementClassAttribute} form-control"
+				errorClass="{element.properties.elementErrorClassAttribute}"
+				additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
+		/>
+	</f:render>
+</formvh:renderRenderable>
+</html>

@@ -18,18 +18,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
+use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
  * Scope: frontend
  * @internal
  */
-class FormElementsOnSubmitHooks
+class FormElementHooks
 {
 
     /**
-     * This hook is invoked by the FormRuntime whenever values are mapped and validated
-     * (after a form page was submitted)
+     * This hook is invoked by the FormRuntime for each form element
+     * **after** a form page was submitted but **before** values are
+     * property-mapped, validated and pushed within the FormRuntime's `FormState`.
      *
      * @param FormRuntime $formRuntime
      * @param RenderableInterface $renderable
@@ -53,5 +55,40 @@ class FormElementsOnSubmitHooks
         }
 
         return $elementValue;
+    }
+
+    /**
+     * This is a hook that is invoked by the rendering system **before**
+     * the corresponding element is rendered.
+     *
+     * @param FormRuntime $formRuntime
+     * @param RootRenderableInterface $renderable
+     */
+    public function beforeRendering(FormRuntime $formRuntime, RootRenderableInterface $renderable)
+    {
+        if ($renderable->getType() === 'Date') {
+            $date = $formRuntime[$renderable->getIdentifier()];
+            if ($date instanceof \DateTime) {
+                // @see https://www.w3.org/TR/2011/WD-html-markup-20110405/input.date.html#input.date.attrs.value
+                // 'Y-m-d' = https://tools.ietf.org/html/rfc3339#section-5.6 -> full-date
+                $formRuntime[$renderable->getIdentifier()] = $date->format('Y-m-d');
+            }
+        }
+    }
+
+    /**
+     * This hook is invoked whenever a form element is created.
+     * Note that this hook will be called **after** all properties from the
+     * prototype configuration are set in the form element but **before**
+     * the properties from the form definition are set in the form element.
+     *
+     * @param RenderableInterface $renderable
+     */
+    public function initializeFormElement(RenderableInterface $renderable)
+    {
+        if ($renderable->getType() === 'Date' || $renderable->getType() === 'DatePicker') {
+            // Set the property mapping type for the `Date` and `DatePicker` element.
+            $renderable->setDataType('DateTime');
+        }
     }
 }

@@ -85,6 +85,7 @@ define(['jquery',
         'FormElement-Url': 'FormElement-Url',
         'FormElement-Telephone': 'FormElement-Telephone',
         'FormElement-Number': 'FormElement-Number',
+        'FormElement-Date': 'FormElement-Date',
         formElementIcon: 'elementIcon',
         iconValidator: 'form-validator',
         multiValueContainer: 'multiValueContainer',
@@ -264,6 +265,7 @@ define(['jquery',
         case 'Telephone':
         case 'Number':
         case 'DatePicker':
+        case 'Date':
           renderSimpleTemplateWithValidators(formElement, template);
           break;
         case 'Fieldset':

@@ -78,6 +78,7 @@ TYPO3:
               FormElement-Telephone: 'Stage/SimpleTemplate'
               FormElement-Url: 'Stage/SimpleTemplate'
               FormElement-Number: 'Stage/SimpleTemplate'
+              FormElement-Date: 'Stage/SimpleTemplate'
 
               # modals
               Modal-InsertElements: 'Modals/InsertElements'
@@ -116,6 +117,8 @@ TYPO3:
                 errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label'
               FileSize:
                 errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.FileSize.label'
+              RFC3339FullDate:
+                errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label'
 
             formElementGroups:
               input:
@@ -614,6 +617,78 @@ TYPO3:
                           label: 'formEditor.elements.TextMixin.validators.Number.editor.header.label'
                         9999: null
 
+            Date:
+              formEditor:
+                label: 'formEditor.elements.Date.label'
+                group: html5
+                groupSorting: 500
+                iconIdentifier: 'form-date-picker'
+                predefinedDefaults:
+                  properties:
+                    fluidAdditionalAttributes:
+                      min: ''
+                      max: ''
+                      step: 1
+                editors:
+                  400: null
+                  500:
+                    placeholder: 'formEditor.elements.Date.editor.defaultValue.placeholder'
+                    propertyValidators:
+                      10: 'RFC3339FullDateOrEmpty'
+                  550:
+                    identifier: 'step'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.Date.editor.step.label'
+                    fieldExplanationText: 'formEditor.elements.Date.editor.step.fieldExplanationText'
+                    propertyPath: 'properties.fluidAdditionalAttributes.step'
+                    propertyValidators:
+                      10: 'Integer'
+                  900:
+                    selectOptions:
+                      20:
+                        value: 'DateRange'
+                        label: 'formEditor.elements.Date.editor.validators.DateRange.label'
+                      30: null
+                      40: null
+                      50: null
+                      60: null
+                      70: null
+                      80: null
+                      90: null
+
+                propertyCollections:
+                  validators:
+                    10:
+                      identifier: 'DateRange'
+                      editors:
+                        100:
+                          label: 'formEditor.elements.DatePicker.validators.DateRange.editor.header.label'
+                        200:
+                          errorCodes:
+                            10: 1521293685
+                            20: 1521293686
+                            30: 1521293687
+                        250:
+                          identifier: 'minimum'
+                          templateName: 'Inspector-TextEditor'
+                          label: 'formEditor.elements.DatePicker.validators.DateRange.editor.minimum'
+                          placeholder: 'formEditor.elements.DatePicker.validators.DateRange.editor.minimum.placeholder'
+                          propertyPath: 'options.minimum'
+                          propertyValidators:
+                            10: 'RFC3339FullDateOrEmpty'
+                          additionalElementPropertyPaths:
+                            10: 'properties.fluidAdditionalAttributes.min'
+                        300:
+                          identifier: 'maximum'
+                          templateName: 'Inspector-TextEditor'
+                          label: 'formEditor.elements.DatePicker.validators.DateRange.editor.maximum'
+                          placeholder: 'formEditor.elements.DatePicker.validators.DateRange.editor.maximum.placeholder'
+                          propertyPath: 'options.maximum'
+                          propertyValidators:
+                            10: 'RFC3339FullDateOrEmpty'
+                          additionalElementPropertyPaths:
+                            10: 'properties.fluidAdditionalAttributes.max'
+
             ### FORM ELEMENTS: SELECT ###
             Checkbox:
               formEditor:
@@ -999,6 +1074,14 @@ TYPO3:
                   options:
                     minimum: '0B'
                     maximum: '10M'
+            DateRange:
+              formEditor:
+                iconIdentifier: 'form-validator'
+                label: 'formEditor.elements.FormElement.validators.DateRange.editor.header.label'
+                predefinedDefaults:
+                  options:
+                    minimum: ''
+                    maximum: ''
 
       ########### MIXINS ###########
       mixins:

@@ -249,6 +249,9 @@
             <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FileSize.label" xml:space="preserve">
                 <source>Invalid file size format, valid e.g. "10B|K|M|G"</source>
             </trans-unit>
+            <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label" xml:space="preserve">
+                <source>Invalid date format. Valid format: Y-m-d (2018-03-17)</source>
+            </trans-unit>
 
             <trans-unit id="formEditor.formElementGroups.input.label" xml:space="preserve">
                 <source>Basic elements</source>
@@ -732,6 +735,9 @@
             <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText" xml:space="preserve">
                 <source>Error message which is shown if the validation does not succeed</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.FormElement.validators.DateRange.editor.header.label" xml:space="preserve">
+                <source>Date range</source>
+            </trans-unit>
 
             <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label" xml:space="preserve">
                 <source>Grid viewport configuration</source>
@@ -837,6 +843,37 @@
                 <source>Number</source>
             </trans-unit>
 
+            <trans-unit id="formEditor.elements.Date.label" xml:space="preserve">
+                <source>Date</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Date.editor.defaultValue.placeholder" xml:space="preserve">
+                <source>A date in format Y-m-d (e.g 2018-03-17)</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Date.editor.step.fieldExplanationText" xml:space="preserve">
+                <source>Specify the number of days between each occurrence of this event.</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Date.editor.step.label" xml:space="preserve">
+                <source>Frequency</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Date.editor.validators.DateRange.label" xml:space="preserve">
+                <source>Date range</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.header.label" xml:space="preserve">
+                <source>Date range</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.minimum" xml:space="preserve">
+                <source>Minimum date</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.maximum" xml:space="preserve">
+                <source>Maximum date</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.minimum.placeholder" xml:space="preserve">
+                <source>A date in format Y-m-d (e.g 2018-03-17)</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.maximum.placeholder" xml:space="preserve">
+                <source>A date in format Y-m-d (e.g 2018-03-17)</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.Password.label" xml:space="preserve">
                 <source>Password</source>
             </trans-unit>
@@ -876,7 +913,7 @@
             </trans-unit>
 
             <trans-unit id="formEditor.elements.DatePicker.label" xml:space="preserve">
-                <source>Date picker</source>
+                <source>Date picker (jQuery)</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.DatePicker.editor.dateFormat.label" xml:space="preserve">
                 <source>Date format</source>

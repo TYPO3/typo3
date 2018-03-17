@@ -1241,6 +1241,12 @@ define(['jquery',
           .remove();
       }
 
+      if (getUtility().isNonEmptyString(editorConfiguration['placeholder'])) {
+        getHelper()
+          .getTemplatePropertyDomElement('propertyPath', editorHtml)
+          .attr('placeholder', editorConfiguration['placeholder']);
+      }
+
       propertyPath = getFormEditorApp().buildPropertyPath(
         editorConfiguration['propertyPath'],
         collectionElementIdentifier,

@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
@@ -32,25 +33,27 @@ class PropertyMappingConfiguration
 {
 
     /**
-     * Set the property mapping configuration for the file upload element.
-     * * Add the UploadedFileReferenceConverter to convert an uploaded file to an
-     *   FileReference.
-     * * Add the MimeTypeValidator to the UploadedFileReferenceConverter to
-     *   delete non valid filetypes directly.
-     * * Setup the storage:
-     *   If the property "saveToFileMount" exist for this element it will be used.
-     *   If this file mount or the property "saveToFileMount" does not exist
-     *   the folder in which the form definition lies (persistence identifier) will be used.
-     *   If the form is generated programmatically and therefore no
-     *   persistence identifier exist the default storage "1:/user_upload/" will be used.
+     * This hook is called for each form element after the class
+     * TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory has built the entire form.
      *
      * @param RenderableInterface $renderable
      * @internal
-     * @todo: could we find a not so ugly solution for that?
      */
     public function afterBuildingFinished(RenderableInterface $renderable)
     {
         if ($renderable instanceof FileUpload) {
+            // Set the property mapping configuration for the file upload element.
+            // * Add the UploadedFileReferenceConverter to convert an uploaded file to a
+            //   FileReference.
+            // * Add the MimeTypeValidator to the UploadedFileReferenceConverter to
+            //   delete non-valid file types directly.
+            // * Setup the storage:
+            //   If the property "saveToFileMount" exist for this element it will be used.
+            //   If this file mount or the property "saveToFileMount" does not exist
+            //   the folder in which the form definition lies (persistence identifier) will be used.
+            //   If the form is generated programmatically and therefore no
+            //   persistence identifier exist the default storage "1:/user_upload/" will be used.
+
             /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
             $propertyMappingConfiguration = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier())->getPropertyMappingConfiguration();
 
@@ -93,6 +96,17 @@ class PropertyMappingConfiguration
             }
 
             $propertyMappingConfiguration->setTypeConverterOptions(UploadedFileReferenceConverter::class, $uploadConfiguration);
+            return;
+        }
+
+        if ($renderable->getType() === 'Date') {
+            // Set the property mapping configuration for the `Date` element.
+
+            /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
+            $propertyMappingConfiguration = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier())->getPropertyMappingConfiguration();
+            // @see https://www.w3.org/TR/2011/WD-html-markup-20110405/input.date.html#input.date.attrs.value
+            // 'Y-m-d' = https://tools.ietf.org/html/rfc3339#section-5.6 -> full-date
+            $propertyMappingConfiguration->setTypeConverterOption(DateTimeConverter::class, DateTimeConverter::CONFIGURATION_DATE_FORMAT, 'Y-m-d');
         }
     }
 

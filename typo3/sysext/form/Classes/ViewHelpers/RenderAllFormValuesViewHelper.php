@@ -186,14 +186,24 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
     {
         $properties = $element->getProperties();
         if ($object instanceof \DateTime) {
-            if (isset($properties['dateFormat'])) {
+            if (
+                $element->getType() === 'DatePicker'
+                && isset($properties['dateFormat'])
+            ) {
                 $dateFormat = $properties['dateFormat'];
                 if (isset($properties['displayTimeSelector']) && $properties['displayTimeSelector'] === true) {
                     $dateFormat .= ' H:i';
                 }
+            } elseif ($element->getType() === 'Date') {
+                if (isset($properties['displayFormat'])) {
+                    $dateFormat = $properties['displayFormat'];
+                } else {
+                    $dateFormat = 'Y-m-d';
+                }
             } else {
                 $dateFormat = \DateTime::W3C;
             }
+
             return $object->format($dateFormat);
         }
 

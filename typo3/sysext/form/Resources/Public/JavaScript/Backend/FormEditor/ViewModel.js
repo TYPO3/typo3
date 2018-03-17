@@ -275,6 +275,24 @@ define(['jquery',
           return getFormEditorApp().getFormElementPropertyValidatorDefinition('FileSize')['errorMessage'] || 'invalid value';
         }
       });
+
+      getFormEditorApp().addPropertyValidationValidator('RFC3339FullDate', function(formElement, propertyPath) {
+        if (getUtility().isUndefinedOrNull(formElement.get(propertyPath))) {
+          return;
+        }
+        if (!formElement.get(propertyPath).match(/^([0-9]{4})-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/i)) {
+          return getFormEditorApp().getFormElementPropertyValidatorDefinition('RFC3339FullDate')['errorMessage'] || 'invalid value';
+        }
+      });
+
+      getFormEditorApp().addPropertyValidationValidator('RFC3339FullDateOrEmpty', function(formElement, propertyPath) {
+        if (getUtility().isUndefinedOrNull(formElement.get(propertyPath))) {
+          return;
+        }
+        if (formElement.get(propertyPath).length > 0 && !formElement.get(propertyPath).match(/^([0-9]{4})-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/i)) {
+          return getFormEditorApp().getFormElementPropertyValidatorDefinition('RFC3339FullDate')['errorMessage'] || 'invalid value';
+        }
+      });
     };
 
     /**

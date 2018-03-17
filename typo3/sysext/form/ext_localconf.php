@@ -26,7 +26,13 @@ call_user_func(function () {
     );
 
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'][1489772699]
-        = \TYPO3\CMS\Form\Hooks\FormElementsOnSubmitHooks::class;
+        = \TYPO3\CMS\Form\Hooks\FormElementHooks::class;
+
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'][1489772699]
+        = \TYPO3\CMS\Form\Hooks\FormElementHooks::class;
+
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'][1489772699]
+        = \TYPO3\CMS\Form\Hooks\FormElementHooks::class;
 
     // FE file upload processing
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][1489772699]

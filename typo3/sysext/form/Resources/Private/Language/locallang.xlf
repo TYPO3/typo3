@@ -91,6 +91,12 @@
             <trans-unit id="validation.error.1505305753" xml:space="preserve">
                 <source>The file size can not exceed %s in size.</source>
             </trans-unit>
+            <trans-unit id="validation.error.1521293686" xml:space="preserve">
+                <source>Please choose a date that is not earlier than "%s".</source>
+            </trans-unit>
+            <trans-unit id="validation.error.1521293687" xml:space="preserve">
+                <source>Please choose a date that is not later than "%s".</source>
+            </trans-unit>
             <trans-unit id="form_new_wizard_title" xml:space="preserve">
                 <source>Form</source>
             </trans-unit>
