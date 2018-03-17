@@ -212,7 +212,7 @@ abstract class AbstractFinisher implements FinisherInterface
             return $value;
         }, $optionValue);
 
-        $renderingOptions = is_array($this->options['translation'])
+        $renderingOptions = isset($this->options['translation']) ?? \is_array($this->options['translation'])
                             ? $this->options['translation']
                             : [];
 

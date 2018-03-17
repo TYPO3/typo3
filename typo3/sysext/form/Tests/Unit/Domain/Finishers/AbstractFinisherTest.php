@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
 /*
@@ -21,17 +22,13 @@ use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractFinisherTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var array A backup of registered singleton instances
      */
@@ -48,7 +45,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * Tear down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
@@ -57,7 +54,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsNullIfOptionNameIsTranslation()
+    public function parseOptionReturnsNullIfOptionNameIsTranslation(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
             AbstractFinisher::class,
@@ -72,7 +69,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsNullIfOptionNameNotExistsWithinOptions()
+    public function parseOptionReturnsNullIfOptionNameNotExistsWithinOptions(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
             AbstractFinisher::class,
@@ -89,7 +86,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsNullIfOptionNameNotExistsWithinDefaultOptions()
+    public function parseOptionReturnsNullIfOptionNameNotExistsWithinDefaultOptions(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
             AbstractFinisher::class,
@@ -106,7 +103,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsArrayOptionValuesAsArray()
+    public function parseOptionReturnsArrayOptionValuesAsArray(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
             AbstractFinisher::class,
@@ -127,7 +124,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsBoolOptionValuesAsBool()
+    public function parseOptionReturnsBoolOptionValuesAsBool(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
             AbstractFinisher::class,
@@ -148,7 +145,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsValueFromFormRuntimeIfOptionNameReferenceAFormElementIdentifierWhoseValueIsAString()
+    public function parseOptionReturnsValueFromFormRuntimeIfOptionNameReferenceAFormElementIdentifierWhoseValueIsAString(): void
     {
         $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
@@ -197,7 +194,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsNoReplacedValueFromFormRuntimeIfOptionNameReferenceAFormElementIdentifierWhoseValueIsNotAString()
+    public function parseOptionReturnsNoReplacedValueFromFormRuntimeIfOptionNameReferenceAFormElementIdentifierWhoseValueIsNotAString(): void
     {
         $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
@@ -247,7 +244,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsNoReplacedValueFromFormRuntimeIfOptionNameReferenceANonExistingFormElement()
+    public function parseOptionReturnsNoReplacedValueFromFormRuntimeIfOptionNameReferenceANonExistingFormElement(): void
     {
         $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
@@ -296,7 +293,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsDefaultOptionValueIfOptionNameNotExistsWithinOptionsButWithinDefaultOptions()
+    public function parseOptionReturnsDefaultOptionValueIfOptionNameNotExistsWithinOptionsButWithinDefaultOptions(): void
     {
         $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
@@ -345,7 +342,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsDefaultOptionValueIfOptionValueIsAFormElementReferenceAndTheFormElementValueIsEmpty()
+    public function parseOptionReturnsDefaultOptionValueIfOptionValueIsAFormElementReferenceAndTheFormElementValueIsEmpty(): void
     {
         $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
@@ -397,7 +394,7 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function parseOptionReturnsTimestampIfOptionValueIsATimestampRequestTrigger()
+    public function parseOptionReturnsTimestampIfOptionValueIsATimestampRequestTrigger(): void
     {
         $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
