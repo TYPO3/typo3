@@ -5855,7 +5855,7 @@ Character that devides the decimals from the rest. Defaults to "."
 ]]></description>
 			<default><![CDATA[.]]></default>
 		</property>
-		<property name="thousand_sep" type="stdWrap">
+		<property name="thousands_sep" type="stdWrap">
 			<description><![CDATA[string / stdWrap
 Character that devides the thousands of the number. Defaults to ",", set an empty value to have no thousands separator.
 ]]></description>
