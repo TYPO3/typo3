@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
 /*
@@ -16,7 +17,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -25,11 +32,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class BackendTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @test
      */
     public function insertRelationInRelationtableSetsMmMatchFieldsInRow()
@@ -37,15 +39,15 @@ class BackendTest extends UnitTestCase
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Backend|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $fixture = $this->getAccessibleMock(Backend::class, ['dummy'], [], '', false);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit_Framework_MockObject_MockObject */
-        $dataMapper = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
+        $dataMapper = $this->createMock(DataMapper::class);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit_Framework_MockObject_MockObject */
-        $dataMap = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class);
+        $dataMap = $this->createMock(DataMap::class);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap|\PHPUnit_Framework_MockObject_MockObject */
-        $columnMap = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class);
+        $columnMap = $this->createMock(ColumnMap::class);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $storageBackend = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface::class);
+        $storageBackend = $this->createMock(BackendInterface::class);
         /* \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $domainObject = $this->createMock(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface::class);
+        $domainObject = $this->createMock(DomainObjectInterface::class);
 
         $mmMatchFields = [
             'identifier' => 'myTable:myField',
@@ -115,7 +117,7 @@ class BackendTest extends UnitTestCase
         $fakeUuid = 'fakeUuid';
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $parentObject = new \stdClass();
-        $proxy = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class)
+        $proxy = $this->getMockBuilder(LazyLoadingProxy::class)
             ->setMethods(['_loadRealInstance'])
             ->setConstructorArgs([$parentObject, 'y', 'z'])
             ->disableProxyingToOriginalMethods()
