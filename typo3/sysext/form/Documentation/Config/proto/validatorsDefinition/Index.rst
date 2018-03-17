@@ -92,6 +92,8 @@ Properties
                [...]
              Count:
                [...]
+             FileSize:
+               [...]
 
 :aspect:`Related options`
       - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.\<formElementTypeIdentifier>.formEditor.propertyCollections.validators.[*].identifier"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.propertycollections.validators.*.identifier>`
@@ -291,3 +293,4 @@ Concrete configurations
     validators/RegularExpression
     validators/StringLength
     validators/Text
+    validators/FileSize

@@ -60,11 +60,32 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.editors.800:
 .. include:: ImageUpload/formEditor/editors/800.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.editors.900:
+.. include:: ImageUpload/formEditor/editors/900.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.editors.9999:
 .. include:: ImageUpload/formEditor/editors/9999.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.predefineddefaults:
 .. include:: ImageUpload/formEditor/predefinedDefaults.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.propertycollections.validators.10:
+.. include:: ImageUpload/formEditor/propertyCollections/validators/10.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.propertycollections.validators.10.identifier:
+.. include:: ImageUpload/formEditor/propertyCollections/validators/10/identifier.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.propertycollections.validators.10.editors.100:
+.. include:: ImageUpload/formEditor/propertyCollections/validators/10/editors/100.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.propertycollections.validators.10.editors.200:
+.. include:: ImageUpload/formEditor/propertyCollections/validators/10/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.propertycollections.validators.10.editors.300:
+.. include:: ImageUpload/formEditor/propertyCollections/validators/10/editors/300.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.propertycollections.validators.10.editors.9999:
+.. include:: ImageUpload/formEditor/propertyCollections/validators/10/editors/9999.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.label:
 .. include:: ImageUpload/formEditor/label.rst

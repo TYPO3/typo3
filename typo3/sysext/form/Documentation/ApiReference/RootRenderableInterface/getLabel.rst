@@ -3,8 +3,6 @@ getLabel()
 
 Get the label of the form element.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getLabel(): string;
+   public function getLabel(): string;

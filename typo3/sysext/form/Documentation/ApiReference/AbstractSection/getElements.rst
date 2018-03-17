@@ -3,8 +3,6 @@ getElements()
 
 Get the child form elements.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getElements(): array;
+   public function getElements(): array;

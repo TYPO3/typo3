@@ -4,8 +4,6 @@ setOptions()
 Set multiple properties of this object at once.
 Every property which has a corresponding set* method can be set using the passed $options array.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function setOptions(array $options);
+   public function setOptions(array $options);

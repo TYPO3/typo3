@@ -3,8 +3,6 @@ setProperty()
 
 Set an element-specific configuration property.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function setProperty(string $key, $value);
+   public function setProperty(string $key, $value);

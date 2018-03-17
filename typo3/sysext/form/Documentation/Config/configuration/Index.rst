@@ -3340,9 +3340,46 @@ Full default configuration
                   validatorIdentifier: NotEmpty
                   propertyPath: properties.fluidAdditionalAttributes.required
                   propertyValue: required
+                900:
+                  identifier: 'validators'
+                  templateName: 'Inspector-ValidatorsEditor'
+                  label: 'formEditor.elements.FileUploadMixin.editor.validators.label'
+                  selectOptions:
+                    10:
+                      value: ''
+                      label: 'formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label'
+                    20:
+                      value: 'FileSize'
+                      label: 'formEditor.elements.FileUploadMixin.editor.validators.FileSize.label'
                 9999:
                   identifier: removeButton
                   templateName: Inspector-RemoveElementEditor
+              propertyCollections:
+                validators:
+                  10:
+                    identifier: FileSize
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: FileSize
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: FileSize
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
               predefinedDefaults:
                 properties:
                   saveToFileMount: '1:/user_upload/'
@@ -3427,9 +3464,46 @@ Full default configuration
                   validatorIdentifier: NotEmpty
                   propertyPath: properties.fluidAdditionalAttributes.required
                   propertyValue: required
+                900:
+                  identifier: 'validators'
+                  templateName: 'Inspector-ValidatorsEditor'
+                  label: 'formEditor.elements.FileUploadMixin.editor.validators.label'
+                  selectOptions:
+                    10:
+                      value: ''
+                      label: 'formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label'
+                    20:
+                      value: 'FileSize'
+                      label: 'formEditor.elements.FileUploadMixin.editor.validators.FileSize.label'
                 9999:
                   identifier: removeButton
                   templateName: Inspector-RemoveElementEditor
+              propertyCollections:
+                validators:
+                  10:
+                    identifier: FileSize
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: FileSize
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: FileSize
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
               predefinedDefaults:
                 properties:
                   saveToFileMount: '1:/user_upload/'
@@ -3754,6 +3828,16 @@ Full default configuration
                 options:
                   minimum: ''
                   maximum: ''
+          FileSize:
+            implementationClassName: TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator
+            formEditor:
+              iconIdentifier: 't3-form-icon-validator'
+              label: 'formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label'
+              predefinedDefaults:
+                options:
+                  minimum: '0B'
+                  maximum: '10M'
+
         formEditor:
           translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
           dynamicRequireJsModules:

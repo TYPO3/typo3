@@ -3,8 +3,6 @@ initializeFormElement()
 
 Will be called as soon as the element is (tried to be) added to a form.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function initializeFormElement();
+   public function initializeFormElement();

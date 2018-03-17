@@ -524,7 +524,7 @@ formEditor.propertyCollections.validators.[*].editors
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      Array with available ``inspector editors`` for this validator. 
+      Array with available ``inspector editors`` for this validator.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.finishers:
@@ -606,7 +606,7 @@ formEditor.propertyCollections.finishers.[*].editors
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      Array with available ``inspector editors`` for this finisher. 
+      Array with available ``inspector editors`` for this finisher.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.label:

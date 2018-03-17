@@ -33,15 +33,15 @@ TypoScript.
 
 .. code-block:: typoscript
 
-    plugin.tx_form {
-        settings {
-            yamlConfigurations {
-                # register your own additional configuration
-                # choose a number higher than 30 (below is reserved)
-                100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
-            }
-        }
-    }
+   plugin.tx_form {
+       settings {
+           yamlConfigurations {
+               # register your own additional configuration
+               # choose a number higher than 30 (below is reserved)
+               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+           }
+       }
+   }
 
 
 EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
@@ -51,22 +51,23 @@ Next, define the additional fluid template search paths via YAML.
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formElementsDefinition:
-                Form:
-                  renderingOptions:
-                    templateRootPaths:
-                      20: 'EXT:my_site_package/Resources/Private/Form/Frontend/Templates/'
-                    partialRootPaths:
-                      20: 'EXT:my_site_package/Resources/Private/Form/Frontend/Partials/'
-                    layoutRootPaths:
-                      20: 'EXT:my_site_package/Resources/Private/Form/Frontend/Layouts/'
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               Form:
+                 renderingOptions:
+                   templateRootPaths:
+                     20: 'EXT:my_site_package/Resources/Private/Form/Frontend/Templates/'
+                   partialRootPaths:
+                     20: 'EXT:my_site_package/Resources/Private/Form/Frontend/Partials/'
+                   layoutRootPaths:
+                     20: 'EXT:my_site_package/Resources/Private/Form/Frontend/Layouts/'
 
 .. note::
+
    The preview within the form editor (backend module) uses the frontend
    templates as well. If you want the preview to show your customized
    templates, register the new paths for the backend module as well.
@@ -81,13 +82,13 @@ learn why we recommend using the concept behind ``ext_typoscript_setup.txt``.
 
 .. code-block:: typoscript
 
-    module.tx_form {
-        settings {
-            yamlConfigurations {
-                100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
-            }
-        }
-    }
+   module.tx_form {
+       settings {
+           yamlConfigurations {
+               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+           }
+       }
+   }
 
 
 .. _faq-migrate-from-v7:

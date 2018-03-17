@@ -3,8 +3,6 @@ getElementsRecursively()
 
 Returns all RenderableInterface instances of this composite renderable recursively.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getElementsRecursively(): array;
+   public function getElementsRecursively(): array;

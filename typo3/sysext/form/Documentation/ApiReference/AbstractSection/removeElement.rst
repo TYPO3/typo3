@@ -3,8 +3,6 @@ removeElement()
 
 Remove $elementToRemove from this Section/Page.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function removeElement(FormElementInterface $elementToRemove);
+   public function removeElement(FormElementInterface $elementToRemove);

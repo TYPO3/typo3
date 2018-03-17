@@ -68,6 +68,7 @@ The 'Redirect finisher' is a simple finisher that redirects to another page.
 Additional link parameters can be added to the URL.
 
 .. note::
+
    This finisher stops the execution of all subsequent finishers in order to perform a redirect.
    Therefore, this finisher should always be the last finisher to be executed.
 
