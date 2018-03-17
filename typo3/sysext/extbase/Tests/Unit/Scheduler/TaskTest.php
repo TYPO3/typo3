@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
 
 /*
@@ -14,16 +15,15 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Scheduler\Task;
+use TYPO3\CMS\Extbase\Scheduler\TaskExecutor;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class TaskTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TaskTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var \TYPO3\CMS\Extbase\Scheduler\Task|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
@@ -36,11 +36,11 @@ class TaskTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     protected function setUp()
     {
-        $this->taskExecutor = $this->getMockBuilder(\TYPO3\CMS\Extbase\Scheduler\TaskExecutor::class)
+        $this->taskExecutor = $this->getMockBuilder(TaskExecutor::class)
             ->setMethods(['execute'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->task = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Scheduler\Task::class, ['logException', '__wakeup'], [], '', false);
+        $this->task = $this->getAccessibleMock(Task::class, ['logException', '__wakeup'], [], '', false);
     }
 
     /**

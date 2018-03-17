@@ -178,7 +178,7 @@ class Task extends AbstractTask
         if (!empty($this->arguments)) {
             $arguments = [];
             foreach ($this->arguments as $argumentName => $argumentValue) {
-                if ($argumentValue != $this->defaults[$argumentName]) {
+                if (!isset($this->defaults[$argumentName]) || $argumentValue != $this->defaults[$argumentName]) {
                     $arguments[] = $argumentName . '=' . $argumentValue;
                 }
             }
