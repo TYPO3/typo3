@@ -52,18 +52,19 @@ interface QuerySettingsInterface
     public function getStoragePageIds();
 
     /**
-     * Sets the flag if a translation is chosen and language overlay should be performed.
+     * Sets the flag if record language should be respected when querying.
+     * Other settings defines whether overlay should happen or not.
      *
-     * @param bool $respectSysLanguage TRUE if a translation is chosen and language overlay should be performed.
+     * @param bool $respectSysLanguage TRUE if only record language should be respected when querying
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
      * @api
      */
     public function setRespectSysLanguage($respectSysLanguage);
 
     /**
-     * Returns the state, if a language overlay should be performed when a translation is active.
+     * Returns the state, if record language should be checked when querying
      *
-     * @return bool TRUE, if a language overlay should be performed when a translation is active; otherwise FALSE.
+     * @return bool if TRUE record language is checked.
      */
     public function getRespectSysLanguage();
 

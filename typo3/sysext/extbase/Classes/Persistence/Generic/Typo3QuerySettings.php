@@ -86,7 +86,7 @@ class Typo3QuerySettings implements QuerySettingsInterface
     protected $languageMode = null;
 
     /**
-     * Represensting sys_language_uid only valid for current context
+     * Representing sys_language_uid only valid for current context
      *
      * @var int
      */
