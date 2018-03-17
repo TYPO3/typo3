@@ -230,7 +230,7 @@ class FormEditorController extends AbstractBackendController
 
             $formElementConfiguration = TranslationService::getInstance()->translateValuesRecursive(
                 $formElementConfiguration,
-                $this->prototypeConfiguration['formEditor']['translationFile']
+                $this->prototypeConfiguration['formEditor']['translationFile'] ?? null
             );
 
             $formElementsByGroup[$formElementConfiguration['group']][] = [
@@ -255,7 +255,7 @@ class FormEditorController extends AbstractBackendController
 
             $groupConfiguration = TranslationService::getInstance()->translateValuesRecursive(
                 $groupConfiguration,
-                $this->prototypeConfiguration['formEditor']['translationFile']
+                $this->prototypeConfiguration['formEditor']['translationFile'] ?? null
             );
 
             $formGroups[] = [
@@ -295,7 +295,7 @@ class FormEditorController extends AbstractBackendController
         $formEditorDefinitions = ArrayUtility::reIndexNumericArrayKeysRecursive($formEditorDefinitions);
         $formEditorDefinitions = TranslationService::getInstance()->translateValuesRecursive(
             $formEditorDefinitions,
-            $this->prototypeConfiguration['formEditor']['translationFile']
+            $this->prototypeConfiguration['formEditor']['translationFile'] ?? null
         );
         return $formEditorDefinitions;
     }
@@ -380,8 +380,8 @@ class FormEditorController extends AbstractBackendController
      */
     protected function renderFormEditorTemplates(array $formEditorDefinitions): string
     {
-        $fluidConfiguration = $this->prototypeConfiguration['formEditor']['formEditorFluidConfiguration'];
-        $formEditorPartials = $this->prototypeConfiguration['formEditor']['formEditorPartials'];
+        $fluidConfiguration = $this->prototypeConfiguration['formEditor']['formEditorFluidConfiguration'] ?? null;
+        $formEditorPartials = $this->prototypeConfiguration['formEditor']['formEditorPartials'] ?? null;
 
         if (!isset($fluidConfiguration['templatePathAndFilename'])) {
             throw new RenderingException(

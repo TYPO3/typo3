@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 
 /*
@@ -19,17 +20,13 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormEditorController;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FormEditorControllerTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var array A backup of registered singleton instances
      */
@@ -55,7 +52,7 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     /**
      * @test
      */
-    public function getInsertRenderablesPanelConfigurationReturnsGroupedAndSortedConfiguration()
+    public function getInsertRenderablesPanelConfigurationReturnsGroupedAndSortedConfiguration(): void
     {
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
             'dummy'
@@ -153,7 +150,7 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     /**
      * @test
      */
-    public function getFormEditorDefinitionsReturnReducedConfiguration()
+    public function getFormEditorDefinitionsReturnReducedConfiguration(): void
     {
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
             'dummy'
@@ -287,7 +284,7 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     /**
      * @test
      */
-    public function renderFormEditorTemplatesThrowsExceptionIfLayoutRootPathsNotSet()
+    public function renderFormEditorTemplatesThrowsExceptionIfLayoutRootPathsNotSet(): void
     {
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294721);
@@ -310,7 +307,7 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     /**
      * @test
      */
-    public function renderFormEditorTemplatesThrowsExceptionIfLayoutRootPathsNotArray()
+    public function renderFormEditorTemplatesThrowsExceptionIfLayoutRootPathsNotArray(): void
     {
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294721);
@@ -334,7 +331,7 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     /**
      * @test
      */
-    public function renderFormEditorTemplatesThrowsExceptionIfPartialRootPathsNotSet()
+    public function renderFormEditorTemplatesThrowsExceptionIfPartialRootPathsNotSet(): void
     {
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294722);
@@ -358,7 +355,7 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     /**
      * @test
      */
-    public function renderFormEditorTemplatesThrowsExceptionIfPartialRootPathsNotArray()
+    public function renderFormEditorTemplatesThrowsExceptionIfPartialRootPathsNotArray(): void
     {
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294722);
@@ -382,7 +379,7 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     /**
      * @test
      */
-    public function renderFormEditorTemplatesThrowsExceptionIftemplatePathAndFilenameNotSet()
+    public function renderFormEditorTemplatesThrowsExceptionIftemplatePathAndFilenameNotSet(): void
     {
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1485636499);
