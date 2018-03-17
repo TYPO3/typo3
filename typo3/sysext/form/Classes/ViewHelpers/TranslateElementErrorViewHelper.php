@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
@@ -40,9 +41,10 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('element', RootRenderableInterface::class, 'Form Element to translate', true);
-        $this->registerArgument('code', 'integer', 'Error code', true);
-        $this->registerArgument('arguments', 'array', 'Error arguments', false, null);
-        $this->registerArgument('defaultValue', 'string', 'The default value', false, '');
+        $this->registerArgument('error', Error::class, '', false, '');
+        $this->registerArgument('code', 'integer', 'Error code - deprecated', false, '');
+        $this->registerArgument('arguments', 'array', 'Error arguments - deprecated', false, null);
+        $this->registerArgument('defaultValue', 'string', 'The default value - deprecated', false, '');
     }
 
     /**
@@ -57,6 +59,22 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $element = $arguments['element'];
+        $error = $arguments['error'];
+
+        $code = $arguments['code'];
+        $errorArguments = $arguments['arguments'];
+        $defaultValue = $arguments['defaultValue'];
+
+        if ($error instanceof Error) {
+            $code = $error->getCode();
+            $errorArguments = $error->getArguments();
+            $defaultValue = $error->__toString();
+        } else {
+            trigger_error(
+                'TranslateElementErrorViewHelper arguments "code", "arguments" and "defaultValue" has been deprecated in v8 and will be removed in v10. Use "error" instead.',
+                E_USER_DEPRECATED
+            );
+        }
 
         /** @var FormRuntime $formRuntime */
         $formRuntime = $renderingContext
@@ -65,9 +83,9 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
 
         return TranslationService::getInstance()->translateFormElementError(
             $element,
-            $arguments['code'],
-            $arguments['arguments'],
-            $arguments['defaultValue'],
+            $code,
+            $errorArguments,
+            $defaultValue,
             $formRuntime
         );
     }
