@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -41,9 +42,10 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('element', RootRenderableInterface::class, 'Form Element to translate', true);
-        $this->registerArgument('code', 'integer', 'Error code', true);
-        $this->registerArgument('arguments', 'array', 'Error arguments', false, null);
-        $this->registerArgument('defaultValue', 'string', 'The default value', false, '');
+        $this->registerArgument('error', Error::class, '', false, '');
+        $this->registerArgument('code', 'integer', 'Error code - deprecated', false);
+        $this->registerArgument('arguments', 'array', 'Error arguments - deprecated', false, null);
+        $this->registerArgument('defaultValue', 'string', 'The default value - deprecated', false, '');
     }
 
     /**
@@ -58,17 +60,28 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $element = $arguments['element'];
+        $error = $arguments['error'];
+
+        $code = $arguments['code'];
+        $errorArguments = $arguments['arguments'];
+        $defaultValue = $arguments['defaultValue'];
+
+        if ($error instanceof Error) {
+            $code = $error->getCode();
+            $errorArguments = $error->getArguments();
+            $defaultValue = $error->__toString();
+        }
 
         /** @var FormRuntime $formRuntime */
-        $formRuntime =  $renderingContext
+        $formRuntime = $renderingContext
             ->getViewHelperVariableContainer()
             ->get(RenderRenderableViewHelper::class, 'formRuntime');
 
         return TranslationService::getInstance()->translateFormElementError(
             $element,
-            $arguments['code'],
-            $arguments['arguments'],
-            $arguments['defaultValue'],
+            $code,
+            $errorArguments,
+            $defaultValue,
             $formRuntime
         );
     }
