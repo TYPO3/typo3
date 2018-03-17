@@ -1,20 +1,17 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
 use TYPO3\CMS\Form\Domain\Model\FormElements\Section;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test TYPO3\CMS\Form\Domain\Model\FormElements\Section class
  *
  * Class AbstractFormElementTest
  */
-class SectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SectionTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     protected static $IDENTIFIER = 'an_id';
     protected static $TYPE = 'a_type';
 
@@ -22,7 +19,7 @@ class SectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * An instance of section
      * @var Section
      */
-    protected $sectionInstance = null;
+    protected $sectionInstance;
 
     /**
      * @before
@@ -36,7 +33,7 @@ class SectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function newInstanceHasNoProperties()
+    public function newInstanceHasNoProperties(): void
     {
         $this->assertNotNull($this->sectionInstance);
         $this->assertCount(0, $this->sectionInstance->getProperties());
@@ -45,7 +42,7 @@ class SectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function setSimpleProperties()
+    public function setSimpleProperties(): void
     {
         $this->sectionInstance->setProperty('foo', 'bar');
         $this->sectionInstance->setProperty('buz', 'qax');
@@ -61,13 +58,13 @@ class SectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function overrideProperties()
+    public function overrideProperties(): void
     {
         $this->sectionInstance->setProperty('foo', 'bar');
         $this->sectionInstance->setProperty('foo', 'buz');
 
         $properties = $this->sectionInstance->getProperties();
-        $this->assertEquals(1, count($properties));
+        $this->assertEquals(1, \count($properties));
         $this->assertTrue(array_key_exists('foo', $properties));
         $this->assertEquals('buz', $properties['foo']);
     }
@@ -75,7 +72,7 @@ class SectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function setArrayProperties()
+    public function setArrayProperties(): void
     {
         $this->sectionInstance->setProperty('foo', ['bar' => 'baz', 'bla' => 'blubb']);
         $properties = $this->sectionInstance->getProperties();
@@ -84,7 +81,7 @@ class SectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->assertTrue(array_key_exists('foo', $properties));
 
         //check arrays details
-        $this->assertTrue(is_array($properties['foo']));
+        $this->assertTrue(\is_array($properties['foo']));
         $this->assertCount(2, $properties['foo']);
         $this->assertTrue(array_key_exists('bar', $properties['foo']));
         $this->assertEquals('baz', $properties['foo']['bar']);

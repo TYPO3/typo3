@@ -14,14 +14,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class AbstractFormElementTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @test
      */
-    public function newInstanceHasNoProperties()
+    public function newInstanceHasNoProperties(): void
     {
         /** @var AbstractFormElement $subject */
         $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
@@ -32,7 +27,7 @@ class AbstractFormElementTest extends UnitTestCase
     /**
      * @test
      */
-    public function setSimpleProperties()
+    public function setSimpleProperties(): void
     {
         /** @var AbstractFormElement $subject */
         $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
@@ -51,7 +46,7 @@ class AbstractFormElementTest extends UnitTestCase
     /**
      * @test
      */
-    public function overrideProperties()
+    public function overrideProperties(): void
     {
         /** @var AbstractFormElement $subject */
         $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
@@ -60,7 +55,7 @@ class AbstractFormElementTest extends UnitTestCase
         $subject->setProperty('foo', 'buz');
 
         $properties = $subject->getProperties();
-        $this->assertEquals(1, count($properties));
+        $this->assertEquals(1, \count($properties));
         $this->assertTrue(array_key_exists('foo', $properties));
         $this->assertEquals('buz', $properties['foo']);
     }
@@ -68,7 +63,7 @@ class AbstractFormElementTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArrayProperties()
+    public function setArrayProperties(): void
     {
         /** @var AbstractFormElement $subject */
         $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
@@ -80,7 +75,7 @@ class AbstractFormElementTest extends UnitTestCase
         $this->assertTrue(array_key_exists('foo', $properties));
 
         //check arrays details
-        $this->assertTrue(is_array($properties['foo']));
+        $this->assertTrue(\is_array($properties['foo']));
         $this->assertCount(2, $properties['foo']);
         $this->assertTrue(array_key_exists('bar', $properties['foo']));
         $this->assertEquals('baz', $properties['foo']['bar']);
@@ -89,7 +84,7 @@ class AbstractFormElementTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsExceptionWhenIdentifierIsEmpty()
+    public function constructThrowsExceptionWhenIdentifierIsEmpty(): void
     {
         $this->expectException(IdentifierNotValidException::class);
         $this->expectExceptionCode(1477082502);
@@ -108,7 +103,7 @@ class AbstractFormElementTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructMustNotThrowExceptionWhenIdentifierIsNonEmptyString()
+    public function constructMustNotThrowExceptionWhenIdentifierIsNonEmptyString(): void
     {
         $mock = $this->getAccessibleMockForAbstractClass(
             AbstractFormElement::class,
@@ -125,7 +120,7 @@ class AbstractFormElementTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeFormElementExpectedCallInitializeFormObjectHooks()
+    public function initializeFormElementExpectedCallInitializeFormObjectHooks(): void
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractFormElement $abstractFormElementMock */
         $abstractFormElementMock = $this->getAccessibleMockForAbstractClass(
@@ -155,10 +150,10 @@ class AbstractFormElementTest extends UnitTestCase
             ->method('initializeFormElement')
             ->with($abstractFormElementMock);
 
-        GeneralUtility::addInstance(get_class($secondMock), $secondMock);
+        GeneralUtility::addInstance(\get_class($secondMock), $secondMock);
 
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] = [
-            get_class($secondMock)
+            \get_class($secondMock)
         ];
 
         $abstractFormElementMock->initializeFormElement();
@@ -167,7 +162,7 @@ class AbstractFormElementTest extends UnitTestCase
     /**
      * @test
      */
-    public function getUniqueIdentifierExpectedUnique()
+    public function getUniqueIdentifierExpectedUnique(): void
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractFormElement $abstractFormElementMock1 */
         $abstractFormElementMock1 = $this->getAccessibleMockForAbstractClass(

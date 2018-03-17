@@ -117,7 +117,7 @@ class Section extends AbstractSection implements FormElementInterface
      */
     public function setProperty(string $key, $value)
     {
-        if (is_array($value) && is_array($this->properties[$key])) {
+        if (is_array($value) && isset($this->properties[$key]) && is_array($this->properties[$key])) {
             ArrayUtility::mergeRecursiveWithOverrule($this->properties[$key], $value);
         } else {
             $this->properties[$key] = $value;
