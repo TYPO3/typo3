@@ -21,11 +21,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @test
      */
     public function buildExpressionAddsLiveWorkspaceWhereClause()
@@ -40,6 +35,9 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 
         $pageRepository = $this->createMock(PageRepository::class);
         $pageRepository->versioningPreview = false;
+
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->sys_page = $pageRepository;
 
         $subject = new FrontendWorkspaceRestriction(0);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
