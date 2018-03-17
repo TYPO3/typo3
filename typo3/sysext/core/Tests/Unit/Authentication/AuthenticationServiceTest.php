@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
 /*
@@ -14,23 +15,20 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Authentication\AuthenticationService
  */
-class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AuthenticationServiceTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * Date provider for processLoginReturnsCorrectData
      *
      * @return array
      */
-    public function processLoginDataProvider()
+    public function processLoginDataProvider(): array
     {
         return [
             'Backend login with securityLevel "normal"' => [
@@ -68,10 +66,10 @@ class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      * @test
      * @dataProvider processLoginDataProvider
      */
-    public function processLoginReturnsCorrectData($passwordSubmissionStrategy, $loginData, $expectedProcessedData)
+    public function processLoginReturnsCorrectData($passwordSubmissionStrategy, $loginData, $expectedProcessedData): void
     {
         /** @var $authenticationService AuthenticationService */
-        $authenticationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(AuthenticationService::class);
+        $authenticationService = GeneralUtility::makeInstance(AuthenticationService::class);
         // Login data is modified by reference
         $authenticationService->processLoginData($loginData, $passwordSubmissionStrategy);
         $this->assertEquals($expectedProcessedData, $loginData);
