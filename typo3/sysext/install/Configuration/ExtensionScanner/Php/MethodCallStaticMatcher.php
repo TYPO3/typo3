@@ -603,4 +603,11 @@ return [
             'Deprecation-85113-LegacyBackendModuleRoutingMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::shortcutExists' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84414-BackendUtilityshortcutExists.rst',
+        ],
+    ],
 ];

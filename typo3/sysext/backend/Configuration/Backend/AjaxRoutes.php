@@ -104,31 +104,31 @@ return [
     // Get shortcut edit form
     'shortcut_editform' => [
         'path' => '/shortcut/editform',
-        'target' => \TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem::class . '::editFormAction'
+        'target' => Controller\ShortcutController::class . '::showEditFormAction'
     ],
 
     // Save edited shortcut
     'shortcut_saveform' => [
         'path' => '/shortcut/saveform',
-        'target' => \TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem::class . '::saveFormAction'
+        'target' => Controller\ShortcutController::class . '::updateAction'
     ],
 
     // Render shortcut toolbar item
     'shortcut_list' => [
         'path' => '/shortcut/list',
-        'target' => \TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem::class . '::menuAction'
+        'target' => Controller\ShortcutController::class . '::menuAction'
     ],
 
     // Delete a shortcut
     'shortcut_remove' => [
         'path' => '/shortcut/remove',
-        'target' => \TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem::class . '::removeShortcutAction'
+        'target' => Controller\ShortcutController::class . '::removeAction'
     ],
 
     // Create a new shortcut
     'shortcut_create' => [
         'path' => '/shortcut/create',
-        'target' => \TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem::class . '::createShortcutAction'
+        'target' => Controller\ShortcutController::class . '::addAction'
     ],
 
     // Render systeminformtion toolbar item

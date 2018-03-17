@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Template;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -358,7 +359,8 @@ function jumpToUrl(URL) {
         $confirmationText = GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark'));
 
         $shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
-        $shortcutExist = BackendUtility::shortcutExists($shortcutUrl);
+        $shortcutRepository = GeneralUtility::makeInstance(ShortcutRepository::class);
+        $shortcutExist = $shortcutRepository->shortcutExists($shortcutUrl);
 
         if ($shortcutExist) {
             return '<a class="active ' . htmlspecialchars($classes) . '" title="">' .

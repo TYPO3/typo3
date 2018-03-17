@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Template;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -544,7 +545,8 @@ class ModuleTemplate
         );
 
         $shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
-        $shortcutExist = BackendUtility::shortcutExists($shortcutUrl);
+        $shortcutRepository = GeneralUtility::makeInstance(ShortcutRepository::class);
+        $shortcutExist = $shortcutRepository->shortcutExists($shortcutUrl);
 
         if ($shortcutExist) {
             return '<a class="active ' . htmlspecialchars($classes) . '" title="">' .

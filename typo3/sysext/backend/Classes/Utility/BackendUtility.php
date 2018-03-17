@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Utility;
  */
 
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Routing\PageUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -4463,31 +4464,19 @@ class BackendUtility
      * Exists already a shortcut entry for this TYPO3 url?
      *
      * @param string $url
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.
      *
      * @return bool
      */
     public static function shortcutExists($url)
     {
-        $queryBuilder = static::getQueryBuilderForTable('sys_be_shortcuts');
-        $queryBuilder->getRestrictions()->removeAll();
+        trigger_error(
+            'Method BackendUtility::shortcutExists() has been marked as deprecated and will be removed in TYPO3 v10.0. Use an instance of ShortcutRepository instead.',
+            E_USER_DEPRECATED
+        );
 
-        $count = $queryBuilder
-            ->count('uid')
-            ->from('sys_be_shortcuts')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'userid',
-                    $queryBuilder->createNamedParameter(
-                        self::getBackendUserAuthentication()->user['uid'],
-                        \PDO::PARAM_INT
-                    )
-                ),
-                $queryBuilder->expr()->eq('url', $queryBuilder->createNamedParameter($url, \PDO::PARAM_STR))
-            )
-            ->execute()
-            ->fetchColumn(0);
-
-        return (bool)$count;
+        $shortcutRepository = GeneralUtility::makeInstance(ShortcutRepository::class);
+        return $shortcutRepository->shortcutExists($url);
     }
 
     /**
