@@ -1863,7 +1863,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             if ($this->isAdmin()) {
                 $filePermissions = array_map('is_bool', $filePermissions);
             } else {
-                $userGroupRecordPermissions = GeneralUtility::trimExplode(',', $this->groupData['file_permissions'], true);
+                $userGroupRecordPermissions = GeneralUtility::trimExplode(',', $this->groupData['file_permissions'] ?? '', true);
                 array_walk(
                     $userGroupRecordPermissions,
                     function ($permission) use (&$filePermissions) {

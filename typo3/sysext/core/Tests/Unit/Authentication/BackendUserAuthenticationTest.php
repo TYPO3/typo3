@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
 /*
@@ -22,6 +23,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
@@ -34,11 +36,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendUserAuthenticationTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var array
      */
@@ -65,7 +62,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * Tear down
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         FormProtectionFactory::purgeInstances();
         parent::tearDown();
@@ -77,7 +74,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      */
-    public function logoffCleansFormProtectionIfBackendUserIsLoggedIn()
+    public function logoffCleansFormProtectionIfBackendUserIsLoggedIn(): void
     {
         /** @var ObjectProphecy|Connection $connection */
         $connection = $this->prophesize(Connection::class);
@@ -90,7 +87,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
 
         /** @var ObjectProphecy|\TYPO3\CMS\Core\FormProtection\AbstractFormProtection $formProtection */
-        $formProtection = $this->prophesize(\TYPO3\CMS\Core\FormProtection\BackendFormProtection::class);
+        $formProtection = $this->prophesize(BackendFormProtection::class);
         $formProtection->clean()->shouldBeCalled();
 
         FormProtectionFactory::set(
@@ -115,7 +112,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getTSConfigDataProvider()
+    public function getTSConfigDataProvider(): array
     {
         $completeConfiguration = [
             'value' => 'oneValue',
@@ -257,7 +254,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      * @dataProvider getTSConfigDataProvider
      * @test
      */
-    public function getTSConfigReturnsCorrectArrayForGivenObjectString(array $completeConfiguration, $objectString, array $expectedConfiguration)
+    public function getTSConfigReturnsCorrectArrayForGivenObjectString(array $completeConfiguration, $objectString, array $expectedConfiguration): void
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -274,7 +271,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider()
+    public function getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider(): array
     {
         return [
             'Only read permissions' => [
@@ -328,7 +325,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      * @test
      * @dataProvider getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider
      */
-    public function getFilePermissionsTakesUserDefaultPermissionsFromTsConfigIntoAccountIfUserIsNotAdmin(array $userTsConfiguration)
+    public function getFilePermissionsTakesUserDefaultPermissionsFromTsConfigIntoAccountIfUserIsNotAdmin(array $userTsConfiguration): void
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -363,7 +360,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getFilePermissionsFromStorageDataProvider()
+    public function getFilePermissionsFromStorageDataProvider(): array
     {
         $defaultPermissions = [
             'addFile' => true,
@@ -467,7 +464,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      * @test
      * @dataProvider getFilePermissionsFromStorageDataProvider
      */
-    public function getFilePermissionsFromStorageOverwritesDefaultPermissions(array $defaultPermissions, $storageUid, array $storagePermissions, array $expectedPermissions)
+    public function getFilePermissionsFromStorageOverwritesDefaultPermissions(array $defaultPermissions, $storageUid, array $storagePermissions, array $expectedPermissions): void
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -506,7 +503,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      * @test
      * @dataProvider getFilePermissionsFromStorageDataProvider
      */
-    public function getFilePermissionsFromStorageAlwaysReturnsDefaultPermissionsForAdmins(array $defaultPermissions, $storageUid, array $storagePermissions)
+    public function getFilePermissionsFromStorageAlwaysReturnsDefaultPermissionsForAdmins(array $defaultPermissions, $storageUid, array $storagePermissions): void
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -541,7 +538,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider()
+    public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider(): array
     {
         return [
             'No permission' => [
@@ -655,7 +652,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      *
      * @dataProvider getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider
      */
-    public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin(string $permissionValue, array $expectedPermissions)
+    public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin(string $permissionValue, array $expectedPermissions): void
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -675,7 +672,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFilePermissionsGrantsAllPermissionsToAdminUsers()
+    public function getFilePermissionsGrantsAllPermissionsToAdminUsers(): void
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -711,7 +708,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      */
-    public function jsConfirmationReturnsTrueIfPassedValueEqualsConfiguration()
+    public function jsConfirmationReturnsTrueIfPassedValueEqualsConfiguration(): void
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -726,7 +723,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      */
-    public function jsConfirmationAllowsSettingMultipleBitsInValue()
+    public function jsConfirmationAllowsSettingMultipleBitsInValue(): void
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -749,7 +746,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      * @param int $feEditAllowed
      * @param int $otherAllowed
      */
-    public function jsConfirmationAllowsUnsettingBitsInValue($jsConfirmation, $typeChangeAllowed, $copyMovePasteAllowed, $deleteAllowed, $feEditAllowed, $otherAllowed)
+    public function jsConfirmationAllowsUnsettingBitsInValue($jsConfirmation, $typeChangeAllowed, $copyMovePasteAllowed, $deleteAllowed, $feEditAllowed, $otherAllowed): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
@@ -766,7 +763,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @return array
      */
-    public function jsConfirmationsWithUnsetBits()
+    public function jsConfirmationsWithUnsetBits(): array
     {
         return [
             'All except "type change" and "copy/move/paste"' => [
@@ -791,7 +788,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      */
-    public function jsConfirmationAlwaysReturnsFalseIfNoConfirmationIsSet()
+    public function jsConfirmationAlwaysReturnsFalseIfNoConfirmationIsSet(): void
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -806,7 +803,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      */
-    public function jsConfirmationReturnsTrueIfConfigurationIsMissing()
+    public function jsConfirmationReturnsTrueIfConfigurationIsMissing(): void
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -867,7 +864,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      * @param string $groups
      * @param string $expected
      */
-    public function getPagePermissionsClauseWithValidUser(int $perms, bool $admin, string $groups, string $expected)
+    public function getPagePermissionsClauseWithValidUser(int $perms, bool $admin, string $groups, string $expected): void
     {
         // We only need to setup the mocking for the non-admin cases
         // If this setup is done for admin cases the FIFO behavior
