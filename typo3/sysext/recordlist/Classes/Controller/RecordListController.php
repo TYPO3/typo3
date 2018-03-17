@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Recordlist;
+namespace TYPO3\CMS\Recordlist\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Recordlist;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -36,11 +37,12 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 
 /**
  * Script Class for the Web > List module; rendering the listing of records on a page
  */
-class RecordList
+class RecordListController
 {
     /**
      * Page Id for which to make the listing
@@ -310,10 +312,8 @@ class RecordList
         }
 
         // Initialize the dblist object:
-        /** @var $dblist RecordList\DatabaseRecordList */
-        $dblist = GeneralUtility::makeInstance(RecordList\DatabaseRecordList::class);
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $dblist = GeneralUtility::makeInstance(DatabaseRecordList::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $dblist->script = (string)$uriBuilder->buildUriFromRoute('web_list');
         $dblist->calcPerms = $calcPerms;
         $dblist->thumbs = $backendUser->uc['thumbnailsByDefault'];
@@ -722,8 +722,7 @@ class RecordList
                         'justLocalized' => 'pages:' . $id . ':' . $languageUid,
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     ];
-                    /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-                    $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                     $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
                     $targetUrl = BackendUtility::getLinkToDataHandlerAction(
                         '&cmd[pages][' . $id . '][localize]=' . $languageUid,

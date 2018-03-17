@@ -2680,7 +2680,6 @@ class PageLayoutView implements LoggerAwareInterface
      * Initializes the clipboard for generating paste links
      *
      *
-     * @see \TYPO3\CMS\Recordlist\RecordList::main()
      * @see \TYPO3\CMS\Backend\Controller\ContextMenuController::clipboardAction()
      * @see \TYPO3\CMS\Filelist\Controller\FileListController::indexAction()
      */

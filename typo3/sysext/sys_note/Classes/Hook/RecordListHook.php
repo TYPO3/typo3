@@ -16,6 +16,7 @@ namespace TYPO3\CMS\SysNote\Hook;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Recordlist\Controller\RecordListController;
 use TYPO3\CMS\SysNote\Controller\NoteController;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 
@@ -28,10 +29,10 @@ class RecordListHook
      * Add sys_notes as additional content to the header of the list module
      *
      * @param array $params
-     * @param \TYPO3\CMS\Recordlist\RecordList $parentObject
+     * @param RecordListController $parentObject
      * @return string
      */
-    public function renderInHeader(array $params = [], \TYPO3\CMS\Recordlist\RecordList $parentObject)
+    public function renderInHeader(array $params = [], RecordListController $parentObject)
     {
         $controller = GeneralUtility::makeInstance(NoteController::class);
         return $controller->listAction($parentObject->id, SysNoteRepository::SYS_NOTE_POSITION_TOP);
@@ -41,10 +42,10 @@ class RecordListHook
      * Add sys_notes as additional content to the footer of the list module
      *
      * @param array $params
-     * @param \TYPO3\CMS\Recordlist\RecordList $parentObject
+     * @param RecordListController $parentObject
      * @return string
      */
-    public function renderInFooter(array $params = [], \TYPO3\CMS\Recordlist\RecordList $parentObject)
+    public function renderInFooter(array $params = [], RecordListController $parentObject)
     {
         $controller = GeneralUtility::makeInstance(NoteController::class);
         return $controller->listAction($parentObject->id, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM);

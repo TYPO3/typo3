@@ -86,6 +86,7 @@
 				"typo3/sysext/fluid/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/info/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/lowlevel/Migrations/Code/ClassAliasMap.php",
+				"typo3/sysext/recordlist/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/reports/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/saltedpasswords/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/workspaces/Migrations/Code/ClassAliasMap.php"

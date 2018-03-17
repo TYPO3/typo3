@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Frontend\Page\PageRepository;
-use TYPO3\CMS\Recordlist\RecordList;
 
 /**
  * Script Class for Web > Layout module
@@ -260,7 +259,7 @@ class PageLayoutController
         $this->MCONF['name'] = $this->moduleName;
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         // Get session data
-        $sessionData = $this->getBackendUser()->getSessionData(RecordList::class);
+        $sessionData = $this->getBackendUser()->getSessionData(__CLASS__);
         $this->search_field = !empty($sessionData['search_field']) ? $sessionData['search_field'] : '';
         // GPvars:
         $this->id = (int)GeneralUtility::_GP('id');
@@ -274,7 +273,7 @@ class PageLayoutController
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         $sessionData['search_field'] = $this->search_field;
         // Store session data
-        $this->getBackendUser()->setAndSaveSessionData(RecordList::class, $sessionData);
+        $this->getBackendUser()->setAndSaveSessionData(__CLASS__, $sessionData);
         // Load page info array:
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
         // Initialize menu

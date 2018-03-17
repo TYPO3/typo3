@@ -7,7 +7,7 @@ defined('TYPO3_MODE') or die();
     '',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Recordlist\RecordList::class . '::mainAction',
+        'routeTarget' => \TYPO3\CMS\Recordlist\Controller\RecordListController::class . '::mainAction',
         'access' => 'user,group',
         'name' => 'web_list',
         'icon' => 'EXT:recordlist/Resources/Public/Icons/module-list.svg',

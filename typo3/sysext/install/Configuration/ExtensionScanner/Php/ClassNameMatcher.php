@@ -654,4 +654,9 @@ return [
             'Deprecation-84109-DeprecateDependencyResolver.rst',
         ],
     ],
+    'TYPO3\CMS\Recordlist\RecordList' => [
+        'restFiles' => [
+            'Deprecation-84399-ClassRecordListRenamedToRecordListController.rst',
+        ],
+    ],
 ];
