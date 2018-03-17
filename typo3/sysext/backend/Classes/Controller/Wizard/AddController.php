@@ -19,11 +19,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -119,8 +120,7 @@ class AddController extends AbstractWizardController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->processRequest();
-        return new HtmlResponse('');
+        return $this->processRequest($request);
     }
 
     /**
@@ -132,7 +132,9 @@ class AddController extends AbstractWizardController
     public function main()
     {
         trigger_error('Method main() will be replaced by protected method processRequest() in v10. Do not call from other extension', E_USER_DEPRECATED);
-        $this->processRequest();
+
+        $response = $this->processRequest($GLOBALS['TYPO3_REQUEST']);
+        HttpUtility::redirect($response->getHeaders()['location'][0]);
     }
 
     /**
@@ -168,7 +170,8 @@ class AddController extends AbstractWizardController
         }
         // Return if new record as parent (not possibly/allowed)
         if ($this->pid === '') {
-            HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
+            // HTTP Redirect is performed by processRequest()
+            return;
         }
         // Else proceed:
         // If a new id has returned from a newly created record...
@@ -200,9 +203,17 @@ class AddController extends AbstractWizardController
     /**
      * Main function
      * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    protected function processRequest(): void
+    protected function processRequest(ServerRequestInterface $request): ResponseInterface
     {
+        // Return if new record as parent (not possibly/allowed)
+        if ($this->pid === '') {
+            return new RedirectResponse(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
+        }
+
         if ($this->returnEditConf) {
             if ($this->processDataFlag) {
                 // Because OnTheFly can't handle MM relations with intermediate tables we use TcaDatabaseRecord here
@@ -304,18 +315,21 @@ class AddController extends AbstractWizardController
                 }
             }
             // Return to the parent FormEngine record editing session:
-            HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
-        } else {
-            // Redirecting to FormEngine with instructions to create a new record
-            // AND when closing to return back with information about that records ID etc.
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-            $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
-                'returnEditConf' => 1,
-                'edit[' . $this->P['params']['table'] . '][' . $this->pid . ']' => 'new',
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-            ]);
-            HttpUtility::redirect($redirectUrl);
+            return new RedirectResponse(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
         }
+
+        // Redirecting to FormEngine with instructions to create a new record
+        // AND when closing to return back with information about that records ID etc.
+        /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+            'returnEditConf' => 1,
+            'edit[' . $this->P['params']['table'] . '][' . $this->pid . ']' => 'new',
+            'returnUrl' => $normalizedParams->getRequestUri(),
+        ]);
+
+        return new RedirectResponse($redirectUrl);
     }
 }

@@ -29,6 +29,10 @@ removed or set to protected in v10 and throw deprecation warnings if used from a
 * [not scanned] :php:`init()`
 * [not scanned] :php:`main()`
 
+Due to refactoring the :php:`init()` method does not perform a redirect anymore in case no ``pid``
+was set by GET params. This redirect has been moved and will be performed for legacy code by the
+deprecated :php:`main()` method now.
+
 Additionally :php:`$GLOBALS['SOBE']` is not set by the :php:`AddController` constructor anymore.
 
 
