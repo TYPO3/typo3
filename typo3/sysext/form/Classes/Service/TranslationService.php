@@ -233,7 +233,7 @@ class TranslationService implements SingletonInterface
         }
 
         $finisherIdentifier = preg_replace('/Finisher$/', '', $finisherIdentifier);
-        $translationFile = $renderingOptions['translationFile'];
+        $translationFile = $renderingOptions['translationFile'] ?? null;
         if (empty($translationFile)) {
             $translationFile = $formRuntime->getRenderingOptions()['translation']['translationFile'];
         }
@@ -328,7 +328,7 @@ class TranslationService implements SingletonInterface
         }
 
         $defaultValue = empty($defaultValue) ? '' : $defaultValue;
-        $translationFile = $renderingOptions['translation']['translationFile'];
+        $translationFile = $renderingOptions['translation']['translationFile'] ?? null;
         if (empty($translationFile)) {
             $translationFile = $formRuntime->getRenderingOptions()['translation']['translationFile'];
         }

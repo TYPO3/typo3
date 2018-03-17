@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Service;
 
 /*
@@ -26,17 +27,13 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TranslationServiceTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var array A backup of registered singleton instances
      */
@@ -97,7 +94,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * Tear down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
@@ -106,7 +103,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateReturnsExistingDefaultLanguageKeyIfFullExtDefaultLanguageKeyIsRequested()
+    public function translateReturnsExistingDefaultLanguageKeyIfFullExtDefaultLanguageKeyIsRequested(): void
     {
         $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $expected = 'FORM EN';
@@ -121,7 +118,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateReturnsExistingDefaultLanguageKeyIfFullLLLExtDefaultLanguageKeyIsRequested()
+    public function translateReturnsExistingDefaultLanguageKeyIfFullLLLExtDefaultLanguageKeyIsRequested(): void
     {
         $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $expected = 'FORM EN';
@@ -136,7 +133,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateReturnsExistingDefaultLanguageKeyIfDefaultLanguageKeyIsRequestedAndDefaultValueIsGiven()
+    public function translateReturnsExistingDefaultLanguageKeyIfDefaultLanguageKeyIsRequestedAndDefaultValueIsGiven(): void
     {
         $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $expected = 'FORM EN';
@@ -155,7 +152,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateReturnsEmptyStringIfNonExistingDefaultLanguageKeyIsRequested()
+    public function translateReturnsEmptyStringIfNonExistingDefaultLanguageKeyIsRequested(): void
     {
         $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $this->store->flushData($xlfPath);
@@ -170,7 +167,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateReturnsDefaultValueIfNonExistingDefaultLanguageKeyIsRequestedAndDefaultValueIsGiven()
+    public function translateReturnsDefaultValueIfNonExistingDefaultLanguageKeyIsRequestedAndDefaultValueIsGiven(): void
     {
         $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $this->store->flushData($xlfPath);
@@ -189,7 +186,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateReturnsExistingLanguageKeyForLanguageIfExtPathLanguageKeyIsRequested()
+    public function translateReturnsExistingLanguageKeyForLanguageIfExtPathLanguageKeyIsRequested(): void
     {
         $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $expected = 'FORM DE';
@@ -207,7 +204,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateReturnsDefaultValueIfNonExistingLanguageKeyForLanguageIsRequestedAndDefaultValueIsGiven()
+    public function translateReturnsDefaultValueIfNonExistingLanguageKeyForLanguageIsRequestedAndDefaultValueIsGiven(): void
     {
         $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $expected = 'defaultValue';
@@ -226,7 +223,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateReturnsEmptyStringIfNonExistingLanguageKeyForLanguageIsRequested()
+    public function translateReturnsEmptyStringIfNonExistingLanguageKeyForLanguageIsRequested(): void
     {
         $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $expected = '';
@@ -244,7 +241,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateReturnsExistingDefaultLanguageKeyIfDefaultLanguageKeyIsRequestedAndExtFilePathIsGiven()
+    public function translateReturnsExistingDefaultLanguageKeyIfDefaultLanguageKeyIsRequestedAndExtFilePathIsGiven(): void
     {
         $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $expected = 'FORM EN';
@@ -261,7 +258,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateReturnsExistingDefaultLanguageKeyIfDefaultLanguageKeyIsRequestedAndLLLExtFilePathIsGiven()
+    public function translateReturnsExistingDefaultLanguageKeyIfDefaultLanguageKeyIsRequestedAndLLLExtFilePathIsGiven(): void
     {
         $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $expected = 'FORM EN';
@@ -278,7 +275,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateValuesRecursiveTranslateRecursive()
+    public function translateValuesRecursiveTranslateRecursive(): void
     {
         $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
 
@@ -315,7 +312,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -359,7 +356,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsEmptyAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -403,7 +400,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueNotTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsEmptyAndPropertyShouldNotBeTranslatedAndTranslationExists()
+    public function translateFormElementValueNotTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsEmptyAndPropertyShouldNotBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -447,7 +444,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelForConcreteFormElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFormElementValueTranslateLabelForConcreteFormElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -491,7 +488,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelForFormElementTypeIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFormElementValueTranslateLabelForFormElementTypeIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -535,7 +532,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueTranslatePropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementPropertyIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFormElementValueTranslatePropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementPropertyIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -582,7 +579,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueNotTranslatePropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementPropertyIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationNotExists()
+    public function translateFormElementValueNotTranslatePropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementPropertyIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationNotExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -629,7 +626,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueTranslateRenderingOptionForConcreteFormAndConcreteSectionElementIfElementRenderingOptionsContainsATranslationFileAndElementRenderingOptionIsNotEmptyAndRenderingOptionShouldBeTranslatedAndTranslationExists()
+    public function translateFormElementValueTranslateRenderingOptionForConcreteFormAndConcreteSectionElementIfElementRenderingOptionsContainsATranslationFileAndElementRenderingOptionIsNotEmptyAndRenderingOptionShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -677,7 +674,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueTranslateOptionsPropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementOptionsPropertyIsAnArrayAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFormElementValueTranslateOptionsPropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementOptionsPropertyIsAnArrayAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -730,7 +727,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueTranslateOptionsPropertyForConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementOptionsPropertyIsAnArrayAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFormElementValueTranslateOptionsPropertyForConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementOptionsPropertyIsAnArrayAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -783,7 +780,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFinisherOptionTranslateOptionForConcreteFormIfFinisherTranslationOptionsContainsATranslationFileAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFinisherOptionTranslateOptionForConcreteFormIfFinisherTranslationOptionsContainsATranslationFileAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -818,7 +815,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFinisherOptionTranslateOptionIfFinisherTranslationOptionsContainsATranslationFileAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFinisherOptionTranslateOptionIfFinisherTranslationOptionsContainsATranslationFileAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -853,7 +850,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementFromFormRumtimeTranslationFileIfElementRenderingOptionsContainsNoTranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementFromFormRumtimeTranslationFileIfElementRenderingOptionsContainsNoTranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -892,7 +889,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function supportsArgumentsForFormElementValueTranslations()
+    public function supportsArgumentsForFormElementValueTranslations(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
 
@@ -933,7 +930,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFinisherOptionTranslateOptionForConcreteFormFromFormRuntimeIfFinisherTranslationOptionsContainsNoTranslationFileAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFinisherOptionTranslateOptionForConcreteFormFromFormRuntimeIfFinisherTranslationOptionsContainsNoTranslationFileAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
@@ -965,7 +962,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function supportsArgumentsForFinisherOptionTranslations()
+    public function supportsArgumentsForFinisherOptionTranslations(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
 
@@ -997,7 +994,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelFromAdditionalTranslationForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists()
+    public function translateFormElementValueTranslateLabelFromAdditionalTranslationForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
         $textElementXlfPaths = [
