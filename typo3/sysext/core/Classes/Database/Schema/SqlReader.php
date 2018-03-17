@@ -92,7 +92,7 @@ class SqlReader
                 continue;
             }
 
-            $statementArray[$statementArrayPointer] .= $lineContent;
+            $statementArray[$statementArrayPointer] = ($statementArray[$statementArrayPointer] ?? '') . $lineContent;
 
             if (substr($lineContent, -1) === ';') {
                 $statement = trim($statementArray[$statementArrayPointer]);

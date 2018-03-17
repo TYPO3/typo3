@@ -25,17 +25,13 @@ use Doctrine\DBAL\Types\TextType;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Tests for TableBuilder
  */
-class TableBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TableBuilderTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var Table
      */
