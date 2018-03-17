@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 
 /*
@@ -20,17 +21,13 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ImageService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ImageScriptServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ImageScriptServiceTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var ImageService
      */
@@ -44,7 +41,7 @@ class ImageScriptServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * Initialize ImageService and environment service mock
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->environmentService = $this->createMock(EnvironmentService::class);
         $this->subject = new ImageService($this->environmentService);
@@ -55,7 +52,7 @@ class ImageScriptServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function fileIsUnwrappedFromReferenceForProcessing()
+    public function fileIsUnwrappedFromReferenceForProcessing(): void
     {
         $reference = $this->getAccessibleMock(FileReference::class, [], [], '', false);
         $file = $this->createMock(File::class);
@@ -69,7 +66,7 @@ class ImageScriptServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @return array
      */
-    public function prefixIsCorrectlyAppliedToGetImageUriDataProvider()
+    public function prefixIsCorrectlyAppliedToGetImageUriDataProvider(): array
     {
         return [
             'with scheme' => ['http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
@@ -82,7 +79,7 @@ class ImageScriptServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      * @test
      * @dataProvider prefixIsCorrectlyAppliedToGetImageUriDataProvider
      */
-    public function prefixIsCorrectlyAppliedToGetImageUri($imageUri, $expected)
+    public function prefixIsCorrectlyAppliedToGetImageUri($imageUri, $expected): void
     {
         $this->environmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(true);
         $GLOBALS['TSFE'] = new \stdClass();
@@ -97,7 +94,7 @@ class ImageScriptServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @return array
      */
-    public function prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider()
+    public function prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider(): array
     {
         return [
             'with scheme' => ['http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
@@ -110,7 +107,7 @@ class ImageScriptServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      * @test
      * @dataProvider prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider
      */
-    public function prefixIsCorrectlyAppliedToGetImageUriWithForcedAbsoluteUrl($imageUri, $expected)
+    public function prefixIsCorrectlyAppliedToGetImageUriWithForcedAbsoluteUrl($imageUri, $expected): void
     {
         $this->environmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(true);
         $GLOBALS['TSFE'] = new \stdClass();

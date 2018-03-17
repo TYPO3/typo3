@@ -2814,12 +2814,12 @@ class GeneralUtility
                 if ($proxySSL === '*') {
                     $proxySSL = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'];
                 }
-                if (self::cmpIP($_SERVER['REMOTE_ADDR'], $proxySSL)) {
+                if (self::cmpIP($_SERVER['REMOTE_ADDR'] ?? '', $proxySSL)) {
                     $retVal = true;
                 } else {
                     // https://secure.php.net/manual/en/reserved.variables.server.php
                     // "Set to a non-empty value if the script was queried through the HTTPS protocol."
-                    $retVal = $_SERVER['SSL_SESSION_ID']
+                    $retVal = !empty($_SERVER['SSL_SESSION_ID'])
                         || (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off');
                 }
                 break;
