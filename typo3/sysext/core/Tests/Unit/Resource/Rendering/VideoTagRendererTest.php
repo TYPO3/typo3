@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
 /*
@@ -14,22 +15,21 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Class VideoTagRendererTest
  */
-class VideoTagRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class VideoTagRendererTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
     public function getPriorityReturnsCorrectValue()
     {
-        $VideoTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer();
+        $VideoTagRenderer = new VideoTagRenderer();
 
         $this->assertSame(1, $VideoTagRenderer->getPriority());
     }
@@ -39,15 +39,15 @@ class VideoTagRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function canRenderReturnsTrueOnCorrectFile()
     {
-        $VideoTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer();
+        $VideoTagRenderer = new VideoTagRenderer();
 
-        $fileResourceMock1 = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
+        $fileResourceMock1 = $this->createMock(File::class);
         $fileResourceMock1->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
-        $fileResourceMock2 = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
+        $fileResourceMock2 = $this->createMock(File::class);
         $fileResourceMock2->expects($this->any())->method('getMimeType')->will($this->returnValue('video/webm'));
-        $fileResourceMock3 = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
+        $fileResourceMock3 = $this->createMock(File::class);
         $fileResourceMock3->expects($this->any())->method('getMimeType')->will($this->returnValue('video/ogg'));
-        $fileResourceMock4 = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
+        $fileResourceMock4 = $this->createMock(File::class);
         $fileResourceMock4->expects($this->any())->method('getMimeType')->will($this->returnValue('application/ogg'));
 
         $this->assertTrue($VideoTagRenderer->canRender($fileResourceMock1));
@@ -61,9 +61,9 @@ class VideoTagRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function canRenderReturnsFalseOnCorrectFile()
     {
-        $VideoTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer();
+        $VideoTagRenderer = new VideoTagRenderer();
 
-        $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
+        $fileResourceMock = $this->createMock(File::class);
         $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('audio/mpeg'));
 
         $this->assertFalse($VideoTagRenderer->canRender($fileResourceMock));
@@ -140,9 +140,9 @@ class VideoTagRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function renderOutputIsCorrect($url, $arguments, $expected)
     {
-        $VideoTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer();
+        $VideoTagRenderer = new VideoTagRenderer();
 
-        $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
+        $fileResourceMock = $this->createMock(File::class);
         $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
         $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue($url));
 

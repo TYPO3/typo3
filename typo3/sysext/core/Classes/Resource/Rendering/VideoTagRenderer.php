@@ -77,10 +77,10 @@ class VideoTagRenderer implements FileRendererInterface
         }
 
         $attributes = [];
-        if (is_array($options['additionalAttributes'])) {
+        if (isset($options['additionalAttributes']) && is_array($options['additionalAttributes'])) {
             $attributes[] = GeneralUtility::implodeAttributes($options['additionalAttributes'], true, true);
         }
-        if (is_array($options['data'])) {
+        if (isset($options['data']) && is_array($options['data'])) {
             array_walk($options['data'], function (&$value, $key) {
                 $value = 'data-' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
             });
@@ -104,7 +104,7 @@ class VideoTagRenderer implements FileRendererInterface
         if (!empty($options['loop'])) {
             $attributes[] = 'loop';
         }
-        if (is_array($options['additionalConfig'])) {
+        if (isset($options['additionalConfig']) && is_array($options['additionalConfig'])) {
             foreach ($options['additionalConfig'] as $key => $value) {
                 if ((bool)$value) {
                     $attributes[] = htmlspecialchars($key);
