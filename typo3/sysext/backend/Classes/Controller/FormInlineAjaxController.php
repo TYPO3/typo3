@@ -175,7 +175,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     {
         $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
 
-        $domObjectId = $ajaxArguments[0];
+        $domObjectId = $ajaxArguments[0] ?? null;
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
@@ -256,8 +256,8 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     public function synchronizeLocalizeAction(ServerRequestInterface $request): ResponseInterface
     {
         $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
-        $domObjectId = $ajaxArguments[0];
-        $type = $ajaxArguments[1];
+        $domObjectId = $ajaxArguments[0] ?? null;
+        $type = $ajaxArguments[1] ?? null;
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
         /** @var InlineStackProcessor $inlineStackProcessor */

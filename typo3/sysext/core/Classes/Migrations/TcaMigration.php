@@ -1121,7 +1121,7 @@ class TcaMigration
                 continue;
             }
             foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                if ($fieldConfig['config']['type'] !== 'input') {
+                if (isset($fieldConfig['config']['type']) && $fieldConfig['config']['type'] !== 'input') {
                     continue;
                 }
                 $eval = $fieldConfig['config']['eval'] ?? '';
@@ -1300,7 +1300,7 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'input' || $fieldConfig['config']['type'] === 'text') {
+                    if (isset($fieldConfig['config']['type']) && ($fieldConfig['config']['type'] === 'input' || $fieldConfig['config']['type'] === 'text')) {
                         if (isset($fieldConfig['config']['wizards']) && is_array($fieldConfig['config']['wizards'])) {
                             foreach ($fieldConfig['config']['wizards'] as $wizardName => $wizardConfig) {
                                 if (isset($wizardConfig['type'])
@@ -1372,7 +1372,7 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'input') {
+                    if (isset($fieldConfig['config']['type']) && $fieldConfig['config']['type'] === 'input') {
                         if (isset($fieldConfig['config']['wizards'])
                             && is_array($fieldConfig['config']['wizards'])) {
                             foreach ($fieldConfig['config']['wizards'] as $wizardName => $wizardConfig) {
@@ -1437,7 +1437,7 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'input'
+                    if (isset($fieldConfig['config']['type']) && $fieldConfig['config']['type'] === 'input'
                         && !isset($fieldConfig['config']['renderType'])
                     ) {
                         if (isset($fieldConfig['config']['wizards'])
@@ -1544,8 +1544,8 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'group'
-                        || $fieldConfig['config']['type'] === 'select'
+                    if (isset($fieldConfig['config']['type']) && ($fieldConfig['config']['type'] === 'group'
+                        || $fieldConfig['config']['type'] === 'select')
                     ) {
                         if (isset($fieldConfig['config']['wizards'])
                             && is_array($fieldConfig['config']['wizards'])
@@ -1631,8 +1631,8 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'group'
-                        || $fieldConfig['config']['type'] === 'select'
+                    if (isset($fieldConfig['config']['type']) && ($fieldConfig['config']['type'] === 'group'
+                        || $fieldConfig['config']['type'] === 'select')
                     ) {
                         if (isset($fieldConfig['config']['wizards'])
                             && is_array($fieldConfig['config']['wizards'])
@@ -1734,8 +1734,8 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'group'
-                        || $fieldConfig['config']['type'] === 'select'
+                    if (isset($fieldConfig['config']['type']) && ($fieldConfig['config']['type'] === 'group'
+                        || $fieldConfig['config']['type'] === 'select')
                     ) {
                         if (isset($fieldConfig['config']['wizards'])
                             && is_array($fieldConfig['config']['wizards'])
@@ -1924,7 +1924,7 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'text') {
+                    if (isset($fieldConfig['config']['type']) && $fieldConfig['config']['type'] === 'text') {
                         if (isset($fieldConfig['config']['wizards'])
                             && is_array($fieldConfig['config']['wizards'])
                         ) {
@@ -2021,7 +2021,7 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'text') {
+                    if (isset($fieldConfig['config']['type']) && $fieldConfig['config']['type'] === 'text') {
                         if (isset($fieldConfig['config']['wizards'])
                             && is_array($fieldConfig['config']['wizards'])
                         ) {
@@ -2136,9 +2136,9 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'group'
+                    if (isset($fieldConfig['config']['type']) && ($fieldConfig['config']['type'] === 'group'
                         && isset($fieldConfig['config']['internal_type'])
-                        && $fieldConfig['config']['internal_type'] === 'db'
+                        && $fieldConfig['config']['internal_type'] === 'db')
                     ) {
                         if (isset($fieldConfig['config']['hideSuggest'])) {
                             continue;
@@ -2218,7 +2218,7 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'group') {
+                    if (isset($fieldConfig['config']['type']) && $fieldConfig['config']['type'] === 'group') {
                         if (isset($fieldConfig['config']['selectedListStyle'])) {
                             unset($fieldConfig['config']['selectedListStyle']);
                             $this->messages[] = 'The \'type\' = \'group\' option \'selectedListStyle\' is obsolete and has been dropped'
@@ -2293,9 +2293,9 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'select'
+                    if (isset($fieldConfig['config']['type']) && ($fieldConfig['config']['type'] === 'select'
                         && isset($fieldConfig['config']['renderType'])
-                        && $fieldConfig['config']['renderType'] === 'selectSingle'
+                        && $fieldConfig['config']['renderType'] === 'selectSingle')
                     ) {
                         if (isset($fieldConfig['config']['showIconTable'])) {
                             if ((bool)$fieldConfig['config']['showIconTable'] === true) {
@@ -2336,7 +2336,7 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] === 'imageManipulation') {
+                    if (isset($fieldConfig['config']['type']) && $fieldConfig['config']['type'] === 'imageManipulation') {
                         if (isset($fieldConfig['config']['enableZoom'])) {
                             unset($fieldConfig['config']['enableZoom']);
                             $this->messages[] = sprintf(
@@ -2399,12 +2399,10 @@ class TcaMigration
         foreach ($tca as $table => &$tableDefinition) {
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if (isset($fieldConfig['config']['renderType'])) {
-                        if ($fieldConfig['config']['renderType'] === 'inputDateTime') {
-                            if (isset($fieldConfig['config']['max'])) {
-                                unset($fieldConfig['config']['max']);
-                                $this->messages[] = 'The config option \'max\' has been removed from the TCA for renderType=\'inputDateTime\' in ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'max\']';
-                            }
+                    if (isset($fieldConfig['config']['renderType']) && $fieldConfig['config']['renderType'] === 'inputDateTime') {
+                        if (isset($fieldConfig['config']['max'])) {
+                            unset($fieldConfig['config']['max']);
+                            $this->messages[] = 'The config option \'max\' has been removed from the TCA for renderType=\'inputDateTime\' in ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'max\']';
                         }
                     }
                 }
@@ -2470,7 +2468,7 @@ class TcaMigration
             }
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                    if ($fieldConfig['config']['type'] !== 'inline') {
+                    if (isset($fieldConfig['config']['type']) && $fieldConfig['config']['type'] !== 'inline') {
                         continue;
                     }
                     if (isset($fieldConfig['config']['foreign_types']) && is_array($fieldConfig['config']['foreign_types'])) {

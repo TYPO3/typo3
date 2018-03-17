@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Tests\UnitDeprecated\Form\FormDataProvider;
 
 /*
@@ -27,11 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TcaFlexPrepareTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var TcaFlexPrepare
      */

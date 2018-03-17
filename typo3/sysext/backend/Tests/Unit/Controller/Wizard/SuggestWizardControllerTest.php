@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Wizard;
 
 /*
@@ -18,21 +19,17 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class SuggestWizardControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SuggestWizardControllerTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
-    public function getFlexFieldConfigurationThrowsExceptionIfSimpleFlexFieldIsNotFound()
+    public function getFlexFieldConfigurationThrowsExceptionIfSimpleFlexFieldIsNotFound(): void
     {
         $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
         $serverRequestProphecy->getParsedBody()->willReturn([
@@ -77,7 +74,7 @@ class SuggestWizardControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     /**
      * @test
      */
-    public function getFlexFieldConfigurationThrowsExceptionIfSectionContainerFlexFieldIsNotFound()
+    public function getFlexFieldConfigurationThrowsExceptionIfSectionContainerFlexFieldIsNotFound(): void
     {
         $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
         $serverRequestProphecy->getParsedBody()->willReturn([
@@ -122,14 +119,19 @@ class SuggestWizardControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     /**
      * @test
      * @dataProvider isTableHiddenIsProperlyRetrievedDataProvider
+     * @param bool $expected
+     * @param array $array
      */
-    public function isTableHiddenIsProperlyRetrieved($expected, $array)
+    public function isTableHiddenIsProperlyRetrieved(bool $expected, array $array): void
     {
         $subject = $this->getAccessibleMock(SuggestWizardController::class, ['dummy'], [], '', false);
         $this->assertEquals($expected, $subject->_call('isTableHidden', $array));
     }
 
-    public function isTableHiddenIsProperlyRetrievedDataProvider()
+    /**
+     * @return array
+     */
+    public function isTableHiddenIsProperlyRetrievedDataProvider(): array
     {
         return [
           'notSetValue' => [false, ['ctrl' => ['hideTable' => null]]],

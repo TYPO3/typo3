@@ -40,19 +40,19 @@ class SuggestWizardController
     {
         $parsedBody = $request->getParsedBody();
 
-        $search = $parsedBody['value'];
-        $tableName = $parsedBody['tableName'];
-        $fieldName = $parsedBody['fieldName'];
-        $uid = $parsedBody['uid'];
-        $pid = (int)$parsedBody['pid'];
-        $dataStructureIdentifier = '';
+        $search = $parsedBody['value'] ?? null;
+        $tableName = $parsedBody['tableName'] ?? null;
+        $fieldName = $parsedBody['fieldName'] ?? null;
+        $uid = $parsedBody['uid'] ?? null;
+        $pid = isset($parsedBody['pid']) ? (int)$parsedBody['pid'] : 0;
+        $dataStructureIdentifier = '' ?? null;
         if (!empty($parsedBody['dataStructureIdentifier'])) {
             $dataStructureIdentifier = json_encode($parsedBody['dataStructureIdentifier']);
         }
-        $flexFormSheetName = $parsedBody['flexFormSheetName'];
-        $flexFormFieldName = $parsedBody['flexFormFieldName'];
-        $flexFormContainerName = $parsedBody['flexFormContainerName'];
-        $flexFormContainerFieldName = $parsedBody['flexFormContainerFieldName'];
+        $flexFormSheetName = $parsedBody['flexFormSheetName'] ?? null;
+        $flexFormFieldName = $parsedBody['flexFormFieldName'] ?? null;
+        $flexFormContainerName = $parsedBody['flexFormContainerName'] ?? null;
+        $flexFormContainerFieldName = $parsedBody['flexFormContainerFieldName'] ?? null;
 
         // Determine TCA config of field
         if (empty($dataStructureIdentifier)) {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 /*
@@ -17,21 +18,17 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FormInlineAjaxControllerTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @test
      */
-    public function createActionThrowsExceptionIfContextIsEmpty()
+    public function createActionThrowsExceptionIfContextIsEmpty(): void
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
@@ -49,7 +46,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function createActionThrowsExceptionIfContextConfigSectionIsEmpty()
+    public function createActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
@@ -67,7 +64,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function createActionThrowsExceptionIfContextConfigSectionDoesNotValidate()
+    public function createActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
@@ -92,7 +89,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function detailsActionThrowsExceptionIfContextIsEmpty()
+    public function detailsActionThrowsExceptionIfContextIsEmpty(): void
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
@@ -110,7 +107,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function detailsActionThrowsExceptionIfContextConfigSectionIsEmpty()
+    public function detailsActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
@@ -128,7 +125,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function detailsActionThrowsExceptionIfContextConfigSectionDoesNotValidate()
+    public function detailsActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
@@ -153,7 +150,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function synchronizeLocalizeActionThrowsExceptionIfContextIsEmpty()
+    public function synchronizeLocalizeActionThrowsExceptionIfContextIsEmpty(): void
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
@@ -171,7 +168,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionIsEmpty()
+    public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
@@ -189,7 +186,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionDoesNotValidate()
+    public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
@@ -217,7 +214,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      *
      * @test
      */
-    public function getInlineExpandCollapseStateArraySwitchesToFallbackIfTheBackendUserDoesNotHaveAnUCInlineViewProperty()
+    public function getInlineExpandCollapseStateArraySwitchesToFallbackIfTheBackendUserDoesNotHaveAnUCInlineViewProperty(): void
     {
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $backendUserProphecy->uc = [];
@@ -242,7 +239,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      *
      * @test
      */
-    public function getInlineExpandCollapseStateArrayWillUnserializeUCInlineViewPropertyAsAnArrayWithData()
+    public function getInlineExpandCollapseStateArrayWillUnserializeUCInlineViewPropertyAsAnArrayWithData(): void
     {
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $backendUserProphecy->uc = ['inlineView' => serialize(['foo' => 'bar'])];
