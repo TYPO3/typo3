@@ -18,17 +18,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Tests for SqlReader
  */
-class SqlReaderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SqlReaderTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var SqlReader
      */
