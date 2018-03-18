@@ -152,10 +152,14 @@ TYPO3:
               properties:
                 renderAsHiddenField: false
                 styleAttribute: 'position:absolute; margin:0 0 0 -999em;'
+              renderingOptions:
+                _isHiddenFormElement: true
 
             Hidden:
               __inheritances:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
+              renderingOptions:
+                _isHiddenFormElement: true
 
             ### FORM ELEMENTS: SELECT ###
             Checkbox:

@@ -84,10 +84,13 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
 
             if (
                 !$element instanceof FormElementInterface
-                || $element->getType() === 'Honeypot'
                 || (
                     isset($renderingOptions['_isCompositeFormElement'])
                     && $renderingOptions['_isCompositeFormElement'] === true
+                )
+                || (
+                    isset($renderingOptions['_isHiddenFormElement'])
+                    && $renderingOptions['_isHiddenFormElement'] === true
                 )
                 || (
                     isset($renderingOptions['_isReadOnlyFormElement'])
