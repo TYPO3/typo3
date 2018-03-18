@@ -607,8 +607,11 @@ class RecordProvider extends AbstractProvider
         if (isset($GLOBALS['TCA'][$this->table]['ctrl']['enablecolumns']['disabled'])) {
             $hiddenFieldName = $GLOBALS['TCA'][$this->table]['ctrl']['enablecolumns']['disabled'];
             if (
-                $hiddenFieldName !== '' && !empty($GLOBALS['TCA'][$this->table]['columns'][$hiddenFieldName]['exclude'])
-                && $this->backendUser->check('non_exclude_fields', $this->table . ':' . $hiddenFieldName)
+                $hiddenFieldName !== '' && !empty($GLOBALS['TCA'][$this->table]['columns'][$hiddenFieldName])
+                && (
+                    empty($GLOBALS['TCA'][$this->table]['columns'][$hiddenFieldName]['exclude'])
+                    || $this->backendUser->check('non_exclude_fields', $this->table . ':' . $hiddenFieldName)
+                )
             ) {
                 return (int)$this->record[$hiddenFieldName] === (int)$value;
             }
