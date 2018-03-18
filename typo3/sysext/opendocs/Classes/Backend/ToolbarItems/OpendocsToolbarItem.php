@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
 
 /*
@@ -14,38 +15,37 @@ namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 
 /**
  * Main functionality to render a list of all open documents in the top bar of the TYPO3 Backend
- *
- * This class also contains hooks and AJAX calls related to the toolbar item dynamic updating processing
  */
 class OpendocsToolbarItem implements ToolbarItemInterface
 {
     /**
      * @var array
      */
-    protected $openDocs = [];
-
-    /**
-     * @var array
-     */
     protected $recentDocs = [];
 
     /**
-     * Constructor
+     * @var OpenDocumentService
      */
-    public function __construct()
+    protected $documentService;
+
+    /**
+     * Set up dependencies
+     *
+     * @param OpenDocumentService|null $documentService
+     */
+    public function __construct(OpenDocumentService $documentService = null)
     {
-        $this->loadDocsFromUserSession();
+        $this->documentService = $documentService ?: GeneralUtility::makeInstance(OpenDocumentService::class);
     }
 
     /**
@@ -55,21 +55,9 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      */
     public function checkAccess()
     {
-        $conf = $this->getBackendUser()->getTSConfig('backendToolbarItem.tx_opendocs.disabled');
-        return (int)$conf['value'] !== 1;
-    }
+        $disabled = $this->getBackendUser()->getTSConfig('backendToolbarItem.tx_opendocs.disabled');
 
-    /**
-     * Loads the opened and recently opened documents from the user
-     */
-    public function loadDocsFromUserSession()
-    {
-        $backendUser = $this->getBackendUser();
-        $openDocs = $backendUser->getModuleData('FormEngine', 'ses');
-        if ($openDocs !== null) {
-            list($this->openDocs, ) = $openDocs;
-        }
-        $this->recentDocs = $backendUser->getModuleData('opendocs::recent') ?: [];
+        return (int)$disabled['value'] !== 1;
     }
 
     /**
@@ -80,86 +68,9 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     public function getItem()
     {
         $view = $this->getFluidTemplateObject('ToolbarItem.html');
-        $view->assign('numDocs', count($this->openDocs));
+        $view->assign('numDocs', count($this->documentService->getOpenDocuments()));
+
         return $view->render();
-    }
-
-    /**
-     * Render drop down via Fluid
-     *
-     * @return string HTML
-     */
-    public function getDropDown()
-    {
-        $view = $this->getFluidTemplateObject('DropDown.html');
-        $view->assignMultiple([
-            'openDocuments' => $this->getMenuEntries($this->openDocs),
-            // If there are "recent documents" in the list, add them
-            'recentDocuments' => $this->getMenuEntries($this->recentDocs)
-        ]);
-        return $view->render();
-    }
-
-    /**
-     * Get menu entries for all eligible records
-     *
-     * @param array $documents
-     * @return array
-     */
-    protected function getMenuEntries(array $documents): array
-    {
-        $entries = [];
-        foreach ($documents as $md5sum => $document) {
-            $menuEntry = $this->getMenuEntry($document, $md5sum);
-            if (is_array($menuEntry)) {
-                $entries[] = $menuEntry;
-            }
-        }
-        return $entries;
-    }
-
-    /**
-     * Returns the data for a recent or open document
-     *
-     * @param array $document
-     * @param string $md5sum
-     * @return array The data of a recent or closed document, or null if no record was found (e.g. deleted)
-     */
-    protected function getMenuEntry($document, $md5sum)
-    {
-        $table = $document[3]['table'];
-        $uid = $document[3]['uid'];
-        $record = BackendUtility::getRecordWSOL($table, $uid);
-        if (!is_array($record)) {
-            // Record seems to be deleted
-            return null;
-        }
-        $result = [];
-        $result['table'] = $table;
-        $result['record'] = $record;
-        $label = htmlspecialchars(strip_tags(htmlspecialchars_decode($document[0])));
-        $result['label'] = $label;
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        $link = (string)$uriBuilder->buildUriFromRoute('record_edit') . '&' . $document[2];
-        $pageId = (int)$document[3]['uid'];
-        if ($document[3]['table'] !== 'pages') {
-            $pageId = (int)$document[3]['pid'];
-        }
-        $onClickCode = 'jump(' . GeneralUtility::quoteJSvalue($link) . ', \'web_list\', \'web\', ' . $pageId . '); TYPO3.OpendocsMenu.toggleMenu(); return false;';
-        $result['onClickCode'] = $onClickCode;
-        $result['md5sum'] = $md5sum;
-        return $result;
-    }
-
-    /**
-     * No additional attributes
-     *
-     * @return string List item HTML attibutes
-     */
-    public function getAdditionalAttributes()
-    {
-        return [];
     }
 
     /**
@@ -172,61 +83,31 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         return true;
     }
 
-    /*******************
-     ***    HOOKS    ***
-     *******************/
     /**
-     * Called as a hook in \TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode, calls a JS function to change
-     * the number of opened documents
+     * Render drop down via Fluid
      *
-     * @param array $params
+     * @return string HTML
      */
-    public function updateNumberOfOpenDocsHook(&$params)
+    public function getDropDown()
     {
-        $params['JScode'] = '
-			if (top && top.TYPO3.OpendocsMenu) {
-				top.TYPO3.OpendocsMenu.updateMenu();
-			}
-		';
-    }
+        $view = $this->getFluidTemplateObject('DropDown.html');
+        $view->assignMultiple([
+            'openDocuments' => $this->getMenuEntries($this->documentService->getOpenDocuments()),
+            // If there are "recent documents" in the list, add them
+            'recentDocuments' => $this->getMenuEntries($this->documentService->getRecentDocuments()),
+        ]);
 
-    /******************
-     *** AJAX CALLS ***
-     ******************/
-    /**
-     * Closes a document in the session and
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function closeDocument(ServerRequestInterface $request): ResponseInterface
-    {
-        $md5sum = $request->getParsedBody()['md5sum'] ?? $request->getQueryParams()['md5sum'];
-        if ($md5sum && isset($this->openDocs[$md5sum])) {
-            $backendUser = $this->getBackendUser();
-            // Add the document to be closed to the recent documents
-            $this->recentDocs = array_merge([$md5sum => $this->openDocs[$md5sum]], $this->recentDocs);
-            // Allow a maximum of 8 recent documents
-            if (count($this->recentDocs) > 8) {
-                $this->recentDocs = array_slice($this->recentDocs, 0, 8);
-            }
-            // Remove it from the list of the open documents, and store the status
-            unset($this->openDocs[$md5sum]);
-            list(, $docDat) = $backendUser->getModuleData('FormEngine', 'ses');
-            $backendUser->pushModuleData('FormEngine', [$this->openDocs, $docDat]);
-            $backendUser->pushModuleData('opendocs::recent', $this->recentDocs);
-        }
-        return $this->renderMenu();
+        return $view->render();
     }
 
     /**
-     * Renders the menu so that it can be returned as response to an AJAX call
+     * No additional attributes
      *
-     * @return ResponseInterface
+     * @return array List of attributes
      */
-    public function renderMenu(): ResponseInterface
+    public function getAdditionalAttributes()
     {
-        return new HtmlResponse($this->getDropDown());
+        return [];
     }
 
     /**
@@ -240,13 +121,76 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Returns the current BE user.
+     * Called as a hook in \TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode, calls a JS function to change
+     * the number of opened documents
      *
-     * @return BackendUserAuthentication
+     * @param array $params
      */
-    protected function getBackendUser()
+    public function updateNumberOfOpenDocsHook(&$params)
     {
-        return $GLOBALS['BE_USER'];
+        $params['JScode'] = '
+            if (top && top.TYPO3.OpendocsMenu) {
+                top.TYPO3.OpendocsMenu.updateMenu();
+            }
+        ';
+    }
+
+    /**
+     * Get menu entries for all eligible records
+     *
+     * @param array $documents
+     * @return array
+     */
+    protected function getMenuEntries(array $documents): array
+    {
+        $entries = [];
+
+        foreach ($documents as $identifier => $document) {
+            $menuEntry = $this->getMenuEntry($document, $identifier);
+
+            if (!empty($menuEntry)) {
+                $entries[] = $menuEntry;
+            }
+        }
+
+        return $entries;
+    }
+
+    /**
+     * Returns the data for a recent or open document
+     *
+     * @param array $document
+     * @param string $identifier
+     * @return array The data of a recent or closed document, or empty array if no record was found (e.g. deleted)
+     */
+    protected function getMenuEntry(array $document, string $identifier): array
+    {
+        $table = $document[3]['table'];
+        $uid = $document[3]['uid'];
+        $record = BackendUtility::getRecordWSOL($table, $uid);
+
+        if (!is_array($record)) {
+            // Record seems to be deleted
+            return [];
+        }
+
+        $result = [];
+        $result['table'] = $table;
+        $result['record'] = $record;
+        $result['label'] = htmlspecialchars(strip_tags(htmlspecialchars_decode($document[0])));
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uri = (string)$uriBuilder->buildUriFromRoute('record_edit') . '&' . $document[2];
+        $pid = (int)$document[3]['pid'];
+
+        if ($document[3]['table'] === 'pages') {
+            $pid = (int)$document[3]['uid'];
+        }
+
+        $result['onClickCode'] = 'jump(' . GeneralUtility::quoteJSvalue($uri) . ', \'web_list\', \'web\', ' . $pid . '); TYPO3.OpendocsMenu.toggleMenu(); return false;';
+        $result['md5sum'] = $identifier;
+
+        return $result;
     }
 
     /**
@@ -261,13 +205,20 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         $view->setLayoutRootPaths(['EXT:opendocs/Resources/Private/Layouts']);
         $view->setPartialRootPaths([
             'EXT:backend/Resources/Private/Partials/ToolbarItems',
-            'EXT:opendocs/Resources/Private/Partials/ToolbarItems'
+            'EXT:opendocs/Resources/Private/Partials/ToolbarItems',
         ]);
         $view->setTemplateRootPaths(['EXT:opendocs/Resources/Private/Templates/ToolbarItems']);
-
         $view->setTemplate($filename);
-
         $view->getRequest()->setControllerExtensionName('Opendocs');
+
         return $view;
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
