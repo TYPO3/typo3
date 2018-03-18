@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
 
 /*
@@ -30,17 +31,13 @@ use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\EntityFixture;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\ValueObjectFixture;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class UriBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class UriBuilderTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var ConfigurationManagerInterface
      */
@@ -394,6 +391,8 @@ class UriBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         GeneralUtility::_GETset(['route' => '/test/Path']);
         $_SERVER['HTTP_HOST'] = 'baseuri';
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
+        $_SERVER['ORIG_SCRIPT_NAME'] = '/typo3/index.php';
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $this->mockRequest->expects($this->any())->method('getBaseUri')->will($this->returnValue('http://baseuri'));
         $this->uriBuilder->setCreateAbsoluteUri(true);
         $expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'index.php?route=%2Ftest%2FPath&token=dummyToken';
