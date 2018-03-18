@@ -27,6 +27,19 @@ use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotValidException;
  */
 class GridContainer extends Section implements GridContainerInterface
 {
+    /**
+     * Initializes the Form Element
+     *
+     * @internal
+     */
+    public function initializeFormElement()
+    {
+        trigger_error(
+            '"GridContainer" form elements has been deprecated in v9 and will be removed in v10. Use "GridRow" form elements instead.',
+            E_USER_DEPRECATED
+        );
+        parent::initializeFormElement();
+    }
 
     /**
      * Register this element at the parent form, if there is a connection to the parent form.
