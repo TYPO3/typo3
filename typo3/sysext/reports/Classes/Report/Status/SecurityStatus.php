@@ -115,7 +115,7 @@ class SecurityStatus implements StatusProviderInterface
                     'record_edit',
                     [
                         'edit[be_users][' . $row['uid'] . ']' => 'edit',
-                        'returnUrl' => (string)$uriBuilder->buildUriFromRoute('system_ReportsTxreportsm1')
+                        'returnUrl' => (string)$uriBuilder->buildUriFromRoute('system_reports')
                     ]
                 );
                 $message = sprintf(
