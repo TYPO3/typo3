@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Reports\ReportInterface;
+use TYPO3\CMS\Reports\RequestAwareReportInterface;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
@@ -136,12 +137,18 @@ class ReportController
         $reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['report'] ?? null;
 
         $reportInstance = GeneralUtility::makeInstance($reportClass, $this);
+
         if ($reportInstance instanceof ReportInterface) {
-            $content = $reportInstance->getReport();
+            if ($reportInstance instanceof RequestAwareReportInterface) {
+                $content = $reportInstance->getReport($request);
+            } else {
+                $content = $reportInstance->getReport();
+            }
             $this->saveState($extension, $report);
         } else {
             $error = $reportClass . ' does not implement the Report Interface which is necessary to be displayed here.';
         }
+
         $this->view->assignMultiple([
             'content' => $content,
             'error' => $error,

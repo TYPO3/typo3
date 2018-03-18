@@ -123,6 +123,12 @@
 			<trans-unit id="status_MysqlDatabaseCharacterSet_Info">
 				<source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
 			</trans-unit>
+			<trans-unit id="status_encryptedConnectionStatus">
+				<source>Encrypted backend connection (HTTPS)</source>
+			</trans-unit>
+			<trans-unit id="status_encryptedConnectionStatus_insecure">
+				<source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
+			</trans-unit>
 			<trans-unit id="status_trustedHostsPattern">
 				<source>Trusted Hosts Pattern</source>
 			</trans-unit>

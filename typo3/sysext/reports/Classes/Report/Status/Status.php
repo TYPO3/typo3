@@ -14,18 +14,20 @@ namespace TYPO3\CMS\Reports\Report\Status;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
-use TYPO3\CMS\Reports\ReportInterface;
+use TYPO3\CMS\Reports\RequestAwareReportInterface;
+use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
  * The status report
  */
-class Status implements ReportInterface
+class Status implements RequestAwareReportInterface
 {
     /**
      * @var StatusProviderInterface[][]
@@ -37,19 +39,21 @@ class Status implements ReportInterface
      */
     public function __construct()
     {
-        $this->getStatusProviders();
         $this->getLanguageService()->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
     }
 
     /**
      * Takes care of creating / rendering the status report
      *
+     * @param ServerRequestInterface|null $request the currently handled request
      * @return string The status report as HTML
      */
-    public function getReport()
+    public function getReport(ServerRequestInterface $request = null)
     {
+        $this->getStatusProviders();
+
         $content = '';
-        $status = $this->getSystemStatus();
+        $status = $this->getSystemStatus($request);
         $highestSeverity = $this->getHighestSeverity($status);
         // Updating the registry
         $registry = GeneralUtility::makeInstance(Registry::class);
@@ -77,15 +81,20 @@ class Status implements ReportInterface
     /**
      * Runs through all status providers and returns all statuses collected.
      *
+     * @param ServerRequestInterface $request
      * @return \TYPO3\CMS\Reports\Status[]
      */
-    public function getSystemStatus()
+    public function getSystemStatus(ServerRequestInterface $request = null)
     {
         $status = [];
         foreach ($this->statusProviders as $statusProviderId => $statusProviderList) {
             $status[$statusProviderId] = [];
             foreach ($statusProviderList as $statusProvider) {
-                $statuses = $statusProvider->getStatus();
+                if ($statusProvider instanceof RequestAwareStatusProviderInterface) {
+                    $statuses = $statusProvider->getStatus($request);
+                } else {
+                    $statuses = $statusProvider->getStatus();
+                }
                 $status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
             }
         }
