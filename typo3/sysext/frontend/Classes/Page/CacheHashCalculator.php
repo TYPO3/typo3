@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Page;
  */
 
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Logic for cHash calculation
@@ -151,7 +152,10 @@ class CacheHashCalculator implements SingletonInterface
         $parameters = array_filter(explode('&', ltrim($queryString, '?')));
         $parameterArray = [];
         foreach ($parameters as $parameter) {
-            list($parameterName, $parameterValue) = explode('=', $parameter);
+            // should not remove empty values with trimExplode, otherwise cases like &=value, value is used as parameterName.
+            $parts = GeneralUtility::trimExplode('=', $parameter, false);
+            $parameterName = $parts[0];
+            $parameterValue = $parts[1] ?? '';
             if (trim($parameterName) === '') {
                 // This parameter cannot appear in $_GET in PHP even if its value is not empty, so it should be ignored!
                 continue;

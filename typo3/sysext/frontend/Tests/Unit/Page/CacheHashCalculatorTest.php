@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 
 /*
@@ -14,16 +15,14 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase
  */
-class CacheHashCalculatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CacheHashCalculatorTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator
      */
@@ -32,7 +31,7 @@ class CacheHashCalculatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
     protected function setUp()
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
-        $this->subject = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        $this->subject = $this->getMockBuilder(CacheHashCalculator::class)
             ->setMethods(['foo'])
             ->getMock();
         $this->subject->setConfiguration([
@@ -115,7 +114,7 @@ class CacheHashCalculatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
                 ['encryptionKey', 'id', 'key']
             ],
             'System and exclude parameters should be omitted and id is not required to be specified' => [
-                '&type=3&no_cache=1',
+                'type=3&no_cache=1',
                 []
             ]
         ];
@@ -193,7 +192,7 @@ class CacheHashCalculatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     public function canWhitelistParameters($params, $expected)
     {
-        $method = new \ReflectionMethod(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, 'setCachedParametersWhiteList');
+        $method = new \ReflectionMethod(CacheHashCalculator::class, 'setCachedParametersWhiteList');
         $method->setAccessible(true);
         $method->invoke($this->subject, ['whitep1', 'whitep2']);
         $this->assertEquals($expected, $this->subject->generateForParameters($params));
