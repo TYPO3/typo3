@@ -229,7 +229,8 @@ define(['jquery',
     PageTree.prototype.updateSvg = function(nodeEnter) {
       nodeEnter
         .select('use')
-        .attr('data-table', 'pages');
+        .attr('data-table', 'pages')
+        .attr('data-context', 'tree');
     };
 
     PageTree.prototype.hideChildren = function(node) {
@@ -250,7 +251,12 @@ define(['jquery',
       var _this = this;
 
       nodes = _super_.nodesUpdate.call(this, nodes)
-        .call(this.dragDrop.drag());
+        .call(this.dragDrop.drag())
+        .attr('data-table', 'pages')
+        .attr('data-context', 'tree')
+        .on('contextmenu', function(node) {
+          _this.dispatch.call('nodeRightClick', node, this);
+        });
 
       var nodeStop = nodes
         .append('text')

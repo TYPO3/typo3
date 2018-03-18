@@ -59,10 +59,13 @@ Migration
 
 Migrate TSConfig from:
 
-:typoscript:`options.contextMenu.folderList.disableItems` to :typoscript:`options.contextMenu.sys_file.disableItems`
-:typoscript:`options.contextMenu.folderTree.disableItems` to :typoscript:`options.contextMenu.sys_file.tree.disableItems`
-:typoscript:`options.contextMenu.pageList.disableItems` to :typoscript:`options.contextMenu.pages.disableItems`
-:typoscript:`options.contextMenu.pageTree.disableItems` to :typoscript:`options.contextMenu.pages.tree.disableItems`
+:typoscript:`options.contextMenu.folderList.disableItems` to :typoscript:`options.contextMenu.table.sys_file.disableItems`
+
+:typoscript:`options.contextMenu.folderTree.disableItems` to :typoscript:`options.contextMenu.table.sys_file.tree.disableItems`
+
+:typoscript:`options.contextMenu.pageList.disableItems` to :typoscript:`options.contextMenu.table.pages.disableItems`
+
+:typoscript:`options.contextMenu.pageTree.disableItems` to :typoscript:`options.contextMenu.table.pages.tree.disableItems`
 
 
 

@@ -800,7 +800,6 @@ define(
           .append('g')
           .attr('class', this.getNodeClass)
           .attr('transform', this.getNodeTransform)
-          .attr('data-table', 'pages')
           .attr('data-state-id', this.getNodeStateIdentifier)
           .attr('title', this.getNodeTitle)
           .on('mouseover', function(node) {
@@ -808,9 +807,6 @@ define(
           })
           .on('mouseout', function(node) {
             _this.nodeBgEvents().mouseOut(node, this);
-          })
-          .on('contextmenu', function(node) {
-            _this.dispatch.call('nodeRightClick', node, this);
           });
 
         var nodeStop = nodes
