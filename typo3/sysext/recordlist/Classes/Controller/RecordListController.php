@@ -327,7 +327,6 @@ class RecordListController
         $dblist->tableTSconfigOverTCA = $this->modTSconfig['properties']['table.'];
         $dblist->allowedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['allowedNewTables'], true);
         $dblist->deniedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['deniedNewTables'], true);
-        $dblist->newWizards = $this->modTSconfig['properties']['newWizards'] ? 1 : 0;
         $dblist->pageRow = $this->pageinfo;
         $dblist->counter++;
         $dblist->MOD_MENU = ['bigControlPanel' => '', 'clipBoard' => ''];

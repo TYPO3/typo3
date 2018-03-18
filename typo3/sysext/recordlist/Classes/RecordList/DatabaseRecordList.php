@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -53,6 +54,15 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class DatabaseRecordList
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'newWizards' => 'Using $newWizards of class DatabaseRecordList from outside is discouraged, property will be removed in v10.',
+    ];
+
     // *********
     // External:
     // *********
@@ -75,10 +85,11 @@ class DatabaseRecordList
 
     /**
      * If TRUE, the control panel will contain links to the create-new wizards for
-     * pages and tt_content elements (normally, the link goes to just creatinga new
+     * pages and tt_content elements (normally, the link goes to just creating a new
      * element without the wizards!).
      *
      * @var bool
+     * @deprecated and unused since v9, will be removed in v10
      */
     public $newWizards = false;
 
@@ -1661,16 +1672,23 @@ class DatabaseRecordList
                             $spriteIcon = $table === 'pages'
                                 ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
                                 : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL);
-                            if ($table === 'tt_content' && $this->newWizards) {
+                            if ($table === 'tt_content') {
                                 // If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
                                 $tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod');
-                                $newContentElementWizard = $tmpTSc['properties']['newContentElementWizard.']['override'] ?? 'new_content_element';
-                                $newContentWizScriptPath = (string)$uriBuilder->buildUriFromRoute($newContentElementWizard, ['id' => $this->id]);
-
-                                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($newContentWizScriptPath) . ');';
-                                $icon = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-                                    . htmlspecialchars($lang->getLL('new')) . '">' . $spriteIcon->render() . '</a>';
-                            } elseif ($table === 'pages' && $this->newWizards) {
+                                $newContentElementWizard = $tmpTSc['properties']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
+                                $url = (string)$uriBuilder->buildUriFromRoute(
+                                    $newContentElementWizard,
+                                    [
+                                        'id' => $this->id,
+                                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+                                    ]
+                                );
+                                $icon = '<a href="#" data-url="' . htmlspecialchars($url) . '" '
+                                    . 'data-title="' . htmlspecialchars($lang->getLL('new')) . '"'
+                                    . 'class="btn btn-default t3js-toggle-new-content-element-wizard">'
+                                    . $spriteIcon->render()
+                                    . '</a>';
+                            } elseif ($table === 'pages') {
                                 $parameters = ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')];
                                 $href = (string)$uriBuilder->buildUriFromRoute('db_new', $parameters);
                                 $icon = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($lang->getLL('new')) . '">'
