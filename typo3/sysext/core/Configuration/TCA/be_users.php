@@ -300,7 +300,7 @@ return [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 5,
-                'enableTablator' => true,
+                'enableTabulator' => true,
                 'fixedFont' => true,
             ],
         ],
