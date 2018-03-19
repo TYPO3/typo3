@@ -856,7 +856,7 @@ class ArrayUtility
                 $array[$key] = self::filterRecursive($value, $callback);
             }
 
-            if (!$callback($value)) {
+            if (!call_user_func($callback, $value)) {
                 unset($array[$key]);
             }
         }

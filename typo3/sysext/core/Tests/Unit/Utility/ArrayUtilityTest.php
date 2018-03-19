@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ArrayUtilityFilterRecursiveCallbackFixture;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -2878,6 +2879,67 @@ class ArrayUtilityTest extends UnitTestCase
                 return $item !== '' && $item !== [] && $item !== null;
             }
         );
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    /**
+     * Data provider for filterRecursiveSupportsCallableCallback
+     * @return array
+     */
+    public function filterRecursiveSupportsCallableCallbackDataProvider()
+    {
+        $input = [
+            'foo' => 'remove',
+            'bar' => [
+                'baz' => 'remove',
+                'keep1' => 'keep'
+            ],
+            'keep2' => 'keep'
+        ];
+        $expectedResult = [
+            'bar' => [
+                'keep1' => 'keep'
+            ],
+            'keep2' => 'keep'
+        ];
+
+        return [
+            'filter using a closure' => [
+                $input,
+                $expectedResult,
+                function ($value): bool {
+                    return is_array($value) || $value === 'keep';
+                },
+            ],
+            'filter using a callable "static class-method call" as string' => [
+                $input,
+                $expectedResult,
+                ArrayUtilityFilterRecursiveCallbackFixture::class . '::callbackViaStaticMethod',
+            ],
+            'filter using a callable "static class-method call" as array' => [
+                $input,
+                $expectedResult,
+                [ArrayUtilityFilterRecursiveCallbackFixture::class, 'callbackViaStaticMethod'],
+            ],
+            'filter using a callable "instance-method call" as array' => [
+                $input,
+                $expectedResult,
+                [new ArrayUtilityFilterRecursiveCallbackFixture(), 'callbackViaInstanceMethod'],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider filterRecursiveSupportsCallableCallbackDataProvider
+     * @param array    $input
+     * @param array    $expectedResult
+     * @param callable $callback
+     * @see https://forge.typo3.org/issues/84485
+     */
+    public function filterRecursiveSupportsCallableCallback(array $input, array $expectedResult, callable $callback)
+    {
+        $result = ArrayUtility::filterRecursive($input, $callback);
         $this->assertEquals($expectedResult, $result);
     }
 }
