@@ -1644,9 +1644,11 @@ class EditDocumentController
 
         $closeUrl = $this->getCloseUrl();
         if ($this->returnUrl !== $closeUrl) {
-            $scriptName = $request->getAttribute('normalizedParams')->getScriptName();
+            $requestUri = GeneralUtility::linkThisScript([
+                'returnUrl' => $closeUrl,
+            ]);
             $aOnClick = 'vHWin=window.open('
-                . GeneralUtility::quoteJSvalue($scriptName . '?returnUrl=' . $closeUrl) . ','
+                . GeneralUtility::quoteJSvalue($requestUri) . ','
                 . GeneralUtility::quoteJSvalue(md5($this->R_URI))
                 . ',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
             $openInNewWindowButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()
