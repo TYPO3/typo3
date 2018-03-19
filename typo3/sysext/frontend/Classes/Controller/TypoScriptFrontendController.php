@@ -1659,7 +1659,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 // Page is 'not found' in case a subsection was found and not accessible, code 2
                 $this->pageNotFound = 2;
                 unset($this->rootLine[$a]);
-                break;
             }
         }
         return $removeTheRestFlag;
