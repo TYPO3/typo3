@@ -14,28 +14,25 @@ namespace TYPO3\CMS\Recycler\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Module 'Recycler' for the 'recycler' extension.
+ * Backend Module for the 'recycler' extension.
  */
-class RecyclerModuleController extends ActionController
+class RecyclerModuleController
 {
-    /**
-     * @var string
-     */
-    protected $relativePath;
-
-    /**
-     * @var string
-     */
-    public $perms_clause;
 
     /**
      * @var array
@@ -63,27 +60,28 @@ class RecyclerModuleController extends ActionController
     protected $id;
 
     /**
-     * @var BackendTemplateView
+     * @var StandaloneView
      */
     protected $view;
 
     /**
-     * BackendTemplateView Container
-     *
-     * @var BackendTemplateView
+     * @var ModuleTemplate
      */
-    protected $defaultViewObjectName = BackendTemplateView::class;
+    protected $moduleTemplate;
 
     /**
-     * Initializes the Module
+     * Injects the request object for the current request, and renders correct action
+     *
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
      */
-    public function initializeAction()
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->id = (int)GeneralUtility::_GP('id');
+        $this->id = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
         $backendUser = $this->getBackendUser();
-        $this->perms_clause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
-        $this->pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
+        $this->pageRecord = BackendUtility::readPageAccess($this->id, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         $this->isAccessibleForCurrentUser = $this->id && is_array($this->pageRecord) || !$this->id && $this->getBackendUser()->isAdmin();
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
 
         // don't access in workspace
         if ($backendUser->workspace !== 0) {
@@ -101,35 +99,47 @@ class RecyclerModuleController extends ActionController
         if (isset($modTS['properties']['recordsPageLimit']) && (int)$modTS['properties']['recordsPageLimit'] > 0) {
             $this->recordsPageLimit = (int)$modTS['properties']['recordsPageLimit'];
         }
+
+        $action = 'index';
+        $this->initializeView($action);
+
+        $result = call_user_func_array([$this, $action . 'Action'], [$request]);
+        if ($result instanceof ResponseInterface) {
+            return $result;
+        }
+
+        $this->registerDocheaderButtons();
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
-     * Initialize the view
-     *
-     * @param ViewInterface $view The view
+     * @param string $templateName
      */
-    public function initializeView(ViewInterface $view)
+    protected function initializeView(string $templateName)
     {
-        /** @var BackendTemplateView $view */
-        parent::initializeView($view);
-        $this->registerDocheaderButtons();
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->setTemplate($templateName);
+        $this->view->setTemplateRootPaths(['EXT:recycler/Resources/Private/Templates/RecyclerModule']);
+        $this->view->setPartialRootPaths(['EXT:recycler/Resources/Private/Partials']);
+        $this->view->setLayoutRootPaths(['EXT:recycler/Resources/Private/Layouts']);
+        $this->view->getRequest()->setControllerExtensionName('Recycler');
     }
 
     /**
      * Renders the content of the module.
+     *
+     * @param ServerRequestInterface $request
      */
-    public function indexAction()
+    public function indexAction(ServerRequestInterface $request)
     {
-        // Integrate dynamic JavaScript such as configuration or lables:
-        $jsConfiguration = $this->getJavaScriptConfiguration();
-        $this->view->getModuleTemplate()->getPageRenderer()->addInlineSettingArray('Recycler', $jsConfiguration);
-        $this->view->getModuleTemplate()->getPageRenderer()->addInlineLanguageLabelFile('EXT:recycler/Resources/Private/Language/locallang.xlf');
+        $this->moduleTemplate->getPageRenderer()->addInlineSettingArray('Recycler', $this->getJavaScriptConfiguration($request->getAttribute('normalizedParams')));
+        $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelFile('EXT:recycler/Resources/Private/Language/locallang.xlf');
         if ($this->isAccessibleForCurrentUser) {
-            $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
         }
 
-        $this->view->assign('title', $this->getLanguageService()->getLL('title'));
         $this->view->assign('allowDelete', $this->allowDelete);
     }
 
@@ -140,48 +150,39 @@ class RecyclerModuleController extends ActionController
      */
     protected function registerDocheaderButtons()
     {
-        /** @var ButtonBar $buttonBar */
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $currentRequest = $this->request;
-        $moduleName = $currentRequest->getPluginName();
-        $getVars = $this->request->getArguments();
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
-        $extensionName = $currentRequest->getControllerExtensionName();
-        if (count($getVars) === 0) {
-            $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = ['id', 'route', $modulePrefix];
-        }
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($moduleName)
-            ->setGetVariables($getVars);
+            ->setModuleName('web_recycler')
+            ->setGetVariables(['id', 'route']);
         $buttonBar->addButton($shortcutButton);
 
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref('#')
             ->setDataAttributes(['action' => 'reload'])
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.reload'))
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**
      * Gets the JavaScript configuration.
      *
+     * @param NormalizedParams $normalizedParams
      * @return array The JavaScript configuration
      */
-    protected function getJavaScriptConfiguration()
+    protected function getJavaScriptConfiguration(NormalizedParams $normalizedParams): array
     {
-        $configuration = [
+        return [
             'pagingSize' => $this->recordsPageLimit,
-            'showDepthMenu' => 1,
-            'startUid' => (int)GeneralUtility::_GP('id'),
-            'isSSL' => GeneralUtility::getIndpEnv('TYPO3_SSL'),
+            'showDepthMenu' => true,
+            'startUid' => $this->id,
+            'isSSL' => $normalizedParams->isHttps(),
             'deleteDisable' => !$this->allowDelete,
             'depthSelection' => $this->getDataFromSession('depthSelection', 0),
             'tableSelection' => $this->getDataFromSession('tableSelection', ''),
             'States' => $this->getBackendUser()->uc['moduleData']['web_recycler']['States']
         ];
-        return $configuration;
     }
 
     /**
@@ -205,29 +206,19 @@ class RecyclerModuleController extends ActionController
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
     /**
-     * Returns an instance of DocumentTemplate
-     *
-     * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    protected function getDocumentTemplate()
-    {
-        return $GLOBALS['TBE_TEMPLATE'];
-    }
-
-    /**
      * Returns an instance of LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
