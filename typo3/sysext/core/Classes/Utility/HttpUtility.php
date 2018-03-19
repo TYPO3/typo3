@@ -36,6 +36,7 @@ class HttpUtility
     const HTTP_STATUS_304 = 'HTTP/1.1 304 Not Modified';
     const HTTP_STATUS_305 = 'HTTP/1.1 305 Use Proxy';
     const HTTP_STATUS_307 = 'HTTP/1.1 307 Temporary Redirect';
+    const HTTP_STATUS_308 = 'HTTP/1.1 308 Permanent Redirect';
     const HTTP_STATUS_400 = 'HTTP/1.1 400 Bad Request';
     const HTTP_STATUS_401 = 'HTTP/1.1 401 Unauthorized';
     const HTTP_STATUS_402 = 'HTTP/1.1 402 Payment Required';
