@@ -49,12 +49,12 @@ class MethodCallMatcher extends AbstractCoreMatcher
         if (!$this->isFileIgnored($node)
             && !$this->isLineIgnored($node)
             && $node instanceof MethodCall
-            && in_array($node->name, array_keys($this->flatMatcherDefinitions), true)
+            && in_array($node->name->name, array_keys($this->flatMatcherDefinitions), true)
         ) {
             $match = [
                 'restFiles' => [],
                 'line' => $node->getAttribute('startLine'),
-                'message' => 'Call to method "' . $node->name . '()"',
+                'message' => 'Call to method "' . $node->name->name . '()"',
                 'indicator' => 'weak',
             ];
 
@@ -62,7 +62,7 @@ class MethodCallMatcher extends AbstractCoreMatcher
             $isArgumentUnpackingUsed = $this->isArgumentUnpackingUsed($node->args);
 
             $isPossibleMatch = false;
-            foreach ($this->flatMatcherDefinitions[$node->name]['candidates'] as $candidate) {
+            foreach ($this->flatMatcherDefinitions[$node->name->name]['candidates'] as $candidate) {
                 // A method call is considered a match if it is called with argument unpacking, or
                 // if the number of given arguments is within range of mandatory / max number of arguments
                 if ($isArgumentUnpackingUsed

@@ -40,8 +40,8 @@ EOC;
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new GeneratorClassesResolver());
         $statements = $traverser->traverse($statements);
-        $this->assertInstanceOf(FullyQualified::class, $statements[0]->args[0]->value);
-        $this->assertEquals([ 'TYPO3', 'CMS', 'Does', 'Not', 'Exist'], $statements[0]->args[0]->value->parts);
+        $this->assertInstanceOf(FullyQualified::class, $statements[0]->expr->args[0]->value);
+        $this->assertEquals(['TYPO3', 'CMS', 'Does', 'Not', 'Exist'], $statements[0]->expr->args[0]->value->parts);
     }
 
     /**
@@ -58,6 +58,6 @@ EOC;
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new GeneratorClassesResolver());
         $statements = $traverser->traverse($statements);
-        $this->assertNotInstanceOf(FullyQualified::class, $statements[0]->args[0]->value);
+        $this->assertNotInstanceOf(FullyQualified::class, $statements[0]->expr->args[0]->value);
     }
 }

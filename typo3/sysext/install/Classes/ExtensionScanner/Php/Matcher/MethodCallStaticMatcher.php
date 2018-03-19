@@ -61,7 +61,7 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
         ) {
             if ($node->class instanceof FullyQualified) {
                 // 'Foo\Bar::deprecated()' -> strong match
-                $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name;
+                $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name->name;
                 if (in_array($fqdnClassWithMethod, array_keys($this->matcherDefinitions), true)) {
                     $this->matches[] = [
                         'restFiles' => $this->matcherDefinitions[$fqdnClassWithMethod]['restFiles'],
@@ -71,12 +71,12 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
                     ];
                 }
             } elseif ($node->class instanceof Variable
-                && in_array($node->name, array_keys($this->flatMatcherDefinitions), true)
+                && in_array($node->name->name, array_keys($this->flatMatcherDefinitions), true)
             ) {
                 $match = [
                     'restFiles' => [],
                     'line' => $node->getAttribute('startLine'),
-                    'message' => 'Use of static class method call "' . $node->name . '()"',
+                    'message' => 'Use of static class method call "' . $node->name->name . '()"',
                     'indicator' => 'weak',
                 ];
 
@@ -84,7 +84,7 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
                 $isArgumentUnpackingUsed = $this->isArgumentUnpackingUsed($node->args);
 
                 $isPossibleMatch = false;
-                foreach ($this->flatMatcherDefinitions[$node->name]['candidates'] as $candidate) {
+                foreach ($this->flatMatcherDefinitions[$node->name->name]['candidates'] as $candidate) {
                     // A method call is considered a match if it is called with argument unpacking, or
                     // if the number of given arguments is within range of mandatory / max number of arguments
                     if ($isArgumentUnpackingUsed

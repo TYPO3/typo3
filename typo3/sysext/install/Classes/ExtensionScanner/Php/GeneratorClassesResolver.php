@@ -42,7 +42,7 @@ class GeneratorClassesResolver extends NodeVisitorAbstract
         if ($node instanceof StaticCall
             && $node->class instanceof FullyQualified
             && $node->class->toString() === 'TYPO3\CMS\Core\Utility\GeneralUtility'
-            && $node->name === 'makeInstance'
+            && $node->name->name === 'makeInstance'
             && isset($node->args[0]->value)
             && $node->args[0]->value instanceof String_
         ) {

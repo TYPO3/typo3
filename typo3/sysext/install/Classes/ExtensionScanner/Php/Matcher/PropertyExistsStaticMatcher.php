@@ -47,13 +47,13 @@ class PropertyExistsStaticMatcher extends AbstractCoreMatcher
             && $node instanceof Property
             && $node->isStatic()
             && !$node->isPrivate()
-            && in_array($node->props[0]->name, array_keys($this->matcherDefinitions), true)
+            && in_array($node->props[0]->name->name, array_keys($this->matcherDefinitions), true)
         ) {
-            $propertyName = $node->props[0]->name;
+            $propertyName = $node->props[0]->name->name;
             $match = [
                 'restFiles' => $this->matcherDefinitions[$propertyName]['restFiles'],
                 'line' => $node->getAttribute('startLine'),
-                'message' => 'Use of property "' . $node->props[0]->name . '"',
+                'message' => 'Use of property "' . $node->props[0]->name->name . '"',
                 'indicator' => 'weak',
             ];
             $this->matches[] = $match;

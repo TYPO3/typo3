@@ -55,7 +55,7 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
 
             if ($node->class instanceof FullyQualified) {
                 // 'Foo\Bar::aMethod()' -> strong match
-                $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name;
+                $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name->name;
                 $numberOfArguments = count($node->args);
                 if (!$isArgumentUnpackingUsed
                     && in_array($fqdnClassWithMethod, array_keys($this->matcherDefinitions), true)
@@ -66,14 +66,14 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
                     $this->matches[] = [
                         'restFiles' => $this->matcherDefinitions[$fqdnClassWithMethod]['restFiles'],
                         'line' => $node->getAttribute('startLine'),
-                        'message' => 'Method "' . $node->name . '()" needs at least '
+                        'message' => 'Method "' . $node->name->name . '()" needs at least '
                             . $this->matcherDefinitions[$fqdnClassWithMethod]['numberOfMandatoryArguments']
                             . ' arguments.',
                         'indicator' => 'strong',
                     ];
                 }
             } elseif ($node->class instanceof Variable
-                && in_array($node->name, array_keys($this->flatMatcherDefinitions), true)
+                && in_array($node->name->name, array_keys($this->flatMatcherDefinitions), true)
             ) {
                 $match = [
                     'restFiles' => [],
@@ -83,7 +83,7 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
 
                 $numberOfArguments = count($node->args);
                 $isPossibleMatch = false;
-                foreach ($this->flatMatcherDefinitions[$node->name]['candidates'] as $candidate) {
+                foreach ($this->flatMatcherDefinitions[$node->name->name]['candidates'] as $candidate) {
                     // A method call is considered a match if it is not called with argument unpacking
                     // and number of used arguments is lesser than numberOfMandatoryArguments
                     if (!$isArgumentUnpackingUsed
@@ -92,7 +92,7 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
                         && $numberOfArguments <= $candidate['maximumNumberOfArguments']
                     ) {
                         $isPossibleMatch = true;
-                        $match['message'] = 'Method "' . $node->name . '()" needs at least '
+                        $match['message'] = 'Method "' . $node->name->name . '()" needs at least '
                             . $candidate['numberOfMandatoryArguments'] . ' arguments.';
                         $match['restFiles'] = array_unique(array_merge($match['restFiles'], $candidate['restFiles']));
                     }

@@ -55,7 +55,7 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
 
             if ($node->class instanceof FullyQualified) {
                 // 'Foo\Bar::aMethod()' -> strong match
-                $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name;
+                $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name->name;
                 if (!$isArgumentUnpackingUsed
                     && in_array($fqdnClassWithMethod, array_keys($this->matcherDefinitions), true)
                     && count($node->args) > $this->matcherDefinitions[$fqdnClassWithMethod]['maximumNumberOfArguments']
@@ -63,14 +63,14 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
                     $this->matches[] = [
                         'restFiles' => $this->matcherDefinitions[$fqdnClassWithMethod]['restFiles'],
                         'line' => $node->getAttribute('startLine'),
-                        'message' => 'Method "' . $node->name . '()" supports only '
+                        'message' => 'Method "' . $node->name->name . '()" supports only '
                             . $this->matcherDefinitions[$fqdnClassWithMethod]['maximumNumberOfArguments']
                             . ' arguments.',
                         'indicator' => 'strong',
                     ];
                 }
             } elseif ($node->class instanceof Variable
-                && in_array($node->name, array_keys($this->flatMatcherDefinitions), true)
+                && in_array($node->name->name, array_keys($this->flatMatcherDefinitions), true)
             ) {
                 $match = [
                     'restFiles' => [],
@@ -80,14 +80,14 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
 
                 $numberOfArguments = count($node->args);
                 $isPossibleMatch = false;
-                foreach ($this->flatMatcherDefinitions[$node->name]['candidates'] as $candidate) {
+                foreach ($this->flatMatcherDefinitions[$node->name->name]['candidates'] as $candidate) {
                     // A method call is considered a match if it is not called with argument unpacking
                     // and number of used arguments is higher than maximumNumberOfArguments
                     if (!$isArgumentUnpackingUsed
                         && $numberOfArguments > $candidate['maximumNumberOfArguments']
                     ) {
                         $isPossibleMatch = true;
-                        $match['message'] = 'Method "' . $node->name . '()" supports only '
+                        $match['message'] = 'Method "' . $node->name->name . '()" supports only '
                             . $candidate['maximumNumberOfArguments'] . ' arguments.';
                         $match['restFiles'] = array_unique(array_merge($match['restFiles'], $candidate['restFiles']));
                     }
