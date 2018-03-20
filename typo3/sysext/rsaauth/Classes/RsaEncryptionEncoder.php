@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Rsaauth;
 
 /*
@@ -89,15 +90,12 @@ class RsaEncryptionEncoder implements SingletonInterface
      * Gets RSA Public Key.
      *
      * @return Keypair|null
-     *
-     * @deprecated since TYPO3 v9. Will be removed in v10.
      */
-    public function getRsaPublicKey()
+    public function getRsaPublicKey(): ?Keypair
     {
-        trigger_error('Method getRsaPublicKey() will be removed in v10.', E_USER_DEPRECATED);
-
         $keyPair = null;
         $backend = Backend\BackendFactory::getBackend();
+
         if ($backend !== null) {
             $keyPair = $backend->createNewKeyPair();
             $storage = Storage\StorageFactory::getStorage();

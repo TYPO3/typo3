@@ -12,7 +12,6 @@ Description
 All methods related to AJAX requests in :php:`\TYPO3\CMS\Rsaauth\RsaEncryptionEncoder` have been
 deprecated:
 
-* :php:`getRsaPublicKey()`
 * :php:`getRsaPublicKeyAjaxHandler()`
 
 The ``rsa_publickey`` AJAX route has been adapted to use the
@@ -23,20 +22,19 @@ RSA key retrieval via eID in the frontend.
 Impact
 ======
 
-Calling one of the above methods on an instance of :php:`RsaEncryptionEncoder` will throw a
+Calling the above method on an instance of :php:`RsaEncryptionEncoder` will throw a
 deprecation warning in v9 and a PHP fatal in v10.
 
 
 Affected Installations
 ======================
 
-All extensions that call the deprecated methods are affected.
+All extensions that call the deprecated method are affected.
 
 
 Migration
 =========
 
-Extensions should not use the deprecated methods but directly request a key pair via the RSA
-backend API.
+Extensions should use the AJAX route `rsa_publickey` instead of the deprecated method.
 
 .. index:: Backend, Frontend, PHP-API, FullyScanned

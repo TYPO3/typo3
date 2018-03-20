@@ -18,8 +18,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Rsaauth\Backend\BackendFactory;
-use TYPO3\CMS\Rsaauth\Storage\StorageFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
 
 /**
  * eID script "RsaPublicKeyGenerationController" to generate an rsa key
@@ -27,23 +27,30 @@ use TYPO3\CMS\Rsaauth\Storage\StorageFactory;
 class RsaPublicKeyGenerationController
 {
     /**
+     * @var RsaEncryptionEncoder
+     */
+    protected $encoder;
+
+    /**
+     * Set up dependencies
+     */
+    public function __construct(RsaEncryptionEncoder $encoder = null)
+    {
+        $this->encoder = $encoder ?: GeneralUtility::makeInstance(RsaEncryptionEncoder::class);
+    }
+
+    /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function processRequest(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var \TYPO3\CMS\Rsaauth\Backend\AbstractBackend $backend */
-        $backend = BackendFactory::getBackend();
+        $keyPair = $this->encoder->getRsaPublicKey();
 
-        if ($backend === null) {
+        if ($keyPair === null) {
             // add a HTTP 500 error code, if an error occurred
             return new JsonResponse(null, 500);
         }
-
-        $keyPair = $backend->createNewKeyPair();
-        $storage = StorageFactory::getStorage();
-        $storage->put($keyPair->getPrivateKey());
-        session_commit();
 
         switch ($request->getHeaderLine('content-type')) {
             case 'application/json':
