@@ -83,14 +83,14 @@ class ConfirmationFinisher extends AbstractFinisher
 
     /**
      * Executes this finisher
+     *
      * @see AbstractFinisher::execute()
+     * @return string
      *
      * @throws FinisherException
      */
     protected function executeInternal()
     {
-        $formRuntime = $this->finisherContext->getFormRuntime();
-
         $contentElementUid = (int)$this->parseOption('contentElementUid');
         $typoscriptObjectPath = $this->parseOption('typoscriptObjectPath');
         if ($contentElementUid > 0) {
@@ -113,6 +113,6 @@ class ConfirmationFinisher extends AbstractFinisher
             $message = $this->parseOption('message');
         }
 
-        $formRuntime->getResponse()->setContent($message);
+        return $message;
     }
 }

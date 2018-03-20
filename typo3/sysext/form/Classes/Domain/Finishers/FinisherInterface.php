@@ -30,6 +30,7 @@ interface FinisherInterface
      * Executes the finisher
      *
      * @param FinisherContext $finisherContext The Finisher context that contains the current Form Runtime and Response
+     * @return string|null
      * @api
      */
     public function execute(FinisherContext $finisherContext);

@@ -117,12 +117,13 @@ abstract class AbstractFinisher implements FinisherInterface
      * Executes the finisher
      *
      * @param FinisherContext $finisherContext The Finisher context that contains the current Form Runtime and Response
+     * @return string|null
      * @api
      */
     final public function execute(FinisherContext $finisherContext)
     {
         $this->finisherContext = $finisherContext;
-        $this->executeInternal();
+        return $this->executeInternal();
     }
 
     /**
@@ -130,6 +131,7 @@ abstract class AbstractFinisher implements FinisherInterface
      *
      * Override and fill with your own implementation!
      *
+     * @return string|null
      * @api
      */
     abstract protected function executeInternal();
