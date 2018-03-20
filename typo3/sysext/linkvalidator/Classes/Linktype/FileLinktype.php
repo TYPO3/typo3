@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  */
 
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -52,6 +53,8 @@ class FileLinktype extends AbstractLinktype
         try {
             $file = $resourceFactory->retrieveFileOrFolderObject($url);
         } catch (FileDoesNotExistException $e) {
+            return false;
+        } catch (FolderDoesNotExistException $e) {
             return false;
         }
         return !$file->isMissing();
