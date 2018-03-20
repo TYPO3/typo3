@@ -341,20 +341,27 @@ class Modal {
     });
 
     if (configuration.type === 'ajax') {
-      $.get(
-        <string>configuration.content,
-        (response: string): void => {
-          this.currentModal.find(configuration.ajaxTarget ? configuration.ajaxTarget : Identifiers.body).empty().append(response);
-          if (configuration.ajaxCallback) {
-            configuration.ajaxCallback();
-          }
-          this.currentModal.trigger('modal-loaded');
-        },
-        'html'
-      );
-      Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done((icon: string): void => {
-        currentModal.find(Identifiers.body).html('<div class="modal-loading">' + icon + '</div>');
-      });
+      const contentTarget = configuration.ajaxTarget ? configuration.ajaxTarget : Identifiers.body;
+      const $loaderTarget = currentModal.find(contentTarget);
+      if (!$loaderTarget.hasClass('modal-content-loaded')) {
+        Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done((icon: string): void => {
+          $loaderTarget.html('<div class="modal-loading">' + icon + '</div>');
+          $.get(
+              <string>configuration.content,
+              (response: string): void => {
+                this.currentModal.find(contentTarget)
+                    .addClass('modal-content-loaded')
+                    .empty()
+                    .append(response);
+                if (configuration.ajaxCallback) {
+                  configuration.ajaxCallback();
+                }
+                this.currentModal.trigger('modal-loaded');
+              },
+              'html'
+          );
+        });
+      }
     } else if (configuration.type === 'iframe') {
       currentModal.find(Identifiers.body).append(
         $('<iframe />', {
