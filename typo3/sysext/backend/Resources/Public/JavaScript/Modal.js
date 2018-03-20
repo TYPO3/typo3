@@ -295,15 +295,15 @@ define(['jquery',
 
     // Add content
     if (type === 'ajax') {
-      $.get(content, function(response) {
-        Modal.currentModal.find(ajaxTarget ? ajaxTarget : Modal.identifiers.body).empty().append(response);
-        if (ajaxCallback) {
-          ajaxCallback();
-        }
-        Modal.currentModal.trigger('modal-loaded');
-      }, 'html');
       Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done(function(icon) {
         currentModal.find(Modal.identifiers.body).html('<div class="modal-loading">' + icon + '</div>');
+        $.get(content, function(response) {
+          Modal.currentModal.find(ajaxTarget ? ajaxTarget : Modal.identifiers.body).empty().append(response);
+          if (ajaxCallback) {
+            ajaxCallback();
+          }
+          Modal.currentModal.trigger('modal-loaded');
+        }, 'html');
       });
     } else if (type === 'iframe') {
       currentModal.find(Modal.identifiers.body).append(
