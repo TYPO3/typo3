@@ -129,4 +129,14 @@ class AdminPanelEnabledShownOnSubmitInitializeModuleFixture implements AdminPane
     {
         return true;
     }
+
+    /**
+     * Returns a string array with javascript files that will be rendered after the module
+     *
+     * @return array
+     */
+    public function getJavaScriptFiles(): array
+    {
+        return [];
+    }
 }

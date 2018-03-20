@@ -178,4 +178,12 @@ abstract class AbstractModule implements AdminPanelModuleInterface
         }
         return $result;
     }
+
+    /**
+     * @return array
+     */
+    public function getJavaScriptFiles(): array
+    {
+        return [];
+    }
 }

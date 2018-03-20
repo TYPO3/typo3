@@ -24,20 +24,11 @@
 			<trans-unit id="edit">
 				<source>Editing</source>
 			</trans-unit>
-			<trans-unit id="edit_displayIcons">
-				<source>Display edit panels</source>
-			</trans-unit>
-			<trans-unit id="edit_displayFieldIcons">
-				<source>Display edit icons</source>
-			</trans-unit>
 			<trans-unit id="edit_editFormsOnPage">
 				<source>Editforms on page</source>
 			</trans-unit>
 			<trans-unit id="edit_editNoPopup">
 				<source>No popup window</source>
-			</trans-unit>
-			<trans-unit id="edit_openAB">
-				<source>Open TYPO3 Backend</source>
 			</trans-unit>
 			<trans-unit id="edit_recordHistory">
 				<source>View record change history</source>

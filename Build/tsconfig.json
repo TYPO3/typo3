@@ -14,6 +14,10 @@
         "baseUrl": ".",
         "rootDir": "../",
         "paths": {
+            "TYPO3/CMS/Adminpanel/*": [
+                "../typo3/sysext/adminpanel/Resources/Public/JavaScript/*",
+                "../typo3/sysext/adminpanel/Resources/Private/TypeScript/*"
+            ],
             "TYPO3/CMS/Backend/*": [
                 "../typo3/sysext/backend/Resources/Public/JavaScript/*",
                 "../typo3/sysext/backend/Resources/Private/TypeScript/*"

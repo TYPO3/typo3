@@ -103,4 +103,11 @@ interface AdminPanelModuleInterface
      * @return bool
      */
     public function showFormSubmitButton(): bool;
+
+    /**
+     * Returns a string array with javascript files that will be rendered after the module
+     *
+     * @return array
+     */
+    public function getJavaScriptFiles(): array;
 }

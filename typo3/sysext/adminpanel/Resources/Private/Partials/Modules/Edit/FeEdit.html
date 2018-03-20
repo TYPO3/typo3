@@ -1,0 +1,25 @@
+<f:if condition="{feEdit}">
+	<div class="typo3-adminPanel-form-group">
+		<div class="typo3-adminPanel-form-group-checkbox">
+			<f:form.hidden name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="0"/>
+			<label for="edit_displayFieldIcons">
+				<f:form.checkbox
+					name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]"
+					value="1" checked="{display.fieldIcons}"
+					id="edit_displayFieldIcons"/>
+				<f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_edit.xlf:displayFieldIcons"/>
+			</label>
+		</div>
+		<div class="typo3-adminPanel-form-group-checkbox">
+			<f:form.hidden name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="0"/>
+			<label for="edit_displayIcons">
+				<f:form.checkbox
+					name="TSFE_ADMIN_PANEL[edit_displayIcons]"
+					value="1"
+					checked="{display.displayIcons}"
+					id="edit_displayIcons"/>
+				<f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_edit.xlf:displayIcons"/>
+			</label>
+		</div>
+	</div>
+</f:if>

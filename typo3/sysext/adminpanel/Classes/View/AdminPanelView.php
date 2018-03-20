@@ -128,6 +128,13 @@ class AdminPanelView
             $output[] = '</div>';
         }
 
+        foreach ($module->getJavaScriptFiles() as $javaScriptFile) {
+            $output[] =
+                '<script src="' .
+                PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($javaScriptFile)) .
+                '"></script>';
+        }
+
         return implode('', $output);
     }
 

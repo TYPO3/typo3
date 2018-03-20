@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Adminpanel\Modules;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -33,71 +34,48 @@ class EditModule extends AbstractModule
      */
     public function getContent(): string
     {
-        $output = [];
-        if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_edit']) {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $templateNameAndPath = $this->extResources . '/Templates/Modules/Edit.html';
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
+        $view->setPartialRootPaths([$this->extResources . '/Partials']);
 
-            // If another page module was specified, replace the default Page module with the new one
-            $newPageModule = trim((string)$this->getBackendUser()->getTSConfigVal('options.overridePageModule'));
-            $pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+        $view->assignMultiple([
+            'feEdit' => ExtensionManagementUtility::isLoaded('feedit'),
+            'display' => [
+                'edit' => $this->getBackendUser()->uc['TSFE_adminConfig']['display_edit'],
+                'fieldIcons' => $this->getConfigurationOption('displayFieldIcons'),
+                'displayIcons' => $this->getConfigurationOption('displayIcons'),
+            ],
+            'toolbar' => $this->getBackendUser()->adminPanel->ext_makeToolBar(),
+            'script' => [
+                'pageUid' => (int)$this->getTypoScriptFrontendController()->page['uid'],
+                'pageModule' => $this->getPageModule(),
+                'backendScript' => BackendUtility::getBackendScript(),
+                't3BeSitenameMd5' => \md5('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']),
+            ],
+        ]);
 
-            if (ExtensionManagementUtility::isLoaded('feedit')) {
-                $output[] = '<div class="typo3-adminPanel-form-group">';
-                $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
-                $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="0" />';
-                $output[] = '    <label for="edit_displayFieldIcons">';
-                $output[] = '      <input type="checkbox" id="edit_displayFieldIcons" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="1"' .
-                            ($this->getBackendUser(
-                            )->uc['TSFE_adminConfig']['edit_displayFieldIcons'] ? ' checked="checked"' : '') .
-                            ' />';
-                $output[] = '      ' . $this->extGetLL('edit_displayFieldIcons');
-                $output[] = '    </label>';
-                $output[] = '  </div>';
-                $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
-                $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="0" />';
-                $output[] = '    <label for="edit_displayIcons">';
-                $output[] = '      <input type="checkbox" id="edit_displayIcons" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="1"' .
-                            ($this->getBackendUser(
-                            )->uc['TSFE_adminConfig']['edit_displayIcons'] ? ' checked="checked"' : '') .
-                            ' />';
-                $output[] = '      ' . $this->extGetLL('edit_displayIcons');
-                $output[] = '    </label>';
-                $output[] = '  </div>';
-                $output[] = '</div>';
-            }
+        return $view->render();
+    }
 
-            $output[] = $this->getBackendUser()->adminPanel->ext_makeToolBar();
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
+    {
+        return $GLOBALS['TSFE'];
+    }
 
-            $onClick = '
-                if (parent.opener && parent.opener.top && parent.opener.top.TS) {
-                    parent.opener.top.fsMod.recentIds["web"]=' .
-                       (int)$this->getTypoScriptFrontendController()->page['uid'] .
-                       ';
-                    if (parent.opener.top && parent.opener.top.nav_frame && parent.opener.top.nav_frame.refresh_nav) {
-                        parent.opener.top.nav_frame.refresh_nav();
-                    }
-                    parent.opener.top.goToModule("' .
-                       $pageModule .
-                       '");
-                    parent.opener.top.focus();
-                } else {
-                    vHWin=window.open(' .
-                       GeneralUtility::quoteJSvalue(BackendUtility::getBackendScript()) .
-                       ',\'' .
-                       md5('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) .
-                       '\');
-                    vHWin.focus();
-                }
-                return false;
-            ';
-            $output[] = '<div class="typo3-adminPanel-form-group">';
-            $output[] = '  <a class="typo3-adminPanel-btn typo3-adminPanel-btn-default" href="#" onclick="' .
-                        htmlspecialchars($onClick) .
-                        '">';
-            $output[] = '    ' . $this->extGetLL('edit_openAB');
-            $output[] = '  </a>';
-            $output[] = '</div>';
-        }
-        return implode('', $output);
+    /**
+     * @return string
+     */
+    private function getPageModule(): string
+    {
+        $newPageModule = \trim(
+            (string)$this->getBackendUser()
+                ->getTSConfigVal('options.overridePageModule')
+        );
+        return BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
     }
 
     /**
@@ -149,10 +127,10 @@ class EditModule extends AbstractModule
     }
 
     /**
-     * @return TypoScriptFrontendController
+     * @return array
      */
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
+    public function getJavaScriptFiles(): array
     {
-        return $GLOBALS['TSFE'];
+        return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit/OpenBackendHandler.js'];
     }
 }
