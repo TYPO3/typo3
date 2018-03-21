@@ -2737,7 +2737,10 @@ class DatabaseRecordList
      */
     public function setCsvRow($csvRow)
     {
-        $this->csvLines[] = CsvUtility::csvValues($csvRow);
+        $csvDelimiter = $this->modTSconfig['properties']['csvDelimiter'] ?? ',';
+        $csvQuote = $this->modTSconfig['properties']['csvQuote'] ?? '"';
+
+        $this->csvLines[] = CsvUtility::csvValues($csvRow, $csvDelimiter, $csvQuote);
     }
 
     /**
