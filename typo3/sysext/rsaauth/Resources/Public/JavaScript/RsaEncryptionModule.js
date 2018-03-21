@@ -118,22 +118,12 @@ define(['jquery', './RsaLibrary'], function($) {
       });
 
       // Try to fetch the field which submitted the form
-      var $currentField = RsaEncryption.$currentForm.find('input[type=submit]:focus,input[type=image]:focus,button:focus');
+      var $currentField = RsaEncryption.$currentForm.find('input[type=submit]:focus,input[type=image]:focus');
       if ($currentField.length === 1) {
         $currentField.trigger('click');
       } else {
         // Create a hidden input field to fake pressing the submit button
-        var name = 'commandLI',
-          value = 'Submit';
-        var $submitField = RsaEncryption.$currentForm.find('input[type=submit],input[type=image],input[type=button],button[name][type=submit]').first();
-        if ($submitField.length === 1) {
-          name = $submitField.attr('name') || name;
-          value = $submitField.attr('value') || value ;
-        }
-        var $hiddenField = $('<input type="hidden">')
-          .attr('name', name)
-          .val(value);
-        RsaEncryption.$currentForm.append($hiddenField);
+        RsaEncryption.$currentForm.append('<input type="hidden" name="commandLI" value="Submit">');
 
         // Restore the original submit handler
         var originalOnSubmit = RsaEncryption.$currentForm.data('original-onsubmit');
