@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Documentation\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,7 +44,7 @@ class DocumentationService
             }
 
             // Cache file locally to be able to create a composer.json file when fetching a document
-            $absoluteCacheFilename = GeneralUtility::getFileAbsFileName('typo3temp/var/transient/documents.json');
+            $absoluteCacheFilename = Environment::getVarPath() . '/transient/documents.json';
             GeneralUtility::writeFileToTypo3tempDir($absoluteCacheFilename, $json);
         }
         return $documents;
@@ -170,7 +171,7 @@ class DocumentationService
         $languageSegment = str_replace('_', '-', strtolower($language));
         $packageName = sprintf('%s-%s-%s.zip', $packagePrefix, $version, $languageSegment);
         $packageUrl = $url . 'packages/' . $packageName;
-        $absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp/var/transient/' . $packageName);
+        $absolutePathToZipFile = Environment::getVarPath() . '/transient/' . $packageName;
 
         $packages = $this->getAvailablePackages($url);
         if (empty($packages) || !isset($packages[$version][$language])) {
@@ -200,7 +201,7 @@ class DocumentationService
             $result = $this->unzipDocumentPackage($absolutePathToZipFile, $absoluteDocumentPath);
 
             // Create a composer.json file
-            $absoluteCacheFilename = GeneralUtility::getFileAbsFileName('typo3temp/var/transient/documents.json');
+            $absoluteCacheFilename = Environment::getVarPath() . '/transient/documents.json';
             $documents = json_decode(file_get_contents($absoluteCacheFilename), true);
             foreach ($documents as $document) {
                 if ($document['key'] === $key) {

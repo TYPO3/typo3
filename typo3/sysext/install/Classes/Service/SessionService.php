@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SessionService implements SingletonInterface
 {
     /**
-     * The path to our typo3temp/var/ (where we can write our sessions). Set in the
+     * The path to our var/ folder (where we can write our sessions). Set in the
      * constructor.
      *
      * @var string
@@ -32,12 +33,12 @@ class SessionService implements SingletonInterface
     private $basePath;
 
     /**
-     * Path where to store our session files in typo3temp. %s will be
+     * Path where to store our session files in var/session/. %s will be
      * non-guessable.
      *
      * @var string
      */
-    private $sessionPath = 'InstallToolSessions/%s';
+    private $sessionPath = 'session/%s';
 
     /**
      * the cookie to store the session ID of the install tool
@@ -67,7 +68,7 @@ class SessionService implements SingletonInterface
      */
     public function __construct()
     {
-        $this->basePath = PATH_site . 'typo3temp/var/';
+        $this->basePath = Environment::getVarPath() . '/';
         // Start our PHP session early so that hasSession() works
         $sessionSavePath = $this->getSessionSavePath();
         // Register our "save" session handler
@@ -129,7 +130,7 @@ class SessionService implements SingletonInterface
                 GeneralUtility::mkdir_deep($sessionSavePath);
             } catch (\RuntimeException $exception) {
                 throw new \TYPO3\CMS\Install\Exception(
-                    'Could not create session folder in typo3temp/. Make sure it is writeable!',
+                    'Could not create session folder in ' . Environment::getVarPath() . '. Make sure it is writeable!',
                     1294587484
                 );
             }
@@ -466,7 +467,8 @@ class SessionService implements SingletonInterface
         }
         if (!$result) {
             throw new Exception(
-                'Session file not writable. Please check permission on typo3temp/var/InstallToolSessions and its subdirectories.',
+                'Session file not writable. Please check permission on ' .
+                Environment::getVarPath() . '/session and its subdirectories.',
                 1424355157
             );
         }

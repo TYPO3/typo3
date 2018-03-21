@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use Symfony\Component\Finder\Finder;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
@@ -234,7 +235,7 @@ class LanguagePackService
         }
 
         $absoluteExtractionPath = GeneralUtility::getFileAbsFileName('typo3conf/l10n/' . $iso . '/' . $key . '/');
-        $absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp/var/transient/' . $key . '-l10n-' . $iso . '.zip');
+        $absolutePathToZipFile = Environment::getVarPath() . '/transient/' . $key . '-l10n-' . $iso . '.zip';
 
         $packExists = is_dir($absoluteExtractionPath);
 
@@ -249,7 +250,7 @@ class LanguagePackService
                     $operationResult = GeneralUtility::rmdir($absoluteExtractionPath, true);
                 }
                 if ($operationResult) {
-                    GeneralUtility::mkdir_deep(GeneralUtility::getFileAbsFileName('typo3temp/var/transient/'));
+                    GeneralUtility::mkdir_deep(Environment::getVarPath() . '/transient/');
                     $operationResult = GeneralUtility::writeFileToTypo3tempDir($absolutePathToZipFile, $languagePackContent) === null;
                 }
                 $this->unzipTranslationFile($absolutePathToZipFile, $absoluteExtractionPath);

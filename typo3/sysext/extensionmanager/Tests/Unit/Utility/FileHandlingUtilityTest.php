@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
@@ -583,7 +584,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         // Create zip-file from extension
         $filename = $fileHandlerMock->_call('createZipFileFromExtension', $extKey);
 
-        $expectedFilename = PATH_site . 'typo3temp/var/ExtensionManager/' . $extKey . '_0.0.0_' . date('YmdHi', 42) . '.zip';
+        $expectedFilename = Environment::getVarPath() . '/transient/' . $extKey . '_0.0.0_' . date('YmdHi', 42) . '.zip';
         $this->testFilesToDelete[] = $filename;
         $this->assertEquals($expectedFilename, $filename, 'Archive file name differs from expectation');
 

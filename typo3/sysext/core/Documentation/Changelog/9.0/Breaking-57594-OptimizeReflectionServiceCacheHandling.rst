@@ -21,7 +21,8 @@ As runtime reflection has been removed completely, along with it several reflect
 analyzed doc blocks, have been removed as well. These are no longer necessary.
 
 The `extbase_reflection` cache is no longer plugin based and will no longer be stored in the database
-in the first place. Serialized ClassSchema instances will be stored in `typo3temp/var/Cache`.
+in the first place. Serialized ClassSchema instances will be stored in `typo3temp/var/cache` or `var/cache` for
+composer-based installations.
 
 The following classes for internal use only and have been removed:
 

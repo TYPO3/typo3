@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource\OnlineMedia\Helpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -118,7 +119,7 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
      */
     protected function getTempFolderPath()
     {
-        $path = PATH_site . 'typo3temp/var/transient/';
+        $path = Environment::getVarPath() . '/transient/';
         if (!is_dir($path)) {
             GeneralUtility::mkdir_deep($path);
         }

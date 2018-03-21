@@ -18,6 +18,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
@@ -827,7 +828,7 @@ class DataHandlerHook
             return;
         }
         // Lock file name:
-        $lockFileName = PATH_site . 'typo3temp/var/swap_locking/' . $table . '_' . $id . '.ser';
+        $lockFileName = Environment::getVarPath() . '/lock/swap' . $table . '_' . $id . '.ser';
         if (@is_file($lockFileName)) {
             $dataHandler->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.', 2);
             return;

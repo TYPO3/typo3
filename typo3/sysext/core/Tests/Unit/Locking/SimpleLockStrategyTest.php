@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\SkippedTestError;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -27,9 +29,9 @@ class SimpleLockStrategyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function constructorCreatesLockDirectoryIfNotExisting()
     {
-        GeneralUtility::rmdir(PATH_site . SimpleLockStrategy::FILE_LOCK_FOLDER, true);
+        GeneralUtility::rmdir(Environment::getVarPath() . '/' . SimpleLockStrategy::FILE_LOCK_FOLDER, true);
         new SimpleLockStrategy('999999999');
-        $this->assertTrue(is_dir(PATH_site . SimpleLockStrategy::FILE_LOCK_FOLDER));
+        $this->assertTrue(is_dir(Environment::getVarPath() . '/' . SimpleLockStrategy::FILE_LOCK_FOLDER));
     }
 
     /**
@@ -38,7 +40,7 @@ class SimpleLockStrategyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     public function constructorSetsResourceToPathWithIdIfUsingSimpleLocking()
     {
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, ['dummy'], ['999999999']);
-        $this->assertSame(PATH_site . SimpleLockStrategy::FILE_LOCK_FOLDER . 'simple_' . md5('999999999'), $lock->_get('filePath'));
+        $this->assertSame(Environment::getVarPath() . '/' . SimpleLockStrategy::FILE_LOCK_FOLDER . 'simple_' . md5('999999999'), $lock->_get('filePath'));
     }
 
     /**
@@ -88,9 +90,9 @@ class SimpleLockStrategyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     {
         return [
             'not within PATH_site' => [tempnam(sys_get_temp_dir(), 'foo')],
-            'directory traversal' => [PATH_site . 'typo3temp/../typo3temp/var/locks/foo'],
-            'directory traversal 2' => [PATH_site . 'typo3temp/var/locks/../../var/locks/foo'],
-            'within uploads' => [PATH_site . 'uploads/TYPO3-Lock-Test']
+            'directory traversal' => [Environment::getVarPath() . '/../var/lock/foo'],
+            'directory traversal 2' => [Environment::getVarPath() . '/lock/../../var/lock/foo'],
+            'within uploads' => [Environment::getPublicPath() . '/uploads/TYPO3-Lock-Test']
         ];
     }
 
@@ -98,7 +100,7 @@ class SimpleLockStrategyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      * @test
      * @dataProvider invalidFileReferences
      * @param string $file
-     * @throws \PHPUnit_Framework_SkippedTestError
+     * @throws SkippedTestError
      */
     public function releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory($file)
     {

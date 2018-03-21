@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Log\Writer;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
@@ -37,7 +38,7 @@ class FileWriter extends AbstractWriter
      *
      * @var string
      */
-    protected $defaultLogFileTemplate = 'typo3temp/var/logs/typo3_%s.log';
+    protected $defaultLogFileTemplate = '/log/typo3_%s.log';
 
     /**
      * Log file handle storage
@@ -232,6 +233,6 @@ class FileWriter extends AbstractWriter
      */
     protected function getDefaultLogFileName()
     {
-        return sprintf($this->defaultLogFileTemplate, substr(GeneralUtility::hmac($this->defaultLogFileTemplate, 'defaultLogFile'), 0, 10));
+        return Environment::getVarPath() . sprintf($this->defaultLogFileTemplate, substr(GeneralUtility::hmac($this->defaultLogFileTemplate, 'defaultLogFile'), 0, 10));
     }
 }

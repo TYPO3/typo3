@@ -73,7 +73,7 @@ class CoreUpdateService
     public function __construct(CoreVersionService $coreVersionService = null)
     {
         $this->coreVersionService = $coreVersionService ?: GeneralUtility::makeInstance(CoreVersionService::class);
-        $this->setDownloadTargetPath(PATH_site . 'typo3temp/var/transient/');
+        $this->setDownloadTargetPath(Environment::getVarPath() . '/transient/');
         $this->symlinkToCoreFiles = $this->discoverCurrentCoreSymlink();
         $this->downloadBaseUri = $this->coreVersionService->getDownloadBaseUri();
         $this->messages = new FlashMessageQueue('install');

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Locking\FileLockStrategy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -27,9 +28,9 @@ class FileLockStrategyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function constructorCreatesLockDirectoryIfNotExisting()
     {
-        GeneralUtility::rmdir(PATH_site . FileLockStrategy::FILE_LOCK_FOLDER, true);
+        GeneralUtility::rmdir(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER, true);
         new FileLockStrategy('999999999');
-        $this->assertTrue(is_dir(PATH_site . FileLockStrategy::FILE_LOCK_FOLDER));
+        $this->assertTrue(is_dir(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER));
     }
 
     /**
@@ -38,6 +39,6 @@ class FileLockStrategyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     public function constructorSetsFilePathToExpectedValue()
     {
         $lock = $this->getAccessibleMock(FileLockStrategy::class, ['dummy'], ['999999999']);
-        $this->assertSame(PATH_site . FileLockStrategy::FILE_LOCK_FOLDER . 'flock_' . md5('999999999'), $lock->_get('filePath'));
+        $this->assertSame(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER . 'flock_' . md5('999999999'), $lock->_get('filePath'));
     }
 }

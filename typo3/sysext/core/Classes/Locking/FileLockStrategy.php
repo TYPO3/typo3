@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Locking;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireException;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
@@ -24,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FileLockStrategy implements LockingStrategyInterface
 {
-    const FILE_LOCK_FOLDER = 'typo3temp/var/locks/';
+    const FILE_LOCK_FOLDER = 'lock/';
 
     /**
      * @var resource File pointer if using flock method
@@ -50,9 +51,9 @@ class FileLockStrategy implements LockingStrategyInterface
         /*
          * Tests if the directory for simple locks is available.
          * If not, the directory will be created. The lock path is usually
-         * below typo3temp/var, typo3temp/var itself should exist already
+         * below typo3temp/var, typo3temp/var itself should exist already (or root-path/var/ respectively)
          */
-        $path = PATH_site . self::FILE_LOCK_FOLDER;
+        $path = Environment::getVarPath() . '/' . self::FILE_LOCK_FOLDER;
         if (!is_dir($path)) {
             // Not using mkdir_deep on purpose here, if typo3temp itself
             // does not exist, this issue should be solved on a different

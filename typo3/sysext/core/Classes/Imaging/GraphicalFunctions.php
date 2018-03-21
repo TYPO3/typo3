@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Imaging;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -1922,8 +1923,8 @@ class GraphicalFunctions
      */
     public function randomName()
     {
-        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/transient/');
-        return PATH_site . 'typo3temp/var/transient/' . md5(uniqid('', true));
+        GeneralUtility::mkdir_deep(Environment::getVarPath() . '/transient/');
+        return Environment::getVarPath() . '/transient/' . md5(uniqid('', true));
     }
 
     /**

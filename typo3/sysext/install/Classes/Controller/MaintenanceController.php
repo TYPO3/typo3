@@ -118,7 +118,7 @@ class MaintenanceController extends AbstractController
             $failedDeletions = $typo3tempFileService->clearProcessedFiles();
             if ($failedDeletions) {
                 $messageQueue->enqueue(new FlashMessage(
-                    'Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/var/logs/typo3_*.log)',
+                    'Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/var/log/typo3_*.log)',
                     '',
                     FlashMessage::ERROR
                 ));

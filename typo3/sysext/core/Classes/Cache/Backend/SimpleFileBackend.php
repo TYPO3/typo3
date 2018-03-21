@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -76,13 +77,13 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
         parent::setCache($cache);
         if (empty($this->temporaryCacheDirectory)) {
             // If no cache directory was given with cacheDirectory
-            // configuration option, set it to a path below typo3temp/var/
-            $temporaryCacheDirectory = PATH_site . 'typo3temp/var/';
+            // configuration option, set it to a path below var/ folder
+            $temporaryCacheDirectory = Environment::getVarPath() . '/';
         } else {
             $temporaryCacheDirectory = $this->temporaryCacheDirectory;
         }
-        $codeOrData = $cache instanceof \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend ? 'Code' : 'Data';
-        $finalCacheDirectory = $temporaryCacheDirectory . 'Cache/' . $codeOrData . '/' . $this->cacheIdentifier . '/';
+        $codeOrData = $cache instanceof \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend ? 'code' : 'data';
+        $finalCacheDirectory = $temporaryCacheDirectory . 'cache/' . $codeOrData . '/' . $this->cacheIdentifier . '/';
         if (!is_dir($finalCacheDirectory)) {
             $this->createFinalCacheDirectory($finalCacheDirectory);
         }

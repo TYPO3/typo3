@@ -19,6 +19,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -3076,7 +3077,7 @@ class GeneralUtility
         } elseif (!static::isAbsPath($filename)) {
             // is relative. Prepended with PATH_site
             $filename = PATH_site . $filename;
-        } elseif (!static::isFirstPartOfStr($filename, PATH_site)) {
+        } elseif (!static::isFirstPartOfStr($filename, Environment::getProjectPath())) {
             // absolute, but set to blank if not allowed
             $filename = '';
         }
@@ -3125,7 +3126,7 @@ class GeneralUtility
     {
         $lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'];
         return static::isAbsPath($path) && static::validPathStr($path)
-            && (static::isFirstPartOfStr($path, PATH_site)
+            && (static::isFirstPartOfStr($path, Environment::getProjectPath())
                 || $lockRootPath && static::isFirstPartOfStr($path, $lockRootPath));
     }
 
@@ -3243,7 +3244,7 @@ class GeneralUtility
     }
 
     /**
-     * Will move an uploaded file (normally in "/tmp/xxxxx") to a temporary filename in PATH_site."typo3temp/" from where TYPO3 can use it.
+     * Will move an uploaded file (normally in "/tmp/xxxxx") to a temporary filename in Environment::getProjectPath() . "var/" from where TYPO3 can use it.
      * Use this function to move uploaded files to where you can work on them.
      * REMEMBER to use \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile() afterwards - otherwise temp-files will build up! They are NOT automatically deleted in PATH_site."typo3temp/"!
      *
@@ -3275,7 +3276,10 @@ class GeneralUtility
             $uploadedTempFileName = self::fixWindowsFilePath($uploadedTempFileName);
             if (
                 self::validPathStr($uploadedTempFileName)
-                && self::isFirstPartOfStr($uploadedTempFileName, PATH_site . 'typo3temp/')
+                && (
+                    self::isFirstPartOfStr($uploadedTempFileName, PATH_site . 'typo3temp/')
+                    || self::isFirstPartOfStr($uploadedTempFileName, Environment::getVarPath() . '/')
+                )
                 && @is_file($uploadedTempFileName)
             ) {
                 if (unlink($uploadedTempFileName)) {
@@ -3297,7 +3301,7 @@ class GeneralUtility
      */
     public static function tempnam($filePrefix, $fileSuffix = '')
     {
-        $temporaryPath = PATH_site . 'typo3temp/var/transient/';
+        $temporaryPath = Environment::getVarPath() . '/transient/';
         if (!is_dir($temporaryPath)) {
             self::mkdir_deep($temporaryPath);
         }

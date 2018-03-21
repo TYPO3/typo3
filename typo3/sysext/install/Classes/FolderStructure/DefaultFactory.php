@@ -107,12 +107,12 @@ class DefaultFactory
                                     'targetPermission' => $directoryPermission,
                                 ],
                                 [
-                                    'name' => 'Cache',
+                                    'name' => 'cache',
                                     'type' => DirectoryNode::class,
                                     'targetPermission' => $directoryPermission,
                                 ],
                                 [
-                                    'name' => 'locks',
+                                    'name' => 'lock',
                                     'type' => DirectoryNode::class,
                                     'targetPermission' => $directoryPermission,
                                 ]

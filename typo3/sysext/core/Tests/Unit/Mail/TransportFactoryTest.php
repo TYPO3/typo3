@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Mail\MemorySpool;
 use TYPO3\CMS\Core\Mail\TransportFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -90,7 +91,7 @@ class TransportFactoryTest extends UnitTestCase
             'defaultMailFromAddress' => '',
             'defaultMailFromName' => '',
             'transport_spool_type' => 'memory',
-            'transport_spool_filepath' => 'typo3temp/var/messages/',
+            'transport_spool_filepath' => Environment::getVarPath() . '/messages/',
         ];
 
         // Register fixture class
@@ -121,7 +122,7 @@ class TransportFactoryTest extends UnitTestCase
             'defaultMailFromAddress' => '',
             'defaultMailFromName' => '',
             'transport_spool_type' => 'TYPO3\\CMS\\Core\\Tests\\Unit\\Mail\\Fixtures\\FakeValidSpoolFixture',
-            'transport_spool_filepath' => 'typo3temp/var/messages/',
+            'transport_spool_filepath' => Environment::getVarPath() . '/messages/',
         ];
 
         /** @var \Swift_SpoolTransport $transport */
@@ -154,7 +155,7 @@ class TransportFactoryTest extends UnitTestCase
             'defaultMailFromAddress' => '',
             'defaultMailFromName' => '',
             'transport_spool_type' => 'TYPO3\\CMS\\Core\\Tests\\Unit\\Mail\\Fixtures\\FakeInvalidSpoolFixture',
-            'transport_spool_filepath' => 'typo3temp/var/messages/',
+            'transport_spool_filepath' => Environment::getVarPath() . '/messages/',
         ];
 
         $this->subject->get($mailSettings);
@@ -176,7 +177,7 @@ class TransportFactoryTest extends UnitTestCase
             'defaultMailFromAddress' => '',
             'defaultMailFromName' => '',
             'transport_spool_type' => '',
-            'transport_spool_filepath' => 'typo3temp/var/messages/',
+            'transport_spool_filepath' => Environment::getVarPath() . '/messages/',
         ];
 
         $transport = $this->subject->get($mailSettings);

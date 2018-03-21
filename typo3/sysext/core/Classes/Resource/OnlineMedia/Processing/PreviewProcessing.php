@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource\OnlineMedia\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\File;
@@ -77,7 +78,7 @@ class PreviewProcessing
         if (empty($temporaryFileName) || !file_exists($temporaryFileName)) {
             return;
         }
-        $temporaryFileNameForResizedThumb = uniqid(PATH_site . 'typo3temp/var/transient/online_media_' . $file->getHashedIdentifier()) . '.jpg';
+        $temporaryFileNameForResizedThumb = uniqid(Environment::getVarPath() . '/transient/online_media_' . $file->getHashedIdentifier()) . '.jpg';
         $configuration = $processedFile->getProcessingConfiguration();
         switch ($taskType) {
             case ProcessedFile::CONTEXT_IMAGEPREVIEW:

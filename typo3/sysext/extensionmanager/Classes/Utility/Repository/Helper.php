@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Repository;
  */
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
@@ -161,7 +162,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getLocalExtListFile()
     {
-        return PATH_site . 'typo3temp/var/ExtensionManager/' . (int)$this->repository->getUid() . '.extensions.xml.gz';
+        return Environment::getVarPath() . '/extensionmanager/' . (int)$this->repository->getUid() . '.extensions.xml.gz';
     }
 
     /**
@@ -201,7 +202,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getLocalMirrorListFile()
     {
-        return PATH_site . 'typo3temp/var/ExtensionManager/' . (int)$this->repository->getUid() . '.mirrors.xml.gz';
+        return Environment::getVarPath() . '/extensionmanager/' . (int)$this->repository->getUid() . '.mirrors.xml.gz';
     }
 
     /**

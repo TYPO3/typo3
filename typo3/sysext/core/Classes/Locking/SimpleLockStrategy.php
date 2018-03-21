@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Locking;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -23,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SimpleLockStrategy implements LockingStrategyInterface
 {
-    const FILE_LOCK_FOLDER = 'typo3temp/var/locks/';
+    const FILE_LOCK_FOLDER = 'lock/';
 
     /**
      * @var string File path used for this lock
@@ -53,8 +54,8 @@ class SimpleLockStrategy implements LockingStrategyInterface
     {
         // Tests if the directory for simple locks is available.
         // If not, the directory will be created. The lock path is usually
-        // below typo3temp/var, typo3temp/var itself should exist already
-        $path = PATH_site . self::FILE_LOCK_FOLDER;
+        // below typo3temp/var, typo3temp/var itself should exist already (or getProjectPath . /var/ respectively)
+        $path = Environment::getVarPath() . '/' . self::FILE_LOCK_FOLDER;
         if (!is_dir($path)) {
             // Not using mkdir_deep on purpose here, if typo3temp/var itself
             // does not exist, this issue should be solved on a different
@@ -102,7 +103,7 @@ class SimpleLockStrategy implements LockingStrategyInterface
         $success = true;
         if (
             GeneralUtility::isAllowedAbsPath($this->filePath)
-            && GeneralUtility::isFirstPartOfStr($this->filePath, PATH_site . self::FILE_LOCK_FOLDER)
+            && GeneralUtility::isFirstPartOfStr($this->filePath, Environment::getVarPath() . '/' . self::FILE_LOCK_FOLDER)
         ) {
             if (@unlink($this->filePath) === false) {
                 $success = false;

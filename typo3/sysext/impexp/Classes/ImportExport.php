@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Impexp;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -953,7 +954,7 @@ abstract class ImportExport
      */
     protected function getTemporaryFolderName()
     {
-        $temporaryPath = PATH_site . 'typo3temp/var/transient/';
+        $temporaryPath = Environment::getVarPath() . '/transient/';
         do {
             $temporaryFolderName = $temporaryPath . 'export_temp_files_' . mt_rand(1, PHP_INT_MAX);
         } while (is_dir($temporaryFolderName));

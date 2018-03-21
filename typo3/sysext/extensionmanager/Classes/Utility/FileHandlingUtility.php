@@ -1,6 +1,7 @@
 <?php
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -418,10 +419,11 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
             $version = '0.0.0';
         }
 
-        if (!@is_dir(PATH_site . 'typo3temp/var/ExtensionManager/')) {
-            GeneralUtility::mkdir(PATH_site . 'typo3temp/var/ExtensionManager/');
+        $temporaryPath = Environment::getVarPath() . '/transient/';
+        if (!@is_dir($temporaryPath)) {
+            GeneralUtility::mkdir($temporaryPath);
         }
-        $fileName = $this->getAbsolutePath('typo3temp/var/ExtensionManager/' . $extension . '_' . $version . '_' . date('YmdHi', $GLOBALS['EXEC_TIME']) . '.zip');
+        $fileName = $temporaryPath . $extension . '_' . $version . '_' . date('YmdHi', $GLOBALS['EXEC_TIME']) . '.zip';
 
         $zip = new \ZipArchive();
         $zip->open($fileName, \ZipArchive::CREATE);

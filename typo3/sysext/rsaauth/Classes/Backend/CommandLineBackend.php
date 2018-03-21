@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  */
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -41,7 +42,7 @@ class CommandLineBackend extends AbstractBackend
     /**
      * Temporary directory. It is best of it is outside of the web site root and
      * not publicly readable.
-     * For now we use typo3temp/var/ (stored in the variable without the trailing slash).
+     * For now we use Environment::getVarPath() . '/transient' (stored in the variable without the trailing slash).
      *
      * @var string
      */
@@ -59,7 +60,7 @@ class CommandLineBackend extends AbstractBackend
         if ($path !== '' && $path[0] === '/' && @is_dir($path) && is_writable($path)) {
             $this->temporaryDirectory = $path;
         } else {
-            $this->temporaryDirectory = PATH_site . 'typo3temp/var/transient';
+            $this->temporaryDirectory = Environment::getVarPath() . '/transient';
         }
     }
 

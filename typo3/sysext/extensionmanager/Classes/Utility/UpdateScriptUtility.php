@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
@@ -105,7 +106,7 @@ class UpdateScriptUtility
         if (!preg_match('/<\?php.*namespace\s+([^;]+);.*class/is', $scriptSourceCode, $matches)) {
             // if no, rename the class with a unique name
             $className = 'ext_update' . md5($extensionKey . $scriptSourceCode);
-            $temporaryFileName = PATH_site . 'typo3temp/var/transient/' . $className . '.php';
+            $temporaryFileName = Environment::getVarPath() . '/transient/' . $className . '.php';
             if (!file_exists(GeneralUtility::getFileAbsFileName($temporaryFileName))) {
                 $scriptSourceCode = preg_replace('/^\s*class\s+ext_update\s+/m', 'class ' . $className . ' ', $scriptSourceCode);
                 GeneralUtility::writeFileToTypo3tempDir($temporaryFileName, $scriptSourceCode);
