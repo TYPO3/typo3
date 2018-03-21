@@ -434,14 +434,16 @@ class Uri implements UriInterface
      */
     public function withPort($port)
     {
-        if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($port) === false) {
-            $argumentType = is_object($port) ? get_class($port) : gettype($port);
-            throw new \InvalidArgumentException('Invalid port "' . $argumentType . '" specified, must be an integer.', 1436717324);
-        }
+        if ($port !== null) {
+            if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($port) === false) {
+                $argumentType = is_object($port) ? get_class($port) : gettype($port);
+                throw new \InvalidArgumentException('Invalid port "' . $argumentType . '" specified, must be an integer.', 1436717324);
+            }
 
-        $port = (int)$port;
-        if ($port < 1 || $port > 65535) {
-            throw new \InvalidArgumentException('Invalid port "' . $port . '" specified, must be a valid TCP/UDP port.', 1436717326);
+            $port = (int)$port;
+            if ($port < 1 || $port > 65535) {
+                throw new \InvalidArgumentException('Invalid port "' . $port . '" specified, must be a valid TCP/UDP port.', 1436717326);
+            }
         }
 
         $clonedObject = clone $this;
