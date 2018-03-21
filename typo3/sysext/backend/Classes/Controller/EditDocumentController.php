@@ -548,6 +548,7 @@ class EditDocumentController
         $this->uc = $parsedBody['uc'] ?? $queryParams['uc'] ?? null;
 
         // Set overrideVals as default values if defVals does not exist.
+        // @todo: Why?
         if (!is_array($this->defVals) && is_array($this->overrideVals)) {
             $this->defVals = $this->overrideVals;
         }
@@ -1220,6 +1221,9 @@ class EditDocumentController
                                 ];
                                 if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
                                     $formDataCompilerInput['overrideValues'] = $this->overrideVals[$table];
+                                }
+                                if (!empty($this->defVals) && is_array($this->defVals)) {
+                                    $formDataCompilerInput['defaultValues'] = $this->defVals;
                                 }
 
                                 $formData = $formDataCompiler->compile($formDataCompilerInput);

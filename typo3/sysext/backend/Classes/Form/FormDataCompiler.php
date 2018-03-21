@@ -291,9 +291,15 @@ class FormDataCompiler
             'tabAndInlineStack' => [],
             'inlineData' => [],
             'inlineStructure' => [],
+
             // This array of fields will be set as hidden-fields instead of rendered normally!
             // This is used by EditDocumentController to force some field values if set as "overrideVals" in _GP
             'overrideValues' => [],
+            // Default values for fields. This is for example used in DatabaseRowInitializeNew data provider to set
+            // fields to specific values if new records are created. Values are often carried around as "defVals" GET
+            // parameters and hand over by controllers to FormEngine using this array. Array structure is
+            // ['aTableName']['aFieldName'] = 'aValue'.
+            'defaultValues' => [],
 
             // This array must NOT be set / manipulated by data providers but is instead used by the render part
             // of FormEngine to add runtime data. Containers and elements add data here which is given to

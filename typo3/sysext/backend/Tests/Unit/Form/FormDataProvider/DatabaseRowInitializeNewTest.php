@@ -333,7 +333,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFromGetIfColumnIsDefinedInTca()
+    public function addDataSetsDefaultDataFromDefaultValuesIfColumnIsDefinedInTca()
     {
         $input = [
             'command' => 'new',
@@ -347,10 +347,8 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                 'columns' => [
                     'aField' => [],
                 ],
-            ]
-        ];
-        $GLOBALS['_GET'] = [
-            'defVals' => [
+            ],
+            'defaultValues' => [
                 'aTable' => [
                     'aField' => 'getValue',
                 ],
@@ -367,82 +365,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFromPostIfColumnIsDefinedInTca()
-    {
-        $input = [
-            'command' => 'new',
-            'tableName' => 'aTable',
-            'vanillaUid' => 23,
-            'neighborRow' => null,
-            'inlineChildChildUid' => null,
-            'isInlineChild' => false,
-            'databaseRow' => [],
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [],
-                ],
-            ]
-        ];
-        $GLOBALS['_POST'] = [
-            'defVals' => [
-                'aTable' => [
-                    'aField' => 'postValue',
-                ],
-            ],
-        ];
-        $expected = [
-            'aField' => 'postValue',
-            'pid' => 23,
-        ];
-        $result = (new DatabaseRowInitializeNew)->addData($input);
-        $this->assertSame($expected, $result['databaseRow']);
-    }
-
-    /**
-     * @test
-     */
-    public function addDataSetsPrioritizesDefaultPostOverDefaultGet()
-    {
-        $input = [
-            'command' => 'new',
-            'tableName' => 'aTable',
-            'vanillaUid' => 23,
-            'neighborRow' => null,
-            'inlineChildChildUid' => null,
-            'isInlineChild' => false,
-            'databaseRow' => [],
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [],
-                ],
-            ]
-        ];
-        $GLOBALS['_GET'] = [
-            'defVals' => [
-                'aTable' => [
-                    'aField' => 'getValue',
-                ],
-            ],
-        ];
-        $GLOBALS['_POST'] = [
-            'defVals' => [
-                'aTable' => [
-                    'aField' => 'postValue',
-                ],
-            ],
-        ];
-        $expected = [
-            'aField' => 'postValue',
-            'pid' => 23,
-        ];
-        $result = (new DatabaseRowInitializeNew)->addData($input);
-        $this->assertSame($expected, $result['databaseRow']);
-    }
-
-    /**
-     * @test
-     */
-    public function addDataDoesNotSetDefaultDataFromGetPostIfColumnIsMissingInTca()
+    public function addDataDoesNotSetDefaultDataFromDefaultValuesIfColumnIsMissingInTca()
     {
         $input = [
             'command' => 'new',
@@ -461,19 +384,10 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             ],
             'processedTca' => [
                 'columns' => [],
-            ]
-        ];
-        $GLOBALS['_GET'] = [
-            'defVals' => [
+            ],
+            'defaultValues' => [
                 'aTable' => [
                     'aField' => 'getValue',
-                ],
-            ],
-        ];
-        $GLOBALS['_POST'] = [
-            'defVals' => [
-                'aTable' => [
-                    'aField' => 'postValue',
                 ],
             ],
         ];
@@ -487,7 +401,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataOverrulingGetPost()
+    public function addDataSetsDefaultDataOverrulesOtherDefauls()
     {
         $input = [
             'command' => 'new',
@@ -521,13 +435,11 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                     'aField' => [],
                 ],
             ],
-        ];
-        $GLOBALS['_POST'] = [
-            'defVals' => [
+            'defaultValues' => [
                 'aTable' => [
                     'aField' => 'postValue',
                 ],
-            ],
+            ]
         ];
         $expected = [
             'aField' => 'postValue',

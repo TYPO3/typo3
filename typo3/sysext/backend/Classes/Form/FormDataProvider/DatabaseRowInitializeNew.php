@@ -46,7 +46,7 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
         $result = $this->setDefaultsFromUserTsConfig($result);
         $result = $this->setDefaultsFromPageTsConfig($result);
         $result = $this->setDefaultsFromNeighborRow($result);
-        $result = $this->setDefaultsFromDevVals($result);
+        $result = $this->setDefaultsFromDefaultValues($result);
         $result = $this->setDefaultsFromInlineRelations($result);
         $result = $this->setDefaultsFromInlineParentLanguage($result);
         $result = $this->setPid($result);
@@ -122,23 +122,19 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
     }
 
     /**
-     * Apply default values from GET / POST
-     *
-     * @todo: Fetch this stuff from request object as soon as modules were moved to PSR-7,
-     * @todo: or hand values over via $result array, so the _GP access is transferred to
-     * @todo: controllers concern.
+     * Apply default values.
+     * These are typically carried around as "defVals" GET vars and set by controllers
+     * in $result['defaultValues'] array as init values.
      *
      * @param array $result Result array
      * @return array Modified result array
      */
-    protected function setDefaultsFromDevVals(array $result)
+    protected function setDefaultsFromDefaultValues(array $result)
     {
         $tableName = $result['tableName'];
-        $defaultValuesFromGetPost = GeneralUtility::_GP('defVals');
-        if (isset($defaultValuesFromGetPost[$tableName])
-            && is_array($defaultValuesFromGetPost[$tableName])
-        ) {
-            foreach ($defaultValuesFromGetPost[$tableName] as $fieldName => $fieldValue) {
+        $defaultValues = $result['defaultValues'] ?? [];
+        if (isset($defaultValues[$tableName]) && is_array($defaultValues[$tableName])) {
+            foreach ($defaultValues[$tableName] as $fieldName => $fieldValue) {
                 if (isset($result['processedTca']['columns'][$fieldName])) {
                     $result['databaseRow'][$fieldName] = $fieldValue;
                 }
