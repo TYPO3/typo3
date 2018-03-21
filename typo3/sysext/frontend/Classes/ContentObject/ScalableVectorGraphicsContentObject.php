@@ -28,7 +28,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string
      */
-    public function render($conf = []) : string
+    public function render($conf = []): string
     {
         $renderMode = isset($conf['renderMode.'])
             ? $this->cObj->stdWrap($conf['renderMode'], $conf['renderMode.'])
@@ -46,7 +46,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      *
      * @return string
      */
-    protected function renderInline(array $conf) : string
+    protected function renderInline(array $conf): string
     {
         $src = $this->resolveAbsoluteSourcePath($conf);
         list($width, $height, $isDefaultWidth, $isDefaultHeight) = $this->getDimensions($conf);
@@ -88,7 +88,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      *
      * @return string
      */
-    protected function renderObject(array $conf) : string
+    protected function renderObject(array $conf): string
     {
         $src = $this->resolveAbsoluteSourcePath($conf);
         list($width, $height) = $this->getDimensions($conf);
@@ -139,7 +139,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      *
      * @return string
      */
-    protected function resolveAbsoluteSourcePath(array $conf) : string
+    protected function resolveAbsoluteSourcePath(array $conf): string
     {
         $src = isset($conf['src.']) ? $this->cObj->stdWrap($conf['src'], $conf['src.']) : $conf['src'];
         return GeneralUtility::getFileAbsFileName($src);
@@ -150,7 +150,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      *
      * @return array
      */
-    protected function getDimensions(array $conf) : array
+    protected function getDimensions(array $conf): array
     {
         $isDefaultWidth = false;
         $isDefaultHeight = false;

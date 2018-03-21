@@ -38,7 +38,7 @@ class FlashMessageService implements SingletonInterface
      * @return FlashMessageQueue
      * @api
      */
-    public function getMessageQueueByIdentifier($identifier = 'core.template.flashMessages') : FlashMessageQueue
+    public function getMessageQueueByIdentifier($identifier = 'core.template.flashMessages'): FlashMessageQueue
     {
         if (!isset($this->flashMessageQueues[$identifier])) {
             $this->flashMessageQueues[$identifier] = GeneralUtility::makeInstance(

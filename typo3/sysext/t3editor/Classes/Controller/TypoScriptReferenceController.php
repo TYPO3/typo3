@@ -70,7 +70,7 @@ class TypoScriptReferenceController
      *
      * @return array
      */
-    protected function getTypes() : array
+    protected function getTypes(): array
     {
         $types = $this->xmlDoc->getElementsByTagName('type');
         $typeArr = [];

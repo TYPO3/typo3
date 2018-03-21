@@ -45,7 +45,7 @@ class SessionManager implements SingletonInterface
      * @return SessionBackendInterface
      * @throws \InvalidArgumentException
      */
-    public function getSessionBackend(string $identifier) : SessionBackendInterface
+    public function getSessionBackend(string $identifier): SessionBackendInterface
     {
         if (!isset($this->sessionBackends[$identifier])) {
             $configuration = $GLOBALS['TYPO3_CONF_VARS']['SYS']['session'][$identifier] ?? false;
@@ -70,7 +70,7 @@ class SessionManager implements SingletonInterface
      * @return SessionBackendInterface
      * @throws \InvalidArgumentException
      */
-    protected function createSessionBackendFromConfiguration(string $identifier, array $configuration) : SessionBackendInterface
+    protected function createSessionBackendFromConfiguration(string $identifier, array $configuration): SessionBackendInterface
     {
         $className = $configuration['backend'];
 

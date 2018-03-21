@@ -83,5 +83,6 @@ return PhpCsFixer\Config::create()
         'no_useless_else' => true,
         'phpdoc_types' => true,
         'phpdoc_types_order' => ['null_adjustment' => 'always_last', 'sort_algorithm' => 'none'],
+        'return_type_declaration' => ['space_before' => 'none'],
     ])
     ->setFinder($finder);

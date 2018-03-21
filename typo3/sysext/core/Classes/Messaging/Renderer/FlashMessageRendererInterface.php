@@ -28,5 +28,5 @@ interface FlashMessageRendererInterface
      * @param FlashMessage[] $flashMessages
      * @return string Representation of the flash message
      */
-    public function render(array $flashMessages) : string;
+    public function render(array $flashMessages): string;
 }

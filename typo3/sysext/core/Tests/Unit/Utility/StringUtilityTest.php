@@ -233,7 +233,7 @@ class StringUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function escapeCssSelectorDataProvider() : array
+    public function escapeCssSelectorDataProvider(): array
     {
         return [
             ['data.field', 'data\\.field'],

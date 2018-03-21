@@ -46,7 +46,7 @@ interface SessionBackendInterface
      *
      * @return array Return a list of all user sessions. The list may be empty.
      */
-    public function getAll() : array;
+    public function getAll(): array;
 
     /**
      * Read session data
@@ -55,7 +55,7 @@ interface SessionBackendInterface
      * @return array Returns the session data
      * @throws SessionNotFoundException
      */
-    public function get(string $sessionId) : array;
+    public function get(string $sessionId): array;
 
     /**
      * Delete a session record
@@ -63,7 +63,7 @@ interface SessionBackendInterface
      * @param string $sessionId
      * @return bool true if the session was deleted, false it session could not be found
      */
-    public function remove(string $sessionId) : bool;
+    public function remove(string $sessionId): bool;
 
     /**
      * Write session data. This method prevents overriding existing session data.
@@ -75,7 +75,7 @@ interface SessionBackendInterface
      * @return array The newly created session record.
      * @throws SessionNotCreatedException
      */
-    public function set(string $sessionId, array $sessionData) : array;
+    public function set(string $sessionId, array $sessionData): array;
 
     /**
      * Updates the session data.
@@ -87,7 +87,7 @@ interface SessionBackendInterface
      * @return array $sessionData The newly updated session record.
      * @throws SessionNotUpdatedException
      */
-    public function update(string $sessionId, array $sessionData) : array;
+    public function update(string $sessionId, array $sessionData): array;
 
     /**
      * Garbage Collection

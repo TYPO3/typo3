@@ -171,7 +171,7 @@ class UserToolbarItem implements ToolbarItemInterface
      *
      * @return StandaloneView
      */
-    protected function getFluidTemplateObject(string $filename):StandaloneView
+    protected function getFluidTemplateObject(string $filename): StandaloneView
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);

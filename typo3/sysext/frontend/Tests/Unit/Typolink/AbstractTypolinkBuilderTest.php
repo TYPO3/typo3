@@ -252,7 +252,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
      *
      * @return array [[$expected, $conf, $name, $respectFrameSetOption, $fallbackTarget],]
      */
-    public function resolveTargetAttributeDataProvider() : array
+    public function resolveTargetAttributeDataProvider(): array
     {
         $targetName = $this->getUniqueId('name_');
         $target = $this->getUniqueId('target_');

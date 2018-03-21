@@ -735,7 +735,7 @@ class ModuleTemplate
     /**
      * @return bool
      */
-    public function isUiBlock() : bool
+    public function isUiBlock(): bool
     {
         return $this->uiBlock;
     }

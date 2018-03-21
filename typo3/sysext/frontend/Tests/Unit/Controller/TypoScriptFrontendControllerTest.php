@@ -429,7 +429,7 @@ class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Unit
         $this->assertEquals($expected, $this->subject->linkVars);
     }
 
-    public function calculateLinkVarsDataProvider() : array
+    public function calculateLinkVarsDataProvider(): array
     {
         return [
             'simple variable' => [

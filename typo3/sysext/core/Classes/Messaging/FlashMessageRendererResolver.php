@@ -40,7 +40,7 @@ class FlashMessageRendererResolver
      *
      * @return FlashMessageRendererInterface
      */
-    public function resolve() : FlashMessageRendererInterface
+    public function resolve(): FlashMessageRendererInterface
     {
         $rendererClass = $this->resolveFlashMessageRenderClass();
         $renderer = GeneralUtility::makeInstance($rendererClass);
@@ -56,7 +56,7 @@ class FlashMessageRendererResolver
      *
      * @return string
      */
-    protected function resolveFlashMessageRenderClass() : string
+    protected function resolveFlashMessageRenderClass(): string
     {
         $context = $this->resolveContext();
         $renderClass = $this->renderer['_default'];
@@ -77,7 +77,7 @@ class FlashMessageRendererResolver
      *
      * @return string
      */
-    protected function resolveContext() : string
+    protected function resolveContext(): string
     {
         $context = '';
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {

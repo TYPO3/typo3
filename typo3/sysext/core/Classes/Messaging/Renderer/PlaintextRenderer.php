@@ -56,7 +56,7 @@ class PlaintextRenderer implements FlashMessageRendererInterface
      * @param FlashMessage[] $flashMessages
      * @return string Representation of the flash message as plain text
      */
-    public function render(array $flashMessages) : string
+    public function render(array $flashMessages): string
     {
         $messages = [];
 
