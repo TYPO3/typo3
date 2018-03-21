@@ -74,7 +74,7 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
             if (!$tableConf['ctrl']['adminOnly'] && !empty($tableConf['ctrl']['delete'])) {
                 $selected = in_array($table, $selectedTables, true) ? ' selected="selected"' : '';
                 $tableTitle = $this->getLanguageService()->sL($tableConf['ctrl']['title']);
-                $options[$tableTitle] = '<option' . $selected . ' value="' . $table . '">' . htmlspecialchars($tableTitle . ' (' . $table . ')') . '</option>';
+                $options[$tableTitle . ' ' . $table] = '<option' . $selected . ' value="' . $table . '">' . htmlspecialchars($tableTitle . ' (' . $table . ')') . '</option>';
             }
         }
         ksort($options);
