@@ -19,6 +19,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * An abstract exception handler
@@ -68,7 +69,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         $logMessage = 'Uncaught TYPO3 Exception: ' . $exceptionCodeNumber . $exception->getMessage() . ' | '
             . get_class($exception) . ' thrown in file ' . $filePathAndName . ' in line ' . $exception->getLine();
         if ($context === 'WEB') {
-            $logMessage .= '. Requested URL: ' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+            $logMessage .= '. Requested URL: ' . $this->anonymizeToken(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         }
         // When database credentials are wrong, the exception is probably
         // caused by this. Therefor we cannot do any database operation,
@@ -141,7 +142,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         if (method_exists($exception, 'getStatusHeaders')) {
             $headers = $exception->getStatusHeaders();
         } else {
-            $headers = [\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500];
+            $headers = [HttpUtility::HTTP_STATUS_500];
         }
         if (!headers_sent()) {
             foreach ($headers as $header) {
@@ -156,5 +157,17 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Replaces the generated token with a generic equivalent
+     *
+     * @param string $requestedUrl
+     * @return string
+     */
+    protected function anonymizeToken(string $requestedUrl): string
+    {
+        $pattern = '/(?<=[tT]oken=)[0-9a-fA-F]{40}/';
+        return preg_replace($pattern, '--AnonymizedToken--', $requestedUrl);
     }
 }
