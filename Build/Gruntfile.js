@@ -277,7 +277,7 @@ module.exports = function (grunt) {
             src: '<%= paths.t3icons %>module/module-about.svg'
           },
           {
-            dest: '<%= paths.sysext %>about/Resources/Public/Icons/module-adminpanel.svg',
+            dest: '<%= paths.sysext %>adminpanel/Resources/Public/Icons/module-adminpanel.svg',
             src: '<%= paths.t3icons %>module/module-adminpanel.svg'
           },
           {
