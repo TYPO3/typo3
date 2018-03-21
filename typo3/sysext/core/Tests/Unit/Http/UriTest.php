@@ -98,6 +98,18 @@ class UriTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function withPortAndNullValueReturnsInstanceWithProvidedPort()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $new = $uri->withPort(null);
+        $this->assertEquals(
+            'https://user:pass@local.example.com/foo?bar=baz#quz',
+            (string) $new
+        );
+    }
+    /**
      * @return array
      */
     public function validPortsDataProvider()
@@ -130,7 +142,6 @@ class UriTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function invalidPortsDataProviderType()
     {
         return [
-            'null'      => [null],
             'false'     => [false],
             'string'    => ['string'],
             'array'     => [[3000]],
