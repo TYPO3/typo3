@@ -248,7 +248,7 @@ class ElementInformationController
      *
      * @return array
      */
-    protected function getPageTitle() : array
+    protected function getPageTitle(): array
     {
         $pageTitle = [
             'title' => BackendUtility::getRecordTitle($this->table, $this->row, false)
@@ -272,7 +272,7 @@ class ElementInformationController
      *
      * @return array
      */
-    protected function getPreview() : array
+    protected function getPreview(): array
     {
         $preview = [];
         // Perhaps @todo in future: Also display preview for records - without fileObject
@@ -318,7 +318,7 @@ class ElementInformationController
      *
      * @return array
      */
-    protected function getPropertiesForTable() : array
+    protected function getPropertiesForTable(): array
     {
         $propertiesForTable = [];
         $lang = $this->getLanguageService();
@@ -426,7 +426,7 @@ class ElementInformationController
      *
      * @return array
      */
-    protected function getReferences() : array
+    protected function getReferences(): array
     {
         $references = [];
         switch ($this->type) {
@@ -451,7 +451,7 @@ class ElementInformationController
      *
      * @return array
      */
-    protected function getBackButton() : array
+    protected function getBackButton(): array
     {
         return ['returnUrl' => GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GET('returnUrl'))];
     }
@@ -611,7 +611,7 @@ class ElementInformationController
      * @param string $ref Filename or uid
      * @return array
      */
-    protected function makeRefFrom($table, $ref) : array
+    protected function makeRefFrom($table, $ref): array
     {
         $refFromLines = [];
         $lang = $this->getLanguageService();

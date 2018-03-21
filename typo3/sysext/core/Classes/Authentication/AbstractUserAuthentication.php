@@ -1609,7 +1609,7 @@ abstract class AbstractUserAuthentication
      * @internal
      * @return string
      */
-    public function getSessionId() : string
+    public function getSessionId(): string
     {
         return $this->id;
     }
@@ -1618,7 +1618,7 @@ abstract class AbstractUserAuthentication
      * @internal
      * @return string
      */
-    public function getLoginType() : string
+    public function getLoginType(): string
     {
         return $this->loginType;
     }

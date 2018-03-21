@@ -953,7 +953,7 @@ abstract class AbstractItemProvider
      * @param string $localFieldName Current handle field name
      * @return QueryBuilder
      */
-    protected function buildForeignTableQueryBuilder(array $result, string $localFieldName):  QueryBuilder
+    protected function buildForeignTableQueryBuilder(array $result, string $localFieldName): QueryBuilder
     {
         $backendUser = $this->getBackendUser();
 

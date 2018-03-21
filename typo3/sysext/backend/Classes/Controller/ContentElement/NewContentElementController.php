@@ -568,7 +568,7 @@ class NewContentElementController extends AbstractModule
      * @param string $filename
      * @return StandaloneView
      */
-    protected function getFluidTemplateObject(string $filename = 'Main.html'):StandaloneView
+    protected function getFluidTemplateObject(string $filename = 'Main.html'): StandaloneView
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);

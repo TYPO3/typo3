@@ -141,7 +141,7 @@ class Richtext
     /**
      * @return BackendUserAuthentication
      */
-    protected function getBackendUser() : BackendUserAuthentication
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
@@ -179,7 +179,7 @@ class Richtext
      * @param string $recordType Record type value
      * @return array
      */
-    protected function getPageTsConfiguration(string $table, string $field, int $pid, string $recordType) : array
+    protected function getPageTsConfiguration(string $table, string $field, int $pid, string $recordType): array
     {
         // Load PageTSconfig configuration
         $fullPageTsConfig = $this->getRtePageTsConfigOfPid($pid);

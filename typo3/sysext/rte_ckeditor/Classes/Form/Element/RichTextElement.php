@@ -64,7 +64,7 @@ class RichTextElement extends AbstractFormElement
      * @return array
      * @throws \InvalidArgumentException
      */
-    public function render() : array
+    public function render(): array
     {
         $resultArray = $this->initializeResultArray();
         $parameterArray = $this->data['parameterArray'];
@@ -166,7 +166,7 @@ class RichTextElement extends AbstractFormElement
      * @param string $fieldId
      * @return string
      */
-    protected function getCkEditorRequireJsModuleCode(string $fieldId) : string
+    protected function getCkEditorRequireJsModuleCode(string $fieldId): string
     {
         $configuration = $this->prepareConfigurationForEditor();
 

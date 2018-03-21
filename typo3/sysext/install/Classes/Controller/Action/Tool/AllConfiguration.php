@@ -202,7 +202,7 @@ class AllConfiguration extends Action\AbstractAction
     /**
      * @return array
      */
-    protected function getDefaultConfigArrayComments() : array
+    protected function getDefaultConfigArrayComments(): array
     {
         /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);

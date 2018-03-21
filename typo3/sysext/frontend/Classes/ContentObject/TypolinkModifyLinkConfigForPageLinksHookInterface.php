@@ -29,5 +29,5 @@ interface TypolinkModifyLinkConfigForPageLinksHookInterface
      *
      * @return array The modified $linkConfiguration
      */
-    public function modifyPageLinkConfiguration(array $linkConfiguration, array $linkDetails, array $pageRow) : array;
+    public function modifyPageLinkConfiguration(array $linkConfiguration, array $linkDetails, array $pageRow): array;
 }

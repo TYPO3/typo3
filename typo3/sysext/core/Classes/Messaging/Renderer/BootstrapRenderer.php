@@ -54,7 +54,7 @@ class BootstrapRenderer implements FlashMessageRendererInterface
      * @param FlashMessage[] $flashMessages
      * @return string Representation of the flash message
      */
-    public function render(array $flashMessages) : string
+    public function render(array $flashMessages): string
     {
         return $this->getMessageAsMarkup($flashMessages);
     }
@@ -66,7 +66,7 @@ class BootstrapRenderer implements FlashMessageRendererInterface
      *
      * @return string The message severity class name
      */
-    protected function getClass(FlashMessage $flashMessage) : string
+    protected function getClass(FlashMessage $flashMessage): string
     {
         return 'alert-' . self::$classes[$flashMessage->getSeverity()];
     }
@@ -78,7 +78,7 @@ class BootstrapRenderer implements FlashMessageRendererInterface
      *
      * @return string The message severity icon name
      */
-    protected function getIconName(FlashMessage $flashMessage) : string
+    protected function getIconName(FlashMessage $flashMessage): string
     {
         return self::$icons[$flashMessage->getSeverity()];
     }
@@ -89,7 +89,7 @@ class BootstrapRenderer implements FlashMessageRendererInterface
      * @param FlashMessage[] $flashMessages
      * @return string
      */
-    protected function getMessageAsMarkup(array $flashMessages) : string
+    protected function getMessageAsMarkup(array $flashMessages): string
     {
         $markup = [];
         $markup[] = '<div class="typo3-messages">';

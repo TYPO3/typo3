@@ -340,7 +340,7 @@ class ReferenceIndex
      * @param array $record Record from $tableName
      * @return array
      */
-    protected function generateDataUsingRecord(string $tableName, array $record) : array
+    protected function generateDataUsingRecord(string $tableName, array $record): array
     {
         $this->relations = [];
         $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];

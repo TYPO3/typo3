@@ -47,7 +47,7 @@ class IconForRecordViewHelper extends AbstractViewHelper
      *
      * @return string
      */
-    public function render() : string
+    public function render(): string
     {
         $table = $this->arguments['table'];
         $size = $this->arguments['size'];

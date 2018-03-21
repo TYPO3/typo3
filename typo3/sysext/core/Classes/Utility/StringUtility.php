@@ -103,7 +103,7 @@ class StringUtility
      * @param string $selector
      * @return string
      */
-    public static function escapeCssSelector(string $selector) : string
+    public static function escapeCssSelector(string $selector): string
     {
         return preg_replace('/([#:.\\[\\],=@])/', '\\\\$1', $selector);
     }
