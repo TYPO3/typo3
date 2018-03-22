@@ -33,10 +33,10 @@ class OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     public function initializeArguments()
     {
         $this->registerUniversalTagAttributes();
+        $this->registerArgument('selected', 'boolean', 'If set, overrides automatic detection of selected state for this option.');
         $this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes. They will be added directly to the resulting HTML tag.');
         $this->registerArgument('data', 'array', 'Additional data-* attributes. They will each be added with a "data-" prefix.');
         $this->registerTagAttribute('value', 'mixed', 'Value to be inserted in HTML tag - must be convertible to string!');
-        $this->registerTagAttribute('selected', 'boolean', 'If filled, overrides automatic detection of selected state for this option');
     }
 
     /**
@@ -44,14 +44,8 @@ class OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
      */
     public function render()
     {
-        if ($this->arguments['selected'] === null) {
-            // user did not provide a tag attribute value. Determine if we need to
-            // set this attribute - or remove it entirely to prevent an empty attribute.
-            if ($this->isValueSelected($this->arguments['value'])) {
-                $this->tag->addAttribute('selected', 'selected');
-            } else {
-                $this->tag->removeAttribute('selected');
-            }
+        if ($this->arguments['selected'] ?? $this->isValueSelected($this->arguments['value'])) {
+            $this->tag->addAttribute('selected', 'selected');
         }
         $childContent = $this->renderChildren();
         $this->tag->setContent($childContent);
