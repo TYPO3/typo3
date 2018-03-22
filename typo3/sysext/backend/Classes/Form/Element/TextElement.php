@@ -278,7 +278,7 @@ class TextElement extends AbstractFormElement
             $fullElement[] =            isset($attributes['style']) ? ' style="' . htmlspecialchars($attributes['style']) . '"' : '';
             $fullElement[] =            isset($attributes['maxlength']) ? ' maxlength="' . htmlspecialchars($attributes['maxlength']) . '"' : '';
             $fullElement[] =        '>';
-            $fullElement[] =            htmlspecialchars($itemValue);
+            $fullElement[] =            htmlspecialchars($shortenedPlaceholder);
             $fullElement[] =        '</textarea>';
             $fullElement[] =    '</div>';
             $fullElement[] = '</div>';
