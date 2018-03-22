@@ -1906,7 +1906,7 @@ class ContentObjectRenderer
      */
     public function stdWrap_ifBlank($content = '', $conf = [])
     {
-        if (strlen($content) === 0) {
+        if (trim($content) === '') {
             $content = $conf['ifBlank'];
         }
         return $content;
