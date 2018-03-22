@@ -10,10 +10,10 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Tobias Liebig, Stephan Petzl, Christian Kartnig',
     'author_email' => 'mail_typo3@etobi.de, spetzl@gmx.at, office@hahnepeter.de',
     'author_company' => '',
-    'version' => '7.6.26',
+    'version' => '7.6.27',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.26',
+            'typo3' => '7.6.27',
         ],
         'conflicts' => [],
         'suggests' => [],
