@@ -5696,13 +5696,13 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             'null is blank' => [$alt, null, $conf],
             'false is blank' => [$alt, false, $conf],
             'empty string is blank' => [$alt, '', $conf],
+            'whitespace is blank' => [$alt, TAB . '', $conf],
             // non-blank cases
             'string is not blank' => ['string', 'string', $conf],
             'zero is not blank' => [0, 0, $conf],
             'zero string is not blank' => ['0', '0', $conf],
             'zero float is not blank' => [0.0, 0.0, $conf],
             'true is not blank' => [true, true, $conf],
-            'whitespace is not blank' => ['  ', '  ', $conf],
         ];
     }
 
