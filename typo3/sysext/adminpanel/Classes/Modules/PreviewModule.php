@@ -89,7 +89,8 @@ class PreviewModule extends AbstractModule
      */
     public function getLabel(): string
     {
-        return $this->extGetLL('preview');
+        $locallangFileAndPath = 'LLL:' . $this->extResources . '/Language/locallang_preview.xlf:module.label';
+        return $this->getLanguageService()->sL($locallangFileAndPath);
     }
 
     public function initializeModule(): void
