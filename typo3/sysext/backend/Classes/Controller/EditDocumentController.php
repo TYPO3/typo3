@@ -1479,7 +1479,7 @@ class EditDocumentController
             ? (int)$record[$TCActrl['languageField']]
             : 0;
         $showDuplicateButton = false;
-        if ($this->firstEl['cmd'] !== 'new' && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])) {
+        if ($this->firstEl['cmd'] !== 'new' && $this->firstEl['table'] !== 'sys_file_metadata' && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])) {
             if ($sysLanguageUid === 0) {
                 // show button, if record is in default language
                 $showDuplicateButton = true;
