@@ -3,6 +3,6 @@ CREATE TABLE ###TAGS_TABLE### (
 	identifier varchar(250) DEFAULT '' NOT NULL,
 	tag varchar(250) DEFAULT '' NOT NULL,
 	PRIMARY KEY (id),
-	KEY cache_id (identifier),
-	KEY cache_tag (tag)
+	KEY cache_id (identifier(191)),
+	KEY cache_tag (tag(191))
 ) ENGINE=InnoDB;

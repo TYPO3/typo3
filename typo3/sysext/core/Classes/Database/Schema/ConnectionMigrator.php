@@ -311,6 +311,9 @@ class ConnectionMigrator
 
         $schemaConfig = GeneralUtility::makeInstance(SchemaConfig::class);
         $schemaConfig->setName($this->connection->getDatabase());
+        if (isset($this->connection->getParams()['tableoptions'])) {
+            $schemaConfig->setDefaultTableOptions($this->connection->getParams()['tableoptions']);
+        }
 
         return GeneralUtility::makeInstance(Schema::class, $tablesForConnection, [], $schemaConfig);
     }
@@ -1097,6 +1100,7 @@ class ConnectionMigrator
      */
     protected function transformTablesForDatabasePlatform(array $tables, Connection $connection): array
     {
+        $defaultTableOptions = $connection->getParams()['tableoptions'] ?? [];
         foreach ($tables as &$table) {
             $indexes = [];
             foreach ($table->getIndexes() as $key => $index) {
@@ -1141,7 +1145,7 @@ class ConnectionMigrator
                 $indexes,
                 $table->getForeignKeys(),
                 0,
-                $table->getOptions()
+                array_merge($defaultTableOptions, $table->getOptions())
             );
         }
 

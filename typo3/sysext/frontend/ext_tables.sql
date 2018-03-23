@@ -66,8 +66,8 @@ CREATE TABLE fe_users (
 	lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
 	is_online int(10) unsigned DEFAULT '0' NOT NULL,
 
-	KEY parent (pid,username),
-	KEY username (username),
+	KEY parent (pid,username(100)),
+	KEY username (username(100)),
 	KEY is_online (is_online)
 );
 
@@ -124,7 +124,7 @@ CREATE TABLE sys_domain (
 	domainName varchar(255) DEFAULT '' NOT NULL,
 
 	KEY getSysDomain (hidden),
-	KEY getDomainStartPage (pid,hidden,domainName)
+	KEY getDomainStartPage (pid,hidden,domainName(100))
 );
 
 #

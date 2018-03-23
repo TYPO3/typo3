@@ -244,6 +244,7 @@ class ConfigurationStatus implements StatusProviderInterface
         if (strpos($defaultDatabaseCharset, 'utf8') !== 0) {
             // If the default character set is e.g. latin1, BUT all tables in the system are UTF-8,
             // we assume that TYPO3 has the correct charset for adding tables, and everything is fine
+            $queryBuilder = $connection->createQueryBuilder();
             $nonUtf8TableCollationsFound = $queryBuilder->select('table_collation')
                 ->from('information_schema.tables')
                 ->where(
@@ -264,6 +265,61 @@ class ConfigurationStatus implements StatusProviderInterface
                 $message = $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Info');
                 $severity = ReportStatus::INFO;
                 $statusValue = $this->getLanguageService()->getLL('status_info');
+            }
+        } elseif (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['tableoptions'])) {
+            $message = $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Ok');
+
+            $tableOptions = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['tableoptions'];
+            if (isset($tableOptions['collate'])) {
+                $collationConstraint = $queryBuilder->expr()->neq('table_collation', $queryBuilder->quote($tableOptions['collate']));
+                $charset = $tableOptions['collate'];
+            } elseif (isset($tableOptions['charset'])) {
+                $collationConstraint = $queryBuilder->expr()->notLike('table_collation', $queryBuilder->quote($tableOptions['charset'] . '%'));
+                $charset = $tableOptions['charset'];
+            }
+
+            if (isset($collationConstraint)) {
+                $queryBuilder = $connection->createQueryBuilder();
+                $wrongCollationTablesFound = $queryBuilder->select('table_collation')
+                    ->from('information_schema.tables')
+                    ->where(
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->eq('table_schema', $queryBuilder->quote($connection->getDatabase())),
+                            $collationConstraint
+                        )
+                    )
+                    ->setMaxResults(1)
+                    ->execute();
+
+                if ($wrongCollationTablesFound->rowCount() > 0) {
+                    $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_MixedCollations'), $charset);
+                    $severity = ReportStatus::ERROR;
+                    $statusValue = $this->getLanguageService()->getLL('status_checkFailed');
+                } else {
+                    if (isset($tableOptions['collate'])) {
+                        $collationConstraint = $queryBuilder->expr()->neq('collation_name', $queryBuilder->quote($tableOptions['collate']));
+                    } elseif (isset($tableOptions['charset'])) {
+                        $collationConstraint = $queryBuilder->expr()->notLike('collation_name', $queryBuilder->quote($tableOptions['charset'] . '%'));
+                    }
+
+                    $queryBuilder = $connection->createQueryBuilder();
+                    $wrongCollationColumnsFound = $queryBuilder->select('collation_name')
+                        ->from('information_schema.columns')
+                        ->where(
+                            $queryBuilder->expr()->andX(
+                                $queryBuilder->expr()->eq('table_schema', $queryBuilder->quote($connection->getDatabase())),
+                                $collationConstraint
+                            )
+                        )
+                        ->setMaxResults(1)
+                        ->execute();
+
+                    if ($wrongCollationColumnsFound->rowCount() > 0) {
+                        $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_MixedCollations'), $charset);
+                        $severity = ReportStatus::ERROR;
+                        $statusValue = $this->getLanguageService()->getLL('status_checkFailed');
+                    }
+                }
             }
         } else {
             $message = $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Ok');

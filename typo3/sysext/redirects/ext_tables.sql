@@ -15,5 +15,5 @@ CREATE TABLE sys_redirect (
 	lasthiton int(11) DEFAULT '0' NOT NULL,
 	disable_hitcount tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
-	KEY index_source (source_host,source_path)
+	KEY index_source (source_host(80),source_path(80))
 );

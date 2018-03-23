@@ -254,8 +254,8 @@ CREATE TABLE sys_file_processedfile (
 	height int(11) DEFAULT '0',
 
 	PRIMARY KEY (uid),
-	KEY combined_1 (original,task_type,configurationsha1),
-	KEY identifier (storage,identifier(199))
+	KEY combined_1 (original,task_type(100),configurationsha1),
+	KEY identifier (storage,identifier(180))
 );
 
 #
@@ -344,8 +344,8 @@ CREATE TABLE sys_history (
 	history_data mediumtext,
 	workspace int(11) DEFAULT '0',
 
-	KEY recordident_1 (tablename,recuid),
-	KEY recordident_2 (tablename,tstamp)
+	KEY recordident_1 (tablename(100),recuid),
+	KEY recordident_2 (tablename(100),tstamp)
 ) ENGINE=InnoDB;
 
 #
@@ -383,9 +383,9 @@ CREATE TABLE sys_refindex (
 	ref_string varchar(1024) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (hash),
-	KEY lookup_rec (tablename(240),recuid),
-	KEY lookup_uid (ref_table(240),ref_uid),
-	KEY lookup_string (ref_string(255))
+	KEY lookup_rec (tablename(100),recuid),
+	KEY lookup_uid (ref_table(100),ref_uid),
+	KEY lookup_string (ref_string(191))
 );
 
 #

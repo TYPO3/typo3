@@ -442,6 +442,14 @@ class InstallerController
                     $defaultConnectionSettings['path'] = Environment::getConfigPath() . $dbFilename;
                 }
             }
+            // For mysql, set utf8mb4 as default charset
+            if (isset($postValues['driver']) && in_array($postValues['driver'], ['mysqli', 'pdo_mysql'])) {
+                $defaultConnectionSettings['charset'] = 'utf8mb4';
+                $defaultConnectionSettings['tableoptions'] = [
+                    'charset' => 'utf8mb4',
+                    'collate' => 'utf8mb4_unicode_ci',
+                ];
+            }
         }
 
         $success = false;
@@ -450,7 +458,10 @@ class InstallerController
             try {
                 $connectionParams = $defaultConnectionSettings;
                 $connectionParams['wrapperClass'] = Connection::class;
-                $connectionParams['charset'] = 'utf-8';
+                if (!isset($connectionParams['charset'])) {
+                    // utf-8 as default for non mysql
+                    $connectionParams['charset'] = 'utf-8';
+                }
                 DriverManager::getConnection($connectionParams)->ping();
                 $success = true;
             } catch (DBALException $e) {
@@ -1054,7 +1065,7 @@ For each website you need a TypoScript template on the main page of your website
         if (strpos($defaultDatabaseCharset, 'utf8') !== 0) {
             $result = new FlashMessage(
                 'Your database uses character set "' . $defaultDatabaseCharset . '", '
-                . 'but only "utf8" is supported with TYPO3. You probably want to change this before proceeding.',
+                . 'but only "utf8" and "utf8mb4" are supported with TYPO3. You probably want to change this before proceeding.',
                 'Invalid Charset',
                 FlashMessage::ERROR
             );

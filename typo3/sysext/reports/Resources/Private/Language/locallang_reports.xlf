@@ -123,6 +123,9 @@
 			<trans-unit id="status_MysqlDatabaseCharacterSet_Info">
 				<source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
 			</trans-unit>
+			<trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations">
+				<source>Your default database is set to create tables with character set "%1$s", but contains tables or columns with different collations. Please fix these tables to avoid "illegal mix of collations" errors.</source>
+			</trans-unit>
 			<trans-unit id="status_encryptedConnectionStatus">
 				<source>Encrypted backend connection (HTTPS)</source>
 			</trans-unit>
