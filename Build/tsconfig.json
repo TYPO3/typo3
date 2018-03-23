@@ -50,6 +50,10 @@
                 "../typo3/sysext/impexp/Resources/Public/JavaScript/*",
                 "../typo3/sysext/impexp/Resources/Private/TypeScript/*"
             ],
+            "TYPO3/CMS/Info/*": [
+                "../typo3/sysext/info/Resources/Public/JavaScript/*",
+                "../typo3/sysext/info/Resources/Private/TypeScript/*"
+            ],
             "TYPO3/CMS/Install/*": [
                 "../typo3/sysext/install/Resources/Public/JavaScript/*",
                 "../typo3/sysext/install/Resources/Private/TypeScript/*"
