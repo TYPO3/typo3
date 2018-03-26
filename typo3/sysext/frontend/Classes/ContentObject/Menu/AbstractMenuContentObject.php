@@ -1629,6 +1629,9 @@ abstract class AbstractMenuContentObject
         if ($this->menuArr[$key]['target']) {
             $LD['target'] = $this->menuArr[$key]['target'];
         }
+
+        $tsfe = $this->getTypoScriptFrontendController();
+
         // Override URL if using "External URL"
         if ($this->menuArr[$key]['doktype'] == PageRepository::DOKTYPE_LINK) {
             if ($this->menuArr[$key]['urltype'] == 3 && GeneralUtility::validEmail($this->menuArr[$key]['url'])) {
@@ -1637,10 +1640,11 @@ abstract class AbstractMenuContentObject
                 $LD['target'] = '';
             } else {
                 $LD['totalURL'] = $this->parent_cObj->typoLink_URL(['parameter' => $this->getSysPage()->getExtURL($this->menuArr[$key])]);
+                if (empty($LD['target']) && !empty($tsfe->extTarget)) {
+                    $LD['target'] = $tsfe->extTarget;
+                }
             }
         }
-
-        $tsfe = $this->getTypoScriptFrontendController();
 
         // Override url if current page is a shortcut
         $shortcut = null;
