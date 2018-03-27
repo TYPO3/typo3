@@ -434,13 +434,16 @@ abstract class AbstractConditionMatcher
     protected function getVariableCommon(array $vars)
     {
         $value = null;
+        $namespace = trim($vars[0]);
         if (count($vars) === 1) {
             $value = $this->getGlobal($vars[0]);
+        } elseif ($namespace === 'LIT') {
+            $value = trim($vars[1]);
         } else {
             $splitAgain = explode('|', $vars[1], 2);
             $k = trim($splitAgain[0]);
             if ($k) {
-                switch ((string)trim($vars[0])) {
+                switch ($namespace) {
                     case 'GP':
                         $value = GeneralUtility::_GP($k);
                         break;
@@ -452,9 +455,6 @@ abstract class AbstractConditionMatcher
                         break;
                     case 'IENV':
                         $value = GeneralUtility::getIndpEnv($k);
-                        break;
-                    case 'LIT':
-                        return trim($vars[1]);
                         break;
                     default:
                         return null;

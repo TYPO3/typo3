@@ -272,6 +272,8 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 = 10.1]'), '2');
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 == 10]'), '3');
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 == 10.1]'), '4');
+        $this->assertTrue($this->matchCondition->match('[globalVar = LIT:0 = 0]'), '5');
+        $this->assertTrue($this->matchCondition->match('[globalVar = LIT:0 == 0]'), '6');
     }
 
     /**
@@ -300,6 +302,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     {
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 != 20]'));
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 != 10.2]'));
+        $this->assertTrue($this->matchCondition->match('[globalVar = LIT:0 != 1]'));
     }
 
     /**
@@ -332,6 +335,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     {
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 < 20]'));
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 < 10.2]'));
+        $this->assertTrue($this->matchCondition->match('[globalVar = LIT:0 < 1]'));
     }
 
     /**
@@ -356,6 +360,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     {
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 > 10]'));
         $this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.2 > 10.1]'));
+        $this->assertTrue($this->matchCondition->match('[globalVar = LIT:1 > 0]'));
     }
 
     /**
