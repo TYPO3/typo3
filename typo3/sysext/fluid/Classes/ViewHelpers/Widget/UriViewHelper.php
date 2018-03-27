@@ -39,6 +39,7 @@ class UriViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerArgument('useCacheHash', 'bool', 'True whether the cache hash should be appended to the URL', false, true);
         $this->registerArgument('addQueryStringMethod', 'string', 'Method to be used for query string');
         $this->registerArgument('action', 'string', 'Target action');
         $this->registerArgument('arguments', 'array', 'Arguments', false, []);
@@ -104,6 +105,7 @@ class UriViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
         return $uriBuilder->reset()
             ->setArguments([$argumentPrefix => $arguments])
             ->setSection($this->arguments['section'])
+            ->setUseCacheHash($this->arguments['useCacheHash'])
             ->setAddQueryString(true)
             ->setAddQueryStringMethod($this->arguments['addQueryStringMethod'])
             ->setArgumentsToBeExcludedFromQueryString([$argumentPrefix, 'cHash'])
