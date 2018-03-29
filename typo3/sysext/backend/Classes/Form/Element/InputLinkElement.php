@@ -265,9 +265,6 @@ class InputLinkElement extends AbstractFormElement
                     );
                 }
             } else {
-                $fallbackValue = 1;
-                $checked = ' checked="checked"';
-                $disabled = ' disabled="disabled"';
                 $overrideLabel = $languageService->sL(
                     'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override_not_available'
                 );
