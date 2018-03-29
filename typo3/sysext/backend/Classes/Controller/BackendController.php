@@ -342,27 +342,27 @@ class BackendController
                     $classes[] = $additionalAttributes['class'];
                     unset($additionalAttributes['class']);
                 }
-                $liAttributes[] = 'class="' . implode(' ', $classes) . '"';
+                $liAttributes['class'] = implode(' ', $classes);
 
                 // Add further attributes
                 foreach ($additionalAttributes as $name => $value) {
-                    $liAttributes[] = $name . '="' . $value . '"';
+                    $liAttributes[$name] = $value;
                 }
 
                 // Create a unique id from class name
-                $fullyQualifiedClassName = get_class($toolbarItem);
+                $fullyQualifiedClassName = \get_class($toolbarItem);
                 $className = GeneralUtility::underscoredToLowerCamelCase($fullyQualifiedClassName);
                 $className = GeneralUtility::camelCaseToLowerCaseUnderscored($className);
                 $className = str_replace(['_', '\\'], '-', $className);
-                $liAttributes[] = 'id="' . $className . '"';
+                $liAttributes['id'] = $className;
 
                 // Create data attribute identifier
                 $shortName = substr($fullyQualifiedClassName, strrpos($fullyQualifiedClassName, '\\') + 1);
                 $dataToolbarIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($shortName);
                 $dataToolbarIdentifier = str_replace('_', '-', $dataToolbarIdentifier);
-                $liAttributes[] = 'data-toolbar-identifier="' . htmlspecialchars($dataToolbarIdentifier) . '"';
+                $liAttributes['data-toolbar-identifier'] = $dataToolbarIdentifier;
 
-                $toolbar[] = '<li ' . implode(' ', $liAttributes) . '>';
+                $toolbar[] = '<li ' . GeneralUtility::implodeAttributes($liAttributes, true) . '>';
 
                 if ($hasDropDown) {
                     $toolbar[] = '<a href="#" class="toolbar-item-link dropdown-toggle" data-toggle="dropdown">';
