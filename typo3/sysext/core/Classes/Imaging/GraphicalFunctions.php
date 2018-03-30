@@ -368,7 +368,7 @@ class GraphicalFunctions
         $this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality;
 
         // ... but if 'processor_effects' is set, enable effects
-        if ($gfxConf['processor_effects']) {
+        if ($gfxConf['processor_effects'] === 1) {
             $this->NO_IM_EFFECTS = 0;
             $this->cmds['jpg'] .= $this->v5_sharpen(10);
             $this->cmds['jpeg'] .= $this->v5_sharpen(10);
