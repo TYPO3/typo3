@@ -184,18 +184,19 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
             return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_isDevelopmentVersion'), Status::NOTICE);
         }
 
-        // If fetching version matrix fails we can not do anything except print out the current version
-        try {
-            $coreVersionService->updateVersionMatrix();
-        } catch (Exception\RemoteFetchException $remoteFetchException) {
-            return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remoteFetchException'), Status::NOTICE);
-        }
-
         try {
             $isUpdateAvailable = $coreVersionService->isYoungerPatchReleaseAvailable();
             $isMaintainedVersion = $coreVersionService->isVersionActivelyMaintained();
-        } catch (Exception\CoreVersionServiceException $coreVersionServiceException) {
-            return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_patchLevelNotFoundInReleaseMatrix'), Status::WARNING);
+        } catch (Exception\RemoteFetchException $remoteFetchException) {
+            return GeneralUtility::makeInstance(
+                Status::class,
+                'TYPO3',
+                TYPO3_version,
+                $languageService->sL(
+                    'LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remoteFetchException'
+                ),
+                Status::NOTICE
+            );
         }
 
         if (!$isUpdateAvailable && $isMaintainedVersion) {

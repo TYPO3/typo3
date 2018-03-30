@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
 /*
@@ -14,338 +16,257 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Registry;
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\CoreVersionService;
-use TYPO3\CMS\Install\Service\Exception\CoreVersionServiceException;
 
 /**
  * Test case
  */
 class CoreVersionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * @test
-     */
-    public function updateVersionMatrixStoresVersionMatrixInRegistry()
+    public function setUpApiResponse(string $url, array $responseData)
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['fetchVersionMatrixFromRemote'], [], '', false);
-        $registry = $this->createMock(Registry::class);
-        $versionArray = [9 => []];
-        $registry->expects($this->once())->method('set')->with('TYPO3.CMS.Install', 'coreVersionMatrix', $versionArray);
-        $instance->_set('registry', $registry);
-        $instance->expects($this->once())->method('fetchVersionMatrixFromRemote')->will($this->returnValue($versionArray));
-        $instance->updateVersionMatrix();
+        $response = new JsonResponse($responseData);
+        $requestFactory = $this->prophesize(RequestFactory::class);
+        $requestFactory->request('https://get.typo3.org/v1/api/' . $url, Argument::cetera())->willReturn($response);
+        GeneralUtility::addInstance(RequestFactory::class, $requestFactory->reveal());
     }
 
     /**
      * @test
      */
-    public function updateVersionMatrixRemovesOldReleasesFromMatrix()
+    public function getTarGzSha1OfVersionReturnsSha1(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['fetchVersionMatrixFromRemote'], [], '', false);
-        $registry = $this->createMock(Registry::class);
-        $versionArray = [
-            '7' => [],
-            '6.2' => [],
-        ];
-        $registry
-            ->expects($this->once())
-            ->method('set')
-            ->with('TYPO3.CMS.Install', 'coreVersionMatrix', $this->logicalNot($this->arrayHasKey('6.2')));
-        $instance->_set('registry', $registry);
-        $instance->expects($this->once())->method('fetchVersionMatrixFromRemote')->will($this->returnValue($versionArray));
-        $instance->updateVersionMatrix();
-    }
-
-    /**
-     * @test
-     */
-    public function isInstalledVersionAReleasedVersionReturnsTrueForNonDevelopmentVersion()
-    {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
-        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
-        $this->assertTrue($instance->isInstalledVersionAReleasedVersion());
-    }
-
-    /**
-     * @test
-     */
-    public function isInstalledVersionAReleasedVersionReturnsFalseForDevelopmentVersion()
-    {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
-        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.4-dev'));
-        $this->assertFalse($instance->isInstalledVersionAReleasedVersion());
-    }
-
-    /**
-     * @test
-     */
-    public function getTarGzSha1OfVersionThrowsExceptionIfSha1DoesNotExistInMatrix()
-    {
-        $this->expectException(CoreVersionServiceException::class);
-        $this->expectExceptionCode(1381263173);
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'],
-            [],
-            '',
-            false
+        $this->setUpApiResponse(
+            'release/8.7.12',
+            [
+                'version' => '8.7.12',
+                'date' => '2018-03-22T11:36:39+00:00',
+                'type' => 'regular',
+                'tar_package' =>
+                    [
+                        'md5sum' => 'e835f454229b1077c9042f1bae4d46c7',
+                        'sha1sum' => '185f3796751a903554a03378634a438beeef966e',
+                        'sha256sum' => '77c3589161bea9d2c30e5d3d944443ba64b56813314ac2511b830e37d3297881',
+                    ],
+                'zip_package' =>
+                    [
+                        'md5sum' => 'e5736ca3b3725966a4528a0c53fc849f',
+                        'sha1sum' => 'eba49b9033da52d98f48876e97ed090a0c5593e0',
+                        'sha256sum' => '7aad3f5864256f3f989c0378cec8bb729e728b30adb25e55ae713d8e682ef72b',
+                    ],
+            ]
         );
-        $versionMatrix = [
-            '7' => [
-                'releases' => [
-                    '7.2.0' => [],
-                ],
-            ],
-        ];
-        $instance->expects($this->once())->method('getMajorVersion')->will($this->returnValue('7'));
-        $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
-        $this->assertTrue($instance->getTarGzSha1OfVersion('7.2.0'));
+        $coreVersionService = new CoreVersionService();
+        $result = $coreVersionService->getTarGzSha1OfVersion('8.7.12');
+        self::assertSame('185f3796751a903554a03378634a438beeef966e', $result);
     }
 
     /**
      * @test
      */
-    public function getTarGzSha1OfVersionReturnsSha1OfSpecifiedVersion()
+    public function getTarGzSha1OfVersionReturnsSha1ReturnsEmptyStringIfNoVersionData(): void
     {
-        $versionMatrixFixtureFile = __DIR__ . '/Fixtures/VersionMatrixFixture.php';
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'],
-            [],
-            '',
-            false
+        $this->setUpApiResponse(
+            'release/8.7.44',
+            [
+                'error' =>
+                    [
+                        'code' => 404,
+                        'message' => 'Not Found',
+                    ],
+            ]
         );
-        $instance->expects($this->any())->method('getMajorVersion')->will($this->returnValue('7'));
-        $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue(require $versionMatrixFixtureFile));
-        $this->assertSame('3dc156eed4b99577232f537d798a8691493f8a83', $instance->getTarGzSha1OfVersion('7.2.0'));
+        $coreVersionService = new CoreVersionService();
+        $result = $coreVersionService->getTarGzSha1OfVersion('8.7.44');
+        self::assertSame('', $result);
     }
 
     /**
-     * Whitebox test of API method: This tests multiple methods, only 'current version' and 'version matrix' are mocked.
-     *
      * @test
      */
-    public function isYoungerPatchReleaseAvailableReturnsTrueIfYoungerReleaseIsAvailable()
+    public function isVersionActivelyMaintainedReturnsTrueIfMaintainedUntilIsNotSet(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getInstalledVersion'],
-            [],
-            '',
-            false
+        $this->setUpApiResponse(
+            'major/9',
+            [
+                'version' => 9.0,
+                'title' => 'TYPO3 v9',
+                'release_date' => '2018-01-30T00:00:00+01:00',
+            ]
         );
-        $versionMatrix = [
-            '7' => [
-                'releases' => [
-                    '7.2.1' => [
-                        'type' => 'security',
-                        'date' => '2013-12-01 18:24:25 UTC',
-                    ],
-                    '7.2.0' => [
-                        'type' => 'regular',
-                        'date' => '2013-11-01 18:24:25 UTC',
-                    ],
-                ],
-            ],
-        ];
-        $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
-        $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
-        $this->assertTrue($instance->isYoungerPatchReleaseAvailable());
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
+        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('9.1.0'));
+
+        $result = $instance->isVersionActivelyMaintained();
+
+        self::assertTrue($result);
     }
 
     /**
-     * Whitebox test of API method: This tests multiple methods, only 'current version' and 'version matrix' are mocked.
-     *
      * @test
      */
-    public function isYoungerReleaseAvailableReturnsFalseIfNoYoungerReleaseExists()
+    public function isVersionActivelyMaintainedReturnsTrueIfMaintainedUntilIsAfterToday(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getInstalledVersion'],
-            [],
-            '',
-            false
+        $this->setUpApiResponse(
+            'major/9',
+            [
+                'version' => 9.0,
+                'title' => 'TYPO3 v9',
+                'release_date' => '2018-01-30T00:00:00+01:00',
+                'maintained_until' => '2222-01-30T00:00:00+01:00',
+            ]
         );
-        $versionMatrix = [
-            '7' => [
-                'releases' => [
-                    '7.2.0' => [
-                        'type' => 'regular',
-                        'date' => '2013-12-01 18:24:25 UTC',
-                    ],
-                    '7.1.0' => [
-                        'type' => 'regular',
-                        'date' => '2013-11-01 18:24:25 UTC',
-                    ],
-                ],
-            ],
-        ];
-        $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
-        $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
-        $this->assertFalse($instance->isYoungerPatchReleaseAvailable());
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
+        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('9.1.0'));
+
+        $result = $instance->isVersionActivelyMaintained();
+
+        self::assertTrue($result);
     }
 
     /**
-     * Whitebox test of API method: This tests multiple methods, only 'current version' and 'version matrix' are mocked.
-     *
      * @test
      */
-    public function isYoungerReleaseAvailableReturnsFalseIfOnlyADevelopmentReleaseIsYounger()
+    public function isVersionActivelyMaintainedReturnsFalseIfMaintainedUntilWasBeforeToday(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getInstalledVersion'],
-            [],
-            '',
-            false
+        $this->setUpApiResponse(
+            'major/7',
+            [
+                'version' => 7,
+                'title' => 'TYPO3 v7',
+                'maintained_until' => '2003-02-18T08:10:14+00:00',
+                'release_date' => '2002-06-03T12:01:07+00:00',
+            ]
         );
-        $versionMatrix = [
-            '7' => [
-                'releases' => [
-                    '7.3.0' => [
-                        'type' => 'development',
-                        'date' => '2013-12-01 18:24:25 UTC',
-                    ],
-                    '7.2.0' => [
-                        'type' => 'regular',
-                        'date' => '2013-11-01 18:24:25 UTC',
-                    ],
-                ],
-            ],
-        ];
-        $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
-        $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
-        $this->assertFalse($instance->isYoungerPatchReleaseAvailable());
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
+        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.6.25'));
+
+        $result = $instance->isVersionActivelyMaintained();
+
+        self::assertFalse($result);
     }
 
     /**
-     * Whitebox test of API method: This tests multiple methods, only 'current version' and 'version matrix' are mocked.
-     *
      * @test
      */
-    public function isYoungerDevelopmentReleaseAvailableReturnsTrueIfADevelopmentReleaseIsYounger()
+    public function isYoungerPatchReleaseAvailableReturnsTrueIfNewerVersionExists(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getInstalledVersion'],
-            [],
-            '',
-            false
+        $this->setUpApiResponse(
+            'major/9/release/latest',
+            [
+                'version' => '9.1.0',
+                'date' => '2018-01-30T15:44:52+00:00',
+                'type' => 'regular',
+            ]
         );
-        $versionMatrix = [
-            '7' => [
-                'releases' => [
-                    '7.3.0' => [
-                        'type' => 'development',
-                        'date' => '2013-12-01 18:24:25 UTC',
-                    ],
-                    '7.2.0' => [
-                        'type' => 'regular',
-                        'date' => '2013-11-01 18:24:25 UTC',
-                    ],
-                ],
-            ],
-        ];
-        $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
-        $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
-        $this->assertTrue($instance->isYoungerPatchDevelopmentReleaseAvailable());
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
+        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->will($this->returnValue('9.0.0'));
+
+        $result = $instance->isYoungerPatchReleaseAvailable();
+
+        self::assertTrue($result);
     }
 
     /**
-     * Whitebox test of API method: This tests multiple methods, only 'current version' and 'version matrix' are mocked.
-     *
      * @test
      */
-    public function isUpdateSecurityRelevantReturnsTrueIfAnUpdateIsSecurityRelevant()
+    public function isYoungerPatchReleaseAvailableReturnsFalseIfNoNewerVersionExists(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getInstalledVersion'],
-            [],
-            '',
-            false
+        $this->setUpApiResponse(
+            'major/9/release/latest',
+            [
+                'version' => '9.1.0',
+                'date' => '2018-01-30T15:44:52+00:00',
+                'type' => 'regular',
+            ]
         );
-        $versionMatrix = [
-            '7' => [
-                'releases' => [
-                    '7.3.0' => [
-                        'type' => 'security',
-                        'date' => '2013-12-01 18:24:25 UTC',
-                    ],
-                    '7.2.0' => [
-                        'type' => 'regular',
-                        'date' => '2013-11-01 18:24:25 UTC',
-                    ],
-                ],
-            ],
-        ];
-        $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
-        $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
-        $this->assertTrue($instance->isUpdateSecurityRelevant());
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
+        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->will($this->returnValue('9.1.0'));
+
+        $result = $instance->isYoungerPatchReleaseAvailable();
+
+        self::assertFalse($result);
     }
 
     /**
-     * Whitebox test of API method: This tests multiple methods, only 'current version' and 'version matrix' are mocked.
-     *
      * @test
      */
-    public function isUpdateSecurityRelevantReturnsFalseIfUpdateIsNotSecurityRelevant()
+    public function isUpdateSecurityRelevantReturnsTrueIfNewerSecurityUpdateExists(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getInstalledVersion'],
-            [],
-            '',
-            false
+        $this->setUpApiResponse(
+            'major/8/release/latest/security',
+            [
+                'version' => '8.7.5',
+                'date' => '2017-09-05T10:54:18+00:00',
+                'type' => 'security',
+            ]
         );
-        $versionMatrix = [
-            '7' => [
-                'releases' => [
-                    '7.3.0' => [
-                        'type' => 'regular',
-                        'date' => '2013-12-01 18:24:25 UTC',
-                    ],
-                    '7.2.0' => [
-                        'type' => 'regular',
-                        'date' => '2013-11-01 18:24:25 UTC',
-                    ],
-                ],
-            ],
-        ];
-        $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
-        $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
-        $this->assertFalse($instance->isUpdateSecurityRelevant());
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
+        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->will($this->returnValue('8.7.1'));
+
+        $result = $instance->isUpdateSecurityRelevant();
+
+        self::assertTrue($result);
     }
 
     /**
      * @test
      */
-    public function getInstalledMajorVersionFetchesInstalledVersionNumber()
+    public function isUpdateSecurityRelevantReturnsFalseIfNoNewerSecurityUpdatesExist(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
-        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
-        $this->assertSame('7', $instance->_call('getInstalledMajorVersion'));
+        $this->setUpApiResponse(
+            'major/8/release/latest/security',
+            [
+                'version' => '8.7.5',
+                'date' => '2017-09-05T10:54:18+00:00',
+                'type' => 'security',
+            ]
+        );
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
+        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->will($this->returnValue('8.7.5'));
+
+        $result = $instance->isUpdateSecurityRelevant();
+
+        self::assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
+    public function getYoungestPatchReleaseReturnsLatestReleaseForCurrentMajorVersion(): void
+    {
+        $this->setUpApiResponse(
+            'major/9/release/latest',
+            [
+                'version' => '9.1.0',
+                'date' => '2018-01-30T15:44:52+00:00',
+                'type' => 'regular',
+            ]
+        );
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
+        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->will($this->returnValue('9.0.0'));
+
+        $result = $instance->getYoungestPatchRelease();
+
+        self::assertSame('9.1.0', $result);
     }
 
     /**
      * Data provider
      */
-    public function getMajorVersionDataProvider()
+    public function getMajorVersionDataProvider(): array
     {
         return [
             '7.2' => [
@@ -370,7 +291,7 @@ class CoreVersionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      * @param string $expectedMajor
      * @throws \InvalidArgumentException
      */
-    public function getMajorVersionReturnsCorrectMajorVersion($version, $expectedMajor)
+    public function getMajorVersionReturnsCorrectMajorVersion($version, $expectedMajor): void
     {
         /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['dummy'], [], '', false);
@@ -380,117 +301,22 @@ class CoreVersionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function getVersionMatrixThrowsExceptionIfVersionMatrixIsNotYetSetInRegistry()
+    public function isInstalledVersionAReleasedVersionReturnsTrueForNonDevelopmentVersion(): void
     {
-        $this->expectException(CoreVersionServiceException::class);
-        $this->expectExceptionCode(1380898792);
         /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['fetchVersionMatrixFromRemote'], [], '', false);
-        $registry = $this->createMock(Registry::class);
-        $registry->expects($this->once())->method('get')->will($this->returnValue(null));
-        $instance->_set('registry', $registry);
-        $instance->_call('getVersionMatrix');
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
+        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
+        $this->assertTrue($instance->isInstalledVersionAReleasedVersion());
     }
 
     /**
      * @test
      */
-    public function getVersionMatrixReturnsMatrixFromRegistry()
+    public function isInstalledVersionAReleasedVersionReturnsFalseForDevelopmentVersion()
     {
         /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['fetchVersionMatrixFromRemote'], [], '', false);
-        $registry = $this->createMock(Registry::class);
-        $versionArray = [$this->getUniqueId()];
-        $registry->expects($this->once())->method('get')->will($this->returnValue($versionArray));
-        $instance->_set('registry', $registry);
-        $this->assertSame($versionArray, $instance->_call('getVersionMatrix'));
-    }
-
-    /**
-     * @test
-     */
-    public function getReleaseTimestampOfVersionThrowsExceptionIfReleaseDateIsNotDefined()
-    {
-        $this->expectException(CoreVersionServiceException::class);
-        $this->expectExceptionCode(1380905853);
-        $versionMatrix = [
-            '7' => [
-                'releases' => [
-                    '7.2.0' => []
-                ],
-            ],
-        ];
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'],
-            [],
-            '',
-            false
-        );
-        $instance->expects($this->once())->method('getMajorVersion')->will($this->returnValue('7'));
-        $instance->expects($this->once())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
-        $instance->_call('getReleaseTimestampOfVersion', '7.2.0');
-    }
-
-    /**
-     * @test
-     */
-    public function getReleaseTimestampOfVersionReturnsTimestamp()
-    {
-        $versionMatrixFixtureFile = __DIR__ . '/Fixtures/VersionMatrixFixture.php';
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'],
-            [],
-            '',
-            false
-        );
-        $instance->expects($this->once())->method('getMajorVersion')->will($this->returnValue('7'));
-        $instance->expects($this->once())->method('getVersionMatrix')->will($this->returnValue(require $versionMatrixFixtureFile));
-        $this->assertSame(1398968665, $instance->_call('getReleaseTimestampOfVersion', '7.3.1'));
-    }
-
-    /**
-     * @test
-     */
-    public function ensureVersionExistsInMatrixThrowsExceptionIfMinorVersionDoesNotExist()
-    {
-        $this->expectException(CoreVersionServiceException::class);
-        $this->expectExceptionCode(1380905851);
-        $versionMatrixFixtureFile = __DIR__ . '/Fixtures/VersionMatrixFixture.php';
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getMajorVersion'],
-            [],
-            '',
-            false
-        );
-        $instance->expects($this->once())->method('getMajorVersion')->will($this->returnValue('2'));
-        $instance->expects($this->once())->method('getVersionMatrix')->will($this->returnValue(require $versionMatrixFixtureFile));
-        $instance->_call('ensureVersionExistsInMatrix', '2.0.42');
-    }
-
-    /**
-     * @test
-     */
-    public function ensureVersionExistsInMatrixThrowsExceptionIfPatchLevelDoesNotExist()
-    {
-        $this->expectException(CoreVersionServiceException::class);
-        $this->expectExceptionCode(1380905852);
-        $versionMatrixFixtureFile = __DIR__ . '/Fixtures/VersionMatrixFixture.php';
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(
-            CoreVersionService::class,
-            ['getVersionMatrix', 'getMajorVersion'],
-            [],
-            '',
-            false
-        );
-        $instance->expects($this->once())->method('getMajorVersion')->will($this->returnValue('7'));
-        $instance->expects($this->once())->method('getVersionMatrix')->will($this->returnValue(require $versionMatrixFixtureFile));
-        $instance->_call('ensureVersionExistsInMatrix', '7.2.5');
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
+        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.4-dev'));
+        $this->assertFalse($instance->isInstalledVersionAReleasedVersion());
     }
 }

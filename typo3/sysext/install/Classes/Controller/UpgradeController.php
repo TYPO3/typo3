@@ -22,7 +22,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -333,20 +332,6 @@ class UpgradeController extends AbstractController
         $this->coreUpdateInitialize();
         return new JsonResponse([
             'success' => $this->coreUpdateService->unpackVersion($this->coreUpdateGetVersionToHandle($request)),
-            'status' => $this->coreUpdateService->getMessages(),
-        ]);
-    }
-
-    /**
-     * Update available core version list
-     *
-     * @return ResponseInterface
-     */
-    public function coreUpdateUpdateVersionMatrixAction(): ResponseInterface
-    {
-        $this->coreUpdateInitialize();
-        return new JsonResponse([
-            'success' => $this->coreUpdateService->updateVersionMatrix(),
             'status' => $this->coreUpdateService->getMessages(),
         ]);
     }

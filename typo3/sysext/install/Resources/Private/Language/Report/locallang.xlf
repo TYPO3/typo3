@@ -70,13 +70,19 @@
 				<source>It seems that this TYPO3 version has never been released. Thus no update information exists.</source>
 			</trans-unit>
 			<trans-unit id="status_newVersionSecurityRelevant">
-				<source>There is a new version of TYPO3 available. This update is security relevant. Please update to version %s</source>
+				<source>There is a new version of TYPO3 available, updating is security relevant. Please update to version %s</source>
 			</trans-unit>
 			<trans-unit id="status_newVersion">
 				<source>There is a new version of TYPO3 available. You can update to version %s</source>
 			</trans-unit>
 			<trans-unit id="status_versionOutdated">
 				<source>The TYPO3 version you're using is not supported anymore. You should update to a supported version.</source>
+			</trans-unit>
+			<trans-unit id="status_noAutomaticCheck">
+				<source>Automatic update checking failed, please check for updates manually.</source>
+			</trans-unit>
+			<trans-unit id="status_uptodate">
+				<source>Your TYPO3 version is up-to-date.</source>
 			</trans-unit>
 			<trans-unit id="status_installToolPassword">
 				<source>Install Tool Password</source>

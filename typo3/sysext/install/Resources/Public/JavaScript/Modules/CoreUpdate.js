@@ -27,11 +27,6 @@ define([
      * The action queue defines what actions are called in which order
      */
     actionQueue: {
-      coreUpdateUpdateVersionMatrix: {
-        loadingMessage: 'Fetching list of released versions from typo3.org',
-        finishMessage: 'Fetched list of released versions',
-        nextActionName: 'coreUpdateIsUpdateAvailable'
-      },
       coreUpdateIsUpdateAvailable: {
         loadingMessage: 'Checking for possible regular or security update',
         finishMessage: undefined,
@@ -102,7 +97,7 @@ define([
      * Public method checkForUpdate
      */
     checkForUpdate: function() {
-      this.callAction('coreUpdateUpdateVersionMatrix');
+      this.callAction('coreUpdateIsUpdateAvailable');
     },
 
     /**

@@ -75,7 +75,7 @@ class CoreUpdateService
         $this->coreVersionService = $coreVersionService ?: GeneralUtility::makeInstance(CoreVersionService::class);
         $this->setDownloadTargetPath(Environment::getVarPath() . '/transient/');
         $this->symlinkToCoreFiles = $this->discoverCurrentCoreSymlink();
-        $this->downloadBaseUri = $this->coreVersionService->getDownloadBaseUri();
+        $this->downloadBaseUri = 'https://get.typo3.org';
         $this->messages = new FlashMessageQueue('install');
     }
 
@@ -127,19 +127,24 @@ class CoreUpdateService
     /**
      * Wrapper method for CoreVersionService
      *
+     * @deprecated Since TYPO3v9 and will be removed in v10 - use REST api directly (see https://get.typo3.org/v1/api/doc)
      * @return bool TRUE on success
      */
     public function updateVersionMatrix()
     {
+        trigger_error(
+            'The method updateVersionMatrix() is deprecated since v9 and will be removed in v10, use the REST api directly (see https://get.typo3.org/v1/api/doc).',
+            \E_USER_DEPRECATED
+        );
         $success = true;
         try {
-            $this->coreVersionService->updateVersionMatrix();
+            $this->coreVersionService->getYoungestPatchRelease();
         } catch (RemoteFetchException $e) {
             $success = false;
             $this->messages->enqueue(new FlashMessage(
-                'Current version specification could not be fetched from http://get.typo3.org/json.'
+                'Current version specification could not be fetched from https://get.typo3.org.'
                     . ' This is probably a network issue, please fix it.',
-                'Version matrix could not be fetched from get.typo3.org',
+                'Version information could not be fetched from get.typo3.org',
                 FlashMessage::ERROR
             ));
         }

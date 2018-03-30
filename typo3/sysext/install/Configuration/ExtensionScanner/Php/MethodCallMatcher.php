@@ -2032,4 +2032,32 @@ return [
             'Deprecation-83475-AggregateValidatorInformationInClassSchema-1.rst',
         ],
     ],
+    'TYPO3\CMS\Install\Service\CoreVersionService->getDownloadBaseUrl' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84549-DeprecateMethodsInCoreVersionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Service\CoreVersionService->isYoungerPatchDevelopmentReleaseAvailable' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84549-DeprecateMethodsInCoreVersionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Service\CoreVersionService->getYoungestPatchDevelopmentRelease' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84549-DeprecateMethodsInCoreVersionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Service\CoreVersionService->updateVersionMatrix' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84549-DeprecateMethodsInCoreVersionService.rst',
+        ],
+    ],
 ];
