@@ -83,6 +83,7 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
     public function render()
     {
         $file = $this->arguments['file'];
+        $additionalAttributes = $this->arguments['additionalAttributes'];        
         $additionalConfig = $this->arguments['additionalConfig'];
         $width = $this->arguments['width'];
         $height = $this->arguments['height'];
@@ -103,8 +104,9 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         if ($fileRenderer === null) {
             return $this->renderImage($file, $width, $height);
         }
+        $additionalAttributes = array_merge_recursive($this->arguments, $additionalAttributes);
         $additionalConfig = array_merge_recursive($this->arguments, $additionalConfig);
-        return $fileRenderer->render($file, $width, $height, $additionalConfig);
+        return $fileRenderer->render($file, $width, $height, $additionalAttributes, $additionalConfig);
     }
 
     /**
