@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -324,6 +325,8 @@ class TreeController
     {
         $backendUser = $this->getBackendUser();
         $repository = GeneralUtility::makeInstance(PageTreeRepository::class, (int)$backendUser->workspace);
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+
         $entryPoints = (int)($backendUser->uc['pageTree_temporaryMountPoint'] ?? 0);
         if ($entryPoints > 0) {
             $entryPoints = [$entryPoints];
@@ -340,11 +343,23 @@ class TreeController
         if (empty($entryPoints)) {
             return [];
         }
+
         foreach ($entryPoints as $k => &$entryPoint) {
             if (in_array($entryPoint, $this->hiddenRecords, true)) {
                 unset($entryPoints[$k]);
                 continue;
             }
+
+            if (!empty($this->backgroundColors) && is_array($this->backgroundColors)) {
+                $entryPointRootLine = $pageRepository->getRootLine($entryPoint);
+                foreach ($entryPointRootLine as $rootLineEntry) {
+                    $parentUid = $rootLineEntry['uid'];
+                    if ($this->backgroundColors[$parentUid] !== null && $this->backgroundColors[$entryPoint] === null) {
+                        $this->backgroundColors[$entryPoint] = $this->backgroundColors[$parentUid];
+                    }
+                }
+            }
+
             $entryPoint = $repository->getTree($entryPoint, function ($page) use ($backendUser) {
                 // check each page if the user has permission to access it
                 return $backendUser->doesUserHaveAccess($page, Permission::PAGE_SHOW);
