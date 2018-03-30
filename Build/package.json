@@ -10,7 +10,7 @@
   "devDependencies": {
     "@claviska/jquery-minicolors": "^2.2.6",
     "@types/bootstrap": "^3.3.34",
-    "@types/ckeditor": "0.0.38",
+    "@types/ckeditor": "0.0.46",
     "@types/imagesloaded": "^4.1.1",
     "@types/jasmine": "^2.5.53",
     "@types/jquery": "2.0.47",
@@ -23,7 +23,7 @@
     "bootstrap-sass": "^3.3.7",
     "bootstrap-slider": "^9.7.3",
     "chosen-js": "^1.7.0",
-    "ckeditor": "^4.7.2",
+    "ckeditor": "4.9.1",
     "codemirror": "^5.30.0",
     "cropper": "^2.3.4",
     "d3": "^4.10.0",

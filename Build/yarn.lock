@@ -14,9 +14,9 @@
   dependencies:
     "@types/jquery" "*"
 
-"@types/ckeditor@0.0.38":
-  version "0.0.38"
-  resolved "https://registry.yarnpkg.com/@types/ckeditor/-/ckeditor-0.0.38.tgz#166fdf37ba60ba2c44f21e5bab84f4eae83d27c0"
+"@types/ckeditor@0.0.46":
+  version "0.0.46"
+  resolved "https://registry.yarnpkg.com/@types/ckeditor/-/ckeditor-0.0.46.tgz#9ab258c8344f3ff8a8847069dbab11fd5210bd61"
 
 "@types/imagesloaded@^4.1.1":
   version "4.1.1"
@@ -579,9 +579,9 @@ circular-json@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
 
-ckeditor@^4.7.2:
-  version "4.8.0"
-  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.8.0.tgz#5d450fa02a68d5a143cf5619754fbf0c04cad426"
+ckeditor@4.9.1:
+  version "4.9.1"
+  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.9.1.tgz#d73adb42f7235f4030ab837e8aee9882d9107e89"
 
 clean-css@^4.x:
   version "4.1.9"
