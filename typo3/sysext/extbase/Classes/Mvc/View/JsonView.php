@@ -229,7 +229,7 @@ class JsonView extends AbstractView
             }
         }
         $propertiesToRender = $this->renderArray();
-        return json_encode($propertiesToRender);
+        return json_encode($propertiesToRender, JSON_UNESCAPED_UNICODE);
     }
 
     /**
