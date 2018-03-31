@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
 /*
@@ -15,6 +17,9 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
  */
 
 use TYPO3\CMS\Extbase\Mvc\Web\Response as WebResponse;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -41,7 +46,7 @@ class JsonView extends AbstractView
     const EXPOSE_CLASSNAME_UNQUALIFIED = 2;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
+     * @var ReflectionService
      */
     protected $reflectionService;
 
@@ -53,7 +58,7 @@ class JsonView extends AbstractView
     /**
      * Only variables whose name is contained in this array will be rendered
      *
-     * @var array
+     * @var string[]
      */
     protected $variablesToRender = ['value'];
 
@@ -158,22 +163,22 @@ class JsonView extends AbstractView
     protected $configuration = [];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+     * @var PersistenceManagerInterface
      */
     protected $persistenceManager;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+     * @param PersistenceManagerInterface $persistenceManager
      */
-    public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager)
+    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
     {
         $this->persistenceManager = $persistenceManager;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+     * @param ReflectionService $reflectionService
      */
-    public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService)
+    public function injectReflectionService(ReflectionService $reflectionService): void
     {
         $this->reflectionService = $reflectionService;
     }
@@ -185,7 +190,7 @@ class JsonView extends AbstractView
      * @param array $variablesToRender
      * @api
      */
-    public function setVariablesToRender(array $variablesToRender)
+    public function setVariablesToRender(array $variablesToRender): void
     {
         $this->variablesToRender = $variablesToRender;
     }
@@ -193,7 +198,7 @@ class JsonView extends AbstractView
     /**
      * @param array $configuration The rendering configuration for this JSON view
      */
-    public function setConfiguration(array $configuration)
+    public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;
     }
@@ -206,7 +211,7 @@ class JsonView extends AbstractView
      * @return string The JSON encoded variables
      * @api
      */
-    public function render()
+    public function render(): string
     {
         $response = $this->controllerContext->getResponse();
         if ($response instanceof WebResponse) {
@@ -296,12 +301,12 @@ class JsonView extends AbstractView
      * @param array $configuration Configuration for transforming the given object or NULL
      * @return array|string Object structure as an array or as a rendered string (for a DateTime instance)
      */
-    protected function transformObject($object, array $configuration)
+    protected function transformObject(object $object, array $configuration)
     {
         if ($object instanceof \DateTime) {
             return $object->format(\DateTime::ATOM);
         }
-        $propertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettablePropertyNames($object);
+        $propertyNames = ObjectAccess::getGettablePropertyNames($object);
 
         $propertiesToRender = [];
         foreach ($propertyNames as $propertyName) {
@@ -312,7 +317,7 @@ class JsonView extends AbstractView
                 continue;
             }
 
-            $propertyValue = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($object, $propertyName);
+            $propertyValue = ObjectAccess::getProperty($object, $propertyName);
 
             if (!is_array($propertyValue) && !is_object($propertyValue)) {
                 $propertiesToRender[$propertyName] = $propertyValue;
