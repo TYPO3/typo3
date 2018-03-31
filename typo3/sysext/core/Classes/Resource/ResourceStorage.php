@@ -1694,15 +1694,23 @@ class ResourceStorage implements ResourceStorageInterface
         $this->assureFileDeletePermissions($fileObject);
 
         $this->emitPreFileDeleteSignal($fileObject);
+        $deleted = true;
 
         if ($this->driver->fileExists($fileObject->getIdentifier())) {
-            $result = $this->driver->deleteFile($fileObject->getIdentifier());
+            $recyclerFolder = $this->getNearestRecyclerFolder($fileObject);
+
+            if ($recyclerFolder === null) {
+                $result = $this->driver->deleteFile($fileObject->getIdentifier());
+            } else {
+                $result = $this->moveFile($fileObject, $recyclerFolder);
+                $deleted = false;
+            }
             if (!$result) {
                 throw new Exception\FileOperationErrorException('Deleting the file "' . $fileObject->getIdentifier() . '\' failed.', 1329831691);
             }
         }
         // Mark the file object as deleted
-        if ($fileObject instanceof AbstractFile) {
+        if ($deleted && $fileObject instanceof AbstractFile) {
             $fileObject->setDeleted();
         }
 
@@ -1801,7 +1809,12 @@ class ResourceStorage implements ResourceStorageInterface
             } else {
                 $tempPath = $file->getForLocalProcessing();
                 $newIdentifier = $this->driver->addFile($tempPath, $targetFolder->getIdentifier(), $sanitizedTargetFileName);
-                $sourceStorage->driver->deleteFile($file->getIdentifier());
+                $recyclerFolder = $this->getNearestRecyclerFolder($file);
+                if ($recyclerFolder === null) {
+                    $sourceStorage->driver->deleteFile($file->getIdentifier());
+                } else {
+                    $this->moveFile($file, $recyclerFolder);
+                }
                 if ($file instanceof File) {
                     $file->updateProperties(['storage' => $this->getUid(), 'identifier' => $newIdentifier]);
                 }
@@ -2995,5 +3008,44 @@ class ResourceStorage implements ResourceStorageInterface
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Get the nearest Recycler folder for given file
+     *
+     * Return null if:
+     *  - There is no folder with ROLE_RECYCLER in the rootline of the given File
+     *  - File is a ProcessedFile (we don't know the concept of recycler folders for processedFiles)
+     *  - File is located in a folder with ROLE_RECYCLER
+     *
+     * @param FileInterface $file
+     * @return Folder|null
+     */
+    protected function getNearestRecyclerFolder(FileInterface $file)
+    {
+        if ($file instanceof ProcessedFile) {
+            return null;
+        }
+
+        $recyclerFolder = null;
+        $rootFolder = $this->getRootLevelFolder(false);
+        $folder = null;
+
+        do {
+            $folder = $folder !== null ? $folder->getParentFolder() : $file->getParentFolder();
+
+            if ($folder->getRole() === FolderInterface::ROLE_RECYCLER) {
+                break;
+            }
+
+            foreach ($folder->getSubfolders() as $subFolder) {
+                if ($subFolder->getRole() === FolderInterface::ROLE_RECYCLER) {
+                    $recyclerFolder = $subFolder;
+                    break;
+                }
+            }
+        } while ($recyclerFolder === null && $folder !== $rootFolder);
+
+        return $recyclerFolder;
     }
 }

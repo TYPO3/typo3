@@ -1174,12 +1174,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     public function deleteFile($fileIdentifier)
     {
         $filePath = $this->getAbsolutePath($fileIdentifier);
-        $recycleDirectory = $this->getRecycleDirectory($filePath);
-        if (!empty($recycleDirectory)) {
-            $result = $this->recycleFileOrFolder($filePath, $recycleDirectory);
-        } else {
-            $result = unlink($filePath);
-        }
+        $result = unlink($filePath);
+
         if ($result === false) {
             throw new \RuntimeException('Deletion of file ' . $fileIdentifier . ' failed.', 1320855304);
         }
