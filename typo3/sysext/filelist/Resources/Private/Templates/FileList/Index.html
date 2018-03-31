@@ -14,40 +14,7 @@
     </f:form>
 
     <f:if condition="{listHtml}">
-        <!--
-            Listing options for extended view, clipboard and thumbnails
-        -->
-        <div class="typo3-listOptions">
-            <f:if condition="{checkboxes.bigControlPanel.enabled}">
-                <div class="checkbox">
-                    <label for="bigControlPanel">
-                        {checkboxes.bigControlPanel.html -> f:format.raw()}
-                        {checkboxes.bigControlPanel.label}
-                    </label>
-                </div>
-            </f:if>
-            <f:if condition="{checkboxes.displayThumbs.enabled}">
-                <div class="checkbox">
-                    <label for="checkDisplayThumbs">
-                        {checkboxes.displayThumbs.html -> f:format.raw()}
-                        {checkboxes.displayThumbs.label}
-                    </label>
-                </div>
-            </f:if>
-            <f:if condition="{checkboxes.enableClipBoard.enabled}">
-                <div class="checkbox">
-                    <label for="checkClipBoard">
-                        {checkboxes.enableClipBoard.html -> f:format.raw()}
-                        {checkboxes.enableClipBoard.label}
-                    </label>
-                </div>
-            </f:if>
-        </div>
-
-        <f:if condition="{showClipBoard}">
-            {clipBoardHtml -> f:format.raw()}
-
-            <f:be.buttons.csh table="xMOD_csh_corebe" field="filelist_clipboard" wrap="<span class='btn btn-sm btn-default'>|</span>" />
-        </f:if>
+        <f:render partial="ListOptions" arguments="{checkboxes:checkboxes}" />
+        <f:render partial="ClipBoard" arguments="{showClipBoard:showClipBoard,clipBoardHtml:clipBoardHtml}" />
     </f:if>
 </f:section>

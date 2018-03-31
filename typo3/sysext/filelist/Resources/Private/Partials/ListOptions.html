@@ -1,0 +1,29 @@
+<!--
+    Listing options for extended view, clipboard and thumbnails
+-->
+<div class="typo3-listOptions">
+    <f:if condition="{checkboxes.bigControlPanel.enabled}">
+        <div class="checkbox">
+            <label for="bigControlPanel">
+                {checkboxes.bigControlPanel.html -> f:format.raw()}
+                {checkboxes.bigControlPanel.label}
+            </label>
+        </div>
+    </f:if>
+    <f:if condition="{checkboxes.displayThumbs.enabled}">
+        <div class="checkbox">
+            <label for="checkDisplayThumbs">
+                {checkboxes.displayThumbs.html -> f:format.raw()}
+                {checkboxes.displayThumbs.label}
+            </label>
+        </div>
+    </f:if>
+    <f:if condition="{checkboxes.enableClipBoard.enabled}">
+        <div class="checkbox">
+            <label for="checkClipBoard">
+                {checkboxes.enableClipBoard.html -> f:format.raw()}
+                {checkboxes.enableClipBoard.label}
+            </label>
+        </div>
+    </f:if>
+</div>

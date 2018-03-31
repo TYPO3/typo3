@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Filelist\Controller;
 
 /*
@@ -337,6 +338,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
 
         // There there was access to this file path, continue, make the list
         if ($this->folderObject) {
+            $this->initClipboard();
             $userTsConfig = $this->getBackendUser()->getTSConfig();
             $this->filelist = GeneralUtility::makeInstance(FileList::class);
             $this->filelist->thumbs = $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $this->MOD_SETTINGS['displayThumbs'];
@@ -354,6 +356,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             $this->filelist->clipObj->cleanCurrent();
             // Saves
             $this->filelist->clipObj->endClipboard();
+
             // If the "cmd" was to delete files from the list (clipboard thing), do that:
             if ($this->cmd === 'delete') {
                 $items = $this->filelist->clipObj->cleanUpCBC(GeneralUtility::_POST('CBC'), '_FILE', 1);
@@ -393,11 +396,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             }
 
             // Set top JavaScript:
-            $this->view->getModuleTemplate()->addJavaScriptCode(
-                'FileListIndex',
-                'if (top.fsMod) top.fsMod.recentIds["file"] = "' . rawurlencode($this->id) . '";
-                '
-            );
+            $this->addJumpToUrl();
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardComponent');
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
             $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf', 'buttons');
@@ -469,6 +468,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             $this->view->assign('fileDenyPattern', $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']);
             $this->view->assign('maxFileSize', GeneralUtility::getMaxUploadFileSize() * 1024);
             $this->view->assign('defaultAction', $this->getDefaultAction());
+            $this->buildListOptionCheckboxes();
         } else {
             $this->forward('missingFolder');
         }
@@ -551,9 +551,14 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         $this->view->assign('settings', [
             'jsConfirmationDelete' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)
         ]);
+        $this->view->assign('moduleSettings', $this->MOD_SETTINGS);
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf', 'buttons');
+
+        $this->initClipboard();
+        $this->buildListOptionCheckboxes($searchWord);
+        $this->addJumpToUrl();
     }
 
     /**
@@ -745,5 +750,102 @@ class FileListController extends ActionController implements LoggerAwareInterfac
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * build option checkboxes for filelist
+     */
+    protected function buildListOptionCheckboxes(string $searchWord = ''): void
+    {
+        $backendUser = $this->getBackendUser();
+        $userTsConfig = $backendUser->getTSConfig();
+
+        $addParams = '';
+        if ($searchWord) {
+            $addParams = '&tx_filelist_file_filelistlist%5Baction%5D=search';
+            $addParams .= '&tx_filelist_file_filelistlist%5Bcontroller%5D=FileList';
+            $addParams .= '&tx_filelist_file_filelistlist%5BsearchWord%5D=' . htmlspecialchars($searchWord);
+        }
+        $this->view->assign('checkboxes', [
+            'bigControlPanel' => [
+                'enabled' => $userTsConfig['options.']['file_list.']['enableDisplayBigControlPanel'] === 'selectable',
+                'label' => htmlspecialchars($this->getLanguageService()->getLL('bigControlPanel')),
+                'html' => BackendUtility::getFuncCheck(
+                    $this->id,
+                    'SET[bigControlPanel]',
+                    $this->MOD_SETTINGS['bigControlPanel'] ?? '',
+                    '',
+                    $addParams,
+                    'id="bigControlPanel"'
+                ),
+            ],
+            'displayThumbs' => [
+                'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] === 'selectable',
+                'label' => htmlspecialchars($this->getLanguageService()->getLL('displayThumbs')),
+                'html' => BackendUtility::getFuncCheck(
+                    $this->id,
+                    'SET[displayThumbs]',
+                    $this->MOD_SETTINGS['displayThumbs'] ?? '',
+                    '',
+                    $addParams,
+                    'id="checkDisplayThumbs"'
+                ),
+            ],
+            'enableClipBoard' => [
+                'enabled' => $userTsConfig['options.']['file_list.']['enableClipBoard'] === 'selectable',
+                'label' => htmlspecialchars($this->getLanguageService()->getLL('clipBoard')),
+                'html' => BackendUtility::getFuncCheck(
+                    $this->id,
+                    'SET[clipBoard]',
+                    $this->MOD_SETTINGS['clipBoard'] ?? '',
+                    '',
+                    $addParams,
+                    'id="checkClipBoard"'
+                ),
+            ]
+        ]);
+    }
+
+    /**
+     * init and assign clipboard to view
+     */
+    protected function initClipboard(): void
+    {
+        // Create fileListing object
+        $this->filelist = GeneralUtility::makeInstance(FileList::class, $this);
+        $this->filelist->thumbs = $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $this->MOD_SETTINGS['displayThumbs'];
+        // Create clipboard object and initialize that
+        $this->filelist->clipObj = GeneralUtility::makeInstance(Clipboard::class);
+        $this->filelist->clipObj->fileMode = true;
+        $this->filelist->clipObj->initializeClipboard();
+        $CB = GeneralUtility::_GET('CB');
+        if ($this->cmd === 'setCB') {
+            $CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(
+                GeneralUtility::_POST('CBH'),
+                (array)GeneralUtility::_POST('CBC')
+            ), '_FILE');
+        }
+        if (!$this->MOD_SETTINGS['clipBoard']) {
+            $CB['setP'] = 'normal';
+        }
+        $this->filelist->clipObj->setCmd($CB);
+        $this->filelist->clipObj->cleanCurrent();
+        // Saves
+        $this->filelist->clipObj->endClipboard();
+
+        $this->view->assign('showClipBoard', (bool)$this->MOD_SETTINGS['clipBoard']);
+        $this->view->assign('clipBoardHtml', $this->filelist->clipObj->printClipboard());
+    }
+
+    /**
+     * add javascript jumpToUrl function
+     */
+    protected function addJumpToUrl(): void
+    {
+        $this->view->getModuleTemplate()->addJavaScriptCode(
+            'FileListIndex',
+            'if (top.fsMod) top.fsMod.recentIds["file"] = "' . rawurlencode($this->id) . '";
+                '
+        );
     }
 }
