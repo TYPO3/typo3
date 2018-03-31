@@ -326,6 +326,46 @@ class JsonViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
+    public function renderKeepsUtf8CharactersUnescaped()
+    {
+        $value = 'Gürkchen';
+        $this->view->assign('value', $value);
+
+        $actualResult = $this->view->render();
+
+        $expectedResult = '"' . $value . '"';
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function escapeCharacterDataProvider(): array
+    {
+        return [
+            'backslash' => ['\\'],
+            'double quote' => ['"'],
+        ];
+    }
+
+    /**
+     * @test
+     * @param string $character
+     * @dataProvider escapeCharacterDataProvider
+     */
+    public function renderEscapesEscapeCharacters(string $character)
+    {
+        $this->view->assign('value', $character);
+
+        $actualResult = $this->view->render();
+
+        $expectedResult = '"\\' . $character . '"';
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
     public function renderReturnsNullIfNameOfAssignedVariableIsNotEqualToValue()
     {
         $value = 'Foo';
