@@ -76,14 +76,17 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
             $varPath . '/charset/' => 2,
             $varPath . '/lock/' => 2,
             $sitePath . '/typo3conf/' => 2,
-            Environment::getExtensionsPath() => 0,
             Environment::getLabelsPath() => 0,
             $sitePath . '/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] => -1,
             $sitePath . '/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '_temp_/' => 0,
         ];
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowGlobalInstall']) {
-            $checkWritable[Environment::getBackendPath() . '/ext/'] = -1;
+        // Check for writable extension folder files in non-composer mode only
+        if (!Environment::isComposerMode()) {
+            $checkWritable[Environment::getExtensionsPath()] = 0;
+            if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowGlobalInstall']) {
+                $checkWritable[Environment::getBackendPath() . '/ext/'] = -1;
+            }
         }
 
         foreach ($checkWritable as $path => $requirementLevel) {
