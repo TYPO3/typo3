@@ -53,6 +53,18 @@ return [
         'target' => Controller\FormInlineAjaxController::class . '::expandOrCollapseAction'
     ],
 
+    // Site configuration inline create route
+    'site_configuration_inline_create' => [
+        'path' => '/siteconfiguration/inline/create',
+        'target' => Controller\SiteInlineAjaxController::class . '::newInlineChildAction'
+    ],
+
+    // Site configuration inline open existing "record" route
+    'site_configuration_inline_details' => [
+        'path' => '/siteconfiguration/inline/details',
+        'target' => Controller\SiteInlineAjaxController::class . '::openInlineChildAction'
+    ],
+
     // Add a flex form section container
     'record_flex_container_add' => [
         'path' => '/record/flex/containeradd',

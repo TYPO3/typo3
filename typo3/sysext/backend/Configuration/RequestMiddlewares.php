@@ -39,6 +39,12 @@ return [
                 'typo3/cms-backend/backend-routing'
             ]
         ],
+        'typo3/cms-backend/site-resolver' => [
+            'target' => \TYPO3\CMS\Backend\Middleware\SiteResolver::class,
+            'after' => [
+                'typo3/cms-backend/backend-routing'
+            ]
+        ],
         'typo3/cms-backend/legacy-document-template' => [
             'target' => \TYPO3\CMS\Backend\Middleware\LegacyBackendTemplateInitialization::class,
             'after' => [

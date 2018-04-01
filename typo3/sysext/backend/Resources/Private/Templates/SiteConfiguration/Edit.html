@@ -1,0 +1,18 @@
+<f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Backend/SiteInlineActions'}" />
+<form
+    action="{f:be.uri(route:'site_configuration', parameters:{action: 'save'})}"
+    method="post"
+    enctype="multipart/form-data"
+    name="editform"
+    id="siteConfigurationController"
+    onsubmit="TBE_EDITOR.checkAndDoSubmit(1); return false;"
+>
+    {formEngineHtml -> f:format.raw()}
+
+    <input type="hidden" name="returnUrl" value="{returnUrl -> f:format.raw()}" />
+    <input type="hidden" name="closeDoc" value="0" />
+    <input type="hidden" name="doSave" value="0" />
+    <input type="hidden" name="rootPageId" value="{rootPageId}" />
+
+    {formEngineFooter -> f:format.raw()}
+</form>

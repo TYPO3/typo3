@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Utility;
  */
 
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Backend\Routing\PageUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
@@ -37,6 +39,7 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -2569,7 +2572,20 @@ class BackendUtility
             $permissionClause = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
             $pageInfo = self::readPageAccess($pageUid, $permissionClause);
             $additionalGetVars .= self::ADMCMD_previewCmds($pageInfo);
-            $previewUrl = self::createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript);
+
+            // Build the URL with a site as prefix, if configured
+            $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+            // Check if the page (= its rootline) has a site attached, otherwise just keep the URL as is
+            $rootLine = $rootLine ?? BackendUtility::BEgetRootLine($pageUid);
+            try {
+                $site = $siteFinder->getSiteByPageId((int)$pageUid, $rootLine);
+                // Create a multi-dimensional array out of the additional get vars
+                $additionalGetVars = GeneralUtility::explodeUrl2Array($additionalGetVars, true);
+                $uriBuilder = GeneralUtility::makeInstance(PageUriBuilder::class);
+                $previewUrl = (string)$uriBuilder->buildUri($pageUid, $additionalGetVars, $anchorSection, ['rootLine' => $rootLine], $uriBuilder::ABSOLUTE_URL);
+            } catch (SiteNotFoundException $e) {
+                $previewUrl = self::createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript);
+            }
         }
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] ?? [] as $className) {

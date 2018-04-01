@@ -43,3 +43,10 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
 
 // Register BackendLayoutDataProvider for PageTs
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']['pagets'] = \TYPO3\CMS\Backend\Provider\PageTsBackendLayoutDataProvider::class;
+
+// Register fieldInformation Provider for site configuration module
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1522919823] = [
+    'nodeName' => 'SiteConfigurationModuleFieldInformation',
+    'priority' => '70',
+    'class' => \TYPO3\CMS\Backend\Form\FieldInformation\SiteConfiguration::class
+];

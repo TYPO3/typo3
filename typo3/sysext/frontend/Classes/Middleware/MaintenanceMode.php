@@ -47,7 +47,7 @@ class MaintenanceMode implements MiddlewareInterface
                 $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']
             )
         ) {
-            return GeneralUtility::makeInstance(ErrorController::class)->unavailableAction('This page is temporarily unavailable.');
+            return GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($GLOBALS['TYPO3_REQUEST'], 'This page is temporarily unavailable.');
         }
         // Continue the regular stack if no maintenance mode is active
         return $handler->handle($request);

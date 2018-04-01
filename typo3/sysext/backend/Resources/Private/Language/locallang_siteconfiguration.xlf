@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1522780424" source-language="en" datatype="plaintext" original="messages" date="2018-02-27T22:22:32Z" product-name="backend">
+		<header/>
+		<body>
+			<trans-unit id="overview.title">
+				<source>Site Configuration</source>
+			</trans-unit>
+			<trans-unit id="overview.site">
+				<source>Site</source>
+			</trans-unit>
+			<trans-unit id="overview.configuration">
+				<source>Configuration Folder</source>
+			</trans-unit>
+			<trans-unit id="overview.noSiteConfiguration">
+				<source>This site does not have a configuration, yet.</source>
+			</trans-unit>
+			<trans-unit id="overview.addSiteConfiguration">
+				<source>Add new site configuration for this site</source>
+			</trans-unit>
+			<trans-unit id="overview.baseUrl">
+				<source>Base URLs</source>
+			</trans-unit>
+			<trans-unit id="validation.identifierRenamed.title">
+				<source>Renamed identifier</source>
+			</trans-unit>
+			<trans-unit id="validation.identifierRenamed.message">
+				<source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+			</trans-unit>
+			<trans-unit id="validation.identifierExists.title">
+				<source>Identifier not changed</source>
+			</trans-unit>
+			<trans-unit id="validation.identifierExists.message">
+				<source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.';</source>
+			</trans-unit>
+			<trans-unit id="validation.required.title">
+				<source>Site configuration not saved</source>
+			</trans-unit>
+			<trans-unit id="validation.required.message">
+				<source>Field "%1s" is a required field, but no value has been provided.</source>
+			</trans-unit>
+			<trans-unit id="validation.duplicateErrorCode.title">
+				<source>Duplicate error code removed</source>
+			</trans-unit>
+			<trans-unit id="validation.duplicateErrorCode.message">
+				<source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+			</trans-unit>
+			<trans-unit id="validation.duplicateLanguageId.title">
+				<source>Duplicate language configuration removed</source>
+			</trans-unit>
+			<trans-unit id="validation.duplicateLanguageId.message">
+				<source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+			</trans-unit>
+			<trans-unit id="validation.duplicateLanguageId.message">
+				<source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

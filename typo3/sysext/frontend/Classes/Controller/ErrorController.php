@@ -16,12 +16,15 @@ namespace TYPO3\CMS\Frontend\Controller;
  */
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\PageErrorHandler\PageErrorHandlerInterface;
 
 /**
  * Handles "Page Not Found" or "Page Unavailable" requests,
@@ -33,15 +36,21 @@ class ErrorController
      * Used for creating a 500 response ("Page unavailable"), usually due some misconfiguration
      * but if configured, a RedirectResponse could be returned as well.
      *
+     * @param ServerRequestInterface $request
      * @param string $message
      * @param array $reasons
      * @return ResponseInterface
      * @throws ServiceUnavailableException
      */
-    public function unavailableAction(string $message, array $reasons = []): ResponseInterface
+    public function unavailableAction(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
         if (!$this->isPageUnavailableHandlerConfigured()) {
             throw new ServiceUnavailableException($message, 1518472181);
+        }
+        $errorHandler = $this->getErrorHandlerFromSite($request, 500);
+        if ($errorHandler instanceof PageErrorHandlerInterface) {
+            $response = $errorHandler->handlePageError($request, $message, $reasons);
+            return $response->withStatus(500, $message);
         }
         return $this->handlePageError(
             $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'],
@@ -55,13 +64,19 @@ class ErrorController
      * Used for creating a 404 response ("Page Not Found"),
      * but if configured, a RedirectResponse could be returned as well.
      *
+     * @param ServerRequestInterface $request
      * @param string $message
      * @param array $reasons
      * @return ResponseInterface
      * @throws PageNotFoundException
      */
-    public function pageNotFoundAction(string $message, array $reasons = []): ResponseInterface
+    public function pageNotFoundAction(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
+        $errorHandler = $this->getErrorHandlerFromSite($request, 404);
+        if ($errorHandler instanceof PageErrorHandlerInterface) {
+            $response = $errorHandler->handlePageError($request, $message, $reasons);
+            return $response->withStatus(404, $message);
+        }
         if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling']) {
             throw new PageNotFoundException($message, 1518472189);
         }
@@ -77,12 +92,18 @@ class ErrorController
      * Used for creating a 403 response ("Access denied"),
      * but if configured, a RedirectResponse could be returned as well.
      *
+     * @param ServerRequestInterface $request
      * @param string $message
      * @param array $reasons
      * @return ResponseInterface
      */
-    public function accessDeniedAction(string $message, array $reasons = []): ResponseInterface
+    public function accessDeniedAction(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
+        $errorHandler = $this->getErrorHandlerFromSite($request, 403);
+        if ($errorHandler instanceof PageErrorHandlerInterface) {
+            $response = $errorHandler->handlePageError($request, $message, $reasons);
+            return $response->withStatus(403, $message);
+        }
         return $this->handlePageError(
             $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'],
             $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_accessdeniedheader'],
@@ -250,7 +271,7 @@ class ErrorController
 
     /**
      * Headers which have been requested, will be added to the response object.
-     * If a header is part of the HTTP Repsonse code, the response object will be annotated as well.
+     * If a header is part of the HTTP Response code, the response object will be annotated as well.
      *
      * @param ResponseInterface $response
      * @param string $headers
@@ -274,5 +295,18 @@ class ErrorController
             }
         }
         return $response;
+    }
+
+    /**
+     * Checks if a site is configured, and an error handler is configured for this specific status code.
+     *
+     * @param ServerRequestInterface $request
+     * @param int $statusCode
+     * @return PageErrorHandlerInterface|null
+     */
+    protected function getErrorHandlerFromSite(ServerRequestInterface $request, int $statusCode): ?PageErrorHandlerInterface
+    {
+        $site = $request->getAttribute('site');
+        return $site instanceof Site ? $site->getErrorHandler($statusCode) : $site;
     }
 }

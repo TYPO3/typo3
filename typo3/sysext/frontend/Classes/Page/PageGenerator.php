@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -103,9 +105,14 @@ class PageGenerator
         $tsfe->content = '';
         $htmlTagAttributes = [];
         $htmlLang = $tsfe->config['config']['htmlTag_langKey'] ?: ($tsfe->sys_language_isocode ?: 'en');
-        // Set content direction: (More info: http://www.tau.ac.il/~danon/Hebrew/HTML_and_Hebrew.html)
-        if ($tsfe->config['config']['htmlTag_dir']) {
-            $htmlTagAttributes['dir'] = htmlspecialchars($tsfe->config['config']['htmlTag_dir']);
+        // Set content direction
+        // More info: http://www.tau.ac.il/~danon/Hebrew/HTML_and_Hebrew.html)
+        $direction = $tsfe->config['config']['htmlTag_dir'];
+        if (self::getCurrentSiteLanguage()) {
+            $direction = self::getCurrentSiteLanguage()->getDirection();
+        }
+        if ($direction) {
+            $htmlTagAttributes['dir'] = htmlspecialchars($direction);
         }
         // Setting document type:
         $docTypeParts = [];
@@ -929,5 +936,19 @@ class PageGenerator
                 $excludeFromConcatenation
             );
         }
+    }
+
+    /**
+     * Returns the currently configured "site language" if a site is configured (= resolved) in the current request.
+     *
+     * @internal
+     */
+    protected static function getCurrentSiteLanguage(): ?SiteLanguage
+    {
+        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
+            && $GLOBALS['TYPO3_REQUEST']->getAttribute('language') instanceof SiteLanguage) {
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
+        }
+        return null;
     }
 }

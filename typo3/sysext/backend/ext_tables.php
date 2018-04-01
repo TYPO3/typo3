@@ -23,6 +23,20 @@ $GLOBALS['TBE_STYLES']['skins']['backend'] = [
     ]
 );
 
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+    'site',
+    'configuration',
+    'top',
+    '',
+    [
+        'routeTarget' => \TYPO3\CMS\Backend\Controller\SiteConfigurationController::class . '::handleRequest',
+        'access' => 'admin',
+        'name' => 'site_configuration',
+        'icon' => 'EXT:backend/Resources/Public/Icons/module-sites.svg',
+        'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf'
+    ]
+);
+
 // "Sort sub pages" csh
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
     'pages_sort',

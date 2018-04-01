@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -63,8 +64,9 @@ class ErrorControllerTest extends UnitTestCase
         $this->expectExceptionMessage('This test page was not found!');
         $this->expectExceptionCode(1518472189);
         $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'] = false;
+        $GLOBALS['TYPO3_REQUEST'] = [];
         $subject = new ErrorController();
-        $subject->pageNotFoundAction('This test page was not found!');
+        $subject->pageNotFoundAction(new ServerRequest(), 'This test page was not found!');
     }
 
     /**
@@ -177,11 +179,12 @@ X-TYPO3-Additional-Header: Banana Stand',
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['SSL_SESSION_ID'] = true;
+        $GLOBALS['TYPO3_REQUEST'] = [];
 
         $this->prophesizeErrorPageController();
 
         $subject = new ErrorController();
-        $response = $subject->pageNotFoundAction($message);
+        $response = $subject->pageNotFoundAction(new ServerRequest(), $message);
         if (is_array($expectedResponseDetails)) {
             $this->assertInstanceOf($expectedResponseDetails['type'], $response);
             $this->assertEquals($expectedResponseDetails['statusCode'], $response->getStatusCode());
@@ -206,11 +209,12 @@ X-TYPO3-Additional-Header: Banana Stand';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['SSL_SESSION_ID'] = true;
+        $GLOBALS['TYPO3_REQUEST'] = [];
         $this->prophesizeErrorPageController();
         $subject = new ErrorController();
 
         $this->prophesizeGetUrl();
-        $response = $subject->pageNotFoundAction('Custom message');
+        $response = $subject->pageNotFoundAction(new ServerRequest(), 'Custom message');
 
         $expectedResponseDetails = [
             'type' => HtmlResponse::class,
@@ -268,8 +272,9 @@ X-TYPO3-Additional-Header: Banana Stand';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['SSL_SESSION_ID'] = true;
+        $GLOBALS['TYPO3_REQUEST'] = [];
         $subject = new ErrorController();
-        $response = $subject->accessDeniedAction($message);
+        $response = $subject->accessDeniedAction(new ServerRequest(), $message);
         if (is_array($expectedResponseDetails)) {
             $this->assertInstanceOf($expectedResponseDetails['type'], $response);
             $this->assertEquals($expectedResponseDetails['statusCode'], $response->getStatusCode());
@@ -293,7 +298,7 @@ X-TYPO3-Additional-Header: Banana Stand';
         $this->expectExceptionCode(1518472181);
         $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'] = false;
         $subject = new ErrorController();
-        $subject->unavailableAction('All your system are belong to us!');
+        $subject->unavailableAction(new ServerRequest(), 'All your system are belong to us!');
     }
 
     /**
@@ -308,7 +313,7 @@ X-TYPO3-Additional-Header: Banana Stand';
         $this->expectExceptionMessage('All your system are belong to us!');
         $this->expectExceptionCode(1518472181);
         $subject = new ErrorController();
-        $subject->unavailableAction('All your system are belong to us!');
+        $subject->unavailableAction(new ServerRequest(), 'All your system are belong to us!');
     }
 
     /**
@@ -422,10 +427,11 @@ X-TYPO3-Additional-Header: Banana Stand',
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['SSL_SESSION_ID'] = true;
+        $GLOBALS['TYPO3_REQUEST'] = [];
         $this->prophesizeGetUrl();
         $this->prophesizeErrorPageController();
         $subject = new ErrorController();
-        $response = $subject->unavailableAction($message);
+        $response = $subject->unavailableAction(new ServerRequest(), $message);
         if (is_array($expectedResponseDetails)) {
             $this->assertInstanceOf($expectedResponseDetails['type'], $response);
             $this->assertEquals($expectedResponseDetails['statusCode'], $response->getStatusCode());
@@ -451,10 +457,11 @@ X-TYPO3-Additional-Header: Banana Stand';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['SSL_SESSION_ID'] = true;
+        $GLOBALS['TYPO3_REQUEST'] = [];
         $this->prophesizeErrorPageController();
         $this->prophesizeGetUrl();
         $subject = new ErrorController();
-        $response = $subject->unavailableAction('custom message');
+        $response = $subject->unavailableAction(new ServerRequest(), 'custom message');
 
         $expectedResponseDetails = [
             'type' => HtmlResponse::class,
