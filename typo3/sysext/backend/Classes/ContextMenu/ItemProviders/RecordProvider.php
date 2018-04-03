@@ -304,7 +304,8 @@ class RecordProvider extends AbstractProvider
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = (string)$uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
             $attributes += [
-                'data-new-wizard-url' => htmlspecialchars($url)
+                'data-new-wizard-url' => htmlspecialchars($url),
+                'data-title' => $this->languageService->getLL('newContentElement'),
             ];
         }
         if ($itemName === 'delete') {

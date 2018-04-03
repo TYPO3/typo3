@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {SeverityEnum} from './Enum/Severity';
 import * as $ from 'jquery';
 import InfoWindow = require('./InfoWindow');
 import Modal = require('./Modal');
 import ModuleMenu = require('./ModuleMenu');
-import Severity = require('./Severity');
 import Viewport = require('./Viewport');
 
 /**
@@ -84,10 +84,17 @@ class ContextMenuActions {
    * @param {number} uid
    */
   public static newContentWizard(table: string, uid: number): void {
-    let $wizardUrl = $(this).data('new-wizard-url');
+    const $me = $(this);
+    let $wizardUrl = $me.data('new-wizard-url');
     if ($wizardUrl) {
       $wizardUrl += '&returnUrl=' + ContextMenuActions.getReturnUrl();
-      Viewport.ContentContainer.setUrl($wizardUrl);
+      Modal.advanced({
+        title: $me.data('title'),
+        type: Modal.types.ajax,
+        size: Modal.sizes.medium,
+        content: $wizardUrl,
+        severity: SeverityEnum.notice
+      });
     }
   }
 
@@ -179,7 +186,7 @@ class ContextMenuActions {
     const $modal = Modal.confirm(
       $anchorElement.data('title'),
       $anchorElement.data('message'),
-      Severity.warning, [
+      SeverityEnum.warning, [
         {
           text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
@@ -309,7 +316,7 @@ class ContextMenuActions {
     const $modal = Modal.confirm(
       $anchorElement.data('title'),
       $anchorElement.data('message'),
-      Severity.warning, [
+      SeverityEnum.warning, [
         {
           text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
