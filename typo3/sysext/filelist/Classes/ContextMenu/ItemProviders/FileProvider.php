@@ -342,9 +342,13 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
                     ' ' . $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile')
                 );
             }
+            $closeText = $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:button.cancel');
+            $deleteText = $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:button.delete');
             $attributes += [
                 'data-title' => htmlspecialchars($title),
-                'data-message' => htmlspecialchars($confirmMessage)
+                'data-message' => htmlspecialchars($confirmMessage),
+                'data-button-close-text' => htmlspecialchars($closeText),
+                'data-button-ok-text' => htmlspecialchars($deleteText),
             ];
         }
         if ($itemName === 'pasteInto' && $this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
