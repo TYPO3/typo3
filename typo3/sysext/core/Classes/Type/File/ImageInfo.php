@@ -57,14 +57,13 @@ class ImageInfo extends FileInfo
         if (is_null($this->imageSizes)) {
             $this->imageSizes = getimagesize($this->getPathname());
 
-            // Fallback to IM identify
+            // Try SVG first as SVG size detection with IM/GM leads to an error output
+            if ($this->imageSizes === false && $this->getMimeType() === 'image/svg+xml') {
+                $this->imageSizes = $this->extractSvgImageSizes();
+            }
+            // Fallback to IM/GM identify
             if ($this->imageSizes === false) {
                 $this->imageSizes = $this->getGraphicalFunctions()->imageMagickIdentify($this->getPathname());
-            }
-
-            // Extra fallback for SVG
-            if (empty($this->imageSizes) && $this->getMimeType() === 'image/svg+xml') {
-                $this->imageSizes = $this->extractSvgImageSizes();
             }
 
             // In case the image size could not be retrieved, log the incident as a warning.
