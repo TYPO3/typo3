@@ -62,6 +62,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendLayou
     = \TYPO3\CMS\Install\Updates\BackendLayoutIconUpdateWizard::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['redirects']
     = \TYPO3\CMS\Install\Updates\RedirectsExtensionUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['adminPanelInstall']
+    = \TYPO3\CMS\Install\Updates\AdminPanelInstall::class;
 
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $icons = [
