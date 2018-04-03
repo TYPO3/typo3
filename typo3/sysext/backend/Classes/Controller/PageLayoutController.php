@@ -386,8 +386,9 @@ class PageLayoutController
         // Clean up settings
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
         // For all elements to be shown in draft workspaces & to also show hidden elements by default if user hasn't disabled the option
-        if ($this->getBackendUser()->workspace != 0 ||
-            isset($this->MOD_SETTINGS['tt_content_showHidden']) && $this->MOD_SETTINGS['tt_content_showHidden'] !== '0'
+        if ($this->getBackendUser()->workspace != 0
+            || !isset($this->MOD_SETTINGS['tt_content_showHidden'])
+            || $this->MOD_SETTINGS['tt_content_showHidden'] !== '0'
         ) {
             $this->MOD_SETTINGS['tt_content_showHidden'] = 1;
         }
@@ -843,18 +844,6 @@ class PageLayoutController
             $h_func = '';
             $h_func_b = '';
             if (!isset($dbList->externalTables[$table])) {
-                // Toggle hidden ContentElements
-                $numberOfHiddenElements = $this->getNumberOfHiddenElements();
-                if ($numberOfHiddenElements > 0) {
-                    $h_func_b = '
-                        <div class="checkbox">
-                            <label for="checkTt_content_showHidden">
-                                <input type="checkbox" id="checkTt_content_showHidden" class="checkbox" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />
-                                ' . htmlspecialchars($this->getLanguageService()->getLL('hiddenCE')) . ' (<span class="t3js-hidden-counter">' . $numberOfHiddenElements . '</span>)
-                            </label>
-                        </div>';
-                }
-
                 // Boolean: Display up/down arrows and edit icons for tt_content records
                 $dbList->tt_contentConfig['showCommands'] = 1;
                 // Boolean: Display info-marks or not
@@ -883,6 +872,17 @@ class PageLayoutController
                     $dbList->tt_contentConfig['languageMode'] = 1;
                     $dbList->tt_contentConfig['languageCols'] = $this->MOD_MENU['language'];
                     $dbList->tt_contentConfig['languageColsPointer'] = $this->current_sys_language;
+                }
+                // Toggle hidden ContentElements
+                $numberOfHiddenElements = $this->getNumberOfHiddenElements($dbList->tt_contentConfig);
+                if ($numberOfHiddenElements > 0) {
+                    $h_func_b = '
+                        <div class="checkbox">
+                            <label for="checkTt_content_showHidden">
+                                <input type="checkbox" id="checkTt_content_showHidden" class="checkbox" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />
+                                ' . htmlspecialchars($this->getLanguageService()->getLL('hiddenCE')) . ' (<span class="t3js-hidden-counter">' . $numberOfHiddenElements . '</span>)
+                            </label>
+                        </div>';
                 }
             } else {
                 if (isset($this->MOD_SETTINGS) && isset($this->MOD_MENU)) {
@@ -1073,9 +1073,10 @@ class PageLayoutController
      * Returns the number of hidden elements (including those hidden by start/end times)
      * on the current page (for the current sys_language)
      *
+     * @param array $contentConfig
      * @return int
      */
-    public function getNumberOfHiddenElements()
+    public function getNumberOfHiddenElements(array $contentConfig = [])
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
@@ -1091,12 +1092,27 @@ class PageLayoutController
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
-                ),
+                )
+            );
+
+        if (!empty($contentConfig['languageCols']) && is_array($contentConfig['languageCols'])) {
+            // Multi-language view is active
+            if ($this->current_sys_language > 0) {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->in(
+                        'sys_language_uid',
+                        [0, $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)]
+                    )
+                );
+            }
+        } else {
+            $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
                     $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
                 )
             );
+        }
 
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'])) {
             $andWhere[] = $queryBuilder->expr()->neq(
