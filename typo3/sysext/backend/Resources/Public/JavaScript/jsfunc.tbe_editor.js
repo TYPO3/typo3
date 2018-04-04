@@ -190,7 +190,14 @@ var TBE_EDITOR = {
     // EXT:backend/Resources/Public/JavaScript/FormEngine.js (reference: http://forge.typo3.org/issues/58755).
     // TODO: This should be solved in a better way when this script is refactored.
     window.setTimeout(function() {
-      document.getElementsByName(TBE_EDITOR.formname).item(0).submit();
+      var formElement = document.getElementsByName(TBE_EDITOR.formname).item(0);
+      $('[data-active-password]:not([type=password])').each(
+        function(index, element) {
+          element.setAttribute('type', 'password');
+          element.blur();
+        }
+      );
+      formElement.submit();
     }, 100);
   },
   split: function(theStr1, delim, index) {
