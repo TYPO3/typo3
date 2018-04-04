@@ -3486,6 +3486,14 @@ class GeneralUtility
      */
     public static function upload_copy_move($source, $destination)
     {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\Utility\GeneralUtility']['moveUploadedFile'] ?? null)) {
+            $params = ['source' => $source, 'destination' => $destination, 'method' => 'upload_copy_move'];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\Utility\GeneralUtility']['moveUploadedFile'] as $hookMethod) {
+                $fakeThis = false;
+                self::callUserFunction($hookMethod, $params, $fakeThis);
+            }
+        }
+
         $result = false;
         if (is_uploaded_file($source)) {
             // Return the value of move_uploaded_file, and if FALSE the temporary $source is still
@@ -3514,6 +3522,14 @@ class GeneralUtility
     {
         if (is_uploaded_file($uploadedFileName)) {
             $tempFile = self::tempnam('upload_temp_');
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\Utility\GeneralUtility']['moveUploadedFile'] ?? null)) {
+                $params = ['source' => $uploadedFileName, 'destination' => $tempFile, 'method' => 'upload_to_tempfile'];
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\Utility\GeneralUtility']['moveUploadedFile'] as $hookMethod) {
+                    $fakeThis = false;
+                    self::callUserFunction($hookMethod, $params, $fakeThis);
+                }
+            }
+
             move_uploaded_file($uploadedFileName, $tempFile);
             return @is_file($tempFile) ? $tempFile : '';
         }
