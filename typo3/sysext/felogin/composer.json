@@ -5,11 +5,13 @@
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{
-			"name": "TYPO3 Core Team",
-			"email": "typo3cms@typo3.org",
-			"role": "Developer"
-		}],
-
+		"name": "TYPO3 Core Team",
+		"email": "typo3cms@typo3.org",
+		"role": "Developer"
+	}],
+	"config": {
+		"sort-packages": true
+	},
 	"require": {
 		"typo3/cms-core": "9.2.*@dev"
 	},
