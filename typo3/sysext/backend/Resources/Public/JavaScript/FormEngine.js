@@ -764,9 +764,9 @@ define(['jquery',
     });
     $maxlengthElements.addClass('t3js-charcounter-initialized');
     $(':password').on('focus', function() {
-      $(this).attr('type', 'text').select();
+      $(this).attr({'type':'text', 'data-active-password':'true'}).select();
     }).on('blur', function() {
-      $(this).attr('type', 'password');
+      $(this).attr('type', 'password').removeAttr('data-active-password');
     });
   };
 
