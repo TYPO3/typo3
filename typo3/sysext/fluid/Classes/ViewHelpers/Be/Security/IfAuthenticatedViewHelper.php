@@ -59,15 +59,4 @@ class IfAuthenticatedViewHelper extends AbstractConditionViewHelper
     {
         return isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->user['uid'] > 0;
     }
-
-    /**
-     * @return mixed
-     */
-    public function render()
-    {
-        if (static::evaluateCondition($this->arguments)) {
-            return $this->renderThenChild();
-        }
-        return $this->renderElseChild();
-    }
 }

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Be\Security;
 
 use TYPO3\CMS\Fluid\ViewHelpers\Be\Security\IfAuthenticatedViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Testcase for be.security.ifAuthenticated view helper
@@ -32,11 +33,14 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
     {
         parent::setUp();
         $GLOBALS['BE_USER'] = new \stdClass();
-        $this->viewHelper = $this->getAccessibleMock(IfAuthenticatedViewHelper::class, ['renderThenChild', 'renderElseChild']);
-        $this->viewHelper->expects($this->any())->method('renderThenChild')->will($this->returnValue('then child'));
-        $this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue('else child'));
+        $this->viewHelper = new IfAuthenticatedViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
+    }
+
+    protected function tearDown()
+    {
+        unset($GLOBALS['BE_USER']);
     }
 
     /**
@@ -45,7 +49,14 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
     public function viewHelperRendersThenChildIfBeUserIsLoggedIn()
     {
         $GLOBALS['BE_USER']->user = ['uid' => 1];
-        $actualResult = $this->viewHelper->render();
+
+        $actualResult = $this->viewHelper->renderStatic(
+            ['then' => 'then child', 'else' => 'else child'],
+            function () {
+            },
+            $this->prophesize(RenderingContextInterface::class)->reveal()
+        );
+
         $this->assertEquals('then child', $actualResult);
     }
 
@@ -55,7 +66,14 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
     public function viewHelperRendersElseChildIfBeUserIsNotLoggedIn()
     {
         $GLOBALS['BE_USER']->user = ['uid' => 0];
-        $actualResult = $this->viewHelper->render();
+
+        $actualResult = $this->viewHelper->renderStatic(
+            ['then' => 'then child', 'else' => 'else child'],
+            function () {
+            },
+            $this->prophesize(RenderingContextInterface::class)->reveal()
+        );
+
         $this->assertEquals('else child', $actualResult);
     }
 }

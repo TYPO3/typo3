@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\ViewHelpers\Security\IfHasRoleViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Testcase for security.ifHasRole view helper
@@ -36,11 +38,14 @@ class IfHasRoleViewHelperTest extends ViewHelperBaseTestcase
             'uid' => [1, 2],
             'title' => ['Editor', 'OtherRole']
         ];
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Security\IfHasRoleViewHelper::class, ['renderThenChild', 'renderElseChild']);
-        $this->viewHelper->expects($this->any())->method('renderThenChild')->will($this->returnValue('then child'));
-        $this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue('else child'));
+        $this->viewHelper = new IfHasRoleViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
+    }
+
+    protected function tearDown()
+    {
+        unset($GLOBALS['TSFE']);
     }
 
     /**
@@ -48,10 +53,13 @@ class IfHasRoleViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperRendersThenChildIfFeUserWithSpecifiedRoleIsLoggedIn()
     {
-        $this->arguments['role'] = 'Editor';
-        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $actualResult = $this->viewHelper->renderStatic(
+            ['role' => 'Editor', 'then' => 'then child', 'else' => 'else child'],
+            function () {
+            },
+            $this->prophesize(RenderingContextInterface::class)->reveal()
+        );
 
-        $actualResult = $this->viewHelper->render('Editor');
         $this->assertEquals('then child', $actualResult);
     }
 
@@ -60,10 +68,13 @@ class IfHasRoleViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperRendersThenChildIfFeUserWithSpecifiedRoleIdIsLoggedIn()
     {
-        $this->arguments['role'] = 1;
-        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $actualResult = $this->viewHelper->renderStatic(
+            ['role' => 1, 'then' => 'then child', 'else' => 'else child'],
+            function () {
+            },
+            $this->prophesize(RenderingContextInterface::class)->reveal()
+        );
 
-        $actualResult = $this->viewHelper->render(1);
         $this->assertEquals('then child', $actualResult);
     }
 
@@ -72,10 +83,13 @@ class IfHasRoleViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperRendersElseChildIfFeUserWithSpecifiedRoleIsNotLoggedIn()
     {
-        $this->arguments['role'] = 'NonExistingRole';
-        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $actualResult = $this->viewHelper->renderStatic(
+            ['role' => 'NonExistingRole', 'then' => 'then child', 'else' => 'else child'],
+            function () {
+            },
+            $this->prophesize(RenderingContextInterface::class)->reveal()
+        );
 
-        $actualResult = $this->viewHelper->render('NonExistingRole');
         $this->assertEquals('else child', $actualResult);
     }
 
@@ -84,10 +98,13 @@ class IfHasRoleViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperRendersElseChildIfFeUserWithSpecifiedRoleIdIsNotLoggedIn()
     {
-        $this->arguments['role'] = 123;
-        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $actualResult = $this->viewHelper->renderStatic(
+            ['role' => 123, 'then' => 'then child', 'else' => 'else child'],
+            function () {
+            },
+            $this->prophesize(RenderingContextInterface::class)->reveal()
+        );
 
-        $actualResult = $this->viewHelper->render(123);
         $this->assertEquals('else child', $actualResult);
     }
 }

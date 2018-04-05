@@ -59,15 +59,4 @@ class IfAuthenticatedViewHelper extends AbstractConditionViewHelper
     {
         return isset($GLOBALS['TSFE']) && $GLOBALS['TSFE']->loginUser;
     }
-
-    /**
-     * @return mixed
-     */
-    public function render()
-    {
-        if (static::evaluateCondition($this->arguments)) {
-            return $this->renderThenChild();
-        }
-        return $this->renderElseChild();
-    }
 }
