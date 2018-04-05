@@ -217,7 +217,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 ->from('pages')
                 ->from('sys_template')
                 ->where($queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('sys_template.pid')))
-                ->groupBy('pages.uid')
+                ->groupBy('pages.uid', 'pages.pid', 'pages.sorting')
                 ->orderBy('pages.pid')
                 ->addOrderBy('pages.sorting')
                 ->execute();
