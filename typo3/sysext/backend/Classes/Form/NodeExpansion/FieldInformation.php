@@ -66,7 +66,7 @@ class FieldInformation extends AbstractNode
             $options['renderData']['fieldInformationOptions'] = $orderedFieldInformationConfiguration['options'] ?? [];
             $informationResult = $this->nodeFactory->create($options)->render();
 
-            $allowedTags = '<a><br><br/><div><em><i><p><strong>';
+            $allowedTags = '<a><br><br/><div><em><i><p><strong><span>';
             if (strip_tags($informationResult['html'], $allowedTags) !== $informationResult['html']) {
                 throw new \RuntimeException(
                     'The field information API supports only a limited number of HTML tags within the result'
