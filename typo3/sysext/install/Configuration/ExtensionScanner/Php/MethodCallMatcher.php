@@ -2081,4 +2081,39 @@ return [
             'Deprecation-84637-TemplateService-linkDataFunctionalityMovedInPageLinkBuilder.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeAdminPanel' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeFrontendEdit' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->isFrontendEditingActive' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->displayAdminPanel' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->isAdminPanelVisible' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+        ],
+    ],
 ];

@@ -16,19 +16,16 @@ namespace TYPO3\CMS\Adminpanel\View;
  */
 
 use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Adminpanel\Service\EditToolbarService;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * View class for the admin panel in frontend editing.
+ *
+ * @internal
  */
 class AdminPanelView
 {
@@ -64,27 +61,27 @@ class AdminPanelView
     protected $modules = [];
 
     /**
+     * @var array
+     */
+    protected $configuration;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->initialize();
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /**
-     * Initializes settings for the admin panel.
+     * Setter for injecting new-style modules
+     *
+     * @see \TYPO3\CMS\Adminpanel\Controller\MainController::render()
+     * @param array $modules
      */
-    public function initialize()
+    public function setModules(array $modules): void
     {
-        $this->validateSortAndInitializeModules();
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->saveConfiguration();
-
-        foreach ($this->modules as $module) {
-            if ($module->isEnabled()) {
-                $module->initializeModule();
-            }
-        }
+        $this->modules = $modules;
     }
 
     /**
@@ -106,7 +103,7 @@ class AdminPanelView
     /**
      * Render a single module with header panel
      *
-     * @param \TYPO3\CMS\Frontend\AdminPanel\AdminPanelModuleInterface $module
+     * @param \TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface $module
      * @return string
      */
     protected function getModule(AdminPanelModuleInterface $module): string
@@ -316,80 +313,6 @@ class AdminPanelView
         return $this->getBackendUser()->uc['TSFE_adminConfig']['display_top'] ?? false;
     }
 
-    /**
-     * Save admin panel configuration to backend user UC
-     */
-    protected function saveConfiguration()
-    {
-        $input = GeneralUtility::_GP('TSFE_ADMIN_PANEL');
-        $beUser = $this->getBackendUser();
-        if (is_array($input)) {
-            // Setting
-            $beUser->uc['TSFE_adminConfig'] = array_merge(
-                !is_array($beUser->uc['TSFE_adminConfig']) ? [] : $beUser->uc['TSFE_adminConfig'],
-                $input
-            );
-            unset($beUser->uc['TSFE_adminConfig']['action']);
-
-            foreach ($this->modules as $module) {
-                if ($module->isEnabled() && $module->isOpen()) {
-                    $module->onSubmit($input);
-                }
-            }
-            // Saving
-            $beUser->writeUC();
-            // Flush fluid template cache
-            $cacheManager = new CacheManager();
-            $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-            $cacheManager->getCache('fluid_template')->flush();
-        }
-    }
-
-    /**
-     * Validates, sorts and initiates the registered modules
-     *
-     * @throws \RuntimeException
-     */
-    protected function validateSortAndInitializeModules(): void
-    {
-        $modules = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
-        if (empty($modules)) {
-            return;
-        }
-        foreach ($modules as $identifier => $configuration) {
-            if (empty($configuration) || !is_array($configuration)) {
-                throw new \RuntimeException(
-                    'Missing configuration for module "' . $identifier . '".',
-                    1519490105
-                );
-            }
-            if (!is_string($configuration['module']) ||
-                empty($configuration['module']) ||
-                !class_exists($configuration['module']) ||
-                !is_subclass_of(
-                    $configuration['module'],
-                    AdminPanelModuleInterface::class
-                )) {
-                throw new \RuntimeException(
-                    'The module "' .
-                    $identifier .
-                    '" defines an invalid module class. Ensure the class exists and implements the "' .
-                    AdminPanelModuleInterface::class .
-                    '".',
-                    1519490112
-                );
-            }
-        }
-
-        $orderedModules = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies(
-            $modules
-        );
-
-        foreach ($orderedModules as $module) {
-            $this->modules[] = GeneralUtility::makeInstance($module['module']);
-        }
-    }
-
     /*****************************************************
      * Admin Panel Layout Helper functions
      ****************************************************/
@@ -397,7 +320,7 @@ class AdminPanelView
     /**
      * Wraps a string in a link which will open/close a certain part of the Admin Panel
      *
-     * @param \TYPO3\CMS\Frontend\AdminPanel\AdminPanelModuleInterface $module
+     * @param AdminPanelModuleInterface $module
      * @return string
      */
     protected function getSectionOpenerLink(AdminPanelModuleInterface $module): string
@@ -426,164 +349,14 @@ class AdminPanelView
     /**
      * Creates the tool bar links for the "edit" section of the Admin Panel.
      *
+     * @deprecated
      * @return string A string containing images wrapped in <a>-tags linking them to proper functions.
      */
     public function ext_makeToolBar()
     {
-        $tsfe = $this->getTypoScriptFrontendController();
-        //  If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
-        $tsConfig = BackendUtility::getModTSconfig($tsfe->page['uid'], 'mod');
-        $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element';
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        $perms = $this->getBackendUser()->calcPerms($tsfe->page);
-        $langAllowed = $this->getBackendUser()->checkLanguageAccess($tsfe->sys_language_uid);
-        $id = $tsfe->id;
-        $returnUrl = GeneralUtility::getIndpEnv('REQUEST_URI');
-        $classes = 'typo3-adminPanel-btn typo3-adminPanel-btn-default';
-        $output = [];
-        $output[] = '<div class="typo3-adminPanel-form-group">';
-        $output[] = '  <div class="typo3-adminPanel-btn-group" role="group">';
-
-        // History
-        $link = (string)$uriBuilder->buildUriFromRoute(
-            'record_history',
-            [
-                'element' => 'pages:' . $id,
-                'returnUrl' => $returnUrl
-            ]
-        );
-        $title = $this->extGetLL('edit_recordHistory');
-        $output[] = '<a class="' . $classes . '" href="' . htmlspecialchars($link) . '#latest" title="' . $title . '">';
-        $output[] = '  ' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render();
-        $output[] = '</a>';
-
-        // New Content
-        if ($perms & Permission::CONTENT_EDIT && $langAllowed) {
-            $linkParameters = [
-                'id' => $id,
-                'returnUrl' => $returnUrl,
-            ];
-            if (!empty($tsfe->sys_language_uid)) {
-                $linkParameters['sys_language_uid'] = $tsfe->sys_language_uid;
-            }
-            $link = (string)$uriBuilder->buildUriFromRoute($moduleName, $linkParameters);
-            $icon = $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render();
-            $title = $this->extGetLL('edit_newContentElement');
-            $output[] = '<a class="' . $classes . '" href="' . htmlspecialchars($link) . '" title="' . $title . '">';
-            $output[] = '  ' . $icon;
-            $output[] = '</a>';
-        }
-
-        // Move Page
-        if ($perms & Permission::PAGE_EDIT) {
-            $link = (string)$uriBuilder->buildUriFromRoute(
-                'move_element',
-                [
-                    'table' => 'pages',
-                    'uid' => $id,
-                    'returnUrl' => $returnUrl
-                ]
-            );
-            $icon = $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL)->render();
-            $title = $this->extGetLL('edit_move_page');
-            $output[] = '<a class="' . $classes . '" href="' . htmlspecialchars($link) . '" title="' . $title . '">';
-            $output[] = '  ' . $icon;
-            $output[] = '</a>';
-        }
-
-        // New Page
-        if ($perms & Permission::PAGE_NEW) {
-            $link = (string)$uriBuilder->buildUriFromRoute(
-                'db_new',
-                [
-                    'id' => $id,
-                    'pagesOnly' => 1,
-                    'returnUrl' => $returnUrl
-                ]
-            );
-            $icon = $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render();
-            $title = $this->extGetLL('edit_newPage');
-            $output[] = '<a class="' . $classes . '" href="' . htmlspecialchars($link) . '" title="' . $title . '">';
-            $output[] = '  ' . $icon;
-            $output[] = '</a>';
-        }
-
-        // Edit Page
-        if ($perms & Permission::PAGE_EDIT) {
-            $link = (string)$uriBuilder->buildUriFromRoute(
-                'record_edit',
-                [
-                    'edit[pages][' . $id . ']' => 'edit',
-                    'noView' => 1,
-                    'returnUrl' => $returnUrl
-                ]
-            );
-            $icon = $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render();
-            $title = $this->extGetLL('edit_editPageProperties');
-            $output[] = '<a class="' . $classes . '" href="' . htmlspecialchars($link) . '" title="' . $title . '">';
-            $output[] = '  ' . $icon;
-            $output[] = '</a>';
-        }
-
-        // Edit Page Overlay
-        if ($perms & Permission::PAGE_EDIT && $tsfe->sys_language_uid && $langAllowed) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages');
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-            $row = $queryBuilder
-                ->select('uid', 'pid', 't3ver_state')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($tsfe->sys_language_uid, \PDO::PARAM_INT)
-                    )
-                )
-                ->setMaxResults(1)
-                ->execute()
-                ->fetch();
-            $tsfe->sys_page->versionOL('pages', $row);
-            if (is_array($row)) {
-                $link = (string)$uriBuilder->buildUriFromRoute(
-                    'record_edit',
-                    [
-                        'edit[pages][' . $row['uid'] . ']' => 'edit',
-                        'noView' => 1,
-                        'returnUrl' => $returnUrl
-                    ]
-                );
-                $icon = $this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)->render();
-                $title = $this->extGetLL('edit_editPageOverlay');
-                $output[] = '<a class="' . $classes . '" href="' . htmlspecialchars($link) . '" title="' . $title . '">';
-                $output[] = '  ' . $icon;
-                $output[] = '</a>';
-            }
-        }
-
-        // Open list view
-        if ($this->getBackendUser()->check('modules', 'web_list')) {
-            $link = (string)$uriBuilder->buildUriFromRoute(
-                'web_list',
-                [
-                    'id' => $id,
-                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-                ]
-            );
-            $icon = $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render();
-            $title = $this->extGetLL('edit_db_list');
-            $output[] = '<a class="' . $classes . '" href="' . htmlspecialchars($link) . '" title="' . $title . '">';
-            $output[] = '  ' . $icon;
-            $output[] = '</a>';
-        }
-
-        $output[] = '  </div>';
-        $output[] = '</div>';
-        return implode('', $output);
+        trigger_error('', E_USER_DEPRECATED);
+        $editToolbarService = GeneralUtility::makeInstance(EditToolbarService::class);
+        return $editToolbarService->createToolbar();
     }
 
     /**
@@ -662,9 +435,9 @@ class AdminPanelView
         // Returns TRUE if the module checked is "preview" and the forcePreview flag is set.
         if ($key === 'preview' && $this->ext_forcePreview) {
             $result = true;
-        } elseif (!empty($this->getBackendUser()->extAdminConfig['enable.']['all'])) {
+        } elseif (!empty($this->configuration['enable.']['all'])) {
             $result = true;
-        } elseif (!empty($this->getBackendUser()->extAdminConfig['enable.'][$key])) {
+        } elseif (!empty($this->configuration['enable.'][$key])) {
             $result = true;
         }
         return $result;
@@ -707,20 +480,20 @@ class AdminPanelView
         // deprecated
         if (
             $sectionName === 'edit' && (
-                $val === 'displayIcons' && $beUser->extAdminConfig['module.']['edit.']['forceDisplayIcons'] ||
-                $val === 'displayFieldIcons' && $beUser->extAdminConfig['module.']['edit.']['forceDisplayFieldIcons'] ||
-                $val === 'editNoPopup' && $beUser->extAdminConfig['module.']['edit.']['forceNoPopup']
+                $val === 'displayIcons' && $this->configuration['module.']['edit.']['forceDisplayIcons'] ||
+                $val === 'displayFieldIcons' && $this->configuration['module.']['edit.']['forceDisplayFieldIcons'] ||
+                $val === 'editNoPopup' && $this->configuration['module.']['edit.']['forceNoPopup']
             )
         ) {
             return true;
         }
 
         // Override all settings with user TSconfig
-        if ($val && isset($beUser->extAdminConfig['override.'][$sectionName . '.'][$val])) {
-            return $beUser->extAdminConfig['override.'][$sectionName . '.'][$val];
+        if ($val && isset($this->configuration['override.'][$sectionName . '.'][$val])) {
+            return $this->configuration['override.'][$sectionName . '.'][$val];
         }
-        if (!$val && isset($beUser->extAdminConfig['override.'][$sectionName])) {
-            return $beUser->extAdminConfig['override.'][$sectionName];
+        if (!$val && isset($this->configuration['override.'][$sectionName])) {
+            return $this->configuration['override.'][$sectionName];
         }
 
         $returnValue = $val ? $beUser->uc['TSFE_adminConfig'][$sectionName . '_' . $val] : 1;

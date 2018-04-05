@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Workspaces\Authentication;
 
 /*
@@ -106,35 +107,5 @@ class PreviewUserAuthentication extends BackendUserAuthentication
     public function calcPerms($row)
     {
         return Permission::PAGE_SHOW;
-    }
-
-    /**
-     * Stub to ensure that frontend editing is not possible as a preview user
-     *
-     * @return bool
-     */
-    public function initializeFrontendEdit()
-    {
-        return false;
-    }
-
-    /**
-     * Stub to ensure that frontend editing is not possible as a preview user
-     *
-     * @return bool
-     */
-    public function isFrontendEditingActive()
-    {
-        return false;
-    }
-
-    /**
-     * Stub to ensure that admin panel is not visible as a preview user
-     *
-     * @return bool
-     */
-    public function isAdminPanelVisible()
-    {
-        return false;
     }
 }

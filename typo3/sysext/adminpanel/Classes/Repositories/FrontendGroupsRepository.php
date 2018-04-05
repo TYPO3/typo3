@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TYPO3\CMS\Adminpanel\Repositories;
 
@@ -110,7 +110,7 @@ class FrontendGroupsRepository
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
+     * @return FrontendBackendUserAuthentication
      */
     protected function getBackendUser(): FrontendBackendUserAuthentication
     {

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TYPO3\CMS\Adminpanel\Modules;
 
@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  */
 
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
@@ -32,6 +33,16 @@ abstract class AbstractModule implements AdminPanelModuleInterface
     protected $extResources = 'EXT:adminpanel/Resources/Private';
 
     /**
+     * @var array
+     */
+    protected $mainConfiguration;
+
+    public function __construct()
+    {
+        $this->mainConfiguration = $this->getBackendUser()->getTSConfigProp('admPanel');
+    }
+
+    /**
      * @inheritdoc
      */
     public function getAdditionalJavaScriptCode(): string
@@ -42,7 +53,7 @@ abstract class AbstractModule implements AdminPanelModuleInterface
     /**
      * @inheritdoc
      */
-    public function initializeModule(): void
+    public function initializeModule(ServerRequest $request): void
     {
     }
 
@@ -59,8 +70,8 @@ abstract class AbstractModule implements AdminPanelModuleInterface
     {
         $identifier = $this->getIdentifier();
         $result = $this->isEnabledViaTsConfig();
-        if ($this->getBackendUser()->extAdminConfig['override.'][$identifier] ?? false) {
-            $result = (bool)$this->getBackendUser()->extAdminConfig['override.'][$identifier];
+        if ($this->mainConfiguration['override.'][$identifier] ?? false) {
+            $result = (bool)$this->mainConfiguration['override.'][$identifier];
         }
         return $result;
     }
@@ -116,7 +127,7 @@ abstract class AbstractModule implements AdminPanelModuleInterface
     {
         $labelStr = $this->getLanguageService()->getLL($key);
         if ($convertWithHtmlspecialchars) {
-            $labelStr = htmlspecialchars($labelStr);
+            $labelStr = htmlspecialchars($labelStr, ENT_QUOTES | ENT_HTML5);
         }
         return $labelStr;
     }
@@ -143,8 +154,8 @@ abstract class AbstractModule implements AdminPanelModuleInterface
         $beUser = $this->getBackendUser();
         $identifier = $this->getIdentifier();
 
-        if ($option && isset($beUser->extAdminConfig['override.'][$identifier . '.'][$option])) {
-            $returnValue = $beUser->extAdminConfig['override.'][$identifier . '.'][$option];
+        if ($option && isset($this->mainConfiguration['override.'][$identifier . '.'][$option])) {
+            $returnValue = $this->mainConfiguration['override.'][$identifier . '.'][$option];
         } else {
             $returnValue = $beUser->uc['TSFE_adminConfig'][$identifier . '_' . $option] ?? '';
         }
@@ -171,9 +182,9 @@ abstract class AbstractModule implements AdminPanelModuleInterface
     {
         $result = false;
         $identifier = $this->getIdentifier();
-        if (!empty($this->getBackendUser()->extAdminConfig['enable.']['all'])) {
+        if (!empty($this->mainConfiguration['enable.']['all'])) {
             $result = true;
-        } elseif (!empty($this->getBackendUser()->extAdminConfig['enable.'][$identifier])) {
+        } elseif (!empty($this->mainConfiguration['enable.'][$identifier])) {
             $result = true;
         }
         return $result;

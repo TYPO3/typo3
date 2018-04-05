@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Frontend\Middleware;
 
 /*
@@ -83,8 +84,6 @@ class BackendUserAuthenticator implements MiddlewareInterface
             Bootstrap::initializeLanguageObject();
             Bootstrap::initializeBackendRouter();
             Bootstrap::loadExtTables();
-            // Initialize admin panel since simulation settings are required here
-            $GLOBALS['BE_USER']->initializeAdminPanel();
         }
 
         return $handler->handle($request);

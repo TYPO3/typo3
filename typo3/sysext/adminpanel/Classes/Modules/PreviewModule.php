@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TYPO3\CMS\Adminpanel\Modules;
 
@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  */
 
 use TYPO3\CMS\Adminpanel\Repositories\FrontendGroupsRepository;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -93,7 +94,10 @@ class PreviewModule extends AbstractModule
         return $this->getLanguageService()->sL($locallangFileAndPath);
     }
 
-    public function initializeModule(): void
+    /**
+     * @param ServerRequest $request
+     */
+    public function initializeModule(ServerRequest $request): void
     {
         $this->initializeFrontendPreview();
         if (GeneralUtility::_GP('ADMCMD_simUser')) {

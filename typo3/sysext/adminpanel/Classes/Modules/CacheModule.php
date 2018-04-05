@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -65,7 +66,7 @@ class CacheModule extends AbstractModule
     /**
      * @inheritdoc
      */
-    public function initializeModule(): void
+    public function initializeModule(ServerRequest $request): void
     {
         if ($this->getConfigurationOption('noCache')) {
             $this->getTypoScriptFrontendController()->set_no_cache('Admin Panel: No Caching', true);

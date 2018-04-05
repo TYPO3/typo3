@@ -13,7 +13,7 @@ namespace TYPO3\CMS\Feedit;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Adminpanel\View\AdminPanelView;
+use TYPO3\CMS\Adminpanel\Service\EditToolbarService;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -97,8 +97,9 @@ class FrontendEditPanel
         $hideField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
 
         $panel = '';
-        if (isset($allow['toolbar']) && $this->backendUser->adminPanel instanceof AdminPanelView) {
-            $panel .= $this->backendUser->adminPanel->ext_makeToolBar();
+        if (isset($allow['toolbar'])) {
+            $editToolbarService = GeneralUtility::makeInstance(EditToolbarService::class);
+            $panel .= $editToolbarService->createToolbar();
         }
         if (isset($allow['edit'])) {
             $icon = '<span title="' . $this->backendUser->extGetLL('p_editRecord') . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render('inline') . '</span>';

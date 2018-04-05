@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend;
  */
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -29,6 +30,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FrontendBackendUserAuthentication extends BackendUserAuthentication
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * Properties which have been moved to protected status from public
+     *
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'extAdmEnabled' => 'Using $extAdmEnabled of class FrontendBackendUserAuthentication from the outside is discouraged, as this variable is only used for internal storage.',
+        'adminPanel' => 'Using $adminPanel of class FrontendBackendUserAuthentication from the outside is discouraged, as this variable is only used for internal storage.',
+        'extAdminConfig' => 'Using $extAdminConfig of class FrontendBackendUserAuthentication from the outside is discouraged, as this variable is only used for internal storage.',
+    ];
+
     /**
      * Form field with login name.
      *
@@ -69,11 +83,13 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * General flag which is set if the adminpanel is enabled at all.
      *
      * @var bool
+     * @deprecated since TYPO3v9, property will be removed in TYPO3 v10 - see extension "adminpanel" for new API
      */
     public $extAdmEnabled = false;
 
     /**
      * @var \TYPO3\CMS\Adminpanel\View\AdminPanelView Instance of admin panel
+     * @deprecated since TYPO3v9, property will be removed in TYPO3 v10 - see extension "adminpanel" for new API
      */
     public $adminPanel = null;
 
@@ -84,58 +100,39 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
 
     /**
      * @var array
+     * @deprecated since TYPO3v9, property will be removed in TYPO3 v10 - see extension "adminpanel" for new API
      */
     public $extAdminConfig = [];
 
     /**
      * Initializes the admin panel.
+     *
+     * @deprecated since TYPO3v9 - rewritten as middleware
      */
     public function initializeAdminPanel()
     {
-        $this->extAdminConfig = $this->getTSConfigProp('admPanel');
-        if (isset($this->extAdminConfig['enable.'])) {
-            foreach ($this->extAdminConfig['enable.'] as $value) {
-                if ($value) {
-                    $this->adminPanel = GeneralUtility::makeInstance(\TYPO3\CMS\Adminpanel\View\AdminPanelView::class);
-                    $this->extAdmEnabled = true;
-                    break;
-                }
-            }
-        }
+        trigger_error('Method will be removed in TYPO3 v10 - initialization is done via middleware.', E_USER_DEPRECATED);
     }
 
     /**
      * Initializes frontend editing.
+     *
+     * @deprecated since TYPO3v9 - rewritten as middleware
      */
     public function initializeFrontendEdit()
     {
-        if (isset($this->extAdminConfig['enable.']) && $this->isFrontendEditingActive()) {
-            foreach ($this->extAdminConfig['enable.'] as $value) {
-                if ($value) {
-                    if ($GLOBALS['TSFE'] instanceof \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController) {
-                        // Grab the Page TSConfig property that determines which controller to use.
-                        $pageTSConfig = $GLOBALS['TSFE']->getPagesTSconfig();
-                        $controllerKey = $pageTSConfig['TSFE.']['frontendEditingController'] ?? 'default';
-                    } else {
-                        $controllerKey = 'default';
-                    }
-                    $controllerClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey];
-                    if ($controllerClass) {
-                        $this->frontendEdit = GeneralUtility::makeInstance($controllerClass);
-                    }
-                    break;
-                }
-            }
-        }
+        trigger_error('Method will be removed in TYPO3 v10 - initialization is done via middleware.', E_USER_DEPRECATED);
     }
 
     /**
      * Determines whether frontend editing is currently active.
      *
+     * @deprecated since TYPO3 v9 - see ext "feedit" for API
      * @return bool Whether frontend editing is active
      */
     public function isFrontendEditingActive()
     {
+        trigger_error('Method will be removed in TYPO3 v10 - use underlying TSFE directly.', E_USER_DEPRECATED);
         return $this->extAdmEnabled && (
             $this->adminPanel->isAdminModuleEnabled('edit') ||
             (int)$GLOBALS['TSFE']->displayEditIcons === 1 ||
@@ -146,20 +143,24 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
     /**
      * Delegates to the appropriate view and renders the admin panel content.
      *
+     * @deprecated since TYPO3v9 - see ext "adminpanel" for new API
      * @return string.
      */
     public function displayAdminPanel()
     {
+        trigger_error('Method will be removed in TYPO3 v10 - use MainController of adminpanel extension.', E_USER_DEPRECATED);
         return $this->adminPanel->display();
     }
 
     /**
      * Determines whether the admin panel is enabled and visible.
      *
+     * @deprecated since TYPO3v9 - see ext "adminpanel" for new API
      * @return bool true if the admin panel is enabled and visible
      */
     public function isAdminPanelVisible()
     {
+        trigger_error('Method will be removed in TYPO3 v10 - use new adminpanel API instead.', E_USER_DEPRECATED);
         return $this->extAdmEnabled && !$this->extAdminConfig['hide'] && $GLOBALS['TSFE']->config['config']['admPanel'];
     }
 

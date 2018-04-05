@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Adminpanel\Modules;
 
 /*
@@ -15,6 +16,7 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -74,7 +76,7 @@ class TsDebugModule extends AbstractModule
     /**
      * @inheritdoc
      */
-    public function initializeModule(): void
+    public function initializeModule(ServerRequest $request): void
     {
         $typoScriptFrontend = $this->getTypoScriptFrontendController();
         $typoScriptFrontend->forceTemplateParsing = (bool)$this->getConfigurationOption('forceTemplateParsing');
@@ -111,7 +113,6 @@ class TsDebugModule extends AbstractModule
     /**
      * Renders the TypoScript log as string
      *
-     * @param $output
      * @return string
      */
     private function renderTypoScriptLog(): string

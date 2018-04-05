@@ -9,6 +9,9 @@
 			<trans-unit id="adminPanelTitle">
 				<source>TYPO3 ADMIN PANEL</source>
 			</trans-unit>
+			<trans-unit id="preview">
+				<source>Preview</source>
+			</trans-unit>
 			<trans-unit id="publish">
 				<source>Publish</source>
 			</trans-unit>

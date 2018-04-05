@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Frontend\Http;
 
 /*
@@ -18,7 +19,6 @@ namespace TYPO3\CMS\Frontend\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
-use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
@@ -160,11 +160,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $controller->hook_eofe();
         // Finish timetracking
         $this->timeTracker->pull();
-
-        // Admin panel
-        if ($controller->isBackendUserLoggedIn() && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication && $GLOBALS['BE_USER']->isAdminPanelVisible()) {
-            $controller->content = str_ireplace('</body>', $GLOBALS['BE_USER']->displayAdminPanel() . '</body>', $controller->content);
-        }
 
         if ($isOutputting) {
             $response->getBody()->write($controller->content);

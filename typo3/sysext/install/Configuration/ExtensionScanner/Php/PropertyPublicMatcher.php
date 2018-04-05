@@ -376,4 +376,19 @@ return [
             'Deprecation-84295-UseServerRequestInterfaceInFileEditFileController.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->adminPanel' => [
+        'restFiles' => [
+            'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdminConfig' => [
+        'restFiles' => [
+            'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdmEnabled' => [
+        'restFiles' => [
+            'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+        ],
+    ],
 ];

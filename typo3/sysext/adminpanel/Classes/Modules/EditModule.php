@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TYPO3\CMS\Adminpanel\Modules;
 
@@ -16,7 +16,9 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Adminpanel\Service\EditToolbarService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -39,6 +41,7 @@ class EditModule extends AbstractModule
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
         $view->setPartialRootPaths([$this->extResources . '/Partials']);
 
+        $editToolbarService = GeneralUtility::makeInstance(EditToolbarService::class);
         $view->assignMultiple([
             'feEdit' => ExtensionManagementUtility::isLoaded('feedit'),
             'display' => [
@@ -46,7 +49,7 @@ class EditModule extends AbstractModule
                 'fieldIcons' => $this->getConfigurationOption('displayFieldIcons'),
                 'displayIcons' => $this->getConfigurationOption('displayIcons'),
             ],
-            'toolbar' => $this->getBackendUser()->adminPanel->ext_makeToolBar(),
+            'toolbar' => $editToolbarService->createToolbar(),
             'script' => [
                 'pageUid' => (int)$this->getTypoScriptFrontendController()->page['uid'],
                 'pageModule' => $this->getPageModule(),
@@ -98,9 +101,11 @@ class EditModule extends AbstractModule
      * Initialize the edit module
      * Includes the frontend edit initialization
      *
+     * @param ServerRequest $request
+     *
      * @todo move into fe_edit (including the module)
      */
-    public function initializeModule(): void
+    public function initializeModule(ServerRequest $request): void
     {
         $extFeEditLoaded = ExtensionManagementUtility::isLoaded('feedit');
         $typoScriptFrontend = $this->getTypoScriptFrontendController();

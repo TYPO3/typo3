@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TYPO3\CMS\Adminpanel\Modules;
 
@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Http\ServerRequest;
+
 /**
  * Interface for admin panel modules registered via EXTCONF
  *
@@ -23,6 +25,7 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  */
 interface AdminPanelModuleInterface
 {
+
     /**
      * Additional JavaScript code for this module
      * (you should only use vanilla JS here, as you cannot
@@ -56,8 +59,10 @@ interface AdminPanelModuleInterface
 
     /**
      * Initialize the module - runs early in a TYPO3 request
+     *
+     * @param \TYPO3\CMS\Core\Http\ServerRequest $request
      */
-    public function initializeModule(): void;
+    public function initializeModule(ServerRequest $request): void;
 
     /**
      * Module is enabled
