@@ -391,7 +391,7 @@ class Clipboard
                                 )
                             ) {
                                 $thumb = [
-                                    'image' => $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, []),
+                                    'image' => $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, [])->getPublicUrl(true),
                                     'title' => htmlspecialchars($fileObject->getName())
                                 ];
                             }
