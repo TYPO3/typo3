@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -652,8 +654,21 @@ abstract class AbstractMenuContentObject
         // Getting current page record NOT overlaid by any translation:
         $tsfe = $this->getTypoScriptFrontendController();
         $currentPageWithNoOverlay = $this->sys_page->getRawRecord('pages', $tsfe->page['uid']);
-        // Traverse languages set up:
-        $languageItems = GeneralUtility::intExplode(',', $specialValue);
+
+        if ($specialValue === 'auto') {
+            $site = $this->getCurrentSite();
+            $languageItems = [];
+            $languages = $site->getLanguages();
+
+            foreach ($languages as $languageUid => $language) {
+                $languageItems[] = $languageUid;
+            }
+        } else {
+            $languageItems = GeneralUtility::intExplode(',', $specialValue);
+        }
+
+        $tsfe->register['languages_HMENU'] = implode(',', $languageItems);
+
         foreach ($languageItems as $sUid) {
             // Find overlay record:
             if ($sUid) {
@@ -2299,6 +2314,18 @@ abstract class AbstractMenuContentObject
     protected function getRuntimeCache()
     {
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+    }
+
+    /**
+     * Returns the currently configured "site" if a site is configured (= resolved) in the current request.
+     *
+     * @return Site
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     */
+    protected function getCurrentSite(): Site
+    {
+        $finder = GeneralUtility::makeInstance(SiteFinder::class);
+        return $finder->getSiteByPageId((int)$this->getTypoScriptFrontendController()->id);
     }
 
     /**
