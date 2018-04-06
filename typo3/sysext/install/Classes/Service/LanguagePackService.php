@@ -234,7 +234,8 @@ class LanguagePackService
             $packageUrl = $key[0] . '/' . $key[1] . '/' . $key . '-l10n/' . $key . '-l10n-' . $iso . '.zip';
         }
 
-        $absoluteExtractionPath = GeneralUtility::getFileAbsFileName('typo3conf/l10n/' . $iso . '/' . $key . '/');
+        $absoluteLanguagePath = GeneralUtility::getFileAbsFileName('typo3conf/l10n/' . $iso . '/');
+        $absoluteExtractionPath = $absoluteLanguagePath . $key . '/';
         $absolutePathToZipFile = Environment::getVarPath() . '/transient/' . $key . '-l10n-' . $iso . '.zip';
 
         $packExists = is_dir($absoluteExtractionPath);
@@ -253,7 +254,7 @@ class LanguagePackService
                     GeneralUtility::mkdir_deep(Environment::getVarPath() . '/transient/');
                     $operationResult = GeneralUtility::writeFileToTypo3tempDir($absolutePathToZipFile, $languagePackContent) === null;
                 }
-                $this->unzipTranslationFile($absolutePathToZipFile, $absoluteExtractionPath);
+                $this->unzipTranslationFile($absolutePathToZipFile, $absoluteLanguagePath);
                 if ($operationResult) {
                     $operationResult = unlink($absolutePathToZipFile);
                 }
