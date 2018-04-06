@@ -329,13 +329,14 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     public function getMountPointParameterFromRootPointMaps(int $pageId)
     {
         // Create map if not found already
+        $config = $this->getTypoScriptFrontendController()->config;
         $mountPointMap = $this->initializeMountPointMap(
-            $this->getTypoScriptFrontendController()->config['config']['MP_defaults'] ?: null,
-            $this->getTypoScriptFrontendController()->config['config']['MP_mapRootPoints'] ?: null
+            !empty($config['config']['MP_defaults']) ? $config['config']['MP_defaults'] : null,
+            !empty($config['config']['MP_mapRootPoints']) ? $config['config']['MP_mapRootPoints'] : null
         );
 
         // Finding MP var for Page ID:
-        if (is_array($mountPointMap[$pageId]) && !empty($mountPointMap[$pageId])) {
+        if (!empty($mountPointMap[$pageId])) {
             return implode(',', $mountPointMap[$pageId]);
         }
         return '';
@@ -502,8 +503,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
         // typeNum
         $typeNum = $this->getTypoScriptFrontendController()->tmpl->setup[$target . '.']['typeNum'];
-        if (!MathUtility::canBeInterpretedAsInteger($typeOverride) && (int)$this->getTypoScriptFrontendController()->config['config']['forceTypeValue']) {
-            $typeOverride = (int)$this->getTypoScriptFrontendController()->config['config']['forceTypeValue'];
+        $config = $this->getTypoScriptFrontendController()->config;
+        if (!MathUtility::canBeInterpretedAsInteger($typeOverride) && !empty($config['config']['forceTypeValue']) && (int)$config['config']['forceTypeValue']) {
+            $typeOverride = (int)$config['config']['forceTypeValue'];
         }
         if ((string)$typeOverride !== '') {
             $typeNum = $typeOverride;
