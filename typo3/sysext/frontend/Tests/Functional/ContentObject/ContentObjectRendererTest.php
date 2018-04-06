@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -448,14 +449,19 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
         ]);
 
         $templateServiceMockObject = $this->getMockBuilder(TemplateService::class)
-            ->setMethods(['linkData'])
             ->getMock();
         $templateServiceMockObject->setup = [
             'lib.' => [
                 'parseFunc.' => $this->getLibParseFunc(),
             ],
         ];
-        $templateServiceMockObject->expects($this->once())->method('linkData')->willReturn([
+
+        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $pageLinkBuilder = $this->getMockBuilder(PageLinkBuilder::class)
+            ->setMethods(['createTotalUrlAndLinkData'])
+            ->setConstructorArgs([$subject])
+            ->getMock();
+        $pageLinkBuilder->expects($this::once())->method('createTotalUrlAndLinkData')->willReturn([
             'url' => '/index.php?id=1',
             'target' => '',
             'type' => '',
@@ -465,6 +471,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
             'sectionIndex' => '',
             'totalURL' => '/',
         ]);
+        GeneralUtility::addInstance(PageLinkBuilder::class, $pageLinkBuilder);
 
         $typoScriptFrontendController = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
@@ -484,7 +491,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
             'section' => 'content',
         ];
 
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $this->assertEquals('<a href="#content">Page title</a>', $subject->typoLink('', $configuration));
     }
 

@@ -2060,4 +2060,25 @@ return [
             'Deprecation-84549-DeprecateMethodsInCoreVersionService.rst',
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->linkData' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 8,
+        'restFiles' => [
+            'Deprecation-84637-TemplateService-linkDataFunctionalityMovedInPageLinkBuilder.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->getFromMPmap' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 8,
+        'restFiles' => [
+            'Deprecation-84637-TemplateService-linkDataFunctionalityMovedInPageLinkBuilder.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->initMPmap_create' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 8,
+        'restFiles' => [
+            'Deprecation-84637-TemplateService-linkDataFunctionalityMovedInPageLinkBuilder.rst',
+        ],
+    ],
 ];

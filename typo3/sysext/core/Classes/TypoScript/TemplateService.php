@@ -306,6 +306,7 @@ class TemplateService
 
     /**
      * Contains mapping of Page id numbers to MP variables.
+     * This is not used anymore, and will be removed in TYPO3 v10.
      *
      * @var string
      */
@@ -1478,9 +1479,11 @@ class TemplateService
      * @param string $targetDomain The target Doamin, if any was detected in typolink
      * @return array Contains keys like "totalURL", "url", "sectionIndex", "linkVars", "no_cache", "type", "target" of which "totalURL" is normally the value you would use while the other keys contains various parts that was used to construct "totalURL
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::link()
+     * @deprecated - will be removed in TYPO3 v10.0 - have a look at PageLinkBuilder
      */
     public function linkData($page, $oTarget, $no_cache, $_ = null, $overrideArray = null, $addParams = '', $typeOverride = '', $targetDomain = '')
     {
+        trigger_error('Creating URLs to pages is now encapsulated into PageLinkBuilder, and should be used in the future. This method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
         $LD = [];
         // Overriding some fields in the page record and still preserves the values by adding them as parameters. Little strange function.
         if (is_array($overrideArray)) {
@@ -1562,9 +1565,11 @@ class TemplateService
      * @return string
      * @see initMPmap_create()
      * @todo Implement some caching of the result between hits. (more than just the memory caching used here)
+     * @deprecated - will be removed in TYPO3 v10.
      */
     public function getFromMPmap($pageId = 0)
     {
+        trigger_error('Getting a mount point parameter for a page is now built into PageLinkBuilder, and should be used in the future. This method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
         // Create map if not found already:
         if (!is_array($this->MPmap)) {
             $this->MPmap = [];
@@ -1597,9 +1602,11 @@ class TemplateService
      * @param array $MP_array MP_array passed from root page.
      * @param int $level Recursion brake. Incremented for each recursive call. 20 is the limit.
      * @see getFromMPvar()
+     * @deprecated will be removed in TYPO3 v10.0
      */
     public function initMPmap_create($id, $MP_array = [], $level = 0)
     {
+        trigger_error('Building a mount point parameter map is now built into PageLinkBuilder, and should be used in the future. This method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
         $id = (int)$id;
         if ($id <= 0) {
             return;

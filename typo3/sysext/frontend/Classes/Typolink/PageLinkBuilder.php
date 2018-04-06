@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Frontend\Typolink;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\TypolinkModifyLinkConfigForPageLinksHookInterface;
@@ -178,7 +180,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // If target page has a different domain and the current domain's linking scheme (e.g. RealURL/...) should not be used
         if ($targetDomain !== '' && $targetDomain !== $currentDomain && !$enableLinksAcrossDomains) {
             $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, $tsfe->extTarget);
-            $LD['target'] = $target;
             // Convert IDNA-like domain (if any)
             if (!preg_match('/^[a-z0-9.\\-]*$/i', $targetDomain)) {
                 $targetDomain = GeneralUtility::idnaEncode($targetDomain);
@@ -187,10 +188,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         } else {
             // Internal link or current domain's linking scheme should be used
             // Internal target:
+            $target = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
             if (empty($target)) {
                 $target = $this->resolveTargetAttribute($conf, 'target', true, $tsfe->intTarget);
             }
-            $LD = $tsfe->tmpl->linkData($page, $target, $conf['no_cache'], '', '', $addQueryParams, $pageType, $targetDomain);
+            $LD = $this->createTotalUrlAndLinkData($page, $target, $conf['no_cache'], $addQueryParams, $pageType, $targetDomain);
             if ($targetDomain !== '') {
                 // We will add domain only if URL does not have it already.
                 if ($enableLinksAcrossDomains && $targetDomain !== $currentDomain && isset($tsfe->config['config']['absRefPrefix'])) {
@@ -210,7 +212,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             }
             $url = $LD['totalURL'] . $sectionMark;
         }
-        $target = $LD['target'];
         // If sectionMark is set, there is no baseURL AND the current page is the page the link is to, check if there are any additional parameters or addQueryString parameters and if not, drop the url.
         if ($sectionMark
             && !$tsfe->config['config']['baseURL']
@@ -311,5 +312,229 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             }
         }
         return !empty($rl_mpArray) ? implode(',', array_reverse($rl_mpArray)) : '';
+    }
+
+    /**
+     * Initializes the automatically created mountPointMap coming from the "config.MP_mapRootPoints" setting
+     * Can be called many times with overhead only the first time since then the map is generated and cached in memory.
+     *
+     * Previously located within TemplateService::getFromMPmap()
+     *
+     * @param int $pageId Page id to return MPvar value for.
+     * @return string
+     */
+    public function getMountPointParameterFromRootPointMaps(int $pageId)
+    {
+        // Create map if not found already
+        $mountPointMap = $this->initializeMountPointMap(
+            $this->getTypoScriptFrontendController()->config['config']['MP_defaults'] ?: null,
+            $this->getTypoScriptFrontendController()->config['config']['MP_mapRootPoints'] ?: null
+        );
+
+        // Finding MP var for Page ID:
+        if (is_array($mountPointMap[$pageId]) && !empty($mountPointMap[$pageId])) {
+            return implode(',', $mountPointMap[$pageId]);
+        }
+        return '';
+    }
+
+    /**
+     * Create mount point map, based on TypoScript config.MP_mapRootPoints and config.MP_defaults.
+     *
+     * @param string $defaultMountPoints a string as defined in config.MP_defaults
+     * @param string|null $mapRootPointList a string as defined in config.MP_mapRootPoints
+     * @return array
+     */
+    protected function initializeMountPointMap(string $defaultMountPoints = null, string $mapRootPointList = null): array
+    {
+        static $mountPointMap = [];
+        if (!empty($mountPointMap) || (empty($mapRootPointList) && empty($defaultMountPoints))) {
+            return $mountPointMap;
+        }
+        if ($defaultMountPoints) {
+            $defaultMountPoints = GeneralUtility::trimExplode('|', $defaultMountPoints, true);
+            foreach ($defaultMountPoints as $temp_p) {
+                list($temp_idP, $temp_MPp) = explode(':', $temp_p, 2);
+                $temp_ids = GeneralUtility::intExplode(',', $temp_idP);
+                foreach ($temp_ids as $temp_id) {
+                    $mountPointMap[$temp_id] = trim($temp_MPp);
+                }
+            }
+        }
+
+        $rootPoints = GeneralUtility::trimExplode(',', strtolower($mapRootPointList), true);
+        // Traverse rootpoints
+        foreach ($rootPoints as $p) {
+            $initMParray = [];
+            if ($p === 'root') {
+                $rootPage = $this->getTypoScriptFrontendController()->tmpl->rootLine[0];
+                $p = $rootPage['uid'];
+                if ($p['_MOUNT_OL'] && $p['_MP_PARAM']) {
+                    $initMParray[] = $p['_MP_PARAM'];
+                }
+            }
+            $this->populateMountPointMapForPageRecursively($mountPointMap, $p, $initMParray);
+        }
+        return $mountPointMap;
+    }
+
+    /**
+     * Creating mountPointMap for a certain ID root point.
+     * Previously called TemplateService->initMPmap_create()
+     *
+     * @param array $mountPointMap the exiting mount point map
+     * @param int $id Root id from which to start map creation.
+     * @param array $MP_array MP_array passed from root page.
+     * @param int $level Recursion brake. Incremented for each recursive call. 20 is the limit.
+     * @see getMountPointParameterFromRootPointMaps()
+     */
+    protected function populateMountPointMapForPageRecursively(array &$mountPointMap, int $id, $MP_array = [], $level = 0)
+    {
+        if ($id <= 0) {
+            return;
+        }
+        // First level, check id
+        if (!$level) {
+            // Find mount point if any:
+            $mount_info = $this->getTypoScriptFrontendController()->sys_page->getMountPointInfo($id);
+            // Overlay mode:
+            if (is_array($mount_info) && $mount_info['overlay']) {
+                $MP_array[] = $mount_info['MPvar'];
+                $id = $mount_info['mount_pid'];
+            }
+            // Set mapping information for this level:
+            $mountPointMap[$id] = $MP_array;
+            // Normal mode:
+            if (is_array($mount_info) && !$mount_info['overlay']) {
+                $MP_array[] = $mount_info['MPvar'];
+                $id = $mount_info['mount_pid'];
+            }
+        }
+        if ($id && $level < 20) {
+            $nextLevelAcc = [];
+            // Select and traverse current level pages:
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $queryResult = $queryBuilder
+                ->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        'doktype',
+                        $queryBuilder->createNamedParameter(PageRepository::DOKTYPE_RECYCLER, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        'doktype',
+                        $queryBuilder->createNamedParameter(PageRepository::DOKTYPE_BE_USER_SECTION, \PDO::PARAM_INT)
+                    )
+                )->execute();
+            while ($row = $queryResult->fetch()) {
+                // Find mount point if any:
+                $next_id = $row['uid'];
+                $next_MP_array = $MP_array;
+                $mount_info = $this->getTypoScriptFrontendController()->sys_page->getMountPointInfo($next_id, $row);
+                // Overlay mode:
+                if (is_array($mount_info) && $mount_info['overlay']) {
+                    $next_MP_array[] = $mount_info['MPvar'];
+                    $next_id = $mount_info['mount_pid'];
+                }
+                if (!isset($mountPointMap[$next_id])) {
+                    // Set mapping information for this level:
+                    $mountPointMap[$next_id] = $next_MP_array;
+                    // Normal mode:
+                    if (is_array($mount_info) && !$mount_info['overlay']) {
+                        $next_MP_array[] = $mount_info['MPvar'];
+                        $next_id = $mount_info['mount_pid'];
+                    }
+                    // Register recursive call
+                    // (have to do it this way since ALL of the current level should be registered BEFORE the sublevel at any time)
+                    $nextLevelAcc[] = [$next_id, $next_MP_array];
+                }
+            }
+            // Call recursively, if any:
+            foreach ($nextLevelAcc as $pSet) {
+                $this->populateMountPointMapForPageRecursively($mountPointMap, $pSet[0], $pSet[1], $level + 1);
+            }
+        }
+    }
+
+    /**
+     * The mother of all functions creating links/URLs etc in a TypoScript environment.
+     * See the references below.
+     * Basically this function takes care of issues such as type,id,alias and Mount Points, URL rewriting (through hooks), M5/B6 encoded parameters etc.
+     * It is important to pass all links created through this function since this is the guarantee that globally configured settings for link creating are observed and that your applications will conform to the various/many configuration options in TypoScript Templates regarding this.
+     *
+     * @param array $page The page record of the page to which we are creating a link. Needed due to fields like uid, alias, target, title and sectionIndex_uid.
+     * @param string $target Target string
+     * @param bool $no_cache If set, then the "&no_cache=1" parameter is included in the URL.
+     * @param string $addParams Additional URL parameters to set in the URL. Syntax is "&foo=bar&foo2=bar2" etc. Also used internally to add parameters if needed.
+     * @param string $typeOverride If you set this value to something else than a blank string, then the typeNumber used in the link will be forced to this value. Normally the typeNum is based on the target set OR on $this->getTypoScriptFrontendController()->config['config']['forceTypeValue'] if found.
+     * @param string $targetDomain The target Doamin, if any was detected in typolink
+     * @return array Contains keys like "totalURL", "url", "sectionIndex", "linkVars", "no_cache", "type" of which "totalURL" is normally the value you would use while the other keys contains various parts that was used to construct "totalURL
+     */
+    protected function createTotalUrlAndLinkData($page, $target, $no_cache, $addParams = '', $typeOverride = '', $targetDomain = '')
+    {
+        $LD = [];
+        // Adding Mount Points, "&MP=", parameter for the current page if any is set
+        // but non other set explicitly
+        if (strpos($addParams, '&MP=') === false) {
+            $mountPointParameter = $this->getMountPointParameterFromRootPointMaps((int)$page['uid']);
+            if ($mountPointParameter) {
+                $addParams .= '&MP=' . rawurlencode($mountPointParameter);
+            }
+        }
+        // Setting ID/alias:
+        $script = 'index.php';
+        if ($page['alias']) {
+            $LD['url'] = $script . '?id=' . rawurlencode($page['alias']);
+        } else {
+            $LD['url'] = $script . '?id=' . $page['uid'];
+        }
+        // typeNum
+        $typeNum = $this->getTypoScriptFrontendController()->tmpl->setup[$target . '.']['typeNum'];
+        if (!MathUtility::canBeInterpretedAsInteger($typeOverride) && (int)$this->getTypoScriptFrontendController()->config['config']['forceTypeValue']) {
+            $typeOverride = (int)$this->getTypoScriptFrontendController()->config['config']['forceTypeValue'];
+        }
+        if ((string)$typeOverride !== '') {
+            $typeNum = $typeOverride;
+        }
+        // Override...
+        if ($typeNum) {
+            $LD['type'] = '&type=' . (int)$typeNum;
+        } else {
+            $LD['type'] = '';
+        }
+        // Preserving the type number.
+        $LD['orig_type'] = $LD['type'];
+        // noCache
+        $LD['no_cache'] = $no_cache ? '&no_cache=1' : '';
+        // linkVars
+        if ($addParams) {
+            $LD['linkVars'] = GeneralUtility::implodeArrayForUrl('', GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars . $addParams), '', false, true);
+        } else {
+            $LD['linkVars'] = $this->getTypoScriptFrontendController()->linkVars;
+        }
+        // Add absRefPrefix if exists.
+        $LD['url'] = $this->getTypoScriptFrontendController()->absRefPrefix . $LD['url'];
+        // If the special key 'sectionIndex_uid' (added 'manually' in tslib/menu.php to the page-record) is set, then the link jumps directly to a section on the page.
+        $LD['sectionIndex'] = $page['sectionIndex_uid'] ? '#c' . $page['sectionIndex_uid'] : '';
+        // Compile the normal total url
+        $LD['totalURL'] = rtrim($LD['url'] . $LD['type'] . $LD['no_cache'] . $LD['linkVars'] . $this->getTypoScriptFrontendController()->getMethodUrlIdToken, '?') . $LD['sectionIndex'];
+        // Call post processing function for link rendering:
+        $_params = [
+            'LD' => &$LD,
+            'args' => ['page' => $page, 'oTarget' => $target, 'no_cache' => $no_cache, 'script' => $script, 'addParams' => $addParams, 'typeOverride' => $typeOverride, 'targetDomain' => $targetDomain],
+            'typeNum' => $typeNum
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this->getTypoScriptFrontendController()->tmpl);
+        }
+        return $LD;
     }
 }

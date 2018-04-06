@@ -26,6 +26,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
 
 /**
  * Generating navigation/menus from TypoScript
@@ -708,14 +709,15 @@ abstract class AbstractMenuContentObject
             $specialValue = $tsfe->page['uid'];
         }
         $items = GeneralUtility::intExplode(',', $specialValue);
+        $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class, $this->parent_cObj);
         foreach ($items as $id) {
-            $MP = $this->tmpl->getFromMPmap($id);
+            $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps($id);
             // Checking if a page is a mount page and if so, change the ID and set the MP var properly.
             $mount_info = $this->sys_page->getMountPointInfo($id);
             if (is_array($mount_info)) {
                 if ($mount_info['overlay']) {
                     // Overlays should already have their full MPvars calculated:
-                    $MP = $this->tmpl->getFromMPmap($mount_info['mount_pid']);
+                    $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps((int)$mount_info['mount_pid']);
                     $MP = $MP ? $MP : $mount_info['MPvar'];
                 } else {
                     $MP = ($MP ? $MP . ',' : '') . $mount_info['MPvar'];
@@ -779,8 +781,9 @@ abstract class AbstractMenuContentObject
         $loadDB->start($specialValue, 'pages');
         $loadDB->additionalWhere['pages'] = $this->parent_cObj->enableFields('pages', false, $skippedEnableFields);
         $loadDB->getFromDB();
+        $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class, $this->parent_cObj);
         foreach ($loadDB->itemArray as $val) {
-            $MP = $this->tmpl->getFromMPmap($val['id']);
+            $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps((int)$val['id']);
             // Keep mount point?
             $mount_info = $this->sys_page->getMountPointInfo($val['id']);
             // There is a valid mount point.
@@ -793,7 +796,7 @@ abstract class AbstractMenuContentObject
                     $row['_MP_PARAM'] = $mount_info['MPvar'];
                     // Overlays should already have their full MPvars calculated
                     if ($mount_info['overlay']) {
-                        $MP = $this->tmpl->getFromMPmap($mount_info['mount_pid']);
+                        $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps((int)$mount_info['mount_pid']);
                         if ($MP) {
                             unset($row['_MP_PARAM']);
                         }
