@@ -75,10 +75,12 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         // caused by this. Therefor we cannot do any database operation,
         // otherwise this will lead into recurring exceptions.
         try {
-            $this->logger->critical($logTitle . ': ' . $logMessage, [
-                'TYPO3_MODE' => TYPO3_MODE,
-                'exception' => $exception
-            ]);
+            if ($this->logger) {
+                $this->logger->critical($logTitle . ': ' . $logMessage, [
+                    'TYPO3_MODE' => TYPO3_MODE,
+                    'exception' => $exception
+                ]);
+            }
             // Write error message to sys_log table
             $this->writeLog($logTitle . ': ' . $logMessage);
         } catch (\Exception $exception) {

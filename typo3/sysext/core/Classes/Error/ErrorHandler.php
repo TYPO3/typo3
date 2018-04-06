@@ -129,7 +129,9 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         $logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
         $message = $logTitle . ': ' . $message;
 
-        $this->logger->log(LogLevel::NOTICE - $severity, $message);
+        if ($this->logger) {
+            $this->logger->log(LogLevel::NOTICE - $severity, $message);
+        }
 
         // Write error message to TSlog (admin panel)
         $timeTracker = $this->getTimeTracker();
