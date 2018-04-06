@@ -2068,15 +2068,15 @@ return [
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->getFromMPmap' => [
-        'numberOfMandatoryArguments' => 3,
-        'maximumNumberOfArguments' => 8,
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84637-TemplateService-linkDataFunctionalityMovedInPageLinkBuilder.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->initMPmap_create' => [
-        'numberOfMandatoryArguments' => 3,
-        'maximumNumberOfArguments' => 8,
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-84637-TemplateService-linkDataFunctionalityMovedInPageLinkBuilder.rst',
         ],
