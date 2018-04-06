@@ -39,7 +39,8 @@ class FuncExtractionUpdate extends AbstractDownloadExtensionUpdate
             'title' => 'Web->Functions module',
             'description' => 'Provides Web->Functions BE module used in previous TYPO3 versions for extensions that still rely on it.',
             'versionString' => '9.0.1',
-        ]
+            'composerName' => 'friendsoftypo3/cms-func',
+        ],
     ];
 
     /**

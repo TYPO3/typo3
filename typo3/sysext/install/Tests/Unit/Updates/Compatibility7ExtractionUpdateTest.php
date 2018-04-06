@@ -114,7 +114,7 @@ class Compatibility7ExtractionUpdateTest extends UnitTestCase
         $installUtility = $this->prophesize(InstallUtility::class);
         $objectManager->get(InstallUtility::class)->willReturn($installUtility->reveal());
         $objectManager->get(ListUtility::class)->willReturn($listUtility->reveal());
-        $extensionList = ['compatibility7' => []];
+        $extensionList = ['compatibility7' => ['foo' => 'bar']];
         $listUtility->getAvailableExtensions()->willReturn($extensionList);
         $listUtility->getAvailableAndInstalledExtensions($extensionList)->willReturn($extensionList);
         $installUtility->install('compatibility7')->shouldBeCalled();

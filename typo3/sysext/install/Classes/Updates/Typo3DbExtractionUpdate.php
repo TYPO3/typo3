@@ -39,7 +39,8 @@ class Typo3DbExtractionUpdate extends AbstractDownloadExtensionUpdate
             'title' => '$GLOBALS[\'TYPO3_DB\'] compatibility layer',
             'description' => 'Provides the well-known database API $GLOBALS[\'TYPO3_DB\'] used in previous TYPO3 versions for extensions that still rely on it.',
             'versionString' => '1.0.1',
-        ]
+            'composerName' => 'friendsoftypo3/typo3db-legacy',
+        ],
     ];
 
     /**

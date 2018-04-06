@@ -40,7 +40,8 @@ class RedirectExtractionUpdate extends AbstractDownloadExtensionUpdate
             'title' => 'Redirects based on &RDCT parameter',
             'description' => 'Provides redirects based on "cache_md5params" and the GET parameter &RDCT for extensions that still rely on it.',
             'versionString' => '1.0.0',
-        ]
+            'composerName' => 'friendsoftypo3/rdct',
+        ],
     ];
 
     /**

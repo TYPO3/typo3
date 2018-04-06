@@ -39,7 +39,8 @@ class RteHtmlAreaExtractionUpdate extends AbstractDownloadExtensionUpdate
             'title' => 'RTE HTMLArea for TYPO3',
             'description' => 'Provides the well-known RTE used in previous TYPO3 versions, if handling of images or custom configurations are necessary.',
             'versionString' => '8.7.0',
-        ]
+            'composerName' => 'friendsoftypo3/rtehtmlarea',
+        ],
     ];
 
     /**
