@@ -40,7 +40,8 @@ class OpenidExtractionUpdate extends AbstractDownloadExtensionUpdate
             'title' => 'OpenID authentication',
             'description' => 'Adds OpenID authentication to TYPO3',
             'versionString' => '7.6.4',
-        ]
+            'composerName' => 'friendsoftypo3/openid',
+        ],
     ];
 
     /**

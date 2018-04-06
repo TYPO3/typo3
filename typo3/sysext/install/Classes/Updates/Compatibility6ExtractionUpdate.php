@@ -39,7 +39,8 @@ class Compatibility6ExtractionUpdate extends AbstractDownloadExtensionUpdate
             'title' => 'Compatibility Mode for TYPO3 CMS 6.x',
             'description' => 'Provides an additional backwards-compatibility layer with legacy functionality for sites that haven\'t fully migrated to TYPO3 v7 yet.',
             'versionString' => '7.6.4',
-        ]
+            'composerName' => 'friendsoftypo3/compatibility6',
+        ],
     ];
 
     /**

@@ -42,7 +42,8 @@ class FormLegacyExtractionUpdate extends AbstractDownloadExtensionUpdate
             'title' => 'Legacy form extension for TYPO3 v7 compatibility',
             'description' => 'Provides an additional backwards-compatibility layer with legacy functionality for sites that used the form extension in TYPO3 v7.',
             'versionString' => '8.7.0',
-        ]
+            'composerName' => 'friendsoftypo3/form-legacy',
+        ],
     ];
 
     /**

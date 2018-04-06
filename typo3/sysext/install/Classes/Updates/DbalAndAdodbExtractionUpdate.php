@@ -34,12 +34,14 @@ class DbalAndAdodbExtractionUpdate extends AbstractDownloadExtensionUpdate
             'title' => 'ADOdb',
             'description' => 'Adds ADOdb to TYPO3',
             'versionString' => '8.4.0',
+            'composerName' => 'friendsoftypo3/adodb',
         ],
         'dbal' => [
             'title' => 'dbal',
             'description' => 'Adds old database abstraction layer to TYPO3',
             'versionString' => '8.4.0',
-        ]
+            'composerName' => 'friendsoftypo3/dbal',
+        ],
     ];
 
     /**

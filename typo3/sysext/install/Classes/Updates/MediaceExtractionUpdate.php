@@ -44,7 +44,8 @@ class MediaceExtractionUpdate extends AbstractDownloadExtensionUpdate
             'description' => 'The media functionality from TYPO3 6.2 and earlier can be found here.'
                 . ' This extension provides ContentObjects and Content Elements.',
             'versionString' => '7.6.3',
-        ]
+            'composerName' => 'friendsoftypo3/mediace',
+        ],
     ];
 
     /**

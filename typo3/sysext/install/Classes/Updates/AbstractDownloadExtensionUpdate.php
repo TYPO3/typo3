@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility;
@@ -58,15 +59,15 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
 
         /** @var $extensionListUtility ListUtility */
         $extensionListUtility = $objectManager->get(ListUtility::class);
-
         $availableExtensions = $extensionListUtility->getAvailableExtensions();
-        $availableAndInstalledExtensions = $extensionListUtility->getAvailableAndInstalledExtensions($availableExtensions);
+        $extensionDetails = $this->getExtensionDetails($extensionKey);
 
-        // Extension is not downloaded yet.
-        if (!is_array($availableAndInstalledExtensions[$extensionKey])) {
+        $isExtensionAvailable = !empty($availableExtensions[$extensionKey]);
+        $isComposerMode = Bootstrap::usesComposerClassLoading();
+
+        if (!$isComposerMode && !$isExtensionAvailable) {
             /** @var $extensionTerUtility TerUtility */
             $extensionTerUtility = $objectManager->get(TerUtility::class);
-            $extensionDetails = $this->getExtensionDetails($extensionKey);
             if (empty($extensionDetails)) {
                 $updateSuccessful = false;
                 $customMessage .= 'No version information for extension ' . $extensionKey . ' found. Can not install the extension.';
@@ -90,11 +91,20 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
             $extensionListUtility->reloadAvailableExtensions();
         }
 
-        if ($updateSuccessful !== false) {
+        if ($isComposerMode && !$isExtensionAvailable) {
+            $updateSuccessful = false;
+            $customMessage .= 'The extension ' . $extensionKey . ' can not be downloaded since ' .
+              'Composer is used for package management. Please require this ' .
+              'extension as package via Composer: ' .
+              '"composer require ' . $extensionDetails['composerName'] . ':^' . $extensionDetails['versionString'] . '"';
+        }
+
+        if ($updateSuccessful) {
             /** @var $extensionInstallUtility InstallUtility */
             $extensionInstallUtility = $objectManager->get(InstallUtility::class);
             $extensionInstallUtility->install($extensionKey);
         }
+
         return $updateSuccessful;
     }
 
