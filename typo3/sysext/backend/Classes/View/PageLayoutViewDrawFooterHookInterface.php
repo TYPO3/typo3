@@ -24,7 +24,7 @@ interface PageLayoutViewDrawFooterHookInterface
      * Preprocesses the preview footer rendering of a content element.
      *
      * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-     * @param string $info Processed values
+     * @param array $info Processed values
      * @param array $row Record row of tt_content
      */
     public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$info, array &$row);
