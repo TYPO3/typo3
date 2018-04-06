@@ -57,7 +57,7 @@ class SiteResolver implements MiddlewareInterface
             // Loop over the whole rootline without permissions to get the actual site information
             try {
                 $site = $finder->getSiteByPageId((int)$pageId);
-                $language = $site->getLanguageById($languageId);
+                $language = $site->getLanguageById((int)$languageId);
             } catch (SiteNotFoundException $e) {
             }
         }
