@@ -558,7 +558,8 @@ abstract class AbstractLinkBrowserController
     public function getUrlParameters(array $overrides = null)
     {
         return [
-            'act' => $overrides['act'] ?? $this->displayedLinkHandlerId
+            'act' => $overrides['act'] ?? $this->displayedLinkHandlerId,
+            'P' => $overrides['P'] ?? $this->parameters,
         ];
     }
 
