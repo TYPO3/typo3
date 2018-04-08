@@ -223,7 +223,7 @@ class SiteLanguage
      */
     public function getNavigationTitle(): string
     {
-        return $this->navigationTitle ?? $this->getTitle();
+        return $this->navigationTitle ?: $this->getTitle();
     }
 
     /**
@@ -243,21 +243,13 @@ class SiteLanguage
     }
 
     /**
-     * @return string
-     */
-    public function getFallbackType(): string
-    {
-        return $this->fallbackType;
-    }
-
-    /**
      * Returns the ISO-639-1 language ISO code
      *
      * @return string
      */
     public function getTwoLetterIsoCode(): string
     {
-        return $this->twoLetterIsoCode ?? '';
+        return $this->twoLetterIsoCode;
     }
 
     /**
@@ -267,7 +259,7 @@ class SiteLanguage
      */
     public function getHreflang(): string
     {
-        return $this->hreflang ?? '';
+        return $this->hreflang;
     }
 
     /**
@@ -277,7 +269,15 @@ class SiteLanguage
      */
     public function getDirection(): string
     {
-        return $this->direction ?? '';
+        return $this->direction;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFallbackType(): string
+    {
+        return $this->fallbackType;
     }
 
     /**
