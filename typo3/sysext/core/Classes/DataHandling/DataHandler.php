@@ -5155,10 +5155,6 @@ class DataHandler implements LoggerAwareInterface
             if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
                 $updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
             }
-            // If the table is sorted, then the sorting number is set very high
-            if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$undeleteRecord) {
-                $updateFields[$GLOBALS['TCA'][$table]['ctrl']['sortby']] = 1000000000;
-            }
             // before (un-)deleting this record, check for child records or references
             $this->deleteRecord_procFields($table, $uid, $undeleteRecord);
             try {
