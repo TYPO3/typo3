@@ -19,16 +19,12 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
-use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
-use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 /**
  * Installs EXT:redirect if sys_domain.redirectTo is filled, and migrates the values from redirectTo
  * to a proper sys_redirect entry.
  */
-class RedirectsExtensionUpdate extends AbstractUpdate implements LoggerAwareInterface
+class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -38,9 +34,16 @@ class RedirectsExtensionUpdate extends AbstractUpdate implements LoggerAwareInte
     protected $title = 'Install system extension "redirects" if a sys_domain entry with redirectTo is necessary';
 
     /**
-     * @var string
+     * @var array
      */
-    protected $extensionKey = 'redirects';
+    protected $extensionDetails = [
+        'redirects' => [
+            'title' => 'Redirects',
+            'description' => 'Manage redirects for your TYPO3-based website',
+            'versionString' => '9.2',
+            'composerName' => 'typo3/cms-redirects',
+        ],
+    ];
 
     /**
      * Checks if an update is needed
@@ -76,7 +79,7 @@ class RedirectsExtensionUpdate extends AbstractUpdate implements LoggerAwareInte
     public function performUpdate(array &$databaseQueries, &$customMessage): bool
     {
         // Install the EXT:redirects extension if not happened yet
-        $installationSuccessful = $this->installExtension($this->extensionKey);
+        $installationSuccessful = $this->installExtension('redirects', $customMessage);
         if ($installationSuccessful) {
             // Migrate the database entries
             $this->migrateRedirectDomainsToSysRedirect();
@@ -112,41 +115,6 @@ class RedirectsExtensionUpdate extends AbstractUpdate implements LoggerAwareInte
         }
 
         return false;
-    }
-
-    /**
-     * This method can be called to install an extension following all proper processes
-     * (e.g. installing in extList, respecting priority, etc.)
-     *
-     * @param string $extensionKey
-     * @return bool
-     */
-    protected function installExtension(string $extensionKey): bool
-    {
-        $extensionInstalled = false;
-        /** @var $objectManager ObjectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-
-        /** @var $extensionListUtility ListUtility */
-        $extensionListUtility = $objectManager->get(ListUtility::class);
-
-        $availableExtensions = $extensionListUtility->getAvailableExtensions();
-        $availableAndInstalledExtensions = $extensionListUtility->getAvailableAndInstalledExtensions($availableExtensions);
-
-        // Extension is not installed yet, install it
-        if (!isset($availableAndInstalledExtensions[$extensionKey]['installed']) || $availableAndInstalledExtensions[$extensionKey]['installed'] !== true) {
-            /** @var $extensionInstallUtility InstallUtility */
-            $extensionInstallUtility = $objectManager->get(InstallUtility::class);
-            try {
-                $extensionInstallUtility->install($extensionKey);
-                $extensionInstalled = true;
-            } catch (ExtensionManagerException $e) {
-                $this->logger->warning($e->getMessage());
-            }
-        } else {
-            $extensionInstalled = true;
-        }
-        return $extensionInstalled;
     }
 
     /**

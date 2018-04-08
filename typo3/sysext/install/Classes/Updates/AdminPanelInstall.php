@@ -17,15 +17,11 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
-use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
  * Installs EXT:adminpanel
  */
-class AdminPanelInstall extends AbstractUpdate
+class AdminPanelInstall extends AbstractDownloadExtensionUpdate
 {
     /**
      * @var string
@@ -36,6 +32,15 @@ class AdminPanelInstall extends AbstractUpdate
      * @var string
      */
     protected $extensionKey = 'adminpanel';
+
+    protected $extensionDetails = [
+        'adminpanel' => [
+            'title' => 'TYPO3 Admin Panel',
+            'description' => 'The TYPO3 admin panel provides a panel with additional functionality in the frontend (Debugging, Caching, Preview...)',
+            'versionString' => '9.2',
+            'composerName' => 'typo3/cms-adminpanel',
+        ],
+    ];
 
     /**
      * Checks if an update is needed
@@ -67,14 +72,9 @@ class AdminPanelInstall extends AbstractUpdate
      */
     public function performUpdate(array &$databaseQueries, &$customMessage): bool
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $extensionInstallUtility = $objectManager->get(InstallUtility::class);
-        try {
-            $extensionInstallUtility->install('adminpanel');
-            $updateSuccessful = true;
+        $updateSuccessful = $this->installExtension($this->extensionKey, $customMessage);
+        if ($updateSuccessful) {
             $this->markWizardAsDone();
-        } catch (ExtensionManagerException $e) {
-            $updateSuccessful = false;
         }
         return $updateSuccessful;
     }
