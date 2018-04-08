@@ -56,7 +56,7 @@ class ContentCreationPagePositionMap extends PagePositionMap
             'edit[tt_content][' . (is_array($row) ? -$row['uid'] : $pid) . ']' => 'new',
             'defVals[tt_content][colPos]' => $vv,
             'defVals[tt_content][sys_language_uid]' => $sys_lang,
-            'returnUrl' => $GLOBALS['SOBE']->R_URI
+            'returnUrl' => GeneralUtility::_GP('returnUrl')
         ]);
         return $this->clientContext . '.location.href=' . GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
     }
