@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Configuration;
 
 /*
@@ -86,7 +87,7 @@ class SiteConfiguration
             $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
             $siteConfiguration = [];
             foreach ($finder as $fileInfo) {
-                $configuration = $loader->load((string)$fileInfo);
+                $configuration = $loader->load(GeneralUtility::fixWindowsFilePath((string)$fileInfo));
                 $identifier = basename($fileInfo->getPath());
                 $siteConfiguration[$identifier] = $configuration;
             }
@@ -94,7 +95,7 @@ class SiteConfiguration
         }
         $sites = [];
         foreach ($siteConfiguration ?? [] as $identifier => $configuration) {
-            $rootPageId = (int)$configuration['site']['rootPageId'] ?? 0;
+            $rootPageId = (int)($configuration['site']['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
                 $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration['site']);
             }
@@ -109,7 +110,7 @@ class SiteConfiguration
      * @param array $configuration
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
-    public function write(string $siteIdentifier, array $configuration)
+    public function write(string $siteIdentifier, array $configuration): void
     {
         $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->configFileName;
         if (!file_exists($fileName)) {
@@ -127,7 +128,7 @@ class SiteConfiguration
      * @param string $newIdentifier
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
-    public function rename(string $currentIdentifier, string $newIdentifier)
+    public function rename(string $currentIdentifier, string $newIdentifier): void
     {
         $result = rename($this->configPath . '/' . $currentIdentifier, $this->configPath . '/' . $newIdentifier);
         if (!$result) {
@@ -143,7 +144,7 @@ class SiteConfiguration
      * @param string $siteIdentifier
      * @throws SiteNotFoundException
      */
-    public function delete(string $siteIdentifier)
+    public function delete(string $siteIdentifier): void
     {
         $sites = $this->resolveAllExistingSites();
         if (!isset($sites[$siteIdentifier])) {
