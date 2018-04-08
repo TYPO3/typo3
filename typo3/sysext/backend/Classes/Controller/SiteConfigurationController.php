@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
@@ -605,7 +606,10 @@ class SiteConfigurationController
             ->where(
                 $queryBuilder->expr()->eq('sys_language_uid', 0),
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq('pid', 0),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq('pid', 0),
+                        $queryBuilder->expr()->neq('doktype', PageRepository::DOKTYPE_SYSFOLDER)
+                    ),
                     $queryBuilder->expr()->eq('is_siteroot', 1)
                 )
             )
