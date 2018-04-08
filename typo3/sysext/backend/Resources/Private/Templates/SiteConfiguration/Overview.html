@@ -16,6 +16,7 @@
             <tr>
                 <td nowrap valign="top">
                     <f:for each="{page.rootline}" as="rootLinePage" iteration="i">
+                        <span style="width: 1px; height: 1px; display:inline-block; margin-left: {rootLinePage.margin}px"></span>
                         <f:if condition="{rootLinePage.uid} == {page.uid}">
                             <f:then>
                                 <a href="#" class="t3js-contextmenutrigger" data-table="pages" data-uid="{rootLinePage.uid}">
