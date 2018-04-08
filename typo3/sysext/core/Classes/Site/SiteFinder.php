@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Site;
 
 /*
@@ -21,7 +22,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -73,7 +73,6 @@ class SiteFinder
     {
         $baseUrls = [];
         foreach ($this->sites as $site) {
-            /** @var SiteLanguage $language */
             foreach ($site->getLanguages() as $language) {
                 $baseUrls[$language->getBase()] = $language;
                 if ($language->getLanguageId() === 0) {

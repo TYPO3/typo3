@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Backend\Routing;
 
 /*
@@ -36,12 +37,12 @@ class PageUriBuilder implements SingletonInterface
     /**
      * Generates an absolute URL
      */
-    const ABSOLUTE_URL = 'url';
+    public const ABSOLUTE_URL = 'url';
 
     /**
      * Generates an absolute path
      */
-    const ABSOLUTE_PATH = 'path';
+    public const ABSOLUTE_PATH = 'path';
 
     /**
      * @var SiteFinder

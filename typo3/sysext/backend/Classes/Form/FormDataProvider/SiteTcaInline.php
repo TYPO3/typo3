@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 /*
@@ -84,7 +85,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             // If the parent is a page, use the uid(!) of the (new?) page as pid for the child records:
             if ($table === 'pages') {
                 $liveVersionId = BackendUtility::getLiveVersionIdOfRecord('pages', $row['uid']);
-                $pid = $liveVersionId === null ? $row['uid'] : $liveVersionId;
+                $pid = $liveVersionId ?? $row['uid'];
             } elseif ($row['pid'] < 0) {
                 $prevRec = BackendUtility::getRecord($table, abs($row['pid']));
                 $pid = $prevRec['pid'];
@@ -256,7 +257,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: $inlineTopMostParent['field'],
         ];
 
-        if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
+        if ($parentConfig['foreign_selector'] && ($parentConfig['appearance']['useCombination'] ?? false)) {
             throw new \RuntimeException('useCombination not implemented in sites module', 1522493097);
         }
         return $formDataCompiler->compile($formDataCompilerInput);

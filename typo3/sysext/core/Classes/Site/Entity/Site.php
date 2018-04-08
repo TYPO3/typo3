@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Site\Entity;
 
 /*
@@ -25,9 +26,9 @@ use TYPO3\CMS\Frontend\PageErrorHandler\PageErrorHandlerInterface;
  */
 class Site
 {
-    const ERRORHANDLER_TYPE_PAGE = 'Page';
-    const ERRORHANDLER_TYPE_FLUID = 'Fluid';
-    const ERRORHANDLER_TYPE_PHP = 'PHP';
+    protected const ERRORHANDLER_TYPE_PAGE = 'Page';
+    protected const ERRORHANDLER_TYPE_FLUID = 'Fluid';
+    protected const ERRORHANDLER_TYPE_PHP = 'PHP';
 
     /**
      * @var string
@@ -186,7 +187,7 @@ class Site
                 // Check if the interface is implemented
                 $handler = GeneralUtility::makeInstance($errorHandler['errorPhpClassFQCN'], $type, $errorHandler);
                 if (!($handler instanceof PageErrorHandlerInterface)) {
-                    // throw new exception
+                    // @todo throw new exception
                 }
                 return $handler;
         }

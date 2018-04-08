@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Site\Entity;
 
 /*
@@ -159,7 +160,7 @@ class SiteLanguage
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'languageId' => $this->getLanguageId(),
