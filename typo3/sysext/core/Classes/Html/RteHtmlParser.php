@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
@@ -401,7 +402,11 @@ class RteHtmlParser extends HtmlParser
                                 ];
                                 if (!$imageInfo[0] || !$imageInfo[1]) {
                                     $filePath = $originalImageFile->getForLocalProcessing(false);
-                                    $imageInfo = @getimagesize($filePath);
+                                    $imageInfoObject = GeneralUtility::makeInstance(ImageInfo::class, $filePath);
+                                    $imageInfo = [
+                                        $imageInfoObject->getWidth(),
+                                        $imageInfoObject->getHeight()
+                                    ];
                                 }
                                 $attribArray = $this->applyPlainImageModeSettings($imageInfo, $attribArray);
                             }
@@ -456,7 +461,11 @@ class RteHtmlParser extends HtmlParser
                             if ($this->procOptions['plainImageMode']) {
                                 // If "plain image mode" has been configured
                                 // Find the original dimensions of the image
-                                $imageInfo = @getimagesize($filepath);
+                                $imageInfoObject = GeneralUtility::makeInstance(ImageInfo::class, $filepath);
+                                $imageInfo = [
+                                    $imageInfoObject->getWidth(),
+                                    $imageInfoObject->getHeight()
+                                ];
                                 $attribArray = $this->applyPlainImageModeSettings($imageInfo, $attribArray);
                             }
                             // Let's try to find a file uid for this image
@@ -904,7 +913,7 @@ class RteHtmlParser extends HtmlParser
      * @param string $value Value to process.
      * @param int $count Recursion brake. Decremented on each recursion down to zero. Default is 5 (which equals the allowed nesting levels of p tags).
      * @param bool $returnArray If TRUE, an array with the lines is returned, otherwise a string of the processed input value.
-     * @return string Processed input value.
+     * @return string|array Processed input value.
      * @see setDivTags()
      */
     public function divideIntoLines($value, $count = 5, $returnArray = false)

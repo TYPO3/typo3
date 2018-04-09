@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -91,11 +92,11 @@ class PreviewProcessing
         GeneralUtility::unlink_tempfile($temporaryFileName);
         if (is_file($temporaryFileNameForResizedThumb)) {
             $processedFile->setName($this->getTargetFileName($processedFile));
-            list($width, $height) = getimagesize($temporaryFileNameForResizedThumb);
+            $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $temporaryFileNameForResizedThumb);
             $processedFile->updateProperties(
                 [
-                    'width' => $width,
-                    'height' => $height,
+                    'width' => $imageInfo->getWidth(),
+                    'height' => $imageInfo->getHeight(),
                     'size' => filesize($temporaryFileNameForResizedThumb),
                     'checksum' => $processedFile->getTask()->getConfigurationChecksum()
                 ]

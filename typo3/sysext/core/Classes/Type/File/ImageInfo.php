@@ -54,9 +54,11 @@ class ImageInfo extends FileInfo
      */
     protected function getImageSizes()
     {
-        if (is_null($this->imageSizes)) {
-            $this->imageSizes = getimagesize($this->getPathname());
-
+        if ($this->imageSizes === null) {
+            $this->imageSizes = false;
+            if (function_exists('getimagesize')) {
+                $this->imageSizes = @getimagesize($this->getPathname());
+            }
             // Try SVG first as SVG size detection with IM/GM leads to an error output
             if ($this->imageSizes === false && $this->getMimeType() === 'image/svg+xml') {
                 $this->imageSizes = $this->extractSvgImageSizes();
