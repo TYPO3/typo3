@@ -251,7 +251,7 @@ class SystemEnvironmentBuilder
     public static function initializeEnvironment(ApplicationContext $context)
     {
         $sitePath = rtrim(PATH_site, '/');
-        $projectRootPath = getenv('TYPO3_PATH_APP');
+        $projectRootPath = GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_APP'));
         $isDifferentRootPath = ($projectRootPath && $projectRootPath !== $sitePath);
         Environment::initialize(
             $context,

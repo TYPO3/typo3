@@ -3077,7 +3077,10 @@ class GeneralUtility
         } elseif (!static::isAbsPath($filename)) {
             // is relative. Prepended with PATH_site
             $filename = PATH_site . $filename;
-        } elseif (!static::isFirstPartOfStr($filename, Environment::getProjectPath())) {
+        } elseif (!(
+                  static::isFirstPartOfStr($filename, Environment::getProjectPath())
+                  || static::isFirstPartOfStr($filename, Environment::getPublicPath())
+                )) {
             // absolute, but set to blank if not allowed
             $filename = '';
         }
@@ -3126,8 +3129,11 @@ class GeneralUtility
     {
         $lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'];
         return static::isAbsPath($path) && static::validPathStr($path)
-            && (static::isFirstPartOfStr($path, Environment::getProjectPath())
-                || $lockRootPath && static::isFirstPartOfStr($path, $lockRootPath));
+            && (
+                static::isFirstPartOfStr($path, Environment::getProjectPath())
+                || static::isFirstPartOfStr($path, Environment::getPublicPath())
+                || $lockRootPath && static::isFirstPartOfStr($path, $lockRootPath)
+               );
     }
 
     /**
