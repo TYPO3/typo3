@@ -48,10 +48,11 @@ class FrontendEditingController
     {
         $this->TSFE_EDIT = GeneralUtility::_GP('TSFE_EDIT');
         // Include classes for editing IF editing module in Admin Panel is open
-        if ($GLOBALS['BE_USER']->isFrontendEditingActive()) {
-            if ($this->isEditAction()) {
-                $this->editAction();
-            }
+        if (((int)$GLOBALS['TSFE']->displayEditIcons === 1
+            || (int)$GLOBALS['TSFE']->displayFieldEditIcons === 1)
+            && $this->isEditAction()
+        ) {
+            $this->editAction();
         }
     }
 

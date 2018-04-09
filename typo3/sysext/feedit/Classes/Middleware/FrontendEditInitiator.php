@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
+use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -40,7 +41,7 @@ class FrontendEditInitiator implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
+        if (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
             $config = $GLOBALS['BE_USER']->getTSConfigProp('admPanel');
             $active = (int)$GLOBALS['TSFE']->displayEditIcons === 1 || (int)$GLOBALS['TSFE']->displayFieldEditIcons === 1;
             if ($active && isset($config['enable.'])) {
@@ -56,6 +57,9 @@ class FrontendEditInitiator implements MiddlewareInterface
                         $controllerClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey];
                         if ($controllerClass) {
                             $GLOBALS['BE_USER']->frontendEdit = GeneralUtility::makeInstance($controllerClass);
+                            if ($controllerClass instanceof FrontendEditingController) {
+                                $GLOBALS['BE_USER']->frontendEdit->initConfigOptions();
+                            }
                         }
                         break;
                     }

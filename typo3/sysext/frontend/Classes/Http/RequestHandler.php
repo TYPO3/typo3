@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Frontend\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
-use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
@@ -68,14 +67,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
         /** @var TypoScriptFrontendController $controller */
         $controller = $GLOBALS['TSFE'];
-
-        // Admin Panel & Frontend editing
-        if ($controller->isBackendUserLoggedIn()) {
-            $GLOBALS['BE_USER']->initializeFrontendEdit();
-            if ($GLOBALS['BE_USER']->frontendEdit instanceof FrontendEditingController) {
-                $GLOBALS['BE_USER']->frontendEdit->initConfigOptions();
-            }
-        }
 
         // Starts the template
         $this->timeTracker->push('Start Template', '');
