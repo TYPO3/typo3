@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
@@ -393,7 +394,11 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                                 ];
                                 if (!$imageInfo[0] || !$imageInfo[1]) {
                                     $filePath = $originalImageFile->getForLocalProcessing(false);
-                                    $imageInfo = @getimagesize($filePath);
+                                    $imageInfoObject = GeneralUtility::makeInstance(ImageInfo::class, $filePath);
+                                    $imageInfo = [
+                                        $imageInfoObject->getWidth(),
+                                        $imageInfoObject->getHeight()
+                                    ];
                                 }
                                 $attribArray = $this->applyPlainImageModeSettings($imageInfo, $attribArray);
                             }
@@ -448,7 +453,11 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                             if ($this->procOptions['plainImageMode']) {
                                 // If "plain image mode" has been configured
                                 // Find the original dimensions of the image
-                                $imageInfo = @getimagesize($filepath);
+                                $imageInfoObject = GeneralUtility::makeInstance(ImageInfo::class, $filepath);
+                                $imageInfo = [
+                                    $imageInfoObject->getWidth(),
+                                    $imageInfoObject->getHeight()
+                                ];
                                 $attribArray = $this->applyPlainImageModeSettings($imageInfo, $attribArray);
                             }
                             // Let's try to find a file uid for this image

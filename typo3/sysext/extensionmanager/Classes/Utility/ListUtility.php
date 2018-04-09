@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  */
 
 use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -268,14 +269,10 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function enrichExtensionsWithIconInformation(array $extensions)
     {
         foreach ($extensions as &$properties) {
-            $iInfo = @getimagesize(PATH_site . $properties['siteRelPath'] . $properties['ext_icon']);
-            if ($iInfo !== false) {
-                $properties['ext_icon_width'] = $iInfo[0];
-                $properties['ext_icon_height'] = $iInfo[1];
-            } else {
-                $properties['ext_icon_width'] = 0;
-                $properties['ext_icon_height'] = 0;
-            }
+            $extIconPath = PATH_site . $properties['siteRelPath'] . $properties['ext_icon'];
+            $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $extIconPath);
+            $properties['ext_icon_width'] = $imageInfo->getWidth();
+            $properties['ext_icon_height'] = $imageInfo->getHeight();
         }
         unset($properties);
         return $extensions;

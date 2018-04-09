@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * This is a static, internal and intermediate helper class for various
@@ -124,21 +123,15 @@ class FormEngineUtility
         $icon = (string)$icon;
         $absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
         if (!empty($absoluteFilePath) && is_file($absoluteFilePath)) {
-            $iconInfo = StringUtility::endsWith($absoluteFilePath, '.svg')
-                ? true
-                : getimagesize($absoluteFilePath);
-
-            if ($iconInfo !== false) {
-                return '<img'
-                    . ' src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($absoluteFilePath)) . '"'
-                    . ' alt="' . htmlspecialchars($alt) . '" '
-                    . ($title ? 'title="' . htmlspecialchars($title) . '"' : '')
+            return '<img'
+                . ' src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($absoluteFilePath)) . '"'
+                . ' alt="' . htmlspecialchars($alt) . '" '
+                . ($title ? 'title="' . htmlspecialchars($title) . '"' : '')
                 . ' />';
-            }
         }
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return '<span alt="' . htmlspecialchars($alt) . '" title="' . htmlspecialchars($title) . '">'
+        return '<span title="' . htmlspecialchars($title) . '">'
             . $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render()
             . '</span>';
     }

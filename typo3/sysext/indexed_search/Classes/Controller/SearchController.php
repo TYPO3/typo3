@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
@@ -695,9 +696,14 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 if ($icon) {
                     $fullPath = GeneralUtility::getFileAbsFileName($icon);
                     if ($fullPath) {
-                        $info = @getimagesize($fullPath);
-                        $iconPath = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($fullPath);
-                        $this->iconFileNameCache[$imageType] = is_array($info) ? '<img src="' . $iconPath . '" ' . $info[3] . ' title="' . htmlspecialchars($alt) . '" alt="" />' : '';
+                        $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $fullPath);
+                        $iconPath = PathUtility::stripPathSitePrefix($fullPath);
+                        $this->iconFileNameCache[$imageType] = $imageInfo->getWidth()
+                            ? '<img src="' . $iconPath
+                              . '" width="' . $imageInfo->getWidth()
+                              . '" height="' . $imageInfo->getHeight()
+                              . '" title="' . htmlspecialchars($alt) . '" alt="" />'
+                            : '';
                     }
                 }
             }

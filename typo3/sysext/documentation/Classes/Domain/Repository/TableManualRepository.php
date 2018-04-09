@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Documentation\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -202,7 +203,6 @@ class TableManualRepository
     {
         $this->getLanguageService()->loadSingleTableDescription($key);
         // Define the label for the key
-        $keyName = $key;
         if (!empty($GLOBALS['TCA_DESCR'][$key]['columns']['']['alttitle'])) {
             // If there's an alternative title, use it
             $keyName = $GLOBALS['TCA_DESCR'][$key]['columns']['']['alttitle'];
@@ -361,8 +361,8 @@ class TableManualRepository
                 $absImagePath = GeneralUtility::getFileAbsFileName($image);
                 if ($absImagePath && @is_file($absImagePath)) {
                     $imgFile = PathUtility::stripPathSitePrefix($absImagePath);
-                    $imgInfo = @getimagesize($absImagePath);
-                    if (is_array($imgInfo)) {
+                    $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $absImagePath);
+                    if ($imageInfo->getWidth()) {
                         $imageData[] = [
                             'image' => $imgFile,
                             'description' => $descriptions

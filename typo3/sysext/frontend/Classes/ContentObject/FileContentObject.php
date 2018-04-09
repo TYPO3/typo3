@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -36,9 +37,12 @@ class FileContentObject extends AbstractContentObject
             $fileInfo = GeneralUtility::split_fileref($file);
             $extension = $fileInfo['fileext'];
             if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
-                $imgInfo = @getimagesize($file);
+                $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $file);
                 $altParameters = trim($this->cObj->getAltParam($conf, false));
-                $theValue = '<img src="' . htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix . $file) . '" width="' . (int)$imgInfo[0] . '" height="' . (int)$imgInfo[1] . '"' . $this->cObj->getBorderAttr(' border="0"') . ' ' . $altParameters . ' />';
+                $theValue = '<img src="'
+                            . htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix . $file)
+                            . '" width="' . (int)$imageInfo->getWidth() . '" height="' . (int)$imageInfo->getHeight()
+                            . '"' . $this->cObj->getBorderAttr(' border="0"') . ' ' . $altParameters . ' />';
             } elseif (filesize($file) < 1024 * 1024) {
                 $theValue = file_get_contents($file);
             }

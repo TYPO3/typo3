@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -199,9 +200,9 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                 $imgMap = $cache->get($imgHash);
                 // File exists
                 if ($imgMap && file_exists($gifFileName)) {
-                    $info = @getimagesize($gifFileName);
-                    $w = $info[0];
-                    $h = $info[1];
+                    $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $gifFileName);
+                    $w = $imageInfo->getWidth();
+                    $h = $imageInfo->getHeight();
                 } else {
                     // file is generated
                     $gifCreator->make();

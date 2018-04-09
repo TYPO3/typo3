@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -242,9 +243,9 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
             // Generation of image file:
             // File exists
             if (file_exists($gifFileName)) {
-                $info = @getimagesize($gifFileName);
-                $this->result[$resKey][$key]['output_w'] = (int)$info[0];
-                $this->result[$resKey][$key]['output_h'] = (int)$info[1];
+                $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $gifFileName);
+                $this->result[$resKey][$key]['output_w'] = (int)$imageInfo->getWidth();
+                $this->result[$resKey][$key]['output_h'] = (int)$imageInfo->getHeight();
                 $this->result[$resKey][$key]['output_file'] = $gifFileName;
             } elseif ($isGD) {
                 // file is generated

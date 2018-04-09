@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Imaging;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -2169,22 +2170,24 @@ class GraphicalFunctions
      */
     public function getImageDimensions($imageFile)
     {
+        $returnArr = null;
         preg_match('/([^\\.]*)$/', $imageFile, $reg);
         if (file_exists($imageFile) && in_array(strtolower($reg[0]), $this->imageFileExt, true)) {
-            if ($returnArr = $this->getCachedImageDimensions($imageFile)) {
-                return $returnArr;
-            }
-            if ($temp = @getimagesize($imageFile)) {
-                $returnArr = [$temp[0], $temp[1], strtolower($reg[0]), $imageFile];
-            } else {
-                $returnArr = $this->imageMagickIdentify($imageFile);
-            }
-            if ($returnArr) {
-                $this->cacheImageDimensions($returnArr);
-                return $returnArr;
+            $returnArr = $this->getCachedImageDimensions($imageFile);
+            if (!$returnArr) {
+                $imageInfoObject = GeneralUtility::makeInstance(ImageInfo::class, $imageFile);
+                if ($imageInfoObject->getWidth()) {
+                    $returnArr = [
+                        $imageInfoObject->getWidth(),
+                        $imageInfoObject->getHeight(),
+                        strtolower($reg[0]),
+                        $imageFile
+                    ];
+                    $this->cacheImageDimensions($returnArr);
+                }
             }
         }
-        return null;
+        return $returnArr;
     }
 
     /**
@@ -2780,10 +2783,10 @@ class GraphicalFunctions
                 break;
         }
         // If non of the above:
-        $i = @getimagesize($sourceImg);
-        $im = imagecreatetruecolor($i[0], $i[1]);
+        $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $sourceImg);
+        $im = imagecreatetruecolor($imageInfo->getWidth(), $imageInfo->getHeight());
         $Bcolor = imagecolorallocate($im, 128, 128, 128);
-        imagefilledrectangle($im, 0, 0, $i[0], $i[1], $Bcolor);
+        imagefilledrectangle($im, 0, 0, $imageInfo->getWidth(), $imageInfo->getHeight(), $Bcolor);
         return $im;
     }
 
