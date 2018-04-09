@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -1660,23 +1661,17 @@ tt_content.' . $key . $suffix . ' {
 
         // First load "full table" files from Configuration/TCA
         foreach ($activePackages as $package) {
-            $tcaConfigurationDirectory = $package->getPackagePath() . 'Configuration/TCA';
-            if (is_dir($tcaConfigurationDirectory)) {
-                $files = scandir($tcaConfigurationDirectory);
-                foreach ($files as $file) {
-                    if (
-                        is_file($tcaConfigurationDirectory . '/' . $file)
-                        && ($file !== '.')
-                        && ($file !== '..')
-                        && (substr($file, -4, 4) === '.php')
-                    ) {
-                        $tcaOfTable = require $tcaConfigurationDirectory . '/' . $file;
-                        if (is_array($tcaOfTable)) {
-                            // TCA table name is filename without .php suffix, eg 'sys_notes', not 'sys_notes.php'
-                            $tcaTableName = substr($file, 0, -4);
-                            $GLOBALS['TCA'][$tcaTableName] = $tcaOfTable;
-                        }
-                    }
+            try {
+                $finder = Finder::create()->files()->sortByName()->depth(0)->name('*.php')->in($package->getPackagePath() . 'Configuration/TCA');
+            } catch (\InvalidArgumentException $e) {
+                // No such directory in this package
+                continue;
+            }
+            foreach ($finder as $fileInfo) {
+                $tcaOfTable = require $fileInfo->getPathname();
+                if (is_array($tcaOfTable)) {
+                    $tcaTableName = substr($fileInfo->getBasename(), 0, -4);
+                    $GLOBALS['TCA'][$tcaTableName] = $tcaOfTable;
                 }
             }
         }
@@ -1686,19 +1681,14 @@ tt_content.' . $key . $suffix . ' {
 
         // Execute override files from Configuration/TCA/Overrides
         foreach ($activePackages as $package) {
-            $tcaOverridesPathForPackage = $package->getPackagePath() . 'Configuration/TCA/Overrides';
-            if (is_dir($tcaOverridesPathForPackage)) {
-                $files = scandir($tcaOverridesPathForPackage);
-                foreach ($files as $file) {
-                    if (
-                        is_file($tcaOverridesPathForPackage . '/' . $file)
-                        && ($file !== '.')
-                        && ($file !== '..')
-                        && (substr($file, -4, 4) === '.php')
-                    ) {
-                        require $tcaOverridesPathForPackage . '/' . $file;
-                    }
-                }
+            try {
+                $finder = Finder::create()->files()->sortByName()->depth(0)->name('*.php')->in($package->getPackagePath() . 'Configuration/TCA/Overrides');
+            } catch (\InvalidArgumentException $e) {
+                // No such directory in this package
+                continue;
+            }
+            foreach ($finder as $fileInfo) {
+                require $fileInfo->getPathname();
             }
         }
 
