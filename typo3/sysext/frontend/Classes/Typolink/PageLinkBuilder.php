@@ -559,7 +559,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // $totalUri contains /index.php for legacy URLs, as previously "it was index.php"
         // In case an URI has is prefixed with "/" which is not the absRefPrefix, remove it.
         // this might change in the future
-        if (strpos($totalUrl, '/index.php') === 0 && strpos($totalUrl, $absRefPrefix) !== 0) {
+        if (strpos($totalUrl, '/index.php') === 0 && $absRefPrefix !== '/') {
             $totalUrl = substr($totalUrl, 1);
         }
 
