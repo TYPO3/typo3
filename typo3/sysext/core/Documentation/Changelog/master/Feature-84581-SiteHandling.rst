@@ -48,7 +48,7 @@ config.yaml
           # Language base. Accepts either a fully qualified URL or a path segment like "/en/".
           base: /
           # sets the locale during frontend rendering
-          locale: en_EN.UTF8
+          locale: en_US.UTF8
           # ???
           iso-639-1: en
           # FE href language
