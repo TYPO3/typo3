@@ -110,6 +110,7 @@ class PageGenerator
         $direction = $tsfe->config['config']['htmlTag_dir'];
         if (self::getCurrentSiteLanguage()) {
             $direction = self::getCurrentSiteLanguage()->getDirection();
+            $htmlLang = self::getCurrentSiteLanguage()->getTwoLetterIsoCode();
         }
         if ($direction) {
             $htmlTagAttributes['dir'] = htmlspecialchars($direction);
