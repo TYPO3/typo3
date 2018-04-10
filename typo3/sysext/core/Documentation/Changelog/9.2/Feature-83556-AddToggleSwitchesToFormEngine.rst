@@ -9,7 +9,7 @@ See :issue:`83556`
 Description
 ===========
 
-In order to give FormEngine a fresher look we add the following `renderTypes` to `type=checkbox`.
+In order to give FormEngine a fresher look we add the following `renderTypes` to `type=check`.
 
 renderType checkboxToggle
 =========================
