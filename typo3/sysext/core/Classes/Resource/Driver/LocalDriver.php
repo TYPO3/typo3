@@ -169,7 +169,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * For the local driver, this will always return a path relative to PATH_site.
      *
      * @param string $identifier
-     * @return string
+     * @return string|null NULL if file is missing or deleted, the generated url otherwise
      * @throws \TYPO3\CMS\Core\Resource\Exception
      */
     public function getPublicUrl($identifier)

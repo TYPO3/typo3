@@ -359,12 +359,12 @@ class File extends AbstractFile
      *
      * @param bool  $relativeToCurrentScript   Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
      *
-     * @return string
+     * @return string|null NULL if file is missing or deleted, the generated url otherwise
      */
     public function getPublicUrl($relativeToCurrentScript = false)
     {
         if ($this->isMissing() || $this->deleted) {
-            return false;
+            return null;
         }
         return $this->getStorage()->getPublicUrl($this, $relativeToCurrentScript);
     }

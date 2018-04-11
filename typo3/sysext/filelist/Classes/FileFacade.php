@@ -132,7 +132,7 @@ class FileFacade
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPublicUrl()
     {

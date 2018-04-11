@@ -122,7 +122,7 @@ interface DriverInterface
      * Either fully qualified URL or relative to PATH_site (rawurlencoded).
      *
      * @param string $identifier
-     * @return string
+     * @return string|null NULL if file is missing or deleted, the generated url otherwise
      */
     public function getPublicUrl($identifier);
 
