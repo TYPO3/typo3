@@ -41,6 +41,11 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
 
         $tsfe = $this->getTypoScriptFrontendController();
         $linkLocation = $fileOrFolderObject->getPublicUrl();
+        if ($linkLocation === null) {
+            // set the linkLocation to an empty string if null,
+            // so it does not collide with the various string functions
+            $linkLocation = '';
+        }
         // Setting title if blank value to link
         $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
         if (strpos($linkLocation, '/') !== 0

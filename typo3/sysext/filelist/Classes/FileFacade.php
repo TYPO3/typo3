@@ -136,9 +136,9 @@ class FileFacade
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPublicUrl(): string
+    public function getPublicUrl()
     {
         return $this->resource->getPublicUrl(true);
     }
