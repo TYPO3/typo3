@@ -3,19 +3,19 @@
 	<div class="btn-toolbar" role="toolbar">
 		<div class="btn-group" role="group">
 			<f:if condition="{form.previousPage}">
-				<span class="previous">
+				<span class="btn-group previous">
 					<f:form.hidden property="__currentPage" value="{form.previousPage.index}" />
 					<f:form.button type="button" onclick="document.forms['{form.formDefinition.identifier}'].submit();" class="btn btn-cancel" formnovalidate="formnovalidate">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'previousButtonLabel')}</f:form.button>
 				</span>
 			</f:if>
 			<f:if condition="{form.nextPage}">
 				<f:then>
-					<span class="next">
+					<span class="btn-group next">
 						<f:form.button property="__currentPage" value="{form.nextPage.index}" class="btn btn-primary">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'nextButtonLabel')}</f:form.button>
 					</span>
 				</f:then>
 				<f:else>
-					<span class="next submit">
+					<span class="btn-group next submit">
 						<f:form.button property="__currentPage" value="{form.pages -> f:count()}" class="btn btn-primary">
 							{formvh:translateElementProperty(element: form, renderingOptionProperty: 'submitButtonLabel')}
 						</f:form.button>
