@@ -52,7 +52,7 @@ class RecyclerModuleController
     /**
      * @var int
      */
-    protected $recordsPageLimit = 25;
+    protected $recordsPageLimit = 50;
 
     /**
      * @var int

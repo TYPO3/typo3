@@ -54,7 +54,7 @@ class RecyclerAjaxController
         $this->conf['filterTxt'] = GeneralUtility::_GP('filterTxt') ? GeneralUtility::_GP('filterTxt') : '';
         $this->conf['startUid'] = GeneralUtility::_GP('startUid') ? (int)GeneralUtility::_GP('startUid') : 0;
         $this->conf['depth'] = GeneralUtility::_GP('depth') ? (int)GeneralUtility::_GP('depth') : 0;
-        $this->conf['records'] = json_decode(GeneralUtility::_GP('records') ? GeneralUtility::_GP('records') : '[]', true);
+        $this->conf['records'] = GeneralUtility::_GP('records') ? GeneralUtility::_GP('records') : null;
         $this->conf['recursive'] = GeneralUtility::_GP('recursive') ? (bool)GeneralUtility::_GP('recursive') : false;
     }
 
@@ -94,13 +94,11 @@ class RecyclerAjaxController
                 $deletedRowsArray = $model->getDeletedRows();
 
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
-                $model->loadData($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], null, $this->conf['filterTxt']);
-                $deletedRowsArrayAll = $model->getDeletedRows();
+                $totalDeleted = $model->getTotalCount($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['filterTxt']);
 
                 /* @var $controller DeletedRecordsController */
                 $controller = GeneralUtility::makeInstance(DeletedRecordsController::class);
-                $recordsArray = $controller->transform($deletedRowsArray);
-                $recordsArrayAll = $controller->transformSmallAddTotal($deletedRowsArrayAll);
+                $recordsArray = $controller->transform($deletedRowsArray, $totalDeleted);
 
                 $modTS = $this->getBackendUser()->getTSConfig('mod.recycler');
                 $allowDelete = $this->getBackendUser()->isAdmin() ? true : (bool)$modTS['properties']['allowDelete'];
@@ -111,8 +109,7 @@ class RecyclerAjaxController
                 $view->assign('total', $recordsArray['total']);
                 $content = [
                     'rows' => $view->render(),
-                    'totalItems' => $recordsArrayAll['total'],
-                    'allTheRows' => $recordsArrayAll['rows']
+                    'totalItems' => $recordsArray['total']
                 ];
                 break;
             case 'undoRecords':
