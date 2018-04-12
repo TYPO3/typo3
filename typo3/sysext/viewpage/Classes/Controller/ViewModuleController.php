@@ -72,6 +72,7 @@ class ViewModuleController
     protected function initializeView(string $templateName)
     {
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->getRequest()->setControllerExtensionName('Viewpage');
         $this->view->setTemplate($templateName);
         $this->view->setTemplateRootPaths(['EXT:viewpage/Resources/Private/Templates/ViewModule']);
         $this->view->setPartialRootPaths(['EXT:viewpage/Resources/Private/Partials']);
