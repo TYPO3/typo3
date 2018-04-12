@@ -427,7 +427,7 @@ define(['jquery',
         )
       );
     } else {
-      $message = messageText;
+      $message = $('<p />').text(messageText);
     }
 
     Modal.confirm(TYPO3.lang['modal.undo.header'], $message, Severity.ok, [
