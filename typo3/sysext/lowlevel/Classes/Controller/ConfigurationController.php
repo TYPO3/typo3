@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Lowlevel\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -112,6 +113,10 @@ class ConfigurationController
         'httpMiddlewareStacks' => [
             'label' => 'httpMiddlewareStacks',
             'type' => 'httpMiddlewareStacks',
+        ],
+        'siteConfiguration' => [
+            'label' => 'siteConfiguration',
+            'type' => 'siteConfiguration',
         ],
     ];
 
@@ -238,6 +243,8 @@ class ConfigurationController
                 // reversing the array allows the admin to read the stack from top to bottom
                 $renderArray[$stackName] = array_reverse($stackResolver->resolve($stackName));
             }
+        } elseif ($selectedTreeDetails['type'] === 'siteConfiguration') {
+            $renderArray = GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca();
         } else {
             throw new \RuntimeException('Unknown array type "' . $selectedTreeDetails['type'] . '"', 1507845662);
         }
