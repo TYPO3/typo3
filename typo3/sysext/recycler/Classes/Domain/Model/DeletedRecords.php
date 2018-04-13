@@ -275,7 +275,7 @@ class DeletedRecords
             $filterConstraint = $queryBuilder->expr()->like(
                 $GLOBALS['TCA'][$table]['ctrl']['label'],
                 $queryBuilder->createNamedParameter(
-                    $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($filter) . '%'),
+                    '%' . $queryBuilder->escapeLikeWildcards($filter) . '%',
                     \PDO::PARAM_STR
                 )
             );
