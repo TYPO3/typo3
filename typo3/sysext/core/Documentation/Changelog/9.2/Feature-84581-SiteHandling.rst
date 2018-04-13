@@ -48,7 +48,7 @@ config.yaml
           # Language base. Accepts either a fully qualified URL or a path segment like "/en/".
           base: /
           # sets the locale during frontend rendering
-          locale: en_US.UTF8
+          locale: en_US.UTF-8
           # ???
           iso-639-1: en
           # FE href language
@@ -64,7 +64,7 @@ config.yaml
           title: 'danish'
           navigationTitle: Dansk
           base: /da/
-          locale: dk_DK.UTF8
+          locale: dk_DK.UTF-8
           iso-639-1: da
           hreflang: dk-DK
           direction: ltr

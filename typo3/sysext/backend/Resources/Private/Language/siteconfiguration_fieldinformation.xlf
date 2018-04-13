@@ -13,7 +13,7 @@
 				<source>use / to use keep the main URL as configured at field Entry Point. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
 			</trans-unit>
 			<trans-unit id="sys_site_language.locale">
-				<source>should be something like de_DE or en_US.UTF8</source>
+				<source>should be something like de_DE or en_US.UTF-8</source>
 			</trans-unit>
 			<trans-unit id="sys_site_language.typo3Language">
 				<source>Select the language to be used from translation files. Keep default if no translation files are available.</source>
