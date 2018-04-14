@@ -4073,7 +4073,7 @@ class BackendUtility
     public static function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*')
     {
         if (ExtensionManagementUtility::isLoaded('workspaces')) {
-            if ($workspace !== 0 && $GLOBALS['TCA'][$table] && self::isTableWorkspaceEnabled($table)) {
+            if ($workspace !== 0 && self::isTableWorkspaceEnabled($table)) {
 
                 // Select workspace version of record:
                 $queryBuilder = static::getQueryBuilderForTable($table);

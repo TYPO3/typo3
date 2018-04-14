@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm;
 
 use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidCombinedPointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
@@ -46,21 +47,17 @@ use TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm\Fixtures\DataStructureParse
 use TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm\Fixtures\DataStructureParsePreProcessHookReturnString;
 use TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm\Fixtures\DataStructureParsePreProcessHookThrowException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FlexFormToolsTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
-    public function getDataStructureIdentifierCallsRegisteredPreProcessHook()
+    public function getDataStructureIdentifierCallsRegisteredPreProcessHook(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
             DataStructureIdentifierPreProcessHookThrowException::class,
@@ -73,7 +70,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfPreProcessHookReturnsNoArray()
+    public function getDataStructureIdentifierThrowsExceptionIfPreProcessHookReturnsNoArray(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
             DataStructureIdentifierPreProcessHookReturnString::class
@@ -86,7 +83,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierUsesCasualLogicIfPreProcessHookReturnsNoIdentifier()
+    public function getDataStructureIdentifierUsesCasualLogicIfPreProcessHookReturnsNoIdentifier(): void
     {
         $fieldTca = [
             'config' => [
@@ -105,7 +102,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierReturnsStringFromPreProcessHook()
+    public function getDataStructureIdentifierReturnsStringFromPreProcessHook(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
             DataStructureIdentifierPreProcessHookReturnArray::class
@@ -117,7 +114,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierReturnsStringFromFirstMatchingPreProcessHook()
+    public function getDataStructureIdentifierReturnsStringFromFirstMatchingPreProcessHook(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
             DataStructureIdentifierPreProcessHookReturnEmptyArray::class,
@@ -131,7 +128,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierCallsRegisteredPostProcessHook()
+    public function getDataStructureIdentifierCallsRegisteredPostProcessHook(): void
     {
         $fieldTca = [
             'config' => [
@@ -151,7 +148,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfPostProcessHookReturnsNoArray()
+    public function getDataStructureIdentifierThrowsExceptionIfPostProcessHookReturnsNoArray(): void
     {
         $fieldTca = [
             'config' => [
@@ -171,7 +168,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfPostProcessHookReturnsEmptyArray()
+    public function getDataStructureIdentifierThrowsExceptionIfPostProcessHookReturnsEmptyArray(): void
     {
         $fieldTca = [
             'config' => [
@@ -191,7 +188,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierPostProcessHookCanEnrichIdentifier()
+    public function getDataStructureIdentifierPostProcessHookCanEnrichIdentifier(): void
     {
         $fieldTca = [
             'config' => [
@@ -210,7 +207,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfDsIsNotAnArrayAndNoDsPointerField()
+    public function getDataStructureIdentifierThrowsExceptionIfDsIsNotAnArrayAndNoDsPointerField(): void
     {
         $fieldTca = [
             'config' => [
@@ -226,7 +223,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierReturnsDefaultIfDsIsSetButNoDsPointerField()
+    public function getDataStructureIdentifierReturnsDefaultIfDsIsSetButNoDsPointerField(): void
     {
         $fieldTca = [
             'config' => [
@@ -242,7 +239,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionsIfNoDsPointerFieldIsSetAndDefaultDoesNotExist()
+    public function getDataStructureIdentifierThrowsExceptionsIfNoDsPointerFieldIsSetAndDefaultDoesNotExist(): void
     {
         $fieldTca = [
             'config' => [
@@ -257,7 +254,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldStringHasMoreThanTwoFields()
+    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldStringHasMoreThanTwoFields(): void
     {
         $fieldTca = [
             'config' => [
@@ -273,7 +270,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldWithStringSingleFieldDoesNotExist()
+    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldWithStringSingleFieldDoesNotExist(): void
     {
         $fieldTca = [
             'config' => [
@@ -292,7 +289,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldSWithTwoFieldsFirstDoesNotExist()
+    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldSWithTwoFieldsFirstDoesNotExist(): void
     {
         $fieldTca = [
             'config' => [
@@ -311,7 +308,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldSWithTwoFieldsSecondDoesNotExist()
+    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldSWithTwoFieldsSecondDoesNotExist(): void
     {
         $fieldTca = [
             'config' => [
@@ -330,7 +327,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierReturnsPointerFieldValueIfDataStructureExists()
+    public function getDataStructureIdentifierReturnsPointerFieldValueIfDataStructureExists(): void
     {
         $fieldTca = [
             'config' => [
@@ -350,7 +347,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierReturnsDefaultIfPointerFieldValueDoesNotExist()
+    public function getDataStructureIdentifierReturnsDefaultIfPointerFieldValueDoesNotExist(): void
     {
         $fieldTca = [
             'config' => [
@@ -370,7 +367,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldValueDoesNotExistAndDefaultToo()
+    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldValueDoesNotExistAndDefaultToo(): void
     {
         $fieldTca = [
             'config' => [
@@ -381,6 +378,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ],
         ];
         $row = [
+            'uid' => 23,
             'aField' => 'aNotDefinedDataStructure',
         ];
         $this->expectException(InvalidSinglePointerFieldException::class);
@@ -391,7 +389,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * Data provider for getDataStructureIdentifierReturnsValidNameForTwoFieldCombinations
      */
-    public function getDataStructureIdentifierReturnsValidNameForTwoFieldCombinationsDataProvider()
+    public function getDataStructureIdentifierReturnsValidNameForTwoFieldCombinationsDataProvider(): array
     {
         return [
             'direct match of two fields' => [
@@ -491,7 +489,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param array $ds
      * @param $expected
      */
-    public function getDataStructureIdentifierReturnsValidNameForTwoFieldCombinations(array $row, array $ds, string $expected)
+    public function getDataStructureIdentifierReturnsValidNameForTwoFieldCombinations(array $row, array $ds, string $expected): void
     {
         $fieldTca = [
             'config' => [
@@ -505,7 +503,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionForTwoFieldsWithNoMatchAndNoDefault()
+    public function getDataStructureIdentifierThrowsExceptionForTwoFieldsWithNoMatchAndNoDefault(): void
     {
         $fieldTca = [
             'config' => [
@@ -516,6 +514,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ],
         ];
         $row = [
+            'uid' => 23,
             'firstField' => 'noMatch',
             'secondField' => 'noMatchToo',
         ];
@@ -527,7 +526,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfParentRowLookupFails()
+    public function getDataStructureIdentifierThrowsExceptionIfParentRowLookupFails(): void
     {
         $fieldTca = [
             'config' => [
@@ -536,6 +535,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ]
         ];
         $row = [
+            'uid' => 23,
             'pid' => 42,
             'tx_templavoila_ds' => null,
         ];
@@ -575,8 +575,10 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfParentRowsFormALoop()
+    public function getDataStructureIdentifierThrowsExceptionIfParentRowsFormALoop(): void
     {
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+
         $fieldTca = [
             'config' => [
                 'ds_pointerField' => 'tx_templavoila_ds',
@@ -642,8 +644,10 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfNoValidPointerFoundUntilRoot()
+    public function getDataStructureIdentifierThrowsExceptionIfNoValidPointerFoundUntilRoot(): void
     {
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+
         $fieldTca = [
             'config' => [
                 'ds_pointerField' => 'tx_templavoila_ds',
@@ -709,7 +713,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfNoValidPointerValueFound()
+    public function getDataStructureIdentifierThrowsExceptionIfNoValidPointerValueFound(): void
     {
         $fieldTca = [
             'config' => [
@@ -727,7 +731,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfResorvedPointerValueIsIntegerButDsFieldNameIsNotConfigured()
+    public function getDataStructureIdentifierThrowsExceptionIfResorvedPointerValueIsIntegerButDsFieldNameIsNotConfigured(): void
     {
         $fieldTca = [
             'config' => [
@@ -745,7 +749,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfDsTableFieldIsMisconfigured()
+    public function getDataStructureIdentifierThrowsExceptionIfDsTableFieldIsMisconfigured(): void
     {
         $fieldTca = [
             'config' => [
@@ -764,7 +768,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierReturnsValidIdentifierForPointerField()
+    public function getDataStructureIdentifierReturnsValidIdentifierForPointerField(): void
     {
         $fieldTca = [
             'config' => [
@@ -782,8 +786,10 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierReturnsValidIdentifierForParentLookup()
+    public function getDataStructureIdentifierReturnsValidIdentifierForParentLookup(): void
     {
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+
         $fieldTca = [
             'config' => [
                 'ds_pointerField' => 'tx_templavoila_ds',
@@ -848,8 +854,10 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierReturnsValidIdentifierForParentLookupAndBreaksLoop()
+    public function getDataStructureIdentifierReturnsValidIdentifierForParentLookupAndBreaksLoop(): void
     {
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+
         $fieldTca = [
             'config' => [
                 'ds_pointerField' => 'tx_templavoila_ds',
@@ -905,8 +913,10 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierReturnsValidIdentifierForParentLookupAndPrefersSubField()
+    public function getDataStructureIdentifierReturnsValidIdentifierForParentLookupAndPrefersSubField(): void
     {
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+
         $fieldTca = [
             'config' => [
                 'ds_pointerField' => 'tx_templavoila_ds',
@@ -966,7 +976,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierReturnsValidIdentifierForTableAndFieldPointer()
+    public function getDataStructureIdentifierReturnsValidIdentifierForTableAndFieldPointer(): void
     {
         $fieldTca = [
             'config' => [
@@ -986,8 +996,10 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierReturnsValidIdentifierForTableAndFieldPointerWithParentLookup()
+    public function getDataStructureIdentifierReturnsValidIdentifierForTableAndFieldPointerWithParentLookup(): void
     {
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+
         $fieldTca = [
             'config' => [
                 'ds_pointerField' => 'tx_templavoila_ds',
@@ -1048,7 +1060,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierThrowsExceptionWithEmptyString()
+    public function parseDataStructureByIdentifierThrowsExceptionWithEmptyString(): void
     {
         $this->expectException(InvalidIdentifierException::class);
         $this->expectExceptionCode(1478100828);
@@ -1058,7 +1070,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierIfIdentifierDoesNotResolveToArray()
+    public function parseDataStructureByIdentifierIfIdentifierDoesNotResolveToArray(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478345642);
@@ -1068,7 +1080,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierCallsRegisteredHook()
+    public function parseDataStructureByIdentifierCallsRegisteredHook(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
             DataStructureParsePreProcessHookThrowException::class,
@@ -1081,7 +1093,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierThrowsExceptionIfHookReturnsNoString()
+    public function parseDataStructureByIdentifierThrowsExceptionIfHookReturnsNoString(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
             DataStructureParsePreProcessHookReturnObject::class
@@ -1094,7 +1106,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierUsesCasualLogicIfHookReturnsNoIdentifier()
+    public function parseDataStructureByIdentifierUsesCasualLogicIfHookReturnsNoIdentifier(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
             DataStructureParsePreProcessHookReturnEmptyString::class
@@ -1114,7 +1126,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierParsesDataStructureReturnedByHook()
+    public function parseDataStructureByIdentifierParsesDataStructureReturnedByHook(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
             DataStructureParsePreProcessHookReturnString::class
@@ -1129,7 +1141,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierParsesDataStructureFromFirstMatchingHook()
+    public function parseDataStructureByIdentifierParsesDataStructureFromFirstMatchingHook(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
             DataStructureParsePreProcessHookReturnEmptyString::class,
@@ -1146,7 +1158,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierThrowsExceptionForInvalidSyntax()
+    public function parseDataStructureByIdentifierThrowsExceptionForInvalidSyntax(): void
     {
         $this->expectException(InvalidIdentifierException::class);
         $this->expectExceptionCode(1478104554);
@@ -1156,7 +1168,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierThrowsExceptionForIncompleteTcaSyntax()
+    public function parseDataStructureByIdentifierThrowsExceptionForIncompleteTcaSyntax(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478113471);
@@ -1167,7 +1179,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierThrowsExceptionForInvalidTcaSyntaxPointer()
+    public function parseDataStructureByIdentifierThrowsExceptionForInvalidTcaSyntaxPointer(): void
     {
         $this->expectException(InvalidIdentifierException::class);
         $this->expectExceptionCode(1478105491);
@@ -1178,7 +1190,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierResolvesTcaSyntaxPointer()
+    public function parseDataStructureByIdentifierResolvesTcaSyntaxPointer(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
@@ -1195,7 +1207,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierThrowsExceptionForIncompleteRecordSyntax()
+    public function parseDataStructureByIdentifierThrowsExceptionForIncompleteRecordSyntax(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478113873);
@@ -1206,7 +1218,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierResolvesRecordSyntaxPointer()
+    public function parseDataStructureByIdentifierResolvesRecordSyntaxPointer(): void
     {
         // Prophecies and revelations for a lot of the database stack classes
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
@@ -1247,7 +1259,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierThrowsExceptionIfDataStructureFileDoesNotExist()
+    public function parseDataStructureByIdentifierThrowsExceptionIfDataStructureFileDoesNotExist(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default']
             = 'FILE:EXT:core/Does/Not/Exist.xml';
@@ -1260,7 +1272,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierFetchesFromFile()
+    public function parseDataStructureByIdentifierFetchesFromFile(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default']
             = ' FILE:EXT:core/Tests/Unit/Configuration/FlexForm/Fixtures/DataStructureWithSheet.xml ';
@@ -1293,7 +1305,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierThrowsExceptionForInvalidXmlStructure()
+    public function parseDataStructureByIdentifierThrowsExceptionForInvalidXmlStructure(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
@@ -1311,7 +1323,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierThrowsExceptionIfStructureHasBothSheetAndRoot()
+    public function parseDataStructureByIdentifierThrowsExceptionIfStructureHasBothSheetAndRoot(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
@@ -1328,7 +1340,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierCreatesDefaultSheet()
+    public function parseDataStructureByIdentifierCreatesDefaultSheet(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
@@ -1379,7 +1391,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierResolvesExtReferenceForSingleSheets()
+    public function parseDataStructureByIdentifierResolvesExtReferenceForSingleSheets(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
@@ -1419,7 +1431,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierResolvesExtReferenceForSingleSheetsWithFilePrefix()
+    public function parseDataStructureByIdentifierResolvesExtReferenceForSingleSheetsWithFilePrefix(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
@@ -1459,7 +1471,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierCallsPostProcessHook()
+    public function parseDataStructureByIdentifierCallsPostProcessHook(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
@@ -1478,7 +1490,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierThrowsExceptionIfPostProcessHookReturnsNoArray()
+    public function parseDataStructureByIdentifierThrowsExceptionIfPostProcessHookReturnsNoArray(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
@@ -1497,7 +1509,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierPostProcessHookManipulatesDataStructure()
+    public function parseDataStructureByIdentifierPostProcessHookManipulatesDataStructure(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
@@ -1519,7 +1531,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingField()
+    public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingField(): void
     {
         $dataStruct = [
             'dummy_field' => [
@@ -1532,7 +1544,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'vKeys' => ['ES'],
             'callBackMethod_value' => 'dummy',
         ];
-        $editData = '';
+        $editData = [];
         /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(FlexFormTools::class)
             ->setMethods(['executeCallBackMethod'])
@@ -1544,7 +1556,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingArrayField()
+    public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingArrayField(): void
     {
         $dataStruct = [
             'dummy_field' => [
@@ -1561,7 +1573,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'el' => 'dummy',
             ],
         ];
-        $editData2 = '';
+        $editData2 = [];
         /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->createMock(FlexFormTools::class);
         $this->assertEquals(

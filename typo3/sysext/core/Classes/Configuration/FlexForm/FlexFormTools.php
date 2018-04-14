@@ -820,53 +820,55 @@ class FlexFormTools
      * @param array $editData (Part of) edit data array, reflecting current part of data structure
      * @param array $PA Additional parameters passed.
      * @param string $path Telling the "path" to the element in the flexform XML
-     * @return array
      */
-    public function traverseFlexFormXMLData_recurse($dataStruct, $editData, &$PA, $path = '')
+    public function traverseFlexFormXMLData_recurse($dataStruct, $editData, &$PA, $path = ''): void
     {
         if (is_array($dataStruct)) {
             foreach ($dataStruct as $key => $value) {
-                // The value of each entry must be an array.
-                if (is_array($value)) {
-                    if ($value['type'] === 'array') {
-                        // Array (Section) traversal
-                        if ($value['section']) {
-                            $cc = 0;
-                            if (is_array($editData[$key]['el'])) {
-                                if ($this->reNumberIndexesOfSectionData) {
-                                    $temp = [];
-                                    $c3 = 0;
-                                    foreach ($editData[$key]['el'] as $v3) {
-                                        $temp[++$c3] = $v3;
-                                    }
-                                    $editData[$key]['el'] = $temp;
+                if (isset($value['type']) && $value['type'] === 'array') {
+                    // Array (Section) traversal
+                    if ($value['section']) {
+                        $cc = 0;
+                        if (isset($editData[$key]['el']) && is_array($editData[$key]['el'])) {
+                            if ($this->reNumberIndexesOfSectionData) {
+                                $temp = [];
+                                $c3 = 0;
+                                foreach ($editData[$key]['el'] as $v3) {
+                                    $temp[++$c3] = $v3;
                                 }
-                                foreach ($editData[$key]['el'] as $k3 => $v3) {
-                                    if (is_array($v3)) {
-                                        $cc = $k3;
-                                        $theType = key($v3);
-                                        $theDat = $v3[$theType];
-                                        $newSectionEl = $value['el'][$theType];
-                                        if (is_array($newSectionEl)) {
-                                            $this->traverseFlexFormXMLData_recurse([$theType => $newSectionEl], [$theType => $theDat], $PA, $path . '/' . $key . '/el/' . $cc);
-                                        }
-                                    }
-                                }
+                                $editData[$key]['el'] = $temp;
                             }
-                        } else {
-                            // Array traversal
-                            if (is_array($editData) && is_array($editData[$key])) {
-                                $this->traverseFlexFormXMLData_recurse($value['el'], $editData[$key]['el'], $PA, $path . '/' . $key . '/el');
+                            foreach ($editData[$key]['el'] as $k3 => $v3) {
+                                if (is_array($v3)) {
+                                    $cc = $k3;
+                                    $theType = key($v3);
+                                    $theDat = $v3[$theType];
+                                    $newSectionEl = $value['el'][$theType];
+                                    if (is_array($newSectionEl)) {
+                                        $this->traverseFlexFormXMLData_recurse([$theType => $newSectionEl], [$theType => $theDat], $PA, $path . '/' . $key . '/el/' . $cc);
+                                    }
+                                }
                             }
                         }
-                    } elseif (is_array($value['TCEforms']['config'])) {
-                        // Processing a field value:
-                        foreach ($PA['vKeys'] as $vKey) {
-                            $vKey = 'v' . $vKey;
-                            // Call back
-                            if ($PA['callBackMethod_value'] && is_array($editData) && is_array($editData[$key])) {
-                                $this->executeCallBackMethod($PA['callBackMethod_value'], [$value, $editData[$key][$vKey], $PA, $path . '/' . $key . '/' . $vKey, $this]);
-                            }
+                    } else {
+                        // Array traversal
+                        if (isset($editData[$key]['el'])) {
+                            $this->traverseFlexFormXMLData_recurse($value['el'], $editData[$key]['el'], $PA, $path . '/' . $key . '/el');
+                        }
+                    }
+                } elseif (isset($value['TCEforms']['config']) && is_array($value['TCEforms']['config'])) {
+                    // Processing a field value:
+                    foreach ($PA['vKeys'] as $vKey) {
+                        $vKey = 'v' . $vKey;
+                        // Call back
+                        if (!empty($PA['callBackMethod_value']) && isset($editData[$key][$vKey])) {
+                            $this->executeCallBackMethod($PA['callBackMethod_value'], [
+                                $value,
+                                $editData[$key][$vKey],
+                                $PA,
+                                $path . '/' . $key . '/' . $vKey,
+                                $this
+                            ]);
                         }
                     }
                 }
