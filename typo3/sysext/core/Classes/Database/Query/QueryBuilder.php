@@ -981,7 +981,7 @@ class QueryBuilder
             );
             if (!empty($suffix)) {
                 throw new \InvalidArgumentException(
-                    'QueryBuilder::quoteIdentifiersForSelect() could not parse the input "' . $input . '"',
+                    'QueryBuilder::quoteIdentifiersForSelect() could not parse the select ' . $select . '.',
                     1461170686
                 );
             }

@@ -28,13 +28,11 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * Test case
+ */
 class QueryBuilderTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var Connection|\Prophecy\Prophecy\ObjectProphecy
      */
@@ -58,7 +56,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * Create a new database connection mock object for every test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -78,7 +76,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function exprReturnsExpressionBuilderForConnection()
+    public function exprReturnsExpressionBuilderForConnection(): void
     {
         $this->connection->getExpressionBuilder()
             ->shouldBeCalled()
@@ -90,7 +88,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTypeDelegatesToConcreteQueryBuilder()
+    public function getTypeDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->getType()
             ->shouldBeCalled()
@@ -102,7 +100,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStateDelegatesToConcreteQueryBuilder()
+    public function getStateDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->getState()
             ->shouldBeCalled()
@@ -114,7 +112,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSQLDelegatesToConcreteQueryBuilder()
+    public function getSQLDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->getSQL()
             ->shouldBeCalled()
@@ -128,7 +126,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function setParameterDelegatesToConcreteQueryBuilder()
+    public function setParameterDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->setParameter(Argument::exact('aField'), Argument::exact(5), Argument::cetera())
             ->shouldBeCalled()
@@ -140,7 +138,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function setParametersDelegatesToConcreteQueryBuilder()
+    public function setParametersDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->setParameters(Argument::exact(['aField' => 'aValue']), Argument::exact([]))
             ->shouldBeCalled()
@@ -152,7 +150,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getParametersDelegatesToConcreteQueryBuilder()
+    public function getParametersDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->getParameters()
             ->shouldBeCalled()
@@ -164,7 +162,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getParameterDelegatesToConcreteQueryBuilder()
+    public function getParameterDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->getParameter(Argument::exact('aField'))
             ->shouldBeCalled()
@@ -176,7 +174,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getParameterTypesDelegatesToConcreteQueryBuilder()
+    public function getParameterTypesDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->getParameterTypes()
             ->shouldBeCalled()
@@ -188,7 +186,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getParameterTypeDelegatesToConcreteQueryBuilder()
+    public function getParameterTypeDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->getParameterType(Argument::exact('aField'))
             ->shouldBeCalled()
@@ -200,7 +198,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function setFirstResultDelegatesToConcreteQueryBuilder()
+    public function setFirstResultDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->setFirstResult(Argument::cetera())
             ->shouldBeCalled()
@@ -212,7 +210,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFirstResultDelegatesToConcreteQueryBuilder()
+    public function getFirstResultDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->getFirstResult()
             ->shouldBeCalled()
@@ -224,7 +222,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function setMaxResultsDelegatesToConcreteQueryBuilder()
+    public function setMaxResultsDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->setMaxResults(Argument::cetera())
             ->shouldBeCalled()
@@ -236,7 +234,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMaxResultsDelegatesToConcreteQueryBuilder()
+    public function getMaxResultsDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->getMaxResults()
             ->shouldBeCalled()
@@ -248,7 +246,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDelegatesToConcreteQueryBuilder()
+    public function addDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->add(Argument::exact('select'), Argument::exact('aField'), Argument::cetera())
             ->shouldBeCalled()
@@ -260,7 +258,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function countBuildsExpressionAndCallsSelect()
+    public function countBuildsExpressionAndCallsSelect(): void
     {
         $this->concreteQueryBuilder->select(Argument::exact('COUNT(*)'))
             ->shouldBeCalled()
@@ -272,7 +270,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function selectQuotesIdentifiersAndDelegatesToConcreteQueryBuilder()
+    public function selectQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
@@ -290,7 +288,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @return array
      */
-    public function quoteIdentifiersForSelectDataProvider()
+    public function quoteIdentifiersForSelectDataProvider(): array
     {
         return [
             'fieldName' => [
@@ -354,7 +352,7 @@ class QueryBuilderTest extends UnitTestCase
      * @param string $identifier
      * @param string $expectedResult
      */
-    public function quoteIdentifiersForSelect($identifier, $expectedResult)
+    public function quoteIdentifiersForSelect($identifier, $expectedResult): void
     {
         $this->connection->quoteIdentifier(Argument::cetera())->will(
             function ($args) {
@@ -370,7 +368,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function quoteIdentifiersForSelectWithInvalidAlias()
+    public function quoteIdentifiersForSelectWithInvalidAlias(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1461170686);
@@ -388,7 +386,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function selectDoesNotQuoteStarPlaceholder()
+    public function selectDoesNotQuoteStarPlaceholder(): void
     {
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
@@ -405,7 +403,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addSelectQuotesIdentifiersAndDelegatesToConcreteQueryBuilder()
+    public function addSelectQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
@@ -423,7 +421,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addSelectDoesNotQuoteStarPlaceholder()
+    public function addSelectDoesNotQuoteStarPlaceholder(): void
     {
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
@@ -440,7 +438,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function selectLiteralDirectlyDelegatesToConcreteQueryBuilder()
+    public function selectLiteralDirectlyDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier(Argument::cetera())
             ->shouldNotBeCalled();
@@ -454,7 +452,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addSelectLiteralDirectlyDelegatesToConcreteQueryBuilder()
+    public function addSelectLiteralDirectlyDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier(Argument::cetera())
             ->shouldNotBeCalled();
@@ -469,7 +467,7 @@ class QueryBuilderTest extends UnitTestCase
      * @test
      * @todo: Test with alias
      */
-    public function deleteQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function deleteQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aTable')
             ->shouldBeCalled()
@@ -485,7 +483,7 @@ class QueryBuilderTest extends UnitTestCase
      * @test
      * @todo: Test with alias
      */
-    public function updateQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function updateQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aTable')
             ->shouldBeCalled()
@@ -500,7 +498,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function insertQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function insertQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aTable')
             ->shouldBeCalled()
@@ -516,7 +514,7 @@ class QueryBuilderTest extends UnitTestCase
      * @test
      * @todo: Test with alias
      */
-    public function fromQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function fromQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aTable')
             ->shouldBeCalled()
@@ -531,7 +529,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function joinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder()
+    public function joinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('fromAlias')
             ->shouldBeCalled()
@@ -552,7 +550,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function innerJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder()
+    public function innerJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('fromAlias')
             ->shouldBeCalled()
@@ -573,7 +571,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function leftJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder()
+    public function leftJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('fromAlias')
             ->shouldBeCalled()
@@ -594,7 +592,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function rightJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder()
+    public function rightJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('fromAlias')
             ->shouldBeCalled()
@@ -615,7 +613,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function setQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function setQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
@@ -633,7 +631,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function setWithoutNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function setWithoutNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
@@ -649,7 +647,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function whereDelegatesToConcreteQueryBuilder()
+    public function whereDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->where('uid=1', 'type=9')
             ->shouldBeCalled()
@@ -661,7 +659,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function andWhereDelegatesToConcreteQueryBuilder()
+    public function andWhereDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->andWhere('uid=1', 'type=9')
             ->shouldBeCalled()
@@ -673,7 +671,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function orWhereDelegatesToConcreteQueryBuilder()
+    public function orWhereDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->orWhere('uid=1', 'type=9')
             ->shouldBeCalled()
@@ -685,7 +683,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function groupByQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function groupByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifiers(['aField', 'anotherField'])
             ->shouldBeCalled()
@@ -700,7 +698,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addGroupByQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function addGroupByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifiers(['aField', 'anotherField'])
             ->shouldBeCalled()
@@ -715,7 +713,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function setValueQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function setValueQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
@@ -733,7 +731,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function setValueWithoudNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function setValueWithoudNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
@@ -748,7 +746,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function valuesQuotesIdentifiersAndDelegatesToConcreteQueryBuilder()
+    public function valuesQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteColumnValuePairs(['aField' => ':dcValue1', 'aValue' => ':dcValue2'])
             ->shouldBeCalled()
@@ -769,7 +767,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function valuesWithoutNamedParametersQuotesIdentifiersAndDelegatesToConcreteQueryBuilder()
+    public function valuesWithoutNamedParametersQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteColumnValuePairs(['aField' => 1, 'aValue' => 2])
             ->shouldBeCalled()
@@ -784,7 +782,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function havingDelegatesToConcreteQueryBuilder()
+    public function havingDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->having('uid=1', 'type=9')
             ->shouldBeCalled()
@@ -796,7 +794,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function andHavingDelegatesToConcreteQueryBuilder()
+    public function andHavingDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->andHaving('uid=1', 'type=9')
             ->shouldBeCalled()
@@ -808,7 +806,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function orHavingDelegatesToConcreteQueryBuilder()
+    public function orHavingDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->orHaving('uid=1', 'type=9')
             ->shouldBeCalled()
@@ -820,7 +818,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function orderByQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function orderByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
@@ -835,7 +833,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addOrderByQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    public function addOrderByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
@@ -850,7 +848,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getQueryPartDelegatesToConcreteQueryBuilder()
+    public function getQueryPartDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->getQueryPart('from')
             ->shouldBeCalled()
@@ -862,7 +860,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getQueryPartsDelegatesToConcreteQueryBuilder()
+    public function getQueryPartsDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->getQueryParts()
             ->shouldBeCalled()
@@ -874,7 +872,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function resetQueryPartsDelegatesToConcreteQueryBuilder()
+    public function resetQueryPartsDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->resetQueryParts(['select', 'from'])
             ->shouldBeCalled()
@@ -886,7 +884,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function resetQueryPartDelegatesToConcreteQueryBuilder()
+    public function resetQueryPartDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->resetQueryPart('select')
             ->shouldBeCalled()
@@ -898,7 +896,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function createNamedParameterDelegatesToConcreteQueryBuilder()
+    public function createNamedParameterDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->createNamedParameter(5, Argument::cetera())
             ->shouldBeCalled()
@@ -910,7 +908,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function createPositionalParameterDelegatesToConcreteQueryBuilder()
+    public function createPositionalParameterDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->createPositionalParameter(5, Argument::cetera())
             ->shouldBeCalled()
@@ -922,7 +920,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function queryRestrictionsAreAddedForSelectOnExecute()
+    public function queryRestrictionsAreAddedForSelectOnExecute(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
             'tstamp' => 'tstamp',
@@ -969,7 +967,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function queryRestrictionsAreAddedForCountOnExecute()
+    public function queryRestrictionsAreAddedForCountOnExecute(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
             'tstamp' => 'tstamp',
@@ -1016,7 +1014,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function queryRestrictionsAreReevaluatedOnSettingsChangeForGetSQL()
+    public function queryRestrictionsAreReevaluatedOnSettingsChangeForGetSQL(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
             'tstamp' => 'tstamp',
@@ -1063,7 +1061,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function queryRestrictionsAreReevaluatedOnSettingsChangeForExecute()
+    public function queryRestrictionsAreReevaluatedOnSettingsChangeForExecute(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
             'tstamp' => 'tstamp',
@@ -1118,7 +1116,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getQueriedTablesReturnsSameTableTwiceForInnerJoin()
+    public function getQueriedTablesReturnsSameTableTwiceForInnerJoin(): void
     {
         $this->concreteQueryBuilder->getQueryPart('from')
             ->shouldBeCalled()
@@ -1150,7 +1148,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @return array
      */
-    public function unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatformsDataProvider()
+    public function unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatformsDataProvider(): array
     {
         return [
             'mysql' => [
@@ -1183,8 +1181,12 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      * @dataProvider unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatformsDataProvider
+     * @param string $platform
+     * @param string $quoteChar
+     * @param string $input
+     * @param string $expected
      */
-    public function unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatforms($platform, $quoteChar, $input, $expected)
+    public function unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatforms(string $platform, string $quoteChar, string $input, string $expected): void
     {
         $connectionProphecy = $this->prophesize(Connection::class);
         $databasePlatformProphecy = $this->prophesize($platform);
@@ -1198,7 +1200,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function cloningQueryBuilderClonesConcreteQueryBuilder()
+    public function cloningQueryBuilderClonesConcreteQueryBuilder(): void
     {
         $clonedQueryBuilder = clone $this->subject;
         self::assertNotSame($this->subject->getConcreteQueryBuilder(), $clonedQueryBuilder->getConcreteQueryBuilder());
@@ -1207,7 +1209,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function changingClonedQueryBuilderDoesNotInfluenceSourceOne()
+    public function changingClonedQueryBuilderDoesNotInfluenceSourceOne(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
             'tstamp' => 'tstamp',

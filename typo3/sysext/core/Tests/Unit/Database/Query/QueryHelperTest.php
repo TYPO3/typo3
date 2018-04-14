@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
 /*
@@ -18,17 +19,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Query helper test
+ * Test case
  */
-class QueryHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class QueryHelperTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * Test cases for stripping of leading logical operators in where constraints.
      *
@@ -60,7 +57,7 @@ class QueryHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param string $input
      * @param string $expectedSql
      */
-    public function stripLogicalOperatorPrefixRemovesConstraintPrefixes(string $input, string $expectedSql)
+    public function stripLogicalOperatorPrefixRemovesConstraintPrefixes(string $input, string $expectedSql): void
     {
         $this->assertSame($expectedSql, QueryHelper::stripLogicalOperatorPrefix($input));
     }
@@ -146,7 +143,7 @@ class QueryHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param string $input
      * @param array $expectedResult
      */
-    public function parseOrderByTest(string $input, array $expectedResult)
+    public function parseOrderByTest(string $input, array $expectedResult): void
     {
         $this->assertSame($expectedResult, QueryHelper::parseOrderBy($input));
     }
@@ -222,7 +219,7 @@ class QueryHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param string $input
      * @param array $expectedResult
      */
-    public function parseTableListTest(string $input, array $expectedResult)
+    public function parseTableListTest(string $input, array $expectedResult): void
     {
         $this->assertSame($expectedResult, QueryHelper::parseTableList($input));
     }
@@ -272,7 +269,7 @@ class QueryHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param string $input
      * @param array $expectedResult
      */
-    public function parseGroupByTest(string $input, array $expectedResult)
+    public function parseGroupByTest(string $input, array $expectedResult): void
     {
         $this->assertSame($expectedResult, QueryHelper::parseGroupBy($input));
     }
@@ -350,7 +347,7 @@ class QueryHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param string $input
      * @param array $expected
      */
-    public function parseJoinSplitsStatement(string $input, array $expected)
+    public function parseJoinSplitsStatement(string $input, array $expected): void
     {
         $this->assertSame($expected, QueryHelper::parseJoin($input));
     }
@@ -388,7 +385,7 @@ class QueryHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param string $input
      * @param string $expected
      */
-    public function quoteDatabaseIdentifiers(string $input, string $expected)
+    public function quoteDatabaseIdentifiers(string $input, string $expected): void
     {
         $connectionProphet = $this->prophesize(Connection::class);
         $connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {

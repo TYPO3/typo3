@@ -1209,14 +1209,18 @@ class QueryGenerator
      * @param array $arr
      * @return array
      */
-    public function getSubscript($arr)
+    public function getSubscript($arr): array
     {
         $retArr = [];
-        while (is_array($arr)) {
+        while (\is_array($arr)) {
             reset($arr);
             $key = key($arr);
             $retArr[] = $key;
-            $arr = $arr[$key];
+            if (isset($arr[$key])) {
+                $arr = $arr[$key];
+            } else {
+                break;
+            }
         }
         return $retArr;
     }

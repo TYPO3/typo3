@@ -74,7 +74,7 @@ class QueryHelper
 
         return array_map(
             function ($expression) {
-                list($tableName, $as, $alias) = GeneralUtility::trimExplode(' ', $expression, true);
+                [$tableName, $as, $alias] = array_pad(GeneralUtility::trimExplode(' ', $expression, true), 3, null);
 
                 if (!empty($as) && strtolower($as) === 'as' && !empty($alias)) {
                     return [$tableName, $alias];

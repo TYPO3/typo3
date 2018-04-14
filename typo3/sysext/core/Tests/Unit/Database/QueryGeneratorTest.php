@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
 /*
@@ -23,11 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class QueryGeneratorTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @return array
      */
@@ -55,7 +51,7 @@ class QueryGeneratorTest extends UnitTestCase
                         'two' => 1,
                         'three' => [
                             'four' => 1,
-                            'five' =>'six',
+                            'five' => 'six',
                         ],
                     ]
                 ],
@@ -119,7 +115,7 @@ class QueryGeneratorTest extends UnitTestCase
      * @param $input
      * @param array $expectedArray
      */
-    public function getSubscriptReturnsExpectedValues($input, array $expectedArray)
+    public function getSubscriptReturnsExpectedValues($input, array $expectedArray): void
     {
         $subject = new QueryGenerator();
         $this->assertSame($expectedArray, $subject->getSubscript($input));
