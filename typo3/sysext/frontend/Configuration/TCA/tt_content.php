@@ -955,6 +955,7 @@ return [
             ]
         ],
         'file_collections' => [
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:file_collections',
             'config' => [
                 'type' => 'group',
@@ -975,6 +976,7 @@ return [
             ])
         ],
         'filelink_size' => [
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_size',
             'config' => [
                 'type' => 'check',
@@ -986,6 +988,7 @@ return [
             ]
         ],
         'filelink_sorting' => [
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_sorting',
             'config' => [
                 'type' => 'select',
@@ -1002,6 +1005,7 @@ return [
             ]
         ],
         'filelink_sorting_direction' => [
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_sorting_direction',
             'config' => [
                 'type' => 'select',
