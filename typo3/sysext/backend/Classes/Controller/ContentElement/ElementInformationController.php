@@ -303,7 +303,7 @@ class ElementInformationController
                     true
                 );
 
-                // else check if we can create an Image preview
+            // else check if we can create an Image preview
             } elseif (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
                 $preview['fileObject'] = $this->fileObject;
                 $preview['width'] = $width;

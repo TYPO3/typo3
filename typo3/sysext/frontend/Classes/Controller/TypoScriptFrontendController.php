@@ -3010,7 +3010,7 @@ class TypoScriptFrontendController
                 // Actually $cachedRow contains content that we could show instead of rendering. Maybe we should do that to gain more performance but then we should set all the stuff done in $this->getFromCache()... For now we stick to this...
                 $this->set_no_cache('Another process wrote into the cache since the beginning of the render process', true);
 
-                // Since the new Locking API this should never be the case
+            // Since the new Locking API this should never be the case
             } else {
                 $this->tempContent = true;
                 // This flag shows that temporary content is put in the cache
