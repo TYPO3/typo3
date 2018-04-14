@@ -28,8 +28,8 @@ return [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.title',
             'config' => [
                 'type' => 'input',
-                'size' => 20,
-                'max' => 30,
+                'size' => 50,
+                'max' => 255,
                 'eval' => 'required,trim'
             ]
         ],
