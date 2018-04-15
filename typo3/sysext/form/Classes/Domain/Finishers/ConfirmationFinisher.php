@@ -51,14 +51,15 @@ class ConfirmationFinisher extends AbstractFinisher
 
     /**
      * Executes this finisher
+     *
      * @see AbstractFinisher::execute()
+     * @return string
      *
      * @throws FinisherException
      */
     protected function executeInternal()
     {
-        $formRuntime = $this->finisherContext->getFormRuntime();
         $message = $this->parseOption('message');
-        $formRuntime->getResponse()->setContent($message);
+        return $message;
     }
 }

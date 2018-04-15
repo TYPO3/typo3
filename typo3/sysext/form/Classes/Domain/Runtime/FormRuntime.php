@@ -540,8 +540,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     public function render()
     {
         if ($this->isAfterLastPage()) {
-            $this->invokeFinishers();
-            return $this->response->getContent();
+            return $this->invokeFinishers();
         }
 
         $this->formState->setLastDisplayedPageIndex($this->currentPage->getIndex());
@@ -564,20 +563,29 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Executes all finishers of this form
+     *
+     * @return string
      */
-    protected function invokeFinishers()
+    protected function invokeFinishers(): string
     {
         $finisherContext = $this->objectManager->get(
             FinisherContext::class,
             $this,
             $this->getControllerContext()
         );
+
+        $output = '';
         foreach ($this->formDefinition->getFinishers() as $finisher) {
-            $finisher->execute($finisherContext);
+            $finisherOutput = $finisher->execute($finisherContext);
+            if (is_string($finisherOutput) && !empty($finisherOutput)) {
+                $output .= $finisherOutput;
+            }
             if ($finisherContext->isCancelled()) {
                 break;
             }
         }
+
+        return $output;
     }
 
     /**
