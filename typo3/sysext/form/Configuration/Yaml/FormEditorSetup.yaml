@@ -186,6 +186,9 @@ TYPO3:
                       50:
                         value: 'DeleteUploads'
                         label: 'formEditor.elements.Form.editor.finishers.DeleteUploads.label'
+                      60:
+                        value: 'Confirmation'
+                        label: 'formEditor.elements.Form.editor.finishers.Confirmation.label'
 
                 propertyCollections:
                   finishers:
@@ -275,6 +278,11 @@ TYPO3:
                           10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
                         100:
                           label: 'formEditor.elements.Form.finisher.Confirmation.editor.header.label'
+                        300:
+                          identifier: 'message'
+                          templateName: 'Inspector-TextareaEditor'
+                          label: 'formEditor.elements.Form.finisher.Confirmation.editor.message.label'
+                          propertyPath: 'options.message'
 
                     60:
                       identifier: 'Closure'
