@@ -396,7 +396,7 @@ class HtmlParser
                 $tok = substr($tok, $eocPos + 10);
                 $inCdata = false;
                 $skipTag = true;
-            } elseif (substr($tok, 0, 3) === '!--') {
+            } elseif (strpos($tok, '!--') === 0) {
                 if (($eocPos = strpos($tok, '-->')) === false) {
                     // Comment started in this token but it does end in the same token. Set a flag to skip till the end of comment
                     $newContent[$c++] = '<' . $tok;
@@ -407,7 +407,7 @@ class HtmlParser
                 $newContent[$c++] = '<' . substr($tok, 0, $eocPos + 3);
                 $tok = substr($tok, $eocPos + 3);
                 $skipTag = true;
-            } elseif (substr($tok, 0, 10) === '![CDATA[*/') {
+            } elseif (strpos($tok, '![CDATA[*/') === 0) {
                 if (($eocPos = strpos($tok, '/*]]>*/')) === false) {
                     // Comment started in this token but it does end in the same token. Set a flag to skip till the end of comment
                     $newContent[$c++] = '<' . $tok;
@@ -421,7 +421,7 @@ class HtmlParser
             }
             $firstChar = $tok[0];
             // It is a tag... (first char is a-z0-9 or /) (fixed 19/01 2004). This also avoids triggering on <?xml..> and <!DOCTYPE..>
-            if (!$skipTag && preg_match('/[[:alnum:]\\/]/', $firstChar) == 1) {
+            if (!$skipTag && preg_match('/[[:alnum:]\\/]/', $firstChar) === 1) {
                 $tagEnd = strpos($tok, '>');
                 // If there is and end-bracket...	tagEnd can't be 0 as the first character can't be a >
                 if ($tagEnd) {
@@ -439,32 +439,33 @@ class HtmlParser
                             // If NOT an endtag, do attribute processing (added dec. 2003)
                             if (!$endTag) {
                                 // Override attributes
-                                if ((string)$tags[$tagName]['overrideAttribs'] !== '') {
+                                if (isset($tags[$tagName]['overrideAttribs']) && (string)$tags[$tagName]['overrideAttribs'] !== '') {
                                     $tagParts[1] = $tags[$tagName]['overrideAttribs'];
                                 }
                                 // Allowed tags
-                                if ((string)$tags[$tagName]['allowedAttribs'] !== '') {
+                                if (isset($tags[$tagName]['allowedAttribs']) && (string)$tags[$tagName]['allowedAttribs'] !== '') {
                                     // No attribs allowed
                                     if ((string)$tags[$tagName]['allowedAttribs'] === '0') {
                                         $tagParts[1] = '';
-                                    } elseif (trim($tagParts[1])) {
+                                    } elseif (isset($tagParts[1]) && trim($tagParts[1])) {
                                         $tagAttrib = $this->get_tag_attributes($tagParts[1]);
                                         $tagParts[1] = '';
                                         $newTagAttrib = [];
-                                        if (!($tList = $tags[$tagName]['_allowedAttribs'])) {
-                                            // Just explode attribts for tag once
-                                            $tList = ($tags[$tagName]['_allowedAttribs'] = GeneralUtility::trimExplode(',', strtolower($tags[$tagName]['allowedAttribs']), true));
-                                        }
+                                        $tList = (array)(
+                                            $tags[$tagName]['_allowedAttribs']
+                                            ?? GeneralUtility::trimExplode(',', strtolower($tags[$tagName]['allowedAttribs']), true)
+                                        );
                                         foreach ($tList as $allowTag) {
                                             if (isset($tagAttrib[0][$allowTag])) {
                                                 $newTagAttrib[$allowTag] = $tagAttrib[0][$allowTag];
                                             }
                                         }
+
                                         $tagParts[1] = $this->compileTagAttribs($newTagAttrib, $tagAttrib[1]);
                                     }
                                 }
                                 // Fixed attrib values
-                                if (is_array($tags[$tagName]['fixAttrib'])) {
+                                if (isset($tags[$tagName]['fixAttrib']) && is_array($tags[$tagName]['fixAttrib'])) {
                                     $tagAttrib = $this->get_tag_attributes($tagParts[1]);
                                     $tagParts[1] = '';
                                     foreach ($tags[$tagName]['fixAttrib'] as $attr => $params) {
@@ -474,7 +475,7 @@ class HtmlParser
                                         if (!empty($params['unset'])) {
                                             unset($tagAttrib[0][$attr]);
                                         }
-                                        if (!isset($tagAttrib[0][$attr]) && (string)$params['default'] !== '') {
+                                        if (!empty($params['default']) && !isset($tagAttrib[0][$attr])) {
                                             $tagAttrib[0][$attr] = $params['default'];
                                         }
                                         if ($params['always'] || isset($tagAttrib[0][$attr])) {
@@ -497,7 +498,7 @@ class HtmlParser
                                                     $tagAttrib[0][$attr] = MathUtility::forceIntegerInRange($tagAttrib[0][$attr], (int)$params['range'][0]);
                                                 }
                                             }
-                                            if (is_array($params['list'])) {
+                                            if (isset($params['list']) && is_array($params['list'])) {
                                                 // For the class attribute, remove from the attribute value any class not in the list
                                                 // Classes are case sensitive
                                                 if ($attr === 'class') {
@@ -561,7 +562,7 @@ class HtmlParser
                                 $tagParts[1] = '';
                             }
                             // Protecting the tag by converting < and > to &lt; and &gt; ??
-                            if ($tags[$tagName]['protect']) {
+                            if (!empty($tags[$tagName]['protect'])) {
                                 $lt = '&lt;';
                                 $gt = '&gt;';
                             } else {
@@ -569,26 +570,26 @@ class HtmlParser
                                 $gt = '>';
                             }
                             // Remapping tag name?
-                            if ($tags[$tagName]['remap']) {
+                            if (!empty($tags[$tagName]['remap'])) {
                                 $tagParts[0] = $tags[$tagName]['remap'];
                             }
                             // rmTagIfNoAttrib
-                            if ($endTag || trim($tagParts[1]) || !$tags[$tagName]['rmTagIfNoAttrib']) {
-                                $setTag = 1;
+                            if ($endTag || empty($tags[$tagName]['rmTagIfNoAttrib']) || trim($tagParts[1] ?? '')) {
+                                $setTag = true;
                                 // Remove this closing tag if $tagName was among $TSconfig['removeTags']
-                                if ($endTag && $tags[$tagName]['allowedAttribs'] === 0 && $tags[$tagName]['rmTagIfNoAttrib'] === 1) {
-                                    $setTag = 0;
+                                if ($endTag && isset($tags[$tagName]['allowedAttribs']) && $tags[$tagName]['allowedAttribs'] === 0 && $tags[$tagName]['rmTagIfNoAttrib'] === 1) {
+                                    $setTag = false;
                                 }
-                                if ($tags[$tagName]['nesting']) {
-                                    if (!is_array($tagRegister[$tagName])) {
+                                if (isset($tags[$tagName]['nesting'])) {
+                                    if (!isset($tagRegister[$tagName])) {
                                         $tagRegister[$tagName] = [];
                                     }
                                     if ($endTag) {
-                                        $correctTag = 1;
+                                        $correctTag = true;
                                         if ($tags[$tagName]['nesting'] === 'global') {
                                             $lastEl = end($tagStack);
                                             if ($tagName !== $lastEl) {
-                                                if (in_array($tagName, $tagStack)) {
+                                                if (in_array($tagName, $tagStack, true)) {
                                                     while (!empty($tagStack) && $tagName !== $lastEl) {
                                                         $elPos = end($tagRegister[$lastEl]);
                                                         unset($newContent[$elPos]);
@@ -598,12 +599,12 @@ class HtmlParser
                                                     }
                                                 } else {
                                                     // In this case the
-                                                    $correctTag = 0;
+                                                    $correctTag = false;
                                                 }
                                             }
                                         }
                                         if (empty($tagRegister[$tagName]) || !$correctTag) {
-                                            $setTag = 0;
+                                            $setTag = false;
                                         } else {
                                             array_pop($tagRegister[$tagName]);
                                             if ($tags[$tagName]['nesting'] === 'global') {
@@ -619,7 +620,7 @@ class HtmlParser
                                 }
                                 if ($setTag) {
                                     // Setting the tag
-                                    $newContent[$c++] = $lt . ($endTag ? '/' : '') . trim($tagParts[0] . ' ' . $tagParts[1]) . ($emptyTag ? ' /' : '') . $gt;
+                                    $newContent[$c++] = $lt . ($endTag ? '/' : '') . trim($tagParts[0] . ' ' . ($tagParts[1] ?? '')) . ($emptyTag ? ' /' : '') . $gt;
                                 }
                             }
                         } else {
@@ -881,7 +882,7 @@ class HtmlParser
                     if (!is_array($keepTags[$key])) {
                         $keepTags[$key] = [];
                     }
-                    if (is_array($tagC['fixAttrib.'])) {
+                    if (isset($tagC['fixAttrib.']) && is_array($tagC['fixAttrib.'])) {
                         foreach ($tagC['fixAttrib.'] as $atName => $atConfig) {
                             if (is_array($atConfig)) {
                                 $atName = substr($atName, 0, -1);
@@ -898,9 +899,8 @@ class HtmlParser
                             }
                         }
                     }
-                    unset($tagC['fixAttrib.']);
-                    unset($tagC['fixAttrib']);
-                    if (isset($tagC['rmTagIfNoAttrib']) && $tagC['rmTagIfNoAttrib'] && empty($tagC['nesting'])) {
+                    unset($tagC['fixAttrib.'], $tagC['fixAttrib']);
+                    if (!empty($tagC['rmTagIfNoAttrib']) && empty($tagC['nesting'])) {
                         $tagC['nesting'] = 1;
                     }
                     $keepTags[$key] = array_merge($keepTags[$key], $tagC);
