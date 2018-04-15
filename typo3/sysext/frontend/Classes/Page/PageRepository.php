@@ -877,6 +877,7 @@ class PageRepository implements LoggerAwareInterface
         }
         return $page;
     }
+
     /**
      * Will find the page carrying the domain record matching the input domain.
      *
@@ -885,9 +886,11 @@ class PageRepository implements LoggerAwareInterface
      * @param string $request_uri Request URI: Used to get parameters from if they should be appended. Typ. supplied by \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')
      * @return mixed If found, returns integer with page UID where found. Otherwise blank. Might exit if location-header is sent, see description.
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::findDomainRecord()
+     * @deprecated will be removed in TYPO3 v10.0.
      */
     public function getDomainStartPage($domain, $path = '', $request_uri = '')
     {
+        trigger_error('This method will be removed in TYPO3 v10.0. As the SiteResolver middleware resolves the domain start page.', E_USER_DEPRECATED);
         $domain = explode(':', $domain);
         $domain = strtolower(preg_replace('/\\.$/', '', $domain[0]));
         // Removing extra trailing slashes

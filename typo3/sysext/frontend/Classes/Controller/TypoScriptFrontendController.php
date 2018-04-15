@@ -1276,12 +1276,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $timeTracker->pull();
         // We find the first page belonging to the current domain
         $timeTracker->push('fetch_the_id domain/', '');
-        // The page_id of the current domain
-        if ($this->getCurrentSiteLanguage()) {
-            $this->domainStartPage = $this->getCurrentSiteLanguage()->getSite()->getRootPageId();
-        } else {
-            $this->domainStartPage = $this->findDomainRecord($GLOBALS['TYPO3_CONF_VARS']['SYS']['recursiveDomainSearch']);
-        }
         if (!$this->id) {
             if ($this->domainStartPage) {
                 // If the id was not previously set, set it to the id of the domain.
@@ -1835,30 +1829,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $expressionBuilder->lt('pages.doktype', 200)
         );
         $this->sys_page->where_groupAccess = $this->sys_page->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
-    }
-
-    /**
-     * Looking up a domain record based on HTTP_HOST
-     *
-     * @param bool $recursive If set, it looks "recursively" meaning that a domain like "123.456.typo3.com" would find a domain record like "typo3.com" if "123.456.typo3.com" or "456.typo3.com" did not exist.
-     * @return int Returns the page id of the page where the domain record was found.
-     * @access private
-     */
-    public function findDomainRecord($recursive = false)
-    {
-        if ($recursive) {
-            $pageUid = 0;
-            $host = explode('.', GeneralUtility::getIndpEnv('HTTP_HOST'));
-            while (count($host)) {
-                $pageUid = $this->sys_page->getDomainStartPage(implode('.', $host), GeneralUtility::getIndpEnv('SCRIPT_NAME'));
-                if ($pageUid) {
-                    return $pageUid;
-                }
-                array_shift($host);
-            }
-            return $pageUid;
-        }
-        return $this->sys_page->getDomainStartPage(GeneralUtility::getIndpEnv('HTTP_HOST'), GeneralUtility::getIndpEnv('SCRIPT_NAME'));
     }
 
     /**

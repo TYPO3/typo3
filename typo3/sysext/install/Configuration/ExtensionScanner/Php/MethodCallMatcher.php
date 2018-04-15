@@ -2116,4 +2116,18 @@ return [
             'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->findDomainRecord' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84725-SysDomainResolvingMovedIntoMiddleware.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->getDomainStartPage' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-84725-SysDomainResolvingMovedIntoMiddleware.rst',
+        ],
+    ],
 ];
