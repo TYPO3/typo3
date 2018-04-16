@@ -163,7 +163,7 @@ Please note, that you need to specify the target column name as array key. Most 
 as this is the default field name for image manipulation in `sys_file_reference`
 
 It is also possible to set the cropping configuration only for a specific tt_content element type by using the
-`columnOverrides` feature:
+`columnsOverrides` feature:
 
 .. code-block:: php
 
