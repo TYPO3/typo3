@@ -21,6 +21,9 @@
 	"replace": {
 		"indexed_search": "*"
 	},
+	"suggest": {
+		"typo3/cms-scheduler": "For garbage collection of search statistics"
+	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "9.3.x-dev"
