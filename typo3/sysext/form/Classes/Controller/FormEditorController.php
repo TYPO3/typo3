@@ -72,9 +72,9 @@ class FormEditorController extends AbstractBackendController
             throw new PersistenceManagerException('Edit a extension formDefinition is not allowed.', 1478265661);
         }
 
-        $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
         $formDefinition = $this->formPersistenceManager->load($formPersistenceIdentifier);
         $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
+        $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
 
         $formDefinition['prototypeName'] = $prototypeName;
 
