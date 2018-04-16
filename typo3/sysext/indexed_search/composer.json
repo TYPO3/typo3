@@ -11,6 +11,9 @@
 	"replace": {
 		"indexed_search": "*"
 	},
+	"suggest": {
+		"typo3/cms-scheduler": "For garbage collection of search statistics"
+	},
 	"autoload": {
 		"psr-4": {
 			"TYPO3\\CMS\\IndexedSearch\\": "Classes/"

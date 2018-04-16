@@ -57,6 +57,9 @@
 			<trans-unit id="indexedsearch.config.indexExternalURLs">
 				<source>Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".</source>
 			</trans-unit>
+			<trans-unit id="indexedsearch.config.trackIpInStatistic">
+				<source>Define the privacy level of the logged IP: 0 for no mask which means no privacy, 1 for masking the host and 2 for masking host and subnet (full privacy)</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

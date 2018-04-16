@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -758,6 +759,13 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function writeSearchStat($searchParams, $searchWords, $count, $pt)
     {
+        $ipAddress = '';
+        try {
+            $ipMask = isset($this->indexerConfig['trackIpInStatistic']) ? (int)$this->indexerConfig['trackIpInStatistic'] : 2;
+            $ipAddress = IpAnonymizationUtility::anonymizeIp(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $ipMask);
+        } catch (\Exception $e) {
+        }
+
         $insertFields = [
             'searchstring' => $this->sword,
             'searchoptions' => serialize([$searchParams, $searchWords, $pt]),
@@ -765,7 +773,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             // cookie as set or retrieved. If people has cookies disabled this will vary all the time
             'cookie' => $GLOBALS['TSFE']->fe_user->id,
             // Remote IP address
-            'IP' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+            'IP' => $ipAddress,
             // Number of hits on the search
             'hits' => (int)$count,
             // Time stamp
