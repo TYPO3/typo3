@@ -1609,7 +1609,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             }
             // "Delete" link:
             $disableDeleteTS = $this->getBackendUserAuthentication()->getTSConfig('options.disableDelete');
-            $disableDelete = (bool) trim(isset($disableDeleteTS['properties'][$table]) ? $disableDeleteTS['properties'][$table] : $disableDeleteTS['value']);
+            $disableDelete = (bool)trim(isset($disableDeleteTS['properties'][$table]) ? $disableDeleteTS['properties'][$table] : $disableDeleteTS['value']);
             if ($permsEdit && !$disableDelete && ($table === 'pages' && $localCalcPerms & Permission::PAGE_DELETE || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT)) {
                 // Check if the record version is in "deleted" state, because that will switch the action to "restore"
                 if ($this->getBackendUserAuthentication()->workspace > 0 && isset($row['t3ver_state']) && (int)$row['t3ver_state'] === 2) {

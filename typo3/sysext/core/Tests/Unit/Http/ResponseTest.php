@@ -64,7 +64,7 @@ class ResponseTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'bool'     => [true],
             'string'   => ['foo'],
             'array'    => [[200]],
-            'object'   => [(object) [200]],
+            'object'   => [(object)[200]],
         ];
     }
 
@@ -133,7 +133,7 @@ class ResponseTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'float'      => [100.1],
             'bad-string' => ['Two hundred'],
             'array'      => [[200]],
-            'object'     => [(object) ['statusCode' => 200]],
+            'object'     => [(object)['statusCode' => 200]],
             'too-small'  => [1],
             'too-big'    => [600],
         ];
@@ -161,7 +161,7 @@ class ResponseTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'int'      => [1],
             'float'    => [1.1],
             'array'    => [['BODY']],
-            'stdClass' => [(object) ['body' => 'BODY']],
+            'stdClass' => [(object)['body' => 'BODY']],
         ];
     }
 
@@ -187,7 +187,7 @@ class ResponseTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'x-invalid-true'   => true,
             'x-invalid-false'  => false,
             'x-invalid-int'    => 1,
-            'x-invalid-object' => (object) ['INVALID'],
+            'x-invalid-object' => (object)['INVALID'],
             'x-valid-string'   => 'VALID',
             'x-valid-array'    => ['VALID'],
         ];

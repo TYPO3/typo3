@@ -194,7 +194,7 @@ class MessageTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'int'    => [1],
             'float'  => [1.1],
             'array'  => [['foo' => ['bar']]],
-            'object' => [(object) ['foo' => 'bar']],
+            'object' => [(object)['foo' => 'bar']],
         ];
     }
 
@@ -219,7 +219,7 @@ class MessageTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'false'  => [false],
             'int'    => [1],
             'float'  => [1.1],
-            'object' => [(object) ['foo' => 'bar']],
+            'object' => [(object)['foo' => 'bar']],
         ];
     }
 

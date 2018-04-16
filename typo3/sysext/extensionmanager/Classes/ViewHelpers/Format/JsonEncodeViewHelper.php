@@ -55,6 +55,6 @@ class JsonEncodeViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return json_encode((array) $renderChildrenClosure());
+        return json_encode((array)$renderChildrenClosure());
     }
 }

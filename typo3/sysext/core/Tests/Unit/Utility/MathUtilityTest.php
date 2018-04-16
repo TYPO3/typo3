@@ -166,8 +166,8 @@ class MathUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         // testcases for Integer apply for float as well
         $intTestcases = $this->functionCanBeInterpretedAsIntegerValidDataProvider();
         $floatTestcases = [
-            'zero as float' => [(float) 0],
-            'negative float' => [(float) -7.5],
+            'zero as float' => [(float)0],
+            'negative float' => [(float)-7.5],
             'negative float as string with exp #1' => ['-7.5e3'],
             'negative float as string with exp #2' => ['-7.5e03'],
             'negative float as string with exp #3' => ['-7.5e-3'],

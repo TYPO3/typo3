@@ -5284,7 +5284,7 @@ class ContentObjectRenderer
                             $rootLine = $tsfe->rootLine;
                             array_shift($rootLine);
                             foreach ($rootLine as $rootLinePage) {
-                                $retVal = (string) $rootLinePage['backend_layout_next_level'];
+                                $retVal = (string)$rootLinePage['backend_layout_next_level'];
                                 // If layout for "next level" is set to "none" - don't use any and stop searching
                                 if ($retVal === '-1') {
                                     $retVal = 'none';

@@ -1603,7 +1603,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 }
                 // Delete
                 $disableDeleteTS = $this->getBackendUser()->getTSConfig('options.disableDelete');
-                $disableDelete = (bool) trim(isset($disableDeleteTS['properties']['tt_content']) ? $disableDeleteTS['properties']['tt_content'] : $disableDeleteTS['value']);
+                $disableDelete = (bool)trim(isset($disableDeleteTS['properties']['tt_content']) ? $disableDeleteTS['properties']['tt_content'] : $disableDeleteTS['value']);
                 if (!$disableDelete) {
                     $params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
                     $confirm = $this->getLanguageService()->getLL('deleteWarning')

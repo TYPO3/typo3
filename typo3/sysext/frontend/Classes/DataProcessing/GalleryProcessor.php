@@ -479,7 +479,7 @@ class GalleryProcessor implements DataProcessorInterface
 
         $croppingConfiguration = $fileObject->getProperty('crop');
         $cropVariantCollection = CropVariantCollection::create((string)$croppingConfiguration);
-        return (int) $cropVariantCollection->getCropArea($this->cropVariant)->makeAbsoluteBasedOnFile($fileObject)->asArray()[$dimensionalProperty];
+        return (int)$cropVariantCollection->getCropArea($this->cropVariant)->makeAbsoluteBasedOnFile($fileObject)->asArray()[$dimensionalProperty];
     }
 
     /**
