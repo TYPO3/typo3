@@ -30,6 +30,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -1361,6 +1362,23 @@ class EditDocumentController
         $lang = $this->getLanguageService();
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
+        $isSavedRecord = (
+            $this->firstEl['cmd'] !== 'new'
+            && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])
+        );
+
+        $record = BackendUtility::getRecord($this->firstEl['table'], $this->firstEl['uid']);
+        $TCActrl = $GLOBALS['TCA'][$this->firstEl['table']]['ctrl'];
+
+        $sysLanguageUid = 0;
+        if ($isSavedRecord
+            && isset($TCActrl['languageField'], $record[$TCActrl['languageField']])) {
+            $sysLanguageUid = (int)$record[$TCActrl['languageField']];
+        } elseif (isset($this->defVals['sys_language_uid'])) {
+            $sysLanguageUid = (int)$this->defVals['sys_language_uid'];
+        }
+
         // Render SAVE type buttons:
         // The action of each button is decided by its name attribute.
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -1408,8 +1426,22 @@ class EditDocumentController
                     $saveSplitButton->addItem($saveAndOpenButton);
                 }
             }
+
             // SAVE / NEW button:
-            if (count($this->elementsData) === 1 && !empty($this->firstEl['table']) && $this->getTsConfigOption($this->firstEl['table'], 'saveDocNew')) {
+            $showSaveAndNewButton = (
+                count($this->elementsData) === 1
+                && !empty($this->firstEl['table'])
+                && $this->getTsConfigOption($this->firstEl['table'], 'saveDocNew')
+            );
+            // Hide the button for tt_content when in connected translation mode
+            if ($this->firstEl['table'] === 'tt_content') {
+                $showSaveAndNewButton = $this->isPageInFreeTranslationMode(
+                    (int)$this->pageinfo['uid'],
+                    !$isSavedRecord ? (int)$this->defVals['colPos'] : (int)$record['colPos'],
+                    $sysLanguageUid
+                );
+            }
+            if ($showSaveAndNewButton) {
                 $saveAndNewButton = $buttonBar->makeInputButton()
                     ->setName('_savedoknew')
                     ->setClasses('t3js-editform-submitButton')
@@ -1470,13 +1502,8 @@ class EditDocumentController
             ));
         $buttonBar->addButton($closeButton);
         // DUPLICATE button:
-        $record = BackendUtility::getRecord($this->firstEl['table'], $this->firstEl['uid']);
-        $TCActrl = $GLOBALS['TCA'][$this->firstEl['table']]['ctrl'];
         $l18nParent = isset($TCActrl['transOrigPointerField'], $record[$TCActrl['transOrigPointerField']])
             ? (int)$record[$TCActrl['transOrigPointerField']]
-            : 0;
-        $sysLanguageUid = isset($TCActrl['languageField'], $record[$TCActrl['languageField']])
-            ? (int)$record[$TCActrl['languageField']]
             : 0;
         $showDuplicateButton = false;
         if (
@@ -1668,6 +1695,111 @@ class EditDocumentController
                 ButtonBar::BUTTON_POSITION_RIGHT
             );
         }
+    }
+
+    /**
+     * Check if the page is in free translation mode
+     *
+     * @param int $page
+     * @param int $column
+     * @param int $language
+     * @return bool
+     */
+    protected function isPageInFreeTranslationMode(int $page, int $column, int $language): bool
+    {
+        $freeTranslationMode = false;
+
+        if ($this->getConnectedContentElementTranslationsCount($page, $column, $language) === 0
+            && $this->getStandAloneContentElementTranslationsCount($page, $column, $language) >= 0) {
+            $freeTranslationMode = true;
+        }
+
+        return $freeTranslationMode;
+    }
+
+    /**
+     * Get the count of connected translated content elements
+     *
+     * @param int $page
+     * @param int $column
+     * @param int $language
+     * @return int
+     */
+    protected function getConnectedContentElementTranslationsCount(int $page, int $column, int $language): int
+    {
+        $queryBuilder = $this->getQueryBuilderForTranslationMode($page, $column, $language);
+
+        return (int)$queryBuilder
+            ->andWhere(
+                $queryBuilder->expr()->gt(
+                    $GLOBALS['TCA']['tt_content']['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetchColumn(0);
+    }
+
+    /**
+     * Get the count of standalone translated content elements
+     *
+     * @param int $page
+     * @param int $column
+     * @param int $language
+     * @return int
+     */
+    protected function getStandAloneContentElementTranslationsCount(int $page, int $column, int $language): int
+    {
+        $queryBuilder = $this->getQueryBuilderForTranslationMode($page, $column, $language);
+
+        return (int)$queryBuilder
+            ->andWhere(
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA']['tt_content']['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetchColumn(0);
+    }
+
+    /**
+     * Get the query builder for the translation mode
+     *
+     * @param int $page
+     * @param int $column
+     * @param int $language
+     * @return QueryBuilder
+     */
+    protected function getQueryBuilderForTranslationMode(int $page, int $column, int $language): QueryBuilder
+    {
+        $languageField = $GLOBALS['TCA']['tt_content']['ctrl']['languageField'];
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_content');
+
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        return $queryBuilder
+            ->count('uid')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($page, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    $languageField,
+                    $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'colPos',
+                    $queryBuilder->createNamedParameter($column, \PDO::PARAM_INT)
+                )
+            );
     }
 
     /**
