@@ -45,6 +45,8 @@ class SiteTcaSelectItems implements FormDataProviderInterface
         // Available languages from Locales class put as "typo3Language" items
         $locales = GeneralUtility::makeInstance(Locales::class);
         $languages = $locales->getLanguages();
+        asort($languages);
+
         $items = [];
         foreach ($languages as $key => $label) {
             $items[] = [

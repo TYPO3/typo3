@@ -136,6 +136,7 @@ return [
                         'renderType' => 'SiteConfigurationModuleFieldInformation',
                     ],
                 ],
+                'default' => 'default'
             ],
         ],
         'flag' => [
