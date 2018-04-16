@@ -1523,6 +1523,11 @@ return [
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
             ',
             'columnsOverrides' => [
+                'selected_categories' => [
+                    'config' => [
+                        'minitems' => 1,
+                    ]
+                ],
                 'category_field' => [
                     'config' => [
                         'itemsProcConfig' => [
@@ -1556,6 +1561,11 @@ return [
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
             ',
             'columnsOverrides' => [
+                'selected_categories' => [
+                    'config' => [
+                        'minitems' => 1,
+                    ]
+                ],
                 'category_field' => [
                     'config' => [
                         'itemsProcConfig' => [
