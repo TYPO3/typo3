@@ -367,7 +367,7 @@ class ElementInformationController
                 } elseif ($name === 'height') {
                     $rowValue = $this->fileObject->getProperty('height') . 'px';
                 }
-            } elseif ($name === 'creation_date' || $name === 'modification_date') {
+            } elseif ($name === 'creation_date' || $name === 'modification_date' || $name === 'tstamp' || $name === 'crdate') {
                 $rowValue = BackendUtility::datetime($this->row[$name]);
             } else {
                 $rowValue = BackendUtility::getProcessedValueExtra($this->table, $name, $this->row[$name]);
