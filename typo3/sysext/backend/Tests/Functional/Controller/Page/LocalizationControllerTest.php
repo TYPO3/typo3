@@ -440,7 +440,7 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
         $recordLocalizeSummaryResponse = $this->subject->getRecordLocalizeSummary($request, new Response());
 
         // Reduce the fetched record summary to list of uids
-        if ($recordLocalizeSummary = json_decode((string) $recordLocalizeSummaryResponse->getBody(), true)) {
+        if ($recordLocalizeSummary = json_decode((string)$recordLocalizeSummaryResponse->getBody(), true)) {
             foreach ($recordLocalizeSummary as &$record) {
                 if (is_array($record)) {
                     $record = array_intersect_key($record, ['uid' => '']);

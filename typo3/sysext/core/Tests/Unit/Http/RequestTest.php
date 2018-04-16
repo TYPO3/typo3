@@ -80,7 +80,7 @@ class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $request2 = $request->withUri(new Uri('/baz/bat?foo=bar'));
         $this->assertNotSame($this->request, $request2);
         $this->assertNotSame($request, $request2);
-        $this->assertEquals('/baz/bat?foo=bar', (string) $request2->getUri());
+        $this->assertEquals('/baz/bat?foo=bar', (string)$request2->getUri());
     }
 
     /**
@@ -121,7 +121,7 @@ class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'int'      => [1],
             'float'    => [1.1],
             'array'    => [['http://example.com']],
-            'stdClass' => [(object) ['href' => 'http://example.com']],
+            'stdClass' => [(object)['href' => 'http://example.com']],
         ];
     }
 
@@ -147,7 +147,7 @@ class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'int'        => [1],
             'float'      => [1.1],
             'array'      => [['POST']],
-            'stdClass'   => [(object) ['method' => 'POST']],
+            'stdClass'   => [(object)['method' => 'POST']],
         ];
     }
 
@@ -183,7 +183,7 @@ class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'int'      => [1],
             'float'    => [1.1],
             'array'    => [['BODY']],
-            'stdClass' => [(object) ['body' => 'BODY']],
+            'stdClass' => [(object)['body' => 'BODY']],
         ];
     }
 
@@ -209,7 +209,7 @@ class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'x-invalid-true'   => true,
             'x-invalid-false'  => false,
             'x-invalid-int'    => 1,
-            'x-invalid-object' => (object) ['INVALID'],
+            'x-invalid-object' => (object)['INVALID'],
             'x-valid-string'   => 'VALID',
             'x-valid-array'    => ['VALID'],
         ];

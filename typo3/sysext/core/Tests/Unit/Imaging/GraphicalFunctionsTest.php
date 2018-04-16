@@ -54,7 +54,7 @@ class GraphicalFunctionsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
                     'origH' => 0,
                     'max' => 0,
                     0 => 150,
-                    1 => (float) 120
+                    1 => (float)120
                 ],
             ],
             'Get image scale with a maximum width of 100px' => [
@@ -73,7 +73,7 @@ class GraphicalFunctionsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
                     'origH' => 0,
                     'max' => 1,
                     0 => 100,
-                    1 => (float) 80
+                    1 => (float)80
                 ],
             ],
             'Get image scale with a minimum width of 200px' => [
@@ -92,7 +92,7 @@ class GraphicalFunctionsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
                     'origH' => 0,
                     'max' => 0,
                     0 => 200,
-                    1 => (float) 136
+                    1 => (float)136
                 ],
             ],
         ];

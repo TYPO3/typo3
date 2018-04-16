@@ -79,7 +79,7 @@ class StreamTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $message = 'foo bar';
         $this->stream->write($message);
-        $this->assertEquals($message, (string) $this->stream);
+        $this->assertEquals($message, (string)$this->stream);
     }
 
     /**
@@ -428,7 +428,7 @@ class StreamTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'int'                 => [1],
             'float'               => [1.1],
             'array'               => [[fopen($fileName, 'r+')]],
-            'object'              => [(object) ['resource' => fopen($fileName, 'r+')]],
+            'object'              => [(object)['resource' => fopen($fileName, 'r+')]],
         ];
     }
 
@@ -484,7 +484,7 @@ class StreamTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         fwrite($resource, 'FooBar');
 
         $this->stream->rewind();
-        $test = (string) $this->stream;
+        $test = (string)$this->stream;
         $this->assertEquals('FooBar', $test);
     }
 

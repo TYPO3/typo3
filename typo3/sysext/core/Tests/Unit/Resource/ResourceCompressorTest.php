@@ -350,7 +350,7 @@ class ResourceCompressorTest extends BaseTestCase
      */
     public function compressCssFileContentDataProvider(): array
     {
-        $path = dirname(__FILE__) . '/ResourceCompressorTest/Fixtures/';
+        $path = __DIR__ . '/ResourceCompressorTest/Fixtures/';
         return [
             // File. Tests:
             // - Stripped comments and white-space.

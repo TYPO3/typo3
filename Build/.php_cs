@@ -25,8 +25,8 @@
  * inside the TYPO3 directory. Warning: This may take up to 10 minutes.
  *
  * For more information read:
- * 	 http://www.php-fig.org/psr/psr-2/
- * 	 http://cs.sensiolabs.org
+ * 	 https://www.php-fig.org/psr/psr-2/
+ * 	 https://cs.sensiolabs.org
  */
 if (PHP_SAPI !== 'cli') {
     die('This script supports command line usage only. Please check your command.');
@@ -84,5 +84,8 @@ return PhpCsFixer\Config::create()
         'phpdoc_types' => true,
         'phpdoc_types_order' => ['null_adjustment' => 'always_last', 'sort_algorithm' => 'none'],
         'return_type_declaration' => ['space_before' => 'none'],
+        'cast_spaces' => ['space' => 'none'],
+        'declare_equal_normalize' => ['space' => 'single'],
+        'dir_constant' => true,
     ])
     ->setFinder($finder);

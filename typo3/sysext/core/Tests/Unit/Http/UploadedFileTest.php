@@ -56,7 +56,7 @@ class UploadedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'invalid-path' => [ ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) ? '[:]' : 'foo' . chr(0) ],
              */
             'array'  => [['filename']],
-            'object' => [(object) ['filename']],
+            'object' => [(object)['filename']],
         ];
     }
 
@@ -82,7 +82,7 @@ class UploadedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'float'  => [1.1],
             'string' => ['1'],
             'array'  => [[1]],
-            'object' => [(object) [1]],
+            'object' => [(object)[1]],
         ];
     }
 
@@ -109,7 +109,7 @@ class UploadedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'float'    => [1.1],
             'string'   => ['1'],
             'array'    => [[1]],
-            'object'   => [(object) [1]],
+            'object'   => [(object)[1]],
             'negative' => [-1],
             'too-big'  => [9],
         ];
@@ -137,7 +137,7 @@ class UploadedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'int'    => [1],
             'float'  => [1.1],
             'array'  => [['string']],
-            'object' => [(object) ['string']],
+            'object' => [(object)['string']],
         ];
     }
 
@@ -226,7 +226,7 @@ class UploadedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'float'  => [1.1],
             'empty'  => [''],
             'array'  => [['filename']],
-            'object' => [(object) ['filename']],
+            'object' => [(object)['filename']],
         ];
     }
 
