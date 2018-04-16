@@ -493,7 +493,8 @@ class TableController extends AbstractWizardController
                     $configuration = $this->configurationStringToArray($configuration, 0);
                 } else {
                     // Regular line based table configuration:
-                    $configuration = $this->configurationStringToArray($row[$this->P['field']], $row[$this->colsFieldName]);
+                    $columns = $row[$this->colsFieldName] ?? 0;
+                    $configuration = $this->configurationStringToArray($row[$this->P['field']], $columns);
                 }
             }
             $configuration = is_array($configuration) ? $configuration : [];
