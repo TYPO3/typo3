@@ -94,3 +94,10 @@ if (isset($extConf['enableMetaphoneSearch']) && (int)$extConf['enableMetaphoneSe
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone'] = \TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility::class;
 }
 unset($extConf);
+
+if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'])) {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['index_stat_search'] = [
+        'dateField' => 'tstamp',
+        'expirePeriod' => 90
+    ];
+}

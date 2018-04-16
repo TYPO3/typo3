@@ -22,6 +22,9 @@
 	"replace": {
 		"indexed_search": "*"
 	},
+	"suggest": {
+		"typo3/cms-scheduler": "For garbage collection of search statistics"
+	},
 	"extra": {
 		"typo3/cms": {
 			"extension-key": "indexed_search"
