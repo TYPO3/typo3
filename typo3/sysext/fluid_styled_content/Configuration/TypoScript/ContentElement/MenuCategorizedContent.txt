@@ -18,6 +18,7 @@ tt_content.menu_categorized_content {
             join.wrap = sys_category_record_mm ON uid = sys_category_record_mm.uid_foreign AND sys_category_record_mm.uid_local IN(|)
             where.data = field:category_field
             where.wrap = tablenames='tt_content' and fieldname='|'
+            orderBy = tt_content.sorting
             as = content
             dataProcessing {
                 10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
