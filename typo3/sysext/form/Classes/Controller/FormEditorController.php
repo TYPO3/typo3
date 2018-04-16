@@ -353,7 +353,7 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-undo-form')
                 ->setValue('undo')
                 ->setClasses('t3-form-element-undo-form-button hidden disabled')
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-undo', Icon::SIZE_SMALL));
 
             $redoButton = $buttonBar->makeInputButton()
                 ->setDataAttributes(['identifier' => 'redoButton'])
@@ -361,7 +361,7 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-redo-form')
                 ->setValue('redo')
                 ->setClasses('t3-form-element-redo-form-button hidden disabled')
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-forward', Icon::SIZE_SMALL));
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-redo', Icon::SIZE_SMALL));
 
             $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
             $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
