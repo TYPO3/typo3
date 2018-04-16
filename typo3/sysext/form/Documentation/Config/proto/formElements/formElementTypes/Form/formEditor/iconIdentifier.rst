@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          Form:
            formEditor:
-             iconIdentifier: content-elements-mailform
+             iconIdentifier: content-form
 
 .. :aspect:`Good to know`
       ToDo

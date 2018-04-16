@@ -108,7 +108,7 @@ define(['jquery',
 
           Wizard.set('savePath', folders[0]['value']);
           if (folders.length > 1) {
-            savePathSelect = $('<select class="new-form-save-path form-control" data-identifier="newFormSavePath" />');
+            savePathSelect = $('<select class="new-form-save-path form-control" id="new-form-save-path" data-identifier="newFormSavePath" />');
             for (var i = 0, len = folders.length; i < len; ++i) {
               var option = new Option(folders[i]['label'], folders[i]['value']);
               $(savePathSelect).append(option);
@@ -127,16 +127,16 @@ define(['jquery',
           html = '<div class="new-form-modal">'
             + '<div class="form-horizontal">'
             + '<div>'
-            + '<label class="control-label">' + TYPO3.lang['formManager.form_name'] + '</label>'
-            + '<input class="new-form-name form-control has-error" data-identifier="newFormName" />';
+            + '<label class="control-label" for="new-form-name">' + TYPO3.lang['formManager.form_name'] + '</label>'
+            + '<input class="new-form-name form-control has-error" id="new-form-name" data-identifier="newFormName" />';
 
           if (savePathSelect) {
-            html += '<label class="control-label">' + TYPO3.lang['formManager.form_save_path'] + '</label>' + $(savePathSelect)[0].outerHTML;
+            html += '<label class="control-label" for="new-form-save-path">' + TYPO3.lang['formManager.form_save_path'] + '</label>' + $(savePathSelect)[0].outerHTML;
           }
 
           if (prototypes.length > 1 || templates.length > 1) {
-            html += '<label class="control-label">' + TYPO3.lang['formManager.newFormWizard.step1.advanced'] + '</label>'
-              + '<div class="t3-form-controls"><input type="checkbox" class="new-form-advance-wizard" data-identifier="advancedWizard" /></div>';
+            html += '<label class="control-label" for="new-form-advance-wizard">' + TYPO3.lang['formManager.newFormWizard.step1.advanced'] + '</label>'
+              + '<div class="t3-form-controls"><input type="checkbox" class="new-form-advance-wizard" id="new-form-advance-wizard" data-identifier="advancedWizard" /></div>';
           }
 
           html += '</div>'
@@ -192,8 +192,8 @@ define(['jquery',
           modal = Wizard.setup.$carousel.closest('.modal');
           nextButton = modal.find('.modal-footer').find('button[name="next"]');
 
-          prototypeNameSelect = $('<select class="new-form-prototype-name form-control" data-identifier="newFormPrototypeName" />');
-          templateSelect = $('<select class="new-form-template form-control" data-identifier="newFormTemplate" />');
+          prototypeNameSelect = $('<select class="new-form-prototype-name form-control" id="new-form-prototype-name" data-identifier="newFormPrototypeName" />');
+          templateSelect = $('<select class="new-form-template form-control" id="new-form-template" data-identifier="newFormTemplate" />');
 
           prototypes = _formManagerApp.getPrototypes();
           templates = {};
@@ -215,10 +215,10 @@ define(['jquery',
             + '<div>';
 
           if (prototypes.length > 1) {
-            html += '<label class="control-label">' + TYPO3.lang['formManager.form_prototype'] + '</label>' + $(prototypeNameSelect)[0].outerHTML;
+            html += '<label class="control-label" for="new-form-prototype-name">' + TYPO3.lang['formManager.form_prototype'] + '</label>' + $(prototypeNameSelect)[0].outerHTML;
           }
           if (templates.length > 1) {
-            html += '<label class="control-label">' + TYPO3.lang['formManager.form_template'] + '</label>' + $(templateSelect)[0].outerHTML;
+            html += '<label class="control-label" for="new-form-template">' + TYPO3.lang['formManager.form_template'] + '</label>' + $(templateSelect)[0].outerHTML;
           }
 
           html += '</div>'

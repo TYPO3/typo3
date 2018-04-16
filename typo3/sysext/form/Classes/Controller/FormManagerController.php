@@ -459,7 +459,7 @@ class FormManagerController extends AbstractBackendController
     }
 
     /**
-     * Registers the Icons into the docheader
+     * Register document header buttons
      *
      * @throws \InvalidArgumentException
      */
@@ -471,6 +471,22 @@ class FormManagerController extends AbstractBackendController
         $moduleName = $currentRequest->getPluginName();
         $getVars = $this->request->getArguments();
 
+        // Create new
+        $addFormButton = $buttonBar->makeLinkButton()
+            ->setDataAttributes(['identifier' => 'newForm'])
+            ->setHref('#')
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form'))
+            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL));
+        $buttonBar->addButton($addFormButton, ButtonBar::BUTTON_POSITION_LEFT);
+
+        // Reload
+        $reloadButton = $buttonBar->makeLinkButton()
+            ->setHref(GeneralUtility::getIndpEnv('REQUEST_URI'))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.reload'))
+            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
+        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        // Shortcut
         $mayMakeShortcut = $this->getBackendUser()->mayMakeShortcut();
         if ($mayMakeShortcut) {
             $extensionName = $currentRequest->getControllerExtensionName();
@@ -483,22 +499,7 @@ class FormManagerController extends AbstractBackendController
                 ->setModuleName($moduleName)
                 ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:module.shortcut_name'))
                 ->setGetVariables($getVars);
-            $buttonBar->addButton($shortcutButton);
-        }
-
-        if (isset($getVars['action']) && $getVars['action'] !== 'index') {
-            $backButton = $buttonBar->makeLinkButton()
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:back'))
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
-                ->setHref($this->getModuleUrl($moduleName));
-            $buttonBar->addButton($backButton);
-        } else {
-            $addFormButton = $buttonBar->makeLinkButton()
-                ->setDataAttributes(['identifier' => 'newForm'])
-                ->setHref('#')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form'))
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL));
-            $buttonBar->addButton($addFormButton, ButtonBar::BUTTON_POSITION_LEFT);
+            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }
     }
 

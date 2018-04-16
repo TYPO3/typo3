@@ -79,7 +79,7 @@ formEditor
              modalRemoveElementLastAvailablePageFlashMessageMessage: formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage
              inspectorEditorFormElementSelectorNoElements: formEditor.inspector.editor.formelement_selector.no_elements
              paginationTitle: formEditor.pagination.title
-             iconIdentifier: content-elements-mailform
+             iconIdentifier: content-form
              propertyCollections:
                finishers:
                  10:

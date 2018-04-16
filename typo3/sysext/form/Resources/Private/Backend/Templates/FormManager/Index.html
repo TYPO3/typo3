@@ -46,7 +46,7 @@
 											</f:else>
 											<f:else>
 												<span title="id={form.identifier}" data-toggle="tooltip" data-placement="right">
-													<core:icon identifier="content-elements-mailform" />
+													<core:icon identifier="content-form" />
 												</span>
 											</f:else>
 										</f:if>
@@ -110,9 +110,9 @@
 		</div>
 	</f:then>
 	<f:else>
-		<f:be.infobox title="{f:translate(key: 'formManager.no_forms', extensionName:'form')}" state="-1">
-			<p><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.no_forms" /></p>
-			<a class="btn btn-primary" data-identifier="newForm" href="#"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form" /></a>
+		<f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}">
+			<p><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.message" /></p>
+			<a class="btn btn-primary" href="#" data-identifier="newForm"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form" /></a>
 		</f:be.infobox>
 	</f:else>
 </f:if>

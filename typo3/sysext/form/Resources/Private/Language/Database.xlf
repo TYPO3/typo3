@@ -140,10 +140,10 @@
             </trans-unit>
 
             <trans-unit id="formManager.headline" xml:space="preserve">
-                <source>Manage forms</source>
+                <source>Form Management</source>
             </trans-unit>
             <trans-unit id="formManager.create_new_form" xml:space="preserve">
-                <source>Create a new form</source>
+                <source>Create new form</source>
             </trans-unit>
             <trans-unit id="formManager.edit_existing_forms" xml:space="preserve">
                 <source>Edit existing forms</source>
@@ -172,8 +172,11 @@
             <trans-unit id="formManager.delete_form" xml:space="preserve">
                 <source>Remove this form</source>
             </trans-unit>
-            <trans-unit id="formManager.no_forms" xml:space="preserve">
-                <source>No form available.</source>
+            <trans-unit id="formManager.forms_not_found.title" xml:space="preserve">
+                <source>No forms found!</source>
+            </trans-unit>
+            <trans-unit id="formManager.forms_not_found.message" xml:space="preserve">
+                <source>There are currently no forms found in the system.</source>
             </trans-unit>
             <trans-unit id="formManager.edit_form_not_allowed" xml:space="preserve">
                 <source>Edit this form is not allowed.</source>

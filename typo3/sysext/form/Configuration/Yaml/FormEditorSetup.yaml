@@ -165,7 +165,7 @@ TYPO3:
 
                 paginationTitle: 'formEditor.pagination.title'
 
-                iconIdentifier: 'content-elements-mailform'
+                iconIdentifier: 'content-form'
                 predefinedDefaults:
                   renderingOptions:
                     submitButtonLabel: 'formEditor.elements.Form.editor.submitButtonLabel.value'
