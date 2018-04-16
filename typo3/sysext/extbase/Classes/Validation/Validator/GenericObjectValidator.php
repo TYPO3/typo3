@@ -35,11 +35,16 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
      */
     public function validate($value)
     {
+        if (is_object($value) && $this->isValidatedAlready($value)) {
+            return $this->result;
+        }
+
         $this->result = new \TYPO3\CMS\Extbase\Error\Result();
         if ($this->acceptsEmptyValues === false || $this->isEmpty($value) === false) {
             if (!is_object($value)) {
                 $this->addError('Object expected, %1$s given.', 1241099149, [gettype($value)]);
             } elseif ($this->isValidatedAlready($value) === false) {
+                $this->markInstanceAsValidated($value);
                 $this->isValid($value);
             }
         }
@@ -145,9 +150,16 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
         if ($this->validatedInstancesContainer->contains($object)) {
             return true;
         }
-        $this->validatedInstancesContainer->attach($object);
 
         return false;
+    }
+
+    /**
+     * @param $object
+     */
+    protected function markInstanceAsValidated($object): void
+    {
+        $this->validatedInstancesContainer->attach($object);
     }
 
     /**

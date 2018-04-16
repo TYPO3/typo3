@@ -60,8 +60,11 @@ class CollectionValidator extends GenericObjectValidator
             if ($value instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage && !$value->isInitialized()) {
                 return $this->result;
             }
-            if (is_object($value) && $this->isValidatedAlready($value)) {
-                return $this->result;
+            if (is_object($value)) {
+                if ($this->isValidatedAlready($value)) {
+                    return $this->result;
+                }
+                $this->markInstanceAsValidated($value);
             }
             $this->isValid($value);
         }
