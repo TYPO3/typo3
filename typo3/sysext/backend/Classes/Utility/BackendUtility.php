@@ -2549,8 +2549,7 @@ class BackendUtility
 
     /**
      * Returns a JavaScript string for viewing the page id, $id
-     * It will detect the correct domain name if needed and provide the link with the right back path.
-     * Also it will re-use any window already open.
+     * It will re-use any window already open.
      *
      * @param int $pageUid Page UID
      * @param string $backPath Must point back to TYPO3_mainDir (where the site is assumed to be one level above)
@@ -2570,6 +2569,46 @@ class BackendUtility
         $additionalGetVars = '',
         $switchFocus = true
     ) {
+        $previewUrl = self::getPreviewUrl(
+            $pageUid,
+            $backPath,
+            $rootLine,
+            $anchorSection,
+            $alternativeUrl,
+            $additionalGetVars,
+            $switchFocus
+        );
+
+        $onclickCode = 'var previewWin = window.open(' . GeneralUtility::quoteJSvalue($previewUrl) . ',\'newTYPO3frontendWindow\');'
+            . ($switchFocus ? 'previewWin.focus();' : '') . LF
+            . 'if (previewWin.location.href === ' . GeneralUtility::quoteJSvalue($previewUrl) . ') { previewWin.location.reload(); };';
+
+        return $onclickCode;
+    }
+
+    /**
+     * Returns the preview url
+     *
+     * It will detect the correct domain name if needed and provide the link with the right back path.
+     *
+     * @param int $pageUid Page UID
+     * @param string $backPath Must point back to TYPO3_mainDir (where the site is assumed to be one level above)
+     * @param array|null $rootLine If root line is supplied the function will look for the first found domain record and use that URL instead (if found)
+     * @param string $anchorSection Optional anchor to the URL
+     * @param string $alternativeUrl An alternative URL that, if set, will ignore other parameters except $switchFocus: It will return the window.open command wrapped around this URL!
+     * @param string $additionalGetVars Additional GET variables.
+     * @param bool $switchFocus If TRUE, then the preview window will gain the focus.
+     * @return string
+     */
+    public static function getPreviewUrl(
+        $pageUid,
+        $backPath = '',
+        $rootLine = null,
+        $anchorSection = '',
+        $alternativeUrl = '',
+        $additionalGetVars = '',
+        &$switchFocus = true
+    ): string {
         $viewScript = '/index.php?id=';
         if ($alternativeUrl) {
             $viewScript = $alternativeUrl;
@@ -2627,9 +2666,7 @@ class BackendUtility
             }
         }
 
-        $onclickCode = 'var previewWin = window.open(' . GeneralUtility::quoteJSvalue($previewUrl) . ',\'newTYPO3frontendWindow\');' . ($switchFocus ? 'previewWin.focus();' : '') . LF
-            . 'if (previewWin.location.href === ' . GeneralUtility::quoteJSvalue($previewUrl) . ') { previewWin.location.reload(); };';
-        return $onclickCode;
+        return $previewUrl;
     }
 
     /**

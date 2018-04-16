@@ -45,11 +45,11 @@
 			<trans-unit id="buttons.confirm.duplicate_record_changed.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="button.confirm.duplicate_record_changed.dismiss_and_duplicate">
-				<source>Dismiss changes and duplicate</source>
+			<trans-unit id="button.confirm.duplicate_record_changed.no">
+				<source>No, just duplicate the original</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.duplicate_record_changed.save_and_duplicate">
-				<source>Save changes and duplicate</source>
+			<trans-unit id="buttons.confirm.duplicate_record_changed.yes">
+				<source>Yes, save and duplicate this record</source>
 			</trans-unit>
 			<trans-unit id="buttons.confirm.close_without_save.yes">
 				<source>Yes, discard my changes</source>
@@ -58,16 +58,49 @@
 				<source>No, I will continue editing</source>
 			</trans-unit>
 			<trans-unit id="label.confirm.duplicate_record_changed.title">
-				<source>Duplicate changed record?</source>
+				<source>Do you want to save before duplicating this record?</source>
 			</trans-unit>
 			<trans-unit id="label.confirm.duplicate_record_changed.content">
-				<source>Do you want to save your changes and duplicate the record?</source>
+				<source>You currently have unsaved changes. Do you want to save your changes before duplicating this record?</source>
+			</trans-unit>
+			<trans-unit id="label.confirm.new_record_changed.title">
+				<source>Do you want to save before adding?</source>
+			</trans-unit>
+			<trans-unit id="label.confirm.new_record_changed.content">
+				<source>You need to save your changes before creating a new record. Do you want to save and create now?</source>
+			</trans-unit>
+			<trans-unit id="buttons.confirm.new_record_changed.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="buttons.confirm.new_record_changed.no">
+				<source>No, just add</source>
+			</trans-unit>
+			<trans-unit id="buttons.confirm.new_record_changed.yes">
+				<source>Yes, save and create now</source>
+			</trans-unit>
+			<trans-unit id="label.confirm.view_record_changed.title">
+				<source>Do you want to save before viewing?</source>
+			</trans-unit>
+			<trans-unit id="label.confirm.view_record_changed.content">
+				<source>You currently have unsaved changes. You can either discard these changes or save and view them.</source>
+			</trans-unit>
+			<trans-unit id="label.confirm.view_record_changed.content.is-new-page">
+				<source>You need to save your changes before viewing the page. Do you want to save and view them now?</source>
+			</trans-unit>
+			<trans-unit id="buttons.confirm.view_record_changed.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="buttons.confirm.view_record_changed.no-save">
+				<source>View without changes</source>
+			</trans-unit>
+			<trans-unit id="buttons.confirm.view_record_changed.save">
+				<source>Save changes and view</source>
 			</trans-unit>
 			<trans-unit id="label.confirm.close_without_save.title">
-				<source>Do you want to quit without saving?</source>
+				<source>Do you want to close without saving?</source>
 			</trans-unit>
 			<trans-unit id="label.confirm.close_without_save.content">
-				<source>You have currently unsaved changes. Are you sure that you want to discard all changes?</source>
+				<source>You currently have unsaved changes. Are you sure you want to discard these changes?</source>
 			</trans-unit>
 			<trans-unit id="buttons.confirm.delete_file.no">
 				<source>Cancel</source>

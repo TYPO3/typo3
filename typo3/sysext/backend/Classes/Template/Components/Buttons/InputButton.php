@@ -154,6 +154,9 @@ class InputButton extends AbstractButton
             'title' => $this->getTitle(),
             'form' => trim($this->getForm())
         ];
+        if ($this->isDisabled()) {
+            $attributes['disabled'] = 'disabled';
+        }
         $labelText = '';
         if ($this->showLabelText) {
             $labelText = ' ' . $this->title;

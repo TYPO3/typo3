@@ -574,6 +574,8 @@ var inline = {
         $(objectIdPrefix + records[current + 1 - cAdj] + '_div')
       );
       this.redrawSortingButtons(objectPrefix, records);
+      $(formObj).addClass('has-change');
+      $(document).trigger('change');
     }
 
     return false;
@@ -609,6 +611,8 @@ var inline = {
     if (inline.data.config && inline.data.config[objectId]) {
       var table = inline.data.config[objectId].table;
       inline.redrawSortingButtons(objectId + inline.structureSeparator + table, checked);
+      $(formObj).addClass('has-change');
+      $(document).trigger('change');
     }
   },
 
@@ -719,6 +723,9 @@ var inline = {
           records.push(newUid);
         }
         formObj[0].value = records.join(',');
+
+        $(formObj).addClass('has-change');
+        $(document).trigger('change');
       }
 
       this.redrawSortingButtons(objectPrefix, records);

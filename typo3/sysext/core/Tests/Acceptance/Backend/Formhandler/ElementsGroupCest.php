@@ -181,6 +181,6 @@ class ElementsGroupCest
         $I->switchToIFrame('list_frame');
         $I->see('admin', 'select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"]');
         $I->click('.btn-toolbar button.btn:nth-child(2)');
-        $I->click('li a[data-form="EditDocumentController"] span[data-identifier="actions-document-save-close"]');
+        $I->click('button[name="_savedok"]');
     }
 }

@@ -44,6 +44,13 @@ class AbstractButton extends AbstractControl implements ButtonInterface
     protected $showLabelText = false;
 
     /**
+     * Disabled state of the button
+     *
+     * @var bool
+     */
+    protected $disabled = false;
+
+    /**
      * Show Label text
      *
      * @return bool
@@ -96,6 +103,28 @@ class AbstractButton extends AbstractControl implements ButtonInterface
     public function setIcon(Icon $icon)
     {
         $this->icon = $icon;
+        return $this;
+    }
+
+    /**
+     * Check if button is disabled
+     *
+     * @return bool
+     */
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    /**
+     * Set if button needs to be disabled
+     *
+     * @param bool $disabled
+     * @return AbstractButton
+     */
+    public function setDisabled(bool $disabled): AbstractButton
+    {
+        $this->disabled = $disabled;
         return $this;
     }
 

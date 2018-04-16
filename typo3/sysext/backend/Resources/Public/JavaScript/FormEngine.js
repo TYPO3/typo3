@@ -643,80 +643,22 @@ define(['jquery',
         });
       }
     }).on('click', '.t3js-editform-close', function(e) {
-      e.preventDefault();
-      FormEngine.preventExitIfNotSaved(
-        FormEngine.preventExitIfNotSavedCallback
-      );
-    }).on('click', '.t3js-editform-duplicate', function(e) {
         e.preventDefault();
-        var $elem = $('<input />').attr('type', 'hidden').attr('name', '_duplicatedoc').attr('value', '1');
-        if ($('form[name="' + FormEngine.formName + '"] .has-change').length > 0) {
-          var title = TYPO3.lang['label.confirm.duplicate_record_changed.title'] || 'Duplicate changed record?';
-          var content = TYPO3.lang['label.confirm.duplicate_record_changed.content'] || 'Do you want to save your changes and duplicate the record?';
-          var $modal = Modal.confirm(title, content, Severity.warning, [
-            {
-              text: TYPO3.lang['buttons.confirm.duplicate_record_changed.cancel'] || 'Cancel',
-              active: true,
-              btnClass: 'btn-default',
-              name: 'cancel'
-            },
-            {
-              text: TYPO3.lang['buttons.confirm.duplicate_record_changed.dismiss_and_duplicate'] || 'Dismiss changes and duplicate',
-              active: true,
-              btnClass: 'btn-default',
-              name: 'dismissDuplicate'
-            },
-            {
-              text: TYPO3.lang['buttons.confirm.duplicate_record_changed.save_and_duplicate'] || 'Save changes and duplicate',
-              btnClass: 'btn-success',
-              name: 'saveDuplicate'
-            }
-        ]);
-          $modal.on('button.clicked', function (e) {
-            if (e.target.name === 'cancel') {
-              Modal.dismiss();
-            } else if (e.target.name === 'dismissDuplicate') {
-              $('form[name=' + FormEngine.formName + ']').append($elem);
-              $('input[name=doSave]').val(0);
-              Modal.dismiss();
-              document.editform.submit();
-            } else if (e.target.name == 'saveDuplicate') {
-              $('form[name=' + FormEngine.formName + ']').append($elem);
-              $('input[name=doSave]').val(1);
-              Modal.dismiss();
-              document.editform.submit();
-            }
-          });
-        } else {
-          $('form[name=' + FormEngine.formName + ']').append($elem);
-          document.editform.submit();
-        }
+        FormEngine.preventExitIfNotSaved(
+            FormEngine.preventExitIfNotSavedCallback
+        );
+    }).on('click', '.t3js-editform-view', function(e) {
+      e.preventDefault();
+      FormEngine.previewAction(e, FormEngine.previewActionCallback);
+    }).on('click', '.t3js-editform-new', function(e) {
+      e.preventDefault();
+      FormEngine.newAction(e, FormEngine.newActionCallback);
+    }).on('click', '.t3js-editform-duplicate', function(e) {
+      e.preventDefault();
+      FormEngine.duplicateAction(e, FormEngine.duplicateActionCallback);
     }).on('click', '.t3js-editform-delete-record', function(e) {
       e.preventDefault();
-      var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
-      var content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
-      var $anchorElement = $(this);
-      var $modal = Modal.confirm(title, content, Severity.warning, [
-        {
-          text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
-          active: true,
-          btnClass: 'btn-default',
-          name: 'no'
-        },
-        {
-          text: TYPO3.lang['buttons.confirm.delete_record.yes'] || 'Yes, delete this record',
-          btnClass: 'btn-warning',
-          name: 'yes'
-        }
-      ]);
-      $modal.on('button.clicked', function(e) {
-        if (e.target.name === 'no') {
-          Modal.dismiss();
-        } else if (e.target.name === 'yes') {
-          deleteRecord($anchorElement.data('table'), $anchorElement.data('uid'), $anchorElement.data('return-url'));
-          Modal.dismiss();
-        }
-      });
+      FormEngine.deleteAction(e, FormEngine.deleteActionCallback);
     }).on('click', '.t3js-editform-delete-inline-record', function(e) {
       e.preventDefault();
       var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
@@ -788,6 +730,9 @@ define(['jquery',
     }).on('formengine.dp.change', function(event, $field) {
       FormEngine.Validation.validate();
       FormEngine.Validation.markFieldAsChanged($field);
+      $('.module-docheader-bar .btn').removeClass('disabled').prop('disabled', false);
+    }).on('change', function(event) {
+      $('.module-docheader-bar .btn').removeClass('disabled').prop('disabled', false);
     });
   };
 
@@ -1156,7 +1101,9 @@ define(['jquery',
    * @return {boolean}
    */
   FormEngine.hasChange = function() {
-    return $('form[name="' + FormEngine.formName + '"] .has-change').length > 0;
+    var formElementChanges = $('form[name="' + FormEngine.formName + '"] .has-change').length > 0,
+        inlineRecordChanges = $('[name^="data["].has-change').length > 0;
+    return formElementChanges || inlineRecordChanges;
   };
 
   /**
@@ -1177,19 +1124,25 @@ define(['jquery',
     callback = callback || FormEngine.preventExitIfNotSavedCallback;
 
     if (FormEngine.hasChange()) {
-      var title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to quit without saving?';
-      var content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You have currently unsaved changes. Are you sure that you want to discard all changes?';
+      var title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to close without saving?';
+      var content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes. Are you sure you want to discard these changes?';
+      var $elem = $('<input />').attr('type', 'hidden').attr('name', '_saveandclosedok').attr('value', '1');
       var $modal = Modal.confirm(title, content, Severity.warning, [
         {
           text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'No, I will continue editing',
-          active: true,
           btnClass: 'btn-default',
           name: 'no'
         },
         {
           text: TYPO3.lang['buttons.confirm.close_without_save.yes'] || 'Yes, discard my changes',
-          btnClass: 'btn-warning',
+          btnClass: 'btn-default',
           name: 'yes'
+        },
+        {
+          text: TYPO3.lang['buttons.confirm.save and close'] || 'Save and close',
+          btnClass: 'btn-warning',
+          name: 'save',
+          active: true
         }
       ]);
       $modal.on('button.clicked', function(e) {
@@ -1199,6 +1152,11 @@ define(['jquery',
         } else if (e.target.name === 'yes') {
           Modal.dismiss();
           callback.call(null, true);
+        } else if (e.target.name === 'save') {
+          $('form[name=' + FormEngine.formName + ']').append($elem);
+          $('input[name=doSave]').val(1);
+          Modal.dismiss();
+          document.editform.submit();
         }
       });
     } else {
@@ -1228,6 +1186,366 @@ define(['jquery',
       return false;
     }
     return true;
+  };
+
+  /**
+   * Preview action
+   *
+   * When there are changes:
+   * Will take action based on local storage preset
+   * If preset is not available, a modal will open
+   *
+   * @param {Event} event
+   * @param {Function} callback
+   */
+  FormEngine.previewAction = function(event, callback) {
+    callback = callback || FormEngine.previewActionCallback;
+
+    var previewUrl = event.target.href;
+    var isNew = event.target.dataset.hasOwnProperty('isNew');
+    var $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_savedokview').attr('value', '1');
+    if (FormEngine.hasChange()) {
+      FormEngine.showPreviewModal(previewUrl, isNew, $actionElement, callback);
+    } else {
+      $('form[name=' + FormEngine.formName + ']').append($actionElement);
+      window.open('', 'newTYPO3frontendWindow');
+      document.editform.submit();
+    }
+  };
+
+  /**
+   * The callback for the preview action
+   *
+   * @param {string} modalButtonName
+   * @param {string} previewUrl
+   * @param {element} $actionElement
+   */
+  FormEngine.previewActionCallback = function(modalButtonName, previewUrl, $actionElement) {
+    Modal.dismiss();
+    switch(modalButtonName) {
+      case 'discard':
+        var previewWin = window.open(previewUrl, 'newTYPO3frontendWindow');
+        previewWin.focus();
+        if (previewWin.location.href === previewUrl) {
+          previewWin.location.reload();
+        }
+        break;
+      case 'save':
+        $('form[name=' + FormEngine.formName + ']').append($actionElement);
+        $('input[name=doSave]').val(1);
+        window.open('', 'newTYPO3frontendWindow');
+        document.editform.submit();
+        break;
+    }
+  };
+
+  /**
+   * Show the preview modal
+   *
+   * @param {string} previewUrl
+   * @param {bool} isNew
+   * @param {element} $actionElement
+   * @param {Function} callback
+   */
+  FormEngine.showPreviewModal = function(previewUrl, isNew, $actionElement, callback) {
+    var title = TYPO3.lang['label.confirm.view_record_changed.title'] || 'Do you want to save before viewing?';
+    var modalCancelButtonConfiguration = {
+      text: TYPO3.lang['buttons.confirm.view_record_changed.cancel'] || 'Cancel',
+      btnClass: 'btn-default',
+      name: 'cancel'
+    };
+    var modaldismissViewButtonConfiguration = {
+      text: TYPO3.lang['buttons.confirm.view_record_changed.no-save'] || 'View without changes',
+      btnClass: 'btn-info',
+      name: 'discard'
+    };
+    var modalsaveViewButtonConfiguration = {
+      text: TYPO3.lang['buttons.confirm.view_record_changed.save'] || 'Save changes and view',
+      btnClass: 'btn-info',
+      name: 'save',
+      active: true
+    };
+    var modalButtons = [];
+    var content = '';
+    if (isNew) {
+      modalButtons = [
+        modalCancelButtonConfiguration,
+        modalsaveViewButtonConfiguration
+      ];
+      content = (
+        TYPO3.lang['label.confirm.view_record_changed.content.is-new-page']
+        || 'You need to save your changes before viewing the page. Do you want to save and view them now?'
+      );
+    } else {
+      modalButtons = [
+        modalCancelButtonConfiguration,
+        modaldismissViewButtonConfiguration,
+        modalsaveViewButtonConfiguration
+      ];
+      content = (
+        TYPO3.lang['label.confirm.view_record_changed.content']
+        || 'You currently have unsaved changes. You can either discard these changes or save and view them.'
+      )
+    }
+    var $modal = Modal.confirm(title, content, Severity.info, modalButtons);
+    $modal.on('button.clicked', function (event) {
+      callback(event.target.name, previewUrl, $actionElement, $modal);
+    });
+  };
+
+  /**
+   * New action
+   *
+   * When there are changes:
+   * Will take action based on local storage preset
+   * If preset is not available, a modal will open
+   *
+   * @param {Event} event
+   * @param {Function} callback
+   */
+  FormEngine.newAction = function(event, callback) {
+    callback = callback || FormEngine.newActionCallback;
+
+    var $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_savedoknew').attr('value', '1');
+    var isNew = event.target.dataset.hasOwnProperty('isNew');
+    if (FormEngine.hasChange()) {
+      FormEngine.showNewModal(isNew, $actionElement, callback);
+    } else {
+      $('form[name=' + FormEngine.formName + ']').append($actionElement);
+      document.editform.submit();
+    }
+  };
+
+  /**
+   * The callback for the preview action
+   *
+   * @param {string} modalButtonName
+   * @param {element} $actionElement
+   */
+  FormEngine.newActionCallback = function(modalButtonName, $actionElement) {
+    var $form = $('form[name=' + FormEngine.formName + ']');
+    Modal.dismiss();
+    switch(modalButtonName) {
+      case 'no':
+        $form.append($actionElement);
+        document.editform.submit();
+        break;
+      case 'yes':
+        $form.append($actionElement);
+        $('input[name=doSave]').val(1);
+        document.editform.submit();
+        break;
+    }
+  };
+
+  /**
+   * Show the new modal
+   *
+   * @param {element} $actionElement
+   * @param {Function} callback
+   * @param {bool} isNew
+   */
+  FormEngine.showNewModal = function(isNew, $actionElement, callback) {
+    var title = TYPO3.lang['label.confirm.new_record_changed.title'] || 'Do you want to save before adding?';
+    var content = (
+      TYPO3.lang['label.confirm.new_record_changed.content']
+      || 'You need to save your changes before creating a new record. Do you want to save and create now?'
+    );
+    var modalButtons = [];
+    var modalCancelButtonConfiguration = {
+      text: TYPO3.lang['buttons.confirm.new_record_changed.cancel'] || 'Cancel',
+      btnClass: 'btn-default',
+      name: 'cancel'
+    };
+    var modalNoButtonConfiguration = {
+      text: TYPO3.lang['buttons.confirm.new_record_changed.no'] || 'No, just add',
+      btnClass: 'btn-default',
+      name: 'no'
+    };
+    var modalYesButtonConfiguration = {
+      text: TYPO3.lang['buttons.confirm.new_record_changed.yes'] || 'Yes, save and create now',
+      btnClass: 'btn-info',
+      name: 'yes',
+      active: true
+    };
+    if (isNew) {
+      modalButtons = [
+        modalCancelButtonConfiguration,
+        modalYesButtonConfiguration
+      ];
+    } else {
+      modalButtons = [
+        modalCancelButtonConfiguration,
+        modalNoButtonConfiguration,
+        modalYesButtonConfiguration
+      ];
+    }
+    var $modal = Modal.confirm(title, content, Severity.info, modalButtons);
+    $modal.on('button.clicked', function (event) {
+        callback(event.target.name, $actionElement);
+    });
+  };
+
+  /**
+   * Duplicate action
+   *
+   * When there are changes:
+   * Will take action based on local storage preset
+   * If preset is not available, a modal will open
+   *
+   * @param {Event} event
+   * @param {Function} callback
+   */
+  FormEngine.duplicateAction = function(event, callback) {
+    callback = callback || FormEngine.duplicateActionCallback;
+
+    var $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_duplicatedoc').attr('value', '1');
+    var isNew = event.target.dataset.hasOwnProperty('isNew');
+    if (FormEngine.hasChange()) {
+        FormEngine.showDuplicateModal(isNew, $actionElement, callback);
+    } else {
+      $('form[name=' + FormEngine.formName + ']').append($actionElement);
+      document.editform.submit();
+    }
+  };
+
+  /**
+   * The callback for the duplicate action
+   *
+   * @param {string} modalButtonName
+   * @param {element} $actionElement
+   */
+  FormEngine.duplicateActionCallback = function(modalButtonName, $actionElement) {
+    var $form = $('form[name=' + FormEngine.formName + ']');
+    Modal.dismiss();
+    switch(modalButtonName) {
+      case 'no':
+        $form.append($actionElement);
+        document.editform.submit();
+        break;
+      case 'yes':
+        $form.append($actionElement);
+        $('input[name=doSave]').val(1);
+        document.editform.submit();
+        break;
+    }
+  };
+
+  /**
+   * Show the duplicate modal
+   *
+   * @param {bool} isNew
+   * @param {element} $actionElement
+   * @param {Function} callback
+   */
+  FormEngine.showDuplicateModal = function(isNew, $actionElement, callback) {
+    var title = TYPO3.lang['label.confirm.duplicate_record_changed.title'] || 'Do you want to save before duplicating this record?';
+    var content = (
+      TYPO3.lang['label.confirm.duplicate_record_changed.content']
+      || 'You currently have unsaved changes. Do you want to save your changes before duplicating this record?'
+    );
+    var modalButtons = [];
+    var modalCancelButtonConfiguration = {
+      text: TYPO3.lang['buttons.confirm.duplicate_record_changed.cancel'] || 'Cancel',
+      btnClass: 'btn-default',
+      name: 'cancel'
+    };
+    var modalDismissDuplicateButtonConfiguration = {
+      text: TYPO3.lang['buttons.confirm.duplicate_record_changed.no'] || 'No, just duplicate the original',
+      btnClass: 'btn-default',
+      name: 'no'
+    };
+    var modalSaveDuplicateButtonConfiguration = {
+      text: TYPO3.lang['buttons.confirm.duplicate_record_changed.yes'] || 'Yes, save and duplicate this record',
+      btnClass: 'btn-info',
+      name: 'yes',
+      active: true
+    };
+    if (isNew) {
+      modalButtons = [
+        modalCancelButtonConfiguration,
+        modalSaveDuplicateButtonConfiguration
+      ];
+    } else {
+      modalButtons = [
+        modalCancelButtonConfiguration,
+        modalDismissDuplicateButtonConfiguration,
+        modalSaveDuplicateButtonConfiguration
+      ];
+    }
+    var $modal = Modal.confirm(title, content, Severity.info, modalButtons);
+    $modal.on('button.clicked', function (event) {
+      callback(event.target.name, $actionElement);
+    });
+  };
+
+  /**
+   * Delete action
+   *
+   * When there are changes:
+   * Will take action based on local storage preset
+   * If preset is not available, a modal will open
+   *
+   * @param {Event} event
+   * @param {Function} callback
+   */
+  FormEngine.deleteAction = function(event, callback) {
+    callback = callback || FormEngine.deleteActionCallback;
+
+    var $anchorElement = $(event.target);
+
+    FormEngine.showDeleteModal($anchorElement, callback);
+  };
+
+  /**
+   * The callback for the delete action
+   *
+   * @param {string} modalButtonName
+   * @param {element} $anchorElement
+   */
+  FormEngine.deleteActionCallback = function(modalButtonName, $anchorElement) {
+    Modal.dismiss();
+    switch(modalButtonName) {
+      case 'yes':
+        deleteRecord($anchorElement.data('table'), $anchorElement.data('uid'), $anchorElement.data('return-url'));
+        break;
+    }
+  };
+
+  /**
+   * Show the delete modal
+   *
+   * @param {element} $anchorElement
+   * @param {Function} callback
+   */
+  FormEngine.showDeleteModal = function($anchorElement, callback) {
+      var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
+      var content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
+
+      if ($anchorElement.data('reference-count-message')) {
+        content += ' ' + $anchorElement.data('reference-count-message');
+      }
+
+      if ($anchorElement.data('translation-count-message')) {
+        content += ' ' + $anchorElement.data('translation-count-message');
+      }
+
+      var $modal = Modal.confirm(title, content, Severity.warning, [
+        {
+          text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
+          btnClass: 'btn-default',
+          name: 'no'
+        },
+        {
+          text: TYPO3.lang['buttons.confirm.delete_record.yes'] || 'Yes, delete this record',
+          btnClass: 'btn-warning',
+          name: 'yes',
+          active: true
+        }
+      ]);
+      $modal.on('button.clicked', function (event) {
+        callback(event.target.name, $anchorElement);
+      });
   };
 
   /**

@@ -111,8 +111,10 @@ class TemplateCest
         $config = $I->grabTextFrom('//textarea[@data-formengine-input-name="data[sys_template][1][config]"]');
         $config = str_replace('HELLO WORLD!', 'Hello Acceptance Test!', $config);
         $I->fillField('//textarea[@data-formengine-input-name="data[sys_template][1][config]"]', $config);
-        $I->click('.btn-toolbar .btn-group.t3js-splitbutton button.btn:nth-child(2)');
-        $I->click('//a[@data-name="_saveandclosedok"]');
+
+        $I->click('//*/button[@name="_savedok"][1]');
+        $I->waitForElement('a.t3js-editform-close');
+        $I->click('a.t3js-editform-close');
 
         $I->wantTo('see the changed title');
         $I->waitForElement('.table-fit');

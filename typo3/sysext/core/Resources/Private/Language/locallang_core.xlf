@@ -849,6 +849,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="rm.saveDoc">
 				<source>Save</source>
 			</trans-unit>
+			<trans-unit id="rm.viewDoc">
+				<source>View</source>
+			</trans-unit>
 			<trans-unit id="rm.saveDocShow">
 				<source>Save and view page</source>
 			</trans-unit>
@@ -860,6 +863,9 @@ Do you want to refresh it now?</source>
 			</trans-unit>
 			<trans-unit id="rm.saveNewDoc">
 				<source>Save and create a new one</source>
+			</trans-unit>
+			<trans-unit id="rm.newDoc">
+				<source>New</source>
 			</trans-unit>
 			<trans-unit id="rm.duplicateDoc">
 				<source>Duplicate</source>
