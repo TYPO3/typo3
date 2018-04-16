@@ -892,8 +892,8 @@ define(['jquery'], function($) {
           utility().assert(utility().isNonEmptyString(topicName), 'Invalid parameter "topicName"', 1475361760);
 
           if ('array' === $.type(_publisherTopics[key])) {
-            _publisherTopics[key] = _publisherTopics[key].filter(function(topicName) {
-              return topicName !== topicName;
+            _publisherTopics[key] = _publisherTopics[key].filter(function(currentTopicName) {
+              return topicName !== currentTopicName;
             });
           }
         };
