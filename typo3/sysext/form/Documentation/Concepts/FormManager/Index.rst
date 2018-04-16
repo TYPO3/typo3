@@ -72,14 +72,14 @@ template``. You need at least the root form element ('Form') and a 'Page'.
 
 .. code-block:: yaml
 
-    type: 'Form'
-    identifier: 'blankForm'
-    label: '[Blank Form]'
-    renderables:
-      -
-        type: 'Page'
-        identifier: 'page-1'
-        label: 'Page'
+   type: 'Form'
+   identifier: 'blankForm'
+   label: '[Blank Form]'
+   renderables:
+     -
+       type: 'Page'
+       identifier: 'page-1'
+       label: 'Page'
 
 As mentioned previously, the form wizard within the ``form manager`` offers
 a list of all existing, :ref:`pre-configured<typo3.cms.form.formmanager.selectableprototypesconfiguration.*.newformtemplates>`
@@ -103,23 +103,23 @@ translated:
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          formManager:
+   TYPO3:
+     CMS:
+       Form:
+         formManager:
 
 The translation files of the ``form manager`` are loaded as follows:
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          formManager:
-            translationFile:
-              # translation files for the form manager
-              10: 'EXT:form/Resources/Private/Language/Database.xlf'
-              20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
+   TYPO3:
+     CMS:
+       Form:
+         formManager:
+           translationFile:
+             # translation files for the form manager
+             10: 'EXT:form/Resources/Private/Language/Database.xlf'
+             20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
 
 The process searches for each option value within all of the defined
 translation files. If a translation is found, the translated option value
@@ -129,9 +129,9 @@ Imagine, the following is defined for an option value:
 
 .. code-block:: yaml
 
-    ...
-    label: 'formManager.selectablePrototypesConfiguration.standard.label'
-    ...
+   ...
+   label: 'formManager.selectablePrototypesConfiguration.standard.label'
+   ...
 
 First of all, the process searches for the translation key ``formManager.selectablePrototypesConfiguration.standard.label``
 within the file ``20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'``

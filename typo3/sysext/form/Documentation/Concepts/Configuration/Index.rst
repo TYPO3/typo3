@@ -58,6 +58,7 @@ regarding the integration of your YAML configuration for the backend
 module.
 
 .. hint::
+
    We recommend using a `site package <https://de.slideshare.net/benjaminkott/typo3-the-anatomy-of-sitepackages>`_.
    This will make your life easier if you want to customise EXT:form
    heavily in order to suit the customer's needs.
@@ -73,27 +74,27 @@ frontend.
 
 .. code-block:: typoscript
 
-    plugin.tx_form {
-        settings {
-            yamlConfigurations {
-                10 = EXT:form/Configuration/Yaml/BaseSetup.yaml
-                20 = EXT:form/Configuration/Yaml/FormEngineSetup.yaml
-            }
-        }
-    }
+   plugin.tx_form {
+       settings {
+           yamlConfigurations {
+               10 = EXT:form/Configuration/Yaml/BaseSetup.yaml
+               20 = EXT:form/Configuration/Yaml/FormEngineSetup.yaml
+           }
+       }
+   }
 
 Since the keys 10 and 20 are already taken, we recommend registering your
 own configuration beginning with the key ``100``.
 
 .. code-block:: typoscript
 
-    plugin.tx_form {
-        settings {
-            yamlConfigurations {
-                100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
-            }
-        }
-    }
+   plugin.tx_form {
+       settings {
+           yamlConfigurations {
+               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+           }
+       }
+   }
 
 .. _concepts-configuration-yamlregistration-backend:
 
@@ -105,30 +106,31 @@ the backend.
 
 .. code-block:: typoscript
 
-    module.tx_form {
-        settings {
-            yamlConfigurations {
-                10 = EXT:form/Configuration/Yaml/BaseSetup.yaml
-                20 = EXT:form/Configuration/Yaml/FormEditorSetup.yaml
-                30 = EXT:form/Configuration/Yaml/FormEngineSetup.yaml
-            }
-        }
-    }
+   module.tx_form {
+       settings {
+           yamlConfigurations {
+               10 = EXT:form/Configuration/Yaml/BaseSetup.yaml
+               20 = EXT:form/Configuration/Yaml/FormEditorSetup.yaml
+               30 = EXT:form/Configuration/Yaml/FormEngineSetup.yaml
+           }
+       }
+   }
 
 Since the keys 10, 20, and 30 are already taken, we recommend registering
 your own configuration beginning with the key ``100``.
 
 .. code-block:: typoscript
 
-    module.tx_form {
-        settings {
-            yamlConfigurations {
-                100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
-            }
-        }
-    }
+   module.tx_form {
+       settings {
+           yamlConfigurations {
+               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+           }
+       }
+   }
 
 .. important::
+
    Consider the following methods to register TypoScript for the backend.
 
 The backend module of EXT:form is based on Extbase. Such backend modules
@@ -165,13 +167,13 @@ YAML registration for the backend via ext_typoscript_setup.txt
 
 .. code-block:: typoscript
 
-    module.tx_form {
-        settings {
-            yamlConfigurations {
-                100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
-            }
-        }
-    }
+   module.tx_form {
+       settings {
+           yamlConfigurations {
+               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+           }
+       }
+   }
 
 
 .. _concepts-configuration-yamlregistration-backend-addtyposcriptsetup:
@@ -180,28 +182,26 @@ YAML registration for the backend via addTypoScriptSetup()
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Add the following PHP code to your :file:`ext_localconf.php` of your site
-package:
+package::
 
-.. code-block:: php
+   <?php
+   defined('TYPO3_MODE') or die();
 
-    <?php
-    defined('TYPO3_MODE') or die();
-
-    call_user_func(function () {
-        if (TYPO3_MODE === 'BE') {
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
-                trim('
-                    module.tx_form {
-                        settings {
-                            yamlConfigurations {
-                                100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
-                            }
-                        }
-                    }
-                ')
-            );
-        }
-    });
+   call_user_func(function () {
+       if (TYPO3_MODE === 'BE') {
+           \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+               trim('
+                   module.tx_form {
+                       settings {
+                           yamlConfigurations {
+                               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+                           }
+                       }
+                   }
+               ')
+           );
+       }
+   });
 
 
 .. _concepts-configuration-configurationaspects:
@@ -254,19 +254,21 @@ TypoScript:
 
 .. code-block:: typoscript
 
-    plugin.tx_form {
-        settings {
-            yamlSettingsOverrides {
-                ...
-            }
-        }
-    }
+   plugin.tx_form {
+       settings {
+           yamlSettingsOverrides {
+               ...
+           }
+       }
+   }
 
 .. note::
+
    Your TypoScript overrides are not interpreted by the ``form editor``,
    i.e. those settings are ignored.
 
 .. note::
+
    The described process is quite handy for you. As soon as you are working
    with your :ref:`own configuration files <concepts-configuration-yamlregistration>`,
    you only have to define the differences compared to the previously
@@ -277,34 +279,34 @@ register an additional configuration file via
 
 .. code-block:: typoscript
 
-    plugin.tx_form {
-        settings {
-            yamlConfigurations {
-                # register your own additional configuration
-                # choose a number higher than 30 (below is reserved)
-                100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
-            }
-        }
-    }
+   plugin.tx_form {
+       settings {
+           yamlConfigurations {
+               # register your own additional configuration
+               # choose a number higher than 30 (below is reserved)
+               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+           }
+       }
+   }
 
 ... you only have to define the following YAML setup in ``EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml``:
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formElementsDefinition:
-                Form:
-                  renderingOptions:
-                    templateRootPaths:
-                      20: 'EXT:my_site_package/Resources/Private/Frontend/Templates/'
-                    partialRootPaths:
-                      20: 'EXT:my_site_package/Resources/Private/Frontend/Partials/'
-                    layoutRootPaths:
-                      20: 'EXT:my_site_package/Resources/Private/Frontend/Layouts/'
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               Form:
+                 renderingOptions:
+                   templateRootPaths:
+                     20: 'EXT:my_site_package/Resources/Private/Frontend/Templates/'
+                   partialRootPaths:
+                     20: 'EXT:my_site_package/Resources/Private/Frontend/Partials/'
+                   layoutRootPaths:
+                     20: 'EXT:my_site_package/Resources/Private/Frontend/Layouts/'
 
 The values of your own configuration file will overrule the corresponding
 values of the basic configuration file (:file:`EXT:form/Configuration/Yaml/BaseSetup.yaml`).
@@ -325,50 +327,50 @@ operator.
 
 .. code-block:: yaml
 
-    Form:
-      part01:
-        key01: value
-        key02:
-          key03: value
-      part02:
-        __inheritances:
-          10: Form.part01
+   Form:
+     part01:
+       key01: value
+       key02:
+         key03: value
+     part02:
+       __inheritances:
+         10: Form.part01
 
 The configuration above results in:
 
 .. code-block:: yaml
 
-    Form:
-      part01:
-        key01: value
-        key02:
-          key03: value
-      part02:
-        key01: value
-        key02:
-          key03: value
+   Form:
+     part01:
+       key01: value
+       key02:
+         key03: value
+     part02:
+       key01: value
+       key02:
+         key03: value
 
 As you can see, ``part02`` inherited all of ``part01``'s properties.
 
 .. code-block:: yaml
 
-    Form:
-      part01:
-        key: value
-      part02:
-        __inheritances:
-          10: Form.part01
-        key: 'value override'
+   Form:
+     part01:
+       key: value
+     part02:
+       __inheritances:
+         10: Form.part01
+       key: 'value override'
 
 The configuration above results in:
 
 .. code-block:: yaml
 
-    Form:
-      part01:
-        key: value
-      part02:
-        key: 'value override'
+   Form:
+     part01:
+       key: value
+     part02:
+       key: 'value override'
 
 EXT:form heavily uses the ``__inheritances`` operator, in particular, for
 the definition of form elements. The following example shows you how to use
@@ -377,23 +379,23 @@ element but also has its own properties.
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formElementsDefinition:
-                GenderSelect:
-                  __inheritances:
-                    10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.RadioButton'
-                  renderingOptions:
-                    templateName: 'RadioButton'
-                  properties:
-                    options:
-                      f: 'Female'
-                      m: 'Male'
-                      u: 'Unicorn'
-                      a: 'Alien'
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               GenderSelect:
+                 __inheritances:
+                   10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.RadioButton'
+                 renderingOptions:
+                   templateName: 'RadioButton'
+                 properties:
+                   options:
+                     f: 'Female'
+                     m: 'Male'
+                     u: 'Unicorn'
+                     a: 'Alien'
 
 The YAML configuration defines a new form element called ``GenderSelect``.
 This element inherits its definition from the ``RadioButton`` element but
@@ -401,17 +403,16 @@ additionally ships four predefined options. Without any problems, the new
 element can be used and overridden within the ``form definition``.
 
 .. hint::
+
    Currently, there is no built-in solution within the TYPO3 core to
    preview the resulting/ final EXT:form YAML configuration. If you want
    to check the configuration, there is a fishy way which you should never
    implement on a production system.
 
    Open the file ``typo3/sysext/form/Classes/Mvc/Configuration/ConfigurationManager.php::getConfigurationFromYamlFile()``
-   and add the following code before the ``return`` statement.
+   and add the following code before the ``return`` statement::
 
-   .. code-block:: php
-
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($yamlSettings, 'form configuration', 9999);
+      \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($yamlSettings, 'form configuration', 9999);
 
    Now open the ``Forms`` module in the backend or navigate to a page in
    the frontend which contains a form. The DebuggerUtility will print the

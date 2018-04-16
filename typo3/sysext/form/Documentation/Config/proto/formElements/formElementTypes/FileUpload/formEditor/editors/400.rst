@@ -33,4 +33,3 @@ formEditor.editors.400
                    10:
                      value: '1:/user_upload/'
                      label: '1:/user_upload/'
-

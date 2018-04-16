@@ -53,16 +53,16 @@ Only the root element (``FormDefinition``) has to be a template file. All child 
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formElementsDefinition:
-                Form:
-                  renderingOptions:
-                    templateRootPaths:
-                      10: 'EXT:form/Resources/Private/Frontend/Templates/'
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               Form:
+                 renderingOptions:
+                   templateRootPaths:
+                     10: 'EXT:form/Resources/Private/Frontend/Templates/'
 
 
 .. _apireference-frontendrendering-fluidformrenderer-options-layoutrootpaths:
@@ -75,16 +75,16 @@ The first folder where the desired layout is found, is used. If the array keys a
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formElementsDefinition:
-                Form:
-                  renderingOptions:
-                    layoutRootPaths:
-                      10: 'EXT:form/Resources/Private/Frontend/Layouts/'
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               Form:
+                 renderingOptions:
+                   layoutRootPaths:
+                     10: 'EXT:form/Resources/Private/Frontend/Layouts/'
 
 
 .. _apireference-frontendrendering-fluidformrenderer-options-partialrootpaths:
@@ -107,16 +107,16 @@ There is a setting available to set a custom partial name. Please read the secti
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formElementsDefinition:
-                Form:
-                  renderingOptions:
-                    partialRootPaths:
-                      10: 'EXT:form/Resources/Private/Frontend/Partials/'
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               Form:
+                 renderingOptions:
+                   partialRootPaths:
+                     10: 'EXT:form/Resources/Private/Frontend/Partials/'
 
 
 .. _apireference-frontendrendering-fluidformrenderer-options-templatename:
@@ -142,15 +142,15 @@ Expected partial file: EXT:form/Resources/Private/Frontend/Partials/Text.html
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formElementsDefinition:
-                Foo:
-                  renderingOptions:
-                    templateName: 'Text'
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               Foo:
+                 renderingOptions:
+                   templateName: 'Text'
 
 
 .. _apireference-frontendrendering-renderviewHelper:
@@ -158,10 +158,12 @@ Expected partial file: EXT:form/Resources/Private/Frontend/Partials/Text.html
 "render" viewHelper
 -------------------
 
+
 .. _apireference-frontendrendering-renderviewHelper-arguments:
 
-Argumentes
-^^^^^^^^^^
+Arguments
+^^^^^^^^^
+
 
 .. _apireference-frontendrendering-renderviewHelper-factoryclass:
 
@@ -177,7 +179,7 @@ This then renders the form.
 
 .. code-block:: html
 
-    <formvh:render factoryClass="VENDOR\MySitePackage\Domain\Factory\CustomFormFactory" />
+   <formvh:render factoryClass="VENDOR\MySitePackage\Domain\Factory\CustomFormFactory" />
 
 
 .. _apireference-frontendrendering-renderviewHelper-persistenceidentifier:
@@ -191,7 +193,7 @@ In this case, the ``factoryClass`` will be given an empty configuration array (i
 
 .. code-block:: html
 
-    <formvh:render persistenceIdentifier="EXT:my_site_package/Resources/Private/Forms/SimpleContactForm.yaml" />
+   <formvh:render persistenceIdentifier="EXT:my_site_package/Resources/Private/Forms/SimpleContactForm.yaml" />
 
 
 .. _apireference-frontendrendering-renderviewHelper-overrideconfiguration:
@@ -216,76 +218,73 @@ If nothing is specified, the configuration (``form definition`` or ``overrideCon
 If no specification exists, the standard prototype ``standard`` is used.
 
 
-
 .. _apireference-frontendrendering-programmatically:
 
 Build forms programmatically
 ----------------------------
 
-Implement a ``FormFactory`` and build the form.
+Implement a ``FormFactory`` and build the form::
 
-.. code-block:: php
+   <?php
+   declare(strict_types = 1);
+   namespace VENDOR\MySitePackage\Domain\Factory;
 
-    <?php
-    declare(strict_types = 1);
-    namespace VENDOR\MySitePackage\Domain\Factory;
+   use TYPO3\CMS\Core\Utility\GeneralUtility;
+   use TYPO3\CMS\Extbase\Object\ObjectManager;
+   use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
+   use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
+   use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+   use TYPO3\CMS\Form\Domain\Factory\AbstractFormFactory;
+   use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
-    use TYPO3\CMS\Core\Utility\GeneralUtility;
-    use TYPO3\CMS\Extbase\Object\ObjectManager;
-    use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
-    use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
-    use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
-    use TYPO3\CMS\Form\Domain\Factory\AbstractFormFactory;
-    use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+   class CustomFormFactory extends AbstractFormFactory
+   {
 
-    class CustomFormFactory extends AbstractFormFactory
-    {
+       /**
+        * Build a FormDefinition.
+        * This example build a FormDefinition manually,
+        * so $configuration and $prototypeName are unused.
+        *
+        * @param array $configuration
+        * @param string $prototypeName
+        * @return FormDefinition
+        */
+       public function build(array $configuration, string $prototypeName = null): FormDefinition
+       {
+           $prototypeName = 'standard';
+           $configurationService = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationService::class);
+           $prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
 
-        /**
-         * Build a FormDefinition.
-         * This example build a FormDefinition manually,
-         * so $configuration and $prototypeName are unused.
-         *
-         * @param array $configuration
-         * @param string $prototypeName
-         * @return FormDefinition
-         */
-        public function build(array $configuration, string $prototypeName = null): FormDefinition
-        {
-            $prototypeName = 'standard';
-            $configurationService = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationService::class);
-            $prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
+           $form = GeneralUtility::makeInstance(ObjectManager::class)->get(FormDefinition::class, 'MyCustomForm', $prototypeConfiguration);
+           $form->setRenderingOption('controllerAction', 'index');
 
-            $form = GeneralUtility::makeInstance(ObjectManager::class)->get(FormDefinition::class, 'MyCustomForm', $prototypeConfiguration);
-            $form->setRenderingOption('controllerAction', 'index');
+           $page1 = $form->createPage('page1');
+           $name = $page1->createElement('name', 'Text');
+           $name->setLabel('Name');
+           $name->addValidator(GeneralUtility::makeInstance(ObjectManager::class)->get(NotEmptyValidator::class));
 
-            $page1 = $form->createPage('page1');
-            $name = $page1->createElement('name', 'Text');
-            $name->setLabel('Name');
-            $name->addValidator(GeneralUtility::makeInstance(ObjectManager::class)->get(NotEmptyValidator::class));
+           $page2 = $form->createPage('page2');
+           $message = $page2->createElement('message', 'Textarea');
+           $message->setLabel('Message');
+           $message->addValidator(GeneralUtility::makeInstance(ObjectManager::class)->get(StringLengthValidator::class, ['minimum' => 5, 'maximum' => 20]));
 
-            $page2 = $form->createPage('page2');
-            $message = $page2->createElement('message', 'Textarea');
-            $message->setLabel('Message');
-            $message->addValidator(GeneralUtility::makeInstance(ObjectManager::class)->get(StringLengthValidator::class, ['minimum' => 5, 'maximum' => 20]));
+           $form->createFinisher('EmailToSender', [
+               'subject' => 'Hello',
+               'recipientAddress' => 'foo@example.com',
+               'senderAddress' => 'bar@example.com',
+           ]);
 
-            $form->createFinisher('EmailToSender', [
-                'subject' => 'Hello',
-                'recipientAddress' => 'foo@example.com',
-                'senderAddress' => 'bar@example.com',
-            ]);
-
-            $this->triggerFormBuildingFinished($form);
-            return $form;
-        }
-    }
+           $this->triggerFormBuildingFinished($form);
+           return $form;
+       }
+   }
 
 
 Use this form within your fluid template.
 
 .. code-block:: html
 
-    <formvh:render factoryClass="VENDOR\MySitePackage\Domain\Factory\CustomFormFactory" />
+   <formvh:render factoryClass="VENDOR\MySitePackage\Domain\Factory\CustomFormFactory" />
 
 
 .. _apireference-frontendrendering-programmatically-commonapimethods:
@@ -306,11 +305,9 @@ Create a page with the given $identifier and attach this page to the form.
 - attach Page object to this form
 - return the newly created Page object
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function createPage(string $identifier, string $typeName = 'Page'): Page;
+   public function createPage(string $identifier, string $typeName = 'Page'): Page;
 
 
 .. _apireference-frontendrendering-programmatically-commonapimethods-createfinisher:
@@ -320,11 +317,9 @@ TYPO3\\CMS\\Form\\Domain\\Model\\FormDefinition::createFinisher()
 
 Create a finisher with the given $identifier and given $options and attach this finisher to the form.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function createFinisher(string $finisherIdentifier, array $options = []): FinisherInterface;
+   public function createFinisher(string $finisherIdentifier, array $options = []): FinisherInterface;
 
 
 .. _apireference-frontendrendering-programmatically-commonapimethods-page-createelement:
@@ -339,11 +334,9 @@ Create a form element with the given $identifier and attach it to the page.
 - attach Form Element to the Page
 - return the newly created Form Element object
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function createElement(string $identifier, string $typeName): FormElementInterface;
+   public function createElement(string $identifier, string $typeName): FormElementInterface;
 
 
 .. _apireference-frontendrendering-programmatically-commonapimethods-section-createelement:
@@ -358,11 +351,9 @@ Create a form element with the given $identifier and attach it to the section.
 - attach Form Element to the Section
 - return the newly created Form Element object
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function createElement(string $identifier, string $typeName): FormElementInterface;
+   public function createElement(string $identifier, string $typeName): FormElementInterface;
 
 
 .. _apireference-frontendrendering-programmatically-commonapimethods-abstractrenderable-createvalidator:
@@ -378,11 +369,9 @@ Mainly possible for
 - TYPO3\\CMS\\Form\\Domain\\Model\\FormElements\\DatePicker
 - TYPO3\\CMS\\Form\\Domain\\Model\\FormElements\\FileUpload
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function createValidator(string $validatorIdentifier, array $options = []);
+   public function createValidator(string $validatorIdentifier, array $options = []);
 
 
 .. _apireference-frontendrendering-programmatically-commonapimethods-initializeformelement:
@@ -399,35 +388,31 @@ Possible for
 - TYPO3\\CMS\\Form\\Domain\\Model\\FormElements\\DatePicker
 - TYPO3\\CMS\\Form\\Domain\\Model\\FormElements\\FileUpload
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function initializeFormElement();
+   public function initializeFormElement();
 
 
 You can use this method to prefill form element data for example from database tables.
 All the classes you can see above extends from the ``TYPO3\CMS\Form\Domain\Model\FormElement\AbstractFormElement``.
-``AbstractFormElement`` implements this method like this
+``AbstractFormElement`` implements this method like this::
 
-.. code-block:: php
-
-    public function initializeFormElement()
-    {
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'initializeFormElement')) {
-                    $hookObj->initializeFormElement(
-                        $this
-                    );
-                }
-            }
-        }
-    }
+   public function initializeFormElement()
+   {
+       if (
+           isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'])
+           && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'])
+       ) {
+           foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] as $className) {
+               $hookObj = GeneralUtility::makeInstance($className);
+               if (method_exists($hookObj, 'initializeFormElement')) {
+                   $hookObj->initializeFormElement(
+                       $this
+                   );
+               }
+           }
+       }
+   }
 
 If you extend you custom implementation from ``AbstractFormElement`` (and you should do this),
 it enables you to override the 'initializeFormElement' method within your custom implementation class.
@@ -459,18 +444,14 @@ Override the current page taken from the request, rendering the page with index 
 This is typically not needed in production code.
 You might prefer the hook :ref:`afterInitializeCurrentPage <apireference-frontendrendering-runtimemanipulation-hooks-afterinitializecurrentpage>`
 
-Signature:
+Signature::
 
-.. code-block:: php
+   public function overrideCurrentPage(int $pageIndex);
 
-    public function overrideCurrentPage(int $pageIndex);
+Example::
 
-Example:
-
-.. code-block:: php
-
-    $form = $formDefinition->bind($this->request, $this->response);
-    $form->overrideCurrentPage($pageIndex);
+   $form = $formDefinition->bind($this->request, $this->response);
+   $form->overrideCurrentPage($pageIndex);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-render:
@@ -480,11 +461,9 @@ render()
 
 Render the form.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function render();
+   public function render();
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getidentifier:
@@ -498,11 +477,9 @@ getRequest()
 Get the request this object is bound to.
 This is mostly relevant inside Finishers, where you f.e. want to redirect the user to another page.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getRequest(): Request;
+   public function getRequest(): Request;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getresponse:
@@ -513,11 +490,9 @@ getResponse()
 Get the response this object is bound to.
 This is mostly relevant inside Finishers, where you f.e. want to set response headers or output content.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getResponse(): Response;
+   public function getResponse(): Response;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getcurrentpage:
@@ -527,11 +502,9 @@ getCurrentPage()
 
 Returns the currently selected page.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getCurrentPage(): Page;
+   public function getCurrentPage(): Page;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getpreviouspage:
@@ -541,11 +514,9 @@ getPreviousPage()
 
 Returns the previous page of the currently selected one or NULL if there is no previous page.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getPreviousPage();
+   public function getPreviousPage();
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getnextpage:
@@ -555,11 +526,9 @@ getNextPage()
 
 Returns the next page of the currently selected one or NULL if there is no next page.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getNextPage();
+   public function getNextPage();
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-gettype:
@@ -573,11 +542,9 @@ getElementValue()
 
 Returns the value of the specified element.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getElementValue(string $identifier);
+   public function getElementValue(string $identifier);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getpages:
@@ -587,11 +554,9 @@ getPages()
 
 Return the form's pages in the correct order.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getPages(): array;
+   public function getPages(): array;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getrenderingoptions:
@@ -599,7 +564,6 @@ Signature:
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getrendererclassname:
 .. include:: RootRenderableInterface/getRendererClassName.rst
-
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getlabel:
 .. include:: RootRenderableInterface/getLabel.rst
@@ -614,11 +578,9 @@ getFormDefinition()
 
 Get the underlying form definition from the runtime.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getFormDefinition(): FormDefinition;
+   public function getFormDefinition(): FormDefinition;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition:
@@ -634,11 +596,9 @@ addPage()
 Add a new page at the end of the form.
 Instead of this method, you should use ``createPage`` instead.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function addPage(Page $page);
+   public function addPage(Page $page);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-createpage:
@@ -653,11 +613,9 @@ Create a page with the given $identifier and attach this page to the form.
 - attach Page object to this form
 - return the newly created Page object
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function createPage(string $identifier, string $typeName = 'Page'): Page;
+   public function createPage(string $identifier, string $typeName = 'Page'): Page;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getpages:
@@ -667,11 +625,9 @@ getPages()
 
 Return the form's pages in the correct order.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getPages(): array;
+   public function getPages(): array;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-haspagewithindex:
@@ -681,11 +637,9 @@ hasPageWithIndex()
 
 Check whether a page with the given $index exists.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function hasPageWithIndex(int $index): bool;
+   public function hasPageWithIndex(int $index): bool;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getpagebyindex:
@@ -696,11 +650,9 @@ getPageByIndex()
 Get the page with the passed index. The first page has index zero.
 If page at $index does not exist, an exception is thrown.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getPageByIndex(int $index);
+   public function getPageByIndex(int $index);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-addfinisher:
@@ -711,11 +663,9 @@ addFinisher()
 Adds the specified finisher to the form.
 Instead of this method, you should use ``createFinisher`` instead.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function addFinisher(FinisherInterface $finisher);
+   public function addFinisher(FinisherInterface $finisher);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-createfinisher:
@@ -725,11 +675,10 @@ createFinisher()
 
 Create a finisher with the given $identifier and given $options and attach this finisher to the form.
 
-Signature:
+Signature::
 
-.. code-block:: php
+   public function createFinisher(string $finisherIdentifier, array $options = []): FinisherInterface;
 
-    public function createFinisher(string $finisherIdentifier, array $options = []): FinisherInterface;
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getfinishers:
 
@@ -738,11 +687,9 @@ getFinishers()
 
 Gets all finishers of the form.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getFinishers(): array;
+   public function getFinishers(): array;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getelementbyidentifier:
@@ -753,11 +700,9 @@ getElementByIdentifier()
 Get a form element by its identifier.
 If identifier does not exist, returns NULL.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getElementByIdentifier(string $elementIdentifier);
+   public function getElementByIdentifier(string $elementIdentifier);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-movepageafter:
@@ -767,11 +712,9 @@ movePageAfter()
 
 Move $pageToMove after $referencePage.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function movePageAfter(Page $pageToMove, Page $referencePage);
+   public function movePageAfter(Page $pageToMove, Page $referencePage);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-removepage:
@@ -781,11 +724,9 @@ removePage()
 
 Remove $pageToRemove from the form.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function removePage(Page $pageToRemove);
+   public function removePage(Page $pageToRemove);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-bind:
@@ -795,11 +736,9 @@ bind()
 
 Bind the current request and response to this form instance, effectively creating a new "instance" of the Form.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function bind(Request $request, Response $response): FormRuntime;
+   public function bind(Request $request, Response $response): FormRuntime;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getprocessingrule:
@@ -809,11 +748,9 @@ getProcessingRule()
 
 Get the processing rule which contains information for property mappings and validations.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getProcessingRule(string $propertyPath): ProcessingRule;
+   public function getProcessingRule(string $propertyPath): ProcessingRule;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-gettype:
@@ -844,11 +781,9 @@ setRendererClassName()
 
 Set the renderer class name.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function setRendererClassName(string $rendererClassName);
+   public function setRendererClassName(string $rendererClassName);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getrenderingoptions:
@@ -902,11 +837,9 @@ Create a form element with the given $identifier and attach it to the page.
 - attach Form Element to the Page
 - return the newly created Form Element object
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function createElement(string $identifier, string $typeName): FormElementInterface;
+   public function createElement(string $identifier, string $typeName): FormElementInterface;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-moveelementbefore:
@@ -1008,11 +941,9 @@ Create a form element with the given $identifier and attach it to the section.
 - attach Form Element to the Section
 - return the newly created Form Element object
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function createElement(string $identifier, string $typeName): FormElementInterface;
+   public function createElement(string $identifier, string $typeName): FormElementInterface;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-moveelementbefore:
@@ -1180,11 +1111,9 @@ execute()
 Executes the finisher. ``AbstractFinisher::execute()`` call ``$this->executeInternal()`` at the end. Own finisher
 implementations which extends from  ``AbstractFinisher:`` must start their own logic within ``executeInternal()``.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function execute(FinisherContext $finisherContext);
+   public function execute(FinisherContext $finisherContext);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractfinisher-setoptions:
@@ -1194,11 +1123,9 @@ setOptions()
 
 Set the finisher options. Instead of directly accessing them, you should rather use ``parseOption()``.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function setOptions(array $options);
+   public function setOptions(array $options);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractfinisher-setoption:
@@ -1208,11 +1135,9 @@ setOption()
 
 Sets a single finisher option.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function setOption(string $optionName, $optionValue);
+   public function setOption(string $optionName, $optionValue);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractfinisher-parseoption:
@@ -1222,11 +1147,9 @@ parseOption()
 
 Please read :ref:`Accessing finisher options<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions>`
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    protected function parseOption(string $optionName);
+   protected function parseOption(string $optionName);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-finishercontext:
@@ -1241,11 +1164,9 @@ cancel()
 
 Cancels the finisher invocation after the current finisher.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function cancel();
+   public function cancel();
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-finishercontext-getformruntime:
@@ -1255,11 +1176,9 @@ getFormRuntime()
 
 The Form Runtime that is associated with the current finisher.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getFormRuntime(): FormRuntime;
+   public function getFormRuntime(): FormRuntime;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-finishercontext-getformvalues:
@@ -1269,11 +1188,9 @@ getFormValues()
 
 The values of the submitted form (after validation and property mapping).
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getFormValues(): array;
+   public function getFormValues(): array;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-finishercontext-getcontrollercontext:
@@ -1283,11 +1200,9 @@ getControllerContext()
 
 Returns the current ControllerContext.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getControllerContext(): ControllerContext;
+   public function getControllerContext(): ControllerContext;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-finishercontext-getfinishervariableprovider:
@@ -1297,11 +1212,9 @@ getFinisherVariableProvider()
 
 Returns the current FinisherVariableProvider.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getFinisherVariableProvider(): FinisherVariableProvider;
+   public function getFinisherVariableProvider(): FinisherVariableProvider;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-finishervariableprovider:
@@ -1319,11 +1232,9 @@ add()
 Add a variable to the finisher variable provider.
 In case the value is already inside, it is silently overridden.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function add(string $finisherIdentifier, string $key, $value);
+   public function add(string $finisherIdentifier, string $key, $value);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-finishervariableprovider-get:
@@ -1333,11 +1244,9 @@ get()
 
 Gets a variable from the finisher variable provider.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function get(string $finisherIdentifier, string $key, $default = null);
+   public function get(string $finisherIdentifier, string $key, $default = null);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-finishervariableprovider-exists:
@@ -1347,11 +1256,9 @@ exists()
 
 Determine whether there is a variable stored for the given key.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function exists($finisherIdentifier, $key): bool;
+   public function exists($finisherIdentifier, $key): bool;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-finishervariableprovider-remove:
@@ -1361,11 +1268,9 @@ remove()
 
 Remove a value from the finisher variable provider.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function remove(string $finisherIdentifier, string $key);
+   public function remove(string $finisherIdentifier, string $key);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-configurationservice:
@@ -1380,11 +1285,9 @@ getPrototypeConfiguration()
 
 Get the configuration for a given $prototypeName
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getPrototypeConfiguration(string $prototypeName): array;
+   public function getPrototypeConfiguration(string $prototypeName): array;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformfactory:
@@ -1400,11 +1303,9 @@ triggerFormBuildingFinished()
 Helper to be called by every ``FormFactory`` which extends from ``AbstractFormFactory`` after
 everything has been built to call the "afterBuildingFinished" hook on all form elements.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    protected function triggerFormBuildingFinished(FormDefinition $form);
+   protected function triggerFormBuildingFinished(FormDefinition $form);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formfactoryinterface:
@@ -1419,11 +1320,9 @@ build()
 
 Build a form definition, depending on some configuration.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function build(array $configuration, string $prototypeName = null): FormDefinition;
+   public function build(array $configuration, string $prototypeName = null): FormDefinition;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-rendererinterface:
@@ -1436,11 +1335,9 @@ TYPO3\\CMS\\Form\\Domain\\Renderer\\RendererInterface
 setControllerContext()
 ''''''''''''''''''''''
 
-Set the controller context which should be used
+Set the controller context which should be used::
 
-.. code-block:: php
-
-    public function setControllerContext(ControllerContext $controllerContext);
+   public function setControllerContext(ControllerContext $controllerContext);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-rendererinterface-render:
@@ -1448,9 +1345,7 @@ Set the controller context which should be used
 render()
 ''''''''
 
-Renders the FormDefinition. This method is expected to call the ``beforeRendering`` hook on each form element.
-
-.. code-block:: php
+Renders the FormDefinition. This method is expected to call the ``beforeRendering`` hook on each form element::
 
     public function render(): string;
 
@@ -1460,11 +1355,9 @@ Renders the FormDefinition. This method is expected to call the ``beforeRenderin
 setFormRuntime()
 ''''''''''''''''
 
-Set the current ``FormRuntime``.
+Set the current ``FormRuntime``::
 
-.. code-block:: php
-
-    public function setFormRuntime(FormRuntime $formRuntime);
+   public function setFormRuntime(FormRuntime $formRuntime);
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-rendererinterface-getformruntime:
@@ -1472,12 +1365,9 @@ Set the current ``FormRuntime``.
 getFormRuntime()
 ''''''''''''''''
 
-Get the current ``FormRuntime``.
+Get the current ``FormRuntime``::
 
-.. code-block:: php
-
-    public function getFormRuntime(): FormRuntime;
-
+   public function getFormRuntime(): FormRuntime;
 
 
 .. _apireference-frontendrendering-runtimemanipulation:
@@ -1496,17 +1386,21 @@ Hooks
 initializeFormElement
 +++++++++++++++++++++
 
-You can connect to the hook and initialize a form elements without defining a custom implementaion to access the element's ``initializeFormElement`` method.
-You only need a class which connects to this hook. Then detect the form element you wish to initialize.
-You can use this hook to prefill form element data for example from database tables.
-Note that this hook will be called **after** all properties from the prototype configuration are set in the form element but **before** the properties from
-the form definition are set in the form element.
-If you want to prefill form element data after the complete form element is configured you should use the :ref:`afterBuildingFinished<apireference-frontendrendering-runtimemanipulation-hooks-afterbuildingfinished>` hook.
+You can connect to the hook and initialize a form elements without defining a
+custom implementaion to access the element's ``initializeFormElement`` method.
+You only need a class which connects to this hook. Then detect the form
+element you wish to initialize. You can use this hook to prefill form element
+data for example from database tables. Note that this hook will be called
+**after** all properties from the prototype configuration are set in the form
+element but **before** the properties from the form definition are set in the
+form element. If you want to prefill form element data after the complete form
+element is configured you should use the
+:ref:`afterBuildingFinished<apireference-frontendrendering-runtimemanipulation-hooks-afterbuildingfinished>` hook.
 
-
-This hook is invoked by the methods ``TYPO3\CMS\Form\Domain\Model\FormElements\Page::createElement()`` and ``TYPO3\CMS\Form\Domain\Model\FormElements\Section::createElement()``.
-That means the hook will **not** be triggered for ``Pages``.
-At this point you don't have access to submitted form element values.
+The initializeFormElement hook is invoked by the methods ``TYPO3\CMS\Form\Domain\Model\FormElements\Page::createElement()``
+and ``TYPO3\CMS\Form\Domain\Model\FormElements\Section::createElement()``.
+That means the hook will **not** be triggered for ``Pages``. At this point
+you do not have access to submitted form element values.
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-initializeformelement-connect:
@@ -1514,10 +1408,16 @@ At this point you don't have access to submitted form element values.
 Connect to the hook
 '''''''''''''''''''
 
-.. code-block:: php
+::
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'][<useATimestampAsKeyPlease>]
-        = \VENDOR\YourNamespace\YourClass::class;
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'][<useATimestampAsKeyPlease>]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+.. note::
+
+   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
+   means?
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-initializeformelement-use:
@@ -1525,18 +1425,48 @@ Connect to the hook
 Use the hook
 ''''''''''''
 
-.. code-block:: php
+::
 
-    /**
-     * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
-     * @return void
-     */
-    public function initializeFormElement(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
-    {
-        if ($renderable->getUniqueIdentifier() === 'contactForm-text-1') {
-            $renderable->setDefaultValue('foo');
-        }
-    }
+   /**
+    * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
+    * @return void
+    */
+   public function initializeFormElement(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
+   {
+       if ($renderable->getUniqueIdentifier() === 'contactForm-text-1') {
+           $renderable->setDefaultValue('foo');
+       }
+   }
+
+
+.. _useATimestampAsKeyPlease:
+
+What does <useATimestampAsKeyPlease> mean?
+++++++++++++++++++++++++++++++++++++++++++
+
+Timestamps are recommended for hooks such as those of the form framework, as
+seen in the following example::
+
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'][<useATimestampAsKeyPlease>]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+Leaving the section ``<useATimestampAsKeyPlease>`` as is is not recommended.
+It does nothing except cause the extension to fail and an error message to be
+delivered. Nor should it be replaced with a function like time(), as the key
+should be unalterable. Instead, replace this section with the current UNIX
+timestamp the moment you are implementing the hook. Check out the following
+example::
+
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'][1507018413]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+The purpose of timestamps is to prevent conflicts that arise when two or more
+extensions within one TYPO3 installation use identical keys (e.g.
+``$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement']['foo'])``.
+When timestamps are used, even a one-second difference in the time different
+hooks were connected ensures that one hook does not override the other.
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-beforeremovefromparentrenderable:
@@ -1553,10 +1483,16 @@ and ``TYPO3\CMS\Form\Domain\Model\FormElements\Section::removeElement()``
 Connect to the hook
 '''''''''''''''''''
 
-.. code-block:: php
+::
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRemoveFromParentRenderable'][<useATimestampAsKeyPlease>]
-        = \VENDOR\YourNamespace\YourClass::class;
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRemoveFromParentRenderable'][<useATimestampAsKeyPlease>]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+.. note::
+
+   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
+   means?
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-beforeremovefromparentrenderable-use:
@@ -1564,15 +1500,15 @@ Connect to the hook
 Use the hook
 ''''''''''''
 
-.. code-block:: php
+::
 
-    /**
-     * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
-     * @return void
-     */
-    public function beforeRemoveFromParentRenderable(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
-    {
-    }
+   /**
+    * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
+    * @return void
+    */
+   public function beforeRemoveFromParentRenderable(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
+   {
+   }
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-afterbuildingfinished:
@@ -1595,10 +1531,16 @@ the property-mapper configuration for ``FileUpload`` elements.
 Connect to the hook
 '''''''''''''''''''
 
-.. code-block:: php
+::
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][<useATimestampAsKeyPlease>]
-        = \VENDOR\YourNamespace\YourClass::class;
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][<useATimestampAsKeyPlease>]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+.. note::
+
+   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
+   means?
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-afterbuildingfinished-use:
@@ -1606,15 +1548,15 @@ Connect to the hook
 Use the hook
 ''''''''''''
 
-.. code-block:: php
+::
 
-    /**
-     * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
-     * @return void
-     */
-    public function afterBuildingFinished(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
-    {
-    }
+   /**
+    * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
+    * @return void
+    */
+   public function afterBuildingFinished(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
+   {
+   }
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-afterinitializecurrentpage:
@@ -1633,10 +1575,16 @@ other form elements have specific values.
 Connect to the hook
 '''''''''''''''''''
 
-.. code-block:: php
+::
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'][<useATimestampAsKeyPlease>]
-        = \VENDOR\YourNamespace\YourClass::class;
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'][<useATimestampAsKeyPlease>]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+.. note::
+
+   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
+   means?
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-afterinitializecurrentpage-use:
@@ -1644,19 +1592,19 @@ Connect to the hook
 Use the hook
 ''''''''''''
 
-.. code-block:: php
+::
 
-    /**
-     * @param \TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime
-     * @param \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $currentPage
-     * @param null|\TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $lastPage
-     * @param mixed $elementValue submitted value of the element *before post processing*
-     * @return \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface
-     */
-    public function afterInitializeCurrentPage(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $currentPage, \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $lastPage = null, array $requestArguments = []): \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface
-    {
-        return $currentPage;
-    }
+   /**
+    * @param \TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime
+    * @param \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $currentPage
+    * @param null|\TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $lastPage
+    * @param mixed $elementValue submitted value of the element *before post processing*
+    * @return \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface
+    */
+   public function afterInitializeCurrentPage(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $currentPage, \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $lastPage = null, array $requestArguments = []): \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface
+   {
+       return $currentPage;
+   }
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-aftersubmit:
@@ -1676,10 +1624,16 @@ EXT:form itself uses this hook to dynamically add validation errors for ``Advanc
 Connect to the hook
 '''''''''''''''''''
 
-.. code-block:: php
+::
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'][<useATimestampAsKeyPlease>]
-        = \VENDOR\YourNamespace\YourClass::class;
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'][<useATimestampAsKeyPlease>]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+.. note::
+
+   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
+   means?
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-aftersubmit-use:
@@ -1687,19 +1641,19 @@ Connect to the hook
 Use the hook
 ''''''''''''
 
-.. code-block:: php
+::
 
-    /**
-     * @param \TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime
-     * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
-     * @param mixed $elementValue submitted value of the element *before post processing*
-     * @param array $requestArguments submitted raw request values
-     * @return void
-     */
-    public function afterSubmit(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable, $elementValue, array $requestArguments = [])
-    {
-        return $elementValue;
-    }
+   /**
+    * @param \TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime
+    * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
+    * @param mixed $elementValue submitted value of the element *before post processing*
+    * @param array $requestArguments submitted raw request values
+    * @return void
+    */
+   public function afterSubmit(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable, $elementValue, array $requestArguments = [])
+   {
+       return $elementValue;
+   }
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-beforerendering:
@@ -1716,10 +1670,16 @@ This hook is called after all validations and property mappings are done.
 Connect to the hook
 '''''''''''''''''''
 
-.. code-block:: php
+::
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'][<useATimestampAsKeyPlease>]
-        = \VENDOR\YourNamespace\YourClass::class;
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'][<useATimestampAsKeyPlease>]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+.. note::
+
+   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
+   means?
 
 
 .. _apireference-frontendrendering-runtimemanipulation-hooks-beforerendering-use:
@@ -1727,16 +1687,16 @@ Connect to the hook
 Use the hook
 ''''''''''''
 
-.. code-block:: php
+::
 
-    /**
-     * @param \TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime
-     * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface $renderable
-     * @return void
-     */
-    public function beforeRendering(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface $renderable)
-    {
-    }
+   /**
+    * @param \TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime
+    * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface $renderable
+    * @return void
+    */
+   public function beforeRendering(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface $renderable)
+   {
+   }
 
 
 .. _apireference-finisheroptions:
@@ -1753,16 +1713,14 @@ This finisher can only be used in programmatically-created forms. It makes it
 possible to execute one's own finisher code without having to implement/
 declare this finisher.
 
-Usage through code:
+Usage through code::
 
-.. code-block:: php
-
-    $closureFinisher = $this->objectManager->get(ClosureFinisher::class);
-    $closureFinisher->setOption('closure', function($finisherContext) {
-        $formRuntime = $finisherContext->getFormRuntime();
-        // ...
-    });
-    $formDefinition->addFinisher($closureFinisher);
+   $closureFinisher = $this->objectManager->get(ClosureFinisher::class);
+   $closureFinisher->setOption('closure', function($finisherContext) {
+       $formRuntime = $finisherContext->getFormRuntime();
+       // ...
+   });
+   $formDefinition->addFinisher($closureFinisher);
 
 
 .. _apireference-finisheroptions-closurefinisher-options:
@@ -1796,35 +1754,31 @@ Usage within form definition
 
 .. code-block:: yaml
 
-    identifier: example-form
-    label: 'example'
-    type: Form
+   identifier: example-form
+   label: 'example'
+   type: Form
 
-    finishers:
-      -
-        identifier: Confirmation
-        options:
-          message: 'Thx for using TYPO3'
-    ...
+   finishers:
+     -
+       identifier: Confirmation
+       options:
+         message: 'Thx for using TYPO3'
+   ...
 
 
-Usage through code:
+Usage through code::
 
-.. code-block:: php
+   $formDefinition->createFinisher('Confirmation', [
+       'message' => 'foo',
+   ]);
 
-    $formDefinition->createFinisher('Confirmation', [
-        'message' => 'foo',
-    ]);
+or create manually (not preferred)::
 
-or create manually (not preferred)
-
-.. code-block:: php
-
-    $confirmationFinisher = $this->objectManager->get(ConfirmationFinisher::class);
-    $confirmationFinisher->setOptions([
-        'message' => 'foo',
-    ]);
-    $formDefinition->addFinisher($confirmationFinisher);
+   $confirmationFinisher = $this->objectManager->get(ConfirmationFinisher::class);
+   $confirmationFinisher->setOptions([
+       'message' => 'foo',
+   ]);
+   $formDefinition->addFinisher($confirmationFinisher);
 
 
 .. _apireference-finisheroptions-confirmationfinisher-options:
@@ -1860,28 +1814,24 @@ Usage within form definition
 
 .. code-block:: yaml
 
-    identifier: example-form
-    label: 'example'
-    type: Form
+   identifier: example-form
+   label: 'example'
+   type: Form
 
-    finishers:
-      -
-        identifier: DeleteUploads
-    ...
+   finishers:
+     -
+       identifier: DeleteUploads
+   ...
 
 
-Usage through code:
+Usage through code::
 
-.. code-block:: php
+   $formDefinition->createFinisher('DeleteUploads');
 
-    $formDefinition->createFinisher('DeleteUploads');
+or create manually (not preferred)::
 
-or create manually (not preferred)
-
-.. code-block:: php
-
-    $deleteUploadsFinisher = $this->objectManager->get(DeleteUploadsFinisher::class);
-    $formDefinition->addFinisher($deleteUploadsFinisher);
+   $deleteUploadsFinisher = $this->objectManager->get(DeleteUploadsFinisher::class);
+   $formDefinition->addFinisher($deleteUploadsFinisher);
 
 
 .. _apireference-finisheroptions-emailfinisher:
@@ -1896,47 +1846,43 @@ Usage within form definition
 
 .. code-block:: yaml
 
-    identifier: example-form
-    label: 'example'
-    type: Form
+   identifier: example-form
+   label: 'example'
+   type: Form
 
-    finishers:
-      -
-        identifier: EmailToReceiver
-        options:
-          subject: 'Your message'
-          recipientAddress: your.company@example.com
-          recipientName: 'Your Company name'
-          senderAddress: 'form@example.com'
-          senderName: 'form submitter'
-    ...
+   finishers:
+     -
+       identifier: EmailToReceiver
+       options:
+         subject: 'Your message'
+         recipientAddress: your.company@example.com
+         recipientName: 'Your Company name'
+         senderAddress: 'form@example.com'
+         senderName: 'form submitter'
+   ...
 
 
-Usage through code:
+Usage through code::
 
-.. code-block:: php
+   $formDefinition->createFinisher('EmailToReceiver', [
+       'subject' => 'Your message',
+       'recipientAddress' => 'your.company@example.com',
+       'recipientName' => 'Your Company name',
+       'senderAddress' => 'form@example.com',
+       'senderName' => 'form submitter',
+   ]);
 
-    $formDefinition->createFinisher('EmailToReceiver', [
-        'subject' => 'Your message',
-        'recipientAddress' => 'your.company@example.com',
-        'recipientName' => 'Your Company name',
-        'senderAddress' => 'form@example.com',
-        'senderName' => 'form submitter',
-    ]);
+or create manually (not preferred)::
 
-or create manually (not preferred)
-
-.. code-block:: php
-
-    $emailFinisher = $this->objectManager->get(EmailFinisher::class);
-    $emailFinisher->setOptions([
-        'subject' => 'Your message',
-        'recipientAddress' => 'your.company@example.com',
-        'recipientName' => 'Your Company name',
-        'senderAddress' => 'form@example.com',
-        'senderName' => 'form submitter',
-    ]);
-    $formDefinition->addFinisher($emailFinisher);
+   $emailFinisher = $this->objectManager->get(EmailFinisher::class);
+   $emailFinisher->setOptions([
+       'subject' => 'Your message',
+       'recipientAddress' => 'your.company@example.com',
+       'recipientName' => 'Your Company name',
+       'senderAddress' => 'form@example.com',
+       'senderName' => 'form submitter',
+   ]);
+   $formDefinition->addFinisher($emailFinisher);
 
 
 .. _apireference-finisheroptions-emailfinisher-options:
@@ -2052,6 +1998,7 @@ replyToAddress
       Email address of to be used as reply-to email (use multiple addresses with an array)
 
 .. note::
+
    For the moment, the ``form editor`` cannot deal with multiple reply-to addresses (use multiple addresses with an array)
 
 
@@ -2073,6 +2020,7 @@ carbonCopyAddress
       Email address of the copy recipient (use multiple addresses with an array)
 
 .. note::
+
    For the moment, the ``form editor`` cannot deal with multiple copy recipient addresses (use multiple addresses with an array)
 
 
@@ -2094,6 +2042,7 @@ blindCarbonCopyAddress
       Email address of the blind copy recipient (use multiple addresses with an array)
 
 .. note::
+
    For the moment, the ``form editor`` cannot deal with multiple blind copy recipient addresses (use multiple addresses with an array)
 
 
@@ -2256,46 +2205,41 @@ FlashMessage finisher
 
 A simple finisher that adds a message to the FlashMessageContainer.
 
-
 Usage within form definition
 
 .. code-block:: yaml
 
-    identifier: example-form
-    label: 'example'
-    type: Form
+   identifier: example-form
+   label: 'example'
+   type: Form
 
-    finishers:
-      -
-        identifier: FlashMessage
-        options:
-          messageBody: 'Thx for using TYPO3'
-          messageTitle: 'Merci'
-          severity: 0
-    ...
+   finishers:
+     -
+       identifier: FlashMessage
+       options:
+         messageBody: 'Thx for using TYPO3'
+         messageTitle: 'Merci'
+         severity: 0
+   ...
 
 
-Usage through code:
+Usage through code::
 
-.. code-block:: php
+   $formDefinition->createFinisher('FlashMessage', [
+       'messageBody' => 'Thx for using TYPO3',
+       'messageTitle' => 'Merci',
+       'severity' => \TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
+   ]);
 
-    $formDefinition->createFinisher('FlashMessage', [
-        'messageBody' => 'Thx for using TYPO3',
-        'messageTitle' => 'Merci',
-        'severity' => \TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
-    ]);
+or create manually (not preferred)::
 
-or create manually (not preferred)
-
-.. code-block:: php
-
-    $flashMessageFinisher = $this->objectManager->get(FlashMessageFinisher::class);
-    $flashMessageFinisher->setOptions([
-        'messageBody' => 'Thx for using TYPO3',
-        'messageTitle' => 'Merci',
-        'severity' => \TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
-    ]);
-    $formDefinition->addFinisher($flashMessageFinisher);
+   $flashMessageFinisher = $this->objectManager->get(FlashMessageFinisher::class);
+   $flashMessageFinisher->setOptions([
+       'messageBody' => 'Thx for using TYPO3',
+       'messageTitle' => 'Merci',
+       'severity' => \TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
+   ]);
+   $formDefinition->addFinisher($flashMessageFinisher);
 
 
 .. _apireference-finisheroptions-flashmessagefinisher-options:
@@ -2401,43 +2345,38 @@ Redirect finisher
 
 A simple finisher that redirects to another page.
 
-
 Usage within form definition
 
 .. code-block:: yaml
 
-    identifier: example-form
-    label: 'example'
-    type: Form
+   identifier: example-form
+   label: 'example'
+   type: Form
 
-    finishers:
-      -
-        identifier: Redirect
-        options:
-          pageUid: 1
-          additionalParameters: 'param1=value1&param2=value2'
-    ...
+   finishers:
+     -
+       identifier: Redirect
+       options:
+         pageUid: 1
+         additionalParameters: 'param1=value1&param2=value2'
+   ...
 
 
-Usage through code:
+Usage through code::
 
-.. code-block:: php
+   $formDefinition->createFinisher('Redirect', [
+       'pageUid' => 1,
+       'additionalParameters' => 'param1=value1&param2=value2',
+   ]);
 
-    $formDefinition->createFinisher('Redirect', [
-        'pageUid' => 1,
-        'additionalParameters' => 'param1=value1&param2=value2',
-    ]);
+or create manually (not preferred)::
 
-or create manually (not preferred)
-
-.. code-block:: php
-
-    $redirectFinisher = $this->objectManager->get(RedirectFinisher::class);
-    $redirectFinisher->setOptions([
-        'pageUid' => 1,
-        'additionalParameters' => 'param1=value1&param2=value2',
-    ]);
-    $formDefinition->addFinisher($redirectFinisher);
+   $redirectFinisher = $this->objectManager->get(RedirectFinisher::class);
+   $redirectFinisher->setOptions([
+       'pageUid' => 1,
+       'additionalParameters' => 'param1=value1&param2=value2',
+   ]);
+   $formDefinition->addFinisher($redirectFinisher);
 
 
 .. _apireference-finisheroptions-redirectfinisher-options:
@@ -2529,83 +2468,79 @@ Usage within form definition
 
 .. code-block:: yaml
 
-    identifier: example-form
-    label: 'example'
-    type: Form
+   identifier: example-form
+   label: 'example'
+   type: Form
 
-    finishers:
-      -
-        identifier: SaveToDatabase
-        options:
-          table: 'fe_users'
-          mode: update
-          whereClause:
-            uid: 1
-          databaseColumnMappings:
-            pid:
-              value: 1
-          elements:
-            textfield-identifier-1:
-              mapOnDatabaseColumn: 'first_name'
-            textfield-identifier-2:
-              mapOnDatabaseColumn: 'last_name'
-            textfield-identifier-3:
-              mapOnDatabaseColumn: 'username'
-            advancedpassword-1:
-              mapOnDatabaseColumn: 'password'
-              skipIfValueIsEmpty: true
-    ...
+   finishers:
+     -
+       identifier: SaveToDatabase
+       options:
+         table: 'fe_users'
+         mode: update
+         whereClause:
+           uid: 1
+         databaseColumnMappings:
+           pid:
+             value: 1
+         elements:
+           textfield-identifier-1:
+             mapOnDatabaseColumn: 'first_name'
+           textfield-identifier-2:
+             mapOnDatabaseColumn: 'last_name'
+           textfield-identifier-3:
+             mapOnDatabaseColumn: 'username'
+           advancedpassword-1:
+             mapOnDatabaseColumn: 'password'
+             skipIfValueIsEmpty: true
+   ...
 
 
-Usage through code:
+Usage through code::
 
-.. code-block:: php
+   $formDefinition->createFinisher('SaveToDatabase', [
+       'table' => 'fe_users',
+       'mode' => 'update',
+       'whereClause' => [
+           'uid' => 1,
+       ],
+       'databaseColumnMappings' => [
+           'pid' => ['value' => 1],
+       ],
+       'elements' => [
+           'textfield-identifier-1' => ['mapOnDatabaseColumn' => 'first_name'],
+           'textfield-identifier-2' => ['mapOnDatabaseColumn' => 'last_name'],
+           'textfield-identifier-3' => ['mapOnDatabaseColumn' => 'username'],
+           'advancedpassword-1' => [
+               'mapOnDatabaseColumn' => 'password',
+               'skipIfValueIsEmpty' => true,
+           ],
+       ],
+   ]);
 
-    $formDefinition->createFinisher('SaveToDatabase', [
-        'table' => 'fe_users',
-        'mode' => 'update',
-        'whereClause' => [
-            'uid' => 1,
-        ],
-        'databaseColumnMappings' => [
-            'pid' => ['value' => 1],
-        ],
-        'elements' => [
-            'textfield-identifier-1' => ['mapOnDatabaseColumn' => 'first_name'],
-            'textfield-identifier-2' => ['mapOnDatabaseColumn' => 'last_name'],
-            'textfield-identifier-3' => ['mapOnDatabaseColumn' => 'username'],
-            'advancedpassword-1' => [
-                'mapOnDatabaseColumn' => 'password',
-                'skipIfValueIsEmpty' => true,
-            ],
-        ],
-    ]);
+or create manually (not preferred)::
 
-or create manually (not preferred)
-
-.. code-block:: php
-
-    $saveToDatabaseFinisher = $this->objectManager->get(SaveToDatabaseFinisher::class);
-    $saveToDatabaseFinisher->setOptions([
-        'table' => 'fe_users',
-        'mode' => 'update',
-        'whereClause' => [
-            'uid' => 1,
-        ],
-        'databaseColumnMappings' => [
-            'pid' => ['value' => 1],
-        ],
-        'elements' => [
-            'textfield-identifier-1' => ['mapOnDatabaseColumn' => 'first_name'],
-            'textfield-identifier-2' => ['mapOnDatabaseColumn' => 'last_name'],
-            'textfield-identifier-3' => ['mapOnDatabaseColumn' => 'username'],
-            'advancedpassword-1' => [
-                'mapOnDatabaseColumn' => 'password',
-                'skipIfValueIsEmpty' => true,
-            ],
-        ],
-    ]);
-    $formDefinition->addFinisher($saveToDatabaseFinisher);
+   $saveToDatabaseFinisher = $this->objectManager->get(SaveToDatabaseFinisher::class);
+   $saveToDatabaseFinisher->setOptions([
+       'table' => 'fe_users',
+       'mode' => 'update',
+       'whereClause' => [
+           'uid' => 1,
+       ],
+       'databaseColumnMappings' => [
+           'pid' => ['value' => 1],
+       ],
+       'elements' => [
+           'textfield-identifier-1' => ['mapOnDatabaseColumn' => 'first_name'],
+           'textfield-identifier-2' => ['mapOnDatabaseColumn' => 'last_name'],
+           'textfield-identifier-3' => ['mapOnDatabaseColumn' => 'username'],
+           'advancedpassword-1' => [
+               'mapOnDatabaseColumn' => 'password',
+               'skipIfValueIsEmpty' => true,
+           ],
+       ],
+   ]);
+   $formDefinition->addFinisher($saveToDatabaseFinisher);
 
 You can write options as an array to perform multiple database operations.
 
@@ -2613,80 +2548,76 @@ Usage within form definition
 
 .. code-block:: yaml
 
-    identifier: example-form
-    label: 'example'
-    type: Form
+   identifier: example-form
+   label: 'example'
+   type: Form
 
-    finishers:
-      -
-        identifier: SaveToDatabase
-        options:
-          1:
-            table: 'my_table'
-            mode: insert
-            databaseColumnMappings:
-              some_column:
-                value: 'cool'
-          2:
-            table: 'my_other_table'
-            mode: update
-            whereClause:
-              pid: 1
-            databaseColumnMappings:
-              some_other_column:
-                value: '{SaveToDatabase.insertedUids.1}'
-    ...
+   finishers:
+     -
+       identifier: SaveToDatabase
+       options:
+         1:
+           table: 'my_table'
+           mode: insert
+           databaseColumnMappings:
+             some_column:
+               value: 'cool'
+         2:
+           table: 'my_other_table'
+           mode: update
+           whereClause:
+             pid: 1
+           databaseColumnMappings:
+             some_other_column:
+               value: '{SaveToDatabase.insertedUids.1}'
+   ...
 
 
-Usage through code:
+Usage through code::
 
-.. code-block:: php
+   $formDefinition->createFinisher('SaveToDatabase', [
+       1 => [
+           'table' => 'my_table',
+           'mode' => 'insert',
+           'databaseColumnMappings' => [
+               'some_column' => ['value' => 'cool'],
+           ],
+       ],
+       2 => [
+           'table' => 'my_other_table',
+           'mode' => 'update',
+           'whereClause' => [
+               'pid' => 1,
+           ],
+           'databaseColumnMappings' => [
+               'some_other_column' => ['value' => '{SaveToDatabase.insertedUids.1}'],
+           ],
+       ],
+   ]);
 
-    $formDefinition->createFinisher('SaveToDatabase', [
-        1 => [
-            'table' => 'my_table',
-            'mode' => 'insert',
-            'databaseColumnMappings' => [
-                'some_column' => ['value' => 'cool'],
-            ],
-        ],
-        2 => [
-            'table' => 'my_other_table',
-            'mode' => 'update',
-            'whereClause' => [
-                'pid' => 1,
-            ],
-            'databaseColumnMappings' => [
-                'some_other_column' => ['value' => '{SaveToDatabase.insertedUids.1}'],
-            ],
-        ],
-    ]);
+or create manually (not preferred)::
 
-or create manually (not preferred)
-
-.. code-block:: php
-
-    $saveToDatabaseFinisher = $this->objectManager->get(SaveToDatabaseFinisher::class);
-    $saveToDatabaseFinisher->setOptions([
-        1 => [
-            'table' => 'my_table',
-            'mode' => 'insert',
-            'databaseColumnMappings' => [
-                'some_column' => ['value' => 'cool'],
-            ],
-        ],
-        2 => [
-            'table' => 'my_other_table',
-            'mode' => 'update',
-            'whereClause' => [
-                'pid' => 1,
-            ],
-            'databaseColumnMappings' => [
-                'some_other_column' => ['value' => '{SaveToDatabase.insertedUids.1}'],
-            ],
-        ],
-    ]);
-    $formDefinition->addFinisher($saveToDatabaseFinisher);
+   $saveToDatabaseFinisher = $this->objectManager->get(SaveToDatabaseFinisher::class);
+   $saveToDatabaseFinisher->setOptions([
+       1 => [
+           'table' => 'my_table',
+           'mode' => 'insert',
+           'databaseColumnMappings' => [
+               'some_column' => ['value' => 'cool'],
+           ],
+       ],
+       2 => [
+           'table' => 'my_other_table',
+           'mode' => 'update',
+           'whereClause' => [
+               'pid' => 1,
+           ],
+           'databaseColumnMappings' => [
+               'some_other_column' => ['value' => '{SaveToDatabase.insertedUids.1}'],
+           ],
+       ],
+   ]);
+   $formDefinition->addFinisher($saveToDatabaseFinisher);
 
 
 This perform 2 database operations.
@@ -2833,7 +2764,7 @@ elements.<formElementIdentifier>.saveFileIdentifierInsteadOfUid
 
 :aspect:`Description`
       Set this to true if the database column should not be written if the value from the submitted form element with the identifier
-      ``<formElementIdentifier>`` is empty (think about password fields etc.)
+      ``<formElementIdentifier>`` is empty (think about password fields etc.).
 
       This setting only rules for form elements which creates a FAL object like ``FileUpload`` or ``ImageUpload``.
       By default, the uid of the FAL object will be written into the database column. Set this to true if you want to store the
@@ -2906,7 +2837,6 @@ databaseColumnMappings.<databaseColumnName>.skipIfValueIsEmpty
       Set this to true if the database column should not be written if the value from ``options.databaseColumnMappings.<databaseColumnName>.value`` is empty. Empty means strings without content, whitespace is valid content.
 
 
-
 .. _apireference-formeditor:
 
 Form editor
@@ -2935,10 +2865,16 @@ The form manager calls the 'beforeFormCreate' hook.
 Connect to the hook
 +++++++++++++++++++
 
-.. code-block:: php
+::
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'][<useATimestampAsKeyPlease>]
-        = \VENDOR\YourNamespace\YourClass::class;
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'][<useATimestampAsKeyPlease>]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+.. note::
+
+   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
+   means?
 
 
 .. _apireference-formeditor-hooks-beforeformcreate-use:
@@ -2946,17 +2882,17 @@ Connect to the hook
 Use the hook
 ++++++++++++
 
-.. code-block:: php
+::
 
-    /**
-     * @param string $formPersistenceIdentifier
-     * @param array $formDefinition
-     * @return array
-     */
-    public function beforeFormCreate(string $formPersistenceIdentifier, array $formDefinition): array
-    {
-        return $formDefinition;
-    }
+   /**
+    * @param string $formPersistenceIdentifier
+    * @param array $formDefinition
+    * @return array
+    */
+   public function beforeFormCreate(string $formPersistenceIdentifier, array $formDefinition): array
+   {
+       return $formDefinition;
+   }
 
 
 .. _apireference-formeditor-hooks-beforeformduplicate:
@@ -2972,10 +2908,16 @@ The form manager call the 'beforeFormDuplicate' hook.
 Connect to the hook
 +++++++++++++++++++
 
-.. code-block:: php
+::
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'][<useATimestampAsKeyPlease>]
-        = \VENDOR\YourNamespace\YourClass::class;
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'][<useATimestampAsKeyPlease>]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+.. note::
+
+   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
+   means?
 
 
 .. _apireference-formeditor-hooks-beforeformduplicate-use:
@@ -2983,17 +2925,17 @@ Connect to the hook
 Use the hook
 ++++++++++++
 
-.. code-block:: php
+::
 
-    /**
-     * @param string $formPersistenceIdentifier
-     * @param array $formDefinition
-     * @return array
-     */
-    public function beforeFormDuplicate(string $formPersistenceIdentifier, array $formDefinition): array
-    {
-        return $formDefinition;
-    }
+   /**
+    * @param string $formPersistenceIdentifier
+    * @param array $formDefinition
+    * @return array
+    */
+   public function beforeFormDuplicate(string $formPersistenceIdentifier, array $formDefinition): array
+   {
+       return $formDefinition;
+   }
 
 
 .. _apireference-formeditor-hooks-beforeformdelete:
@@ -3009,10 +2951,16 @@ The form manager call the 'beforeFormDelete' hook.
 Connect to the hook
 +++++++++++++++++++
 
-.. code-block:: php
+::
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'][<useATimestampAsKeyPlease>]
-        = \VENDOR\YourNamespace\YourClass::class;
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'][<useATimestampAsKeyPlease>]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+.. note::
+
+   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
+   means?
 
 
 .. _apireference-formeditor-hooks-beforeformdelete-use:
@@ -3020,15 +2968,15 @@ Connect to the hook
 Use the hook
 ++++++++++++
 
-.. code-block:: php
+::
 
-    /**
-     * @param string $formPersistenceIdentifier
-     * @return void
-     */
-    public function beforeFormDelete(string $formPersistenceIdentifier)
-    {
-    }
+   /**
+    * @param string $formPersistenceIdentifier
+    * @return void
+    */
+   public function beforeFormDelete(string $formPersistenceIdentifier)
+   {
+   }
 
 
 .. _apireference-formeditor-hooks-beforeformsave:
@@ -3044,10 +2992,16 @@ The form editor call the 'beforeFormSave' hook.
 Connect to the hook
 +++++++++++++++++++
 
-.. code-block:: php
+::
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'][<useATimestampAsKeyPlease>]
-        = \VENDOR\YourNamespace\YourClass::class;
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'][<useATimestampAsKeyPlease>]
+       = \VENDOR\YourNamespace\YourClass::class;
+
+
+.. note::
+
+   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
+   means?
 
 
 .. _apireference-formeditor-hooks-beforeformsave-use:
@@ -3055,18 +3009,17 @@ Connect to the hook
 Use the hook
 ++++++++++++
 
-.. code-block:: php
+::
 
-    /**
-     * @param string $formPersistenceIdentifier
-     * @param array $formDefinition
-     * @return array
-     */
-    public function beforeFormSave(string $formPersistenceIdentifier, array $formDefinition): array
-    {
-        return $formDefinition;
-    }
-
+   /**
+    * @param string $formPersistenceIdentifier
+    * @param array $formDefinition
+    * @return array
+    */
+   public function beforeFormSave(string $formPersistenceIdentifier, array $formDefinition): array
+   {
+       return $formDefinition;
+   }
 
 
 .. _apireference-formeditor-stage:
@@ -3139,13 +3092,13 @@ possible for form elements that have ``properties.options.*`` values, e.g.
 
 .. code-block:: yaml
 
-        type: MultiCheckbox
-        identifier: multicheckbox-1
-        label: 'Multi checkbox'
-        properties:
-          options:
-            value1: label1
-            value2: label2
+       type: MultiCheckbox
+       identifier: multicheckbox-1
+       label: 'Multi checkbox'
+       properties:
+         options:
+           value1: label1
+           value2: label2
 
 
 The template will now list 'label1' and 'label2'.
@@ -3161,28 +3114,28 @@ under ``properties.allowedMimeTypes.*`` as an array.
 
 .. code-block:: yaml
 
-        type: FileUpload
-        identifier: fileupload-1
-        label: 'File upload'
-        properties:
-          saveToFileMount: '1:/user_upload/'
-          allowedMimeTypes:
-            - application/msexcel
-            - application/pdf
+       type: FileUpload
+       identifier: fileupload-1
+       label: 'File upload'
+       properties:
+         saveToFileMount: '1:/user_upload/'
+         allowedMimeTypes:
+           - application/msexcel
+           - application/pdf
 
 
 Stage/SelectTemplate
 
 .. code-block:: html
 
-    <div data-identifier="multiValueContainer" data-template-property="properties.options">
+   <div data-identifier="multiValueContainer" data-template-property="properties.options">
 
 
 Stage/FileUploadTemplate
 
 .. code-block:: html
 
-    <div data-identifier="multiValueContainer" data-template-property="properties.allowedMimeTypes">
+   <div data-identifier="multiValueContainer" data-template-property="properties.allowedMimeTypes">
 
 
 ``data-template-property`` contains the path to the property, which is to be
@@ -3190,7 +3143,6 @@ read out of the form element and then shown in the template.
 
 The ``Stage/SelectTemplate`` can then :ref:`be rendered <apireference-formeditor-basicjavascriptconcepts-events-view-stage-abstract-render-template-perform>`
 with the method ``getFormEditorApp().getViewModel().getStage().renderSelectTemplates()``.
-
 
 
 .. _apireference-formeditor-basicjavascriptconcepts:
@@ -3211,31 +3163,29 @@ Note that the order of the subscriber is not manipulable and that information
 flow between the subscribers does not exist. All events must be asynchronously
 designed.
 
-
 Publish an event:
 
 .. code-block:: javascript
 
-    getPublisherSubscriber().publish('eventname', [argumentToPublish1, argumentToPublish2, ...]);
+   getPublisherSubscriber().publish('eventname', [argumentToPublish1, argumentToPublish2, ...]);
 
 
 Subscribe to an event:
 
 .. code-block:: javascript
 
-    var subscriberToken = getPublisherSubscriber().subscribe('eventname', function(topic, args) {
-        // args[0] = argumentToPublish1
-        // args[1] = argumentToPublish2
-        // ...
-    });
+   var subscriberToken = getPublisherSubscriber().subscribe('eventname', function(topic, args) {
+       // args[0] = argumentToPublish1
+       // args[1] = argumentToPublish2
+       // ...
+   });
 
 
 Unsubscribe an event subscriber:
 
 .. code-block:: javascript
 
-    getPublisherSubscriber().unsubscribe(subscriberToken);
-
+   getPublisherSubscriber().unsubscribe(subscriberToken);
 
 EXT:form itself publishes and subscribes to the following events:
 
@@ -3252,15 +3202,15 @@ Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('ajax/beforeSend', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('ajax/beforeSend', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-ajax-complete:
@@ -3271,20 +3221,19 @@ ajax/complete
 Each Ajax request is called after the end of this event. EXT:form uses this
 event to remove the spinner icon on the save button.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('ajax/complete', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('ajax/complete', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-core-ajax-error:
@@ -3297,23 +3246,22 @@ render the current page of the form in the ``preview view``, fails. EXT:form
 uses this event to show an error message as a flash message and to show the
 received error text in the ``preview view``.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = jqXHR
-     *              args[1] = textStatus
-     *              args[2] = errorThrown
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('core/ajax/error', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = jqXHR
+    *              args[1] = textStatus
+    *              args[2] = errorThrown
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('core/ajax/error', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-core-ajax-renderformdefinitionpage-success:
@@ -3325,22 +3273,21 @@ This event is called if the Ajax request that is used to render the current
 page of the form in the ``preview view`` was successful. EXT:form uses this
 event to display the rendered form in the ``preview view``.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = html
-     *              args[1] = pageIndex
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('core/ajax/renderFormDefinitionPage/success', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = html
+    *              args[1] = pageIndex
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('core/ajax/renderFormDefinitionPage/success', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-core-ajax-saveformdefinition-success:
@@ -3353,21 +3300,20 @@ successful. EXT:form uses this event to display a success message as a flash
 message. The ``form editor`` is also informed that no unsaved content currently
 exists.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = html
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('core/ajax/saveFormDefinition/success', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = html
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('core/ajax/saveFormDefinition/success', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-core-applicationstate-add:
@@ -3381,23 +3327,22 @@ undo/ redo function can be implemented. This event is called whenever the
 current state is added to the stack. EXT:form uses this event to reset the
 enabled/ disabled state of the undo/ redo buttons.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = applicationState
-     *              args[1] = stackPointer
-     *              args[2] = stackSize
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('core/applicationState/add', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = applicationState
+    *              args[1] = stackPointer
+    *              args[2] = stackSize
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('core/applicationState/add', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-core-currentlyselectedformelementchanged:
@@ -3409,21 +3354,20 @@ The method ``getFormEditorApp().setCurrentlySelectedFormElement()`` tells the
 ``form editor`` which form element should currently be dealt with. This method
 calls this event at the end.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = formElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('core/currentlySelectedFormElementChanged', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = formElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('core/currentlySelectedFormElementChanged', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-core-formelement-somepropertychanged:
@@ -3444,24 +3388,23 @@ a form element in other components (e.g. ``Tree`` component ) when this label
 is changed. Furthermore, any validation errors from form element properties
 are indicated by this event in the ``Tree`` component.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = propertyPath
-     *              args[1] = value
-     *              args[2] = oldValue
-     *              args[3] = formElementIdentifierPath
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('core/formElement/somePropertyChanged', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = propertyPath
+    *              args[1] = value
+    *              args[2] = oldValue
+    *              args[3] = formElementIdentifierPath
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('core/formElement/somePropertyChanged', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-collectionelement-moved:
@@ -3474,24 +3417,23 @@ calls this event at the end. EXT:form uses this event to re-render the
 ``Inspector`` component as soon as a property collection element (validator/
 finisher) is moved.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = movedCollectionElementIdentifier
-     *              args[1] = previousCollectionElementIdentifier
-     *              args[2] = nextCollectionElementIdentifier
-     *              args[3] = collectionName
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/collectionElement/moved', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = movedCollectionElementIdentifier
+    *              args[1] = previousCollectionElementIdentifier
+    *              args[2] = nextCollectionElementIdentifier
+    *              args[3] = collectionName
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/collectionElement/moved', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-collectionelement-new-added:
@@ -3504,25 +3446,24 @@ calls this event at the end. EXT:form uses this event to re-render the
 ``Inspector`` component as soon as a property collection element (validator/
 finisher) is created and added.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = collectionElementIdentifier
-     *              args[1] = collectionName
-     *              args[2] = formElement
-     *              args[3] = collectionElementConfiguration
-     *              args[4] = referenceCollectionElementIdentifier
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/collectionElement/new/added', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = collectionElementIdentifier
+    *              args[1] = collectionName
+    *              args[2] = formElement
+    *              args[3] = collectionElementConfiguration
+    *              args[4] = referenceCollectionElementIdentifier
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/collectionElement/new/added', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-collectionelement-removed:
@@ -3535,23 +3476,22 @@ calls this event at the end. EXT:form uses this event to re-render the
 ``Inspector`` component as soon as a property collection element (validator/
 finisher) is removed.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = collectionElementIdentifier
-     *              args[1] = collectionName
-     *              args[2] = formElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/collectionElement/removed', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = collectionElementIdentifier
+    *              args[1] = collectionName
+    *              args[2] = formElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/collectionElement/removed', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-formelement-inserted:
@@ -3565,21 +3505,20 @@ call this event at the end. EXT:form uses this event to set the current
 to-be-processed form element (``getFormEditorApp().setCurrentlySelectedFormElement()``)
 and to re-render the ``Tree``, ``Stage`` and ``Inspector`` components.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = newFormElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/formElement/inserted', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = newFormElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/formElement/inserted', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-formelement-moved:
@@ -3590,21 +3529,20 @@ view/formElement/moved
 The method ``getFormEditorApp().getViewModel().moveFormElement()`` calls this
 event at the end.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = movedFormElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/formElement/moved', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = movedFormElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/formElement/moved', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-formelement-removed:
@@ -3617,21 +3555,20 @@ event at the end. EXT:form uses this event to set the current to-be-processed
 form element (``getFormEditorApp().setCurrentlySelectedFormElement()``) and to
 re-render the ``Tree``, ``Stage`` and ``Inspector`` components.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = parentFormElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/formElement/removed', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = parentFormElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/formElement/removed', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-header-button-close-clicked:
@@ -3643,20 +3580,19 @@ The onClick event of the "Close" button in the ``form editor's`` header section
 calls this event. EXT:form uses this event to display a warning message in case
 there are unsaved changes.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/header/button/close/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/header/button/close/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-header-button-newpage-clicked:
@@ -3668,21 +3604,20 @@ The onClick event of the "new page" button in the ``form editor's`` header
 section calls this event. EXT:form uses this event to display the "new page"
 dialog box.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = targetEvent
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/header/button/newPage/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = targetEvent
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/header/button/newPage/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-header-button-save-clicked:
@@ -3695,20 +3630,19 @@ calls this event. EXT:form uses this event either to display a dialog box with
 the element in question (if there are validation errors) or to save the ``form
 definition`` (if there are no validation errors).
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/header/button/save/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/header/button/save/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-header-formsettings-clicked:
@@ -3720,20 +3654,19 @@ The onClick event of the "settings"  button in the ``form editor's`` header
 section calls this event. EXT:form uses this event to select the root form
 element.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/header/formSettings/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/header/formSettings/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-insertelements-perform-after:
@@ -3754,21 +3687,20 @@ event :ref:`view/formElement/inserted<apireference-formeditor-basicjavascriptcon
 is called. The event ``view/formElement/inserted`` in ``getFormEditorApp().getViewModel().createAndAddFormElement()``
 was previously deactivated.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = formElementType
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/insertElements/perform/after', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = formElementType
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/insertElements/perform/after', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-insertelements-perform-bottom:
@@ -3785,21 +3717,20 @@ EXT:form uses this event to create a new form element (``getFormEditorApp().getV
 This element is always created as the last element of the currently selected
 page.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = formElementType
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/insertElements/perform/bottom', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = formElementType
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/insertElements/perform/bottom', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-insertelements-perform-inside:
@@ -3815,21 +3746,20 @@ element:
 EXT:form uses this event to create a new form element as a child element of the
 currently selected element (``getFormEditorApp().getViewModel().createAndAddFormElement()``).
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = formElementType
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/insertElements/perform/inside', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = formElementType
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/insertElements/perform/inside', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-insertpages-perform:
@@ -3846,21 +3776,20 @@ element:
 EXT:form uses this event to create a new page after the currently selected page
 (``getFormEditorApp().getViewModel().createAndAddFormElement()``).
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = formElementType
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/insertPages/perform', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = formElementType
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/insertPages/perform', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-inspector-collectionelement-existing-selected:
@@ -3881,17 +3810,17 @@ Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = collectionElementIdentifier
-     *              args[1] = collectionName
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/inspector/collectionElement/existing/selected', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = collectionElementIdentifier
+    *              args[1] = collectionName
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/inspector/collectionElement/existing/selected', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-inspector-collectionelement-new-selected:
@@ -3907,22 +3836,21 @@ addition, the ``inspector editor`` :ref:`RequiredValidatorEditor <typo3.cms.form
 calls this event when a checkbox is chosen. EXT:form uses this event to add and
 render the validator/ finisher of the ``form definition`` via ``getFormEditorApp().getViewModel().createAndAddPropertyCollectionElement()``.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = collectionElementIdentifier
-     *              args[1] = collectionName
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/inspector/collectionElement/new/selected', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = collectionElementIdentifier
+    *              args[1] = collectionName
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/inspector/collectionElement/new/selected', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-inspector-collectionelement-dnd-update:
@@ -3937,24 +3865,23 @@ collection element in the ``Inspector`` component is sorted. EXT:form uses this
 event to move the validator/ finisher in the ``form definition`` via the method
 ``getFormEditorApp().getViewModel().movePropertyCollectionElement()``.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = movedCollectionElementIdentifier
-     *              args[1] = previousCollectionElementIdentifier
-     *              args[2] = nextCollectionElementIdentifier
-     *              args[3] = collectionName
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/inspector/collectionElements/dnd/update', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = movedCollectionElementIdentifier
+    *              args[1] = previousCollectionElementIdentifier
+    *              args[2] = nextCollectionElementIdentifier
+    *              args[3] = collectionName
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/inspector/collectionElements/dnd/update', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-inspector-editor-insert-perform:
@@ -3984,208 +3911,207 @@ your own ``inspector editor``, you can use this event to execute in
 the corresponding JavaScript code, with the help of the property
 ``templateName``.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = editorConfiguration
-     *              args[1] = editorHtml
-     *              args[2] = collectionElementIdentifier
-     *              args[3] = collectionName
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/inspector/editor/insert/perform', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = editorConfiguration
+    *              args[1] = editorHtml
+    *              args[2] = collectionElementIdentifier
+    *              args[3] = collectionName
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/inspector/editor/insert/perform', function(topic, args) {
+   });
 
 
 A simple example that registers a custom ``inspector editor`` called 'Inspector-MyCustomInspectorEditor' and adds it to text form elements:
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formEditor:
-                dynamicRequireJsModules:
-                  additionalViewModelModules:
-                    - 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
-                formEditorFluidConfiguration:
-                  partialRootPaths:
-                    100: 'EXT:my_site_package/Resources/Private/Backend/Partials/FormEditor/'
-                formEditorPartials:
-                  Inspector-MyCustomInspectorEditor: 'Inspector/MyCustomInspectorEditor'
-              formElementsDefinition:
-                Text:
-                  formEditor:
-                    editors:
-                      600:
-                        templateName: 'Inspector-MyCustomInspectorEditor'
-                        ...
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formEditor:
+               dynamicRequireJsModules:
+                 additionalViewModelModules:
+                   - 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
+               formEditorFluidConfiguration:
+                 partialRootPaths:
+                   100: 'EXT:my_site_package/Resources/Private/Backend/Partials/FormEditor/'
+               formEditorPartials:
+                 Inspector-MyCustomInspectorEditor: 'Inspector/MyCustomInspectorEditor'
+             formElementsDefinition:
+               Text:
+                 formEditor:
+                   editors:
+                     600:
+                       templateName: 'Inspector-MyCustomInspectorEditor'
+                       ...
 
 
 .. code-block:: javascript
    :emphasize-lines: 107-116
 
-    /**
-     * Module: TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel
-     */
-    define(['jquery',
-            'TYPO3/CMS/Form/Backend/FormEditor/Helper'
-            ], function($, Helper) {
-            'use strict';
+   /**
+    * Module: TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel
+    */
+   define(['jquery',
+           'TYPO3/CMS/Form/Backend/FormEditor/Helper'
+           ], function($, Helper) {
+           'use strict';
 
-        return (function($, Helper) {
+       return (function($, Helper) {
 
-            /**
-             * @private
-             *
-             * @var object
-             */
-            var _formEditorApp = null;
+           /**
+            * @private
+            *
+            * @var object
+            */
+           var _formEditorApp = null;
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getFormEditorApp() {
-                return _formEditorApp;
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getFormEditorApp() {
+               return _formEditorApp;
+           };
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getPublisherSubscriber() {
-                return getFormEditorApp().getPublisherSubscriber();
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getPublisherSubscriber() {
+               return getFormEditorApp().getPublisherSubscriber();
+           };
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getUtility() {
-                return getFormEditorApp().getUtility();
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getUtility() {
+               return getFormEditorApp().getUtility();
+           };
 
-            /**
-             * @private
-             *
-             * @param object
-             * @return object
-             */
-            function getHelper() {
-                return Helper;
-            };
+           /**
+            * @private
+            *
+            * @param object
+            * @return object
+            */
+           function getHelper() {
+               return Helper;
+           };
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getCurrentlySelectedFormElement() {
-                return getFormEditorApp().getCurrentlySelectedFormElement();
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getCurrentlySelectedFormElement() {
+               return getFormEditorApp().getCurrentlySelectedFormElement();
+           };
 
-            /**
-             * @private
-             *
-             * @param mixed test
-             * @param string message
-             * @param int messageCode
-             * @return void
-             */
-            function assert(test, message, messageCode) {
-                return getFormEditorApp().assert(test, message, messageCode);
-            };
+           /**
+            * @private
+            *
+            * @param mixed test
+            * @param string message
+            * @param int messageCode
+            * @return void
+            */
+           function assert(test, message, messageCode) {
+               return getFormEditorApp().assert(test, message, messageCode);
+           };
 
-            /**
-             * @private
-             *
-             * @return void
-             * @throws 1491643380
-             */
-            function _helperSetup() {
-                assert('function' === $.type(Helper.bootstrap),
-                    'The view model helper does not implement the method "bootstrap"',
-                    1491643380
-                );
-                Helper.bootstrap(getFormEditorApp());
-            };
+           /**
+            * @private
+            *
+            * @return void
+            * @throws 1491643380
+            */
+           function _helperSetup() {
+               assert('function' === $.type(Helper.bootstrap),
+                   'The view model helper does not implement the method "bootstrap"',
+                   1491643380
+               );
+               Helper.bootstrap(getFormEditorApp());
+           };
 
-            /**
-             * @private
-             *
-             * @return void
-             */
-            function _subscribeEvents() {
-                /**
-                 * @private
-                 *
-                 * @param string
-                 * @param array
-                 *              args[0] = editorConfiguration
-                 *              args[1] = editorHtml
-                 *              args[2] = collectionElementIdentifier
-                 *              args[3] = collectionName
-                 * @return void
-                 */
-                getPublisherSubscriber().subscribe('view/inspector/editor/insert/perform', function(topic, args) {
-                    if (args[0]['templateName'] === 'Inspector-MyCustomInspectorEditor') {
-                        renderMyCustomInspectorEditor(
-                            args[0],
-                            args[1],
-                            args[2],
-                            args[3]
-                        );
-                    }
-                });
-            };
+           /**
+            * @private
+            *
+            * @return void
+            */
+           function _subscribeEvents() {
+               /**
+                * @private
+                *
+                * @param string
+                * @param array
+                *              args[0] = editorConfiguration
+                *              args[1] = editorHtml
+                *              args[2] = collectionElementIdentifier
+                *              args[3] = collectionName
+                * @return void
+                */
+               getPublisherSubscriber().subscribe('view/inspector/editor/insert/perform', function(topic, args) {
+                   if (args[0]['templateName'] === 'Inspector-MyCustomInspectorEditor') {
+                       renderMyCustomInspectorEditor(
+                           args[0],
+                           args[1],
+                           args[2],
+                           args[3]
+                       );
+                   }
+               });
+           };
 
-            /**
-             * @private
-             *
-             * @param object editorConfiguration
-             * @param object editorHtml
-             * @param string collectionElementIdentifier
-             * @param string collectionName
-             * @return void
-             */
-            function renderMyCustomInspectorEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
-                // do cool stuff
-            });
+           /**
+            * @private
+            *
+            * @param object editorConfiguration
+            * @param object editorHtml
+            * @param string collectionElementIdentifier
+            * @param string collectionName
+            * @return void
+            */
+           function renderMyCustomInspectorEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
+               // do cool stuff
+           });
 
-            /**
-             * @public
-             *
-             * @param object formEditorApp
-             * @return void
-             */
-            function bootstrap(formEditorApp) {
-                _formEditorApp = formEditorApp;
-                _helperSetup();
-                _subscribeEvents();
-            };
+           /**
+            * @public
+            *
+            * @param object formEditorApp
+            * @return void
+            */
+           function bootstrap(formEditorApp) {
+               _formEditorApp = formEditorApp;
+               _helperSetup();
+               _subscribeEvents();
+           };
 
-            /**
-             * Publish the public methods.
-             * Implements the "Revealing Module Pattern".
-             */
-            return {
-                bootstrap: bootstrap
-            };
-        })($, Helper);
-    });
+           /**
+            * Publish the public methods.
+            * Implements the "Revealing Module Pattern".
+            */
+           return {
+               bootstrap: bootstrap
+           };
+       })($, Helper);
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-inspector-removecollectionelement-perform:
@@ -4198,23 +4124,22 @@ calls this event, if the checkbox is deselected. EXT:form uses this event to
 remove the configured required validator ('NotEmpty') from the ``form
 definition`` through the method ``getFormEditorApp().getViewModel().removePropertyCollectionElement()``.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = collectionElementIdentifier
-     *              args[1] = collectionName
-     *              args[2] = formElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/inspector/removeCollectionElement/perform', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = collectionElementIdentifier
+    *              args[1] = collectionName
+    *              args[2] = formElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/inspector/removeCollectionElement/perform', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-modal-close-perform:
@@ -4227,20 +4152,19 @@ appears, asking whether you really wish to close it. If you confirm it, this
 event is called in the ``check box`` component. EXT:form uses this event to
 close the ``form editor`` and return to the ``form manager``.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/modal/close/perform', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/modal/close/perform', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-modal-removecollectionelement-perform:
@@ -4254,23 +4178,22 @@ is called in the ``check box`` component. EXT:form uses this event to remove
 the validator/ finisher from the ``form definition`` through the method
 ``getFormEditorApp().getViewModel().removePropertyCollectionElement()``.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = collectionElementIdentifier
-     *              args[1] = collectionName
-     *              args[2] = formElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/modal/removeCollectionElement/perform', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = collectionElementIdentifier
+    *              args[1] = collectionName
+    *              args[2] = formElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/modal/removeCollectionElement/perform', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-modal-removeformelement-perform:
@@ -4283,21 +4206,20 @@ appears, asking you to confirm this action. If confirmed, this event is called
 in the ``check box`` component. EXT:form uses this event to remove the form
 element from the ``form definition`` via the method ``getFormEditorApp().getViewModel().removeFormElement()``.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = formElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/modal/removeFormElement/perform', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = formElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/modal/removeFormElement/perform', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-modal-validationerrors-element-clicked:
@@ -4311,21 +4233,20 @@ form element can be clicked in this dialog box. This event is called by
 clicking a form element in the dialog box. EXT:form uses this event to select
 and show this form element.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = formElementIdentifierPath
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/modal/validationErrors/element/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = formElementIdentifierPath
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/modal/validationErrors/element/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-paginationnext-clicked:
@@ -4337,20 +4258,19 @@ This event is called if the 'pagination next' button in the ``Stage``
 component's header section is clicked. EXT:form uses this event to render the
 next page of the form.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/paginationNext/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/paginationNext/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-paginationprevious-clicked:
@@ -4362,20 +4282,19 @@ This event is called, if the 'pagination previous' button in the ``Stage``
 component's header section is clicked. EXT:form uses this event to render the
 previous page of the form.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/paginationPrevious/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/paginationPrevious/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-ready:
@@ -4387,7 +4306,6 @@ EXT:form makes it possible to load :ref:`your own JavaScript module <concepts-fo
 If all modules are loaded, the view-model method ``_loadAdditionalModules``
 calls this event. EXT:form uses this event to remove the preloader icon and
 finally initialize the ``form editor``.
-
 
 Subscribe to the event:
 
@@ -4415,20 +4333,19 @@ collection elements (validators/ finishers) is saved in an internal stack in
 order to reset the undo/ redo functionality. EXT:form uses this event to reset
 this stack to the previous state.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/redoButton/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/redoButton/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-abstract-button-newelement-clicked:
@@ -4440,22 +4357,21 @@ This event is called if the "Create new element" button at the end of the
 ``Stage`` component in the ``abstract view`` mode is clicked. EXT:form uses
 this event to display the "new element" dialog box.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = targetEvent
-     *              args[1] = configuration
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/abstract/button/newElement/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = targetEvent
+    *              args[1] = configuration
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/abstract/button/newElement/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-abstract-dnd-change:
@@ -4469,23 +4385,22 @@ the ``view/stage/abstract/dnd/change`` event in the ``Stage`` component in the
 ``abstract view`` mode if form elements are sorted. EXT:form uses this event to
 set various CSS classes during the drag-and-drop process.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = placeholderDomElement
-     *              args[1] = parentFormElementIdentifierPath
-     *              args[2] = enclosingCompositeFormElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/abstract/dnd/change', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = placeholderDomElement
+    *              args[1] = parentFormElementIdentifierPath
+    *              args[2] = enclosingCompositeFormElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/abstract/dnd/change', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-abstract-dnd-start:
@@ -4499,22 +4414,21 @@ the ``view/stage/abstract/dnd/start`` event in the ``Stage`` component in the
 ``abstract view`` mode if form elements are sorted. EXT:form uses this event to
 set various CSS classes at the start of the drag-and-drop process.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = draggedFormElementDomElement
-     *              args[1] = draggedFormPlaceholderDomElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/abstract/dnd/start', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = draggedFormElementDomElement
+    *              args[1] = draggedFormPlaceholderDomElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/abstract/dnd/start', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-abstract-dnd-stop:
@@ -4529,21 +4443,20 @@ drop functionality. The 'stop' event from 'jquery.mjs.nestedSortable' calls the
 to re-render the ``Tree``, ``Stage`` and ``Inspector`` components at the end of
 the drag-and-drop process and to select the moved form element.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = draggedFormElementIdentifierPath
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/abstract/dnd/stop', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = draggedFormElementIdentifierPath
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/abstract/dnd/stop', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-abstract-dnd-update:
@@ -4558,24 +4471,23 @@ the ``view/stage/abstract/dnd/update`` event in the ``Stage`` component in the
 to move the form element in the ``form definition`` accordingly at the end of
 the drag-and-drop process.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = movedDomElement
-     *              args[1] = movedFormElementIdentifierPath
-     *              args[2] = previousFormElementIdentifierPath
-     *              args[3] = nextFormElementIdentifierPath
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/abstract/dnd/update', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = movedDomElement
+    *              args[1] = movedFormElementIdentifierPath
+    *              args[2] = previousFormElementIdentifierPath
+    *              args[3] = nextFormElementIdentifierPath
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/abstract/dnd/update', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-abstract-elementtoolbar-button-newelement-clicked:
@@ -4587,22 +4499,21 @@ This event is called if the "Create new element" button in the form-element
 toolbar or "Inside" or "After" in the split button is clicked. EXT:form uses
 this event to display the "New element" dialog box.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = targetEvent
-     *              args[1] = configuration
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/abstract/elementToolbar/button/newElement/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = targetEvent
+    *              args[1] = configuration
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/abstract/elementToolbar/button/newElement/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-abstract-render-postprocess:
@@ -4613,20 +4524,19 @@ view/stage/abstract/render/postProcess
 This event is called after the ``abstract view`` of the ``Stage`` component has
 been rendered. EXT:form uses this event to render the undo/ redo buttons.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/abstract/render/postProcess', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/abstract/render/postProcess', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-abstract-render-preprocess:
@@ -4637,20 +4547,19 @@ view/stage/abstract/render/preProcess
 This event is called before the ``abstract view`` of the ``Stage`` component is
 rendered.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/abstract/render/preProcess', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/abstract/render/preProcess', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-abstract-render-template-perform:
@@ -4685,205 +4594,202 @@ method delivered with EXT:form. An overview over the functionality of the
 formEditorPartials for the ``<formElementTypeIdentifier>`` and its JavaScript
 code is found :ref:`here <apireference-formeditor-stage-commonabstractformelementtemplates>`.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = formElement
-     *              args[1] = template
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/abstract/render/template/perform', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = formElement
+    *              args[1] = template
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/abstract/render/template/perform', function(topic, args) {
+   });
 
 
 A simple example reusing the EXT:form inline HTML template ``Stage/SelectTemplate`` and the EXT:form JavaScript code ``renderSelectTemplates()``
 for a custom form element with ``<formElementTypeIdentifier>`` = 'GenderSelect'.
 In this example, 'GenderSelect' is basically a radio button form element with some predefined options.
 
-
 .. code-block:: yaml
    :emphasize-lines: 11
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formEditor:
-                dynamicRequireJsModules:
-                  additionalViewModelModules:
-                    - 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
-                formEditorPartials:
-                  FormElement-GenderSelect: 'Stage/SelectTemplate'
-              formElementsDefinition:
-                GenderSelect:
-                  __inheritances:
-                    10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.RadioButton'
-                  renderingOptions:
-                    templateName: 'RadioButton'
-                  properties:
-                    options:
-                      f: 'Female'
-                      m: 'Male'
-                      u: 'Unicorn'
-                      a: 'Alien'
-                  formEditor:
-                    label: 'Gender Select'
-                    group: select
-                    groupSorting: 9000
-                    predefinedDefaults:
-                      properties:
-                        options:
-                          f: 'Female'
-                          m: 'Male'
-                          u: 'Unicorn'
-                          a: 'Alien'
-                    editors:
-                      300: null
-
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formEditor:
+               dynamicRequireJsModules:
+                 additionalViewModelModules:
+                   - 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
+               formEditorPartials:
+                 FormElement-GenderSelect: 'Stage/SelectTemplate'
+             formElementsDefinition:
+               GenderSelect:
+                 __inheritances:
+                   10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.RadioButton'
+                 renderingOptions:
+                   templateName: 'RadioButton'
+                 properties:
+                   options:
+                     f: 'Female'
+                     m: 'Male'
+                     u: 'Unicorn'
+                     a: 'Alien'
+                 formEditor:
+                   label: 'Gender Select'
+                   group: select
+                   groupSorting: 9000
+                   predefinedDefaults:
+                     properties:
+                       options:
+                         f: 'Female'
+                         m: 'Male'
+                         u: 'Unicorn'
+                         a: 'Alien'
+                   editors:
+                     300: null
 
 .. code-block:: javascript
    :emphasize-lines: 105-109
 
-    /**
-     * Module: TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel
-     */
-    define(['jquery',
-            'TYPO3/CMS/Form/Backend/FormEditor/Helper'
-            ], function($, Helper) {
-            'use strict';
+   /**
+    * Module: TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel
+    */
+   define(['jquery',
+           'TYPO3/CMS/Form/Backend/FormEditor/Helper'
+           ], function($, Helper) {
+           'use strict';
 
-        return (function($, Helper) {
+       return (function($, Helper) {
 
-            /**
-             * @private
-             *
-             * @var object
-             */
-            var _formEditorApp = null;
+           /**
+            * @private
+            *
+            * @var object
+            */
+           var _formEditorApp = null;
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getFormEditorApp() {
-                return _formEditorApp;
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getFormEditorApp() {
+               return _formEditorApp;
+           };
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getPublisherSubscriber() {
-                return getFormEditorApp().getPublisherSubscriber();
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getPublisherSubscriber() {
+               return getFormEditorApp().getPublisherSubscriber();
+           };
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getUtility() {
-                return getFormEditorApp().getUtility();
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getUtility() {
+               return getFormEditorApp().getUtility();
+           };
 
-            /**
-             * @private
-             *
-             * @param object
-             * @return object
-             */
-            function getHelper() {
-                return Helper;
-            };
+           /**
+            * @private
+            *
+            * @param object
+            * @return object
+            */
+           function getHelper() {
+               return Helper;
+           };
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getCurrentlySelectedFormElement() {
-                return getFormEditorApp().getCurrentlySelectedFormElement();
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getCurrentlySelectedFormElement() {
+               return getFormEditorApp().getCurrentlySelectedFormElement();
+           };
 
-            /**
-             * @private
-             *
-             * @param mixed test
-             * @param string message
-             * @param int messageCode
-             * @return void
-             */
-            function assert(test, message, messageCode) {
-                return getFormEditorApp().assert(test, message, messageCode);
-            };
+           /**
+            * @private
+            *
+            * @param mixed test
+            * @param string message
+            * @param int messageCode
+            * @return void
+            */
+           function assert(test, message, messageCode) {
+               return getFormEditorApp().assert(test, message, messageCode);
+           };
 
-            /**
-             * @private
-             *
-             * @return void
-             * @throws 1491643380
-             */
-            function _helperSetup() {
-                assert('function' === $.type(Helper.bootstrap),
-                    'The view model helper does not implement the method "bootstrap"',
-                    1491643380
-                );
-                Helper.bootstrap(getFormEditorApp());
-            };
+           /**
+            * @private
+            *
+            * @return void
+            * @throws 1491643380
+            */
+           function _helperSetup() {
+               assert('function' === $.type(Helper.bootstrap),
+                   'The view model helper does not implement the method "bootstrap"',
+                   1491643380
+               );
+               Helper.bootstrap(getFormEditorApp());
+           };
 
-            /**
-             * @private
-             *
-             * @return void
-             */
-            function _subscribeEvents() {
-                /**
-                 * @private
-                 *
-                 * @param string
-                 * @param array
-                 *              args[0] = formElement
-                 *              args[1] = template
-                 * @return void
-                 */
-                getPublisherSubscriber().subscribe('view/stage/abstract/render/template/perform', function(topic, args) {
-                    if (args[0].get('type') === 'GenderSelect') {
-                        getFormEditorApp().getViewModel().getStage().renderSelectTemplates(args[0], args[1]);
-                    }
-                });
-            };
+           /**
+            * @private
+            *
+            * @return void
+            */
+           function _subscribeEvents() {
+               /**
+                * @private
+                *
+                * @param string
+                * @param array
+                *              args[0] = formElement
+                *              args[1] = template
+                * @return void
+                */
+               getPublisherSubscriber().subscribe('view/stage/abstract/render/template/perform', function(topic, args) {
+                   if (args[0].get('type') === 'GenderSelect') {
+                       getFormEditorApp().getViewModel().getStage().renderSelectTemplates(args[0], args[1]);
+                   }
+               });
+           };
 
-            /**
-             * @public
-             *
-             * @param object formEditorApp
-             * @return void
-             */
-            function bootstrap(formEditorApp) {
-                _formEditorApp = formEditorApp;
-                _helperSetup();
-                _subscribeEvents();
-            };
+           /**
+            * @public
+            *
+            * @param object formEditorApp
+            * @return void
+            */
+           function bootstrap(formEditorApp) {
+               _formEditorApp = formEditorApp;
+               _helperSetup();
+               _subscribeEvents();
+           };
 
-            /**
-             * Publish the public methods.
-             * Implements the "Revealing Module Pattern".
-             */
-            return {
-                bootstrap: bootstrap
-            };
-        })($, Helper);
-    });
+           /**
+            * Publish the public methods.
+            * Implements the "Revealing Module Pattern".
+            */
+           return {
+               bootstrap: bootstrap
+           };
+       })($, Helper);
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-element-clicked:
@@ -4896,21 +4802,20 @@ clicked. EXT:form uses this event to select this element and to display the
 form-element toolbar. In addition, the ``Tree`` and ``Inspector`` components
 are re-rendered.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = formElementIdentifierPath
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/element/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = formElementIdentifierPath
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/element/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-panel-clicked:
@@ -4921,20 +4826,19 @@ view/stage/panel/clicked
 This event is called if the header section of the ``Stage`` component is
 clicked.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/panel/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/panel/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-stage-preview-render-postprocess:
@@ -4945,20 +4849,19 @@ view/stage/preview/render/postProcess
 This event is called after the ``preview view`` of the ``Stage`` component has
 been rendered. EXT:form uses this event to render the undo/ redo buttons.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/stage/preview/render/postProcess', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/stage/preview/render/postProcess', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-structure-button-newpage-clicked:
@@ -4974,16 +4877,16 @@ Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = targetEvent
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/structure/button/newPage/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = targetEvent
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/structure/button/newPage/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-structure-renew-postprocess:
@@ -4995,20 +4898,19 @@ This event is called from the view-model after the ``Tree`` component has been
 re-rendered. EXT:form uses this event to display potential validation errors
 from form elements in the ``Tree`` component.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/structure/renew/postProcess', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/structure/renew/postProcess', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-structure-root-selected:
@@ -5020,20 +4922,19 @@ This event is called if the root form element in the ``Tree`` component is
 clicked. EXT:form uses this event to re-render the ``Stage``, ``Inspector`` and
 ``Tree`` components.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/structure/root/selected', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/structure/root/selected', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-tree-dnd-change:
@@ -5047,23 +4948,22 @@ the ``view/tree/dnd/change`` event in der ``Tree`` component if form elements
 are sorted. EXT:form uses this event to set various CSS classes during the drag
 -and-drop process.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = placeholderDomElement
-     *              args[1] = parentFormElementIdentifierPath
-     *              args[2] = enclosingCompositeFormElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/tree/dnd/change', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = placeholderDomElement
+    *              args[1] = parentFormElementIdentifierPath
+    *              args[2] = enclosingCompositeFormElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/tree/dnd/change', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-tree-dnd-stop:
@@ -5078,21 +4978,20 @@ sorted. EXT:form uses this event to re-render ``Tree``, ``Stage`` and
 ``Inspector`` components at the end of the drag-and-drop process and to select
 the moved form element.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = draggedFormElementIdentifierPath
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/tree/dnd/stop', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = draggedFormElementIdentifierPath
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/tree/dnd/stop', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-tree-dnd-update:
@@ -5106,24 +5005,23 @@ the ``view/tree/dnd/update`` event in der ``Tree`` component if form elements
 are sorted. EXT:form uses this event to move the form element in the ``form
 definition`` accordingly at the end of the drag-and-drop process.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = movedDomElement
-     *              args[1] = movedFormElementIdentifierPath
-     *              args[2] = previousFormElementIdentifierPath
-     *              args[3] = nextFormElementIdentifierPath
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/tree/dnd/update', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = movedDomElement
+    *              args[1] = movedFormElementIdentifierPath
+    *              args[2] = previousFormElementIdentifierPath
+    *              args[3] = nextFormElementIdentifierPath
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/tree/dnd/update', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-tree-node-clicked:
@@ -5135,21 +5033,20 @@ This event is called from the ``Tree`` component if a form element is clicked.
 EXT:form uses this event to re-render the ``Stage`` and ``Inspector``
 components and select the form element.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = formElementIdentifierPath
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/tree/node/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = formElementIdentifierPath
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/tree/node/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-tree-render-listitemadded:
@@ -5160,22 +5057,21 @@ view/tree/render/listItemAdded
 This event is called by the ``Tree`` component for each form element as soon as
 it is added to the tree.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     *              args[0] = listItem
-     *              args[1] = formElement
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/tree/render/listItemAdded', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    *              args[0] = listItem
+    *              args[1] = formElement
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/tree/render/listItemAdded', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-undobutton-clicked:
@@ -5189,20 +5085,19 @@ collection elements (validators/ finishers) is stored in an internal stack to
 implement the undo / redo functionality. EXT:form uses this event to set this
 stack to the next state.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/undoButton/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/undoButton/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-viewmodebutton-abstract-clicked:
@@ -5214,20 +5109,19 @@ This event is called when the abstract view button is clicked in the header
 area of the ``Stage`` component. EXT:form uses this event to render the
 ``abstract view`` in the ``Stage`` component.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/viewModeButton/abstract/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/viewModeButton/abstract/clicked', function(topic, args) {
+   });
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-events-view-viewmodebutton-preview-clicked:
@@ -5239,20 +5133,19 @@ This event is called when the preview button is clicked in the header area of
 the ``Stage`` component. EXT:form uses this event to render the ``preview
 view`` in the ``Stage`` component.
 
-
 Subscribe to the event:
 
 .. code-block:: javascript
 
-    /**
-     * @private
-     *
-     * @param string
-     * @param array
-     * @return void
-     */
-    getPublisherSubscriber().subscribe('view/viewModeButton/preview/clicked', function(topic, args) {
-    });
+   /**
+    * @private
+    *
+    * @param string
+    * @param array
+    * @return void
+    */
+   getPublisherSubscriber().subscribe('view/viewModeButton/preview/clicked', function(topic, args) {
+   });
 
 
 
@@ -5295,32 +5188,32 @@ Example of a ``FormElement model``:
 
 .. code-block:: javascript
 
-    {
-      "identifier": "name",
-      "defaultValue": "",
-      "label": "Name",
-      "type": "Text",
-      "properties": {
-        "fluidAdditionalAttributes": {
-          "placeholder": "Name"
-        }
-      },
-      "__parentRenderable": "example-form/page-1 (filtered)",
-      "__identifierPath": "example-form/page-1/name",
-      "validators": [
-        {
-          "identifier": "NotEmpty"
-        }
-      ]
-    }
+   {
+     "identifier": "name",
+     "defaultValue": "",
+     "label": "Name",
+     "type": "Text",
+     "properties": {
+       "fluidAdditionalAttributes": {
+         "placeholder": "Name"
+       }
+     },
+     "__parentRenderable": "example-form/page-1 (filtered)",
+     "__identifierPath": "example-form/page-1/name",
+     "validators": [
+       {
+         "identifier": "NotEmpty"
+       }
+     ]
+   }
 
 
 Access to ``properties.fluidAdditionalAttributes.placeholder``:
 
 .. code-block:: javascript
 
-    // value = 'Name'
-    var value = getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').get('properties.fluidAdditionalAttributes.placeholder');
+   // value = 'Name'
+   var value = getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').get('properties.fluidAdditionalAttributes.placeholder');
 
 
 Two exceptions are the two arrays of "finishers" / "validators" (``property
@@ -5338,42 +5231,41 @@ their positions in the array are potentially unknown, the ``getFormEditorApp().b
 method exists. This can be used to access a property of a property collection
 item via its ``identifier``.
 
-
 Example of a ``FormElement model``:
 
 .. code-block:: javascript
 
-    {
-      "identifier": "name",
-      "defaultValue": "",
-      "label": "Name",
-      "type": "Text",
-      "properties": {
-        "fluidAdditionalAttributes": {
-          "placeholder": "Name"
-        }
-      },
-      "__parentRenderable": "example-form/page-1 (filtered)",
-      "__identifierPath": "example-form/page-1/name",
-      "validators": [
-        {
-          "identifier": "StringLength"
-          "options": {
-            "minimum": "1",
-            "maximum": "2"
-          }
-        }
-      ]
-    }
+   {
+     "identifier": "name",
+     "defaultValue": "",
+     "label": "Name",
+     "type": "Text",
+     "properties": {
+       "fluidAdditionalAttributes": {
+         "placeholder": "Name"
+       }
+     },
+     "__parentRenderable": "example-form/page-1 (filtered)",
+     "__identifierPath": "example-form/page-1/name",
+     "validators": [
+       {
+         "identifier": "StringLength"
+         "options": {
+           "minimum": "1",
+           "maximum": "2"
+         }
+       }
+     ]
+   }
 
 Access to ``options.minimum`` of the validator ``StringLength``:
 
 .. code-block:: javascript
 
-    var formElement = getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name');
-    var propertyPath = getFormEditorApp().buildPropertyPath('options.minimum', 'StringLength', 'validators', formElement);
-    // value = 1
-    var value = formElement.get(propertyPath);
+   var formElement = getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name');
+   var propertyPath = getFormEditorApp().buildPropertyPath('options.minimum', 'StringLength', 'validators', formElement);
+   // value = 1
+   var value = formElement.get(propertyPath);
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-formelementmodel-method-get-renderables:
@@ -5401,55 +5293,55 @@ Example of a ``FormElement model``:
 
 .. code-block:: javascript
 
-    {
-      "identifier": "name",
-      "defaultValue": "",
-      "label": "Name",
-      "type": "Text",
-      "properties": {
-        "fluidAdditionalAttributes": {
-          "placeholder": "Name"
-        }
-      },
-      "__parentRenderable": "example-form/page-1 (filtered)",
-      "__identifierPath": "example-form/page-1/name",
-      "validators": [
-        {
-          "identifier": "NotEmpty"
-        }
-      ]
-    }
+   {
+     "identifier": "name",
+     "defaultValue": "",
+     "label": "Name",
+     "type": "Text",
+     "properties": {
+       "fluidAdditionalAttributes": {
+         "placeholder": "Name"
+       }
+     },
+     "__parentRenderable": "example-form/page-1 (filtered)",
+     "__identifierPath": "example-form/page-1/name",
+     "validators": [
+       {
+         "identifier": "NotEmpty"
+       }
+     ]
+   }
 
 
 Set the property ``properties.fluidAdditionalAttributes.placeholder``:
 
 .. code-block:: javascript
 
-    getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').set('properties.fluidAdditionalAttributes.placeholder', 'New Placeholder');
+   getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').set('properties.fluidAdditionalAttributes.placeholder', 'New Placeholder');
 
 
 Example of the ``FormElement model`` after the ``set()`` operation:
 
 .. code-block:: javascript
 
-    {
-      "identifier": "name",
-      "defaultValue": "",
-      "label": "Name",
-      "type": "Text",
-      "properties": {
-        "fluidAdditionalAttributes": {
-          "placeholder": "New Placeholder"
-        }
-      },
-      "__parentRenderable": "example-form/page-1 (filtered)",
-      "__identifierPath": "example-form/page-1/name",
-      "validators": [
-        {
-          "identifier": "NotEmpty"
-        }
-      ]
-    }
+   {
+     "identifier": "name",
+     "defaultValue": "",
+     "label": "Name",
+     "type": "Text",
+     "properties": {
+       "fluidAdditionalAttributes": {
+         "placeholder": "New Placeholder"
+       }
+     },
+     "__parentRenderable": "example-form/page-1 (filtered)",
+     "__identifierPath": "example-form/page-1/name",
+     "validators": [
+       {
+         "identifier": "NotEmpty"
+       }
+     ]
+   }
 
 
 Two exceptions are the two arrays of "finishers" / "validators" (``property
@@ -5467,9 +5359,9 @@ Set the property ``options.minimum`` of the validator ``StringLength``:
 
 .. code-block:: javascript
 
-    var formElement = getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name');
-    var propertyPath = getFormEditorApp().buildPropertyPath('options.minimum', 'StringLength', 'validators', formElement);
-    formElement.set(propertyPath, '2');
+   var formElement = getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name');
+   var propertyPath = getFormEditorApp().buildPropertyPath('options.minimum', 'StringLength', 'validators', formElement);
+   formElement.set(propertyPath, '2');
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-formelementmodel-method-set-renderables:
@@ -5498,54 +5390,54 @@ Example of a ``FormElement model``:
 
 .. code-block:: javascript
 
-    {
-      "identifier": "name",
-      "defaultValue": "",
-      "label": "Name",
-      "type": "Text",
-      "properties": {
-        "fluidAdditionalAttributes": {
-          "placeholder": "Name"
-        }
-      },
-      "__parentRenderable": "example-form/page-1 (filtered)",
-      "__identifierPath": "example-form/page-1/name",
-      "validators": [
-        {
-          "identifier": "NotEmpty"
-        }
-      ]
-    }
+   {
+     "identifier": "name",
+     "defaultValue": "",
+     "label": "Name",
+     "type": "Text",
+     "properties": {
+       "fluidAdditionalAttributes": {
+         "placeholder": "Name"
+       }
+     },
+     "__parentRenderable": "example-form/page-1 (filtered)",
+     "__identifierPath": "example-form/page-1/name",
+     "validators": [
+       {
+         "identifier": "NotEmpty"
+       }
+     ]
+   }
 
 
 Delete the property ``properties.fluidAdditionalAttributes.placeholder``:
 
 .. code-block:: javascript
 
-    // value = 'Name'
-    var value = getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').unset('properties.fluidAdditionalAttributes.placeholder');
+   // value = 'Name'
+   var value = getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').unset('properties.fluidAdditionalAttributes.placeholder');
 
 
 Example of the ``FormElement model`` after the ``unset()`` operation:
 
 .. code-block:: javascript
 
-    {
-      "identifier": "name",
-      "defaultValue": "",
-      "label": "Name",
-      "type": "Text",
-      "properties": {
-        "fluidAdditionalAttributes": {}
-      },
-      "__parentRenderable": "example-form/page-1 (filtered)",
-      "__identifierPath": "example-form/page-1/name",
-      "validators": [
-        {
-          "identifier": "NotEmpty"
-        }
-      ]
-    }
+   {
+     "identifier": "name",
+     "defaultValue": "",
+     "label": "Name",
+     "type": "Text",
+     "properties": {
+       "fluidAdditionalAttributes": {}
+     },
+     "__parentRenderable": "example-form/page-1 (filtered)",
+     "__identifierPath": "example-form/page-1/name",
+     "validators": [
+       {
+         "identifier": "NotEmpty"
+       }
+     ]
+   }
 
 
 Two exceptions are the two arrays of "finishers" / "validators" (``property
@@ -5563,9 +5455,9 @@ Delete the property ``options.minimum`` of the validator ``StringLength``:
 
 .. code-block:: javascript
 
-    var formElement = getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name');
-    var propertyPath = getFormEditorApp().buildPropertyPath('options.minimum', 'StringLength', 'validators', formElement);
-    formElement.unset(propertyPath);
+   var formElement = getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name');
+   var propertyPath = getFormEditorApp().buildPropertyPath('options.minimum', 'StringLength', 'validators', formElement);
+   formElement.unset(propertyPath);
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-formelementmodel-method-unset-renderables:
@@ -5592,9 +5484,9 @@ Example:
 
 .. code-block:: javascript
 
-    getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').on('properties.fluidAdditionalAttributes.placeholder', 'my/custom/event');
-    getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').set('properties.fluidAdditionalAttributes.placeholder', 'New Placeholder');
-    // now, the event 'my/custom/event' will be published
+   getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').on('properties.fluidAdditionalAttributes.placeholder', 'my/custom/event');
+   getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').set('properties.fluidAdditionalAttributes.placeholder', 'New Placeholder');
+   // now, the event 'my/custom/event' will be published
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-formelementmodel-method-off:
@@ -5609,7 +5501,7 @@ Example:
 
 .. code-block:: javascript
 
-    getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').off('properties.fluidAdditionalAttributes.placeholder', 'my/custom/event');
+   getFormEditorApp().getFormElementByIdentifierPath('example-form/page-1/name').off('properties.fluidAdditionalAttributes.placeholder', 'my/custom/event');
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-formelementmodel-method-getobjectdata:
@@ -5636,7 +5528,7 @@ supplied by ``getObjectData()`` in string form.
 
 .. code-block:: javascript
 
-    console.log(formElement.toString());
+   console.log(formElement.toString());
 
 
 .. _apireference-formeditor-basicjavascriptconcepts-formelementmodel-method-clone:
@@ -5650,4 +5542,4 @@ original ``FormElement model``.
 
 .. code-block:: javascript
 
-    var dolly = formElement.clone();
+   var dolly = formElement.clone();

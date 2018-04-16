@@ -3,8 +3,6 @@ getProperties()
 
 Get all element-specific configuration properties.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getProperties(): array;
+   public function getProperties(): array;

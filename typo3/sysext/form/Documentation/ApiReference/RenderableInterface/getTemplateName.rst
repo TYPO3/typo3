@@ -3,8 +3,6 @@ getTemplateName()
 
 Get the template name of the form element.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getTemplateName(): string;
+   public function getTemplateName(): string;

@@ -8,6 +8,7 @@ Introduction
 ============
 
 .. note::
+
    This documentation will be extended on a constant basis. If you have
    problems understanding a certain aspect, or if you notice something
    missing, contribute to improve it. This will help you and everyone else!

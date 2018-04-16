@@ -3,8 +3,6 @@ getParentRenderable()
 
 Return the parent form element.
 
-Signature:
+Signature::
 
-.. code-block:: php
-
-    public function getParentRenderable();
+   public function getParentRenderable();

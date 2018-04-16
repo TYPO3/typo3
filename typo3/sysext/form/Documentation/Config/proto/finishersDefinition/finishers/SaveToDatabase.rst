@@ -218,7 +218,7 @@ options.elements.<formElementIdentifier>.mapOnDatabaseColumn.saveFileIdentifierI
 
 :aspect:`Description`
       Set this to true if the database column should not be written if the value from the submitted form element with the identifier
-      ``<formElementIdentifier>`` is empty (think about password fields etc.)
+      ``<formElementIdentifier>`` is empty (think about password fields etc.).
 
       This setting only rules for form elements which creates a FAL object like ``FileUpload`` or ``ImageUpload``.
       By default, the uid of the FAL object will be written into the database column. Set this to true if you want to store the
@@ -348,7 +348,8 @@ options.databaseColumnMappings.<databaseColumnName>.skipIfValueIsEmpty
       - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      Set this to true if the database column should not be written if the value from ``options.databaseColumnMappings.<databaseColumnName>.value`` is empty. Empty means strings without content, whitespace is valid content.
+      Set this to true if the database column should not be written if the value from ``options.databaseColumnMappings.
+      <databaseColumnName>.value`` is empty. Empty means strings without content, whitespace is valid content.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.translation.translationfile:

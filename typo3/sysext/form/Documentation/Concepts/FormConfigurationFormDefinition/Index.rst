@@ -35,76 +35,76 @@ Example form definition
 
 .. code-block:: yaml
 
-    identifier: ext-form-simple-contact-form-example
-    label: 'Simple Contact Form'
-    prototype: standard
-    type: Form
+   identifier: ext-form-simple-contact-form-example
+   label: 'Simple Contact Form'
+   prototype: standard
+   type: Form
 
-    finishers:
-      -
-        identifier: EmailToReceiver
-        options:
-          subject: 'Your message'
-          recipientAddress: 'your.company@example.com'
-          recipientName: 'Your company name'
-          senderAddress: '{email}'
-          senderName: '{name}'
+   finishers:
+     -
+       identifier: EmailToReceiver
+       options:
+         subject: 'Your message'
+         recipientAddress: 'your.company@example.com'
+         recipientName: 'Your company name'
+         senderAddress: '{email}'
+         senderName: '{name}'
 
-    renderables:
-      -
-        identifier: page-1
-        label: 'Contact Form'
-        type: Page
+   renderables:
+     -
+       identifier: page-1
+       label: 'Contact Form'
+       type: Page
 
-        renderables:
-          -
-            identifier: name
-            label: 'Name'
-            type: Text
-            properties:
-              fluidAdditionalAttributes:
-                placeholder: 'Name'
-            defaultValue: ''
-            validators:
-              -
-                identifier: NotEmpty
-          -
-            identifier: subject
-            label: 'Subject'
-            type: Text
-            properties:
-              fluidAdditionalAttributes:
-                placeholder: 'Subject'
-            defaultValue: ''
-            validators:
-              -
-                identifier: NotEmpty
-          -
-            identifier: email
-            label: 'Email'
-            type: Text
-            properties:
-              fluidAdditionalAttributes:
-                placeholder: 'Email address'
-            defaultValue: ''
-            validators:
-              -
-                identifier: NotEmpty
-              -
-                identifier: EmailAddress
-          -
-            identifier: message
-            label: 'Message'
-            type: Textarea
-            properties:
-              fluidAdditionalAttributes:
-                placeholder: ''
-            defaultValue: ''
-            validators:
-              -
-                identifier: NotEmpty
+       renderables:
+         -
+           identifier: name
+           label: 'Name'
+           type: Text
+           properties:
+             fluidAdditionalAttributes:
+               placeholder: 'Name'
+           defaultValue: ''
+           validators:
+             -
+               identifier: NotEmpty
+         -
+           identifier: subject
+           label: 'Subject'
+           type: Text
+           properties:
+             fluidAdditionalAttributes:
+               placeholder: 'Subject'
+           defaultValue: ''
+           validators:
+             -
+               identifier: NotEmpty
+         -
+           identifier: email
+           label: 'Email'
+           type: Text
+           properties:
+             fluidAdditionalAttributes:
+               placeholder: 'Email address'
+           defaultValue: ''
+           validators:
+             -
+               identifier: NotEmpty
+             -
+               identifier: EmailAddress
+         -
+           identifier: message
+           label: 'Message'
+           type: Textarea
+           properties:
+             fluidAdditionalAttributes:
+               placeholder: ''
+           defaultValue: ''
+           validators:
+             -
+               identifier: NotEmpty
 
-      -
-        identifier: summarypage
-        label: 'Summary page'
-        type: SummaryPage
+     -
+       identifier: summarypage
+       label: 'Summary page'
+       type: SummaryPage

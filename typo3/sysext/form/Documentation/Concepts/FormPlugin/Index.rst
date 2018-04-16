@@ -38,29 +38,29 @@ translated:
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              finishersDefinition:
-                <finisherIdentifier>
-                  formEngine:
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             finishersDefinition:
+               <finisherIdentifier>
+                 formEngine:
 
 The translation files of the ``form plugin`` are loaded as follows:
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formEngine:
-                translationFile:
-                  # translation files for the form plugin (finisher overrides)
-                  10: 'EXT:form/Resources/Private/Language/Database.xlf'
-                  20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formEngine:
+               translationFile:
+                 # translation files for the form plugin (finisher overrides)
+                 10: 'EXT:form/Resources/Private/Language/Database.xlf'
+                 20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
 
 The process searches for each option value within all of the defined
 translation files. If a translation is found, the translated option value
@@ -70,9 +70,9 @@ Imagine, the following is defined for an option value:
 
 .. code-block:: yaml
 
-    ...
-    label: 'tt_content.finishersDefinition.EmailToReceiver.label'
-    ...
+   ...
+   label: 'tt_content.finishersDefinition.EmailToReceiver.label'
+   ...
 
 First of all, the process searches for the translation key
 ``tt_content.finishersDefinition.EmailToReceiver.label`` within the file

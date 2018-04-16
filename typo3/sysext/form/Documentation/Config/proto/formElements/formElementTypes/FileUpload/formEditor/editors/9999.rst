@@ -27,4 +27,3 @@ formEditor.editors.9999
                9999:
                  identifier: removeButton
                  templateName: Inspector-RemoveElementEditor
-

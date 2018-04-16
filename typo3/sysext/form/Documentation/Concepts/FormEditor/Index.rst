@@ -50,12 +50,12 @@ the following configuration path:
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formEditor:
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formEditor:
 
 Furthermore, you are able to configure the ``form editor`` regarding its
 different aspects. The configuration can be found below the following
@@ -63,20 +63,20 @@ configuration paths:
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formElementsDefinition:
-                <formElementTypeIdentifier>:
-                  formEditor:
-              finishersDefinition:
-                <finisherIdentifier>
-                  formEditor:
-              validatorsDefinition:
-                <validatorIdentifier>
-                  formEditor:
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               <formElementTypeIdentifier>:
+                 formEditor:
+             finishersDefinition:
+               <finisherIdentifier>
+                 formEditor:
+             validatorsDefinition:
+               <validatorIdentifier>
+                 formEditor:
 
 
 .. _concepts-formeditor-stage:
@@ -167,15 +167,15 @@ The following YAML configuration registers an additional JavaScript module.
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formEditor:
-                dynamicRequireJsModules:
-                  additionalViewModelModules:
-                    - 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formEditor:
+               dynamicRequireJsModules:
+                 additionalViewModelModules:
+                   - 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
 
 According to the example shown above, the JavaScript files have to be stored
 within the folder ``my_site_package/Resources/Public/JavaScript/Backend/FormEditor/ViewModel.js``.
@@ -193,135 +193,135 @@ for setting up your own module.
 
 .. code-block:: javascript
 
-    /**
-     * Module: TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel
-     */
-    define(['jquery',
-            'TYPO3/CMS/Form/Backend/FormEditor/Helper'
-            ], function($, Helper) {
-            'use strict';
+   /**
+    * Module: TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel
+    */
+   define(['jquery',
+           'TYPO3/CMS/Form/Backend/FormEditor/Helper'
+           ], function($, Helper) {
+           'use strict';
 
-        return (function($, Helper) {
+       return (function($, Helper) {
 
-            /**
-             * @private
-             *
-             * @var object
-             */
-            var _formEditorApp = null;
+           /**
+            * @private
+            *
+            * @var object
+            */
+           var _formEditorApp = null;
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getFormEditorApp() {
-                return _formEditorApp;
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getFormEditorApp() {
+               return _formEditorApp;
+           };
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getPublisherSubscriber() {
-                return getFormEditorApp().getPublisherSubscriber();
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getPublisherSubscriber() {
+               return getFormEditorApp().getPublisherSubscriber();
+           };
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getUtility() {
-                return getFormEditorApp().getUtility();
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getUtility() {
+               return getFormEditorApp().getUtility();
+           };
 
-            /**
-             * @private
-             *
-             * @param object
-             * @return object
-             */
-            function getHelper() {
-                return Helper;
-            };
+           /**
+            * @private
+            *
+            * @param object
+            * @return object
+            */
+           function getHelper() {
+               return Helper;
+           };
 
-            /**
-             * @private
-             *
-             * @return object
-             */
-            function getCurrentlySelectedFormElement() {
-                return getFormEditorApp().getCurrentlySelectedFormElement();
-            };
+           /**
+            * @private
+            *
+            * @return object
+            */
+           function getCurrentlySelectedFormElement() {
+               return getFormEditorApp().getCurrentlySelectedFormElement();
+           };
 
-            /**
-             * @private
-             *
-             * @param mixed test
-             * @param string message
-             * @param int messageCode
-             * @return void
-             */
-            function assert(test, message, messageCode) {
-                return getFormEditorApp().assert(test, message, messageCode);
-            };
+           /**
+            * @private
+            *
+            * @param mixed test
+            * @param string message
+            * @param int messageCode
+            * @return void
+            */
+           function assert(test, message, messageCode) {
+               return getFormEditorApp().assert(test, message, messageCode);
+           };
 
-            /**
-             * @private
-             *
-             * @return void
-             * @throws 1491643380
-             */
-            function _helperSetup() {
-                assert('function' === $.type(Helper.bootstrap),
-                    'The view model helper does not implement the method "bootstrap"',
-                    1491643380
-                );
-                Helper.bootstrap(getFormEditorApp());
-            };
+           /**
+            * @private
+            *
+            * @return void
+            * @throws 1491643380
+            */
+           function _helperSetup() {
+               assert('function' === $.type(Helper.bootstrap),
+                   'The view model helper does not implement the method "bootstrap"',
+                   1491643380
+               );
+               Helper.bootstrap(getFormEditorApp());
+           };
 
-            /**
-             * @private
-             *
-             * @return void
-             */
-            function _subscribeEvents() {
-                getPublisherSubscriber().subscribe('some/eventName/you/want/to/handle', function(topic, args) {
-                    myCustomCode();
-                });
-            };
+           /**
+            * @private
+            *
+            * @return void
+            */
+           function _subscribeEvents() {
+               getPublisherSubscriber().subscribe('some/eventName/you/want/to/handle', function(topic, args) {
+                   myCustomCode();
+               });
+           };
 
-            /**
-             * @private
-             *
-             * @return void
-             */
-            function myCustomCode() {
-            };
+           /**
+            * @private
+            *
+            * @return void
+            */
+           function myCustomCode() {
+           };
 
-            /**
-             * @public
-             *
-             * @param object formEditorApp
-             * @return void
-             */
-            function bootstrap(formEditorApp) {
-                _formEditorApp = formEditorApp;
-                _helperSetup();
-                _subscribeEvents();
-            };
+           /**
+            * @public
+            *
+            * @param object formEditorApp
+            * @return void
+            */
+           function bootstrap(formEditorApp) {
+               _formEditorApp = formEditorApp;
+               _helperSetup();
+               _subscribeEvents();
+           };
 
-            /**
-             * Publish the public methods.
-             * Implements the "Revealing Module Pattern".
-             */
-            return {
-                bootstrap: bootstrap
-            };
-        })($, Helper);
-    });
+           /**
+            * Publish the public methods.
+            * Implements the "Revealing Module Pattern".
+            */
+           return {
+               bootstrap: bootstrap
+           };
+       })($, Helper);
+   });
 
 
 .. _concepts-formeditor-basicjavascriptconcepts-events:
@@ -352,103 +352,103 @@ you a ``form definition`` and the debug output of the corresponding
 
 .. code-block:: yaml
 
-    identifier: javascript-form-element-model
-    label: 'JavaScript FormElement model'
-    type: Form
-    finishers:
-      -
-        identifier: EmailToReceiver
-        options:
-          subject: 'Your message: {subject}'
-          recipientAddress: your.company@example.com
-          recipientName: 'Your Company name'
-          senderAddress: '{email}'
-          senderName: '{name}'
-          replyToAddress: ''
-          carbonCopyAddress: ''
-          blindCarbonCopyAddress: ''
-          format: html
-          attachUploads: 'true'
-          translation:
-            language: ''
-    renderables:
-      -
-        identifier: page-1
-        label: 'Contact Form'
-        type: Page
-        renderables:
-          -
-            identifier: name
-            label: Name
-            type: Text
-            properties:
-              fluidAdditionalAttributes:
-                placeholder: Name
-            defaultValue: ''
-            validators:
-              -
-                identifier: NotEmpty
+   identifier: javascript-form-element-model
+   label: 'JavaScript FormElement model'
+   type: Form
+   finishers:
+     -
+       identifier: EmailToReceiver
+       options:
+         subject: 'Your message: {subject}'
+         recipientAddress: your.company@example.com
+         recipientName: 'Your Company name'
+         senderAddress: '{email}'
+         senderName: '{name}'
+         replyToAddress: ''
+         carbonCopyAddress: ''
+         blindCarbonCopyAddress: ''
+         format: html
+         attachUploads: 'true'
+         translation:
+           language: ''
+   renderables:
+     -
+       identifier: page-1
+       label: 'Contact Form'
+       type: Page
+       renderables:
+         -
+           identifier: name
+           label: Name
+           type: Text
+           properties:
+             fluidAdditionalAttributes:
+               placeholder: Name
+           defaultValue: ''
+           validators:
+             -
+               identifier: NotEmpty
 
 
 .. code-block:: javascript
 
-    {
-      "identifier": "javascript-form-element-model",
-      "label": "JavaScript FormElement model",
-      "type": "Form",
-      "prototypeName": "standard",
-      "__parentRenderable": null,
-      "__identifierPath": "example-form",
-      "finishers": [
-        {
-          "identifier": "EmailToReceiver",
-          "options": {
-            "subject": "Your message: {subject}",
-            "recipientAddress": "your.company@example.com",
-            "recipientName": "Your Company name",
-            "senderAddress": "{email}",
-            "senderName": "{name}",
-            "replyToAddress": "",
-            "carbonCopyAddress": "",
-            "blindCarbonCopyAddress": "",
-            "format": "html",
-            "attachUploads": true,
-            "translation": {
-              "language": ""
-            }
-          }
-        }
-      ],
-      "renderables": [
-        {
-          "identifier": "page-1",
-          "label": "Contact Form",
-          "type": "Page",
-          "__parentRenderable": "example-form (filtered)",
-          "__identifierPath": "example-form/page-1",
-          "renderables": [
-            {
-              "identifier": "name",
-              "defaultValue": "",
-              "label": "Name",
-              "type": "Text",
-              "properties": {
-                "fluidAdditionalAttributes": {
-                  "placeholder": "Name"
-                }
-              },
-              "__parentRenderable": "example-form/page-1 (filtered)",
-              "__identifierPath": "example-form/page-1/name",
-              "validators": [
-                {
-                  "identifier": "NotEmpty"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
+   {
+     "identifier": "javascript-form-element-model",
+     "label": "JavaScript FormElement model",
+     "type": "Form",
+     "prototypeName": "standard",
+     "__parentRenderable": null,
+     "__identifierPath": "example-form",
+     "finishers": [
+       {
+         "identifier": "EmailToReceiver",
+         "options": {
+           "subject": "Your message: {subject}",
+           "recipientAddress": "your.company@example.com",
+           "recipientName": "Your Company name",
+           "senderAddress": "{email}",
+           "senderName": "{name}",
+           "replyToAddress": "",
+           "carbonCopyAddress": "",
+           "blindCarbonCopyAddress": "",
+           "format": "html",
+           "attachUploads": true,
+           "translation": {
+             "language": ""
+           }
+         }
+       }
+     ],
+     "renderables": [
+       {
+         "identifier": "page-1",
+         "label": "Contact Form",
+         "type": "Page",
+         "__parentRenderable": "example-form (filtered)",
+         "__identifierPath": "example-form/page-1",
+         "renderables": [
+           {
+             "identifier": "name",
+             "defaultValue": "",
+             "label": "Name",
+             "type": "Text",
+             "properties": {
+               "fluidAdditionalAttributes": {
+                 "placeholder": "Name"
+               }
+             },
+             "__parentRenderable": "example-form/page-1 (filtered)",
+             "__identifierPath": "example-form/page-1/name",
+             "validators": [
+               {
+                 "identifier": "NotEmpty"
+               }
+             ]
+           }
+         ]
+       }
+     ]
+   }
 
 For each form element which has child elements, you will find a property
 called ``renderables``. Those ``renderables`` are arrays whose elements
@@ -486,36 +486,36 @@ translated:
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formEditor:
-              formElementsDefinition:
-                <formElementTypeIdentifier>:
-                  formEditor:
-              finishersDefinition:
-                <finisherIdentifier>
-                  formEditor:
-              validatorsDefinition:
-                <validatorIdentifier>
-                  formEditor:
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formEditor:
+             formElementsDefinition:
+               <formElementTypeIdentifier>:
+                 formEditor:
+             finishersDefinition:
+               <finisherIdentifier>
+                 formEditor:
+             validatorsDefinition:
+               <validatorIdentifier>
+                 formEditor:
 
 The translation files of the ``form editor`` are loaded as follows:
 
 .. code-block:: yaml
 
-    TYPO3:
-      CMS:
-        Form:
-          prototypes:
-            standard:
-              formEditor:
-                translationFile:
-                  # translation files for the form editor
-                  10: 'EXT:form/Resources/Private/Language/Database.xlf'
-                  20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formEditor:
+               translationFile:
+                 # translation files for the form editor
+                 10: 'EXT:form/Resources/Private/Language/Database.xlf'
+                 20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
 
 The process searches for each option value within all of the defined
 translation files. If a translation is found, the translated option value
@@ -525,9 +525,9 @@ Imagine, the following is defined for an option value:
 
 .. code-block:: yaml
 
-    ...
-    label: 'formEditor.elements.Form.editor.finishers.label'
-    ...
+   ...
+   label: 'formEditor.elements.Form.editor.finishers.label'
+   ...
 
 First of all, the process searches for the translation key ``formEditor.elements.Form.editor.finishers.label``
 within the file ``20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'``
