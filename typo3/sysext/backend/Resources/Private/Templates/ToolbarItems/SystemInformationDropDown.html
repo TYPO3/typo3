@@ -19,7 +19,7 @@
 				<div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">
 					<f:if condition="{info.iconIdentifier}">
 						<f:then>
-							<core:icon identifier="{info.iconIdentifier}" size="small"/>
+							<core:icon identifier="{info.iconIdentifier}" size="small" alternativeMarkupIdentifier="inline" />
 						</f:then>
 						<f:else>{info.icon -> f:format.raw()}</f:else>
 					</f:if>
