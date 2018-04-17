@@ -56,7 +56,10 @@ define(['jquery',
       domElementDataAttributeNames: {
         contentElementSelectorTarget: 'data-insert-target',
         finisher: 'data-finisher-identifier',
-        validator: 'data-validator-identifier'
+        validator: 'data-validator-identifier',
+        randomId: 'data-random-id',
+        randomIdTarget: 'data-random-id-attribute',
+        randomIdIndex: 'data-random-id-number'
       },
       domElementDataAttributeValues: {
         collapse: 'actions-view-table-expand',
@@ -700,6 +703,40 @@ define(['jquery',
       return propertyData;
     };
 
+    /**
+     * @private
+     *
+     * @param object
+     * @throws 1523904699
+     */
+    function _setRandomIds(html) {
+      assert(
+        'object' === $.type(html),
+        'Invalid input "html"',
+        1523904699
+      );
+
+      $(getHelper().getDomElementClassName('inspectorEditor', true)).each(function(e) {
+        var $parent = $(this),
+            idReplacements = {};
+
+        $(getHelper().getDomElementDataAttribute('randomId', 'bracesWithKey'), $parent).each(function(e) {
+            var $element = $(this),
+                targetAttribute = $element.attr(getHelper().getDomElementDataAttribute('randomIdTarget')),
+                randomIdIndex = $element.attr(getHelper().getDomElementDataAttribute('randomIdIndex'));
+
+            if ($element.is('[' + targetAttribute + ']')) {
+                return true;
+            }
+
+            if (!idReplacements.hasOwnProperty(randomIdIndex)) {
+              idReplacements[randomIdIndex] = 'fe' + Math.floor(Math.random() * 42) + Date.now();
+            }
+            $element.attr(targetAttribute, idReplacements[randomIdIndex]);
+        });
+      });
+    };
+
     /* *************************************************************
      * Public Methodes
      * ************************************************************/
@@ -809,6 +846,7 @@ define(['jquery',
           .addClass(getHelper().getDomElementClassName('inspectorEditor'));
         getInspectorDomElement().append($(html));
 
+        _setRandomIds(html);
         _renderEditorDispatcher(formElementTypeDefinition['editors'][i], html);
       }
 
@@ -909,6 +947,7 @@ define(['jquery',
           getCollectionElementDomElement(collectionName, collectionElementIdentifier).append(html);
         }
 
+        _setRandomIds(html);
         _renderEditorDispatcher(
           collectionElementConfiguration['editors'][i],
           html,
