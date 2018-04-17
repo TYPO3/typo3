@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
@@ -661,6 +663,102 @@ class ConditionMatcherTest extends UnitTestCase
         ];
         $this->assertTrue($this->matchCondition->match('[globalString = ' . $this->testGlobalNamespace . '|first = testFirst]'));
         $this->assertTrue($this->matchCondition->match('[globalString = ' . $this->testGlobalNamespace . '|second|third = testThird]'));
+    }
+
+    /**
+     * Tests whether any property of a site language matches the request
+     *
+     * @test
+     */
+    public function siteLanguageMatchesCondition(): void
+    {
+        $site = new Site('angelo', 13, [
+            'languages' => [
+                [
+                    'languageId' => 0,
+                    'title' => 'United States',
+                    'locale' => 'en_US.UTF-8',
+                ],
+                [
+                    'languageId' => 2,
+                    'title' => 'UK',
+                    'locale' => 'en_UK.UTF-8',
+                ]
+            ]
+        ]);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
+        $this->assertTrue($this->matchCondition->match('[siteLanguage = locale = en_US.UTF-8]'));
+        $this->assertTrue($this->matchCondition->match('[siteLanguage = locale = de_DE, locale = en_US.UTF-8]'));
+    }
+
+    /**
+     * Tests whether any property of a site language does NOT match the request
+     *
+     * @test
+     */
+    public function siteLanguageDoesNotMatchCondition(): void
+    {
+        $site = new Site('angelo', 13, [
+            'languages' => [
+                [
+                    'languageId' => 0,
+                    'title' => 'United States',
+                    'locale' => 'en_US.UTF-8',
+                ],
+                [
+                    'languageId' => 2,
+                    'title' => 'UK',
+                    'locale' => 'en_UK.UTF-8',
+                ]
+            ]
+        ]);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
+        $this->assertFalse($this->matchCondition->match('[siteLanguage = locale = en_UK.UTF-8]'));
+        $this->assertFalse($this->matchCondition->match('[siteLanguage = locale = de_DE, title = UK]'));
+    }
+
+    /**
+     * Tests whether any property of a site matches the request
+     *
+     * @test
+     */
+    public function siteMatchesCondition(): void
+    {
+        $site = new Site('angelo', 13, ['languages' => [], 'base' => 'https://typo3.org/']);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
+        $this->assertTrue($this->matchCondition->match('[site = identifier = angelo]'));
+        $this->assertTrue($this->matchCondition->match('[site = rootPageId = 13]'));
+        $this->assertTrue($this->matchCondition->match('[site = base = https://typo3.org/]'));
+    }
+
+    /**
+     * Tests whether any property of a site that does NOT match the request
+     *
+     * @test
+     */
+    public function siteDoesNotMatchCondition(): void
+    {
+        $site = new Site('angelo', 13, [
+            'languages' => [
+                [
+                    'languageId' => 0,
+                    'title' => 'United States',
+                    'locale' => 'en_US.UTF-8',
+                ],
+                [
+                    'languageId' => 2,
+                    'title' => 'UK',
+                    'locale' => 'en_UK.UTF-8',
+                ]
+            ]
+        ]);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
+        $this->assertFalse($this->matchCondition->match('[site = identifier = berta]'));
+        $this->assertFalse($this->matchCondition->match('[site = rootPageId = 14, rootPageId=23]'));
     }
 
     /**

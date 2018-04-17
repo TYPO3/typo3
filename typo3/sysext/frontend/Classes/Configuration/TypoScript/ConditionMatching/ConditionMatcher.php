@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
 
 /*
@@ -14,7 +15,9 @@ namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -43,46 +46,87 @@ class ConditionMatcher extends AbstractConditionMatcher
             return $result;
         }
         switch ($key) {
-                case 'usergroup':
-                    $groupList = $this->getGroupList();
-                    // '0,-1' is the default usergroups when not logged in!
-                    if ($groupList !== '0,-1') {
-                        $values = GeneralUtility::trimExplode(',', $value, true);
-                        foreach ($values as $test) {
-                            if ($test === '*' || GeneralUtility::inList($groupList, $test)) {
+            case 'usergroup':
+                $groupList = $this->getGroupList();
+                // '0,-1' is the default usergroups when not logged in!
+                if ($groupList !== '0,-1') {
+                    $values = GeneralUtility::trimExplode(',', $value, true);
+                    foreach ($values as $test) {
+                        if ($test === '*' || GeneralUtility::inList($groupList, $test)) {
+                            return true;
+                        }
+                    }
+                }
+                break;
+            case 'treeLevel':
+                $values = GeneralUtility::trimExplode(',', $value, true);
+                $treeLevel = count($this->rootline) - 1;
+                foreach ($values as $test) {
+                    if ($test == $treeLevel) {
+                        return true;
+                    }
+                }
+                break;
+            case 'PIDupinRootline':
+            case 'PIDinRootline':
+                $values = GeneralUtility::trimExplode(',', $value, true);
+                if ($key === 'PIDinRootline' || !in_array($this->pageId, $values)) {
+                    foreach ($values as $test) {
+                        foreach ($this->rootline as $rlDat) {
+                            if ($rlDat['uid'] == $test) {
                                 return true;
                             }
                         }
                     }
-                    break;
-                case 'treeLevel':
+                }
+                break;
+            case 'site':
+                $siteLanguage = $this->getCurrentSiteLanguage();
+                if ($siteLanguage instanceof SiteLanguage) {
+                    $site = $siteLanguage->getSite();
                     $values = GeneralUtility::trimExplode(',', $value, true);
-                    $treeLevel = count($this->rootline) - 1;
                     foreach ($values as $test) {
-                        if ($test == $treeLevel) {
-                            return true;
-                        }
-                    }
-                    break;
-                case 'PIDupinRootline':
-                case 'PIDinRootline':
-                    $values = GeneralUtility::trimExplode(',', $value, true);
-                    if ($key === 'PIDinRootline' || !in_array($this->pageId, $values)) {
-                        foreach ($values as $test) {
-                            foreach ($this->rootline as $rlDat) {
-                                if ($rlDat['uid'] == $test) {
-                                    return true;
-                                }
+                        $point = strcspn($test, '=');
+                        $testValue = substr($test, $point + 1);
+                        $testValue = trim($testValue);
+                        $theVarName = trim(substr($test, 0, $point));
+                        $methodName = 'get' . ucfirst($theVarName);
+                        if (method_exists($site, $methodName)) {
+                            $sitePropertyValue = call_user_func([$site, $methodName]);
+                            // loose check on purpose in order to check for integer values
+                            if ($testValue == $sitePropertyValue) {
+                                return true;
                             }
                         }
                     }
-                    break;
-                default:
-                    $conditionResult = $this->evaluateCustomDefinedCondition($string);
-                    if ($conditionResult !== null) {
-                        return $conditionResult;
+                }
+                break;
+            case 'siteLanguage':
+                $siteLanguage = $this->getCurrentSiteLanguage();
+                if ($siteLanguage instanceof SiteLanguage) {
+                    $values = GeneralUtility::trimExplode(',', $value, true);
+                    foreach ($values as $test) {
+                        $point = strcspn($test, '=');
+                        $testValue = substr($test, $point + 1);
+                        $testValue = trim($testValue);
+                        $theVarName = trim(substr($test, 0, $point));
+                        $methodName = 'get' . ucfirst($theVarName);
+                        if (method_exists($siteLanguage, $methodName)) {
+                            $languagePropertyValue = call_user_func([$siteLanguage, $methodName]);
+                            // loose check on purpose in order to check for integer values
+                            if ($testValue == $languagePropertyValue) {
+                                return true;
+                            }
+                        }
                     }
-            }
+                }
+                break;
+            default:
+                $conditionResult = $this->evaluateCustomDefinedCondition($string);
+                if ($conditionResult !== null) {
+                    return $conditionResult;
+                }
+        }
 
         return false;
     }
@@ -221,5 +265,19 @@ class ConditionMatcher extends AbstractConditionMatcher
     protected function getTypoScriptFrontendController()
     {
         return $GLOBALS['TSFE'];
+    }
+
+    /**
+     * Returns the currently configured "site language" if a site is configured (= resolved) in the current request.
+     *
+     * @internal
+     */
+    protected function getCurrentSiteLanguage(): ?SiteLanguage
+    {
+        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
+            && $GLOBALS['TYPO3_REQUEST']->getAttribute('language') instanceof SiteLanguage) {
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
+        }
+        return null;
     }
 }
