@@ -28,7 +28,7 @@ return [
         'typeicon_column' => 'doktype',
         'typeicon_classes' => [
             '1' => 'apps-pagetree-page-default',
-            '1-hideinmenu' => 'apps-pagetree-page-not-in-menu',
+            '1-hideinmenu' => 'apps-pagetree-page-hideinmenu',
             '1-root' => 'apps-pagetree-page-domain',
             '3' => 'apps-pagetree-page-shortcut-external',
             '3-hideinmenu' => 'apps-pagetree-page-shortcut-external-hideinmenu',

@@ -54,9 +54,9 @@
   version "2.1.31"
   resolved "https://registry.yarnpkg.com/@types/requirejs/-/requirejs-2.1.31.tgz#a24eaa0ee4f6b84feb8f521ca6550d48490b2bc6"
 
-"@typo3/icons@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@typo3/icons/-/icons-1.6.0.tgz#75aa65255aeeaf911d0bed644d2bb8fc2c1afcbb"
+"@typo3/icons@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@typo3/icons/-/icons-1.7.0.tgz#95a9367a58f6f5fab572d774e13848dc7777e3c4"
 
 JSONStream@^0.8.4:
   version "0.8.4"

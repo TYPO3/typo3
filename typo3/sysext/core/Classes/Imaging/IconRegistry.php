@@ -96,7 +96,7 @@ class IconRegistry implements SingletonInterface
          * Important Information:
          *
          * Icons are maintained in an external repository, if new icons are needed
-         * please request them at: https://github.com/wmdbsystems/T3.Icons/issues
+         * please request them at: https://github.com/typo3/typo3.icons/issues
          */
 
         // Actions
@@ -274,55 +274,55 @@ class IconRegistry implements SingletonInterface
         ],
 
         // System Information
-        'sysinfo-php-version' => [
+        'information-php-version' => [
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'code'
             ]
         ],
-        'sysinfo-database' =>  [
+        'information-database' =>  [
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'database'
             ]
         ],
-        'sysinfo-application-context' => [
+        'information-application-context' => [
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'tasks'
             ]
         ],
-        'sysinfo-composer-mode' => [
+        'information-composer-mode' => [
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'music'
             ]
         ],
-        'sysinfo-git' => [
+        'information-git' => [
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'git'
             ]
         ],
-        'sysinfo-webserver' => [
+        'information-webserver' => [
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'server'
             ]
         ],
-        'sysinfo-os-linux' => [
+        'information-os-linux' => [
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'linux'
             ]
         ],
-        'sysinfo-os-apple' => [
+        'information-os-apple' => [
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'apple'
             ]
         ],
-        'sysinfo-os-windows' => [
+        'information-os-windows' => [
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'windows'
@@ -511,8 +511,8 @@ class IconRegistry implements SingletonInterface
         't3-form-icon-gridrow' => 'form-gridrow',
         't3-form-icon-hidden' => 'form-hidden',
         't3-form-icon-image-upload' => 'form-image-upload',
-        't3-form-icon-insert-after' => 'form-insert-after',
-        't3-form-icon-insert-in' => 'form-insert-in',
+        't3-form-icon-insert-after' => 'actions-form-insert-after',
+        't3-form-icon-insert-in' => 'actions-form-insert-in',
         't3-form-icon-multi-checkbox' => 'form-multi-checkbox',
         't3-form-icon-multi-select' => 'form-multi-select',
         't3-form-icon-number' => 'form-number',
