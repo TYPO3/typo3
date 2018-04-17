@@ -236,6 +236,9 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getMirrors($forcedUpdateFromRemote = true)
     {
+        if ($this->repository === null) {
+            throw new ExtensionManagerException('No extension repository was found.', 1523971295);
+        }
         $assignedMirror = $this->repository->getMirrors();
         if ($forcedUpdateFromRemote || is_null($assignedMirror) || !is_object($assignedMirror)) {
             if ($forcedUpdateFromRemote || !is_file($this->getLocalMirrorListFile())) {
