@@ -439,27 +439,24 @@ class LoginRefresh {
    * and opens a dialog.
    */
   protected checkActiveSession = (): void => {
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls.login_timedout,
-      success: (response) => {
-        if (response.login.locked) {
-          if (!this.backendIsLocked) {
-            this.backendIsLocked = true;
-            this.showBackendLockedModal();
-          }
-        } else {
-          if (this.backendIsLocked) {
-            this.backendIsLocked = false;
-            this.hideBackendLockedModal();
-          }
-        }
-
+    $.getJSON(TYPO3.settings.ajaxUrls.login_timedout, [], (response) => {
+      if (response.login.locked) {
         if (!this.backendIsLocked) {
-          if (response.login.timed_out || response.login.will_time_out) {
-            response.login.timed_out
-              ? this.showLoginForm()
-              : this.showTimeoutModal();
-          }
+          this.backendIsLocked = true;
+          this.showBackendLockedModal();
+        }
+      } else {
+        if (this.backendIsLocked) {
+          this.backendIsLocked = false;
+          this.hideBackendLockedModal();
+        }
+      }
+
+      if (!this.backendIsLocked) {
+        if (response.login.timed_out || response.login.will_time_out) {
+          response.login.timed_out
+            ? this.showLoginForm()
+            : this.showTimeoutModal();
         }
       }
     });
