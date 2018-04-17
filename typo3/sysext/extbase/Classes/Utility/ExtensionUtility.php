@@ -104,7 +104,7 @@ tt_content.' . $pluginSignature . ' {
 
     /**
      * Register an Extbase PlugIn into backend's list of plugins
-     * FOR USE IN ext_tables.php FILES
+     * FOR USE IN Configuration/TCA/Overrides/tt_content.php
      *
      * @param string $extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
      * @param string $pluginName must be a unique id for your plugin in UpperCamelCase (the string length of the extension key added to the length of the plugin name should be less than 32!)
