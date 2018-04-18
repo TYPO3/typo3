@@ -20,12 +20,19 @@ class Client {
   private keyPrefix: string = 't3-';
 
   /**
+   * @returns {boolean}
+   */
+  private static isCapable(): boolean {
+    return localStorage !== null;
+  }
+
+  /**
    * Simple localStorage wrapper, to get value from localStorage
    * @param {string} key
    * @returns {string}
    */
   public get = (key: string): string => {
-    return localStorage.getItem(this.keyPrefix + key);
+    return Client.isCapable() ? localStorage.getItem(this.keyPrefix + key) : null;
   }
 
   /**
@@ -36,7 +43,9 @@ class Client {
    * @returns {string}
    */
   public set = (key: string, value: string): void => {
-    localStorage.setItem(this.keyPrefix + key, value);
+    if (Client.isCapable()) {
+      localStorage.setItem(this.keyPrefix + key, value);
+    }
   }
 
   /**
@@ -45,7 +54,9 @@ class Client {
    * @param {string} key
    */
   public unset = (key: string): void => {
-    localStorage.removeItem(this.keyPrefix + key);
+    if (Client.isCapable()) {
+      localStorage.removeItem(this.keyPrefix + key);
+    }
   }
 
   /**
@@ -54,6 +65,10 @@ class Client {
    * @param {string} prefix
    */
   public unsetByPrefix = (prefix: string): void => {
+    if (!Client.isCapable()) {
+      return;
+    }
+
     prefix = this.keyPrefix + prefix;
 
     const keysToDelete: Array<string> = [];
@@ -76,7 +91,9 @@ class Client {
    * Simple localStorage wrapper, to clear localStorage
    */
   public clear = (): void => {
-    localStorage.clear();
+    if (Client.isCapable()) {
+      localStorage.clear();
+    }
   }
 
   /**
@@ -86,8 +103,12 @@ class Client {
    * @returns {boolean}
    */
   public isset = (key: string): boolean => {
-    const value = this.get(key);
-    return (typeof value !== 'undefined' && value !== null);
+    if (Client.isCapable()) {
+      const value = this.get(key);
+      return (typeof value !== 'undefined' && value !== null);
+    }
+
+    return false;
   }
 }
 
