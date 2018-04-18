@@ -341,7 +341,7 @@ abstract class AbstractFormElement extends AbstractNode
      */
     protected function calculateColumnMarkup(int $cols): array
     {
-        $colWidth = floor(12 / $cols);
+        $colWidth = (int)floor(12 / $cols);
         $colClass = 'col-md-12';
         $colClear = [];
         if ($colWidth === 6) {
