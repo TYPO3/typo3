@@ -763,6 +763,21 @@ class IconRegistry implements SingletonInterface
     }
 
     /**
+     * Calculates the cache identifier based on the current registry
+     *
+     * @return string
+     * @internal
+     */
+    public function getCacheIdentifier(): string
+    {
+        if (!$this->fullInitialized) {
+            $this->initialize();
+        }
+
+        return sha1(json_encode($this->icons));
+    }
+
+    /**
      * Load icons from TCA for each table and add them as "tcarecords-XX" to $this->icons
      */
     protected function registerTCAIcons()

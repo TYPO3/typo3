@@ -12,6 +12,7 @@
  */
 
 import * as $ from 'jquery';
+import ClientStorage = require('./Storage/Client');
 
 enum Sizes {
   small = 'small',
@@ -30,7 +31,7 @@ enum MarkupIdentifiers {
   inline = 'inline'
 }
 
-interface Cache {
+interface PromiseCache {
   [key: string]: JQueryPromise<any>;
 }
 
@@ -42,7 +43,7 @@ class Icons {
   public readonly sizes: any = Sizes;
   public readonly states: any = States;
   public readonly markupIdentifiers: any = MarkupIdentifiers;
-  private readonly cache: Cache = {};
+  private readonly promiseCache: PromiseCache = {};
 
   /**
    * Get the icon by its identifier
@@ -59,24 +60,7 @@ class Icons {
                  overlayIdentifier?: string,
                  state?: string,
                  markupIdentifier?: MarkupIdentifiers): JQueryPromise<any> {
-    return $.when(this.fetch(identifier, size, overlayIdentifier, state, markupIdentifier));
-  }
 
-  /**
-   * Performs the AJAX request to fetch the icon
-   *
-   * @param {string} identifier
-   * @param {Sizes} size
-   * @param {string} overlayIdentifier
-   * @param {string} state
-   * @param {MarkupIdentifiers} markupIdentifier
-   * @returns {JQueryPromise<any>}
-   */
-  public fetch(identifier: string,
-               size: Sizes,
-               overlayIdentifier: string,
-               state: string,
-               markupIdentifier: MarkupIdentifiers): JQueryPromise<any> {
     /**
      * Icon keys:
      *
@@ -90,22 +74,76 @@ class Icons {
     state = state || States.default;
     markupIdentifier = markupIdentifier || MarkupIdentifiers.default;
 
-    const icon = [identifier, size, overlayIdentifier, state, markupIdentifier];
-    const cacheIdentifier = icon.join('_');
+    const describedIcon = [identifier, size, overlayIdentifier, state, markupIdentifier];
+    const cacheIdentifier = describedIcon.join('_');
 
-    if (!this.isCached(cacheIdentifier)) {
-      this.putInCache(cacheIdentifier, $.ajax({
+    return $.when(this.getIconRegistryCache()).pipe((registryCacheIdentifier: string): any => {
+      if (!ClientStorage.isset('icon_registry_cache_identifier')
+        || ClientStorage.get('icon_registry_cache_identifier') !== registryCacheIdentifier
+      ) {
+        ClientStorage.unsetByPrefix('icon_');
+        ClientStorage.set('icon_registry_cache_identifier', registryCacheIdentifier);
+      }
+
+      return this.fetchFromLocal(cacheIdentifier).then(null, (): any => {
+        return this.fetchFromRemote(describedIcon, cacheIdentifier);
+      });
+    });
+  }
+
+  private getIconRegistryCache(): JQueryPromise<any> {
+    const promiseCacheIdentifier = 'icon_registry_cache_identifier';
+
+    if (!this.isPromiseCached(promiseCacheIdentifier)) {
+      this.putInPromiseCache(promiseCacheIdentifier, $.ajax({
+        url: TYPO3.settings.ajaxUrls.icons_cache,
+        success: (response: string): string => {
+          return response;
+        }
+      }));
+    }
+
+    return this.getFromPromiseCache(promiseCacheIdentifier);
+  }
+
+  /**
+   * Performs the AJAX request to fetch the icon
+   *
+   * @param {Array<string>} icon
+   * @param {string} cacheIdentifier
+   * @returns {JQueryPromise<any>}
+   */
+  private fetchFromRemote(icon: Array<string>, cacheIdentifier: string): JQueryPromise<any> {
+    if (!this.isPromiseCached(cacheIdentifier)) {
+      this.putInPromiseCache(cacheIdentifier, $.ajax({
         url: TYPO3.settings.ajaxUrls.icons,
         dataType: 'html',
         data: {
           icon: JSON.stringify(icon)
         },
         success: (markup: string) => {
+          ClientStorage.set('icon_' + cacheIdentifier, markup);
           return markup;
         }
-      }).promise());
+      }));
     }
-    return this.getFromCache(cacheIdentifier).done();
+    return this.getFromPromiseCache(cacheIdentifier);
+  }
+
+  /**
+   * Gets the icon from localStorage
+   * @param {string} cacheIdentifier
+   * @returns {JQueryPromise<any>}
+   */
+  private fetchFromLocal(cacheIdentifier: string): JQueryPromise<any> {
+    const deferred = $.Deferred();
+    if (ClientStorage.isset('icon_' + cacheIdentifier)) {
+      deferred.resolve(ClientStorage.get('icon_' + cacheIdentifier));
+    } else {
+      deferred.reject();
+    }
+
+    return deferred.promise();
   }
 
   /**
@@ -114,8 +152,8 @@ class Icons {
    * @param {string} cacheIdentifier
    * @returns {boolean}
    */
-  private isCached(cacheIdentifier: string): boolean {
-    return typeof this.cache[cacheIdentifier] !== 'undefined';
+  private isPromiseCached(cacheIdentifier: string): boolean {
+    return typeof this.promiseCache[cacheIdentifier] !== 'undefined';
   }
 
   /**
@@ -124,8 +162,8 @@ class Icons {
    * @param {string} cacheIdentifier
    * @returns {JQueryPromise<any>}
    */
-  private getFromCache(cacheIdentifier: string): JQueryPromise<any> {
-    return this.cache[cacheIdentifier];
+  private getFromPromiseCache(cacheIdentifier: string): JQueryPromise<any> {
+    return this.promiseCache[cacheIdentifier];
   }
 
   /**
@@ -134,34 +172,12 @@ class Icons {
    * @param {string} cacheIdentifier
    * @param {JQueryPromise<any>} markup
    */
-  private putInCache(cacheIdentifier: string, markup: JQueryPromise<any>): void {
-    this.cache[cacheIdentifier] = markup;
+  private putInPromiseCache(cacheIdentifier: string, markup: JQueryPromise<any>): void {
+    this.promiseCache[cacheIdentifier] = markup;
   }
 }
 
 let iconsObject: Icons;
-try {
-  // fetch from opening window
-  if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.Icons) {
-    iconsObject = window.opener.TYPO3.Icons;
-  }
-
-  // fetch from parent
-  if (parent && parent.window.TYPO3 && parent.window.TYPO3.Icons) {
-    iconsObject = parent.window.TYPO3.Icons;
-  }
-
-  // fetch object from outer frame
-  if (top && top.TYPO3.Icons) {
-    iconsObject = top.TYPO3.Icons;
-  }
-} catch (e) {
-  // This only happens if the opener, parent or top is some other url (eg a local file)
-  // which loaded the current window. Then the browser's cross domain policy jumps in
-  // and raises an exception.
-  // For this case we are safe and we can create our global object below.
-}
-
 if (!iconsObject) {
   iconsObject = new Icons();
   TYPO3.Icons = iconsObject;

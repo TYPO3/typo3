@@ -45,29 +45,29 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
      */
     describe('tests for Icons::putInCache', function() {
       it('works for simply identifier and markup', function() {
-        Icons.putInCache('foo', 'bar');
-        expect(Icons.cache['foo']).toBe('bar');
+        Icons.putInPromiseCache('foo', 'bar');
+        expect(Icons.promiseCache['foo']).toBe('bar');
       });
     });
 
     /**
      * @test
      */
-    describe('tests for Icons::getFromCache', function() {
-      it('return undefined for uncached icon', function() {
-        expect(Icons.getFromCache('bar')).not.toBeDefined();
+    describe('tests for Icons::getFromPromiseCache', function() {
+      it('return undefined for uncached promise', function() {
+        expect(Icons.getFromPromiseCache('bar')).not.toBeDefined();
       });
     });
 
     /**
      * @test
      */
-    describe('tests for Icons::isCached', function() {
-      it('return true for cached icon', function() {
-        expect(Icons.isCached('foo')).toBe(true);
+    describe('tests for Icons::isPromiseCached', function() {
+      it('return true for cached promise', function() {
+        expect(Icons.isPromiseCached('foo')).toBe(true);
       });
-      it('return false for uncached icon', function() {
-        expect(Icons.isCached('bar')).toBe(false);
+      it('return false for uncached promise', function() {
+        expect(Icons.isPromiseCached('bar')).toBe(false);
       });
     });
   });

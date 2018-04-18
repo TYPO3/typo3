@@ -17,13 +17,15 @@
  * @exports TYPO3/CMS/Backend/Storage/Client
  */
 class Client {
+  private keyPrefix: string = 't3-';
+
   /**
    * Simple localStorage wrapper, to get value from localStorage
    * @param {string} key
    * @returns {string}
    */
   public get = (key: string): string => {
-    return localStorage.getItem('t3-' + key);
+    return localStorage.getItem(this.keyPrefix + key);
   }
 
   /**
@@ -34,7 +36,7 @@ class Client {
    * @returns {string}
    */
   public set = (key: string, value: string): void => {
-    localStorage.setItem('t3-' + key, value);
+    localStorage.setItem(this.keyPrefix + key, value);
   }
 
   /**
@@ -43,7 +45,31 @@ class Client {
    * @param {string} key
    */
   public unset = (key: string): void => {
-    localStorage.removeItem('t3-' + key);
+    localStorage.removeItem(this.keyPrefix + key);
+  }
+
+  /**
+   * Removes values from localStorage by a specific prefix of the key
+   *
+   * @param {string} prefix
+   */
+  public unsetByPrefix = (prefix: string): void => {
+    prefix = this.keyPrefix + prefix;
+
+    const keysToDelete: Array<string> = [];
+    for (let i = 0; i < localStorage.length; ++i) {
+      if (localStorage.key(i).substring(0, prefix.length) === prefix) {
+        // Remove the global key prefix, as it gets prepended in unset again
+        const key = localStorage.key(i).substr(this.keyPrefix.length);
+
+        // We can't delete the key here as this interferes with the size of the localStorage
+        keysToDelete.push(key);
+      }
+    }
+
+    for (let key of keysToDelete) {
+      this.unset(key);
+    }
   }
 
   /**

@@ -19,14 +19,22 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Controller for icon handling
+ *
+ * @internal
  */
 class IconController
 {
+    /**
+     * @var IconRegistry
+     */
+    protected $iconRegistry;
+
     /**
      * @var IconFactory
      */
@@ -37,7 +45,17 @@ class IconController
      */
     public function __construct()
     {
+        $this->iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+    }
+
+    /**
+     * @return ResponseInterface
+     * @internal
+     */
+    public function getCacheIdentifier(): ResponseInterface
+    {
+        return new HtmlResponse($this->iconRegistry->getCacheIdentifier());
     }
 
     /**
