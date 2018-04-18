@@ -359,27 +359,7 @@ class IconRegistry implements SingletonInterface
             'options' => [
                 'name' => 'check-square'
             ]
-        ],
-
-        // Flags will be auto-registered after we have the SVG files
-        'flags-multiple' => [
-            'provider' => BitmapIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/multiple.png'
-            ]
-        ],
-        'flags-catalonia' => [
-            'provider' => BitmapIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/catalonia.png'
-            ]
-        ],
-        'flags-en-us-gb' => [
-            'provider' => BitmapIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/en_us-gb.png'
-            ]
-        ],
+        ]
     ];
 
     /**
@@ -852,7 +832,7 @@ class IconRegistry implements SingletonInterface
      */
     protected function registerFlags()
     {
-        $iconFolder = 'EXT:core/Resources/Public/Icons/Flags/PNG/';
+        $iconFolder = 'EXT:core/Resources/Public/Icons/Flags/';
         $files = [
             'AC', 'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AN', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ',
             'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ',
@@ -879,7 +859,11 @@ class IconRegistry implements SingletonInterface
             'WF', 'WS',
             'XK',
             'YE', 'YT',
-            'ZA', 'ZM', 'ZW'
+            'ZA', 'ZM', 'ZW',
+            // Special Flags
+            'catalonia',
+            'multiple',
+            'en-us-gb'
         ];
         foreach ($files as $file) {
             $identifier = strtolower($file);
