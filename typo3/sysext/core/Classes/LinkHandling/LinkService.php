@@ -34,8 +34,6 @@ class LinkService implements SingletonInterface
     const TYPE_RECORD = 'record';
     const TYPE_UNKNOWN = 'unknown';
 
-    // @TODO There needs to be an API to make these types extensible as the former 'typolinkLinkHandler' does not work anymore! forge #79647
-
     /**
      * All registered LinkHandlers
      *
@@ -123,7 +121,17 @@ class LinkService implements SingletonInterface
             $result = $this->handlers[self::TYPE_EMAIL]->resolveHandlerData(['email' => $urn]);
             $result['type'] = self::TYPE_EMAIL;
         } else {
-            throw new Exception\UnknownUrnException('No valid URN to resolve found', 1457177667);
+            $result = [];
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Link']['resolveByStringRepresentation'] ?? null)) {
+                $params = ['urn' => $urn, 'result' => &$result];
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Link']['resolveByStringRepresentation'] as $hookMethod) {
+                    $fakeThis = false;
+                    GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
+                }
+            }
+            if (empty($result) || empty($result['type'])) {
+                throw new Exception\UnknownUrnException('No valid URN to resolve found', 1457177667);
+            }
         }
 
         return $result;
