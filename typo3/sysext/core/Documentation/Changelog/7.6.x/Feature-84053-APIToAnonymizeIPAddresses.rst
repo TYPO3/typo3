@@ -32,6 +32,5 @@ Impact
 The core uses this API whenever IP addresses are stored, this includes:
 
 - Indexed Search uses the new setting for its search statistics.
--
 
 .. index:: PHP-API, ext:core, ext:indexed_search
