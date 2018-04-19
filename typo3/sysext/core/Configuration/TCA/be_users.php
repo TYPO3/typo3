@@ -175,22 +175,50 @@ return [
             ]
         ],
         'disable' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disable',
+            'exclude' => 1,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
             'config' => [
-                'type' => 'check'
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => true
+                    ],
+                ],
             ]
         ],
         'disableIPlock' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.disableIPlock',
+            'exclude' => 1,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.IPlockState',
             'config' => [
-                'type' => 'check'
+                'type' => 'check',
+                'renderType' => 'checkboxLabeledToggle',
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'labelChecked' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
+                        'labelUnchecked' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disabled',
+                        'invertStateDisplay' => true
+                    ],
+                ],
             ]
         ],
         'admin' => [
+            'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.admin',
             'config' => [
                 'type' => 'check',
-                'default' => 0
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                    ],
+                ],
             ]
         ],
         'options' => [
@@ -235,13 +263,18 @@ return [
             ]
         ],
         'workspace_perms' => [
+            'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'default' => 1,
                 'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms_live', 0]
+                    [
+                        0 => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms_live',
+                        1 => '',
+                    ],
                 ],
-                'default' => 1
             ]
         ],
         'starttime' => [

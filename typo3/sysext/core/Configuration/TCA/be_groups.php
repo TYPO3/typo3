@@ -110,15 +110,21 @@ return [
             ]
         ],
         'workspace_perms' => [
+            'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
                 'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms_live', 0]
+                    [
+                        0 => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms_live',
+                        1 => '',
+                    ],
                 ],
-                'default' => 0
             ]
         ],
+
         'pagetypes_select' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.pagetypes_select',
             'config' => [
@@ -187,10 +193,19 @@ return [
             ]
         ],
         'hidden' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disable',
+            'exclude' => 1,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
             'config' => [
                 'type' => 'check',
-                'default' => 0
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => true
+                    ],
+                ],
             ]
         ],
         'lockToDomain' => [

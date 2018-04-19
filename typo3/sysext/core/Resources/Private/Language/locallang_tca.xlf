@@ -72,6 +72,9 @@
 			<trans-unit id="be_users.disableIPlock">
 				<source>Disable IP lock for user</source>
 			</trans-unit>
+			<trans-unit id="be_users.IPlockState">
+				<source>IP lock for user</source>
+			</trans-unit>
 			<trans-unit id="be_users.admin">
 				<source>Admin (!)</source>
 			</trans-unit>
