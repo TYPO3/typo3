@@ -56,12 +56,19 @@ define(['jquery'], function($) {
   };
 
   /**
+   * @returns {boolean}
+   */
+  Storage.Client.isCapable = function() {
+    return localStorage !== null;
+  };
+
+  /**
    * Simple localStorage wrapper, to get value from localStorage
    * @param {String} key
    * @return {String}
    */
   Storage.Client.get = function(key) {
-    return localStorage.getItem('t3-' + key);
+    return Storage.Client.isCapable() ? localStorage.getItem('t3-' + key) : null;
   };
 
   /**
@@ -70,7 +77,9 @@ define(['jquery'], function($) {
    * @param {String} value
    */
   Storage.Client.set = function(key, value) {
-    localStorage.setItem('t3-' + key, value);
+    if (Storage.Client.isCapable()) {
+      localStorage.setItem('t3-' + key, value);
+    }
   };
 
   /**
@@ -78,14 +87,18 @@ define(['jquery'], function($) {
    * @param {String} key
    */
   Storage.Client.unset = function(key) {
-    localStorage.removeItem('t3-' + key);
+    if (Storage.Client.isCapable()) {
+      localStorage.removeItem('t3-' + key);
+    }
   };
 
   /**
    * Simple localStorage wrapper, to clear localStorage
    */
   Storage.Client.clear = function() {
-    localStorage.clear();
+    if (Storage.Client.isCapable()) {
+      localStorage.clear();
+    }
   };
 
   /**
@@ -95,8 +108,12 @@ define(['jquery'], function($) {
    * @returns {Boolean}
    */
   Storage.Client.isset = function(key) {
-    var value = this.get(key);
-    return (typeof value !== 'undefined' && value !== null);
+    if (Storage.Client.isCapable()) {
+      var value = this.get(key);
+      return (typeof value !== 'undefined' && value !== null);
+    }
+
+    return false;
   };
 
   /**
