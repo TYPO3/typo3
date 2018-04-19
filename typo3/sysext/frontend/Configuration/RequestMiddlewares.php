@@ -48,7 +48,7 @@ return [
         'typo3/cms-frontend/tsfe' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\TypoScriptFrontendInitialization::class,
             'after' => [
-                'typo3/cms-core/normalized-params-attribute',
+                'typo3/cms-frontend/eid',
             ]
         ],
         'typo3/cms-frontend/output-compression' => [
