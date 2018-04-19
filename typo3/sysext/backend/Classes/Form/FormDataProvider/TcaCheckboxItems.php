@@ -144,10 +144,10 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
     private function sanitizeLabeledToggleCheckbox(array $item, int $itemKey, array $newItems)
     {
         if (array_key_exists('labelChecked', $item)) {
-            $newItems[$itemKey]['labelChecked'] = $item['labelChecked'];
+            $newItems[$itemKey]['labelChecked'] = $this->getLanguageService()->sL($item['labelChecked']);
         }
         if (array_key_exists('labelUnchecked', $item)) {
-            $newItems[$itemKey]['labelUnchecked'] = $item['labelUnchecked'];
+            $newItems[$itemKey]['labelUnchecked'] = $this->getLanguageService()->sL($item['labelUnchecked']);
         }
         if (array_key_exists('invertStateDisplay', $item)) {
             $newItems[$itemKey]['invertStateDisplay'] = $item['invertStateDisplay'];
