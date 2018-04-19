@@ -86,6 +86,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
     {
         $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_title')) . '</h1>';
         if ($this->pObj->id) {
+            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Frontend/TranslationStatus');
+
             // Depth selector:
             $theOutput .= '<div class="form-inline form-inline-spaced">';
             $h_func = BackendUtility::getDropdownMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
@@ -248,15 +250,15 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                         } else {
                             $status = GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : '';
                             $info = '<div class="btn-group"><label class="btn btn-default btn-checkbox">';
-                            $info .= '<input type="checkbox" name="newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']" value="1" />';
+                            $info .= '<input type="checkbox" data-lang="' . (int)$langRow['uid'] . '" name="newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']" value="1" />';
                             $info .= '<span class="t3-icon fa"></span></label></div>';
-                            $newOL_js[$langRow['uid']] .= '
-								+(document.webinfoForm['
+                            $newOL_js[$langRow['uid']] .=
+                                '+(document.webinfoForm['
                                 . GeneralUtility::quoteJSvalue('newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']')
                                 . '].checked ? '
                                 . GeneralUtility::quoteJSvalue('&edit[pages_language_overlay][' . $data['row']['uid'] . ']=new')
-                                . ' : \'\')
-							';
+                                . ' : \'\')'
+                            ;
                         }
                         $tCells[] = '<td class="' . $status . ' col-border-left">&nbsp;</td>';
                         $tCells[] = '<td class="' . $status . '">&nbsp;</td>';
@@ -324,7 +326,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                     $onClickArray[] = '\'' . $newOL_js[$langRow['uid']] . ' + \'&' . $lastElement;
                     $onClick = implode('?', $onClickArray);
                 }
-                $newButton = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onClick)
+                $newButton = '<a href="#" class="btn btn-default disabled t3js-language-new-' . (int)$langRow['uid'] . '" onclick="' . htmlspecialchars($onClick)
                     . '" title="' . $lang->sL(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
                     ) . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '</a>';
