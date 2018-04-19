@@ -207,6 +207,7 @@ define(['jquery',
       getPublisherSubscriber().subscribe('core/ajax/saveFormDefinition/success', function(topic, args) {
         getFormEditorApp().setUnsavedContent(false);
         getViewModel().showSaveSuccessMessage();
+        getViewModel().showSaveButtonSaveIcon();
 
         getFormEditorApp().setFormDefinition(args[0]['formDefinition']);
 
@@ -230,6 +231,7 @@ define(['jquery',
        * @subscribe core/ajax/saveFormDefinition/error
        */
       getPublisherSubscriber().subscribe('core/ajax/saveFormDefinition/error', function(topic, args) {
+        getViewModel().showSaveButtonSaveIcon();
         getViewModel().showSaveErrorMessage(args[0]);
       });
 
@@ -265,30 +267,6 @@ define(['jquery',
         }
       });
 
-      /**
-       * @private
-       *
-       * @param string
-       * @param array
-       * @return void
-       * @subscribe ajax/beforeSend
-       */
-      getPublisherSubscriber().subscribe('ajax/beforeSend', function(topic, args) {
-        getViewModel().showSaveButtonSpinnerIcon();
-      });
-
-      /**
-       * @private
-       *
-       * @param string
-       * @param array
-       * @return void
-       * @subscribe ajax/complete
-       */
-      getPublisherSubscriber().subscribe('ajax/complete', function(topic, args) {
-        getViewModel().showSaveButtonSaveIcon();
-      });
-
       /* *********************************************************
        * Header
        * ********************************************************/
@@ -305,6 +283,7 @@ define(['jquery',
         if (getFormEditorApp().validationResultsHasErrors(getFormEditorApp().validateFormElementRecursive(getRootFormElement(), true))) {
           getViewModel().showValidationErrorsModal();
         } else {
+          getViewModel().showSaveButtonSpinnerIcon();
           getFormEditorApp().saveFormDefinition();
         }
       });
