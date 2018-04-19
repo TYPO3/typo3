@@ -180,6 +180,15 @@
 			<trans-unit id="LGL.error">
 				<source>Error!</source>
 			</trans-unit>
+			<trans-unit id="LGL.visible">
+				<source>Visible</source>
+			</trans-unit>
+			<trans-unit id="LGL.enabled">
+				<source>Enabled</source>
+			</trans-unit>
+			<trans-unit id="LGL.disabled">
+				<source>Disabled</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
