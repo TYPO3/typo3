@@ -100,6 +100,28 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\T
     ];
 }
 
+// Save any previous option array for ip anonymization task
+// to temporary variable so it can be pre-populated by other
+// extensions and LocalConfiguration/AdditionalConfiguration
+$ipAnonymizeCollectionTaskOptions = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class]['options'] ?? [];
+$ipAnonymizeCollectionTaskOptions['tables'] = $ipAnonymizeCollectionTaskOptions['tables'] ?? [];
+// Add ip anonymization task
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class] = [
+    'extension' => 'scheduler',
+    'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:ipAnonymization.name',
+    'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:tableGarbageCollection.description',
+    'additionalFields' => \TYPO3\CMS\Scheduler\Task\IpAnonymizationAdditionalFieldProvider::class,
+    'options' => $ipAnonymizeCollectionTaskOptions
+];
+unset($ipAnonymizeCollectionTaskOptions);
+
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class]['options']['tables']['sys_log'] ?? false)) {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class]['options']['tables']['sys_log'] = [
+        'dateField' => 'tstamp',
+        'ipField' => 'IP'
+    ];
+}
+
 // Add task for optimizing database tables
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\OptimizeDatabaseTableTask::class] = [
     'extension' => 'scheduler',
