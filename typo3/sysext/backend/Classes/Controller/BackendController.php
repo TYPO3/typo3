@@ -401,7 +401,7 @@ class BackendController
             }
         }
         // if no custom logo was set or the path is invalid, use the original one
-        if (empty($logoPath)) {
+        if (empty($logoPath) || !file_exists($logoPath)) {
             $logoPath = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Images/typo3_logo_orange.svg');
             $logoWidth = 22;
             $logoHeight = 22;
