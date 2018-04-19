@@ -114,6 +114,12 @@
 			<trans-unit id="pages.hidden_checkbox_1_formlabel">
 				<source>Disable</source>
 			</trans-unit>
+			<trans-unit id="pages.hidden_toggle">
+				<source>Page visible</source>
+			</trans-unit>
+			<trans-unit id="pages.hidden_toggle_formlabel">
+				<source>Page visible</source>
+			</trans-unit>
 			<trans-unit id="pages.layout_formlabel">
 				<source>Frontend Layout</source>
 			</trans-unit>
@@ -143,6 +149,12 @@
 			</trans-unit>
 			<trans-unit id="pages.nav_hide_formlabel">
 				<source>In Menus</source>
+			</trans-unit>
+			<trans-unit id="pages.nav_hide_toggle">
+				<source>Page enabled in menus</source>
+			</trans-unit>
+			<trans-unit id="pages.nav_hide_toggle_formlabel">
+				<source>Page enabled in menus</source>
 			</trans-unit>
 			<trans-unit id="pages.nav_hide_checkbox_1_formlabel">
 				<source>Hide</source>
