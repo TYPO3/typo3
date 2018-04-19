@@ -414,6 +414,33 @@
 			<trans-unit id="optimizeDatabaseTable.description">
 				<source>This task executes "OPTIMIZE TABLE" statements on the selected database tables. This helps to reduce storage space and improve I/O efficiency. Warning! Tables will be locked during the optimization process.</source>
 			</trans-unit>
+			<trans-unit id="ipAnonymization.name">
+				<source>Anonymize IP addresses in database tables</source>
+			</trans-unit>
+			<trans-unit id="ipAnonymization.description">
+				<source>This task anonymizes the IP addresses to enforce the privacy of the persisted data.</source>
+			</trans-unit>
+			<trans-unit id="label.ipAnonymization.table">
+				<source>Table to anoymize</source>
+			</trans-unit>
+			<trans-unit id="label.ipAnonymization.additionalInformationTable">
+				<source>Table: %s after %s days</source>
+			</trans-unit>
+			<trans-unit id="label.ipAnonymization.additionalInformationAllTables">
+				<source>All tables</source>
+			</trans-unit>
+			<trans-unit id="label.ipAnonymization.numberOfDays">
+				<source>Handle entries older than given number of days</source>
+			</trans-unit>
+			<trans-unit id="label.ipAnonymization.mask">
+				<source>Mask level</source>
+			</trans-unit>
+			<trans-unit id="label.ipAnonymization.mask.1">
+				<source>Last byte for IPv4 / Interface ID for IPv6</source>
+			</trans-unit>
+			<trans-unit id="label.ipAnonymization.mask.2">
+				<source>Last 2 bytes for IPv4 / Interface &amp; SLA ID for IPv6</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
