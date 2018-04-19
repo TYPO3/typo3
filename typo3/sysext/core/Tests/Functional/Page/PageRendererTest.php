@@ -54,6 +54,8 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->setMetaTag('name', 'author', 'foobar');
         $subject->setMetaTag('http-equiv', 'refresh', '5');
         $subject->setMetaTag('name', 'DC.Author', '<evil tag>');
+        $subject->setMetaTag('property', 'og:image', '/path/to/image1.jpg', [], false);
+        $subject->setMetaTag('property', 'og:image', '/path/to/image2.jpg', [], false);
 
         // Unset meta tag
         $subject->setMetaTag('NaMe', 'randomTag', 'foobar');
@@ -112,6 +114,8 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $this->assertNotContains('<meta name="randomtag" content="foobar">', $renderedString);
         $this->assertNotContains('<meta name="randomtag" content="foobar" />', $renderedString);
         $this->assertContains('<meta name="generator" content="TYPO3 CMS" />', $renderedString);
+        $this->assertContains('<meta property="og:image" content="/path/to/image1.jpg" />', $renderedString);
+        $this->assertContains('<meta property="og:image" content="/path/to/image2.jpg" />', $renderedString);
     }
 
     /**

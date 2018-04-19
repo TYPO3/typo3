@@ -136,3 +136,22 @@ unset($extractorRegistry);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
     'TCEMAIN.translateToMessage = Translate to %s:'
 );
+
+$metaTagManagerRegistry = \TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::getInstance();
+$metaTagManagerRegistry->registerManager(
+    'opengraph',
+    \TYPO3\CMS\Core\MetaTag\OpenGraphMetaTagManager::class
+);
+$metaTagManagerRegistry->registerManager(
+    'html5',
+    \TYPO3\CMS\Core\MetaTag\Html5MetaTagManager::class
+);
+$metaTagManagerRegistry->registerManager(
+    'edge',
+    \TYPO3\CMS\Core\MetaTag\EdgeMetaTagManager::class
+);
+$metaTagManagerRegistry->registerManager(
+    'twitter',
+    \TYPO3\CMS\Core\MetaTag\TwitterCardMetaTagManager::class
+);
+unset($metaTagManagerRegistry);

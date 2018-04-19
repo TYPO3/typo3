@@ -877,11 +877,13 @@ class PageGenerator
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $conf = $typoScriptService->convertTypoScriptArrayToPlainArray($metaTagTypoScript);
         foreach ($conf as $key => $properties) {
+            $replace = false;
             if (is_array($properties)) {
                 $nodeValue = $properties['_typoScriptNodeValue'] ?? '';
                 $value = trim($cObj->stdWrap($nodeValue, $metaTagTypoScript[$key . '.']));
                 if ($value === '' && !empty($properties['value'])) {
                     $value = $properties['value'];
+                    $replace = false;
                 }
             } else {
                 $value = $properties;
@@ -894,13 +896,16 @@ class PageGenerator
             if (is_array($properties) && !empty($properties['attribute'])) {
                 $attribute = $properties['attribute'];
             }
+            if (is_array($properties) && !empty($properties['replace'])) {
+                $replace = true;
+            }
 
             if (!is_array($value)) {
                 $value = (array)$value;
             }
             foreach ($value as $subValue) {
                 if (trim($subValue) !== '') {
-                    $pageRenderer->setMetaTag($attribute, $key, $subValue);
+                    $pageRenderer->setMetaTag($attribute, $key, $subValue, [], $replace);
                 }
             }
         }

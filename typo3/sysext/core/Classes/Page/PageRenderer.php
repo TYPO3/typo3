@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -949,9 +950,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $type The type of the meta tag. Allowed values are property, name or http-equiv
      * @param string $name The name of the property to add
      * @param string $content The content of the meta tag
+     * @param array $subProperties Subproperties of the meta tag (like e.g. og:image:width)
+     * @param bool $replace Replace earlier set meta tag
      * @throws \InvalidArgumentException
      */
-    public function setMetaTag(string $type, string $name, string $content)
+    public function setMetaTag(string $type, string $name, string $content, array $subProperties = [], $replace = true)
     {
         /**
          * Lowercase all the things
@@ -964,7 +967,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 1496402460
             );
         }
-        $this->metaTagsByAPI[$type][$name] = $content;
+
+        $metaTagManagerRegistry = MetaTagManagerRegistry::getInstance();
+        $manager = $metaTagManagerRegistry->getManagerForProperty($name);
+        $manager->addProperty($name, $content, $subProperties, $replace, $type);
     }
 
     /**
@@ -982,11 +988,16 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
          */
         $type = strtolower($type);
         $name = strtolower($name);
-        if (isset($this->metaTagsByAPI[$type], $this->metaTagsByAPI[$type][$name])) {
+
+        $metaTagManagerRegistry = MetaTagManagerRegistry::getInstance();
+        $manager = $metaTagManagerRegistry->getManagerForProperty($name);
+        $propertyContent = $manager->getProperty($name, $type);
+
+        if (!empty($propertyContent[0])) {
             return [
                 'type' => $type,
                 'name' => $name,
-                'content' => $this->metaTagsByAPI[$type][$name]
+                'content' => $propertyContent[0]['content']
             ];
         }
         return [];
@@ -1005,7 +1016,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
          */
         $type = strtolower($type);
         $name = strtolower($name);
-        unset($this->metaTagsByAPI[$type][$name]);
+
+        $metaTagManagerRegistry = MetaTagManagerRegistry::getInstance();
+        $manager = $metaTagManagerRegistry->getManagerForProperty($name);
+        $manager->removeProperty($name, $type);
     }
 
     /**
@@ -1640,10 +1654,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function renderMetaTagsFromAPI()
     {
+        $metaTagManagerRegistry = MetaTagManagerRegistry::getInstance();
         $metaTags = [];
-        foreach ($this->metaTagsByAPI as $metaTagType => $type) {
-            foreach ($type as $metaType => $content) {
-                $metaTags[] = '<meta ' . htmlspecialchars($metaTagType) . '="' . htmlspecialchars($metaType) . '" content="' . htmlspecialchars($content) . '"' . $this->endingSlash . '>';
+        foreach ($metaTagManagerRegistry->getAllManagers() as $manager) {
+            if ($properties = $manager->renderAllProperties()) {
+                $metaTags[] = $properties;
             }
         }
         return $metaTags;

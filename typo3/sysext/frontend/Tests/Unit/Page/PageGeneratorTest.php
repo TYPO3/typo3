@@ -237,7 +237,7 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         PageGenerator::renderContentWithHeader('');
 
-        $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->shouldHaveBeenCalled();
+        $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false)->shouldHaveBeenCalled();
     }
 
     /**
@@ -365,7 +365,7 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         PageGenerator::renderContentWithHeader('');
 
-        $pageRendererProphecy->setMetaTag($expectedTags[0]['type'], $expectedTags[0]['name'], $expectedTags[0]['content'])->shouldHaveBeenCalled();
-        $pageRendererProphecy->setMetaTag($expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'])->shouldHaveBeenCalled();
+        $pageRendererProphecy->setMetaTag($expectedTags[0]['type'], $expectedTags[0]['name'], $expectedTags[0]['content'], [], false)->shouldHaveBeenCalled();
+        $pageRendererProphecy->setMetaTag($expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'], [], false)->shouldHaveBeenCalled();
     }
 }
