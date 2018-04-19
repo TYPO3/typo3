@@ -4,7 +4,7 @@
         <header/>
         <body>
             <trans-unit id="element.ImageUpload.properties.SummaryPage.altText" xml:space="preserve">
-                <source>uploaded image</source>
+                <source>Uploaded image</source>
             </trans-unit>
             <trans-unit id="element.DatePicker.properties.timeSelectorHourLabel" xml:space="preserve">
                 <source>Hour</source>
@@ -26,94 +26,94 @@
                 <source>This field is mandatory.</source>
             </trans-unit>
             <trans-unit id="validation.error.1238087674" xml:space="preserve">
-                <source>Please enter a valid Date.</source>
+                <source>You must enter a valid date.</source>
             </trans-unit>
             <trans-unit id="validation.error.1221551320" xml:space="preserve">
-                <source>Please enter letters or digits.</source>
+                <source>You can only enter letters or digits.</source>
             </trans-unit>
             <trans-unit id="validation.error.1221565786" xml:space="preserve">
-                <source>Please enter a valid text (e.g. without XML tags).</source>
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
             </trans-unit>
             <trans-unit id="validation.error.1238110957" xml:space="preserve">
-                <source>Please enter a valid text.</source>
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
             </trans-unit>
             <trans-unit id="validation.error.1269883975" xml:space="preserve">
-                <source>Please enter a valid text.</source>
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
             </trans-unit>
             <trans-unit id="validation.error.1428504122" xml:space="preserve">
-                <source>Please enter a text between %s and %s characters.</source>
+                <source>Your text must be a minimum of %s characters in length and no longer than %s.</source>
             </trans-unit>
             <trans-unit id="validation.error.1238108068" xml:space="preserve">
-                <source>Please enter a text which is longer than %s characters.</source>
+                <source>You must enter text which is longer than %s characters.</source>
             </trans-unit>
             <trans-unit id="validation.error.1238108069" xml:space="preserve">
-                <source>Please enter a text which is not longer than %s characters.</source>
+                <source>You must enter text which is no longer than %s characters.</source>
             </trans-unit>
             <trans-unit id="validation.error.1221559976" xml:space="preserve">
-                <source>Please enter a valid email address.</source>
+                <source>You must enter a valid email address.</source>
             </trans-unit>
             <trans-unit id="validation.error.1221560494" xml:space="preserve">
-                <source>Please enter a valid number.</source>
+                <source>You must enter a valid number.</source>
             </trans-unit>
             <trans-unit id="validation.error.1221560288" xml:space="preserve">
-                <source>Please enter a valid floating point number.</source>
+                <source>You must enter a valid floating point number.</source>
             </trans-unit>
             <trans-unit id="validation.error.1221563685" xml:space="preserve">
-                <source>Please enter a valid number.</source>
+                <source>You must enter a valid number.</source>
             </trans-unit>
             <trans-unit id="validation.error.1221561046" xml:space="preserve">
-                <source>Please enter a valid number between %s and %s.</source>
+                <source>You must enter a valid number between %s and %s.</source>
             </trans-unit>
             <trans-unit id="validation.error.1221565130" xml:space="preserve">
-                <source>Please enter a valid value.</source>
+                <source>You must enter a valid value. Please refer to the description of this field.</source>
             </trans-unit>
             <trans-unit id="validation.error.1475002976" xml:space="preserve">
-                <source>The given subject is not countable.</source>
+                <source>You must enter a countable subject.</source>
             </trans-unit>
             <trans-unit id="validation.error.1475002994" xml:space="preserve">
-                <source>Please select %s to %s elements.</source>
+                <source>You must select between %s to %s elements.</source>
             </trans-unit>
             <trans-unit id="validation.error.1471708997" xml:space="preserve">
-                <source>The given value was not an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+                <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
             </trans-unit>
             <trans-unit id="validation.error.1471708998" xml:space="preserve">
-                <source>The media type "%s" is not allowed for this file.</source>
+                <source>You entered an incorrect media type, "%s" is not allowed for this file. Please refer to the description of this field.</source>
             </trans-unit>
             <trans-unit id="validation.error.1476396435" xml:space="preserve">
-                <source>Do not fill this field.</source>
+                <source>You must NOT fill this field.</source>
             </trans-unit>
             <trans-unit id="validation.error.1505303626" xml:space="preserve">
-                <source>The given value was not an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+                <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
             </trans-unit>
             <trans-unit id="validation.error.1505305752" xml:space="preserve">
-                <source>The file must be at least %s in size.</source>
+                <source>You must select a file that is larger than %s in size.</source>
             </trans-unit>
             <trans-unit id="validation.error.1505305753" xml:space="preserve">
-                <source>The file size can not exceed %s in size.</source>
+                <source>You must select a file that is no larger than %s.</source>
             </trans-unit>
             <trans-unit id="validation.error.1521293686" xml:space="preserve">
-                <source>Please choose a date that is not earlier than "%s".</source>
+                <source>You must select a date before %s.</source>
             </trans-unit>
             <trans-unit id="validation.error.1521293687" xml:space="preserve">
-                <source>Please choose a date that is not later than "%s".</source>
+                <source>You must select a date after %s.</source>
             </trans-unit>
             <trans-unit id="form_new_wizard_title" xml:space="preserve">
                 <source>Form</source>
             </trans-unit>
             <trans-unit id="form_new_wizard_description" xml:space="preserve">
-                <source>A form allowing website users to submit messages.</source>
+                <source>A form that allows website users to submit messages.</source>
             </trans-unit>
             <trans-unit id="upload.error.150530345" xml:space="preserve">
                 <source>Maximum file size exceeded.</source>
             </trans-unit>
             <trans-unit id="upload.error.150530346" xml:space="preserve">
-                <source>The file is partially uploaded, please try again.</source>
+                <source>Upload failed. The file was only partially uploaded, please try again.</source>
             </trans-unit>
             <trans-unit id="upload.error.150530347" xml:space="preserve">
                 <source>No file was uploaded.</source>
             </trans-unit>
             <trans-unit id="upload.error.150530348" xml:space="preserve">
-                <source>Upload not possible.</source>
+                <source>Upload failed.</source>
             </trans-unit>
         </body>
     </file>
