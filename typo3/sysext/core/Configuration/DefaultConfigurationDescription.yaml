@@ -325,9 +325,6 @@ BE:
         flexformForceCDATA:
             type: bool
             description: 'If set, will add CDATA to Flexform XML. Some versions of libxml have a bug that causes HTML entities to be stripped from any XML content and this setting will avoid the bug by adding CDATA.'
-        explicitConfirmationOfTranslation:
-            type: bool
-            description: 'If set, then the diff-data of localized records is not saved automatically when updated but requires that a translator clicks the special finish_translation/save/close button that becomes available.'
         versionNumberInFilename:
             type: bool
             description: |

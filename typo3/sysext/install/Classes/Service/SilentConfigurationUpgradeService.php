@@ -128,6 +128,8 @@ class SilentConfigurationUpgradeService
         // #83878
         'SYS/isInitialInstallationInProgress',
         'SYS/isInitialDatabaseImportDone',
+        // #84810
+        'BE/explicitConfirmationOfTranslation',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

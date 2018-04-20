@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException;
@@ -74,6 +75,15 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class DataHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'updateModeL10NdiffData' => 'Using updateModeL10NdiffData is deprecated and will not be possible anymore in TYPO3 v10.',
+        'updateModeL10NdiffDataClear' => 'Using updateModeL10NdiffDataClear is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
 
     // *********************
     // Public variables you can configure before using the class:
@@ -169,7 +179,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @var bool|string
      */
-    public $updateModeL10NdiffData = true;
+    protected $updateModeL10NdiffData = true;
 
     /**
      * If TRUE, the translation diff. fields will in fact be reset so that they indicate that all needs to change again!
@@ -177,7 +187,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @var bool
      */
-    public $updateModeL10NdiffDataClear = false;
+    protected $updateModeL10NdiffDataClear = false;
 
     /**
      * If TRUE, workspace restrictions are bypassed on edit an create actions (process_datamap()).
@@ -731,9 +741,6 @@ class DataHandler implements LoggerAwareInterface
         $this->admin = $this->BE_USER->user['admin'];
         if ($this->BE_USER->uc['recursiveDelete']) {
             $this->deleteTree = 1;
-        }
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation'] && $this->updateModeL10NdiffData === true) {
-            $this->updateModeL10NdiffData = false;
         }
         // Initializing default permissions for pages
         $defaultPermissions = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'];
@@ -1534,7 +1541,7 @@ class DataHandler implements LoggerAwareInterface
                             $fieldArray[$field] = $res['value'];
                         }
                         // Add the value of the original record to the diff-storage content:
-                        if ($this->updateModeL10NdiffData && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']) {
+                        if ($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']) {
                             $originalLanguage_diffStorage[$field] = $this->updateModeL10NdiffDataClear ? '' : $originalLanguageRecord[$field];
                             $diffStorageFlag = true;
                         }
@@ -3188,7 +3195,7 @@ class DataHandler implements LoggerAwareInterface
                     // Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing.
                     // We do this after $dataValues has been updated since I expect that $dataValues_current holds evaluated values from database (so this must be the right value to compare with).
                     if (mb_substr($vKey, -9) !== '.vDEFbase') {
-                        if ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][$vKey . '.vDEFbase']) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {
+                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][$vKey . '.vDEFbase']))) {
                             // Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
                             if (isset($dataValues[$key]['vDEF'])) {
                                 $diffValue = $dataValues[$key]['vDEF'];

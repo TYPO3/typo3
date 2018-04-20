@@ -5,8 +5,6 @@ defined('TYPO3_MODE') or die();
 // The code here should only manipulate TYPO3_CONF_VARS for example to set the database configuration
 // dependent to the requested environment.
 
-// $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation'] = TRUE;
-
 $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = false;
 
 // Register hooks for frontend test

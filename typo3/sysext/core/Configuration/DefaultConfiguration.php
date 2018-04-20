@@ -1202,7 +1202,6 @@ return [
         'interfaces' => 'backend',
         'explicitADmode' => 'explicitDeny',
         'flexformForceCDATA' => 0,
-        'explicitConfirmationOfTranslation' => false,
         'versionNumberInFilename' => false,
         'debug' => false,
         'toolbarItems' => [], // Array: Registered toolbar items classes

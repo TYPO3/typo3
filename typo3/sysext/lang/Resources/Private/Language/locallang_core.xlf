@@ -852,12 +852,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="rm.saveCloseDoc">
 				<source>Save and close</source>
 			</trans-unit>
-			<trans-unit id="rm.translationSaveDoc">
-				<source>Translation finished, save and close</source>
-			</trans-unit>
-			<trans-unit id="rm.translationSaveDocClear">
-				<source>Translation NOT finished, Save</source>
-			</trans-unit>
 			<trans-unit id="rm.saveCloseAllDocs">
 				<source>Save and close all</source>
 			</trans-unit>

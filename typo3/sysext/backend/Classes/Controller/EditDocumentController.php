@@ -499,8 +499,6 @@ class EditDocumentController
             || isset($parsedBody['_savedokview'])
             || isset($parsedBody['_savedoknew'])
             || isset($parsedBody['_duplicatedoc'])
-            || isset($parsedBody['_translation_savedok'])
-            || isset($parsedBody['_translation_savedokclear'])
         ) {
             if ($response = $this->processData($request)) {
                 return $response;
@@ -604,9 +602,7 @@ class EditDocumentController
             || isset($_POST['_saveandclosedok'])
             || isset($_POST['_savedokview'])
             || isset($_POST['_savedoknew'])
-            || isset($_POST['_duplicatedoc'])
-            || isset($_POST['_translation_savedok'])
-            || isset($_POST['_translation_savedokclear']);
+            || isset($_POST['_duplicatedoc']);
         return $out;
     }
 
@@ -650,13 +646,6 @@ class EditDocumentController
 
         $tce->setControl($parsedBody['control'] ?? $queryParams['control'] ?? []);
 
-        if (isset($parsedBody['_translation_savedok'])) {
-            $tce->updateModeL10NdiffData = 'FORCE_FFUPD';
-        }
-        if (isset($parsedBody['_translation_savedokclear'])) {
-            $tce->updateModeL10NdiffData = 'FORCE_FFUPD';
-            $tce->updateModeL10NdiffDataClear = true;
-        }
         // Set default values specific for the user
         $TCAdefaultOverride = $beUser->getTSConfigProp('TCAdefaults');
         if (is_array($TCAdefaultOverride)) {
@@ -865,7 +854,6 @@ class EditDocumentController
 
         if ((int)$this->closeDoc < self::DOCUMENT_CLOSE_MODE_DEFAULT
             || isset($parsedBody['_saveandclosedok'])
-            || isset($parsedBody['_translation_savedok'])
         ) {
             // Redirect if element should be closed after save
             $possibleRedirect = $this->closeDocument(abs($this->closeDoc), $request);
@@ -1466,29 +1454,6 @@ class EditDocumentController
                     Icon::SIZE_SMALL
                 ));
             $saveSplitButton->addItem($saveAndCloseButton);
-            // FINISH TRANSLATION / SAVE / CLOSE
-            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation']) {
-                $saveTranslationButton = $buttonBar->makeInputButton()
-                    ->setName('_translation_savedok')
-                    ->setValue('1')
-                    ->setForm('EditDocumentController')
-                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.translationSaveDoc'))
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                        'actions-document-save-cleartranslationcache',
-                        Icon::SIZE_SMALL
-                    ));
-                $saveSplitButton->addItem($saveTranslationButton);
-                $saveAndClearTranslationButton = $buttonBar->makeInputButton()
-                    ->setName('_translation_savedokclear')
-                    ->setValue('1')
-                    ->setForm('EditDocumentController')
-                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.translationSaveDocClear'))
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                        'actions-document-save-cleartranslationcache',
-                        Icon::SIZE_SMALL
-                    ));
-                $saveSplitButton->addItem($saveAndClearTranslationButton);
-            }
             $buttonBar->addButton($saveSplitButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         }
         // CLOSE button:
