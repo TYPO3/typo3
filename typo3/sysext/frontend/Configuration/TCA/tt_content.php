@@ -212,23 +212,28 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:editlock',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                    [
+                        0 => '',
+                        1 => '',
                     ]
-                ]
+                ],
             ]
         ],
         'hidden' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.visible',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:hidden.I.0'
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => true
                     ]
-                ]
+                ],
             ]
         ],
         'starttime' => [
@@ -776,11 +781,13 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageborder',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                    [
+                        0 => '',
+                        1 => '',
                     ]
-                ]
+                ],
             ]
         ],
         'image_zoom' => [
@@ -788,11 +795,13 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                    [
+                        0 => '',
+                        1 => '',
                     ]
-                ]
+                ],
             ]
         ],
         'imagecols' => [
@@ -980,11 +989,13 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_size',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                    [
+                        0 => '',
+                        1 => '',
                     ]
-                ]
+                ],
             ]
         ],
         'filelink_sorting' => [
@@ -1047,12 +1058,14 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:sectionIndex',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'default' => 1,
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                    [
+                        0 => '',
+                        1 => '',
                     ]
-                ]
+                ],
             ]
         ],
         'linkToTop' => [
@@ -1060,11 +1073,13 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:linkToTop',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                    [
+                        0 => '',
+                        1 => '',
                     ]
-                ]
+                ],
             ]
         ],
         'pi_flexform' => [
@@ -1112,11 +1127,13 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:accessibility_bypass',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                    [
+                        0 => '',
+                        1 => '',
                     ]
-                ]
+                ],
             ]
         ],
         'accessibility_bypass_text' => [
@@ -1243,10 +1260,14 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_tfoot',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'default' => 0,
                 'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled', 1]
-                ]
+                    [
+                        0 => '',
+                        1 => '',
+                    ]
+                ],
             ]
         ],
         'uploads_description' => [
@@ -1254,10 +1275,14 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.uploads_description',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'default' => 0,
                 'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled', 1]
-                ]
+                    [
+                        0 => '',
+                        1 => '',
+                    ]
+                ],
             ]
         ],
         'uploads_type' => [
