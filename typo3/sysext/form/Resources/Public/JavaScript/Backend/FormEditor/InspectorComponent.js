@@ -2393,10 +2393,7 @@ define(['jquery',
             formElementSelectorSplitButtonListContainer.append(itemTemplate);
           });
         } else {
-          for (var i = 0, len = nonCompositeNonToplevelFormElements.length; i < len; ++i) {
-            var nonCompositeNonToplevelFormElement;
-
-            nonCompositeNonToplevelFormElement = nonCompositeNonToplevelFormElements[i];
+          $.each(nonCompositeNonToplevelFormElements, function(i, nonCompositeNonToplevelFormElement) {
             Icons.getIcon(
               getFormElementDefinition(nonCompositeNonToplevelFormElement, 'iconIdentifier'),
               Icons.sizes.small,
@@ -2430,7 +2427,7 @@ define(['jquery',
 
               formElementSelectorSplitButtonListContainer.append(itemTemplate);
             });
-          }
+          });
         }
       } else {
         $(getHelper().getDomElementDataIdentifierSelector('editorControlsInputGroup'), editorHtml)
