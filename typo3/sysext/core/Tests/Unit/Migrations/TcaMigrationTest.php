@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Migrations;
 
 /*
@@ -15,21 +16,17 @@ namespace TYPO3\CMS\Core\Tests\Unit\Migrations;
  */
 
 use TYPO3\CMS\Core\Migrations\TcaMigration;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaMigrationTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
-    public function missingTypeThrowsException()
+    public function missingTypeThrowsException(): void
     {
         $input = [
             'aTable' => [
@@ -59,7 +56,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateReturnsGivenArrayUnchangedIfNoMigrationNeeded()
+    public function migrateReturnsGivenArrayUnchangedIfNoMigrationNeeded(): void
     {
         $input = $expected = [
             'aTable' => [
@@ -89,7 +86,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateAddsMissingColumnsConfig()
+    public function migrateAddsMissingColumnsConfig(): void
     {
         $input = [
             'aTable' => [
@@ -144,7 +141,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateChangesT3editorWizardToT3editorRenderTypeIfNotEnabledByTypeConfig()
+    public function migrateChangesT3editorWizardToT3editorRenderTypeIfNotEnabledByTypeConfig(): void
     {
         $input = [
             'aTable' => [
@@ -198,7 +195,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateDropsStylePointerFromShowItem()
+    public function migrateDropsStylePointerFromShowItem(): void
     {
         $input = [
             'aTable' => [
@@ -231,7 +228,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateMovesSpecialConfigurationToColumnsOverridesDefaultExtras()
+    public function migrateMovesSpecialConfigurationToColumnsOverridesDefaultExtras(): void
     {
         $input = [
             'aTable' => [
@@ -265,7 +262,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateMovesSpecialConfigurationToColumnsOverridesDefaultExtrasAndMergesExistingDefaultExtras()
+    public function migrateMovesSpecialConfigurationToColumnsOverridesDefaultExtrasAndMergesExistingDefaultExtras(): void
     {
         $input = [
             'aTable' => [
@@ -316,7 +313,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateChangesT3editorWizardThatIsEnabledByTypeConfigToRenderTypeInColumnsOverrides()
+    public function migrateChangesT3editorWizardThatIsEnabledByTypeConfigToRenderTypeInColumnsOverrides(): void
     {
         $input = [
             'aTable' => [
@@ -416,7 +413,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateRemovesAnUnusedT3edtiorDefinitionIfEnabledByTypeConfig()
+    public function migrateRemovesAnUnusedT3edtiorDefinitionIfEnabledByTypeConfig(): void
     {
         $input = [
             'aTable' => [
@@ -469,7 +466,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateSpecialConfigurationAndRemoveShowItemStylePointerConfigDoesNotAddMessageIfOnlySyntaxChanged()
+    public function migrateSpecialConfigurationAndRemoveShowItemStylePointerConfigDoesNotAddMessageIfOnlySyntaxChanged(): void
     {
         $input = [
             'aTable' => [
@@ -496,7 +493,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateShowItemMovesAdditionalPaletteToOwnPaletteDefinition()
+    public function migrateShowItemMovesAdditionalPaletteToOwnPaletteDefinition(): void
     {
         $input = [
             'aTable' => [
@@ -523,7 +520,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateIconsForFormFieldWizardToNewLocation()
+    public function migrateIconsForFormFieldWizardToNewLocation(): void
     {
         $input = [
             'aTable' => [
@@ -566,7 +563,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateExtAndSysextPathToEXTPath()
+    public function migrateExtAndSysextPathToEXTPath(): void
     {
         $input = [
             'aTable' => [
@@ -608,7 +605,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migratePathWhichStartsWithIToEXTPath()
+    public function migratePathWhichStartsWithIToEXTPath(): void
     {
         $input = [
             'aTable' => [
@@ -648,7 +645,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateRemovesIconsInOptionTags()
+    public function migrateRemovesIconsInOptionTags(): void
     {
         $input = [
             'aTable' => [
@@ -682,7 +679,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateRewritesRelativeIconPathToExtensionReference()
+    public function migrateRewritesRelativeIconPathToExtensionReference(): void
     {
         $input = [
                 'aTable' => [
@@ -705,7 +702,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateRewritesIconFilenameOnlyToDefaultT3skinExtensionReference()
+    public function migrateRewritesIconFilenameOnlyToDefaultT3skinExtensionReference(): void
     {
         $input = [
                 'aTable' => [
@@ -728,7 +725,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateKeepsGivenExtensionReference()
+    public function migrateKeepsGivenExtensionReference(): void
     {
         $input = [
                 'aTable' => [
@@ -751,7 +748,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateSelectFieldRenderType()
+    public function migrateSelectFieldRenderType(): void
     {
         $input = [
             'aTable-do-not-migrate-because-renderType-is-set' => [
@@ -938,7 +935,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateSetsShowIconTableIfMissingDataProvider()
+    public function migrateSetsShowIconTableIfMissingDataProvider(): array
     {
         return [
             'not-a-select-is-kept' => [
@@ -1053,7 +1050,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param array $givenConfig
      * @param array $expectedConfig
      */
-    public function migrateSetsShowIconTableIfMissing(array $givenConfig, array $expectedConfig)
+    public function migrateSetsShowIconTableIfMissing(array $givenConfig, array $expectedConfig): void
     {
         $input = [
             'aTable' => [
@@ -1123,7 +1120,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateRemovesRteTransformOptionsDataProvider()
+    public function migrateRemovesRteTransformOptionsDataProvider(): array
     {
         return [
             'columns richtext configuration' => [
@@ -1641,7 +1638,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param array $givenConfig
      * @param array $expectedConfig
      */
-    public function migrateRemovesRteTransformOptions(array $givenConfig, array $expectedConfig)
+    public function migrateRemovesRteTransformOptions(array $givenConfig, array $expectedConfig): void
     {
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
@@ -1650,7 +1647,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateSelectTreeOptionsDataProvider()
+    public function migrateSelectTreeOptionsDataProvider(): array
     {
         return [
             'remove width' => [
@@ -1815,13 +1812,16 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param array $input
      * @param array $expected
      */
-    public function migrateSelectTreeOptions(array $input, array $expected)
+    public function migrateSelectTreeOptions(array $input, array $expected): void
     {
         $subject = new TcaMigration();
         $this->assertEquals($expected, $subject->migrate($input));
     }
 
-    public function migrateTsTemplateSoftReferencesDataProvider()
+    /**
+     * @return array
+     */
+    public function migrateTsTemplateSoftReferencesDataProvider(): array
     {
         return [
             'nothing removed' => [
@@ -1911,13 +1911,16 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param array $givenConfig
      * @param array $expectedConfig
      */
-    public function migrateTsTemplateSoftReferences(array $givenConfig, array $expectedConfig)
+    public function migrateTsTemplateSoftReferences(array $givenConfig, array $expectedConfig): void
     {
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
     }
 
-    public function migrateShowIfRTESettingDataProvider()
+    /**
+     * @return array
+     */
+    public function migrateShowIfRTESettingDataProvider(): array
     {
         return [
             'nothing removed' => [
@@ -1979,13 +1982,16 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param array $givenConfig
      * @param array $expectedConfig
      */
-    public function migrateShowIfRTESetting(array $givenConfig, array $expectedConfig)
+    public function migrateShowIfRTESetting(array $givenConfig, array $expectedConfig): void
     {
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
     }
 
-    public function migrateWorkspaceSettingsDataProvider()
+    /**
+     * @return array
+     */
+    public function migrateWorkspaceSettingsDataProvider(): array
     {
         return [
             'no workspaces enabled' => [
@@ -2094,7 +2100,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param array $givenConfig
      * @param array $expectedConfig
      */
-    public function migrateWorkspaceSettings(array $givenConfig, array $expectedConfig)
+    public function migrateWorkspaceSettings(array $givenConfig, array $expectedConfig): void
     {
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
@@ -2103,7 +2109,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateTranslationTableDataProvider()
+    public function migrateTranslationTableDataProvider(): array
     {
         return [
             'remove transForeignTable' => [
@@ -2143,7 +2149,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateTranslationTableDataProvider
      */
-    public function migrateTranslationTable(array $givenConfig, array $expectedConfig)
+    public function migrateTranslationTable(array $givenConfig, array $expectedConfig): void
     {
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
@@ -2152,7 +2158,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateL10nModeDefinitionsDataProvider()
+    public function migrateL10nModeDefinitionsDataProvider(): array
     {
         return [
             'remove l10n_mode noCopy' => [
@@ -2217,7 +2223,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateL10nModeDefinitionsDataProvider
      */
-    public function migrateL10nModeDefinitions(array $givenConfig, array $expectedConfig)
+    public function migrateL10nModeDefinitions(array $givenConfig, array $expectedConfig): void
     {
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
@@ -2226,7 +2232,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migratePageLocalizationDefinitionsDataProvider()
+    public function migratePageLocalizationDefinitionsDataProvider(): array
     {
         return [
             'missing l10n_mode' => [
@@ -2312,7 +2318,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migratePageLocalizationDefinitionsDataProvider
      */
-    public function migratePageLocalizationDefinitions(array $givenConfig, array $expectedConfig)
+    public function migratePageLocalizationDefinitions(array $givenConfig, array $expectedConfig): void
     {
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
@@ -2321,7 +2327,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateInlineLocalizationModeDataProvider()
+    public function migrateInlineLocalizationModeDataProvider(): array
     {
         return [
             'remove counter-productive localizationMode=keep' => [
@@ -2424,7 +2430,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateInlineLocalizationModeDataProvider
      */
-    public function migrateInlineLocalizationMode(array $givenConfig, array $expectedConfig)
+    public function migrateInlineLocalizationMode(array $givenConfig, array $expectedConfig): void
     {
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
@@ -2434,7 +2440,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesRequestUpdateCtrlFieldToColumnsDataProvider()
+    public function migrateMovesRequestUpdateCtrlFieldToColumnsDataProvider(): array
     {
         return [
             'move single field name' => [
@@ -2517,7 +2523,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesRequestUpdateCtrlFieldToColumnsDataProvider
      */
-    public function migrateMovesRequestUpdateCtrlFieldToColumns(array $input, array $expected)
+    public function migrateMovesRequestUpdateCtrlFieldToColumns(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -2525,7 +2531,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesTypeInputDateTimeToRenderTypeDataProvider()
+    public function migrateMovesTypeInputDateTimeToRenderTypeDataProvider(): array
     {
         return [
             'simple input with eval date' => [
@@ -2682,7 +2688,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesTypeInputDateTimeToRenderTypeDataProvider
      */
-    public function migrateMovesTypeInputDateTimeToRenderType(array $input, array $expected)
+    public function migrateMovesTypeInputDateTimeToRenderType(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -2690,7 +2696,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesWizardsWithEnableByTypeConfigToColumnsOverridesDataProvider()
+    public function migrateMovesWizardsWithEnableByTypeConfigToColumnsOverridesDataProvider(): array
     {
         return [
             'enableByTypeConfig on multiple wizards' => [
@@ -2873,7 +2879,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesWizardsWithEnableByTypeConfigToColumnsOverridesDataProvider
      */
-    public function migrateMovesWizardsWithEnableByTypeConfigToColumnsOverrides(array $input, array $expected)
+    public function migrateMovesWizardsWithEnableByTypeConfigToColumnsOverrides(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -2881,7 +2887,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateRewritesColorpickerWizardDataProvider()
+    public function migrateRewritesColorpickerWizardDataProvider(): array
     {
         return [
             'colorpicker in columns field' => [
@@ -3030,7 +3036,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateRewritesColorpickerWizardDataProvider
      */
-    public function migrateRewritesColorpickerWizard(array $input, array $expected)
+    public function migrateRewritesColorpickerWizard(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -3038,7 +3044,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesSelectWizardToValuePickerDataProvider()
+    public function migrateMovesSelectWizardToValuePickerDataProvider(): array
     {
         return [
             'select wizard without mode' => [
@@ -3450,7 +3456,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesSelectWizardToValuePickerDataProvider
      */
-    public function migrateMovesSelectWizardToValuePicker(array $input, array $expected)
+    public function migrateMovesSelectWizardToValuePicker(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -3458,7 +3464,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesSliderWizardToSliderConfigurationDataProvider()
+    public function migrateMovesSliderWizardToSliderConfigurationDataProvider(): array
     {
         return [
             'slider wizard with no options' => [
@@ -3643,7 +3649,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesSliderWizardToSliderConfigurationDataProvider
      */
-    public function migrateMovesSliderWizardToSliderConfiguration(array $input, array $expected)
+    public function migrateMovesSliderWizardToSliderConfiguration(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -3651,7 +3657,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesLinkWizardToRenderTypeWithFieldControlDataProvider()
+    public function migrateMovesLinkWizardToRenderTypeWithFieldControlDataProvider(): array
     {
         return [
             'simple link wizard without options' => [
@@ -3917,7 +3923,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesLinkWizardToRenderTypeWithFieldControlDataProvider
      */
-    public function migrateMovesLinkWizardToRenderTypeWithFieldControl(array $input, array $expected)
+    public function migrateMovesLinkWizardToRenderTypeWithFieldControl(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -3925,7 +3931,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesEditWizardToFieldControlDataProvider()
+    public function migrateMovesEditWizardToFieldControlDataProvider(): array
     {
         return [
             'simple link wizard without options' => [
@@ -4090,7 +4096,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesEditWizardToFieldControlDataProvider
      */
-    public function migrateMovesEditWizardToFieldControl(array $input, array $expected)
+    public function migrateMovesEditWizardToFieldControl(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -4098,7 +4104,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesAddWizardToFieldControlDataProvider()
+    public function migrateMovesAddWizardToFieldControlDataProvider(): array
     {
         return [
             'simple add wizard without options' => [
@@ -4276,7 +4282,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesAddWizardToFieldControlDataProvider
      */
-    public function migrateMovesAddWizardToFieldControl(array $input, array $expected)
+    public function migrateMovesAddWizardToFieldControl(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -4284,7 +4290,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesListWizardToFieldControlDataProvider()
+    public function migrateMovesListWizardToFieldControlDataProvider(): array
     {
         return [
             'simple list wizard without options' => [
@@ -4458,7 +4464,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesListWizardToFieldControlDataProvider
      */
-    public function migrateMovesListWizardToFieldControl(array $input, array $expected)
+    public function migrateMovesListWizardToFieldControl(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -4466,7 +4472,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesLastDefaultExtrasValuesDataProvider()
+    public function migrateMovesLastDefaultExtrasValuesDataProvider(): array
     {
         return [
             'rte_only is removed' => [
@@ -4597,7 +4603,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesLastDefaultExtrasValuesDataProvider
      */
-    public function migrateMovesLastDefaultExtrasValues(array $input, array $expected)
+    public function migrateMovesLastDefaultExtrasValues(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -4605,7 +4611,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesTableWizardToRenderTypeDataProvider()
+    public function migrateMovesTableWizardToRenderTypeDataProvider(): array
     {
         return [
             'simple table wizard without options' => [
@@ -4927,7 +4933,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesTableWizardToRenderTypeDataProvider
      */
-    public function migrateMovesTableWizardToRenderType(array $input, array $expected)
+    public function migrateMovesTableWizardToRenderType(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -4935,7 +4941,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateMovesFullScreenRichtextWizardToFieldControlDataProvider()
+    public function migrateMovesFullScreenRichtextWizardToFieldControlDataProvider(): array
     {
         return [
             'simple rte wizard' => [
@@ -5141,7 +5147,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateMovesFullScreenRichtextWizardToFieldControlDataProvider
      */
-    public function migrateMovesFullScreenRichtextWizardToFieldControl(array $input, array $expected)
+    public function migrateMovesFullScreenRichtextWizardToFieldControl(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -5149,7 +5155,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateSuggestWizardDataProvider()
+    public function migrateSuggestWizardDataProvider(): array
     {
         return [
             'no suggest wizard in main field but configured in columnsOverrides' => [
@@ -5408,7 +5414,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateSuggestWizardDataProvider
      */
-    public function migrateSuggestWizard(array $input, array $expected)
+    public function migrateSuggestWizard(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -5416,7 +5422,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateOptionsOfTypeGroupDataProvider()
+    public function migrateOptionsOfTypeGroupDataProvider(): array
     {
         return [
             'selectedListStyle is dropped' => [
@@ -5688,7 +5694,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateOptionsOfTypeGroupDataProvider
      */
-    public function migrateOptionsOfTypeGroup(array $input, array $expected)
+    public function migrateOptionsOfTypeGroup(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -5696,7 +5702,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateSelectSingleShowIconTableDataProvider()
+    public function migrateSelectSingleShowIconTableDataProvider(): array
     {
         return [
             'showIconTable enabled selectIcons field wizard' => [
@@ -5767,7 +5773,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateSelectSingleShowIconTableDataProvider
      */
-    public function migrateSelectSingleShowIconTable(array $input, array $expected)
+    public function migrateSelectSingleShowIconTable(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -5775,7 +5781,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function migrateImageManipulationRatiosDataProvider()
+    public function migrateImageManipulationRatiosDataProvider(): array
     {
         return [
             'enableZoom is removed' => [
@@ -5895,7 +5901,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @dataProvider migrateImageManipulationRatiosDataProvider
      */
-    public function migrateImageManipulationRatios(array $input, array $expected)
+    public function migrateImageManipulationRatios(array $input, array $expected): void
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
@@ -5903,7 +5909,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateinputDateTimeMaxNotDefinedAndRenderTypeNotDefined()
+    public function migrateinputDateTimeMaxNotDefinedAndRenderTypeNotDefined(): void
     {
         $input = [
             'aTable' => [
@@ -5936,7 +5942,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateinputDateTimeMaxNotDefinedAndRenderTypeNotInputDateTime()
+    public function migrateinputDateTimeMaxNotDefinedAndRenderTypeNotInputDateTime(): void
     {
         $input = [
             'aTable' => [
@@ -5971,7 +5977,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateinputDateTimeMaxNotDefined()
+    public function migrateinputDateTimeMaxNotDefined(): void
     {
         $input = [
             'aTable' => [
@@ -6006,7 +6012,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateinputDateTimeMaxDefined()
+    public function migrateinputDateTimeMaxDefined(): void
     {
         $input = [
             'aTable' => [
@@ -6042,7 +6048,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateinputDateTimeMaxDefinedAndRenderTypeNotDefined()
+    public function migrateinputDateTimeMaxDefinedAndRenderTypeNotDefined(): void
     {
         $input = [
             'aTable' => [
@@ -6077,7 +6083,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateinputDateTimeMaxDefinedAndRenderTypeNotDateTime()
+    public function migrateinputDateTimeMaxDefinedAndRenderTypeNotDateTime(): void
     {
         $input = [
             'aTable' => [
@@ -6114,7 +6120,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateForeignTypesOverride()
+    public function migrateForeignTypesOverride(): void
     {
         $input = [
             'aTable' => [
@@ -6157,7 +6163,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateForeignTypesMergedIntoExistingOverrideChildTca()
+    public function migrateForeignTypesMergedIntoExistingOverrideChildTca(): void
     {
         $input = [
             'aTable' => [
@@ -6217,7 +6223,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateForeignDefaultsOverride()
+    public function migrateForeignDefaultsOverride(): void
     {
         $input = [
             'aTable' => [
@@ -6285,7 +6291,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateForeignSelectorOverrides()
+    public function migrateForeignSelectorOverrides(): void
     {
         $input = [
             'aTable' => [
@@ -6355,7 +6361,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateAllOverridesFromColumnOverride()
+    public function migrateAllOverridesFromColumnOverride(): void
     {
         $input = [
             'aTable' => [
@@ -6446,7 +6452,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migratePartlyOverridesFromColumnOverride()
+    public function migratePartlyOverridesFromColumnOverride(): void
     {
         $input = [
             'aTable' => [

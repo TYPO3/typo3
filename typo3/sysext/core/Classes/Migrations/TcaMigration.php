@@ -262,15 +262,15 @@ class TcaMigration
                     if (count($fieldArray) === 2 && empty($fieldArray['fieldLabel'])) {
                         unset($fieldArray['fieldLabel']);
                     }
-                    if (count($fieldArray) === 1 && empty($fieldArray['fieldName'])) {
-                        // The field may vanish if nothing is left
-                        unset($fieldArray['fieldName']);
-                    }
                     $newFieldString = implode(';', $fieldArray);
                     if ($newFieldString !== $fieldString) {
                         $this->messages[] = 'The 4th parameter \'specConf\' of the field \'showitem\' with fieldName = \'' . $fieldArray['fieldName'] . '\' has been migrated, from TCA table "'
                             . $table . '[\'types\'][\'' . $typeName . '\'][\'showitem\']"' . 'to "'
                             . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'' . $fieldArray['fieldName'] . '\'][\'defaultExtras\']".';
+                    }
+                    if (count($fieldArray) === 1 && empty($fieldArray['fieldName'])) {
+                        // The field may vanish if nothing is left
+                        unset($fieldArray['fieldName']);
                     }
                     if (!empty($newFieldString)) {
                         $newFieldStrings[] = $newFieldString;
@@ -980,7 +980,7 @@ class TcaMigration
                     $this->messages[] = 'The TCA setting \'noCopy\' was removed '
                         . 'in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\']';
                 }
-                if ($fieldConfig['l10n_mode'] === 'mergeIfNotBlank') {
+                if (!empty($fieldConfig['l10n_mode']) && $fieldConfig['l10n_mode'] === 'mergeIfNotBlank') {
                     unset($fieldConfig['l10n_mode']);
                     if (empty($fieldConfig['config']['behaviour']['allowLanguageSynchronization'])) {
                         $fieldConfig['config']['behaviour']['allowLanguageSynchronization'] = true;
@@ -2430,7 +2430,7 @@ class TcaMigration
                     foreach ($typeConfig['columnsOverrides'] as $fieldName => &$fieldConfig) {
                         if (isset($fieldConfig['config']['overrideChildTca'])
                             || (isset($fieldConfig['config']['type']) && $fieldConfig['config']['type'] !== 'inline')
-                            || (!isset($fieldConfig['config']['type']) && $tca[$table]['columns'][$fieldName]['config']['type'] !== 'inline')
+                            || (!isset($fieldConfig['config']['type']) && (empty($tca[$table]['columns'][$fieldName]['config']['type']) || $tca[$table]['columns'][$fieldName]['config']['type'] !== 'inline'))
                         ) {
                             // The new config is either set intentionally for compatibility
                             // or accidentally. In any case we keep the new config and skip the migration.
