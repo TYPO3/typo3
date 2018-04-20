@@ -52,6 +52,7 @@ class FalMetadataInheritanceCest
         $I->click('.t3js-page-new-ce a');
         $I->switchToIFrame();
         $I->waitForElement('.t3js-modal.in');
+        $I->wait(3);
         $I->click('Text & Images');
         $I->switchToIFrame('list_frame');
         $I->waitForText('Create new Page Content on page');
@@ -142,6 +143,7 @@ class FalMetadataInheritanceCest
         $I->click('.t3js-page-new-ce a');
         $I->switchToIFrame();
         $I->waitForElement('.t3js-modal.in');
+        $I->wait(3);
         $I->click('Text & Images');
         $I->switchToIFrame('list_frame');
         $I->waitForText('Create new Page Content on page');
