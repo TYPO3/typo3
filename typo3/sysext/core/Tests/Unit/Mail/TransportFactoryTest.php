@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Mail\MemorySpool;
 use TYPO3\CMS\Core\Mail\TransportFactory;
+use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeInvalidSpoolFixture;
+use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeValidSpoolFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -26,11 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TransportFactoryTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * * @var TransportFactory
      */
@@ -44,7 +41,7 @@ class TransportFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getReturnsSwiftSpoolTransportUsingSwiftFileSpool()
+    public function getReturnsSwiftSpoolTransportUsingSwiftFileSpool(): void
     {
         $mailSettings = [
             'transport' => 'mail',
@@ -78,7 +75,7 @@ class TransportFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getReturnsSwiftSpoolTransportUsingSwiftMemorySpool()
+    public function getReturnsSwiftSpoolTransportUsingSwiftMemorySpool(): void
     {
         $mailSettings = [
             'transport' => 'mail',
@@ -109,7 +106,7 @@ class TransportFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getReturnsSwiftSpoolTransportUsingCustomSpool()
+    public function getReturnsSwiftSpoolTransportUsingCustomSpool(): void
     {
         $mailSettings = [
             'transport' => 'mail',
@@ -121,7 +118,7 @@ class TransportFactoryTest extends UnitTestCase
             'transport_mbox_file' => '',
             'defaultMailFromAddress' => '',
             'defaultMailFromName' => '',
-            'transport_spool_type' => 'TYPO3\\CMS\\Core\\Tests\\Unit\\Mail\\Fixtures\\FakeValidSpoolFixture',
+            'transport_spool_type' => FakeValidSpoolFixture::class,
             'transport_spool_filepath' => Environment::getVarPath() . '/messages/',
         ];
 
@@ -139,7 +136,7 @@ class TransportFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getThrowsRuntimeExceptionForInvalidCustomSpool()
+    public function getThrowsRuntimeExceptionForInvalidCustomSpool(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1466799482);
@@ -154,7 +151,7 @@ class TransportFactoryTest extends UnitTestCase
             'transport_mbox_file' => '',
             'defaultMailFromAddress' => '',
             'defaultMailFromName' => '',
-            'transport_spool_type' => 'TYPO3\\CMS\\Core\\Tests\\Unit\\Mail\\Fixtures\\FakeInvalidSpoolFixture',
+            'transport_spool_type' => FakeInvalidSpoolFixture::class,
             'transport_spool_filepath' => Environment::getVarPath() . '/messages/',
         ];
 
@@ -164,7 +161,7 @@ class TransportFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getReturnsSwiftMailTransport()
+    public function getReturnsSwiftMailTransport(): void
     {
         $mailSettings = [
             'transport' => 'mail',

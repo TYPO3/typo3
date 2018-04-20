@@ -117,8 +117,9 @@ class TransportFactory implements SingletonInterface
     /**
      * Creates a spool from mail settings.
      *
-     * @param  array  $mailSettings
+     * @param array $mailSettings
      * @return \Swift_Spool
+     * @throws \RuntimeException
      */
     protected function createSpool(array $mailSettings): \Swift_Spool
     {
@@ -137,8 +138,11 @@ class TransportFactory implements SingletonInterface
             default:
                 $spool = GeneralUtility::makeInstance($mailSettings['transport_spool_type'], $mailSettings);
                 if (!$spool instanceof \Swift_Spool) {
-                    throw new \RuntimeException($mailSettings['spool'] . ' is not an implementation of \\Swift_Spool,
-                            but must implement that interface to be used as a mail spool.', 1466799482);
+                    throw new \RuntimeException(
+                        $mailSettings['transport_spool_type'] . ' is not an implementation of \\Swift_Spool,
+                            but must implement that interface to be used as a mail spool.',
+                        1466799482
+                    );
                 }
                 break;
         }
