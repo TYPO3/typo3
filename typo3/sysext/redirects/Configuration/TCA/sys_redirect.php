@@ -52,14 +52,17 @@ return [
     'columns' => [
         'disabled' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.disabled',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.disabled.0'
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => true
                     ]
-                ]
+                ],
             ]
         ],
         'starttime' => [
@@ -112,29 +115,33 @@ return [
         ],
         'force_https' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.force_https',
+            'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.force_https.0',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'default' => 0,
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.force_https.0'
+                    [
+                        0 => '',
+                        1 => '',
                     ]
-                ]
-            ],
+                ],
+            ]
         ],
         'keep_query_parameters' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.keep_query_parameters',
+            'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.keep_query_parameters.0',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'default' => 0,
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.keep_query_parameters.0'
+                    [
+                        0 => '',
+                        1 => '',
                     ]
-                ]
-            ],
+                ],
+            ]
         ],
         'target' => [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target',
@@ -193,14 +200,19 @@ return [
         ],
         'disable_hitcount' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.disable_hitcount',
+            'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.hitcountState',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxLabeledToggle',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.disable_hitcount.0'
+                    [
+                        0 => '',
+                        1 => '',
+                        'labelChecked' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
+                        'labelUnchecked' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disabled',
+                        'invertStateDisplay' => true
                     ]
-                ]
+                ],
             ],
             'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled'
         ],
@@ -209,12 +221,14 @@ return [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.is_regexp',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.is_regexp.0'
+                    [
+                        0 => '',
+                        1 => '',
                     ]
-                ]
-            ],
+                ],
+            ]
         ],
     ],
 ];

@@ -48,6 +48,9 @@
 			<trans-unit id="sys_redirect.lasthiton">
 				<source>Last Hit On</source>
 			</trans-unit>
+			<trans-unit id="sys_redirect.hitcountState">
+				<source>Hit Counter</source>
+			</trans-unit>
 			<trans-unit id="sys_redirect.disable_hitcount">
 				<source>Disable Hit Counter</source>
 			</trans-unit>
