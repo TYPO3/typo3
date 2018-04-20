@@ -56,7 +56,14 @@ return [
         'personal' => [
             'label' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.personal',
             'config' => [
-                'type' => 'check'
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                    ]
+                ],
             ]
         ],
         'position' => [

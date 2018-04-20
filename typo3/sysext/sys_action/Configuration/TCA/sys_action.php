@@ -42,9 +42,17 @@ return [
             ]
         ],
         'hidden' => [
-            'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.hidden',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
             'config' => [
-                'type' => 'check'
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => true
+                    ]
+                ],
             ]
         ],
         'type' => [
@@ -98,9 +106,17 @@ return [
             ]
         ],
         't1_create_user_dir' => [
+            'exclude' => 1,
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.t1_create_user_dir',
             'config' => [
-                'type' => 'check'
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                    ]
+                ],
             ]
         ],
         't1_copy_of_user' => [
