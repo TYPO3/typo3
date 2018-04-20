@@ -40,12 +40,20 @@ return [
             ]
         ],
         'hidden' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disable',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
             'exclude' => true,
             'config' => [
                 'type' => 'check',
-                'default' => 0
-            ]
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => true,
+                    ],
+                ],
+            ],
         ],
         'starttime' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
@@ -73,8 +81,16 @@ return [
         'root' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.root',
             'config' => [
-                'type' => 'check'
-            ]
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                    ],
+                ],
+            ],
         ],
         'clear' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.clear',
@@ -163,7 +179,14 @@ return [
             'exclude' => true,
             'config' => [
                 'type' => 'check',
-                'default' => 0
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                    ]
+                ],
             ]
         ],
         'config' => [
