@@ -65,7 +65,10 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
      */
     public function setExceptionalErrors($exceptionalErrors)
     {
-        $this->exceptionalErrors = (int)$exceptionalErrors;
+        $exceptionalErrors = (int)$exceptionalErrors;
+        // We always disallow E_USER_DEPRECATED to generate exceptions as this may cause
+        // bad user experience specifically during upgrades.
+        $this->exceptionalErrors = $exceptionalErrors & ~E_USER_DEPRECATED;
     }
 
     /**
