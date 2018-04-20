@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
 /*                                                                        *
@@ -14,22 +15,20 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
 use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
+use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
 use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the default package manager
  */
-class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class PackageManagerTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager
      */
@@ -78,8 +77,9 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @param string $packageKey
      * @return Package
+     * @throws InvalidPackageStateException
      */
-    protected function createPackage($packageKey)
+    protected function createPackage(string $packageKey): Package
     {
         $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
         mkdir($packagePath, 0770, true);
@@ -94,8 +94,10 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
+     * @throws UnknownPackageException
+     * @throws InvalidPackageStateException
      */
-    public function getPackageReturnsTheSpecifiedPackage()
+    public function getPackageReturnsTheSpecifiedPackage(): void
     {
         $this->createPackage('TYPO3.MyPackage');
         $package = $this->packageManager->getPackage('TYPO3.MyPackage');
@@ -105,8 +107,9 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
+     * @throws UnknownPackageException
      */
-    public function getPackageThrowsExceptionOnUnknownPackage()
+    public function getPackageThrowsExceptionOnUnknownPackage(): void
     {
         $this->expectException(UnknownPackageException::class);
         $this->expectExceptionCode(1166546734);
@@ -117,7 +120,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function scanAvailablePackagesTraversesThePackagesDirectoryAndRegistersPackagesItFinds()
+    public function scanAvailablePackagesTraversesThePackagesDirectoryAndRegistersPackagesItFinds(): void
     {
         $expectedPackageKeys = [
             $this->getUniqueId('TYPO3.CMS'),
@@ -148,7 +151,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function scanAvailablePackagesKeepsExistingPackageConfiguration()
+    public function scanAvailablePackagesKeepsExistingPackageConfiguration(): void
     {
         $expectedPackageKeys = [
             $this->getUniqueId('TYPO3.CMS'),
@@ -192,7 +195,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function packageStatesConfigurationContainsRelativePaths()
+    public function packageStatesConfigurationContainsRelativePaths(): void
     {
         $packageKeys = [
             $this->getUniqueId('Lolli.Pop.NothingElse'),
@@ -236,7 +239,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @return array
      */
-    public function packageKeysAndPaths()
+    public function packageKeysAndPaths(): array
     {
         return [
             ['TYPO3.YetAnotherTestPackage', 'vfs://Test/Packages/Application/TYPO3.YetAnotherTestPackage/'],
@@ -247,8 +250,9 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      * @dataProvider packageKeysAndPaths
+     * @throws InvalidPackageStateException
      */
-    public function createPackageCreatesPackageFolderAndReturnsPackage($packageKey, $expectedPackagePath)
+    public function createPackageCreatesPackageFolderAndReturnsPackage($packageKey, $expectedPackagePath): void
     {
         $actualPackage = $this->createPackage($packageKey);
         $actualPackagePath = $actualPackage->getPackagePath();
@@ -261,8 +265,12 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
+     * @throws InvalidPackageStateException
+     * @throws ProtectedPackageKeyException
+     * @throws UnknownPackageException
+     * @throws PackageStatesFileNotWritableException
      */
-    public function activatePackageAndDeactivatePackageActivateAndDeactivateTheGivenPackage()
+    public function activatePackageAndDeactivatePackageActivateAndDeactivateTheGivenPackage(): void
     {
         $packageKey = 'Acme.YetAnotherTestPackage';
 
@@ -279,8 +287,12 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
+     * @throws InvalidPackageStateException
+     * @throws PackageStatesFileNotWritableException
+     * @throws ProtectedPackageKeyException
+     * @throws UnknownPackageException
      */
-    public function deactivatePackageThrowsAnExceptionIfPackageIsProtected()
+    public function deactivatePackageThrowsAnExceptionIfPackageIsProtected(): void
     {
         $this->expectException(ProtectedPackageKeyException::class);
         $this->expectExceptionCode(1308662891);
@@ -293,8 +305,11 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
+     * @throws ProtectedPackageKeyException
+     * @throws UnknownPackageException
+     * @throws \TYPO3\CMS\Core\Package\Exception
      */
-    public function deletePackageThrowsErrorIfPackageIsNotAvailable()
+    public function deletePackageThrowsErrorIfPackageIsNotAvailable(): void
     {
         $this->expectException(UnknownPackageException::class);
         $this->expectExceptionCode(1166543253);
@@ -305,8 +320,12 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
+     * @throws InvalidPackageStateException
+     * @throws ProtectedPackageKeyException
+     * @throws UnknownPackageException
+     * @throws \TYPO3\CMS\Core\Package\Exception
      */
-    public function deletePackageThrowsAnExceptionIfPackageIsProtected()
+    public function deletePackageThrowsAnExceptionIfPackageIsProtected(): void
     {
         $this->expectException(ProtectedPackageKeyException::class);
         $this->expectExceptionCode(1220722120);
@@ -318,8 +337,12 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
+     * @throws InvalidPackageStateException
+     * @throws ProtectedPackageKeyException
+     * @throws UnknownPackageException
+     * @throws \TYPO3\CMS\Core\Package\Exception
      */
-    public function deletePackageRemovesPackageFromAvailableAndActivePackagesAndDeletesThePackageDirectory()
+    public function deletePackageRemovesPackageFromAvailableAndActivePackagesAndDeletesThePackageDirectory(): void
     {
         $this->createPackage('Acme.YetAnotherTestPackage');
 
@@ -337,7 +360,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function composerNamesAndPackageKeys()
+    public function composerNamesAndPackageKeys(): array
     {
         return [
             ['imagine/Imagine', 'imagine.Imagine'],
@@ -350,8 +373,10 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      * @dataProvider composerNamesAndPackageKeys
+     * @param string $composerName
+     * @param string $packageKey
      */
-    public function getPackageKeyFromComposerNameIgnoresCaseDifferences($composerName, $packageKey)
+    public function getPackageKeyFromComposerNameIgnoresCaseDifferences(string $composerName, string $packageKey): void
     {
         $packageStatesConfiguration = [
             'packages' => [
@@ -374,7 +399,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function buildDependencyGraphBuildsCorrectGraphDataProvider()
+    public function buildDependencyGraphBuildsCorrectGraphDataProvider(): array
     {
         return [
             'TYPO3 Flow Packages' => [
@@ -619,7 +644,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param array $expectedGraph
      * @dataProvider buildDependencyGraphBuildsCorrectGraphDataProvider
      */
-    public function buildDependencyGraphBuildsCorrectGraph(array $unsortedPackageStatesConfiguration, array $frameworkPackageKeys, array $expectedGraph)
+    public function buildDependencyGraphBuildsCorrectGraph(array $unsortedPackageStatesConfiguration, array $frameworkPackageKeys, array $expectedGraph): void
     {
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService]);
         $packageManager->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
@@ -632,7 +657,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
-    public function packageSortingDataProvider()
+    public function packageSortingDataProvider(): array
     {
         return [
             'TYPO3 Flow Packages' => [
@@ -748,7 +773,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param array $unsortedPackageStatesConfiguration
      * @param array $frameworkPackageKeys
      */
-    public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays($unsortedPackageStatesConfiguration, $frameworkPackageKeys, $expectedSortedPackageKeys)
+    public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays($unsortedPackageStatesConfiguration, $frameworkPackageKeys, $expectedSortedPackageKeys): void
     {
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService]);
         $packageManager->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
@@ -761,7 +786,7 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function sortPackageStatesConfigurationByDependencyThrowsExceptionWhenCycleDetected()
+    public function sortPackageStatesConfigurationByDependencyThrowsExceptionWhenCycleDetected(): void
     {
         $unsortedPackageStatesConfiguration = [
             'A' => [
