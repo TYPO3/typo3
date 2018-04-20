@@ -71,6 +71,7 @@ define([
             title: modaltitle,
             size: Modal.sizes.large,
             content: '<div class="modal-loading">' + icon + '</div>',
+            additionalCssClasses: ['install-tool-modal'],
             callback: function (currentModal) {
               require([requireModule], function(aModule) {
                 if (typeof aModule.initialize !== 'undefined') {
