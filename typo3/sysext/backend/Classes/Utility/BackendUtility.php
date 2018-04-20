@@ -1353,19 +1353,23 @@ class BackendUtility
                 ) {
                     $cropVariantCollection = CropVariantCollection::create((string)$fileReferenceObject->getProperty('crop'));
                     $cropArea = $cropVariantCollection->getCropArea();
-                    $processedImage = $fileObject->process(
-                        ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
-                        [
-                            'width' => $sizeParts[0],
-                            'height' => $sizeParts[1] . 'c',
-                            'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($fileReferenceObject)
-                        ]
-                    );
-                    $imageUrl = $processedImage->getPublicUrl(true);
-                    $imgTag = '<img src="' . $imageUrl . '" '
-                        . 'width="' . $processedImage->getProperty('width') . '" '
-                        . 'height="' . $processedImage->getProperty('height') . '" '
-                        . 'alt="' . htmlspecialchars($fileReferenceObject->getName()) . '" />';
+                    $processingInformation = [
+                        'width' => $sizeParts[0],
+                        'height' => $sizeParts[1] . 'c',
+                        'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($fileReferenceObject)
+                    ];
+                    $imageUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)
+                        ->buildUriFromRoute('thumbnails', [
+                            'fileIdentifier' => $fileObject->getCombinedIdentifier(),
+                            'processingInstructions' => $processingInformation
+                        ]);
+                    $attributes = [
+                        'src' => $imageUrl,
+                        'width' => (int)$sizeParts[0],
+                        'height' => (int)$sizeParts[1],
+                        'alt' => $fileReferenceObject->getName(),
+                    ];
+                    $imgTag = '<img ' . GeneralUtility::implodeAttributes($attributes, true) . '/>';
                 } else {
                     // Icon
                     $imgTag = '<span title="' . htmlspecialchars($fileObject->getName()) . '">'
