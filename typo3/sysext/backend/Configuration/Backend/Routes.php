@@ -194,5 +194,11 @@ return [
     'record_edit' => [
         'path' => '/record/edit',
         'target' => Controller\EditDocumentController::class . '::mainAction'
+    ],
+
+    // Thumbnails
+    'thumbnails' => [
+        'path' => '/thumbnails',
+        'target' => Controller\File\ThumbnailController::class . '::render'
     ]
 ];
