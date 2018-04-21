@@ -84,6 +84,7 @@ define([
             if (Array.isArray(data.suggestions)) {
               data.suggestions.forEach(function(element) {
                 var aBlock = modalContent.find(self.selectorSuggestionBlock).clone();
+                aBlock.removeClass(self.selectorSuggestionBlock.substr(1));
                 var key = element.key;
                 aBlock.find('.t3js-databaseAnalyzer-suggestion-block-legend').text(element.label);
                 aBlock.find('.t3js-databaseAnalyzer-suggestion-block-checkbox').attr('id', 't3-install-' + key + '-checkbox');
@@ -93,19 +94,20 @@ define([
                 aBlock.find('.t3js-databaseAnalyzer-suggestion-block-label').attr('for', 't3-install-' + key + '-checkbox');
                 element.children.forEach(function(line) {
                   var aLine = modalContent.find(self.selectorSuggestionLine).clone();
+                  aLine.removeClass(self.selectorSuggestionLine.substr(1));
                   var hash = line.hash;
-                  aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox').attr('id', 't3-install-db-' + hash);
-                  aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox').attr('data-hash', hash);
+                  var $checkbox = aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox');
+                  $checkbox.attr('id', 't3-install-db-' + hash).attr('data-hash', hash);
                   if (element.enabled) {
-                    aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox').attr('checked', 'checked');
+                    $checkbox.attr('checked', 'checked');
                   }
                   aLine.find('.t3js-databaseAnalyzer-suggestion-line-label').attr('for', 't3-install-db-' + hash);
                   aLine.find('.t3js-databaseAnalyzer-suggestion-line-statement').text(line.statement);
-                  if (line.current !== undefined) {
+                  if (typeof line.current !== 'undefined') {
                     aLine.find('.t3js-databaseAnalyzer-suggestion-line-current-value').text(line.current);
                     aLine.find('.t3js-databaseAnalyzer-suggestion-line-current').show();
                   }
-                  if (line.rowCount !== undefined) {
+                  if (typeof line.rowCount !== 'undefined') {
                     aLine.find('.t3js-databaseAnalyzer-suggestion-line-count-value').text(line.rowCount);
                     aLine.find('.t3js-databaseAnalyzer-suggestion-line-count').show();
                   }
