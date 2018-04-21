@@ -117,6 +117,7 @@ return [
         ],
         'alternative' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.alternative',
+            'l10n_mode' => 'prefixLangTitle',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
