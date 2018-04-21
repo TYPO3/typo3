@@ -2233,9 +2233,12 @@ class EditDocumentController
             if ($table === 'pages') {
                 $row = BackendUtility::getRecord($table, $uid, $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']);
                 // Ensure the check is always done against the default language page
-                $langRows = $this->getLanguages((int)($row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] ?: $uid));
+                $langRows = $this->getLanguages(
+                    (int)$row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] ?: $uid,
+                    $table
+                );
             } else {
-                $langRows = $this->getLanguages((int)$pid);
+                $langRows = $this->getLanguages((int)$pid, $table);
             }
             // Page available in other languages than default language?
             if (is_array($langRows) && count($langRows) > 1) {
@@ -2430,9 +2433,10 @@ class EditDocumentController
      * @param int $id Page id: If zero, the query will select all sys_language records from root level which are NOT
      *                hidden. If set to another value, the query will select all sys_language records that has a
      *                translation record on that page (and is not hidden, unless you are admin user)
+     * @param string $table For pages we want all languages, for other records the languages of the page translations
      * @return array Language records including faked record for default language
      */
-    public function getLanguages(int $id): array
+    public function getLanguages(int $id, string $table = ''): array
     {
         // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
@@ -2481,12 +2485,7 @@ class EditDocumentController
                 $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
             }
 
-            // Add join with pages translations to only show active languages
-            $queryBuilder->from('pages', 'o')
-                ->where(
-                    $queryBuilder->expr()->eq('o.' . $GLOBALS['TCA']['pages']['ctrl']['languageField'], $queryBuilder->quoteIdentifier('s.uid')),
-                    $queryBuilder->expr()->eq('o.' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'], $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
-                );
+            $this->joinPagesTranslationsForActiveLanguage($queryBuilder, $table, $id);
         }
 
         $result = $queryBuilder->execute();
@@ -2495,6 +2494,29 @@ class EditDocumentController
         }
 
         return $languages;
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param string $table
+     * @param int $id
+     */
+    public function joinPagesTranslationsForActiveLanguage(QueryBuilder $queryBuilder, string $table, int $id)
+    {
+        // Add join with pages translations to only show active languages
+        if ($table !== 'pages') {
+            $queryBuilder->from('pages', 'o')
+                         ->where(
+                             $queryBuilder->expr()->eq(
+                                 'o.' . $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                                 $queryBuilder->quoteIdentifier('s.uid')
+                             ),
+                             $queryBuilder->expr()->eq(
+                                 'o.' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                                 $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                             )
+                         );
+        }
     }
 
     /**
