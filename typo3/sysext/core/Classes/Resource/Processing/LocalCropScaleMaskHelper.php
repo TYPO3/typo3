@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
@@ -91,13 +92,15 @@ class LocalCropScaleMaskHelper
             $backupPrefix = $gifBuilder->filenamePrefix;
             $gifBuilder->filenamePrefix = 'crop_';
 
+            $jpegQuality = MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality'], 10, 100, 85);
+
             // the result info is an array with 0=width,1=height,2=extension,3=filename
             $result = $gifBuilder->imageMagickConvert(
                 $originalFileName,
                 $configuration['fileExtension'],
                 '',
                 '',
-                sprintf('-crop %dx%d+%d+%d +repage', $newWidth, $newHeight, $offsetLeft, $offsetTop),
+                sprintf('-crop %dx%d+%d+%d +repage -quality %d', $newWidth, $newHeight, $offsetLeft, $offsetTop, $jpegQuality),
                 '',
                 ['noScale' => true],
                 true
