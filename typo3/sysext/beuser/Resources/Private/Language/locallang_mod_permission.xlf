@@ -97,10 +97,10 @@
 				<source>Change/Add/Delete/Move content.</source>
 			</trans-unit>
 			<trans-unit id="2_t">
-				<source>Change/Move page, eg. change pagetitle etc.</source>
+				<source>Change page eg. change pagetitle etc.</source>
 			</trans-unit>
 			<trans-unit id="4_t">
-				<source>Delete page and content.</source>
+				<source>Delete/Move page and content.</source>
 			</trans-unit>
 			<trans-unit id="8_t">
 				<source>Create new pages under this page.</source>
