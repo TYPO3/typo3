@@ -112,8 +112,10 @@ class ArrayFormFactory extends AbstractFormFactory
 
         $renderable->setOptions($nestedRenderableConfiguration);
 
-        foreach ($childRenderables as $elementConfiguration) {
-            $this->addNestedRenderable($elementConfiguration, $renderable);
+        if ($renderable instanceof CompositeRenderableInterface) {
+            foreach ($childRenderables as $elementConfiguration) {
+                $this->addNestedRenderable($elementConfiguration, $renderable);
+            }
         }
 
         return $renderable;
