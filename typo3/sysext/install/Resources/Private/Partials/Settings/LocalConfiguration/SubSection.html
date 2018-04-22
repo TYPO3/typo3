@@ -27,7 +27,7 @@
 							</f:if>
 						</f:then>
 						<f:else>
-							<f:if condition="{item.value}">
+							<f:if condition="{item.value} && !{item.hideValue}">
 								= {item.value -> f:format.crop(maxCharacters: 40, respectWordBoundaries:0, respectHtml:0)}
 							</f:if>
 						</f:else>
@@ -78,6 +78,18 @@
 										value="{item.value}"
 										data-path="{sectionName}/{item.key}"
 										class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+									/>
+								</div>
+							</f:if>
+
+							<f:if condition="{item.type} == 'password'">
+								<div class="form-group">
+									<span class="help-block">{item.description -> f:format.raw()}</span>
+									<input
+											type="password"
+											value="{item.value}"
+											data-path="{sectionName}/{item.key}"
+											class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
 									/>
 								</div>
 							</f:if>

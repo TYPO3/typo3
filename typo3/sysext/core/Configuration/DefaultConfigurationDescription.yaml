@@ -478,7 +478,7 @@ MAIL:
             type: text
             description: '<em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your username here.'
         transport_smtp_password:
-            type: text
+            type: password
             description: '<em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your password here.'
         transport_sendmail_command:
             type: text

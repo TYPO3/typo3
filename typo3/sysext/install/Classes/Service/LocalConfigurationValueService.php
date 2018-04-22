@@ -125,6 +125,11 @@ class LocalConfigurationValueService
                         $itemData['value'] = $value;
                         $itemData['phpErrorCode'] = true;
                         break;
+                    case 'password':
+                        $itemData['type'] = 'password';
+                        $itemData['value'] = $value;
+                        $itemData['hideValue'] = true;
+                        break;
                     default:
                         $itemData['type'] = 'input';
                         $itemData['value'] = $value;
@@ -196,6 +201,8 @@ class LocalConfigurationValueService
                     $messageBody = 'New value = none';
                 } elseif (is_array($value)) {
                     $messageBody = "New value = ['" . implode("', '", $value) . "']";
+                } elseif ($dataType === 'password') {
+                    $messageBody = 'New value is set';
                 } else {
                     $messageBody = 'New value = ' . $value;
                 }
