@@ -29,29 +29,29 @@ class InstallWithMysqlIntroductionPackageCest
 
         // EnvironmentAndFolders step
         $I->waitForText('Installing TYPO3');
-        $I->waitForText('System looks good. Continue!');
-        $I->click('System looks good. Continue!');
+        $I->waitForText('No problems detected, continue with installation');
+        $I->click('No problems detected, continue with installation');
 
         // DatabaseConnection step
-        $I->waitForText('Database connection');
+        $I->waitForText('Select database');
         $I->fillField('#t3-install-step-mysqliManualConfiguration-username', getenv('typo3DatabaseUsername'));
         $I->fillField('#t3-install-step-mysqliManualConfiguration-password', getenv('typo3DatabasePassword'));
         $I->click('Continue');
 
         // DatabaseSelect step
-        $I->waitForText('Select database');
+        $I->waitForText('Select a database');
         $I->click('#t3-install-form-db-select-type-new');
         $I->fillField('#t3-install-step-database-new', getenv('typo3DatabaseName') . '_atimysql');
         $I->click('Continue');
 
         // DatabaseData step
-        $I->waitForText('Create user and import base data');
+        $I->waitForText('Create Administrative User / Specify Site Name');
         $I->fillField('#username', 'admin');
         $I->fillField('#password', 'password');
         $I->click('Continue');
 
         // DefaultConfiguration step - Create empty page
-        $I->waitForText('Installation done!');
+        $I->waitForText('Installation Complete');
         $I->click('#load-distributions');
         $I->click('Open the TYPO3 Backend');
 

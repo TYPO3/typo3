@@ -2,19 +2,18 @@
 	<div id="t3js-installer-databaseConnect-execute-token">{executeDatabaseConnectToken}</div>
 </div>
 
-<h3>Database connection</h3>
+<h3>Select database</h3>
 <f:if condition="{hasAtLeastOneOption}">
 	<f:then>
 		<p>
-			If you have not already created a username and password to access the database, please do so now.
-			This can be done using tools provided by your host.
+			You will need to create a database user with the appropriate privileges to access your database.
 		</p>
 		<div class="t3js-installer-databaseConnect-output"></div>
 		<div class="row">
 			<div class="col-md-6">
 				<form method="post" class="form-horizontal">
 					<div class="form-group">
-						<label for="t3js-connect-database-driver" class="control-label col-md-2">Available</label>
+						<label for="t3js-connect-database-driver" class="control-label col-md-2">Connection</label>
 						<div class="col-md-10">
 							<select id="t3js-connect-database-driver" class="form-control" name="install[values][availableSet]">
 								<f:if condition="{hasMysqliManualConfiguration}">

@@ -2,7 +2,7 @@
 	<div id="t3js-installer-databaseSelect-execute-token">{executeDatabaseSelectToken}</div>
 </div>
 
-<h3>Select database</h3>
+<h3>Select a database</h3>
 
 <div class="t3js-installer-databaseSelect-output"></div>
 
@@ -15,10 +15,7 @@
 	</f:for>
 </f:if>
 
-You have two options:
-
 <form method="post" id="stepInstaller-databaseSelect">
-	<p>&nbsp;</p>
 	<div class="row">
 		<div class="col-md-6">
 			<div class="radio">
@@ -56,14 +53,12 @@ You have two options:
 						value="new"
 						class="radio"
 					/>
-					OR create a new database:
+					Create a new database:
 				</label>
 			</div>
 			<div class="form-group">
 				<p>
-					<em>Attention: The database user must have sufficient privileges to create the whole structure.</em>
-					<br />
-					Enter a name for your TYPO3 database.
+					Specify a name for your TYPO3 database.
 				</p>
 				<input
 					id="t3-install-step-database-new"

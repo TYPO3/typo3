@@ -29,11 +29,11 @@ class InstallWithPgsqlIntroductionPackageCest
 
         // EnvironmentAndFolders step
         $I->waitForText('Installing TYPO3');
-        $I->waitForText('System looks good. Continue!');
-        $I->click('System looks good. Continue!');
+        $I->waitForText('No problems detected, continue with installation');
+        $I->click('No problems detected, continue with installation');
 
         // DatabaseConnection step
-        $I->waitForText('Database connection');
+        $I->waitForText('Select database');
         $I->selectOption('#t3js-connect-database-driver', 'Manually configured PostgreSQL connection');
         $I->fillField('#t3-install-step-postgresManualConfiguration-username', getenv('typo3DatabaseUsername'));
         // password intentionally not filled. Postgres authenticates with the shell user.
@@ -41,13 +41,13 @@ class InstallWithPgsqlIntroductionPackageCest
         $I->click('Continue');
 
         // DatabaseData step
-        $I->waitForText('Create user and import base data');
+        $I->waitForText('Create Administrative User / Specify Site Name');
         $I->fillField('#username', 'admin');
         $I->fillField('#password', 'password');
         $I->click('Continue');
 
         // DefaultConfiguration step - load distributions
-        $I->waitForText('Installation done!');
+        $I->waitForText('Installation Complete');
         $I->click('#load-distributions');
         $I->click('Open the TYPO3 Backend');
 

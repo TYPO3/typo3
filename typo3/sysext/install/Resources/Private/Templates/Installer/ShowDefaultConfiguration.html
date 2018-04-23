@@ -2,15 +2,11 @@
 	<div id="t3js-installer-defaultConfiguration-execute-token">{executeDefaultConfigurationToken}</div>
 </div>
 
-<h3>Installation done!</h3>
+<h3>Installation Complete</h3>
 
 <p>
-	The only thing remaining is to set some configuration values based on your
-	system environment, which happens automatically in this step.
-	Then you will be redirected to your TYPO3 CMS backend, ready for you to log in
-	with the user you just created.
+	The Installation Wizard can create an empty page at the root of your website to help get you started. If you would like to use this option select "Create empty starting page".
 </p>
-<p>&nbsp;</p>
 
 <div class="t3js-installer-defaultConfiguration-output"></div>
 
@@ -18,11 +14,8 @@
 	<div class="alert alert-notice">
 		<h4>Want a pre-configured site?</h4>
 		<p>
-			You now have an empty installation. If you want a pre-configured site, there are
-			distributions on the web which can be installed via the Extension Manager.
-			If you check the option below, the list of distributions will be fetched and you will
-			be able to choose one directly.
-			<strong>Please note: This may take some time after login.</strong>
+			You currently have an empty installation of TYPO3. If you would like to view a list of pre-configured distributions select “download list of distributions” from the list below.
+			<strong>Note: This may take some time to load.</strong>
 		</p>
 	</div>
 </f:if>
@@ -33,20 +26,20 @@
 			<div class="radio">
 				<label for="load-distributions">
 					<input type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
-					Yes, download the list of distributions.
+					Yes, download the list of distributions
 				</label>
 			</div>
 		</f:if>
 		<div class="radio">
 			<label for="create-site">
 				<input type="radio" id="create-site" name="install[values][sitesetup]" value="createsite" />
-				Yes, create a base empty page to start from.
+				Create empty starting page
 			</label>
 		</div>
 		<div class="radio">
 			<label for="do-nothing">
 				<input type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" checked="checked" />
-				Do nothing, just get me to the Backend.
+				Take me straight to the backend
 			</label>
 		</div>
 	</div>
