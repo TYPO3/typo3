@@ -1550,13 +1550,13 @@ class QueryGenerator
     }
 
     /**
-     * Get tree list
+     * Recursively fetch all descendants of a given page
      *
-     * @param int $id
+     * @param int $id uid of the page
      * @param int $depth
      * @param int $begin
      * @param string $permClause
-     * @return string
+     * @return string comma separated list of descendant pages
      */
     public function getTreeList($id, $depth, $begin = 0, $permClause = '')
     {
