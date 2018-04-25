@@ -89,7 +89,7 @@ class InheritancesResolverService
      *
      * @var string
      */
-    protected $inheritancePathToCkeck = '';
+    protected $inheritancePathToCheck = '';
 
     /**
      * Returns an instance of this service. Additionally the configuration
@@ -119,7 +119,7 @@ class InheritancesResolverService
     {
         $this->referenceConfiguration = [];
         $this->inheritanceStack = [];
-        $this->inheritancePathToCkeck = '';
+        $this->inheritancePathToCheck = '';
         return $this;
     }
 
@@ -162,13 +162,13 @@ class InheritancesResolverService
      *
      * @param array $configuration - a mapped YAML configuration (full or partial)
      * @param array $pathStack - an identifier for YAML key as array (Form.part1.key => {Form, part1, key})
-     * @param bool $setInheritancePathToCkeck
+     * @param bool $setInheritancePathToCheck
      * @return array
      */
     protected function resolve(
         array $configuration,
         array $pathStack = [],
-        bool $setInheritancePathToCkeck = true
+        bool $setInheritancePathToCheck = true
     ): array {
         foreach ($configuration as $key => $values) {
             //add current key to pathStack
@@ -179,8 +179,8 @@ class InheritancesResolverService
             $this->throwExceptionIfCycleInheritances($path, $path);
 
             //overwrite service property 'inheritancePathToCheck' with current path
-            if ($setInheritancePathToCkeck) {
-                $this->inheritancePathToCkeck = $path;
+            if ($setInheritancePathToCheck) {
+                $this->inheritancePathToCheck = $path;
             }
 
             //if value of subnode is an array, perform a deep search iteration step
@@ -230,9 +230,9 @@ class InheritancesResolverService
                 isset($inheritedConfiguration[self::INHERITANCE_OPERATOR])
                 && count($inheritedConfiguration) === 1
             ) {
-                if ($this->inheritancePathToCkeck === $inheritancePath) {
+                if ($this->inheritancePathToCheck === $inheritancePath) {
                     throw new CycleInheritancesException(
-                        $this->inheritancePathToCkeck . ' has cycle inheritances',
+                        $this->inheritancePathToCheck . ' has cycle inheritances',
                         1474900796
                     );
                 }
