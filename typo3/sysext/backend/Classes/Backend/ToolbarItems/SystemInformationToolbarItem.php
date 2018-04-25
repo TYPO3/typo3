@@ -208,7 +208,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function getOperatingSystem()
     {
-        $kernelName = php_uname('s');
+        $kernelName = PHP_OS;
         switch (strtolower($kernelName)) {
             case 'linux':
                 $icon = 'linux';
@@ -216,8 +216,11 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             case 'darwin':
                 $icon = 'apple';
                 break;
-            default:
+            case StringUtility::beginsWith($kernelName, 'win'):
                 $icon = 'windows';
+                break;
+            default:
+                $icon = 'unknown';
         }
         $this->systemInformation[] = [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem',

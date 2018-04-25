@@ -2971,6 +2971,12 @@ class IconRegistry implements SingletonInterface
                 'name' => 'windows'
             ]
         ],
+        'sysinfo-os-unknown' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/sysinfo/sysinfo-os-unknown.svg'
+            ]
+        ],
         'sysinfo-typo3-version' => [
             'provider' => SvgIconProvider::class,
             'options' => [
