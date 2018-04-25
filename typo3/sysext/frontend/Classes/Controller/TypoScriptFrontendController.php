@@ -2612,7 +2612,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                                         // The existing fallbacks have not been found, but instead of continuing
                                         // page rendering with default language, a "page not found" message should be shown
                                         // instead.
-                                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction('Page is not available in the requested language (fallbacks did not apply).');
+                                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($GLOBALS['TYPO3_REQUEST'], 'Page is not available in the requested language (fallbacks did not apply).');
                                         $this->sendResponseAndExit($response);
                                     }
                                 }
