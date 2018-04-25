@@ -8,6 +8,7 @@
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
 		<sorting>1</sorting>
+		<colPos>0</colPos>
 	</tt_content>
 	<tt_content>
 		<uid>2</uid>
@@ -17,6 +18,7 @@
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
 		<sorting>2</sorting>
+		<colPos>1</colPos>
 	</tt_content>
 	<tt_content>
 		<uid>3</uid>
@@ -26,5 +28,6 @@
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
 		<sorting>3</sorting>
+		<colPos>1</colPos>
 	</tt_content>
 </dataset>

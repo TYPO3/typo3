@@ -913,13 +913,14 @@ class PageLayoutView implements LoggerAwareInterface
             $cList = array_keys($contentRecordsPerColumn);
             // For each column, render the content into a variable:
             foreach ($cList as $columnId) {
-                if (!isset($this->contentElementCache[$lP][$columnId])) {
-                    $this->contentElementCache[$lP][$columnId] = [];
+                if (!isset($this->contentElementCache[$lP])) {
+                    $this->contentElementCache[$lP] = [];
                 }
 
                 if (!$lP) {
                     $defaultLanguageElementsByColumn[$columnId] = [];
                 }
+
                 // Start wrapping div
                 $content[$columnId] .= '<div data-colpos="' . $columnId . '" data-language-uid="' . $lP . '" class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-' . $lP . ' t3-page-ce-wrapper';
                 if (empty($contentRecordsPerColumn[$columnId])) {
@@ -999,13 +1000,6 @@ class PageLayoutView implements LoggerAwareInterface
                         $this->contentElementCache[$lP][$columnId][$row['uid']] = $row;
                         if ($this->tt_contentConfig['languageMode']) {
                             $languageColumn[$columnId][$lP] = $head[$columnId] . $content[$columnId];
-                            if (!$this->defLangBinding && $columnId !== 'unused') {
-                                $languageColumn[$columnId][$lP] .= $this->newLanguageButton(
-                                    $this->getNonTranslatedTTcontentUids($defaultLanguageElementsByColumn[$columnId], $id, $lP),
-                                    $lP,
-                                    $columnId
-                                );
-                            }
                         }
                         if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                             $singleElementHTML = '';
@@ -1134,13 +1128,7 @@ class PageLayoutView implements LoggerAwareInterface
                 foreach ($cList as $columnId) {
                     if (GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnId) || $columnId === 'unused') {
                         $languageColumn[$columnId][$lP] = $head[$columnId] . $content[$columnId];
-                        if (!$this->defLangBinding && $columnId !== 'unused') {
-                            $languageColumn[$columnId][$lP] .= $this->newLanguageButton(
-                                $this->getNonTranslatedTTcontentUids($defaultLanguageElementsByColumn[$columnId], $id, $lP),
-                                $lP,
-                                $columnId
-                            );
-                        }
+
                         // We sort $languageColumn again according to $cList as it may contain data already from above.
                         $sortedLanguageColumn[$columnId] = $languageColumn[$columnId];
                     }
@@ -1348,11 +1336,27 @@ class PageLayoutView implements LoggerAwareInterface
                     );
 
                     $lPLabel =
-                        '<div class="btn-group">'
+                        '<p>' . $recordIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($pageLocalizationRecord['title'], 20)) . '</p>'
+                        . '<div class="btn-group">'
                             . $viewLink
                             . $editLink
                         . '</div>'
-                        . ' ' . $recordIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($pageLocalizationRecord['title'], 20));
+                        ;
+
+                    $defaultLanguageElements = [];
+                    array_walk($defaultLanguageElementsByColumn, function (array $columnContent) use (&$defaultLanguageElements) {
+                        $defaultLanguageElements = array_merge($defaultLanguageElements, $columnContent);
+                    });
+
+                    $localizationButtons = [];
+                    $localizationButtons[] = $this->newLanguageButton(
+                        $this->getNonTranslatedTTcontentUids($defaultLanguageElements, $id, $lP),
+                        $lP
+                    );
+
+                    if (!empty($localizationButtons)) {
+                        $lPLabel .= LF . '<div class="btn-group">' . implode(LF, $localizationButtons) . '</div>';
+                    }
                 } else {
                     $editLink = '';
                     $recordIcon = '';
@@ -1419,11 +1423,7 @@ class PageLayoutView implements LoggerAwareInterface
                             } else {
                                 $element = $defLangBinding[$cKey][$lP][$defUid] ?? '';
                             }
-                            $cCont[] = $element . $this->newLanguageButton(
-                                    $this->getNonTranslatedTTcontentUids([$defUid], $id, $lP),
-                                    $lP,
-                                    $cKey
-                                );
+                            $cCont[] = $element;
                         }
                         $out .= '
                         <tr>
@@ -2397,10 +2397,9 @@ class PageLayoutView implements LoggerAwareInterface
      *
      * @param array $defaultLanguageUids Numeric array with uids of tt_content elements in the default language
      * @param int $lP Sys language UID
-     * @param int $colPos Column position
      * @return string "Copy languages" button, if available.
      */
-    public function newLanguageButton($defaultLanguageUids, $lP, $colPos = 0)
+    public function newLanguageButton($defaultLanguageUids, $lP)
     {
         $lP = (int)$lP;
         if (!$this->doEdit || !$lP) {
@@ -2420,35 +2419,38 @@ class PageLayoutView implements LoggerAwareInterface
             }
         }
 
-        if (isset($this->contentElementCache[$lP][$colPos]) && is_array($this->contentElementCache[$lP][$colPos])) {
-            foreach ($this->contentElementCache[$lP][$colPos] as $record) {
-                $key = array_search($record['l10n_source'], $defaultLanguageUids);
-                if ($key !== false) {
-                    unset($defaultLanguageUids[$key]);
+        if (isset($this->contentElementCache[$lP]) && is_array($this->contentElementCache[$lP])) {
+            foreach ($this->contentElementCache[$lP] as $column => $records) {
+                foreach ($records as $record) {
+                    $key = array_search($record['l10n_source'], $defaultLanguageUids);
+                    if ($key !== false) {
+                        unset($defaultLanguageUids[$key]);
+                    }
                 }
             }
         }
 
         if (!empty($defaultLanguageUids)) {
             $theNewButton =
-                '<input'
-                    . ' class="btn btn-default t3js-localize"'
-                    . ' type="button"'
-                    . ' disabled'
-                    . ' value="' . htmlspecialchars($this->getLanguageService()->getLL('newPageContent_translate')) . '"'
-                    . ' data-has-elements="' . (int)!empty($this->contentElementCache[$lP][$colPos]) . '"'
+                '<a'
+                    . ' href="#"'
+                    . ' class="btn btn-default btn-sm t3js-localize disabled"'
+                    . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('newPageContent_translate')) . '"'
+                    . ' data-page="' . htmlspecialchars($this->getPageLayoutController()->getLocalizedPageTitle()) . '"'
+                    . ' data-has-elements="' . (int)!empty($this->contentElementCache[$lP]) . '"'
                     . ' data-allow-copy="' . (int)$allowCopy . '"'
                     . ' data-allow-translate="' . (int)$allowTranslate . '"'
                     . ' data-table="tt_content"'
                     . ' data-page-id="' . (int)GeneralUtility::_GP('id') . '"'
                     . ' data-language-id="' . $lP . '"'
                     . ' data-language-name="' . htmlspecialchars($this->tt_contentConfig['languageCols'][$lP]) . '"'
-                    . ' data-colpos-id="' . $colPos . '"'
-                    . ' data-colpos-name="' . BackendUtility::getProcessedValue('tt_content', 'colPos', $colPos) . '"'
-                . '/>';
+                . '>'
+                . $this->iconFactory->getIcon('actions-localize', Icon::SIZE_SMALL)->render()
+                . ' ' . htmlspecialchars($this->getLanguageService()->getLL('newPageContent_translate'))
+                . '</a>';
         }
 
-        return '<div class="t3-page-lang-copyce">' . $theNewButton . '</div>';
+        return $theNewButton;
     }
 
     /**

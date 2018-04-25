@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Backend\Domain\Repository\Localization;
 
 /*
@@ -14,6 +16,8 @@ namespace TYPO3\CMS\Backend\Domain\Repository\Localization;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Driver\Statement;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -23,26 +27,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Repository for record localizations
+ *
+ * @internal
  */
 class LocalizationRepository
 {
     /**
-     * Fetch the language from which the records of a colPos in a certain language were initially localized
+     * Fetch the language from which the records in a certain language were initially localized
      *
      * @param int $pageId
-     * @param int $colPos
      * @param int $localizedLanguage
-     * @return array|false
+     * @return array
      */
-    public function fetchOriginLanguage($pageId, $colPos, $localizedLanguage)
+    public function fetchOriginLanguage(int $pageId, int $localizedLanguage): array
     {
         $queryBuilder = $this->getQueryBuilderWithWorkspaceRestriction('tt_content');
 
         $constraints = [
-            $queryBuilder->expr()->eq(
-                'tt_content.colPos',
-                $queryBuilder->createNamedParameter($colPos, \PDO::PARAM_INT)
-            ),
             $queryBuilder->expr()->eq(
                 'tt_content.pid',
                 $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
@@ -77,19 +78,18 @@ class LocalizationRepository
             ->where(...$constraints)
             ->groupBy('tt_content_orig.sys_language_uid');
 
-        return $queryBuilder->execute()->fetch();
+        return $queryBuilder->execute()->fetch() ?: [];
     }
 
     /**
-     * Returns number of localized records in given page, colPos and language
+     * Returns number of localized records in given page and language
      * Records which were added to the language directly (not through translation) are not counted.
      *
      * @param int $pageId
-     * @param int $colPos
      * @param int $languageId
      * @return int
      */
-    public function getLocalizedRecordCount($pageId, $colPos, $languageId)
+    public function getLocalizedRecordCount(int $pageId, int $languageId): int
     {
         $queryBuilder = $this->getQueryBuilderWithWorkspaceRestriction('tt_content');
 
@@ -99,10 +99,6 @@ class LocalizationRepository
                 $queryBuilder->expr()->eq(
                     'tt_content.sys_language_uid',
                     $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'tt_content.colPos',
-                    $queryBuilder->createNamedParameter($colPos, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'tt_content.pid',
@@ -123,11 +119,10 @@ class LocalizationRepository
      * Fetch all available languages
      *
      * @param int $pageId
-     * @param int $colPos
      * @param int $languageId
      * @return array
      */
-    public function fetchAvailableLanguages($pageId, $colPos, $languageId)
+    public function fetchAvailableLanguages(int $pageId, int $languageId): array
     {
         $queryBuilder = $this->getQueryBuilderWithWorkspaceRestriction('tt_content');
 
@@ -135,10 +130,6 @@ class LocalizationRepository
             $queryBuilder->expr()->eq(
                 'tt_content.sys_language_uid',
                 $queryBuilder->quoteIdentifier('sys_language.uid')
-            ),
-            $queryBuilder->expr()->eq(
-                'tt_content.colPos',
-                $queryBuilder->createNamedParameter($colPos, \PDO::PARAM_INT)
             ),
             $queryBuilder->expr()->eq(
                 'tt_content.pid',
@@ -201,17 +192,16 @@ class LocalizationRepository
      * Get records for copy process
      *
      * @param int $pageId
-     * @param int $colPos
      * @param int $destLanguageId
      * @param int $languageId
      * @param string $fields
-     * @return \Doctrine\DBAL\Driver\Statement
+     * @return Statement
      */
-    public function getRecordsToCopyDatabaseResult($pageId, $colPos, $destLanguageId, $languageId, $fields = '*')
+    public function getRecordsToCopyDatabaseResult(int $pageId, int $destLanguageId, int $languageId, string $fields = '*'): Statement
     {
         $originalUids = [];
 
-        // Get original uid of existing elements triggered language / colpos
+        // Get original uid of existing elements triggered language
         $queryBuilder = $this->getQueryBuilderWithWorkspaceRestriction('tt_content');
 
         $originalUidsStatement = $queryBuilder
@@ -221,10 +211,6 @@ class LocalizationRepository
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
                     $queryBuilder->createNamedParameter($destLanguageId, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'tt_content.colPos',
-                    $queryBuilder->createNamedParameter($colPos, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'tt_content.pid',
@@ -243,10 +229,6 @@ class LocalizationRepository
                 $queryBuilder->expr()->eq(
                     'tt_content.sys_language_uid',
                     $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'tt_content.colPos',
-                    $queryBuilder->createNamedParameter($colPos, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'tt_content.pid',
@@ -271,9 +253,9 @@ class LocalizationRepository
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

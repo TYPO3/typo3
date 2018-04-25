@@ -2214,4 +2214,11 @@ return [
             'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getUsedLanguagesInPageAndColumn' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-84877-MethodsOfLocalizationRepositoryChanged.rst',
+        ],
+    ],
 ];

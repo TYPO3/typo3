@@ -640,8 +640,9 @@ class PageLayoutController
 
     /**
      * @return string $title
+     * @internal
      */
-    protected function getLocalizedPageTitle()
+    public function getLocalizedPageTitle()
     {
         if ($this->current_sys_language > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

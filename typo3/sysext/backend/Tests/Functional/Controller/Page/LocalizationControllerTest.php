@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
 /*
@@ -16,9 +18,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
@@ -29,7 +29,12 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
-     * @var LocalizationController
+     * @var string
+     */
+    protected $assertionDataSetDirectory = 'typo3/sysext/backend/Tests/Functional/Controller/Page/Localization/CSV/DataSet/';
+
+    /**
+     * @var LocalizationController|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
 
@@ -51,7 +56,7 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
     /**
      * Sets up this test case.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -65,13 +70,17 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_language.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-default-language.xml');
 
-        $this->subject = new LocalizationController();
+        $this->subject = $this->getMockBuilder(LocalizationController::class)
+            ->setMethods(['getPageColumns'])
+            ->getMock()
+        ;
     }
 
     /**
      * @test
+     * see DataSet/TranslatedFromDefault.csv
      */
-    public function recordsGetTranslatedFromDefaultLanguage()
+    public function recordsGetTranslatedFromDefaultLanguage(): void
     {
         $params = [
             'pageId' => 1,
@@ -81,54 +90,13 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
             'action' => LocalizationController::ACTION_LOCALIZE,
         ];
         $this->callInaccessibleMethod($this->subject, 'process', $params);
-
-        $expectedResults = [
-            [
-                'pid' => 1,
-                'sys_language_uid' => 1,
-                'l18n_parent' => 1,
-                'header' => '[Translate to Dansk:] Test content 1',
-            ],
-            [
-                'pid' => 1,
-                'sys_language_uid' => 1,
-                'l18n_parent' => 2,
-                'header' => '[Translate to Dansk:] Test content 2',
-            ],
-            [
-                'pid' => 1,
-                'sys_language_uid' => 1,
-                'l18n_parent' => 3,
-                'header' => '[Translate to Dansk:] Test content 3',
-            ],
-        ];
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tt_content');
-        $queryBuilder->getRestrictions()->removeAll();
-        $results = $queryBuilder
-            ->select('pid', 'sys_language_uid', 'l18n_parent', 'header')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'sys_language_uid',
-                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
-                    )
-                )
-            )
-            ->orderBy('uid')
-            ->execute()
-            ->fetchAll();
-        $this->assertEquals($expectedResults, $results);
+        $this->assertAssertionDataSet('TranslatedFromDefault');
     }
 
     /**
      * @test
      */
-    public function recordsGetTranslatedFromDifferentTranslation()
+    public function recordsGetTranslatedFromDifferentTranslation(): void
     {
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-danish-language.xml');
 
@@ -140,54 +108,13 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
             'action' => LocalizationController::ACTION_LOCALIZE,
         ];
         $this->callInaccessibleMethod($this->subject, 'process', $params);
-
-        $expectedResults = [
-            [
-                'pid' => 1,
-                'sys_language_uid' => 2,
-                'l18n_parent' => 1,
-                'header' => '[Translate to Deutsch:] Test indhold 1',
-            ],
-            [
-                'pid' => 1,
-                'sys_language_uid' => 2,
-                'l18n_parent' => 2,
-                'header' => '[Translate to Deutsch:] Test indhold 2',
-            ],
-            [
-                'pid' => 1,
-                'sys_language_uid' => 2,
-                'l18n_parent' => 3,
-                'header' => '[Translate to Deutsch:] Test indhold 3',
-            ],
-        ];
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tt_content');
-        $queryBuilder->getRestrictions()->removeAll();
-        $results = $queryBuilder
-            ->select('pid', 'sys_language_uid', 'l18n_parent', 'header')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'sys_language_uid',
-                        $queryBuilder->createNamedParameter(2, \PDO::PARAM_INT)
-                    )
-                )
-            )
-            ->orderBy('uid')
-            ->execute()
-            ->fetchAll();
-        $this->assertEquals($expectedResults, $results);
+        $this->assertAssertionDataSet('TranslatedFromTranslation');
     }
 
     /**
      * @test
      */
-    public function recordsGetCopiedFromDefaultLanguage()
+    public function recordsGetCopiedFromDefaultLanguage(): void
     {
         $params = [
             'pageId' => 1,
@@ -197,54 +124,13 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
             'action' => LocalizationController::ACTION_COPY,
         ];
         $this->callInaccessibleMethod($this->subject, 'process', $params);
-
-        $expectedResults = [
-            [
-                'pid' => 1,
-                'sys_language_uid' => 2,
-                'l18n_parent' => 0,
-                'header' => '[Translate to Deutsch:] Test content 1',
-            ],
-            [
-                'pid' => 1,
-                'sys_language_uid' => 2,
-                'l18n_parent' => 0,
-                'header' => '[Translate to Deutsch:] Test content 2',
-            ],
-            [
-                'pid' => 1,
-                'sys_language_uid' => 2,
-                'l18n_parent' => 0,
-                'header' => '[Translate to Deutsch:] Test content 3',
-            ],
-        ];
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tt_content');
-        $queryBuilder->getRestrictions()->removeAll();
-        $results = $queryBuilder
-            ->select('pid', 'sys_language_uid', 'l18n_parent', 'header')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'sys_language_uid',
-                        $queryBuilder->createNamedParameter(2, \PDO::PARAM_INT)
-                    )
-                )
-            )
-            ->orderBy('uid')
-            ->execute()
-            ->fetchAll();
-        $this->assertEquals($expectedResults, $results);
+        $this->assertAssertionDataSet('CopiedFromDefault');
     }
 
     /**
      * @test
      */
-    public function recordsGetCopiedFromAnotherLanguage()
+    public function recordsGetCopiedFromAnotherLanguage(): void
     {
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-danish-language.xml');
 
@@ -256,54 +142,13 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
             'action' => LocalizationController::ACTION_COPY,
         ];
         $this->callInaccessibleMethod($this->subject, 'process', $params);
-
-        $expectedResults = [
-            [
-                'pid' => 1,
-                'sys_language_uid' => 2,
-                'l18n_parent' => 0,
-                'header' => '[Translate to Deutsch:] Test indhold 1',
-            ],
-            [
-                'pid' => 1,
-                'sys_language_uid' => 2,
-                'l18n_parent' => 0,
-                'header' => '[Translate to Deutsch:] Test indhold 2',
-            ],
-            [
-                'pid' => 1,
-                'sys_language_uid' => 2,
-                'l18n_parent' => 0,
-                'header' => '[Translate to Deutsch:] Test indhold 3',
-            ],
-        ];
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tt_content');
-        $queryBuilder->getRestrictions()->removeAll();
-        $results = $queryBuilder
-            ->select('pid', 'sys_language_uid', 'l18n_parent', 'header')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'sys_language_uid',
-                        $queryBuilder->createNamedParameter(2, \PDO::PARAM_INT)
-                    )
-                )
-            )
-            ->orderBy('uid')
-            ->execute()
-            ->fetchAll();
-        $this->assertEquals($expectedResults, $results);
+        $this->assertAssertionDataSet('CopiedFromTranslation');
     }
 
     /**
      * @test
      */
-    public function copyingNewContentFromLanguageIntoExistingLocalizationHasSameOrdering()
+    public function copyingNewContentFromLanguageIntoExistingLocalizationHasSameOrdering(): void
     {
         $params = [
             'pageId' => 1,
@@ -321,6 +166,7 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
                     'sys_language_uid' => 0,
                     'header' => 'Test content 2.5',
                     'pid' => -2,
+                    'colPos' => 0,
                 ],
             ],
         ];
@@ -339,88 +185,53 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
             'action' => LocalizationController::ACTION_COPY,
         ];
         $this->callInaccessibleMethod($this->subject, 'process', $params);
-
-        $expectedResults = [
-            [
-                'pid' => 1,
-                'sys_language_uid' => 1,
-                'l18n_parent' => 0,
-                'header' => '[Translate to Dansk:] Test content 1',
-            ],
-            [
-                'pid' => 1,
-                'sys_language_uid' => 1,
-                'l18n_parent' => 0,
-                'header' => '[Translate to Dansk:] Test content 2',
-            ],
-            [
-                'pid' => 1,
-                'sys_language_uid' => 1,
-                'l18n_parent' => 0,
-                'header' => '[Translate to Dansk:] Test content 2.5',
-            ],
-            [
-                'pid' => 1,
-                'sys_language_uid' => 1,
-                'l18n_parent' => 0,
-                'header' => '[Translate to Dansk:] Test content 3',
-            ],
-        ];
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tt_content');
-        $queryBuilder->getRestrictions()->removeAll();
-        $results = $queryBuilder
-            ->select('pid', 'sys_language_uid', 'l18n_parent', 'header')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'sys_language_uid',
-                        $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
-                    )
-                )
-            )
-            ->orderBy('sorting', 'ASC')
-            ->execute()
-            ->fetchAll();
-        $this->assertEquals($expectedResults, $results);
+        $this->assertAssertionDataSet('CreatedElementOrdering');
     }
 
     /**
      * @test
      */
-    public function recordLocalizeSummaryRespectsWorkspaceEncapsulationForDeletedRecords()
+    public function recordLocalizeSummaryRespectsWorkspaceEncapsulationForDeletedRecords(): void
     {
         // Delete record 2 within workspace 1
         $this->backendUser->workspace = 1;
         $this->actionService->deleteRecord('tt_content', 2);
 
-        $expectedRecordUidList = [
-            ['uid' => 1],
-            ['uid' => 3]
+        $expectedRecords = [
+            '0' => [
+                ['uid' => 1],
+            ],
+            '1' => [
+                ['uid' => 3],
+            ],
         ];
 
-        $this->assertEquals($expectedRecordUidList, $this->getReducedRecordLocalizeSummary());
+        $localizeSummary = $this->getReducedRecordLocalizeSummary();
+
+        $this->assertEquals($expectedRecords, $localizeSummary);
     }
 
     /**
      * @test
      */
-    public function recordLocalizeSummaryRespectsWorkspaceEncapsulationForMovedRecords()
+    public function recordLocalizeSummaryRespectsWorkspaceEncapsulationForMovedRecords(): void
     {
         // Move record 2 to page 2 within workspace 1
         $this->backendUser->workspace = 1;
         $this->actionService->moveRecord('tt_content', 2, 2);
 
-        $expectedRecordUidList = [
-            ['uid' => 1],
-            ['uid' => 3]
+        $expectedRecords = [
+            '0' => [
+                ['uid' => 1],
+            ],
+            '1' => [
+                ['uid' => 3],
+            ],
         ];
 
-        $this->assertEquals($expectedRecordUidList, $this->getReducedRecordLocalizeSummary());
+        $localizeSummary = $this->getReducedRecordLocalizeSummary();
+
+        $this->assertEquals($expectedRecords, $localizeSummary);
     }
 
     /**
@@ -428,26 +239,40 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
      *
      * @return array
      */
-    protected function getReducedRecordLocalizeSummary()
+    protected function getReducedRecordLocalizeSummary(): array
     {
         $request = (new ServerRequest())->withQueryParams([
             'pageId'         => 1, // page uid, the records are stored on
-            'colPos'         => 0, // column position, the records are to be taken from
             'destLanguageId' => 1, // destination language uid
             'languageId'     => 0  // source language uid
         ]);
 
-        $recordLocalizeSummaryResponse = $this->subject->getRecordLocalizeSummary($request, new Response());
+        $this->subject->method('getPageColumns')->willReturn([
+            0 => 'Column 0',
+            1 => 'Column 1',
+        ]);
+
+        $recordLocalizeSummaryResponse = $this->subject->getRecordLocalizeSummary($request);
 
         // Reduce the fetched record summary to list of uids
         if ($recordLocalizeSummary = json_decode((string)$recordLocalizeSummaryResponse->getBody(), true)) {
-            foreach ($recordLocalizeSummary as &$record) {
-                if (is_array($record)) {
-                    $record = array_intersect_key($record, ['uid' => '']);
+            foreach ($recordLocalizeSummary['records'] as $colPos => $records) {
+                foreach ($records as $key => $record) {
+                    $recordLocalizeSummary['records'][$colPos][$key] = array_intersect_key($record, ['uid' => '']);
                 }
             }
         }
 
-        return $recordLocalizeSummary;
+        return $recordLocalizeSummary['records'];
+    }
+
+    /**
+     * @param string $dataSetName
+     */
+    protected function assertAssertionDataSet(string $dataSetName)
+    {
+        $fileName = rtrim($this->assertionDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
+        $fileName = GeneralUtility::getFileAbsFileName($fileName);
+        $this->assertCSVDataSet($fileName);
     }
 }

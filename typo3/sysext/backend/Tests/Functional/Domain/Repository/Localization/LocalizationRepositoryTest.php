@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Backend\Tests\Functional\Domain\Repository\Localization;
 
 /*
@@ -30,7 +32,7 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
     /**
      * Sets up this test case.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -42,24 +44,24 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
         $this->subject = new LocalizationRepository();
     }
 
-    public function fetchOriginLanguageDataProvider()
+    /**
+     * @return array
+     */
+    public function fetchOriginLanguageDataProvider(): array
     {
         return [
             'default language returns false' => [
                 1,
                 0,
-                0,
-                false
+                []
             ],
             'connected mode translated from default language' => [
                 1,
-                0,
                 1,
-                false
+                []
             ],
             'connected mode translated from non default language' => [
                 1,
-                0,
                 2,
                 [
                     'sys_language_uid' => 1
@@ -67,13 +69,11 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
             ],
             'free mode translated from default language' => [
                 2,
-                0,
                 1,
-                false
+                []
             ],
             'free mode translated from non default language' => [
                 2,
-                0,
                 2,
                 [
                     'sys_language_uid' => 1
@@ -81,13 +81,11 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
             ],
             'free mode copied from another page translated from default language' => [
                 3,
-                0,
                 1,
-                false
+                []
             ],
             'free mode copied from another page translated from non default language' => [
                 3,
-                0,
                 2,
                 [
                     'sys_language_uid' => 1
@@ -97,62 +95,56 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
     }
 
     /**
+     * @param int $pageId
+     * @param int $localizedLanguage
+     * @param array|bool $expectedResult
      * @dataProvider fetchOriginLanguageDataProvider
      * @test
-     *
-     * @param $pageId
-     * @param $colPos
-     * @param $localizedLanguage
-     * @param $expectedResult
      */
-    public function fetchOriginLanguage($pageId, $colPos, $localizedLanguage, $expectedResult)
+    public function fetchOriginLanguage(int $pageId, int $localizedLanguage, ?array $expectedResult): void
     {
-        $result = $this->subject->fetchOriginLanguage($pageId, $colPos, $localizedLanguage);
+        $result = $this->subject->fetchOriginLanguage($pageId, $localizedLanguage);
         $this->assertEquals($expectedResult, $result);
     }
 
-    public function getLocalizedRecordCountDataProvider()
+    /**
+     * @return array
+     */
+    public function getLocalizedRecordCountDataProvider(): array
     {
         return [
             'default language returns 0 always' => [
                 1,
                 0,
-                0,
                 0
             ],
             'connected mode translated from default language' => [
                 1,
-                0,
                 1,
                 2
             ],
             'connected mode translated from non default language' => [
                 1,
-                0,
                 2,
                 1
             ],
             'free mode translated from default language' => [
                 2,
-                0,
                 1,
                 1
             ],
             'free mode translated from non default language' => [
                 2,
-                0,
                 2,
                 1
             ],
             'free mode copied from another page translated from default language' => [
                 3,
-                0,
                 1,
                 1
             ],
             'free mode copied from another page translated from non default language' => [
                 3,
-                0,
                 2,
                 1
             ]
@@ -160,21 +152,26 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
     }
 
     /**
+     * @param int $pageId
+     * @param int $localizedLanguage
+     * @param int $expectedResult
      * @dataProvider getLocalizedRecordCountDataProvider
      * @test
      */
-    public function getLocalizedRecordCount($pageId, $colPos, $localizedLanguage, $expectedResult)
+    public function getLocalizedRecordCount(int $pageId, int $localizedLanguage, int $expectedResult): void
     {
-        $result = $this->subject->getLocalizedRecordCount($pageId, $colPos, $localizedLanguage);
+        $result = $this->subject->getLocalizedRecordCount($pageId, $localizedLanguage);
         $this->assertEquals($expectedResult, $result);
     }
 
-    public function getRecordsToCopyDatabaseResultDataProvider()
+    /**
+     * @return array
+     */
+    public function getRecordsToCopyDatabaseResultDataProvider(): array
     {
         return [
             'from language 0 to 1 connected mode' => [
                 1,
-                0,
                 1,
                 0,
                 [
@@ -183,7 +180,6 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
             ],
             'from language 1 to 2 connected mode' => [
                 1,
-                0,
                 2,
                 1,
                 [
@@ -192,28 +188,24 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
             ],
             'from language 0 to 1 free mode' => [
                 2,
-                0,
                 1,
                 0,
                 []
             ],
             'from language 1 to 2 free mode' => [
                 2,
-                0,
                 2,
                 1,
                 []
             ],
             'from language 0 to 1 free mode copied' => [
                 3,
-                0,
                 1,
                 0,
                 []
             ],
             'from language 1 to 2 free mode  mode copied' => [
                 3,
-                0,
                 2,
                 1,
                 []
@@ -222,12 +214,16 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
     }
 
     /**
+     * @param int $pageId
+     * @param int $destLanguageId
+     * @param int $languageId
+     * @param array $expectedResult
      * @dataProvider getRecordsToCopyDatabaseResultDataProvider
      * @test
      */
-    public function getRecordsToCopyDatabaseResult($pageId, $colPos, $destLanguageId, $languageId, $expectedResult)
+    public function getRecordsToCopyDatabaseResult(int $pageId, int $destLanguageId, int $languageId, array $expectedResult): void
     {
-        $result = $this->subject->getRecordsToCopyDatabaseResult($pageId, $colPos, $destLanguageId, $languageId, 'uid');
+        $result = $this->subject->getRecordsToCopyDatabaseResult($pageId, $destLanguageId, $languageId, 'uid');
         $result = $result->fetchAll();
         $this->assertEquals($expectedResult, $result);
     }

@@ -68,11 +68,13 @@ define([
       Icons.getIcon('actions-edit-copy', Icons.sizes.large).done(function(copyIconMarkup) {
         Localization.actions.translate.prepend(localizeIconMarkup);
         Localization.actions.copy.prepend(copyIconMarkup);
-        $(Localization.identifier.triggerButton).prop('disabled', false);
+        $(Localization.identifier.triggerButton).removeClass('disabled');
       });
     });
 
-    $(document).on('click', Localization.identifier.triggerButton, function() {
+    $(document).on('click', Localization.identifier.triggerButton, function(e) {
+      e.preventDefault();
+
       var $triggerButton = $(this),
         actions = [],
         slideStep1 = '';
@@ -101,7 +103,7 @@ define([
 
       slideStep1 += '<div data-toggle="buttons">' + actions.join('<hr>') + '</div>';
 
-      Wizard.addSlide('localize-choose-action', TYPO3.lang['localize.wizard.header'].replace('{0}', $triggerButton.data('colposName')).replace('{1}', $triggerButton.data('languageName')), slideStep1, Severity.info);
+      Wizard.addSlide('localize-choose-action', TYPO3.lang['localize.wizard.header_page'].replace('{0}', $triggerButton.data('page')).replace('{1}', $triggerButton.data('languageName')), slideStep1, Severity.info);
       Wizard.addSlide('localize-choose-language', TYPO3.lang['localize.view.chooseLanguage'], '', Severity.info, function($slide) {
         Icons.getIcon('spinner-circle-dark', Icons.sizes.large).done(function(markup) {
           $slide.html(
@@ -109,7 +111,6 @@ define([
           );
           Localization.loadAvailableLanguages(
             $triggerButton.data('pageId'),
-            $triggerButton.data('colposId'),
             $triggerButton.data('languageId')
           ).done(function(result) {
             if (result.length === 1) {
@@ -147,45 +148,72 @@ define([
           $slide.html(
             $('<div />', {class: 'text-center'}).append(markup)
           );
-
           Localization.getSummary(
             $triggerButton.data('pageId'),
-            $triggerButton.data('colposId'),
             $triggerButton.data('languageId')
           ).done(function(result) {
-            var $summary = $('<div />', {class: 'row'});
+            $slide.empty();
             Localization.records = [];
 
-            $.each(result, function(_, record) {
-              var label = ' (' + record.uid + ') ' + record.title;
-              Localization.records.push(record.uid);
+            var columns = result.columns.columns;
+            var columnList = result.columns.columnList;
 
-              $summary.append(
-                $('<div />', {'class': 'col-sm-6'}).append(
-                  $('<div />', {'class': 'input-group'}).append(
-                    $('<span />', {'class': 'input-group-addon'}).append(
-                      $('<input />', {
-                        type: 'checkbox',
-                        id: 'record-uid-' + record.uid,
-                        checked: 'checked',
-                        'data-uid': record.uid,
-                        'aria-label': label
-                      })
-                    ),
-                    $('<label />', {
-                      'class': 'form-control',
-                      for: 'record-uid-' + record.uid
-                    }).text(label).prepend(record.icon)
+            columnList.forEach(function(colPos) {
+              if (typeof result.records[colPos] === 'undefined') {
+                return;
+              }
+
+              var column = columns[colPos];
+              var $row = $('<div />', {class: 'row'});
+
+              result.records[colPos].forEach(function(record) {
+                var label = ' (' + record.uid + ') ' + record.title;
+                Localization.records.push(record.uid);
+
+                $row.append(
+                  $('<div />', {'class': 'col-sm-6'}).append(
+                    $('<div />', {'class': 'input-group'}).append(
+                      $('<span />', {'class': 'input-group-addon'}).append(
+                        $('<input />', {
+                          type: 'checkbox',
+                          'class': 't3js-localization-toggle-record',
+                          id: 'record-uid-' + record.uid,
+                          checked: 'checked',
+                          'data-uid': record.uid,
+                          'aria-label': label
+                        })
+                      ),
+                      $('<label />', {
+                        'class': 'form-control',
+                        for: 'record-uid-' + record.uid
+                      }).text(label).prepend(record.icon)
+                    )
                   )
+                );
+              });
+
+              $slide.append(
+                $('<fieldset />', {
+                  'class': 'localization-fieldset'
+                }).append(
+                  $('<label />').text(column).prepend(
+                    $('<input />', {
+                      'class': 't3js-localization-toggle-column',
+                      type: 'checkbox',
+                      checked: 'checked'
+                    })
+                  ),
+                  $row
                 )
               );
             });
-            $slide.html($summary);
             Wizard.unlockNextStep();
 
-            Wizard.getComponent().on('change', 'input[type="checkbox"]', function() {
+            Wizard.getComponent().on('change', '.t3js-localization-toggle-record', function() {
               var $me = $(this),
-                uid = $me.data('uid');
+                uid = $me.data('uid'),
+                $parent = $me.closest('fieldset'),
+                $columnCheckbox = $parent.find('.t3js-localization-toggle-column');
 
               if ($me.is(':checked')) {
                 Localization.records.push(uid);
@@ -196,11 +224,23 @@ define([
                 }
               }
 
+              var $allChildren = $parent.find('.t3js-localization-toggle-record');
+              var $checkedChildren = $parent.find('.t3js-localization-toggle-record:checked');
+
+              $columnCheckbox.prop('checked', $checkedChildren.length > 0);
+              $columnCheckbox.prop('indeterminate', $checkedChildren.length > 0 && $checkedChildren.length < $allChildren.length);
+
               if (Localization.records.length > 0) {
                 Wizard.unlockNextStep();
               } else {
                 Wizard.lockNextStep();
               }
+            }).on('change', '.t3js-localization-toggle-column', function() {
+              var $me = $(this),
+                $children = $me.closest('fieldset').find('.t3js-localization-toggle-record');
+
+              $children.prop('checked', $me.is(':checked'));
+              $children.trigger('change');
             });
           });
         });
@@ -208,7 +248,6 @@ define([
       Wizard.addFinalProcessingSlide(function() {
         Localization.localizeRecords(
           $triggerButton.data('pageId'),
-          $triggerButton.data('colposId'),
           $triggerButton.data('languageId'),
           Localization.records
         ).done(function() {
@@ -236,19 +275,17 @@ define([
     });
 
     /**
-     * Load available languages from page and colPos
+     * Load available languages from page
      *
      * @param {Integer} pageId
-     * @param {Integer} colPos
      * @param {Integer} languageId
      * @return {Promise}
      */
-    Localization.loadAvailableLanguages = function(pageId, colPos, languageId) {
+    Localization.loadAvailableLanguages = function(pageId, languageId) {
       return $.ajax({
-        url: TYPO3.settings.ajaxUrls['languages_page_colpos'],
+        url: TYPO3.settings.ajaxUrls['page_languages'],
         data: {
           pageId: pageId,
-          colPos: colPos,
           languageId: languageId
         }
       });
@@ -258,16 +295,14 @@ define([
      * Get summary for record processing
      *
      * @param {Integer} pageId
-     * @param {Integer} colPos
      * @param {Integer} languageId
      * @return {Promise}
      */
-    Localization.getSummary = function(pageId, colPos, languageId) {
+    Localization.getSummary = function(pageId, languageId) {
       return $.ajax({
         url: TYPO3.settings.ajaxUrls['records_localize_summary'],
         data: {
           pageId: pageId,
-          colPos: colPos,
           destLanguageId: languageId,
           languageId: Localization.settings.language
         }
@@ -278,17 +313,15 @@ define([
      * Localize records
      *
      * @param {Integer} pageId
-     * @param {Integer} colPos
      * @param {Integer} languageId
      * @param {Array} uidList
      * @return {Promise}
      */
-    Localization.localizeRecords = function(pageId, colPos, languageId, uidList) {
+    Localization.localizeRecords = function(pageId, languageId, uidList) {
       return $.ajax({
         url: TYPO3.settings.ajaxUrls['records_localize'],
         data: {
           pageId: pageId,
-          colPos: colPos,
           srcLanguageId: Localization.settings.language,
           destLanguageId: languageId,
           action: Localization.settings.mode,

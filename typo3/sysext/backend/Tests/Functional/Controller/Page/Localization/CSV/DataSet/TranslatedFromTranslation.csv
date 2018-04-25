@@ -1,0 +1,11 @@
+"tt_content",,,,,,,
+,"uid","pid","deleted","sys_language_uid","l18n_parent","header","colPos"
+,1,1,0,0,0,"Test content 1",0
+,2,1,0,0,0,"Test content 2",1
+,3,1,0,0,0,"Test content 3",1
+,4,1,0,1,1,"Test indhold 1",0
+,5,1,0,1,2,"Test indhold 2",1
+,6,1,0,1,3,"Test indhold 3",1
+,7,1,0,2,1,"[Translate to Deutsch:] Test indhold 1",0
+,8,1,0,2,2,"[Translate to Deutsch:] Test indhold 2",1
+,9,1,0,2,3,"[Translate to Deutsch:] Test indhold 3",1

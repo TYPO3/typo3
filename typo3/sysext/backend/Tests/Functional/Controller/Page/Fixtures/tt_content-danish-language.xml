@@ -10,6 +10,7 @@
 		<t3ver_wsid>0</t3ver_wsid>
 		<header>Test indhold 1</header>
 		<sorting>1</sorting>
+		<colPos>0</colPos>
 	</tt_content>
 	<tt_content>
 		<uid>5</uid>
@@ -21,6 +22,7 @@
 		<t3ver_wsid>0</t3ver_wsid>
 		<header>Test indhold 2</header>
 		<sorting>2</sorting>
+		<colPos>1</colPos>
 	</tt_content>
 	<tt_content>
 		<uid>6</uid>
@@ -32,5 +34,6 @@
 		<t3ver_wsid>0</t3ver_wsid>
 		<header>Test indhold 3</header>
 		<sorting>3</sorting>
+		<colPos>1</colPos>
 	</tt_content>
 </dataset>

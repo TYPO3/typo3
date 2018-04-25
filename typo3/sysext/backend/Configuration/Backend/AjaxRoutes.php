@@ -246,10 +246,10 @@ return [
         'target' => \TYPO3\CMS\Backend\Controller\LinkBrowserController::class . '::encodeTypoLink',
     ],
 
-    // Get languages in page and colPos
-    'languages_page_colpos' => [
+    // Get languages in page
+    'page_languages' => [
         'path' => '/records/localize/get-languages',
-        'target' => Controller\Page\LocalizationController::class . '::getUsedLanguagesInPageAndColumn'
+        'target' => Controller\Page\LocalizationController::class . '::getUsedLanguagesInPage'
     ],
 
     // Get summary of records to localize

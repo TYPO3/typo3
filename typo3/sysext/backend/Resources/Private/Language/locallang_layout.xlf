@@ -90,18 +90,6 @@
 			<trans-unit id="newPageContent_translate">
 				<source>Translate</source>
 			</trans-unit>
-			<trans-unit id="newPageContent_copyForLang">
-				<source>Translate default content elements</source>
-			</trans-unit>
-			<trans-unit id="newPageContent_translateFromDefault">
-				<source>Copy from default language</source>
-			</trans-unit>
-			<trans-unit id="newPageContent_copyFromAnotherLang_button">
-				<source>Copy from language...</source>
-			</trans-unit>
-			<trans-unit id="newPageContent_copyFromAnotherLang">
-				<source>Copy from language "%s"</source>
-			</trans-unit>
 			<trans-unit id="newPageContent2">
 				<source>New content</source>
 			</trans-unit>
@@ -335,6 +323,9 @@
 			</trans-unit>
 			<trans-unit id="localize.wizard.header">
 				<source>Localize record &quot;{0}&quot; into {1}</source>
+			</trans-unit>
+			<trans-unit id="localize.wizard.header_page">
+				<source>Localize page &quot;{0}&quot; into {1}</source>
 			</trans-unit>
 			<trans-unit id="localize.wizard.button.cancel">
 				<source>Cancel</source>

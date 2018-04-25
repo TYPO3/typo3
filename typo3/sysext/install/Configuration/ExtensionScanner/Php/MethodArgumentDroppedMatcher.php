@@ -153,4 +153,28 @@ return [
             'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->fetchOriginLanguage' => [
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-84877-MethodsOfLocalizationRepositoryChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getLocalizedRecordCount' => [
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-84877-MethodsOfLocalizationRepositoryChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->fetchAvailableLanguages' => [
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-84877-MethodsOfLocalizationRepositoryChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getRecordsToCopyDatabaseResult' => [
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Breaking-84877-MethodsOfLocalizationRepositoryChanged.rst',
+        ],
+    ],
 ];
