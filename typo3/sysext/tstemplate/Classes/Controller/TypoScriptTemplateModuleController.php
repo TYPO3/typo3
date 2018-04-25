@@ -583,13 +583,11 @@ page.10.value = HELLO WORLD!
 
         $statusCheckedIcon = $this->moduleTemplate->getIconFactory()
             ->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
-        $i = 0;
         foreach ($pArray as $k => $v) {
             if (MathUtility::canBeInterpretedAsInteger($k)) {
                 $line = [];
                 $key = $k . '_';
                 $line['marginLeft'] = $c * 20;
-                $line['class'] = ($i++ % 2 === 0 ? 'bgColor4' : 'bgColor6');
                 $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($pArray[$k], 30);
                 $line['icon'] = $this->moduleTemplate->getIconFactory()
                     ->getIconForRecord(
