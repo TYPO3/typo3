@@ -20,6 +20,24 @@ call_user_func(function () {
         '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/PageTS/modWizards.ts">'
     );
 
+    // Add module configuration
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+        'module.tx_form {
+    settings {
+        yamlConfigurations {
+            10 = EXT:form/Configuration/Yaml/BaseSetup.yaml
+            20 = EXT:form/Configuration/Yaml/FormEditorSetup.yaml
+            30 = EXT:form/Configuration/Yaml/FormEngineSetup.yaml
+        }
+    }
+    view {
+        templateRootPaths.10 = EXT:form/Resources/Private/Backend/Templates/
+        partialRootPaths.10 = EXT:form/Resources/Private/Backend/Partials/
+        layoutRootPaths.10 = EXT:form/Resources/Private/Backend/Layouts/
+    }
+}'
+    );
+
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'][1489772699]
         = \TYPO3\CMS\Form\Hooks\FormElementHooks::class;
 
