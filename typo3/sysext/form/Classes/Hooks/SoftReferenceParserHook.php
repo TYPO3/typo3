@@ -39,7 +39,7 @@ class SoftReferenceParserHook extends SoftReferenceIndex
      * @param string $spKey The softlink parser key. This is only interesting if more than one parser is grouped in the same class. That is the case with this parser.
      * @param array $spParams Parameters of the softlink parser. Basically this is the content inside optional []-brackets after the softref keys. Parameters are exploded by ";
      * @param string $structurePath If running from inside a FlexForm structure, this is the path of the tag.
-     * @return array Result array on positive matches, see description above. Otherwise FALSE
+     * @return array|bool Result array on positive matches, see description above. Otherwise FALSE
      */
     public function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '')
     {
@@ -47,7 +47,14 @@ class SoftReferenceParserHook extends SoftReferenceIndex
         $tokenId = $this->makeTokenID($content);
 
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $file = $resourceFactory->retrieveFileOrFolderObject($content);
+        try {
+            $file = $resourceFactory->retrieveFileOrFolderObject($content);
+        } catch (\Exception $e) {
+            // Top level catch to ensure useful following exception handling, because FAL throws top level exceptions.
+            // TYPO3\CMS\Core\Database\ReferenceIndex::getRelations() will check the return value of this hook with is_array()
+            // so we return false to tell getRelations() to do nothing.
+            return false;
+        }
 
         return [
             'content' => '{softref:' . $tokenId . '}',
