@@ -13,13 +13,21 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\WindowsPathUtilityFixture;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\PathUtility
  */
-class PathUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class PathUtilityTest extends UnitTestCase
 {
+    /**
+     * Restore Environment after the test
+     * @var bool
+     */
+    protected $backupEnvironment = true;
+
     /**
      * @param array $paths
      * @param string $expected
@@ -28,7 +36,7 @@ class PathUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function isCommonPrefixResolvedCorrectly(array $paths, $expected)
     {
-        $commonPrefix = \TYPO3\CMS\Core\Utility\PathUtility::getCommonPrefix($paths);
+        $commonPrefix = PathUtility::getCommonPrefix($paths);
         $this->assertEquals($expected, $commonPrefix);
     }
 
@@ -122,7 +130,7 @@ class PathUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function isRelativePathResolvedCorrectly($source, $target, $expected)
     {
-        $relativePath = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePath($source, $target);
+        $relativePath = PathUtility::getRelativePath($source, $target);
         $this->assertEquals($expected, $relativePath);
     }
 
@@ -174,7 +182,7 @@ class PathUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function isTrailingSeparatorSanitizedCorrectly($path, $separator, $expected)
     {
-        $sanitizedPath = \TYPO3\CMS\Core\Utility\PathUtility::sanitizeTrailingSeparator($path, $separator);
+        $sanitizedPath = PathUtility::sanitizeTrailingSeparator($path, $separator);
         $this->assertEquals($expected, $sanitizedPath);
     }
 
@@ -240,7 +248,7 @@ class PathUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectly($baseFileName, $includeFileName, $expectedFileName)
     {
-        $resolvedFilename = \TYPO3\CMS\Core\Utility\PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($baseFileName, $includeFileName);
+        $resolvedFilename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($baseFileName, $includeFileName);
         $this->assertEquals($expectedFileName, $resolvedFilename);
     }
 
@@ -345,9 +353,21 @@ class PathUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getCanonicalPathCorrectlyCleansPath($inputName, $expectedResult)
     {
+        // Ensure Environment runs as Windows test
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            'WINDOWS'
+        );
         $this->assertEquals(
             $expectedResult,
-            WindowsPathUtilityFixture::getCanonicalPath($inputName)
+            PathUtility::getCanonicalPath($inputName)
         );
     }
 }

@@ -48,7 +48,7 @@ class SimpleLockStrategyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function acquireFixesPermissionsOnLockFile()
     {
-        if (TYPO3_OS === 'WIN') {
+        if (Environment::isWindows()) {
             $this->markTestSkipped('Test not available on Windows.');
         }
         // Use a very high id to be unique

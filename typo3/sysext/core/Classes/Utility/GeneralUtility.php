@@ -1946,7 +1946,7 @@ class GeneralUtility
      */
     public static function fixPermissions($path, $recursive = false)
     {
-        if (TYPO3_OS === 'WIN') {
+        if (Environment::isWindows()) {
             return true;
         }
         $result = false;
@@ -2159,7 +2159,7 @@ class GeneralUtility
                 if ($OK) {
                     $OK = @rmdir($path);
                 }
-            } elseif (is_link($path) && is_dir($path) && TYPO3_OS === 'WIN') {
+            } elseif (is_link($path) && is_dir($path) && Environment::isWindows()) {
                 $OK = @rmdir($path);
             } else {
                 // If $path is a file, simply remove it
@@ -2168,7 +2168,7 @@ class GeneralUtility
             clearstatcache();
         } elseif (is_link($path)) {
             $OK = @unlink($path);
-            if (!$OK && TYPO3_OS === 'WIN') {
+            if (!$OK && Environment::isWindows()) {
                 // Try to delete dead folder links on Windows systems
                 $OK = @rmdir($path);
             }
@@ -3116,7 +3116,7 @@ class GeneralUtility
      */
     public static function isAbsPath($path)
     {
-        return isset($path[0]) && $path[0] === '/' || TYPO3_OS === 'WIN' && (strpos($path, ':/') === 1 || strpos($path, ':\\') === 1);
+        return isset($path[0]) && $path[0] === '/' || Environment::isWindows() && (strpos($path, ':/') === 1 || strpos($path, ':\\') === 1);
     }
 
     /**

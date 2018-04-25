@@ -93,7 +93,7 @@ class CommandLineBackend extends AbstractBackend
         // to do the same and use the F4 (0x10001) exponent. This is the most
         // secure.
         $command = $this->opensslPath . ' genrsa -out ' . escapeshellarg($privateKeyFile) . ' 1024';
-        if (TYPO3_OS === 'WIN') {
+        if (Environment::isWindows()) {
             $command .= ' 2>NUL';
         } else {
             $command .= ' 2>/dev/null';

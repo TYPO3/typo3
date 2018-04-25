@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -117,7 +118,7 @@ class SetupCheck implements CheckInterface
         $currentLocale = setlocale(LC_CTYPE, 0);
 
         // On Windows an empty locale value uses the regional settings from the Control Panel
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] === '' && TYPO3_OS !== 'WIN') {
+        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] === '' && !Environment::isWindows()) {
             $this->messageQueue->enqueue(new FlashMessage(
                 '$GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is not set. This is fine as long as no UTF-8 file system is used.',
                 'Empty systemLocale setting',
@@ -147,7 +148,7 @@ class SetupCheck implements CheckInterface
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
             // On Windows an empty local value uses the regional settings from the Control Panel
-            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] === '' && TYPO3_OS !== 'WIN') {
+            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] === '' && !Environment::isWindows()) {
                 $this->messageQueue->enqueue(new FlashMessage(
                     '$GLOBALS[TYPO3_CONF_VARS][SYS][UTF8filesystem] is set, but $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale]'
                         . ' is empty. Make sure a valid locale which supports UTF-8 is set.',
@@ -157,7 +158,7 @@ class SetupCheck implements CheckInterface
             } else {
                 $testString = 'ÖöĄĆŻĘĆćążąęó.jpg';
                 $currentLocale = setlocale(LC_CTYPE, 0);
-                $quote = TYPO3_OS === 'WIN' ? '"' : '\'';
+                $quote = Environment::isWindows() ? '"' : '\'';
                 setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
                 if (escapeshellarg($testString) === $quote . $testString . $quote) {
                     $this->messageQueue->enqueue(new FlashMessage(

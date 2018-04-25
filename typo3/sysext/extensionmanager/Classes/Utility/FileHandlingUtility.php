@@ -294,7 +294,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $extDirPath = GeneralUtility::fixWindowsFilePath($extDirPath);
         $extensionPathWithoutTrailingSlash = rtrim($extDirPath, '/');
-        if (is_link($extensionPathWithoutTrailingSlash) && TYPO3_OS !== 'WIN') {
+        if (is_link($extensionPathWithoutTrailingSlash) && !Environment::isWindows()) {
             $result = unlink($extensionPathWithoutTrailingSlash);
         } else {
             $result = GeneralUtility::rmdir($extDirPath, true);

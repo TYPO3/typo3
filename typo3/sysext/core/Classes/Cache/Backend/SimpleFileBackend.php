@@ -118,7 +118,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
         }
         $documentRoot = PATH_site;
         if ($open_basedir = ini_get('open_basedir')) {
-            if (TYPO3_OS === 'WIN') {
+            if (Environment::isWindows()) {
                 $delimiter = ';';
                 $cacheDirectory = str_replace('\\', '/', $cacheDirectory);
                 if (!preg_match('/[A-Z]:/', substr($cacheDirectory, 0, 2))) {
@@ -134,7 +134,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
             $basedirs = explode($delimiter, $open_basedir);
             $cacheDirectoryInBaseDir = false;
             foreach ($basedirs as $basedir) {
-                if (TYPO3_OS === 'WIN') {
+                if (Environment::isWindows()) {
                     $basedir = str_replace('\\', '/', $basedir);
                 }
                 if ($basedir[strlen($basedir) - 1] !== '/') {
@@ -158,7 +158,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
                 // Absolute path to cache directory.
                 $documentRoot = '';
             }
-            if (TYPO3_OS === 'WIN') {
+            if (Environment::isWindows()) {
                 if (substr($cacheDirectory, 0, strlen($documentRoot)) === $documentRoot) {
                     $documentRoot = '';
                 }

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
@@ -75,7 +76,7 @@ class DefaultPermissionsCheck
             $permissionStatus = FlashMessage::ERROR;
             $extraMessage = ' (not read or writable by the user)';
         } elseif ($perms['ow']) {
-            if (TYPO3_OS === 'WIN') {
+            if (Environment::isWindows()) {
                 $permissionStatus = FlashMessage::INFO;
                 $extraMessage = ' (writable by anyone on the server). This is the default behavior on a Windows system';
             } else {

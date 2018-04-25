@@ -178,7 +178,7 @@ class CoreUpdateService
         }
 
         // No core update on windows
-        if (TYPO3_OS === 'WIN') {
+        if (Environment::isWindows()) {
             $success = false;
             $this->messages->enqueue(new FlashMessage(
                 '',

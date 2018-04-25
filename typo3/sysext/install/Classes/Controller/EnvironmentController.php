@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
@@ -65,7 +66,7 @@ class EnvironmentController extends AbstractController
 
             'systemInformationCgiDetected', GeneralUtility::isRunningOnCgiServerApi(),
             'systemInformationDatabaseConnections' => $this->getDatabaseConnectionInformation(),
-            'systemInformationOperatingSystem' => TYPO3_OS === 'WIN' ? 'Windows' : 'Unix',
+            'systemInformationOperatingSystem' => Environment::isWindows() ? 'Windows' : 'Unix',
         ]);
         return new JsonResponse([
             'success' => true,
@@ -85,7 +86,7 @@ class EnvironmentController extends AbstractController
         $view->assignMultiple([
             'systemInformationCgiDetected', GeneralUtility::isRunningOnCgiServerApi(),
             'systemInformationDatabaseConnections' => $this->getDatabaseConnectionInformation(),
-            'systemInformationOperatingSystem' => TYPO3_OS === 'WIN' ? 'Windows' : 'Unix',
+            'systemInformationOperatingSystem' => Environment::isWindows() ? 'Windows' : 'Unix',
         ]);
         return new JsonResponse([
             'success' => true,

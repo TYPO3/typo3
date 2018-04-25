@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * Class to handle system commands.
  * finds executables (programs) on Unix and Windows without knowing where they are
@@ -94,7 +96,7 @@ class CommandUtility
     public static function imageMagickCommand($command, $parameters, $path = '')
     {
         $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
-        $isExt = TYPO3_OS === 'WIN' ? '.exe' : '';
+        $isExt = Environment::isWindows() ? '.exe' : '';
         if (!$path) {
             $path = $gfxConf['processor_path'];
         }
@@ -170,7 +172,7 @@ class CommandUtility
         foreach (self::$paths as $path => $validPath) {
             // Ignore invalid (FALSE) paths
             if ($validPath) {
-                if (TYPO3_OS === 'WIN') {
+                if (Environment::isWindows()) {
                     // Windows OS
                     // @todo Why is_executable() is not called here?
                     if (@is_file($path . $cmd)) {
@@ -200,7 +202,7 @@ class CommandUtility
 
         // Try to get the executable with the command 'which'.
         // It does the same like already done, but maybe on other paths
-        if (TYPO3_OS !== 'WIN') {
+        if (!Environment::isWindows()) {
             $cmd = @self::exec('which ' . $cmd);
             if (@is_executable($cmd)) {
                 self::$applications[$cmd]['app'] = $cmd;
@@ -396,7 +398,7 @@ class CommandUtility
 
         // Add path from environment
         if (!empty($GLOBALS['_SERVER']['PATH']) || !empty($GLOBALS['_SERVER']['Path'])) {
-            $sep = (TYPO3_OS === 'WIN' ? ';' : ':');
+            $sep = Environment::isWindows() ? ';' : ':';
             $serverPath = $GLOBALS['_SERVER']['PATH'] ?? $GLOBALS['_SERVER']['Path'];
             $envPath = GeneralUtility::trimExplode($sep, $serverPath, true);
             foreach ($envPath as $val) {
@@ -406,7 +408,7 @@ class CommandUtility
         }
 
         // Set common paths for Unix (only)
-        if (TYPO3_OS !== 'WIN') {
+        if (!Environment::isWindows()) {
             $sysPathArr = array_merge($sysPathArr, [
                 '/usr/bin/' => '/usr/bin/',
                 '/usr/local/bin/' => '/usr/local/bin/',

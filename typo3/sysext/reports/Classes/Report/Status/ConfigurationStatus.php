@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -41,7 +42,7 @@ class ConfigurationStatus implements StatusProviderInterface
         if ($this->isMemcachedUsed()) {
             $statuses['memcachedConnection'] = $this->getMemcachedConnectionStatus();
         }
-        if (TYPO3_OS !== 'WIN') {
+        if (!Environment::isWindows()) {
             $statuses['createdFilesWorldWritable'] = $this->getCreatedFilesWorldWritableStatus();
             $statuses['createdDirectoriesWorldWritable'] = $this->getCreatedDirectoriesWorldWritableStatus();
         }

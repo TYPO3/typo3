@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Rsaauth\Tests\Unit\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Rsaauth\Backend\CommandLineBackend;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,7 +31,7 @@ class CommandLineBackendTest extends UnitTestCase
 
     protected function setUp()
     {
-        if (TYPO3_OS === 'WIN') {
+        if (Environment::isWindows()) {
             $this->markTestSkipped('This test is not available on Windows as auto-detection of openssl path will fail.');
         }
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['rsaauth']['temporaryDirectory'] = '';

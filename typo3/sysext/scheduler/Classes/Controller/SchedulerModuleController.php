@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -353,7 +354,7 @@ class SchedulerModuleController
 
         // Skip this check if running Windows, as rights do not work the same way on this platform
         // (i.e. the script will always appear as *not* executable)
-        if (TYPO3_OS === 'WIN') {
+        if (Environment::isWindows()) {
             $isExecutable = true;
         } else {
             $isExecutable = is_executable($script);

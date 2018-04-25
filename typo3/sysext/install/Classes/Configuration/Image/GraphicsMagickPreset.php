@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Configuration\Image;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * Preset for GraphicsMagick
  */
@@ -64,7 +66,7 @@ class GraphicsMagickPreset extends AbstractImagePreset
     {
         $result = false;
         foreach ($searchPaths as $path) {
-            if (TYPO3_OS === 'WIN') {
+            if (Environment::isWindows()) {
                 $executable = 'gm.exe';
             } else {
                 $executable = 'gm';

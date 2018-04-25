@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
@@ -194,10 +195,7 @@ abstract class AbstractNode
      */
     protected function isWindowsOs()
     {
-        if (TYPO3_OS === 'WIN') {
-            return true;
-        }
-        return false;
+        return Environment::isWindows();
     }
 
     /**

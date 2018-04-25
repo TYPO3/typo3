@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * Class with helper functions for file paths.
  */
@@ -220,7 +222,7 @@ class PathUtility
     public static function isAbsolutePath($path)
     {
         // On Windows also a path starting with a drive letter is absolute: X:/
-        if (static::isWindows() && (substr($path, 1, 2) === ':/' || substr($path, 1, 2) === ':\\')) {
+        if (Environment::isWindows() && (substr($path, 1, 2) === ':/' || substr($path, 1, 2) === ':\\')) {
             return true;
         }
         // Path starting with a / is always absolute, on every system
@@ -285,7 +287,7 @@ class PathUtility
 
         $absolutePathPrefix = '';
         if (static::isAbsolutePath($path)) {
-            if (static::isWindows() && substr($path, 1, 2) === ':/') {
+            if (Environment::isWindows() && substr($path, 1, 2) === ':/') {
                 $absolutePathPrefix = substr($path, 0, 3);
                 $path = substr($path, 3);
             } else {
@@ -345,21 +347,5 @@ class PathUtility
             $pathSiteLength = strlen(PATH_site);
         }
         return substr($path, $pathSiteLength);
-    }
-
-    /*********************
-     *
-     * Helper methods
-     *
-     *********************/
-
-    /**
-     * Wrapper method to be able to test windows path transformation on other systems
-     *
-     * @return bool
-     */
-    protected static function isWindows()
-    {
-        return TYPO3_OS === 'WIN';
     }
 }

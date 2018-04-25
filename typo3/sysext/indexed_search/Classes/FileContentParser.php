@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch;
  */
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -79,7 +80,7 @@ class FileContentParser
         // Then read indexer-config and set if appropriate:
         $indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         // If windows, apply extension to tool name:
-        $exe = TYPO3_OS === 'WIN' ? '.exe' : '';
+        $exe = Environment::isWindows() ? '.exe' : '';
         // lg
         $extOK = false;
         $mainExtension = '';

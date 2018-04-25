@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\FileStreamWrapper;
@@ -611,7 +612,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function createFileFixesPermissionsOnCreatedFile()
     {
-        if (TYPO3_OS === 'WIN') {
+        if (Environment::isWindows()) {
             $this->markTestSkipped('createdFilesHaveCorrectRights() tests not available on Windows');
         }
 
@@ -980,7 +981,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     {
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             $this->markTestSkipped('Test skipped if run on linux as root');
-        } elseif (TYPO3_OS === 'WIN') {
+        } elseif (Environment::isWindows()) {
             $this->markTestSkipped('Test skipped if run on Windows system');
         }
         /** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
@@ -1011,7 +1012,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     {
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             $this->markTestSkipped('Test skipped if run on linux as root');
-        } elseif (TYPO3_OS === 'WIN') {
+        } elseif (Environment::isWindows()) {
             $this->markTestSkipped('Test skipped if run on Windows system');
         }
         /** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
@@ -1079,7 +1080,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser($group, $permissions, $expectedResult)
     {
-        if (TYPO3_OS === 'WIN') {
+        if (Environment::isWindows()) {
             $this->markTestSkipped('Test skipped if run on Windows system');
         }
         $this->addToMount([

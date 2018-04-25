@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use TYPO3\CMS\Core\Category\CategoryRegistry;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -1070,7 +1071,7 @@ class ExtensionManagementUtility
         // OS check
         // Empty $os means 'not limited to one OS', therefore a check is not needed
         if ($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['available'] && $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os'] != '') {
-            $os_type = TYPO3_OS === 'WIN' ? 'WIN' : 'UNIX';
+            $os_type = Environment::isWindows() ? 'WIN' : 'UNIX';
             $os = GeneralUtility::trimExplode(',', strtoupper($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os']));
             if (!in_array($os_type, $os, true)) {
                 self::deactivateService($serviceType, $serviceKey);
