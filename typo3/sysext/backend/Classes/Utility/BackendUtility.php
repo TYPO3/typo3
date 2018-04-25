@@ -440,7 +440,7 @@ class BackendUtility
     {
         static $getPageForRootline_cache = [];
         $ident = $uid . '-' . $clause . '-' . $workspaceOL;
-        if (is_array($getPageForRootline_cache[$ident]) ?? false) {
+        if (is_array($getPageForRootline_cache[$ident] ?? false)) {
             $row = $getPageForRootline_cache[$ident];
         } else {
             $queryBuilder = static::getQueryBuilderForTable('pages');
