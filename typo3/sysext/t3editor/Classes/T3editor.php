@@ -16,7 +16,7 @@ namespace TYPO3\CMS\T3editor;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -102,7 +102,7 @@ class T3editor implements SingletonInterface
 
         $cache = $this->getCache();
         $cacheIdentifier = $this->generateCacheIdentifier('T3editorConfiguration');
-        $configurationFromCache = $cache->requireOnce($cacheIdentifier);
+        $configurationFromCache = $cache->get($cacheIdentifier);
         if ($configurationFromCache !== false) {
             $this->configuration = $configurationFromCache;
         } else {
@@ -127,7 +127,7 @@ class T3editor implements SingletonInterface
                     }
                 }
             }
-            $cache->set($cacheIdentifier, 'return json_decode(\'' . json_encode($this->configuration) . '\', true);');
+            $cache->set($cacheIdentifier, $this->configuration);
         }
 
         return $this->configuration;
@@ -147,8 +147,8 @@ class T3editor implements SingletonInterface
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      * @throws \InvalidArgumentException
      */
-    protected function getCache(): PhpFrontend
+    protected function getCache(): FrontendInterface
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
     }
 }
