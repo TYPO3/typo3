@@ -222,7 +222,7 @@ class BackendUtility
 
     /**
      * Makes an backwards explode on the $str and returns an array with ($table, $uid).
-     * Example: tt_content_45 => array('tt_content', 45)
+     * Example: tt_content_45 => ['tt_content', 45]
      *
      * @param string $str [tablename]_[uid] string to explode
      * @return array

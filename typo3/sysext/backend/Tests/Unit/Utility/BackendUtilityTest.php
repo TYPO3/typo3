@@ -1212,4 +1212,32 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $computedProperties = BackendUtility::purgeComputedPropertiesFromRecord($record);
         self::assertSame($expected, $computedProperties);
     }
+
+    public function splitTableUidDataProvider()
+    {
+        return [
+            'simple' => [
+                'pages_23',
+                ['pages', '23']
+            ],
+            'complex' => [
+                'tt_content_13',
+                ['tt_content', '13']
+            ],
+            'multiple underscores' => [
+                'tx_runaway_domain_model_crime_scene_1234',
+                ['tx_runaway_domain_model_crime_scene', '1234']
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider splitTableUidDataProvider
+     */
+    public function splitTableUid($input, $expected)
+    {
+        $result = BackendUtility::splitTable_Uid($input);
+        self::assertSame($expected, $result);
+    }
 }
