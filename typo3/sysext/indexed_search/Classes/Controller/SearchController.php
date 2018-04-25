@@ -868,9 +868,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function getSearchWords($defaultOperator)
     {
-        // Shorten search-word string to max 200 bytes (does NOT take multibyte charsets into account - but never mind,
-        // shortening the string here is only a run-away feature!)
-        $searchWords = substr($this->getSword(), 0, 200);
+        // Shorten search-word string to max 200 bytes - shortening the string here is only a run-away feature!
+        $searchWords = mb_substr($this->getSword(), 0, 200);
         // Convert to UTF-8 + conv. entities (was also converted during indexing!)
         if ($GLOBALS['TSFE']->metaCharset && $GLOBALS['TSFE']->metaCharset !== 'utf-8') {
             $searchWords = mb_convert_encoding($searchWords, 'utf-8', $GLOBALS['TSFE']->metaCharset);
