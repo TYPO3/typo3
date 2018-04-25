@@ -25,6 +25,12 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class ResourceCompressorTest extends BaseTestCase
 {
     /**
+     * Restore Environment after the test
+     * @var bool
+     */
+    protected $backupEnvironment = true;
+
+    /**
      * @var ResourceCompressor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
@@ -527,5 +533,98 @@ class ResourceCompressorTest extends BaseTestCase
             $compressedCss = $this->subject->_call('cssFixRelativeUrlPaths', $compressedCss, PathUtility::dirname($relativeFilename) . '/');
         }
         $this->assertEquals(file_get_contents($expected), $compressedCss, 'Group of file CSS assets optimized correctly.');
+    }
+
+    /**
+     * @return array
+     */
+    public function getVariousFilenamesFromMainDirInBackendContextDataProvider(): array
+    {
+        return [
+            // Get filename using EXT:
+            [
+                'EXT:core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css'
+            ],
+            // Get filename using relative path
+            [
+                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css'
+            ],
+            [
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css'
+            ],
+            [
+                'typo3temp/assets/compressed/.htaccess',
+                '../typo3temp/assets/compressed/.htaccess'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getVariousFilenamesFromMainDirInBackendContextDataProvider
+     * @param string $filename input that will be fired on the extension
+     * @param string $expected
+     */
+    public function getVariousFilenamesFromMainDirInBackendContext(string $filename, string $expected)
+    {
+        $rootPath = \dirname($_SERVER['SCRIPT_NAME']);
+        $this->subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
+        $this->subject->setRootPath($rootPath . '/');
+
+        $relativeToRootPath = $this->subject->_call('getFilenameFromMainDir', $filename);
+        $this->assertSame($expected, $relativeToRootPath, 'Path to the file relative to the path converted correctly.');
+    }
+
+    /**
+     * @return array
+     */
+    public function getVariousFilenamesFromMainDirInFrontendContextDataProvider(): array
+    {
+        return [
+            // Get filename using EXT:
+            [
+                'EXT:core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css'
+            ],
+            // Get filename using relative path
+            [
+                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css'
+            ],
+            [
+                'typo3temp/assets/compressed/.htaccess',
+                'typo3temp/assets/compressed/.htaccess'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getVariousFilenamesFromMainDirInFrontendContextDataProvider
+     * @param string $filename input that will be fired on the extension
+     * @param string $expected
+     */
+    public function getVariousFilenamesFromMainDirInFrontendContext(string $filename, string $expected)
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            PATH_site . 'index.php',
+            TYPO3_OS === 'WIN' ? 'WINDOWS' : 'UNIX'
+        );
+        $_SERVER['ORIG_SCRIPT_NAME'] = '/index.php';
+        $this->subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
+        $this->subject->setRootPath(PATH_site);
+
+        $relativeToRootPath = $this->subject->_call('getFilenameFromMainDir', $filename);
+        $this->assertSame($expected, $relativeToRootPath, 'Path to the file relative to the path converted correctly.');
     }
 }

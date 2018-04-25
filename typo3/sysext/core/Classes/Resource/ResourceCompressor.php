@@ -474,9 +474,9 @@ class ResourceCompressor
             $file = Environment::getPublicPath() . '/' . $filename;
         }
 
-        // check if the file exists, and if so, return the path relative to TYPO3_mainDir
+        // check if the file exists, and if so, return the path relative to PATH_thisScript
         if (is_file($file)) {
-            return '../' . str_replace(Environment::getPublicPath() . '/', '', $file);
+            return rtrim(PathUtility::getRelativePathTo($file), '/');
         }
         // none of above conditions were met, fallback to default behaviour
         return $filename;

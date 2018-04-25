@@ -32,6 +32,7 @@ abstract class BaseTestCase extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     protected function setUp()
     {
+        parent::setUp();
         $this->mountDir = $this->getUniqueId('mount-');
         $this->basedir = $this->getUniqueId('base-');
         vfsStream::setup($this->basedir);
