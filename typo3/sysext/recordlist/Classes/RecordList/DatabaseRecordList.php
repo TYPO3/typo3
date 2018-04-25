@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -3961,24 +3962,31 @@ class DatabaseRecordList
      */
     protected function getSearchableWebmounts($id, $depth, $perms_clause)
     {
-        $backendUser = $this->getBackendUserAuthentication();
-        /** @var PageTreeView $tree */
-        $tree = GeneralUtility::makeInstance(PageTreeView::class);
-        $tree->init('AND ' . $perms_clause);
-        $tree->makeHTML = 0;
-        $tree->fieldArray = ['uid', 'php_tree_stop'];
-        $idList = [];
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $hash = 'webmounts_list' . md5($id . '-' . $depth . '-' . $perms_clause);
+        if ($runtimeCache->has($hash)) {
+            $idList = $runtimeCache->get($hash);
+        } else {
+            $backendUser = $this->getBackendUserAuthentication();
+            /** @var PageTreeView $tree */
+            $tree = GeneralUtility::makeInstance(PageTreeView::class);
+            $tree->init('AND ' . $perms_clause);
+            $tree->makeHTML = 0;
+            $tree->fieldArray = ['uid', 'php_tree_stop'];
+            $idList = [];
 
-        $allowedMounts = !$backendUser->isAdmin() && $id === 0
-            ? $backendUser->returnWebmounts()
-            : [$id];
+            $allowedMounts = !$backendUser->isAdmin() && $id === 0
+                ? $backendUser->returnWebmounts()
+                : [$id];
 
-        foreach ($allowedMounts as $allowedMount) {
-            $idList[] = $allowedMount;
-            if ($depth) {
-                $tree->getTree($allowedMount, $depth, '');
+            foreach ($allowedMounts as $allowedMount) {
+                $idList[] = $allowedMount;
+                if ($depth) {
+                    $tree->getTree($allowedMount, $depth, '');
+                }
+                $idList = array_merge($idList, $tree->ids);
             }
-            $idList = array_merge($idList, $tree->ids);
+            $runtimeCache->set($hash, $idList);
         }
 
         return $idList;
