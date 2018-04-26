@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "d7aa1d6bb21a2a96e095290923fb34cc",
@@ -4511,16 +4511,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "19f8b36aaac1815fa9c98600c292c41a11b008eb"
+                "reference": "3f63b438ded711e7a2188e209ed037c304dc21a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/19f8b36aaac1815fa9c98600c292c41a11b008eb",
-                "reference": "19f8b36aaac1815fa9c98600c292c41a11b008eb",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/3f63b438ded711e7a2188e209ed037c304dc21a1",
+                "reference": "3f63b438ded711e7a2188e209ed037c304dc21a1",
                 "shasum": ""
             },
             "require": {
@@ -4569,7 +4569,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2018-04-15T12:42:35+00:00"
+            "time": "2018-04-25T16:22:29+00:00"
         },
         {
             "name": "webmozart/assert",
