@@ -287,7 +287,7 @@ class NormalizedParams
      *
      * @param ServerRequestInterface $serverRequest Used to access $_SERVER
      * @param array $typo3ConfVars $GLOBALS['TYPO3_CONF_VARS']
-     * @param string $pathThisScript Absolute server entry script path, constant PATH_thisScript
+     * @param string $pathThisScript Absolute server entry script path, usually found within Environment::getCurrentScript()
      * @param string $pathSite Absolute server path to document root, constant PATH_site
      */
     public function __construct(ServerRequestInterface $serverRequest, array $typo3ConfVars, string $pathThisScript, string $pathSite)

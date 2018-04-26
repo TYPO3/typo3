@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -2974,7 +2975,7 @@ class BackendUtility
             $mainParams = ['id' => $mainParams];
         }
         if (!$script) {
-            $script = basename(PATH_thisScript);
+            $script = basename(Environment::getCurrentScript());
         }
 
         if ($routePath = GeneralUtility::_GP('route')) {

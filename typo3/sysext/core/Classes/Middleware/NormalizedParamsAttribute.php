@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 
 /**
@@ -39,7 +40,7 @@ class NormalizedParamsAttribute implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = $request->withAttribute('normalizedParams', new NormalizedParams($request, $GLOBALS['TYPO3_CONF_VARS'], PATH_thisScript, PATH_site));
+        $request = $request->withAttribute('normalizedParams', new NormalizedParams($request, $GLOBALS['TYPO3_CONF_VARS'], Environment::getCurrentScript(), PATH_site));
 
         // Set $request as global variable. This is needed in a transition phase until core code has been
         // refactored to have ServerRequest object available where it is needed. This global will be

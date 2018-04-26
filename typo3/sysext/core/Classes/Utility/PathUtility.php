@@ -30,7 +30,7 @@ class PathUtility
      */
     public static function getRelativePathTo($targetPath)
     {
-        return self::getRelativePath(dirname(PATH_thisScript), $targetPath);
+        return self::getRelativePath(dirname(Environment::getCurrentScript()), $targetPath);
     }
 
     /**
@@ -52,7 +52,7 @@ class PathUtility
             return $targetPath;
         } else {
             // Make an absolute path out of it
-            $targetPath = GeneralUtility::resolveBackPath(dirname(PATH_thisScript) . '/' . $targetPath);
+            $targetPath = GeneralUtility::resolveBackPath(dirname(Environment::getCurrentScript()) . '/' . $targetPath);
             $targetPath = self::stripPathSitePrefix($targetPath);
             if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
                 $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
