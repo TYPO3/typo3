@@ -1459,7 +1459,8 @@ class DatabaseRecordList
                 if (!isset($GLOBALS['TCA'][$table]['types'][$type])) {
                     $type = isset($GLOBALS['TCA'][$table]['types'][0]) ? 0 : 1;
                 }
-                $visibleColumns = $GLOBALS['TCA'][$table]['types'][$type]['showitem'];
+
+                $visibleColumns = $this->getVisibleColumns($GLOBALS['TCA'][$table], $type);
 
                 if ($this->thumbs &&
                     trim($row[$thumbsCol]) &&
@@ -4405,6 +4406,35 @@ class DatabaseRecordList
     public function showOnlyTranslatedRecords(bool $showOnlyTranslatedRecords)
     {
         $this->showOnlyTranslatedRecords = $showOnlyTranslatedRecords;
+    }
+
+    /**
+     * Flatten palettes into types showitem
+     *
+     * By replacing the palettes in showitem of a TCA type with each palette content, the fields within a palette
+     * can be considered as visible database columns for a backend form.
+     *
+     * @param array $tableTCA
+     * @param string $type
+     * @return string
+     */
+    protected function getVisibleColumns(array $tableTCA, string $type)
+    {
+        $visibleColumns = $tableTCA['types'][$type]['showitem'] ?? '';
+
+        if (strpos($visibleColumns, '--palette--') !== false) {
+            $matches = [];
+            preg_match_all('/--palette--\s*;[^;]*;\s*(\w+)/', $visibleColumns, $matches, PREG_SET_ORDER);
+            if (!empty($matches)) {
+                foreach ($matches as $palette) {
+                    $paletteColumns = $tableTCA['palettes'][$palette[1]]['showitem'] ?? '';
+                    $paletteColumns = rtrim($paletteColumns, ", \t\r\n");
+                    $visibleColumns = str_replace($palette[0], $paletteColumns, $visibleColumns);
+                }
+            }
+        }
+
+        return $visibleColumns;
     }
 
     /**
