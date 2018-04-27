@@ -59,8 +59,13 @@ Info > Linkvalidator
     vertical-align: middle;
 }
 
+#linkvalidator-broken-links-table {
+    table-layout: fixed;
+}
+
 #linkvalidator-broken-links-table td {
     border-left: 1px solid white;
+    word-break: break-word;
 }
 
 #linkvalidator-broken-links-table td span.valid {
