@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Extbase\SignalSlot;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A dispatcher which dispatches signals by calling its registered slot methods
  * and passing them the method arguments which were originally passed to the
@@ -110,6 +113,16 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function dispatch($signalClassName, $signalName, array $signalArguments = [])
     {
+        // We can't use LoggerAwaireTrait/Interface here as this class is singleton and instanciated
+        // too early (before loading of ext_localconf.php of extensions) so any logger configuration
+        // done in an extension won't be used if injecting the logger at creation time
+        $logManager = GeneralUtility::makeInstance(LogManager::class);
+        $logger = $logManager->getLogger(self::class);
+        $logger->log(LOG_DEBUG, 'Triggered signal ' . $signalClassName . ' ' . $signalName, [
+            'signalClassName' => $signalClassName,
+            'signalName' => $signalName,
+            'signalArguments' => $signalArguments
+        ]);
         $this->initializeObject();
         if (!isset($this->slots[$signalClassName][$signalName])) {
             return $signalArguments;
