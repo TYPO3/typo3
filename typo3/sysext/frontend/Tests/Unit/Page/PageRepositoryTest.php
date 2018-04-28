@@ -20,11 +20,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @var \TYPO3\CMS\Frontend\Page\PageRepository|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $pageSelectObject;

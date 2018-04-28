@@ -206,7 +206,7 @@ class PageRepository implements LoggerAwareInterface
             // versioning preview (that means we are online!)
             $this->where_hid_del = $this->enableFields('pages', $show_hidden, ['fe_group' => true], true);
         }
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] ?? false)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] as $classRef) {
                 $hookObject = GeneralUtility::makeInstance($classRef);
                 if (!$hookObject instanceof PageRepositoryInitHookInterface) {
@@ -990,7 +990,7 @@ class PageRepository implements LoggerAwareInterface
             $uI = parse_url($redirectTo);
             // If relative path, prefix Site URL
             // If it's a valid email without protocol, add "mailto:"
-            if (!$uI['scheme']) {
+            if (!($uI['scheme'] ?? false)) {
                 if (GeneralUtility::validEmail($redirectTo)) {
                     $redirectTo = 'mailto:' . $redirectTo;
                 } elseif ($redirectTo[0] !== '/') {
@@ -1361,15 +1361,15 @@ class PageRepository implements LoggerAwareInterface
                 // In case of versioning-preview, enableFields are ignored (checked in
                 // versionOL())
                 if (!$this->versioningPreview || !$ctrl['versioningWS'] || $noVersionPreview) {
-                    if ($ctrl['enablecolumns']['disabled'] && !$show_hidden && !$ignore_array['disabled']) {
+                    if (($ctrl['enablecolumns']['disabled'] ?? false) && !$show_hidden && !($ignore_array['disabled'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
                         $constraints[] = $expressionBuilder->eq($field, 0);
                     }
-                    if ($ctrl['enablecolumns']['starttime'] && !$ignore_array['starttime']) {
+                    if (($ctrl['enablecolumns']['starttime'] ?? false) && !($ignore_array['starttime'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
                         $constraints[] = $expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME']);
                     }
-                    if ($ctrl['enablecolumns']['endtime'] && !$ignore_array['endtime']) {
+                    if (($ctrl['enablecolumns']['endtime'] ?? false) && !($ignore_array['endtime'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
                         $constraints[] = $expressionBuilder->orX(
                             $expressionBuilder->eq($field, 0),

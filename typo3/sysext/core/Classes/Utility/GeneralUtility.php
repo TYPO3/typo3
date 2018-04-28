@@ -2624,11 +2624,11 @@ class GeneralUtility
         switch ((string)$getEnvName) {
             case 'SCRIPT_NAME':
                 $retVal = self::isRunningOnCgiServerApi()
-                    && ($_SERVER['ORIG_PATH_INFO'] ?: $_SERVER['PATH_INFO'])
-                        ? ($_SERVER['ORIG_PATH_INFO'] ?: $_SERVER['PATH_INFO'])
-                        : ($_SERVER['ORIG_SCRIPT_NAME'] ?: $_SERVER['SCRIPT_NAME']);
+                    && (($_SERVER['ORIG_PATH_INFO'] ?? false) ?: ($_SERVER['PATH_INFO'] ?? false))
+                        ? (($_SERVER['ORIG_PATH_INFO'] ?? '') ?: ($_SERVER['PATH_INFO'] ?? ''))
+                        : (($_SERVER['ORIG_SCRIPT_NAME'] ?? '') ?: ($_SERVER['SCRIPT_NAME'] ?? ''));
                 // Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
-                if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+                if (self::cmpIP(($_SERVER['REMOTE_ADDR'] ?? ''), $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
                     if (self::getIndpEnv('TYPO3_SSL') && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
                         $retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL'] . $retVal;
                     } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix']) {
