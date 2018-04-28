@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Extbase\SignalSlot;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * A dispatcher which dispatches signals by calling its registered slot methods
@@ -46,6 +48,11 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
     protected $slots = [];
 
     /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
      * Initializes this object.
      *
      * This methods needs to be used as alternative to inject aspects.
@@ -56,7 +63,9 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
     public function initializeObject()
     {
         if (!$this->isInitialized) {
-            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            $logManager = GeneralUtility::makeInstance(LogManager::class);
+            $this->logger = $logManager->getLogger(self::class);
             $this->isInitialized = true;
         }
     }
@@ -91,7 +100,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
             'class' => $class,
             'method' => $method,
             'object' => $object,
-            'passSignalInformation' => $passSignalInformation === true
+            'passSignalInformation' => $passSignalInformation === true,
         ];
         // The in_array() comparision needs to be strict to avoid potential issues
         // with complex objects being registered as slot.
@@ -113,17 +122,15 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function dispatch($signalClassName, $signalName, array $signalArguments = [])
     {
-        // We can't use LoggerAwaireTrait/Interface here as this class is singleton and instanciated
-        // too early (before loading of ext_localconf.php of extensions) so any logger configuration
-        // done in an extension won't be used if injecting the logger at creation time
-        $logManager = GeneralUtility::makeInstance(LogManager::class);
-        $logger = $logManager->getLogger(self::class);
-        $logger->log(LOG_DEBUG, 'Triggered signal ' . $signalClassName . ' ' . $signalName, [
-            'signalClassName' => $signalClassName,
-            'signalName' => $signalName,
-            'signalArguments' => $signalArguments
-        ]);
         $this->initializeObject();
+        $this->logger->debug(
+            'Triggered signal ' . $signalClassName . ' ' . $signalName,
+            [
+                'signalClassName' => $signalClassName,
+                'signalName' => $signalName,
+                'signalArguments' => $signalArguments,
+            ]
+        );
         if (!isset($this->slots[$signalClassName][$signalName])) {
             return $signalArguments;
         }
