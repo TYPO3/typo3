@@ -202,7 +202,6 @@
 // Enabling
 //
 #TSFE_ADMIN_PANEL_FORM {
-    #typo3AdminPanelEnable,
     #typo3AdminPanelCollapse {
         display: none;
     }
@@ -211,10 +210,6 @@
         .typo3-adminPanel-header {
             .typo3-adminPanel-header-enable-enabled {
                 display: inline;
-            }
-
-            .typo3-adminPanel-header-enable-disabled {
-                display: none;
             }
 
             .typo3-adminPanel-header-collapse {
@@ -232,10 +227,6 @@
         .typo3-adminPanel-header {
             .typo3-adminPanel-header-collapse-enabled {
                 display: inline;
-            }
-
-            .typo3-adminPanel-header-collapse-disabled {
-                display: none;
             }
         }
     }
@@ -273,7 +264,6 @@
         }
 
         .typo3-adminPanel-header-enable-enabled {
-            display: none;
             color: $brand-success;
         }
 

@@ -17,12 +17,12 @@ namespace TYPO3\CMS\Adminpanel\Controller;
  */
 
 use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
+use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\View\AdminPanelView;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -46,7 +46,8 @@ class MainController implements SingletonInterface
      */
     public function initialize(ServerRequest $request): void
     {
-        $this->validateSortAndInitializeModules();
+        $moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
+        $this->modules = $moduleLoader->getModulesFromConfiguration();
         $this->saveConfiguration();
 
         foreach ($this->modules as $module) {
@@ -97,52 +98,6 @@ class MainController implements SingletonInterface
             $cacheManager = new CacheManager();
             $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
             $cacheManager->getCache('fluid_template')->flush();
-        }
-    }
-
-    /**
-     * Validates, sorts and initiates the registered modules
-     *
-     * @throws \RuntimeException
-     */
-    protected function validateSortAndInitializeModules(): void
-    {
-        $modules = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
-        if (empty($modules)) {
-            return;
-        }
-        foreach ($modules as $identifier => $configuration) {
-            if (empty($configuration) || !is_array($configuration)) {
-                throw new \RuntimeException(
-                    'Missing configuration for module "' . $identifier . '".',
-                    1519490105
-                );
-            }
-            if (!is_string($configuration['module']) ||
-                empty($configuration['module']) ||
-                !class_exists($configuration['module']) ||
-                !is_subclass_of(
-                    $configuration['module'],
-                    AdminPanelModuleInterface::class
-                )
-            ) {
-                throw new \RuntimeException(
-                    'The module "' .
-                    $identifier .
-                    '" defines an invalid module class. Ensure the class exists and implements the "' .
-                    AdminPanelModuleInterface::class .
-                    '".',
-                    1519490112
-                );
-            }
-        }
-
-        $orderedModules = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies(
-            $modules
-        );
-
-        foreach ($orderedModules as $module) {
-            $this->modules[] = GeneralUtility::makeInstance($module['module']);
         }
     }
 

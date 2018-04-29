@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Adminpanel\View;
 
 use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
 use TYPO3\CMS\Adminpanel\Service\EditToolbarService;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -183,10 +184,14 @@ class AdminPanelView
             }
         }
 
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $toggleActiveUrl = $uriBuilder->buildUriFromRoute('ajax_adminPanel_toggle');
+        $saveFormUrl = $uriBuilder->buildUriFromRoute('ajax_adminPanel_saveForm');
+
         $output = [];
         $output[] = '<!-- TYPO3 Admin panel start -->';
         $output[] = '<a id="TSFE_ADMIN_PANEL"></a>';
-        $output[] = '<form id="TSFE_ADMIN_PANEL_FORM" name="TSFE_ADMIN_PANEL_FORM" style="display: none;" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '#TSFE_ADMIN_PANEL" method="get" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">';
+        $output[] = '<div data-typo3-role="typo3-adminPanel"><form id="TSFE_ADMIN_PANEL_FORM" name="TSFE_ADMIN_PANEL_FORM" style="display: none;" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '#TSFE_ADMIN_PANEL" method="get" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">';
         if (!GeneralUtility::_GET('id')) {
             $output[] = '<input type="hidden" name="id" value="' . $this->getTypoScriptFrontendController()->id . '" />';
         }
@@ -202,10 +207,6 @@ class AdminPanelView
                 }
             }
         }
-        $output[] = '  <input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="0" />';
-        $output[] = '  <input id="typo3AdminPanelEnable" type="checkbox" onchange="document.TSFE_ADMIN_PANEL_FORM.submit();" name="TSFE_ADMIN_PANEL[display_top]" value="1"' .
-                    ($this->isAdminPanelActivated() ? ' checked="checked"' : '') .
-                    '/>';
         $output[] = '  <input id="typo3AdminPanelCollapse" type="checkbox" value="1" />';
         $output[] = '  <div class="typo3-adminPanel typo3-adminPanel-state-' .
                     ($this->isAdminPanelActivated() ? 'open' : 'closed') .
@@ -213,13 +214,18 @@ class AdminPanelView
         $output[] = '    <div class="typo3-adminPanel-header">';
         $output[] = '      <span class="typo3-adminPanel-header-title">' . $this->extGetLL('adminPanelTitle') . '</span>';
         $output[] = '      <span class="typo3-adminPanel-header-user">' . htmlspecialchars($this->getBackendUser()->user['username']) . '</span>';
-        $output[] = '      <label for="typo3AdminPanelEnable" class="typo3-adminPanel-header-enable">';
-        $output[] = '        <span class="typo3-adminPanel-header-enable-enabled">';
-        $output[] = '          ' . $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render('inline');
-        $output[] = '        </span>';
-        $output[] = '        <span class="typo3-adminPanel-header-enable-disabled">';
-        $output[] = '          ' . $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render('inline');
-        $output[] = '        </span>';
+        $output[] = '      <label for="typo3AdminPanelEnable" data-typo3-role="typo3-adminPanel-trigger" data-typo3-ajax-url="' .
+                    $toggleActiveUrl .
+                    '" class="typo3-adminPanel-header-enable">';
+        if ($this->isAdminPanelActivated()) {
+            $output[] = '        <span class="typo3-adminPanel-header-enable-enabled">';
+            $output[] = '          ' . $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render('inline');
+            $output[] = '        </span>';
+        } else {
+            $output[] = '        <span class="typo3-adminPanel-header-enable-disabled">';
+            $output[] = '          ' . $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render('inline');
+            $output[] = '        </span>';
+        }
         $output[] = '      </label>';
         $output[] = '      <label for="typo3AdminPanelCollapse" class="typo3-adminPanel-header-collapse">';
         $output[] = '        <span class="typo3-adminPanel-header-collapse-enabled">';
@@ -232,14 +238,16 @@ class AdminPanelView
         $output[] = '    </div>';
         if ($moduleContent && $this->extNeedUpdate) {
             $output[] = '<div class="typo3-adminPanel-actions">';
-            $output[] = '  <input class="typo3-adminPanel-btn typo3-adminPanel-btn-dark" type="submit" value="' . $this->extGetLL('update') . '" />';
+            $output[] = '  <button data-typo3-role="typo3-adminPanel-saveButton" data-typo3-ajax-url="' .
+                        $saveFormUrl .
+                        '" class="typo3-adminPanel-btn typo3-adminPanel-btn-dark">' . $this->extGetLL('update') . '</button>';
             $output[] = '</div>';
         }
         $output[] = '    <div class="typo3-adminPanel-body">';
         $output[] = '      ' . $moduleContent;
         $output[] = '    </div>';
         $output[] = '  </div>';
-        $output[] = '</form>';
+        $output[] = '</form></div>';
         if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_top']) {
             $evalFieldJavaScriptFile = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
             $output[] = '<script type="text/javascript" src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($evalFieldJavaScriptFile)) . '"></script>';
@@ -273,7 +281,9 @@ class AdminPanelView
             $output[] = '<script language="javascript" type="text/javascript">' . $this->extJSCODE . '</script>';
         }
         $cssFileLocation = GeneralUtility::getFileAbsFileName('EXT:adminpanel/Resources/Public/Css/adminpanel.css');
+        $jsFileLocation = GeneralUtility::getFileAbsFileName('EXT:adminpanel/Resources/Public/JavaScript/AdminPanel.js');
         $output[] = '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($cssFileLocation)) . '" media="all" />';
+        $output[] = '<script type="text/javascript" src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($jsFileLocation)) . '"></script>';
         $output[] = $this->getAdminPanelStylesheet();
         $output[] = '<!-- TYPO3 admin panel end -->';
 
