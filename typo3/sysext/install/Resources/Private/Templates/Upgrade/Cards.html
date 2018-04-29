@@ -8,7 +8,7 @@
 			<span class="card-subtitle">Core Upgrade</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Update your TYPO3 installation with one click, if your instance is set up correctly.</p>
+			<p class="card-text">Update your TYPO3 installation (support for symbolic links required).</p>
 		</div>
 		<div class="card-footer">
 			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/CoreUpdate">Update Core</a>
@@ -16,14 +16,14 @@
 	</div>
 	<div class="card card-size-fixed-small">
 		<div class="card-header">
-			<h1 class="card-title">Execute Upgrade Wizards</h1>
+			<h1 class="card-title">Upgrade Wizard</h1>
 			<span class="card-subtitle">Core Upgrade</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">If you upgrade your TYPO3 installation from e.g. v8 to v9, then Upgrade Wizards guide you through the necessary steps.</p>
+			<p class="card-text">Finalises the upgrade process when moving to a major release.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/UpgradeWizards">Execute Upgrade Wizards</a>
+			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/UpgradeWizards">Run Upgrade Wizard</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -32,7 +32,7 @@
 			<span class="card-subtitle">Core Upgrade</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Show and search documentation files describing important changes between TYPO3 versions.</p>
+			<p class="card-text">View and search for important changes that have been made for every major and minor release of TYPO3.</p>
 		</div>
 		<div class="card-footer">
 			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/UpgradeDocs">View Upgrade Documentation</a>
@@ -44,7 +44,8 @@
 			<span class="card-subtitle">TCA</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Test if extensions still change TCA in ext_tables.php files, resulting in performance drawbacks.</p>
+			<p class="card-text">Identify any extensions that are modifying the Table Control Array (TCA) in ext_tables.php. Changes made to the TCA can result in performance drawbacks.
+			</p>
 		</div>
 		<div class="card-footer">
 			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/TcaExtTablesCheck">Check TCA</a>
@@ -56,10 +57,10 @@
 			<span class="card-subtitle">Extensions</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Check if all base configuration files of currently loaded extensions have errors with the current TYPO3 version.</p>
+			<p class="card-text">Checks the compatibility of all active extensions against the current (installed) version of TYPO3.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/ExtensionCompatTester">Check Extensions</a>
+			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/ExtensionCompatTester">Check Extension Compatibility</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -68,7 +69,7 @@
 			<span class="card-subtitle">TCA</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Check if third-party extensions have outdated TCA configuration which should be adapted for the current TYPO3 version.</p>
+			<p class="card-text">Identifies any third-party extensions that contain an outdated TCA configuration which should be adapted for the current (installed) version of TYPO3.</p>
 		</div>
 		<div class="card-footer">
 			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/TcaMigrationsCheck">Check TCA Migrations</a>

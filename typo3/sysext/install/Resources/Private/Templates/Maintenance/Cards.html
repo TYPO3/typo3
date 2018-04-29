@@ -5,14 +5,17 @@
 <div class="card-container">
 	<div class="card card-size-fixed-small">
 		<div class="card-header">
-			<h1 class="card-title">Flush TYPO3 and PHP Caches</h1>
+			<h1 class="card-title">Flush TYPO3 and PHP Cache</h1>
 			<span class="card-subtitle">Caching</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Clears all TYPO3 Caches including PHP Op-Caches, similiar to the <i>Clear Cache</i> Button in the TYPO3 Backend.</p>
+			<p class="card-text">This action directly clears all registered caches including opcode cache.
+				This utility is also present in TYPO3’s backend: Top Bar > Clear Cache > Flush all caches.
+				A fatal error will be thrown if a broken extension is detected. If this occurs, use the extension tester utility (Upgrade > Check For Broken Extensions).
+			</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/Cache">Clear all cache</a>
+			<a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/Cache">Flush cache</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -21,7 +24,7 @@
 			<span class="card-subtitle">Database</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Compare and update the database table and field definitions of the current database with specifications from extensions.</p>
+			<p class="card-text">Compare and update the database table and field definitions of your installation against the specification defined for every activated extension.</p>
 		</div>
 		<div class="card-footer">
 			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/DatabaseAnalyzer">Analyse database</a>
@@ -33,7 +36,7 @@
 			<span class="card-subtitle">Caching</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Clears temporary files in typo3temp/assets/ folder, including concatenated JS/CSS files, and processed images.</p>
+			<p class="card-text">Clears temporary files including concatenated JS/CSS files and processed images.</p>
 		</div>
 		<div class="card-footer">
 			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/ClearTypo3tempFiles">Scan temporary files</a>
@@ -45,7 +48,7 @@
 			<span class="card-subtitle">Caching</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">This (re-)dumps autoload information for all active third party extensions.</p>
+			<p class="card-text">Resets autoload information for all active third party extensions.</p>
 		</div>
 		<div class="card-footer">
 			<a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/DumpAutoload">Dump autoload</a>
@@ -53,11 +56,11 @@
 	</div>
 	<div class="card card-size-fixed-small">
 		<div class="card-header">
-			<h1 class="card-title">Clear Semi-Temporary Database Tables</h1>
+			<h1 class="card-title">Clear persistent database tables</h1>
 			<span class="card-subtitle">Database</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Truncates semi-temporary database tables, which are not related to caches, but can also be re-populated by TYPO3.</p>
+			<p class="card-text">Truncates persistent database tables, which are not related to caching.</p>
 		</div>
 		<div class="card-footer">
 			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/ClearTables">Scan tables</a>
@@ -65,23 +68,23 @@
 	</div>
 	<div class="card card-size-fixed-small">
 		<div class="card-header">
-			<h1 class="card-title">Add Administrator User</h1>
+			<h1 class="card-title">Create administrative user</h1>
 			<span class="card-subtitle">Backend Users</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Use this function if there are no admin users in the database, for instance if this is a blank installation.</p>
+			<p class="card-text">Create new administrative users and grant them system maintainer privileges (optional).</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/CreateAdmin">Add Administrator</a>
+			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/CreateAdmin">Create Administrator</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
 		<div class="card-header">
-			<h1 class="card-title">Reset All Backend User Preferences</h1>
+			<h1 class="card-title">Reset backend user preferences</h1>
 			<span class="card-subtitle">Backend Users</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Clears user preferences of all backend users from be_users table. The field <code>uc</code> will be set to an empty string.</p>
+			<p class="card-text">Clears preferences and settings for all backend users. The <code>uc</code> field is then set to an empty string.</p>
 		</div>
 		<div class="card-footer">
 			<a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/ResetBackendUserUc">Reset backend user preferences</a>
@@ -93,7 +96,7 @@
 			<span class="card-subtitle">Language</span>
 		</div>
 		<div class="card-content">
-			<p class="card-text">Download and update language packs of extensions.</p>
+			<p class="card-text">Download and update language packs for installed extensions.</p>
 		</div>
 		<div class="card-footer">
 			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/LanguagePacks">Manage languages</a>
