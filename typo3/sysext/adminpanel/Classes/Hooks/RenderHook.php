@@ -22,13 +22,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Hook used to postProcess output - renders the admin panel
+ * Hook to render the admin panel
  */
 class RenderHook
 {
 
     /**
-     * PostProcess output hook to render the admin panel
+     * Hook to render the admin panel
      * We use a hook this late in the project to make sure all data is collected and can be displayed
      *
      * As the main content is already rendered, we use a string replace on the content to append the adminPanel
