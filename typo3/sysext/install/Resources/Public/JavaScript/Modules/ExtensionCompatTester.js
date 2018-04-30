@@ -50,58 +50,62 @@ define([
       });
     },
 
-    getLoadedExtensionList: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
-      var $outputContainer = $(this.selectorOutputContainer);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      modalContent.append(message);
+    getLoadedExtensionList: function () {
+      const self = this;
+      this.currentModal.find(this.selectorCheckTrigger).prop('disabled', true);
+
+      this.currentModal.find('.modal-loading').hide();
+      const modalContent = this.currentModal.find(self.selectorModalBody);
+      const $outputContainer = this.currentModal.find(self.selectorOutputContainer);
+      const message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.append(message);
-      var loadResult = false;
+
       $.ajax({
         url: Router.getUrl('extensionCompatTesterLoadedExtensionList'),
         cache: false,
-        success: function(data) {
+        success: function (data) {
           modalContent.empty().append(data.html);
+
+          const $outputContainer = self.currentModal.find(self.selectorOutputContainer);
+          const progressBar = ProgressBar.render(Severity.loading, 'Loading...', '');
+          $outputContainer.append(progressBar);
+
           if (data.success === true && Array.isArray(data.extensions)) {
-            try {
-              data.extensions.forEach(function(extension) {
-                loadResult = self.loadExtLocalconf(extension);
-                if (loadResult === false) {
-                  throw extension;
-                }
+            const loadExtLocalconf = function () {
+              const promises = [];
+              data.extensions.forEach(function (extension) {
+                promises.push(self.loadExtLocalconf(extension));
               });
-              message = InfoBox.render(Severity.OK, 'ext_localconf.php of all loaded extensions successfully loaded', '');
+              return $.when.apply($, promises).done(function () {
+                const message = InfoBox.render(Severity.OK, 'ext_localconf.php of all loaded extensions successfully loaded', '');
+                $outputContainer.append(message);
+              });
+            };
+
+            const loadExtTables = function () {
+              const promises = [];
+              data.extensions.forEach(function (extension) {
+                promises.push(self.loadExtTables(extension));
+              });
+              return $.when.apply($, promises).done(function () {
+                const message = InfoBox.render(Severity.OK, 'ext_tables.php of all loaded extensions successfully loaded', '');
+                $outputContainer.append(message);
+              });
+            };
+
+            $.when(loadExtLocalconf(), loadExtTables()).fail(function (response) {
+              const message = InfoBox.render(Severity.error, 'Loading ' + response.scope + ' of extension "' + response.extension + '" failed');
+              $outputContainer.append(message);
+              modalContent.find(self.selectorUninstallTrigger).text('Unload extension "' + response.extension + '"').attr('data-extension', response.extension).show();
+            }).always(function () {
               $outputContainer.find('.alert-loading').remove();
-              $outputContainer.append(message);
-              var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-              $outputContainer.append(message);
-              try {
-                data.extensions.forEach(function(extension) {
-                  loadResult = self.loadExtTables(extension);
-                  if (loadResult === false) {
-                    throw extension;
-                  }
-                });
-                message = InfoBox.render(Severity.OK, 'ext_tables.php of all loaded extensions successfully loaded', '');
-                modalContent.append(message);
-              } catch (extension) {
-                message = InfoBox.render(Severity.error, 'Loading ext_tables.php of extension "' + extension + '" failed');
-                modalContent.append(message);
-                modalContent.find(self.selectorUninstallTrigger).text('Unload extension "' + extension + '"').attr('data-extension', extension).show();
-              }
-            } catch (extension) {
-              message = InfoBox.render(Severity.error, 'Loading ext_localconf.php of extension "' + extension + '" failed');
-              // $outputContainer.find('.alert-loading').remove();
-              // $outputContainer.append(message);
-              modalContent.append(message);
-              modalContent.find(self.selectorUninstallTrigger).text('Unload extension "' + extension + '"').attr('data-extension', extension).show();
-            }
+              self.currentModal.find(self.selectorCheckTrigger).prop('disabled', false);
+            });
           } else {
             Notification.error('Something went wrong');
           }
         },
-        error: function(xhr) {
+        error: function (xhr) {
           Router.handleAjaxError(xhr);
         }
       });
@@ -110,53 +114,49 @@ define([
     loadExtLocalconf: function(extension) {
       var self = this;
       var executeToken = self.currentModal.find(this.selectorLoadExtLocalconfToken).text();
-      var result = false;
-      $.ajax({
+      var $ajax = $.ajax({
         url: Router.getUrl(),
         method: 'POST',
         cache: false,
-        async: false,
         data: {
           'install': {
             'action': 'extensionCompatTesterLoadExtLocalconf',
             'token': executeToken,
             'extension': extension
           }
-        },
-        success: function(data) {
-          result = data.success === true;
-        },
-        error: function(data) {
-          result = false;
         }
       });
-      return result;
+
+      return $ajax.promise().then(null, function() {
+        throw {
+          scope: 'ext_localconf.php',
+          extension: extension
+        };
+      });
     },
 
     loadExtTables: function(extension) {
       var self = this;
       var executeToken = self.currentModal.find(this.selectorLoadExtTablesToken).text();
-      var result = false;
-      $.ajax({
+      var $ajax = $.ajax({
         url: Router.getUrl(),
         method: 'POST',
         cache: false,
-        async: false,
         data: {
           'install': {
             'action': 'extensionCompatTesterLoadExtTables',
             'token': executeToken,
             'extension': extension
           }
-        },
-        success: function(data) {
-          result = data.success === true;
-        },
-        error: function(data) {
-          result = false;
         }
       });
-      return result;
+
+      return $ajax.promise().then(null, function() {
+        throw {
+          scope: 'ext_tables.php',
+          extension: extension
+        };
+      });
     },
 
     /**
