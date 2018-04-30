@@ -549,15 +549,22 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         );
 
         $output = '';
+        $originalContent = $this->response->getContent();
+        $this->response->setContent(null);
         foreach ($this->formDefinition->getFinishers() as $finisher) {
             $finisherOutput = $finisher->execute($finisherContext);
             if (is_string($finisherOutput) && !empty($finisherOutput)) {
                 $output .= $finisherOutput;
+            } else {
+                $output .= $this->response->getContent();
+                $this->response->setContent(null);
             }
+
             if ($finisherContext->isCancelled()) {
                 break;
             }
         }
+        $this->response->setContent($originalContent);
 
         return $output;
     }
