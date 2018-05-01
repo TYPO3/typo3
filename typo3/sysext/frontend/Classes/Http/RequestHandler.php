@@ -174,6 +174,7 @@ class RequestHandler implements RequestHandlerInterface
         $this->timeTracker->pull();
         // Get from cache
         $this->timeTracker->push('Get Page from cache', '');
+        // Locks may be acquired here
         $this->controller->getFromCache();
         $this->timeTracker->pull();
         // Get config if not already gotten
@@ -198,8 +199,8 @@ class RequestHandler implements RequestHandlerInterface
 
         // Generate page
         $this->controller->setUrlIdToken();
-        $this->timeTracker->push('Page generation', '');
         if ($this->controller->isGeneratePage()) {
+            $this->timeTracker->push('Page generation');
             $this->controller->generatePage_preProcessing();
             $temp_theScript = $this->controller->generatePage_whichScript();
             if ($temp_theScript) {
@@ -207,21 +208,21 @@ class RequestHandler implements RequestHandlerInterface
             } else {
                 $this->controller->preparePageContentGeneration();
                 // Content generation
-                if (!$this->controller->isINTincScript()) {
-                    PageGenerator::renderContent();
-                    $this->controller->setAbsRefPrefix();
-                }
+                PageGenerator::renderContent();
+                $this->controller->setAbsRefPrefix();
             }
             $this->controller->generatePage_postProcessing();
-        } elseif ($this->controller->isINTincScript()) {
-            $this->controller->preparePageContentGeneration();
+            $this->timeTracker->pull();
         }
         $this->controller->releaseLocks();
-        $this->timeTracker->pull();
 
-        // Render non-cached parts
+        // Render non-cached page parts by replacing placeholders which are taken from cache or added during page generation
         if ($this->controller->isINTincScript()) {
-            $this->timeTracker->push('Non-cached objects', '');
+            if (!$this->controller->isGeneratePage()) {
+                // When page was generated, this was already called. Avoid calling this twice.
+                $this->controller->preparePageContentGeneration();
+            }
+            $this->timeTracker->push('Non-cached objects');
             $this->controller->INTincScript();
             $this->timeTracker->pull();
         }
