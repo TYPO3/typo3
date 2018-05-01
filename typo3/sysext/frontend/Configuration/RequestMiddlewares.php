@@ -90,5 +90,11 @@ return [
                 'typo3/cms-frontend/site',
             ]
         ],
+        'typo3/cms-frontend/prepare-tsfe-rendering' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\PrepareTypoScriptFrontendRendering::class,
+            'after' => [
+                'typo3/cms-frontend/page-resolver',
+            ]
+        ],
     ]
 ];

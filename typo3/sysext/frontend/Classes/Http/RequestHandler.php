@@ -68,30 +68,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         /** @var TypoScriptFrontendController $controller */
         $controller = $GLOBALS['TSFE'];
 
-        // Starts the template
-        $this->timeTracker->push('Start Template', '');
-        $controller->initTemplate();
-        $this->timeTracker->pull();
-        // Get from cache
-        $this->timeTracker->push('Get Page from cache', '');
-        $controller->getFromCache();
-        $this->timeTracker->pull();
-        // Get config if not already gotten
-        // After this, we should have a valid config-array ready
-        $controller->getConfigArray();
-        // Setting language and locale
-        $this->timeTracker->push('Setting language and locale', '');
-        $controller->settingLanguage();
-        $controller->settingLocale();
-        $this->timeTracker->pull();
-
-        // Convert POST data to utf-8 for internal processing if metaCharset is different
-        $controller->convPOSTCharset();
-
-        $controller->initializeRedirectUrlHandlers();
-
-        $controller->handleDataSubmission();
-
         // Check for shortcut page and redirect
         $controller->checkPageForShortcutRedirect();
         $controller->checkPageForMountpointRedirect();
