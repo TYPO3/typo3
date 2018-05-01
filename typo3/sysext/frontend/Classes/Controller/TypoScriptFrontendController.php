@@ -2955,16 +2955,50 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
+     * Returns URI of target page, if the current page is an overlaid mountpoint.
+     *
+     * If the current page is of type mountpoint and should be overlaid with the contents of the mountpoint page
+     * and is accessed directly, the user will be redirected to the mountpoint context.
+     * @internal
+     */
+    public function getRedirectUriForMountPoint(): ?string
+    {
+        if (!empty($this->originalMountPointPage) && (int)$this->originalMountPointPage['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT) {
+            return $this->getUriToCurrentPageForRedirect();
+        }
+
+        return null;
+    }
+
+    /**
      * Redirect to target page if the current page is an overlaid mountpoint.
      *
      * If the current page is of type mountpoint and should be overlaid with the contents of the mountpoint page
      * and is accessed directly, the user will be redirected to the mountpoint context.
+     * @deprecated in TYPO3 9, will be removed in TYPO3 10
      */
     public function checkPageForMountpointRedirect()
     {
+        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', \E_USER_DEPRECATED);
         if (!empty($this->originalMountPointPage) && $this->originalMountPointPage['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT) {
             $this->redirectToCurrentPage();
         }
+    }
+
+    /**
+     * Returns URI of target page, if the current page is a Shortcut.
+     *
+     * If the current page is of type shortcut and accessed directly via its URL,
+     * the user will be redirected to shortcut target.
+     * @internal
+     */
+    public function getRedirectUriForShortcut(): ?string
+    {
+        if (!empty($this->originalShortcutPage) && $this->originalShortcutPage['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
+            return $this->getUriToCurrentPageForRedirect();
+        }
+
+        return null;
     }
 
     /**
@@ -2972,19 +3006,36 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * If the current page is of type shortcut and accessed directly via its URL, this function redirects to the
      * Shortcut target using a Location header.
+     * @deprecated in TYPO3 9, will be removed in TYPO3 10
      */
     public function checkPageForShortcutRedirect()
     {
-        if (!empty($this->originalShortcutPage) && $this->originalShortcutPage['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
+        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', \E_USER_DEPRECATED);
+        if (!empty($this->originalShortcutPage) && (int)$this->originalShortcutPage['doktype'] === PageRepository::DOKTYPE_SHORTCUT) {
             $this->redirectToCurrentPage();
         }
     }
 
     /**
-     * Builds a typolink to the current page, appends the type paremeter if required
+     * Builds a typolink to the current page, appends the type parameter if required
      * and redirects the user to the generated URL using a Location header.
+     * @deprecated in TYPO3 9, will be removed in TYPO3 10
      */
     protected function redirectToCurrentPage()
+    {
+        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', \E_USER_DEPRECATED);
+        $redirectUrl = $this->getUriToCurrentPageForRedirect();
+        // Prevent redirection loop
+        if (!empty($redirectUrl) && GeneralUtility::getIndpEnv('REQUEST_URI') !== '/' . $redirectUrl) {
+            // redirect and exit
+            HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_307);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    protected function getUriToCurrentPageForRedirect(): string
     {
         $this->calculateLinkVars();
         // Instantiate \TYPO3\CMS\Frontend\ContentObject to generate the correct target URL
@@ -2995,14 +3046,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($type && MathUtility::canBeInterpretedAsInteger($type)) {
             $parameter .= ',' . $type;
         }
-        $redirectUrl = $cObj->typoLink_URL(['parameter' => $parameter, 'addQueryString' => true,
-            'addQueryString.' => ['exclude' => 'id']]);
-
-        // Prevent redirection loop
-        if (!empty($redirectUrl) && GeneralUtility::getIndpEnv('REQUEST_URI') !== '/' . $redirectUrl) {
-            // redirect and exit
-            HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_307);
-        }
+        $redirectUrl = $cObj->typoLink_URL([
+            'parameter' => $parameter,
+            'addQueryString' => true,
+            'addQueryString.' => ['exclude' => 'id']
+        ]);
+        return $redirectUrl;
     }
 
     /********************************************

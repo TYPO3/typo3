@@ -68,10 +68,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         /** @var TypoScriptFrontendController $controller */
         $controller = $GLOBALS['TSFE'];
 
-        // Check for shortcut page and redirect
-        $controller->checkPageForShortcutRedirect();
-        $controller->checkPageForMountpointRedirect();
-
         // Generate page
         $controller->setUrlIdToken();
         if ($controller->isGeneratePage()) {
