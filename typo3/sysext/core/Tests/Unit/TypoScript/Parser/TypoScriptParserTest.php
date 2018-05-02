@@ -274,6 +274,17 @@ class TypoScriptParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     }
 
     /**
+     * @test
+     */
+    public function emptyConditionIsReported()
+    {
+        $typoScript = '[]';
+        $this->typoScriptParser->parse($typoScript);
+        $expected = 'Empty condition is always false, this does not make sense. At line 0';
+        $this->assertEquals($expected, $this->typoScriptParser->errors[0][0]);
+    }
+
+    /**
      * @return array
      */
     public function doubleSlashCommentsDataProvider()
