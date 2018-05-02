@@ -94,6 +94,8 @@ class MenuProcessor implements DataProcessorInterface
         'begin.',
         'alternativeSortingField',
         'alternativeSortingField.',
+        'showAccessRestrictedPages',
+        'showAccessRestrictedPages.',
         'excludeUidList',
         'excludeUidList.',
         'excludeDoktypes',
@@ -355,6 +357,13 @@ class MenuProcessor implements DataProcessorInterface
             $this->menuConfig[$i . '.']['IProcFunc'] = 'TYPO3\CMS\Frontend\DataProcessing\MenuProcessor->replacePlaceholderInRenderedMenuItem';
             if ($i > 1) {
                 $this->menuConfig[$i . '.']['stdWrap.']['wrap'] = ',"children": [|]';
+            }
+            if (array_key_exists('showAccessRestrictedPages', $this->menuConfig)) {
+                $this->menuConfig[$i . '.']['showAccessRestrictedPages'] = $this->menuConfig['showAccessRestrictedPages'];
+                if (array_key_exists('showAccessRestrictedPages.', $this->menuConfig)
+                    && is_array($this->menuConfig['showAccessRestrictedPages.'])) {
+                    $this->menuConfig[$i . '.']['showAccessRestrictedPages.'] = $this->menuConfig['showAccessRestrictedPages.'];
+                }
             }
             $this->menuConfig[$i . '.']['expAll'] = $this->menuExpandAll;
             $this->menuConfig[$i . '.']['alternativeSortingField'] = $this->menuAlternativeSortingField;
