@@ -291,6 +291,20 @@ class TypoScriptParserTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function emptyConditionIsReported()
+    {
+        $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
+        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
+
+        $typoScript = '[]';
+        $this->typoScriptParser->parse($typoScript);
+        $expected = 'Empty condition is always false, this does not make sense. At line 0';
+        $this->assertEquals($expected, $this->typoScriptParser->errors[0][0]);
+    }
+
+    /**
      * @return array
      */
     public function doubleSlashCommentsDataProvider()

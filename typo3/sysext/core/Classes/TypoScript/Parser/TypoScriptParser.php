@@ -240,6 +240,10 @@ class TypoScriptParser
                 $this->error('Breakpoint at ' . ($this->lineNumberOffset + $this->rawP - 2) . ': Line content was "' . $this->raw[$this->rawP - 2] . '"', 1);
                 break;
             }
+            if ($pre === '[]') {
+                $this->error('Empty condition is always false, this does not make sense. At line ' . ($this->lineNumberOffset + $this->rawP - 1), 2);
+                break;
+            }
             $preUppercase = strtoupper($pre);
             if ($pre[0] === '[' &&
                 ($preUppercase === '[GLOBAL]' ||
