@@ -242,21 +242,12 @@ class ReviewController extends ActionController
         $activeWorkspace = $this->getBackendUser()->workspace;
         $wsCur = [$activeWorkspace => true];
         $wsList = array_intersect_key($wsList, $wsCur);
-        $backendDomain = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
         $this->view->assignMultiple([
             'pageUid' => (int)GeneralUtility::_GP('id'),
             'showGrid' => true,
             'workspaceList' => $this->prepareWorkspaceTabs($wsList, (int)$activeWorkspace, false),
             'activeWorkspaceUid' => $activeWorkspace,
-            'backendDomain' => $backendDomain
         ]);
-        // Setting the document.domain early before JavScript
-        // libraries are loaded, try to access top frame reference
-        // and possibly run into some CORS issue
-        $this->pageRenderer->setMetaCharsetTag(
-            $this->pageRenderer->getMetaCharsetTag() . LF
-            . GeneralUtility::wrapJS('document.domain = ' . GeneralUtility::quoteJSvalue($backendDomain) . ';')
-        );
         $this->pageRenderer->addInlineSetting('Workspaces', 'singleView', '1');
     }
 

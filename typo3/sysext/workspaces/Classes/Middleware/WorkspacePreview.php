@@ -268,13 +268,6 @@ class WorkspacePreview implements MiddlewareInterface
      */
     protected function renderPreviewInfo(TypoScriptFrontendController $tsfe, NormalizedParams $normalizedParams): string
     {
-        $backendDomain = $GLOBALS['BE_USER']->getSessionData('workspaces.backend_domain') ?: $normalizedParams->getRequestHostOnly();
-
-        $content = '<script type="text/javascript">
-	// having this is very important, otherwise the parent.resize call will fail
-	document.domain = ' . GeneralUtility::quoteJSvalue($backendDomain) . ';
-</script>';
-
         if (!isset($tsfe->config['config']['disablePreviewNotification']) || (int)$tsfe->config['config']['disablePreviewNotification'] !== 1) {
             // get the title of the current workspace
             $currentWorkspaceId = $tsfe->whichWorkspace();

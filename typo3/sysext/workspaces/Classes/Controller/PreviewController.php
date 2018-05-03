@@ -160,15 +160,11 @@ class PreviewController
         }
         $this->moduleTemplate->getPageRenderer()->addInlineSetting('Workspaces', 'SplitPreviewModes', $splitPreviewModes);
 
-        $backendDomain = $request->getAttribute('normalizedParams')->getRequestHostOnly();
-        $this->getBackendUser()->setAndSaveSessionData('workspaces.backend_domain', $backendDomain);
-
         $this->view->assignMultiple([
             'logoLink' => TYPO3_URL_GENERAL,
             'liveUrl' => $liveUrl ?? false,
             'wsUrl' => $wsUrl,
             'wsSettingsUrl' => $wsSettingsUrl,
-            'backendDomain' => $backendDomain,
             'activeWorkspace' => $availableWorkspaces[$activeWorkspace],
             'splitPreviewModes' => $splitPreviewModes,
             'firstPreviewMode' => current($splitPreviewModes),
