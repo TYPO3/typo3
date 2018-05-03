@@ -100,7 +100,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 			Event.on(this.selectElement, 'change', function (event) { return self.onChange(self, event); });
 			// Handlers to change the selected option when the select is collapsed/expanded
 			if (!UserAgent.isIE) {
-				Event.on(this.selectElement, 'click', function (event) { self.onTrigger(event); });
+				Event.on(this.selectElement, 'change', function (event) { self.onTrigger(event); });
 				Event.on(window, 'mouseup', function (event) { if (event.target !== self.selectElement && !self.collapsed) { self.onTrigger(event); event.stopPropagation();}});
 				Event.on(this.selectElement, 'blur', function (event) { if (!self.collapsed) { self.onTrigger(event); event.stopPropagation();}});
 				Event.on(this.selectElement, 'keyup', function (event) { self.onEscape(event); });
