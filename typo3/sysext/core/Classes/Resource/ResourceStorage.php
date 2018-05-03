@@ -710,6 +710,32 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
+     * @param ResourceInterface $fileOrFolder
+     * @return bool
+     */
+    public function checkFileAndFolderNameFilters(ResourceInterface $fileOrFolder)
+    {
+        foreach ($this->fileAndFolderNameFilters as $filter) {
+            if (is_callable($filter)) {
+                $result = call_user_func($filter, $fileOrFolder->getName(), $fileOrFolder->getIdentifier(), $fileOrFolder->getParentFolder()->getIdentifier(), [], $this->driver);
+                // We have to use -1 as the „don't include“ return value, as call_user_func() will return FALSE
+                // If calling the method succeeded and thus we can't use that as a return value.
+                if ($result === -1) {
+                    return false;
+                }
+                if ($result === false) {
+                    throw new \RuntimeException(
+                        'Could not apply file/folder name filter ' . $filter[0] . '::' . $filter[1],
+                        1525342106
+                    );
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * If the fileName is given, checks it against the
      * TYPO3_CONF_VARS[BE][fileDenyPattern] + and if the file extension is allowed.
      *

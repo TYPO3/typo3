@@ -173,7 +173,8 @@ class FileRepository extends AbstractRepository
         /** @var ResourceFactory $fileFactory */
         $fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
-        $folders = $folder->getStorage()->getFoldersInFolder($folder, 0, 0, true, true);
+        $storage = $folder->getStorage();
+        $folders = $storage->getFoldersInFolder($folder, 0, 0, true, true);
         $folders[$folder->getIdentifier()] = $folder;
 
         $fileRecords = $this->getFileIndexRepository()->findByFolders($folders, false, $fileName);
@@ -182,7 +183,10 @@ class FileRepository extends AbstractRepository
         $files = [];
         foreach ($fileRecords as $fileRecord) {
             try {
-                $files[] = $fileFactory->getFileObject($fileRecord['uid'], $fileRecord);
+                $file = $fileFactory->getFileObject($fileRecord['uid'], $fileRecord);
+                if ($storage->checkFileAndFolderNameFilters($file)) {
+                    $files[] = $file;
+                }
             } catch (Exception\FileDoesNotExistException $ignoredException) {
                 continue;
             }
