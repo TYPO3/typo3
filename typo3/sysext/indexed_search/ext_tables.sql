@@ -65,8 +65,8 @@ CREATE TABLE index_words (
   metaphone int(11) DEFAULT '0' NOT NULL,
   is_stopword tinyint(3) DEFAULT '0' NOT NULL,
   PRIMARY KEY (wid),
-  KEY baseword (baseword,wid),
-  KEY metaphone (metaphone,wid)
+  KEY baseword (baseword),
+  KEY metaphone (metaphone)
 ) ENGINE=InnoDB;
 
 #

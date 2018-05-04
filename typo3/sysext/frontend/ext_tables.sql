@@ -151,7 +151,6 @@ CREATE TABLE sys_domain (
 	sorting int(10) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid),
 	KEY getSysDomain (hidden),
 	KEY getDomainStartPage (pid,hidden,domainName)
 );

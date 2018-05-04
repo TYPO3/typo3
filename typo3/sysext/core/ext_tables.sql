@@ -629,7 +629,7 @@ CREATE TABLE sys_log (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY event (userid,event_pid),
-	KEY recuidIdx (recuid,uid),
+	KEY recuidIdx (recuid),
 	KEY user_auth (type,action,tstamp),
 	KEY request (request_id),
 	KEY combined_1 (tstamp, type, userid)
@@ -688,7 +688,6 @@ CREATE TABLE sys_category (
 	items int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY category_parent (parent),
 	KEY category_list (pid,deleted,sys_language_uid)
