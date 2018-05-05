@@ -77,7 +77,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $sectionMark = '#' . (MathUtility::canBeInterpretedAsInteger($sectionMark) ? 'c' : '') . $sectionMark;
         }
         // Overruling 'type'
-        $pageType = $linkDetails['pagetype'] ?? 0;
+        $pageType = $linkDetails['pagetype'] ?? '';
 
         if (isset($linkDetails['parameters'])) {
             $conf['additionalParams'] .= '&' . ltrim($linkDetails['parameters'], '&');
