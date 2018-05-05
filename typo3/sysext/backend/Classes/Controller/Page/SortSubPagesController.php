@@ -105,7 +105,7 @@ class SortSubPagesController
         if (!$isInWorkspace) {
             // Apply new sorting if given
             $newSortBy = $request->getQueryParams()['newSortBy'] ?? null;
-            if ($newSortBy && in_array($newSortBy, ['title', 'subtitle', 'crdate', 'tstamp'], true)) {
+            if ($newSortBy && in_array($newSortBy, ['title', 'subtitle', 'nav_title', 'crdate', 'tstamp'], true)) {
                 $this->sortSubPagesByField($parentPageUid, (string)$newSortBy);
             } elseif ($newSortBy && $newSortBy === 'reverseCurrentSorting') {
                 $this->reverseSortingOfPages($parentPageUid);
@@ -144,9 +144,9 @@ class SortSubPagesController
      */
     protected function sortSubPagesByField(int $parentPageUid, string $newSortBy)
     {
-        if (!in_array($newSortBy, ['title', 'subtitle', 'crdate', 'tstamp'], true)) {
+        if (!in_array($newSortBy, ['title', 'subtitle', 'nav_title', 'crdate', 'tstamp'], true)) {
             throw new \RuntimeException(
-                'New sort by must be one of "title", "subtitle", "crdate" or tstamp',
+                'New sort by must be one of "title", "subtitle", "nav_title", "crdate" or tstamp',
                 1498924810
             );
         }

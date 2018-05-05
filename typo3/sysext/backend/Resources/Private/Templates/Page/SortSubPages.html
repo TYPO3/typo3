@@ -9,14 +9,14 @@
 />
 
 <h1>
-    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:title" />
+    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:title" />
 </h1>
 
 <f:if condition="{isInWorkspace}">
     <f:then>
         <f:be.infobox
-            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:notAvailableInWorkspace.title')}"
-            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:notAvailableInWorkspace.message')}"
+            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:notAvailableInWorkspace.title')}"
+            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:notAvailableInWorkspace.message')}"
             state="-1"
         />
     </f:then>
@@ -25,14 +25,14 @@
             <f:then>
                 <f:if condition="{hasInvisiblePage}">
                     <f:be.infobox
-                        title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:hasInvisiblePage.title')}"
-                        message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:hasInvisiblePage.message')}"
+                        title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:hasInvisiblePage.title')}"
+                        message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:hasInvisiblePage.message')}"
                         state="-1"
                     />
                 </f:if>
 
                 <h2>
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:currentPageOrder" />
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:currentPageOrder" />
                 </h2>
 
                 <div class="table-fit">
@@ -40,16 +40,19 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:fieldTitle" />
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:fieldTitle" />
                                 </th>
                                 <th>
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:fieldSubtitle" />
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:fieldSubtitle" />
                                 </th>
                                 <th>
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:fieldTstamp" />
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:fieldNavTitle" />
                                 </th>
                                 <th>
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:fieldCrdate" />
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:fieldTstamp" />
+                                </th>
+                                <th>
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:fieldCrdate" />
                                 </th>
                             </tr>
                         </thead>
@@ -61,7 +64,7 @@
                                     <f:if condition="!{page.canEdit}">
                                         <span
                                             data-toggle="tooltip"
-                                            data-title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:noEditPermissions')}"
+                                            data-title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:noEditPermissions')}"
                                         >
                                             <core:icon identifier="status-status-permission-denied" />
                                         </span>
@@ -70,6 +73,9 @@
                                 </td>
                                 <td class="text-nowrap">
                                     {page.record.subtitle -> f:format.crop(maxCharacters: maxTitleLength)}
+                                </td>
+                                <td class="text-nowrap">
+                                    {page.record.nav_title -> f:format.crop(maxCharacters: maxTitleLength)}
                                 </td>
                                 <td class="text-nowrap">
                                     <f:format.date format="{dateFormat} {timeFormat}">{page.record.tstamp}</f:format.date>
@@ -83,58 +89,67 @@
                 </div>
 
                 <h2>
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:changeOrder"/>
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrder"/>
                 </h2>
                 <a class="btn btn-default t3js-modal-trigger"
                     href="{be:moduleLink(route:'pages_sort', arguments:'{id:parentPageUid, newSortBy:\'title\'}')}"
                     data-severity="warning"
                     data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:pleaseConfirm')}"
                     data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
-                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:changeOrderConfirm')}"
+                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderConfirm')}"
                 >
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:changeOrderByTitle" />
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderByTitle" />
                 </a>
                 <a class="btn btn-default t3js-modal-trigger"
                     href="{be:moduleLink(route:'pages_sort', arguments:'{id:parentPageUid, newSortBy:\'subtitle\'}')}"
                     data-severity="warning"
                     data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:pleaseConfirm')}"
                     data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
-                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:changeOrderConfirm')}"
+                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderConfirm')}"
                 >
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:changeOrderBySubtitle" />
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderBySubtitle" />
+                </a>
+                <a class="btn btn-default t3js-modal-trigger"
+                    href="{be:moduleLink(route:'pages_sort', arguments:'{id:parentPageUid, newSortBy:\'nav_title\'}')}"
+                    data-severity="warning"
+                    data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:pleaseConfirm')}"
+                    data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderConfirm')}"
+                >
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderByNavtitle" />
                 </a>
                 <a class="btn btn-default t3js-modal-trigger"
                     href="{be:moduleLink(route:'pages_sort', arguments:'{id:parentPageUid, newSortBy:\'tstamp\'}')}"
                     data-severity="warning"
                     data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:pleaseConfirm')}"
                     data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
-                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:changeOrderConfirm')}"
+                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderConfirm')}"
                 >
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:changeOrderByTstamp" />
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderByTstamp" />
                 </a>
                 <a class="btn btn-default t3js-modal-trigger"
                     href="{be:moduleLink(route:'pages_sort', arguments:'{id:parentPageUid, newSortBy:\'create\'}')}"
                     data-severity="warning"
                     data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:pleaseConfirm')}"
                     data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
-                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:changeOrderConfirm')}"
+                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderConfirm')}"
                 >
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:changeOrderByCreate" />
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderByCreate" />
                 </a>
                 <a class="btn btn-default t3js-modal-trigger"
                     href="{be:moduleLink(route:'pages_sort', arguments:'{id:parentPageUid, newSortBy:\'reverseCurrentSorting\'}')}"
                     data-severity="warning"
                     data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:pleaseConfirm')}"
                     data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
-                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:changeOrderConfirm')}"
+                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderConfirm')}"
                 >
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:changeOrderReverse" />
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:changeOrderReverse" />
                 </a>
             </f:then>
             <f:else>
                 <f:be.infobox
-                    title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:noSubpages.title')}"
-                    message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort:noSubpages.message')}"
+                    title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:noSubpages.title')}"
+                    message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:noSubpages.message')}"
                     state="-1"
                 />
             </f:else>

@@ -22,6 +22,9 @@
 			<trans-unit id="fieldSubtitle">
 				<source>Subtitle</source>
 			</trans-unit>
+			<trans-unit id="fieldNavitle">
+				<source>Navigation title</source>
+			</trans-unit>
 			<trans-unit id="fieldCrdate">
 				<source>Create-time</source>
 			</trans-unit>
@@ -34,6 +37,9 @@
 			</trans-unit>
 			<trans-unit id="changeOrderBySubtitle">
 				<source>Subtitle</source>
+			</trans-unit>
+			<trans-unit id="changeOrderByNavtitle">
+				<source>Navigation title</source>
 			</trans-unit>
 			<trans-unit id="changeOrderByTstamp">
 				<source>Change-time</source>
