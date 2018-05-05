@@ -329,10 +329,6 @@ module.exports = function (grunt) {
             src: '<%= paths.t3icons %>module/module-install.svg'
           },
           {
-            dest: '<%= paths.sysext %>lang/Resources/Public/Icons/module-lang.svg',
-            src: '<%= paths.t3icons %>module/module-lang.svg'
-          },
-          {
             dest: '<%= paths.sysext %>recordlist/Resources/Public/Icons/module-list.svg',
             src: '<%= paths.t3icons %>module/module-list.svg'
           },
