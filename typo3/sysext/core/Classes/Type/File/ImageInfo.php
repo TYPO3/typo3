@@ -68,7 +68,9 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
             }
             // Fallback to IM/GM identify
             if ($this->imageSizes === false) {
-                $this->imageSizes = $this->getGraphicalFunctions()->imageMagickIdentify($this->getPathname());
+                $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+                $graphicalFunctions->init();
+                $this->imageSizes = $graphicalFunctions->imageMagickIdentify($this->getPathname());
             }
 
             // In case the image size could not be retrieved, log the incident as a warning.
@@ -113,20 +115,5 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
         }
 
         return $imagesSizes !== [] ? $imagesSizes : false;
-    }
-
-    /**
-     * @return GraphicalFunctions
-     */
-    protected function getGraphicalFunctions()
-    {
-        static $graphicalFunctions = null;
-
-        if ($graphicalFunctions === null) {
-            $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
-            $graphicalFunctions->init();
-        }
-
-        return $graphicalFunctions;
     }
 }
