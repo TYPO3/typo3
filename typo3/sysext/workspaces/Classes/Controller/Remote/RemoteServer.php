@@ -28,15 +28,17 @@ use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
 use TYPO3\CMS\Workspaces\Service\HistoryService;
+use TYPO3\CMS\Workspaces\Service\IntegrityService;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Class RemoteServer
  */
-class RemoteServer extends AbstractHandler
+class RemoteServer
 {
     /**
      * @var GridDataService
@@ -49,9 +51,21 @@ class RemoteServer extends AbstractHandler
     protected $stagesService;
 
     /**
+     * @var WorkspaceService
+     */
+    protected $workspaceService;
+
+    /**
      * @var DiffUtility
      */
     protected $differenceHandler;
+
+    public function __construct()
+    {
+        $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
+        $this->gridDataService = GeneralUtility::makeInstance(GridDataService::class);
+        $this->stagesService = GeneralUtility::makeInstance(StagesService::class);
+    }
 
     /**
      * Checks integrity of elements before peforming actions on them.
@@ -82,23 +96,22 @@ class RemoteServer extends AbstractHandler
         if (!isset($parameter->language) || !MathUtility::canBeInterpretedAsInteger($parameter->language)) {
             $parameter->language = null;
         }
-        $versions = $this->getWorkspaceService()->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, $pageId, $parameter->depth, 'tables_select', $parameter->language);
-        $data = $this->getGridDataService()->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace());
+        $versions = $this->workspaceService->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, $pageId, $parameter->depth, 'tables_select', $parameter->language);
+        $data = $this->gridDataService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace());
         return $data;
     }
 
     /**
      * Get List of available workspace actions
      *
-     * @param \stdClass $parameter
      * @return array $data
      */
-    public function getStageActions(\stdClass $parameter)
+    public function getStageActions()
     {
         $currentWorkspace = $this->getCurrentWorkspace();
         $stages = [];
         if ($currentWorkspace != WorkspaceService::SELECT_ALL_WORKSPACES) {
-            $stages = $this->getStagesService()->getStagesForWSUser();
+            $stages = $this->stagesService->getStagesForWSUser();
         }
         $data = [
             'total' => count($stages),
@@ -124,8 +137,7 @@ class RemoteServer extends AbstractHandler
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icon_Live = $iconFactory->getIconForRecord($parameter->table, $liveRecord, Icon::SIZE_SMALL)->render();
         $icon_Workspace = $iconFactory->getIconForRecord($parameter->table, $versionRecord, Icon::SIZE_SMALL)->render();
-        $stagesService = $this->getStagesService();
-        $stagePosition = $stagesService->getPositionOfCurrentStage($parameter->stage);
+        $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
         if ($GLOBALS['TCA'][$parameter->table]) {
             if ($GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList']) {
@@ -247,12 +259,11 @@ class RemoteServer extends AbstractHandler
         }
         $commentsForRecord = $this->getCommentsForRecord($parameter->uid, $parameter->table);
 
-        /** @var $historyService HistoryService */
         $historyService = GeneralUtility::makeInstance(HistoryService::class);
         $history = $historyService->getHistory($parameter->table, $parameter->t3ver_oid);
 
-        $prevStage = $stagesService->getPrevStage($parameter->stage);
-        $nextStage = $stagesService->getNextStage($parameter->stage);
+        $prevStage = $this->stagesService->getPrevStage($parameter->stage);
+        $nextStage = $this->stagesService->getNextStage($parameter->stage);
 
         if (isset($prevStage[0])) {
             $prevStage = current($prevStage);
@@ -275,7 +286,7 @@ class RemoteServer extends AbstractHandler
                     'comments' => $commentsForRecord,
                     // escape/sanitize the others
                     'path_Live' => htmlspecialchars(BackendUtility::getRecordPath($liveRecord['pid'], '', 999)),
-                    'label_Stage' => htmlspecialchars($stagesService->getStageTitle($parameter->stage)),
+                    'label_Stage' => htmlspecialchars($this->stagesService->getStageTitle($parameter->stage)),
                     'label_PrevStage' => $prevStage,
                     'label_NextStage' => $nextStage,
                     'stage_position' => (int)$stagePosition['position'],
@@ -404,7 +415,7 @@ class RemoteServer extends AbstractHandler
             $sysLogEntry = [];
             $data = unserialize($sysLogRow['log_data']);
             $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
-            $sysLogEntry['stage_title'] = htmlspecialchars($this->getStagesService()->getStageTitle($data['stage']));
+            $sysLogEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle($data['stage']));
             $sysLogEntry['user_uid'] = (int)$sysLogRow['userid'];
             $sysLogEntry['user_username'] = is_array($beUserRecord) ? htmlspecialchars($beUserRecord['username']) : '';
             $sysLogEntry['tstamp'] = htmlspecialchars(BackendUtility::datetime($sysLogRow['tstamp']));
@@ -430,7 +441,7 @@ class RemoteServer extends AbstractHandler
                 'icon' => $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render()
             ]
         ];
-        foreach ($this->getGridDataService()->getSystemLanguages() as $id => $systemLanguage) {
+        foreach ($this->gridDataService->getSystemLanguages() as $id => $systemLanguage) {
             if ($id < 0) {
                 continue;
             }
@@ -448,7 +459,7 @@ class RemoteServer extends AbstractHandler
     }
 
     /**
-     * @return BackendUserAuthentication;
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser()
     {
@@ -456,37 +467,11 @@ class RemoteServer extends AbstractHandler
     }
 
     /**
-     * @return LanguageService;
+     * @return LanguageService
      */
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Gets the Grid Data Service.
-     *
-     * @return GridDataService
-     */
-    protected function getGridDataService()
-    {
-        if (!isset($this->gridDataService)) {
-            $this->gridDataService = GeneralUtility::makeInstance(GridDataService::class);
-        }
-        return $this->gridDataService;
-    }
-
-    /**
-     * Gets the Stages Service.
-     *
-     * @return StagesService
-     */
-    protected function getStagesService()
-    {
-        if (!isset($this->stagesService)) {
-            $this->stagesService = GeneralUtility::makeInstance(StagesService::class);
-        }
-        return $this->stagesService;
     }
 
     /**
@@ -501,5 +486,75 @@ class RemoteServer extends AbstractHandler
             $this->differenceHandler->stripTags = false;
         }
         return $this->differenceHandler;
+    }
+
+    /**
+     * Creates a new instance of the integrity service for the
+     * given set of affected elements.
+     *
+     * @param CombinedRecord[] $affectedElements
+     * @return IntegrityService
+     * @see getAffectedElements
+     */
+    protected function createIntegrityService(array $affectedElements)
+    {
+        $integrityService = GeneralUtility::makeInstance(IntegrityService::class);
+        $integrityService->setAffectedElements($affectedElements);
+        return $integrityService;
+    }
+
+    /**
+     * Gets affected elements on publishing/swapping actions.
+     * Affected elements have a dependency, e.g. translation overlay
+     * and the default origin record - thus, the default record would be
+     * affected if the translation overlay shall be published.
+     *
+     * @param \stdClass $parameters
+     * @return array
+     */
+    protected function getAffectedElements(\stdClass $parameters)
+    {
+        $affectedElements = [];
+        if ($parameters->type === 'selection') {
+            foreach ((array)$parameters->selection as $element) {
+                $affectedElements[] = CombinedRecord::create($element->table, $element->liveId, $element->versionId);
+            }
+        } elseif ($parameters->type === 'all') {
+            $versions = $this->workspaceService->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, -1, 0, 'tables_select', $this->validateLanguageParameter($parameters));
+            foreach ($versions as $table => $tableElements) {
+                foreach ($tableElements as $element) {
+                    $affectedElement = CombinedRecord::create($table, $element['t3ver_oid'], $element['uid']);
+                    $affectedElement->getVersionRecord()->setRow($element);
+                    $affectedElements[] = $affectedElement;
+                }
+            }
+        }
+        return $affectedElements;
+    }
+
+    /**
+     * Validates whether the submitted language parameter can be
+     * interpreted as integer value.
+     *
+     * @param \stdClass $parameters
+     * @return int|null
+     */
+    protected function validateLanguageParameter(\stdClass $parameters)
+    {
+        $language = null;
+        if (isset($parameters->language) && MathUtility::canBeInterpretedAsInteger($parameters->language)) {
+            $language = $parameters->language;
+        }
+        return $language;
+    }
+
+    /**
+     * Gets the current workspace ID.
+     *
+     * @return int The current workspace ID
+     */
+    protected function getCurrentWorkspace()
+    {
+        return $this->workspaceService->getCurrentWorkspace();
     }
 }

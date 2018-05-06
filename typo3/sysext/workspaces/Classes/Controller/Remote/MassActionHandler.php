@@ -14,13 +14,17 @@ namespace TYPO3\CMS\Workspaces\Controller\Remote;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
- * Class MassActionHandler
  * Class encapsulates all actions which are triggered for all elements within the current workspace.
  */
-class MassActionHandler extends AbstractHandler
+class MassActionHandler
 {
     const MAX_RECORDS_TO_PROCESS = 30;
 
@@ -32,27 +36,36 @@ class MassActionHandler extends AbstractHandler
     private $pathToLocallang = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf';
 
     /**
+     * @var WorkspaceService
+     */
+    protected $workspaceService;
+
+    public function __construct()
+    {
+        $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
+    }
+
+    /**
      * Get list of available mass workspace actions.
      *
-     * @param \stdClass $parameter
      * @return array $data
      */
-    public function getMassStageActions($parameter)
+    public function getMassStageActions()
     {
         $actions = [];
         $currentWorkspace = $this->getCurrentWorkspace();
-        $massActionsEnabled = $GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.enableMassActions') !== '0';
+        $massActionsEnabled = $this->getBackendUser()->getTSConfigVal('options.workspaces.enableMassActions') !== '0';
         // in case we're working within "All Workspaces" we can't provide Mass Actions
         if ($currentWorkspace != WorkspaceService::SELECT_ALL_WORKSPACES && $massActionsEnabled) {
-            $publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess($currentWorkspace);
-            if ($publishAccess && !($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1)) {
-                $actions[] = ['action' => 'publish', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_publish')];
-                if ($GLOBALS['BE_USER']->workspaceSwapAccess()) {
-                    $actions[] = ['action' => 'swap', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_swap')];
+            $publishAccess = $this->getBackendUser()->workspacePublishAccess($currentWorkspace);
+            if ($publishAccess && !($this->getBackendUser()->workspaceRec['publish_access'] & 1)) {
+                $actions[] = ['action' => 'publish', 'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':label_doaction_publish')];
+                if ($this->getBackendUser()->workspaceSwapAccess()) {
+                    $actions[] = ['action' => 'swap', 'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':label_doaction_swap')];
                 }
             }
             if ($currentWorkspace !== WorkspaceService::LIVE_WORKSPACE_ID) {
-                $actions[] = ['action' => 'discard', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_discard')];
+                $actions[] = ['action' => 'discard', 'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':label_doaction_discard')];
             }
         }
         $result = [
@@ -82,8 +95,8 @@ class MassActionHandler extends AbstractHandler
                 $cnt = $this->initPublishData($this->getCurrentWorkspace(), $parameters->swap, $language);
                 $result['total'] = $cnt;
             } else {
-                $result['processed'] = $this->processData($this->getCurrentWorkspace());
-                $result['total'] = $GLOBALS['BE_USER']->getSessionData('workspaceMassAction_total');
+                $result['processed'] = $this->processData();
+                $result['total'] = $this->getBackendUser()->getSessionData('workspaceMassAction_total');
             }
         } catch (\Exception $e) {
             $result['error'] = $e->getMessage();
@@ -108,11 +121,10 @@ class MassActionHandler extends AbstractHandler
         try {
             if ($parameters->init) {
                 $language = $this->validateLanguageParameter($parameters);
-                $cnt = $this->initFlushData($this->getCurrentWorkspace(), $language);
-                $result['total'] = $cnt;
+                $result['total'] = $this->initFlushData($this->getCurrentWorkspace(), $language);
             } else {
-                $result['processed'] = $this->processData($this->getCurrentWorkspace());
-                $result['total'] = $GLOBALS['BE_USER']->getSessionData('workspaceMassAction_total');
+                $result['processed'] = $this->processData();
+                $result['total'] = $this->getBackendUser()->getSessionData('workspaceMassAction_total');
             }
         } catch (\Exception $e) {
             $result['error'] = $e->getMessage();
@@ -131,15 +143,15 @@ class MassActionHandler extends AbstractHandler
     protected function initPublishData($workspace, $swap, $language = null)
     {
         // workspace might be -98 a.k.a "All Workspaces but that's save here
-        $publishData = $this->getWorkspaceService()->getCmdArrayForPublishWS($workspace, $swap, 0, $language);
+        $publishData = $this->workspaceService->getCmdArrayForPublishWS($workspace, $swap, 0, $language);
         $recordCount = 0;
         foreach ($publishData as $table => $recs) {
             $recordCount += count($recs);
         }
         if ($recordCount > 0) {
-            $GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction', $publishData);
-            $GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_total', $recordCount);
-            $GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_processed', 0);
+            $this->getBackendUser()->setAndSaveSessionData('workspaceMassAction', $publishData);
+            $this->getBackendUser()->setAndSaveSessionData('workspaceMassAction_total', $recordCount);
+            $this->getBackendUser()->setAndSaveSessionData('workspaceMassAction_processed', 0);
         }
         return $recordCount;
     }
@@ -154,15 +166,15 @@ class MassActionHandler extends AbstractHandler
     protected function initFlushData($workspace, $language = null)
     {
         // workspace might be -98 a.k.a "All Workspaces but that's save here
-        $flushData = $this->getWorkspaceService()->getCmdArrayForFlushWS($workspace, true, 0, $language);
+        $flushData = $this->workspaceService->getCmdArrayForFlushWS($workspace, true, 0, $language);
         $recordCount = 0;
         foreach ($flushData as $table => $recs) {
             $recordCount += count($recs);
         }
         if ($recordCount > 0) {
-            $GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction', $flushData);
-            $GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_total', $recordCount);
-            $GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_processed', 0);
+            $this->getBackendUser()->setAndSaveSessionData('workspaceMassAction', $flushData);
+            $this->getBackendUser()->setAndSaveSessionData('workspaceMassAction_total', $recordCount);
+            $this->getBackendUser()->setAndSaveSessionData('workspaceMassAction_processed', 0);
         }
         return $recordCount;
     }
@@ -170,13 +182,12 @@ class MassActionHandler extends AbstractHandler
     /**
      * Processes the data.
      *
-     * @param int $workspace
      * @return int
      */
-    protected function processData($workspace)
+    protected function processData()
     {
-        $processData = $GLOBALS['BE_USER']->getSessionData('workspaceMassAction');
-        $recordsProcessed = $GLOBALS['BE_USER']->getSessionData('workspaceMassAction_processed');
+        $processData = $this->getBackendUser()->getSessionData('workspaceMassAction');
+        $recordsProcessed = $this->getBackendUser()->getSessionData('workspaceMassAction_processed');
         $limitedCmd = [];
         $numRecs = 0;
         foreach ($processData as $table => $recs) {
@@ -193,15 +204,14 @@ class MassActionHandler extends AbstractHandler
         }
         if ($numRecs == 0) {
             // All done
-            $GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction', null);
-            $GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_total', 0);
+            $this->getBackendUser()->setAndSaveSessionData('workspaceMassAction', null);
+            $this->getBackendUser()->setAndSaveSessionData('workspaceMassAction_total', 0);
         } else {
-            /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-            $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
             // Execute the commands:
-            $tce->start([], $limitedCmd);
-            $tce->process_cmdmap();
-            $errors = $tce->errorLog;
+            $dataHandler->start([], $limitedCmd);
+            $dataHandler->process_cmdmap();
+            $errors = $dataHandler->errorLog;
             if (!empty($errors)) {
                 throw new \Exception(implode(', ', $errors), 1476048278);
             }
@@ -212,9 +222,51 @@ class MassActionHandler extends AbstractHandler
                     unset($processData[$table][$key]);
                 }
             }
-            $GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction', $processData);
-            $GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_processed', $recordsProcessed);
+            $this->getBackendUser()->setAndSaveSessionData('workspaceMassAction', $processData);
+            $this->getBackendUser()->setAndSaveSessionData('workspaceMassAction_processed', $recordsProcessed);
         }
         return $recordsProcessed;
+    }
+
+    /**
+     * Validates whether the submitted language parameter can be
+     * interpreted as integer value.
+     *
+     * @param \stdClass $parameters
+     * @return int|null
+     */
+    protected function validateLanguageParameter(\stdClass $parameters)
+    {
+        $language = null;
+        if (isset($parameters->language) && MathUtility::canBeInterpretedAsInteger($parameters->language)) {
+            $language = $parameters->language;
+        }
+        return $language;
+    }
+
+    /**
+     * Gets the current workspace ID.
+     *
+     * @return int The current workspace ID
+     */
+    protected function getCurrentWorkspace()
+    {
+        return $this->workspaceService->getCurrentWorkspace();
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

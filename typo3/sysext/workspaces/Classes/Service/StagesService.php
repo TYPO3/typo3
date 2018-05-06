@@ -204,7 +204,7 @@ class StagesService implements SingletonInterface
      */
     public function getStagesForWSUser()
     {
-        if ($GLOBALS['BE_USER']->isAdmin()) {
+        if ($this->getBackendUser()->isAdmin()) {
             return $this->getStagesForWS();
         }
 
@@ -303,7 +303,7 @@ class StagesService implements SingletonInterface
      * Gets next stage in process for given stage id
      *
      * @param int $stageId Id of the stage to fetch the next one for
-     * @return int The next stage Id
+     * @return array The next stage (id + details)
      * @throws \InvalidArgumentException
      */
     public function getNextStage($stageId)
@@ -370,7 +370,7 @@ class StagesService implements SingletonInterface
      * Get next stage in process for given stage id
      *
      * @param int $stageId Id of the stage to fetch the previous one for
-     * @return int The previous stage Id
+     * @return bool|array The previous stage or false
      * @throws \InvalidArgumentException
      */
     public function getPrevStage($stageId)
@@ -746,7 +746,7 @@ class StagesService implements SingletonInterface
         if (isset($this->workspaceStageAllowedCache[$cacheKey])) {
             return $this->workspaceStageAllowedCache[$cacheKey];
         }
-        $isAllowed = $GLOBALS['BE_USER']->workspaceCheckStageForCurrent($stageId);
+        $isAllowed = $this->getBackendUser()->workspaceCheckStageForCurrent($stageId);
         $this->workspaceStageAllowedCache[$cacheKey] = $isAllowed;
         return $isAllowed;
     }

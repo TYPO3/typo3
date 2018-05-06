@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -30,7 +31,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 /**
  * Class ActionHandler
  */
-class ActionHandler extends AbstractHandler
+class ActionHandler
 {
     /**
      * @var StagesService
@@ -38,11 +39,17 @@ class ActionHandler extends AbstractHandler
     protected $stageService;
 
     /**
+     * @var WorkspaceService
+     */
+    protected $workspaceService;
+
+    /**
      * Creates this object.
      */
     public function __construct()
     {
         $this->stageService = GeneralUtility::makeInstance(StagesService::class);
+        $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
     }
 
     /**
@@ -53,7 +60,7 @@ class ActionHandler extends AbstractHandler
      */
     public function generateWorkspacePreviewLink($uid)
     {
-        return $this->getWorkspaceService()->generateWorkspacePreviewLink($uid);
+        return $this->workspaceService->generateWorkspacePreviewLink($uid);
     }
 
     /**
@@ -64,7 +71,7 @@ class ActionHandler extends AbstractHandler
      */
     public function generateWorkspacePreviewLinksForAllLanguages($uid)
     {
-        return $this->getWorkspaceService()->generateWorkspacePreviewLinksForAllLanguages($uid);
+        return $this->workspaceService->generateWorkspacePreviewLinksForAllLanguages($uid);
     }
 
     /**
@@ -201,14 +208,14 @@ class ActionHandler extends AbstractHandler
                 'hidden' => $column->hidden
             ];
         }
-        $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'] = $data;
-        $GLOBALS['BE_USER']->writeUC();
+        $this->getBackendUser()->uc['moduleData']['Workspaces'][$this->getBackendUser()->workspace]['columns'] = $data;
+        $this->getBackendUser()->writeUC();
     }
 
     public function loadColumnModel()
     {
-        if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
-            return $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'];
+        if (is_array($this->getBackendUser()->uc['moduleData']['Workspaces'][$this->getBackendUser()->workspace]['columns'])) {
+            return $this->getBackendUser()->uc['moduleData']['Workspaces'][$this->getBackendUser()->workspace]['columns'];
         }
         return [];
     }
@@ -223,8 +230,8 @@ class ActionHandler extends AbstractHandler
         if (MathUtility::canBeInterpretedAsInteger($language) === false && $language !== 'all') {
             $language = 'all';
         }
-        $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['language'] = $language;
-        $GLOBALS['BE_USER']->writeUC();
+        $this->getBackendUser()->uc['moduleData']['Workspaces'][$this->getBackendUser()->workspace]['language'] = $language;
+        $this->getBackendUser()->writeUC();
     }
 
     /**
@@ -342,7 +349,7 @@ class ActionHandler extends AbstractHandler
 
         if ($stageRecord === null) {
             throw new \InvalidArgumentException(
-                $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'),
+                $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'),
                 1476044776
             );
         }
@@ -871,5 +878,44 @@ class ActionHandler extends AbstractHandler
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Gets an error response to be shown in the grid component.
+     *
+     * @param string $errorLabel Name of the label in the locallang.xlf file
+     * @param int $errorCode The error code to be used
+     * @param bool $successFlagValue Value of the success flag to be delivered back (might be FALSE in most cases)
+     * @return array
+     */
+    protected function getErrorResponse($errorLabel, $errorCode = 0, $successFlagValue = false)
+    {
+        $localLangFile = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf';
+        $response = [
+            'error' => [
+                'code' => $errorCode,
+                'message' => $this->getLanguageService()->sL($localLangFile . ':' . $errorLabel)
+            ],
+            'success' => $successFlagValue
+        ];
+        return $response;
+    }
+
+    /**
+     * Gets the current workspace ID.
+     *
+     * @return int The current workspace ID
+     */
+    protected function getCurrentWorkspace()
+    {
+        return $this->workspaceService->getCurrentWorkspace();
     }
 }

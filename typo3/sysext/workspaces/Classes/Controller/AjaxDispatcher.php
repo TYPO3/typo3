@@ -67,7 +67,6 @@ class AjaxDispatcher
     {
         $tmp = new \stdClass();
         $tmp->action = $call->action;
-        $tmp->debug = '';
         $tmp->method = $call->method;
         $tmp->result = $responseFromMethod;
         $tmp->tid = $call->tid;
