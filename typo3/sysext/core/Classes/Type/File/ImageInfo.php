@@ -63,7 +63,9 @@ class ImageInfo extends FileInfo
             }
             // Fallback to IM/GM identify
             if ($this->imageSizes === false) {
-                $this->imageSizes = $this->getGraphicalFunctions()->imageMagickIdentify($this->getPathname());
+                $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+                $graphicalFunctions->init();
+                $this->imageSizes = $graphicalFunctions->imageMagickIdentify($this->getPathname());
             }
 
             // In case the image size could not be retrieved, log the incident as a warning.
@@ -126,12 +128,8 @@ class ImageInfo extends FileInfo
      */
     protected function getGraphicalFunctions()
     {
-        static $graphicalFunctions = null;
-
-        if ($graphicalFunctions === null) {
-            $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
-            $graphicalFunctions->init();
-        }
+        $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+        $graphicalFunctions->init();
 
         return $graphicalFunctions;
     }
