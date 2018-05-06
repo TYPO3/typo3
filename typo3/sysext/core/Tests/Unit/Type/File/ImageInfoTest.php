@@ -61,4 +61,28 @@ class ImageInfoTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->assertEquals(0, $imageInfo->getWidth());
         $this->assertEquals(0, $imageInfo->getHeight());
     }
+
+    /**
+     * @return array
+     */
+    public function canDetectImageSizesDataProvider(): array
+    {
+        return [
+            'svg' => ['test.svg', 80, 80],
+            'jpg' => ['test.jpg', 600, 388],
+            'png' => ['test.png', 600, 388],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider canDetectImageSizesDataProvider
+     */
+    public function canDetectImageSizes($file, $width, $height)
+    {
+        $imageInfo = new ImageInfo(__DIR__ . '/../Fixture/' . $file);
+
+        $this->assertEquals($width, $imageInfo->getWidth());
+        $this->assertEquals($height, $imageInfo->getHeight());
+    }
 }
