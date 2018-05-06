@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
+use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 
 /**
  * Grid data service
@@ -157,7 +158,7 @@ class GridDataService implements LoggerAwareInterface
                     }
 
                     $isDeletedPage = $table === 'pages' && $recordState === 'deleted';
-                    $viewUrl = WorkspaceService::viewSingleRecord($table, $record['uid'], $origRecord, $versionRecord);
+                    $viewUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, $record['uid'], $origRecord, $versionRecord);
                     $versionArray = [];
                     $versionArray['table'] = $table;
                     $versionArray['id'] = $table . ':' . $record['uid'];

@@ -19,8 +19,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 use TYPO3\CMS\Workspaces\Service\StagesService;
-use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Befunc service
@@ -42,7 +42,7 @@ class BackendUtilityHook
     public function preProcess(&$pageUid, $backPath, $rootLine, $anchorSection, &$viewScript, $additionalGetVars, $switchFocus)
     {
         if ($GLOBALS['BE_USER']->workspace !== 0) {
-            $viewScript = GeneralUtility::makeInstance(WorkspaceService::class)->generateWorkspaceSplittedPreviewLink($pageUid);
+            $viewScript = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForWorkspaceSplitPreview((int)$pageUid, false);
         }
     }
 

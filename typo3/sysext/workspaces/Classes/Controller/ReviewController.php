@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Workspaces\Service\AdditionalColumnService;
@@ -145,7 +146,6 @@ class ReviewController extends ActionController
         $backendUser = $this->getBackendUser();
         $moduleTemplate = $this->view->getModuleTemplate();
 
-        $wsService = GeneralUtility::makeInstance(WorkspaceService::class);
         if (GeneralUtility::_GP('id')) {
             $pageRecord = BackendUtility::getRecord('pages', GeneralUtility::_GP('id'));
             if ($pageRecord) {
@@ -153,7 +153,7 @@ class ReviewController extends ActionController
                 $this->view->assign('pageTitle', BackendUtility::getRecordTitle('pages', $pageRecord));
             }
         }
-        $wsList = $wsService->getAvailableWorkspaces();
+        $wsList = GeneralUtility::makeInstance(WorkspaceService::class)->getAvailableWorkspaces();
         $activeWorkspace = $backendUser->workspace;
         $performWorkspaceSwitch = false;
         // Only admins see multiple tabs, we decided to use it this
@@ -189,7 +189,7 @@ class ReviewController extends ActionController
             'activeWorkspaceTitle' => WorkspaceService::getWorkspaceTitle($activeWorkspace),
         ]);
 
-        if ($wsService->canCreatePreviewLink(GeneralUtility::_GP('id'), $activeWorkspace)) {
+        if ($this->canCreatePreviewLink((int)GeneralUtility::_GP('id'), (int)$activeWorkspace)) {
             $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
             $iconFactory = $moduleTemplate->getIconFactory();
             $showButton = $buttonBar->makeLinkButton()
@@ -342,6 +342,26 @@ class ReviewController extends ActionController
         $extension['AdditionalColumn']['Definition'] = $this->getAdditionalColumnService()->getDefinition();
         $extension['AdditionalColumn']['Handler'] = $this->getAdditionalColumnService()->getHandler();
         $this->pageRenderer->addInlineSetting('Workspaces', 'extension', $extension);
+    }
+
+    /**
+     * Determine whether this page for the current
+     *
+     * @param int $pageUid
+     * @param int $workspaceUid
+     * @return bool
+     */
+    protected function canCreatePreviewLink(int $pageUid, int $workspaceUid): bool
+    {
+        if ($pageUid > 0 && $workspaceUid > 0) {
+            $pageRecord = BackendUtility::getRecord('pages', $pageUid);
+            BackendUtility::workspaceOL('pages', $pageRecord, $workspaceUid);
+            if (VersionState::cast($pageRecord['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**

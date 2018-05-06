@@ -14,13 +14,10 @@ namespace TYPO3\CMS\Workspaces\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\QueryView;
@@ -29,18 +26,12 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Workspaces\Hook\PreviewHook;
 
 /**
  * Workspace service
  */
 class WorkspaceService implements SingletonInterface
 {
-    /**
-     * @var array
-     */
-    protected $pageCache = [];
-
     /**
      * @var array
      */
@@ -54,11 +45,12 @@ class WorkspaceService implements SingletonInterface
     const TABLE_WORKSPACE = 'sys_workspace';
     const SELECT_ALL_WORKSPACES = -98;
     const LIVE_WORKSPACE_ID = 0;
+
     /**
      * retrieves the available workspaces from the database and checks whether
      * they're available to the current BE user
      *
-     * @return array array of worspaces available to the current user
+     * @return array array of workspaces available to the current user
      */
     public function getAvailableWorkspaces()
     {
@@ -732,183 +724,6 @@ class WorkspaceService implements SingletonInterface
     }
 
     /**
-     * Generates a view link for a page.
-     *
-     * @param string $table Table to be used
-     * @param int $uid Uid of the version(!) record
-     * @param array $liveRecord Optional live record data
-     * @param array $versionRecord Optional version record data
-     * @return string
-     */
-    public static function viewSingleRecord($table, $uid, array $liveRecord = null, array $versionRecord = null)
-    {
-        if ($table === 'pages') {
-            return BackendUtility::viewOnClick(BackendUtility::getLiveVersionIdOfRecord('pages', $uid));
-        }
-
-        if ($liveRecord === null) {
-            $liveRecord = BackendUtility::getLiveVersionOfRecord($table, $uid);
-        }
-        if ($versionRecord === null) {
-            $versionRecord = BackendUtility::getRecord($table, $uid);
-        }
-        if (VersionState::cast($versionRecord['t3ver_state'])->equals(VersionState::MOVE_POINTER)) {
-            $movePlaceholder = BackendUtility::getMovePlaceholder($table, $liveRecord['uid'], 'pid');
-        }
-
-        // Directly use pid value and consider move placeholders
-        $previewPageId = (empty($movePlaceholder['pid']) ? $liveRecord['pid'] : $movePlaceholder['pid']);
-        $additionalParameters = '&previewWS=' . $versionRecord['t3ver_wsid'];
-        // Add language parameter if record is a localization
-        if (BackendUtility::isTableLocalizable($table)) {
-            $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
-            if ($versionRecord[$languageField] > 0) {
-                $additionalParameters .= '&L=' . $versionRecord[$languageField];
-            }
-        }
-
-        $pageTsConfig = BackendUtility::getPagesTSconfig($previewPageId);
-        $viewUrl = '';
-
-        // Directly use determined direct page id
-        if ($table === 'tt_content') {
-            $viewUrl = BackendUtility::viewOnClick($previewPageId, '', null, '', '', $additionalParameters);
-        } elseif (!empty($pageTsConfig['options.']['workspaces.']['previewPageId.'][$table]) || !empty($pageTsConfig['options.']['workspaces.']['previewPageId'])) {
-            // Analyze Page TSconfig options.workspaces.previewPageId
-            if (!empty($pageTsConfig['options.']['workspaces.']['previewPageId.'][$table])) {
-                $previewConfiguration = $pageTsConfig['options.']['workspaces.']['previewPageId.'][$table];
-            } else {
-                $previewConfiguration = $pageTsConfig['options.']['workspaces.']['previewPageId'];
-            }
-            // Extract possible settings (e.g. "field:pid")
-            list($previewKey, $previewValue) = explode(':', $previewConfiguration, 2);
-            if ($previewKey === 'field') {
-                $previewPageId = (int)$liveRecord[$previewValue];
-            } else {
-                $previewPageId = (int)$previewConfiguration;
-            }
-            $viewUrl = BackendUtility::viewOnClick($previewPageId, '', null, '', '', $additionalParameters);
-        } elseif (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
-            // Call user function to render the single record view
-            $_params = [
-                'table' => $table,
-                'uid' => $uid,
-                'record' => $liveRecord,
-                'liveRecord' => $liveRecord,
-                'versionRecord' => $versionRecord,
-            ];
-            $_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
-            $null = null;
-            $viewUrl = GeneralUtility::callUserFunction($_funcRef, $_params, $null);
-        }
-
-        return $viewUrl;
-    }
-
-    /**
-     * Determine whether this page for the current
-     *
-     * @param int $pageUid
-     * @param int $workspaceUid
-     * @return bool
-     */
-    public function canCreatePreviewLink($pageUid, $workspaceUid)
-    {
-        $result = true;
-        if ($pageUid > 0 && $workspaceUid > 0) {
-            $pageRecord = BackendUtility::getRecord('pages', $pageUid);
-            BackendUtility::workspaceOL('pages', $pageRecord, $workspaceUid);
-            if (VersionState::cast($pageRecord['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-                $result = false;
-            }
-        } else {
-            $result = false;
-        }
-        return $result;
-    }
-
-    /**
-     * Generates a workspace preview link.
-     *
-     * @param int $uid The ID of the record to be linked
-     * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
-     */
-    public function generateWorkspacePreviewLink($uid)
-    {
-        $previewObject = GeneralUtility::makeInstance(PreviewHook::class);
-        $timeToLiveHours = $previewObject->getPreviewLinkLifetime();
-        $previewKeyword = $previewObject->compilePreviewKeyword($GLOBALS['BE_USER']->user['uid'], $timeToLiveHours * 3600, $this->getCurrentWorkspace());
-        $linkParams = [
-            'ADMCMD_prev' => $previewKeyword,
-            'id' => $uid
-        ];
-        return BackendUtility::getViewDomain($uid) . '/index.php?' . GeneralUtility::implodeArrayForUrl('', $linkParams);
-    }
-
-    /**
-     * Generates a workspace splitted preview link.
-     *
-     * @param int $uid The ID of the record to be linked
-     * @param bool $addDomain Parameter to decide if domain should be added to the generated link, FALSE per default
-     * @return string the preview link without the trailing '/'
-     */
-    public function generateWorkspaceSplittedPreviewLink($uid, $addDomain = false)
-    {
-        // In case a $pageUid is submitted we need to make sure it points to a live-page
-        if ($uid > 0) {
-            $uid = $this->getLivePageUid($uid);
-        }
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        // the actual uid will be appended directly in BackendUtility Hook
-        $viewScript = $uriBuilder->buildUriFromRoute('workspace_previewcontrols', ['id' => '']);
-        if ($addDomain === true) {
-            $viewScript = $uriBuilder->buildUriFromRoute('workspace_previewcontrols', ['id' => $uid]);
-            return BackendUtility::getViewDomain($uid) . 'index.php?redirect_url=' . urlencode($viewScript);
-        }
-        return $viewScript;
-    }
-
-    /**
-     * Generate workspace preview links for all available languages of a page
-     *
-     * @param int $uid
-     * @return array
-     */
-    public function generateWorkspacePreviewLinksForAllLanguages($uid)
-    {
-        $previewUrl = $this->generateWorkspacePreviewLink($uid);
-        $previewLanguages = $this->getAvailableLanguages($uid);
-        $previewLinks = [];
-
-        foreach ($previewLanguages as $languageUid => $language) {
-            $previewLinks[$language] = $previewUrl . '&L=' . $languageUid;
-        }
-
-        return $previewLinks;
-    }
-
-    /**
-     * Find the Live-Uid for a given page,
-     * the results are cached at run-time to avoid too many database-queries
-     *
-     * @throws \InvalidArgumentException
-     * @param int $uid
-     * @return int
-     */
-    public function getLivePageUid($uid)
-    {
-        if (!isset($this->pageCache[$uid])) {
-            $pageRecord = BackendUtility::getRecord('pages', $uid);
-            if (is_array($pageRecord)) {
-                $this->pageCache[$uid] = $pageRecord['t3ver_oid'] ? $pageRecord['t3ver_oid'] : $uid;
-            } else {
-                throw new \InvalidArgumentException('uid is supposed to point to an existing page - given value was: ' . $uid, 1290628113);
-            }
-        }
-        return $this->pageCache[$uid];
-    }
-
-    /**
      * Determines whether a page has workspace versions.
      *
      * @param int $workspaceId
@@ -1102,50 +917,5 @@ class WorkspaceService implements SingletonInterface
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         return $queryBuilder;
-    }
-
-    /**
-     * Get the available languages of a certain page
-     *
-     * @param int $pageId
-     * @return array
-     */
-    public function getAvailableLanguages($pageId)
-    {
-        $languageOptions = [];
-        $translationConfigurationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
-        $systemLanguages = $translationConfigurationProvider->getSystemLanguages($pageId);
-
-        if ($GLOBALS['BE_USER']->checkLanguageAccess(0)) {
-            // Use configured label for default language
-            $languageOptions[0] = $systemLanguages[0]['title'];
-        }
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
-        $result = $queryBuilder->select('sys_language_uid')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
-                )
-            )
-            ->execute();
-
-        while ($row = $result->fetch()) {
-            $languageId = (int)$row['sys_language_uid'];
-            // Only add links to active languages the user has access to
-            if (isset($systemLanguages[$languageId]) && $GLOBALS['BE_USER']->checkLanguageAccess($languageId)) {
-                $languageOptions[$languageId] = $systemLanguages[$languageId]['title'];
-            }
-        }
-
-        return $languageOptions;
     }
 }

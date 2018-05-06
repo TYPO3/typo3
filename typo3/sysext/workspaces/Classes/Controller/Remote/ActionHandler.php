@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
 use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
+use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -60,7 +61,7 @@ class ActionHandler
      */
     public function generateWorkspacePreviewLink($uid)
     {
-        return $this->workspaceService->generateWorkspacePreviewLink($uid);
+        return GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForPage((int)$uid);
     }
 
     /**
@@ -71,7 +72,7 @@ class ActionHandler
      */
     public function generateWorkspacePreviewLinksForAllLanguages($uid)
     {
-        return $this->workspaceService->generateWorkspacePreviewLinksForAllLanguages($uid);
+        return GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUrisForAllLanguagesOfPage((int)$uid);
     }
 
     /**
@@ -126,7 +127,7 @@ class ActionHandler
      */
     public function viewSingleRecord($table, $uid)
     {
-        return WorkspaceService::viewSingleRecord($table, $uid);
+        return GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, $uid);
     }
 
     /**
@@ -422,8 +423,7 @@ class ActionHandler
     public function discardStagesFromPage($pageId)
     {
         $cmdMapArray = [];
-        $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
             $filter = 1,
             $stage = -99,
@@ -746,8 +746,7 @@ class ActionHandler
      */
     public function sendPageToPreviousStage($id)
     {
-        $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
             $filter = 1,
             $stage = -99,
@@ -757,7 +756,7 @@ class ActionHandler
         );
         list($currentStage, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
             $filter = 1,
             $currentStage['uid'],
@@ -781,8 +780,7 @@ class ActionHandler
      */
     public function sendPageToNextStage($id)
     {
-        $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
             $filter = 1,
             $stage = -99,
@@ -792,7 +790,7 @@ class ActionHandler
         );
         list($currentStage, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
             $filter = 1,
             $currentStage['uid'],
@@ -817,19 +815,17 @@ class ActionHandler
      */
     public function updateStageChangeButtons($id)
     {
-        $stageService = GeneralUtility::makeInstance(StagesService::class);
-        $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
         // fetch the next and previous stage
-        $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace(
-            $stageService->getWorkspaceId(),
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
+            $this->stageService->getWorkspaceId(),
             $filter = 1,
             $stage = -99,
             $id,
             $recursionLevel = 0,
             $selectionType = 'tables_modify'
         );
-        list(, $nextStage) = $stageService->getNextStageForElementCollection($workspaceItemsArray);
-        list(, $previousStage) = $stageService->getPreviousStageForElementCollection($workspaceItemsArray);
+        list(, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
+        list(, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $extensionPath = ExtensionManagementUtility::extPath('workspaces');

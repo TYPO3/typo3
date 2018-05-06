@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\DataHandler\CommandMap;
+use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -565,6 +566,7 @@ class DataHandlerHook
         }
         // prepare and then send the emails
         if (!empty($emails)) {
+            $previewUriBuilder = GeneralUtility::makeInstance(PreviewUriBuilder::class);
             // Path to record is found:
             list($elementTable, $elementUid) = explode(':', $elementName);
             $elementUid = (int)$elementUid;
@@ -606,10 +608,11 @@ class DataHandlerHook
                 $tempEmailMessage = $emailConfig['message'];
             }
             if (strpos($tempEmailMessage, '###PREVIEW_LINK###') !== false) {
-                $markers['###PREVIEW_LINK###'] = $this->workspaceService->generateWorkspacePreviewLink($elementUid);
+                $markers['###PREVIEW_LINK###'] = $previewUriBuilder->buildUriForPage((int)$elementUid);
             }
             unset($tempEmailMessage);
-            $markers['###SPLITTED_PREVIEW_LINK###'] = $this->workspaceService->generateWorkspaceSplittedPreviewLink($elementUid, true);
+
+            $markers['###SPLITTED_PREVIEW_LINK###'] = $previewUriBuilder->buildUriForWorkspaceSplitPreview((int)$elementUid, true);
             // Hook for preprocessing of the content for formmails:
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] ?? [] as $className) {
                 $_procObj = GeneralUtility::makeInstance($className);
