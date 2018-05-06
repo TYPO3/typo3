@@ -69,7 +69,10 @@ class GetExtensionsCest
     {
         $I->fillField('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', 'superext');
         $I->click('Go');
+        // @todo do something about the double loading of the table, it is rendered twice (not double, but once, then retrieve extension list loader, then second time)
         $I->waitForElementVisible('#terSearchTable');
+        $I->wait(3);
+        $I->waitForElementNotVisible('div#nprogess');
         $I->canSeeNumberOfElements('#terSearchTable tbody tr', 1);
         $I->canSee('Super Extension');
 
@@ -78,6 +81,8 @@ class GetExtensionsCest
         $I->fillField('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', 'neededext');
         $I->pressKey('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', WebDriverKeys::ENTER);
         $I->waitForElementVisible('#terSearchTable');
+        $I->wait(3);
+        $I->waitForElementNotVisible('div#nprogess');
         $I->canSeeNumberOfElements('#terSearchTable tbody tr', 1);
         $I->canSee('Needed Extension');
     }
@@ -91,6 +96,8 @@ class GetExtensionsCest
         $I->click('Go');
         $I->waitForElementVisible('#terSearchTable');
         $I->canSeeNumberOfElements('#terSearchTable tbody tr', 2);
+        $I->wait(3);
+        $I->waitForElementNotVisible('div#nprogess');
         $I->canSee('Super Extension');
         $I->canSee('Needed Extension');
     }

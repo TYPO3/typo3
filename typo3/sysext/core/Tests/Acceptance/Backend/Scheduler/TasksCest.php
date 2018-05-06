@@ -45,7 +45,7 @@ class TasksCest
     {
         $I->see('No tasks defined yet');
         $I->click('//a[contains(@title, "Add task")]', '.module-docheader');
-        $I->cantSeeElement('#task_SystemStatusUpdateNotificationEmail');
+        $I->waitForElementNotVisible('#task_SystemStatusUpdateNotificationEmail');
         $I->selectOption('#task_class', 'System Status Update');
         $I->seeElement('#task_SystemStatusUpdateNotificationEmail');
         $I->selectOption('#task_type', 'Single');
@@ -97,6 +97,7 @@ class TasksCest
         $I->dontSee('disabled');
         $I->wantTo('See a disable button for a task');
         $I->click('//a[contains(@data-original-title, "Disable")]');
+        $I->waitForElementVisible('div.tx_scheduler_mod1');
         $I->seeElement('.tx_scheduler_mod1 .disabled');
         $I->see('disabled');
     }
@@ -133,6 +134,7 @@ class TasksCest
     public function canSwitchToSetupCheck(Admin $I)
     {
         $I->selectOption('select[name=SchedulerJumpMenu]', 'Setup check');
+        $I->waitForElementVisible('div.tx_scheduler_mod1');
         $I->see('Setup check');
         $I->see('This screen checks if the requisites for running the Scheduler as a cron job are fulfilled');
     }
@@ -143,6 +145,7 @@ class TasksCest
     public function canSwitchToInformation(Admin $I)
     {
         $I->selectOption('select[name=SchedulerJumpMenu]', 'Information');
+        $I->waitForElementVisible('div.tx_scheduler_mod1');
         $I->see('Information');
         $I->canSeeNumberOfElements('.tx_scheduler_mod1 table tbody tr', [1, 10000]);
     }

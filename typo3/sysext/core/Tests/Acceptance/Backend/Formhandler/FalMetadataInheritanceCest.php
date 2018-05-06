@@ -53,6 +53,7 @@ class FalMetadataInheritanceCest
         $I->switchToIFrame();
         $I->waitForElement('.t3js-modal.in');
         $I->wait(3);
+        $I->waitForElementNotVisible('div#nprogess');
         $I->click('Text & Images');
         $I->switchToIFrame('list_frame');
         $I->waitForText('Create new Page Content on page');
@@ -105,6 +106,7 @@ class FalMetadataInheritanceCest
         $I->switchToWindow();
         $I->switchToIFrame('list_frame');
         $I->click('tt_content with image');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Page Content "tt_content with image" on page "styleguide TCA demo"');
         $I->click('Images');
         $I->click('.form-irre-header');
@@ -144,6 +146,7 @@ class FalMetadataInheritanceCest
         $I->switchToIFrame();
         $I->waitForElement('.t3js-modal.in');
         $I->wait(3);
+        $I->waitForElementNotVisible('div#nprogess');
         $I->click('Text & Images');
         $I->switchToIFrame('list_frame');
         $I->waitForText('Create new Page Content on page');

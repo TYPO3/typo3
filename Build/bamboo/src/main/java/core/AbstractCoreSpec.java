@@ -663,8 +663,7 @@ abstract public class AbstractCoreSpec {
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        this.getScriptTaskBashPhpNoXdebug() +
-                        "php_no_xdebug bin/phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTests.xml"
+                        "php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTests.xml"
                     )
             )
             .finalTasks(
@@ -696,8 +695,7 @@ abstract public class AbstractCoreSpec {
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        this.getScriptTaskBashPhpNoXdebug() +
-                        "php_no_xdebug bin/phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTestsDeprecated.xml"
+                        "php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTestsDeprecated.xml"
                     )
             )
             .finalTasks(
@@ -733,8 +731,7 @@ abstract public class AbstractCoreSpec {
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
-                            this.getScriptTaskBashPhpNoXdebug() +
-                            "php_no_xdebug bin/phpunit-randomizer --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTests.xml --order rand"
+                            "php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit-randomizer --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTests.xml --order rand"
                         )
                 )
                 .finalTasks(
@@ -800,7 +797,7 @@ abstract public class AbstractCoreSpec {
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                "php -S localhost:8000 >/dev/null 2>&1 &\n" +
+                "php -n -c /etc/php/cli-no-xdebug/php.ini -S localhost:8000 >/dev/null 2>&1 &\n" +
                 "echo $! > phpserver.pid\n" +
                 "\n" +
                 "./bin/chromedriver --url-base=/wd/hub >/dev/null 2>&1 &\n" +
@@ -957,22 +954,6 @@ abstract public class AbstractCoreSpec {
             "    bash \"$0\" \"$@\"\n" +
             "    exit \"$?\"\n" +
             "fi\n" +
-            "\n";
-    }
-
-    /**
-     * A bash function providing a php bin without xdebug
-     */
-    protected String getScriptTaskBashPhpNoXdebug() {
-        return
-            "php_no_xdebug () {\n" +
-            "    temporaryPath=\"$(mktemp -t php.XXXX).ini\"\n" +
-            "    php -i | grep \"\\.ini\" | grep -o -e '\\(/[A-Za-z0-9._-]\\+\\)\\+\\.ini' | grep -v xdebug | xargs awk 'FNR==1{print \"\"}1' > \"${temporaryPath}\"\n" +
-            "    php -n -c \"${temporaryPath}\" \"$@\"\n" +
-            "    RETURN=$?\n" +
-            "    rm -f \"${temporaryPath}\"\n" +
-            "    exit $RETURN\n" +
-            "}\n" +
             "\n";
     }
 }

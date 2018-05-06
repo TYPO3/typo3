@@ -37,6 +37,7 @@ class ListUserCest
 
         // switch to content iframe
         $I->switchToIFrame('list_frame');
+        $I->waitForElementNotVisible('div#nprogess');
     }
 
     /**
@@ -66,6 +67,7 @@ class ListUserCest
         $I->wantTo('Filter the list of user by valid username admin');
         $I->fillField('#tx_Beuser_username', 'admin');
         $I->click('Filter');
+        $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
         // We expect exact one fitting Backend User created from the Fixtures
@@ -74,6 +76,7 @@ class ListUserCest
         $I->wantTo('Filter the list of user by valid username administrator');
         $I->fillField('#tx_Beuser_username', 'administrator');
         $I->click('Filter');
+        $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
         // We expect exact no fitting Backend User created from the Fixtures
@@ -93,6 +96,7 @@ class ListUserCest
         $I->wantToTest('Filter BackendUser and see only admins');
         $I->selectOption('#tx_Beuser_usertype', 'Admin only');
         $I->click('Filter');
+        $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
         // We expect exact two fitting Backend Users created from the Fixtures
@@ -101,6 +105,7 @@ class ListUserCest
         $I->wantToTest('Filter BackendUser and see normal users');
         $I->selectOption('#tx_Beuser_usertype', 'Normal users only');
         $I->click('Filter');
+        $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
         // We expect exact two fitting Backend Users created from the Fixtures
@@ -120,6 +125,7 @@ class ListUserCest
         $I->wantToTest('Filter BackendUser and see only active users');
         $I->selectOption('#tx_Beuser_status', 'Active only');
         $I->click('Filter');
+        $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
         // We expect exact two fitting Backend Users created from the Fixtures
@@ -128,6 +134,7 @@ class ListUserCest
         $I->wantToTest('Filter BackendUser and see only inactive users');
         $I->selectOption('#tx_Beuser_status', 'Inactive only');
         $I->click('Filter');
+        $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
         // We expect exact two fitting Backend Users created from the Fixtures
@@ -147,6 +154,7 @@ class ListUserCest
         $I->wantToTest('Filter BackendUser and see only users logged in before');
         $I->selectOption('#tx_Beuser_logins', 'Logged in before');
         $I->click('Filter');
+        $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
         // We expect exact two fitting Backend Users created from the Fixtures
@@ -155,6 +163,7 @@ class ListUserCest
         $I->wantToTest('Filter BackendUser and see only users never logged in before');
         $I->selectOption('#tx_Beuser_logins', 'Never logged in');
         $I->click('Filter');
+        $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
         // We expect exact two fitting Backend Users created from the Fixtures
@@ -175,6 +184,7 @@ class ListUserCest
         $I->wantToTest('Filter BackendUser and see only users with given usergroup');
         $I->selectOption('#tx_beuser_backendUserGroup', 'editor-group');
         $I->click('Filter');
+        $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
         // We expect exact one fitting Backend User created from the Fixtures

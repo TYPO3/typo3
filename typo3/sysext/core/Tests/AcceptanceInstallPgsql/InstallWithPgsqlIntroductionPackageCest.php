@@ -62,6 +62,7 @@ class InstallWithPgsqlIntroductionPackageCest
         $I->seeCookie('be_typo_user');
 
         // Loading might take some time
+        $I->wait(10);
         $I->switchToIFrame('list_frame');
         $I->waitForText('Get preconfigured distribution', 30);
         $I->click('.t3-button-action-installdistribution');

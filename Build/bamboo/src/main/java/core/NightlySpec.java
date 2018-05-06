@@ -154,8 +154,7 @@ public class NightlySpec extends AbstractCoreSpec {
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        this.getScriptTaskBashPhpNoXdebug() +
-                        "php_no_xdebug ./bin/php-cs-fixer fix -v --dry-run --path-mode intersection --config=Build/.php_cs typo3/\n" +
+                        "php -n -c /etc/php/cli-no-xdebug/php.ini bin/php-cs-fixer fix -v --dry-run --path-mode intersection --config=Build/.php_cs typo3/\n" +
                         "exit $?\n"
                     )
             )

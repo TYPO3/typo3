@@ -39,11 +39,13 @@ class ElementsBasicInputCest extends AbstractElementsBasicCest
         $I->click('List');
         $pageTree->openPath(['styleguide TCA demo', 'elements basic']);
         $I->switchToIFrame('list_frame');
+        $I->waitForElementNotVisible('div#nprogess', 30);
 
         // Open record and wait until form is ready
-        $I->waitForText('elements basic');
+        $I->waitForText('elements basic', 20);
         $editRecordLinkCssPath = '#recordlist-tx_styleguide_elements_basic a[data-original-title="Edit record"]';
         $I->click($editRecordLinkCssPath);
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Form', 3, 'h1');
     }
 

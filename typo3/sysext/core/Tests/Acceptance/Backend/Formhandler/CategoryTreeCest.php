@@ -29,6 +29,7 @@ class CategoryTreeCest
         $I->useExistingSession();
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
         $I->switchToIFrame('list_frame');
+        $I->waitForElementNotVisible('div#nprogess', 30);
         $I->waitForText('Web Content Management System');
         $I->switchToIFrame();
     }
@@ -62,6 +63,7 @@ class CategoryTreeCest
         $I->waitForElementVisible('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
         // Select category with id 7
         $I->click('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
+        $I->waitForText('Category', 20);
         // Change title and level to root
         $I->fillField('input[data-formengine-input-name="data[sys_category][7][title]"]', 'level-1-4');
         $I->click('.identifier-0_7 text.node-name');
@@ -69,6 +71,7 @@ class CategoryTreeCest
         $I->click('button[name="_savedok"]');
         // Wait for tree and check if isset level-1-4
         $I->waitForElement('.svg-tree-wrapper svg');
-        $I->see('level-1-4', '.svg-tree-wrapper svg .node text.node-name');
+        $I->waitForText('Category');
+        $I->see('level-1-4');
     }
 }

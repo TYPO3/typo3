@@ -53,6 +53,7 @@ abstract class AbstractElementsBasicCest
                 $inputField->sendKeys(WebDriverKeys::TAB);
                 // Click on the div so that any opened popup (potentially from the field below) is closed
                 $formSection->click();
+                $I->waitForElementNotVisible('#t3js-ui-block');
 
                 $I->comment('Test value of visible and hidden field');
                 $I->canSeeInField($inputField, $data['expectedValue']);
@@ -62,6 +63,7 @@ abstract class AbstractElementsBasicCest
                 $saveButtonLink = '//*/button[@name="_savedok"][1]';
                 $I->waitForElement($saveButtonLink, 30);
                 $I->click($saveButtonLink);
+                $I->waitForElementNotVisible('#t3js-ui-block');
                 $I->waitForElement('//*/button[@name="_savedok"][not(@disabled)][1]', 30);
                 $I->waitForElement($initializedInputFieldXpath, 30);
 
