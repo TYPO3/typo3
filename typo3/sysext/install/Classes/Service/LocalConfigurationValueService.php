@@ -45,7 +45,8 @@ class LocalConfigurationValueService
 
         foreach ($localConfiguration as $sectionName => $section) {
             if (isset($commentArray[$sectionName])) {
-                $data[$sectionName] = $this->recursiveConfigurationFetching(
+                $data[$sectionName]['description'] = $commentArray[$sectionName]['description'] ?? $sectionName;
+                $data[$sectionName]['items'] = $this->recursiveConfigurationFetching(
                     $section,
                     $GLOBALS['TYPO3_CONF_VARS'][$sectionName] ?? null,
                     $commentArray[$sectionName]
@@ -217,25 +218,6 @@ class LocalConfigurationValueService
             $configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationPathValuePairs);
         }
         return $messageQueue;
-    }
-
-    /**
-     * Returns an array of available sections and their description
-     *
-     * @return string[]
-     */
-    public function getSpeakingSectionNames(): array
-    {
-        return [
-            'BE' => 'Backend',
-            'DB' => 'Database',
-            'EXT' => 'Extension Installation',
-            'FE' => 'Frontend',
-            'GFX' => 'Image Processing',
-            'HTTP' => 'Connection',
-            'MAIL' => 'Mail',
-            'SYS' => 'System'
-        ];
     }
 
     /**

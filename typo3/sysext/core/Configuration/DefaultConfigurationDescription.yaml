@@ -1,5 +1,6 @@
 GFX:
     type: container
+    description: 'Image Processing'
     items:
         thumbnails:
             type: bool
@@ -63,6 +64,7 @@ GFX:
             description: 'Integer: Default JPEG generation quality'
 SYS:
     type: container
+    description: 'System'
     items:
         fileCreateMask:
             type: text
@@ -211,6 +213,7 @@ SYS:
                 description: 'If activated, TCA configuration for pages_language_overlay will never be loaded, and the database table "pages_language_overlay" will not be created.'
 EXT:
     type: container
+    description: 'Extension Installation'
     items:
         allowGlobalInstall:
             type: bool
@@ -223,6 +226,7 @@ EXT:
             description: 'List of directories and files which will not be packaged into extensions nor taken into account otherwise by the Extension Manager. Perl regular expression syntax!'
 BE:
     type: container
+    description: 'Backend'
     items:
         languageDebug:
             type: bool
@@ -338,6 +342,7 @@ BE:
             description: 'If enabled, the loginrefresh is disabled and pageRenderer is set to debug mode. Furthermore the fieldname is prepended to the label of fields. Use this to debug the backend only!'
 FE:
     type: container
+    description: 'Frontend'
     items:
         addAllowedPaths:
             type: list
@@ -464,6 +469,7 @@ FE:
               <strong>IMPORTANT</strong>: ''embed'' requires extra <code>.htaccess</code> rules to work (please refer to the <code>_.htaccess</code> file shipped with TYPO3)'
 MAIL:
     type: container
+    description: 'Mail'
     items:
         transport:
             type: text
@@ -506,6 +512,7 @@ MAIL:
             description: 'This default name is used when no other "reply-to" name is set for a TYPO3-generated email.'
 HTTP:
     type: container
+    description: 'Connection'
     items:
         cert:
             type: mixed

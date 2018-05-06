@@ -245,7 +245,6 @@ class SettingsController extends AbstractController
         $view = $this->initializeStandaloneView($request, 'Settings/LocalConfigurationGetContent.html');
         $view->assignMultiple([
             'localConfigurationWriteToken' => $formProtection->generateToken('installTool', 'localConfigurationWrite'),
-            'localConfigurationSectionNames' => $localConfigurationValueService->getSpeakingSectionNames(),
             'localConfigurationData' => $localConfigurationValueService->getCurrentConfigurationData(),
         ]);
         return new JsonResponse([

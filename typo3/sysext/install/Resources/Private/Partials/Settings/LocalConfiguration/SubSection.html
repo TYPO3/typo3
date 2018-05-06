@@ -6,14 +6,12 @@
 				aria-expanded="true" aria-controls="collapse{sectionName}" class="collapsed"
 			>
 				<span class="caret"></span>
-				<strong>
-					<i:object.arrayValueByKey array="{localConfigurationSectionNames}" key="{sectionName}"/>
-				</strong> [{sectionName}]
+				<strong>{sectionData.description}</strong> [{sectionName}]
 			</a>
 		</h3>
 	</div>
 	<div id="collapse{sectionName}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{sectionName}">
-		<f:for each="{sectionData}" as="item">
+		<f:for each="{sectionData.items}" as="item">
 			<a id="{sectionName}-{item.key}"></a>
 			<div class="item">
 				<div class="item-heading">
