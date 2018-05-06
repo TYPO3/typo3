@@ -51,6 +51,7 @@ class FalMetadataInheritanceCest
     {
         $I->amGoingTo('Create new CE with image');
         $I->click('.t3js-page-new-ce a');
+        $I->waitForElementNotVisible('div#nprogess');
         $I->click('Text & Images');
         $I->waitForText('Create new Page Content on page');
         $I->fillField('//input[contains(@data-formengine-input-name, "data[tt_content]") and contains(@data-formengine-input-name, "[header]")]', 'tt_content with image');
@@ -107,6 +108,7 @@ class FalMetadataInheritanceCest
         $I->switchToWindow();
         $I->switchToIFrame('list_frame');
         $I->click('tt_content with image');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Page Content "tt_content with image" on page "styleguide TCA demo"');
         $I->click('Images');
         $I->click('.form-irre-header');
@@ -143,6 +145,7 @@ class FalMetadataInheritanceCest
     {
         $I->amGoingTo('Create new CE with image with filled metadata');
         $I->click('.t3js-page-new-ce a');
+        $I->waitForElementNotVisible('div#nprogess');
         $I->click('Text & Images');
         $I->waitForText('Create new Page Content on page');
         $I->fillField('//input[contains(@data-formengine-input-name, "data[tt_content]") and contains(@data-formengine-input-name, "[header]")]', 'tt_content with image with filled metadata');

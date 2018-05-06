@@ -18,4 +18,4 @@ modules:
         # You can simply do that by scrolling to it.
         elementScrollBehavior: 1
         chromeOptions:
-          args: ["--headless", "--no-sandbox", "window-size=1280x1024"]
+          args: ["--headless", "--no-sandbox", "window-size=1280x1024", "--proxy-server='direct://'", "--proxy-bypass-list=*", "--disable-gpu"]

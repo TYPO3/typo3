@@ -34,10 +34,11 @@ class ElementsGroupCest
         $I->click('List');
         $pageTree->openPath(['styleguide TCA demo', 'elements group']);
         $I->switchToIFrame('list_frame');
+        $I->waitForElementNotVisible('div#nprogess', 30);
 
         $I->executeJS('window.name="TYPO3Main";');
 
-        $I->waitForText('elements group');
+        $I->waitForText('elements group', 20);
         $editRecordLinkCssPath = '#recordlist-tx_styleguide_elements_group a[data-original-title="Edit record"]';
         $I->click($editRecordLinkCssPath);
         $I->waitForText('Edit Form', 3, 'h1');

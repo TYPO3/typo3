@@ -102,6 +102,7 @@ class InstallModuleCest
             $I->amGoingTo('login to install tool with right password');
             $I->fillField('#t3-install-form-password', $this->password);
             $I->click('//button[@type="submit"]');
+            $I->wait(2);
             $I->waitForElement('//body[@class="backend"]');
             $I->see('Important actions');
             $I->waitForElement('.t3js-list-group-wrapper');

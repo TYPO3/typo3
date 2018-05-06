@@ -54,7 +54,7 @@ class InstalledExtensionsCest
         $I->canSee('cshmanual', '#typo3-extension-list tbody tr[role="row"] td');
 
         // unset the filter
-        $I->waitForElementVisible('#Tx_Extensionmanager_extensionkey ~button.close', 1);
+        $I->waitForElementVisible('#Tx_Extensionmanager_extensionkey ~button.close', 10);
         $I->click('#Tx_Extensionmanager_extensionkey ~button.close');
 
         $I->canSeeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', [10, 100]);
@@ -81,12 +81,8 @@ class InstalledExtensionsCest
         $I->canSeeElement('#system_BelogLog');
 
         $I->switchToIFrame('list_frame');
-        $I->fillField('Tx_Extensionmanager_extensionkey', 'belog');
         $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
         $I->click('a[data-original-title="Deactivate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
-
-        $I->waitForElementVisible('#Tx_Extensionmanager_extensionkey ~button.close', 1);
-        $I->click('#Tx_Extensionmanager_extensionkey ~button.close');
 
         $I->switchToIFrame();
         $I->cantSeeElement('#system_BelogLog');
@@ -97,12 +93,8 @@ class InstalledExtensionsCest
         $I->cantSeeElement('#system_BelogLog');
 
         $I->switchToIFrame('list_frame');
-        $I->fillField('Tx_Extensionmanager_extensionkey', 'belog');
         $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
         $I->click('a[data-original-title="Activate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
-
-        $I->waitForElementVisible('#Tx_Extensionmanager_extensionkey ~button.close', 1);
-        $I->click('#Tx_Extensionmanager_extensionkey ~button.close');
 
         $I->switchToIFrame();
         $I->canSeeElement('#system_BelogLog');

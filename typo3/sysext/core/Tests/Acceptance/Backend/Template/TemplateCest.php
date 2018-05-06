@@ -102,7 +102,9 @@ class TemplateCest
         // fill title input field
         $I->fillField('//input[@data-formengine-input-name="data[sys_template][1][title]"]', 'Acceptance Test Site');
         $I->click("//button[@name='_savedok']");
+        $I->waitForElementNotVisible('#t3js-ui-block', 30);
         $I->waitForElement('#EditDocumentController');
+        $I->waitForElementNotVisible('#t3js-ui-block');
 
         $I->wantTo('change the setup, save the template and close the form');
         // grap and fill setup textarea
@@ -134,6 +136,7 @@ class TemplateCest
         $I->waitForText('page.10.value =');
         $I->fillField('//input[@name="data[page.10.value][value]"]', 'HELLO WORLD!');
         $I->click('//input[@name="update_value"]');
+        $I->wait(2);
         $I->waitForText('Value updated');
         $I->see('page.10.value = HELLO WORLD!');
         $I->see('[value] = HELLO WORLD!');

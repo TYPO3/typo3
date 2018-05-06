@@ -36,7 +36,7 @@ class Inline1nCest
         $pageTree->openPath(['styleguide TCA demo', 'inline 1n']);
         $I->switchToIFrame('list_frame');
 
-        $I->waitForText('inline 1n');
+        $I->waitForText('inline 1n', 20);
         $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_1n a[data-original-title="Edit record"]';
         $I->click($editRecordLinkCssPath);
         $I->waitForText('Edit Form', 3, 'h1');
@@ -47,12 +47,12 @@ class Inline1nCest
      */
     public function checkIfExpandsAndCollapseShowInput(Admin $I)
     {
-        $I->wantTo('Expands the inline Elemnet');
+        $I->wantTo('Expands the inline Element');
         $I->click('div[data-toggle="formengine-inline"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
         $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]');
         $I->wantTo('check is the value in input');
         $I->seeInField('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]', 'lipsum');
-        $I->wantTo('Collapse the inline Elemnet');
+        $I->wantTo('Collapse the inline Element');
         $I->click('div[data-toggle="formengine-inline"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
         $I->waitForElementNotVisible('#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_fields.panel-collapse');
     }
