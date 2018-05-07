@@ -45,7 +45,7 @@ abstract public class AbstractCoreSpec {
     protected static String projectName = "TYPO3 Core";
     protected static String projectKey = "CORE";
 
-    protected String composerRootVersionEnvironment = "COMPOSER_ROOT_VERSION=9.2.0@dev";
+    protected String composerRootVersionEnvironment = "COMPOSER_ROOT_VERSION=9.3.0@dev";
 
     protected String testingFrameworkBuildPath = "vendor/typo3/testing-framework/Resources/Core/Build/";
 
@@ -635,7 +635,7 @@ abstract public class AbstractCoreSpec {
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "git status | grep -q \"nothing to commit, working directory clean\""
+                        "git status | grep -q \"nothing to commit, working tree clean\""
                     )
             )
             .requirements(
