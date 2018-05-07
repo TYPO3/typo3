@@ -69,7 +69,7 @@ class InstallWithMysqlIntroductionPackageCest
         $I->switchToIFrame('list_frame');
         $I->waitForText('Get preconfigured distribution', 30);
         $I->click('.t3-button-action-installdistribution');
-        $I->waitForText('You successfully installed the distribution:introduction', 30);
+        $I->waitForText('You successfully installed the distribution:introduction', 120);
 
         // Verify default frontend is rendered
         $I->amOnPage('/');

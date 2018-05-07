@@ -38,6 +38,10 @@ class InstallWithPgsqlBlankPageCest
         $I->fillField('#t3-install-step-postgresManualConfiguration-username', getenv('typo3DatabaseUsername'));
         // password intentionally not filled. Postgres authenticates with the shell user.
         $I->fillField('#t3-install-step-postgresManualConfiguration-database', getenv('typo3DatabaseName') . '_atipgsql');
+        // fill port if set in environment
+        if (!empty(getenv('typo3DatabasePort'))) {
+            $I->fillField('#t3-install-step-postgresManualConfiguration-port', getenv('typo3DatabasePort'));
+        }
         $I->click('Continue');
 
         // DatabaseData step

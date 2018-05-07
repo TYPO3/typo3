@@ -38,6 +38,10 @@ class InstallWithPgsqlIntroductionPackageCest
         $I->fillField('#t3-install-step-postgresManualConfiguration-username', getenv('typo3DatabaseUsername'));
         // password intentionally not filled. Postgres authenticates with the shell user.
         $I->fillField('#t3-install-step-postgresManualConfiguration-database', getenv('typo3DatabaseName') . '_atipgsql');
+        // fill port if set in environment
+        if (!empty(getenv('typo3DatabasePort'))) {
+            $I->fillField('#t3-install-step-postgresManualConfiguration-port', getenv('typo3DatabasePort'));
+        }
         $I->click('Continue');
 
         // DatabaseData step
@@ -65,7 +69,7 @@ class InstallWithPgsqlIntroductionPackageCest
         $I->switchToIFrame('list_frame');
         $I->waitForText('Get preconfigured distribution', 30);
         $I->click('.t3-button-action-installdistribution');
-        $I->waitForText('You successfully installed the distribution:introduction', 30);
+        $I->waitForText('You successfully installed the distribution:introduction', 120);
 
         // Verify default frontend is rendered
         $I->amOnPage('/');

@@ -71,6 +71,7 @@ abstract public class AbstractCoreSpec {
         " typo3DatabaseName=\"func\"" +
         " typo3DatabaseUsername=\"bamboo\"" +
         " typo3DatabaseHost=\"localhost\"" +
+        " typo3DatabasePort=\"5433\"" +
         " typo3InstallToolPassword=\"klaus\"";
 
     /**
@@ -603,7 +604,7 @@ abstract public class AbstractCoreSpec {
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "git status | grep -q \"nothing to commit, working directory clean\""
+                        "git status | grep -q \"nothing to commit, working tree clean\""
                     )
             )
             .requirements(
@@ -798,12 +799,12 @@ abstract public class AbstractCoreSpec {
                 this.getScriptTaskBashInlineBody() +
                 "DB_STARTS_WITH=\"func_\"\n" +
                 "PGUSER=\"bamboo\"\n" +
-                "DBS=\"$(/usr/bin/psql -qtA -c 'SELECT datname FROM pg_database WHERE datistemplate = false;' postgres)\"\n" +
+                "DBS=\"$(/usr/bin/psql -qtA -p 5433 -c 'SELECT datname FROM pg_database WHERE datistemplate = false;' postgres)\"\n" +
                 "\n" +
                 "for db in $DBS; do\n" +
                 "    if [[ \"$db\" == $DB_STARTS_WITH* ]]; then\n" +
                 "        echo \"Deleting $db\"\n" +
-                "        /usr/bin/psql -qtA -c \"DROP DATABASE $db\" postgres\n" +
+                "        /usr/bin/psql -qtA -p 5433 -c \"DROP DATABASE $db\" postgres\n" +
                 "    fi\n" +
                 "done\n"
             );
