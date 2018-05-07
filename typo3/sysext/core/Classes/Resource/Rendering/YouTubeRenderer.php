@@ -127,7 +127,7 @@ class YouTubeRenderer implements FileRendererInterface
 
         $src = sprintf(
             'https://www.youtube%s.com/embed/%s?%s',
-            !empty($options['no-cookie']) ? '-nocookie' : '',
+            !isset($options['no-cookie']) || !empty($options['no-cookie']) ? '-nocookie' : '',
             $videoId,
             implode('&amp;', $urlParams)
         );
