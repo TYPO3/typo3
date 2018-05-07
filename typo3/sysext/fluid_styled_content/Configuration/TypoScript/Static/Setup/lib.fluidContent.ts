@@ -36,6 +36,9 @@ lib.fluidContent {
 
 				linkParams.ATagParams.dataWrap =  class="{$styles.content.textmedia.linkWrap.lightboxCssClass}" rel="{$styles.content.textmedia.linkWrap.lightboxRelAttribute}"
 			}
+			additionalConfig {
+				no-cookie = 1
+			}
 		}
 	}
 }
