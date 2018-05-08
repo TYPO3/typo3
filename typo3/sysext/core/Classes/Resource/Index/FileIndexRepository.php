@@ -557,6 +557,69 @@ class FileIndexRepository implements SingletonInterface
         $refIndexObj->updateRefIndexTable($this->table, $id);
     }
 
+    /**
+     * Search for files by search word in metadata
+     *
+     * @param string $searchWord search word
+     *
+     * @return array
+     */
+    public function findBySearchWordInMetaData($searchWord)
+    {
+        $metaDataTableName = 'sys_file_metadata';
+        $sysFileTableName = 'sys_file';
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($metaDataTableName);
+        $queryBuilder
+            ->select($sysFileTableName . '.*')
+            ->from($metaDataTableName)
+            ->join(
+                $metaDataTableName,
+                $sysFileTableName,
+                $sysFileTableName,
+                $queryBuilder->expr()->eq($metaDataTableName . '.file', $queryBuilder->quoteIdentifier($sysFileTableName . '.uid'))
+            );
+
+        if (null !== $searchWord) {
+            $nameParts = str_getcsv($searchWord, ' ');
+            foreach ($nameParts as $part) {
+                $part = trim($part);
+                if ($part !== '') {
+                    $queryBuilder->orWhere(
+                        $queryBuilder->expr()->like(
+                            $metaDataTableName . '.title',
+                            $queryBuilder->createNamedParameter(
+                                '%' . $queryBuilder->escapeLikeWildcards($part) . '%',
+                                \PDO::PARAM_STR
+                            )
+                        ),
+                        $queryBuilder->expr()->like(
+                            $metaDataTableName . '.description',
+                            $queryBuilder->createNamedParameter(
+                                '%' . $queryBuilder->escapeLikeWildcards($part) . '%',
+                                \PDO::PARAM_STR
+                            )
+                        ),
+                        $queryBuilder->expr()->like(
+                            $metaDataTableName . '.alternative',
+                            $queryBuilder->createNamedParameter(
+                                '%' . $queryBuilder->escapeLikeWildcards($part) . '%',
+                                \PDO::PARAM_STR
+                            )
+                        )
+                    );
+                }
+            }
+        }
+        $result = $queryBuilder->execute();
+        $fileRecords = [];
+        while ($fileRecord = $result->fetch()) {
+            $fileRecords[$fileRecord['identifier']] = $fileRecord;
+        }
+
+        return $fileRecords;
+    }
+
     /*
      * Get the SignalSlot dispatcher
      *

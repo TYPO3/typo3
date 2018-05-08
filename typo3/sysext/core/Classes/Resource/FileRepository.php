@@ -177,6 +177,7 @@ class FileRepository extends AbstractRepository
         $folders[$folder->getIdentifier()] = $folder;
 
         $fileRecords = $this->getFileIndexRepository()->findByFolders($folders, false, $fileName);
+        $fileRecords = array_merge($fileRecords, $this->getFileIndexRepository()->findBySearchWordInMetaData($fileName));
 
         $files = [];
         foreach ($fileRecords as $fileRecord) {
