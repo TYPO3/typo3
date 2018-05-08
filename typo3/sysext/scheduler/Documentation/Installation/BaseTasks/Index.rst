@@ -17,7 +17,7 @@ The Scheduler comes by default with several tasks:
   have an automatic garbage collection process. For these it is useful
   to run this Scheduler task to regularly free some space.
 
-- **Fileadmin garbage collection** : empties "\_recycler\_" folders in
+- **Fileadmin garbage collection** : empties :file:`_recycler_` folders in
   the fileadmin.
 
 - **Table garbage collection** : cleans up old records from any table in
@@ -46,18 +46,18 @@ delete from the task configuration screen.
 It's also possible to clean up all configured table by
 checking the "Clean all available tables" box. The configuration for
 the tables to clean up is stored in
-:code:`$GLOBALS['TYPO3\_CONF\_VARS']['SC\_OPTIONS']['scheduler']['tasks']['tx\_scheduler\_TableGarbageCollection']['options']['tables']`.
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables']`.
 The syntax is the following:
 
-- option " **expireField** " can be used to point to a table field
+- option :php:`expireField` can be used to point to a table field
   containing an expiry timestamp. This timestamp will then be used to
   decide whether a record has expired or not. If its timestamp is in the
   past, the record will be deleted.
 
 - if a table has no expiry field, one can use a combination of a date
   field and an expiry period to decide which records should be deleted.
-  The corresponding options are " **dateField** " and " **expirePeriod**
-  ". The expiry period is expressed in days.
+  The corresponding options are :php:`dateField` and :php:`expirePeriod`.
+  The expiry period is expressed in days.
 
 
 .. _table-garbage-collection-task-example:
@@ -78,10 +78,10 @@ Example
    );
 
 The first part of the configuration indicates that records older than
-180 days should be removed from table :code:`tx\_realurl\_errorlog` ,
+180 days should be removed from table :code:`tx_realurl_errorlog` ,
 based on the timestamp field called "tstamp". The second part
 indicates that old records should be removed from table
-:code:`tx\_realurl\_uniqalias` directly based on the field "expire"
+:code:`tx_realurl_uniqalias` directly based on the field "expire"
 which contains expiration dates for each record.
 
 
