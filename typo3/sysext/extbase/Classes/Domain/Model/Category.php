@@ -25,7 +25,7 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     /**
      * @var string
-     * @validate notEmpty
+     * @Extbase\Validate("NotEmpty")
      */
     protected $title = '';
 

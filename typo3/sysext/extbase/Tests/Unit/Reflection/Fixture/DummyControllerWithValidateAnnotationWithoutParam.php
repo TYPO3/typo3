@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
 /*
@@ -15,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -23,10 +25,10 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 class DummyControllerWithValidateAnnotationWithoutParam extends ActionController
 {
     /**
-     * @validate $fooParam NotEmpty
-     * @validate $fooParam StringLength
+     * @Extbase\Validate(param="fooParam", validator="NotEmpty")
+     * @Extbase\Validate(param="fooParam", validator="StringLength")
      */
-    public function methodWithValidateAnnotationsAction()
+    public function methodWithValidateAnnotationsAction(): void
     {
     }
 }

@@ -14,6 +14,8 @@ namespace ExtbaseTeam\BlogExample\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * A blog post comment
  */
@@ -26,19 +28,19 @@ class Comment extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @var string
-     * @validate NotEmpty
+     * Extbase\Validate("NotEmpty")
      */
     protected $author = '';
 
     /**
      * @var string
-     * @validate EmailAddress
+     * @Extbase\Validate("EmailAddress")
      */
     protected $email = '';
 
     /**
      * @var string
-     * @validate StringLength(maximum = 500)
+     * @Extbase\Validate("StringLength", options={"maximum": 500})
      */
     protected $content = '';
 

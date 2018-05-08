@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -25,20 +26,20 @@ class DummyController extends ActionController
     /**
      * @param $fooParam
      */
-    public function methodWithoutValidateAnnotationsAction($fooParam)
+    public function methodWithoutValidateAnnotationsAction($fooParam): void
     {
     }
 
     /**
      * @param string $fooParam
-     * @validate $fooParam StringLength (minimum=1,maximum=10)
-     * @validate $fooParam NotEmpty
-     * @validate $fooParam TYPO3.CMS.Extbase:NotEmpty
-     * @validate $fooParam TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator
-     * @validate $fooParam \TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
-     * @validate $fooParam TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
+     * @Extbase\Validate(param="fooParam", validator="StringLength", options={"minimum": 1, "maximum": 10})
+     * @Extbase\Validate(param="fooParam", validator="NotEmpty")
+     * @Extbase\Validate(param="fooParam", validator="TYPO3.CMS.Extbase:NotEmpty")
+     * @Extbase\Validate(param="fooParam", validator="TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator")
+     * @Extbase\Validate(param="fooParam", validator="\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
+     * @Extbase\Validate(param="fooParam", validator="TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
      */
-    public function methodWithValidateAnnotationsAction($fooParam)
+    public function methodWithValidateAnnotationsAction($fooParam): void
     {
     }
 }

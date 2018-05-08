@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
@@ -24,14 +25,15 @@ class Model extends AbstractEntity
 {
     /**
      * @var string
-     * @validate StringLength(minimum=1), StringLength(maximum=10)
-     * @validate NotEmpty
+     * @Extbase\Validate("StringLength", options={"minimum": 1})
+     * @Extbase\Validate("StringLength", options={"maximum": 10})
+     * @Extbase\Validate("NotEmpty")
      */
     protected $foo;
 
     /**
      * @var int
-     * @validate \TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Validation\Validator\CustomValidator
+     * @Extbase\Validate("\TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Validation\Validator\CustomValidator")
      */
     protected $bar;
 

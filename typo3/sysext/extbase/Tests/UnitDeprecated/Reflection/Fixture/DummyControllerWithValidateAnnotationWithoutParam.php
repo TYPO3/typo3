@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection\Fixture;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,18 +16,18 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
  * Fixture class with @validate annotations
  */
-class DummyControllerWithValidateAnnotationWithoutParamTypeHint extends ActionController
+class DummyControllerWithValidateAnnotationWithoutParam extends ActionController
 {
     /**
-     * @Extbase\Validate(param="fooParam", validator="NotEmpty")
+     * @validate $fooParam NotEmpty
+     * @validate $fooParam StringLength
      */
-    public function methodWithValidateAnnotationsAction($fooParam): void
+    public function methodWithValidateAnnotationsAction(): void
     {
     }
 }

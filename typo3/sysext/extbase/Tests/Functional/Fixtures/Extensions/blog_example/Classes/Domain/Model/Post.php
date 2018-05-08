@@ -28,7 +28,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @var string
-     * @validate StringLength(minimum = 3, maximum = 50)
+     * @Extbase\Validate("StringLength", options={"minimum": 3, "maximum": 50})
      */
     protected $title = '';
 
@@ -49,7 +49,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @var string
-     * @validate StringLength(minimum = 3)
+     * @Extbase\Validate("StringLength", options={"minimum": 3})
      */
     protected $content = '';
 

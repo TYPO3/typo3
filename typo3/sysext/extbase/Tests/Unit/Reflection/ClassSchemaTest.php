@@ -355,21 +355,17 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsValidateAnnotationsModelProperties()
+    public function classSchemaDetectsValidateAnnotationsModelProperties(): void
     {
         $classSchema = new ClassSchema(Fixture\DummyModel::class);
 
-        static::assertSame(
-            [],
-            $classSchema->getProperty('propertyWithoutValidateAnnotations')['validators']
-        );
         static::assertSame(
             [
                 [
                     'name' => 'StringLength',
                     'options' => [
-                        'minimum' => '1',
-                        'maximum' => '10',
+                        'minimum' => 1,
+                        'maximum' => 10,
                     ],
                     'className' => StringLengthValidator::class
                 ],
@@ -406,22 +402,17 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsValidateAnnotationsOfControllerActions()
+    public function classSchemaDetectsValidateAnnotationsOfControllerActions(): void
     {
         $classSchema = new ClassSchema(Fixture\DummyController::class);
-
-        static::assertSame(
-            [],
-            $classSchema->getMethod('methodWithoutValidateAnnotationsAction')['params']['fooParam']['validators']
-        );
 
         static::assertSame(
             [
                 [
                     'name' => 'StringLength',
                     'options' => [
-                        'minimum' => '1',
-                        'maximum' => '10',
+                        'minimum' => 1,
+                        'maximum' => 10,
                     ],
                     'className' => StringLengthValidator::class
                 ],
@@ -458,7 +449,7 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function classSchemaGenerationThrowsExceptionWithValidateAnnotationsForParamWithoutTypeHint()
+    public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForParamWithoutTypeHint()
     {
         $this->expectException(InvalidTypeHintException::class);
         $this->expectExceptionMessage('Missing type information for parameter "$fooParam" in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint->methodWithValidateAnnotationsAction(): Either use an @param annotation or use a type hint.');
@@ -470,7 +461,7 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function classSchemaGenerationThrowsExceptionWithValidateAnnotationsForMissingParam()
+    public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForMissingParam()
     {
         $this->expectException(InvalidValidationConfigurationException::class);
         $this->expectExceptionMessage('Invalid validate annotation in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParam->methodWithValidateAnnotationsAction(): The following validators have been defined for missing param "$fooParam": NotEmpty, StringLength');

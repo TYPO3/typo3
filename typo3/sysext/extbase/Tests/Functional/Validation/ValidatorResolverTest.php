@@ -203,13 +203,13 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Functional\Func
         /** @var StringLengthValidator $propertyValidator */
         $propertyValidator = $fooPropertyValidators->current();
         static::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
-        static::assertSame(['minimum' => '1', 'maximum' => PHP_INT_MAX], $propertyValidator->getOptions());
+        static::assertSame(['minimum' => 1, 'maximum' => PHP_INT_MAX], $propertyValidator->getOptions());
 
         $fooPropertyValidators->next();
         /** @var StringLengthValidator $propertyValidator */
         $propertyValidator = $fooPropertyValidators->current();
         static::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
-        static::assertSame(['minimum' => 0, 'maximum' => '10'], $propertyValidator->getOptions());
+        static::assertSame(['minimum' => 0, 'maximum' => 10], $propertyValidator->getOptions());
 
         $fooPropertyValidators->next();
         $propertyValidator = $fooPropertyValidators->current();

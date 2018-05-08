@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * This model represents a backend usergroup.
  *
@@ -28,7 +30,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @var string
-     * @validate notEmpty
+     * @Extbase\Validate("NotEmpty")
      */
     protected $title = '';
 

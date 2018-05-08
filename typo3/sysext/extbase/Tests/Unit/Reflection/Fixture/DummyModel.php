@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
 /*
@@ -14,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
@@ -24,12 +27,12 @@ class DummyModel extends AbstractEntity
     protected $propertyWithoutValidateAnnotations;
 
     /**
-     * @validate StringLength (minimum=1,maximum=10)
-     * @validate NotEmpty
-     * @validate TYPO3.CMS.Extbase:NotEmpty
-     * @validate TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator
-     * @validate \TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
-     * @validate TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
+     * @Extbase\Validate("StringLength", options={"minimum": 1, "maximum": 10})
+     * @Extbase\Validate("NotEmpty")
+     * @Extbase\Validate("TYPO3.CMS.Extbase:NotEmpty")
+     * @Extbase\Validate("TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator")
+     * @Extbase\Validate("\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
+     * @Extbase\Validate("TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
      */
     protected $propertyWithValidateAnnotations;
 }

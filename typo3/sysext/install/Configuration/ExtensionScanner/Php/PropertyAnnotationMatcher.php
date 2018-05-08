@@ -24,4 +24,10 @@ return [
             'Deprecation-83093-ReplaceCascadeWithTYPO3CMSExtbaseAnnotationORMCascade.rst',
         ],
     ],
+    '@validate' => [
+        'restFiles' => [
+            'Feature-82869-ReplaceInjectWithTYPO3CMSExtbaseAnnotationInject.rst',
+            'Deprecation-82869-ReplaceInjectWithTYPO3CMSExtbaseAnnotationInject.rst',
+        ],
+    ],
 ];

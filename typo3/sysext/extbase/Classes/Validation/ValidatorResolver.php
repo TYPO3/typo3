@@ -277,25 +277,30 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
 
         // note: the simpleType check reduces lookups to the class loader
         if (!TypeHandlingUtility::isSimpleType($targetClassName) && class_exists($targetClassName)) {
+            $classSchema = $this->reflectionService->getClassSchema($targetClassName);
+
             // Model based validator
             /** @var \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator $objectValidator */
             $objectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, []);
-            foreach ($this->reflectionService->getClassPropertyNames($targetClassName) as $classPropertyName) {
-                $classPropertyTagsValues = $this->reflectionService->getPropertyTagsValues($targetClassName, $classPropertyName);
+            foreach ($classSchema->getProperties() as $classPropertyName => $classPropertyDefinition) {
+                /** @var array|array[] $classPropertyDefinition */
+                $classPropertyTagsValues = $classPropertyDefinition['tags'];
 
                 if (!isset($classPropertyTagsValues['var'])) {
                     throw new \InvalidArgumentException(sprintf('There is no @var annotation for property "%s" in class "%s".', $classPropertyName, $targetClassName), 1363778104);
                 }
-                try {
-                    $parsedType = TypeHandlingUtility::parseType(trim(implode('', $classPropertyTagsValues['var']), ' \\'));
-                } catch (\TYPO3\CMS\Extbase\Utility\Exception\InvalidTypeException $exception) {
-                    throw new \InvalidArgumentException(sprintf(' @var annotation of ' . $exception->getMessage(), 'class "' . $targetClassName . '", property "' . $classPropertyName . '"'), 1315564744, $exception);
-                }
-                $propertyTargetClassName = $parsedType['type'];
+
+                $propertyTargetClassName = $classPropertyDefinition['type'];
                 // note: the outer simpleType check reduces lookups to the class loader
                 if (!TypeHandlingUtility::isSimpleType($propertyTargetClassName)) {
                     if (TypeHandlingUtility::isCollectionType($propertyTargetClassName)) {
-                        $collectionValidator = $this->createValidator(\TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class, ['elementType' => $parsedType['elementType'], 'validationGroups' => $validationGroups]);
+                        $collectionValidator = $this->createValidator(
+                            \TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class,
+                            [
+                                'elementType' => $classPropertyDefinition['elementType'],
+                                'validationGroups' => $validationGroups
+                            ]
+                        );
                         $objectValidator->addPropertyValidator($classPropertyName, $collectionValidator);
                     } elseif (class_exists($propertyTargetClassName) && !TypeHandlingUtility::isCoreType($propertyTargetClassName) && $this->objectManager->isRegistered($propertyTargetClassName) && $this->objectManager->getScope($propertyTargetClassName) === \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE) {
                         $validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName);
@@ -305,25 +310,17 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                     }
                 }
 
-                $validateAnnotations = [];
-                // @todo: Resolve annotations via reflectionService once its available
-                if (isset($classPropertyTagsValues['validate']) && is_array($classPropertyTagsValues['validate'])) {
-                    foreach ($classPropertyTagsValues['validate'] as $validateValue) {
-                        $parsedAnnotations = $this->parseValidatorAnnotation($validateValue);
-
-                        foreach ($parsedAnnotations['validators'] as $validator) {
-                            $validateAnnotation = $validator;
-                            $validateAnnotation['argumentName'] = $parsedAnnotations['argumentName'] ?? null;
-                            $validateAnnotations[] = $validateAnnotation;
-                        }
-                    }
-                }
-
-                foreach ($validateAnnotations as $validateAnnotation) {
+                foreach ($classPropertyDefinition['validators'] as $validatorDefinition) {
                     // @todo: Respect validationGroups
-                    $newValidator = $this->createValidator($validateAnnotation['validatorName'], $validateAnnotation['validatorOptions']);
+
+                    // @todo: At this point we already have the class name of the validator, thus there is not need
+                    // @todo: calling \TYPO3\CMS\Extbase\Validation\ValidatorResolver::resolveValidatorObjectName inside
+                    // @todo: \TYPO3\CMS\Extbase\Validation\ValidatorResolver::createValidator once again. However, to
+                    // @todo: keep things simple for now, we still use the method createValidator here. In the future,
+                    // @todo: createValidator must only accept FQCN's.
+                    $newValidator = $this->createValidator($validatorDefinition['className'], $validatorDefinition['options']);
                     if ($newValidator === null) {
-                        throw new Exception\NoSuchValidatorException('Invalid validate annotation in ' . $targetClassName . '::' . $classPropertyName . ': Could not resolve class name for  validator "' . $validateAnnotation->type . '".', 1241098027);
+                        throw new Exception\NoSuchValidatorException('Invalid validate annotation in ' . $targetClassName . '::' . $classPropertyName . ': Could not resolve class name for validator "' . $validatorDefinition['className'] . '".', 1241098027);
                     }
                     $objectValidator->addPropertyValidator($classPropertyName, $newValidator);
                 }
@@ -349,7 +346,6 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $targetClassName
      * @param ConjunctionValidator $conjunctionValidator
-     * @return Validator\ObjectValidatorInterface|null
      */
     protected function addCustomValidators($targetClassName, ConjunctionValidator &$conjunctionValidator)
     {
@@ -370,6 +366,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $validateValue
      * @return array
      * @internal
+     * @deprecated Helper, remove in v10 together with the deprecated consumer methods
      */
     public function parseValidatorAnnotation($validateValue)
     {
@@ -530,6 +527,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $methodName
      *
      * @return array
+     * @deprecated Helper, remove in v10 together with buildMethodArgumentsValidatorConjunctions()
      */
     public function getMethodValidateAnnotations($className, $methodName)
     {

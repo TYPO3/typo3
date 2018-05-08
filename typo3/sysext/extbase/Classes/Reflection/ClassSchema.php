@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Annotation\Inject;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
@@ -193,7 +194,33 @@ class ClassSchema
             $this->properties[$propertyName]['annotations']['cascade'] = null;
             $this->properties[$propertyName]['annotations']['dependency'] = null;
 
+            $annotations = $annotationReader->getPropertyAnnotations($reflectionProperty);
+
+            /** @var array|Validate[] $validateAnnotations */
+            $validateAnnotations = array_filter($annotations, function ($annotation) {
+                return $annotation instanceof Validate;
+            });
+
+            if (count($validateAnnotations) > 0) {
+                $validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+
+                foreach ($validateAnnotations as $validateAnnotation) {
+                    $validatorObjectName = $validatorResolver->resolveValidatorObjectName($validateAnnotation->validator);
+
+                    $this->properties[$propertyName]['validators'][] = [
+                        'name' => $validateAnnotation->validator,
+                        'options' => $validateAnnotation->options,
+                        'className' => $validatorObjectName,
+                    ];
+                }
+            }
+
             if ($docCommentParser->isTaggedWith('validate')) {
+                trigger_error(
+                    'Tagging properties with @validate is deprecated and will be removed in TYPO3 v10.0.',
+                    E_USER_DEPRECATED
+                );
+
                 $validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
 
                 $validateValues = $docCommentParser->getTagValues('validate');
@@ -340,6 +367,29 @@ class ClassSchema
             $docCommentParser->parseDocComment($reflectionMethod->getDocComment());
 
             $argumentValidators = [];
+
+            $annotations = $annotationReader->getMethodAnnotations($reflectionMethod);
+
+            /** @var array|Validate[] $validateAnnotations */
+            $validateAnnotations = array_filter($annotations, function ($annotation) {
+                return $annotation instanceof Validate;
+            });
+
+            if ($this->isController && $this->methods[$methodName]['isAction'] && count($validateAnnotations) > 0) {
+                $validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+
+                foreach ($validateAnnotations as $validateAnnotation) {
+                    $validatorName = $validateAnnotation->validator;
+                    $validatorObjectName = $validatorResolver->resolveValidatorObjectName($validatorName);
+
+                    $argumentValidators[$validateAnnotation->param][] = [
+                        'name' => $validatorName,
+                        'options' => $validateAnnotation->options,
+                        'className' => $validatorObjectName,
+                    ];
+                }
+            }
+
             foreach ($docCommentParser->getTagsValues() as $tag => $values) {
                 if ($tag === 'ignorevalidation') {
                     trigger_error(
@@ -348,6 +398,11 @@ class ClassSchema
                     );
                 }
                 if ($tag === 'validate' && $this->isController && $this->methods[$methodName]['isAction']) {
+                    trigger_error(
+                        'Tagging methods with @validate is deprecated and will be removed in TYPO3 v10.0.',
+                        E_USER_DEPRECATED
+                    );
+
                     $validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
 
                     foreach ($values as $validate) {
@@ -375,7 +430,7 @@ class ClassSchema
             }
             unset($methodValidatorDefinition);
 
-            foreach ($annotationReader->getMethodAnnotations($reflectionMethod) as $annotation) {
+            foreach ($annotations as $annotation) {
                 if ($annotation instanceof IgnoreValidation) {
                     $this->methods[$methodName]['tags']['ignorevalidation'][] = $annotation->argumentName;
                 }

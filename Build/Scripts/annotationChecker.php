@@ -61,9 +61,10 @@ class NodeVisitor extends NodeVisitorAbstract
                     // PHPCheckStyle
                     'SuppressWarnings', 'noinspection',
                     // Extbase related (deprecated)
-                    'transient', 'validate', 'cli', 'flushesCaches',
+                    'transient', 'cli', 'flushesCaches',
                     // Extbase related
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Inject', 'Extbase\\\\Inject', 'Inject',
+                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Validate', 'Extbase\\\\Validate', 'Validate',
                     'Transient', 'Extbase\\\\ORM\\\\Lazy', 'IgnoreValidation', 'Enum',
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\ORM\\\\Cascade', 'Extbase\\\\ORM\\\\Cascade', 'Cascade',
                     // Extension scanner

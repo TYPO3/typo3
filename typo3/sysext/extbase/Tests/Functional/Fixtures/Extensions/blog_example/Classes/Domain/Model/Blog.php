@@ -25,7 +25,7 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * The blog's title.
      *
      * @var string
-     * @validate StringLength(minimum = 1, maximum = 80)
+     * @Extbase\Validate("StringLength", options={"minimum": 1, "maximum": 80})
      */
     protected $title = '';
 
@@ -40,7 +40,7 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * A short description of the blog
      *
      * @var string
-     * @validate StringLength(maximum = 150)
+     * @Extbase\Validate("StringLength", options={"maximum": 150})
      */
     protected $description = '';
 

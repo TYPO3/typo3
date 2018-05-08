@@ -1,6 +1,7 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model;
+
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection\Fixture;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,17 +16,20 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Fixture model
  */
-class AnotherModel extends AbstractEntity
+class DummyModelWithValidateAnnotation extends AbstractEntity
 {
     /**
-     * @var string
-     * @Extbase\Validate("NotEmpty")
+     * @validate StringLength (minimum=1,maximum=10)
+     * @validate NotEmpty
+     * @validate TYPO3.CMS.Extbase:NotEmpty
+     * @validate TYPO3.CMS.Extbase.Tests.UnitDeprecated.Reflection.Fixture:DummyValidator
+     * @validate \TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
+     * @validate TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
      */
-    protected $foo;
+    protected $propertyWithValidateAnnotations;
 }

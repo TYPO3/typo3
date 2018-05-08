@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Documentation\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * An extension helper model to be used in ext:documentation context
  */
@@ -23,7 +25,7 @@ class Document extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * packageKey
      *
      * @var string
-     * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
      */
     protected $packageKey;
 
@@ -31,7 +33,7 @@ class Document extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * extensionKey
      *
      * @var string
-     * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
      */
     protected $extensionKey;
 
