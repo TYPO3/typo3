@@ -29,6 +29,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Match validator names and options
      * @todo: adjust [a-z0-9_:.\\\\] once Tx_Extbase_Foo syntax is outdated.
+     * @deprecated and will be removed in TYPO3 v10.0.
      *
      * @var string
      */
@@ -48,6 +49,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Match validator options (to parse actual options)
      * @var string
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     const PATTERN_MATCH_VALIDATOROPTIONS = '/
 			\s*
@@ -230,9 +232,15 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $objectPath The object path
      * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $propertyValidator The validator which should be added to the property specified by objectPath
      * @return \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator
+     * @deprecated
      */
     protected function buildSubObjectValidator(array $objectPath, \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $propertyValidator)
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         $rootObjectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, []);
         $parentObjectValidator = $rootObjectValidator;
 
@@ -370,6 +378,11 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function parseValidatorAnnotation($validateValue)
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         $matches = [];
         if ($validateValue[0] === '$') {
             $parts = explode(' ', $validateValue, 2);
@@ -395,9 +408,15 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $rawValidatorOptions
      * @return array An array of optionName/optionValue pairs
+     * @deprecated
      */
     protected function parseValidatorOptions($rawValidatorOptions)
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         $validatorOptions = [];
         $parsedValidatorOptions = [];
         preg_match_all(self::PATTERN_MATCH_VALIDATOROPTIONS, $rawValidatorOptions, $validatorOptions, PREG_SET_ORDER);
@@ -415,9 +434,15 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * This method is meant as a helper for regular expression results.
      *
      * @param string &$quotedValue Value to unquote
+     * @deprecated
      */
     protected function unquoteString(&$quotedValue)
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         switch ($quotedValue[0]) {
             case '"':
                 $quotedValue = str_replace('\\"', '"', trim($quotedValue, '"'));

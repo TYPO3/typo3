@@ -2221,4 +2221,32 @@ return [
             'Breaking-84877-MethodsOfLocalizationRepositoryChanged.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Validation\ValidatorResolver->buildSubObjectValidator' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85005-DeprecateMethodsAndConstantsInValidatorResolver.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Validation\ValidatorResolver->parseValidatorAnnotation' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85005-DeprecateMethodsAndConstantsInValidatorResolver.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Validation\ValidatorResolver->parseValidatorOptions' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85005-DeprecateMethodsAndConstantsInValidatorResolver.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Validation\ValidatorResolver->unquoteString' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85005-DeprecateMethodsAndConstantsInValidatorResolver.rst',
+        ],
+    ],
 ];
