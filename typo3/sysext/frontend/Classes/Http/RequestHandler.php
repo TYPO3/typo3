@@ -88,7 +88,10 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
 
         // Render non-cached page parts by replacing placeholders which are taken from cache or added during page generation
         if ($controller->isINTincScript()) {
-            $controller->preparePageContentGeneration();
+            if (!$controller->isGeneratePage()) {
+                // When page was generated, this was already called. Avoid calling this twice.
+                $controller->preparePageContentGeneration();
+            }
             $this->timeTracker->push('Non-cached objects');
             $controller->INTincScript();
             $this->timeTracker->pull();
