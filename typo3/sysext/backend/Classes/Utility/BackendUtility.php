@@ -322,7 +322,7 @@ class BackendUtility
                 ->from($table)
                 ->where(
                     $queryBuilder->expr()->eq(
-                        $tcaCtrl['transOrigPointerField'],
+                        $tcaCtrl['translationSource'] ?? $tcaCtrl['transOrigPointerField'],
                         $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(

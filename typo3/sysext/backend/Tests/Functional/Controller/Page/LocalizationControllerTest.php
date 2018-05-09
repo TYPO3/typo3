@@ -351,13 +351,13 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
                 'pid' => 1,
                 'sys_language_uid' => 1,
                 'l18n_parent' => 0,
-                'header' => '[Translate to Dansk:] Test content 2.5',
+                'header' => '[Translate to Dansk:] Test content 2',
             ],
             [
                 'pid' => 1,
                 'sys_language_uid' => 1,
                 'l18n_parent' => 0,
-                'header' => '[Translate to Dansk:] Test content 2',
+                'header' => '[Translate to Dansk:] Test content 2.5',
             ],
             [
                 'pid' => 1,
