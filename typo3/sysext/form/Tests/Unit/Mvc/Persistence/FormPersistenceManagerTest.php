@@ -521,7 +521,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         ], [], '', false);
 
         $mockFormPersistenceManager
-            ->expects($this->at(null))
+            ->expects($this->at(0))
             ->method('listForms')
             ->willReturn([
                 0 => [
@@ -543,7 +543,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         ], [], '', false);
 
         $mockFormPersistenceManager
-            ->expects($this->at(null))
+            ->expects($this->at(0))
             ->method('listForms')
             ->willReturn([
                 0 => [
