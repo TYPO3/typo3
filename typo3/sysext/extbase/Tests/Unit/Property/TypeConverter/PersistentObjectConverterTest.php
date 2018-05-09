@@ -25,6 +25,7 @@ use TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationExce
 use TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\PersistentObjectEntityFixture;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\PersistentObjectFixture;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\PersistentObjectValueObjectFixture;
@@ -374,8 +375,30 @@ class PersistentObjectConverterTest extends \TYPO3\TestingFramework\Core\Unit\Un
     /**
      * @test
      */
-    public function convertFromShouldCreateObjectWhenThereAreConstructorParameters()
+    public function convertFromShouldCreateObjectWhenThereAreConstructorParameters(): void
     {
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock
+            ->expects($this->any())
+            ->method('getMethod')
+            ->with('__construct')
+            ->willReturn([
+            'params' => [
+                'property1' => ['optional' => false]
+            ]
+        ]);
+
+        $classSchemaMock
+            ->expects($this->any())
+            ->method('hasConstructor')
+            ->willReturn(true);
+
+        $this->mockReflectionService
+            ->expects($this->any())
+            ->method('getClassSchema')
+            ->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class)
+            ->willReturn($classSchemaMock);
+
         $source = [
             'propertyX' => 'bar'
         ];
@@ -386,18 +409,6 @@ class PersistentObjectConverterTest extends \TYPO3\TestingFramework\Core\Unit\Un
         $expectedObject = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor('param1');
         $expectedObject->setProperty2('bar');
 
-        $this->mockReflectionService
-                ->expects($this->any())
-                ->method('getMethodParameters')
-                ->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, '__construct')
-                ->will($this->returnValue([
-                    'property1' => ['optional' => false]
-                ]));
-        $this->mockReflectionService
-                ->expects($this->any())
-                ->method('hasMethod')
-                ->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, '__construct')
-                ->will($this->returnValue(true));
         $this->mockContainer->expects($this->any())->method('getImplementationClassName')->will($this->returnValue(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class));
         $configuration = $this->buildConfiguration([PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true]);
         $result = $this->converter->convertFrom($source, \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, $convertedChildProperties, $configuration);
@@ -410,19 +421,33 @@ class PersistentObjectConverterTest extends \TYPO3\TestingFramework\Core\Unit\Un
      */
     public function convertFromShouldCreateObjectWhenThereAreOptionalConstructorParameters()
     {
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock
+            ->expects($this->any())
+            ->method('getMethod')
+            ->with('__construct')
+            ->willReturn([
+                'params' => [
+                    'property1' => ['optional' => true, 'defaultValue' => 'thisIsTheDefaultValue']
+                ]
+            ]);
+
+        $classSchemaMock
+            ->expects($this->any())
+            ->method('hasConstructor')
+            ->willReturn(true);
+
+        $this->mockReflectionService
+            ->expects($this->any())
+            ->method('getClassSchema')
+            ->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class)
+            ->willReturn($classSchemaMock);
+
         $source = [
             'propertyX' => 'bar'
         ];
         $expectedObject = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor('thisIsTheDefaultValue');
 
-        $this->mockReflectionService->expects($this->any())->method('getMethodParameters')->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, '__construct')->will($this->returnValue([
-            'property1' => ['optional' => true, 'defaultValue' => 'thisIsTheDefaultValue']
-        ]));
-        $this->mockReflectionService
-                ->expects($this->any())
-                ->method('hasMethod')
-                ->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, '__construct')
-                ->will($this->returnValue(true));
         $this->mockContainer->expects($this->any())->method('getImplementationClassName')->will($this->returnValue(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class));
         $configuration = $this->buildConfiguration([PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true]);
         $result = $this->converter->convertFrom($source, \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, [], $configuration);
@@ -432,8 +457,30 @@ class PersistentObjectConverterTest extends \TYPO3\TestingFramework\Core\Unit\Un
     /**
      * @test
      */
-    public function convertFromShouldThrowExceptionIfRequiredConstructorParameterWasNotFound()
+    public function convertFromShouldThrowExceptionIfRequiredConstructorParameterWasNotFound(): void
     {
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock
+            ->expects($this->any())
+            ->method('getMethod')
+            ->with('__construct')
+            ->willReturn([
+                'params' => [
+                    'property1' => ['optional' => false]
+                ]
+            ]);
+
+        $classSchemaMock
+            ->expects($this->any())
+            ->method('hasConstructor')
+            ->willReturn(true);
+
+        $this->mockReflectionService
+            ->expects($this->any())
+            ->method('getClassSchema')
+            ->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class)
+            ->willReturn($classSchemaMock);
+
         $this->expectException(InvalidTargetException::class);
         $this->expectExceptionCode(1268734872);
         $source = [
@@ -444,14 +491,6 @@ class PersistentObjectConverterTest extends \TYPO3\TestingFramework\Core\Unit\Un
             'property2' => 'bar'
         ];
 
-        $this->mockReflectionService->expects($this->any())->method('getMethodParameters')->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, '__construct')->will($this->returnValue([
-            'property1' => ['optional' => false]
-        ]));
-        $this->mockReflectionService
-                ->expects($this->any())
-                ->method('hasMethod')
-                ->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, '__construct')
-                ->will($this->returnValue(true));
         $this->mockContainer->expects($this->any())->method('getImplementationClassName')->will($this->returnValue(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class));
         $configuration = $this->buildConfiguration([PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true]);
         $result = $this->converter->convertFrom($source, \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, $convertedChildProperties, $configuration);

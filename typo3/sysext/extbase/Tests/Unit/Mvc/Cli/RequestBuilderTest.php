@@ -21,6 +21,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 
 /**
  * Test case
@@ -53,7 +54,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $mockCommandManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
+     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $mockReflectionService;
 
@@ -89,9 +90,14 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function cliAccessWithExtensionControllerAndActionNameBuildsCorrectRequest()
+    public function cliAccessWithExtensionControllerAndActionNameBuildsCorrectRequest(): void
     {
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->will($this->returnValue([]));
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => []
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
         $request = $this->requestBuilder->build('some_extension_name:default:list');
         $this->assertSame('Tx\\SomeExtensionName\\Command\\DefaultCommandController', $request->getControllerObjectName());
         $this->assertSame('list', $request->getControllerCommandName(), 'The CLI request specifying a package, controller and action name did not return a request object pointing to the expected action.');
@@ -123,12 +129,18 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function argumentWithValueSeparatedByEqualSignBuildsCorrectRequest()
+    public function argumentWithValueSeparatedByEqualSignBuildsCorrectRequest(): void
     {
         $methodParameters = [
             'testArgument' => ['optional' => false, 'type' => 'string']
         ];
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
         $request = $this->requestBuilder->build('some_extension_name:default:list --test-argument=value');
         $this->assertTrue($request->hasArgument('testArgument'), 'The given "testArgument" was not found in the built request.');
         $this->assertSame($request->getArgument('testArgument'), 'value', 'The "testArgument" had not the given value.');
@@ -139,13 +151,19 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function cliAccessWithExtensionControllerActionAndArgumentsBuildsCorrectRequest()
+    public function cliAccessWithExtensionControllerActionAndArgumentsBuildsCorrectRequest(): void
     {
         $methodParameters = [
             'testArgument' => ['optional' => false, 'type' => 'string'],
             'testArgument2' => ['optional' => false, 'type' => 'string']
         ];
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
         $request = $this->requestBuilder->build('some_extension_name:default:list --test-argument=value --test-argument2=value2');
         $this->assertTrue($request->hasArgument('testArgument'), 'The given "testArgument" was not found in the built request.');
         $this->assertTrue($request->hasArgument('testArgument2'), 'The given "testArgument2" was not found in the built request.');
@@ -158,7 +176,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function checkIfCLIAccesWithPackageControllerActionAndArgumentsToleratesSpaces()
+    public function checkIfCLIAccesWithPackageControllerActionAndArgumentsToleratesSpaces(): void
     {
         $methodParameters = [
             'testArgument' => ['optional' => false, 'type' => 'string'],
@@ -166,7 +184,13 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'testArgument3' => ['optional' => false, 'type' => 'string'],
             'testArgument4' => ['optional' => false, 'type' => 'string']
         ];
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
         $request = $this->requestBuilder->build('some_extension_name:default:list --test-argument= value --test-argument2 =value2 --test-argument3 = value3 --test-argument4=value4');
         $this->assertTrue($request->hasArgument('testArgument'), 'The given "testArgument" was not found in the built request.');
         $this->assertTrue($request->hasArgument('testArgument2'), 'The given "testArgument2" was not found in the built request.');
@@ -183,14 +207,21 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function CLIAccesWithShortArgumentsBuildsCorrectRequest()
+    public function CLIAccesWithShortArgumentsBuildsCorrectRequest(): void
     {
         $methodParameters = [
             'a' => ['optional' => false, 'type' => 'string'],
             'd' => ['optional' => false, 'type' => 'string'],
             'f' => ['optional' => false, 'type' => 'string']
         ];
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
+
         $request = $this->requestBuilder->build('some_extension_name:default:list -d valued -f=valuef -a = valuea');
         $this->assertTrue($request->hasArgument('d'), 'The given "d" was not found in the built request.');
         $this->assertTrue($request->hasArgument('f'), 'The given "f" was not found in the built request.');
@@ -206,7 +237,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function CLIAccesWithArgumentsWithAndWithoutValuesBuildsCorrectRequest()
+    public function CLIAccesWithArgumentsWithAndWithoutValuesBuildsCorrectRequest(): void
     {
         $methodParameters = [
             'testArgument' => ['optional' => false, 'type' => 'string'],
@@ -224,7 +255,14 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'k' => ['optional' => false, 'type' => 'string'],
             'm' => ['optional' => false, 'type' => 'string']
         ];
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
+
         $request = $this->requestBuilder->build('some_extension_name:default:list --test-argument=value --test-argument2= value2 -k --test-argument-3 = value3 --test-argument4=value4 -f valuef -d=valued -a = valuea -c --testArgument7 --test-argument5 = 5 --test-argument6 -j kjk -m');
         $this->assertTrue($request->hasArgument('testArgument'), 'The given "testArgument" was not found in the built request.');
         $this->assertTrue($request->hasArgument('testArgument2'), 'The given "testArgument2" was not found in the built request.');
@@ -254,13 +292,19 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function insteadOfNamedArgumentsTheArgumentsCanBePassedUnnamedInTheCorrectOrder()
+    public function insteadOfNamedArgumentsTheArgumentsCanBePassedUnnamedInTheCorrectOrder(): void
     {
         $methodParameters = [
             'testArgument1' => ['optional' => false, 'type' => 'string'],
             'testArgument2' => ['optional' => false, 'type' => 'string']
         ];
-        $this->mockReflectionService->expects($this->exactly(2))->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
         $request = $this->requestBuilder->build('some_extension_name:default:list --test-argument1 firstArgumentValue --test-argument2 secondArgumentValue');
         $this->assertSame('firstArgumentValue', $request->getArgument('testArgument1'));
         $this->assertSame('secondArgumentValue', $request->getArgument('testArgument2'));
@@ -272,7 +316,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function argumentsAreDetectedAfterOptions()
+    public function argumentsAreDetectedAfterOptions(): void
     {
         $methodParameters = [
             'some' => ['optional' => true, 'type' => 'boolean'],
@@ -280,7 +324,13 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'argument1' => ['optional' => false, 'type' => 'string'],
             'argument2' => ['optional' => false, 'type' => 'string']
         ];
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
         $request = $this->requestBuilder->build('some_extension_name:default:list --some -option=value file1 file2');
         $this->assertSame('list', $request->getControllerCommandName());
         $this->assertTrue($request->getArgument('some'));
@@ -291,13 +341,20 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function exceedingArgumentsMayBeSpecified()
+    public function exceedingArgumentsMayBeSpecified(): void
     {
         $methodParameters = [
             'testArgument1' => ['optional' => false, 'type' => 'string'],
             'testArgument2' => ['optional' => false, 'type' => 'string']
         ];
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
+
         $expectedArguments = ['testArgument1' => 'firstArgumentValue', 'testArgument2' => 'secondArgumentValue'];
         $request = $this->requestBuilder->build('some_extension_name:default:list --test-argument1=firstArgumentValue --test-argument2 secondArgumentValue exceedingArgument1');
         $this->assertEquals($expectedArguments, $request->getArguments());
@@ -307,7 +364,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function ifNamedArgumentsAreUsedAllRequiredArgumentsMustBeNamed()
+    public function ifNamedArgumentsAreUsedAllRequiredArgumentsMustBeNamed(): void
     {
         $this->expectException(InvalidArgumentMixingException::class);
         $this->expectExceptionCode(1309971820);
@@ -315,14 +372,21 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'testArgument1' => ['optional' => false, 'type' => 'string'],
             'testArgument2' => ['optional' => false, 'type' => 'string']
         ];
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
+
         $this->requestBuilder->build('some_extension_name:default:list --test-argument1 firstArgumentValue secondArgumentValue');
     }
 
     /**
      * @test
      */
-    public function ifUnnamedArgumentsAreUsedAllRequiredArgumentsMustBeUnnamed()
+    public function ifUnnamedArgumentsAreUsedAllRequiredArgumentsMustBeUnnamed(): void
     {
         $this->expectException(InvalidArgumentMixingException::class);
         $this->expectExceptionCode(1309971821);
@@ -330,21 +394,35 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'requiredArgument1' => ['optional' => false, 'type' => 'string'],
             'requiredArgument2' => ['optional' => false, 'type' => 'string']
         ];
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
+
         $this->requestBuilder->build('some_extension_name:default:list firstArgumentValue --required-argument2 secondArgumentValue');
     }
 
     /**
      * @test
      */
-    public function booleanOptionsAreConsideredEvenIfAnUnnamedArgumentFollows()
+    public function booleanOptionsAreConsideredEvenIfAnUnnamedArgumentFollows(): void
     {
         $methodParameters = [
             'requiredArgument1' => ['optional' => false, 'type' => 'string'],
             'requiredArgument2' => ['optional' => false, 'type' => 'string'],
             'booleanOption' => ['optional' => true, 'type' => 'boolean']
         ];
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
+
         $expectedArguments = ['requiredArgument1' => 'firstArgumentValue', 'requiredArgument2' => 'secondArgumentValue', 'booleanOption' => true];
         $request = $this->requestBuilder->build('some_extension_name:default:list --booleanOption firstArgumentValue secondArgumentValue');
         $this->assertEquals($expectedArguments, $request->getArguments());
@@ -353,7 +431,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function booleanOptionsCanHaveOnlyCertainValuesIfTheValueIsAssignedWithoutEqualSign()
+    public function booleanOptionsCanHaveOnlyCertainValuesIfTheValueIsAssignedWithoutEqualSign(): void
     {
         $methodParameters = [
             'b1' => ['optional' => true, 'type' => 'boolean'],
@@ -363,7 +441,14 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'b5' => ['optional' => true, 'type' => 'boolean'],
             'b6' => ['optional' => true, 'type' => 'boolean']
         ];
-        $this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('listCommand')->willReturn([
+            'params' => $methodParameters
+        ]);
+
+        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('Tx\\SomeExtensionName\\Command\\DefaultCommandController')->willReturn($classSchemaMock);
+
         $expectedArguments = ['b1' => true, 'b2' => true, 'b3' => true, 'b4' => false, 'b5' => false, 'b6' => false];
         $request = $this->requestBuilder->build('some_extension_name:default:list --b2 y --b1 1 --b3 true --b4 false --b5 n --b6 0');
         $this->assertEquals($expectedArguments, $request->getArguments());

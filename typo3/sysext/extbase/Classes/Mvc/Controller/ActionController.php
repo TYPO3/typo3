@@ -225,7 +225,10 @@ class ActionController extends AbstractController
      */
     protected function initializeActionMethodArguments()
     {
-        $methodParameters = $this->reflectionService->getMethodParameters(static::class, $this->actionMethodName);
+        $methodParameters = $this->reflectionService
+                ->getClassSchema(static::class)
+                ->getMethod($this->actionMethodName)['params'] ?? [];
+
         foreach ($methodParameters as $parameterName => $parameterInfo) {
             $dataType = null;
             if (isset($parameterInfo['type'])) {

@@ -27,6 +27,7 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -155,7 +156,7 @@ class ActionControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeActionMethodArgumentsRegistersArgumentsFoundInTheSignatureOfTheCurrentActionMethod()
+    public function initializeActionMethodArgumentsRegistersArgumentsFoundInTheSignatureOfTheCurrentActionMethod(): void
     {
         $mockRequest = $this->createMock(Request::class);
         $mockArguments = $this->getMockBuilder(Arguments::class)
@@ -194,8 +195,22 @@ class ActionControllerTest extends UnitTestCase
                 'hasDefaultValue' => false
             ]
         ];
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock
+            ->expects($this->any())
+            ->method('getMethod')
+            ->with('fooAction')
+            ->willReturn([
+                'params' => $methodParameters
+            ]);
+
         $mockReflectionService = $this->createMock(ReflectionService::class);
-        $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
+        $mockReflectionService
+            ->expects($this->any())
+            ->method('getClassSchema')
+            ->with(get_class($mockController))
+            ->willReturn($classSchemaMock);
         $mockController->_set('reflectionService', $mockReflectionService);
         $mockController->_set('request', $mockRequest);
         $mockController->_set('arguments', $mockArguments);
@@ -206,7 +221,7 @@ class ActionControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeActionMethodArgumentsRegistersOptionalArgumentsAsSuch()
+    public function initializeActionMethodArgumentsRegistersOptionalArgumentsAsSuch(): void
     {
         $mockRequest = $this->createMock(Request::class);
         $mockArguments = $this->createMock(Arguments::class);
@@ -244,8 +259,22 @@ class ActionControllerTest extends UnitTestCase
                 'hasDefaultValue' => true
             ]
         ];
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock
+            ->expects($this->any())
+            ->method('getMethod')
+            ->with('fooAction')
+            ->willReturn([
+                'params' => $methodParameters
+            ]);
+
         $mockReflectionService = $this->createMock(ReflectionService::class);
-        $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
+        $mockReflectionService
+            ->expects($this->any())
+            ->method('getClassSchema')
+            ->with(get_class($mockController))
+            ->willReturn($classSchemaMock);
         $mockController->_set('reflectionService', $mockReflectionService);
         $mockController->_set('request', $mockRequest);
         $mockController->_set('arguments', $mockArguments);
@@ -256,7 +285,7 @@ class ActionControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeActionMethodArgumentsThrowsExceptionIfDataTypeWasNotSpecified()
+    public function initializeActionMethodArgumentsThrowsExceptionIfDataTypeWasNotSpecified(): void
     {
         $this->expectException(InvalidArgumentTypeException::class);
         $this->expectExceptionCode(1253175643);
@@ -272,8 +301,22 @@ class ActionControllerTest extends UnitTestCase
                 'allowsNull' => false
             ]
         ];
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock
+            ->expects($this->any())
+            ->method('getMethod')
+            ->with('fooAction')
+            ->willReturn([
+                'params' => $methodParameters
+            ]);
+
         $mockReflectionService = $this->createMock(ReflectionService::class);
-        $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
+        $mockReflectionService
+            ->expects($this->any())
+            ->method('getClassSchema')
+            ->with(get_class($mockController))
+            ->willReturn($classSchemaMock);
         $mockController->_set('reflectionService', $mockReflectionService);
         $mockController->_set('request', $mockRequest);
         $mockController->_set('arguments', $mockArguments);

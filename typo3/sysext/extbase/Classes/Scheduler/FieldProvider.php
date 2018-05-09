@@ -212,8 +212,11 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
         $command = $this->commandManager->getCommandByIdentifier($this->task->getCommandIdentifier());
         $controllerClassName = $command->getControllerClassName();
         $methodName = $command->getControllerCommandName() . 'Command';
-        $tags = $this->reflectionService->getMethodTagsValues($controllerClassName, $methodName);
-        foreach ($tags['param'] as $tag) {
+
+        $tags = $this->reflectionService
+                ->getClassSchema($controllerClassName)
+                ->getMethod($methodName)['tags']['param'] ?? [];
+        foreach ($tags as $tag) {
             list($argumentType, $argumentVariableName) = explode(' ', $tag);
             if (substr($argumentVariableName, 1) === $argument->getName()) {
                 return $argumentType;
@@ -260,7 +263,11 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
         $type = $this->getArgumentType($argument);
         $argumentName = $argument->getName();
         $command = $this->commandManager->getCommandByIdentifier($this->task->getCommandIdentifier());
-        $argumentReflection = $this->reflectionService->getMethodParameters($command->getControllerClassName(), $command->getControllerCommandName() . 'Command');
+
+        $argumentReflection = $this->reflectionService
+            ->getClassSchema($command->getControllerClassName())
+            ->getMethod($command->getControllerCommandName() . 'Command')['params'] ?? [];
+
         $defaultValue = $argumentReflection[$argumentName]['defaultValue'];
         if (TypeHandlingUtility::normalizeType($type) === 'boolean') {
             $defaultValue = (bool)$defaultValue ? 1 : 0;

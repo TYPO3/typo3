@@ -167,7 +167,9 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
         $validatorConjunctions = [];
 
         if ($methodParameters === null) {
-            $methodParameters = $this->reflectionService->getMethodParameters($className, $methodName);
+            $methodParameters = $this->reflectionService
+                ->getClassSchema($className)
+                ->getMethod($methodName)['params'] ?? [];
         }
         if (empty($methodParameters)) {
             return $validatorConjunctions;
@@ -553,7 +555,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
     public function getMethodValidateAnnotations($className, $methodName)
     {
         $validateAnnotations = [];
-        $methodTagsValues = $this->reflectionService->getMethodTagsValues($className, $methodName);
+        $methodTagsValues = $this->reflectionService->getClassSchema($className)->getMethod($methodName)['tags'] ?? [];
         if (isset($methodTagsValues['validate']) && is_array($methodTagsValues['validate'])) {
             foreach ($methodTagsValues['validate'] as $validateValue) {
                 $parsedAnnotations = $this->parseValidatorAnnotation($validateValue);

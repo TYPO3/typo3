@@ -85,9 +85,15 @@ class ReflectionService implements SingletonInterface
      *
      * @param string $className Name of the class
      * @return array An array of tags and their values or an empty array if no tags were found
+     * @deprecated
      */
     public function getClassTagsValues($className): array
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         try {
             $classSchema = $this->getClassSchema($className);
         } catch (\Exception $e) {
@@ -103,9 +109,15 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class containing the property
      * @param string $tag Tag to return the values of
      * @return array An array of values or an empty array if the tag was not found
+     * @deprecated
      */
     public function getClassTagValues($className, $tag): array
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         try {
             $classSchema = $this->getClassSchema($className);
         } catch (\Exception $e) {
@@ -120,9 +132,15 @@ class ReflectionService implements SingletonInterface
      *
      * @param string $className Name of the class to return the property names of
      * @return array An array of property names or an empty array if none exist
+     * @deprecated
      */
     public function getClassPropertyNames($className): array
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         try {
             $classSchema = $this->getClassSchema($className);
         } catch (\Exception $e) {
@@ -155,9 +173,15 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class containing the method
      * @param string $methodName Name of the method
      * @return bool
+     * @deprecated
      */
     public function hasMethod($className, $methodName): bool
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         try {
             $classSchema = $this->getClassSchema($className);
         } catch (\Exception $e) {
@@ -173,9 +197,15 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class containing the method
      * @param string $methodName Name of the method to return the tags and values of
      * @return array An array of tags and their values or an empty array of no tags were found
+     * @deprecated
      */
     public function getMethodTagsValues($className, $methodName): array
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         try {
             $classSchema = $this->getClassSchema($className);
         } catch (\Exception $e) {
@@ -192,9 +222,15 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class containing the method
      * @param string $methodName Name of the method to return parameter information of
      * @return array An array of parameter names and additional information or an empty array of no parameters were found
+     * @deprecated
      */
     public function getMethodParameters($className, $methodName): array
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         try {
             $classSchema = $this->getClassSchema($className);
         } catch (\Exception $e) {
@@ -210,9 +246,15 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class containing the property
      * @param string $propertyName Name of the property to return the tags and values of
      * @return array An array of tags and their values or an empty array of no tags were found
+     * @deprecated
      */
     public function getPropertyTagsValues($className, $propertyName): array
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         try {
             $classSchema = $this->getClassSchema($className);
         } catch (\Exception $e) {
@@ -229,9 +271,15 @@ class ReflectionService implements SingletonInterface
      * @param string $propertyName Name of the tagged property
      * @param string $tag Tag to return the values of
      * @return array An array of values or an empty array if the tag was not found
+     * @deprecated
      */
     public function getPropertyTagValues($className, $propertyName, $tag): array
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         try {
             $classSchema = $this->getClassSchema($className);
         } catch (\Exception $e) {
@@ -247,9 +295,15 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class
      * @param string $tag Tag to check for
      * @return bool TRUE if the class is tagged with $tag, otherwise FALSE
+     * @deprecated
      */
     public function isClassTaggedWith($className, $tag): bool
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         try {
             $classSchema = $this->getClassSchema($className);
         } catch (\Exception $e) {
@@ -272,9 +326,15 @@ class ReflectionService implements SingletonInterface
      * @param string $propertyName Name of the property
      * @param string $tag Tag to check for
      * @return bool TRUE if the class property is tagged with $tag, otherwise FALSE
+     * @deprecated
      */
     public function isPropertyTaggedWith($className, $propertyName, $tag): bool
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
         try {
             $classSchema = $this->getClassSchema($className);
         } catch (\Exception $e) {

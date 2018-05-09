@@ -128,7 +128,9 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         $commandLineArguments = [];
         $exceedingArguments = [];
         $commandMethodName = $controllerCommandName . 'Command';
-        $commandMethodParameters = $this->reflectionService->getMethodParameters($controllerObjectName, $commandMethodName);
+        $commandMethodParameters = $this->reflectionService
+            ->getClassSchema($controllerObjectName)
+            ->getMethod($commandMethodName)['params'] ?? [];
         $requiredArguments = [];
         $optionalArguments = [];
         $argumentNames = [];

@@ -121,15 +121,17 @@ class ObjectConverter extends AbstractTypeConverter
         }
 
         $specificTargetType = $this->objectContainer->getImplementationClassName($targetType);
-        if ($this->reflectionService->hasMethod($specificTargetType, \TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName))) {
-            $methodParameters = $this->reflectionService->getMethodParameters($specificTargetType, \TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName));
+        $classSchema = $this->reflectionService->getClassSchema($specificTargetType);
+
+        if ($classSchema->hasMethod(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName))) {
+            $methodParameters = $classSchema->getMethod(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName))['params'] ?? [];
             $methodParameter = current($methodParameters);
             if (!isset($methodParameter['type'])) {
                 throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Setter for property "' . $propertyName . '" had no type hint or documentation in target object of type "' . $specificTargetType . '".', 1303379158);
             }
             return $methodParameter['type'];
         }
-        $methodParameters = $this->reflectionService->getMethodParameters($specificTargetType, '__construct');
+        $methodParameters = $classSchema->getMethod('__construct')['params'] ?? [];
         if (isset($methodParameters[$propertyName]) && isset($methodParameters[$propertyName]['type'])) {
             return $methodParameters[$propertyName]['type'];
         }
@@ -213,8 +215,10 @@ class ObjectConverter extends AbstractTypeConverter
     protected function buildObject(array &$possibleConstructorArgumentValues, $objectType)
     {
         $specificObjectType = $this->objectContainer->getImplementationClassName($objectType);
-        if ($this->reflectionService->hasMethod($specificObjectType, '__construct')) {
-            $constructorSignature = $this->reflectionService->getMethodParameters($specificObjectType, '__construct');
+        $classSchema = $this->reflectionService->getClassSchema($specificObjectType);
+
+        if ($classSchema->hasConstructor()) {
+            $constructorSignature = $classSchema->getMethod('__construct')['params'] ?? [];
             $constructorArguments = [];
             foreach ($constructorSignature as $constructorArgumentName => $constructorArgumentInformation) {
                 if (array_key_exists($constructorArgumentName, $possibleConstructorArgumentValues)) {

@@ -22,6 +22,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        */
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 
 /**
  * Test case
@@ -103,15 +104,24 @@ class ObjectConverterTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType()
+    public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType(): void
     {
-        $this->mockReflectionService->expects($this->any())->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->will($this->returnValue(false));
-        $this->mockReflectionService->expects($this->any())->method('getMethodParameters')->with('TheTargetType', '__construct')->will($this->returnValue([
-            'thePropertyName' => [
-                'type' => 'TheTypeOfSubObject',
-                'elementType' => null
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('__construct')->willReturn([
+            'params' => [
+                'thePropertyName' => [
+                    'type' => 'TheTypeOfSubObject',
+                    'elementType' => null
+                ]
             ]
-        ]));
+        ]);
+
+        $this->mockReflectionService
+            ->expects($this->any())
+            ->method('getClassSchema')
+            ->with('TheTargetType')
+            ->willReturn($classSchemaMock);
+
         $this->mockContainer->expects($this->any())->method('getImplementationClassName')->will($this->returnValue('TheTargetType'));
 
         $configuration = new PropertyMappingConfiguration();

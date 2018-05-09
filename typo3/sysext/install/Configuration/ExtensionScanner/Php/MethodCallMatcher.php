@@ -2333,4 +2333,74 @@ return [
             'Deprecation-85130-TSFE-getPageShortcutMovedToPageRepository.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Reflection\ReflectionService->getClassTagsValues' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ReflectionService->getClassTagValues' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ReflectionService->getClassPropertyNames' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ReflectionService->hasMethod' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ReflectionService->getMethodTagsValues' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ReflectionService->getMethodParameters' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ReflectionService->getPropertyTagsValues' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ReflectionService->getPropertyTagValues' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ReflectionService->isClassTaggedWith' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ReflectionService->isPropertyTaggedWith' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
+        ],
+    ],
 ];

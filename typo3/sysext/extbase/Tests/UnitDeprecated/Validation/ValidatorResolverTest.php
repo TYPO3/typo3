@@ -15,7 +15,9 @@ namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Validation;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
 /**
  * Test case
@@ -38,12 +40,22 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     public function buildMethodArgumentsValidatorConjunctionsReturnsEmptyArrayIfMethodHasNoArguments()
     {
         $mockController = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\ActionController::class, ['fooAction'], [], '', false);
-        $methodParameters = [];
+        $className = get_class($mockController);
+        $methodName = 'fooAction';
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with($methodName)->willReturn([
+            'params' => [],
+        ]);
+
         $mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-        $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
+        $mockReflectionService->expects($this->any())->method('getClassSchema')->with($className)->willReturn($classSchemaMock);
+
+        /** @var ValidatorResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $validatorResolver */
         $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, ['createValidator']);
         $validatorResolver->_set('reflectionService', $mockReflectionService);
-        $result = $validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($mockController), 'fooAction');
+
+        $result = $validatorResolver->buildMethodArgumentsValidatorConjunctions($className, $methodName);
         $this->assertSame([], $result);
     }
 
@@ -56,6 +68,10 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             ->setMethods(['fooMethod'])
             ->disableOriginalConstructor()
             ->getMock();
+
+        $className = get_class($mockObject);
+        $methodName = 'fooAction';
+
         $methodParameters = [
             'arg1' => [
                 'type' => 'string'
@@ -74,9 +90,16 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 '$arg2 VENDOR\\ModelCollection\\Domain\\Model\\Model'
             ]
         ];
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with($methodName)->willReturn([
+            'params' => $methodParameters,
+            'tags' => $methodTagsValues
+        ]);
+
         $mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-        $mockReflectionService->expects($this->once())->method('getMethodTagsValues')->with(get_class($mockObject), 'fooAction')->will($this->returnValue($methodTagsValues));
-        $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockObject), 'fooAction')->will($this->returnValue($methodParameters));
+        $mockReflectionService->expects($this->any())->method('getClassSchema')->with($className)->willReturn($classSchemaMock);
+
         $mockStringValidator = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
         $mockArrayValidator = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
         $mockFooValidator = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
@@ -92,6 +115,8 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $mockArguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
         $mockArguments->addArgument(new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('arg1', 'dummyValue'));
         $mockArguments->addArgument(new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('arg2', 'dummyValue'));
+
+        /** @var ValidatorResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $validatorResolver */
         $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, ['createValidator']);
         $validatorResolver->expects($this->at(0))->method('createValidator')->with(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator::class)->will($this->returnValue($conjunction1));
         $validatorResolver->expects($this->at(1))->method('createValidator')->with('string')->will($this->returnValue($mockStringValidator));
@@ -101,7 +126,8 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $validatorResolver->expects($this->at(5))->method('createValidator')->with('Bar')->will($this->returnValue($mockBarValidator));
         $validatorResolver->expects($this->at(6))->method('createValidator')->with('VENDOR\\ModelCollection\\Domain\\Model\\Model')->will($this->returnValue($mockQuuxValidator));
         $validatorResolver->_set('reflectionService', $mockReflectionService);
-        $result = $validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($mockObject), 'fooAction');
+
+        $result = $validatorResolver->buildMethodArgumentsValidatorConjunctions($className, $methodName);
         $this->assertEquals(['arg1' => $conjunction1, 'arg2' => $conjunction2], $result);
     }
 
@@ -116,6 +142,10 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             ->setMethods(['fooMethod'])
             ->disableOriginalConstructor()
             ->getMock();
+
+        $className = get_class($mockObject);
+        $methodName = 'fooAction';
+
         $methodParameters = [
             'arg1' => [
                 'type' => 'string'
@@ -129,19 +159,28 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 '$arg2 VENDOR\\ModelCollection\\Domain\\Model\\Model'
             ]
         ];
+
+        $classSchemaMock = $this->createMock(ClassSchema::class);
+        $classSchemaMock->expects($this->any())->method('getMethod')->with($methodName)->willReturn([
+            'params' => $methodParameters,
+            'tags' => $methodTagsValues
+        ]);
+
         $mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-        $mockReflectionService->expects($this->once())->method('getMethodTagsValues')->with(get_class($mockObject), 'fooAction')->will($this->returnValue($methodTagsValues));
-        $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockObject), 'fooAction')->will($this->returnValue($methodParameters));
+        $mockReflectionService->expects($this->any())->method('getClassSchema')->with($className)->willReturn($classSchemaMock);
+
         $mockStringValidator = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
         $mockQuuxValidator = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
         $conjunction1 = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator::class);
         $conjunction1->expects($this->at(0))->method('addValidator')->with($mockStringValidator);
+
+        /** @var ValidatorResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $validatorResolver */
         $validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, ['createValidator']);
         $validatorResolver->expects($this->at(0))->method('createValidator')->with(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator::class)->will($this->returnValue($conjunction1));
         $validatorResolver->expects($this->at(1))->method('createValidator')->with('string')->will($this->returnValue($mockStringValidator));
         $validatorResolver->expects($this->at(2))->method('createValidator')->with('VENDOR\\ModelCollection\\Domain\\Model\\Model')->will($this->returnValue($mockQuuxValidator));
         $validatorResolver->_set('reflectionService', $mockReflectionService);
-        $validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($mockObject), 'fooAction');
+        $validatorResolver->buildMethodArgumentsValidatorConjunctions($className, $methodName);
     }
 
     /**

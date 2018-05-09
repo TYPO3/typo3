@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
 /*
@@ -33,22 +35,23 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      * @param array $foo The foo parameter
      * @return string
      */
-    public function fixtureMethodForMethodTagsValues(array $foo)
+    public function fixtureMethodForMethodTagsValues(array $foo): string
     {
+        return '';
     }
 
     /**
      * @param bool $dummy
      * @param int $foo
      */
-    public function fixtureMethodForMethodTagsValuesWithShortTypes($dummy, $foo)
+    public function fixtureMethodForMethodTagsValuesWithShortTypes($dummy, $foo): void
     {
     }
 
     /**
      * @test
      */
-    public function getClassTagsValues()
+    public function getClassTagsValues(): void
     {
         $service = new ReflectionService();
         $classValues = $service->getClassTagsValues(static::class);
@@ -66,7 +69,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
-    public function getClassTagValues()
+    public function getClassTagValues(): void
     {
         $service = new ReflectionService();
         $classValues = $service->getClassTagValues(static::class, 'see');
@@ -88,7 +91,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
-    public function hasMethod()
+    public function hasMethod(): void
     {
         $service = new ReflectionService();
         $this->assertTrue($service->hasMethod(static::class, 'fixtureMethodForMethodTagsValues'));
@@ -99,7 +102,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
-    public function getMethodTagsValues()
+    public function getMethodTagsValues(): void
     {
         $service = new ReflectionService();
         $tagsValues = $service->getMethodTagsValues(static::class, 'fixtureMethodForMethodTagsValues');
@@ -122,7 +125,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
-    public function getMethodParameters()
+    public function getMethodParameters(): void
     {
         $service = new ReflectionService();
         $parameters = $service->getMethodParameters(static::class, 'fixtureMethodForMethodTagsValues');
@@ -158,7 +161,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
-    public function getMethodParametersWithShortTypeNames()
+    public function getMethodParametersWithShortTypeNames(): void
     {
         $service = new ReflectionService();
         $parameters = $service->getMethodParameters(static::class, 'fixtureMethodForMethodTagsValuesWithShortTypes');
@@ -196,7 +199,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         ], $parameters);
     }
 
-    public function testIsClassTaggedWith()
+    public function testIsClassTaggedWith(): void
     {
         $service = new ReflectionService();
         $this->assertTrue($service->isClassTaggedWith(
@@ -215,7 +218,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         ));
     }
 
-    public function testIsPropertyTaggedWith()
+    public function testIsPropertyTaggedWith(): void
     {
         $service = new ReflectionService();
         $this->assertTrue($service->isPropertyTaggedWith(
@@ -243,7 +246,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         ));
     }
 
-    public function testgetPropertyTagValues()
+    public function testgetPropertyTagValues(): void
     {
         $service = new ReflectionService();
         $this->assertSame(
@@ -258,14 +261,14 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $this->assertSame(
             [],
             $service->getPropertyTagValues(
-            Fixture\DummyClassWithAllTypesOfProperties::class,
-            'propertyWithInjectAnnotation',
-            'inject'
+                Fixture\DummyClassWithAllTypesOfProperties::class,
+                'propertyWithInjectAnnotation',
+                'inject'
             )
         );
     }
 
-    public function testGetPropertyTagsValues()
+    public function testGetPropertyTagsValues(): void
     {
         $service = new ReflectionService();
         $this->assertSame(
@@ -298,7 +301,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         );
     }
 
-    public function testGetClassPropertyNames()
+    public function testGetClassPropertyNames(): void
     {
         $service = new ReflectionService();
         $this->assertSame(

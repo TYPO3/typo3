@@ -162,7 +162,9 @@ class CommandController implements CommandControllerInterface
      */
     protected function initializeCommandMethodArguments()
     {
-        $methodParameters = $this->reflectionService->getMethodParameters(static::class, $this->commandMethodName);
+        $methodParameters = $this->reflectionService
+            ->getClassSchema(static::class)
+            ->getMethod($this->commandMethodName)['params'] ?? [];
 
         foreach ($methodParameters as $parameterName => $parameterInfo) {
             $dataType = null;
