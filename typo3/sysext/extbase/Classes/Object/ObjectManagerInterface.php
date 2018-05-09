@@ -31,10 +31,11 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
      * Returns a fresh or existing instance of the object specified by $objectName.
      *
      * @param string $objectName The name of the object to return an instance of
+     * @param array ...$constructorArguments
      * @return object The object instance
      * @api
      */
-    public function get($objectName);
+    public function get($objectName, ...$constructorArguments);
 
     /**
      * Create an instance of $className without calling its constructor

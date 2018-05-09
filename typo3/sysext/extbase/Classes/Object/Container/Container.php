@@ -92,11 +92,12 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $className
      * @param array $givenConstructorArguments the list of constructor arguments as array
      * @return object the built object
+     * @internal
      */
     public function getInstance($className, $givenConstructorArguments = [])
     {
         $this->prototypeObjectsWhichAreCurrentlyInstanciated = [];
-        return $this->getInstanceInternal($className, $givenConstructorArguments);
+        return $this->getInstanceInternal($className, ...$givenConstructorArguments);
     }
 
     /**
@@ -124,7 +125,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException
      * @return object the built object
      */
-    protected function getInstanceInternal($className, $givenConstructorArguments = [])
+    protected function getInstanceInternal($className, ...$givenConstructorArguments)
     {
         $className = $this->getImplementationClassName($className);
         if ($className === \TYPO3\CMS\Extbase\Object\Container\Container::class) {
@@ -152,7 +153,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
             }
             $this->prototypeObjectsWhichAreCurrentlyInstanciated[$className] = true;
         }
-        $instance = $this->instanciateObject($classSchema, $givenConstructorArguments);
+        $instance = $this->instanciateObject($classSchema, ...$givenConstructorArguments);
         $this->injectDependencies($instance, $classSchema);
         $this->initializeObject($instance);
         if (!$classIsSingleton) {
@@ -171,7 +172,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Object\Exception
      * @return object the new instance
      */
-    protected function instanciateObject(ClassSchema $classSchema, array $givenConstructorArguments)
+    protected function instanciateObject(ClassSchema $classSchema, ...$givenConstructorArguments)
     {
         $className = $classSchema->getClassName();
         $classIsSingleton = $classSchema->isSingleton();
@@ -179,8 +180,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
             throw new \TYPO3\CMS\Extbase\Object\Exception('Object "' . $className . '" has explicit constructor arguments but is a singleton; this is not allowed.', 1292858051);
         }
         $constructorArguments = $this->getConstructorArguments($className, $classSchema, $givenConstructorArguments);
-        array_unshift($constructorArguments, $className);
-        $instance = call_user_func_array([GeneralUtility::class, 'makeInstance'], $constructorArguments);
+        $instance = GeneralUtility::makeInstance($className, ...$constructorArguments);
         if ($classIsSingleton) {
             $this->singletonInstances[$className] = $instance;
         }

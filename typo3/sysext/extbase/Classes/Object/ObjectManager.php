@@ -84,18 +84,16 @@ class ObjectManager implements ObjectManagerInterface
      * Returns a fresh or existing instance of the object specified by $objectName.
      *
      * @param string $objectName The name of the object to return an instance of
+     * @param array $constructorArguments
      * @return object The object instance
      * @api
      */
-    public function get($objectName)
+    public function get($objectName, ...$constructorArguments)
     {
-        $arguments = func_get_args();
-        array_shift($arguments);
         if ($objectName === 'DateTime') {
-            array_unshift($arguments, $objectName);
-            $instance = call_user_func_array([\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'makeInstance'], $arguments);
+            $instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($objectName, ...$constructorArguments);
         } else {
-            $instance = $this->objectContainer->getInstance($objectName, $arguments);
+            $instance = $this->objectContainer->getInstance($objectName, $constructorArguments);
         }
         return $instance;
     }
