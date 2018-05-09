@@ -140,9 +140,6 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
         static::assertInstanceOf(\SplObjectStorage::class, $validators);
 
         $validators->rewind();
-        static::assertInstanceOf(StringValidator::class, $validators->current());
-
-        $validators->next();
         static::assertInstanceOf(Fixture\Validation\Validator\CustomValidator::class, $validators->current());
 
         $validators->next();
@@ -150,10 +147,6 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
         /** @var ConjunctionValidator $subConjunctionValidator */
         $subConjunctionValidator = $validators->current();
         static::assertInstanceOf(ConjunctionValidator::class, $subConjunctionValidator);
-
-        // todo: It doesn't make sense that there is another conjunction
-        // todo: valididator with a StringValidator attached. We need to
-        // todo: find out what causes that and how to fix this.
 
         /** @var \SplObjectStorage $subValidators */
         $subValidators = $subConjunctionValidator->getValidators();
@@ -193,19 +186,9 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
         /** @var \SplObjectStorage $validators */
         $validators = $conjunctionValidator->getValidators();
         static::assertInstanceOf(\SplObjectStorage::class, $validators);
+        static::assertCount(1, $validators);
 
         $validators->rewind();
         static::assertInstanceOf(NotEmptyValidator::class, $validators->current());
-
-        $validators->next();
-
-        /** @var ConjunctionValidator $subConjunctionValidator */
-        $subConjunctionValidator = $validators->current();
-        static::assertInstanceOf(ConjunctionValidator::class, $subConjunctionValidator);
-
-        /** @var \SplObjectStorage $subValidators */
-        $subValidators = $subConjunctionValidator->getValidators();
-        static::assertInstanceOf(\SplObjectStorage::class, $subValidators);
-        static::assertEmpty($subValidators);
     }
 }

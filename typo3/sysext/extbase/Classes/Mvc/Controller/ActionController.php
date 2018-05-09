@@ -20,8 +20,8 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
-use TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
@@ -251,40 +251,31 @@ class ActionController extends AbstractController
      */
     protected function initializeActionMethodValidators()
     {
-        $methodParameters = $this->reflectionService->getMethodParameters(static::class, $this->actionMethodName);
-
-        /** @var ConjunctionValidator[] $validatorConjunctions */
-        $validatorConjunctions = [];
-        foreach ($methodParameters as $parameterName => $methodParameter) {
-            /** @var ConjunctionValidator $validatorConjunction */
-            $validatorConjunction = $this->objectManager->get(ConjunctionValidator::class);
-
-            // @todo: remove check for old underscore model name syntax once it's possible
-            if (strpbrk($methodParameter['type'], '_\\') === false) {
-                // this checks if the type is a simply type and then adds a
-                // validator. StringValidator and such for example.
-                $typeValidator = $this->validatorResolver->createValidator($methodParameter['type']);
-
-                if ($typeValidator !== null) {
-                    $validatorConjunction->addValidator($typeValidator);
-                }
-            }
-
-            $validatorConjunctions[$parameterName] = $validatorConjunction;
-
-            foreach ($methodParameter['validators'] as $validator) {
-                $validatorConjunctions[$parameterName]->addValidator(
-                    $this->objectManager->get($validator['className'], $validator['options'])
-                );
-            }
+        if ($this->arguments->count() === 0) {
+            return;
         }
+
+        $classSchema = $this->reflectionService->getClassSchema(static::class);
 
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
         foreach ($this->arguments as $argument) {
-            $validator = $validatorConjunctions[$argument->getName()];
+            $validator = $this->objectManager->get(ConjunctionValidator::class);
+            $validatorDefinitions = $classSchema->getMethod($this->actionMethodName)['params'][$argument->getName()]['validators'] ?? [];
+
+            foreach ($validatorDefinitions as $validatorDefinition) {
+                /** @var ValidatorInterface $validatorInstance */
+                $validatorInstance = $this->objectManager->get(
+                    $validatorDefinition['className'],
+                    $validatorDefinition['options']
+                );
+
+                $validator->addValidator(
+                    $validatorInstance
+                );
+            }
 
             $baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
-            if (!empty($baseValidatorConjunction) && $validator instanceof AbstractCompositeValidator) {
+            if ($baseValidatorConjunction->count() > 0) {
                 $validator->addValidator($baseValidatorConjunction);
             }
             $argument->setValidator($validator);
