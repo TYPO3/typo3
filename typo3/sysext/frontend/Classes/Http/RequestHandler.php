@@ -98,7 +98,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         // Output content
         $isOutputting = $controller->isOutputting();
         if ($isOutputting) {
-            $this->timeTracker->push('Print Content', '');
+            $this->timeTracker->push('Print Content');
             $controller->processOutput();
             $this->timeTracker->pull();
         }

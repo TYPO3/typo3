@@ -1028,7 +1028,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // we proceed and check if a backend user is logged in.
         if ($_COOKIE[BackendUserAuthentication::getCookieName()]) {
             $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = microtime(true);
-            $this->getTimeTracker()->push('Back End user initialized', '');
+            $this->getTimeTracker()->push('Back End user initialized');
             $this->beUserLogin = false;
             // New backend user object
             $backendUserObject = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class);
@@ -1258,7 +1258,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function fetch_the_id()
     {
         $timeTracker = $this->getTimeTracker();
-        $timeTracker->push('fetch_the_id initialize/', '');
+        $timeTracker->push('fetch_the_id initialize/');
         // Initialize the page-select functions.
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $this->sys_page->versioningPreview = $this->whichWorkspace() > 0 || (bool)GeneralUtility::_GP('ADMCMD_view');
@@ -1275,7 +1275,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->type = (int)$this->type;
         $timeTracker->pull();
         // We find the first page belonging to the current domain
-        $timeTracker->push('fetch_the_id domain/', '');
+        $timeTracker->push('fetch_the_id domain/');
         if (!$this->id) {
             if ($this->domainStartPage) {
                 // If the id was not previously set, set it to the id of the domain.
@@ -1298,7 +1298,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         $timeTracker->pull();
-        $timeTracker->push('fetch_the_id rootLine/', '');
+        $timeTracker->push('fetch_the_id rootLine/');
         // We store the originally requested id
         $this->requestedId = $this->id;
         try {
@@ -2243,7 +2243,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if ($this->all) {
                 // we got page section information
                 $this->newHash = $this->getHash();
-                $this->getTimeTracker()->push('Cache Row', '');
+                $this->getTimeTracker()->push('Cache Row');
                 $row = $this->getFromCache_queryRow();
                 if (!is_array($row)) {
                     // nothing in the cache, we acquire an exclusive lock now
@@ -2315,7 +2315,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function getFromCache_queryRow()
     {
-        $this->getTimeTracker()->push('Cache Query', '');
+        $this->getTimeTracker()->push('Cache Query');
         $row = $this->pageCache->get($this->newHash);
         $this->getTimeTracker()->pull();
         return $row;
@@ -2421,14 +2421,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // If config is not set by the cache (which would be a major mistake somewhere) OR if INTincScripts-include-scripts have been registered, then we must parse the template in order to get it
         if (empty($this->config) || is_array($this->config['INTincScript']) || $this->forceTemplateParsing) {
             $timeTracker = $this->getTimeTracker();
-            $timeTracker->push('Parse template', '');
+            $timeTracker->push('Parse template');
             // Force parsing, if set?:
             $this->tmpl->forceTemplateParsing = $this->forceTemplateParsing;
             // Start parsing the TS template. Might return cached version.
             $this->tmpl->start($this->rootLine);
             $timeTracker->pull();
             if ($this->tmpl->loaded) {
-                $timeTracker->push('Setting the config-array', '');
+                $timeTracker->push('Setting the config-array');
                 // toplevel - objArrayName
                 $this->sPre = $this->tmpl->setup['types.'][$this->type];
                 $this->pSetup = $this->tmpl->setup[$this->sPre . '.'];
@@ -3613,7 +3613,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 if (is_array($INTiS_config[$INTiS_key])) {
                     $label = 'Include ' . $INTiS_config[$INTiS_key]['type'];
                     $label = $label . isset($INTiS_config[$INTiS_key]['file']) ? ' ' . $INTiS_config[$INTiS_key]['file'] : '';
-                    $timeTracker->push($label, '');
+                    $timeTracker->push($label);
                     $incContent = '';
                     $INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
                     /* @var $INTiS_cObj ContentObjectRenderer */

@@ -57,11 +57,11 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
     public function process(ServerRequestInterface $request, PsrRequestHandlerInterface $handler): ResponseInterface
     {
         // Starts the template
-        $this->timeTracker->push('Start Template', '');
+        $this->timeTracker->push('Start Template');
         $this->controller->initTemplate();
         $this->timeTracker->pull();
         // Get from cache
-        $this->timeTracker->push('Get Page from cache', '');
+        $this->timeTracker->push('Get Page from cache');
         // Locks may be acquired here
         $this->controller->getFromCache();
         $this->timeTracker->pull();
@@ -69,7 +69,7 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
         // After this, we should have a valid config-array ready
         $this->controller->getConfigArray();
         // Setting language and locale
-        $this->timeTracker->push('Setting language and locale', '');
+        $this->timeTracker->push('Setting language and locale');
         $this->controller->settingLanguage();
         $this->controller->settingLocale();
         $this->timeTracker->pull();
