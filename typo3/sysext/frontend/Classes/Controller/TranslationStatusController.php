@@ -363,11 +363,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             $allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_language');
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll();
-        $queryBuilder
+            ->getQueryBuilderForTable('sys_language')
             ->select('*')
             ->from('sys_language')
             ->orderBy('sorting');
