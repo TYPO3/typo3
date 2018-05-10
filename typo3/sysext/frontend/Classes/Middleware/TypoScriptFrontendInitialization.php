@@ -15,11 +15,17 @@ namespace TYPO3\CMS\Frontend\Middleware;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Exception\ConnectionException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -31,10 +37,13 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * @internal
  */
-class TypoScriptFrontendInitialization implements MiddlewareInterface
+class TypoScriptFrontendInitialization implements MiddlewareInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
-     * Creates an instance of TSFE and sets it as a global variable
+     * Creates an instance of TSFE and sets it as a global variable,
+     * also pings the database in order ensure a valid database connection.
      *
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
@@ -52,7 +61,27 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
             null,
             GeneralUtility::_GP('MP')
         );
-        $GLOBALS['TSFE']->connectToDB();
+
+        // Set up the database connection and see if the connection can be established
+        try {
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
+            $connection->connect();
+        } catch (ConnectionException $exception) {
+            // Cannot connect to current database
+            $message = 'Cannot connect to the configured database "' . $connection->getDatabase() . '"';
+            $this->logger->emergency($message, ['exception' => $exception]);
+            try {
+                return GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($request, $message);
+            } catch (ServiceUnavailableException $e) {
+                throw new ServiceUnavailableException($message, 1526013723);
+            }
+        }
+        // Call post processing function for DB connection:
+        $_params = ['pObj' => &$GLOBALS['TSFE']];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
+        }
+
         return $handler->handle($request);
     }
 }

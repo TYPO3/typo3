@@ -840,9 +840,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @throws \RuntimeException
      * @throws ServiceUnavailableException
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
      */
     public function connectToDB()
     {
+        trigger_error('The method "' . __METHOD__ . '" will be removed in TYPO3 v10.0, as the database connection is checked in the TypoScriptFrontendInitialization middleware.', E_USER_DEPRECATED);
         try {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
             $connection->connect();
@@ -976,9 +978,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Two options:
      * 1) Use PATH_INFO (also Apache) to extract id and type from that var. Does not require any special modules compiled with apache. (less typical)
      * 2) Using hook which enables features like those provided from "realurl" extension (AKA "Speaking URLs")
+     *
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
      */
     public function checkAlternativeIdMethods()
     {
+        trigger_error('This method "' . __METHOD__ . '" is removed, extensions should use a Frontend PSR-15-based middleware to hook into the frontend process. There is no need to call this method directly.', E_USER_DEPRECATED);
         $this->siteScript = GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT');
         // Call post processing function for custom URL methods.
         $_params = ['pObj' => &$this];
@@ -1015,9 +1020,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Creates the backend user object and returns it.
      *
      * @return FrontendBackendUserAuthentication the backend user object
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
      */
     public function initializeBackendUser()
     {
+        trigger_error('The method "' . __METHOD__ . '" is deprecated, and will be removed in TYPO3 v10. Extensions should ensure that the BackendAuthenticator middleware is run to load a backend user.', E_USER_DEPRECATED);
         // PRE BE_USER HOOK
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] ?? [] as $_funcRef) {
             $_params = [];
@@ -1382,9 +1389,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @throws ServiceUnavailableException
      * @throws PageNotFoundException
-     * @access private
      */
-    public function getPageAndRootline()
+    protected function getPageAndRootline()
     {
         $this->resolveTranslatedPageId();
         if (empty($this->page)) {
@@ -1603,9 +1609,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @todo Invert boolean return value. Return true if visible.
      *
      * @return bool
-     * @access private
      */
-    public function checkRootlineForIncludeSection(): bool
+    protected function checkRootlineForIncludeSection(): bool
     {
         $c = count($this->rootLine);
         $removeTheRestFlag = false;
@@ -1816,10 +1821,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Sets sys_page where-clause
-     *
-     * @access private
      */
-    public function setSysPageWhereClause()
+    protected function setSysPageWhereClause()
     {
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('pages')
@@ -2063,10 +2066,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Fetches the integer page id for a page alias.
      * Looks if ->id is not an integer and if so it will search for a page alias and if found the page uid of that page is stored in $this->id
-     *
-     * @access private
      */
-    public function checkAndSetAlias()
+    protected function checkAndSetAlias()
     {
         if ($this->id && !MathUtility::canBeInterpretedAsInteger($this->id)) {
             $aid = $this->sys_page->getPageIdFromAlias($this->id);
@@ -2350,10 +2351,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Used to get and later store the cached data.
      *
      * @return string MD5 hash of serialized hash base from createHashBase()
-     * @access private
      * @see getFromCache(), getLockHash()
      */
-    public function getHash()
+    protected function getHash()
     {
         return md5($this->createHashBase(false));
     }
@@ -2363,10 +2363,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * This hash is unique to the above hash, except that it doesn't contain the template information in $this->all.
      *
      * @return string MD5 hash
-     * @access private
      * @see getFromCache(), getHash()
      */
-    public function getLockHash()
+    protected function getLockHash()
     {
         $lockHash = $this->createHashBase(true);
         return md5($lockHash);
@@ -2745,9 +2744,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Handle data submission
      * This is done at this point, because we need the config values
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function handleDataSubmission()
     {
+        trigger_error('The method "' . __METHOD__ . '" is deprecated since TYPO3 v9, and will be removed in TYPO3 v10. Implement the hooks directly, as they are still executed within TYPO3 via a PSR-15 middleware.', E_USER_DEPRECATED);
         // Hook for processing data submission to extensions
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] ?? [] as $className) {
             $_procObj = GeneralUtility::makeInstance($className);
@@ -2815,10 +2816,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Sets the URL_ID_TOKEN in the internal var, $this->getMethodUrlIdToken
      * This feature allows sessions to use a GET-parameter instead of a cookie.
-     *
-     * @access private
      */
-    public function setUrlIdToken()
+    protected function setUrlIdToken()
     {
         if ($this->config['config']['ftu']) {
             $this->getMethodUrlIdToken = $GLOBALS['TYPO3_CONF_VARS']['FE']['get_url_id_token'];
@@ -4125,9 +4124,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $key Is the key in the array, for num-key let the value be empty
      * @param string $content Is the content if you want any
      * @see setJS()
+     *
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
      */
     public function setCSS($key, $content)
     {
+        trigger_error('The method "' . __METHOD__ . '" will be removed in TYPO3 v10, use PageRenderer instead to add CSS.', E_USER_DEPRECATED);
         if ($key) {
             $this->additionalCSS[$key] = $content;
         }
@@ -4374,9 +4376,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Converts the $_POST array from metaCharset (page HTML charset from input form) to utf-8 (internal processing) IF the two charsets are different.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function convPOSTCharset()
     {
+        trigger_error('The method "' . __METHOD__ . '" is deprecated since TYPO3 v9, and will be removed in TYPO3 v10. A PSR-15 middleware is now taking care of the conversion. It seems you called this method from your own bootstrap code - ensure that the PrepareTypoScriptFrontendRendering middleware is called and you can remove the method call.', E_USER_DEPRECATED);
         if ($this->metaCharset !== 'utf-8' && is_array($_POST) && !empty($_POST)) {
             $this->convertCharsetRecursivelyToUtf8($_POST, $this->metaCharset);
             $GLOBALS['HTTP_POST_VARS'] = $_POST;
@@ -4388,6 +4392,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param mixed $data given by reference (string/array usually)
      * @param string $fromCharset convert FROM this charset
+     * @deprecated since TYPO3 v9, will be removed when convPOSTCharset() is removed as well in TYPO3 v10.
      */
     protected function convertCharsetRecursivelyToUtf8(&$data, string $fromCharset)
     {

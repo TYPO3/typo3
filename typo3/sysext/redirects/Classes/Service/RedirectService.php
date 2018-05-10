@@ -246,8 +246,6 @@ class RedirectService implements LoggerAwareInterface
             GeneralUtility::_GP('id'),
             GeneralUtility::_GP('type')
         );
-        $GLOBALS['TSFE']->initFEuser();
-        $GLOBALS['TSFE']->initializeBackendUser();
         $GLOBALS['TSFE']->fetch_the_id();
         $GLOBALS['TSFE']->initTemplate();
         $GLOBALS['TSFE']->getConfigArray();

@@ -75,11 +75,40 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
         $this->timeTracker->pull();
 
         // Convert POST data to utf-8 for internal processing if metaCharset is different
-        $this->controller->convPOSTCharset();
+        if ($this->controller->metaCharset !== 'utf-8' && is_array($_POST) && !empty($_POST)) {
+            $this->convertCharsetRecursivelyToUtf8($_POST, $this->controller->metaCharset);
+            $GLOBALS['HTTP_POST_VARS'] = $_POST;
+            $parsedBody = $request->getParsedBody();
+            $this->convertCharsetRecursivelyToUtf8($parsedBody, $this->controller->metaCharset);
+            $request = $request->withParsedBody($parsedBody);
+            $GLOBALS['TYPO3_REQUEST'] = $request;
+        }
 
         $this->controller->initializeRedirectUrlHandlers();
-        $this->controller->handleDataSubmission();
+
+        // Hook for processing data submission to extensions
+        // This is done at this point, because we need the config values
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] ?? [] as $className) {
+            GeneralUtility::makeInstance($className)->checkDataSubmission($this->controller);
+        }
 
         return $handler->handle($request);
+    }
+
+    /**
+     * Small helper function to convert charsets for arrays to UTF-8
+     *
+     * @param mixed $data given by reference (string/array usually)
+     * @param string $fromCharset convert FROM this charset
+     */
+    protected function convertCharsetRecursivelyToUtf8(&$data, string $fromCharset)
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($data[$key])) {
+                $this->convertCharsetRecursivelyToUtf8($data[$key], $fromCharset);
+            } elseif (is_string($data[$key])) {
+                $data[$key] = mb_convert_encoding($data[$key], 'utf-8', $fromCharset);
+            }
+        }
     }
 }
