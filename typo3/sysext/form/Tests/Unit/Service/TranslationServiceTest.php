@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Service;
+namespace TYPO3\CMS\Form\Tests\Unit\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.

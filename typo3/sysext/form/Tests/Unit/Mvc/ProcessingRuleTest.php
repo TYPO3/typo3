@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
+namespace TYPO3\CMS\Form\Tests\Unit\Mvc;
 
 /*
  * This file is part of the TYPO3 CMS project.

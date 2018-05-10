@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Form\Mvc\Property;
+namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Mvc\ProcessingRule;
+use TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
