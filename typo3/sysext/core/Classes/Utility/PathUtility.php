@@ -30,7 +30,7 @@ class PathUtility
      */
     public static function getRelativePathTo($targetPath)
     {
-        return self::getRelativePath(dirname(Environment::getCurrentScript()), $targetPath);
+        return self::getRelativePath(self::dirname(Environment::getCurrentScript()), $targetPath);
     }
 
     /**
@@ -52,7 +52,7 @@ class PathUtility
             return $targetPath;
         } else {
             // Make an absolute path out of it
-            $targetPath = GeneralUtility::resolveBackPath(dirname(Environment::getCurrentScript()) . '/' . $targetPath);
+            $targetPath = GeneralUtility::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $targetPath);
             $targetPath = self::stripPathSitePrefix($targetPath);
             if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
                 $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
@@ -260,6 +260,36 @@ class PathUtility
         // Avoid double slash on empty path
         $result = (($newDir !== '/') ? $newDir : '') . '/' . $fileName;
         return $result;
+    }
+
+    /**
+     * Returns parent directory's path
+     * Early during bootstrap there is no TYPO3_CONF_VARS yet so the setting for the system locale
+     * is also unavailable. The path of the parent directory is determined with a regular expression
+     * to avoid issues with locales.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public static function dirnameDuringBootstrap($path): string
+    {
+        return preg_replace('#(.*)(/|\\\\)([^\\\\/]+)$#', '$1', $path);
+    }
+
+    /**
+     * Returns filename part of a path
+     * Early during bootstrap there is no TYPO3_CONF_VARS yet so the setting for the system locale
+     * is also unavailable. The filename part is determined with a regular expression to avoid issues
+     * with locales.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public static function basenameDuringBootstrap($path): string
+    {
+        return preg_replace('#([^\\\\/]+)$#', '$1', $path);
     }
 
     /*********************

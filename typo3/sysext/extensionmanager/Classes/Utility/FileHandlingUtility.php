@@ -506,7 +506,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function sendZipFileToBrowserAndDelete($fileName, $downloadName = '')
     {
         if ($downloadName === '') {
-            $downloadName = basename($fileName, '.zip');
+            $downloadName = PathUtility::basename($fileName, '.zip');
         }
         header('Content-Type: application/zip');
         header('Content-Length: ' . filesize($fileName));

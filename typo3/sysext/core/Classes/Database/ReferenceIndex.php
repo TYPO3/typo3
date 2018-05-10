@@ -898,7 +898,7 @@ class ReferenceIndex implements LoggerAwareInterface
             if (trim($file)) {
                 $realFile = $destinationFolder . '/' . trim($file);
                 $newValueFile = [
-                    'filename' => basename($file),
+                    'filename' => PathUtility::basename($file),
                     'ID' => md5($realFile),
                     'ID_absFile' => $realFile
                 ];

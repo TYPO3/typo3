@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
@@ -150,7 +151,7 @@ class PreviewProcessing
         if (!file_exists($temporaryFileName)) {
             // Create a error image
             $graphicalFunctions = $this->getGraphicalFunctionsObject();
-            $graphicalFunctions->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', basename($originalFileName));
+            $graphicalFunctions->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', PathUtility::basename($originalFileName));
         }
     }
 
@@ -195,7 +196,7 @@ class PreviewProcessing
         if (!file_exists($temporaryFileName)) {
             // Create a error image
             $graphicalFunctions = $this->getGraphicalFunctionsObject();
-            $graphicalFunctions->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', basename($originalFileName));
+            $graphicalFunctions->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', PathUtility::basename($originalFileName));
         }
     }
 

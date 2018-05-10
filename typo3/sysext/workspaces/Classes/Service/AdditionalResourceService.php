@@ -115,8 +115,8 @@ class AdditionalResourceService implements SingletonInterface
     protected function resolvePath($resourcePath)
     {
         $absoluteFilePath = GeneralUtility::getFileAbsFileName($resourcePath);
-        $absolutePath = dirname($absoluteFilePath);
-        $fileName = basename($absoluteFilePath);
+        $absolutePath = PathUtility::dirname($absoluteFilePath);
+        $fileName = PathUtility::basename($absoluteFilePath);
 
         return PathUtility::getRelativePathTo($absolutePath) . $fileName;
     }

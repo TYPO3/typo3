@@ -2975,7 +2975,7 @@ class BackendUtility
             $mainParams = ['id' => $mainParams];
         }
         if (!$script) {
-            $script = basename(Environment::getCurrentScript());
+            $script = PathUtility::basename(Environment::getCurrentScript());
         }
 
         if ($routePath = GeneralUtility::_GP('route')) {

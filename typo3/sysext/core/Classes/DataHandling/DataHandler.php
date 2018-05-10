@@ -2211,7 +2211,7 @@ class DataHandler implements LoggerAwareInterface
                     if ($this->autoVersioningUpdate === true) {
                         foreach ($valueArray as $key => $theFile) {
                             // If it is an already attached file...
-                            if ($theFile === basename($theFile)) {
+                            if ($theFile === PathUtility::basename($theFile)) {
                                 $valueArray[$key] = PATH_site . $tcaFieldConf['uploadfolder'] . '/' . $theFile;
                             }
                         }
@@ -2297,7 +2297,7 @@ class DataHandler implements LoggerAwareInterface
                                         $this->copiedFileMap[$theFile] = $theDestFile;
                                         clearstatcache();
                                         if (!@is_file($theDestFile)) {
-                                            $this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)', 16, [$theFile, dirname($theDestFile), $recFID], $propArr['event_pid']);
+                                            $this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)', 16, [$theFile, PathUtility::dirname($theDestFile), $recFID], $propArr['event_pid']);
                                         }
                                     } else {
                                         $this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: No destination file (%s) possible!. (%s)', 11, [$theFile, $theDestFile, $recFID], $propArr['event_pid']);
@@ -2367,7 +2367,7 @@ class DataHandler implements LoggerAwareInterface
                             if (@is_file(PATH_site . $this->alternativeFilePath[$theFile])) {
                                 $theFile = PATH_site . $this->alternativeFilePath[$theFile];
                             } elseif (@is_file($theFile)) {
-                                $dest = dirname(PATH_site . $this->alternativeFilePath[$theFile]);
+                                $dest = PathUtility::dirname(PATH_site . $this->alternativeFilePath[$theFile]);
                                 if (!@is_dir($dest)) {
                                     GeneralUtility::mkdir_deep($dest);
                                 }
@@ -2390,7 +2390,7 @@ class DataHandler implements LoggerAwareInterface
                                             $this->copiedFileMap[$theFile] = $theDestFile;
                                             clearstatcache();
                                             if (!@is_file($theDestFile)) {
-                                                $this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)', 16, [$theFile, dirname($theDestFile), $recFID], $propArr['event_pid']);
+                                                $this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)', 16, [$theFile, PathUtility::dirname($theDestFile), $recFID], $propArr['event_pid']);
                                             }
                                         } else {
                                             $this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: No destination file (%s) possible!. (%s)', 11, [$theFile, $theDestFile, $recFID], $propArr['event_pid']);
@@ -4175,7 +4175,7 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
         foreach ($rteFileRecords as $rteFileRecord) {
-            $filename = basename($rteFileRecord['ref_string']);
+            $filename = PathUtility::basename($rteFileRecord['ref_string']);
             if (!GeneralUtility::isFirstPartOfStr($filename, 'RTEmagicC_')) {
                 continue;
             }
@@ -4189,8 +4189,8 @@ class DataHandler implements LoggerAwareInterface
                 continue;
             }
             // Initialize; Get directory prefix for file and set the original name:
-            $dirPrefix = dirname($rteFileRecord['ref_string']) . '/';
-            $rteOrigName = basename($fileInfo['original']);
+            $dirPrefix = PathUtility::dirname($rteFileRecord['ref_string']) . '/';
+            $rteOrigName = PathUtility::basename($fileInfo['original']);
             // If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
             if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/') && @is_dir(PATH_site . $dirPrefix)) {
                 // RTE:
@@ -4198,7 +4198,7 @@ class DataHandler implements LoggerAwareInterface
                 $origDestName = $this->fileFunc->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
                 // Create copy file name:
                 $pI = pathinfo($rteFileRecord['ref_string']);
-                $copyDestName = dirname($origDestName) . '/RTEmagicC_' . mb_substr(basename($origDestName), 10) . '.' . $pI['extension'];
+                $copyDestName = PathUtility::dirname($origDestName) . '/RTEmagicC_' . mb_substr(PathUtility::basename($origDestName), 10) . '.' . $pI['extension'];
                 if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)) {
                     // Making copies:
                     GeneralUtility::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);

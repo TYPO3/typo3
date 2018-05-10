@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Localization\Parser;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Abstract class for XML based parser.
@@ -95,7 +96,7 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
     protected function getLocalizedFileName($fileRef, $language, $sameLocation = false)
     {
         // If $fileRef is already prefixed with "[language key]" then we should return it as is
-        $fileName = basename($fileRef);
+        $fileName = PathUtility::basename($fileRef);
         if (GeneralUtility::isFirstPartOfStr($fileName, $language . '.')) {
             return GeneralUtility::getFileAbsFileName($fileRef);
         }

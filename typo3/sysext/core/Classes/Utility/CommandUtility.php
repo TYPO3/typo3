@@ -206,7 +206,7 @@ class CommandUtility
             $cmd = @self::exec('which ' . $cmd);
             if (@is_executable($cmd)) {
                 self::$applications[$cmd]['app'] = $cmd;
-                self::$applications[$cmd]['path'] = dirname($cmd) . '/';
+                self::$applications[$cmd]['path'] = PathUtility::dirname($cmd) . '/';
                 self::$applications[$cmd]['valid'] = true;
                 return true;
             }
@@ -361,8 +361,8 @@ class CommandUtility
                     continue;
                 }
                 list($cmd, $cmdPath) = GeneralUtility::trimExplode('=', $val, true, 2);
-                $cmdArr[$cmd]['app'] = basename($cmdPath);
-                $cmdArr[$cmd]['path'] = dirname($cmdPath) . '/';
+                $cmdArr[$cmd]['app'] = PathUtility::basename($cmdPath);
+                $cmdArr[$cmd]['path'] = PathUtility::dirname($cmdPath) . '/';
                 $cmdArr[$cmd]['valid'] = true;
             }
         }

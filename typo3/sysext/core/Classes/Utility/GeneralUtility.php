@@ -2794,7 +2794,7 @@ class GeneralUtility
                 if (defined('TYPO3_PATH_WEB')) {
                     $retVal = $url;
                 } elseif (Environment::getCurrentScript() && defined('PATH_site')) {
-                    $lPath = PathUtility::stripPathSitePrefix(dirname(Environment::getCurrentScript())) . '/';
+                    $lPath = PathUtility::stripPathSitePrefix(PathUtility::dirnameDuringBootstrap(Environment::getCurrentScript())) . '/';
                     $siteUrl = substr($url, 0, -strlen($lPath));
                     if (substr($siteUrl, -1) !== '/') {
                         $siteUrl .= '/';
@@ -3328,7 +3328,7 @@ class GeneralUtility
             self::mkdir_deep($temporaryPath);
         }
         if ($fileSuffix === '') {
-            $tempFileName = $temporaryPath . basename(tempnam($temporaryPath, $filePrefix));
+            $tempFileName = $temporaryPath . PathUtility::basename(tempnam($temporaryPath, $filePrefix));
         } else {
             do {
                 $tempFileName = $temporaryPath . $filePrefix . mt_rand(1, PHP_INT_MAX) . $fileSuffix;
@@ -3404,7 +3404,7 @@ class GeneralUtility
     {
         trigger_error('This method will be removed in TYPO3 v10.0, the functionality has been moved into AbstractXmlParser', E_USER_DEPRECATED);
         // If $fileRef is already prefixed with "[language key]" then we should return it as is
-        $fileName = basename($fileRef);
+        $fileName = PathUtility::basename($fileRef);
         if (self::isFirstPartOfStr($fileName, $language . '.')) {
             return $fileRef;
         }

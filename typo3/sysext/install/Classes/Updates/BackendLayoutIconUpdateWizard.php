@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Upgrade wizard which goes through all files referenced in backend_layout.icon
@@ -207,7 +208,7 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate
             $fileUid = null;
             $sourcePath = PATH_site . $this->sourcePath . $item;
             $targetDirectory = PATH_site . $fileadminDirectory . $this->targetPath;
-            $targetPath = $targetDirectory . basename($item);
+            $targetPath = $targetDirectory . PathUtility::basenameDuringBootstrap($item);
 
             // maybe the file was already moved, so check if the original file still exists
             if (file_exists($sourcePath)) {

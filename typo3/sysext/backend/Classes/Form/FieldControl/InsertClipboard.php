@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Renders the icon "insert record from clipboard",
@@ -52,7 +53,7 @@ class InsertClipboard extends AbstractNode
             $title = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipInsert_file'), count($clipboardElements));
             foreach ($clipboardElements as $clipboardElement) {
                 $value = $clipboardElement['value'];
-                $title = 'unescape(' . GeneralUtility::quoteJSvalue(rawurlencode(basename($clipboardElement['title']))) . ')';
+                $title = 'unescape(' . GeneralUtility::quoteJSvalue(rawurlencode(PathUtility::basename($clipboardElement['title']))) . ')';
                 $clipboardOnClick[] = 'setFormValueFromBrowseWin('
                         . GeneralUtility::quoteJSvalue($elementName) . ','
                         . 'unescape(' . GeneralUtility::quoteJSvalue(rawurlencode(str_replace('%20', ' ', $value))) . '),'

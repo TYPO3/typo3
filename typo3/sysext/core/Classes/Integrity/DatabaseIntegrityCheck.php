@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * This class holds functions used by the TYPO3 backend to check the integrity of the database (The DBint module, 'lowlevel' extension)
@@ -579,9 +580,9 @@ class DatabaseIntegrityCheck
                     $references = 1;
                 }
                 // The directory must be empty (prevents checking of the root directory)
-                $directory = dirname($file);
+                $directory = PathUtility::dirname($file);
                 if ($directory !== '') {
-                    $newCheckFileRefs[$directory][basename($file)] = $references;
+                    $newCheckFileRefs[$directory][PathUtility::basename($file)] = $references;
                 }
             }
         }

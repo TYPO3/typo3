@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\UpgradeAnalysis;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Provide information about documentation files
@@ -237,7 +238,7 @@ class DocumentationFile
         $documentationFiles = [];
         if ($this->isRelevantDirectory($docDirectory, $version)) {
             $documentationFiles[$version] = [];
-            $absolutePath = strtr(dirname($docDirectory), '\\', '/') . '/' . $version;
+            $absolutePath = strtr(PathUtility::dirname($docDirectory), '\\', '/') . '/' . $version;
             $rstFiles = scandir($docDirectory);
             foreach ($rstFiles as $file) {
                 $fileInfo = pathinfo($file);

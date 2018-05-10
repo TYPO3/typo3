@@ -1584,7 +1584,7 @@ class Import extends ImportExport
         // Just for security, check again. Should actually not be necessary.
         if (!$bypassMountCheck) {
             try {
-                ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier(dirname($fileName));
+                ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier(PathUtility::dirname($fileName));
             } catch (InsufficientFolderAccessPermissionsException $e) {
                 $this->error('ERROR: Filename "' . $fileName . '" was not allowed in destination path!');
                 return false;

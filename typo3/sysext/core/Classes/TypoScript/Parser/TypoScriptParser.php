@@ -989,14 +989,14 @@ class TypoScriptParser
         } else {
             // Apparently this is not a folder, so the restriction
             // is the folder so we restrict into this folder
-            $finder->in(dirname($absoluteFileName));
+            $finder->in(PathUtility::dirname($absoluteFileName));
             if (!is_file($absoluteFileName)
-                && strpos(basename($absoluteFileName), '*') === false
-                && substr(basename($absoluteFileName), -11) !== '.typoscript') {
+                && strpos(PathUtility::basename($absoluteFileName), '*') === false
+                && substr(PathUtility::basename($absoluteFileName), -11) !== '.typoscript') {
                 $absoluteFileName .= '*.typoscript';
             }
-            $finder->name(basename($absoluteFileName));
-            $readableFilePrefix = dirname($filename);
+            $finder->name(PathUtility::basename($absoluteFileName));
+            $readableFilePrefix = PathUtility::dirname($filename);
         }
 
         foreach ($finder as $fileObject) {

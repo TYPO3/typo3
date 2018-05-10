@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Finds files within uploads/ which are not needed anymore
@@ -203,7 +204,7 @@ If you want to get more detailed information, use the --verbose option.')
             }
 
             // If the file is a RTEmagic-image name and if so, we allow it
-            if (preg_match('/^RTEmagic[P|C]_/', basename($value))) {
+            if (preg_match('/^RTEmagic[P|C]_/', PathUtility::basenameDuringBootstrap($value))) {
                 continue;
             }
 

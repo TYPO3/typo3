@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
@@ -176,7 +177,7 @@ class SoftReferenceIndex
                     $elements[$k] = [];
                     $elements[$k]['matchString'] = $v;
                     // If the image seems to be an RTE image, then proceed to set up substitution token:
-                    if (GeneralUtility::isFirstPartOfStr($srcRef, 'uploads/') && preg_match('/^RTEmagicC_/', basename($srcRef))) {
+                    if (GeneralUtility::isFirstPartOfStr($srcRef, 'uploads/') && preg_match('/^RTEmagicC_/', PathUtility::basename($srcRef))) {
                         // Token and substitute value:
                         // Make sure the value we work on is found and will get substituted in the content (Very important that the src-value is not DeHSC'ed)
                         if (strstr($splitContent[$k], $attribs[0]['src'])) {

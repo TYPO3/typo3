@@ -371,8 +371,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
 
             /** @var SplFileInfo $fileInfo */
             foreach ($finder as $fileInfo) {
-                $path = dirname($fileInfo->getPathname());
-                $extensionName = basename($path);
+                $path = PathUtility::dirname($fileInfo->getPathname());
+                $extensionName = PathUtility::basename($path);
                 // Fix Windows backslashes
                 // we can't use GeneralUtility::fixWindowsFilePath as we have to keep double slashes for Unit Tests (vfs://)
                 $currentPath = str_replace('\\', '/', $path) . '/';
@@ -871,13 +871,13 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             $json = file_get_contents($manifestPath . 'composer.json');
             $composerManifest = json_decode($json);
             if (!$composerManifest instanceof \stdClass) {
-                throw new Exception\InvalidPackageManifestException('The composer.json found for extension "' . basename($manifestPath) . '" is invalid!', 1439555561);
+                throw new Exception\InvalidPackageManifestException('The composer.json found for extension "' . PathUtility::basename($manifestPath) . '" is invalid!', 1439555561);
             }
         }
 
         $extensionManagerConfiguration = $this->getExtensionEmConf($manifestPath);
         $composerManifest = $this->mapExtensionManagerConfigurationToComposerManifest(
-            basename($manifestPath),
+            PathUtility::basename($manifestPath),
             $extensionManagerConfiguration,
             $composerManifest ?: new \stdClass()
         );
@@ -895,7 +895,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getExtensionEmConf($packagePath)
     {
-        $packageKey = basename($packagePath);
+        $packageKey = PathUtility::basename($packagePath);
         $_EXTKEY = $packageKey;
         $path = $packagePath . 'ext_emconf.php';
         $EM_CONF = null;
@@ -1041,7 +1041,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             throw new Exception\InvalidPackageManifestException('Invalid composer manifest in package path: ' . $packagePath, 1348146451);
         }
         if (isset($manifest->type) && substr($manifest->type, 0, 10) === 'typo3-cms-') {
-            $packageKey = basename($packagePath);
+            $packageKey = PathUtility::basename($packagePath);
             return preg_replace('/[^A-Za-z0-9._-]/', '', $packageKey);
         }
         $packageKey = str_replace('/', '.', $manifest->name);

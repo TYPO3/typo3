@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -556,7 +557,7 @@ class Clipboard
             if (!$this->fileMode) {
                 $str = '<span class="text-muted">' . $str . '</span>';
             } elseif (ExtensionManagementUtility::isLoaded('filelist')) {
-                $str = '<a href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_list', ['id' => dirname($rec)])) . '">' . $str . '</a>';
+                $str = '<a href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_list', ['id' => PathUtility::dirname($rec)])) . '">' . $str . '</a>';
             }
         }
         return $str;
@@ -697,10 +698,10 @@ class Clipboard
             $labelKey = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.' . ($this->currentMode() === 'copy' ? 'copy' : 'move') . ($this->current === 'normal' ? '' : 'cb') . '_' . $type;
             $msg = $this->getLanguageService()->sL($labelKey . ($columnLabel ? '_colPos' : ''));
             if ($table === '_FILE') {
-                $thisRecTitle = basename($rec);
+                $thisRecTitle = PathUtility::basename($rec);
                 if ($this->current === 'normal') {
                     $selItem = reset($clElements);
-                    $selRecTitle = basename($selItem);
+                    $selRecTitle = PathUtility::basename($selItem);
                 } else {
                     $selRecTitle = count($clElements);
                 }

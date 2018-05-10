@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * External standard parsers for indexed_search
@@ -521,7 +522,7 @@ class FileContentParser
                     unset($res);
                     $content = $this->pObj->convertHTMLToUtf8($content);
                     $contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
-                    $contentArr['title'] = basename($absFile);
+                    $contentArr['title'] = PathUtility::basename($absFile);
                     $this->setLocaleForServerFileSystem(true);
                 }
                 break;
@@ -534,7 +535,7 @@ class FileContentParser
                     unset($res);
                     $content = $this->pObj->convertHTMLToUtf8($content);
                     $contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
-                    $contentArr['title'] = basename($absFile);
+                    $contentArr['title'] = PathUtility::basename($absFile);
                     $this->setLocaleForServerFileSystem(true);
                 }
                 break;
@@ -571,7 +572,7 @@ class FileContentParser
                     $utf8_content = trim(strip_tags(str_replace('<', ' <', $content_xml)));
                     $contentArr = $this->pObj->splitRegularContent($utf8_content);
                     // Make sure the title doesn't expose the absolute path!
-                    $contentArr['title'] = basename($absFile);
+                    $contentArr['title'] = PathUtility::basename($absFile);
                     // Meta information
                     $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' docProps/core.xml';
                     CommandUtility::exec($cmd, $res);
@@ -607,7 +608,7 @@ class FileContentParser
                     unset($res);
                     $utf8_content = trim(strip_tags(str_replace('<', ' <', $content_xml)));
                     $contentArr = $this->pObj->splitRegularContent($utf8_content);
-                    $contentArr['title'] = basename($absFile);
+                    $contentArr['title'] = PathUtility::basename($absFile);
                     // Make sure the title doesn't expose the absolute path!
                     // Meta information
                     $metaContent = GeneralUtility::xml2tree($meta_xml);
@@ -646,7 +647,7 @@ class FileContentParser
                 $contentCharset = 'utf-8';
                 $content = $this->pObj->convertHTMLToUtf8($content, $contentCharset);
                 $contentArr = $this->pObj->splitRegularContent($content);
-                $contentArr['title'] = basename($absFile);
+                $contentArr['title'] = PathUtility::basename($absFile);
                 // Make sure the title doesn't expose the absolute path!
                 $this->setLocaleForServerFileSystem(true);
                 break;
@@ -666,7 +667,7 @@ class FileContentParser
                 // Converting content:
                 $fileContent = $this->pObj->convertHTMLToUtf8(strip_tags(str_replace('<', ' <', $fileContent)), $charset);
                 $contentArr = $this->pObj->splitRegularContent($fileContent);
-                $contentArr['title'] = basename($absFile);
+                $contentArr['title'] = PathUtility::basename($absFile);
                 // Make sure the title doesn't expose the absolute path!
                 $this->setLocaleForServerFileSystem(true);
                 break;
@@ -686,7 +687,7 @@ class FileContentParser
                     $comment = '';
                 }
                 $contentArr = $this->pObj->splitRegularContent($comment);
-                $contentArr['title'] = basename($absFile);
+                $contentArr['title'] = PathUtility::basename($absFile);
                 // Make sure the title doesn't expose the absolute path!
                 $this->setLocaleForServerFileSystem(true);
                 break;
@@ -696,7 +697,7 @@ class FileContentParser
         // If no title (and why should there be...) then the file-name is set as title. This will raise the hits considerably if the search matches the document name.
         if (is_array($contentArr) && !$contentArr['title']) {
             // Substituting "_" for " " because many filenames may have this instead of a space char.
-            $contentArr['title'] = str_replace('_', ' ', basename($absFile));
+            $contentArr['title'] = str_replace('_', ' ', PathUtility::basename($absFile));
         }
         return $contentArr;
     }

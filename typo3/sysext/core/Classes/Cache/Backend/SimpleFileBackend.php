@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -217,7 +218,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
         if (!is_string($data)) {
             throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1334756734);
         }
-        if ($entryIdentifier !== basename($entryIdentifier)) {
+        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756735);
         }
         if ($entryIdentifier === '') {
@@ -246,7 +247,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
      */
     public function get($entryIdentifier)
     {
-        if ($entryIdentifier !== basename($entryIdentifier)) {
+        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756877);
         }
         $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
@@ -266,7 +267,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
      */
     public function has($entryIdentifier)
     {
-        if ($entryIdentifier !== basename($entryIdentifier)) {
+        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756878);
         }
         return file_exists($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension);
@@ -283,7 +284,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
      */
     public function remove($entryIdentifier)
     {
-        if ($entryIdentifier !== basename($entryIdentifier)) {
+        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756960);
         }
         if ($entryIdentifier === '') {
@@ -352,7 +353,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
     public function requireOnce($entryIdentifier)
     {
         $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-        if ($entryIdentifier !== basename($entryIdentifier)) {
+        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073037);
         }
         return file_exists($pathAndFilename) ? require_once $pathAndFilename : false;

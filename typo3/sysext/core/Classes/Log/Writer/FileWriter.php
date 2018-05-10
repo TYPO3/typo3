@@ -184,7 +184,7 @@ class FileWriter extends AbstractWriter
         if (file_exists($this->logFile)) {
             return;
         }
-        $logFileDirectory = dirname($this->logFile);
+        $logFileDirectory = PathUtility::dirname($this->logFile);
         if (!@is_dir($logFileDirectory)) {
             GeneralUtility::mkdir_deep($logFileDirectory);
             // create .htaccess file if log file is within the site path

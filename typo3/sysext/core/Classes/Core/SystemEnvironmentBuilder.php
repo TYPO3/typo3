@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Core;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -402,7 +403,7 @@ class SystemEnvironmentBuilder
      */
     protected static function getRootPathFromScriptPath($scriptPath, $entryPointLevel)
     {
-        $entryScriptDirectory = dirname($scriptPath);
+        $entryScriptDirectory = PathUtility::dirnameDuringBootstrap($scriptPath);
         if ($entryPointLevel > 0) {
             list($rootPath) = GeneralUtility::revExplode('/', $entryScriptDirectory, $entryPointLevel + 1);
         } else {

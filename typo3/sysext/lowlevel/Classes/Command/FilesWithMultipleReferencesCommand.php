@@ -209,13 +209,13 @@ If you want to get more detailed information, use the --verbose option.')
                         $io->writeln('Keeping "' . $fileName . '" for record "' . $recReference . '"');
                     } else {
                         // Create unique name for file
-                        $newName = $fileFunc->getUniqueName(basename($fileName), dirname($absoluteFileName));
+                        $newName = $fileFunc->getUniqueName(PathUtility::basename($fileName), PathUtility::dirname($absoluteFileName));
                         $io->writeln('Copying "' . $fileName . '" to "' . PathUtility::stripPathSitePrefix($newName) . '" for record "' . $recReference . '"');
                         if (!$dryRun) {
                             GeneralUtility::upload_copy_move($absoluteFileName, $newName);
                             clearstatcache();
                             if (@is_file($newName)) {
-                                $error = $referenceIndex->setReferenceValue($hash, basename($newName));
+                                $error = $referenceIndex->setReferenceValue($hash, PathUtility::basename($newName));
                                 if ($error) {
                                     $io->error('ReferenceIndex::setReferenceValue() reported "' . $error . '"');
                                 }

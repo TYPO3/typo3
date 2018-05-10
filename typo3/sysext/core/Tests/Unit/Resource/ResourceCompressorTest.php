@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  */
 
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Testcase for the ResourceCompressor class
@@ -395,7 +396,7 @@ class ResourceCompressorTest extends BaseTestCase
         // we have to fix relative paths, if we aren't working on a file in our target directory
         $relativeFilename = str_replace(PATH_site, '', $cssFile);
         if (strpos($relativeFilename, $this->subject->_get('targetDirectory')) === false) {
-            $compressedCss = $this->subject->_call('cssFixRelativeUrlPaths', $compressedCss, dirname($relativeFilename) . '/');
+            $compressedCss = $this->subject->_call('cssFixRelativeUrlPaths', $compressedCss, PathUtility::dirname($relativeFilename) . '/');
         }
         $this->assertEquals(file_get_contents($expected), $compressedCss, 'Group of file CSS assets optimized correctly.');
     }

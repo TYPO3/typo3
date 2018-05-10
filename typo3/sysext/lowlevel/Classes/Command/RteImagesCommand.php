@@ -227,7 +227,7 @@ If you want to get more detailed information, use the --verbose option.')
         // Traverse the files and put into a large table:
         while ($rec = $result->fetch()) {
             $file = $rec['ref_string'];
-            $filename = basename($file);
+            $filename = PathUtility::basenameDuringBootstrap($file);
             if (strpos($filename, 'RTEmagicC_') === 0) {
                 // First time the file is referenced => build index
                 if (!is_array($allRteImagesInUse[$file])) {
@@ -268,7 +268,7 @@ If you want to get more detailed information, use the --verbose option.')
         // Traverse files
         foreach ($files as $key => $value) {
             // If the file is a RTEmagic-image name
-            if (preg_match('/^RTEmagic[P|C]_/', basename($value))) {
+            if (preg_match('/^RTEmagic[P|C]_/', PathUtility::basenameDuringBootstrap($value))) {
                 $filesFound[] = $value;
                 continue;
             }
@@ -323,19 +323,19 @@ If you want to get more detailed information, use the --verbose option.')
                 if ($c === 0) {
                     $io->writeln('Keeping file ' . $fileName . ' for record ' . $recordID);
                 } else {
-                    $io->writeln('Copying file ' . basename($fileName) . ' for record ' . $recordID);
+                    $io->writeln('Copying file ' . PathUtility::basenameDuringBootstrap($fileName) . ' for record ' . $recordID);
                     // Get directory prefix for file and set the original name
-                    $dirPrefix = dirname($fileName) . '/';
-                    $rteOrigName = basename($fileInfo['original']);
+                    $dirPrefix = PathUtility::dirnameDuringBootstrap($fileName) . '/';
+                    $rteOrigName = PathUtility::basenameDuringBootstrap($fileInfo['original']);
                     // If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
                     if ($rteOrigName && strpos($dirPrefix, 'uploads/') === 0 && @is_dir(PATH_site . $dirPrefix)) {
                         // From the "original" RTE filename, produce a new "original" destination filename which is unused.
                         $origDestName = $fileProcObj->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
                         // Create copy file name
                         $pI = pathinfo($fileName);
-                        $copyDestName = dirname($origDestName) . '/RTEmagicC_' . substr(basename($origDestName), 10) . '.' . $pI['extension'];
+                        $copyDestName = PathUtility::dirnameDuringBootstrap($origDestName) . '/RTEmagicC_' . substr(PathUtility::basenameDuringBootstrap($origDestName), 10) . '.' . $pI['extension'];
                         if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)) {
-                            $io->writeln('Copying file ' . basename($fileName) . ' for record ' . $recordID . ' to ' . basename($copyDestName));
+                            $io->writeln('Copying file ' . PathUtility::basenameDuringBootstrap($fileName) . ' for record ' . $recordID . ' to ' . PathUtility::basenameDuringBootstrap($copyDestName));
                             if (!$dryRun) {
                                 // Making copies
                                 GeneralUtility::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);

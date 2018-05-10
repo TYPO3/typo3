@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Impexp\Domain\Repository\PresetRepository;
 use TYPO3\CMS\Impexp\Export;
@@ -532,7 +533,7 @@ class ImportExportController extends BaseScriptClass
                 $mimeType = 'application/octet-stream';
                 header('Content-Type: ' . $mimeType);
                 header('Content-Length: ' . strlen($out));
-                header('Content-Disposition: attachment; filename=' . basename($dlFile));
+                header('Content-Disposition: attachment; filename=' . PathUtility::basename($dlFile));
                 echo $out;
                 die;
             }
