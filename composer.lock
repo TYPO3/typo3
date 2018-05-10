@@ -1677,16 +1677,16 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "2.0.0",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "68a206451b8d479049a8886bdb0001134bfe03ac"
+                "reference": "0f8092b107e8e3524a40e531fd7594ab59575a2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/68a206451b8d479049a8886bdb0001134bfe03ac",
-                "reference": "68a206451b8d479049a8886bdb0001134bfe03ac",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/0f8092b107e8e3524a40e531fd7594ab59575a2f",
+                "reference": "0f8092b107e8e3524a40e531fd7594ab59575a2f",
                 "shasum": ""
             },
             "require": {
@@ -1707,7 +1707,7 @@
             "extra": {
                 "class": "TYPO3\\CMS\\Composer\\Installer\\Plugin",
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -1717,7 +1717,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -1740,7 +1740,7 @@
                 "installer",
                 "typo3"
             ],
-            "time": "2017-12-12T14:04:22+00:00"
+            "time": "2018-04-05T21:00:40+00:00"
         },
         {
             "name": "typo3fluid/fluid",
