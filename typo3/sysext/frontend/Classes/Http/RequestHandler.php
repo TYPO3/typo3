@@ -69,7 +69,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $controller = $GLOBALS['TSFE'];
 
         // Generate page
-        $controller->setUrlIdToken();
         if ($controller->isGeneratePage()) {
             $this->timeTracker->push('Page generation');
             $controller->generatePage_preProcessing();

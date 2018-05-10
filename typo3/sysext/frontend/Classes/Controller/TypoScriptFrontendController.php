@@ -2510,6 +2510,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->config['config']['absRefPrefix'] = $this->config['config']['absRefPrefix'] ?? 'auto';
         }
 
+        $this->setUrlIdToken();
+
         // Hook for postProcessing the configuration array
         $params = ['config' => &$this->config['config']];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'] ?? [] as $funcRef) {
