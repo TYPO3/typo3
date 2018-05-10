@@ -35,7 +35,8 @@ return [
     // Register login frameset
     'login_frameset' => [
         'path' => '/login/frame',
-        'target' => Controller\LoginFramesetController::class . '::mainAction'
+        'access' => 'public',
+        'target' => Controller\LoginController::class . '::refreshAction'
     ],
 
     /** Wizards */

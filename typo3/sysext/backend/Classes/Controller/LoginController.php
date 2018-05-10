@@ -140,7 +140,7 @@ class LoginController implements LoggerAwareInterface
         // If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
         if (($parsedBody['L'] ?? $queryParams['L'] ?? null) === 'OUT' && is_object($this->getBackendUserAuthentication())) {
             $this->getBackendUserAuthentication()->logoff();
-            HttpUtility::redirect($this->redirectUrl);
+            $this->redirectToUrl();
         }
 
         $this->view = $this->getFluidTemplateObject();
@@ -155,6 +155,18 @@ class LoginController implements LoggerAwareInterface
      */
     public function formAction(ServerRequestInterface $request): ResponseInterface
     {
+        return new HtmlResponse($this->createLoginLogoutForm($request));
+    }
+
+    /**
+     * Calls the main function but with loginRefresh enabled at any time
+     *
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the finished response with the content
+     */
+    public function refreshAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->loginRefresh = true;
         return new HtmlResponse($this->createLoginLogoutForm($request));
     }
 
@@ -265,6 +277,7 @@ class LoginController implements LoggerAwareInterface
             ],
             'copyright' => BackendUtility::TYPO3_copyRightNotice(),
             'redirectUrl' => $this->redirectUrl,
+            'loginRefresh' => $this->loginRefresh,
             'loginNewsItems' => $this->getSystemNews(),
             'loginProviderIdentifier' => $this->loginProviderIdentifier,
             'loginProviders' => $this->loginProviders
@@ -300,8 +313,8 @@ class LoginController implements LoggerAwareInterface
     protected function checkRedirect(ServerRequestInterface $request): void
     {
         if (
-            empty($this->getBackendUserAuthentication()->user['uid'])
-            && ($this->isLoginInProgress($request) || !$this->loginRefresh)
+            empty($this->getBackendUserAuthentication()->user['uid']) ||
+            (!($this->isLoginInProgress($request) || $this->loginRefresh))
         ) {
             return;
         }
@@ -311,7 +324,7 @@ class LoginController implements LoggerAwareInterface
          * This assumes that a cookie-setting script (like this one) has been hit at
          * least once prior to this instance.
          */
-        if (!$_COOKIE[BackendUserAuthentication::getCookieName()]) {
+        if (!isset($_COOKIE[BackendUserAuthentication::getCookieName()])) {
             if ($this->submitValue === 'setCookie') {
                 /*
                  * we tried it a second time but still no cookie
@@ -355,14 +368,14 @@ class LoginController implements LoggerAwareInterface
             $formProtection->setSessionTokenFromRegistry();
             $formProtection->persistSessionToken();
             $this->getDocumentTemplate()->JScode .= GeneralUtility::wrapJS('
-				if (parent.opener && parent.opener.TYPO3 && parent.opener.TYPO3.LoginRefresh) {
-					parent.opener.TYPO3.LoginRefresh.startTask();
-					parent.close();
+				if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.LoginRefresh) {
+					window.opener.TYPO3.LoginRefresh.startTask();
+					window.close();
 				}
 			');
         } else {
             $formProtection->storeSessionTokenInRegistry();
-            HttpUtility::redirect($this->redirectToURL);
+            $this->redirectToUrl();
         }
     }
 
@@ -492,6 +505,14 @@ class LoginController implements LoggerAwareInterface
 
         $view->getRequest()->setControllerExtensionName('Backend');
         return $view;
+    }
+
+    /**
+     * Wrapper method to redirect to configured redirect URL
+     */
+    protected function redirectToUrl(): void
+    {
+        HttpUtility::redirect($this->redirectToURL);
     }
 
     /**

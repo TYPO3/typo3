@@ -35,6 +35,7 @@ class BackendUserAuthenticator implements MiddlewareInterface
      */
     protected $publicRoutes = [
         '/login',
+        '/login/frame',
         '/ajax/login',
         '/ajax/logout',
         '/ajax/login/refresh',

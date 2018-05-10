@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 /*
@@ -16,16 +17,29 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class LoginControllerTest
  */
-class LoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LoginControllerTest extends UnitTestCase
 {
     /**
      * @var LoginController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $loginControllerMock;
+
+    /**
+     * @var bool
+     * @see prophesizeFormProtection
+     */
+    protected static $alreadySetUp = false;
 
     /**
      * @throws \InvalidArgumentException
@@ -76,7 +90,7 @@ class LoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1433416043);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = [
-            1433419736 => []
+            1433419736 => [],
         ];
         $this->loginControllerMock->_call('validateAndSortLoginProviders');
     }
@@ -90,8 +104,8 @@ class LoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->expectExceptionCode(1460977275);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = [
             1433419736 => [
-                'provider' => \stdClass::class
-            ]
+                'provider' => \stdClass::class,
+            ],
         ];
         $this->loginControllerMock->_call('validateAndSortLoginProviders');
     }
@@ -107,8 +121,8 @@ class LoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             1433419736 => [
                 'provider' => UsernamePasswordLoginProvider::class,
                 'sorting' => 30,
-                'icon-class' => 'foo'
-            ]
+                'icon-class' => 'foo',
+            ],
         ];
         $this->loginControllerMock->_call('validateAndSortLoginProviders');
     }
@@ -124,8 +138,8 @@ class LoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             1433419736 => [
                 'provider' => UsernamePasswordLoginProvider::class,
                 'sorting' => 30,
-                'label' => 'foo'
-            ]
+                'label' => 'foo',
+            ],
         ];
         $this->loginControllerMock->_call('validateAndSortLoginProviders');
     }
@@ -141,9 +155,154 @@ class LoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             1433419736 => [
                 'provider' => UsernamePasswordLoginProvider::class,
                 'label' => 'foo',
-                'icon-class' => 'foo'
-            ]
+                'icon-class' => 'foo',
+            ],
         ];
         $this->loginControllerMock->_call('validateAndSortLoginProviders');
+    }
+
+    /**
+     * @test
+     */
+    public function checkRedirectRedirectsIfLoginIsInProgressAndUserWasFound(): void
+    {
+        $GLOBALS['LANG'] = ($this->prophesize(LanguageService::class))->reveal();
+        $authenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $authenticationProphecy->getTSConfigVal('auth.BE.redirectToURL')->willReturn('http://example.com');
+        $authenticationProphecy->writeUC()->willReturn();
+        $authenticationProphecy->getSessionData('formProtectionSessionToken')->willReturn('foo');
+        $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
+        $this->prophesizeFormProtection();
+
+        $this->loginControllerMock = $this->getAccessibleMock(
+            LoginController::class,
+            ['isLoginInProgress', 'redirectToUrl'],
+            [],
+            '',
+            false
+        );
+
+        $GLOBALS['BE_USER']->user['uid'] = 1;
+        $this->loginControllerMock->method('isLoginInProgress')->willReturn(true);
+        $this->loginControllerMock->_set('loginRefresh', false);
+
+        $this->loginControllerMock->expects($this->once())->method('redirectToUrl');
+        $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function checkRedirectAddsJavaScriptForCaseLoginRefresh(): void
+    {
+        $GLOBALS['LANG'] = $this->prophesize(LanguageService::class)->reveal();
+        $authenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $authenticationProphecy->getTSConfigVal('auth.BE.redirectToURL')->willReturn('http://example.com');
+        $authenticationProphecy->writeUC()->willReturn();
+        $this->prophesizeFormProtection();
+        $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
+        $documentTemplateProphecy = $this->prophesize(DocumentTemplate::class);
+        $GLOBALS['TBE_TEMPLATE'] = $documentTemplateProphecy->reveal();
+
+        $this->loginControllerMock = $this->getAccessibleMock(
+            LoginController::class,
+            ['isLoginInProgress', 'redirectToUrl'],
+            [],
+            '',
+            false
+        );
+
+        $GLOBALS['BE_USER']->user['uid'] = 1;
+        $this->loginControllerMock->method('isLoginInProgress')->willReturn(false);
+        $this->loginControllerMock->_set('loginRefresh', true);
+
+        $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
+
+        self::assertContains('window.opener.TYPO3.LoginRefresh.startTask();', $documentTemplateProphecy->JScode);
+    }
+
+    /**
+     * @test
+     */
+    public function checkRedirectAddsJavaScriptForCaseLoginRefreshWhileLoginIsInProgress(): void
+    {
+        $GLOBALS['LANG'] = $this->prophesize(LanguageService::class)->reveal();
+        $authenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $authenticationProphecy->getTSConfigVal('auth.BE.redirectToURL')->willReturn('http://example.com');
+        $authenticationProphecy->writeUC()->willReturn();
+        $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
+        $this->prophesizeFormProtection();
+        $documentTemplateProphecy = $this->prophesize(DocumentTemplate::class);
+        $GLOBALS['TBE_TEMPLATE'] = $documentTemplateProphecy->reveal();
+
+        $this->loginControllerMock = $this->getAccessibleMock(
+            LoginController::class,
+            ['isLoginInProgress', 'redirectToUrl'],
+            [],
+            '',
+            false
+        );
+
+        $GLOBALS['BE_USER']->user['uid'] = 1;
+        $this->loginControllerMock->method('isLoginInProgress')->willReturn(true);
+        $this->loginControllerMock->_set('loginRefresh', true);
+
+        $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
+
+        self::assertContains('window.opener.TYPO3.LoginRefresh.startTask();', $documentTemplateProphecy->JScode);
+    }
+
+    /**
+     * @test
+     */
+    public function checkRedirectDoesNotRedirectIfNoUserIsFound(): void
+    {
+        $GLOBALS['BE_USER'] = $this->prophesize(BackendUserAuthentication::class)->reveal();
+        $this->loginControllerMock = $this->getAccessibleMock(
+            LoginController::class,
+            ['redirectToUrl'],
+            [],
+            '',
+            false
+        );
+
+        $GLOBALS['BE_USER']->user['uid'] = null;
+
+        $this->loginControllerMock->expects($this->never())->method('redirectToUrl');
+        $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function checkRedirectDoesNotRedirectIfLoginIsNotInProgressAndLoginRefreshIsFalse(): void
+    {
+        $GLOBALS['BE_USER'] = $this->prophesize(BackendUserAuthentication::class)->reveal();
+        $this->loginControllerMock = $this->getAccessibleMock(
+            LoginController::class,
+            ['redirectToUrl', 'isLoginInProgress'],
+            [],
+            '',
+            false
+        );
+
+        $GLOBALS['BE_USER']->user['uid'] = 1;
+        $this->loginControllerMock->method('isLoginInProgress')->willReturn(false);
+        $this->loginControllerMock->_set('loginRefresh', false);
+
+        $this->loginControllerMock->expects($this->never())->method('redirectToUrl');
+        $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
+    }
+
+    /**
+     * FormProtectionFactory has an internal static instance cache we need to work around here
+     */
+    protected function prophesizeFormProtection(): void
+    {
+        if (!self::$alreadySetUp) {
+            $formProtectionProphecy = $this->prophesize(BackendFormProtection::class);
+            GeneralUtility::addInstance(BackendFormProtection::class, $formProtectionProphecy->reveal());
+            self::$alreadySetUp = true;
+        }
     }
 }
