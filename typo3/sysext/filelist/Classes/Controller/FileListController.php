@@ -621,7 +621,7 @@ class FileListController extends ActionController
             if ($parentFolder->getIdentifier() !== $this->folderObject->getIdentifier()
                 && $currentStorage->isWithinFileMountBoundaries($parentFolder)
             ) {
-                $levelUpClick = 'top.document.getElementsByName("navigation")[0].contentWindow.Tree.highlightActiveItem("file","folder'
+                $levelUpClick = 'top.document.getElementsByName("nav_frame")[0].contentWindow.Tree.highlightActiveItem("file","folder'
                     . GeneralUtility::md5int($parentFolder->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)';
                 $levelUpButton = $buttonBar->makeLinkButton()
                     ->setHref((string)$uriBuilder->buildUriFromRoute('file_FilelistList', ['id' => $parentFolder->getCombinedIdentifier()]))

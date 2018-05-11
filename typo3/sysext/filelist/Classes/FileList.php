@@ -947,7 +947,7 @@ class FileList
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $href = (string)$uriBuilder->buildUriFromRoute('file_FilelistList', ['id' => $folderObject->getCombinedIdentifier()]);
-        $onclick = ' onclick="' . htmlspecialchars('top.document.getElementsByName("navigation")[0].contentWindow.Tree.highlightActiveItem("file","folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)') . '"';
+        $onclick = ' onclick="' . htmlspecialchars('top.document.getElementsByName("nav_frame")[0].contentWindow.Tree.highlightActiveItem("file","folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)') . '"';
         // Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
         if ((string)$title === strip_tags($title)) {
             return '<a href="' . htmlspecialchars($href) . '"' . $onclick . ' title="' . htmlspecialchars($title) . '">' . $title . '</a>';
