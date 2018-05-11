@@ -20,6 +20,7 @@ import moment = require('moment');
 import NProgress = require('nprogress');
 import Modal = require('./Modal');
 import Notification = require('./Notification');
+import 'TYPO3/CMS/Backend/jsfunc.inline';
 
 /**
  * Possible actions for conflicts w/ existing files
@@ -41,7 +42,7 @@ interface UploadedFile {
   uid: number;
   icon: string;
   extension: string;
-  permissions: {read: boolean; write: boolean};
+  permissions: { read: boolean; write: boolean };
   size: number;
   // formatted as ddmmyy
   date: string;
@@ -49,6 +50,17 @@ interface UploadedFile {
   mtime: Date;
   thumbUrl: string;
   type: string;
+}
+
+interface DragUploaderOptions {
+  /**
+   * CSS selector for the element where generated messages are inserted. (required)
+   */
+  outputSelector: string;
+  /**
+   * Color of the message text. (optional)
+   */
+  outputColor?: string;
 }
 
 class DragUploaderPlugin {
@@ -64,7 +76,7 @@ class DragUploaderPlugin {
   /**
    * Array of files which are asked for being overridden
    */
-  private askForOverride: Array<{original: UploadedFile, uploaded: File, action: Action}> = [];
+  private askForOverride: Array<{ original: UploadedFile, uploaded: File, action: Action }> = [];
 
   private percentagePerFile: number = 1;
 
@@ -302,7 +314,7 @@ class DragUploaderPlugin {
           url: TYPO3.settings.ajaxUrls.flashmessages_render,
           cache: false,
           success: (data) => {
-            $.each(data, (index: number, flashMessage: {title: string, message: string, severity: number}) => {
+            $.each(data, (index: number, flashMessage: { title: string, message: string, severity: number }) => {
               Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity);
             });
           }
@@ -394,7 +406,7 @@ class DragUploaderPlugin {
     );
 
     const uploader = this;
-    $modal.on('change', '.t3js-actions-all', function(this: HTMLInputElement): void {
+    $modal.on('change', '.t3js-actions-all', function (this: HTMLInputElement): void {
       const $this = $(this),
         value = $this.val();
 
@@ -409,11 +421,11 @@ class DragUploaderPlugin {
       } else {
         $modal.find('.t3js-actions').removeProp('disabled');
       }
-    }).on('change', '.t3js-actions', function(this: HTMLInputElement): void {
+    }).on('change', '.t3js-actions', function (this: HTMLInputElement): void {
       const $this = $(this),
         index = parseInt($this.data('override'), 10);
       uploader.askForOverride[index].action = <Action>$this.val();
-    }).on('button.clicked', function(this: HTMLInputElement, e: Event): void {
+    }).on('button.clicked', function (this: HTMLInputElement, e: Event): void {
       if ((<HTMLInputElement>(e.target)).name === 'cancel') {
         uploader.askForOverride = [];
         Modal.dismiss();
@@ -512,7 +524,7 @@ class FileQueueItem {
         data: formData,
         cache: false,
         type: 'POST',
-        success: (data: {upload?: UploadedFile[]}) => this.uploadSuccess(data),
+        success: (data: { upload?: UploadedFile[] }) => this.uploadSuccess(data),
         error: (response: XMLHttpRequest) => this.uploadError(response)
       });
 
@@ -578,7 +590,7 @@ class FileQueueItem {
   /**
    * @param {{upload?: UploadedFile[]}} data
    */
-  public uploadSuccess(data: {upload?: UploadedFile[]}): void {
+  public uploadSuccess(data: { upload?: UploadedFile[] }): void {
     if (data.upload) {
       this.dragUploader.decrementQueueLength();
       this.$row.removeClass('uploading');
@@ -727,7 +739,7 @@ interface DragUploaderFunction {
   (options: DragUploaderOptions): JQuery;
 }
 
-export const initialize = function(): void {
+export const initialize = function (): void {
   DragUploader.init();
 
   // load required modules to hook in the post initialize function

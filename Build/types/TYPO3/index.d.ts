@@ -39,7 +39,6 @@ declare namespace TBE_EDITOR {
 /**
  * Current AMD/RequireJS modules are returning *instances* of ad-hoc *classes*, make that known to TypeScript
  */
-
 declare module 'TYPO3/CMS/Backend/FormEngineValidation' {
   export = new TYPO3.CMS.Backend.FormEngineValidation();
 }
@@ -75,22 +74,6 @@ declare module 'TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' {
 
 declare module 'cm/lib/codemirror';
 declare module 'moment';
-declare module 'TYPO3/CMS/Backend/jsfunc.inline';
-
-/**
- * Options for the plugin.
- * TODO fix this
- */
-interface DragUploaderOptions {
-  /**
-   * CSS selector for the element where generated messages are inserted. (required)
-   */
-  outputSelector: string;
-  /**
-   * Color of the message text. (optional)
-   */
-  outputColor?: string;
-}
 
 interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
   originalEvent: T;
@@ -101,11 +84,14 @@ interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
  */
 interface JQuery {
   clearable(options?: any): JQuery;
+
   datetimepicker(options?: any): JQuery;
-  dragUploader(options?: DragUploaderOptions): JQuery;
+
+  dragUploader(options?: any): JQuery;
 
   // To be able to use twbs/bootstrap-slider we have to override the definition of jquerui
   slider(options: { [key: string]: any }): any;
+
   // To be able to use jquery/autocomplete-slider we have to override the definition of jquerui
   autocomplete(options?: { [key: string]: any }): any;
 }

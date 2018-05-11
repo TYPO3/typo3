@@ -30,7 +30,10 @@ indent_size = 4
 indent_style = space
 indent_size = 4
 
-# JS-Files
+# TS/JS-Files
+[*.ts]
+indent_style = space
+indent_size = 2
 [*.js]
 indent_style = space
 indent_size = 2
@@ -68,9 +71,6 @@ indent_style = space
 indent_size = 2
 
 # TypoScript
-[*.ts]
-indent_style = space
-indent_size = 2
 [*.typoscript]
 indent_style = space
 indent_size = 2
