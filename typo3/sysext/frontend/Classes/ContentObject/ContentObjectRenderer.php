@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -28,7 +30,6 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -73,8 +74,10 @@ use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
  * The class is normally instantiated and referred to as "cObj".
  * When you call your own PHP-code typically through a USER or USER_INT cObject then it is this class that instantiates the object and calls the main method. Before it does so it will set (if you are using classes) a reference to itself in the internal variable "cObj" of the object. Thus you can access all functions and data from this class by $this->cObj->... from within you classes written to be USER or USER_INT content objects.
  */
-class ContentObjectRenderer
+class ContentObjectRenderer implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var array
      */
@@ -4575,9 +4578,7 @@ class ContentObjectRenderer
                         $fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
                     }
                 } catch (Exception $exception) {
-                    /** @var \TYPO3\CMS\Core\Log\Logger $logger */
-                    $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-                    $logger->warning('The image "' . $file . '" could not be found and won\'t be included in frontend output', ['exception' => $exception]);
+                    $this->logger->warning('The image "' . $file . '" could not be found and won\'t be included in frontend output', ['exception' => $exception]);
                     return null;
                 }
             }
@@ -5017,9 +5018,7 @@ class ContentObjectRenderer
                 $fileObject = null;
             }
         } catch (Exception $exception) {
-            /** @var \TYPO3\CMS\Core\Log\Logger $logger */
-            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-            $logger->warning('The file "' . $fileUidOrCurrentKeyword . '" could not be found and won\'t be included in frontend output', ['exception' => $exception]);
+            $this->logger->warning('The file "' . $fileUidOrCurrentKeyword . '" could not be found and won\'t be included in frontend output', ['exception' => $exception]);
             $fileObject = null;
         }
 
@@ -5259,9 +5258,7 @@ class ContentObjectRenderer
         try {
             $linkDetails = $linkService->resolve($linkParameter);
         } catch (Exception\InvalidPathException $exception) {
-            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-            $logger->warning('The link could not be generated', ['exception' => $exception]);
-
+            $this->logger->warning('The link could not be generated', ['exception' => $exception]);
             return $linkText;
         }
 

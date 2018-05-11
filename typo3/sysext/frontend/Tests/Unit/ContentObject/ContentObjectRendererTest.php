@@ -15,13 +15,11 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  */
 
 use Prophecy\Argument;
-use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -128,7 +126,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     protected function setUp()
     {
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
-        $this->createMockedLoggerAndLogManager();
 
         $this->templateServiceMock =
             $this->getMockBuilder(TemplateService::class)
@@ -154,6 +151,9 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             ['getResourceFactory', 'getEnvironmentVariable'],
             [$this->frontendControllerMock]
         );
+
+        $logger = $this->prophesize(Logger::class);
+        $this->subject->setLogger($logger->reveal());
         $this->subject->setContentObjectClassMap($this->contentObjectMap);
         $this->subject->start([], 'tt_content');
     }
@@ -174,19 +174,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     protected function getFrontendController()
     {
         return $GLOBALS['TSFE'];
-    }
-
-    /**
-     * Avoid logging to the file system (file writer is currently the only configured writer)
-     */
-    protected function createMockedLoggerAndLogManager()
-    {
-        $logManagerMock = $this->getMockBuilder(LogManager::class)->getMock();
-        $loggerMock = $this->getMockBuilder(LoggerInterface::class)->getMock();
-        $logManagerMock->expects($this->any())
-            ->method('getLogger')
-            ->willReturn($loggerMock);
-        GeneralUtility::setSingletonInstance(LogManager::class, $logManagerMock);
     }
 
     /**
@@ -3105,12 +3092,9 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         GeneralUtility::setSingletonInstance(LinkService::class, $linkService->reveal());
         $linkService->resolve('foo')->willThrow(InvalidPathException::class);
 
-        $logManager = $this->prophesize(LogManager::class);
-        GeneralUtility::setSingletonInstance(LogManager::class, $logManager->reveal());
         $logger = $this->prophesize(Logger::class);
         $logger->warning('The link could not be generated', Argument::any())->shouldBeCalled();
-        $logManager->getLogger(Argument::any())->willReturn($logger->reveal());
-
+        $this->subject->setLogger($logger->reveal());
         $this->subject->typoLink('foo', ['parameter' => 'foo']);
     }
 
