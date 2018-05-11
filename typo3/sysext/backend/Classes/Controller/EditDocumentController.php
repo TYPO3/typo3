@@ -1626,7 +1626,8 @@ class EditDocumentController
         $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('TCEforms');
         $buttonBar->addButton($cshButton);
 
-        if ($this->returnUrl !== $this->getCloseUrl()) {
+        $closeUrl = $this->getCloseUrl();
+        if ($this->returnUrl !== $closeUrl) {
             $shortCutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
             $shortCutButton->setModuleName('xMOD_alt_doc.php')
                 ->setGetVariables([
@@ -1638,10 +1639,7 @@ class EditDocumentController
                     'returnNewPageId',
                     'noView']);
             $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($shortCutButton);
-        }
 
-        $closeUrl = $this->getCloseUrl();
-        if ($this->returnUrl !== $closeUrl) {
             $requestUri = GeneralUtility::linkThisScript([
                 'returnUrl' => $closeUrl,
             ]);

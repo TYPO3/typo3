@@ -5559,7 +5559,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $mailAddress Email address
      * @param string $linktxt Link text, default will be the email address.
-     * @return string Returns a numerical array with two elements: 1) $mailToUrl, string ready to be inserted into the href attribute of the <a> tag, b) $linktxt: The string between starting and ending <a> tag.
+     * @return array A numerical array with two elements: 1) $mailToUrl, string ready to be inserted into the href attribute of the <a> tag, b) $linktxt: The string between starting and ending <a> tag.
      */
     public function getMailTo($mailAddress, $linktxt)
     {
@@ -5730,11 +5730,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         } else {
             $newQueryArray = $currentQueryArray;
         }
-        if ($forceOverruleArguments) {
-            ArrayUtility::mergeRecursiveWithOverrule($newQueryArray, $overruleQueryArguments);
-        } else {
-            ArrayUtility::mergeRecursiveWithOverrule($newQueryArray, $overruleQueryArguments, false);
-        }
+        ArrayUtility::mergeRecursiveWithOverrule($newQueryArray, $overruleQueryArguments, $forceOverruleArguments);
         return GeneralUtility::implodeArrayForUrl('', $newQueryArray, '', false, true);
     }
 

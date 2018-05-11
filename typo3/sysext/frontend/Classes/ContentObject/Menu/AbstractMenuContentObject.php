@@ -258,7 +258,7 @@ abstract class AbstractMenuContentObject
         $this->conf = $conf;
         $this->menuNumber = $menuNumber;
         $this->mconf = $conf[$this->menuNumber . $objSuffix . '.'];
-        $this->debug = $tsfe->debug;
+        $this->debug = !empty($tsfe->config['config']['debug']);
         $this->WMcObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         // In XHTML and HTML5 there is no "name" attribute anymore
         switch ($tsfe->xhtmlDoctype) {

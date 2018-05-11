@@ -2075,7 +2075,7 @@ class GeneralUtility
      * sets permissions on newly created directories.
      *
      * @param string $directory Target directory to create. Must a have trailing slash
-     * @param string $deepDirectory Directory to create. This second parameter
+     * @param string $deepDirectory Directory to create. This second parameter is deprecated since TYPO3 v9, and will be removed in TYPO3 v10.
      * @throws \InvalidArgumentException If $directory or $deepDirectory are not strings
      * @throws \RuntimeException If directory could not be created
      */
@@ -2333,7 +2333,7 @@ class GeneralUtility
      *
      * @param array $fileArr The file array to remove the prefix from
      * @param string $prefixToRemove The prefix path to remove (if found as first part of string!)
-     * @return array The input $fileArr processed.
+     * @return array|string The input $fileArr processed, or a string with an error message, when an error occurred.
      */
     public static function removePrefixPathFromList(array $fileArr, $prefixToRemove)
     {
