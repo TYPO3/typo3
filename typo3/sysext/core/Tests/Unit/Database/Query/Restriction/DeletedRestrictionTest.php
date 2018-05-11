@@ -20,13 +20,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 class DeletedRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
      * @test
      */
     public function buildRestrictionsAddsDeletedWhereClause()

@@ -20,13 +20,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
 {
-    /**
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
     public function frontendStatesDataProvider()
     {
         return [

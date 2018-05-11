@@ -23,7 +23,10 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -65,8 +68,7 @@ class QueryBuilderTest extends UnitTestCase
         $this->connection = $this->prophesize(Connection::class);
         $this->connection->getDatabasePlatform()->willReturn(new MockPlatform());
 
-        $this->subject = GeneralUtility::makeInstance(
-            QueryBuilder::class,
+        $this->subject = new QueryBuilder(
             $this->connection->reveal(),
             null,
             $this->concreteQueryBuilder->reveal()
@@ -1265,5 +1267,86 @@ class QueryBuilderTest extends UnitTestCase
         $this->assertSame($expectedSQL, $subject->getSQL());
 
         $this->assertSame($expectedCountSQL, $clonedQueryBuilder->getSQL());
+    }
+
+    /**
+     * @test
+     */
+    public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConstructor()
+    {
+        $restrictionClass = get_class($this->prophesize(QueryRestrictionInterface::class)->reveal());
+        $queryBuilder = new QueryBuilder(
+            $this->connection->reveal(),
+            null,
+            $this->concreteQueryBuilder->reveal(),
+            [
+                $restrictionClass => [],
+            ]
+        );
+
+        $container = $this->prophesize(AbstractRestrictionContainer::class);
+        $container->add(new $restrictionClass())->shouldBeCalled();
+
+        $queryBuilder->setRestrictions($container->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration()
+    {
+        $restrictionClass = get_class($this->prophesize(QueryRestrictionInterface::class)->reveal());
+        $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'][$restrictionClass] = [];
+        $queryBuilder = new QueryBuilder(
+            $this->connection->reveal(),
+            null,
+            $this->concreteQueryBuilder->reveal()
+        );
+
+        $container = $this->prophesize(AbstractRestrictionContainer::class);
+        $container->add(new $restrictionClass())->shouldBeCalled();
+
+        $queryBuilder->setRestrictions($container->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function settingRestrictionContainerWillNotAddAdditionalRestrictionsFromConfigurationIfNotDisabled()
+    {
+        $restrictionClass = get_class($this->prophesize(QueryRestrictionInterface::class)->reveal());
+        $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'][$restrictionClass] = ['disabled' => true];
+        $queryBuilder = new QueryBuilder(
+            $this->connection->reveal(),
+            null,
+            $this->concreteQueryBuilder->reveal()
+        );
+
+        $container = $this->prophesize(AbstractRestrictionContainer::class);
+        $container->add(new $restrictionClass())->shouldNotBeCalled();
+
+        $queryBuilder->setRestrictions($container->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function resettingToDefaultRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration()
+    {
+        $restrictionClass = get_class($this->prophesize(QueryRestrictionInterface::class)->reveal());
+        $queryBuilder = new QueryBuilder(
+            $this->connection->reveal(),
+            null,
+            $this->concreteQueryBuilder->reveal(),
+            [
+                $restrictionClass => [],
+            ]
+        );
+
+        $container = $this->prophesize(DefaultRestrictionContainer::class);
+        $container->add(new $restrictionClass())->shouldBeCalled();
+        GeneralUtility::addInstance(DefaultRestrictionContainer::class, $container->reveal());
+
+        $queryBuilder->resetRestrictions();
     }
 }

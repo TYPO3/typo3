@@ -19,6 +19,9 @@
  * The description of the various options is stored in the DefaultConfigurationDescription.yaml file
  */
 return [
+    'DB' => [
+        'additionalQueryRestrictions' => [],
+    ],
     'GFX' => [ // Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
         'thumbnails' => true,
         'thumbnails_png' => true,
