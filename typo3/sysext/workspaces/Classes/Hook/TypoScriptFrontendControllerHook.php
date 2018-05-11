@@ -45,19 +45,7 @@ class TypoScriptFrontendControllerHook
             return '';
         }
 
-        if (empty($this->getBackendUserAuthentication()->getSessionData('workspaces.backend_domain'))) {
-            $backendDomain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-        } else {
-            $backendDomain = $this->getBackendUserAuthentication()->getSessionData('workspaces.backend_domain');
-        }
-
-        $content = $pObj->cObj->cObjGetSingle('FLUIDTEMPLATE', [
-            'file' => 'EXT:workspaces/Resources/Private/Templates/Preview/Preview.html',
-            'variables.' => [
-                'backendDomain' => 'TEXT',
-                'backendDomain.' => ['value' => $backendDomain]
-            ]
-        ]);
+        $content = '';
 
         if (!isset($pObj->config['config']['disablePreviewNotification']) || (int)$pObj->config['config']['disablePreviewNotification'] !== 1) {
             // get the title of the current workspace

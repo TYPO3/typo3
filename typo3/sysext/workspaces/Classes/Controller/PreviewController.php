@@ -126,7 +126,6 @@ class PreviewController extends AbstractController
             $liveUrl = $wsBaseUrl . '&ADMCMD_noBeUser=1&ADMCMD_prev=IGNORE';
         }
         $wsUrl = $wsBaseUrl . '&ADMCMD_prev=IGNORE&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $backendUser->workspace;
-        $backendDomain = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
         $splitPreviewTsConfig = BackendUtility::getModTSconfig($this->pageId, 'workspaces.splitPreviewModes');
         $splitPreviewModes = GeneralUtility::trimExplode(',', $splitPreviewTsConfig['value']);
         $allPreviewModes = ['slider', 'vbox', 'hbox'];
@@ -144,8 +143,6 @@ class PreviewController extends AbstractController
         $cssFile = GeneralUtility::getFileAbsFileName($cssFile);
         $this->pageRenderer->addCssFile(PathUtility::getAbsoluteWebPath($cssFile));
 
-        $backendUser->setAndSaveSessionData('workspaces.backend_domain', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
-
         $logoPath = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Images/typo3_logo_orange.svg');
         $logoWidth = 22;
         $logoHeight = 22;
@@ -158,7 +155,6 @@ class PreviewController extends AbstractController
             'liveUrl' => $liveUrl,
             'wsUrl' => $wsUrl,
             'wsSettingsUrl' => $wsSettingsUrl,
-            'backendDomain' => $backendDomain,
             'activeWorkspace' => $wsList[$activeWorkspace],
             'splitPreviewModes' => $splitPreviewModes,
             'firstPreviewMode' => current($splitPreviewModes),
