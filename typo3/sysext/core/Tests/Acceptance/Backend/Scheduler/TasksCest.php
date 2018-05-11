@@ -149,4 +149,37 @@ class TasksCest
         $I->see('Information');
         $I->canSeeNumberOfElements('.tx_scheduler_mod1 table tbody tr', [1, 10000]);
     }
+
+    /**
+     * @param Admin $I
+     */
+    public function canCreateNewTaskGroupFromEditForm(Admin $I)
+    {
+        $I->amGoingTo('create a task when none exists yet');
+        $I->canSee('Scheduled tasks', 'h1');
+        $this->createASchedulerTask($I);
+
+        $I->amGoingTo('test the new task group button on task edit view');
+        $I->click('#DataTables_Table_0 > tbody > tr > td.nowrap > span > div:nth-child(1) > a:nth-child(1)');
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->canSee('Edit task', 'h2');
+        $I->click('#task_group_row > div > div > div > div > a');
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->canSee('Create new Scheduler task group on root level', 'h1');
+
+        $I->fillField('//input[contains(@data-formengine-input-name, "data[tx_scheduler_task_group]") and contains(@data-formengine-input-name, "[groupName]")]', 'new task group');
+        $I->click('button[name="_savedok"]');
+        $I->wait(0.2);
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->click('a[title="Close"]');
+        $I->waitForElementVisible('#tx_scheduler_form');
+
+        $I->selectOption('select#task_class', 'new task group');
+        $I->click('button[value="save"]');
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->click('a[title="Cancel"]');
+        $I->waitForElementVisible('div.tx_scheduler_mod1');
+
+        $I->canSee('new task group', 'tr.taskGroup');
+    }
 }

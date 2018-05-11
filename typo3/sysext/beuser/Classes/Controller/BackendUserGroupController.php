@@ -59,7 +59,7 @@ class BackendUserGroupController extends BackendUserActionController
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $this->view->assign('backendUserGroups', $this->backendUserGroupRepository->findAll());
-        $this->view->assign('returnUrl', rawurlencode((string)$uriBuilder->buildUriFromRoute(
+        $this->view->assign('returnUrl', (string)$uriBuilder->buildUriFromRoute(
             'system_BeuserTxBeuser',
             [
                 'tx_beuser_system_beusertxbeuser' => [
@@ -67,6 +67,6 @@ class BackendUserGroupController extends BackendUserActionController
                     'controller' => 'BackendUserGroup'
                 ]
             ]
-        )));
+        ));
     }
 }

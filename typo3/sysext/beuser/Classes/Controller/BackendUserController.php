@@ -158,7 +158,7 @@ class BackendUserController extends BackendUserActionController
         $this->view->assign('demand', $demand);
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        $this->view->assign('returnUrl', rawurlencode((string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser')));
+        $this->view->assign('returnUrl', (string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
         $this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
         $this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
         $this->view->assign('backendUsers', $this->backendUserRepository->findDemanded($demand));
@@ -206,7 +206,7 @@ class BackendUserController extends BackendUserActionController
                 'tx_beuser_system_beusertxbeuser[controller]' => 'BackendUser'
             ]
         );
-        $this->view->assign('returnUrl', rawurlencode($returnUrl));
+        $this->view->assign('returnUrl', $returnUrl);
         $this->view->assign('compareUserList', !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '');
     }
 

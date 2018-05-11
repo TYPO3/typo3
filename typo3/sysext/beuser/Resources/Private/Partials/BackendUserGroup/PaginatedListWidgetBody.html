@@ -10,7 +10,7 @@
         </thead>
         <tbody>
         <f:for each="{paginatedBackendUserGroups}" as="backendUserGroup">
-            <f:render partial="BackendUserGroup/IndexListRow" arguments="{demand: demand, backendUserGroup: backendUserGroup, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl, currentUserUid: currentUserUid}" />
+            <f:render partial="BackendUserGroup/IndexListRow" section="list_row" arguments="{demand: demand, backendUserGroup: backendUserGroup, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl, currentUserUid: currentUserUid}" />
         </f:for>
         <f:comment>
             Footer row: no officially defined style yet

@@ -1,5 +1,11 @@
-{namespace notes=TYPO3\CMS\SysNote\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+	  xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+	  xmlns:notes="http://typo3.org/ns/TYPO3/CMS/SysNote/ViewHelpers"
+>
+<f:layout name="Default" />
 
+<f:section name="main">
 <f:if condition="{notes}">
 	<h2><f:translate key="internal_note" /></h2>
 
@@ -29,9 +35,9 @@
 					</f:if>
 
 					<div class="btn-group pull-right">
-						<a href="{notes:editLink(id:note.uid)}" class="btn btn-default btn-sm">
+						<be:link.editRecord uid="{note.uid}" table="sys_note" class="btn btn-default btn-sm">
 							<core:icon identifier="actions-open" />
-						</a>
+						</be:link.editRecord>
 						<a href="{notes:deleteLink(id:note.uid)}" class="btn btn-default btn-sm t3js-modal-trigger" data-severity="warning" data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}" data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}" data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}">
 							<core:icon identifier="actions-edit-delete" />
 						</a>
@@ -45,3 +51,5 @@
 		</f:for>
 	</div>
 </f:if>
+</f:section>
+</html>

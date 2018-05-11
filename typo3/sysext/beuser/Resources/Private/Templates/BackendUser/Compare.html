@@ -1,5 +1,7 @@
-{namespace be = TYPO3\CMS\Backend\ViewHelpers}
-{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+	  xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+	  xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers">
 
 <f:layout name="Default" />
 
@@ -19,9 +21,9 @@
 								<be:avatar backendUser="{compareUser.uid}" showIcon="true" />
 							</a>
 							{compareUser.userName}
-							<a class="btn btn-default pull-right" href="{bu:editRecord(parameters: 'edit[be_users][{compareUser.uid}]=edit&returnUrl={returnUrl}')}" title="edit">
+								<be:link.editRecord class="btn btn-default pull-right" table="be_users" uid="{compareUser.uid}" returnUrl="{returnUrl}" title="edit">
 								<core:icon identifier="actions-open" />
-							</a>
+								</be:link.editRecord>
 						</th>
 					</f:for>
 				</tr>
@@ -198,3 +200,4 @@
 		</table>
 	</div>
 </f:section>
+</html>

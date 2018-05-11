@@ -1,4 +1,4 @@
-{namespace sched = TYPO3\CMS\Scheduler\ViewHelpers}
+{namespace be = TYPO3\CMS\Backend\ViewHelpers}
 
 <input type="hidden" name="tx_scheduler[uid]" value="{uid}" />
 <input type="hidden" name="previousCMD" value="{cmd}" />
@@ -61,7 +61,9 @@
                     </f:for>
                 </select>
                 <div class="input-group-btn" role="group">
-                    <a class="btn btn-default" href="{sched:editRecord(parameters: 'edit[tx_scheduler_task_group][0]=new&returnUrl={returnUrl}')}" ><core:icon identifier="actions-add" /></a>
+                    <be:link.newRecord class="btn btn-default" table="tx_scheduler_task_group" returnUrl="{returnUrl}">
+                        <core:icon identifier="actions-add" />
+                    </be:link.newRecord>
                 </div>
             </div>
         </div>

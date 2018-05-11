@@ -202,4 +202,41 @@ class ListUserCest
         $I->canSeeNumberOfElements('#typo3-backend-user-list tfoot tr', 1);
         $I->see($countOfUsers . ' Users', '#typo3-backend-user-list tfoot tr');
     }
+
+    /**
+     * @param Admin $I
+     */
+    public function canEditUsersFromIndexListView(Admin $I)
+    {
+        $I->canSee('Backend User Listing', 'h1');
+        $username = $I->grabTextFrom('#typo3-backend-user-list > tbody > tr:nth-child(1) > td.col-title > a:nth-child(1) > b');
+
+        $I->amGoingTo('test the edit button');
+        $I->click('#typo3-backend-user-list > tbody > tr:nth-child(1) > td.col-control > div:nth-child(1) > a');
+        $this->openAndCloseTheEditForm($I, $username);
+
+        $I->amGoingTo('test the edit link on username');
+        $I->click('#typo3-backend-user-list > tbody > tr:nth-child(1) > td.col-title > a:nth-child(1)');
+        $this->openAndCloseTheEditForm($I, $username);
+
+        $I->amGoingTo('test the edit link on real name');
+        $I->click('#typo3-backend-user-list > tbody > tr:nth-child(1) > td.col-title > a:nth-child(4)');
+        $this->openAndCloseTheEditForm($I, $username);
+    }
+
+    /**
+     * @param Admin $I
+     * @param string $username
+     *
+     * @throws \Exception
+     */
+    private function openAndCloseTheEditForm(Admin $I, string $username): void
+    {
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->canSee('Edit Backend user "' . $username . '" on root level');
+
+        $I->click('div.module-docheader .btn.t3js-editform-close');
+        $I->waitForElementVisible('table.table-striped');
+        $I->canSee('Backend User Listing', 'h1');
+    }
 }

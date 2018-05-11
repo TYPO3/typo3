@@ -1,0 +1,64 @@
+<?php
+declare(strict_types = 1);
+
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FileList;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+
+/**
+ * Cases concerning sys_file_metadata records
+ */
+class FileMetaDataCest
+{
+    /**
+     * @param Admin $I
+     *
+     * @throws \Exception
+     */
+    public function _before(Admin $I)
+    {
+        $I->useExistingSession();
+        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('list_frame');
+        $I->waitForText('Web Content Management System');
+        $I->switchToIFrame();
+    }
+
+    /**
+     * @param Admin $I
+     *
+     * @throws \Exception
+     */
+    public function metaDataCanBeEdited(Admin $I)
+    {
+        $I->wantToTest('Metadata can be edited through search list results');
+        $I->click('Filelist');
+
+        $I->switchToIFrame('list_frame');
+        $I->waitForElementNotVisible('div#nprogress');
+        $I->canSee('fileadmin/ (auto-created)');
+
+        $I->fillField('tx_filelist_file_filelistlist[searchWord]', 'bus');
+        $I->click('Search');
+        $I->waitForElementVisible('table.table-striped');
+
+        $I->click('bus_lane.jpg');
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->waitForElementVisible('#EditDocumentController');
+
+        $I->canSee('Edit File Metadata "bus_lane.jpg"', 'h1');
+    }
+}

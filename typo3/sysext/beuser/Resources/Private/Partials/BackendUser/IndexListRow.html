@@ -1,6 +1,9 @@
-{namespace be = TYPO3\CMS\Backend\ViewHelpers}
-{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+	  xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+	  xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers">
 
+<f:section name="list_row">
 <tr>
 	<td>
 		<a href="#" class="t3js-contextmenutrigger" data-table="be_users" data-uid="{backendUser.uid}" title="{f:if(condition: '{backendUser.description}', then: '{backendUser.description} ')}(id={backendUser.uid})">
@@ -8,14 +11,18 @@
 		</a>
 	</td>
 	<td class="col-title">
-		<a href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}">
+		<be:link.editRecord table="be_users" uid="{backendUser.uid}" returnUrl="{returnUrl}" title="edit">
 			<b>{backendUser.userName}</b>
-		</a>
+		</be:link.editRecord>
 		<f:if condition="{bu:arrayElement(array: onlineBackendUsers, key: backendUser.uid)}">
 			<span class="label label-success"><f:translate key="online" /></span>
 		</f:if>
 		<br />
-		<a href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}">{backendUser.realName}</a>
+		<f:if condition="{backendUser.realName}">
+			<be:link.editRecord table="be_users" uid="{backendUser.uid}" returnUrl="{returnUrl}" title="edit">
+				{backendUser.realName}
+			</be:link.editRecord>
+		</f:if>
 	</td>
 	<td>
 		<f:if condition="{backendUser.lastLoginDateAndTime}">
@@ -29,7 +36,9 @@
 	</td>
 	<td class="col-control">
 		<div class="btn-group" role="group">
-			<a class="btn btn-default" href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}"><core:icon identifier="actions-open" /></a>
+			<be:link.editRecord class="btn btn-default" table="be_users" uid="{backendUser.uid}" returnUrl="{returnUrl}" title="edit" >
+				<core:icon identifier="actions-open" />
+			</be:link.editRecord>
 			<f:if condition="{backendUser.currentlyLoggedIn} == 1">
 				<f:then>
 					<span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
@@ -80,3 +89,5 @@
 		</div>
 	</td>
 </tr>
+</f:section>
+</html>

@@ -55,6 +55,7 @@ class NoteController
             $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
                 'EXT:sys_note/Resources/Private/Templates/Note/List.html'
             ));
+            $view->setLayoutRootPaths(['EXT:sys_note/Resources/Private/Layouts']);
             $view->getRequest()->setControllerExtensionName('SysNote');
             $view->assign('notes', $notes);
             return $view->render();

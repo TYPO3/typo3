@@ -1,4 +1,7 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:rd="http://typo3.org/ns/TYPO3/CMS/Redirects/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:rd="http://typo3.org/ns/TYPO3/CMS/Redirects/ViewHelpers"
+	  xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+	  data-namespace-typo3-fluid="true">
 <f:layout name="RedirectAdministration" />
 
 <f:section name="headline">
@@ -11,7 +14,9 @@
 		<f:else>
 			<f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.title')}">
 				<p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.message"/></p>
-				<a class="btn btn-primary" href="{rd:editRecord(command: 'new', uid: 0)}"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/></a>
+				<be:link.newRecord class="btn btn-primary" table="sys_redirect">
+					<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/>
+				</be:link.newRecord>
 			</f:be.infobox>
 		</f:else>
 	</f:if>
@@ -54,7 +59,9 @@
 										</f:if>
 										<core:iconForRecord table="sys_redirect" row="{redirect}" /></span>
 										</f:alias>
-										<a href="{rd:editRecord(command: 'edit', uid: redirect.uid)}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">{redirect.source_path}</a>
+										<be:link.editRecord table="sys_redirect" uid="{redirect.uid}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">
+											{redirect.source_path}
+										</be:link.editRecord>
 									</td>
 									<td><f:link.typolink parameter="{redirect.target}" target="_blank"><f:uri.typolink parameter="{redirect.target}"></f:uri.typolink></f:link.typolink> (<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination_status_code"/>: {redirect.target_statuscode})</td>
 									<f:if condition="{showHitCounter}">
@@ -90,11 +97,9 @@
 													</f:link.external>
 												</f:else>
 											</f:if>
-											<a class="btn btn-default"
-												 href="{rd:editRecord(command: 'edit', uid: redirect.uid)}"
-												 title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">
+											<be:link.editRecord class="btn btn-default" table="sys_redirect" uid="{redirect.uid}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">
 												<core:icon identifier="actions-open" />
-											</a>
+											</be:link.editRecord>
 											<f:if condition="{redirect.disabled} == 1">
 												<f:then>
 													<a class="btn btn-default" href="{rd:editRecord(command: 'unhide', uid: redirect.uid)}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"><core:icon identifier="actions-edit-unhide" /></a>

@@ -1,5 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
 	xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+	xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
 	xmlns:fl="http://typo3.org/ns/TYPO3/CMS/Filelist/ViewHelpers">
 <f:layout name="Default"/>
 
@@ -43,7 +44,7 @@
 								<f:then>
 									<a href="#" class="filelist-file-title"
 										title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata' )}"
-										data-url="{fl:uri.editSysFileMetadataRecord( uid:file.metadataUid, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
+										data-url="{be:uri.editRecord( uid:file.metadataUid, table:'sys_file_metadata', returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
 									>
 										{file.name}
 									</a>
@@ -77,7 +78,7 @@
 									<f:then>
 										<a href="#" class="btn btn-default filelist-file-edit"
 										   title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata' )}"
-										   data-url="{fl:uri.editSysFileMetadataRecord(uid:file.metadataUid, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
+										   data-url="{be:uri.editRecord(uid:file.metadataUid, table:'sys_file_metadata', returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
 										>
 											<core:icon identifier="actions-open" />
 										</a>

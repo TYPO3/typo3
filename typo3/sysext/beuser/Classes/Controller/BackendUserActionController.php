@@ -132,7 +132,7 @@ class BackendUserActionController extends ActionController
         $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUsers');
         if ($this->request->getControllerName() === 'BackendUser') {
             if ($this->request->getControllerActionName() === 'index') {
-                $returnUrl = rawurlencode((string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
+                $returnUrl = (string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser');
                 $parameters = GeneralUtility::explodeUrl2Array('edit[be_users][0]=new&returnUrl=' . $returnUrl);
                 $addUserLink = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
                 $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral');

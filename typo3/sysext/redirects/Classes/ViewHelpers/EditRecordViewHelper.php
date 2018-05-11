@@ -53,20 +53,6 @@ class EditRecordViewHelper extends AbstractViewHelper
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         switch ($arguments['command']) {
-            case 'new':
-                $urlParameters = [
-                    'edit[sys_redirect][' . $arguments['uid'] . ']' => 'new',
-                    'returnUrl' => (string)$uriBuilder->buildUriFromRoute('site_redirects'),
-                ];
-                $route = 'record_edit';
-                break;
-            case 'edit':
-                $urlParameters = [
-                    'edit[sys_redirect][' . $arguments['uid'] . ']' => 'edit',
-                    'returnUrl' => (string)$uriBuilder->buildUriFromRoute('site_redirects'),
-                ];
-                $route = 'record_edit';
-                break;
             case 'delete':
                 $urlParameters = [
                     'cmd[sys_redirect][' . $arguments['uid'] . '][delete]' => 1,
