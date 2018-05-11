@@ -59,19 +59,27 @@ class QueryBuilder
     protected $restrictionContainer;
 
     /**
+     * @var array
+     */
+    protected $additionalRestrictions;
+
+    /**
      * Initializes a new QueryBuilder.
      *
      * @param Connection $connection The DBAL Connection.
      * @param QueryRestrictionContainerInterface $restrictionContainer
      * @param \Doctrine\DBAL\Query\QueryBuilder $concreteQueryBuilder
+     * @param array $additionalRestrictions
      */
     public function __construct(
         Connection $connection,
         QueryRestrictionContainerInterface $restrictionContainer = null,
-        \Doctrine\DBAL\Query\QueryBuilder $concreteQueryBuilder = null
+        \Doctrine\DBAL\Query\QueryBuilder $concreteQueryBuilder = null,
+        array $additionalRestrictions = null
     ) {
         $this->connection = $connection;
-        $this->restrictionContainer = $restrictionContainer ?: GeneralUtility::makeInstance(DefaultRestrictionContainer::class);
+        $this->additionalRestrictions = $additionalRestrictions ?: $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'] ?? [];
+        $this->setRestrictions($restrictionContainer ?: GeneralUtility::makeInstance(DefaultRestrictionContainer::class));
         $this->concreteQueryBuilder = $concreteQueryBuilder ?: GeneralUtility::makeInstance(\Doctrine\DBAL\Query\QueryBuilder::class, $connection);
     }
 
@@ -88,6 +96,12 @@ class QueryBuilder
      */
     public function setRestrictions(QueryRestrictionContainerInterface $restrictionContainer)
     {
+        foreach ($this->additionalRestrictions as $restrictionClass => $options) {
+            if (empty($options['disabled'])) {
+                $restriction = GeneralUtility::makeInstance($restrictionClass);
+                $restrictionContainer->add($restriction);
+            }
+        }
         $this->restrictionContainer = $restrictionContainer;
     }
 
@@ -96,7 +110,7 @@ class QueryBuilder
      */
     public function resetRestrictions()
     {
-        $this->restrictionContainer = GeneralUtility::makeInstance(DefaultRestrictionContainer::class);
+        $this->setRestrictions(GeneralUtility::makeInstance(DefaultRestrictionContainer::class));
     }
 
     /**
@@ -1096,8 +1110,6 @@ class QueryBuilder
             }
             $this->concreteQueryBuilder->andWhere($expression);
         }
-
-        // @todo add hook to be able to add additional restrictions
 
         return $originalWhereConditions;
     }

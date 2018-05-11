@@ -20,13 +20,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 class DefaultRestrictionContainerTest extends AbstractRestrictionTestCase
 {
     /**
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
      * @test
      */
     public function buildRestrictionsAddsAllDefaultRestrictions()

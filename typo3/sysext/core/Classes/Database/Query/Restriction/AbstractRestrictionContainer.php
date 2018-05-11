@@ -30,6 +30,11 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
     protected $restrictions = [];
 
     /**
+     * @var QueryRestrictionInterface[]
+     */
+    protected $enforcedRestrictions = [];
+
+    /**
      * Main method to build expressions for given tables.
      * Iterating over all registered expressions and combine them with AND
      *
@@ -53,7 +58,7 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
      */
     public function removeAll()
     {
-        $this->restrictions = [];
+        $this->restrictions = $this->enforcedRestrictions;
         return $this;
     }
 
@@ -65,7 +70,7 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
      */
     public function removeByType(string $restrictionType)
     {
-        unset($this->restrictions[$restrictionType]);
+        unset($this->restrictions[$restrictionType], $this->enforcedRestrictions[$restrictionType]);
         return $this;
     }
 
@@ -78,6 +83,9 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
     public function add(QueryRestrictionInterface $restriction)
     {
         $this->restrictions[get_class($restriction)] = $restriction;
+        if ($restriction instanceof EnforceableQueryRestrictionInterface && $restriction->isEnforced()) {
+            $this->enforcedRestrictions[get_class($restriction)] = $restriction;
+        }
         return $this;
     }
 
