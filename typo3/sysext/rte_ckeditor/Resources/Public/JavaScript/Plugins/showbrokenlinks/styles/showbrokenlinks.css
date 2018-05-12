@@ -1,0 +1,10 @@
+
+/**
+ * Show broken links with red border and yellow background
+ */
+a[data-rte-error]
+{
+    background-color: yellow!important;
+    border: 2px red solid!important;
+    color: black!important;
+}
