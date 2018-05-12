@@ -20,6 +20,7 @@ use ExtbaseTeam\BlogExample\Domain\Model\Tag;
 use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -70,6 +71,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         /* @var $blogRepository \TYPO3\CMS\Extbase\Persistence\Repository */
         $blogRepository = $this->objectManager->get(BlogRepository::class);
         $this->blog = $blogRepository->findByUid(1);
+
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
     }
 
     /**

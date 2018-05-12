@@ -886,7 +886,7 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getModTSconfigIgnoresValuesFromUserTsConfigIfNoSet()
+    public function getModTSconfigIgnoresValuesFromUserTsConfigIfNotSet()
     {
         $completeConfiguration = [
             'value' => 'bar',

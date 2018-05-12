@@ -257,12 +257,9 @@ class BackendUserAuthenticationTest extends UnitTestCase
     public function getTSConfigReturnsCorrectArrayForGivenObjectString(array $completeConfiguration, $objectString, array $expectedConfiguration): void
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['dummy'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $subject = $this->getAccessibleMock(BackendUserAuthentication::class, ['dummy'], [], '', false);
         $subject->setLogger(new NullLogger());
-        $subject->userTS = $completeConfiguration;
+        $subject->_set('userTS', $completeConfiguration);
 
         $actualConfiguration = $subject->getTSConfig($objectString);
         $this->assertSame($expectedConfiguration, $actualConfiguration);
@@ -329,7 +326,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['isAdmin'])
+            ->setMethods(['isAdmin', 'getTSConfig'])
             ->getMock();
 
         $subject
@@ -338,13 +335,16 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->will($this->returnValue(false));
 
         $subject->setLogger(new NullLogger());
-        $subject->userTS = [
-            'permissions.' => [
-                'file.' => [
-                    'default.' => $userTsConfiguration
-                ],
-            ]
-        ];
+        $subject
+            ->expects($this->any())
+            ->method('getTSConfig')
+            ->will($this->returnValue([
+                'permissions.' => [
+                    'file.' => [
+                        'default.' => $userTsConfiguration
+                    ],
+                ]
+            ]));
 
         $expectedPermissions = array_merge($this->defaultFilePermissions, $userTsConfiguration);
         array_walk(
@@ -468,7 +468,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['isAdmin', 'getFilePermissions'])
+            ->setMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
         $storageMock = $this->createMock(ResourceStorage::class);
         $storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
@@ -483,15 +483,18 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->method('getFilePermissions')
             ->will($this->returnValue($defaultPermissions));
 
-        $subject->userTS = [
-            'permissions.' => [
-                'file.' => [
-                    'storage.' => [
-                        $storageUid . '.' => $storagePermissions
+        $subject
+            ->expects($this->any())
+            ->method('getTSConfig')
+            ->will($this->returnValue([
+                'permissions.' => [
+                    'file.' => [
+                        'storage.' => [
+                            $storageUid . '.' => $storagePermissions
+                        ],
                     ],
-                ],
-            ]
-        ];
+                ]
+            ]));
 
         $this->assertEquals($expectedPermissions, $subject->getFilePermissionsForStorage($storageMock));
     }
@@ -507,7 +510,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['isAdmin', 'getFilePermissions'])
+            ->setMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
         $storageMock = $this->createMock(ResourceStorage::class);
         $storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
@@ -522,15 +525,18 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->method('getFilePermissions')
             ->will($this->returnValue($defaultPermissions));
 
-        $subject->userTS = [
-            'permissions.' => [
-                'file.' => [
-                    'storage.' => [
-                        $storageUid . '.' => $storagePermissions
+        $subject
+            ->expects($this->any())
+            ->method('getTSConfig')
+            ->will($this->returnValue([
+                'permissions.' => [
+                    'file.' => [
+                        'storage.' => [
+                            $storageUid . '.' => $storagePermissions
+                        ],
                     ],
-                ],
-            ]
-        ];
+                ]
+            ]));
 
         $this->assertEquals($defaultPermissions, $subject->getFilePermissionsForStorage($storageMock));
     }
@@ -656,7 +662,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['isAdmin'])
+            ->setMethods(['isAdmin', 'getTSConfig'])
             ->getMock();
 
         $subject
@@ -664,7 +670,10 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->method('isAdmin')
             ->will($this->returnValue(false));
 
-        $subject->userTS = [];
+        $subject
+            ->expects($this->any())
+            ->method('getTSConfig')
+            ->will($this->returnValue([]));
         $subject->groupData['file_permissions'] = $permissionValue;
         $this->assertEquals($expectedPermissions, $subject->getFilePermissions());
     }

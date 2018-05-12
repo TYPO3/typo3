@@ -3,6 +3,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Comment;
 use ExtbaseTeam\BlogExample\Domain\Model\DateExample;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
@@ -36,6 +37,8 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
 
         $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
+
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
     }
 
     /**

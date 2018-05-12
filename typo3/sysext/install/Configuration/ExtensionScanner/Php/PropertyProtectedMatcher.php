@@ -552,4 +552,29 @@ return [
             'Deprecation-84463-PageTsConfigOptionModweb_listnewWizardsDropped.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->TSdataArray' => [
+        'restFiles' => [
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS' => [
+        'restFiles' => [
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTSUpdated' => [
+        'restFiles' => [
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_text' => [
+        'restFiles' => [
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_dontGetCached' => [
+        'restFiles' => [
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+        ],
+    ],
 ];

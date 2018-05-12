@@ -1416,9 +1416,10 @@ class QueryGenerator
     {
         $out = [];
         $enableArr = explode(',', $enableList);
-        $backendUserAuthentication = $this->getBackendUserAuthentication();
+        $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
+
         // Make output
-        if (in_array('table', $enableArr) && !$backendUserAuthentication->userTS['mod.']['dbint.']['disableSelectATable']) {
+        if (in_array('table', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableSelectATable']) {
             $out[] = '<div class="form-group">';
             $out[] = '	<label for="SET[queryTable]">Select a table:</label>';
             $out[] =    $this->mkTableSelect('SET[queryTable]', $this->table);
@@ -1458,25 +1459,25 @@ class QueryGenerator
             $this->enableQueryParts = (bool)$modSettings['search_query_smallparts'];
             $codeArr = $this->getFormElements();
             $queryCode = $this->printCodeArray($codeArr);
-            if (in_array('fields', $enableArr) && !$backendUserAuthentication->userTS['mod.']['dbint.']['disableSelectFields']) {
+            if (in_array('fields', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableSelectFields']) {
                 $out[] = '<div class="form-group form-group-with-button-addon">';
                 $out[] = '	<label for="SET[queryFields]">Select fields:</label>';
                 $out[] =    $this->mkFieldToInputSelect('SET[queryFields]', $this->extFieldLists['queryFields']);
                 $out[] = '</div>';
             }
-            if (in_array('query', $enableArr) && !$backendUserAuthentication->userTS['mod.']['dbint.']['disableMakeQuery']) {
+            if (in_array('query', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableMakeQuery']) {
                 $out[] = '<div class="form-group">';
                 $out[] = '	<label>Make Query:</label>';
                 $out[] =    $queryCode;
                 $out[] = '</div>';
             }
-            if (in_array('group', $enableArr) && !$backendUserAuthentication->userTS['mod.']['dbint.']['disableGroupBy']) {
+            if (in_array('group', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableGroupBy']) {
                 $out[] = '<div class="form-group form-inline">';
                 $out[] = '	<label for="SET[queryGroup]">Group By:</label>';
                 $out[] =     $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '');
                 $out[] = '</div>';
             }
-            if (in_array('order', $enableArr) && !$backendUserAuthentication->userTS['mod.']['dbint.']['disableOrderBy']) {
+            if (in_array('order', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableOrderBy']) {
                 $module = $this->getModule();
                 $orderByArr = explode(',', $this->extFieldLists['queryOrder']);
                 $orderBy = [];
@@ -1500,7 +1501,7 @@ class QueryGenerator
                 $out[] =     implode(LF, $orderBy);
                 $out[] = '</div>';
             }
-            if (in_array('limit', $enableArr) && !$backendUserAuthentication->userTS['mod.']['dbint.']['disableLimit']) {
+            if (in_array('limit', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableLimit']) {
                 $limit = [];
                 $limit[] = '<div class="input-group">';
                 $limit[] = '	<div class="input-group-addon">';

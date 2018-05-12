@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -40,7 +41,22 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendUserAuthentication extends AbstractUserAuthentication
 {
-    const ROLE_SYSTEMMAINTAINER = 'systemMaintainer';
+    use PublicPropertyDeprecationTrait;
+
+    public const ROLE_SYSTEMMAINTAINER = 'systemMaintainer';
+
+    /**
+     * Properties which have been moved to protected status from public
+     *
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'TSdataArray' => 'Using $TSdataArray of class BackendUserAuthentication from the outside is discouraged. This property is for class internal use only.',
+        'userTS' => 'Using $userTS of class BackendUserAuthentication from the outside is discouraged. Use getTSConfig() instead.',
+        'userTSUpdated' => 'Using $userTSUpdated of class BackendUserAuthentication from the outside is discouraged. This property is for class internal use only.',
+        'userTS_text' => 'Using $userTS_text of class BackendUserAuthentication from the outside is discouraged. This property is for class internal use only.',
+        'userTS_dontGetCached' => 'Using $userTS_dontGetCached of class BackendUserAuthentication is deprecated. The property will be removed in v10.',
+    ];
 
     /**
      * Should be set to the usergroup-column (id-list) in the user-record
@@ -125,34 +141,29 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public $includeGroupArray = [];
 
     /**
-     * Used to accumulate the TSconfig data of the user
-     * @var array
+     * @var array Accumulated, unparsed TSconfig data array of the user
      */
-    public $TSdataArray = [];
+    protected $TSdataArray = [];
 
     /**
-     * Contains the non-parsed user TSconfig
-     * @var string
+     * @var string Accumulated, unparsed TSconfig data string of the user
      */
-    public $userTS_text = '';
+    protected $userTS_text = '';
 
     /**
-     * Contains the parsed user TSconfig
-     * @var array
+     * @var array Parsed user TSconfig
      */
-    public $userTS = [];
+    protected $userTS = [];
 
     /**
-     * Set internally if the user TSconfig was parsed and needs to be cached.
-     * @var bool
+     * @var bool True if the user TSconfig was parsed and needs to be cached.
      */
-    public $userTSUpdated = false;
+    protected $userTSUpdated = false;
 
     /**
-     * Set this from outside if you want the user TSconfig to ALWAYS be parsed and not fetched from cache.
-     * @var bool
+     * @var bool @deprecated since v9, will be removed in v10. If true, parsed TSconfig will not be cached
      */
-    public $userTS_dontGetCached = false;
+    protected $userTS_dontGetCached = false;
 
     /**
      * Contains last error message
@@ -1363,6 +1374,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
             $this->userTS_text = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
             if (!$this->userTS_dontGetCached) {
+                // @deprecated: Property userTS_dontGetCached is deprecated since v9 and will be removed in v10
                 // Perform TS-Config parsing with condition matching
                 $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TsConfigParser::class);
                 $res = $parseObj->parseTSconfig($this->userTS_text, 'userTS');
@@ -1376,6 +1388,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
                 $cachedContent = $cache->get($hash);
                 if (is_array($cachedContent) && !$this->userTS_dontGetCached) {
+                    // @deprecated: Property userTS_dontGetCached is deprecated since v9 and will be removed in v10
                     $this->userTS = $cachedContent;
                 } else {
                     $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
@@ -1874,7 +1887,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 );
 
                 // Finally overlay any userTSconfig
-                $permissionsTsConfig = $this->getTSConfigProp('permissions.file.default');
+                $permissionsTsConfig = $this->getTSConfig()['permissions.']['file.']['default.'] ?? [];
                 if (!empty($permissionsTsConfig)) {
                     array_walk(
                         $permissionsTsConfig,
@@ -1903,7 +1916,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     {
         $finalUserPermissions = $this->getFilePermissions();
         if (!$this->isAdmin()) {
-            $storageFilePermissions = $this->getTSConfigProp('permissions.file.storage.' . $storageObject->getUid());
+            $storageFilePermissions = $this->getTSConfig()['permissions.']['file.']['storage.'][$storageObject->getUid() . '.'] ?? [];
             if (!empty($storageFilePermissions)) {
                 array_walk(
                     $storageFilePermissions,

@@ -422,7 +422,8 @@ class QueryView
         $output = '';
         $this->hookArray = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3lib_fullsearch'] ?? [];
         $msg = $this->procesStoreControl();
-        if (!$this->backendUserAuthentication->userTS['mod.']['dbint.']['disableStoreControl']) {
+        $userTsConfig = $this->backendUserAuthentication->getTSConfig();
+        if (!$userTsConfig['mod.']['dbint.']['disableStoreControl']) {
             $output .= '<h2>Load/Save Query</h2>';
             $output .= '<div>' . $this->makeStoreControl() . '</div>';
             $output .= $msg;
@@ -465,13 +466,13 @@ class QueryView
                         $fullQueryString = $selectQueryString;
                         $dataRows = $connection->executeQuery($selectQueryString)->fetchAll();
                     }
-                    if (!$this->backendUserAuthentication->userTS['mod.']['dbint.']['disableShowSQLQuery']) {
+                    if (!$userTsConfig['mod.']['dbint.']['disableShowSQLQuery']) {
                         $output .= '<h2>SQL query</h2><div><pre>' . htmlspecialchars($fullQueryString) . '</pre></div>';
                     }
                     $cPR = $this->getQueryResultCode($mQ, $dataRows, $queryGenerator->table);
                     $output .= '<h2>' . $cPR['header'] . '</h2><div>' . $cPR['content'] . '</div>';
                 } catch (DBALException $e) {
-                    if (!$this->backendUserAuthentication->userTS['mod.']['dbint.']['disableShowSQLQuery']) {
+                    if (!$userTsConfig['mod.']['dbint.']['disableShowSQLQuery']) {
                         $output .= '<h2>SQL query</h2><div><pre>' . htmlspecialchars($fullQueryString) . '</pre></div>';
                     }
                     $out = '<p><strong>Error: <span class="text-danger">'

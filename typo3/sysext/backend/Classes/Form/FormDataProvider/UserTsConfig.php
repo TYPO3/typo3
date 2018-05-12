@@ -30,7 +30,7 @@ class UserTsConfig implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        $result['userTsConfig'] = $this->getBackendUser()->userTS;
+        $result['userTsConfig'] = $this->getBackendUser()->getTSConfig();
         return $result;
     }
 

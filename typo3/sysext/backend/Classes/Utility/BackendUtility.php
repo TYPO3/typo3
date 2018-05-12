@@ -865,7 +865,7 @@ class BackendUtility
         }
         $cacheHash = $res['hash'];
         // Get User TSconfig overlay
-        $userTSconfig = static::getBackendUserAuthentication()->userTS['page.'] ?? null;
+        $userTSconfig = static::getBackendUserAuthentication()->getTSConfig()['page.'] ?? null;
         if (is_array($userTSconfig)) {
             ArrayUtility::mergeRecursiveWithOverrule($tsConfig, $userTSconfig);
             $cacheHash .= '_user' . static::getBackendUserAuthentication()->user['uid'];
