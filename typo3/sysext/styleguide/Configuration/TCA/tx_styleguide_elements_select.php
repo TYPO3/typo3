@@ -872,6 +872,8 @@ return [
                     flex_1,
                 --div--;requestUpdate,
                     select_requestUpdate_1,
+                --div--;meta,
+                    starttime, endtime, sys_language_uid, l10n_parent, l10n_source,
             ',
         ],
     ],
