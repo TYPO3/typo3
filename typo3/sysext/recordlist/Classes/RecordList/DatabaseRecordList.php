@@ -923,6 +923,14 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             'title' => 'id=' . $row['uid'],
         ];
 
+        // Add active class to record of current link
+        if (
+            isset($this->currentLink['tableNames'])
+            && (int)$this->currentLink['uid'] === (int)$row['uid']
+            && GeneralUtility::inList($this->currentLink['tableNames'], $table)
+        ) {
+            $tagAttributes['class'][] = 'active';
+        }
         // Add special classes for first and last row
         if ($cc == 1 && $indent == 0) {
             $tagAttributes['class'][] = 'firstcol';

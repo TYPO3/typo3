@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -315,9 +317,16 @@ class AbstractDatabaseRecordList extends AbstractRecordList
 
     /**
      * Override/add urlparameters in listUrl() method
-     * @var string[]
+     * @var mixed[]
      */
     protected $overrideUrlParameters = [];
+
+    /**
+     * Current link: array with table names and uid
+     *
+     * @var array
+     */
+    protected $currentLink = [];
 
     /**
      * Override the page ids taken into account by getPageIdConstraint()
@@ -388,6 +397,20 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 1,
                 10000
             );
+        }
+
+        // If there is a current link to a record, set the current link uid and get the table name from the link handler configuration
+        $currentLinkValue = isset($this->overrideUrlParameters['P']['currentValue']) ? trim($this->overrideUrlParameters['P']['currentValue']) : '';
+        if ($currentLinkValue) {
+            $linkService = GeneralUtility::makeInstance(LinkService::class);
+            try {
+                $currentLinkParts = $linkService->resolve($currentLinkValue);
+                if ($currentLinkParts['type'] === 'record' && isset($currentLinkParts['identifier'])) {
+                    $this->currentLink['tableNames'] = $this->tableList;
+                    $this->currentLink['uid'] = (int)$currentLinkParts['uid'];
+                }
+            } catch (UnknownLinkHandlerException $e) {
+            }
         }
 
         // $table might be NULL at this point in the code. As the expressionBuilder
@@ -1385,6 +1408,10 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      */
     public function setOverrideUrlParameters(array $urlParameters)
     {
+        $currentUrlParameter = GeneralUtility::_GP('curUrl');
+        if (isset($currentUrlParameter['url'])) {
+            $urlParameters['P']['currentValue'] = $currentUrlParameter['url'];
+        }
         $this->overrideUrlParameters = $urlParameters;
     }
 
