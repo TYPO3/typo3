@@ -370,4 +370,82 @@ class PathUtilityTest extends UnitTestCase
             PathUtility::getCanonicalPath($inputName)
         );
     }
+
+    /**
+     * Data provider for dirnameDuringBootstrapCorrectlyFetchesParent
+     *
+     * @return array
+     */
+    public function dirnameDuringBootstrapCorrectlyFetchesParentDataProvider()
+    {
+        return [
+            'relative path' => [
+                'abc/def/ghi',
+                'abc/def'
+            ],
+            'absolute path 1' => [
+                '/var/www/html/index.php',
+                '/var/www/html'
+            ],
+            'absolute path 2' => [
+                '/var/www/html/typo3/index.php',
+                '/var/www/html/typo3'
+            ],
+            'windows path' => [
+                'C:\\inetpub\\index.php',
+                'C:\\inetpub'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider dirnameDuringBootstrapCorrectlyFetchesParentDataProvider
+     */
+    public function dirnameDuringBootstrapCorrectlyFetchesParent($inputPath, $expectedResult)
+    {
+        $this->assertEquals(
+            $expectedResult,
+            PathUtility::dirnameDuringBootstrap($inputPath)
+        );
+    }
+
+    /**
+     * Data provider for basenameDuringBootstrapCorrectlyFetchesBasename
+     *
+     * @return array
+     */
+    public function basenameDuringBootstrapCorrectlyFetchesBasenameDataProvider()
+    {
+        return [
+            'relative path' => [
+                'abc/def/ghi',
+                'ghi'
+            ],
+            'absolute path 1' => [
+                '/var/www/html/index.php',
+                'index.php'
+            ],
+            'absolute path 2' => [
+                '/var/www/html/typo3/index.php',
+                'index.php'
+            ],
+            'windows path' => [
+                'C:\\inetpub\\index.php',
+                'index.php'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider basenameDuringBootstrapCorrectlyFetchesBasenameDataProvider
+     */
+    public function basenameDuringBootstrapCorrectlyFetchesBasename($inputPath, $expectedResult)
+    {
+        $this->assertEquals(
+            $expectedResult,
+            PathUtility::basenameDuringBootstrap($inputPath)
+        );
+    }
 }

@@ -289,7 +289,7 @@ class PathUtility
      */
     public static function basenameDuringBootstrap($path): string
     {
-        return preg_replace('#([^\\\\/]+)$#', '$1', $path);
+        return preg_replace('#.*[/\\\\]([^\\\\/]+)$#', '$1', $path);
     }
 
     /*********************
