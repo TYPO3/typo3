@@ -2194,7 +2194,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 ['workspace_id' => $this->user['workspace_id']],
                 ['uid' => (int)$this->user['uid']]
             );
-            $this->simplelog('User changed workspace to "' . $this->workspace . '"');
+            $this->writelog(4, 0, 0, 0, 'User changed workspace to "' . $this->workspace . '"', []);
         }
     }
 
@@ -2341,9 +2341,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $extKey Option extension key / module name
      * @param int $error Error level. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
      * @return int Log entry UID
+     * @deprecated since core v9, will be removed with core v10
      */
     public function simplelog($message, $extKey = '', $error = 0)
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         return $this->writelog(4, 0, $error, 0, ($extKey ? '[' . $extKey . '] ' : '') . $message, []);
     }
 

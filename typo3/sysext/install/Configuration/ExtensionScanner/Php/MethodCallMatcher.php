@@ -2179,4 +2179,11 @@ return [
             'Deprecation-84980-BackendUserAuthentication-addTScommentDeprecated.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->simplelog' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-84981-BackendUserAuthentication-simplelogDeprecated.rst',
+        ],
+    ],
 ];
