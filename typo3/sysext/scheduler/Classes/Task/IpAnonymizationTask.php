@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types = 1);
 namespace TYPO3\CMS\Scheduler\Task;
 
 /*
@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
@@ -36,7 +37,7 @@ class IpAnonymizationTask extends AbstractTask
     public $numberOfDays = 180;
 
     /**
-     * @var int mask level
+     * @var int mask level see \TYPO3\CMS\Core\Utility\IpAnonymizationUtility::anonymizeIp
      */
     public $mask = 2;
 
@@ -53,18 +54,11 @@ class IpAnonymizationTask extends AbstractTask
      */
     public function execute()
     {
-        $tableConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][self::class]['options']['tables'];
-        $tableHandled = false;
-        foreach ($tableConfigurations as $tableName => $configuration) {
-            if ($tableName === $this->table) {
-                $this->handleTable($tableName, $configuration);
-                $tableHandled = true;
-            }
-        }
-
-        if (!$tableHandled) {
+        $configuration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][self::class]['options']['tables'][$this->table] ?? [];
+        if (empty($configuration)) {
             throw new \RuntimeException(self::class . ' misconfiguration: ' . $this->table . ' does not exist in configuration', 1524502548);
         }
+        $this->handleTable($this->table, $configuration);
         return true;
     }
 
@@ -90,7 +84,7 @@ class IpAnonymizationTask extends AbstractTask
         }
         $deleteTimestamp = strtotime('-' . $this->numberOfDays . 'days');
         if ($deleteTimestamp === false) {
-            throw new \RuntimeException(self::class . ' misconfiguration: number of days could not be calculcated for table ' . $table, 1524526354);
+            throw new \RuntimeException(self::class . ' misconfiguration: number of days could not be calculated for table ' . $table, 1524526354);
         }
         try {
             $result = $queryBuilder
