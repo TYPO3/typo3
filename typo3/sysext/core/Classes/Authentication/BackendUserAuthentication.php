@@ -1190,15 +1190,20 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
+     * Returns fully parsed user TSconfig array.
+     *
      * Returns the value/properties of a TS-object as given by $objectString, eg. 'options.dontMountAdminMounts'
-     * Nice (general!) function for returning a part of a TypoScript array!
      *
      * @param string $objectString Pointer to an "object" in the TypoScript array, fx. 'options.dontMountAdminMounts'
      * @param array|string $config Optional TSconfig array: If array, then this is used and not $this->userTS. If not array, $this->userTS is used.
      * @return array An array with two keys, "value" and "properties" where "value" is a string with the value of the object string and "properties" is an array with the properties of the object string.
      */
-    public function getTSConfig($objectString, $config = '')
+    public function getTSConfig($objectString = '', $config = '')
     {
+        if (empty($objectString) && empty($config)) {
+            return $this->userTS;
+        }
+
         if (!is_array($config)) {
             // Getting Root-ts if not sent
             $config = $this->userTS;
