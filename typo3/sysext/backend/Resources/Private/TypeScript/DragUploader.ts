@@ -20,7 +20,10 @@ import moment = require('moment');
 import NProgress = require('nprogress');
 import Modal = require('./Modal');
 import Notification = require('./Notification');
-import 'TYPO3/CMS/Backend/jsfunc.inline';
+// Do not import TYPO3/CMS/Backend/jsfunc.inline because it is loaded in global scope
+// Import here, will load it twice and produce JS errors.
+// @TODO: Import later, after decoupling has been finished
+//  import 'TYPO3/CMS/Backend/jsfunc.inline';
 
 /**
  * Possible actions for conflicts w/ existing files
