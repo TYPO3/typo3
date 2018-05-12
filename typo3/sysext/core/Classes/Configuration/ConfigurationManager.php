@@ -77,6 +77,7 @@ class ConfigurationManager
         'EXTCONF',
         'DB',
         'SYS/caching/cacheConfigurations',
+        'SYS/session',
         'EXTENSIONS',
     ];
 
