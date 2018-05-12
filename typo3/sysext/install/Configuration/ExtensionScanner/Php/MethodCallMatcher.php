@@ -2172,4 +2172,11 @@ return [
             'Deprecation-84965-VariousTypoScriptFrontendControllerMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->addTScomment' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84980-BackendUserAuthentication-addTScommentDeprecated.rst',
+        ],
+    ],
 ];

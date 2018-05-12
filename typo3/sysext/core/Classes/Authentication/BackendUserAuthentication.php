@@ -1323,13 +1323,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Fileoperation permissions
             $this->dataLists['file_permissions'] = $this->user['file_permissions'];
             // Setting default User TSconfig:
-            $this->TSdataArray[] = $this->addTScomment('From $GLOBALS["TYPO3_CONF_VARS"]["BE"]["defaultUserTSconfig"]:')
-                . $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'];
+            $this->TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'];
             // Default TSconfig for admin-users
             if ($this->isAdmin()) {
-                $this->TSdataArray[] = $this->addTScomment('"admin" user presets:') . '
-					admPanel.enable.all = 1
-				';
+                $this->TSdataArray[] = 'admPanel.enable.all = 1';
                 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_note')) {
                     $this->TSdataArray[] = '
 							// Setting defaults for sys_note author / email...
@@ -1355,7 +1352,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->setCachedList($this->groupList);
 
             // Add the TSconfig for this specific user:
-            $this->TSdataArray[] = $this->addTScomment('USER TSconfig field') . $this->user['TSconfig'];
+            $this->TSdataArray[] = $this->user['TSconfig'];
             // Check include lines.
             $this->TSdataArray = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines_array($this->TSdataArray);
             // Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
@@ -1506,7 +1503,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 }
                 // Add the group uid, current list, TSconfig to the internal arrays.
                 $this->includeGroupArray[] = $uid;
-                $this->TSdataArray[] = $this->addTScomment('Group "' . $row['title'] . '" [' . $row['uid'] . '] TSconfig field:') . $row['TSconfig'];
+                $this->TSdataArray[] = $row['TSconfig'];
                 // Mount group database-mounts
                 if (($this->user['options'] & Permission::PAGE_SHOW) == 1) {
                     $this->dataLists['webmount_list'] .= ',' . $row['db_mountpoints'];
@@ -2020,9 +2017,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param string $str The text to wrap in comment prefixes and delimiters.
      * @return string TypoScript comment with the string text inside.
+     * @deprecated since core v9, will be removed with core v10
      */
     public function addTScomment($str)
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         $delimiter = '# ***********************************************';
         $out = $delimiter . LF;
         $lines = GeneralUtility::trimExplode(LF, $str);
