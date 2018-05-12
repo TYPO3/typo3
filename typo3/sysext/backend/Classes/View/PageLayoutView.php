@@ -622,7 +622,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                                 $defaultLanguageElementsByColumn[$columnId][] = (isset($row['_ORIG_uid']) ? $row['_ORIG_uid'] : $row['uid']);
                             }
                             $editUidList .= $row['uid'] . ',';
-                            $disableMoveAndNewButtons = $this->defLangBinding && $lP > 0;
+                            $disableMoveAndNewButtons = $this->defLangBinding && $lP > 0 && $this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP);
                             if (!$this->tt_contentConfig['languageMode']) {
                                 $singleElementHTML .= '<div class="t3-page-ce-dragitem" id="' . StringUtility::getUniqueId() . '">';
                             }
@@ -693,7 +693,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             }
                             $singleElementHTML .= '</div></div><div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div></div>';
                             if ($this->defLangBinding && $this->tt_contentConfig['languageMode']) {
-                                $defLangBinding[$columnId][$lP][$row[$lP ? 'l18n_parent' : 'uid']] = $singleElementHTML;
+                                $defLangBinding[$columnId][$lP][$row[$lP ? 'l18n_parent' : 'uid'] ?: $row['uid']] = $singleElementHTML;
                             } else {
                                 $content[$columnId] .= $singleElementHTML;
                             }
@@ -977,16 +977,27 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     $out .= '<td valign="top" class="t3-grid-cell t3-page-column t3js-page-column t3js-page-lang-column t3js-page-lang-column-' . $languageId . '">' . $columnContent . '</td>';
                 }
                 $out .= '</tr>';
-                if ($this->defLangBinding) {
-                    // "defLangBinding" mode
-                    foreach ($defaultLanguageElementsByColumn[$cKey] as $defUid) {
+                if ($this->defLangBinding && !empty($defLangBinding[$cKey])) {
+                    $maxItemsCount = max(array_map('count', $defLangBinding[$cKey]));
+                    for ($i = 0; $i < $maxItemsCount; $i++) {
+                        $defUid = $defaultLanguageElementsByColumn[$cKey][$i] ?? 0;
                         $cCont = [];
                         foreach ($langListArr as $lP) {
-                            $cCont[] = $defLangBinding[$cKey][$lP][$defUid] . $this->newLanguageButton(
-                                $this->getNonTranslatedTTcontentUids([$defUid], $id, $lP),
-                                $lP,
-                                $cKey
-                            );
+                            if ($lP > 0
+                                && is_array($defLangBinding[$cKey][$lP])
+                                && !$this->checkIfTranslationsExistInLanguage($defaultLanguageElementsByColumn[$cKey], $lP)
+                                && count($defLangBinding[$cKey][$lP]) > $i
+                            ) {
+                                $slice = array_slice($defLangBinding[$cKey][$lP], $i, 1);
+                                $element = $slice[0] ?? '';
+                            } else {
+                                $element = $defLangBinding[$cKey][$lP][$defUid] ?? '';
+                            }
+                            $cCont[] = $element . $this->newLanguageButton(
+                                    $this->getNonTranslatedTTcontentUids([$defUid], $id, $lP),
+                                    $lP,
+                                    $cKey
+                                );
                         }
                         $out .= '
                         <tr>
@@ -2002,7 +2013,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $allowTranslate = false;
             }
             if (isset($this->languageHasTranslationsCache[$lP]['hasTranslations'])) {
-                $allowCopy = false;
+                $allowCopy = !$this->languageHasTranslationsCache[$lP]['hasTranslations'];
             }
         }
 
@@ -2565,8 +2576,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     }
                 }
             }
+            if (!isset($this->languageHasTranslationsCache[$language])) {
+                $this->languageHasTranslationsCache[$language]['hasTranslations'] = false;
+            }
             // Check whether we have a mix of both
-            if ($this->languageHasTranslationsCache[$language]['hasStandAloneContent']
+            if (isset($this->languageHasTranslationsCache[$language]['hasStandAloneContent'])
                 && $this->languageHasTranslationsCache[$language]['hasTranslations']
             ) {
                 $this->languageHasTranslationsCache[$language]['mode'] = 'mixed';
@@ -2581,10 +2595,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $queue->addMessage($message);
             }
         }
-        if ($this->languageHasTranslationsCache[$language]['hasTranslations']) {
-            return true;
-        }
-        return false;
+
+        return $this->languageHasTranslationsCache[$language]['hasTranslations'];
     }
 
     /**
