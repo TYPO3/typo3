@@ -23,6 +23,8 @@ typo3conf/sites folder
 New sites will live in the folder `typo3conf/sites/`. In the first iteration this folder will contain a file called
 `config.yaml` which holds all configuration for a given site.
 
+Note that if you are using a composer based installation, then the file location is `<project-root>/config/sites/<identifier>/config.yaml`
+
 In the future this folder can (and should) be used for more files like Fluid templates, and Backend layouts.
 
 
@@ -49,7 +51,7 @@ config.yaml
           base: /
           # sets the locale during frontend rendering
           locale: en_US.UTF-8
-          # ???
+          # two-letter code for the language according to ISO-639 nomenclature (see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
           iso-639-1: en
           # FE href language
           hreflang: en-US
