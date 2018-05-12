@@ -483,6 +483,9 @@ return [
                     [ 'static from tca 4711', 4711 ],
                     [ 'static from tca 4712', 4712 ],
                 ],
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
                 'treeConfig' => [
                     'parentField' => 'pid',
                     'appearance' => [
