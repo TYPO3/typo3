@@ -14,9 +14,10 @@ namespace TYPO3\CMS\Core\Html;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -132,6 +133,16 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         'nav',
         'section'
     ];
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * Initialize, setting element reference and record PID
@@ -802,13 +813,13 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 continue;
             }
             $hrefInformation = $linkService->resolve($attributes['href']);
-            if ($hrefInformation['type'] === LinkService::TYPE_PAGE && $hrefInformation['pageuid'] !== 'current') {
-                $pageRecord = BackendUtility::getRecord('pages', $hrefInformation['pageuid']);
-                if (!is_array($pageRecord)) {
-                    // Page does not exist
-                    $attributes['data-rte-error'] = 'Page with ID ' . $hrefInformation['pageuid'] . ' not found';
-                }
+
+            $brokenLinkAnalysis = new BrokenLinkAnalysisEvent($hrefInformation['type'], $hrefInformation);
+            $this->eventDispatcher->dispatch($brokenLinkAnalysis);
+            if ($brokenLinkAnalysis->isBrokenLink()) {
+                $attributes['data-rte-error'] = $brokenLinkAnalysis->getReason();
             }
+
             // Always rewrite the block to allow the nested calling even if a page is found
             $blocks[$position] =
                 '<a ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>'

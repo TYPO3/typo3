@@ -8,3 +8,15 @@ services:
     resource: '../Classes/*'
     # Tasks require EXT:scheduler to be installed, ignore for now.
     exclude: '../Classes/Task'
+
+  # EventListeners
+  TYPO3\CMS\Linkvalidator\EventListener\CheckBrokenRteLinkEventListener:
+    tags:
+      - { name: event.listener,
+          identifier: 'rte-check-link-external',
+          event: TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent,
+          method: 'checkExternalLink' }
+      - { name: event.listener,
+          identifier: 'rte-check-link-to-page',
+          event: TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent,
+          method: 'checkPageLink' }

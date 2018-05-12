@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Html;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -105,7 +106,8 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function hrTagCorrectlyTransformedOnWayToDataBase($content, $expectedResult)
     {
-        $subject = new RteHtmlParser();
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
         $thisConfig = ['proc.' => $this->procOptions];
         self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
     }
@@ -181,7 +183,8 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult)
     {
-        $subject = new RteHtmlParser();
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
         $thisConfig = ['proc.' => $this->procOptions];
         self::assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
     }
@@ -369,7 +372,8 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function paragraphCorrectlyTransformedOnWayToDatabase($content, $expectedResult)
     {
-        $subject = new RteHtmlParser();
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
         $thisConfig = ['proc.' => $this->procOptions];
         self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
     }
@@ -469,7 +473,8 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function lineBreakCorrectlyTransformedOnWayToRTE($content, $expectedResult)
     {
-        $subject = new RteHtmlParser();
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
         $thisConfig = ['proc.' => $this->procOptions];
         self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'rte', $thisConfig));
     }
@@ -621,7 +626,8 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult)
     {
-        $subject = new RteHtmlParser();
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
         $thisConfig = ['proc.' => $this->procOptions];
         self::assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
     }

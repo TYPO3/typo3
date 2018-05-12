@@ -29,6 +29,9 @@ services:
   TYPO3\CMS\Core\Database\Schema\SqlReader:
     public: true
 
+  TYPO3\CMS\Core\Html\RteHtmlParser:
+    public: true
+
   # EventListeners
   TYPO3\CMS\Core\Compatibility\Slot\PostInitializeMailer:
     tags:
