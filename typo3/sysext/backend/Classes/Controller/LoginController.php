@@ -300,22 +300,16 @@ class LoginController implements LoggerAwareInterface
     /**
      * Checking, if we should perform some sort of redirection OR closing of windows.
      *
-     * Do redirect:
-     *
-     * If a user is logged in AND
-     *   a) if either the login is just done (isLoginInProgress) or
-     *   b) a loginRefresh is done
+     * Do a redirect if a user is logged in
      *
      * @param ServerRequestInterface $request
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     protected function checkRedirect(ServerRequestInterface $request): void
     {
-        if (
-            empty($this->getBackendUserAuthentication()->user['uid']) ||
-            (!($this->isLoginInProgress($request) || $this->loginRefresh))
-        ) {
+        if (empty($this->getBackendUserAuthentication()->user['uid'])) {
             return;
         }
 

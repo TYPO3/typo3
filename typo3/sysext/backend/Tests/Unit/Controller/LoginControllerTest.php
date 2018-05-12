@@ -273,28 +273,6 @@ class LoginControllerTest extends UnitTestCase
     }
 
     /**
-     * @test
-     */
-    public function checkRedirectDoesNotRedirectIfLoginIsNotInProgressAndLoginRefreshIsFalse(): void
-    {
-        $GLOBALS['BE_USER'] = $this->prophesize(BackendUserAuthentication::class)->reveal();
-        $this->loginControllerMock = $this->getAccessibleMock(
-            LoginController::class,
-            ['redirectToUrl', 'isLoginInProgress'],
-            [],
-            '',
-            false
-        );
-
-        $GLOBALS['BE_USER']->user['uid'] = 1;
-        $this->loginControllerMock->method('isLoginInProgress')->willReturn(false);
-        $this->loginControllerMock->_set('loginRefresh', false);
-
-        $this->loginControllerMock->expects($this->never())->method('redirectToUrl');
-        $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
-    }
-
-    /**
      * FormProtectionFactory has an internal static instance cache we need to work around here
      */
     protected function prophesizeFormProtection(): void
