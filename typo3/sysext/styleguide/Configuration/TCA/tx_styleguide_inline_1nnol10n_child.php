@@ -18,7 +18,7 @@ return [
     'columns' => [
 
         'disable' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disable',
             'config' => [
                 'type' => 'check'
             ]
