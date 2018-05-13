@@ -547,4 +547,11 @@ return [
             'Deprecation-83475-AggregateValidatorInformationInClassSchema-2.rst',
         ],
     ],
+    'TYPO3\CMS\backend\Utility\BackendUtility::getPidForModTSconfig' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-84994-BackendUtilitygetPidForModTSconfigDeprecated.rst',
+        ],
+    ],
 ];

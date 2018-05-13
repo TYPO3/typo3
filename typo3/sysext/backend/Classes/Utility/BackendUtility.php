@@ -3424,9 +3424,11 @@ class BackendUtility
      * @param int $pid Record pid
      * @return int
      * @internal
+     * @deprecated since core v9, will be removed with core v10
      */
     public static function getPidForModTSconfig($table, $uid, $pid)
     {
+        trigger_error('Method getPidForModTSconfig() will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         return $table === 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $pid;
     }
 
@@ -3474,7 +3476,7 @@ class BackendUtility
         // If pid is negative (referring to another record) the pid of the other record is fetched and returned.
         $cPid = self::getTSconfig_pidValue($table, $uid, $pid);
         // $TScID is the id of $table = pages, else it's the pid of the record.
-        $TScID = self::getPidForModTSconfig($table, $uid, $cPid);
+        $TScID = $table === 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $cPid;
         return [$TScID, $cPid];
     }
 
