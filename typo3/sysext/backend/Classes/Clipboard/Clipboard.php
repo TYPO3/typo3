@@ -114,13 +114,10 @@ class Clipboard
      */
     public function initializeClipboard()
     {
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
         // Get data
-        $clipData = $this->getBackendUser()->getModuleData('clipboard', $this->getBackendUser()->getTSConfigVal('options.saveClipboard') ? '' : 'ses');
-        // NumberTabs
-        $clNP = $this->getBackendUser()->getTSConfigVal('options.clipboardNumberPads');
-        if (MathUtility::canBeInterpretedAsInteger($clNP) && $clNP >= 0) {
-            $this->numberTabs = MathUtility::forceIntegerInRange($clNP, 0, 20);
-        }
+        $clipData = $this->getBackendUser()->getModuleData('clipboard', $userTsConfig['options.']['saveClipboard'] ? '' : 'ses');
+        $this->numberTabs = MathUtility::forceIntegerInRange((int)($userTsConfig['options.']['clipboardNumberPads'] ?? 3), 0, 20);
         // Resets/reinstates the clipboard pads
         $this->clipData['normal'] = is_array($clipData['normal']) ? $clipData['normal'] : [];
         for ($a = 1; $a <= $this->numberTabs; $a++) {

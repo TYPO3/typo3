@@ -391,7 +391,7 @@ class BackendController
         $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         // If another page module was specified, replace the default Page module with the new one
-        $newPageModule = trim($beUser->getTSConfigVal('options.overridePageModule'));
+        $newPageModule = trim($beUser->getTSConfig()['options.']['overridePageModule'] ?? '');
         $pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
         if (!$beUser->check('modules', $pageModule)) {
             $pageModule = '';
@@ -432,6 +432,7 @@ class BackendController
     protected function handlePageEditing()
     {
         $beUser = $this->getBackendUser();
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
         // EDIT page:
         $editId = preg_replace('/[^[:alnum:]_]/', '', GeneralUtility::_GET('edit'));
         if ($editId) {
@@ -474,8 +475,8 @@ class BackendController
 	window.setTimeout("top.loadEditId(' . (int)$editRecord['uid'] . ');", 500);
 			';
                 // Checking page edit parameter:
-                if (!$beUser->getTSConfigVal('options.bookmark_onEditId_dontSetPageTree')) {
-                    $bookmarkKeepExpanded = $beUser->getTSConfigVal('options.bookmark_onEditId_keepExistingExpanded');
+                if (!($userTsConfig['options.']['bookmark_onEditId_dontSetPageTree'] ?? false)) {
+                    $bookmarkKeepExpanded = (bool)($userTsConfig['options.']['bookmark_onEditId_keepExistingExpanded'] ?? false);
                     // Expanding page tree:
                     BackendUtility::openPageTree((int)$editRecord['pid'], !$bookmarkKeepExpanded);
                 }

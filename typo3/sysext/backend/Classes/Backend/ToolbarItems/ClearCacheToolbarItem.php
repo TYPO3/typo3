@@ -46,11 +46,12 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     public function __construct()
     {
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ClearCacheMenu');
-        $backendUser = $this->getBackendUser();
-
+        $isAdmin = $this->getBackendUser()->isAdmin();
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
         // Clear all page-related caches
-        if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.pages')) {
+        if ($isAdmin || $userTsConfig['options.']['clearCache.']['pages'] ?? false) {
             $this->cacheActions[] = [
                 'id' => 'pages',
                 'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushPageCachesTitle',
@@ -64,7 +65,9 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         // Clearing of all caches is only shown if explicitly enabled via TSConfig
         // or if BE-User is admin and the TSconfig explicitly disables the possibility for admins.
         // This is useful for big production systems where admins accidentally could slow down the system.
-        if ($backendUser->getTSConfigVal('options.clearCache.all') || ($backendUser->isAdmin() && $backendUser->getTSConfigVal('options.clearCache.all') !== '0')) {
+        if ($userTsConfig['options.']['clearCache.']['all'] ?? false
+            || ($isAdmin && (bool)($userTsConfig['options.']['clearCache.']['all'] ?? true))
+        ) {
             $this->cacheActions[] = [
                 'id' => 'all',
                 'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushAllCachesTitle2',
@@ -97,7 +100,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
             return true;
         }
         foreach ($this->optionValues as $value) {
-            if ($backendUser->getTSConfigVal('options.clearCache.' . $value)) {
+            if ($backendUser->getTSConfig()['options.']['clearCache.'][$value] ?? false) {
                 return true;
             }
         }

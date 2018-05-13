@@ -929,8 +929,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function mayMakeShortcut()
     {
-        return $this->getTSConfigVal('options.enableBookmarks')
-            && !$this->getTSConfigVal('options.mayNotCreateEditBookmarks');
+        return $this->getTSConfig()['options.']['enableBookmarks'] ?? false
+            && !($this->getTSConfig()['options.']['mayNotCreateEditBookmarks'] ?? false);
     }
 
     /**
@@ -1242,9 +1242,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
      * @return string The value for that object string (object path)
      * @see getTSConfig()
+     * @deprecated since core v9, will be removed with core v10
      */
     public function getTSConfigVal($objectString)
     {
+        trigger_error('This getTSConfigVal() will be removed in TYPO3 v10. Use getTSConfig() instead.', E_USER_DEPRECATED);
         $TSConf = $this->getTSConfig($objectString);
         return $TSConf['value'];
     }
@@ -1255,9 +1257,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
      * @return array The properties for that object string (object path) - if any
      * @see getTSConfig()
+     * @deprecated since core v9, will be removed with core v10
      */
     public function getTSConfigProp($objectString)
     {
+        trigger_error('This getTSConfigProp() will be removed in TYPO3 v10. Use getTSConfig() instead.', E_USER_DEPRECATED);
         $TSConf = $this->getTSConfig($objectString);
         return $TSConf['properties'];
     }
@@ -1304,7 +1308,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public function jsConfirmation($bitmask)
     {
         try {
-            $alertPopupsSetting = trim((string)$this->getTSConfig('options.alertPopups')['value']);
+            $alertPopupsSetting = trim((string)($this->getTSConfig()['options.']['alertPopups'] ?? ''));
             $alertPopup = JsConfirmation::cast($alertPopupsSetting === '' ? null : (int)$alertPopupsSetting);
         } catch (InvalidEnumerationValueException $e) {
             $alertPopup = new JsConfirmation();
@@ -1401,7 +1405,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
             // Processing webmounts
             // Admin's always have the root mounted
-            if ($this->isAdmin() && !$this->getTSConfigVal('options.dontMountAdminMounts')) {
+            if ($this->isAdmin() && !($this->getTSConfig()['options.']['dontMountAdminMounts'] ?? false)) {
                 $this->dataLists['webmount_list'] = '0,' . $this->dataLists['webmount_list'];
             }
             // The lists are cleaned for duplicates
@@ -1696,7 +1700,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
 
         // Read-only file mounts
-        $readOnlyMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
+        $readOnlyMountPoints = \trim($this->getTSConfig()['options.']['folderTree.']['altElementBrowserMountPoints'] ?? '');
         if ($readOnlyMountPoints) {
             // We cannot use the API here but need to fetch the default storage record directly
             // to not instantiate it (which directly applies mount points) before all mount points are resolved!
@@ -1948,7 +1952,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function getDefaultUploadFolder($pid = null, $table = null, $field = null)
     {
-        $uploadFolder = $this->getTSConfigVal('options.defaultUploadFolder');
+        $uploadFolder = $this->getTSConfig()['options.']['defaultUploadFolder'] ?? '';
         if ($uploadFolder) {
             $uploadFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($uploadFolder);
         } else {
@@ -2062,9 +2066,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         $this->setWorkspace($this->user['workspace_id']);
         // Limiting the DB mountpoints if there any selected in the workspace record
         $this->initializeDbMountpointsInWorkspace();
-        if ($allowed_languages = $this->getTSConfigVal('options.workspaces.allowed_languages.' . $this->workspace)) {
-            $this->groupData['allowed_languages'] = $allowed_languages;
-            $this->groupData['allowed_languages'] = GeneralUtility::uniqueList($this->groupData['allowed_languages']);
+        $allowed_languages = $this->getTSConfig()['options.']['workspaces.']['allowed_languages.'][$this->workspace] ?? '';
+        if (!empty($allowed_languages)) {
+            $this->groupData['allowed_languages'] = GeneralUtility::uniqueList($allowed_languages);
         }
     }
 
@@ -2486,8 +2490,8 @@ This is a dump of the failures:
     {
         $isValid = true;
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['enabledBeUserIPLock']) {
-            $IPList = $this->getTSConfigVal('options.lockToIP');
-            if (trim($IPList)) {
+            $IPList = trim($this->getTSConfig()['options.']['lockToIP'] ?? '');
+            if (!empty($IPList)) {
                 $isValid = GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $IPList);
             }
         }
@@ -2560,7 +2564,7 @@ This is a dump of the failures:
             $this->uc = array_merge(
                 $this->uc_default,
                 (array)$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUC'],
-                GeneralUtility::removeDotsFromTS((array)$this->getTSConfigProp('setup.default')),
+                GeneralUtility::removeDotsFromTS((array)($this->getTSConfig()['setup.']['default.'] ?? [])),
                 $originalUc
             );
             $this->overrideUC();
@@ -2595,7 +2599,7 @@ This is a dump of the failures:
      */
     public function overrideUC()
     {
-        $this->uc = array_merge((array)$this->uc, (array)$this->getTSConfigProp('setup.override'));
+        $this->uc = array_merge((array)$this->uc, (array)($this->getTSConfig()['setup.']['override.'] ?? []));
     }
 
     /**

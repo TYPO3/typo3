@@ -1070,7 +1070,9 @@ abstract class AbstractTreeView
         foreach ($rootline as $rootlineElement) {
             $record = BackendUtility::getRecordWSOL('pages', $rootlineElement['uid'], 'title, nav_title', '', true, true);
             $text = $record['title'];
-            if ((bool)$this->getBackendUser()->getTSConfigVal('options.pageTree.showNavTitle') && trim($record['nav_title'] ?? '') !== '') {
+            if ((bool)($this->getBackendUser()->getTSConfig()['options.']['pageTree.']['showNavTitle'] ?? false)
+                && trim($record['nav_title'] ?? '') !== ''
+            ) {
                 $text = $record['nav_title'];
             }
             $path[] = htmlspecialchars($text);

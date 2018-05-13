@@ -723,8 +723,11 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
-        $subject->method('getTSConfig')->with('options.alertPopups')->willReturn(['value' => 1]);
-
+        $subject->method('getTSConfig')->with()->willReturn([
+            'options.' => [
+                'alertPopups' => 1
+            ],
+        ]);
         $this->assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
         $this->assertFalse($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
     }
@@ -738,8 +741,11 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
-        $subject->method('getTSConfig')->with('options.alertPopups')->willReturn(['value' => 3]);
-
+        $subject->method('getTSConfig')->with()->willReturn([
+            'options.' => [
+                'alertPopups' => 3
+            ],
+        ]);
         $this->assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
         $this->assertTrue($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
     }
@@ -760,8 +766,11 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
-        $subject->method('getTSConfig')->with('options.alertPopups')->willReturn(['value' => $jsConfirmation]);
-
+        $subject->method('getTSConfig')->with()->willReturn([
+            'options.' => [
+                'alertPopups' => $jsConfirmation
+            ],
+        ]);
         $this->assertEquals($typeChangeAllowed, $subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
         $this->assertEquals($copyMovePasteAllowed, $subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
         $this->assertEquals($deleteAllowed, $subject->jsConfirmation(JsConfirmation::DELETE));
@@ -803,8 +812,11 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
-        $subject->method('getTSConfig')->with('options.alertPopups')->willReturn(['value' => 0]);
-
+        $subject->method('getTSConfig')->with()->willReturn([
+            'options.' => [
+                'alertPopups' => 0
+            ],
+        ]);
         $this->assertFalse($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
         $this->assertFalse($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
     }

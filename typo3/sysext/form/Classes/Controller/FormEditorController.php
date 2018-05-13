@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -105,14 +106,11 @@ class FormEditorController extends AbstractBackendController
 
         $popupWindowWidth  = 700;
         $popupWindowHeight = 750;
-        $popupWindowSize = $this->getBackendUser()->getTSConfigVal('options.popupWindowSize')
-            ? trim($this->getBackendUser()->getTSConfigVal('options.popupWindowSize'))
-            : null;
+        $popupWindowSize = \trim($this->getBackendUser()->getTSConfig()['options.']['popupWindowSize'] ?? '');
         if (!empty($popupWindowSize)) {
             list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::intExplode('x', $popupWindowSize);
         }
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $addInlineSettings = [
             'FormEditor' => [
                 'typo3WinBrowserUrl' => (string)$uriBuilder->buildUriFromRoute('wizard_element_browser'),
@@ -321,8 +319,8 @@ class FormEditorController extends AbstractBackendController
                 ->setValue('new-page')
                 ->setClasses('t3-form-element-new-page-button hidden')
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL));
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            /** @var UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
             $closeButton = $buttonBar->makeLinkButton()
                 ->setDataAttributes(['identifier' => 'closeButton'])

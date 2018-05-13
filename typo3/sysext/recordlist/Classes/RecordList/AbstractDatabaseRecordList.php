@@ -435,11 +435,9 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             ->expr();
         $permsClause = $expressionBuilder->andX($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         // This will hide records from display - it has nothing to do with user rights!!
-        if ($pidList = $backendUser->getTSConfigVal('options.hideRecords.pages')) {
-            $pidList = GeneralUtility::intExplode(',', $pidList, true);
-            if (!empty($pidList)) {
-                $permsClause->add($expressionBuilder->notIn('pages.uid', $pidList));
-            }
+        $pidList = GeneralUtility::intExplode(',', $backendUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? '', true);
+        if (!empty($pidList)) {
+            $permsClause->add($expressionBuilder->notIn('pages.uid', $pidList));
         }
         $this->perms_clause = (string)$permsClause;
 

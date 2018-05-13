@@ -647,7 +647,7 @@ class EditDocumentController
         $tce->setControl($parsedBody['control'] ?? $queryParams['control'] ?? []);
 
         // Set default values specific for the user
-        $TCAdefaultOverride = $beUser->getTSConfigProp('TCAdefaults');
+        $TCAdefaultOverride = $beUser->getTSConfig()['TCAdefaults.'] ?? null;
         if (is_array($TCAdefaultOverride)) {
             $tce->setDefaultsFromUserTS($TCAdefaultOverride);
         }

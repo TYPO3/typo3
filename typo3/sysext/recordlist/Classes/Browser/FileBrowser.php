@@ -182,7 +182,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         }
 
         // Getting flag for showing/not showing thumbnails:
-        $noThumbs = $backendUser->getTSConfigVal('options.noThumbsInEB');
+        $noThumbs = $backendUser->getTSConfig()['options.']['noThumbsInEB'] ?? false;
         $_MOD_SETTINGS = [];
         if (!$noThumbs) {
             // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
@@ -412,7 +412,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $out = '';
 
         // Getting flag for showing/not showing thumbnails:
-        $noThumbsInEB = $this->getBackendUser()->getTSConfigVal('options.noThumbsInEB');
+        $noThumbsInEB = $this->getBackendUser()->getTSConfig()['options.']['noThumbsInEB'] ?? false;
         if (!$noThumbsInEB && $this->selectedFolder) {
             // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
             $_MOD_MENU = ['displayThumbs' => ''];

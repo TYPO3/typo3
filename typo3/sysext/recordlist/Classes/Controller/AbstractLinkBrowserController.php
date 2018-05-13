@@ -265,10 +265,7 @@ abstract class AbstractLinkBrowserController
      */
     protected function getLinkHandlers()
     {
-        $pageTSconfig = BackendUtility::getPagesTSconfig($this->getCurrentPageId());
-        $pageTSconfig = $this->getBackendUser()->getTSConfig('TCEMAIN.linkHandler.', $pageTSconfig);
-        $linkHandlers = (array)$pageTSconfig['properties'];
-
+        $linkHandlers = (array)(BackendUtility::getPagesTSconfig($this->getCurrentPageId())['TCEMAIN.']['linkHandler.'] ?? []);
         foreach ($this->hookObjects as $hookObject) {
             if (method_exists($hookObject, 'modifyLinkHandlers')) {
                 $linkHandlers = $hookObject->modifyLinkHandlers($linkHandlers, $this->currentLinkParts);

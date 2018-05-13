@@ -53,11 +53,9 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      *
      * @return bool TRUE if user has access, FALSE if not
      */
-    public function checkAccess()
+    public function checkAccess(): bool
     {
-        $disabled = $this->getBackendUser()->getTSConfig('backendToolbarItem.tx_opendocs.disabled');
-
-        return (int)$disabled['value'] !== 1;
+        return !(bool)($this->getBackendUser()->getTSConfig()['backendToolbarItem.']['tx_opendocs.']['disabled'] ?? false);
     }
 
     /**

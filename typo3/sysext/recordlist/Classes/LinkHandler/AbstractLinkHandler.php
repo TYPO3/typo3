@@ -129,8 +129,8 @@ abstract class AbstractLinkHandler
             $backendUser->setWebmounts($alternativeWebmountPoint);
         } else {
             // Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
-            $alternativeWebmountPoints = trim($backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
-            $appendAlternativeWebmountPoints = $backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
+            $alternativeWebmountPoints = \trim($backendUser->getTSConfig()['options.']['pageTree.']['altElementBrowserMountPoints'] ?? '');
+            $appendAlternativeWebmountPoints = $backendUser->getTSConfig()['options.']['pageTree.']['altElementBrowserMountPoints.']['append'] ?? '';
             if ($alternativeWebmountPoints) {
                 $alternativeWebmountPoints = GeneralUtility::intExplode(',', $alternativeWebmountPoints);
                 $this->getBackendUser()->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);

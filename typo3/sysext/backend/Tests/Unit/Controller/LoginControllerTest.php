@@ -168,7 +168,13 @@ class LoginControllerTest extends UnitTestCase
     {
         $GLOBALS['LANG'] = ($this->prophesize(LanguageService::class))->reveal();
         $authenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $authenticationProphecy->getTSConfigVal('auth.BE.redirectToURL')->willReturn('http://example.com');
+        $authenticationProphecy->getTSConfig()->willReturn([
+            'auth.' => [
+                'BE.' => [
+                    'redirectToURL' => 'http://example.com'
+                ]
+            ]
+        ]);
         $authenticationProphecy->writeUC()->willReturn();
         $authenticationProphecy->getSessionData('formProtectionSessionToken')->willReturn('foo');
         $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
@@ -197,7 +203,13 @@ class LoginControllerTest extends UnitTestCase
     {
         $GLOBALS['LANG'] = $this->prophesize(LanguageService::class)->reveal();
         $authenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $authenticationProphecy->getTSConfigVal('auth.BE.redirectToURL')->willReturn('http://example.com');
+        $authenticationProphecy->getTSConfig()->willReturn([
+            'auth.' => [
+                'BE.' => [
+                    'redirectToURL' => 'http://example.com'
+                ]
+            ]
+        ]);
         $authenticationProphecy->writeUC()->willReturn();
         $this->prophesizeFormProtection();
         $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
@@ -228,7 +240,13 @@ class LoginControllerTest extends UnitTestCase
     {
         $GLOBALS['LANG'] = $this->prophesize(LanguageService::class)->reveal();
         $authenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $authenticationProphecy->getTSConfigVal('auth.BE.redirectToURL')->willReturn('http://example.com');
+        $authenticationProphecy->getTSConfig()->willReturn([
+            'auth.' => [
+                'BE.' => [
+                    'redirectToURL' => 'http://example.com'
+                ]
+            ]
+        ]);
         $authenticationProphecy->writeUC()->willReturn();
         $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
         $this->prophesizeFormProtection();

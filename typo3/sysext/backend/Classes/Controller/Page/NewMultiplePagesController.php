@@ -181,7 +181,7 @@ class NewMultiplePagesController
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
             // Set default TCA values specific for the user
             $backendUser = $this->getBackendUser();
-            $tcaDefaultOverride = $backendUser->getTSConfigProp('TCAdefaults');
+            $tcaDefaultOverride = $backendUser->getTSConfig()['TCAdefaults.'] ?? null;
             if (is_array($tcaDefaultOverride)) {
                 $dataHandler->setDefaultsFromUserTS($tcaDefaultOverride);
             }

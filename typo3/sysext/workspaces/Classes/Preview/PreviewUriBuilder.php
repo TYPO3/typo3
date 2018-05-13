@@ -221,7 +221,7 @@ class PreviewUriBuilder
      */
     protected function getPreviewLinkLifetime(): int
     {
-        $ttlHours = (int)$this->getBackendUser()->getTSConfigVal('options.workspaces.previewLinkTTLHours');
+        $ttlHours = (int)($this->getBackendUser()->getTSConfig()['options.']['workspaces.']['previewLinkTTLHours'] ?? 0);
         return $ttlHours ?: 24 * 2;
     }
 

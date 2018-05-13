@@ -202,7 +202,7 @@ class PreviewController
     protected function generateJavascript(): string
     {
         // If another page module was specified, replace the default Page module with the new one
-        $pageModule = trim($this->getBackendUser()->getTSConfigVal('options.overridePageModule') ?? '');
+        $pageModule = \trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? '');
         $pageModule = BackendUtility::isModuleSetInTBE_MODULES($pageModule) ? $pageModule : 'web_layout';
         if (!$this->getBackendUser()->check('modules', $pageModule)) {
             $pageModule = '';

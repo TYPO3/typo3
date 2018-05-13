@@ -1955,9 +1955,10 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public function tt_content_drawHeader($row, $space = 0, $disableMoveAndNewButtons = false, $langMode = false, $dragDropEnabled = false)
     {
+        $backendUser = $this->getBackendUser();
         $out = '';
         // If show info is set...;
-        if ($this->tt_contentConfig['showInfo'] && $this->getBackendUser()->recordEditAccessInternals('tt_content', $row)) {
+        if ($this->tt_contentConfig['showInfo'] && $backendUser->recordEditAccessInternals('tt_content', $row)) {
             // Render control panel for the element:
             if ($this->tt_contentConfig['showCommands'] && $this->doEdit) {
                 // Edit content element:
@@ -1981,7 +1982,7 @@ class PageLayoutView implements LoggerAwareInterface
                 $hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
                 if ($hiddenField && $GLOBALS['TCA']['tt_content']['columns'][$hiddenField]
                     && (!$GLOBALS['TCA']['tt_content']['columns'][$hiddenField]['exclude']
-                        || $this->getBackendUser()->check('non_exclude_fields', 'tt_content:' . $hiddenField))
+                        || $backendUser->check('non_exclude_fields', 'tt_content:' . $hiddenField))
                 ) {
                     if ($row[$hiddenField]) {
                         $value = 0;
@@ -1997,8 +1998,11 @@ class PageLayoutView implements LoggerAwareInterface
                         . $this->iconFactory->getIcon('actions-edit-' . strtolower($label), Icon::SIZE_SMALL)->render() . '</a>';
                 }
                 // Delete
-                $disableDeleteTS = $this->getBackendUser()->getTSConfig('options.disableDelete');
-                $disableDelete = (bool)trim($disableDeleteTS['properties']['tt_content'] ?? $disableDeleteTS['value']);
+                $disableDelete = (bool)\trim(
+                    $backendUser->getTSConfig()['options.']['disableDelete.']['tt_content']
+                    ?? $backendUser->getTSConfig()['options.']['disableDelete']
+                    ?? '0'
+                );
                 if (!$disableDelete) {
                     $params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
                     $refCountMsg = BackendUtility::referenceCount(
@@ -2020,7 +2024,7 @@ class PageLayoutView implements LoggerAwareInterface
                         . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
                         . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('deleteItem')) . '">'
                         . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
-                    if ($out && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
+                    if ($out && $backendUser->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
                         $out = '<div class="btn-group btn-group-sm" role="group">' . $out . '</div>';
                     } else {
                         $out = '';
@@ -3093,11 +3097,9 @@ class PageLayoutView implements LoggerAwareInterface
             ->expr();
         $permsClause = $expressionBuilder->andX($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         // This will hide records from display - it has nothing to do with user rights!!
-        if ($pidList = $backendUser->getTSConfigVal('options.hideRecords.pages')) {
-            $pidList = GeneralUtility::intExplode(',', $pidList, true);
-            if (!empty($pidList)) {
-                $permsClause->add($expressionBuilder->notIn('pages.uid', $pidList));
-            }
+        $pidList = GeneralUtility::intExplode(',', $backendUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? '', true);
+        if (!empty($pidList)) {
+            $permsClause->add($expressionBuilder->notIn('pages.uid', $pidList));
         }
         $this->perms_clause = (string)$permsClause;
 

@@ -8582,9 +8582,10 @@ class DataHandler implements LoggerAwareInterface
         if (is_object($this->BE_USER)) {
             $this->BE_USER->writelog(3, 1, 0, 0, 'User %s has cleared the cache (cacheCmd=%s)', [$this->BE_USER->user['username'], $cacheCmd]);
         }
+        $userTsConfig = $this->BE_USER->getTSConfig();
         switch (strtolower($cacheCmd)) {
             case 'pages':
-                if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.pages')) {
+                if ($this->admin || $userTsConfig['options.']['clearCache.']['pages'] ?? false) {
                     $this->getCacheManager()->flushCachesInGroup('pages');
                 }
                 break;
@@ -8592,7 +8593,9 @@ class DataHandler implements LoggerAwareInterface
                 // allow to clear all caches if the TS config option is enabled or the option is not explicitly
                 // disabled for admins (which could clear all caches by default). The latter option is useful
                 // for big production sites where it should be possible to restrict the cache clearing for some admins.
-                if ($this->BE_USER->getTSConfigVal('options.clearCache.all') || ($this->admin && $this->BE_USER->getTSConfigVal('options.clearCache.all') !== '0')) {
+                if ($userTsConfig['options.']['clearCache.']['all'] ?? false
+                    || ($this->admin && (bool)($userTsConfig['options.']['clearCache.']['all'] ?? true))
+                ) {
                     $this->getCacheManager()->flushCaches();
                     GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getConnectionForTable('cache_treelist')
@@ -8610,7 +8613,7 @@ class DataHandler implements LoggerAwareInterface
                     . ' instead or call the group cache clearing of "system" group directly via a custom extension.',
                     E_USER_DEPRECATED
                 );
-                if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.system')) {
+                if ($this->admin || $userTsConfig['options.']['clearCache.']['system'] ?? false) {
                     $this->getCacheManager()->flushCachesInGroup('system');
                 }
                 break;

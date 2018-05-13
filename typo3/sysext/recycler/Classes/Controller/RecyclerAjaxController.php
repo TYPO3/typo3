@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
@@ -44,12 +45,10 @@ class RecyclerAjaxController
         // Configuration, variable assignment
         $this->conf['action'] = GeneralUtility::_GP('action');
         $this->conf['table'] = GeneralUtility::_GP('table') ? GeneralUtility::_GP('table') : '';
-        $modTS = $this->getBackendUser()->getTSConfig('mod.recycler');
-        if (isset($modTS['properties']['recordsPageLimit']) && (int)$modTS['properties']['recordsPageLimit'] > 0) {
-            $this->conf['limit'] = (int)$modTS['properties']['recordsPageLimit'];
-        } else {
-            $this->conf['limit'] = 25;
-        }
+        $this->conf['limit'] = MathUtility::forceIntegerInRange(
+            (int)($this->getBackendUser()->getTSConfig()['mod.']['recycler.']['recordsPageLimit'] ?? 25),
+            1
+        );
         $this->conf['start'] = GeneralUtility::_GP('start') ? (int)GeneralUtility::_GP('start') : 0;
         $this->conf['filterTxt'] = GeneralUtility::_GP('filterTxt') ? GeneralUtility::_GP('filterTxt') : '';
         $this->conf['startUid'] = GeneralUtility::_GP('startUid') ? (int)GeneralUtility::_GP('startUid') : 0;

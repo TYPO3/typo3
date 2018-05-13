@@ -15,8 +15,11 @@ namespace TYPO3\CMS\Backend\Domain\Repository\Module;
  */
 
 use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -212,16 +215,6 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Return language service instance
-     *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
      * loads the module menu from the moduleloader based on $GLOBALS['TBE_MODULES']
      * and compiles an array with all the data needed for menu etc.
      *
@@ -240,8 +233,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
 
         // Unset modules that are meant to be hidden from the menu.
         $loadedModules = $this->removeHiddenModules($loadedModules);
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $dummyScript = (string)$uriBuilder->buildUriFromRoute('dummy');
         foreach ($loadedModules as $moduleName => $moduleData) {
             $moduleLink = '';
@@ -317,22 +309,21 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function removeHiddenModules($loadedModules)
     {
-        $hiddenModules = $GLOBALS['BE_USER']->getTSConfig('options.hideModules');
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
 
         // Hide modules if set in userTS.
-        if (!empty($hiddenModules['value'])) {
-            $hiddenMainModules = explode(',', $hiddenModules['value']);
-            foreach ($hiddenMainModules as $hiddenMainModule) {
-                unset($loadedModules[trim($hiddenMainModule)]);
-            }
+        $hiddenMainModules = GeneralUtility::trimExplode(',', $userTsConfig['options.']['hideModules'] ?? '', true);
+        foreach ($hiddenMainModules as $hiddenMainModule) {
+            unset($loadedModules[$hiddenMainModule]);
         }
 
         // Hide sub-modules if set in userTS.
-        if (!empty($hiddenModules['properties']) && is_array($hiddenModules['properties'])) {
-            foreach ($hiddenModules['properties'] as $mainModuleName => $subModules) {
-                $hiddenSubModules = explode(',', $subModules);
+        $hiddenModules = $userTsConfig['options.']['hideModules.'] ?? [];
+        if (is_array($hiddenModules)) {
+            foreach ($hiddenModules as $mainModuleName => $subModules) {
+                $hiddenSubModules = GeneralUtility::trimExplode(',', $subModules, true);
                 foreach ($hiddenSubModules as $hiddenSubModule) {
-                    unset($loadedModules[$mainModuleName]['sub'][trim($hiddenSubModule)]);
+                    unset($loadedModules[$mainModuleName]['sub'][$hiddenSubModule]);
                 }
             }
         }
@@ -358,5 +349,23 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
             return $iconFactory->getIcon($iconIdentifier)->render();
         }
         return '';
+    }
+
+    /**
+     * Return language service instance
+     *
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

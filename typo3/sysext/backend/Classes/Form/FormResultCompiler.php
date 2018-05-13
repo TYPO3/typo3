@@ -218,18 +218,18 @@ class FormResultCompiler
             }
         }
         $pageRenderer->loadJquery();
-        $beUserAuth = $this->getBackendUserAuthentication();
+        $backendUser = $this->getBackendUserAuthentication();
 
         // define the window size of the element browser etc.
         $popupWindowWidth  = 800;
         $popupWindowHeight = 600;
-        $popupWindowSize = trim($beUserAuth->getTSConfigVal('options.popupWindowSize'));
+        $popupWindowSize = trim($backendUser->getTSConfig()['options.']['popupWindowSize'] ?? '');
         if (!empty($popupWindowSize)) {
             list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::intExplode('x', $popupWindowSize);
         }
 
         // define the window size of the popups within the RTE
-        $rtePopupWindowSize = trim($beUserAuth->getTSConfigVal('options.rte.popupWindowSize'));
+        $rtePopupWindowSize = trim($backendUser->getTSConfig()['options.']['rte.']['popupWindowSize'] ?? '');
         if (!empty($rtePopupWindowSize)) {
             list($rtePopupWindowWidth, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
         }
@@ -238,7 +238,7 @@ class FormResultCompiler
 
         // Make textareas resizable and flexible ("autogrow" in height)
         $textareaSettings = [
-            'autosize'  => (bool)$beUserAuth->uc['resizeTextareas_Flexible'],
+            'autosize'  => (bool)$backendUser->uc['resizeTextareas_Flexible'],
             'RTEPopupWindow' => [
                 'width' => $rtePopupWindowWidth,
                 'height' => $rtePopupWindowHeight

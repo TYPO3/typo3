@@ -337,15 +337,14 @@ class NewRecordController
         // Page-selection permission clause (reading)
         $this->perms_clause = $beUser->getPagePermsClause(Permission::PAGE_SHOW);
         // This will hide records from display - it has nothing to do with user rights!!
-        if ($pidList = $beUser->getTSConfigVal('options.hideRecords.pages')) {
-            if (!empty($pidList)) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('pages');
-                $this->perms_clause .= ' AND ' . $queryBuilder->expr()->notIn(
-                    'pages.uid',
-                    GeneralUtility::intExplode(',', $pidList)
-                );
-            }
+        $pidList = $beUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? '';
+        if (!empty($pidList)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages');
+            $this->perms_clause .= ' AND ' . $queryBuilder->expr()->notIn(
+                'pages.uid',
+                GeneralUtility::intExplode(',', $pidList)
+            );
         }
         // Setting GPvars:
         $parsedBody = $request->getParsedBody();

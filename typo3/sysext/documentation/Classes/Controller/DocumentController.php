@@ -143,13 +143,12 @@ class DocumentController extends ActionController
         $documents = $this->getDocuments();
 
         // Filter documents to be shown for current user
-        $hideDocuments = $this->getBackendUser()->getTSConfigVal('mod.help_DocumentationDocumentation.documents.hide');
-        $hideDocuments = GeneralUtility::trimExplode(',', $hideDocuments, true);
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
+        $hideDocuments = GeneralUtility::trimExplode(',', $userTsConfig['mod.']['help_DocumentationDocumentation.']['documents.']['hide'] ?? '', true);
         if (!empty($hideDocuments)) {
             $documents = array_diff_key($documents, array_flip($hideDocuments));
         }
-        $showDocuments = $this->getBackendUser()->getTSConfigVal('mod.help_DocumentationDocumentation.documents.show');
-        $showDocuments = GeneralUtility::trimExplode(',', $showDocuments, true);
+        $showDocuments = GeneralUtility::trimExplode(',', $userTsConfig['mod.']['help_DocumentationDocumentation.']['documents.']['show'] ?? '', true);
         if (!empty($showDocuments)) {
             $documents = array_intersect_key($documents, array_flip($showDocuments));
         }

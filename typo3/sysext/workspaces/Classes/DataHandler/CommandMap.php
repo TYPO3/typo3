@@ -96,8 +96,8 @@ class CommandMap
         $this->setTceMain($tceMain);
         $this->set($commandMap);
         $this->setWorkspace($workspace);
-        $this->setWorkspacesSwapMode($this->getTceMain()->BE_USER->getTSConfigVal('options.workspaces.swapMode'));
-        $this->setWorkspacesChangeStageMode($this->getTceMain()->BE_USER->getTSConfigVal('options.workspaces.changeStageMode'));
+        $this->setWorkspacesSwapMode($this->getTceMain()->BE_USER->getTSConfig()['options.']['workspaces.']['swapMode'] ?? '');
+        $this->setWorkspacesChangeStageMode($this->getTceMain()->BE_USER->getTSConfig()['options.']['workspaces.']['changeStageMode'] ?? '');
         $this->constructScopes();
     }
 

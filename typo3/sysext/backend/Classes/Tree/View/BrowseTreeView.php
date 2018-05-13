@@ -81,17 +81,19 @@ class BrowseTreeView extends AbstractTreeView
      */
     public function init($clause = '', $orderByFields = '')
     {
+        $backendUser = $this->getBackendUser();
         // This will hide records from display - it has nothing to do with user rights!!
         $clauseExcludePidList = '';
-        if ($pidList = $this->getBackendUser()->getTSConfigVal('options.hideRecords.pages')) {
+        $pidList = $backendUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? '';
+        if (!empty($pidList)) {
             if ($pidList = implode(',', GeneralUtility::intExplode(',', $pidList))) {
                 $clauseExcludePidList = ' AND pages.uid NOT IN (' . $pidList . ')';
             }
         }
         // This is very important for making trees of pages: Filtering out deleted pages, pages with no access to and sorting them correctly:
-        parent::init(' AND deleted=0 AND sys_language_uid=0 AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW) . ' ' . $clause . $clauseExcludePidList, 'sorting');
+        parent::init(' AND deleted=0 AND sys_language_uid=0 AND ' . $backendUser->getPagePermsClause(Permission::PAGE_SHOW) . ' ' . $clause . $clauseExcludePidList, 'sorting');
         $this->title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-        $this->MOUNTS = $this->getBackendUser()->returnWebmounts();
+        $this->MOUNTS = $backendUser->returnWebmounts();
         if ($pidList) {
             // Remove mountpoint if explicitly set in options.hideRecords.pages (see above)
             $hideList = explode(',', $pidList);
@@ -148,7 +150,9 @@ class BrowseTreeView extends AbstractTreeView
         } else {
             $title = parent::getTitleStr($row, $titleLen);
         }
-        if (!empty($row['is_siteroot']) && $this->getBackendUser()->getTSConfigVal('options.pageTree.showDomainNameWithTitle')) {
+        if (!empty($row['is_siteroot'])
+            && $this->getBackendUser()->getTSConfig()['options.']['pageTree.']['showDomainNameWithTitle'] ?? false
+        ) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
             $row = $queryBuilder
                 ->select('domainName', 'sorting')

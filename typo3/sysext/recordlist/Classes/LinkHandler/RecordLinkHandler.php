@@ -165,14 +165,14 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
      */
     protected function renderPageTree(): string
     {
-        $backendUser = $this->getBackendUser();
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
 
         /** @var RecordBrowserPageTreeView $pageTree */
         $pageTree = GeneralUtility::makeInstance(RecordBrowserPageTreeView::class);
         $pageTree->setLinkParameterProvider($this);
-        $pageTree->ext_showPageId = (bool)$backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
-        $pageTree->ext_showNavTitle = (bool)$backendUser->getTSConfigVal('options.pageTree.showNavTitle');
-        $pageTree->ext_showPathAboveMounts = (bool)$backendUser->getTSConfigVal('options.pageTree.showPathAboveMounts');
+        $pageTree->ext_showPageId = (bool)($userTsConfig['options.']['pageTree.']['showPageIdWithTitle'] ?? false);
+        $pageTree->ext_showNavTitle = (bool)($userTsConfig['options.']['pageTree.']['showNavTitle'] ?? false);
+        $pageTree->ext_showPathAboveMounts = (bool)($userTsConfig['options.']['pageTree.']['showPathAboveMounts'] ?? false);
         $pageTree->addField('nav_title');
 
         // Load the mount points, if any

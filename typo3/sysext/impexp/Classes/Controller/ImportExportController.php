@@ -217,7 +217,6 @@ class ImportExportController extends BaseScriptClass
             // flag doesn't exist initially; state is on by default
             $inData['excludeDisabled'] = 1;
         }
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $this->standaloneView->assign('moduleUrl', (string)$uriBuilder->buildUriFromRoute('xMOD_tximpexp'));
         $this->standaloneView->assign('id', $this->id);
@@ -232,8 +231,8 @@ class ImportExportController extends BaseScriptClass
                 break;
             case 'import':
                 $backendUser = $this->getBackendUser();
-                $isEnabledForNonAdmin = $backendUser->getTSConfig('options.impexp.enableImportForNonAdminUser');
-                if (!$backendUser->isAdmin() && empty($isEnabledForNonAdmin['value'])) {
+                $isEnabledForNonAdmin = (bool)($backendUser->getTSConfig()['options.']['impexp.']['enableImportForNonAdminUser'] ?? false);
+                if (!$backendUser->isAdmin() && $isEnabledForNonAdmin) {
                     throw new \RuntimeException(
                         'Import module is disabled for non admin users and '
                         . 'userTsConfig options.impexp.enableImportForNonAdminUser is not enabled.',

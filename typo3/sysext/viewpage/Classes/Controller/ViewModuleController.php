@@ -279,13 +279,8 @@ class ViewModuleController
      */
     protected function getDomainName(int $pageId)
     {
-        $previewDomainConfig = $this->getBackendUser()->getTSConfig('TCEMAIN.previewDomain', BackendUtility::getPagesTSconfig($pageId));
-        if ($previewDomainConfig['value']) {
-            $domain = $previewDomainConfig['value'];
-        } else {
-            $domain = BackendUtility::firstDomainRecord(BackendUtility::BEgetRootLine($pageId));
-        }
-        return $domain;
+        $previewDomainConfig = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.']['previewDomain'] ?? '';
+        return $previewDomainConfig ?: BackendUtility::firstDomainRecord(BackendUtility::BEgetRootLine($pageId));
     }
 
     /**

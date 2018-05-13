@@ -1920,6 +1920,8 @@ class DatabaseRecordList
      */
     public function makeControl($table, $row)
     {
+        $backendUser = $this->getBackendUserAuthentication();
+        $userTsConfig = $backendUser->getTSConfig();
         $module = $this->getModule();
         $rowUid = $row['uid'];
         if (ExtensionManagementUtility::isLoaded('workspaces') && isset($row['_ORIG_uid'])) {
@@ -1935,14 +1937,14 @@ class DatabaseRecordList
         // If the listed table is 'pages' we have to request the permission settings for each page:
         $localCalcPerms = 0;
         if ($table === 'pages') {
-            $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
+            $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
         }
         $permsEdit = $table === 'pages'
-                     && $this->getBackendUserAuthentication()->checkLanguageAccess(0)
+                     && $backendUser->checkLanguageAccess(0)
                      && $localCalcPerms & Permission::PAGE_EDIT
                      || $table !== 'pages'
                         && $this->calcPerms & Permission::CONTENT_EDIT
-                        && $this->getBackendUserAuthentication()->recordEditAccessInternals($table, $row);
+                        && $backendUser->recordEditAccessInternals($table, $row);
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
         // "Show" link (only pages and tt_content elements)
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
@@ -1996,9 +1998,7 @@ class DatabaseRecordList
         // If the table is NOT a read-only table, then show these links:
         if ($this->isEditable($table)) {
             // "Revert" link (history/undo)
-            $showHistoryTS = $this->getBackendUserAuthentication()->getTSConfig('options.showHistory');
-            $showHistory = (bool)trim($showHistoryTS['properties'][$table] ?? $showHistoryTS['value'] ?? '1');
-            if ($showHistory) {
+            if ((bool)\trim($userTsConfig['options.']['showHistory.'][$table] ?? $userTsConfig['options.']['showHistory'] ?? '1')) {
                 $moduleUrl = BackendUtility::getModuleUrl('record_history', ['element' => $table . ':' . $row['uid']]);
                 $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($moduleUrl) . ',\'#latest\');';
                 $historyAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
@@ -2007,7 +2007,7 @@ class DatabaseRecordList
                 $this->addActionToCellGroup($cells, $historyAction, 'history');
             }
             // "Edit Perms" link:
-            if ($table === 'pages' && $this->getBackendUserAuthentication()->check('modules', 'system_BeuserTxPermission') && ExtensionManagementUtility::isLoaded('beuser')) {
+            if ($table === 'pages' && $backendUser->check('modules', 'system_BeuserTxPermission') && ExtensionManagementUtility::isLoaded('beuser')) {
                 if ($isL10nOverlay) {
                     $permsAction = $this->spaceIcon;
                 } else {
@@ -2070,7 +2070,7 @@ class DatabaseRecordList
             if (
                 !empty($GLOBALS['TCA'][$table]['columns'][$hiddenField])
                 && (empty($GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude'])
-                    || $this->getBackendUserAuthentication()->check('non_exclude_fields', $table . ':' . $hiddenField))
+                    || $backendUser->check('non_exclude_fields', $table . ':' . $hiddenField))
             ) {
                 if (!$permsEdit || $this->isRecordCurrentBackendUser($table, $row)) {
                     $hideAction = $this->spaceIcon;
@@ -2096,11 +2096,10 @@ class DatabaseRecordList
                 $this->addActionToCellGroup($cells, $hideAction, 'hide');
             }
             // "Delete" link:
-            $disableDeleteTS = $this->getBackendUserAuthentication()->getTSConfig('options.disableDelete');
-            $disableDelete = (bool)trim($disableDeleteTS['properties'][$table] ?? $disableDeleteTS['value']);
+            $disableDelete = (bool)\trim($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? '0');
             if ($permsEdit && !$disableDelete && ($table === 'pages' && $localCalcPerms & Permission::PAGE_DELETE || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT)) {
                 // Check if the record version is in "deleted" state, because that will switch the action to "restore"
-                if ($this->getBackendUserAuthentication()->workspace > 0 && isset($row['t3ver_state']) && (int)$row['t3ver_state'] === 2) {
+                if ($backendUser->workspace > 0 && isset($row['t3ver_state']) && (int)$row['t3ver_state'] === 2) {
                     $actionName = 'restore';
                     $refCountMsg = '';
                 } else {
@@ -2150,7 +2149,7 @@ class DatabaseRecordList
                 }
                 // Down (Paste as subpage to the page right above)
                 if (!$isL10nOverlay && $this->currentTable['prevUid'][$row['uid']]) {
-                    $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']]));
+                    $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']]));
                     if ($localCalcPerms & Permission::PAGE_NEW) {
                         $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prevUid'][$row['uid']];
                         $moveRightAction = '<a class="btn btn-default" href="#" onclick="'
@@ -2946,11 +2945,9 @@ class DatabaseRecordList
             ->expr();
         $permsClause = $expressionBuilder->andX($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         // This will hide records from display - it has nothing to do with user rights!!
-        if ($pidList = $backendUser->getTSConfigVal('options.hideRecords.pages')) {
-            $pidList = GeneralUtility::intExplode(',', $pidList, true);
-            if (!empty($pidList)) {
-                $permsClause->add($expressionBuilder->notIn('pages.uid', $pidList));
-            }
+        $pidList = GeneralUtility::intExplode(',', $backendUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? '', true);
+        if (!empty($pidList)) {
+            $permsClause->add($expressionBuilder->notIn('pages.uid', $pidList));
         }
         $this->perms_clause = (string)$permsClause;
 

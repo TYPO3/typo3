@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Recordlist\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -49,21 +50,19 @@ class FolderUtilityRenderer
      */
     public function createFolder(Folder $folderObject)
     {
-        if (!$folderObject->checkActionPermission('write')) {
-            return '';
-        }
         $backendUser = $this->getBackendUser();
-        if (!$backendUser->isAdmin() && !$backendUser->getTSConfigVal('options.createFoldersInEB')) {
-            return '';
-        }
-        // Don't show Folder-create form if it's denied
-        if ($backendUser->getTSConfigVal('options.folderTree.hideCreateFolder')) {
-            return '';
-        }
+        $userTsConfig = $backendUser->getTSConfig();
         $lang = $this->getLanguageService();
 
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        if (!$folderObject->checkActionPermission('write')
+            || !$backendUser->isAdmin() && !($userTsConfig['options.']['createFoldersInEB'] ?? false)
+            || $userTsConfig['options.']['folderTree.']['hideCreateFolder'] ?? false
+        ) {
+            // Do not show create folder form if it is denied
+            return '';
+        }
+
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $formAction = (string)$uriBuilder->buildUriFromRoute('tce_file');
         $markup = [];
         $markup[] = '<form action="' . htmlspecialchars($formAction)
@@ -113,13 +112,11 @@ class FolderUtilityRenderer
             return '';
         }
         // Read configuration of upload field count
-        $userSetting = $this->getBackendUser()->getTSConfigVal('options.folderTree.uploadFieldsInLinkBrowser');
-        $count = isset($userSetting) ? (int)$userSetting : 1;
+        $count = (int)($this->getBackendUser()->getTSConfig()['options.']['folderTree.']['uploadFieldsInLinkBrowser'] ?? 1);
         if ($count === 0) {
             return '';
         }
 
-        $count = (int)$count === 0 ? 1 : (int)$count;
         // Create header, showing upload path:
         $header = $folderObject->getIdentifier();
         $lang = $this->getLanguageService();
@@ -131,8 +128,8 @@ class FolderUtilityRenderer
                     . strtoupper(htmlspecialchars($fileExt)) . '</span>';
             }
         }
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $formAction = (string)$uriBuilder->buildUriFromRoute('tce_file');
         $combinedIdentifier = $folderObject->getCombinedIdentifier();
         $markup = [];

@@ -125,7 +125,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     public function checkAccess()
     {
-        return (bool)$this->getBackendUser()->getTSConfigVal('options.enableBookmarks');
+        return (bool)($this->getBackendUser()->getTSConfig()['options.']['enableBookmarks'] ?? false);
     }
 
     /**
@@ -392,7 +392,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
         // Groups from TSConfig
-        $bookmarkGroups = $backendUser->getTSConfigProp('options.bookmarkGroups');
+        $bookmarkGroups = $backendUser->getTSConfig()['options.']['bookmarkGroups.'] ?? [];
         if (is_array($bookmarkGroups) && !empty($bookmarkGroups)) {
             foreach ($bookmarkGroups as $groupId => $label) {
                 if (!empty($label)) {

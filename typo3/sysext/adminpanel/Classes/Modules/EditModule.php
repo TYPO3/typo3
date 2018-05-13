@@ -74,11 +74,8 @@ class EditModule extends AbstractModule
      */
     private function getPageModule(): string
     {
-        $newPageModule = \trim(
-            (string)$this->getBackendUser()
-                ->getTSConfigVal('options.overridePageModule')
-        );
-        return BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+        $pageModule = \trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? '');
+        return BackendUtility::isModuleSetInTBE_MODULES($pageModule) ? $pageModule : 'web_layout';
     }
 
     /**

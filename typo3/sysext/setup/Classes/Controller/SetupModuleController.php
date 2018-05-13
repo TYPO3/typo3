@@ -345,9 +345,9 @@ class SetupModuleController
 
         $this->isAdmin = $scriptUser->isAdmin();
         // Getting the 'override' values as set might be set in User TSconfig
-        $this->overrideConf = $this->beUser->getTSConfigProp('setup.override');
+        $this->overrideConf = $this->beUser->getTSConfig()['setup.']['override.'] ?? null;
         // Getting the disabled fields might be set in User TSconfig (eg setup.fields.password.disabled=1)
-        $this->tsFieldConf = $this->beUser->getTSConfigProp('setup.fields');
+        $this->tsFieldConf = $this->beUser->getTSConfig()['setup.']['fields.'] ?? null;
         // id password is disabled, disable repeat of password too (password2)
         if (isset($this->tsFieldConf['password.']) && $this->tsFieldConf['password.']['disabled']) {
             $this->tsFieldConf['password2.']['disabled'] = 1;

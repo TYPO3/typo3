@@ -47,7 +47,7 @@ class AdminPanelInitiator implements MiddlewareInterface
             // Initialize admin panel since simulation settings are required here
             $beUser = $GLOBALS['BE_USER'];
             // set legacy config
-            $beUser->extAdminConfig = $beUser->getTSConfigProp('admPanel');
+            $beUser->extAdminConfig = $beUser->getTSConfig()['admPanel.'] ?? [];
             $adminPanelConfiguration = $beUser->extAdminConfig;
             if (isset($adminPanelConfiguration['enable.'])) {
                 foreach ($adminPanelConfiguration['enable.'] as $value) {

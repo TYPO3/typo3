@@ -309,7 +309,8 @@ class LoginController implements LoggerAwareInterface
      */
     protected function checkRedirect(ServerRequestInterface $request): void
     {
-        if (empty($this->getBackendUserAuthentication()->user['uid'])) {
+        $backendUser = $this->getBackendUserAuthentication();
+        if (empty($backendUser->user['uid'])) {
             return;
         }
 
@@ -331,7 +332,7 @@ class LoginController implements LoggerAwareInterface
             // try it once again - that might be needed for auto login
             $this->redirectToURL = 'index.php?commandLI=setCookie';
         }
-        $redirectToUrl = (string)$this->getBackendUserAuthentication()->getTSConfigVal('auth.BE.redirectToURL');
+        $redirectToUrl = (string)($backendUser->getTSConfig()['auth.']['BE.']['redirectToURL'] ?? '');
         if (empty($redirectToUrl)) {
             // Based on the interface we set the redirect script
             $parsedBody = $request->getParsedBody();
@@ -351,8 +352,8 @@ class LoginController implements LoggerAwareInterface
             $interface = '';
         }
         // store interface
-        $this->getBackendUserAuthentication()->uc['interfaceSetup'] = $interface;
-        $this->getBackendUserAuthentication()->writeUC();
+        $backendUser->uc['interfaceSetup'] = $interface;
+        $backendUser->writeUC();
 
         $formProtection = FormProtectionFactory::get();
         if (!$formProtection instanceof BackendFormProtection) {

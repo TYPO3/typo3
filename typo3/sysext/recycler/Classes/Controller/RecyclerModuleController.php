@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -89,16 +90,16 @@ class RecyclerModuleController
         }
 
         // read configuration
-        $modTS = $backendUser->getTSConfig('mod.recycler');
-        if ($this->getBackendUser()->isAdmin()) {
+        if ($backendUser->isAdmin()) {
             $this->allowDelete = true;
         } else {
-            $this->allowDelete = (bool)$modTS['properties']['allowDelete'];
+            $this->allowDelete = (bool)($backendUser->getTSConfig()['mod.']['recycler.']['allowDelete'] ?? false);
         }
 
-        if (isset($modTS['properties']['recordsPageLimit']) && (int)$modTS['properties']['recordsPageLimit'] > 0) {
-            $this->recordsPageLimit = (int)$modTS['properties']['recordsPageLimit'];
-        }
+        $this->recordsPageLimit = MathUtility::forceIntegerInRange(
+            (int)($backendUser->getTSConfig()['mod.']['recycler.']['recordsPageLimit'] ?? 25),
+            1
+        );
 
         $action = 'index';
         $this->initializeView($action);

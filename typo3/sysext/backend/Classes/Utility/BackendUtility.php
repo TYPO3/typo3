@@ -2687,9 +2687,9 @@ class BackendUtility
     {
         // Look if a fixed preview language should be added:
         $beUser = static::getBackendUserAuthentication();
-        $viewLanguageOrder = $beUser->getTSConfigVal('options.view.languageOrder');
+        $viewLanguageOrder = (string)($beUser->getTSConfig()['options.']['view.']['languageOrder'] ?? '');
 
-        if ((string)$viewLanguageOrder !== '') {
+        if (!empty($viewLanguageOrder)) {
             $suffix = '';
             // Find allowed languages (if none, all are allowed!)
             $allowedLanguages = null;
@@ -2747,15 +2747,12 @@ class BackendUtility
         if (!empty($rootLine)) {
             $urlParts = parse_url($domain);
             $protocol = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
-            $previewDomainConfig = static::getBackendUserAuthentication()->getTSConfig(
-                'TCEMAIN.previewDomain',
-                self::getPagesTSconfig($pageId)
-            );
-            if ($previewDomainConfig['value']) {
-                if (strpos($previewDomainConfig['value'], '://') !== false) {
-                    list($protocol, $domainName) = explode('://', $previewDomainConfig['value']);
+            $previewDomainConfig = self::getPagesTSconfig($pageId)['TCEMAIN.']['previewDomain'] ?? '';
+            if (!empty($previewDomainConfig)) {
+                if (strpos($previewDomainConfig, '://') !== false) {
+                    list($protocol, $domainName) = explode('://', $previewDomainConfig);
                 } else {
-                    $domainName = $previewDomainConfig['value'];
+                    $domainName = $previewDomainConfig;
                 }
             } else {
                 $domainName = self::firstDomainRecord($rootLine);

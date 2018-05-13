@@ -106,7 +106,7 @@ class TreeController
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->useNavTitle = (bool)$this->getBackendUser()->getTSConfigVal('options.pageTree.showNavTitle');
+        $this->useNavTitle = (bool)($this->getBackendUser()->getTSConfig()['options.']['pageTree.']['showNavTitle'] ?? false);
     }
 
     /**
@@ -136,6 +136,7 @@ class TreeController
      */
     protected function getDokTypes(): array
     {
+        $backendUser = $this->getBackendUser();
         $doktypeLabelMap = [];
         foreach ($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] as $doktypeItemConfig) {
             if ($doktypeItemConfig[1] === '--div--') {
@@ -143,10 +144,10 @@ class TreeController
             }
             $doktypeLabelMap[$doktypeItemConfig[1]] = $doktypeItemConfig[0];
         }
-        $doktypes = GeneralUtility::intExplode(',', $this->getBackendUser()->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea'), true);
+        $doktypes = GeneralUtility::intExplode(',', $backendUser->getTSConfig()['options.']['pageTree.']['doktypesToShowInNewPageDragArea'] ?? '', true);
         $output = [];
-        $allowedDoktypes = GeneralUtility::intExplode(',', $this->getBackendUser()->groupData['pagetypes_select'], true);
-        $isAdmin = $this->getBackendUser()->isAdmin();
+        $allowedDoktypes = GeneralUtility::intExplode(',', $backendUser->groupData['pagetypes_select'], true);
+        $isAdmin = $backendUser->isAdmin();
         // Early return if backend user may not create any doktype
         if (!$isAdmin && empty($allowedDoktypes)) {
             return $output;
@@ -174,11 +175,12 @@ class TreeController
      */
     public function fetchDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->hiddenRecords = GeneralUtility::intExplode(',', $this->getBackendUser()->getTSConfigVal('options.hideRecords.pages'), true);
-        $this->backgroundColors = $this->getBackendUser()->getTSConfigProp('options.pageTree.backgroundColor');
-        $this->addIdAsPrefix = (bool)$this->getBackendUser()->getTSConfigVal('options.pageTree.showPageIdWithTitle');
-        $this->addDomainName = (bool)$this->getBackendUser()->getTSConfigVal('options.pageTree.showDomainNameWithTitle');
-        $this->showMountPathAboveMounts = (bool)$this->getBackendUser()->getTSConfigVal('options.pageTree.showPathAboveMounts');
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
+        $this->hiddenRecords = GeneralUtility::intExplode(',', $userTsConfig['options.']['hideRecords.']['pages'] ?? '', true);
+        $this->backgroundColors = $userTsConfig['options.']['pageTree.']['backgroundColor.'] ?? [];
+        $this->addIdAsPrefix = (bool)($userTsConfig['options.']['pageTree.']['showPageIdWithTitle'] ?? false);
+        $this->addDomainName = (bool)($userTsConfig['options.']['pageTree.']['showDomainNameWithTitle'] ?? false);
+        $this->showMountPathAboveMounts = (bool)($userTsConfig['options.']['pageTree.']['showPathAboveMounts'] ?? false);
         $backendUserConfiguration = GeneralUtility::makeInstance(BackendUserConfiguration::class);
         $this->expandedState = $backendUserConfiguration->get('BackendComponents.States.Pagetree');
         if (is_object($this->expandedState->stateHash)) {

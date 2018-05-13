@@ -76,19 +76,18 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
      */
     public function render()
     {
-        $this->setTemporaryDbMounts();
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
 
+        $this->setTemporaryDbMounts();
         list(, , , $allowedTables) = explode('|', $this->bparams);
-        $backendUser = $this->getBackendUser();
 
         // Making the browsable pagetree:
-        /** @var ElementBrowserPageTreeView $pageTree */
         $pageTree = GeneralUtility::makeInstance(ElementBrowserPageTreeView::class);
         $pageTree->setLinkParameterProvider($this);
         $pageTree->ext_pArrPages = $allowedTables === 'pages';
-        $pageTree->ext_showNavTitle = (bool)$backendUser->getTSConfigVal('options.pageTree.showNavTitle');
-        $pageTree->ext_showPageId = (bool)$backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
-        $pageTree->ext_showPathAboveMounts = (bool)$backendUser->getTSConfigVal('options.pageTree.showPathAboveMounts');
+        $pageTree->ext_showNavTitle = (bool)($userTsConfig['options.']['pageTree.']['showNavTitle'] ?? false);
+        $pageTree->ext_showPageId = (bool)($userTsConfig['options.']['pageTree.']['showPageIdWithTitle'] ?? false);
+        $pageTree->ext_showPathAboveMounts = (bool)($userTsConfig['options.']['pageTree.']['showPathAboveMounts'] ?? false);
         $pageTree->addField('nav_title');
         $tree = $pageTree->getBrowsableTree();
 
@@ -179,8 +178,8 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             $backendUser->setWebmounts($alternativeWebmountPoint);
         } else {
             // Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
-            $alternativeWebmountPoints = trim($backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
-            $appendAlternativeWebmountPoints = $backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
+            $alternativeWebmountPoints = \trim($backendUser->getTSConfig()['options.']['pageTree.']['altElementBrowserMountPoints'] ?? '');
+            $appendAlternativeWebmountPoints = $backendUser->getTSConfig()['options.']['pageTree.']['altElementBrowserMountPoints.']['append'] ?? '';
             if ($alternativeWebmountPoints) {
                 $alternativeWebmountPoints = GeneralUtility::intExplode(',', $alternativeWebmountPoints);
                 $this->getBackendUser()->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);

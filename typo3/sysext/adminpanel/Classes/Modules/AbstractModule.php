@@ -39,7 +39,7 @@ abstract class AbstractModule implements AdminPanelModuleInterface
 
     public function __construct()
     {
-        $this->mainConfiguration = $this->getBackendUser()->getTSConfigProp('admPanel');
+        $this->mainConfiguration = $this->getBackendUser()->getTSConfig()['admPanel.'] ?? [];
     }
 
     /**

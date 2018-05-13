@@ -422,22 +422,19 @@ class TaskModuleController extends BaseScriptClass
      * @param string $taskClass Name of the task
      * @return bool Access to the task allowed or not
      */
-    protected function checkAccess($extKey, $taskClass)
+    protected function checkAccess($extKey, $taskClass): bool
     {
-        // Check if task is blinded with TsConfig (taskcenter.<extkey>.<taskName>
-        $tsConfig = $this->getBackendUser()->getTSConfig('taskcenter.' . $extKey . '.' . $taskClass);
-        if (isset($tsConfig['value']) && (int)$tsConfig['value'] === 0) {
-            return false;
-        }
+        $backendUser = $this->getBackendUser();
         // Admins are always allowed
-        if ($this->getBackendUser()->isAdmin()) {
+        if ($backendUser->isAdmin()) {
             return true;
         }
         // Check if task is restricted to admins
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'][$extKey][$taskClass]['admin'] === 1) {
             return false;
         }
-        return true;
+        // Check if task is blinded with TsConfig (taskcenter.<extkey>.<taskName>
+        return (bool)($backendUser->getTSConfig()['taskcenter.'][$extKey . '.'][$taskClass] ?? true);
     }
 
     /**

@@ -42,7 +42,7 @@ class FrontendEditInitiator implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
-            $config = $GLOBALS['BE_USER']->getTSConfigProp('admPanel');
+            $config = $GLOBALS['BE_USER']->getTSConfig()['admPanel.'] ?? [];
             $active = (int)$GLOBALS['TSFE']->displayEditIcons === 1 || (int)$GLOBALS['TSFE']->displayFieldEditIcons === 1;
             if ($active && isset($config['enable.'])) {
                 foreach ($config['enable.'] as $value) {

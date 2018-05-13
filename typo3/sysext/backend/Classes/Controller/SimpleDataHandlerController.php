@@ -228,7 +228,7 @@ class SimpleDataHandlerController
         if ($beUser->uc['neverHideAtCopy']) {
             $this->tce->neverHideAtCopy = 1;
         }
-        $TCAdefaultOverride = $beUser->getTSConfigProp('TCAdefaults');
+        $TCAdefaultOverride = $beUser->getTSConfig()['TCAdefaults.'] ?? null;
         if (is_array($TCAdefaultOverride)) {
             $this->tce->setDefaultsFromUserTS($TCAdefaultOverride);
         }
