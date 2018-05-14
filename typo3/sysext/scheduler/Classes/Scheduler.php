@@ -446,7 +446,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function isValidTaskObject($task)
     {
-        return get_class($task->getExecution()) !== '__PHP_Incomplete_Class' && $task instanceof Task\AbstractTask;
+        return $task instanceof Task\AbstractTask && get_class($task->getExecution()) !== '__PHP_Incomplete_Class';
     }
 
     /**
