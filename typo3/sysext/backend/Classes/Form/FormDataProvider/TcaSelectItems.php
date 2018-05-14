@@ -43,6 +43,11 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                 continue;
             }
 
+            // Make sure we only process useful dataFields
+            if ($this->isSkippableInlineField($result, $fieldName) || $this->isSkippableLanguageField($result, $fieldName)) {
+                continue;
+            }
+
             $fieldConfig['config']['items'] = $this->sanitizeItemArray($fieldConfig['config']['items'] ?? [], $table, $fieldName);
 
             // Resolve "itemsProcFunc"
@@ -105,6 +110,61 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
         }
 
         return $result;
+    }
+
+    /**
+     * Checks if the field is an inlineChild and not not exposed
+     *
+     * @param array $result The current result array
+     * @param string $fieldName Current handle field name
+     * @return bool
+     */
+    protected function isSkippableInlineField(array $result, string $fieldName): bool
+    {
+        // is inline record
+        if (empty($result['isInlineChild'])) {
+            return false;
+        }
+        // skip data loading for inline children if they are not visible
+        if (empty($result['isInlineChildExpanded']) && empty($result['isInlineAjaxOpeningContext'])) {
+            return true;
+        }
+
+        // skip data loading for inline children if there are the parent relation fields
+        $inlineParentConfig = $result['inlineParentConfig'];
+        if ($inlineParentConfig && isset($inlineParentConfig['foreign_field']) && $inlineParentConfig['foreign_field'] === $fieldName) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * If the current form shows only the default language record, processing of language parent field can be skipped
+     *
+     * @param array $result The current result array
+     * @param string $fieldName Field name being processed
+     * @return bool
+     */
+    protected function isSkippableLanguageField(array $result, string $fieldName): bool
+    {
+        // look for a translation for this record although we're on the default language (0)
+        $transOrigPointerFieldName = $result['processedTca']['ctrl']['transOrigPointerField'] ?? '';
+        if (empty($transOrigPointerFieldName) || $fieldName !== $transOrigPointerFieldName) {
+            return false;
+        }
+
+        // get TCA language field name
+        $languageField = $result['processedTca']['ctrl']['languageField'];
+        $languageUids = $result['databaseRow'][$languageField];
+
+        // languageField can be an array or a scalar value (try to normalize it)
+        if (!is_array($languageUids)) {
+            $languageUids = [(int)$result['databaseRow'][$languageField]];
+        }
+
+        // only default language available?
+        return count($languageUids) === 1 && (int)$languageUids[0] === 0;
     }
 
     /**
