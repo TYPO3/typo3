@@ -28,9 +28,14 @@ Implement it for example as follows:
 .. code-block:: php
 
 	class YourHookClass {
-		public function processTranslateTo_copyAction(&$content, $lang, $dataHandler) {
+		public function processTranslateTo_copyAction(&$content, $lang, $dataHandler, $fieldName) {
 			// Do something with content (translate, transliterate etc)
 		}
 	}
+
+Note
+======
+
+Since Version 8.7.16 hooks now get a fourth parameter for the currently processed fieldname.
 
 .. index:: PHP-API, Backend

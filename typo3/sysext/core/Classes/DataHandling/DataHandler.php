@@ -4973,7 +4973,7 @@ class DataHandler implements LoggerAwareInterface
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'] ?? [] as $className) {
                         $hookObj = GeneralUtility::makeInstance($className);
                         if (method_exists($hookObj, 'processTranslateTo_copyAction')) {
-                            $hookObj->processTranslateTo_copyAction($row[$fN], $langRec, $this);
+                            $hookObj->processTranslateTo_copyAction($row[$fN], $langRec, $this, $fN);
                         }
                     }
                     if (!empty($translateToMsg)) {
