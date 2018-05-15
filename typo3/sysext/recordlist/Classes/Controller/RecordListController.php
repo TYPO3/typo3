@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -44,6 +45,17 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
  */
 class RecordListController
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * Properties which have been moved to protected status from public
+     *
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'modTSconfig' => 'Using $modTSconfig of class RecordListController is discouraged. This property is for class internal use only.',
+    ];
+
     /**
      * Page Id for which to make the listing
      *
@@ -133,7 +145,7 @@ class RecordListController
      *
      * @var array
      */
-    public $modTSconfig;
+    protected $modTSconfig;
 
     /**
      * Current ids page record
@@ -169,13 +181,6 @@ class RecordListController
      * @var string
      */
     public $content;
-
-    /**
-     * The name of the module
-     *
-     * @var string
-     */
-    protected $moduleName = 'web_list';
 
     /**
      * @var string
@@ -253,9 +258,9 @@ class RecordListController
             'clipBoard' => '',
         ];
         // Loading module configuration:
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
+        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
         // Clean up settings:
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_list');
     }
 
     /**
@@ -699,10 +704,11 @@ class RecordListController
                 }
             }
             // Remove disabled languages
-            $modSharedTSconfig = BackendUtility::getModTSconfig($id, 'mod.SHARED');
-            $disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages'])
-                ? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], true)
-                : [];
+            $disableLanguages = GeneralUtility::trimExplode(
+                ',',
+                BackendUtility::getPagesTSconfig($id)['mod.']['SHARED.']['disableLanguages'] ?? '',
+                true
+            );
             if (!empty($availableTranslations) && !empty($disableLanguages)) {
                 foreach ($disableLanguages as $language) {
                     if ($language != 0 && isset($availableTranslations[$language])) {

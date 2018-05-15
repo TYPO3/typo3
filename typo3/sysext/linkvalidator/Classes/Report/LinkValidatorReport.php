@@ -153,8 +153,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         // get searchLevel (number of levels of pages to check / show results)
         $this->searchLevel[$prefix] = GeneralUtility::_GP($prefix . '_search_levels');
         if (isset($this->pObj->id)) {
-            $this->modTS = BackendUtility::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
-            $this->modTS = $this->modTS['properties'];
+            $this->modTS = BackendUtility::getPagesTSconfig($this->pObj->id)['mod.']['linkvalidator.'] ?? [];
         }
         if (isset($this->searchLevel[$prefix])) {
             $this->pObj->MOD_SETTINGS[$prefix . '_searchlevel'] = $this->searchLevel[$prefix];

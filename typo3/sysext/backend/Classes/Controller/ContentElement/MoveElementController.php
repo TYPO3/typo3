@@ -236,9 +236,6 @@ class MoveElementController
                     $assigns['ttContent']['pageInfo'] = $pageInfo;
                     $assigns['ttContent']['recordTooltip'] = BackendUtility::getRecordToolTip($pageInfo, 'pages');
                     $assigns['ttContent']['recordTitle'] = BackendUtility::getRecordTitle('pages', $pageInfo, true);
-                    // Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
-                    // SHARED page-TSconfig settings.
-                    // $modTSconfig_SHARED = BackendUtility::getModTSconfig($this->pageId, 'mod.SHARED');
                     $colPosArray = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $this->page_id, $this);
                     $colPosIds = [];
                     foreach ($colPosArray as $colPos) {

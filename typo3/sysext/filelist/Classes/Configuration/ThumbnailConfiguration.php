@@ -16,9 +16,8 @@ namespace TYPO3\CMS\Filelist\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Class TYPO3\CMS\Filelist\Configuration\ThumbnailConfiguration
@@ -37,17 +36,9 @@ class ThumbnailConfiguration implements SingletonInterface
 
     public function __construct()
     {
-        $modTSconfig = BackendUtility::getModTSconfig(0, 'options.file_list');
-        if (isset($modTSconfig['properties']['thumbnail.']['width'])
-            && MathUtility::canBeInterpretedAsInteger($modTSconfig['properties']['thumbnail.']['width'])
-        ) {
-            $this->width = (int)$modTSconfig['properties']['thumbnail.']['width'];
-        }
-        if (isset($modTSconfig['properties']['thumbnail.']['height'])
-            && MathUtility::canBeInterpretedAsInteger($modTSconfig['properties']['thumbnail.']['height'])
-        ) {
-            $this->height = (int)$modTSconfig['properties']['thumbnail.']['height'];
-        }
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
+        $this->width = (int)($userTsConfig['options.']['file_list.']['thumbnail.']['width'] ?? 64);
+        $this->height = (int)($userTsConfig['options.']['file_list.']['thumbnail.']['height'] ?? 64);
     }
 
     /**
@@ -64,5 +55,13 @@ class ThumbnailConfiguration implements SingletonInterface
     public function getHeight(): int
     {
         return $this->height;
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

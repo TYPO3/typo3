@@ -115,7 +115,7 @@ class EditDocumentController
         'newC' => 'Using $newC of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
         'viewId' => 'Using $viewId of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
         'viewId_addParams' => 'Using $viewId_addParams of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
-        'modTSconfig' => 'Using $modTSconfig of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'modTSconfig' => 'Using $modTSconfig of class EditDocumentTemplate from the outside is discouraged, the variable will be removed.',
         'dontStoreDocumentRef' => 'Using $dontStoreDocumentRef of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
     ];
 
@@ -428,11 +428,9 @@ class EditDocumentController
     protected $viewId_addParams;
 
     /**
-     * Module TSconfig, loaded from main() based on the page id value of viewId
-     *
-     * @var array
+     * @deprecated since v9, will be removed in v10, unused
      */
-    protected $modTSconfig;
+    protected $modTSconfig = [];
 
     /**
      * @var FormResultCompiler
@@ -959,8 +957,7 @@ class EditDocumentController
             $currentPageId = MathUtility::convertToPositiveInteger($this->popViewId);
         }
 
-        $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
-        $previewConfiguration = $pageTsConfig['TCEMAIN.']['preview.'][$table . '.'] ?? [];
+        $previewConfiguration = BackendUtility::getPagesTSconfig($currentPageId)['TCEMAIN.']['preview.'][$table . '.'] ?? [];
 
         $recordArray = BackendUtility::getRecord($table, $recordId);
 
@@ -1128,13 +1125,6 @@ class EditDocumentController
                     $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->storeUrlMd5]);
                     BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
                 }
-                // Module configuration
-                $this->modTSconfig = $this->viewId
-                    ? BackendUtility::getModTSconfig(
-                        $this->viewId,
-                        'mod.xMOD_alt_doc'
-                    )
-                    : [];
                 $body = $this->formResultCompiler->addCssFiles();
                 $body .= $this->compileForm($editForm);
                 $body .= $this->formResultCompiler->printNeededJSFunctions();
@@ -2144,13 +2134,13 @@ class EditDocumentController
         }
 
         $languageService = $this->getLanguageService();
-        $modSharedTSconfig = BackendUtility::getModTSconfig($id, 'mod.SHARED');
+        $modPageTsConfig = BackendUtility::getPagesTSconfig($id)['mod.']['SHARED.'] ?? [];
         // Fallback non sprite-configuration
-        if (preg_match('/\\.gif$/', $modSharedTSconfig['properties']['defaultLanguageFlag'] ?? '')) {
-            $modSharedTSconfig['properties']['defaultLanguageFlag'] = str_replace(
+        if (preg_match('/\\.gif$/', $modPageTsConfig['defaultLanguageFlag'] ?? '')) {
+            $modPageTsConfig['defaultLanguageFlag'] = str_replace(
                 '.gif',
                 '',
-                $modSharedTSconfig['properties']['defaultLanguageFlag']
+                $modPageTsConfig['defaultLanguageFlag']
             );
         }
         $languages = [
@@ -2158,10 +2148,10 @@ class EditDocumentController
                 'uid' => 0,
                 'pid' => 0,
                 'hidden' => 0,
-                'title' => $modSharedTSconfig['properties']['defaultLanguageLabel'] !== ''
-                        ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
+                'title' => $modPageTsConfig['defaultLanguageLabel'] !== ''
+                        ? $modPageTsConfig['defaultLanguageLabel'] . ' (' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
                         : $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage'),
-                'flag' => $modSharedTSconfig['properties']['defaultLanguageFlag']
+                'flag' => $modPageTsConfig['defaultLanguageFlag']
             ]
         ];
 
@@ -2352,8 +2342,11 @@ class EditDocumentController
      */
     protected function getTsConfigOption(string $table, string $key): string
     {
-        $TsConfig = $this->getBackendUser()->getTSConfig('options.' . $key);
-        return trim((string)($TsConfig['properties'][$table] ?? $TsConfig['value']));
+        return \trim((string)(
+            $this->getBackendUser()->getTSConfig()['options.'][$key . '.'][$table]
+            ?? $this->getBackendUser()->getTSConfig()['options.'][$key]
+            ?? ''
+        ));
     }
 
     /**

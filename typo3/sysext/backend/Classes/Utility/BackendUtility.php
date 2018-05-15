@@ -824,8 +824,8 @@ class BackendUtility
      * Returns the Page TSconfig for page with id, $id
      *
      * @param int $id Page uid for which to create Page TSconfig
-     * @param array $rootLine If $rootLine is an array, that is used as rootline, otherwise rootline is just calculated
-     * @param bool $returnPartArray If $returnPartArray is set, then the array with accumulated Page TSconfig is returned non-parsed. Otherwise the output will be parsed by the TypoScript parser.
+     * @param array $rootLine @deprecated
+     * @param bool $returnPartArray @deprecated
      * @return array Page TSconfig
      * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
      */
@@ -865,10 +865,29 @@ class BackendUtility
         }
         $cacheHash = $res['hash'];
         // Get User TSconfig overlay
-        $userTSconfig = static::getBackendUserAuthentication()->getTSConfig()['page.'] ?? null;
-        if (is_array($userTSconfig)) {
-            ArrayUtility::mergeRecursiveWithOverrule($tsConfig, $userTSconfig);
+
+        $userTSconfig = static::getBackendUserAuthentication()->getTSConfig() ?? [];
+        $isCacheHashExtendedWithUserUid = false;
+        if (is_array($userTSconfig['page.'])) {
+            ArrayUtility::mergeRecursiveWithOverrule($tsConfig, $userTSconfig['page.']);
+            $isCacheHashExtendedWithUserUid = true;
             $cacheHash .= '_user' . static::getBackendUserAuthentication()->user['uid'];
+        }
+
+        // Overlay page "mod." ts with user ts in a special and deprecated way
+        if (is_array($userTSconfig['mod.'])) {
+            // @deprecated This entire "if" and variable $isCacheHashExtendedWithUserUid can be deleted in v10
+            trigger_error(
+                'Overriding page TSconfig "mod." with user TSconfig "mod." is deprecated. Use user TSconfig "page.mod." instead',
+                E_USER_DEPRECATED
+            );
+            if (!is_array($tsConfig['mod.'])) {
+                $tsConfig['mod.'] = [];
+            }
+            ArrayUtility::mergeRecursiveWithOverrule($tsConfig['mod.'], $userTSconfig['mod.']);
+            if (!$isCacheHashExtendedWithUserUid) {
+                $cacheHash .= '_user' . static::getBackendUserAuthentication()->user['uid'];
+            }
         }
 
         if ($useCacheForCurrentPageId) {
@@ -2784,9 +2803,15 @@ class BackendUtility
      * @param int $id Page uid
      * @param string $TSref An object string which determines the path of the TSconfig to return.
      * @return array
+     * @deprecated since v9, will be removed in TYPO3 v10, use getPagesTSconfig() instead
      */
     public static function getModTSconfig($id, $TSref)
     {
+        trigger_error(
+            'Method getModTSconfig() is deprecated in v9 and will be removed in v10.'
+            . ' Use getPagesTSconfig() to retrieve the full page TSconfig array instead.',
+            E_USER_DEPRECATED
+        );
         $beUser = static::getBackendUserAuthentication();
         $pageTS_modOptions = $beUser->getTSConfig($TSref, static::getPagesTSconfig($id));
         $BE_USER_modOptions = $beUser->getTSConfig($TSref);
@@ -2994,9 +3019,11 @@ class BackendUtility
      * @param array $itemArray Array of items from which to remove items.
      * @param string $TSref $TSref points to the "object string" in $modTSconfig
      * @return array The modified $itemArray is returned.
+     * @deprecated since core v9, will be removed with core v10
      */
     public static function unsetMenuItems($modTSconfig, $itemArray, $TSref)
     {
+        trigger_error('Method getPidForModTSconfig() will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         // Getting TS-config options for this module for the Backend User:
         $conf = static::getBackendUserAuthentication()->getTSConfig($TSref, $modTSconfig);
         if (is_array($conf['properties'])) {
@@ -3341,20 +3368,15 @@ class BackendUtility
         // Get main config for the table
         list($TScID, $cPid) = self::getTSCpid($table, $row['uid'], $row['pid']);
         if ($TScID >= 0) {
-            $tempConf = static::getBackendUserAuthentication()->getTSConfig(
-                'TCEFORM.' . $table,
-                self::getPagesTSconfig($TScID)
-            );
-            if (is_array($tempConf['properties'])) {
-                $typeVal = self::getTCAtypeValue($table, $row);
-                foreach ($tempConf['properties'] as $key => $val) {
-                    if (is_array($val)) {
-                        $fieldN = substr($key, 0, -1);
-                        $res[$fieldN] = $val;
-                        unset($res[$fieldN]['types.']);
-                        if ((string)$typeVal !== '' && is_array($val['types.'][$typeVal . '.'])) {
-                            ArrayUtility::mergeRecursiveWithOverrule($res[$fieldN], $val['types.'][$typeVal . '.']);
-                        }
+            $tsConfig = static::getPagesTSconfig($TScID)['TCEFORM.'][$table . '.'] ?? [];
+            $typeVal = self::getTCAtypeValue($table, $row);
+            foreach ($tsConfig as $key => $val) {
+                if (is_array($val)) {
+                    $fieldN = substr($key, 0, -1);
+                    $res[$fieldN] = $val;
+                    unset($res[$fieldN]['types.']);
+                    if ((string)$typeVal !== '' && is_array($val['types.'][$typeVal . '.'])) {
+                        ArrayUtility::mergeRecursiveWithOverrule($res[$fieldN], $val['types.'][$typeVal . '.']);
                     }
                 }
             }

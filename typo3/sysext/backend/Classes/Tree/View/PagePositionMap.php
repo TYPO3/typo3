@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
@@ -33,6 +34,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PagePositionMap
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * Properties which have been moved to protected status from public
+     *
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'getModConfigCache' => 'Using $getModConfigCache of class PagePositionMap is discouraged. This property will be removed in v10.',
+        'modConfigStr' => 'Using $$modConfigStr of class PagePositionMap is discouraged. This property will be removed in v10.',
+    ];
+
     // EXTERNAL, static:
     /**
      * @var string
@@ -77,9 +90,9 @@ class PagePositionMap
 
     // Caching arrays:
     /**
-     * @var array
+     * @deprecated since v9, will be removed in v10
      */
-    public $getModConfigCache = [];
+    protected $getModConfigCache = [];
 
     /**
      * @var array
@@ -98,9 +111,9 @@ class PagePositionMap
     public $l_insertNewRecordHere = 'insertNewRecordHere';
 
     /**
-     * @var string
+     * @deprecated since v9, will be removed in v10
      */
-    public $modConfigStr = 'mod.web_list.newPageWiz';
+    protected $modConfigStr = 'mod.web_list.newPageWiz';
 
     /**
      * Page tree implementation class name
@@ -278,8 +291,7 @@ class PagePositionMap
      */
     public function onClickEvent($pid, $newPagePID)
     {
-        $TSconfig = BackendUtility::getModTSconfig($newPagePID, 'mod.newPageWizard');
-        $TSconfig = $TSconfig['properties'];
+        $TSconfig = BackendUtility::getPagesTSconfig($newPagePID)['mod.']['newPageWizard.'] ?? [];
         if (isset($TSconfig['override']) && !empty($TSconfig['override'])) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = $uriBuilder->buildUriFromRoute(
@@ -341,12 +353,14 @@ class PagePositionMap
      * @param int $pid Page id for which to get the module configuration.
      * @return array The properties of the module configuration for the page id.
      * @see onClickEvent()
+     * @deprecated since v9, will be removed in v10
      */
     public function getModConfig($pid)
     {
+        trigger_error('Method getModConfig() is deprecated and will be removed in v10', E_USER_DEPRECATED);
         if (!isset($this->getModConfigCache[$pid])) {
             // Acquiring TSconfig for this PID:
-            $this->getModConfigCache[$pid] = BackendUtility::getModTSconfig($pid, $this->modConfigStr);
+            $this->getModConfigCache[$pid]['properties'] = BackendUtility::getPagesTSconfig($pid)['mod.']['web_list.']['newPageWiz.'] ?? [];
         }
         return $this->getModConfigCache[$pid]['properties'];
     }

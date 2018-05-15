@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Configuration;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -106,9 +105,7 @@ class Richtext
      */
     protected function getRtePageTsConfigOfPid(int $pid): array
     {
-        // Override with pageTs if needed
-        $backendUser = $this->getBackendUser();
-        return $backendUser->getTSConfig('RTE', BackendUtility::getPagesTSconfig($pid));
+        return BackendUtility::getPagesTSconfig($pid)['RTE.'] ?? [];
     }
 
     /**
@@ -133,14 +130,6 @@ class Richtext
             }
         }
         return $typoScriptArray;
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     /**

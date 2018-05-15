@@ -516,13 +516,6 @@ class DataHandler implements LoggerAwareInterface
     protected $isInWebMount_Cache = [];
 
     /**
-     * Caching for collecting TSconfig for page ids
-     *
-     * @var array
-     */
-    protected $cachedTSconfig = [];
-
-    /**
      * Used for caching page records in pageInfo()
      *
      * @var array
@@ -1178,7 +1171,7 @@ class DataHandler implements LoggerAwareInterface
                 // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
                 list($tscPID) = BackendUtility::getTSCpid($table, $id, $old_pid_value ? $old_pid_value : $fieldArray['pid']);
                 if ($status === 'new' && $table === 'pages') {
-                    $TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
+                    $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
                     if (isset($TSConfig['permissions.']) && is_array($TSConfig['permissions.'])) {
                         $fieldArray = $this->setTSconfigPermissions($fieldArray, $TSConfig['permissions.']);
                     }
@@ -3470,7 +3463,7 @@ class DataHandler implements LoggerAwareInterface
         // Page TSconfig related:
         // NOT using \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
         $tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
-        $TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
+        $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
         $tE = $this->getTableEntries($table, $TSConfig);
         // Traverse ALL fields of the selected record:
         $setDefaultOnCopyArray = array_flip(GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy']));
@@ -3531,8 +3524,6 @@ class DataHandler implements LoggerAwareInterface
                 $this->autoVersionIdMap[$table][$theNewSQLID] = $copyTCE->autoVersionIdMap[$table][$theNewSQLID];
             }
         }
-        // Copy back the cached TSconfig
-        $this->cachedTSconfig = $copyTCE->cachedTSconfig;
         $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
         unset($copyTCE);
         if (!$ignoreLocalization && $language == 0) {
@@ -4807,7 +4798,7 @@ class DataHandler implements LoggerAwareInterface
             if ($fCfg['l10n_mode'] === 'prefixLangTitle') {
                 if (($fCfg['config']['type'] === 'text' || $fCfg['config']['type'] === 'input') && (string)$row[$fN] !== '') {
                     list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
-                    $TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
+                    $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
                     if (!empty($TSConfig['translateToMessage'])) {
                         $translateToMsg = $this->getLanguageService()->sL($TSConfig['translateToMessage']);
                         $translateToMsg = @sprintf($translateToMsg, $langRec['title']);
@@ -5914,8 +5905,6 @@ class DataHandler implements LoggerAwareInterface
         $copyTCE = GeneralUtility::makeInstance(DataHandler::class);
         $copyTCE->copyTree = $this->copyTree;
         $copyTCE->enableLogging = $this->enableLogging;
-        // Copy forth the cached TSconfig
-        $copyTCE->cachedTSconfig = $this->cachedTSconfig;
         // Transformations should NOT be carried out during copy
         $copyTCE->dontProcessTransformations = true;
         // make sure the isImporting flag is transferred, so all hooks know if
@@ -7876,13 +7865,12 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param int $tscPID Page id (PID) from which to get configuration.
      * @return array TSconfig array, if any
+     * @deprecated since core v9, will be removed with core v10
      */
     public function getTCEMAIN_TSconfig($tscPID)
     {
-        if (!isset($this->cachedTSconfig[$tscPID])) {
-            $this->cachedTSconfig[$tscPID] = $this->BE_USER->getTSConfig('TCEMAIN', BackendUtility::getPagesTSconfig($tscPID));
-        }
-        return $this->cachedTSconfig[$tscPID]['properties'];
+        trigger_error('Method getTCEMAIN_TSconfig() will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        return BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
     }
 
     /**
@@ -7891,7 +7879,6 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param array $TSconfig TSconfig for page
      * @return array TSconfig merged
-     * @see getTCEMAIN_TSconfig()
      */
     public function getTableEntries($table, $TSconfig)
     {
@@ -8430,7 +8417,7 @@ class DataHandler implements LoggerAwareInterface
         $clearCacheCommands = [];
         $pageUid = 0;
         // Get Page TSconfig relevant:
-        $TSConfig = $this->getTCEMAIN_TSconfig($pid);
+        $TSConfig = BackendUtility::getPagesTSconfig($pid)['TCEMAIN.'] ?? [];
         if (empty($TSConfig['clearCache_disable'])) {
             // If table is "pages":
             $pageIdsThatNeedCacheFlush = [];

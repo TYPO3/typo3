@@ -139,9 +139,8 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
      */
     protected function fillFieldConfiguration(int $pageId)
     {
-        $modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_info.fieldDefinitions');
-
-        foreach ($modTSconfig['properties'] as $key => $item) {
+        $modTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['web_info.']['fieldDefinitions.'] ?? [];
+        foreach ($modTSconfig as $key => $item) {
             $fieldList = str_replace('###ALL_TABLES###', $this->cleanTableNames(), $item['fields']);
             $fields = GeneralUtility::trimExplode(',', $fieldList, true);
             $key = trim($key, '.');

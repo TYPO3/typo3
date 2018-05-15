@@ -260,7 +260,6 @@
         'disableAllHeaderCode': kw('disableAllHeaderCode'),
         'disableAltText': kw('disableAltText'),
         'disableBodyTag': kw('disableBodyTag'),
-        'disableCacheSelector': kw('disableCacheSelector'),
         'disableCharsetHeader': kw('disableCharsetHeader'),
         'disabled': kw('disabled'),
         'disableDelete': kw('disableDelete'),

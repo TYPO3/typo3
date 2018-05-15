@@ -1201,19 +1201,29 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Returns fully parsed user TSconfig array.
+     * Returns full parsed user TSconfig array, merged with TSconfig from groups.
      *
-     * Returns the value/properties of a TS-object as given by $objectString, eg. 'options.dontMountAdminMounts'
+     * Example:
+     * [
+     *     'options.' => [
+     *         'fooEnabled' => '0',
+     *         'fooEnabled.' => [
+     *             'tt_content' => 1,
+     *         ],
+     *     ],
+     * ]
      *
-     * @param string $objectString Pointer to an "object" in the TypoScript array, fx. 'options.dontMountAdminMounts'
-     * @param array|string $config Optional TSconfig array: If array, then this is used and not $this->userTS. If not array, $this->userTS is used.
-     * @return array An array with two keys, "value" and "properties" where "value" is a string with the value of the object string and "properties" is an array with the properties of the object string.
+     * @param string $objectString @deprecated
+     * @param array|string $config @deprecated
+     * @return array Parsed and merged user TSconfig array
      */
-    public function getTSConfig($objectString = '', $config = '')
+    public function getTSConfig($objectString = null, $config = null)
     {
-        if (empty($objectString) && empty($config)) {
+        if ($objectString === null && $config === null) {
             return $this->userTS;
         }
+
+        trigger_error('Handing over arguments to getTSConfig() is deprecated, they will be removed in v10.', E_USER_DEPRECATED);
 
         if (!is_array($config)) {
             // Getting Root-ts if not sent

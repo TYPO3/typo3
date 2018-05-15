@@ -1249,12 +1249,9 @@ class DataMapProcessor
         $languageRecord = BackendUtility::getRecord('sys_language', $language, 'title');
         list($pageId) = BackendUtility::getTSCpid($tableName, $fromId, $data['pid'] ?? null);
 
-        $TSconfig = $this->backendUser->getTSConfig(
-            'TCEMAIN',
-            BackendUtility::getPagesTSconfig($pageId)
-        );
-        if (!empty($TSconfig['translateToMessage'])) {
-            $prefix = $TSconfig['translateToMessage'];
+        $tsConfigTranslateToMessage = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.']['translateToMessage'] ?? '';
+        if (!empty($tsConfigTranslateToMessage)) {
+            $prefix = $tsConfigTranslateToMessage;
             if ($languageService !== null) {
                 $prefix = $languageService->sL($prefix);
             }

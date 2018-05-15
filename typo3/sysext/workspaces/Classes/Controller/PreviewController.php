@@ -152,8 +152,11 @@ class PreviewController
         $wsUrl = $previewBaseUrl . '&ADMCMD_prev=IGNORE&ADMCMD_view=1&ADMCMD_editIcons=1';
 
         // Evaluate available preview modes
-        $splitPreviewTsConfig = BackendUtility::getModTSconfig($this->pageId, 'workspaces.splitPreviewModes');
-        $splitPreviewModes = GeneralUtility::trimExplode(',', $splitPreviewTsConfig['value']);
+        $splitPreviewModes = GeneralUtility::trimExplode(
+            ',',
+            BackendUtility::getPagesTSconfig($this->pageId)['workspaces.']['splitPreviewModes'] ?? '',
+            true
+        );
         $allPreviewModes = ['slider', 'vbox', 'hbox'];
         if (!array_intersect($splitPreviewModes, $allPreviewModes)) {
             $splitPreviewModes = $allPreviewModes;

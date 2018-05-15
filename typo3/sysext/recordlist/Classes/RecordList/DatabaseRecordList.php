@@ -1675,8 +1675,8 @@ class DatabaseRecordList
                                 : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL);
                             if ($table === 'tt_content') {
                                 // If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
-                                $tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod');
-                                $newContentElementWizard = $tmpTSc['properties']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
+                                $newContentElementWizard = BackendUtility::getPagesTSconfig($this->pageinfo['uid'])['mod.']['newContentElementWizard.']['override']
+                                    ?? 'new_content_element_wizard';
                                 $url = (string)$uriBuilder->buildUriFromRoute(
                                     $newContentElementWizard,
                                     [

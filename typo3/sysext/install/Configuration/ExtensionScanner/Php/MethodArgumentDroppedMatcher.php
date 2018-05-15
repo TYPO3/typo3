@@ -147,4 +147,10 @@ return [
             'Deprecation-83592-ImpexpRemovedMaximumNumberOfRecordsRestriction.rst'
         ],
     ],
+    'TYPO3\CMS\core\Authentication\BackendUserAuthentication->getTSConfig' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst'
+        ],
+    ],
 ];

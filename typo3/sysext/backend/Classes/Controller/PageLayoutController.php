@@ -120,14 +120,14 @@ class PageLayoutController
      *
      * @var array
      */
-    public $modTSconfig;
+    public $modTSconfig = [];
 
     /**
      * Module shared TSconfig
      *
      * @var array
      */
-    public $modSharedTSconfig;
+    public $modSharedTSconfig = [];
 
     /**
      * Current ids page record
@@ -302,8 +302,9 @@ class PageLayoutController
             ]
         ];
         // initialize page/be_user TSconfig settings
-        $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
+        $pageTsConfig = BackendUtility::getPagesTSconfig($this->id);
+        $this->modSharedTSconfig['properties'] = $pageTsConfig['mod.']['SHARED.'] ?? [];
+        $this->modTSconfig['properties'] = $pageTsConfig['mod.']['web_layout.'] ?? [];
 
         // First, select all localized page records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
@@ -422,8 +423,13 @@ class PageLayoutController
         if (!$count) {
             unset($actions['2']);
         }
-        // page/be_user TSconfig blinding of menu-items
-        $actions = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $actions, 'menu.function');
+        // Page / user TSconfig blinding of menu-items
+        $blindActions = $this->modTSconfig['properties']['menu.']['functions.'] ?? [];
+        foreach ($blindActions as $key => $value) {
+            if (!$value && array_key_exists($key, $actions)) {
+                unset($actions[$key]);
+            }
+        }
 
         return $actions;
     }

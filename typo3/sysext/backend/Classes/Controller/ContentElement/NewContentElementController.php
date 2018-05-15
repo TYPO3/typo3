@@ -204,7 +204,7 @@ class NewContentElementController
         $this->colPos = $colPos === null ? null : (int)$colPos;
         $this->uid_pid = (int)($parsedBody['uid_pid'] ?? $queryParams['uid_pid'] ?? 0);
         $this->MCONF['name'] = 'xMOD_db_new_content_el';
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.wizards.newContentElement');
+        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.'] ?? [];
         $config = BackendUtility::getPagesTSconfig($this->id);
         $this->config = $config['mod.']['wizards.']['newContentElement.'];
         // Starting the document template object:

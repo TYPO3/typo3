@@ -213,10 +213,15 @@ class BaseScriptClass
      */
     public function menuConfig()
     {
-        // Page/be_user TSconfig settings and blinding of menu-items
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
+        // Page / user TSconfig settings and blinding of menu-items
+        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.'][$this->MCONF['name'] . '.'] ?? [];
         $this->MOD_MENU['function'] = $this->mergeExternalItems($this->MCONF['name'], 'function', $this->MOD_MENU['function']);
-        $this->MOD_MENU['function'] = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['function'], 'menu.function');
+        $blindActions = $this->modTSconfig['properties']['menu.']['function.'] ?? [];
+        foreach ($blindActions as $key => $value) {
+            if (!$value && array_key_exists($key, $this->MOD_MENU['function'])) {
+                unset($this->MOD_MENU['function'][$key]);
+            }
+        }
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
     }
 

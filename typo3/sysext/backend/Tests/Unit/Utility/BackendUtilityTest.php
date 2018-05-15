@@ -16,13 +16,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\BackendUtilityFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithMultipleAllowedTablesFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithOneAllowedTableFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForSelectWithMMRelationFixture;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -881,31 +879,6 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $onclickCode,
             BackendUtility::viewOnClick(null, null, null, null, $alternativeUrl, null, false)
         );
-    }
-
-    /**
-     * @test
-     */
-    public function getModTSconfigIgnoresValuesFromUserTsConfigIfNotSet()
-    {
-        $completeConfiguration = [
-            'value' => 'bar',
-            'properties' => [
-                'permissions.' => [
-                    'file.' => [
-                        'default.' => ['readAction' => '1'],
-                        '1.' => ['writeAction' => '1'],
-                        '0.' => ['readAction' => '0'],
-                    ],
-                ]
-            ]
-        ];
-
-        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER']->expects($this->at(0))->method('getTSConfig')->will($this->returnValue($completeConfiguration));
-        $GLOBALS['BE_USER']->expects($this->at(1))->method('getTSConfig')->will($this->returnValue(['value' => null, 'properties' => null]));
-
-        $this->assertSame($completeConfiguration, BackendUtilityFixture::getModTSconfig(42, 'notrelevant'));
     }
 
     /**

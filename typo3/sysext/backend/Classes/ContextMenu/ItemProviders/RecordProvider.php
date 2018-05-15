@@ -293,8 +293,8 @@ class RecordProvider extends AbstractProvider
             $attributes += $this->getViewAdditionalAttributes();
         }
         if ($itemName === 'newWizard' && $this->table === 'tt_content') {
-            $tsConfig = BackendUtility::getModTSconfig($this->record['pid'], 'mod');
-            $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
+            $moduleName = BackendUtility::getPagesTSconfig($this->record['pid'])['mod.']['newContentElementWizard.']['override']
+                ?? 'new_content_element_wizard';
             $urlParameters = [
                 'id' => $this->record['pid'],
                 'sys_language_uid' => $this->record['sys_language_uid'],
@@ -504,9 +504,11 @@ class RecordProvider extends AbstractProvider
      */
     protected function isDeletionDisabledInTS(): bool
     {
-        $disableDeleteTS = $this->backendUser->getTSConfig('options.disableDelete');
-        $disableDelete = (bool)trim($disableDeleteTS['properties'][$this->table] ?? (string)$disableDeleteTS['value']);
-        return $disableDelete;
+        return (bool)\trim(
+            $this->backendUser->getTSConfig()['options.']['disableDelete.'][$this->table]
+            ?? $this->backendUser->getTSConfig()['options.']['disableDelete']
+            ?? ''
+        );
     }
 
     /**
@@ -546,12 +548,9 @@ class RecordProvider extends AbstractProvider
      */
     protected function canOpenNewCEWizard(): bool
     {
-        $tsConfig = BackendUtility::getModTSconfig($this->record['pid'], 'mod.web_layout');
-        $wizardEnabled = true;
-        if (isset($tsConfig['properties']['disableNewContentElementWizard'])) {
-            $wizardEnabled = false;
-        }
-        return $this->table === 'tt_content' && $wizardEnabled && $this->canBeEdited();
+        return $this->table === 'tt_content'
+            && (bool)(BackendUtility::getPagesTSconfig($this->record['pid'])['mod.']['web_layout.']['disableNewContentElementWizard'] ?? true)
+            && $this->canBeEdited();
     }
 
     /**

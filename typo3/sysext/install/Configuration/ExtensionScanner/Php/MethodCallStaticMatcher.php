@@ -554,4 +554,18 @@ return [
             'Deprecation-84994-BackendUtilitygetPidForModTSconfigDeprecated.rst',
         ],
     ],
+    'TYPO3\CMS\backend\Utility\BackendUtility::getModTSconfig' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\backend\Utility\BackendUtility::unsetMenuItems' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
+        ],
+    ],
 ];

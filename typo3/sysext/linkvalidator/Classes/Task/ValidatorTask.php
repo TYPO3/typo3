@@ -362,7 +362,6 @@ class ValidatorTask extends AbstractTask
      */
     protected function loadModTsConfig($page)
     {
-        $modTs = BackendUtility::getModTSconfig($page, 'mod.linkvalidator');
         $parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
         $parseObj->parse($this->configuration);
         if (!empty($parseObj->errors)) {
@@ -374,8 +373,8 @@ class ValidatorTask extends AbstractTask
             }
             throw new \Exception($parseErrorMessage, '1295476989');
         }
+        $modTs = BackendUtility::getPagesTSconfig($page)['mod.']['linkvalidator.'] ?? [];
         $tsConfig = $parseObj->setup;
-        $modTs = $modTs['properties'];
         $overrideTs = $tsConfig['mod.']['linkvalidator.'];
         if (is_array($overrideTs)) {
             ArrayUtility::mergeRecursiveWithOverrule($modTs, $overrideTs);

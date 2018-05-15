@@ -44,9 +44,8 @@ class TranslationConfigurationProvider
      */
     public function getSystemLanguages($pageId = 0)
     {
-        $modSharedTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.SHARED');
-
         // default language and "all languages" are always present
+        $modSharedTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['SHARED.'] ?? [];
         $languages = [
             // 0: default language
             0 => [
@@ -230,8 +229,8 @@ class TranslationConfigurationProvider
      */
     protected function getDefaultLanguageFlag(array $modSharedTSconfig)
     {
-        if (strlen($modSharedTSconfig['properties']['defaultLanguageFlag'])) {
-            $defaultLanguageFlag = 'flags-' . $modSharedTSconfig['properties']['defaultLanguageFlag'];
+        if (strlen($modSharedTSconfig['defaultLanguageFlag'])) {
+            $defaultLanguageFlag = 'flags-' . $modSharedTSconfig['defaultLanguageFlag'];
         } else {
             $defaultLanguageFlag = 'empty-empty';
         }
@@ -244,8 +243,8 @@ class TranslationConfigurationProvider
      */
     protected function getDefaultLanguageLabel(array $modSharedTSconfig)
     {
-        if (strlen($modSharedTSconfig['properties']['defaultLanguageLabel'])) {
-            $defaultLanguageLabel = $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')';
+        if (strlen($modSharedTSconfig['defaultLanguageLabel'])) {
+            $defaultLanguageLabel = $modSharedTSconfig['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')';
         } else {
             $defaultLanguageLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage');
         }

@@ -273,17 +273,19 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getColPosListItemsParsed($id)
     {
-        $tsConfig = BackendUtility::getModTSconfig($id, 'TCEFORM.tt_content.colPos');
+        $tsConfig = BackendUtility::getPagesTSconfig($id)['TCEFORM.']['tt_content.']['colPos.'] ?? [];
         $tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'];
         $tcaItems = $tcaConfig['items'];
-        $tcaItems = $this->addItems($tcaItems, $tsConfig['properties']['addItems.']);
+        $tcaItems = $this->addItems($tcaItems, $tsConfig['addItems.']);
         if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {
             $tcaItems = $this->addColPosListLayoutItems($id, $tcaItems);
         }
-        foreach (GeneralUtility::trimExplode(',', $tsConfig['properties']['removeItems'], true) as $removeId) {
-            foreach ($tcaItems as $key => $item) {
-                if ($item[1] == $removeId) {
-                    unset($tcaItems[$key]);
+        if (!empty($tsConfig['removeItems'])) {
+            foreach (GeneralUtility::trimExplode(',', $tsConfig['removeItems'], true) as $removeId) {
+                foreach ($tcaItems as $key => $item) {
+                    if ($item[1] == $removeId) {
+                        unset($tcaItems[$key]);
+                    }
                 }
             }
         }

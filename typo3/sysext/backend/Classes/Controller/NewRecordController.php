@@ -423,29 +423,13 @@ class NewRecordController
                 $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
             }
             // Acquiring TSconfig for this module/current page:
-            $this->web_list_modTSconfig = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
-            $this->allowedNewTables = GeneralUtility::trimExplode(
-                ',',
-                $this->web_list_modTSconfig['properties']['allowedNewTables'],
-                true
-            );
-            $this->deniedNewTables = GeneralUtility::trimExplode(
-                ',',
-                $this->web_list_modTSconfig['properties']['deniedNewTables'],
-                true
-            );
+            $this->web_list_modTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid'])['mod.']['web_list.'] ?? [];
+            $this->allowedNewTables = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['allowedNewTables'] ?? '', true);
+            $this->deniedNewTables = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['deniedNewTables'] ?? '', true);
             // Acquiring TSconfig for this module/parent page:
-            $this->web_list_modTSconfig_pid = BackendUtility::getModTSconfig($this->pageinfo['pid'], 'mod.web_list');
-            $this->allowedNewTables_pid = GeneralUtility::trimExplode(
-                ',',
-                $this->web_list_modTSconfig_pid['properties']['allowedNewTables'],
-                true
-            );
-            $this->deniedNewTables_pid = GeneralUtility::trimExplode(
-                ',',
-                $this->web_list_modTSconfig_pid['properties']['deniedNewTables'],
-                true
-            );
+            $this->web_list_modTSconfig_pid = BackendUtility::getPagesTSconfig($this->pageinfo['pid'])['mod.']['web_list.'] ?? [];
+            $this->allowedNewTables_pid = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig_pid['allowedNewTables'] ?? '', true);
+            $this->deniedNewTables_pid = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig_pid['deniedNewTables'] ?? '', true);
             // More init:
             if (!$this->isRecordCreationAllowedForTable('pages')) {
                 $this->newPagesInto = 0;
@@ -714,8 +698,8 @@ class NewRecordController
                                 . '<strong>' . $lang->getLL('createNewContent') . '</strong>'
                                 . '<ul>';
                             // If mod.newContentElementWizard.override is set, use that extension's wizard instead:
-                            $tsConfig = BackendUtility::getModTSconfig($this->id, 'mod');
-                            $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
+                            $moduleName = BackendUtility::getPagesTSconfig($this->id)['mod.']['newContentElementWizard.']['override']
+                                ?? 'new_content_element_wizard';
                             /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
                             $normalizedParams = $request->getAttribute('normalizedParams');
                             $url = (string)$uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => $normalizedParams->getRequestUri()]);

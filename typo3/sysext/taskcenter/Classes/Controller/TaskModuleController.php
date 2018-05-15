@@ -71,14 +71,17 @@ class TaskModuleController extends BaseScriptClass
         $this->MOD_MENU = ['mode' => []];
         $this->MOD_MENU['mode']['information'] = $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_overview');
         $this->MOD_MENU['mode']['tasks'] = $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_tasks');
-        /* Copied from parent::menuConfig, because parent is hardcoded to menu.function,
-         * however menu.function is already used for the individual tasks.
-         * Therefore we use menu.mode here.
-         */
+        // Copied from parent::menuConfig, because parent is hardcoded to menu.function,
+        // however menu.function is already used for the individual tasks. Therefore we use menu.mode here.
         // Page/be_user TSconfig settings and blinding of menu-items
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
+        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.'][$this->moduleName . '.'] ?? [];
         $this->MOD_MENU['mode'] = $this->mergeExternalItems($this->MCONF['name'], 'mode', $this->MOD_MENU['mode']);
-        $this->MOD_MENU['mode'] = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['mode'], 'menu.mode');
+        $blindActions = $this->modTSconfig['properties']['menu.']['mode.'] ?? [];
+        foreach ($blindActions as $key => $value) {
+            if (!$value && array_key_exists($key, $this->MOD_MENU['mode'])) {
+                unset($this->MOD_MENU['mode'][$key]);
+            }
+        }
         parent::menuConfig();
     }
 

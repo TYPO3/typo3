@@ -263,8 +263,7 @@ class ViewModuleController
     protected function getTypeParameterIfSet(int $pageId): string
     {
         $typeParameter = '';
-        $modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
-        $typeId = (int)$modTSconfig['properties']['type'];
+        $typeId = (int)(BackendUtility::getPagesTSconfig($pageId)['mod.']['web_view.']['type'] ?? 0);
         if ($typeId > 0) {
             $typeParameter = '&type=' . $typeId;
         }
@@ -291,37 +290,35 @@ class ViewModuleController
      */
     protected function getPreviewPresets(int $pageId): array
     {
-        $modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
         $presetGroups = [
             'desktop' => [],
             'tablet' => [],
             'mobile' => [],
             'unidentified' => []
         ];
-        if (is_array($modTSconfig['properties']['previewFrameWidths.'])) {
-            foreach ($modTSconfig['properties']['previewFrameWidths.'] as $item => $conf) {
-                $data = [
-                    'key' => substr($item, 0, -1),
-                    'label' => $conf['label'] ?? null,
-                    'type' => $conf['type'] ?? 'unknown',
-                    'width' => (isset($conf['width']) && (int)$conf['width'] > 0 && strpos($conf['width'], '%') === false) ? (int)$conf['width'] : null,
-                    'height' => (isset($conf['height']) && (int)$conf['height'] > 0 && strpos($conf['height'], '%') === false) ? (int)$conf['height'] : null,
-                ];
-                $width = (int)substr($item, 0, -1);
-                if (!isset($data['width']) && $width > 0) {
-                    $data['width'] = $width;
-                }
-                if (!isset($data['label'])) {
-                    $data['label'] = $data['key'];
-                } elseif (strpos($data['label'], 'LLL:') === 0) {
-                    $data['label'] = $this->getLanguageService()->sL(trim($data['label']));
-                }
+        $previewFrameWidthConfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['web_view.']['previewFrameWidths.'] ?? [];
+        foreach ($previewFrameWidthConfig as $item => $conf) {
+            $data = [
+                'key' => substr($item, 0, -1),
+                'label' => $conf['label'] ?? null,
+                'type' => $conf['type'] ?? 'unknown',
+                'width' => (isset($conf['width']) && (int)$conf['width'] > 0 && strpos($conf['width'], '%') === false) ? (int)$conf['width'] : null,
+                'height' => (isset($conf['height']) && (int)$conf['height'] > 0 && strpos($conf['height'], '%') === false) ? (int)$conf['height'] : null,
+            ];
+            $width = (int)substr($item, 0, -1);
+            if (!isset($data['width']) && $width > 0) {
+                $data['width'] = $width;
+            }
+            if (!isset($data['label'])) {
+                $data['label'] = $data['key'];
+            } elseif (strpos($data['label'], 'LLL:') === 0) {
+                $data['label'] = $this->getLanguageService()->sL(trim($data['label']));
+            }
 
-                if (array_key_exists($data['type'], $presetGroups)) {
-                    $presetGroups[$data['type']][$data['key']] = $data;
-                } else {
-                    $presetGroups['unidentified'][$data['key']] = $data;
-                }
+            if (array_key_exists($data['type'], $presetGroups)) {
+                $presetGroups[$data['type']][$data['key']] = $data;
+            } else {
+                $presetGroups['unidentified'][$data['key']] = $data;
             }
         }
 
@@ -338,13 +335,13 @@ class ViewModuleController
     {
         $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
         $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
-        $modSharedTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.SHARED');
-        if ($modSharedTSconfig['properties']['view.']['disableLanguageSelector'] === '1') {
+        $modSharedTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['SHARED.'] ?? [];
+        if ($modSharedTSconfig['view.']['disableLanguageSelector'] === '1') {
             return [];
         }
         $languages = [
-            0 => isset($modSharedTSconfig['properties']['defaultLanguageLabel'])
-                    ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
+            0 => isset($modSharedTSconfig['defaultLanguageLabel'])
+                    ? $modSharedTSconfig['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
                     : $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage')
         ];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');

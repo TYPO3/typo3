@@ -33,9 +33,7 @@ class EditToolbarService
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $tsfe = $this->getTypoScriptFrontendController();
         //  If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
-        $tsConfig = BackendUtility::getModTSconfig($tsfe->page['uid'], 'mod');
-        $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element';
-        /** @var UriBuilder $uriBuilder */
+        $moduleName = BackendUtility::getPagesTSconfig($tsfe->page['uid'])['mod.']['newContentElementWizard.']['override'] ?? 'new_content_element';
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $perms = $this->getBackendUser()->calcPerms($tsfe->page);
         $langAllowed = $this->getBackendUser()->checkLanguageAccess($tsfe->sys_language_uid);
@@ -47,7 +45,6 @@ class EditToolbarService
         $output[] = '  <div class="typo3-adminPanel-btn-group" role="group">';
 
         // History
-        /** @var UriBuilder $uriBuilder */
         $link = (string)$uriBuilder->buildUriFromRoute(
             'record_history',
             [

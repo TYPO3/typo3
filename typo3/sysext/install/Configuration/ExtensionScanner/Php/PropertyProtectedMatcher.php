@@ -577,4 +577,19 @@ return [
             'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
         ],
     ],
+    'TYPO3\CMS\backend\Tree\View\PagePositionMap->getModConfigCache' => [
+        'restFiles' => [
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+        ],
+    ],
+    'TYPO3\CMS\backend\Tree\View\PagePositionMap->modConfigStr' => [
+        'restFiles' => [
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+        ],
+    ],
+    'TYPO3\CMS\recordlist\Controller\RecordListController->modTSconfig' => [
+        'restFiles' => [
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+        ],
+    ],
 ];

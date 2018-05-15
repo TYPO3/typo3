@@ -279,20 +279,19 @@ class FileList
      */
     public function __construct(FileListController $fileListController)
     {
-        if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
-            $this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
+        $backendUser = $this->getBackendUser();
+        if (isset($backendUser->uc['titleLen']) && $backendUser->uc['titleLen'] > 0) {
+            $this->fixedL = $backendUser->uc['titleLen'];
         }
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->getTranslateTools();
         $this->determineScriptUrl();
         $this->fileListController = $fileListController;
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->thumbnailConfiguration = GeneralUtility::makeInstance(ThumbnailConfiguration::class);
-
-        $modTSconfig = BackendUtility::getModTSconfig(0, 'options.file_list');
-        if (!empty($modTSconfig['properties']['filesPerPage'])) {
-            $this->iLimit = MathUtility::forceIntegerInRange($modTSconfig['properties']['filesPerPage'], 1);
-        }
+        $this->iLimit = MathUtility::forceIntegerInRange(
+            $backendUser->getTSConfig()['options.']['file_list.']['filesPerPage'] ?? 1,
+            1
+        );
     }
 
     /**

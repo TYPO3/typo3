@@ -2200,4 +2200,18 @@ return [
             'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
         ],
     ],
+    'TYPO3\CMS\backend\Tree\View\PagePositionMap->getModConfig' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\core\DataHandling\DataHandler->getTCEMAIN_TSconfig' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
+        ],
+    ],
 ];

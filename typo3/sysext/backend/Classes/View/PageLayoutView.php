@@ -939,8 +939,7 @@ class PageLayoutView implements LoggerAwareInterface
                             'uid_pid' => $id,
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ];
-                        $tsConfig = BackendUtility::getModTSconfig($id, 'mod');
-                        $routeName = $tsConfig['properties']['newContentElementWizard.']['override']
+                        $routeName = BackendUtility::getPagesTSconfig($id)['mod.']['newContentElementWizard.']['override']
                             ?? 'new_content_element_wizard';
                         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                         $url = (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
@@ -1062,8 +1061,7 @@ class PageLayoutView implements LoggerAwareInterface
                                         'uid_pid' => -$row['uid'],
                                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                                     ];
-                                    $tsConfig = BackendUtility::getModTSconfig($row['pid'], 'mod');
-                                    $routeName = $tsConfig['properties']['newContentElementWizard.']['override']
+                                    $routeName = BackendUtility::getPagesTSconfig($row['pid'])['mod.']['newContentElementWizard.']['override']
                                         ?? 'new_content_element_wizard';
                                     $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                                     $url = (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
@@ -1164,7 +1162,7 @@ class PageLayoutView implements LoggerAwareInterface
                 $grid .= '</colgroup>';
 
                 // Check how to handle restricted columns
-                $hideRestrictedCols = (bool)($tsConfig['properties']['web_layout.']['hideRestrictedCols'] ?? false);
+                $hideRestrictedCols = (bool)(BackendUtility::getPagesTSconfig($id)['mod.']['web_layout.']['hideRestrictedCols'] ?? false);
 
                 // Cycle through rows
                 for ($row = 1; $row <= $rowCount; $row++) {
@@ -2172,28 +2170,25 @@ class PageLayoutView implements LoggerAwareInterface
         // and render it via Fluid. Possible option:
         // mod.web_layout.tt_content.preview.media = EXT:site_mysite/Resources/Private/Templates/Preview/Media.html
         if ($drawItem) {
-            $tsConfig = BackendUtility::getModTSconfig($row['pid'], 'mod.web_layout.tt_content.preview');
+            $tsConfig = BackendUtility::getPagesTSconfig($row['pid'])['mod.']['web_layout.']['tt_content.']['preview.'] ?? [];
             $fluidTemplateFile = '';
 
-            if (
-                $row['CType'] === 'list' && !empty($row['list_type'])
-                && !empty($tsConfig['properties']['list.'][$row['list_type']])
+            if ($row['CType'] === 'list' && !empty($row['list_type'])
+                && !empty($tsConfig['list.'][$row['list_type']])
             ) {
-                $fluidTemplateFile = $tsConfig['properties']['list.'][$row['list_type']];
-            } elseif (!empty($tsConfig['properties'][$row['CType']])) {
-                $fluidTemplateFile = $tsConfig['properties'][$row['CType']];
+                $fluidTemplateFile = $tsConfig['list.'][$row['list_type']];
+            } elseif (!empty($tsConfig[$row['CType']])) {
+                $fluidTemplateFile = $tsConfig[$row['CType']];
             }
 
             if ($fluidTemplateFile) {
                 $fluidTemplateFile = GeneralUtility::getFileAbsFileName($fluidTemplateFile);
                 if ($fluidTemplateFile) {
                     try {
-                        /** @var StandaloneView $view */
                         $view = GeneralUtility::makeInstance(StandaloneView::class);
                         $view->setTemplatePathAndFilename($fluidTemplateFile);
                         $view->assignMultiple($row);
                         if (!empty($row['pi_flexform'])) {
-                            /** @var FlexFormService $flexFormService */
                             $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
                             $view->assign('pi_flexform_transformed', $flexFormService->convertFlexFormContentToArray($row['pi_flexform']));
                         }
@@ -2413,14 +2408,9 @@ class PageLayoutView implements LoggerAwareInterface
         }
         $theNewButton = '';
 
-        $localizationTsConfig = BackendUtility::getModTSconfig($this->id, 'mod.web_layout.localization');
-        $allowCopy = isset($localizationTsConfig['properties']['enableCopy'])
-            ? (int)$localizationTsConfig['properties']['enableCopy'] === 1
-            : true;
-        $allowTranslate = isset($localizationTsConfig['properties']['enableTranslate'])
-            ? (int)$localizationTsConfig['properties']['enableTranslate'] === 1
-            : true;
-
+        $localizationTsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_layout.']['localization.'] ?? [];
+        $allowCopy = (bool)($localizationTsConfig['enableCopy'] ?? true);
+        $allowTranslate = (bool)($localizationTsConfig['enableTranslate'] ?? true);
         if (!empty($this->languageHasTranslationsCache[$lP])) {
             if (isset($this->languageHasTranslationsCache[$lP]['hasStandAloneContent'])) {
                 $allowTranslate = false;
@@ -2473,8 +2463,7 @@ class PageLayoutView implements LoggerAwareInterface
     public function newContentElementOnClick($id, $colPos, $sys_language)
     {
         if ($this->option_newWizard) {
-            $tsConfig = BackendUtility::getModTSconfig($id, 'mod');
-            $routeName = $tsConfig['properties']['newContentElementWizard.']['override']
+            $routeName = BackendUtility::getPagesTSconfig($id)['mod.']['newContentElementWizard.']['override']
                 ?? 'new_content_element_wizard';
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = $uriBuilder->buildUriFromRoute($routeName, [
@@ -2620,10 +2609,11 @@ class PageLayoutView implements LoggerAwareInterface
                 }
             }
             // Remove disabled languages
-            $modSharedTSconfig = BackendUtility::getModTSconfig($id, 'mod.SHARED');
-            $disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages'])
-                ? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], true)
-                : [];
+            $disableLanguages = GeneralUtility::trimExplode(
+                ',',
+                BackendUtility::getPagesTSconfig($id)['mod.']['SHARED.']['disableLanguages'] ?? '',
+                true
+            );
             if (!empty($availableTranslations) && !empty($disableLanguages)) {
                 foreach ($disableLanguages as $language) {
                     if ($language != 0 && isset($availableTranslations[$language])) {
@@ -2969,8 +2959,8 @@ class PageLayoutView implements LoggerAwareInterface
         // Also, you may override this strict behavior via user TS Config
         // If you do so, you're on your own and cannot rely on any support by the TYPO3 core
         // We jump out here since we don't need to do the expensive loop operations
-        $allowInconsistentLanguageHandling = BackendUtility::getModTSconfig($this->id, 'mod.web_layout.allowInconsistentLanguageHandling');
-        if ($language === 0 || $allowInconsistentLanguageHandling['value'] === '1') {
+        $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($this->id)['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
+        if ($language === 0 || $allowInconsistentLanguageHandling) {
             return false;
         }
         /**

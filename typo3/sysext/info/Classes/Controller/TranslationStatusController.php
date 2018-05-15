@@ -195,8 +195,11 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             $tCells[] = '<td class="' . $status . '" title="' . $lang->sL(
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
                 ) . '" align="center">' . $this->getContentElementCount($data['row']['uid'], 0) . '</td>';
-            $modSharedTSconfig = BackendUtility::getModTSconfig($data['row']['uid'], 'mod.SHARED');
-            $disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], true) : [];
+            $disableLanguages = GeneralUtility::trimExplode(
+                ',',
+                BackendUtility::getPagesTSconfig($data['row']['uid'])['mod.']['SHARED.']['disableLanguages'] ?? '',
+                true
+            );
             // Traverse system languages:
             foreach ($languages as $langRow) {
                 if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int)$this->pObj->MOD_SETTINGS['lang'] === (int)$langRow['uid']) {

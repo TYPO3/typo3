@@ -169,58 +169,53 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                 $tmpl->ext_expandAllNotes = 1;
                 $tmpl->ext_noPMicons = 1;
 
-                $beUser = $this->getBackendUser();
+                $pageTsConfig = BackendUtility::getPagesTSconfig($this->pObj->id);
                 switch ($this->pObj->MOD_SETTINGS['tsconf_parts']) {
                     case '1':
-                        $modTSconfig = BackendUtility::getModTSconfig($this->pObj->id, 'mod');
+                        $pageTsConfig = $pageTsConfig['mod.'] ?? [];
                         break;
                     case '1a':
-                        $modTSconfig = $beUser->getTSConfig('mod.web_layout', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['mod.']['web_layout.'] ?? [];
                         break;
                     case '1b':
-                        $modTSconfig = $beUser->getTSConfig('mod.web_view', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['mod.']['web_view.'] ?? [];
                         break;
                     case '1c':
-                        $modTSconfig = $beUser->getTSConfig('mod.web_modules', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['mod.']['web_modules.'] ?? [];
                         break;
                     case '1d':
-                        $modTSconfig = $beUser->getTSConfig('mod.web_list', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['mod.']['web_list.'] ?? [];
                         break;
                     case '1e':
-                        $modTSconfig = $beUser->getTSConfig('mod.web_info', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['mod.']['web_info.'] ?? [];
                         break;
                     case '1f':
-                        $modTSconfig = $beUser->getTSConfig('mod.web_func', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['mod.']['web_func.'] ?? [];
                         break;
                     case '1g':
-                        $modTSconfig = $beUser->getTSConfig('mod.web_ts', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['mod.']['web_ts.'] ?? [];
                         break;
                     case '2':
-                        $modTSconfig = $beUser->getTSConfig('RTE', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['RTE.'] ?? [];
                         break;
                     case '5':
-                        $modTSconfig = $beUser->getTSConfig('TCEFORM', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['TCEFORM.'] ?? [];
                         break;
                     case '6':
-                        $modTSconfig = $beUser->getTSConfig('TCEMAIN', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['TCEMAIN.'] ?? [];
                         break;
                     case '3':
-                        $modTSconfig = $beUser->getTSConfig('TSFE', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['TSFE.'] ?? [];
                         break;
                     case '4':
-                        $modTSconfig = $beUser->getTSConfig('user', BackendUtility::getPagesTSconfig($this->pObj->id));
+                        $pageTsConfig = $pageTsConfig['user.'] ?? [];
                         break;
                     default:
-                        $modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->pObj->id);
-                }
-
-                $modTSconfig = $modTSconfig['properties'];
-                if (!is_array($modTSconfig)) {
-                    $modTSconfig = [];
+                        // Entire array
                 }
 
                 $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', null, '|'));
-                $this->view->assign('tree', $tmpl->ext_getObjTree($modTSconfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort']));
+                $this->view->assign('tree', $tmpl->ext_getObjTree($pageTsConfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort']));
             }
             $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"'));
             $this->view->assign('dropdownMenu', BackendUtility::getDropdownMenu($this->pObj->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']));

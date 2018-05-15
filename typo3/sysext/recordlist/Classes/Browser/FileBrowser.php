@@ -81,16 +81,12 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseFiles');
         $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
 
-        $modTSconfig = BackendUtility::getModTSconfig(0, 'options.file_list');
-        if (isset($modTSconfig['properties']['thumbnail.']['width'])
-            && MathUtility::canBeInterpretedAsInteger($modTSconfig['properties']['thumbnail.']['width'])
-        ) {
-            $this->thumbnailConfiguration['width'] = (int)$modTSconfig['properties']['thumbnail.']['width'];
+        $thumbnailConfig = $this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.'] ?? [];
+        if (isset($thumbnailConfig['width']) && MathUtility::canBeInterpretedAsInteger($thumbnailConfig['width'])) {
+            $this->thumbnailConfiguration['width'] = (int)$thumbnailConfig['width'];
         }
-        if (isset($modTSconfig['properties']['thumbnail.']['height'])
-            && MathUtility::canBeInterpretedAsInteger($modTSconfig['properties']['thumbnail.']['height'])
-        ) {
-            $this->thumbnailConfiguration['height'] = (int)$modTSconfig['properties']['thumbnail.']['height'];
+        if (isset($thumbnailConfig['height']) && MathUtility::canBeInterpretedAsInteger($thumbnailConfig['height'])) {
+            $this->thumbnailConfiguration['height'] = (int)$thumbnailConfig['height'];
         }
     }
 

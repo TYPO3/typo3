@@ -14,6 +14,23 @@ Some user TSconfig related methods have been deprecated:
 * :php:`TYPO3\CMS\core\Authentication\BackendUserAuthentication->getTSConfigVal()`
 * :php:`TYPO3\CMS\core\Authentication\BackendUserAuthentication->getTSConfigProp()`
 
+Changed method signatures:
+
+* :php:`TYPO3\CMS\core\Authentication\BackendUserAuthentication->getTSConfig()`, no argument allowed any longer
+
+Some page TSconfig related methods have been deprecated:
+
+* :php:`TYPO3\CMS\backend\Utility\BackendUtility::getModTSconfig()`
+* :php:`TYPO3\CMS\backend\Utility\BackendUtility::unsetMenuItems()`
+* :php:`TYPO3\CMS\backend\Tree\View\PagePositionMap->getModConfig()`
+* :php:`TYPO3\CMS\core\DataHandling\DataHandler->getTCEMAIN_TSconfig()`
+
+These properties have been set to protected, should not be used any longer and log a deprecation message on access:
+
+* :php:`TYPO3\CMS\backend\Tree\View\PagePositionMap->getModConfigCache`
+* :php:`TYPO3\CMS\backend\Tree\View\PagePositionMap->modConfigStr`
+* :php:`TYPO3\CMS\recordlist\Controller\RecordListController->modTSconfig`
+
 
 Impact
 ======
@@ -31,11 +48,11 @@ will find affected code occurrences in extensions.
 Migration
 =========
 
-Change the calls to use :php:`BackendUserAuthentication->getTSConfig()` instead, it
-comes with a slightly changed return syntax.
+Change user TSconfig related calls to use :php:`BackendUserAuthentication->getTSConfig()`
+instead, it comes with a slightly changed return syntax.
 
 :php:`getTSConfig()` without arguments simply returns the entire user TSconfig as array, similar to other
-methods that return parsed TypoScript arrays. The examples below show some imaginary user TSConfig TypoScript,
+methods that return parsed TypoScript arrays. The examples below shows some imaginary user TSConfig,
 the full parsed array returned by :php:`getTSConfig()` and some typical access patterns with fallback. Note
 it's almost always useful to use the null coalescence :php:`??` operator for a fallback value to suppress
 PHP notice level warnings::
@@ -70,5 +87,16 @@ PHP notice level warnings::
     // Switch an old getTSConfigProp() to getTSConfig(), note the parenthesis and the trailing dot:
     $value = (array)$backendUser->getTSConfigProp('options.somePartWithSubToggles');
     $value = (array)($backendUser->getTSConfig()['options.']['somePartWithSubToggles.'] ?? []);
+
+
+Change :php:`BackendUtility->getModTSconfig()` related calls to use :php:`BackendUtility::getPagesTSconfig($pid)` instead.
+Note this method does not return the 'properties' and 'value' sub array as :php:`->getModTSconfig()` did::
+
+    // Switch an old getModTSconfig() to getPagesTSConfig():
+    $configArray = BackendUtility::getModTSconfig($id, 'mod.web_list');
+    $configArray['properties'] = BackendUtility::getPagesTSconfig($pid)['mod.']['web_list.'] ?? [];
+
+Methods :php:`BackendUtility::unsetMenuItems()` and :php:`DataHandler->getTCEMAIN_TSconfig()` have been rarely used
+and are dropped without substitution. Copy the code into consuming methods if you really need them.
 
 .. index:: Backend, PHP-API, TSConfig, FullyScanned

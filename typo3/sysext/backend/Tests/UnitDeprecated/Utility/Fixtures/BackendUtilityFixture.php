@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures;
+namespace TYPO3\CMS\Backend\Tests\UnitDeprecated\Utility\Fixtures;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * BackendUtility fixture
  */
-class BackendUtilityFixture extends \TYPO3\CMS\Backend\Utility\BackendUtility
+class BackendUtilityFixture extends BackendUtility
 {
     /**
      * @param int $id
