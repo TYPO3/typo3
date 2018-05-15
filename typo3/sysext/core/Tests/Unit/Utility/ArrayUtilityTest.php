@@ -423,6 +423,19 @@ class ArrayUtilityTest extends UnitTestCase
                 'foo/baz',
                 $testObject
             ],
+            'sub array' => [
+                [
+                    'foo' => [
+                        'bar' => [
+                            'baz' => 42,
+                        ],
+                    ],
+                ],
+                'foo/bar',
+                [
+                    'baz' => 42,
+                ],
+            ],
             'enclosed path' => [
                 [
                     'foo/bar' => [
