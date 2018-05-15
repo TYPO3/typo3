@@ -2249,4 +2249,18 @@ return [
             'Deprecation-85005-DeprecateMethodsAndConstantsInValidatorResolver.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\Argument->getValidationResults' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85012-OnlyValidateMethodParamsIfNeeded.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\Arguments->getValidationResults' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85012-OnlyValidateMethodParamsIfNeeded.rst',
+        ],
+    ],
 ];

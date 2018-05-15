@@ -257,8 +257,16 @@ class ActionController extends AbstractController
 
         $classSchema = $this->reflectionService->getClassSchema(static::class);
 
+        $ignoreValidationAnnotations = array_unique(array_flip(
+            $classSchema->getMethod($this->actionMethodName)['tags']['ignorevalidation'] ?? []
+        ));
+
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
         foreach ($this->arguments as $argument) {
+            if (isset($ignoreValidationAnnotations[$argument->getName()])) {
+                continue;
+            }
+
             $validator = $this->objectManager->get(ConjunctionValidator::class);
             $validatorDefinitions = $classSchema->getMethod($this->actionMethodName)['params'][$argument->getName()]['validators'] ?? [];
 
@@ -313,33 +321,12 @@ class ActionController extends AbstractController
         foreach ($this->arguments as $argument) {
             $preparedArguments[] = $argument->getValue();
         }
-        $validationResult = $this->arguments->getValidationResults();
+        $validationResult = $this->arguments->validate();
         if (!$validationResult->hasErrors()) {
             $this->emitBeforeCallActionMethodSignal($preparedArguments);
-            $actionResult = call_user_func_array([$this, $this->actionMethodName], $preparedArguments);
+            $actionResult = $this->{$this->actionMethodName}(...$preparedArguments);
         } else {
-            $methodTagsValues = $this->reflectionService->getMethodTagsValues(static::class, $this->actionMethodName);
-            $ignoreValidationAnnotations = $methodTagsValues['ignorevalidation'] ?? [];
-
-            // if there exist errors which are not ignored with @TYPO3\CMS\Extbase\Annotation\IgnoreValidation => call error method
-            // else => call action method
-            $shouldCallActionMethod = true;
-            foreach ($validationResult->getSubResults() as $argumentName => $subValidationResult) {
-                if (!$subValidationResult->hasErrors()) {
-                    continue;
-                }
-                if (in_array($argumentName, $ignoreValidationAnnotations, true)) {
-                    continue;
-                }
-                $shouldCallActionMethod = false;
-                break;
-            }
-            if ($shouldCallActionMethod) {
-                $this->emitBeforeCallActionMethodSignal($preparedArguments);
-                $actionResult = call_user_func_array([$this, $this->actionMethodName], $preparedArguments);
-            } else {
-                $actionResult = call_user_func([$this, $this->errorMethodName]);
-            }
+            $actionResult = $this->{$this->errorMethodName}();
         }
 
         if ($actionResult === null && $this->view instanceof ViewInterface) {
@@ -610,7 +597,7 @@ class ActionController extends AbstractController
         if ($referringRequest !== null) {
             $originalRequest = clone $this->request;
             $this->request->setOriginalRequest($originalRequest);
-            $this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
+            $this->request->setOriginalRequestMappingResults($this->arguments->validate());
             $this->forward(
                 $referringRequest->getControllerActionName(),
                 $referringRequest->getControllerName(),

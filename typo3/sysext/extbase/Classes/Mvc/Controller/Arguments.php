@@ -275,13 +275,27 @@ class Arguments extends \ArrayObject
      * Get all property mapping / validation errors
      *
      * @return \TYPO3\CMS\Extbase\Error\Result
+     * @deprecated
      */
     public function getValidationResults()
+    {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
+        return $this->validate();
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Error\Result
+     */
+    public function validate(): \TYPO3\CMS\Extbase\Error\Result
     {
         $results = new \TYPO3\CMS\Extbase\Error\Result();
         /** @var Argument $argument */
         foreach ($this as $argument) {
-            $argumentValidationResults = $argument->getValidationResults();
+            $argumentValidationResults = $argument->validate();
             if ($argumentValidationResults === null) {
                 continue;
             }

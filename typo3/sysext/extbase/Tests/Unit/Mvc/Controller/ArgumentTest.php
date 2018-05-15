@@ -231,7 +231,7 @@ class ArgumentTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->simpleValueArgument->setValidator($mockValidator);
         $this->setupPropertyMapperAndSetValue();
         $this->assertFalse($this->simpleValueArgument->isValid());
-        $this->assertEquals([$error], $this->simpleValueArgument->getValidationResults()->getErrors());
+        $this->assertEquals([$error], $this->simpleValueArgument->validate()->getErrors());
     }
 
     /**

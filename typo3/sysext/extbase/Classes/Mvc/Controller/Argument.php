@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
@@ -88,7 +89,12 @@ class Argument
      *
      * @var \TYPO3\CMS\Extbase\Error\Result
      */
-    protected $validationResults = null;
+    protected $validationResults;
+
+    /**
+     * @var bool
+     */
+    private $hasBeenValidated = false;
 
     /**
      * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
@@ -124,6 +130,8 @@ class Argument
         }
         $this->name = $name;
         $this->dataType = TypeHandlingUtility::normalizeType($dataType);
+
+        $this->validationResults = new Result();
     }
 
     /**
@@ -274,12 +282,7 @@ class Argument
                 throw $e;
             }
         }
-        $this->validationResults = $this->propertyMapper->getMessages();
-        if ($this->validator !== null) {
-            // @todo Validation API has also changed!!!
-            $validationMessages = $this->validator->validate($this->value);
-            $this->validationResults->merge($validationMessages);
-        }
+        $this->validationResults->merge($this->propertyMapper->getMessages());
         return $this;
     }
 
@@ -312,18 +315,23 @@ class Argument
      * @return bool TRUE if the argument is valid, FALSE otherwise
      * @api
      */
-    public function isValid()
+    public function isValid(): bool
     {
-        return !$this->validationResults->hasErrors();
+        return !$this->validate()->hasErrors();
     }
 
     /**
      * @return \TYPO3\CMS\Extbase\Error\Result Validation errors which have occurred.
-     * @api
+     * @deprecated
      */
     public function getValidationResults()
     {
-        return $this->validationResults;
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
+            E_USER_DEPRECATED
+        );
+
+        return $this->validate();
     }
 
     /**
@@ -335,5 +343,24 @@ class Argument
     public function __toString()
     {
         return (string)$this->value;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Error\Result
+     * @api
+     */
+    public function validate(): \TYPO3\CMS\Extbase\Error\Result
+    {
+        if ($this->hasBeenValidated) {
+            return $this->validationResults;
+        }
+
+        if ($this->validator !== null) {
+            $validationMessages = $this->validator->validate($this->value);
+            $this->validationResults->merge($validationMessages);
+        }
+
+        $this->hasBeenValidated = true;
+        return $this->validationResults;
     }
 }
