@@ -101,6 +101,10 @@ class ConfigurationController
             'label' => 'beUser',
             'type' => 'uc',
         ],
+        'beUserTsConfig' => [
+            'label' => 'beUserTsConfig',
+            'type' => 'beUserTsConfig',
+        ],
         'beRoutes' => [
             'label' => 'routes',
             'type' => 'routes',
@@ -198,6 +202,8 @@ class ConfigurationController
                     ArrayUtility::intersectRecursive($blindedConfigurationOptions[$globalArrayKey], $renderArray)
                 );
             }
+        } elseif ($selectedTreeDetails['type'] === 'beUserTsConfig') {
+            $renderArray = $backendUser->getTSConfig();
         } elseif ($selectedTreeDetails['type'] === 'uc') {
             $renderArray = $backendUser->uc;
         } elseif ($selectedTreeDetails['type'] === 'routes') {

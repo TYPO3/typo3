@@ -21,6 +21,9 @@
 			<trans-unit id="tbeStyles">
 				<source>$GLOBALS['TBE_STYLES'] (Skinning Styles)</source>
 			</trans-unit>
+			<trans-unit id="beUserTsConfig">
+				<source>$GLOBALS['BE_USER']-&gt;getTSConfig() (User TSconfig)</source>
+			</trans-unit>
 			<trans-unit id="beUser">
 				<source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
 			</trans-unit>
