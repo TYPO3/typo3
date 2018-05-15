@@ -1287,12 +1287,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 if (!is_array($pageRecord)) {
                     // Page does not exist
                     $attributes['data-rte-error'] = 'Page with ID ' . $hrefInformation['pageuid'] . ' not found';
-                    $styling = 'background-color: yellow; border:2px red solid; color: black;';
-                    if (empty($attributes['style'])) {
-                        $attributes['style'] = $styling;
-                    } else {
-                        $attributes['style'] .= ' ' . $styling;
-                    }
                 }
             }
             // Always rewrite the block to allow the nested calling even if a page is found
