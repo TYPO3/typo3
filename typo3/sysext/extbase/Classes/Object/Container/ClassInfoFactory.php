@@ -65,9 +65,8 @@ class ClassInfoFactory
                 $info['dependency'] = $reflectionParameter->getClass()->getName();
             }
 
-            try {
+            if ($reflectionParameter->isDefaultValueAvailable()) {
                 $info['defaultValue'] = $reflectionParameter->getDefaultValue();
-            } catch (\ReflectionException $e) {
             }
 
             $result[] = $info;
