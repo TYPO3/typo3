@@ -179,9 +179,7 @@ class Md5Salt extends AbstractComposedSalt
      *
      * This is typically called during the login process when the plain text
      * password is available.  A new hash is needed when the desired iteration
-     * count has changed through a change in the variable $hashCount or
-     * HASH_COUNT or if the user's password hash was generated in an bulk update
-     * with class ext_update.
+     * count has changed through a change in the variable $hashCount or HASH_COUNT.
      *
      * @param string $passString Salted hash to check if it needs an update
      * @return bool TRUE if salted hash needs an update, otherwise FALSE

@@ -21,4 +21,4 @@ None. You can start to use the new password hashing methods by selecting "Standa
 or "Standard PHP password hashing (argon2i)" in Extension Manager Configuration of saltedpasswords. Password
 hashes of existing users will be updated as soon as users log in.
 
-.. index:: Backend, Frontend, PHP-API
+.. index:: Backend, Frontend, PHP-API, ext:saltedpasswords
