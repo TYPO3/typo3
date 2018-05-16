@@ -91,7 +91,7 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
         $subject = (new StorageRepository())->findByUid(1);
         $subject->setEvaluatePermissions(true);
 
-        // read_only = true -> no write access for user, so checkinf for second argument true should assert false
+        // read_only = true -> no write access for user, so checking for second argument true should assert false
         $subject->addFileMount('/' . $fileMountFolder . '/', ['read_only' => $isFileMountReadOnly]);
         $this->assertSame($expectedResult, $subject->isWithinFileMountBoundaries($file, $checkWriteAccess));
     }
@@ -209,5 +209,45 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1325689164);
         $subject->createFolder('newFolder', new Folder($subject, '/foo/', 'foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function deleteFileMovesFileToRecyclerFolderIfAvailable()
+    {
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->setUpBackendUserFromFixture(1);
+        $subject = (new StorageRepository())->findByUid(1);
+
+        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/foo');
+        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/_recycler_');
+        file_put_contents(PATH_site . 'fileadmin/foo/bar.txt', 'myData');
+        clearstatcache();
+
+        $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $subject->deleteFile($file);
+
+        $this->assertTrue(file_exists(PATH_site . 'fileadmin/_recycler_/bar.txt'));
+        $this->assertFalse(file_exists(PATH_site . 'fileadmin/foo/bar.txt'));
+    }
+
+    /**
+     * @test
+     */
+    public function deleteFileUnlinksFileIfNoRecyclerFolderAvailable()
+    {
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->setUpBackendUserFromFixture(1);
+        $subject = (new StorageRepository())->findByUid(1);
+
+        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/foo');
+        file_put_contents(PATH_site . 'fileadmin/foo/bar.txt', 'myData');
+        clearstatcache();
+
+        $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $subject->deleteFile($file);
+
+        $this->assertFalse(file_exists(PATH_site . 'fileadmin/foo/bar.txt'));
     }
 }
