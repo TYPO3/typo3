@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\Enumeration;
+
 /**
  * Enumeration object for DuplicationBehavior
  */
-class DuplicationBehavior extends \TYPO3\CMS\Core\Type\Enumeration
+final class DuplicationBehavior extends Enumeration
 {
     const __default = self::CANCEL;
 

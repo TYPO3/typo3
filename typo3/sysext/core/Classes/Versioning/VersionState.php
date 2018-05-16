@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Versioning;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\Enumeration;
+
 /**
  * Enumeration object for VersionState
  */
-class VersionState extends \TYPO3\CMS\Core\Type\Enumeration
+final class VersionState extends Enumeration
 {
     const __default = self::DEFAULT_STATE;
 

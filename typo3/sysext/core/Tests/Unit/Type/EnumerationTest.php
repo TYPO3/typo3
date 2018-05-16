@@ -95,148 +95,43 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * @test
-     */
-    public function loadValuesSetsStaticEnumConstants()
-    {
-        $enumeration = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
-            ['dummy']
-        );
-
-        $enumClassName = get_class($enumeration);
-
-        $expectedValue = [
-            'INTEGER_VALUE' => 1,
-            'STRING_VALUE' => 'foo',
-             '__default' => 1
-        ];
-
-        $result = $enumeration->_getStatic('enumConstants');
-        $this->assertArrayHasKey($enumClassName, $result);
-        $this->assertSame($expectedValue, $result[$enumClassName]);
-    }
-
-    /**
-     * @test
-     */
-    public function constructorSetsValue()
-    {
-        $enumeration = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
-            ['dummy'],
-            [1]
-        );
-        $this->assertEquals(1, $enumeration->_get('value'));
-    }
-
-    /**
-     * @test
-     */
-    public function setValueSetsValue()
-    {
-        $enumeration = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
-            ['dummy'],
-            [1]
-        );
-        $enumeration->_call('setValue', 'foo');
-        $this->assertEquals('foo', $enumeration->_get('value'));
-    }
-
-    /**
-     * @test
-     */
-    public function setValueToAnInvalidValueThrowsException()
-    {
-        $this->expectException(InvalidEnumerationValueException::class);
-        $this->expectExceptionCode(1381615295);
-
-        $enumeration = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
-            ['dummy'],
-            [1]
-        );
-        $enumeration->_call('setValue', 2);
-        $this->assertEquals(2, $enumeration->_get('value'));
-    }
-
-    /**
      * Array of value pairs and expected comparison result
      */
-    public function isValidComparisonExpectations()
+    public function looseEnumerationValues()
     {
         return [
             [
                 1,
-                1,
-                true
-            ],
-            [
-                1,
-                '1',
-                true
+                Enumeration\CompleteEnumeration::INTEGER_VALUE,
             ],
             [
                 '1',
-                1,
-                true
+                Enumeration\CompleteEnumeration::INTEGER_VALUE,
             ],
             [
-                'a1',
-                1,
-                false
+                2,
+                Enumeration\CompleteEnumeration::STRING_INTEGER_VALUE,
             ],
             [
-                1,
-                'a1',
-                false
-            ],
-            [
-                '1a',
-                1,
-                false
-            ],
-            [
-                1,
-                '1a',
-                false
+                '2',
+                Enumeration\CompleteEnumeration::STRING_INTEGER_VALUE,
             ],
             [
                 'foo',
-                'foo',
-                true
+                Enumeration\CompleteEnumeration::STRING_VALUE,
             ],
-            [
-                'foo',
-                'bar',
-                false
-            ],
-            [
-                'foo',
-                'foobar',
-                false
-            ]
         ];
     }
 
     /**
      * @test
-     * @dataProvider isValidComparisonExpectations
+     * @dataProvider looseEnumerationValues
      */
-    public function isValidDoesTypeLooseComparison($enumerationValue, $testValue, $expectation)
+    public function doesTypeLooseComparison($testValue, $expectedValue)
     {
-        $mockName = $this->getUniqueId('CompleteEnumerationMock');
-        $enumeration = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
-            ['dummy'],
-            [],
-            $mockName,
-            false
-        );
-        $enumeration->_setStatic('enumConstants', [$mockName => ['CONSTANT_NAME' => $enumerationValue]]);
-        $enumeration->_set('value', $enumerationValue);
-        $this->assertSame($expectation, $enumeration->_call('isValid', $testValue));
+        $value = new Enumeration\CompleteEnumeration($testValue);
+
+        $this->assertEquals((string)$expectedValue, (string)$value);
     }
 
     /**
@@ -244,7 +139,13 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getConstantsReturnsArrayOfPossibleValuesWithoutDefault()
     {
-        $this->assertEquals(['INTEGER_VALUE' => 1, 'STRING_VALUE' => 'foo'], Enumeration\CompleteEnumeration::getConstants());
+        $expected = [
+            'INTEGER_VALUE' => 1,
+            'STRING_INTEGER_VALUE' => '2',
+            'STRING_VALUE' => 'foo',
+        ];
+
+        $this->assertEquals($expected, Enumeration\CompleteEnumeration::getConstants());
     }
 
     /**
@@ -252,7 +153,14 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getConstantsReturnsArrayOfPossibleValuesWithDefaultIfRequested()
     {
-        $this->assertEquals(['INTEGER_VALUE' => 1, 'STRING_VALUE' => 'foo', '__default' => 1], Enumeration\CompleteEnumeration::getConstants(true));
+        $expected = [
+            'INTEGER_VALUE' => 1,
+            'STRING_INTEGER_VALUE' => '2',
+            'STRING_VALUE' => 'foo',
+            '__default' => 1,
+        ];
+
+        $this->assertEquals($expected, Enumeration\CompleteEnumeration::getConstants(true));
     }
 
     /**
@@ -261,7 +169,13 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getConstantsCanBeCalledOnInstances()
     {
         $enumeration = new Enumeration\CompleteEnumeration();
-        $this->assertEquals(['INTEGER_VALUE' => 1, 'STRING_VALUE' => 'foo'], $enumeration->getConstants());
+        $expected = [
+            'INTEGER_VALUE' => 1,
+            'STRING_INTEGER_VALUE' => '2',
+            'STRING_VALUE' => 'foo',
+        ];
+
+        $this->assertEquals($expected, $enumeration->getConstants());
     }
 
     /**
@@ -307,12 +221,9 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function castCastsStringToEnumerationWithCorrespondingValue()
     {
-        $enumeration = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
-            ['dummy'],
-            ['1']
-        );
-        $this->assertSame(1, $enumeration->_get('value'));
+        $value = new Enumeration\CompleteEnumeration(Enumeration\CompleteEnumeration::STRING_VALUE);
+
+        $this->assertSame((string)Enumeration\CompleteEnumeration::STRING_VALUE, (string)$value);
     }
 
     /**
@@ -320,12 +231,9 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function castCastsIntegerToEnumerationWithCorrespondingValue()
     {
-        $enumeration = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
-            ['dummy'],
-            [1]
-        );
-        $this->assertSame(1, $enumeration->_get('value'));
+        $value = new Enumeration\CompleteEnumeration(Enumeration\CompleteEnumeration::INTEGER_VALUE);
+
+        $this->assertSame((int)(string)Enumeration\CompleteEnumeration::INTEGER_VALUE, (int)(string)$value);
     }
 
     /**

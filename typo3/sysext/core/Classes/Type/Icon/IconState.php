@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Type\Icon;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\Enumeration;
+
 /**
  * A class providing constants for icon states
  */
-class IconState extends \TYPO3\CMS\Core\Type\Enumeration
+final class IconState extends Enumeration
 {
     const __default = self::STATE_DEFAULT;
 

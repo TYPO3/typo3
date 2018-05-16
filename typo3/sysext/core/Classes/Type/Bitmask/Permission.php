@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Type\Bitmask;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\Enumeration;
+
 /**
  * A class providing constants for bitwise operations on page access check
  */
-class Permission extends \TYPO3\CMS\Core\Type\Enumeration
+final class Permission extends Enumeration
 {
     /**
      * @var int

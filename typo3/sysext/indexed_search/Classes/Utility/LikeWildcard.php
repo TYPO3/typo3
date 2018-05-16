@@ -14,12 +14,13 @@ namespace TYPO3\CMS\IndexedSearch\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Type\Enumeration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Enumeration object for LikeWildcard
  */
-class LikeWildcard extends \TYPO3\CMS\Core\Type\Enumeration
+final class LikeWildcard extends Enumeration
 {
     const __default = self::BOTH;
 

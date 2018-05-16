@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Backend\Toolbar\Enumeration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\Enumeration;
+
 /**
  * This class holds the severities of the SystemInformation toolbar menu
  */
-class InformationStatus extends \TYPO3\CMS\Core\Type\Enumeration
+final class InformationStatus extends Enumeration
 {
     const __default = self::STATUS_INFO;
 

@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Type\Exception;
 /**
  * A class providing constants for bitwise operations on javascript confirmation popups
  */
-class JsConfirmation extends Enumeration
+final class JsConfirmation extends Enumeration
 {
     /**
      * @var int

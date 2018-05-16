@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\Enumeration;
+
 /**
  * Enumeration object for tca internal type
  */
-class TableColumnSubType extends \TYPO3\CMS\Core\Type\Enumeration
+final class TableColumnSubType extends Enumeration
 {
     const __default = self::DEFAULT_TYPE;
 
