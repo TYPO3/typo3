@@ -3044,7 +3044,7 @@ class ResourceStorage implements ResourceStorageInterface
                     break;
                 }
             }
-        } while ($recyclerFolder === null && $folder !== $rootFolder);
+        } while ($recyclerFolder === null && $folder->getCombinedIdentifier() !== $rootFolder->getCombinedIdentifier());
 
         return $recyclerFolder;
     }
