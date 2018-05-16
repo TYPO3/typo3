@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
  */
 
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for SaltFactory
+ * Test case
  */
-class SaltFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SaltFactoryTest extends UnitTestCase
 {
     /**
      * Keeps instance of object to test.
@@ -41,7 +42,6 @@ class SaltFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'updatePasswd' => 1,
             ],
             'FE' => [
-                'enabled' => 1,
                 'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
                 'forceSalted' => 0,
                 'onlyAuthService' => 0,

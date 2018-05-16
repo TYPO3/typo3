@@ -65,26 +65,15 @@ class SaltedPasswordService extends AbstractAuthenticationService
     protected $authenticationFailed = false;
 
     /**
-     * Checks if service is available. In case of this service we check that
-     * following prerequesties are fulfilled:
-     * - loginSecurityLevel of according TYPO3_MODE is set to normal
+     * Set salted passwords extension configuration to $this->extConf
      *
-     * @return bool TRUE if service is available
+     * @return bool TRUE
      */
     public function init()
     {
-        $available = false;
-        $mode = TYPO3_MODE;
-        if ($this->info['requestedServiceSubType'] === 'authUserBE') {
-            $mode = 'BE';
-        } elseif ($this->info['requestedServiceSubType'] === 'authUserFE') {
-            $mode = 'FE';
-        }
-        if (Utility\SaltedPasswordsUtility::isUsageEnabled($mode)) {
-            $available = true;
-            $this->extConf = Utility\SaltedPasswordsUtility::returnExtConf();
-        }
-        return $available ? parent::init() : false;
+        $this->extConf = Utility\SaltedPasswordsUtility::returnExtConf();
+        parent::init();
+        return true;
     }
 
     /**

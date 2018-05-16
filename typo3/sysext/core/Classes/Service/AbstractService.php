@@ -514,8 +514,7 @@ abstract class AbstractService implements LoggerAwareInterface
         $this->reset();
         // Check for external programs which are defined by $info['exec']
         if (trim($this->info['exec'])) {
-            if (!$this->checkExec($this->info['exec'])) {
-            }
+            $this->checkExec($this->info['exec']);
         }
         return $this->getLastError() === true;
     }

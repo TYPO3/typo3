@@ -15,22 +15,12 @@ namespace TYPO3\CMS\Saltedpasswords\Evaluation;
  */
 
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
-use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 
 /**
  * Class implementing salted evaluation methods.
  */
 class Evaluator
 {
-    /**
-     * Keeps TYPO3 mode.
-     *
-     * Either 'FE' or 'BE'.
-     *
-     * @var string
-     */
-    protected $mode = null;
-
     /**
      * This function just return the field value as it is. No transforming,
      * hashing will be done on server-side.
@@ -52,23 +42,20 @@ class Evaluator
      */
     public function evaluateFieldValue($value, $is_in, &$set)
     {
-        $isEnabled = $this->mode ? SaltedPasswordsUtility::isUsageEnabled($this->mode) : SaltedPasswordsUtility::isUsageEnabled();
-        if ($isEnabled) {
-            $isMD5 = preg_match('/[0-9abcdef]{32,32}/', $value);
-            $hashingMethod = substr($value, 0, 2);
-            $isDeprecatedSaltedHash = ($hashingMethod === 'C$' || $hashingMethod === 'M$');
-            $objInstanceSaltedPW = SaltFactory::getSaltingInstance(null, $this->mode);
-            if ($isMD5) {
+        $isMD5 = preg_match('/[0-9abcdef]{32,32}/', $value);
+        $hashingMethod = substr($value, 0, 2);
+        $isDeprecatedSaltedHash = ($hashingMethod === 'C$' || $hashingMethod === 'M$');
+        $objInstanceSaltedPW = SaltFactory::getSaltingInstance();
+        if ($isMD5) {
+            $set = true;
+            $value = 'M' . $objInstanceSaltedPW->getHashedPassword($value);
+        } else {
+            // Determine method used for the (possibly) salted hashed password
+            $tempValue = $isDeprecatedSaltedHash ? substr($value, 1) : $value;
+            $tempObjInstanceSaltedPW = SaltFactory::getSaltingInstance($tempValue);
+            if (!is_object($tempObjInstanceSaltedPW)) {
                 $set = true;
-                $value = 'M' . $objInstanceSaltedPW->getHashedPassword($value);
-            } else {
-                // Determine method used for the (possibly) salted hashed password
-                $tempValue = $isDeprecatedSaltedHash ? substr($value, 1) : $value;
-                $tempObjInstanceSaltedPW = SaltFactory::getSaltingInstance($tempValue);
-                if (!is_object($tempObjInstanceSaltedPW)) {
-                    $set = true;
-                    $value = $objInstanceSaltedPW->getHashedPassword($value);
-                }
+                $value = $objInstanceSaltedPW->getHashedPassword($value);
             }
         }
         return $value;

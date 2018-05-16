@@ -35,9 +35,6 @@ variable! A valid setting for working salted user password hashes are
 Now return back to the Extension manager and again open the extension
 configuration for system extension "Salted user password hashes" (saltedpasswords)!
 
-Depending on which TYPO3 mode (FE or BE) you like to use salted user
-password hashes for, activate the according **checkbox** "**Enable FE**" or "**Enable BE**"!
-
 Additionally, you might want to change the hashing method. See
 previous chapter for an explanation on when to use which method.
 

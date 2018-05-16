@@ -16,31 +16,13 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Evaluation;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Saltedpasswords\Evaluation\Evaluator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for SaltedPasswordsUtility
+ * Test case
  */
-class EvaluatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class EvaluatorTest extends UnitTestCase
 {
-    /**
-     * @var Evaluator
-     */
-    protected $subject;
-
-    /**
-     * Set up the a test
-     */
-    protected function setUp()
-    {
-        $this->subject = $this->getMockBuilder(Evaluator::class)
-            ->setMethods(['dummy'])
-            ->getMock();
-
-        // Make sure SaltedPasswordsUtility::isUsageEnabled() returns TRUE
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] = 'rsa';
-    }
-
     /**
      * @test
      */
@@ -48,11 +30,11 @@ class EvaluatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $isSet = null;
         $originalPassword = 'password';
-        $saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
-        $hashingMethod = substr($saltedPassword, 0, 3);
+        $saltedPassword = (new Evaluator())->evaluateFieldValue($originalPassword, '', $isSet);
+        $isSalted = substr($saltedPassword, 0, 1) === '$';
         $this->assertTrue($isSet);
         $this->assertNotEquals($originalPassword, $saltedPassword);
-        $this->assertTrue($hashingMethod === '$1$' || $hashingMethod === '$2$' || $hashingMethod === '$2a' || $hashingMethod === '$P$');
+        $this->assertTrue($isSalted);
     }
 
     /**
@@ -62,7 +44,7 @@ class EvaluatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $isSet = null;
         $originalPassword = '5f4dcc3b5aa765d61d8327deb882cf99';
-        $saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
+        $saltedPassword = (new Evaluator())->evaluateFieldValue($originalPassword, '', $isSet);
         $this->assertTrue($isSet);
         $this->assertNotEquals($originalPassword, $saltedPassword);
         $this->assertTrue(GeneralUtility::isFirstPartOfStr($saltedPassword, 'M$'));
@@ -75,7 +57,7 @@ class EvaluatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $isSet = null;
         $originalPassword = 'M$P$CibIRipvLfaPlaaeH8ifu9g21BrPjp.';
-        $saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
+        $saltedPassword = (new Evaluator())->evaluateFieldValue($originalPassword, '', $isSet);
         $this->assertNull($isSet);
         $this->assertSame($originalPassword, $saltedPassword);
     }

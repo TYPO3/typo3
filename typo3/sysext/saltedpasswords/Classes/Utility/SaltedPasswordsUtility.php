@@ -79,10 +79,8 @@ class SaltedPasswordsUtility
      */
     public function feloginForgotPasswordHook(array &$params, \TYPO3\CMS\Felogin\Controller\FrontendLoginController $pObj)
     {
-        if (self::isUsageEnabled('FE')) {
-            $objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
-            $params['newPassword'] = $objInstanceSaltedPW->getHashedPassword($params['newPassword']);
-        }
+        $objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
+        $params['newPassword'] = $objInstanceSaltedPW->getHashedPassword($params['newPassword']);
     }
 
     /**
@@ -97,7 +95,6 @@ class SaltedPasswordsUtility
             'forceSalted' => '0',
             'updatePasswd' => '1',
             'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
-            'enabled' => '1'
         ];
     }
 
@@ -122,20 +119,15 @@ class SaltedPasswordsUtility
      * Returns information if salted password hashes are
      * indeed used in the TYPO3_MODE.
      *
-     * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
      * @return bool TRUE, if salted password hashes are used in the TYPO3_MODE, otherwise FALSE
+     * @deprecated in TYPO3 v9, will be removed in TYPO3 v10
      */
-    public static function isUsageEnabled($mode = TYPO3_MODE)
+    public static function isUsageEnabled()
     {
-        // Login Security Level Recognition
-        $extConf = self::returnExtConf($mode);
-        $securityLevel = trim($GLOBALS['TYPO3_CONF_VARS'][$mode]['loginSecurityLevel']) ?: 'normal';
-        if ($mode === 'BE') {
-            return true;
-        }
-        if ($mode === 'FE' && $extConf['enabled']) {
-            return $securityLevel === 'normal' || $securityLevel === 'rsa';
-        }
-        return false;
+        trigger_error(
+            'Method isUsageEnabled() has been deprecated with core v9, always returns true and will be removed with v10.',
+            E_USER_DEPRECATED
+        );
+        return true;
     }
 }

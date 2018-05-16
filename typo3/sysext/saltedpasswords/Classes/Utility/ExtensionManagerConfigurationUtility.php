@@ -275,73 +275,67 @@ class ExtensionManagerConfigurationUtility
         $extConf = $this->extConf['FE'];
         $problems = [];
         $lang = $this->getLanguageService();
-        if ($extConf['enabled']) {
-            $loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel']) ?: 'normal';
-            if ($loginSecurityLevel !== 'normal' && $loginSecurityLevel !== 'rsa') {
-                $this->setErrorLevel('info');
-                $problems[] = '<strong>' . $lang->getLL('ext.saltedpasswords.configuration.label.important') .
-                    '</strong><br /> ' .
-                    $lang->getLL('ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferent') .
-                    '<br />
-					<ul>
-						<li>' .
-                    $lang->getLL('ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentFirstItem') .
-                    '</li>
+        $loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel']) ?: 'normal';
+        if ($loginSecurityLevel !== 'normal' && $loginSecurityLevel !== 'rsa') {
+            $this->setErrorLevel('info');
+            $problems[] = '<strong>' . $lang->getLL('ext.saltedpasswords.configuration.label.important') .
+                '</strong><br /> ' .
+                $lang->getLL('ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferent') .
+                '<br />
+                <ul>
+                    <li>' .
+                $lang->getLL('ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentFirstItem') .
+                '</li>
 
-						<li>' .
-                    $lang->getLL('ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentSecondItem') .
-                    '</li>
-					</ul>
-					<br />
-					' . $lang->getLL('ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentNote');
-            } elseif ($loginSecurityLevel === 'rsa') {
-                if (ExtensionManagementUtility::isLoaded('rsaauth')) {
-                    if ($this->isRsaAuthBackendAvailable()) {
-                        $this->setErrorLevel('ok');
-                        $problems[] = $lang->getLL('ext.saltedpasswords.configuration.message.okFeRsaauthLoaded');
-                    } else {
-                        // This means that login would fail because rsaauth is not working properly
-                        $this->setErrorLevel('error');
-                        $problems[] = '<strong>' . $lang->getLL('ext.saltedpasswords.configuration.message.openSslMissing') .
-                            ' <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
-                    }
+                    <li>' .
+                $lang->getLL('ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentSecondItem') .
+                '</li>
+                </ul>
+                <br />
+                ' . $lang->getLL('ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentNote');
+        } elseif ($loginSecurityLevel === 'rsa') {
+            if (ExtensionManagementUtility::isLoaded('rsaauth')) {
+                if ($this->isRsaAuthBackendAvailable()) {
+                    $this->setErrorLevel('ok');
+                    $problems[] = $lang->getLL('ext.saltedpasswords.configuration.message.okFeRsaauthLoaded');
                 } else {
-                    // Rsaauth is not installed but configured to be used
-                    $this->setErrorLevel('warning');
-                    $problems[] = $lang->getLL('ext.saltedpasswords.configuration.message.warningRsaauthNotInstalledButConfigured');
+                    // This means that login would fail because rsaauth is not working properly
+                    $this->setErrorLevel('error');
+                    $problems[] = '<strong>' . $lang->getLL('ext.saltedpasswords.configuration.message.openSslMissing') .
+                        ' <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
                 }
+            } else {
+                // Rsaauth is not installed but configured to be used
+                $this->setErrorLevel('warning');
+                $problems[] = $lang->getLL('ext.saltedpasswords.configuration.message.warningRsaauthNotInstalledButConfigured');
             }
-            // Only saltedpasswords as authsservice
-            if ($extConf['onlyAuthService']) {
-                // Warn user that the combination with "forceSalted" may lock
-                // him out from frontend
-                if ($extConf['forceSalted']) {
-                    $this->setErrorLevel('warning');
-                    $problems[] = nl2br($lang->getLL('ext.saltedpasswords.configuration.message.infoForceSalted')) .
-                        '<strong><i>' . $lang->getLL('ext.saltedpasswords.configuration.label.important') .
-                        '</i></strong> ' . $lang->getLL('ext.saltedpasswords.configuration.message.warningForceSaltedNoteForFrontend');
-                } else {
-                    // Inform the user that things like openid won't work anymore
-                    $this->setErrorLevel('info');
-                    $problems[] = $lang->getLL('ext.saltedpasswords.configuration.message.infoOnlyFrontendAuthService');
-                }
-            }
-            // forceSalted is set
-            if ($extConf['forceSalted'] && !$extConf['onlyAuthService']) {
+        }
+        // Only saltedpasswords as authsservice
+        if ($extConf['onlyAuthService']) {
+            // Warn user that the combination with "forceSalted" may lock
+            // him out from frontend
+            if ($extConf['forceSalted']) {
                 $this->setErrorLevel('warning');
                 $problems[] = nl2br($lang->getLL('ext.saltedpasswords.configuration.message.infoForceSalted')) .
                     '<strong><i>' . $lang->getLL('ext.saltedpasswords.configuration.label.important') .
-                    '</i></strong> ' . $lang->getLL('ext.saltedpasswords.configuration.message.warningForceSaltedNote2');
+                    '</i></strong> ' . $lang->getLL('ext.saltedpasswords.configuration.message.warningForceSaltedNoteForFrontend');
+            } else {
+                // Inform the user that things like openid won't work anymore
+                $this->setErrorLevel('info');
+                $problems[] = $lang->getLL('ext.saltedpasswords.configuration.message.infoOnlyFrontendAuthService');
             }
-            // updatePasswd wont work with "forceSalted"
-            if ($extConf['updatePasswd'] && $extConf['forceSalted']) {
-                $this->setErrorLevel('error');
-                $problems[] = nl2br($lang->getLL('ext.saltedpasswords.configuration.message.errorForceSaltedAndUpdatePassword'));
-            }
-        } else {
-            // Not enabled warning
-            $this->setErrorLevel('info');
-            $problems[] = $lang->getLL('ext.saltedpasswords.configuration.message.infoSaltedpasswordsFrontendDisabled');
+        }
+        // forceSalted is set
+        if ($extConf['forceSalted'] && !$extConf['onlyAuthService']) {
+            $this->setErrorLevel('warning');
+            $problems[] = nl2br($lang->getLL('ext.saltedpasswords.configuration.message.infoForceSalted')) .
+                '<strong><i>' . $lang->getLL('ext.saltedpasswords.configuration.label.important') .
+                '</i></strong> ' . $lang->getLL('ext.saltedpasswords.configuration.message.warningForceSaltedNote2');
+        }
+        // updatePasswd wont work with "forceSalted"
+        if ($extConf['updatePasswd'] && $extConf['forceSalted']) {
+            $this->setErrorLevel('error');
+            $problems[] = nl2br($lang->getLL('ext.saltedpasswords.configuration.message.errorForceSaltedAndUpdatePassword'));
         }
         $this->problems = $problems;
         $result = $this->renderMessage();

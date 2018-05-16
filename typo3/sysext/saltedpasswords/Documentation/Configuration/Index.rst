@@ -25,13 +25,6 @@ Basic configuration
 
 ::
 
-   # Enable FE (boolean)
-   FE.enabled = 1
-
-Enables usage of salted user password records for the TYPO3 frontend
-
-::
-
    # Hashing method for the frontend (list)
    FE.saltedPWHashingMethod = tx_saltedpasswords_salts_phpass (Portable PHP password hashing)
 
@@ -63,8 +56,7 @@ stored password will result in a failed authentication.
    # Exclusive FE usage (boolean)
    FE.onlyAuthService = 0
 
-If enabled and authentication fails, no further authentication service
-will be tried.
+If authentication fails, no further authentication service will be tried
 
 ::
 
@@ -94,8 +86,7 @@ stored password will result in a failed authentication.
    # Exclusive BE usage (boolean)
    BE.onlyAuthService = 0
 
-If enabled and authentication fails, no further authentication service
-will be tried.
+If authentication fails, no further authentication service will be tried.
 
 ::
 

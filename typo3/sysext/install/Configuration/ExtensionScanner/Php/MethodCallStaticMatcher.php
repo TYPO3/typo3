@@ -568,4 +568,11 @@ return [
             'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
         ],
     ],
+    'TYPO3\CMS\saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85027-SaltedPasswordsRelatedMethodsAndClasses.rst',
+        ],
+    ],
 ];
