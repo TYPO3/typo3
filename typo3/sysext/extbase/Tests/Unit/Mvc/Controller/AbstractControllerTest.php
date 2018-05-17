@@ -22,19 +22,6 @@ class AbstractControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      */
-    public function constructResolvesExtensionnameFromOldStyle()
-    {
-        $className = $this->getUniqueId('Tx_Extbase_Tests_Fixtures_Controller');
-        eval('class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class . ' { function getExtensionName() { return $this->extensionName; } }');
-        $mockController = new $className();
-        $expectedResult = 'Extbase';
-        $actualResult = $mockController->getExtensionName();
-        $this->assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
     public function constructResolvesExtensionnameFromNamespaced()
     {
         $className = $this->getUniqueId('DummyController');

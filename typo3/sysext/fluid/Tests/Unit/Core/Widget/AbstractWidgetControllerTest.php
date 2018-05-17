@@ -115,13 +115,30 @@ class AbstractWidgetControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
         $view = $this->getAccessibleMock(TemplateView::class, ['getTemplatePaths', 'toArray'], [], '', false);
         $view->expects($this->exactly(2))->method('getTemplatePaths')->willReturn($templatePaths);
 
-        $mock = $this->getAccessibleMock(AbstractWidgetController::class, ['dummy']);
-        $mock->_set('configurationManager', $configurationManager);
-        $mock->_set('controllerContext', $controllerContext);
-        $mock->_set('request', $request);
-        $method = new \ReflectionMethod(AbstractWidgetController::class, 'setViewConfiguration');
-        $method->setAccessible(true);
-        $method->invokeArgs($mock, [$view]);
+        $prophecy = $this->prophesize(AbstractWidgetController::class);
+
+        /** @var AbstractWidgetController $controller */
+        $controller = $prophecy->reveal();
+
+        $reflectionClass = new \ReflectionClass($controller);
+
+        $reflectionProperty = $reflectionClass->getProperty('configurationManager');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($controller, $configurationManager);
+
+        $reflectionProperty = $reflectionClass->getProperty('controllerContext');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($controller, $controllerContext);
+
+        $reflectionProperty = $reflectionClass->getProperty('request');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($controller, $request);
+
+        $reflectionMethod = $reflectionClass->getMethod('setViewConfiguration');
+        $reflectionMethod->setAccessible(true);
+
+        $reflectionMethod->setAccessible(true);
+        $reflectionMethod->invokeArgs($controller, [$view]);
     }
 
     /**

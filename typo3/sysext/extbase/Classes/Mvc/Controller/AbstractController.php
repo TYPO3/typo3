@@ -131,16 +131,12 @@ abstract class AbstractController implements ControllerInterface
     public function __construct()
     {
         $className = static::class;
-        if (strpos($className, '\\') !== false) {
-            $classNameParts = explode('\\', $className, 4);
-            // Skip vendor and product name for core classes
-            if (strpos($className, 'TYPO3\\CMS\\') === 0) {
-                $this->extensionName = $classNameParts[2];
-            } else {
-                $this->extensionName = $classNameParts[1];
-            }
+        $classNameParts = explode('\\', $className, 4);
+        // Skip vendor and product name for core classes
+        if (strpos($className, 'TYPO3\\CMS\\') === 0) {
+            $this->extensionName = $classNameParts[2];
         } else {
-            list(, $this->extensionName) = explode('_', $className);
+            $this->extensionName = $classNameParts[1];
         }
     }
 

@@ -325,24 +325,6 @@ class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
                 'VENDOR\\Ext\\ViewHelpers\\Widget\\Controller\\FooController',
             ],
-            'No vendor, extension, controller given' => [
-                [
-                    'vendorName' => null,
-                    'extensionName' => 'Ext',
-                    'subpackageKey' => '',
-                    'controllerName' => 'Foo',
-                ],
-                'Tx_Ext_Controller_FooController',
-            ],
-            'No vendor, extension, subpackage, controller given' => [
-                [
-                    'vendorName' => null,
-                    'extensionName' => 'Fluid',
-                    'subpackageKey' => 'ViewHelpers_Widget',
-                    'controllerName' => 'Paginate',
-                ],
-                'Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController',
-            ],
         ];
     }
 

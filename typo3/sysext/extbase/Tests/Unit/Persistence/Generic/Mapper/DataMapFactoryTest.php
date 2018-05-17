@@ -515,8 +515,6 @@ class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'Core classes with namespaces and leading backslash' => [\TYPO3\CMS\Belog\Domain\Model\LogEntry::class, 'tx_belog_domain_model_logentry'],
             'Extension classes' => ['ExtbaseTeam\\BlogExample\\Domain\\Model\\Blog', 'tx_blogexample_domain_model_blog'],
             'Extension classes with namespaces and leading backslash' => ['\\ExtbaseTeam\\BlogExample\\Domain\\Model\\Blog', 'tx_blogexample_domain_model_blog'],
-            'Extension classes without namespace' => ['Tx_News_Domain_Model_News', 'tx_news_domain_model_news'],
-            'Extension classes without namespace but leading slash' => ['\\Tx_News_Domain_Model_News', 'tx_news_domain_model_news'],
         ];
     }
 

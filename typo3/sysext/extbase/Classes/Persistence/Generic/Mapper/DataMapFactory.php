@@ -185,18 +185,15 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
     protected function resolveTableName($className)
     {
         $className = ltrim($className, '\\');
-        if (strpos($className, '\\') !== false) {
-            $classNameParts = explode('\\', $className);
-            // Skip vendor and product name for core classes
-            if (strpos($className, 'TYPO3\\CMS\\') === 0) {
-                $classPartsToSkip = 2;
-            } else {
-                $classPartsToSkip = 1;
-            }
-            $tableName = 'tx_' . strtolower(implode('_', array_slice($classNameParts, $classPartsToSkip)));
+        $classNameParts = explode('\\', $className);
+        // Skip vendor and product name for core classes
+        if (strpos($className, 'TYPO3\\CMS\\') === 0) {
+            $classPartsToSkip = 2;
         } else {
-            $tableName = strtolower($className);
+            $classPartsToSkip = 1;
         }
+        $tableName = 'tx_' . strtolower(implode('_', array_slice($classNameParts, $classPartsToSkip)));
+
         return $tableName;
     }
 

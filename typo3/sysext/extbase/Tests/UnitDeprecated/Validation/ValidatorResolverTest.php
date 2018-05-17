@@ -227,15 +227,6 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 ]
             ],
             [
-                '$var F3_TestPackage_Quux',
-                [
-                    'argumentName' => 'var',
-                    'validators' => [
-                        ['validatorName' => 'F3_TestPackage_Quux', 'validatorOptions' => []]
-                    ]
-                ]
-            ],
-            [
                 '$var Baz(Foo="5"), Bar(Quux="123")',
                 [
                     'argumentName' => 'var',

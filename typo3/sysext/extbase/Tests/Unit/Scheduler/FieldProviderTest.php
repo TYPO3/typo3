@@ -49,19 +49,11 @@ class FieldProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $command2->expects($this->once())->method('getControllerCommandName')->will($this->returnValue('FuncB'));
         $command2->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('mypkg:mockb:funcb'));
 
-        /** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $command3 */
-        $command3 = $this->getAccessibleMock(Command::class, [], [], '', false);
-        $command3->expects($this->once())->method('isInternal')->will($this->returnValue(false));
-        $command3->expects($this->once())->method('isCliOnly')->will($this->returnValue(false));
-        $command3->expects($this->once())->method('getControllerClassName')->will($this->returnValue('Tx_Extbase_Command_MockCCommandController'));
-        $command3->expects($this->once())->method('getControllerCommandName')->will($this->returnValue('FuncC'));
-        $command3->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('extbase:mockc:funcc'));
-
         /** @var CommandManager|\PHPUnit_Framework_MockObject_MockObject $commandManager */
         $commandManager = $this->getMockBuilder(CommandManager::class)
             ->setMethods(['getAvailableCommands'])
             ->getMock();
-        $commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue([$command1, $command2, $command3]));
+        $commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue([$command1, $command2]));
 
         /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $fieldProvider */
         $fieldProvider = $this->getAccessibleMock(
@@ -76,7 +68,6 @@ class FieldProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $actualResult = $fieldProvider->_call('getCommandControllerActionField', []);
         $this->assertContains('<option title="test" value="extbase:mocka:funca">Extbase MockA: FuncA</option>', $actualResult['code']);
         $this->assertContains('<option title="test" value="mypkg:mockb:funcb">Mypkg MockB: FuncB</option>', $actualResult['code']);
-        $this->assertContains('<option title="test" value="extbase:mockc:funcc">Extbase MockC: FuncC</option>', $actualResult['code']);
     }
 
     /**

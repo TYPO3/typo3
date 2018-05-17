@@ -64,6 +64,9 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     public function initialize($configuration)
     {
         if (!$this->isInCliMode()) {
+            if (!isset($configuration['vendorName']) || $configuration['vendorName'] === '') {
+                throw new \RuntimeException('Invalid configuration: "vendorName" is not set', 1526629315);
+            }
             if (!isset($configuration['extensionName']) || $configuration['extensionName'] === '') {
                 throw new \RuntimeException('Invalid configuration: "extensionName" is not set', 1290623020);
             }

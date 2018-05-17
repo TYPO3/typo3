@@ -28,14 +28,13 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
      * Match validator names and options
-     * @todo: adjust [a-z0-9_:.\\\\] once Tx_Extbase_Foo syntax is outdated.
      * @deprecated and will be removed in TYPO3 v10.0.
      *
      * @var string
      */
     const PATTERN_MATCH_VALIDATORS = '/
 			(?:^|,\s*)
-			(?P<validatorName>[a-z0-9_:.\\\\]+)
+			(?P<validatorName>[a-z0-9:.\\\\]+)
 			\s*
 			(?:\(
 				(?P<validatorOptions>(?:\s*[a-z0-9]+\s*=\s*(?:
@@ -182,8 +181,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                 throw new Exception\InvalidTypeHintException('Missing type information, probably no @param annotation for parameter "$' . $parameterName . '" in ' . $className . '->' . $methodName . '()', 1281962564);
             }
 
-            // @todo: remove check for old underscore model name syntax once it's possible
-            if (strpbrk($methodParameter['type'], '_\\') === false) {
+            if (strpbrk($methodParameter['type'], '\\') === false) {
                 $typeValidator = $this->createValidator($methodParameter['type']);
             } else {
                 $typeValidator = null;
@@ -478,19 +476,17 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                     $extensionName = array_pop($extensionNameParts);
                     $vendorName = implode('\\', $extensionNameParts);
                     $possibleClassName = $vendorName . '\\' . $extensionName . '\\Validation\\Validator\\' . $extensionValidatorName;
-                } else {
-                    $possibleClassName = 'Tx_' . $extensionName . '_Validation_Validator_' . $extensionValidatorName;
                 }
             } else {
                 // Shorthand built in
                 $possibleClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . $this->getValidatorType($validatorName);
             }
-        } elseif (strpbrk($validatorName, '_\\') === false) {
+        } elseif (strpbrk($validatorName, '\\') === false) {
             // Shorthand built in
             $possibleClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . $this->getValidatorType($validatorName);
         } else {
             // Full qualified
-            // Tx_MyExt_Validation_Validator_MyValidator or \Acme\Ext\Validation\Validator\FooValidator
+            // Example: \Acme\Ext\Validation\Validator\FooValidator
             $possibleClassName = $validatorName;
             if (!empty($possibleClassName) && $possibleClassName[0] === '\\') {
                 $possibleClassName = substr($possibleClassName, 1);

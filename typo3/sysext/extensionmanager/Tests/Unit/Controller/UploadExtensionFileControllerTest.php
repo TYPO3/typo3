@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
+
 /**
  * Update from TER controller test
  */
@@ -63,7 +65,7 @@ class UploadExtensionFileControllerTest extends \TYPO3\TestingFramework\Core\Uni
      */
     public function getExtensionFromZipFileExtractsExtensionKey($filename, $expectedKey)
     {
-        $fixture = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController::class, ['dummy']);
+        /** @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService|MockObject $managementServiceMock */
         $managementServiceMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class)
             ->setMethods(['isAvailable'])
             ->disableOriginalConstructor()
@@ -72,12 +74,21 @@ class UploadExtensionFileControllerTest extends \TYPO3\TestingFramework\Core\Uni
             ->method('isAvailable')
             ->with($expectedKey)
             ->will($this->returnValue(false));
-        $fixture->_set('managementService', $managementServiceMock);
+
+        /** @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility|MockObject $fileHandlingUtilityMock */
         $fileHandlingUtilityMock = $this->createMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class);
         $fileHandlingUtilityMock->expects($this->once())->method('unzipExtensionFromFile');
-        $fixture->_set('fileHandlingUtility', $fileHandlingUtilityMock);
 
-        $extensionDetails = $fixture->_call('getExtensionFromZipFile', '', $filename);
+        $fixture = new \TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController();
+        $fixture->injectManagementService($managementServiceMock);
+        $fixture->injectFileHandlingUtility($fileHandlingUtilityMock);
+
+        $reflectionClass = new \ReflectionClass($fixture);
+        $reflectionMethod = $reflectionClass->getMethod('getExtensionFromZipFile');
+        $reflectionMethod->setAccessible(true);
+
+        $extensionDetails = $reflectionMethod->invokeArgs($fixture, ['', $filename]);
+
         $this->assertEquals($expectedKey, $extensionDetails['extKey']);
     }
 }

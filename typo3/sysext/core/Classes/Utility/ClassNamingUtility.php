@@ -34,8 +34,8 @@ class ClassNamingUtility
     public static function translateModelNameToRepositoryName($modelName)
     {
         return str_replace(
-            ['\\Domain\\Model', '_Domain_Model_'],
-            ['\\Domain\\Repository', '_Domain_Repository_'],
+            '\\Domain\\Model',
+            '\\Domain\\Repository',
             $modelName
         ) . 'Repository';
     }
@@ -51,8 +51,8 @@ class ClassNamingUtility
     public static function translateModelNameToValidatorName($modelName)
     {
         return str_replace(
-            ['\\Domain\\Model\\', '_Domain_Model_'],
-            ['\\Domain\\Validator\\', '_Domain_Validator_'],
+            '\\Domain\\Model\\',
+            '\\Domain\\Validator\\',
             $modelName
         ) . 'Validator';
     }
@@ -68,8 +68,8 @@ class ClassNamingUtility
     public static function translateRepositoryNameToModelName($repositoryName)
     {
         return preg_replace(
-            ['/\\\\Domain\\\\Repository/', '/_Domain_Repository_/', '/Repository$/'],
-            ['\\Domain\\Model', '_Domain_Model_', ''],
+            ['/\\\\Domain\\\\Repository/', '/Repository$/'],
+            ['\\Domain\\Model', ''],
             $repositoryName
         );
     }
@@ -85,25 +85,17 @@ class ClassNamingUtility
     {
         $matches = [];
 
-        if (strpos($controllerObjectName, '\\') !== false) {
-            if (substr($controllerObjectName, 0, 9) === 'TYPO3\\CMS') {
-                $extensionName = '^(?P<vendorName>[^\\\\]+\\\[^\\\\]+)\\\(?P<extensionName>[^\\\\]+)';
-            } else {
-                $extensionName = '^(?P<vendorName>[^\\\\]+)\\\\(?P<extensionName>[^\\\\]+)';
-            }
-
-            preg_match(
-                '/' . $extensionName . '\\\\(Controller|Command|(?P<subpackageKey>.+)\\\\Controller)\\\\(?P<controllerName>[a-z\\\\]+)Controller$/ix',
-                $controllerObjectName,
-                $matches
-            );
+        if (substr($controllerObjectName, 0, 9) === 'TYPO3\\CMS') {
+            $extensionName = '^(?P<vendorName>[^\\\\]+\\\[^\\\\]+)\\\(?P<extensionName>[^\\\\]+)';
         } else {
-            preg_match(
-                '/^Tx_(?P<extensionName>[^_]+)_(Controller|Command|(?P<subpackageKey>.+)_Controller)_(?P<controllerName>[a-z_]+)Controller$/ix',
-                $controllerObjectName,
-                $matches
-            );
+            $extensionName = '^(?P<vendorName>[^\\\\]+)\\\\(?P<extensionName>[^\\\\]+)';
         }
+
+        preg_match(
+            '/' . $extensionName . '\\\\(Controller|Command|(?P<subpackageKey>.+)\\\\Controller)\\\\(?P<controllerName>[a-z\\\\]+)Controller$/ix',
+            $controllerObjectName,
+            $matches
+        );
 
         return array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
     }

@@ -329,40 +329,18 @@ class RepositoryTest extends UnitTestCase
     }
 
     /**
-     * dataProvider for createQueryCallsQueryFactoryWithExpectedType
-     *
-     * @return array
-     */
-    public function modelAndRepositoryClassNames()
-    {
-        return [
-            ['Tx_BlogExample_Domain_Repository_BlogRepository', 'Tx_BlogExample_Domain_Model_Blog'],
-            ['﻿_Domain_Repository_Content_PageRepository', '﻿_Domain_Model_Content_Page'],
-            ['Tx_RepositoryExample_Domain_Repository_SomeModelRepository', 'Tx_RepositoryExample_Domain_Model_SomeModel'],
-            ['Tx_RepositoryExample_Domain_Repository_RepositoryRepository', 'Tx_RepositoryExample_Domain_Model_Repository'],
-            ['Tx_Repository_Domain_Repository_RepositoryRepository', 'Tx_Repository_Domain_Model_Repository']
-        ];
-    }
-
-    /**
      * @test
-     * @dataProvider modelAndRepositoryClassNames
-     * @param string $repositoryClassName
-     * @param string $modelClassName
      */
-    public function constructSetsObjectTypeFromClassName($repositoryClassName, $modelClassName)
+    public function constructSetsObjectTypeFromClassName()
     {
-        $repositoryClassNameWithNS = __NAMESPACE__ . '\\' . $repositoryClassName;
-        eval('namespace ' . __NAMESPACE__ . '; class ' . $repositoryClassName . ' extends \\TYPO3\\CMS\\Extbase\\Persistence\\Repository {
-			protected function getRepositoryClassName() {
-				return \'' . $repositoryClassName . '\';
-			}
-			public function _getObjectType() {
-				return $this->objectType;
-			}
-		}');
-        $this->repository = new $repositoryClassNameWithNS($this->mockObjectManager);
-        $this->assertEquals($modelClassName, $this->repository->_getObjectType());
+        $repository = new Fixture\Domain\Repository\EntityRepository($this->mockObjectManager);
+
+        $reflectionClass = new \ReflectionClass($repository);
+        $reflectionProperty = $reflectionClass->getProperty('objectType');
+        $reflectionProperty->setAccessible(true);
+        $objectType = $reflectionProperty->getValue($repository);
+
+        $this->assertEquals(Fixture\Domain\Model\Entity::class, $objectType);
     }
 
     /**

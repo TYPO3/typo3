@@ -35,41 +35,6 @@ class ClassNamingUtilityTest extends UnitTestCase
     {
         return [
             [
-                'Tx_BlogExample_Domain_Repository_BlogRepository',
-                'Tx_BlogExample_Domain_Model_Blog',
-                'Tx_BlogExample_Domain_Validator_BlogValidator'
-            ],
-            [
-                ' _Domain_Repository_Content_PageRepository',
-                ' _Domain_Model_Content_Page',
-                ' _Domain_Validator_Content_PageValidator'
-            ],
-            [
-                'Tx_RepositoryExample_Domain_Repository_SomeModelRepository',
-                'Tx_RepositoryExample_Domain_Model_SomeModel',
-                'Tx_RepositoryExample_Domain_Validator_SomeModelValidator'
-            ],
-            [
-                'Tx_RepositoryExample_Domain_Repository_RepositoryRepository',
-                'Tx_RepositoryExample_Domain_Model_Repository',
-                'Tx_RepositoryExample_Domain_Validator_RepositoryValidator'
-            ],
-            [
-                'Tx_Repository_Domain_Repository_RepositoryRepository',
-                'Tx_Repository_Domain_Model_Repository',
-                'Tx_Repository_Domain_Validator_RepositoryValidator'
-            ],
-            [
-                'Tx_ModelCollection_Domain_Repository_ModelRepository',
-                'Tx_ModelCollection_Domain_Model_Model',
-                'Tx_ModelCollection_Domain_Validator_ModelValidator'
-            ],
-            [
-                'Tx_Model_Domain_Repository_ModelRepository',
-                'Tx_Model_Domain_Model_Model',
-                'Tx_Model_Domain_Validator_ModelValidator'
-            ],
-            [
                 'VENDOR\\EXT\\Domain\\Repository\\BlogRepository',
                 'VENDOR\\EXT\\Domain\\Model\\Blog',
                 'VENDOR\\EXT\\Domain\\Validator\\BlogValidator'
@@ -206,31 +171,6 @@ class ClassNamingUtilityTest extends UnitTestCase
                     'extensionName' => 'Ext',
                     'subpackageKey' => 'ViewHelpers\\Widget',
                     'controllerName' => 'Foo',
-                ]
-            ],
-            // Oldschool
-            [
-                'Tx_Ext_Controller_FooController',
-                [
-                    'extensionName' => 'Ext',
-                    'subpackageKey' => '',
-                    'controllerName' => 'Foo',
-                ]
-            ],
-            [
-                'Tx_Ext_Command_FooCommandController',
-                [
-                    'extensionName' => 'Ext',
-                    'subpackageKey' => '',
-                    'controllerName' => 'FooCommand',
-                ]
-            ],
-            [
-                'Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController',
-                [
-                    'extensionName' => 'Fluid',
-                    'subpackageKey' => 'ViewHelpers_Widget',
-                    'controllerName' => 'Paginate',
                 ]
             ],
         ];

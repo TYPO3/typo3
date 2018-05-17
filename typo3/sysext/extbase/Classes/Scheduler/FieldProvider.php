@@ -138,22 +138,16 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
                 continue;
             }
             $className = $command->getControllerClassName();
-            if (strpos($className, '\\')) {
-                $classNameParts = explode('\\', $className);
-                // Skip vendor and product name for core classes
-                if (strpos($className, 'TYPO3\\CMS\\') === 0) {
-                    $classPartsToSkip = 2;
-                } else {
-                    $classPartsToSkip = 1;
-                }
-                $classNameParts = array_slice($classNameParts, $classPartsToSkip);
-                $extensionName = $classNameParts[0];
-                $controllerName = $classNameParts[2];
+            $classNameParts = explode('\\', $className);
+            // Skip vendor and product name for core classes
+            if (strpos($className, 'TYPO3\\CMS\\') === 0) {
+                $classPartsToSkip = 2;
             } else {
-                $classNameParts = explode('_', $className);
-                $extensionName = $classNameParts[1];
-                $controllerName = $classNameParts[3];
+                $classPartsToSkip = 1;
             }
+            $classNameParts = array_slice($classNameParts, $classPartsToSkip);
+            $extensionName = $classNameParts[0];
+            $controllerName = $classNameParts[2];
             $identifier = $command->getCommandIdentifier();
             $options[$identifier] = $extensionName . ' ' . str_replace('CommandController', '', $controllerName) . ': ' . $command->getControllerCommandName();
         }

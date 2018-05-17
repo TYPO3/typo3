@@ -21,8 +21,6 @@ namespace TYPO3\CMS\Extbase\Property;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\CMS\Core\Core\ClassLoadingInformation;
-
 /**
  * Concrete configuration object for the PropertyMapper.
  *
@@ -303,9 +301,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      */
     public function setTypeConverterOptions($typeConverter, array $options)
     {
-        if (strpos($typeConverter, '_') !== false) {
-            $typeConverter = ClassLoadingInformation::getClassNameForAlias($typeConverter);
-        }
         foreach ($this->getTypeConvertersWithParentClasses($typeConverter) as $typeConverter) {
             $this->configuration[$typeConverter] = $options;
         }
@@ -323,9 +318,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      */
     public function setTypeConverterOption($typeConverter, $optionKey, $optionValue)
     {
-        if (strpos($typeConverter, '_') !== false) {
-            $typeConverter = ClassLoadingInformation::getClassNameForAlias($typeConverter);
-        }
         foreach ($this->getTypeConvertersWithParentClasses($typeConverter) as $typeConverter) {
             $this->configuration[$typeConverter][$optionKey] = $optionValue;
         }

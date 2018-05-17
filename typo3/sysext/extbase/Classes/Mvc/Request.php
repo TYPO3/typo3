@@ -26,13 +26,6 @@ class Request implements RequestInterface
     const PATTERN_MATCH_FORMAT = '/^[a-z0-9]{1,5}$/';
 
     /**
-     * Pattern after which the controller object name is built
-     *
-     * @var string
-     */
-    protected $controllerObjectNamePattern = 'Tx_@extension_@subpackage_Controller_@controllerController';
-
-    /**
      * Pattern after which the namespaced controller object name is built
      *
      * @var string
@@ -146,42 +139,24 @@ class Request implements RequestInterface
      */
     public function getControllerObjectName()
     {
-        if (null !== $this->controllerVendorName) {
-            // It's safe to assume a namespaced name as namespaced names have to follow PSR-0
-            $objectName = str_replace(
-                [
-                    '@extension',
-                    '@subpackage',
-                    '@controller',
-                    '@vendor',
-                    '\\\\'
-                ],
-                [
-                    $this->controllerExtensionName,
-                    $this->controllerSubpackageKey,
-                    $this->controllerName,
-                    $this->controllerVendorName,
-                    '\\'
-                ],
-                $this->namespacedControllerObjectNamePattern
-            );
-        } else {
-            $objectName = str_replace(
-                [
-                    '@extension',
-                    '@subpackage',
-                    '@controller',
-                    '__'
-                ],
-                [
-                    $this->controllerExtensionName,
-                    $this->controllerSubpackageKey,
-                    $this->controllerName,
-                    '_'
-                ],
-                $this->controllerObjectNamePattern
-            );
-        }
+        $objectName = str_replace(
+            [
+                '@extension',
+                '@subpackage',
+                '@controller',
+                '@vendor',
+                '\\\\'
+            ],
+            [
+                $this->controllerExtensionName,
+                $this->controllerSubpackageKey,
+                $this->controllerName,
+                $this->controllerVendorName,
+                '\\'
+            ],
+            $this->namespacedControllerObjectNamePattern
+        );
+
         // @todo implement getCaseSensitiveObjectName()
         if ($objectName === false) {
             throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchControllerException('The controller object "' . $objectName . '" does not exist.', 1220884009);
@@ -295,9 +270,6 @@ class Request implements RequestInterface
     {
         if (!is_string($controllerName) && $controllerName !== null) {
             throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
-        }
-        if (strpos($controllerName, '_') !== false) {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException('The controller name must not contain underscores.', 1217846412);
         }
         if ($controllerName !== null) {
             $this->controllerName = $controllerName;

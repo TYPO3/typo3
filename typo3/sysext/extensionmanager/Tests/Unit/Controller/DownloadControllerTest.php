@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
+
 /**
  * Download from TER controller test
  */
@@ -31,13 +33,19 @@ class DownloadControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $dummyExtension = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)->getMock();
         $dummyExtension->expects($this->any())->method('getExtensionKey')->will($this->returnValue($dummyExtensionName));
 
+        /** @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility|MockObject $downloadUtilityMock */
         $downloadUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility::class)->getMock();
         $downloadUtilityMock->expects($this->any())->method('setDownloadPath')->willThrowException($dummyException);
 
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\DownloadController::class, ['dummy']);
-        $subject->_set('downloadUtility', $downloadUtilityMock);
+        /** @var \TYPO3\CMS\Extensionmanager\Controller\DownloadController $subject */
+        $subject = new \TYPO3\CMS\Extensionmanager\Controller\DownloadController();
+        $subject->injectDownloadUtility($downloadUtilityMock);
 
-        $result = $subject->_call('installFromTer', $dummyExtension);
+        $reflectionClass = new \ReflectionClass($subject);
+        $reflectionMethod = $reflectionClass->getMethod('installFromTer');
+        $reflectionMethod->setAccessible(true);
+
+        $result = $reflectionMethod->invokeArgs($subject, [$dummyExtension]);
 
         $expectedResult = [
             false,

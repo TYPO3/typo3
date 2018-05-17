@@ -93,8 +93,7 @@ class Command
         $this->controllerClassName = $controllerClassName;
         $this->controllerCommandName = $controllerCommandName;
         $this->controllerCommandMethod = $this->controllerCommandName . 'Command';
-        $delimiter = strpos($controllerClassName, '\\') !== false ? '\\' : '_';
-        $classNameParts = explode($delimiter, $controllerClassName);
+        $classNameParts = explode('\\', $controllerClassName);
         if (isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3' && isset($classNameParts[1]) && $classNameParts[1] === 'CMS') {
             $classNameParts[0] .= '\\' . $classNameParts[1];
             unset($classNameParts[1]);

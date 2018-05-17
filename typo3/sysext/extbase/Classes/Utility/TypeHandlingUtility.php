@@ -19,7 +19,7 @@ class TypeHandlingUtility
     /**
      * A property type parse pattern.
      */
-    const PARSE_TYPE_PATTERN = '/^\\\\?(?P<type>integer|int|float|double|boolean|bool|string|DateTime|Tx_[a-zA-Z0-9_]+|[A-Z][a-zA-Z0-9\\\\_]+|object|resource|array|ArrayObject|SplObjectStorage|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage)(?:<\\\\?(?P<elementType>[a-zA-Z0-9\\\\_]+)>)?/';
+    const PARSE_TYPE_PATTERN = '/^\\\\?(?P<type>integer|int|float|double|boolean|bool|string|DateTime|[A-Z][a-zA-Z0-9\\\\]+|object|resource|array|ArrayObject|SplObjectStorage|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage)(?:<\\\\?(?P<elementType>[a-zA-Z0-9\\\\]+)>)?/';
 
     /**
      * A type pattern to detect literal types.
