@@ -153,11 +153,33 @@ Currently, there are no plans to implement such a feature. There are huge
 concerns regarding the data privacy when it comes to storing user data in
 your TYPO3 database permanently.
 
+
 .. _faq-honeypt-session:
 
 The honeypot does not work with static site caching. What can I do?
 ===================================================================
 
-If you want to use a static site caching - for example using the staticfilecache extension -
-you should disable the automatic inclusion of the
+If you want to use a static site caching - for example using the
+staticfilecache extension - you should disable the automatic inclusion of the
 honeypot. Read more ':ref:`here<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.honeypot.enable>`'.
+
+
+.. _faq-form-element-default-value:
+
+How do I set a default value for my form element?
+=================================================
+
+Most of the form elements support setting a default value (do not mix this
+up with the placeholder attribute). For a text field or a textarea, this is
+quite trivial.
+
+A little bit more thrilling is the handling for select and multi select form
+elements. Those special elements support - beside the :yaml:`defaultValue` - a
+:yaml:`prependOptionValue` setting. The :yaml:`defaultValue` allows you to select a
+specific option as default. This option will be pre-selected as soon as the
+form is loaded. In contrast, the :yaml:`prependOptionValue` allows you to define a
+string which will be shown as the first select-option. If both settings exist,
+the :yaml:`defaultValue` is prioritized.
+
+Learn more ':ref:`here<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.defaultValue>`'
+and see the forge issue `#82422 <https://forge.typo3.org/issues/82422#note-6>`.
