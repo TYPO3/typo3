@@ -5272,6 +5272,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             try {
                 list($this->lastTypoLinkUrl, $linkText, $target) = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
             } catch (UnableToLinkException $e) {
+                $this->logger->debug(sprintf('Unable to link "%s": %s', $e->getLinkText(), $e->getMessage()), ['exception' => $e]);
+
                 // Only return the link text directly
                 return $e->getLinkText();
             }
