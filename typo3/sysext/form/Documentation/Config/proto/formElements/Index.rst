@@ -127,6 +127,32 @@ Common <formElementTypeIdentifier> properties
 =============================================
 
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.defaultValue:
+
+defaultValue
+------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.defaultValue
+
+:aspect:`Data type`
+      string/ array
+
+:aspect:`Needed by`
+      Frontend/ Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      undefined
+
+:aspect:`Description`
+      If set this string/ array will be used as default value of the form
+      element. Array is in place for multi value elements (e.g. the
+      ``MultiSelect`` form element).
+
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.implementationclassname:
 
 implementationClassName
