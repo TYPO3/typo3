@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -45,17 +44,6 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
  */
 class RecordListController
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * Properties which have been moved to protected status from public
-     *
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'modTSconfig' => 'Using $modTSconfig of class RecordListController is discouraged. This property is for class internal use only.',
-    ];
-
     /**
      * Page Id for which to make the listing
      *
@@ -145,7 +133,7 @@ class RecordListController
      *
      * @var array
      */
-    protected $modTSconfig;
+    public $modTSconfig;
 
     /**
      * Current ids page record

@@ -587,9 +587,4 @@ return [
             'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
         ],
     ],
-    'TYPO3\CMS\recordlist\Controller\RecordListController->modTSconfig' => [
-        'restFiles' => [
-            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
-        ],
-    ],
 ];

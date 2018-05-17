@@ -29,7 +29,6 @@ These properties have been set to protected, should not be used any longer and l
 
 * :php:`TYPO3\CMS\backend\Tree\View\PagePositionMap->getModConfigCache`
 * :php:`TYPO3\CMS\backend\Tree\View\PagePositionMap->modConfigStr`
-* :php:`TYPO3\CMS\recordlist\Controller\RecordListController->modTSconfig`
 
 
 Impact
