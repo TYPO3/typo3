@@ -87,5 +87,5 @@ renderingOptions.honeypot.enable
                       honeypot:
                         enable: false
 
-   See forge issue `#83212 <https://forge.typo3.org/issues/83212>` for more
+   See forge issue `#83212 <https://forge.typo3.org/issues/83212>`_ for more
    information.

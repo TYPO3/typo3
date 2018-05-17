@@ -5,9 +5,15 @@
 .. role:: html(code)
 .. role:: js(code)
 .. role:: php(code)
+.. role:: sep (strong)
 .. role:: typoscript(code)
+
 .. role:: ts(typoscript)
    :class: typoscript
 
-.. highlight:: php
 .. default-role:: code
+.. highlight:: php
+
+.. special in this manual:
+
+.. role:: yaml(code)
