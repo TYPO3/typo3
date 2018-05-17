@@ -5702,6 +5702,10 @@ class ContentObjectRenderer
             try {
                 list($this->lastTypoLinkUrl, $linkText, $target) = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
             } catch (UnableToLinkException $e) {
+                /** @var \TYPO3\CMS\Core\Log\Logger $logger */
+                $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+                $logger->debug(sprintf('Unable to link "%s": %s', $e->getLinkText(), $e->getMessage()), ['exception' => $e]);
+
                 // Only return the link text directly
                 return $e->getLinkText();
             }
