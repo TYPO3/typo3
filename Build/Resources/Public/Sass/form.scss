@@ -333,6 +333,13 @@ body {
         clear: both;
     }
 
+    .t3-form-control-group.form-group {
+        #t3-form-add-finisher.t3-form-add-collection-element,
+        #t3-form-add-validator.t3-form-add-collection-element {
+            margin: initial;
+        }
+    }
+
     .t3-form-inspector-editor-requiredValidator {
         label {
             cursor: pointer;
@@ -388,6 +395,11 @@ body {
             @include expanded-icon-animation();
         }
     }
+}
+
+#t3-form-inspector-validators.t3-form-collection-container,
+#t3-form-inspector-finishers.t3-form-collection-container {
+    margin-top: -2.25em;
 }
 
 .t3-form-collection-element {
@@ -1085,6 +1097,28 @@ body {
     }
 }
 
+#t3-form-inspector-panels {
+    span.t3-form-validation-errors,
+    .inspector-editor-hint {
+        display: inline-block;
+        color: #fff;
+        font-size: 0.8em;
+        font-weight: 700;
+        margin-top: 0.5em;
+        padding: 0.1em 0.5em;
+        border-radius: 2px;
+        line-height: 1.5em;
+    }
+
+    span.t3-form-validation-errors {
+        background-color: $brand-danger;
+    }
+
+    .inspector-editor-hint {
+        background-color: $gray-dark;
+    }
+}
+
 //
 // Loading Editor Spinner
 //
@@ -1138,4 +1172,10 @@ body {
 .t3-form-element-new-page-button {
     position: absolute;
     left: 0.5em;
+}
+
+.t3-form-controls.has-error {
+    .help-block {
+        margin-bottom: initial;
+    }
 }
