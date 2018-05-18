@@ -247,4 +247,62 @@
 		<deleted>1</deleted>
 		<hidden>0</hidden>
 	</tx_blogexample_domain_model_post>
+
+
+	<tx_blogexample_domain_model_post>
+		<uid>101</uid>
+		<pid>-1</pid>
+		<tstamp>121319</tstamp>
+		<blog>1</blog>
+		<author>3</author>
+		<reviewer>2</reviewer>
+		<tags>10</tags>
+		<date>1502275450</date>
+		<categories>3</categories>
+		<title>WorkspaceOverlay Post1</title>
+		<content>WorkspaceOverlay Lorem ipsum...</content>
+		<l18n_diffsource></l18n_diffsource>
+		<sorting>1</sorting>
+		<deleted>0</deleted>
+		<related_posts>1</related_posts>
+		<t3ver_oid>1</t3ver_oid>
+		<t3ver_state>-1</t3ver_state>
+		<t3ver_wsid>1</t3ver_wsid>
+	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>102</uid>
+		<pid>-1</pid>
+		<blog>1</blog>
+		<author>2</author>
+		<reviewer>2</reviewer>
+		<tags>1</tags>
+		<date>1502275450</date>
+		<categories>0</categories>
+		<title>WorkspaceOverlay Post2</title>
+		<content>WorkspaceOverlay Lorem ipsum...</content>
+		<l18n_diffsource></l18n_diffsource>
+		<sorting>2</sorting>
+		<deleted>0</deleted>
+		<t3ver_oid>2</t3ver_oid>
+		<t3ver_state>-1</t3ver_state>
+		<t3ver_wsid>1</t3ver_wsid>
+	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>103</uid>
+		<pid>-1</pid>
+		<blog>1</blog>
+		<author>2</author>
+		<reviewer>1</reviewer>
+		<tags>1</tags>
+		<date>1502275450</date>
+		<categories>0</categories>
+		<title>WorkspaceOverlay Post3</title>
+		<content>WorkspaceOverlay Lorem ipsum...</content>
+		<l18n_diffsource></l18n_diffsource>
+		<sorting>3</sorting>
+		<deleted>0</deleted>
+		<t3ver_oid>3</t3ver_oid>
+		<t3ver_state>-1</t3ver_state>
+		<t3ver_wsid>1</t3ver_wsid>
+	</tx_blogexample_domain_model_post>
 </dataset>
