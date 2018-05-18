@@ -819,6 +819,8 @@ TYPO3:
                     text: ''
                 iconIdentifier: 'form-static-text'
                 editors:
+                  200:
+                    label: 'formEditor.elements.StaticText.editor.label.label'
                   300:
                     identifier: 'staticText'
                     templateName: 'Inspector-TextareaEditor'

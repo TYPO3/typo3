@@ -500,7 +500,7 @@
             </trans-unit>
 
             <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.label" xml:space="preserve">
-                <source>Inactive option</source>
+                <source>First option (empty value)</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText" xml:space="preserve">
                 <source>If set, this label will be shown as first option.</source>
@@ -690,7 +690,7 @@
                 <source>Page</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" xml:space="preserve">
-                <source>Pages</source>
+                <source>Page</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label" xml:space="preserve">
                 <source>Additional parameters</source>
@@ -707,7 +707,7 @@
                 <source>Content element uid</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" xml:space="preserve">
-                <source>tt_content</source>
+                <source>Page Content</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.label" xml:space="preserve">
                 <source>Text</source>
@@ -956,6 +956,9 @@
             <trans-unit id="formEditor.elements.StaticText.label" xml:space="preserve">
                 <source>Static text</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.StaticText.editor.label.label" xml:space="preserve">
+                <source>Header</source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.StaticText.editor.staticText.label" xml:space="preserve">
                 <source>Text</source>
             </trans-unit>
@@ -978,7 +981,7 @@
                 <source>Content element uid</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" xml:space="preserve">
-                <source>tt_content</source>
+                <source>Page Content</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.FileUpload.label" xml:space="preserve">
