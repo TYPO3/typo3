@@ -3,7 +3,7 @@
 return [
     'ctrl' => [
         'label' => 'errorCode',
-        'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.ctrl.title',
+        'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.ctrl.title',
         'type' => 'errorHandler',
         'typeicon_column' => 'errorHandler',
         'typeicon_classes' => [
@@ -15,7 +15,7 @@ return [
     ],
     'columns' => [
         'errorCode' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorCode',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required, trim, int',
@@ -27,12 +27,12 @@ return [
                 'valuePicker' => [
                     'mode' => '',
                     'items' => [
-                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorCode.404', '404'],
-                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorCode.403', '403'],
-                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorCode.401', '401'],
-                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorCode.500', '500'],
-                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorCode.503', '503'],
-                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorCode.0', '0'],
+                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode.404', '404'],
+                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode.403', '403'],
+                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode.401', '401'],
+                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode.500', '500'],
+                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode.503', '503'],
+                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode.0', '0'],
                     ],
                 ],
                 'fieldInformation' => [
@@ -43,7 +43,7 @@ return [
             ],
         ],
         'errorHandler' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorHandler',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorHandler',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -61,7 +61,7 @@ return [
             ],
         ],
         'errorFluidTemplate' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorFluidTemplate',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidTemplate',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required',
@@ -73,7 +73,7 @@ return [
             ],
         ],
         'errorFluidTemplatesRootPath' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorFluidTemplatesRootPath',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidTemplatesRootPath',
             'config' => [
                 'type' => 'input',
                 'fieldInformation' => [
@@ -84,7 +84,7 @@ return [
             ],
         ],
         'errorFluidLayoutsRootPath' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorFluidLayoutsRootPath',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidLayoutsRootPath',
             'config' => [
                 'type' => 'input',
                 'fieldInformation' => [
@@ -95,7 +95,7 @@ return [
             ],
         ],
         'errorFluidPartialsRootPath' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorFluidPartialsRootPath',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidPartialsRootPath',
             'config' => [
                 'type' => 'input',
                 'fieldInformation' => [
@@ -106,7 +106,7 @@ return [
             ],
         ],
         'errorContentSource' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorContentSource',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorContentSource',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputLink',
@@ -126,7 +126,7 @@ return [
             ],
         ],
         'errorPhpClassFQCN' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.errorPhpClassFQCN',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorPhpClassFQCN',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required',
@@ -144,7 +144,7 @@ return [
         ],
         'Fluid' => [
             'showitem' => 'errorCode, errorHandler, errorFluidTemplate,
-                           --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_errorhandling.tab.rootpaths,
+                           --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.tab.rootpaths,
                            errorFluidTemplatesRootPath, errorFluidLayoutsRootPath, errorFluidPartialsRootPath',
         ],
         'Page' => [

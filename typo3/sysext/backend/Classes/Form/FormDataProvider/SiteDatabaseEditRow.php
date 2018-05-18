@@ -41,12 +41,12 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
 
         $tableName = $result['tableName'];
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-        if ($tableName === 'sys_site') {
+        if ($tableName === 'site') {
             $siteConfigurationForPageUid = (int)$result['vanillaUid'];
             $rowData = $siteFinder->getSiteByRootPageId($siteConfigurationForPageUid)->getConfiguration();
             $result['databaseRow']['uid'] = $rowData['rootPageId'];
             $result['databaseRow']['identifier'] = $result['customData']['siteIdentifier'];
-        } elseif ($tableName === 'sys_site_errorhandling' || $tableName === 'sys_site_language') {
+        } elseif ($tableName === 'site_errorhandling' || $tableName === 'site_language') {
             $siteConfigurationForPageUid = (int)($result['inlineTopMostParentUid'] ?? $result['inlineParentUid']);
             $rowData = $siteFinder->getSiteByRootPageId($siteConfigurationForPageUid)->getConfiguration();
             $parentFieldName = $result['inlineParentFieldName'];

@@ -3,117 +3,117 @@
 	<file t3:id="1522785604" source-language="en" datatype="plaintext" original="messages" date="2018-02-27T22:22:32Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="sys_site.ctrl.title">
+			<trans-unit id="site.ctrl.title">
 				<source>Site Configuration</source>
 			</trans-unit>
-			<trans-unit id="sys_site.identifier">
+			<trans-unit id="site.identifier">
 				<source>Site Identifier</source>
 			</trans-unit>
-			<trans-unit id="sys_site.rootPageId">
+			<trans-unit id="site.rootPageId">
 				<source>Root Page ID (You must create a page with a site root flag)</source>
 			</trans-unit>
-			<trans-unit id="sys_site.base">
+			<trans-unit id="site.base">
 				<source>Entry point (can be https://www.mydomain/ or just /, if it is just / you can not rely on TYPO3 creating full URLs)</source>
 			</trans-unit>
-			<trans-unit id="sys_site.languages">
+			<trans-unit id="site.languages">
 				<source>Available Languages for this site</source>
 			</trans-unit>
-			<trans-unit id="sys_site.errorHandling">
+			<trans-unit id="site.errorHandling">
 				<source>Error Handling</source>
 			</trans-unit>
-			<trans-unit id="sys_site.tab.languages">
+			<trans-unit id="site.tab.languages">
 				<source>Languages</source>
 			</trans-unit>
-			<trans-unit id="sys_site.tab.errorHandling">
+			<trans-unit id="site.tab.errorHandling">
 				<source>Error Handling</source>
 			</trans-unit>
 
-			<trans-unit id="sys_site_language.ctrl.title">
+			<trans-unit id="site_language.ctrl.title">
 				<source>Language Configuration for a Site</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.language">
+			<trans-unit id="site_language.language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.title">
+			<trans-unit id="site_language.title">
 				<source>Language title (e.g. "English")</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.navigationTitle">
+			<trans-unit id="site_language.navigationTitle">
 				<source>Navigation title (e.g. "English", "Deutsch", "Français")</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.base">
+			<trans-unit id="site_language.base">
 				<source>Entry point (either https://www.mydomain.fr/ or /fr/)</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.locale">
+			<trans-unit id="site_language.locale">
 				<source>Language locale</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.iso-639-1">
+			<trans-unit id="site_language.iso-639-1">
 				<source>Two letter ISO code</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.hreflang">
+			<trans-unit id="site_language.hreflang">
 				<source>Language tag defined by RFC 1766 / 3066 for "lang" and "hreflang" attributes</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.direction">
+			<trans-unit id="site_language.direction">
 				<source>Language direction for "dir" attribute</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.typo3Language">
+			<trans-unit id="site_language.typo3Language">
 				<source>Language key for XLF files</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.flag">
+			<trans-unit id="site_language.flag">
 				<source>Select flag icon</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.fallbackType">
+			<trans-unit id="site_language.fallbackType">
 				<source>Fallback type</source>
 			</trans-unit>
-			<trans-unit id="sys_site_language.fallbacks">
+			<trans-unit id="site_language.fallbacks">
 				<source>Fallback to other language(s) - order is important!</source>
 			</trans-unit>
 
-			<trans-unit id="sys_site_errorhandling.ctrl.title">
+			<trans-unit id="site_errorhandling.ctrl.title">
 				<source>Error Handling</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.tab.rootpaths">
+			<trans-unit id="site_errorhandling.tab.rootpaths">
 				<source>Root Paths (optional)</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorCode">
+			<trans-unit id="site_errorhandling.errorCode">
 				<source>Error Status Code</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorCode.404">
+			<trans-unit id="site_errorhandling.errorCode.404">
 				<source>404 (Page not found)</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorCode.403">
+			<trans-unit id="site_errorhandling.errorCode.403">
 				<source>403 (Forbidden)</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorCode.401">
+			<trans-unit id="site_errorhandling.errorCode.401">
 				<source>401 (Unauthorized)</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorCode.500">
+			<trans-unit id="site_errorhandling.errorCode.500">
 				<source>500 (Internal Server Error)</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorCode.503">
+			<trans-unit id="site_errorhandling.errorCode.503">
 				<source>503 (Service Unavailable)</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorCode.0">
+			<trans-unit id="site_errorhandling.errorCode.0">
 				<source>any error not defined otherwise</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorHandler">
+			<trans-unit id="site_errorhandling.errorHandler">
 				<source>How to handle errors</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorFluidTemplate">
+			<trans-unit id="site_errorhandling.errorFluidTemplate">
 				<source>Fluid Template File</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorFluidTemplatesRootPath">
+			<trans-unit id="site_errorhandling.errorFluidTemplatesRootPath">
 				<source>Fluid Templates Root Path</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorFluidLayoutsRootPath">
+			<trans-unit id="site_errorhandling.errorFluidLayoutsRootPath">
 				<source>Fluid Layouts Root Path</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorFluidPartialsRootPath">
+			<trans-unit id="site_errorhandling.errorFluidPartialsRootPath">
 				<source>Fluid Partials Root Path</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorContentSource">
+			<trans-unit id="site_errorhandling.errorContentSource">
 				<source>Show Content From Page</source>
 			</trans-unit>
-			<trans-unit id="sys_site_errorhandling.errorPhpClassFQCN">
+			<trans-unit id="site_errorhandling.errorPhpClassFQCN">
 				<source>ErrorHandler Class Target (FQCN)</source>
 			</trans-unit>
 		</body>

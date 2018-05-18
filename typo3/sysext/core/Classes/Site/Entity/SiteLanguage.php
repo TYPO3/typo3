@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Site\Entity;
  */
 
 /**
- * Entity representing a sys_sitelanguage configuration of a site object.
+ * Entity representing a site_language configuration of a site object.
  */
 class SiteLanguage
 {

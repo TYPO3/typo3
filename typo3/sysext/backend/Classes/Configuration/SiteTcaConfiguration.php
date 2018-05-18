@@ -23,41 +23,42 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Helper class for the backend "Sites" module
  *
- * Load Site configuration TCA from ext:*Configuration/SiteConfigurationTCA
- * and ext:*Configuration/SiteConfigurationTCA/Overrides
+ * Load Site configuration TCA from ext:*Configuration/SiteConfiguration
+ * and ext:*Configuration/SiteConfiguration/Overrides
  */
 class SiteTcaConfiguration
 {
     /**
      * Returns a "fake TCA" array that is syntactically identical to
-     * "normal" TCA, and just isn't available as $GLOBALS['TCA'].
+     * "normal" TCA, but is not available as $GLOBALS['TCA']. During
+     * configuration loading time, the target array is available as
+     * $GLOBALS['SiteConfiguration'] within the Overrides files.
+     *
+     * It is not possible to use ExtensionManagementUtility methods.
      *
      * @return array
      */
     public function getTca(): array
     {
-        // To allow casual ExtensionManagementUtility methods that works on $GLOBALS['TCA']
-        // to change our fake TCA, just kick original TCA, and reset to original at the end.
-        $originalTca = $GLOBALS['TCA'];
-        $GLOBALS['TCA'] = [];
+        $GLOBALS['SiteConfiguration'] = [];
         $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
-        // First load "full table" files from Configuration/SiteConfigurationTCA
+        // First load "full table" files from Configuration/SiteConfiguration
         $finder = new Finder();
         foreach ($activePackages as $package) {
             try {
-                $finder->files()->depth(0)->name('*.php')->in($package->getPackagePath() . 'Configuration/SiteConfigurationTCA');
+                $finder->files()->depth(0)->name('*.php')->in($package->getPackagePath() . 'Configuration/SiteConfiguration');
             } catch (\InvalidArgumentException $e) {
                 // No such directory in this package
                 continue;
             }
             foreach ($finder as $fileInfo) {
-                $GLOBALS['TCA'][substr($fileInfo->getBasename(), 0, -4)] = require $fileInfo->getPathname();
+                $GLOBALS['SiteConfiguration'][substr($fileInfo->getBasename(), 0, -4)] = require $fileInfo->getPathname();
             }
         }
-        // Execute override files from Configuration/TCA/Overrides
+        // Execute override files from Configuration/SiteConfiguration/Overrides
         foreach ($activePackages as $package) {
             try {
-                $finder->files()->depth(0)->name('*.php')->in($package->getPackagePath() . 'Configuration/SiteConfigurationTCA/Overrides');
+                $finder->files()->depth(0)->name('*.php')->in($package->getPackagePath() . 'Configuration/SiteConfiguration/Overrides');
             } catch (\InvalidArgumentException $e) {
                 // No such directory in this package
                 continue;
@@ -66,8 +67,8 @@ class SiteTcaConfiguration
                 require $fileInfo->getPathname();
             }
         }
-        $result = $GLOBALS['TCA'];
-        $GLOBALS['TCA'] = $originalTca;
+        $result = $GLOBALS['SiteConfiguration'];
+        unset($GLOBALS['SiteConfiguration']);
         return $result;
     }
 }

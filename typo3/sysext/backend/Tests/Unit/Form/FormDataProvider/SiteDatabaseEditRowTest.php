@@ -76,7 +76,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
     {
         $input = [
             'command' => 'edit',
-            'tableName' => 'sys_site',
+            'tableName' => 'site',
             'vanillaUid' => 23,
             'customData' => [
                 'siteIdentifier' => 'main',
@@ -114,7 +114,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
     {
         $input = [
             'command' => 'edit',
-            'tableName' => 'sys_site_errorhandling',
+            'tableName' => 'site_errorhandling',
             'vanillaUid' => 23,
             'inlineTopMostParentUid' => 5,
             'inlineParentFieldName' => 'invalid',
@@ -140,7 +140,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
     {
         $input = [
             'command' => 'edit',
-            'tableName' => 'sys_site_language',
+            'tableName' => 'site_language',
             'vanillaUid' => 23,
             'inlineTopMostParentUid' => 5,
             'inlineParentFieldName' => 'invalid',
@@ -166,7 +166,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
     {
         $input = [
             'command' => 'edit',
-            'tableName' => 'sys_site_language',
+            'tableName' => 'site_language',
             'vanillaUid' => 23,
             'inlineTopMostParentUid' => 5,
             'inlineParentFieldName' => 'languages',

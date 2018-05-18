@@ -3,14 +3,14 @@
 return [
     'ctrl' => [
         'label' => 'languageId',
-        'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.ctrl.title',
+        'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.ctrl.title',
         'typeicon_classes' => [
             'default' => 'mimetypes-x-content-domain',
         ],
     ],
     'columns' => [
         'languageId' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.language',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.language',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -29,7 +29,7 @@ return [
             ],
         ],
         'title' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.title',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.title',
             'config' => [
                 'type' => 'input',
                 'size' => 10,
@@ -43,7 +43,7 @@ return [
             ],
         ],
         'navigationTitle' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.navigationTitle',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.navigationTitle',
             'config' => [
                 'type' => 'input',
                 'size' => 10,
@@ -56,7 +56,7 @@ return [
             ],
         ],
         'base' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.base',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.base',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required',
@@ -69,7 +69,7 @@ return [
             ],
         ],
         'locale' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.locale',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.locale',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required',
@@ -82,7 +82,7 @@ return [
             ],
         ],
         'iso-639-1' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.iso-639-1',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.iso-639-1',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -96,7 +96,7 @@ return [
             ],
         ],
         'hreflang' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.hreflang',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.hreflang',
             'config' => [
                 'type' => 'input',
                 'placeholder' => 'en-US',
@@ -108,7 +108,7 @@ return [
             ],
         ],
         'direction' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.direction',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.direction',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -125,7 +125,7 @@ return [
             ],
         ],
         'typo3Language' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.typo3Language',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.typo3Language',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -140,7 +140,7 @@ return [
             ],
         ],
         'flag' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.flag',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.flag',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -412,7 +412,7 @@ return [
             ],
         ],
         'fallbackType' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.fallbackType',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.fallbackType',
             'displayCond' => 'FIELD:languageId:>:0',
             'onChange' => 'reload',
             'config' => [
@@ -430,7 +430,7 @@ return [
             ],
         ],
         'fallbacks' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site_language.fallbacks',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.fallbacks',
             'displayCond' => 'FIELD:fallbackType:=:fallback',
             'config' => [
                 'type' => 'select',

@@ -3,14 +3,14 @@
 return [
     'ctrl' => [
         'label' => 'identifier',
-        'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site.ctrl.title',
+        'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.ctrl.title',
         'typeicon_classes' => [
             'default' => 'mimetypes-x-content-domain',
         ],
     ],
     'columns' => [
         'identifier' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site.identifier',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.identifier',
             'config' => [
                 'type' => 'input',
                 'size' => 35,
@@ -26,7 +26,7 @@ return [
             ],
         ],
         'rootPageId' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site.rootPageId',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.rootPageId',
             'config' => [
                 'type' => 'select',
                 'readOnly' => true,
@@ -41,7 +41,7 @@ return [
             ],
         ],
         'base' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site.base',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.base',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required',
@@ -53,10 +53,10 @@ return [
             ],
         ],
         'languages' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site.languages',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages',
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'sys_site_language',
+                'foreign_table' => 'site_language',
                 'foreign_selector' => 'languageId',
                 'foreign_unique' => 'languageId',
                 'size' => 4,
@@ -69,10 +69,10 @@ return [
             ],
         ],
         'errorHandling' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site.errorHandling',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.errorHandling',
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'sys_site_errorhandling',
+                'foreign_table' => 'site_errorhandling',
                 'appearance' => [
                     'enabledControls' => [
                         'info' => false,
@@ -84,8 +84,8 @@ return [
     'types' => [
         '0' => [
             'showitem' => 'identifier, rootPageId, base,
-                --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site.tab.languages, languages,
-                --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:sys_site.tab.errorHandling, errorHandling',
+                --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.tab.languages, languages,
+                --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.tab.errorHandling, errorHandling',
         ],
     ],
 ];

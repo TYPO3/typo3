@@ -29,7 +29,7 @@ class SiteTcaSelectItems implements FormDataProviderInterface
 {
     /**
      * Resolve select items for
-     * * 'sys_site_language' -> 'typo3language'
+     * * 'site_language' -> 'typo3language'
      *
      * @param array $result
      * @return array
@@ -38,7 +38,7 @@ class SiteTcaSelectItems implements FormDataProviderInterface
     public function addData(array $result): array
     {
         $table = $result['tableName'];
-        if ($table !== 'sys_site_language') {
+        if ($table !== 'site_language') {
             return $result;
         }
 

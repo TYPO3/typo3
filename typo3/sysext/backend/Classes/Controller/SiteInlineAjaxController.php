@@ -81,8 +81,8 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         $childTableName = $parentConfig['foreign_table'];
 
         $defaultDatabaseRow = [];
-        if ($childTableName === 'sys_site_language') {
-            // Feed new sys_site_language row with data from sys_language record if possible
+        if ($childTableName === 'site_language') {
+            // Feed new site_language row with data from sys_language record if possible
             if ($childChildUid > 0) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
                 $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);

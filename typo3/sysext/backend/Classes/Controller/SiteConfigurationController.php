@@ -124,7 +124,7 @@ class SiteConfigurationController
     {
         $this->configureEditViewDocHeader();
 
-        // Put sys_site and friends TCA into global TCA
+        // Put site and friends TCA into global TCA
         // @todo: We might be able to get rid of that later
         $GLOBALS['TCA'] = array_merge($GLOBALS['TCA'], GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca());
 
@@ -138,7 +138,7 @@ class SiteConfigurationController
 
         $defaultValues = [];
         if ($isNewConfig) {
-            $defaultValues['sys_site']['rootPageId'] = $pageUid;
+            $defaultValues['site']['rootPageId'] = $pageUid;
         }
 
         $allSites = $this->siteFinder->getAllSites();
@@ -152,7 +152,7 @@ class SiteConfigurationController
         $formDataGroup = GeneralUtility::makeInstance(SiteConfigurationDataGroup::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
-            'tableName' => 'sys_site',
+            'tableName' => 'site',
             'vanillaUid' => $isNewConfig ? $pageUid : $allSites[$siteIdentifier]->getRootPageId(),
             'command' => $isNewConfig ? 'new' : 'edit',
             'returnUrl' => (string)$returnUrl,
@@ -186,7 +186,7 @@ class SiteConfigurationController
      */
     protected function saveAction(ServerRequestInterface $request): ResponseInterface
     {
-        // Put sys_site and friends TCA into global TCA
+        // Put site and friends TCA into global TCA
         // @todo: We might be able to get rid of that later
         $GLOBALS['TCA'] = array_merge($GLOBALS['TCA'], GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca());
 
@@ -205,14 +205,14 @@ class SiteConfigurationController
             throw new \RuntimeException('Either save or save and close', 1520370364);
         }
 
-        if (!isset($parsedBody['data']['sys_site']) || !is_array($parsedBody['data']['sys_site'])) {
-            throw new \RuntimeException('No sys_site data or sys_site identifier given', 1521030950);
+        if (!isset($parsedBody['data']['site']) || !is_array($parsedBody['data']['site'])) {
+            throw new \RuntimeException('No site data or site identifier given', 1521030950);
         }
 
         $data = $parsedBody['data'];
         // This can be NEW123 for new records
-        $pageId = (int)key($data['sys_site']);
-        $sysSiteRow = current($data['sys_site']);
+        $pageId = (int)key($data['site']);
+        $sysSiteRow = current($data['site']);
         $siteIdentifier = $sysSiteRow['identifier'] ?? '';
 
         $isNewConfiguration = false;
@@ -236,20 +236,20 @@ class SiteConfigurationController
 
         try {
             $newSysSiteData = [];
-            // Hard set rootPageId: This is TCA readOnly and not transmitted by FormEngine, but is also the "uid" of the sys_site record
+            // Hard set rootPageId: This is TCA readOnly and not transmitted by FormEngine, but is also the "uid" of the site record
             $newSysSiteData['site']['rootPageId'] = $pageId;
             foreach ($sysSiteRow as $fieldName => $fieldValue) {
-                $type = $siteTca['sys_site']['columns'][$fieldName]['config']['type'];
+                $type = $siteTca['site']['columns'][$fieldName]['config']['type'];
                 if ($type === 'input') {
-                    $fieldValue = $this->validateAndProcessValue('sys_site', $fieldName, $fieldValue);
+                    $fieldValue = $this->validateAndProcessValue('site', $fieldName, $fieldValue);
                     $newSysSiteData['site'][$fieldName] = $fieldValue;
                 } elseif ($type === 'inline') {
                     $newSysSiteData['site'][$fieldName] = [];
                     $childRowIds = GeneralUtility::trimExplode(',', $fieldValue, true);
-                    if (!isset($siteTca['sys_site']['columns'][$fieldName]['config']['foreign_table'])) {
+                    if (!isset($siteTca['site']['columns'][$fieldName]['config']['foreign_table'])) {
                         throw new \RuntimeException('No foreign_table found for inline type', 1521555037);
                     }
-                    $foreignTable = $siteTca['sys_site']['columns'][$fieldName]['config']['foreign_table'];
+                    $foreignTable = $siteTca['site']['columns'][$fieldName]['config']['foreign_table'];
                     foreach ($childRowIds as $childRowId) {
                         $childRowData = [];
                         if (!isset($data[$foreignTable][$childRowId])) {
@@ -315,7 +315,7 @@ class SiteConfigurationController
     {
         $languageService = $this->getLanguageService();
         // Normal "eval" processing of field first
-        $identifier = $this->validateAndProcessValue('sys_site', 'identifier', $identifier);
+        $identifier = $this->validateAndProcessValue('site', 'identifier', $identifier);
         if ($isNew) {
             // Verify no other site with this identifier exists. If so, find a new unique name as
             // identifier and show a flash message the identifier has been adapted

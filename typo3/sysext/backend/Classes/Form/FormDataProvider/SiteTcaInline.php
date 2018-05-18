@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Special data provider for the sites configuration module.
  *
- * Handle inline children of 'sys_site"
+ * Handle inline children of 'site'
  */
 class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataProviderInterface
 {
@@ -47,7 +47,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
                 continue;
             }
             $childTableName = $fieldConfig['config']['foreign_table'];
-            if ($childTableName !== 'sys_site_errorhandling' && $childTableName !== 'sys_site_language') {
+            if ($childTableName !== 'site_errorhandling' && $childTableName !== 'site_language') {
                 throw new \RuntimeException('Inline relation to other tables not implemented', 1522494737);
             }
             $result['processedTca']['columns'][$fieldName]['children'] = [];
@@ -122,9 +122,9 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             }
         }
 
-        // If we are dealing with sys_site_language, we *always* force a relation to sys_language "0"
+        // If we are dealing with site_language, we *always* force a relation to sys_language "0"
         $foreignTable = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'];
-        if ($foreignTable === 'sys_site_language' && $result['command'] === 'new') {
+        if ($foreignTable === 'site_language' && $result['command'] === 'new') {
             // If new, just add a new default child
             $child = $this->compileDefaultSysSiteLanguageChild($result, $fieldName);
             $connectedUids[] = $child['databaseRow']['uid'];
@@ -141,8 +141,8 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             }
         }
 
-        // If we are dealing with sys_site_language, we *always* force a relation to sys_language "0"
-        if ($foreignTable === 'sys_site_language' && $result['command'] === 'edit') {
+        // If we are dealing with ite_language, we *always* force a relation to sys_language "0"
+        if ($foreignTable === 'site_language' && $result['command'] === 'edit') {
             // If edit, find out if a child using sys_language "0" exists, else add it on top
             $defaultSysSiteLanguageChildFound = false;
             foreach ($result['processedTca']['columns'][$fieldName]['children'] as $child) {
@@ -264,7 +264,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
     }
 
     /**
-     * Compile default sys_site_language child using sys_language uid "0"
+     * Compile default site_language child using sys_language uid "0"
      *
      * @param array $result
      * @param string $parentFieldName
@@ -280,7 +280,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
             'command' => 'new',
-            'tableName' => 'sys_site_language',
+            'tableName' => 'site_language',
             'vanillaUid' => $result['inlineFirstPid'],
             'returnUrl' => $result['returnUrl'],
             'isInlineChild' => true,
