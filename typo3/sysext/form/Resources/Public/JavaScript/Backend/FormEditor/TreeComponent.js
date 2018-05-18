@@ -67,7 +67,7 @@ define(['jquery',
           vertical: 'M0 0 V20 H0',
           hidden: 'M0 0 V0 H0'
         },
-        width: 15
+        width: 20
       }
     };
 
@@ -242,7 +242,7 @@ define(['jquery',
         expanderItem.after(
           $(icon).addClass(getHelper().getDomElementClassName('icon'))
             .tooltip({
-              title: 'identifier: ' + formElement.get('identifier'),
+              title: 'id = ' + formElement.get('identifier'),
               placement: 'right'
             })
         );

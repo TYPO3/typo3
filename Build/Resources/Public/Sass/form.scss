@@ -213,6 +213,13 @@ body {
         }
     }
 
+    #t3-form-navigation-component-tree-root {
+        width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
     .tree li > div:hover,
     .t3-form-form-element-selected,
     #t3-form-navigation-component-tree-root-container:hover,
@@ -248,6 +255,18 @@ body {
 
         svg {
             opacity: 0;
+        }
+    }
+
+    .mjs-nestedSortable-branch {
+        span[data-identifier="treeExpander"] {
+            margin-left: -1.7em;
+        }
+    }
+
+    .mjs-nestedSortable-leaf {
+        span.t3-form-icon {
+            margin-left: initial;
         }
     }
 }
