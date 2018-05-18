@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -555,17 +556,15 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             return $rows;
         }
 
-        /** @var Context $context */
-        $context = $this->objectManager->get(Context::class);
+        $context = GeneralUtility::makeInstance(Context::class);
         if ($workspaceUid === null) {
             $workspaceUid = (int)$context->getPropertyFromAspect('workspace', 'id');
         } else {
             // A custom query is needed, so a custom context is cloned
             $context = clone $context;
-            $context->setAspect('workspace', $this->objectManager->get(WorkspaceAspect::class, $workspaceUid));
+            $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $workspaceUid));
         }
-        /** @var PageRepository $pageRepository */
-        $pageRepository = $this->objectManager->get(PageRepository::class, $context);
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
 
         // Fetches the move-placeholder in case it is supported
         // by the table and if there's only one row in the result set
@@ -579,10 +578,10 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
             $queryBuilder->getRestrictions()->removeAll();
             $movePlaceholder = $queryBuilder
-                ->select($tableName . '.*')
+                ->select('*')
                 ->from($tableName)
                 ->where(
-                    $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(3, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::MOVE_PLACEHOLDER, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($versionId, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('t3ver_move_id', $queryBuilder->createNamedParameter($rows[0]['uid'], \PDO::PARAM_INT))
                 )
@@ -594,9 +593,25 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             }
         }
         $overlaidRows = [];
+        $querySettings = $query->getQuerySettings();
         foreach ($rows as $row) {
+            // If current row is a translation select its parent
+            $languageOfCurrentRecord = 0;
+            if ($GLOBALS['TCA'][$tableName]['ctrl']['languageField'] ?? null
+            && $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] ?? 0) {
+                $languageOfCurrentRecord = $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']];
+            }
+            if ($querySettings->getLanguageOverlayMode()
+                && $languageOfCurrentRecord > 0
+                && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+                && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0) {
+                $row = $pageRepository->getRawRecord(
+                    $tableName,
+                    (int)$row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']]
+                );
+            }
+            // Handle workspace overlays
             $pageRepository->versionOL($tableName, $row, true);
-            $querySettings = $query->getQuerySettings();
             if (is_array($row) && $querySettings->getLanguageOverlayMode()) {
                 if ($tableName === 'pages') {
                     $row = $pageRepository->getPageOverlay($row, $querySettings->getLanguageUid());
@@ -604,17 +619,18 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                     // todo: remove type cast once getLanguageUid strictly returns an int
                     $languageUid = (int)$querySettings->getLanguageUid();
                     if (!$querySettings->getRespectSysLanguage()
-                        && isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']])
-                        && $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] > 0
+                        && $languageOfCurrentRecord > 0
                         && (!$query instanceof Query || !$query->getParentQuery())
                     ) {
                         //no parent query means we're processing the aggregate root.
                         //respectSysLanguage is false which means that records returned by the query
                         //might be from different languages (which is desired).
                         //So we need to force language used for overlay to the language of the current record.
-                        $languageUid = $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']];
+                        $languageUid = $languageOfCurrentRecord;
                     }
-                    if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']) && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0) {
+                    if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+                        && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
+                        && $languageOfCurrentRecord > 0) {
                         //force overlay by faking default language record, as getRecordOverlay can only handle default language records
                         $row['uid'] = $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']];
                         $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = 0;

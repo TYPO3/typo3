@@ -54,4 +54,44 @@
 		<deleted>1</deleted>
 		<posts>1</posts>
 	</tx_blogexample_domain_model_blog>
+	<tx_blogexample_domain_model_blog>
+		<uid>6</uid>
+		<pid>0</pid>
+		<title>Blog6Hidden</title>
+		<description>Blog6 Description</description>
+		<logo></logo>
+		<l18n_diffsource></l18n_diffsource>
+		<hidden>1</hidden>
+		<deleted>0</deleted>
+		<posts>1</posts>
+	</tx_blogexample_domain_model_blog>
+
+
+	<tx_blogexample_domain_model_blog>
+		<uid>101</uid>
+		<pid>0</pid>
+		<title>WorkspaceOverlay Blog1</title>
+		<description>WorkspaceOverlay Blog1 Description</description>
+		<logo></logo>
+		<l18n_diffsource></l18n_diffsource>
+		<deleted>0</deleted>
+		<posts>10</posts>
+		<t3ver_oid>1</t3ver_oid>
+		<t3ver_state>-1</t3ver_state>
+		<t3ver_wsid>1</t3ver_wsid>
+	</tx_blogexample_domain_model_blog>
+	<tx_blogexample_domain_model_blog>
+		<uid>102</uid>
+		<pid>0</pid>
+		<title>WorkspaceOverlay Blog6Enabled</title>
+		<description>WorkspaceOverlay Blog6 Description</description>
+		<logo></logo>
+		<l18n_diffsource></l18n_diffsource>
+		<hidden>0</hidden>
+		<deleted>0</deleted>
+		<posts>1</posts>
+		<t3ver_oid>6</t3ver_oid>
+		<t3ver_state>-1</t3ver_state>
+		<t3ver_wsid>1</t3ver_wsid>
+	</tx_blogexample_domain_model_blog>
 </dataset>

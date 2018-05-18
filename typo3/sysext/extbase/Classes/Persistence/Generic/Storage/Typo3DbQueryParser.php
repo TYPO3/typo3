@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -715,6 +716,9 @@ class Typo3DbQueryParser
             if (!empty($pageIdStatement)) {
                 $whereClause[] = $pageIdStatement;
             }
+        } elseif (!empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'])) {
+            // Always prevent workspace records from being returned
+            $whereClause[] = $this->queryBuilder->expr()->eq($tableAlias . '.t3ver_oid', 0);
         }
 
         return $whereClause;
@@ -765,7 +769,7 @@ class Typo3DbQueryParser
         if ($ignoreEnableFields && !$includeDeleted) {
             if (!empty($enableFieldsToBeIgnored)) {
                 // array_combine() is necessary because of the way \TYPO3\CMS\Core\Domain\Repository\PageRepository::enableFields() is implemented
-                $statement .= $this->getPageRepository()->enableFields($tableName, -1, array_combine($enableFieldsToBeIgnored, $enableFieldsToBeIgnored));
+                $statement .= $this->getPageRepository()->enableFields($tableName, -1, array_combine($enableFieldsToBeIgnored, $enableFieldsToBeIgnored), true);
             } elseif (!empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
                 $statement .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
             }
@@ -788,7 +792,9 @@ class Typo3DbQueryParser
     protected function getBackendConstraintStatement($tableName, $ignoreEnableFields, $includeDeleted)
     {
         $statement = '';
-        if (!$ignoreEnableFields) {
+        // In case of versioning-preview, enableFields are ignored (checked in Typo3DbBackend::doLanguageAndWorkspaceOverlay)
+        $isUserInWorkspace = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'isOffline');
+        if (!$ignoreEnableFields && !$isUserInWorkspace) {
             $statement .= BackendUtility::BEenableFields($tableName);
         }
         if (!$includeDeleted && !empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {

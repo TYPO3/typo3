@@ -727,14 +727,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockQuerySettings->setIgnoreEnableFields(!$respectEnableFields);
         $mockQuerySettings->setIncludeDeleted(!$respectEnableFields);
 
-        /** @var $mockEnvironmentService \TYPO3\CMS\Extbase\Service\EnvironmentService | \PHPUnit\Framework\MockObject\MockObject */
-        $mockEnvironmentService = $this->getMockBuilder(EnvironmentService::class)
-            ->setMethods(['isEnvironmentInFrontendMode'])
-            ->getMock();
-        $mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn($mode === 'FE');
-
+        $environmentService = new EnvironmentService();
+        $environmentService->setFrontendMode($mode === 'FE');
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
-        $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);
+        $mockTypo3DbQueryParser->injectEnvironmentService($environmentService);
         $actualSql = $mockTypo3DbQueryParser->_call('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         self::assertSame($expectedSql, $actualSql);
         unset($GLOBALS['TCA'][$tableName]);
@@ -762,14 +758,11 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockQuerySettings->expects(self::once())->method('getEnableFieldsToBeIgnored')->willReturn([]);
         $mockQuerySettings->expects(self::once())->method('getIncludeDeleted')->willReturn(true);
 
-        /** @var $mockEnvironmentService \TYPO3\CMS\Extbase\Service\EnvironmentService | \PHPUnit\Framework\MockObject\MockObject */
-        $mockEnvironmentService = $this->getMockBuilder(EnvironmentService::class)
-            ->setMethods(['isEnvironmentInFrontendMode'])
-            ->getMock();
-        $mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn(true);
-
+        $environmentService = new EnvironmentService();
+        $environmentService->setFrontendMode(true);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
-        $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);
+        $mockTypo3DbQueryParser->injectEnvironmentService($environmentService);
+
         $mockTypo3DbQueryParser->_call('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         unset($GLOBALS['TCA'][$tableName]);
     }
