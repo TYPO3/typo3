@@ -36,14 +36,14 @@ Different changelog types
 
 A changelog handles one of these change types:
 
-- Breaking change: A patch moved or removed a specific part of core functionality that may break extensions if they use
+- **Breaking change**: A patch moved or removed a specific part of core functionality that may break extensions if they use
   this part. Removal of deprecated code or an interface change are good examples of this type.
 
-- Deprecation: A patch deprecates a certain core functionality for a planned removal.
+- **Deprecation**: A patch deprecates a certain core functionality for a planned removal.
 
-- Feature: A patch adds new functionality.
+- **Feature**: A patch adds new functionality.
 
-- Important: Any other important message.
+- **Important**: Any other important message which may require manual action.
 
 Casual bug fixes do not need changelog files, but every change that may be of special interest for extension developers
 or documentation writers should receive an entry. The changelog file must be provided as part of the patch that
@@ -55,38 +55,43 @@ Location
 
 New changelog files should usually be added to the :file:`typo3/sysext/core/Documentation/Changelog/master` directory. If a
 version is to be released, all files in this directory will be moved to a directory that is named after the release number.
-This way it can be easily seen which change has been introduced in which released core version.
+This way it can be easily seen which change has been introduced in which released TYPO3 version.
 
-In rare cases, patches worth a changelog file need to be back ported to stable LTS and / or old stable LTS versions. Those
+In rare cases, patches worth a changelog file need to be backported to stable LTS and / or old stable LTS versions. Those
 should be put into a different directory, depending on target LTS versions. We'll explain this by example:
 
-Suppose core is currently developing v9, a first 9.0 has been released, so git core branch `master` will become 9.1.0 with
+Suppose core is currently developing v9, a first 9.0 has been released, so the Git branch `master` will become version 9.1.0 with the
 next sprint release.
-Stable LTS version is currently 8.7.9, git core branch `TYPO3_8-7` will become 8.7.10 with next stable LTS patch level release.
-Old stable LTS version is currently 7.6.23, git core branch `TYPO3_7-6` will become 7.6.24 with next old stable LTS
+The stable LTS version is currently 8.7.9, so the Git branch `TYPO3_8-7` will become version 8.7.10 with the next stable LTS patch level release.
+The old stable LTS version is currently 7.6.23, so the Git branch `TYPO3_7-6` will become version 7.6.24 with next old stable LTS
 patch level release.
 
 Example scenarios:
 
-* **A feature patch is added to master:** Put the .rst file into the :file:`master/` directory. The core team will re-review
-  files in this directory shortly before 9.1.0 release and will move all files from :file:`master` into :file:`9.1` directory.
+* **A patch is only added to master:** Put the :file:`.rst` file into the :file:`typo3/sysext/core/Documentation/Changelog/master`
+  directory in the `master` branch. The core team will re-review files in this directory 
+  shortly before the 9.1.0 release and will move all files from the :file:`master` into the :file:`9.1` directory.
 
-* **A patch with an important change in behavior is not only added to master, but also to 8.7:** Put the .rst file into the
-  :file:`8.7.x` directory in `master` branch. The back port to `TYPO3_8-7` branch includes the changelog file into
-  :file:`8.7.x` directory, too. Users upgrading to latest patch level release of 8.7 will then see the new file in
-  the :file:`8.7.x` directory.
+* **A patch is not only added to master, but also backported to v8:** Put the :file:`.rst` file into the
+  :file:`typo3/sysext/core/Documentation/Changelog/8.7.x` directory in the `master` branch. 
+  The backport to `TYPO3_8-7` branch includes the changelog file into :file:`8.7.x` directory, too.
+  Users upgrading to latest patch level release of 8.7 will then see the new file in the :file:`8.7.x` directory.
 
-* **A patch with an important change in behavior is not only added to master, but back ported to 8.7 and to 7.6:** Put the .rst
-  into :file:`8.7.x` directory, duplicate the file and also add it to :file:`7.6.x` directory in the `master` branch. The
-  back port to `TYPO3_8-7` branch adds these two files as well. The patch to `TYPO3_7-6` branch adds only the file in the
-  :file:`7.6.x` directory, not the file in :file:`8.7.x` directory.
-  Users upgrading to latest 7.6 patch level will then see the new file in :file:`7.6.x` directory, users upgrading to
-  latest 8.7 patch level will see the a new file in :file:`7.6.x` directory, and also in :file:`8.7.x` directory.
+* **A patch is not only added to master, but backported to v8 and v7:** Put the .rst
+  into :file:`typo3/sysext/core/Documentation/Changelog/8.7.x` and a duplicate into
+  :file:`typo3/sysext/core/Documentation/Changelog/7.6.x` directories in the `master` branch.
+  The backport to the `TYPO3_8-7` branch have the two identical files in both directories, too.
+  The `TYPO3_7-6` branch backport contains only the :file:`typo3/sysext/core/Documentation/Changelog/7.6.x`, the
+  `8.7.x` directory does not exist in the version 7 branch.
+  Users upgrading to latest 7.6 patch level or the latest 8.7 patch level will then see
+  the new file in :file:`7.6.x` directory or in :file:`8.7.x` directory, respectively.
 
-The main goal of this approach is to have a consistent state of changelog file across branches. Changelog files from
-older releases are never deleted in younger branches. They are still rendered in the install tool
-"View Upgrade Documentation" and are connected to the "Extension scanner". In our example above, master contains
-all changelog files for v9, and v8 and v7 files, branch `TYPO3_8-7` contains all files for v8 and v7, and branch
+The main goal of this approach is to have a consistent state of changelog file across branches. 
+Changelog files are added to the oldest release branch where a change has been backported to, thus basically 
+the first TYPO3 version where a change is visible. Changelog files from older releases are never deleted in younger branches. 
+They are still rendered in the install tool
+"View Upgrade Documentation" and are connected to the "Extension scanner". In our example above, the `master`branch contains
+all changelog files for TYPO3 v9, v8 and v7, the branch `TYPO3_8-7` contains all files for TYPO3 v8 and v7, and the branch
 `TYPO3_7-6` contains all v7 files.
 
 Furthermore, documentation files from older releases should be identical in all branches. If a patch improves some
