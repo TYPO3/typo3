@@ -289,7 +289,7 @@ class FileList
         $this->fileListController = $fileListController;
         $this->thumbnailConfiguration = GeneralUtility::makeInstance(ThumbnailConfiguration::class);
         $this->iLimit = MathUtility::forceIntegerInRange(
-            $backendUser->getTSConfig()['options.']['file_list.']['filesPerPage'] ?? 1,
+            $backendUser->getTSConfig()['options.']['file_list.']['filesPerPage'] ?? $this->iLimit,
             1
         );
     }
