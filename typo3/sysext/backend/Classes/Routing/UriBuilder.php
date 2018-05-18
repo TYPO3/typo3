@@ -55,7 +55,7 @@ class UriBuilder
     }
 
     /**
-     * Generates a URL or path for a specific route based on the given rout.
+     * Generates a URL or path for a specific route based on the given route.
      * Currently used to link to the current script, it is encouraged to use "buildUriFromRoute" if possible.
      *
      * If there is no route with the given name, the generator throws the RouteNotFoundException.
