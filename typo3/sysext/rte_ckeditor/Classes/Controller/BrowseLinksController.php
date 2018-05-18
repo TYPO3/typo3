@@ -173,6 +173,9 @@ class BrowseLinksController extends AbstractLinkBrowserController
             $this->currentLinkParts['type'] = $data['type'];
             unset($data['type']);
             $this->currentLinkParts['url'] = $data;
+            if (!empty($this->currentLinkParts['url']['parameters'])) {
+                $this->currentLinkParts['params'] = '&' . $this->currentLinkParts['url']['parameters'];
+            }
         }
 
         if (!empty($this->currentLinkParts['class'])) {
