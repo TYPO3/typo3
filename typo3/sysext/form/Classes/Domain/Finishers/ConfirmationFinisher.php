@@ -91,9 +91,9 @@ class ConfirmationFinisher extends AbstractFinisher
      */
     protected function executeInternal()
     {
-        $contentElementUid = (int)$this->parseOption('contentElementUid');
+        $contentElementUid = $this->parseOption('contentElementUid');
         $typoscriptObjectPath = $this->parseOption('typoscriptObjectPath');
-        if ($contentElementUid > 0) {
+        if (!empty($contentElementUid)) {
             $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
             $lastSegment = array_pop($pathSegments);
             $setup = $this->typoScriptSetup;

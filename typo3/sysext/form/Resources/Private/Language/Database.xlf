@@ -42,6 +42,16 @@
                 <source>Invalid configuration.</source>
             </trans-unit>
 
+            <trans-unit id="tt_content.finishersDefinition.Confirmation.label" xml:space="preserve">
+                <source>Confirmation</source>
+            </trans-unit>
+            <trans-unit id="tt_content.finishersDefinition.Confirmation.message.label" xml:space="preserve">
+                <source>Text</source>
+            </trans-unit>
+            <trans-unit id="tt_content.finishersDefinition.Confirmation.contentElementUid.label" xml:space="preserve">
+                <source>Record</source>
+            </trans-unit>
+
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.label" xml:space="preserve">
                 <source>Email to sender (form submitter)</source>
             </trans-unit>
