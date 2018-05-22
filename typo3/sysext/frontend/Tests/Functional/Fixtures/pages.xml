@@ -96,6 +96,23 @@
     </pages>
 
     <pages>
+        <uid>501</uid>
+        <pid>1</pid>
+        <title>Localization 1-501</title>
+        <deleted>0</deleted>
+        <l18n_cfg>1</l18n_cfg>
+    </pages>
+    <pages>
+        <uid>502</uid>
+        <pid>1</pid>
+        <title>Übersetzung 1-501</title>
+        <deleted>0</deleted>
+        <l10n_parent>501</l10n_parent>
+        <l18n_cfg>1</l18n_cfg>
+        <sys_language_uid>1</sys_language_uid>
+    </pages>
+
+    <pages>
         <uid>901</uid>
         <pid>0</pid>
         <l10n_parent>1</l10n_parent>

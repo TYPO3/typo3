@@ -235,7 +235,7 @@ class PageRepository implements LoggerAwareInterface
      * The page record is either served from a first-level cache or loaded from the
      * database. If no page can be found, an empty array is returned.
      *
-     * Language overlay and versioning overlay are applied. Mount Point
+     * Language overlay and version overlay are applied. Mount Point
      * handling is not done, an overlaid Mount Point is not replaced.
      *
      * The result is conditioned by the public properties where_groupAccess
@@ -297,9 +297,16 @@ class PageRepository implements LoggerAwareInterface
 
         $row = $queryBuilder->execute()->fetch();
         if ($row) {
-            $this->versionOL('pages', $row);
-            if (is_array($row)) {
-                $result = $this->getPageOverlay($row);
+            $tsfe = $this->getTypoScriptFrontendController();
+            if ($tsfe->sys_language_uid > 0 || !GeneralUtility::hideIfDefaultLanguage($row['l18n_cfg'])) {
+                $this->versionOL('pages', $row);
+                if (is_array($row)) {
+                    $row = $this->getPageOverlay($row);
+
+                    if ($tsfe->sys_language_uid === 0 || isset($row['_PAGES_OVERLAY']) || !GeneralUtility::hideIfNotTranslated($row['l18n_cfg'])) {
+                        $result = $row;
+                    }
+                }
             }
         }
         $this->cache_getPage[$uid][$cacheKey] = $result;
@@ -727,6 +734,10 @@ class PageRepository implements LoggerAwareInterface
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
 
+        // Always ensure fetching l18n_cfg for further processing
+        if ($fields !== '*' && !GeneralUtility::inList($fields, 'l18n_cfg')) {
+            $fields .= ',l18n_cfg';
+        }
         $res = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
             ->from('pages')
             ->where(
@@ -757,9 +768,9 @@ class PageRepository implements LoggerAwareInterface
 
             // Versioning Preview Overlay
             $this->versionOL('pages', $page, true);
-            // Skip if page got disabled due to version overlay
-            // (might be delete or move placeholder)
-            if (empty($page)) {
+            // Skip if page got disabled due to version overlay or default language should be hidden
+            // (might be deleted or move placeholder)
+            if (empty($page) || GeneralUtility::hideIfDefaultLanguage($page['l18n_cfg'])) {
                 continue;
             }
 
