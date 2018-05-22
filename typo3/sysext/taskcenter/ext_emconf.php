@@ -10,14 +10,14 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Kasper Skaarhoj',
     'author_email' => 'kasperYYYY@typo3.com',
     'author_company' => 'Curby Soft Multimedia',
-    'version' => '7.6.28',
+    'version' => '7.6.29',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.28',
+            'typo3' => '7.6.29',
         ],
         'conflicts' => [],
         'suggests' => [
-            'sys_action' => '7.6.28',
+            'sys_action' => '7.6.29',
         ],
     ],
 ];
