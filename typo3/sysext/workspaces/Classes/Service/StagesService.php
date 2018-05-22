@@ -238,7 +238,7 @@ class StagesService implements SingletonInterface
     }
 
     /**
-     * Prepares simplified stages array to be used in ExtJs components.
+     * Prepares simplified stages array
      *
      * @param StageRecord[] $stageRecords
      * @return array

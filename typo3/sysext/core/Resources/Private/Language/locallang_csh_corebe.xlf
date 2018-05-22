@@ -93,7 +93,6 @@ Clicking the title of a page is another option. It will load the right frame of 
 			<trans-unit id="_pagetree.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:list_module,
 More about the Page Tree | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageTree/
-Rendering Page trees [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/JavaScript/UsingExtjs/PageTree/
 Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_01.gif
 Clicking Icons or Titles? (Animation) | FILE:EXT:welcome/modsub/ani_06.gif
 Creating pages (Animation) | FILE:EXT:welcome/modsub/ani_07.gif

@@ -621,7 +621,7 @@ export class GridEditor {
   }
 
   /**
-   * Creates an ExtJs Window with two input fields and shows it. On save, the data
+   * Creates an Modal with two input fields and shows it. On save, the data
    * is written into the grid element.
    *
    * @param {number} col

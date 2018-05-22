@@ -185,11 +185,6 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    // EXTJS PAGETREE FIXES START
-    #typo3-pagetree-treeContainer > div > .x-panel-body {
-        overflow: auto;
-    }
-    // EXTJS PAGETREE FIXES END
 }
 
 .scaffold-content-module {

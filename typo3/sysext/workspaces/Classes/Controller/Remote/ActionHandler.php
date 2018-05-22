@@ -81,7 +81,7 @@ class ActionHandler
      * @param string $table
      * @param int $t3ver_oid
      * @param int $orig_uid
-     * @todo What about reporting errors back to the ExtJS interface? /olly/
+     * @todo What about reporting errors back to the interface? /olly/
      */
     public function swapSingleRecord($table, $t3ver_oid, $orig_uid)
     {
@@ -103,7 +103,7 @@ class ActionHandler
      *
      * @param string $table
      * @param int $uid
-     * @todo What about reporting errors back to the ExtJS interface? /olly/
+     * @todo What about reporting errors back to the interface? /olly/
      */
     public function deleteSingleRecord($table, $uid)
     {

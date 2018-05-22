@@ -19,7 +19,7 @@ What does it do?
 ^^^^^^^^^^^^^^^^
 
 The new improved recycler offers the possibilities of cleaning up the
-garbage collection or to restore data again. Based on an ExtJS
+garbage collection or to restore data again. Based on an JavaScript
 interface it's possible to get a quick overview of the accordant
 records, filter the resultset and execute the required actions.
 

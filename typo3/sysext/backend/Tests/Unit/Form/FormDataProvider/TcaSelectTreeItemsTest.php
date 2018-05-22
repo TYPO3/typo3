@@ -128,7 +128,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsTreeConfigurationForExtJs()
+    public function addDataAddsTreeConfigurationForSelectTreeElement()
     {
         $GLOBALS['TCA']['foreignTable'] = [];
 

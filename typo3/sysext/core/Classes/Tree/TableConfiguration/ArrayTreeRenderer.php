@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 
 /**
- * Renders a tca tree array for ExtJS
+ * Renders a tca tree array for the SelectElementTree
  */
 class ArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
 {

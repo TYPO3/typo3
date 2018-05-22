@@ -372,11 +372,6 @@
 // CONTEXT MENU
 //
 
-// pagetree-context-menu shadow
-.x-shadow {
-    z-index: 40 !important;                       // problem with EXTJS - needs to be removed
-}
-
 [id=typo3-pagetree-indicatorBar-temporaryMountPoint] {
     .media-right {
         position: absolute;
