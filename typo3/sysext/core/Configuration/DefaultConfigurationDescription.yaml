@@ -199,6 +199,13 @@ SYS:
         generateApacheHtaccess:
             type: bool
             description: 'TYPO3 can create <em>.htaccess</em> files which are used by Apache Webserver. They are useful for access protection or performance improvements. Currently <em>.htaccess</em> files in the following directories are created, if they do not exist: <ul><li>typo3temp/compressor/</li></ul>You want to disable this feature, if you are not running Apache or want to use own rulesets.'
+        ipAnonymization:
+            type: int
+            allowedValues:
+              '0': 'Disabled - Do not modify IP addresses at all'
+              '1': 'Mask the last byte for IPv4 addresses / Mask the Interface ID for IPv6 addresses (default)'
+              '2': 'Mask the last two bytes for IPv4 addresses / Mask the Interface ID and SLA ID for IPv6 addresses'
+            description: 'Configures if and how IP addresses stored via TYPO3''s API should be anonymized ("masked") with a zero-numbered replacement.'
         systemMaintainers:
             type: array
             description: 'A list of backend user IDs allowed to access the Install Tool'

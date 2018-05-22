@@ -204,6 +204,7 @@ return [
         'belogErrorReporting' => E_ALL & ~(E_STRICT | E_NOTICE),
         'locallangXMLOverride' => [], // For extension/overriding of the arrays in 'locallang' files in frontend  and backend. See 'Inside TYPO3' for more information.
         'generateApacheHtaccess' => 1,
+        'ipAnonymization' => 1,
         'Objects' => [],
         'fal' => [
             'registeredDrivers' => [
