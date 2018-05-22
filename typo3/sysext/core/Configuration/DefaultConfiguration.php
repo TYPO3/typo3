@@ -80,6 +80,7 @@ return [
         'recursiveDomainSearch' => false,
         'trustedHostsPattern' => 'SERVER_NAME',
         'devIPmask' => '127.0.0.1,::1',
+        'ipAnonymization' => 1,
         'sqlDebug' => 0,
         'enable_DLOG' => false,
         'ddmmyy' => 'd-m-y',
