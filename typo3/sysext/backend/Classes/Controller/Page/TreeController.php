@@ -356,7 +356,7 @@ class TreeController
                 $entryPointRootLine = $pageRepository->getRootLine($entryPoint);
                 foreach ($entryPointRootLine as $rootLineEntry) {
                     $parentUid = $rootLineEntry['uid'];
-                    if ($this->backgroundColors[$parentUid] !== null && $this->backgroundColors[$entryPoint] === null) {
+                    if (!empty($this->backgroundColors[$parentUid]) && empty($this->backgroundColors[$entryPoint])) {
                         $this->backgroundColors[$entryPoint] = $this->backgroundColors[$parentUid];
                     }
                 }
