@@ -81,7 +81,7 @@ class AbstractFormElementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
                     'format' => 'datetime',
                 ],
                 '1412358894',
-                '17:54 03-10-2014'
+                '03-10-14 17:54'
             ],
             'format to datetime with empty value' => [
                 [
