@@ -220,19 +220,19 @@ abstract class AbstractFormElement extends AbstractNode
             case 'datetime':
                 // compatibility with "eval" (type "input")
                 if ($itemValue !== '' && $itemValue !== null) {
-                    $itemValue = date('H:i d-m-Y', (int)$itemValue);
+                    $itemValue = BackendUtility::datetime((int)$itemValue);
                 }
                 break;
             case 'time':
                 // compatibility with "eval" (type "input")
                 if ($itemValue !== '' && $itemValue !== null) {
-                    $itemValue = gmdate('H:i', (int)$itemValue);
+                    $itemValue = BackendUtility::time((int)$itemValue, false);
                 }
                 break;
             case 'timesec':
                 // compatibility with "eval" (type "input")
                 if ($itemValue !== '' && $itemValue !== null) {
-                    $itemValue = gmdate('H:i:s', (int)$itemValue);
+                    $itemValue = BackendUtility::time((int)$itemValue);
                 }
                 break;
             case 'year':
