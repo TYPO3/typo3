@@ -119,6 +119,9 @@ class Section extends AbstractSection implements FormElementInterface
     {
         if (is_array($value) && isset($this->properties[$key]) && is_array($this->properties[$key])) {
             ArrayUtility::mergeRecursiveWithOverrule($this->properties[$key], $value);
+            $this->properties[$key] = ArrayUtility::removeNullValuesRecursive($this->properties[$key]);
+        } elseif ($value === null) {
+            unset($this->properties[$key]);
         } else {
             $this->properties[$key] = $value;
         }
@@ -134,7 +137,14 @@ class Section extends AbstractSection implements FormElementInterface
      */
     public function setRenderingOption(string $key, $value)
     {
-        $this->renderingOptions[$key] = $value;
+        if (is_array($value) && isset($this->renderingOptions[$key]) && is_array($this->renderingOptions[$key])) {
+            ArrayUtility::mergeRecursiveWithOverrule($this->renderingOptions[$key], $value);
+            $this->renderingOptions[$key] = ArrayUtility::removeNullValuesRecursive($this->renderingOptions[$key]);
+        } elseif ($value === null) {
+            unset($this->renderingOptions[$key]);
+        } else {
+            $this->renderingOptions[$key] = $value;
+        }
     }
 
     /**

@@ -119,6 +119,11 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
     public function setDefaultValue($defaultValue)
     {
         $formDefinition = $this->getRootForm();
+        $currentDefaultValue = $formDefinition->getElementDefaultValueByIdentifier($this->identifier);
+        if (is_array($currentDefaultValue) && is_array($defaultValue)) {
+            ArrayUtility::mergeRecursiveWithOverrule($currentDefaultValue, $defaultValue);
+            $defaultValue = ArrayUtility::removeNullValuesRecursive($currentDefaultValue);
+        }
         $formDefinition->addElementDefaultValue($this->identifier, $defaultValue);
     }
 
@@ -149,6 +154,9 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
     {
         if (is_array($value) && isset($this->properties[$key]) && is_array($this->properties[$key])) {
             ArrayUtility::mergeRecursiveWithOverrule($this->properties[$key], $value);
+            $this->properties[$key] = ArrayUtility::removeNullValuesRecursive($this->properties[$key]);
+        } elseif ($value === null) {
+            unset($this->properties[$key]);
         } else {
             $this->properties[$key] = $value;
         }

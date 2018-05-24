@@ -354,13 +354,7 @@ class FormDefinition extends AbstractCompositeRenderable
         }
         if (isset($options['renderingOptions'])) {
             foreach ($options['renderingOptions'] as $key => $value) {
-                if (is_array($value)) {
-                    $currentValue = $this->getRenderingOptions()[$key] ?? [];
-                    ArrayUtility::mergeRecursiveWithOverrule($currentValue, $value);
-                    $this->setRenderingOption($key, $currentValue);
-                } else {
-                    $this->setRenderingOption($key, $value);
-                }
+                $this->setRenderingOption($key, $value);
             }
         }
         if (isset($options['finishers'])) {

@@ -2,6 +2,19 @@
 declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use TYPO3\CMS\Form\Domain\Model\FormElements\Section;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -85,5 +98,114 @@ class SectionTest extends UnitTestCase
         $this->assertCount(2, $properties['foo']);
         $this->assertTrue(array_key_exists('bar', $properties['foo']));
         $this->assertEquals('baz', $properties['foo']['bar']);
+    }
+
+    /**
+     * @test
+     */
+    public function setPropertyUnsetIfValueIsNull(): void
+    {
+        $expected = ['foo-1' => ['bar-1' => 'foo-2']];
+        $this->sectionInstance->setProperty('foo-1', ['bar-1' => 'foo-2']);
+        $this->sectionInstance->setProperty('foo-2', ['bar-2' => 'foo-3']);
+        $this->sectionInstance->setProperty('foo-2', null);
+
+        $this->assertSame($expected, $this->sectionInstance->getProperties());
+    }
+
+    /**
+     * @test
+     */
+    public function setPropertyUnsetIfValueIsArrayWithSomeNullVales(): void
+    {
+        $expected = [
+            'foo-1' => [
+                'bar-1' => 'foo-2'
+            ],
+            'foo-2' => [
+                'bar-2' => 'foo-3'
+            ]
+        ];
+        $this->sectionInstance->setProperty('foo-1', ['bar-1' => 'foo-2']);
+        $this->sectionInstance->setProperty('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
+        $this->sectionInstance->setProperty('foo-2', ['bar-3' => null]);
+
+        $this->assertSame($expected, $this->sectionInstance->getProperties());
+    }
+
+    /**
+     * @test
+     */
+    public function setRenderingOptionSetStringValueIfKeyDoesNotExists(): void
+    {
+        $expected = ['foo' => 'bar'];
+        $this->sectionInstance->setRenderingOption('foo', 'bar');
+
+        $this->assertSame($expected, $this->sectionInstance->getRenderingOptions());
+    }
+
+    /**
+     * @test
+     */
+    public function setRenderingOptionSetArrayValueIfKeyDoesNotExists(): void
+    {
+        $expected = ['foo-1' => ['bar' => 'foo-2']];
+        $this->sectionInstance->setRenderingOption('foo-1', ['bar' => 'foo-2']);
+
+        $this->assertSame($expected, $this->sectionInstance->getRenderingOptions());
+    }
+
+    /**
+     * @test
+     */
+    public function setRenderingOptionUnsetIfValueIsNull(): void
+    {
+        $expected = ['foo-1' => ['bar-1' => 'foo-2']];
+        $this->sectionInstance->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
+        $this->sectionInstance->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);
+        $this->sectionInstance->setRenderingOption('foo-2', null);
+
+        $this->assertSame($expected, $this->sectionInstance->getRenderingOptions());
+    }
+
+    /**
+     * @test
+     */
+    public function setRenderingOptionUnsetIfValueIsArrayWithSomeNullVales(): void
+    {
+        $expected = [
+            'foo-1' => [
+                'bar-1' => 'foo-2'
+            ],
+            'foo-2' => [
+                'bar-2' => 'foo-3'
+            ]
+        ];
+        $this->sectionInstance->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
+        $this->sectionInstance->setRenderingOption('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
+        $this->sectionInstance->setRenderingOption('foo-2', ['bar-3' => null]);
+
+        $this->assertSame($expected, $this->sectionInstance->getRenderingOptions());
+    }
+
+    /**
+     * @test
+     */
+    public function setRenderingOptionAddValueIfValueIsArray(): void
+    {
+        $expected = [
+            'foo-1' => [
+                'bar-1' => 'foo-2'
+            ],
+            'foo-2' => [
+                'bar-2' => 'foo-3',
+                'bar-3' => 'foo-4'
+            ]
+        ];
+        $this->sectionInstance->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
+        $this->sectionInstance->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);
+        $this->sectionInstance->setRenderingOption('foo-2', ['bar-3' => 'foo-4']);
+
+        $this->assertSame($expected, $this->sectionInstance->getRenderingOptions());
     }
 }

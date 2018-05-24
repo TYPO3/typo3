@@ -146,13 +146,7 @@ abstract class AbstractRenderable implements RenderableInterface
 
         if (isset($options['renderingOptions'])) {
             foreach ($options['renderingOptions'] as $key => $value) {
-                if (is_array($value)) {
-                    $currentValue = $this->getRenderingOptions()[$key] ?? [];
-                    ArrayUtility::mergeRecursiveWithOverrule($currentValue, $value);
-                    $this->setRenderingOption($key, $currentValue);
-                } else {
-                    $this->setRenderingOption($key, $value);
-                }
+                $this->setRenderingOption($key, $value);
             }
         }
 
@@ -268,7 +262,14 @@ abstract class AbstractRenderable implements RenderableInterface
      */
     public function setRenderingOption(string $key, $value)
     {
-        $this->renderingOptions[$key] = $value;
+        if (is_array($value) && isset($this->renderingOptions[$key]) && is_array($this->renderingOptions[$key])) {
+            ArrayUtility::mergeRecursiveWithOverrule($this->renderingOptions[$key], $value);
+            $this->renderingOptions[$key] = ArrayUtility::removeNullValuesRecursive($this->renderingOptions[$key]);
+        } elseif ($value === null) {
+            unset($this->renderingOptions[$key]);
+        } else {
+            $this->renderingOptions[$key] = $value;
+        }
     }
 
     /**

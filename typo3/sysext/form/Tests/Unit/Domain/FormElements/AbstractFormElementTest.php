@@ -2,6 +2,19 @@
 declare(strict_types = 1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
@@ -79,6 +92,43 @@ class AbstractFormElementTest extends UnitTestCase
         $this->assertCount(2, $properties['foo']);
         $this->assertTrue(array_key_exists('bar', $properties['foo']));
         $this->assertEquals('baz', $properties['foo']['bar']);
+    }
+
+    /**
+     * @test
+     */
+    public function setPropertyUnsetIfValueIsNull(): void
+    {
+        $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
+
+        $expected = ['foo-1' => ['bar-1' => 'foo-2']];
+        $subject->setProperty('foo-1', ['bar-1' => 'foo-2']);
+        $subject->setProperty('foo-2', ['bar-2' => 'foo-3']);
+        $subject->setProperty('foo-2', null);
+
+        $this->assertSame($expected, $subject->getProperties());
+    }
+
+    /**
+     * @test
+     */
+    public function setPropertyUnsetIfValueIsArrayWithSomeNullVales(): void
+    {
+        $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
+
+        $expected = [
+            'foo-1' => [
+                'bar-1' => 'foo-2'
+            ],
+            'foo-2' => [
+                'bar-2' => 'foo-3'
+            ]
+        ];
+        $subject->setProperty('foo-1', ['bar-1' => 'foo-2']);
+        $subject->setProperty('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
+        $subject->setProperty('foo-2', ['bar-3' => null]);
+
+        $this->assertSame($expected, $subject->getProperties());
     }
 
     /**
@@ -212,5 +262,175 @@ class AbstractFormElementTest extends UnitTestCase
             $abstractFormElementMock1->getUniqueIdentifier(),
             $abstractFormElementMock2->getUniqueIdentifier()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function setDefaultValueSetStringValueIfKeyDoesNotExists(): void
+    {
+        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
+            'dummy'
+        ], [], '', false);
+
+        $abstractFormElementMock = $this->getAccessibleMockForAbstractClass(
+            AbstractFormElement::class,
+            ['is_in', 'a_type'],
+            '',
+            true,
+            true,
+            true,
+            ['getRootForm']
+        );
+
+        $abstractFormElementMock
+            ->method('getRootForm')
+            ->willReturn($formDefinitionMock);
+
+        $input = 'foo';
+        $expected = 'foo';
+
+        $abstractFormElementMock->setDefaultValue($input);
+
+        $this->assertSame($expected, $abstractFormElementMock->getDefaultValue());
+    }
+
+    /**
+     * @test
+     */
+    public function setDefaultValueSetArrayValueIfKeyDoesNotExists(): void
+    {
+        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
+            'dummy'
+        ], [], '', false);
+
+        $abstractFormElementMock = $this->getAccessibleMockForAbstractClass(
+            AbstractFormElement::class,
+            ['is_in', 'a_type'],
+            '',
+            true,
+            true,
+            true,
+            ['getRootForm']
+        );
+
+        $abstractFormElementMock
+            ->method('getRootForm')
+            ->willReturn($formDefinitionMock);
+
+        $input = ['foo' => 'bar'];
+        $expected = ['foo' => 'bar'];
+
+        $abstractFormElementMock->setDefaultValue($input);
+
+        $this->assertSame($expected, $abstractFormElementMock->getDefaultValue());
+    }
+
+    /**
+     * @test
+     */
+    public function setDefaultValueUnsetIfValueIsArrayWithSomeNullVales(): void
+    {
+        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
+            'dummy'
+        ], [], '', false);
+
+        $abstractFormElementMock = $this->getAccessibleMockForAbstractClass(
+            AbstractFormElement::class,
+            ['is_in', 'a_type'],
+            '',
+            true,
+            true,
+            true,
+            ['getRootForm']
+        );
+
+        $abstractFormElementMock
+            ->method('getRootForm')
+            ->willReturn($formDefinitionMock);
+
+        $input1 = [
+            'foo-1' => [
+                'bar-1' => 'foo-2'
+            ],
+            'foo-2' => [
+                'bar-2' => 'foo-3',
+                'bar-3' => 'foo-4'
+            ]
+        ];
+
+        $input2 = [
+            'foo-2' => [
+                'bar-3' => null
+            ]
+        ];
+
+        $expected = [
+            'foo-1' => [
+                'bar-1' => 'foo-2'
+            ],
+            'foo-2' => [
+                'bar-2' => 'foo-3'
+            ]
+        ];
+
+        $abstractFormElementMock->setDefaultValue($input1);
+        $abstractFormElementMock->setDefaultValue($input2);
+
+        $this->assertSame($expected, $abstractFormElementMock->getDefaultValue());
+    }
+
+    /**
+     * @test
+     */
+    public function setDefaultValueAddValueIfValueIsArray(): void
+    {
+        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
+            'dummy'
+        ], [], '', false);
+
+        $abstractFormElementMock = $this->getAccessibleMockForAbstractClass(
+            AbstractFormElement::class,
+            ['is_in', 'a_type'],
+            '',
+            true,
+            true,
+            true,
+            ['getRootForm']
+        );
+
+        $abstractFormElementMock
+            ->method('getRootForm')
+            ->willReturn($formDefinitionMock);
+
+        $input1 = [
+            'foo-1' => [
+                'bar-1' => 'foo-2'
+            ],
+            'foo-2' => [
+                'bar-2' => 'foo-3',
+            ]
+        ];
+
+        $input2 = [
+            'foo-2' => [
+                'bar-3' => 'foo-4'
+            ]
+        ];
+
+        $expected = [
+            'foo-1' => [
+                'bar-1' => 'foo-2'
+            ],
+            'foo-2' => [
+                'bar-2' => 'foo-3',
+                'bar-3' => 'foo-4'
+            ]
+        ];
+
+        $abstractFormElementMock->setDefaultValue($input1);
+        $abstractFormElementMock->setDefaultValue($input2);
+
+        $this->assertSame($expected, $abstractFormElementMock->getDefaultValue());
     }
 }
