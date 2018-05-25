@@ -35,6 +35,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Renderer\RendererInterface;
 use TYPO3\CMS\Form\Domain\Runtime\Exception\PropertyMappingException;
+use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -205,6 +206,12 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     {
         if (!$this->formState->isFormSubmitted()) {
             $this->currentPage = $this->formDefinition->getPageByIndex(0);
+            $renderingOptions = $this->currentPage->getRenderingOptions();
+
+            if (!$this->currentPage->isEnabled()) {
+                throw new FormException('Disabling the first page is not allowed', 1527186844);
+            }
+
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'] ?? [] as $className) {
                 $hookObj = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObj, 'afterInitializeCurrentPage')) {
@@ -218,21 +225,38 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             }
             return;
         }
-        $this->lastDisplayedPage = $this->formDefinition->getPageByIndex($this->formState->getLastDisplayedPageIndex());
 
-        // We know now that lastDisplayedPage is filled
+        $this->lastDisplayedPage = $this->formDefinition->getPageByIndex($this->formState->getLastDisplayedPageIndex());
         $currentPageIndex = (int)$this->request->getInternalArgument('__currentPage');
-        if ($currentPageIndex > $this->lastDisplayedPage->getIndex() + 1) {
-            // We only allow jumps to following pages
-            $currentPageIndex = $this->lastDisplayedPage->getIndex() + 1;
+
+        if ($this->userWentBackToPreviousStep()) {
+            if ($currentPageIndex < $this->lastDisplayedPage->getIndex()) {
+                $currentPageIndex = $this->lastDisplayedPage->getIndex();
+            }
+        } else {
+            if ($currentPageIndex > $this->lastDisplayedPage->getIndex() + 1) {
+                $currentPageIndex = $this->lastDisplayedPage->getIndex() + 1;
+            }
         }
 
-        // We now know that the user did not try to skip a page
-        if ($currentPageIndex === count($this->formDefinition->getPages())) {
+        if ($currentPageIndex >= count($this->formDefinition->getPages())) {
             // Last Page
             $this->currentPage = null;
         } else {
             $this->currentPage = $this->formDefinition->getPageByIndex($currentPageIndex);
+            $renderingOptions = $this->currentPage->getRenderingOptions();
+
+            if (!$this->currentPage->isEnabled()) {
+                if ($currentPageIndex === 0) {
+                    throw new FormException('Disabling the first page is not allowed', 1527186845);
+                }
+
+                if ($this->userWentBackToPreviousStep()) {
+                    $this->currentPage = $this->getPreviousEnabledPage();
+                } else {
+                    $this->currentPage = $this->getNextEnabledPage();
+                }
+            }
         }
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'] ?? [] as $className) {
@@ -440,6 +464,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         }
 
         foreach ($page->getElementsRecursively() as $element) {
+            if (!$element->isEnabled()) {
+                continue;
+            }
+
             try {
                 $value = ArrayUtility::getValueByPath($requestArguments, $element->getIdentifier(), '.');
             } catch (MissingArrayPathException $exception) {
@@ -609,10 +637,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * Returns the currently selected page
      *
-     * @return Page
+     * @return Page|null
      * @api
      */
-    public function getCurrentPage(): Page
+    public function getCurrentPage(): ?Page
     {
         return $this->currentPage;
     }
@@ -623,7 +651,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @return Page|null
      * @api
      */
-    public function getPreviousPage()
+    public function getPreviousPage(): ?Page
     {
         $previousPageIndex = $this->currentPage->getIndex() - 1;
         if ($this->formDefinition->hasPageWithIndex($previousPageIndex)) {
@@ -638,13 +666,77 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @return Page|null
      * @api
      */
-    public function getNextPage()
+    public function getNextPage(): ?Page
     {
         $nextPageIndex = $this->currentPage->getIndex() + 1;
         if ($this->formDefinition->hasPageWithIndex($nextPageIndex)) {
             return $this->formDefinition->getPageByIndex($nextPageIndex);
         }
         return null;
+    }
+
+    /**
+     * Returns the previous enabled page of the currently selected one
+     * or NULL if there is no previous page
+     *
+     * @return Page|null
+     * @api
+     */
+    public function getPreviousEnabledPage(): ?Page
+    {
+        $previousPage = null;
+        $previousPageIndex = $this->currentPage->getIndex() - 1;
+        while ($previousPageIndex >= 0) {
+            if ($this->formDefinition->hasPageWithIndex($previousPageIndex)) {
+                $previousPage = $this->formDefinition->getPageByIndex($previousPageIndex);
+
+                if ($previousPage->isEnabled()) {
+                    break;
+                }
+
+                $previousPage = null;
+                $previousPageIndex--;
+            } else {
+                $previousPage = null;
+                break;
+            }
+        }
+
+        return $previousPage;
+    }
+
+    /**
+     * Returns the next enabled page of the currently selected one or
+     * NULL if there is no next page
+     *
+     * @return Page|null
+     * @api
+     */
+    public function getNextEnabledPage(): ?Page
+    {
+        $nextPage = null;
+        $pageCount = count($this->formDefinition->getPages());
+        $nextPageIndex = $this->currentPage->getIndex() + 1;
+
+        while ($nextPageIndex < $pageCount) {
+            if ($this->formDefinition->hasPageWithIndex($nextPageIndex)) {
+                $nextPage = $this->formDefinition->getPageByIndex($nextPageIndex);
+                $renderingOptions = $nextPage->getRenderingOptions();
+                if (
+                    !isset($renderingOptions['enabled'])
+                    || (bool)$renderingOptions['enabled']
+                ) {
+                    break;
+                }
+                $nextPage = null;
+                $nextPageIndex++;
+            } else {
+                $nextPage = null;
+                break;
+            }
+        }
+
+        return $nextPage;
     }
 
     /**

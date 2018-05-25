@@ -125,6 +125,11 @@ abstract class AbstractFinisher implements FinisherInterface
     final public function execute(FinisherContext $finisherContext)
     {
         $this->finisherContext = $finisherContext;
+
+        if (!$this->isEnabled()) {
+            return null;
+        }
+
         return $this->executeInternal();
     }
 
@@ -347,6 +352,16 @@ abstract class AbstractFinisher implements FinisherInterface
         }
         // in case no value could be resolved
         return '{' . $property . '}';
+    }
+
+    /**
+     * Returns whether this finisher is enabled
+     *
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return !isset($this->options['renderingOptions']['enabled']) || (bool)$this->parseOption('renderingOptions.enabled') === true;
     }
 
     /**

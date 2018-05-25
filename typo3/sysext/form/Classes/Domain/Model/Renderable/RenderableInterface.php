@@ -86,4 +86,12 @@ interface RenderableInterface extends RootRenderableInterface
      * @api
      */
     public function getTemplateName(): string;
+
+    /**
+     * Returns whether this renderable is enabled
+     *
+     * @return bool
+     * @api
+     */
+    public function isEnabled(): bool;
 }

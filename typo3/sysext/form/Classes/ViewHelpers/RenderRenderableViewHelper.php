@@ -67,23 +67,28 @@ class RenderRenderableViewHelper extends AbstractViewHelper
             ->getViewHelperVariableContainer()
             ->get(self::class, 'formRuntime');
 
+        $renderable = $arguments['renderable'];
+
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
             if (method_exists($hookObj, 'beforeRendering')) {
                 $hookObj->beforeRendering(
                     $formRuntime,
-                    $arguments['renderable']
+                    $renderable
                 );
             }
         }
 
-        $content = $renderChildrenClosure();
+        $content = '';
+
+        if ($renderable instanceof FormRuntime || $renderable instanceof RenderableInterface && $renderable->isEnabled()) {
+            $content = $renderChildrenClosure();
+        }
 
         // Wrap every renderable with a span with a identifier path data attribute if previewMode is active
         if (!empty($content)) {
             $renderingOptions = $formRuntime->getRenderingOptions();
             if (isset($renderingOptions['previewMode']) && $renderingOptions['previewMode'] === true) {
-                $renderable = $arguments['renderable'];
                 $path = $renderable->getIdentifier();
                 if ($renderable instanceof RenderableInterface) {
                     while ($renderable = $renderable->getParentRenderable()) {

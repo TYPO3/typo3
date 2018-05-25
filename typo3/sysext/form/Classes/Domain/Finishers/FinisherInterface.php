@@ -25,7 +25,6 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
  */
 interface FinisherInterface
 {
-
     /**
      * Executes the finisher
      *
@@ -49,4 +48,12 @@ interface FinisherInterface
      * @api
      */
     public function setOption(string $optionName, $optionValue);
+
+    /**
+     * Returns whether this finisher is enabled
+     *
+     * @return bool
+     * @api
+     */
+    public function isEnabled(): bool;
 }

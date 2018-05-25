@@ -412,4 +412,14 @@ abstract class AbstractRenderable implements RenderableInterface
             ? $this->type
             : $this->renderingOptions['templateName'];
     }
+
+    /**
+     * Returns whether this renderable is enabled
+     *
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return !isset($this->renderingOptions['enabled']) || (bool)$this->renderingOptions['enabled'] === true;
+    }
 }

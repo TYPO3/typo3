@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface;
+use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -66,6 +67,10 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
         $renderable = $arguments['renderable'];
         $as = $arguments['as'];
 
+        if (!$renderable->isEnabled()) {
+            return '';
+        }
+
         if ($renderable instanceof CompositeRenderableInterface) {
             $elements = $renderable->getRenderablesRecursively();
         } else {
@@ -79,24 +84,18 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
         $output = '';
         foreach ($elements as $element) {
             $renderingOptions = $element->getRenderingOptions();
-
             if (
                 !$element instanceof FormElementInterface
-                || (
-                    isset($renderingOptions['_isCompositeFormElement'])
-                    && $renderingOptions['_isCompositeFormElement'] === true
-                )
-                || (
-                    isset($renderingOptions['_isHiddenFormElement'])
-                    && $renderingOptions['_isHiddenFormElement'] === true
-                )
-                || (
-                    isset($renderingOptions['_isReadOnlyFormElement'])
-                    && $renderingOptions['_isReadOnlyFormElement'] === true
-                )
+                || (isset($renderingOptions['_isCompositeFormElement']) && (bool)$renderingOptions['_isCompositeFormElement'] === true)
+                || !$element->isEnabled()
+                || self::hasDisabledParent($element)
+                // @todo: we can remove the next 2 conditions if variants are implemented
+                || (isset($renderingOptions['_isHiddenFormElement']) && (bool)$renderingOptions['_isHiddenFormElement'] === true)
+                || (isset($renderingOptions['_isReadOnlyFormElement']) && (bool)$renderingOptions['_isReadOnlyFormElement'] === true)
             ) {
                 continue;
             }
+
             $value = $formRuntime[$element->getIdentifier()];
 
             $formValue = [
@@ -218,5 +217,19 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
             return (string)$object;
         }
         return 'Object [' . get_class($object) . ']';
+    }
+
+    /**
+     * @return bool
+     */
+    public static function hasDisabledParent(RenderableInterface $renderable): bool
+    {
+        while ($renderable = $renderable->getParentRenderable()) {
+            if ($renderable instanceof RenderableInterface && !$renderable->isEnabled()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
