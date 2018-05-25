@@ -61,10 +61,10 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/translated-posts.xml');
 
+        $this->setUpBasicFrontendEnvironment();
+
         $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
-
-        $this->setUpBasicFrontendEnvironment();
     }
 
     /**
@@ -74,7 +74,7 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
     {
         $environmentServiceMock = $this->createMock(\TYPO3\CMS\Extbase\Service\EnvironmentService::class);
         $environmentServiceMock
-            ->expects($this->any())
+            ->expects($this->atLeast(1))
             ->method('isEnvironmentInFrontendMode')
             ->willReturn(true);
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Service\EnvironmentService::class, $environmentServiceMock);
