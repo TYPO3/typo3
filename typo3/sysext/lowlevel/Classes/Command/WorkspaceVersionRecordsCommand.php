@@ -91,7 +91,7 @@ class WorkspaceVersionRecordsCommand extends Command
             ->addOption(
                 'action',
                 null,
-                InputOption::VALUE_NONE,
+                InputOption::VALUE_OPTIONAL,
                 'Specify which action should be taken. Set it to "versions_in_live", "published_versions", "invalid_workspace" or "unused_placeholders"'
             );
     }
