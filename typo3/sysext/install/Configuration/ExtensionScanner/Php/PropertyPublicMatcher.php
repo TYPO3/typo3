@@ -396,4 +396,9 @@ return [
             'Deprecation-85122-FunctionalityInCharsetConverter.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->versioningPreview' => [
+        'restFiles' => [
+            'Deprecation-85078-PageRepositoryVersioningPreview.rst',
+        ],
+    ],
 ];

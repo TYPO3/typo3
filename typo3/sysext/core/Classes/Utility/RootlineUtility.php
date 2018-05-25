@@ -51,11 +51,6 @@ class RootlineUtility
     protected $workspaceUid = 0;
 
     /**
-     * @var bool
-     */
-    protected $versionPreview = false;
-
-    /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
     protected static $cache = null;
@@ -144,7 +139,6 @@ class RootlineUtility
     {
         $this->languageUid = (int)$this->pageContext->sys_language_uid;
         $this->workspaceUid = (int)$this->pageContext->versioningWorkspaceId;
-        $this->versionPreview = $this->pageContext->versioningPreview;
         if ($this->mountPointParameter !== '') {
             if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
                 throw new \RuntimeException('Mount-Point Pages are disabled for this installation. Cannot resolve a Rootline for a page with Mount-Points', 1343462896);
@@ -188,8 +182,7 @@ class RootlineUtility
             $otherUid !== null ? (int)$otherUid : $this->pageUid,
             $mountPointParameter,
             $this->languageUid,
-            $this->workspaceUid,
-            $this->versionPreview ? 1 : 0
+            $this->workspaceUid
         ]);
     }
 

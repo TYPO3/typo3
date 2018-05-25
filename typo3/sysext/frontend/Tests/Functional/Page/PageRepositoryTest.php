@@ -310,7 +310,6 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function initSetsPublicPropertyCorrectlyForWorkspacePreview()
     {
-        $this->pageRepo->versioningPreview = true;
         $this->pageRepo->versioningWorkspaceId = 2;
         $this->pageRepo->init(false);
 
@@ -333,7 +332,6 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     {
         $GLOBALS['SIM_ACCESS_TIME'] = 123;
 
-        $this->pageRepo->versioningPreview = false;
         $this->pageRepo->versioningWorkspaceId = 0;
         $this->pageRepo->init(false);
 
@@ -358,29 +356,12 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     /**
      * @test
      */
-    public function noPagesFromWorkspaceAreShownLive()
-    {
-        // initialization
-        $wsid = 987654321;
-
-        // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
-        $this->pageRepo->versioningPreview = false;
-        $this->pageRepo->versioningWorkspaceId = $wsid;
-        $this->pageRepo->init(false);
-
-        $this->assertSame([], $this->pageRepo->getPage(11));
-    }
-
-    /**
-     * @test
-     */
     public function previewShowsPagesFromLiveAndCurrentWorkspace()
     {
         // initialization
         $wsid = 987654321;
 
         // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
-        $this->pageRepo->versioningPreview = true;
         $this->pageRepo->versioningWorkspaceId = $wsid;
         $this->pageRepo->init(false);
 
@@ -402,7 +383,6 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $wsid = 987654321;
 
         // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
-        $this->pageRepo->versioningPreview = true;
         $this->pageRepo->versioningWorkspaceId = $wsid;
         $this->pageRepo->init(false);
 
@@ -431,7 +411,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             ]
         ];
 
-        $this->pageRepo->versioningPreview = false;
+        $this->pageRepo->versioningWorkspaceId = 0;
         $this->pageRepo->init(false);
 
         $conditions = $this->pageRepo->enableFields($table);
@@ -461,7 +441,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             ]
         ];
 
-        $this->pageRepo->versioningPreview = true;
+        $this->pageRepo->versioningWorkspaceId = 13;
         $this->pageRepo->init(false);
 
         $conditions = $this->pageRepo->enableFields($table);
@@ -491,7 +471,6 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             ]
         ];
 
-        $this->pageRepo->versioningPreview = true;
         $this->pageRepo->versioningWorkspaceId = 2;
         $this->pageRepo->init(false);
 
@@ -517,7 +496,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             ]
         ];
 
-        $this->pageRepo->versioningPreview = true;
+        $this->pageRepo->versioningWorkspaceId = 23;
         $this->pageRepo->init(false);
 
         $conditions = $this->pageRepo->enableFields($table, -1, [], true);
@@ -531,7 +510,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $this->assertThat(
             $conditions,
             $this->logicalNot($this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.pid') . ' <> -1)')),
-            'No necords from page -1'
+            'No records from page -1'
         );
     }
 

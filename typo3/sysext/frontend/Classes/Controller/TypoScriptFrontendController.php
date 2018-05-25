@@ -1191,7 +1191,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($this->whichWorkspace() > 0) {
             // Fetch overlay of page if in workspace and check if it is hidden
             $pageSelectObject = GeneralUtility::makeInstance(PageRepository::class);
-            $pageSelectObject->versioningPreview = true;
             $pageSelectObject->init(false);
             $targetPage = $pageSelectObject->getWorkspaceVersionOfRecord($this->whichWorkspace(), 'pages', $page['uid']);
             $result = $targetPage === -1 || $targetPage === -2;
@@ -1269,7 +1268,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $timeTracker->push('fetch_the_id initialize/');
         // Initialize the page-select functions.
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        $this->sys_page->versioningPreview = $this->whichWorkspace() > 0 || (bool)GeneralUtility::_GP('ADMCMD_view');
         $this->sys_page->versioningWorkspaceId = $this->whichWorkspace();
         $this->sys_page->init($this->showHiddenPage);
         // Set the valid usergroups for FE

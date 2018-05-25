@@ -48,6 +48,7 @@ class PageRepository implements LoggerAwareInterface
      * @var array
      */
     protected $deprecatedPublicProperties = [
+        'versioningPreview' => 'Using $versioningPreview of class PageRepository is discouraged, just use versioningWorkspaceId to determine if a workspace should be previewed.',
         'workspaceCache' => 'Using $workspaceCache of class PageRepository from the outside is discouraged, as this only reflects a local runtime cache.',
         'error_getRootLine' => 'Using $error_getRootLine of class PageRepository from the outside is deprecated as this property only exists for legacy reasons.',
         'error_getRootLine_failPid' => 'Using $error_getRootLine_failPid of class PageRepository from the outside is deprecated as this property only exists for legacy reasons.',
@@ -80,11 +81,15 @@ class PageRepository implements LoggerAwareInterface
      * user!!!
      *
      * @var bool
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10. As $versioningWorkspaceId now indicates what records to fetch.
      */
-    public $versioningPreview = false;
+    protected $versioningPreview = false;
 
     /**
      * Workspace ID for preview
+     * If > 0, versioning preview of other record versions is allowed. THIS MUST
+     * ONLY BE SET IF the page is not cached and truly previewed by a backend
+     * user!
      *
      * @var int
      */
@@ -185,7 +190,7 @@ class PageRepository implements LoggerAwareInterface
     {
         $this->where_groupAccess = '';
 
-        if ($this->versioningPreview) {
+        if ($this->versioningWorkspaceId) {
             // For version previewing, make sure that enable-fields are not
             // de-selecting hidden pages - we need versionOL() to unset them only
             // if the overlay record instructs us to.
@@ -1339,7 +1344,7 @@ class PageRepository implements LoggerAwareInterface
                 $constraints[] = $expressionBuilder->eq($table . '.' . $ctrl['delete'], 0);
             }
             if ($ctrl['versioningWS']) {
-                if (!$this->versioningPreview) {
+                if (!$this->versioningWorkspaceId) {
                     // Filter out placeholder records (new/moved/deleted items)
                     // in case we are NOT in a versioning preview (that means we are online!)
                     $constraints[] = $expressionBuilder->lte(
@@ -1365,7 +1370,7 @@ class PageRepository implements LoggerAwareInterface
             if (is_array($ctrl['enablecolumns'])) {
                 // In case of versioning-preview, enableFields are ignored (checked in
                 // versionOL())
-                if (!$this->versioningPreview || !$ctrl['versioningWS'] || $noVersionPreview) {
+                if (!$this->versioningWorkspaceId || !$ctrl['versioningWS'] || $noVersionPreview) {
                     if (($ctrl['enablecolumns']['disabled'] ?? false) && !$show_hidden && !($ignore_array['disabled'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
                         $constraints[] = $expressionBuilder->eq($field, 0);
@@ -1465,7 +1470,7 @@ class PageRepository implements LoggerAwareInterface
      */
     public function fixVersioningPid($table, &$rr)
     {
-        if ($this->versioningPreview && is_array($rr) && (int)$rr['pid'] === -1 && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if ($this->versioningWorkspaceId && is_array($rr) && (int)$rr['pid'] === -1 && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
             $oid = 0;
             $wsid = 0;
             // Check values for t3ver_oid and t3ver_wsid:
@@ -1545,7 +1550,7 @@ class PageRepository implements LoggerAwareInterface
      */
     public function versionOL($table, &$row, $unsetMovePointers = false, $bypassEnableFieldsCheck = false)
     {
-        if ($this->versioningPreview && is_array($row)) {
+        if ($this->versioningWorkspaceId && is_array($row)) {
             // will overlay any movePlhOL found with the real record, which in turn
             // will be overlaid with its workspace version if any.
             $movePldSwap = $this->movePlhOL($table, $row);
@@ -1683,42 +1688,40 @@ class PageRepository implements LoggerAwareInterface
      */
     public function getMovePlaceholder($table, $uid, $fields = '*')
     {
-        if ($this->versioningPreview) {
-            $workspace = (int)$this->versioningWorkspaceId;
-            if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $workspace !== 0) {
-                // Select workspace version of record:
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $workspace = (int)$this->versioningWorkspaceId;
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $workspace !== 0) {
+            // Select workspace version of record:
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-                $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
-                    ->from($table)
-                    ->where(
-                        $queryBuilder->expr()->neq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
-                        $queryBuilder->expr()->eq(
-                            't3ver_state',
-                            $queryBuilder->createNamedParameter(
-                                (string)VersionState::cast(VersionState::MOVE_PLACEHOLDER),
-                                \PDO::PARAM_INT
-                            )
-                        ),
-                        $queryBuilder->expr()->eq(
-                            't3ver_move_id',
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->eq(
-                            't3ver_wsid',
-                            $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
+            $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->neq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        't3ver_state',
+                        $queryBuilder->createNamedParameter(
+                            (string)VersionState::cast(VersionState::MOVE_PLACEHOLDER),
+                            \PDO::PARAM_INT
                         )
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_move_id',
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
                     )
-                    ->setMaxResults(1)
-                    ->execute()
-                    ->fetch();
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
 
-                if (is_array($row)) {
-                    return $row;
-                }
+            if (is_array($row)) {
+                return $row;
             }
         }
         return false;

@@ -152,7 +152,6 @@ class Typo3DbBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $pageRepositoryMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\PageRepository::class)
             ->setMethods(['movePlhOL', 'getWorkspaceVersionOfRecord'])
             ->getMock();
-        $pageRepositoryMock->versioningPreview = true;
         $pageRepositoryMock->expects($this->once())->method('getWorkspaceVersionOfRecord')->with($workspaceUid, 'tx_foo', '42')->will($this->returnValue($workspaceVersion));
         $mockTypo3DbBackend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend::class, ['dummy'], [], '', false);
         $mockTypo3DbBackend->_set('pageRepository', $pageRepositoryMock);

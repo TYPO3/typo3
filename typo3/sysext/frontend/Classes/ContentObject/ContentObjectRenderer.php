@@ -6716,7 +6716,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         ];
 
         $considerMovePlaceholders = (
-            $tsfe->sys_page->versioningPreview && $table !== 'pages'
+            $tsfe->sys_page->versioningWorkspaceId > 0 && $table !== 'pages'
             && !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
         );
 

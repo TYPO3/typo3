@@ -310,15 +310,13 @@ class RootlineUtilityTest extends UnitTestCase
     {
         $this->pageContextMock->sys_language_uid = 8;
         $this->pageContextMock->versioningWorkspaceId = 15;
-        $this->pageContextMock->versioningPreview = true;
         $this->subject->__construct(42, '47-11', $this->pageContextMock);
-        $this->assertSame('42_47-11_8_15_1', $this->subject->getCacheIdentifier());
-        $this->pageContextMock->versioningPreview = false;
+        $this->assertSame('42_47-11_8_15', $this->subject->getCacheIdentifier());
         $this->subject->__construct(42, '47-11', $this->pageContextMock);
-        $this->assertSame('42_47-11_8_15_0', $this->subject->getCacheIdentifier());
+        $this->assertSame('42_47-11_8_15', $this->subject->getCacheIdentifier());
         $this->pageContextMock->versioningWorkspaceId = 0;
         $this->subject->__construct(42, '47-11', $this->pageContextMock);
-        $this->assertSame('42_47-11_8_0_0', $this->subject->getCacheIdentifier());
+        $this->assertSame('42_47-11_8_0', $this->subject->getCacheIdentifier());
     }
 
     /**
@@ -336,7 +334,6 @@ class RootlineUtilityTest extends UnitTestCase
         );
         $this->pageContextMock->sys_language_uid = 8;
         $this->pageContextMock->versioningWorkspaceId = 15;
-        $this->pageContextMock->versioningPreview = true;
         $this->subject->__construct(42, '47-11,48-12', $this->pageContextMock);
         $this->assertTrue($cacheFrontendMock->isValidEntryIdentifier($this->subject->getCacheIdentifier()));
     }

@@ -41,13 +41,13 @@ class FrontendWorkspaceRestriction implements QueryRestrictionInterface
 
     /**
      * @param int $workspaceId (PageRepository::$versioningWorkspaceId property)
-     * @param bool $includeRowsForWorkspacePreview (PageRepository::$versioningPreview property)
+     * @param bool $includeRowsForWorkspacePreview (PageRepository::$versioningWorkspaceId > 0 property)
      * @param bool $enforceLiveRowsOnly (!$noVersionPreview argument from PageRepository::enableFields()) This is ONLY for use in PageRepository class and most likely will be removed
      */
     public function __construct(int $workspaceId = null, bool $includeRowsForWorkspacePreview = null, bool $enforceLiveRowsOnly = true)
     {
         $this->workspaceId = $workspaceId ?? $GLOBALS['TSFE']->sys_page->versioningWorkspaceId;
-        $this->includeRowsForWorkspacePreview = $includeRowsForWorkspacePreview ?? $GLOBALS['TSFE']->sys_page->versioningPreview;
+        $this->includeRowsForWorkspacePreview = $includeRowsForWorkspacePreview ?? $GLOBALS['TSFE']->sys_page->versioningWorkspaceId > 0;
         $this->enforceLiveRowsOnly = $enforceLiveRowsOnly;
     }
 

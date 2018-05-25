@@ -27,7 +27,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'tableName' => 'aTable',
                 'tableAlias' => 'aTable',
                 'workspaceId' => 0,
-                'workspacePreview' => false,
                 'hiddenPagePreview' => false,
                 'hiddenRecordPreview' => false,
                 'feGroupList' => '0,-1',
@@ -37,7 +36,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'tableName' => 'aTable',
                 'tableAlias' => 'aTable',
                 'workspaceId' => 0,
-                'workspacePreview' => false,
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
                 'feGroupList' => '0,-1',
@@ -47,7 +45,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'tableName' => 'aTable',
                 'tableAlias' => 'aTable',
                 'workspaceId' => 1,
-                'workspacePreview' => true,
                 'hiddenPagePreview' => false,
                 'hiddenRecordPreview' => false,
                 'feGroupList' => '0,-1',
@@ -57,7 +54,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'tableName' => 'aTable',
                 'tableAlias' => 'aTable',
                 'workspaceId' => 1,
-                'workspacePreview' => true,
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
                 'feGroupList' => '0,-1',
@@ -67,7 +63,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'tableName' => 'pages',
                 'tableAlias' => 'pages',
                 'workspaceId' => 0,
-                'workspacePreview' => false,
                 'hiddenPagePreview' => false,
                 'hiddenRecordPreview' => false,
                 'feGroupList' => '0,-1',
@@ -77,7 +72,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'tableName' => 'pages',
                 'tableAlias' => 'pages',
                 'workspaceId' => 0,
-                'workspacePreview' => false,
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
                 'feGroupList' => '0,-1',
@@ -87,7 +81,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'tableName' => 'pages',
                 'tableAlias' => 'pages',
                 'workspaceId' => 1,
-                'workspacePreview' => true,
                 'hiddenPagePreview' => false,
                 'hiddenRecordPreview' => false,
                 'feGroupList' => '0,-1',
@@ -97,7 +90,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'tableName' => 'pages',
                 'tableAlias' => 'pages',
                 'workspaceId' => 1,
-                'workspacePreview' => true,
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
                 'feGroupList' => '0,-1',
@@ -107,7 +99,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'tableName' => 'aTable',
                 'tableAlias' => 'a',
                 'workspaceId' => 0,
-                'workspacePreview' => false,
                 'hiddenPagePreview' => false,
                 'hiddenRecordPreview' => false,
                 'feGroupList' => '0,-1',
@@ -120,7 +111,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
      * @param string $tableName
      * @param string $tableAlias
      * @param int $workspaceId
-     * @param bool $workspacePreview
      * @param bool $hiddenPagePreview
      * @param bool $hiddenRecordPreview
      * @param string $feGroupList
@@ -133,7 +123,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
         string $tableName,
         string $tableAlias,
         int $workspaceId,
-        bool $workspacePreview,
         bool $hiddenPagePreview,
         bool $hiddenRecordPreview,
         string $feGroupList,
@@ -174,7 +163,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
 
         $pageRepository = $this->createMock(PageRepository::class);
         $pageRepository->versioningWorkspaceId = $workspaceId;
-        $pageRepository->versioningPreview = $workspacePreview;
 
         $typoScriptFrontendController = new \stdClass();
         $typoScriptFrontendController->showHiddenPage = $hiddenPagePreview;

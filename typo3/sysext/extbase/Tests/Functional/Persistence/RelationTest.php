@@ -73,6 +73,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $this->blog = $blogRepository->findByUid(1);
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+        $GLOBALS['BE_USER']->workspace = 0;
     }
 
     /**

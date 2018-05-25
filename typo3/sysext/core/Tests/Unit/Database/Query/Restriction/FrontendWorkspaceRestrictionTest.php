@@ -28,13 +28,13 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
         $GLOBALS['TCA'] = [
             'aTable' => [
                 'ctrl' => [
-                    'versioningWS' => 2,
+                    'versioningWS' => true,
                 ],
             ]
         ];
 
         $pageRepository = $this->createMock(PageRepository::class);
-        $pageRepository->versioningPreview = false;
+        $pageRepository->versioningWorkspaceId = 0;
 
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->sys_page = $pageRepository;
@@ -52,13 +52,12 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
         $GLOBALS['TCA'] = [
             'aTable' => [
                 'ctrl' => [
-                    'versioningWS' => 2,
+                    'versioningWS' => true,
                 ],
             ]
         ];
 
         $pageRepository = $this->createMock(PageRepository::class);
-        $pageRepository->versioningPreview = true;
         $pageRepository->versioningWorkspaceId = 42;
 
         $subject = new FrontendWorkspaceRestriction(42, true);
@@ -74,13 +73,12 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
         $GLOBALS['TCA'] = [
             'aTable' => [
                 'ctrl' => [
-                    'versioningWS' => 2,
+                    'versioningWS' => true,
                 ],
             ]
         ];
 
         $pageRepository = $this->createMock(PageRepository::class);
-        $pageRepository->versioningPreview = true;
         $pageRepository->versioningWorkspaceId = 42;
 
         $subject = new FrontendWorkspaceRestriction(42, true, false);
