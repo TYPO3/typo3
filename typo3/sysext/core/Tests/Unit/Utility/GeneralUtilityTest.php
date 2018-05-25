@@ -2872,6 +2872,98 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         return array_shift($secondaryGroups);
     }
 
+    /////////////////////////////////////////////
+    // Tests concerning writeFileToTypo3tempDir()
+    /////////////////////////////////////////////
+
+    /**
+     * @return array
+     */
+    public function invalidFilePathForTypo3tempDirDataProvider()
+    {
+        return [
+            [
+                PATH_site . '../path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
+                'Input filepath "' . PATH_site . '../path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
+            ],
+            [
+                PATH_site . 'dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
+                'Input filepath "' . PATH_site . 'dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
+            ],
+            [
+                PATH_site . 'dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
+                'Input filepath "' . PATH_site . 'dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
+            ],
+            [
+                '/dummy/path/awesome',
+                '"/dummy/path/" was not within directory PATH_site + "typo3temp/"'
+            ],
+            [
+                PATH_site . 'typo3conf/path',
+                '"' . PATH_site . 'typo3conf/" was not within directory PATH_site + "typo3temp/"',
+            ],
+            [
+                PATH_site . 'typo3temp/táylor/swíft',
+                'Subdir, "táylor/", was NOT on the form "[[:alnum:]_]/+"',
+            ],
+            'Path instead of file given' => [
+                PATH_site . 'typo3temp/dummy/path/',
+                'Calculated file location didn\'t match input "' . PATH_site . 'typo3temp/dummy/path/".'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidFilePathForTypo3tempDirDataProvider
+     * @param string $invalidFilePath
+     * @param string $expectedResult
+     */
+    public function writeFileToTypo3tempDirFailsWithInvalidPath($invalidFilePath, string $expectedResult)
+    {
+        $result = GeneralUtility::writeFileToTypo3tempDir($invalidFilePath, 'dummy content to be written');
+        $this->assertSame($result, $expectedResult);
+    }
+
+    /**
+     * @return array
+     */
+    public function validFilePathForTypo3tempDirDataProvider()
+    {
+        return [
+            'Default text file' => [
+                PATH_site . 'typo3temp/var/paranoid/android.txt',
+            ],
+            'Html file extension' => [
+                PATH_site . 'typo3temp/var/karma.html',
+            ],
+            'No file extension' => [
+                PATH_site . 'typo3temp/var/no-surprises',
+            ],
+            'Deep directory' => [
+                PATH_site . 'typo3temp/var/climbing/up/the/walls',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider validFilePathForTypo3tempDirDataProvider
+     * @param string $filePath
+     */
+    public function writeFileToTypo3tempDirWorksWithValidPath($filePath)
+    {
+        $dummyContent = 'Please could you stop the noise, I\'m trying to get some rest from all the unborn chicken voices in my head.';
+
+        $this->testFilesToDelete[] = $filePath;
+
+        $result = GeneralUtility::writeFileToTypo3tempDir($filePath, $dummyContent);
+
+        $this->assertNull($result);
+        $this->assertFileExists($filePath);
+        $this->assertStringEqualsFile($filePath, $dummyContent);
+    }
+
     ///////////////////////////////
     // Tests concerning mkdir_deep
     ///////////////////////////////

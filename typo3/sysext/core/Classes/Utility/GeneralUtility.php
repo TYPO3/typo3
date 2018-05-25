@@ -2017,40 +2017,66 @@ class GeneralUtility
         if (!static::validPathStr($filepath) || !$fI['basename'] || strlen($fI['basename']) >= 60) {
             return 'Input filepath "' . $filepath . '" was generally invalid!';
         }
+
         // Setting main temporary directory name (standard)
-        $dirName = PATH_site . 'typo3temp/';
-        if (!@is_dir($dirName)) {
-            return 'PATH_site + "typo3temp/" was not a directory!';
+        $allowedPathPrefixes = [
+            PATH_site . 'typo3temp' => 'PATH_site + "typo3temp/"'
+        ];
+        // Also allow project-path + /var/
+        if (Environment::getVarPath() !== PATH_site . 'typo3temp/var') {
+            $relPath = substr(Environment::getVarPath(), strlen(Environment::getProjectPath()) + 1);
+            $allowedPathPrefixes[Environment::getVarPath()] = 'ProjectPath + ' . $relPath;
         }
-        if (!static::isFirstPartOfStr($fI['dirname'], $dirName)) {
-            return '"' . $fI['dirname'] . '" was not within directory PATH_site + "typo3temp/"';
-        }
-        // Checking if the "subdir" is found:
-        $subdir = substr($fI['dirname'], strlen($dirName));
-        if ($subdir) {
-            if (preg_match('#^(?:[[:alnum:]_]+/)+$#', $subdir)) {
-                $dirName .= $subdir;
-                if (!@is_dir($dirName)) {
-                    static::mkdir_deep(PATH_site . 'typo3temp/' . $subdir);
+
+        $errorMessage = null;
+        foreach ($allowedPathPrefixes as $pathPrefix => $prefixLabel) {
+            $dirName = $pathPrefix . '/';
+            // Invalid file path, let's check for the other path, if it exists
+            if (!static::isFirstPartOfStr($fI['dirname'], $dirName)) {
+                if ($errorMessage === null) {
+                    $errorMessage = '"' . $fI['dirname'] . '" was not within directory ' . $prefixLabel;
+                }
+                continue;
+            }
+            // This resets previous error messages from the first path
+            $errorMessage = null;
+
+            if (!@is_dir($dirName)) {
+                $errorMessage = $prefixLabel . ' was not a directory!';
+                // continue and see if the next iteration resets the errorMessage above
+                continue;
+            }
+            // Checking if the "subdir" is found
+            $subdir = substr($fI['dirname'], strlen($dirName));
+            if ($subdir) {
+                if (preg_match('#^(?:[[:alnum:]_]+/)+$#', $subdir)) {
+                    $dirName .= $subdir;
+                    if (!@is_dir($dirName)) {
+                        static::mkdir_deep($pathPrefix . '/' . $subdir);
+                    }
+                } else {
+                    $errorMessage = 'Subdir, "' . $subdir . '", was NOT on the form "[[:alnum:]_]/+"';
+                    break;
+                }
+            }
+            // Checking dir-name again (sub-dir might have been created)
+            if (@is_dir($dirName)) {
+                if ($filepath === $dirName . $fI['basename']) {
+                    static::writeFile($filepath, $content);
+                    if (!@is_file($filepath)) {
+                        $errorMessage = 'The file was not written to the disk. Please, check that you have write permissions to the ' . $prefixLabel . ' directory.';
+                        break;
+                    }
+                } else {
+                    $errorMessage = 'Calculated file location didn\'t match input "' . $filepath . '".';
+                    break;
                 }
             } else {
-                return 'Subdir, "' . $subdir . '", was NOT on the form "[[:alnum:]_]/+"';
+                $errorMessage = '"' . $dirName . '" is not a directory!';
+                break;
             }
         }
-        // Checking dir-name again (sub-dir might have been created):
-        if (@is_dir($dirName)) {
-            if ($filepath === $dirName . $fI['basename']) {
-                static::writeFile($filepath, $content);
-                if (!@is_file($filepath)) {
-                    return 'The file was not written to the disk. Please, check that you have write permissions to the typo3temp/ directory.';
-                }
-            } else {
-                return 'Calculated file location didn\'t match input "' . $filepath . '".';
-            }
-        } else {
-            return '"' . $dirName . '" is not a directory!';
-        }
-        return null;
+        return $errorMessage;
     }
 
     /**
