@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 
 /**
- * Validator for DateTime objects.
+ * Validator for DateTime/DateTimeImmutable objects.
  *
  * @api
  */
@@ -30,7 +30,7 @@ class DateTimeValidator extends AbstractValidator
     public function isValid($value)
     {
         $this->result->clear();
-        if ($value instanceof \DateTime) {
+        if ($value instanceof \DateTimeInterface) {
             return;
         }
         $this->addError(
