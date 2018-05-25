@@ -83,6 +83,7 @@ class UriBuilderTest extends UnitTestCase
         $router = GeneralUtility::makeInstance(Router::class);
         $router->addRoute('module_key', new Route('/test/Path', []));
         $router->addRoute('module_key2', new Route('/test/Path2', []));
+        $router->addRoute('', new Route('', []));
         // Mocking backend user is required for backend URI generation as BackendUtility::getModuleUrl() is called
         $backendUserMock = $this->createMock(BackendUserAuthentication::class);
         $backendUserMock->expects($this->any())->method('check')->will($this->returnValue(true));
@@ -258,7 +259,7 @@ class UriBuilderTest extends UnitTestCase
                     'route',
                     'id'
                 ],
-                '/typo3/index.php?route=&token=dummyToken&foo=bar&foo2=bar2'
+                '/typo3/index.php?route=%2F&token=dummyToken&foo=bar&foo2=bar2'
             ],
             'Arguments to be excluded in the end' => [
                 [
@@ -273,7 +274,7 @@ class UriBuilderTest extends UnitTestCase
                     'route',
                     'id'
                 ],
-                '/typo3/index.php?route=&token=dummyToken&foo=bar&foo2=bar2'
+                '/typo3/index.php?route=%2F&token=dummyToken&foo=bar&foo2=bar2'
             ],
             'Arguments in nested array to be excluded' => [
                 [
@@ -428,7 +429,7 @@ class UriBuilderTest extends UnitTestCase
         ];
         $this->uriBuilder->setAddQueryString(true);
         $this->uriBuilder->setAddQueryStringMethod('POST,GET');
-        $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('/typo3/index.php?route=&token=dummyToken&key1=POST1&key2=GET2&key3[key31]=POST31&key3[key32]=GET32&key3[key33][key331]=GET331&key3[key33][key332]=POST332');
+        $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('/typo3/index.php?route=%2F&token=dummyToken&key1=POST1&key2=GET2&key3[key31]=POST31&key3[key32]=GET32&key3[key33][key331]=GET331&key3[key33][key332]=POST332');
         $actualResult = $this->uriBuilder->buildBackendUri();
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -461,7 +462,7 @@ class UriBuilderTest extends UnitTestCase
         ];
         $this->uriBuilder->setAddQueryString(true);
         $this->uriBuilder->setAddQueryStringMethod('GET,POST');
-        $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('/typo3/index.php?route=&token=dummyToken&key1=GET1&key2=POST2&key3[key31]=GET31&key3[key32]=POST32&key3[key33][key331]=POST331&key3[key33][key332]=GET332');
+        $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('/typo3/index.php?route=%2F&token=dummyToken&key1=GET1&key2=POST2&key3[key31]=GET31&key3[key32]=POST32&key3[key33][key331]=POST331&key3[key33][key332]=GET332');
         $actualResult = $this->uriBuilder->buildBackendUri();
         $this->assertEquals($expectedResult, $actualResult);
     }

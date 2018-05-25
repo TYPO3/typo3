@@ -2002,7 +2002,7 @@ class DatabaseRecordList
         if ($this->isEditable($table)) {
             // "Revert" link (history/undo)
             if ((bool)\trim($userTsConfig['options.']['showHistory.'][$table] ?? $userTsConfig['options.']['showHistory'] ?? '1')) {
-                $moduleUrl = BackendUtility::getModuleUrl('record_history', ['element' => $table . ':' . $row['uid']]);
+                $moduleUrl = (string)$uriBuilder->buildUriFromRoute('record_history', ['element' => $table . ':' . $row['uid']]);
                 $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($moduleUrl) . ',\'#latest\');';
                 $historyAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
                     . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'

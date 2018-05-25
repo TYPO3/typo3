@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use Symfony\Component\Finder\Finder;
+use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -904,13 +906,9 @@ class ExtensionManagementUtility
         }
 
         // Also register the module as regular route
+        $routeName = $moduleConfiguration['id'] ?? $fullModuleSignature;
         // Build Route objects from the data
-        $name = $fullModuleSignature;
-        if (isset($moduleConfiguration['path'])) {
-            $path = $moduleConfiguration['path'];
-        } else {
-            $path = str_replace('_', '/', $name);
-        }
+        $path = $moduleConfiguration['path'] ?? str_replace('_', '/', $fullModuleSignature);
         $path = '/' . trim($path, '/') . '/';
 
         $options = [
@@ -922,12 +920,8 @@ class ExtensionManagementUtility
             $options['target'] = $moduleConfiguration['routeTarget'];
         }
 
-        $router = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class);
-        $router->addRoute(
-            $name,
-            // @todo: see if we should do a "module route"
-            GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Route::class, $path, $options)
-        );
+        $router = GeneralUtility::makeInstance(Router::class);
+        $router->addRoute($routeName, GeneralUtility::makeInstance(Route::class, $path, $options));
     }
 
     /**

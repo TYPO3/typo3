@@ -596,4 +596,11 @@ return [
             'Deprecation-85102-PhpOptionsUtility.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85113-LegacyBackendModuleRoutingMethods.rst',
+        ],
+    ],
 ];

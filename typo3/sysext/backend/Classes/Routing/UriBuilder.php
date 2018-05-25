@@ -121,9 +121,11 @@ class UriBuilder
      * @param string $referenceType The type of reference to be generated (one of the constants)
      *
      * @return Uri The generated Uri
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10. Use buildUriFromRoute() instead.
      */
     public function buildUriFromModule($moduleName, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {
+        trigger_error('UriBuilder->buildUriFromModule() will be removed in TYPO3 v10, use buildUriFromRoute() instead.', E_USER_DEPRECATED);
         $parameters = [
             'route' => $moduleName,
             'token' => FormProtectionFactory::get('backend')->generateToken('route', $moduleName)

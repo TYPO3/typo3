@@ -3205,10 +3205,11 @@ class BackendUtility
      * @param string $moduleName Name of the module
      * @param array $urlParameters URL parameters that should be added as key value pairs
      * @return string Calculated URL
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Use UriBuilder instead.
      */
     public static function getModuleUrl($moduleName, $urlParameters = [])
     {
-        /** @var UriBuilder $uriBuilder */
+        trigger_error('BackendUtility::getModuleUrl() will be removed in TYPO3 v10, use UriBuilder->buildUriFromRoute() instead.', E_USER_DEPRECATED);
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         try {
             $uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
