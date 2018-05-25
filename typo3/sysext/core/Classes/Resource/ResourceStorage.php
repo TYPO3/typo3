@@ -1697,14 +1697,20 @@ class ResourceStorage implements ResourceStorageInterface
         $deleted = true;
 
         if ($this->driver->fileExists($fileObject->getIdentifier())) {
-            $recyclerFolder = $this->getNearestRecyclerFolder($fileObject);
+            // Disable permission check to find nearest recycler and move file without errors
+            $currentPermissions = $this->evaluatePermissions;
+            $this->evaluatePermissions = false;
 
+            $recyclerFolder = $this->getNearestRecyclerFolder($fileObject);
             if ($recyclerFolder === null) {
                 $result = $this->driver->deleteFile($fileObject->getIdentifier());
             } else {
                 $result = $this->moveFile($fileObject, $recyclerFolder);
                 $deleted = false;
             }
+
+            $this->evaluatePermissions = $currentPermissions;
+
             if (!$result) {
                 throw new Exception\FileOperationErrorException('Deleting the file "' . $fileObject->getIdentifier() . '\' failed.', 1329831691);
             }
@@ -1809,12 +1815,18 @@ class ResourceStorage implements ResourceStorageInterface
             } else {
                 $tempPath = $file->getForLocalProcessing();
                 $newIdentifier = $this->driver->addFile($tempPath, $targetFolder->getIdentifier(), $sanitizedTargetFileName);
-                $recyclerFolder = $this->getNearestRecyclerFolder($file);
+
+                // Disable permission check to find nearest recycler and move file without errors
+                $currentPermissions = $sourceStorage->evaluatePermissions;
+                $sourceStorage->evaluatePermissions = false;
+
+                $recyclerFolder = $sourceStorage->getNearestRecyclerFolder($file);
                 if ($recyclerFolder === null) {
                     $sourceStorage->driver->deleteFile($file->getIdentifier());
                 } else {
-                    $this->moveFile($file, $recyclerFolder);
+                    $sourceStorage->moveFile($file, $recyclerFolder);
                 }
+                $sourceStorage->evaluatePermissions = $currentPermissions;
                 if ($file instanceof File) {
                     $file->updateProperties(['storage' => $this->getUid(), 'identifier' => $newIdentifier]);
                 }
@@ -3028,12 +3040,9 @@ class ResourceStorage implements ResourceStorageInterface
         }
 
         $recyclerFolder = null;
-        $rootFolder = $this->getRootLevelFolder(false);
-        $folder = null;
+        $folder = $file->getParentFolder();
 
         do {
-            $folder = $folder !== null ? $folder->getParentFolder() : $file->getParentFolder();
-
             if ($folder->getRole() === FolderInterface::ROLE_RECYCLER) {
                 break;
             }
@@ -3044,7 +3053,11 @@ class ResourceStorage implements ResourceStorageInterface
                     break;
                 }
             }
-        } while ($recyclerFolder === null && $folder->getCombinedIdentifier() !== $rootFolder->getCombinedIdentifier());
+
+            $parentFolder = $folder->getParentFolder();
+            $isFolderLoop = $folder->getIdentifier() === $parentFolder->getIdentifier();
+            $folder = $parentFolder;
+        } while ($recyclerFolder === null && !$isFolderLoop);
 
         return $recyclerFolder;
     }
