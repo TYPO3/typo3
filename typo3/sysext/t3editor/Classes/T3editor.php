@@ -143,7 +143,7 @@ class T3editor implements SingletonInterface
     }
 
     /**
-     * @return PhpFrontend
+     * @return FrontendInterface
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      * @throws \InvalidArgumentException
      */

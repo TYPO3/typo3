@@ -17,6 +17,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Code completion for t3editor
@@ -24,49 +28,25 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 class CodeCompletionController
 {
     /**
-     * @var \TYPO3\CMS\Core\Http\AjaxRequestHandler
-     */
-    protected $ajaxObj;
-
-    /**
-     * Default constructor
-     */
-    public function __construct()
-    {
-        $GLOBALS['LANG']->includeLLFile('EXT:t3editor/Resources/Private/Language/locallang.xlf');
-    }
-
-    /**
-     * General processor for AJAX requests.
-     * Called by AjaxRequestHandler
+     * Loads all templates up to a given page id (walking the rootline) and
+     * cleans parts that are not required for the t3editor codecompletion.
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function loadCompletions(ServerRequestInterface $request): ResponseInterface
     {
-        $pageId = (int)($request->getParsedBody()['pageId'] ?? $request->getQueryParams()['pageId']);
-        return $this->loadTemplates($pageId);
-    }
-
-    /**
-     * Loads all templates up to a given page id (walking the rootline) and
-     * cleans parts that are not required for the t3editor codecompletion.
-     *
-     * @param int $pageId ID of the page
-     * @return ResponseInterface
-     */
-    protected function loadTemplates($pageId): ResponseInterface
-    {
         // Check whether access is granted (only admin have access to sys_template records):
-        if ($GLOBALS['BE_USER']->isAdmin()) {
-            // Check whether there is a pageId given:
-            if ($pageId) {
-                return (new JsonResponse())->setPayload($this->getMergedTemplates($pageId));
-            }
-            return new HtmlResponse($GLOBALS['LANG']->getLL('pageIDInteger'), 500);
+        if (!$GLOBALS['BE_USER']->isAdmin()) {
+            return new HtmlResponse($this->getLanguageService()->sL('LLL:EXT:t3editor/Resources/Private/Language/locallang.xlf:noPermission'), 500);
         }
-        return new HtmlResponse($GLOBALS['LANG']->getLL('noPermission'), 500);
+        $pageId = (int)($request->getParsedBody()['pageId'] ?? $request->getQueryParams()['pageId']);
+        // Check whether there is a pageId given:
+        if (!$pageId) {
+            return new HtmlResponse($this->getLanguageService()->sL('LLL:EXT:t3editor/Resources/Private/Language/locallang.xlf:pageIDInteger'), 500);
+        }
+        // Fetch the templates
+        return (new JsonResponse())->setPayload($this->getMergedTemplates($pageId));
     }
 
     /**
@@ -78,12 +58,10 @@ class CodeCompletionController
      */
     protected function getMergedTemplates($pageId)
     {
-        /** @var $tsParser \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
-        $tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
+        $tsParser = GeneralUtility::makeInstance(ExtendedTemplateService::class);
         $tsParser->init();
         // Gets the rootLine
-        $page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-        $rootLine = $page->getRootLine($pageId);
+        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
         // This generates the constants/config + hierarchy info for the template.
         $tsParser->runThroughTemplates($rootLine);
         // ts-setup & ts-constants of the currently edited template should not be included
@@ -110,7 +88,7 @@ class CodeCompletionController
         foreach ($treeBranch as $key => $value) {
             $dotCount = substr_count($key, '.');
             //type definition or value-assignment
-            if ($dotCount == 0) {
+            if ($dotCount === 0) {
                 if ($value != '') {
                     if (strlen($value) > 20) {
                         $value = substr($value, 0, 20);
@@ -133,5 +111,13 @@ class CodeCompletionController
             }
         }
         return $cleanedTreeBranch;
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

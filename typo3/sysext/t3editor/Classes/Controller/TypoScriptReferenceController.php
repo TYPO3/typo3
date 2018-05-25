@@ -29,14 +29,6 @@ class TypoScriptReferenceController
     protected $xmlDoc;
 
     /**
-     * Default constructor
-     */
-    public function __construct()
-    {
-        $GLOBALS['LANG']->includeLLFile('EXT:t3editor/Resources/Private/Language/locallang.xlf');
-    }
-
-    /**
      * Load TypoScript reference
      *
      * @param ServerRequestInterface $request
