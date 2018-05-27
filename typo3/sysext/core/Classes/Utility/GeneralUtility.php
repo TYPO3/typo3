@@ -4022,9 +4022,11 @@ class GeneralUtility
      * @param mixed $valueList List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
      * @param int $valueLength Long string values are shortened to this length. Default: 20
      * @return string Output string with key names and their value as string
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.
      */
     public static function arrayToLogString(array $arr, $valueList = [], $valueLength = 20)
     {
+        trigger_error('Method GeneralUtility::arrayToLogString() will be removed in TYPO3 v10. Use CLI-related methods in your code directly.', E_USER_DEPRECATED);
         $str = '';
         if (!is_array($valueList)) {
             $valueList = self::trimExplode(',', $valueList, true);

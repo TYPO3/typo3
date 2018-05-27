@@ -547,32 +547,39 @@ return [
             'Deprecation-83475-AggregateValidatorInformationInClassSchema-2.rst',
         ],
     ],
-    'TYPO3\CMS\backend\Utility\BackendUtility::getPidForModTSconfig' => [
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getPidForModTSconfig' => [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-84994-BackendUtilitygetPidForModTSconfigDeprecated.rst',
         ],
     ],
-    'TYPO3\CMS\backend\Utility\BackendUtility::getModTSconfig' => [
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
         ],
     ],
-    'TYPO3\CMS\backend\Utility\BackendUtility::unsetMenuItems' => [
+    'TYPO3\CMS\Backend\Utility\BackendUtility::unsetMenuItems' => [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
         ],
     ],
-    'TYPO3\CMS\saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled' => [
+    'TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85027-SaltedPasswordsRelatedMethodsAndClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85086-GeneralUtilityArrayToLogString.rst',
         ],
     ],
 ];
