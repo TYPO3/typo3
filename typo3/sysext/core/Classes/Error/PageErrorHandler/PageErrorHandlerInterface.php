@@ -1,6 +1,7 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Frontend\PageErrorHandler;
+
+namespace TYPO3\CMS\Core\Error\PageErrorHandler;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -19,8 +20,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Page error handler interface
- * Should be implemented by all custom PHP-related Page Error Handlers.
+ * Page error handler interface, used to jump in for Frontend-related calls
+ *
+ * Needs to be implemented by all custom PHP-related Page Error Handlers.
  */
 interface PageErrorHandlerInterface
 {

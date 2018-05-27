@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Frontend\PageErrorHandler;
+namespace TYPO3\CMS\Core\Error\PageErrorHandler;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
 /**
  * Renders the content of a page to be displayed (also in relation to language etc)
@@ -46,13 +45,13 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
      * PageContentErrorHandler constructor.
      * @param int $statusCode
      * @param array $configuration
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(int $statusCode, array $configuration)
     {
         $this->statusCode = $statusCode;
         if (empty($configuration['errorContentSource'])) {
-            throw new InvalidArgumentException('PageContentErrorHandler needs to have a proper link set.', 1522826413);
+            throw new \InvalidArgumentException('PageContentErrorHandler needs to have a proper link set.', 1522826413);
         }
         $this->errorHandlerConfiguration = $configuration;
     }

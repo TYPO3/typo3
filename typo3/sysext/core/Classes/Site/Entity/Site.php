@@ -16,10 +16,11 @@ namespace TYPO3\CMS\Core\Site\Entity;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Error\PageErrorHandler\FluidPageErrorHandler;
+use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
+use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
+use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\PageErrorHandler\FluidPageErrorHandler;
-use TYPO3\CMS\Frontend\PageErrorHandler\PageContentErrorHandler;
-use TYPO3\CMS\Frontend\PageErrorHandler\PageErrorHandlerInterface;
 
 /**
  * Entity representing a single site with available languages
@@ -171,27 +172,28 @@ class Site
     /**
      * Returns a ready-to-use error handler, to be used within the ErrorController
      *
-     * @param int $type
+     * @param int $statusCode
      * @return PageErrorHandlerInterface
      * @throws \RuntimeException
+     * @throws InvalidPageErrorHandlerException
      */
-    public function getErrorHandler(int $type): PageErrorHandlerInterface
+    public function getErrorHandler(int $statusCode): PageErrorHandlerInterface
     {
-        $errorHandler = $this->errorHandlers[$type];
-        switch ($errorHandler['errorHandler']) {
+        $errorHandlerConfiguration = $this->errorHandlers[$statusCode] ?? null;
+        switch ($errorHandlerConfiguration['errorHandler']) {
             case self::ERRORHANDLER_TYPE_FLUID:
-                return new FluidPageErrorHandler($type, $errorHandler);
+                return GeneralUtility::makeInstance(FluidPageErrorHandler::class, $statusCode, $errorHandlerConfiguration);
             case self::ERRORHANDLER_TYPE_PAGE:
-                return new PageContentErrorHandler($type, $errorHandler);
+                return GeneralUtility::makeInstance(PageContentErrorHandler::class, $statusCode, $errorHandlerConfiguration);
             case self::ERRORHANDLER_TYPE_PHP:
+                $handler = GeneralUtility::makeInstance($errorHandlerConfiguration['errorPhpClassFQCN'], $statusCode, $errorHandlerConfiguration);
                 // Check if the interface is implemented
-                $handler = GeneralUtility::makeInstance($errorHandler['errorPhpClassFQCN'], $type, $errorHandler);
                 if (!($handler instanceof PageErrorHandlerInterface)) {
-                    // @todo throw new exception
+                    throw new InvalidPageErrorHandlerException('The configured error handler "' . (string)$errorHandlerConfiguration['errorPhpClassFQCN'] . '" for status code ' . $statusCode . ' must implement the PageErrorHandlerInterface.', 1527432330);
                 }
                 return $handler;
         }
-        throw new \RuntimeException('Not implemented', 1522495914);
+        throw new \RuntimeException('No error handler given for the status code "' . $statusCode . '".', 1522495914);
     }
 
     /**
