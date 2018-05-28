@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 
 /*
@@ -17,44 +19,48 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\TypoScript\TemplateService
  */
-class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TemplateServiceTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var \TYPO3\CMS\Core\TypoScript\TemplateService
+     * @var TemplateService
      */
     protected $templateService;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Core\TypoScript\TemplateService
+     * @var \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface|TemplateService
      */
     protected $templateServiceMock;
 
     /**
-     * @var \TYPO3\CMS\Core\Package\PackageManager
+     * @var PackageManager
      */
     protected $backupPackageManager;
 
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $GLOBALS['TYPO3_LOADED_EXT'] = [];
-        $this->templateService = new \TYPO3\CMS\Core\TypoScript\TemplateService();
+        $this->templateService = new TemplateService();
         $this->templateService->tt_track = false;
-        $this->templateServiceMock = $this->getAccessibleMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, ['dummy']);
+        $this->templateServiceMock = $this->getAccessibleMock(
+            TemplateService::class,
+            ['dummy']
+        );
         $this->templateServiceMock->tt_track = false;
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
@@ -62,7 +68,7 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * Tear down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
         parent::tearDown();
@@ -71,11 +77,11 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function versionOlCallsVersionOlOfPageSelectClassWithGivenRow()
+    public function versionOlCallsVersionOlOfPageSelectClassWithGivenRow(): void
     {
         $row = ['foo'];
         $GLOBALS['TSFE'] = new \stdClass();
-        $sysPageMock = $this->createMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+        $sysPageMock = $this->createMock(PageRepository::class);
         $sysPageMock->expects($this->once())->method('versionOL')->with('sys_template', $row);
         $GLOBALS['TSFE']->sys_page = $sysPageMock;
         $this->templateService->versionOL($row);
@@ -84,7 +90,7 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function extensionStaticFilesAreNotProcessedIfNotExplicitlyRequested()
+    public function extensionStaticFilesAreNotProcessedIfNotExplicitlyRequested(): void
     {
         $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
@@ -103,14 +109,14 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $this->templateService->runThroughTemplates([], 0);
         $this->assertFalse(
-            in_array('test.Core.TypoScript = 1', $this->templateService->config)
+            in_array('test.Core.TypoScript = 1', $this->templateService->config, true)
         );
     }
 
     /**
      * @test
      */
-    public function extensionStaticsAreProcessedIfExplicitlyRequested()
+    public function extensionStaticsAreProcessedIfExplicitlyRequested(): void
     {
         $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
@@ -121,20 +127,20 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $GLOBALS['TYPO3_LOADED_EXT'] = [
             $identifier => [
                 'ext_typoscript_setup.txt' => ExtensionManagementUtility::extPath(
-                        'core',
+                    'core',
                     'Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt'
-                    ),
+                ),
                 'ext_typoscript_constants.txt' => ''
             ],
         ];
 
-        $mockPackage = $this->getMockBuilder(\TYPO3\CMS\Core\Package\Package::class)
+        $mockPackage = $this->getMockBuilder(Package::class)
             ->setMethods(['getPackagePath'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockPackage->expects($this->any())->method('getPackagePath')->will($this->returnValue(''));
 
-        $mockPackageManager = $this->getMockBuilder(\TYPO3\CMS\Core\Package\PackageManager::class)
+        $mockPackageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -146,14 +152,14 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->templateService->runThroughTemplates([], 0);
 
         $this->assertTrue(
-            in_array('test.Core.TypoScript = 1', $this->templateService->config)
+            in_array('test.Core.TypoScript = 1', $this->templateService->config, true)
         );
     }
 
     /**
      * @test
      */
-    public function updateRootlineDataOverwritesOwnArrayData()
+    public function updateRootlineDataOverwritesOwnArrayData(): void
     {
         $originalRootline = [
             0 => ['uid' => 2, 'title' => 'originalTitle'],
@@ -179,7 +185,7 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function updateRootlineDataWithInvalidNewRootlineThrowsException()
+    public function updateRootlineDataWithInvalidNewRootlineThrowsException(): void
     {
         $originalRootline = [
             0 => ['uid' => 2, 'title' => 'originalTitle'],
@@ -201,7 +207,7 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getFileNameReturnsUrlCorrectly()
+    public function getFileNameReturnsUrlCorrectly(): void
     {
         $this->assertSame('http://example.com', $this->templateService->getFileName('http://example.com'));
         $this->assertSame('https://example.com', $this->templateService->getFileName('https://example.com'));
@@ -210,7 +216,7 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getFileNameReturnsFileCorrectly()
+    public function getFileNameReturnsFileCorrectly(): void
     {
         $this->assertSame('typo3/index.php', $this->templateService->getFileName('typo3/index.php'));
     }
@@ -218,7 +224,7 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getFileNameReturnsNullIfDirectory()
+    public function getFileNameReturnsNullIfDirectory(): void
     {
         $this->assertNull($this->templateService->getFileName(__DIR__));
     }
@@ -226,7 +232,7 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getFileNameReturnsNullWithInvalidFileName()
+    public function getFileNameReturnsNullWithInvalidFileName(): void
     {
         $this->assertNull($this->templateService->getFileName('  '));
         $this->assertNull($this->templateService->getFileName('something/../else'));

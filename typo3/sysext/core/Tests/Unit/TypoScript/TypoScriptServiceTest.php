@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 
 /*
@@ -23,15 +25,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class TypoScriptServiceTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * data provider for convertTypoScriptArrayToPlainArray
      * @return array
      */
-    public function convertTypoScriptArrayToPlainArrayTestdata()
+    public function convertTypoScriptArrayToPlainArrayTestdata(): array
     {
         return [
             'simple typoscript array' => [
@@ -157,8 +154,10 @@ class TypoScriptServiceTest extends UnitTestCase
      * @param mixed $typoScriptSettings
      * @param mixed $expectedSettings
      */
-    public function convertTypoScriptArrayToPlainArrayRemovesTrailingDotsWithChangedOrderInTheTypoScriptArray($typoScriptSettings, $expectedSettings)
-    {
+    public function convertTypoScriptArrayToPlainArrayRemovesTrailingDotsWithChangedOrderInTheTypoScriptArray(
+        $typoScriptSettings,
+        $expectedSettings
+    ): void {
         $typoScriptService = new TypoScriptService();
         $processedSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($typoScriptSettings);
         $this->assertEquals($expectedSettings, $processedSettings);
@@ -169,7 +168,7 @@ class TypoScriptServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function convertPlainArrayToTypoScriptArrayTestdata()
+    public function convertPlainArrayToTypoScriptArrayTestdata(): array
     {
         return [
             'simple typoscript' => [
@@ -291,7 +290,7 @@ class TypoScriptServiceTest extends UnitTestCase
      * @param mixed $extbaseTS
      * @param mixed $classic
      */
-    public function convertPlainArrayToTypoScriptArray($extbaseTS, $classic)
+    public function convertPlainArrayToTypoScriptArray($extbaseTS, $classic): void
     {
         $typoScriptService = new TypoScriptService();
         $converted = $typoScriptService->convertPlainArrayToTypoScriptArray($extbaseTS);
@@ -301,7 +300,7 @@ class TypoScriptServiceTest extends UnitTestCase
     /**
      * @return array
      */
-    public function explodeConfigurationForOptionSplitProvider()
+    public function explodeConfigurationForOptionSplitProvider(): array
     {
         return [
             [
@@ -414,7 +413,7 @@ class TypoScriptServiceTest extends UnitTestCase
      * @dataProvider explodeConfigurationForOptionSplitProvider
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ObjectsAndProperties/Index.html#objects-optionsplit
      */
-    public function explodeConfigurationForOptionSplitTest($configuration, $splitCount, $expected)
+    public function explodeConfigurationForOptionSplitTest($configuration, $splitCount, $expected): void
     {
         $serviceObject = new TypoScriptService();
         $actual = $serviceObject->explodeConfigurationForOptionSplit($configuration, $splitCount);

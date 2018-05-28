@@ -124,13 +124,13 @@ class TypoScriptService
                         $firstC = count($first);
                     }
                     $middle = [];
-                    if ($main[1]) {
+                    if (!empty($main[1])) {
                         $middle = explode('||', $main[1]);
                         $middleC = count($middle);
                     }
                     $last = [];
                     $value = '';
-                    if ($main[2]) {
+                    if (!empty($main[2])) {
                         $last = explode('||', $main[2]);
                         $lastC = count($last);
                         $value = $last[0];

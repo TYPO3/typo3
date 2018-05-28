@@ -720,11 +720,11 @@ class TemplateService
     public function processTemplate($row, $idList, $pid, $templateID = '', $templateParent = '', $includePath = '')
     {
         // Adding basic template record information to rowSum array
-        $this->rowSum[] = [$row['uid'], $row['title'], $row['tstamp']];
+        $this->rowSum[] = [$row['uid'] ?? null, $row['title'] ?? null, $row['tstamp'] ?? null];
         // Processing "Clear"-flags
         $clConst = 0;
         $clConf = 0;
-        if ($row['clear']) {
+        if (!empty($row['clear'])) {
             $clConst = $row['clear'] & 1;
             $clConf = $row['clear'] & 2;
             if ($clConst) {
@@ -747,12 +747,14 @@ class TemplateService
         }
         // Include files (from extensions) (#1/2)
         // NORMAL inclusion, The EXACT same code is found below the basedOn inclusion!!!
-        if (!$row['includeStaticAfterBasedOn']) {
+        if (!isset($row['!$row[\'includeStaticAfterBasedOn\']']) ||
+            isset($row['includeStaticAfterBasedOn']) && !$row['includeStaticAfterBasedOn']
+        ) {
             $this->includeStaticTypoScriptSources($idList, $templateID, $pid, $row);
         }
         // Include "Based On" sys_templates:
         // 'basedOn' is a list of templates to include
-        if (trim($row['basedOn'])) {
+        if (trim($row['basedOn'] ?? '')) {
             // Normal Operation, which is to include the "based-on" sys_templates,
             // if they are not already included, and maintaining the sorting of the templates
             $basedOnIds = GeneralUtility::intExplode(',', $row['basedOn'], true);
@@ -790,20 +792,20 @@ class TemplateService
             }
         }
         // Include files (from extensions) (#2/2)
-        if ($row['includeStaticAfterBasedOn']) {
+        if (!empty($row['includeStaticAfterBasedOn'])) {
             $this->includeStaticTypoScriptSources($idList, $templateID, $pid, $row);
         }
         // Creating hierarchy information; Used by backend analysis tools
         $this->hierarchyInfo[] = ($this->hierarchyInfoToRoot[] = [
-            'root' => trim($row['root']),
-            'next' => $row['nextLevel'],
+            'root' => trim($row['root'] ?? ''),
+            'next' => $row['nextLevel'] ?? null,
             'clConst' => $clConst,
             'clConf' => $clConf,
             'templateID' => $templateID,
             'templateParent' => $templateParent,
             'title' => $row['title'],
             'uid' => $row['uid'],
-            'pid' => $row['pid'],
+            'pid' => $row['pid'] ?? null,
             'configLines' => substr_count($row['config'], LF) + 1
         ]);
         // Adding the content of the fields constants (Constants) and config (Setup)
@@ -813,16 +815,16 @@ class TemplateService
         // For backend analysis (Template Analyser) provide the order of added constants/config template IDs
         $this->clearList_const[] = $templateID;
         $this->clearList_setup[] = $templateID;
-        if (trim($row['sitetitle'])) {
+        if (trim($row['sitetitle'] ?? null)) {
             $this->sitetitle = $row['sitetitle'];
         }
         // If the template record is a Rootlevel record, set the flag and clear the template rootLine (so it starts over from this point)
-        if (trim($row['root'])) {
+        if (trim($row['root'] ?? null)) {
             $this->rootId = $pid;
             $this->rootLine = [];
         }
         // If a template is set to be active on the next level set this internal value to point to this UID. (See runThroughTemplates())
-        if ($row['nextLevel']) {
+        if ($row['nextLevel'] ?? null) {
             $this->nextLevel = $row['nextLevel'];
         } else {
             $this->nextLevel = 0;
@@ -883,11 +885,12 @@ class TemplateService
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         // If "Include before all static templates if root-flag is set" is set:
-        if ($row['static_file_mode'] == 3 && strpos($templateID, 'sys_') === 0 && $row['root']) {
+        $staticFileMode = $row['static_file_mode'] ?? null;
+        if ($staticFileMode == 3 && strpos($templateID, 'sys_') === 0 && $row['root']) {
             $this->addExtensionStatics($idList, $templateID, $pid, $row);
         }
         // Static Template Files (Text files from extensions): include_static_file is a list of static files to include (from extensions)
-        if (trim($row['include_static_file'])) {
+        if (trim($row['include_static_file'] ?? '')) {
             $include_static_fileArr = GeneralUtility::trimExplode(',', $row['include_static_file'], true);
             // Traversing list
             foreach ($include_static_fileArr as $ISF_file) {
@@ -915,7 +918,7 @@ class TemplateService
         }
         // If "Default (include before if root flag is set)" is set OR
         // "Always include before this template record" AND root-flag are set
-        if ($row['static_file_mode'] == 1 || $row['static_file_mode'] == 0 && substr($templateID, 0, 4) === 'sys_' && $row['root']) {
+        if ($staticFileMode == 1 || $staticFileMode == 0 && substr($templateID, 0, 4) === 'sys_' && $row['root']) {
             $this->addExtensionStatics($idList, $templateID, $pid, $row);
         }
         // Include Static Template Records after all other TypoScript has been included.
@@ -1020,8 +1023,8 @@ class TemplateService
     {
         // the identifier can be "43" if coming from "static template" extension or a path like "cssstyledcontent/static/"
         $identifier = $subrow['uid'];
-        $subrow['config'] .= $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'][$identifier];
-        $subrow['constants'] .= $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants.'][$identifier];
+        $subrow['config'] .= $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'][$identifier] ?? null;
+        $subrow['constants'] .= $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants.'][$identifier] ?? null;
         // if this is a template of type "default content rendering", also see if other extensions have added their TypoScript that should be included after the content definitions
         if (in_array($identifier, $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'], true)) {
             $subrow['config'] .= $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
@@ -1700,7 +1703,7 @@ class TemplateService
             array_unshift($this->config, (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']);
             array_unshift($this->templateIncludePaths, '');
             // prepare a proper entry to hierachyInfo (used by TemplateAnalyzer in BE)
-            $rootTemplateId = $this->hierarchyInfo[count($this->hierarchyInfo) - 1]['templateID'];
+            $rootTemplateId = $this->hierarchyInfo[count($this->hierarchyInfo) - 1]['templateID'] ?? null;
             $defaultTemplateInfo = [
                 'root' => '',
                 'next' => '',
