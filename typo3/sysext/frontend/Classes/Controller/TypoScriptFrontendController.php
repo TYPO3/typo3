@@ -1314,9 +1314,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->pageNotFound = 1;
         }
         $timeTracker->pull();
-        // @todo: in the future, the check if "pageNotFound_handling" is configured should go away, but this breaks
-        // Functional tests in workspaces currently
-        if ($this->pageNotFound && $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling']) {
+        if ($this->pageNotFound) {
             $pNotFoundMsg = [
                 1 => 'ID was not an accessible page',
                 2 => 'Subsection was found and not accessible',
