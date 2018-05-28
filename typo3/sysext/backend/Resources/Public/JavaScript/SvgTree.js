@@ -568,7 +568,6 @@ define(
             _this.nodeBgEvents().mouseOut(node, this);
           })
           .on('click', function(node) {
-            _this.nodeBgEvents().click(node, this);
             _this.selectNode(node);
           })
           .on('contextmenu', function(node) {
@@ -609,25 +608,6 @@ define(
               .classed('node-over node-alert', false)
               .attr('rx', '0')
               .attr('ry', '0');
-          }
-        };
-
-        self.click = function(node, element) {
-          var $nodeBg = $(element).closest('svg').find('.nodes-bg .node-bg[data-state-id=' + node.stateIdentifier + ']');
-
-          _this.nodes.forEach(function(node) {
-            if (node.selected === true) {
-              node.selected = false;
-            }
-          });
-
-          node.selected = true;
-          if ($nodeBg.length) {
-            $nodeBg.addClass('node-selected')
-              .parents('svg')
-              .find('.node-selected')
-              .not($nodeBg)
-              .removeClass('node-selected');
           }
         };
 
@@ -882,7 +862,7 @@ define(
           nextNode = nodeBgClass.data()[i + 1];
         }
 
-        if (node.selected) {
+        if (node.checked) {
           bgClass += ' node-selected';
         }
 
@@ -1113,7 +1093,6 @@ define(
        */
       clickOnLabel: function(node, element) {
         this.selectNode(node);
-        this.nodeBgEvents().click(node, element);
       },
 
       /**

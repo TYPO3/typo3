@@ -940,8 +940,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
 				}
 
 				function setHighlight(id) {
-					top.fsMod.recentIds["web"]=id;
-					top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;	// For highlighting
+					top.fsMod.recentIds["web"] = id;
+					top.fsMod.navFrameHighlightedID["web"] = top.fsMod.currentBank + "_" + id; // For highlighting
 
 					if (top.nav_frame && top.nav_frame.refresh_nav) {
 						top.nav_frame.refresh_nav();

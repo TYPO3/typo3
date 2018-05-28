@@ -390,12 +390,12 @@ class RecordListController
             $this->moduleTemplate->addJavaScriptCode(
                 'RecordListInlineJS',
                 '
-				function jumpExt(URL,anchor) {	//
+				function jumpExt(URL,anchor) {
 					var anc = anchor?anchor:"";
 					window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
 					return false;
 				}
-				function jumpSelf(URL) {	//
+				function jumpSelf(URL) {
 					window.location.href = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
 					return false;
 				}
@@ -404,9 +404,9 @@ class RecordListController
 					return false;
 				}
 
-				function setHighlight(id) {	//
-					top.fsMod.recentIds["web"]=id;
-					top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;	// For highlighting
+				function setHighlight(id) {
+					top.fsMod.recentIds["web"] = id;
+					top.fsMod.navFrameHighlightedID["web"] = top.fsMod.currentBank + "_" + id; // For highlighting
 
 					if (top.nav_frame && top.nav_frame.refresh_nav) {
 						top.nav_frame.refresh_nav();
@@ -414,10 +414,10 @@ class RecordListController
 				}
 				' . $this->moduleTemplate->redirectUrls($listUrl) . '
 				' . $dblist->CBfunctions() . '
-				function editRecords(table,idList,addParams,CBflag) {	//
+				function editRecords(table,idList,addParams,CBflag) {
 					window.location.href="' . (string)$uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]) . '&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
-				function editList(table,idList) {	//
+				function editList(table,idList) {
 					var list="";
 
 						// Checking how many is checked, how many is not

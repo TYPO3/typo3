@@ -729,7 +729,7 @@ class PageLayoutController
             $this->moduleTemplate->addJavaScriptCode('mainJsFunctions', '
                 if (top.fsMod) {
                     top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
-                    top.fsMod.navFrameHighlightedID["web"] = "pages' . (int)$this->id . '_"+top.fsMod.currentBank;
+                    top.fsMod.navFrameHighlightedID["web"] = top.fsMod.currentBank + "_" + ' . (int)$this->id . ';
                 }
                 ' . ($this->popView ? BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id)) : '') . '
                 function deleteRecord(table,id,url) {   //

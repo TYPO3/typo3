@@ -55,6 +55,7 @@ define(['jquery',
       _this.dispatch.on('nodeRightClick.pageTree', _this.nodeRightClick);
       _this.dispatch.on('contextmenu.pageTree', _this.contextmenu);
       _this.dispatch.on('updateSvg.pageTree', _this.updateSvg);
+      _this.dispatch.on('prepareLoadedNode.pageTree', _this.prepareLoadedNode);
       _this.dragDrop = PageTreeDragDrop;
       _this.dragDrop.init(_this);
 
@@ -186,12 +187,16 @@ define(['jquery',
      * @param {Node} node
      */
     PageTree.prototype.nodeSelectedAfter = function(node) {
+      //remember the selected page in the global state
+      fsMod.recentIds.web = node.identifier;
+      fsMod.currentBank = node.stateIdentifier.split('_')[0];
+      fsMod.navFrameHighlightedID.web = node.stateIdentifier;
+
       var separator = '?';
       if (currentSubScript.indexOf('?') !== -1) {
         separator = '&';
       }
 
-      fsMod.recentIds.web = node.identifier;
       TYPO3.Backend.ContentContainer.setUrl(
         currentSubScript + separator + 'id=' + node.identifier
       );
@@ -233,6 +238,18 @@ define(['jquery',
         .attr('data-context', 'tree');
     };
 
+    /**
+     * Event listener called for each loaded node,
+     * here used to mark node remembered in fsMode as selected
+     *
+     * @param node
+     */
+    PageTree.prototype.prepareLoadedNode = function(node) {
+      if (node.stateIdentifier === fsMod.navFrameHighlightedID.web) {
+        node.checked = true;
+      }
+    };
+
     PageTree.prototype.hideChildren = function(node) {
       _super_.hideChildren(node);
       Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, 0);
@@ -272,6 +289,35 @@ define(['jquery',
         });
 
       return nodes;
+    };
+
+    /**
+     * Node selection logic (triggered by different events)
+     * Page tree supports only one node to be selected at a time
+     * so the default function from SvgTree needs to be overriden
+     *
+     * @param {Node} node
+     */
+    PageTree.prototype.selectNode = function (node) {
+      if (!this.isNodeSelectable(node)) {
+        return;
+      }
+
+      var _this = this;
+      var checked = node.checked;
+
+      var selectedNodes = this.getSelectedNodes();
+      selectedNodes.forEach(function (node) {
+        if (node.checked === true) {
+          node.checked = false;
+          _this.dispatch.call('nodeSelectedAfter', _this, node);
+        }
+      });
+
+      node.checked = true;
+
+      this.dispatch.call('nodeSelectedAfter', this, node);
+      this.update();
     };
 
     /**

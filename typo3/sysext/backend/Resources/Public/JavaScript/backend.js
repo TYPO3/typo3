@@ -97,7 +97,7 @@ function openUrlInWindow(url, windowName) {	//
  */
 function loadEditId(id, addGetVars) {	//
   top.fsMod.recentIds.web = id;
-  top.fsMod.navFrameHighlightedID.web = "pages" + id + "_0";		// For highlighting
+  top.fsMod.navFrameHighlightedID.web = '0_' + id; // For highlighting
 
   if (top.nav_frame && top.nav_frame.refresh_nav) {
     top.nav_frame.refresh_nav();
