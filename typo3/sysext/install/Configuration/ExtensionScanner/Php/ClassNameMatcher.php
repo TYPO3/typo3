@@ -674,4 +674,9 @@ return [
             'Deprecation-84411-TypoScriptReferenceLoaderRenamedToTypoScriptReferenceController.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\PhpOptionsUtility' => [
+        'restFiles' => [
+            'Deprecation-85102-PhpOptionsUtility.rst',
+        ],
+    ],
 ];

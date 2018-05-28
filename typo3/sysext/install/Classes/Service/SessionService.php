@@ -80,7 +80,7 @@ class SessionService implements SingletonInterface
         ini_set('session.gc_probability', (string)100);
         ini_set('session.gc_divisor', (string)100);
         ini_set('session.gc_maxlifetime', (string)$this->expireTimeInMinutes * 2 * 60);
-        if (\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSessionAutoStartEnabled()) {
+        if ($this->isSessionAutoStartEnabled()) {
             $sessionCreationError = 'Error: session.auto-start is enabled.<br />';
             $sessionCreationError .= 'The PHP option session.auto-start is enabled. Disable this option in php.ini or .htaccess:<br />';
             $sessionCreationError .= '<pre>php_value session.auto_start Off</pre>';
@@ -522,5 +522,26 @@ class SessionService implements SingletonInterface
     public function __destruct()
     {
         session_write_close();
+    }
+
+    /**
+     * Check if php session.auto_start is enabled
+     *
+     * @return bool TRUE if session.auto_start is enabled, FALSE if disabled
+     */
+    protected function isSessionAutoStartEnabled()
+    {
+        return $this->getIniValueBoolean('session.auto_start');
+    }
+
+    /**
+     * Cast an on/off php ini value to boolean
+     *
+     * @param string $configOption
+     * @return bool TRUE if the given option is enabled, FALSE if disabled
+     */
+    protected function getIniValueBoolean($configOption)
+    {
+        return filter_var(ini_get($configOption), FILTER_VALIDATE_BOOLEAN, [FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE]);
     }
 }

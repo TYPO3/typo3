@@ -582,4 +582,18 @@ return [
             'Deprecation-85086-GeneralUtilityArrayToLogString.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSessionAutoStartEnabled' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85102-PhpOptionsUtility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\PhpOptionsUtility::getIniValueBoolean' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85102-PhpOptionsUtility.rst',
+        ],
+    ],
 ];
