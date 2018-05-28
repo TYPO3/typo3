@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\Service;
 
 /*
@@ -20,17 +22,13 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Unit test for marker utility
  */
-class MarkerBasedTemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class MarkerBasedTemplateServiceTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var MarkerBasedTemplateService
      */
@@ -41,7 +39,7 @@ class MarkerBasedTemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     protected $singletonInstances = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
 
@@ -54,7 +52,7 @@ class MarkerBasedTemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
         $this->templateService = new MarkerBasedTemplateService();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         GeneralUtility::resetSingletonInstances($this->singletonInstances);
@@ -66,7 +64,7 @@ class MarkerBasedTemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
      *
      * @return array
      */
-    public function getSubpartDataProvider()
+    public function getSubpartDataProvider(): array
     {
         return [
             'No start marker' => [
@@ -136,7 +134,7 @@ text
      * @param string $expected
      * @dataProvider getSubpartDataProvider
      */
-    public function getSubpart($content, $marker, $expected)
+    public function getSubpart(string $content, string $marker, string $expected): void
     {
         $this->assertSame($expected, $this->templateService->getSubpart($content, $marker));
     }
@@ -146,7 +144,7 @@ text
      *
      * @return array
      */
-    public function substituteSubpartDataProvider()
+    public function substituteSubpartDataProvider(): array
     {
         return [
             'No start marker' => [
@@ -266,27 +264,38 @@ hello
      * @test
      * @param string $content
      * @param string $marker
-     * @param array $subpartContent
+     * @param string|array $subpartContent
      * @param bool $recursive
      * @param bool $keepMarker
      * @param string $expected
      * @dataProvider substituteSubpartDataProvider
      */
-    public function substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker, $expected)
-    {
-        $this->assertSame($expected, $this->templateService->substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker));
+    public function substituteSubpart(
+        string $content,
+        string $marker,
+        $subpartContent,
+        bool $recursive,
+        bool $keepMarker,
+        string $expected
+    ): void {
+        $this->assertSame(
+            $expected,
+            $this->templateService->substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker)
+        );
     }
 
     /**
      * Data provider for substituteMarkerArray
      */
-    public function substituteMarkerArrayDataProvider()
+    public function substituteMarkerArrayDataProvider(): array
     {
         return [
             'Upper case marker' => [
                 'This is ###MARKER1### and this is ###MARKER2###',
-                ['###MARKER1###' => 'marker 1',
-                    '###MARKER2###' => 'marker 2'],
+                [
+                    '###MARKER1###' => 'marker 1',
+                    '###MARKER2###' => 'marker 2'
+                ],
                 '',
                 false,
                 false,
@@ -294,8 +303,10 @@ hello
             ],
             'Lower case marker' => [
                 'This is ###MARKER1### and this is ###MARKER2###',
-                ['###marker1###' => 'marker 1',
-                    '###marker2###' => 'marker 2'],
+                [
+                    '###marker1###' => 'marker 1',
+                    '###marker2###' => 'marker 2'
+                ],
                 '',
                 true,
                 false,
@@ -303,8 +314,10 @@ hello
             ],
             'Upper case marker without hash mark' => [
                 'This is ###MARKER1### and this is ###MARKER2###',
-                ['MARKER1' => 'marker 1',
-                    'MARKER2' => 'marker 2'],
+                [
+                    'MARKER1' => 'marker 1',
+                    'MARKER2' => 'marker 2'
+                ],
                 '###|###',
                 false,
                 false,
@@ -312,8 +325,10 @@ hello
             ],
             'Upper case marker with another hash mark' => [
                 'This is *MARKER1* and this is *MARKER2*',
-                ['MARKER1' => 'marker 1',
-                    'MARKER2' => 'marker 2'],
+                [
+                    'MARKER1' => 'marker 1',
+                    'MARKER2' => 'marker 2'
+                ],
                 '*|*',
                 false,
                 false,
@@ -321,8 +336,10 @@ hello
             ],
             'Upper case marker with unused marker' => [
                 'This is ###MARKER1### and this is ###MARKER2### ###UNUSED###',
-                ['###MARKER1###' => 'marker 1',
-                    '###MARKER2###' => 'marker 2'],
+                [
+                    '###MARKER1###' => 'marker 1',
+                    '###MARKER2###' => 'marker 2'
+                ],
                 '',
                 false,
                 false,
@@ -330,8 +347,10 @@ hello
             ],
             'Upper case marker with unused marker deleted' => [
                 'This is ###MARKER1### and this is ###MARKER2### ###UNUSED###',
-                ['###MARKER1###' => 'marker 1',
-                    '###MARKER2###' => 'marker 2'],
+                [
+                    '###MARKER1###' => 'marker 1',
+                    '###MARKER2###' => 'marker 2'
+                ],
                 '',
                 false,
                 true,
@@ -350,15 +369,24 @@ hello
      * @param bool $deleteUnused If set, all unused marker are deleted.
      * @param string $expected
      */
-    public function substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused, $expected)
-    {
-        $this->assertSame($expected, $this->templateService->substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused));
+    public function substituteMarkerArray(
+        string $content,
+        array $markContentArray,
+        string $wrap,
+        bool $uppercase,
+        bool $deleteUnused,
+        string $expected
+    ): void {
+        $this->assertSame(
+            $expected,
+            $this->templateService->substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused)
+        );
     }
 
     /**
      * Data provider for substituteMarker
      */
-    public function substituteMarkerDataProvider()
+    public function substituteMarkerDataProvider(): array
     {
         return [
             'Single marker' => [
@@ -383,7 +411,7 @@ hello
      * @param mixed $markContent The content to insert instead of the marker string found.
      * @param string $expected The expected result of the substitution
      */
-    public function substituteMarker($content, $marker, $markContent, $expected)
+    public function substituteMarker(string $content, string $marker, $markContent, string $expected): void
     {
         $this->assertSame($expected, $this->templateService->substituteMarker($content, $marker, $markContent));
     }
@@ -393,7 +421,7 @@ hello
      *
      * @return array
      */
-    public function substituteSubpartArrayDataProvider()
+    public function substituteSubpartArrayDataProvider(): array
     {
         return [
             'Substitute multiple subparts at once with plain marker' => [
@@ -401,8 +429,10 @@ hello
 ###SUBPART1###text1###SUBPART1###
 ###SUBPART2###text2###SUBPART2###
 </body>',
-                ['###SUBPART1###' => 'hello',
-                    '###SUBPART2###' => 'world'],
+                [
+                    '###SUBPART1###' => 'hello',
+                    '###SUBPART2###' => 'world'
+                ],
                 '<body>
 hello
 world
@@ -418,7 +448,7 @@ world
      * @param string $expected
      * @dataProvider substituteSubpartArrayDataProvider
      */
-    public function substituteSubpartArray($content, array $subpartsContent, $expected)
+    public function substituteSubpartArray(string $content, array $subpartsContent, string $expected): void
     {
         $this->assertSame($expected, $this->templateService->substituteSubpartArray($content, $subpartsContent));
     }
@@ -428,7 +458,7 @@ world
      *
      * @return array
      */
-    public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider()
+    public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider(): array
     {
         $template = '###SINGLEMARKER1###
 <!-- ###FOO### begin -->
@@ -440,7 +470,7 @@ world
 <!-- ###FOOTER### end -->
 <!-- ###FOO### end -->';
 
-        $expected ='Value 1
+        $expected = 'Value 1
 
 
 Value 2.1
@@ -630,15 +660,30 @@ Value 2.2
      * @param string $expected
      * @dataProvider substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider
      */
-    public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused, $expected)
-    {
-        $this->assertSame($expected, $this->templateService->substituteMarkerAndSubpartArrayRecursive($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused));
+    public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray(
+        string $template,
+        array $markersAndSubparts,
+        string $wrap,
+        bool $uppercase,
+        bool $deleteUnused,
+        string $expected
+    ): void {
+        $this->assertSame(
+            $expected,
+            $this->templateService->substituteMarkerAndSubpartArrayRecursive(
+                $template,
+                $markersAndSubparts,
+                $wrap,
+                $uppercase,
+                $deleteUnused
+            )
+        );
     }
 
     /**
      * @return array
      */
-    public function substituteMarkerArrayCachedReturnsExpectedContentDataProvider()
+    public function substituteMarkerArrayCachedReturnsExpectedContentDataProvider(): array
     {
         return [
             'no markers defined' => [
@@ -743,12 +788,20 @@ Value 2.2
      * @param array $subpartContentArray
      * @param array $wrappedSubpartContentArray
      * @param string $expectedContent
-     * @param bool $shouldQueryCache
-     * @param bool $shouldStoreCache
      */
-    public function substituteMarkerArrayCachedReturnsExpectedContent($content, array $markContentArray, array $subpartContentArray, array $wrappedSubpartContentArray, $expectedContent)
-    {
-        $resultContent = $this->templateService->substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
+    public function substituteMarkerArrayCachedReturnsExpectedContent(
+        string $content,
+        array $markContentArray,
+        array $subpartContentArray,
+        array $wrappedSubpartContentArray,
+        string $expectedContent
+    ): void {
+        $resultContent = $this->templateService->substituteMarkerArrayCached(
+            $content,
+            $markContentArray,
+            $subpartContentArray,
+            $wrappedSubpartContentArray
+        );
         $this->assertSame($expectedContent, $resultContent);
     }
 }

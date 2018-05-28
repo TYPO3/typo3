@@ -204,7 +204,7 @@ class MarkerBasedTemplateService
                     // use strtr instead of strtoupper to avoid locale problems with Turkish
                     $marker = strtr($marker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
                 }
-                if (!empty($wrapArr)) {
+                if (isset($wrapArr[0], $wrapArr[1])) {
                     $marker = $wrapArr[0] . $marker . $wrapArr[1];
                 }
                 $search[] = $marker;
@@ -279,7 +279,7 @@ class MarkerBasedTemplateService
                 // Use strtr instead of strtoupper to avoid locale problems with Turkish
                 $subpartMarker = strtr($subpartMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
             }
-            if (!empty($wraps)) {
+            if (isset($wraps[0], $wraps[1])) {
                 $subpartMarker = $wraps[0] . $subpartMarker . $wraps[1];
             }
             $subTemplates[$subpartMarker] = $this->getSubpart($content, $subpartMarker);
@@ -291,10 +291,11 @@ class MarkerBasedTemplateService
                 // use strtr instead of strtoupper to avoid locale problems with Turkish
                 $completeMarker = strtr($completeMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
             }
-            if (!empty($wraps)) {
+            if (isset($wraps[0], $wraps[1])) {
                 $completeMarker = $wraps[0] . $completeMarker . $wraps[1];
             }
             if (!empty($markersAndSubparts[$subpartMarker])) {
+                $subpartSubstitutes[$completeMarker] = '';
                 foreach ($markersAndSubparts[$subpartMarker] as $partialMarkersAndSubparts) {
                     $subpartSubstitutes[$completeMarker] .= $this->substituteMarkerAndSubpartArrayRecursive(
                         $subTemplates[$completeMarker],
