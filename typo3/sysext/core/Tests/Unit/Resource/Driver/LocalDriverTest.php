@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 /*
@@ -15,26 +16,28 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
  */
 
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamContent;
 use org\bovigo\vfs\vfsStreamWrapper;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
+use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
+use TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
+use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\FileStreamWrapper;
 
 /**
  * Testcase for the local storage driver class of the TYPO3 VFS
  */
-class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
+class LocalDriverTest extends BaseTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
+     * @var LocalDriver
      */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver
-     */
-    protected $localDriver = null;
+    protected $localDriver;
 
     /**
      * @var array A backup of registered singleton instances
@@ -64,11 +67,11 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * Tear down
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ($this->testDirs as $dir) {
             chmod($dir, 0777);
-            \TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($dir, true);
+            GeneralUtility::rmdir($dir, true);
         }
         parent::tearDown();
     }
@@ -81,7 +84,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      *
      * @return string
      */
-    protected function createRealTestdir()
+    protected function createRealTestdir(): string
     {
         $basedir = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('fal-test-');
         mkdir($basedir);
@@ -95,7 +98,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      *
      * @return array With path to base directory and driver
      */
-    protected function prepareRealTestEnvironment()
+    protected function prepareRealTestEnvironment(): array
     {
         $basedir = $this->createRealTestdir();
         $subject = $this->createDriver([
@@ -111,18 +114,18 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      *
      * @param array $driverConfiguration
      * @param array $mockedDriverMethods
-     * @return \TYPO3\CMS\Core\Resource\Driver\LocalDriver
+     * @return LocalDriver
      */
-    protected function createDriver($driverConfiguration = [], $mockedDriverMethods = [])
+    protected function createDriver(array $driverConfiguration = [], array $mockedDriverMethods = []): LocalDriver
     {
         // it's important to do that here, so vfsContents could have been set before
         if (!isset($driverConfiguration['basePath'])) {
             $this->initializeVfs();
             $driverConfiguration['basePath'] = $this->getMountRootUrl();
         }
-        /** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver $driver */
+        /** @var LocalDriver $driver */
         $mockedDriverMethods[] = 'isPathValid';
-        $driver = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\Driver\LocalDriver::class, $mockedDriverMethods, [$driverConfiguration]);
+        $driver = $this->getAccessibleMock(LocalDriver::class, $mockedDriverMethods, [$driverConfiguration]);
         $driver->expects($this->any())
             ->method('isPathValid')
             ->will(
@@ -138,7 +141,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function calculatedBasePathRelativeIsSane()
+    public function calculatedBasePathRelativeIsSane(): void
     {
         $subject = $this->createDriver();
 
@@ -155,7 +158,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function calculatedBasePathAbsoluteIsSane()
+    public function calculatedBasePathAbsoluteIsSane(): void
     {
         $subject = $this->createDriver();
 
@@ -171,9 +174,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function createFolderRecursiveSanitizesFilename()
+    public function createFolderRecursiveSanitizesFilename(): void
     {
-        /** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
+        /** @var LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
         $driver = $this->createDriver([], ['sanitizeFilename']);
         $driver->expects($this->exactly(2))
             ->method('sanitizeFileName')
@@ -187,13 +190,13 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function determineBaseUrlUrlEncodesUriParts()
+    public function determineBaseUrlUrlEncodesUriParts(): void
     {
-        /** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
-        $driver = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\Driver\LocalDriver::class, ['hasCapability'], [], '', false);
+        /** @var LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
+        $driver = $this->getAccessibleMock(LocalDriver::class, ['hasCapability'], [], '', false);
         $driver->expects($this->once())
             ->method('hasCapability')
-            ->with(\TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC)
+            ->with(ResourceStorage::CAPABILITY_PUBLIC)
             ->will(
                 $this->returnValue(true)
             );
@@ -206,7 +209,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getDefaultFolderReturnsFolderForUserUploadPath()
+    public function getDefaultFolderReturnsFolderForUserUploadPath(): void
     {
         $subject = $this->createDriver();
         $folderIdentifier = $subject->getDefaultFolder();
@@ -216,7 +219,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function defaultLevelFolderFolderIsCreatedIfItDoesntExist()
+    public function defaultLevelFolderFolderIsCreatedIfItDoesntExist(): void
     {
         $subject = $this->createDriver();
         $this->assertFileExists($this->getUrlInMount($subject->getDefaultFolder()));
@@ -225,7 +228,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFolderInFolderReturnsCorrectFolderObject()
+    public function getFolderInFolderReturnsCorrectFolderObject(): void
     {
         $this->addToMount([
             'someDir' => [
@@ -240,7 +243,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function createFolderCreatesFolderOnDisk()
+    public function createFolderCreatesFolderOnDisk(): void
     {
         $this->addToMount(['some' => ['folder' => []]]);
         $subject = $this->createDriver();
@@ -252,7 +255,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function createFolderReturnsFolderObject()
+    public function createFolderReturnsFolderObject(): void
     {
         $this->addToMount(['some' => ['folder' => []]]);
         $subject = $this->createDriver();
@@ -260,7 +263,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         $this->assertEquals('/some/folder/path/', $createdFolder);
     }
 
-    public static function createFolderSanitizesFolderNameBeforeCreationDataProvider()
+    /**
+     * @return array
+     */
+    public static function createFolderSanitizesFolderNameBeforeCreationDataProvider(): array
     {
         return [
             'folder name with NULL character' => [
@@ -277,8 +283,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      * @dataProvider createFolderSanitizesFolderNameBeforeCreationDataProvider
+     * @param string $newFolderName
+     * @param string $expectedFolderName
      */
-    public function createFolderSanitizesFolderNameBeforeCreation($newFolderName, $expectedFolderName)
+    public function createFolderSanitizesFolderNameBeforeCreation(string $newFolderName, string $expectedFolderName): void
     {
         $this->addToMount(['some' => ['folder' => []]]);
         $subject = $this->createDriver();
@@ -289,7 +297,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function basePathIsNormalizedWithTrailingSlash()
+    public function basePathIsNormalizedWithTrailingSlash(): void
     {
         $subject = $this->createDriver();
         $this->assertEquals('/', substr($subject->_call('getAbsoluteBasePath'), -1));
@@ -298,13 +306,16 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function noSecondSlashIsAddedIfBasePathAlreadyHasTrailingSlash()
+    public function noSecondSlashIsAddedIfBasePathAlreadyHasTrailingSlash(): void
     {
         $subject = $this->createDriver();
         $this->assertNotEquals('/', substr($subject->_call('getAbsoluteBasePath'), -2, 1));
     }
 
-    public function getSpecificFileInformationDataProvider()
+    /**
+     * @return array
+     */
+    public function getSpecificFileInformationDataProvider(): array
     {
         return [
             'size' => [
@@ -353,8 +364,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      * @dataProvider getSpecificFileInformationDataProvider
+     * @param $expectedValue
+     * @param string $property
      */
-    public function getSpecificFileInformationReturnsRequestedFileInformation($expectedValue, $property)
+    public function getSpecificFileInformationReturnsRequestedFileInformation($expectedValue, string $property): void
     {
         $root = vfsStream::setup();
         $subFolder = vfsStream::newDirectory('fileadmin');
@@ -379,7 +392,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getAbsolutePathReturnsCorrectPath()
+    public function getAbsolutePathReturnsCorrectPath(): void
     {
         $this->addToMount([
             'someFolder' => [
@@ -395,7 +408,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function addFileMovesFileToCorrectLocation()
+    public function addFileMovesFileToCorrectLocation(): void
     {
         $this->addToMount(['targetFolder' => []]);
         $this->addToVfs([
@@ -415,7 +428,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function addFileUsesFilenameIfGiven()
+    public function addFileUsesFilenameIfGiven(): void
     {
         $this->addToMount(['targetFolder' => []]);
         $this->addToVfs([
@@ -435,7 +448,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function addFileFailsIfFileIsInDriverStorage()
+    public function addFileFailsIfFileIsInDriverStorage(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314778269);
@@ -451,7 +464,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function addFileReturnsFileIdentifier()
+    public function addFileReturnsFileIdentifier(): void
     {
         $this->addToMount(['targetFolder' => []]);
         $this->addToVfs([
@@ -472,7 +485,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function existenceChecksWorkForFilesAndFolders()
+    public function existenceChecksWorkForFilesAndFolders(): void
     {
         $this->addToMount([
             'file' => 'asdf',
@@ -489,7 +502,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function existenceChecksInFolderWorkForFilesAndFolders()
+    public function existenceChecksInFolderWorkForFilesAndFolders(): void
     {
         $this->addToMount([
             'subfolder' => [
@@ -507,7 +520,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getPublicUrlReturnsCorrectUriForConfiguredBaseUri()
+    public function getPublicUrlReturnsCorrectUriForConfiguredBaseUri(): void
     {
         $baseUri = 'http://example.org/foobar/' . $this->getUniqueId();
         $this->addToMount([
@@ -528,7 +541,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      *
      * @return array
      */
-    public function getPublicUrlReturnsValidUrlContainingSpecialCharacters_dataProvider()
+    public function getPublicUrlReturnsValidUrlContainingSpecialCharacters_dataProvider(): array
     {
         return [
             ['/single file with some special chars äüö!.txt'],
@@ -541,8 +554,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      * @dataProvider getPublicUrlReturnsValidUrlContainingSpecialCharacters_dataProvider
+     * @param string $fileIdentifier
      */
-    public function getPublicUrlReturnsValidUrlContainingSpecialCharacters($fileIdentifier)
+    public function getPublicUrlReturnsValidUrlContainingSpecialCharacters(string $fileIdentifier): void
     {
         $baseUri = 'http://example.org/foobar/' . $this->getUniqueId();
         $subject = $this->createDriver([
@@ -555,7 +569,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function fileContentsCanBeWrittenAndRead()
+    public function fileContentsCanBeWrittenAndRead(): void
     {
         $fileContents = 'asdf';
         $this->addToMount([
@@ -571,7 +585,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function setFileContentsReturnsNumberOfBytesWrittenToFile()
+    public function setFileContentsReturnsNumberOfBytesWrittenToFile(): void
     {
         $fileContents = 'asdf';
         $this->addToMount([
@@ -587,7 +601,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      * @test
      * @see http://phpmagazin.de/vfsStream-1.1.0-nutzt-PHP-5.4-M%C3%B6glichkeiten-064406.html
      */
-    public function newFilesCanBeCreated()
+    public function newFilesCanBeCreated(): void
     {
         $subject = $this->createDriver();
         $subject->createFile('testfile.txt', '/');
@@ -598,7 +612,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      * @test
      * @see http://phpmagazin.de/vfsStream-1.1.0-nutzt-PHP-5.4-M%C3%B6glichkeiten-064406.html
      */
-    public function createdFilesAreEmpty()
+    public function createdFilesAreEmpty(): void
     {
         $subject = $this->createDriver();
         $subject->createFile('testfile.txt', '/');
@@ -610,7 +624,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function createFileFixesPermissionsOnCreatedFile()
+    public function createFileFixesPermissionsOnCreatedFile(): void
     {
         if (Environment::isWindows()) {
             $this->markTestSkipped('createdFilesHaveCorrectRights() tests not available on Windows');
@@ -625,7 +639,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
                 'someDir' => []
             ]
         );
-        /** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+        /** @var $subject LocalDriver */
         list($basedir, $subject) = $this->prepareRealTestEnvironment();
         mkdir($basedir . '/someDir');
         $subject->createFile('testfile.txt', '/someDir');
@@ -638,7 +652,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFileReturnsCorrectIdentifier()
+    public function getFileReturnsCorrectIdentifier(): void
     {
         $root = vfsStream::setup();
         $subFolder = vfsStream::newDirectory('fileadmin');
@@ -661,7 +675,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFileThrowsExceptionIfFileDoesNotExist()
+    public function getFileThrowsExceptionIfFileDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314516809);
@@ -672,7 +686,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFilesInFolderReturnsEmptyArrayForEmptyDirectory()
+    public function getFilesInFolderReturnsEmptyArrayForEmptyDirectory(): void
     {
         $subject = $this->createDriver();
         $fileList = $subject->getFilesInFolder('/');
@@ -682,7 +696,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFileListReturnsAllFilesInDirectory()
+    public function getFileListReturnsAllFilesInDirectory(): void
     {
         $dirStructure = [
             'aDir' => [],
@@ -702,7 +716,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFileListReturnsAllFilesInSubdirectoryIfRecursiveParameterIsSet()
+    public function getFileListReturnsAllFilesInSubdirectoryIfRecursiveParameterIsSet(): void
     {
         $dirStructure = [
             'aDir' => [
@@ -727,7 +741,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFileListFailsIfDirectoryDoesNotExist()
+    public function getFileListFailsIfDirectoryDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314349666);
@@ -739,7 +753,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFileInFolderCallsConfiguredCallbackFunctionWithGivenItemName()
+    public function getFileInFolderCallsConfiguredCallbackFunctionWithGivenItemName(): void
     {
         $dirStructure = [
             'file2' => 'fdsa'
@@ -768,7 +782,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      * @throws \InvalidArgumentException
      * @see getFileListCallsConfiguredCallbackFunction
      */
-    public static function callbackStaticTestFunction($itemName)
+    public static function callbackStaticTestFunction(string $itemName): void
     {
         if ($itemName === 'file2') {
             throw new \InvalidArgumentException('$itemName', 1336159604);
@@ -778,7 +792,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFileListFiltersItemsWithGivenFilterMethods()
+    public function getFileListFiltersItemsWithGivenFilterMethods(): void
     {
         $dirStructure = [
             'fileA' => 'asdfg',
@@ -792,7 +806,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         );
         $filterCallbacks = [
             [
-                \TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter::class,
+                LocalDriverFilenameFilter::class,
                 'filterFilename',
             ],
         ];
@@ -803,7 +817,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFolderListReturnsAllDirectoriesInDirectory()
+    public function getFolderListReturnsAllDirectoriesInDirectory(): void
     {
         $dirStructure = [
             'dir1' => [],
@@ -819,7 +833,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFolderListReturnsHiddenFoldersByDefault()
+    public function getFolderListReturnsHiddenFoldersByDefault(): void
     {
         $dirStructure = [
             '.someHiddenDir' => [],
@@ -839,7 +853,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      *
      * @test
      */
-    public function getFolderListLeavesOutNavigationalEntries()
+    public function getFolderListLeavesOutNavigationalEntries(): void
     {
         // we have to add .. and . manually, as these are not included in vfsStream directory listings (as opposed
         // to normal filelistings)
@@ -855,7 +869,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFolderListFiltersItemsWithGivenFilterMethods()
+    public function getFolderListFiltersItemsWithGivenFilterMethods(): void
     {
         $dirStructure = [
             'folderA' => [],
@@ -865,7 +879,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         $subject = $this->createDriver();
         $filterCallbacks = [
             [
-                \TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter::class,
+                LocalDriverFilenameFilter::class,
                 'filterFilename',
             ],
         ];
@@ -876,7 +890,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFolderListFailsIfDirectoryDoesNotExist()
+    public function getFolderListFailsIfDirectoryDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314349666);
@@ -888,7 +902,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function hashReturnsCorrectHashes()
+    public function hashReturnsCorrectHashes(): void
     {
         $contents = '68b329da9893e34099c7d8ad5cb9c940';
         $expectedMd5Hash = '8c67dbaf0ba22f2e7fbc26413b86051b';
@@ -902,7 +916,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function hashingWithUnsupportedAlgorithmFails()
+    public function hashingWithUnsupportedAlgorithmFails(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1304964032);
@@ -912,9 +926,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
 
     /**
      * @test
-     * @covers TYPO3\CMS\Core\Resource\Driver\LocalDriver::getFileForLocalProcessing
+     * @covers LocalDriver::getFileForLocalProcessing
      */
-    public function getFileForLocalProcessingCreatesCopyOfFileByDefault()
+    public function getFileForLocalProcessingCreatesCopyOfFileByDefault(): void
     {
         $fileContents = 'asdfgh';
         $this->addToMount([
@@ -930,7 +944,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function getFileForLocalProcessingReturnsOriginalFilepathForReadonlyAccess()
+    public function getFileForLocalProcessingReturnsOriginalFilepathForReadonlyAccess(): void
     {
         $fileContents = 'asdfgh';
         $this->addToMount([
@@ -946,7 +960,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function filesCanBeCopiedToATemporaryPath()
+    public function filesCanBeCopiedToATemporaryPath(): void
     {
         $fileContents = 'asdfgh';
         $this->addToMount([
@@ -964,9 +978,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function permissionsAreCorrectlyRetrievedForAllowedFile()
+    public function permissionsAreCorrectlyRetrievedForAllowedFile(): void
     {
-        /** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+        /** @var $subject LocalDriver */
         list($basedir, $subject) = $this->prepareRealTestEnvironment();
         touch($basedir . '/someFile');
         chmod($basedir . '/someFile', 448);
@@ -977,14 +991,14 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function permissionsAreCorrectlyRetrievedForForbiddenFile()
+    public function permissionsAreCorrectlyRetrievedForForbiddenFile(): void
     {
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             $this->markTestSkipped('Test skipped if run on linux as root');
         } elseif (Environment::isWindows()) {
             $this->markTestSkipped('Test skipped if run on Windows system');
         }
-        /** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+        /** @var $subject LocalDriver */
         list($basedir, $subject) = $this->prepareRealTestEnvironment();
         touch($basedir . '/someForbiddenFile');
         chmod($basedir . '/someForbiddenFile', 0);
@@ -995,9 +1009,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function permissionsAreCorrectlyRetrievedForAllowedFolder()
+    public function permissionsAreCorrectlyRetrievedForAllowedFolder(): void
     {
-        /** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+        /** @var $subject LocalDriver */
         list($basedir, $subject) = $this->prepareRealTestEnvironment();
         mkdir($basedir . '/someFolder');
         chmod($basedir . '/someFolder', 448);
@@ -1008,14 +1022,14 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function permissionsAreCorrectlyRetrievedForForbiddenFolder()
+    public function permissionsAreCorrectlyRetrievedForForbiddenFolder(): void
     {
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             $this->markTestSkipped('Test skipped if run on linux as root');
         } elseif (Environment::isWindows()) {
             $this->markTestSkipped('Test skipped if run on Windows system');
         }
-        /** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+        /** @var $subject LocalDriver */
         list($basedir, $subject) = $this->prepareRealTestEnvironment();
         mkdir($basedir . '/someForbiddenFolder');
         chmod($basedir . '/someForbiddenFolder', 0);
@@ -1031,7 +1045,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      *
      * @return array group, filemode and expected result
      */
-    public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider()
+    public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider(): array
     {
         $data = [];
         // On some OS, the posix_* functions do not exits
@@ -1077,8 +1091,11 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      * @dataProvider getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider
+     * @param int $group
+     * @param int $permissions
+     * @param array $expectedResult
      */
-    public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser($group, $permissions, $expectedResult)
+    public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser(int $group, int $permissions, array $expectedResult): void
     {
         if (Environment::isWindows()) {
             $this->markTestSkipped('Test skipped if run on Windows system');
@@ -1099,7 +1116,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function isWithinRecognizesFilesWithinFolderAndInOtherFolders()
+    public function isWithinRecognizesFilesWithinFolderAndInOtherFolders(): void
     {
         $subject = $this->createDriver();
         $this->assertTrue($subject->isWithin('/someFolder/', '/someFolder/test.jpg'));
@@ -1110,7 +1127,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function isWithinAcceptsFileAndFolderObjectsAsContent()
+    public function isWithinAcceptsFileAndFolderObjectsAsContent(): void
     {
         $subject = $this->createDriver();
         $this->assertTrue($subject->isWithin('/someFolder/', '/someFolder/test.jpg'));
@@ -1124,7 +1141,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function filesCanBeCopiedWithinStorage()
+    public function filesCanBeCopiedWithinStorage(): void
     {
         $fileContents = $this->getUniqueId();
         $this->addToMount([
@@ -1142,7 +1159,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function filesCanBeMovedWithinStorage()
+    public function filesCanBeMovedWithinStorage(): void
     {
         $fileContents = $this->getUniqueId();
         $this->addToMount([
@@ -1159,7 +1176,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function fileMetadataIsChangedAfterMovingFile()
+    public function fileMetadataIsChangedAfterMovingFile(): void
     {
         $fileContents = $this->getUniqueId();
         $this->addToMount([
@@ -1176,7 +1193,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         $this->assertEquals($newIdentifier, $fileMetadata['identifier']);
     }
 
-    public function renamingFiles_dataProvider()
+    public function renamingFiles_dataProvider(): array
     {
         return [
             'file in subfolder' => [
@@ -1201,8 +1218,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      * @dataProvider renamingFiles_dataProvider
+     * @param array $filesystemStructure
+     * @param string $oldFileIdentifier
+     * @param string $newFileName
+     * @param string $expectedNewIdentifier
      */
-    public function renamingFilesChangesFilenameOnDisk(array $filesystemStructure, $oldFileIdentifier, $newFileName, $expectedNewIdentifier)
+    public function renamingFilesChangesFilenameOnDisk(array $filesystemStructure, string $oldFileIdentifier, string $newFileName, string $expectedNewIdentifier)
     {
         $this->addToMount($filesystemStructure);
         $subject = $this->createDriver();
@@ -1215,9 +1236,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function renamingFilesFailsIfTargetFileExists()
+    public function renamingFilesFailsIfTargetFileExists(): void
     {
-        $this->expectException(\TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException::class);
+        $this->expectException(ExistingTargetFileNameException::class);
         $this->expectExceptionCode(1320291063);
         $this->addToMount([
             'targetFolder' => ['file' => '', 'newFile' => '']
@@ -1231,7 +1252,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      *
      * @return array
      */
-    public function renamingFolders_dataProvider()
+    public function renamingFolders_dataProvider(): array
     {
         return [
             'folder in root folder' => [
@@ -1258,8 +1279,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      * @dataProvider renamingFolders_dataProvider
+     * @param array $filesystemStructure
+     * @param string $oldFolderIdentifier
+     * @param string $newFolderName
+     * @param string $expectedNewIdentifier
      */
-    public function renamingFoldersChangesFolderNameOnDisk(array $filesystemStructure, $oldFolderIdentifier, $newFolderName, $expectedNewIdentifier)
+    public function renamingFoldersChangesFolderNameOnDisk(array $filesystemStructure, string $oldFolderIdentifier, string $newFolderName, string $expectedNewIdentifier)
     {
         $this->addToMount($filesystemStructure);
         $subject = $this->createDriver();
@@ -1272,7 +1297,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function renameFolderReturnsCorrectMappingInformationForAllFiles()
+    public function renameFolderReturnsCorrectMappingInformationForAllFiles(): void
     {
         $fileContents = 'asdfg';
         $this->addToMount([
@@ -1293,7 +1318,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function renameFolderRevertsRenamingIfFilenameMapCannotBeCreated()
+    public function renameFolderRevertsRenamingIfFilenameMapCannotBeCreated(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1334160746);
@@ -1305,7 +1330,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         $subject = $this->createDriver([], ['createIdentifierMap']);
         $subject->expects($this->atLeastOnce())->method('createIdentifierMap')->will(
             $this->throwException(
-                new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException('testing', 1476045666)
+                new FileOperationErrorException('testing', 1476045666)
             )
         );
         $subject->renameFolder('/sourceFolder/', 'newFolder');
@@ -1329,7 +1354,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function isFolderEmptyReturnsFalseIfFolderHasFile()
+    public function isFolderEmptyReturnsFalseIfFolderHasFile(): void
     {
         $this->addToMount([
             'folderWithFile' => [
@@ -1343,7 +1368,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function isFolderEmptyReturnsFalseIfFolderHasSubfolder()
+    public function isFolderEmptyReturnsFalseIfFolderHasSubfolder(): void
     {
         $this->addToMount([
             'folderWithSubfolder' => [
@@ -1360,7 +1385,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function foldersCanBeMovedWithinStorage()
+    public function foldersCanBeMovedWithinStorage(): void
     {
         $fileContents = $this->getUniqueId();
         $this->addToMount([
@@ -1370,7 +1395,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
             'targetFolder' => [],
         ]);
         $subject = $this->createDriver();
-        /** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver $subject */
+        /** @var LocalDriver $subject */
         $subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'someFolder');
         $this->assertTrue(file_exists($this->getUrlInMount('/targetFolder/someFolder/')));
         $this->assertEquals($fileContents, file_get_contents($this->getUrlInMount('/targetFolder/someFolder/file')));
@@ -1380,7 +1405,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function moveFolderWithinStorageReturnsCorrectMappingInformationForAllFiles()
+    public function moveFolderWithinStorageReturnsCorrectMappingInformationForAllFiles(): void
     {
         $fileContents = 'asdfg';
         $this->addToMount([
@@ -1400,7 +1425,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function folderCanBeRenamedWhenMoving()
+    public function folderCanBeRenamedWhenMoving(): void
     {
         $this->addToMount([
             'sourceFolder' => [
@@ -1416,7 +1441,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function copyFolderWithinStorageCopiesSingleFileToNewFolderName()
+    public function copyFolderWithinStorageCopiesSingleFileToNewFolderName(): void
     {
         $this->addToMount([
             'sourceFolder' => [
@@ -1432,7 +1457,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function copyFolderWithinStorageCopiesSingleSubFolderToNewFolderName()
+    public function copyFolderWithinStorageCopiesSingleSubFolderToNewFolderName(): void
     {
         list($basePath, $subject) = $this->prepareRealTestEnvironment();
         GeneralUtility::mkdir_deep($basePath . '/sourceFolder/subFolder');
@@ -1445,7 +1470,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function copyFolderWithinStorageCopiesFileInSingleSubFolderToNewFolderName()
+    public function copyFolderWithinStorageCopiesFileInSingleSubFolderToNewFolderName(): void
     {
         list($basePath, $subject) = $this->prepareRealTestEnvironment();
         GeneralUtility::mkdir_deep($basePath . '/sourceFolder/subFolder');
@@ -1464,7 +1489,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * Set up data for sanitizeFileName tests
      */
-    public function setUpCharacterStrings()
+    public function setUpCharacterStrings(): void
     {
         // Generate string containing all characters for the iso8859-1 charset, charcode greater than 127
         $this->iso88591GreaterThan127 = '';
@@ -1503,7 +1528,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      *
      * @return array
      */
-    public function sanitizeFileNameUTF8FilesystemDataProvider()
+    public function sanitizeFileNameUTF8FilesystemDataProvider(): array
     {
         $this->setUpCharacterStrings();
         return [
@@ -1535,8 +1560,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      * @dataProvider sanitizeFileNameUTF8FilesystemDataProvider
+     * @param string $fileName
+     * @param string $expectedResult
      */
-    public function sanitizeFileNameUTF8Filesystem($fileName, $expectedResult)
+    public function sanitizeFileNameUTF8Filesystem(string $fileName, string $expectedResult): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 1;
         $this->assertEquals(
@@ -1555,7 +1582,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      *
      * @return array
      */
-    public function sanitizeFileNameNonUTF8FilesystemDataProvider()
+    public function sanitizeFileNameNonUTF8FilesystemDataProvider(): array
     {
         $this->setUpCharacterStrings();
         return [
@@ -1627,8 +1654,11 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      * @dataProvider sanitizeFileNameNonUTF8FilesystemDataProvider
+     * @param string $fileName
+     * @param string $charset
+     * @param string $expectedResult
      */
-    public function sanitizeFileNameNonUTF8Filesystem($fileName, $charset, $expectedResult)
+    public function sanitizeFileNameNonUTF8Filesystem(string $fileName, string $charset, string $expectedResult): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 0;
         $this->assertEquals(
@@ -1640,7 +1670,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function sanitizeFileNameThrowsExceptionOnInvalidFileName()
+    public function sanitizeFileNameThrowsExceptionOnInvalidFileName(): void
     {
         $this->expectException(InvalidFileNameException::class);
         $this->expectExceptionCode(1320288991);
@@ -1652,7 +1682,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function applyFilterMethodsToDirectoryItemCallsFilterMethodIfClosure()
+    public function applyFilterMethodsToDirectoryItemCallsFilterMethodIfClosure(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1463073434);
@@ -1670,10 +1700,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     /**
      * @test
      */
-    public function applyFilterMethodsToDirectoryItemCallsFilterMethodIfName()
+    public function applyFilterMethodsToDirectoryItemCallsFilterMethodIfName(): void
     {
         $dummyObject = $this
-            ->getMockBuilder('\TYPO3\CMS\Core\Resource\Driver\LocalDriver')
+            ->getMockBuilder(LocalDriver::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();

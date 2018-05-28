@@ -661,7 +661,7 @@ class CharsetConverter implements SingletonInterface
     protected function initCharset($charset)
     {
         // Only process if the charset is not yet loaded:
-        if (!is_array($this->parsedCharsets[$charset])) {
+        if (empty($this->parsedCharsets[$charset])) {
             // Conversion table filename:
             $charsetConvTableFile = ExtensionManagementUtility::extPath('core') . 'Resources/Private/Charsets/csconvtbl/' . $charset . '.tbl';
             // If the conversion table is found:
@@ -885,7 +885,7 @@ class CharsetConverter implements SingletonInterface
     protected function initToASCII($charset)
     {
         // Only process if the case table is not yet loaded:
-        if (is_array($this->toASCII[$charset])) {
+        if (isset($this->toASCII[$charset]) && is_array($this->toASCII[$charset])) {
             return 1;
         }
         // Use cached version if possible

@@ -148,7 +148,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             );
         }
 
-        if ($configuration['pathType'] === 'relative') {
+        if (!empty($configuration['pathType']) && $configuration['pathType'] === 'relative') {
             $relativeBasePath = $configuration['basePath'];
             $absoluteBasePath = PATH_site . $relativeBasePath;
         } else {

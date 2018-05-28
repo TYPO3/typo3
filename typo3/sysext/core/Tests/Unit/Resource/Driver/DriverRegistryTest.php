@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 /*
@@ -14,18 +16,18 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
+use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
+use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for the FAL driver registry.
  */
-class DriverRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DriverRegistryTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry
+     * @var DriverRegistry
      */
     protected $subject;
 
@@ -34,17 +36,17 @@ class DriverRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->initializeSubject();
     }
 
-    protected function initializeSubject()
+    protected function initializeSubject(): void
     {
-        $this->subject = new \TYPO3\CMS\Core\Resource\Driver\DriverRegistry();
+        $this->subject = new DriverRegistry();
     }
 
     /**
      * @test
      */
-    public function registeredDriverClassesCanBeRetrieved()
+    public function registeredDriverClassesCanBeRetrieved(): void
     {
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
         $this->subject->registerDriverClass($className, 'foobar');
         $returnedClassName = $this->subject->getDriverClass('foobar');
         $this->assertEquals($className, $returnedClassName);
@@ -53,7 +55,7 @@ class DriverRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function registerDriverClassThrowsExceptionIfClassDoesNotExist()
+    public function registerDriverClassThrowsExceptionIfClassDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314979197);
@@ -63,12 +65,12 @@ class DriverRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function registerDriverClassThrowsExceptionIfShortnameIsAlreadyTakenByAnotherDriverClass()
+    public function registerDriverClassThrowsExceptionIfShortnameIsAlreadyTakenByAnotherDriverClass(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314979451);
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
-        $className2 = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\DriverInterface::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
+        $className2 = get_class($this->getMockForAbstractClass(DriverInterface::class));
         $this->subject->registerDriverClass($className, 'foobar');
         $this->subject->registerDriverClass($className2, 'foobar');
     }
@@ -76,7 +78,7 @@ class DriverRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDriverClassThrowsExceptionIfClassIsNotRegistered()
+    public function getDriverClassThrowsExceptionIfClassIsNotRegistered(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314085990);
@@ -86,9 +88,9 @@ class DriverRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getDriverClassAcceptsClassNameIfClassIsRegistered()
+    public function getDriverClassAcceptsClassNameIfClassIsRegistered(): void
     {
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
         $this->subject->registerDriverClass($className, 'foobar');
         $this->assertEquals($className, $this->subject->getDriverClass($className));
     }
@@ -96,9 +98,9 @@ class DriverRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function driverRegistryIsInitializedWithPreconfiguredDrivers()
+    public function driverRegistryIsInitializedWithPreconfiguredDrivers(): void
     {
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
         $shortName = $this->getUniqueId();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
             $shortName => [
@@ -112,9 +114,9 @@ class DriverRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function driverExistsReturnsTrueForAllExistingDrivers()
+    public function driverExistsReturnsTrueForAllExistingDrivers(): void
     {
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
         $shortName = $this->getUniqueId();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
             $shortName => [
@@ -129,10 +131,9 @@ class DriverRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function driverExistsReturnsFalseIfDriverDoesNotExist()
+    public function driverExistsReturnsFalseIfDriverDoesNotExist(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
-        ];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [];
         $this->initializeSubject();
         $this->assertFalse($this->subject->driverExists($this->getUniqueId()));
     }
