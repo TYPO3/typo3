@@ -369,7 +369,7 @@ class RootlineUtility
      */
     protected function columnHasRelationToResolve(array $configuration)
     {
-        $configuration = $configuration['config'];
+        $configuration = $configuration['config'] ?? null;
         if (!empty($configuration['MM']) && !empty($configuration['type']) && in_array($configuration['type'], ['select', 'inline', 'group'])) {
             return true;
         }
@@ -441,23 +441,26 @@ class RootlineUtility
      */
     protected function processMountedPage(array $mountedPageData, array $mountPointPageData)
     {
-        if ($mountPointPageData['mount_pid'] != $mountedPageData['uid']) {
-            throw new \RuntimeException('Broken rootline. Mountpoint parameter does not match the actual rootline. mount_pid (' . $mountPointPageData['mount_pid'] . ') does not match page uid (' . $mountedPageData['uid'] . ').', 1343464100);
+        $mountPid = $mountPointPageData['mount_pid'] ?? null;
+        $uid = $mountedPageData['uid'] ?? null;
+        if ($mountPid != $uid) {
+            throw new \RuntimeException('Broken rootline. Mountpoint parameter does not match the actual rootline. mount_pid (' . $mountPid . ') does not match page uid (' . $uid . ').', 1343464100);
         }
         // Current page replaces the original mount-page
-        if ($mountPointPageData['mount_pid_ol']) {
+        $mountUid = $mountPointPageData['uid'] ?? null;
+        if (!empty($mountPointPageData['mount_pid_ol'])) {
             $mountedPageData['_MOUNT_OL'] = true;
             $mountedPageData['_MOUNT_PAGE'] = [
-                'uid' => $mountPointPageData['uid'],
-                'pid' => $mountPointPageData['pid'],
-                'title' => $mountPointPageData['title']
+                'uid' => $mountUid,
+                'pid' => $mountPointPageData['pid'] ?? null,
+                'title' => $mountPointPageData['title'] ?? null
             ];
         } else {
             // The mount-page is not replaced, the mount-page itself has to be used
             $mountedPageData = $mountPointPageData;
         }
         $mountedPageData['_MOUNTED_FROM'] = $this->pageUid;
-        $mountedPageData['_MP_PARAM'] = $this->pageUid . '-' . $mountPointPageData['uid'];
+        $mountedPageData['_MP_PARAM'] = $this->pageUid . '-' . $mountUid;
         return $mountedPageData;
     }
 

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 /*
@@ -15,10 +17,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -27,12 +31,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class RootlineUtilityTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var RootlineUtility|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RootlineUtility|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
 
@@ -41,7 +40,11 @@ class RootlineUtilityTest extends UnitTestCase
      */
     protected $pageContextMock;
 
-    protected function setUp()
+    /**
+     * @throws \ReflectionException
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     */
+    protected function setUp(): void
     {
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -49,10 +52,17 @@ class RootlineUtilityTest extends UnitTestCase
         $cacheManagerProphecy->getCache('cache_rootline')->willReturn($cacheFrontendProphecy->reveal());
 
         $this->pageContextMock = $this->createMock(PageRepository::class);
-        $this->subject = $this->getAccessibleMock(RootlineUtility::class, ['enrichWithRelationFields'], [1, '', $this->pageContextMock]);
+        $this->subject = $this->getAccessibleMock(
+            RootlineUtility::class,
+            ['enrichWithRelationFields'],
+            [1, '', $this->pageContextMock]
+        );
     }
 
-    protected function tearDown()
+    /**
+     *
+     */
+    protected function tearDown(): void
     {
         RootlineUtility::purgeCaches();
         GeneralUtility::purgeInstances();
@@ -67,7 +77,7 @@ class RootlineUtilityTest extends UnitTestCase
      * @param array $subsetCandidate
      * @param array $superset
      */
-    protected function assertIsSubset(array $subsetCandidate, array $superset)
+    protected function assertIsSubset(array $subsetCandidate, array $superset): void
     {
         $this->assertSame($subsetCandidate, array_intersect_assoc($subsetCandidate, $superset));
     }
@@ -75,7 +85,7 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isMountedPageWithoutMountPointsReturnsFalse()
+    public function isMountedPageWithoutMountPointsReturnsFalse(): void
     {
         $this->subject->__construct(1);
         $this->assertFalse($this->subject->isMountedPage());
@@ -84,7 +94,7 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isMountedPageWithMatchingMountPointParameterReturnsTrue()
+    public function isMountedPageWithMatchingMountPointParameterReturnsTrue(): void
     {
         $this->subject->__construct(1, '1-99');
         $this->assertTrue($this->subject->isMountedPage());
@@ -93,7 +103,7 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isMountedPageWithNonMatchingMountPointParameterReturnsFalse()
+    public function isMountedPageWithNonMatchingMountPointParameterReturnsFalse(): void
     {
         $this->subject->__construct(1, '99-99');
         $this->assertFalse($this->subject->isMountedPage());
@@ -102,31 +112,43 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function processMountedPageWithNonMountedPageThrowsException()
+    public function processMountedPageWithNonMountedPageThrowsException(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1343464100);
 
         $this->subject->__construct(1, '1-99');
-        $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_DEFAULT]);
+        $this->subject->_call(
+            'processMountedPage',
+            ['uid' => 1],
+            ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_DEFAULT]
+        );
     }
 
     /**
      * @test
      */
-    public function processMountedPageWithMountedPageNotThrowsException()
+    public function processMountedPageWithMountedPageNotThrowsException(): void
     {
         $this->subject->__construct(1, '1-99');
-        $this->assertNotEmpty($this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]));
+        $this->assertNotEmpty($this->subject->_call(
+            'processMountedPage',
+            ['uid' => 1],
+            ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]
+        ));
     }
 
     /**
      * @test
      */
-    public function processMountedPageWithMountedPageAddsMountedFromParameter()
+    public function processMountedPageWithMountedPageAddsMountedFromParameter(): void
     {
         $this->subject->__construct(1, '1-99');
-        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]);
+        $result = $this->subject->_call(
+            'processMountedPage',
+            ['uid' => 1],
+            ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]
+        );
         $this->assertTrue(isset($result['_MOUNTED_FROM']));
         $this->assertSame(1, $result['_MOUNTED_FROM']);
     }
@@ -134,10 +156,14 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function processMountedPageWithMountedPageAddsMountPointParameterToReturnValue()
+    public function processMountedPageWithMountedPageAddsMountPointParameterToReturnValue(): void
     {
         $this->subject->__construct(1, '1-99');
-        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]);
+        $result = $this->subject->_call(
+            'processMountedPage',
+            ['uid' => 1],
+            ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]
+        );
         $this->assertTrue(isset($result['_MP_PARAM']));
         $this->assertSame('1-99', $result['_MP_PARAM']);
     }
@@ -145,10 +171,14 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function processMountedPageForMountPageIsOverlayAddsMountOLParameter()
+    public function processMountedPageForMountPageIsOverlayAddsMountOLParameter(): void
     {
         $this->subject->__construct(1, '1-99');
-        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1]);
+        $result = $this->subject->_call(
+            'processMountedPage',
+            ['uid' => 1],
+            ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1]
+        );
         $this->assertTrue(isset($result['_MOUNT_OL']));
         $this->assertSame(true, $result['_MOUNT_OL']);
     }
@@ -156,10 +186,17 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function processMountedPageForMountPageIsOverlayAddsDataInformationAboutMountPage()
+    public function processMountedPageForMountPageIsOverlayAddsDataInformationAboutMountPage(): void
     {
         $this->subject->__construct(1, '1-99');
-        $result = $this->subject->_call('processMountedPage', ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1, 'pid' => 5, 'title' => 'TestCase']);
+        $result = $this->subject->_call('processMountedPage', ['uid' => 1], [
+            'uid' => 99,
+            'doktype' => PageRepository::DOKTYPE_MOUNTPOINT,
+            'mount_pid' => 1,
+            'mount_pid_ol' => 1,
+            'pid' => 5,
+            'title' => 'TestCase'
+        ]);
         $this->assertTrue(isset($result['_MOUNT_PAGE']));
         $this->assertSame(['uid' => 99, 'pid' => 5, 'title' => 'TestCase'], $result['_MOUNT_PAGE']);
     }
@@ -167,9 +204,14 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function processMountedPageForMountPageWithoutOverlayReplacesMountedPageWithMountPage()
+    public function processMountedPageForMountPageWithoutOverlayReplacesMountedPageWithMountPage(): void
     {
-        $mountPointPageData = ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 0];
+        $mountPointPageData = [
+            'uid' => 99,
+            'doktype' => PageRepository::DOKTYPE_MOUNTPOINT,
+            'mount_pid' => 1,
+            'mount_pid_ol' => 0
+        ];
         $this->subject->__construct(1, '1-99');
         $result = $this->subject->_call('processMountedPage', ['uid' => 1], $mountPointPageData);
         $this->assertIsSubset($mountPointPageData, $result);
@@ -178,7 +220,7 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnHasRelationToResolveDetectsGroupFieldAsLocal()
+    public function columnHasRelationToResolveDetectsGroupFieldAsLocal(): void
     {
         $this->assertFalse($this->subject->_call('columnHasRelationToResolve', [
             'type' => 'group'
@@ -188,7 +230,7 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnHasRelationToResolveDetectsGroupFieldWithMMAsRemote2()
+    public function columnHasRelationToResolveDetectsGroupFieldWithMMAsRemote2(): void
     {
         $this->assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
@@ -201,7 +243,7 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnHasRelationToResolveDetectsInlineFieldAsLocal()
+    public function columnHasRelationToResolveDetectsInlineFieldAsLocal(): void
     {
         $this->assertFalse($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
@@ -213,7 +255,7 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnHasRelationToResolveDetectsInlineFieldWithForeignKeyAsRemote()
+    public function columnHasRelationToResolveDetectsInlineFieldWithForeignKeyAsRemote(): void
     {
         $this->assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
@@ -226,7 +268,7 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnHasRelationToResolveDetectsInlineFieldWithFMMAsRemote()
+    public function columnHasRelationToResolveDetectsInlineFieldWithFMMAsRemote(): void
     {
         $this->assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
@@ -239,7 +281,7 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnHasRelationToResolveDetectsSelectFieldAsLocal()
+    public function columnHasRelationToResolveDetectsSelectFieldAsLocal(): void
     {
         $this->assertFalse($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
@@ -251,7 +293,7 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnHasRelationToResolveDetectsSelectFieldWithMMAsRemote()
+    public function columnHasRelationToResolveDetectsSelectFieldWithMMAsRemote(): void
     {
         $this->assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
@@ -264,7 +306,7 @@ class RootlineUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheIdentifierContainsAllContextParameters()
+    public function getCacheIdentifierContainsAllContextParameters(): void
     {
         $this->pageContextMock->sys_language_uid = 8;
         $this->pageContextMock->versioningWorkspaceId = 15;
@@ -281,11 +323,17 @@ class RootlineUtilityTest extends UnitTestCase
 
     /**
      * @test
+     * @throws \ReflectionException
      */
-    public function getCacheIdentifierReturnsValidIdentifierWithCommasInMountPointParameter()
+    public function getCacheIdentifierReturnsValidIdentifierWithCommasInMountPointParameter(): void
     {
-        /** @var \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend $cacheFrontendMock */
-        $cacheFrontendMock = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, [], '', false);
+        /** @var AbstractFrontend $cacheFrontendMock */
+        $cacheFrontendMock = $this->getMockForAbstractClass(
+            AbstractFrontend::class,
+            [],
+            '',
+            false
+        );
         $this->pageContextMock->sys_language_uid = 8;
         $this->pageContextMock->versioningWorkspaceId = 15;
         $this->pageContextMock->versioningPreview = true;
