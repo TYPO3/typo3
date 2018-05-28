@@ -34,7 +34,7 @@ class TreeDataProviderFactory
     {
         /** @var $dataProvider \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider */
         $dataProvider = null;
-        if (!isset($tcaConfiguration['treeConfig']) | !is_array($tcaConfiguration['treeConfig'])) {
+        if (!isset($tcaConfiguration['treeConfig']) || !is_array($tcaConfiguration['treeConfig'])) {
             throw new \InvalidArgumentException('TCA Tree configuration is invalid: "treeConfig" array is missing', 1288215890);
         }
 
