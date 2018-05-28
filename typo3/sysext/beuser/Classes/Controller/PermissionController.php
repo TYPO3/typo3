@@ -126,15 +126,7 @@ class PermissionController extends ActionController
         if ($view instanceof BackendTemplateView) {
             $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Beuser/Permissions');
             $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-            $view->getModuleTemplate()->addJavaScriptCode(
-                'jumpToUrl',
-                '
-                function jumpToUrl(URL) {
-                    window.location.href = URL;
-                    return false;
-                }
-                '
-            );
+
             $this->registerDocHeaderButtons();
             $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
             $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
