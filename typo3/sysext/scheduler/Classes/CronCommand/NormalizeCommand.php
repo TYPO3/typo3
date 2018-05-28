@@ -268,12 +268,12 @@ class NormalizeCommand
         if ($stepValuesAndStepArrayCount < 1 || $stepValuesAndStepArrayCount > 2) {
             throw new \InvalidArgumentException('Unable to convert step values: Multiple slashes found.', 1291242168);
         }
-        $left = $stepValuesAndStepArray[0];
-        $right = $stepValuesAndStepArray[1];
-        if ((string)$stepValuesAndStepArray[0] === '') {
+        $left = $stepValuesAndStepArray[0] ?? '';
+        $right = $stepValuesAndStepArray[1] ?? '';
+        if ($left === '') {
             throw new \InvalidArgumentException('Unable to convert step values: Left part of / is empty.', 1291414955);
         }
-        if ((string)$stepValuesAndStepArray[1] === '') {
+        if ($right === '') {
             throw new \InvalidArgumentException('Unable to convert step values: Right part of / is empty.', 1291414956);
         }
         if (!MathUtility::canBeInterpretedAsInteger($right)) {
