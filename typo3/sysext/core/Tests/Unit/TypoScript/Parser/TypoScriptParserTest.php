@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Parser;
 
 /*
@@ -17,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Parser;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -25,25 +28,23 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class TypoScriptParserTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
+     * @var TypoScriptParser|AccessibleObjectInterface
      */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var TypoScriptParser|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $typoScriptParser = null;
+    protected $typoScriptParser;
 
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $accessibleClassName = $this->buildAccessibleProxy(TypoScriptParser::class);
         $this->typoScriptParser = new $accessibleClassName();
     }
 
-    protected function tearDown()
+    /**
+     *
+     */
+    protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();
@@ -54,7 +55,7 @@ class TypoScriptParserTest extends UnitTestCase
      *
      * @return array modifier name, modifier arguments, current value, expected result
      */
-    public function executeValueModifierDataProvider()
+    public function executeValueModifierDataProvider(): array
     {
         return [
             'prependString with string' => [
@@ -237,10 +238,23 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider executeValueModifierDataProvider
+     * @param string $modifierName
+     * @param string $currentValue
+     * @param string $modifierArgument
+     * @param string $expected
      */
-    public function executeValueModifierReturnsModifiedResult($modifierName, $currentValue, $modifierArgument, $expected)
-    {
-        $actualValue = $this->typoScriptParser->_call('executeValueModifier', $modifierName, $modifierArgument, $currentValue);
+    public function executeValueModifierReturnsModifiedResult(
+        string $modifierName,
+        string $currentValue,
+        string $modifierArgument,
+        string $expected
+    ): void {
+        $actualValue = $this->typoScriptParser->_call(
+            'executeValueModifier',
+            $modifierName,
+            $modifierArgument,
+            $currentValue
+        );
         $this->assertEquals($expected, $actualValue);
     }
 
@@ -249,7 +263,7 @@ class TypoScriptParserTest extends UnitTestCase
      *
      * @return array modifier name, modifier arguments, current value, expected result
      */
-    public function executeValueModifierInvalidDataProvider()
+    public function executeValueModifierInvalidDataProvider(): array
     {
         return [
             'sortList sorts a list numeric' => [
@@ -268,9 +282,15 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider executeValueModifierInvalidDataProvider
+     * @param string $modifierName
+     * @param string $currentValue
+     * @param string $modifierArgument
      */
-    public function executeValueModifierThrowsException($modifierName, $currentValue, $modifierArgument)
-    {
+    public function executeValueModifierThrowsException(
+        string $modifierName,
+        string $currentValue,
+        string $modifierArgument
+    ): void {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1438191758);
         $this->typoScriptParser->_call('executeValueModifier', $modifierName, $modifierArgument, $currentValue);
@@ -279,7 +299,7 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function invalidCharactersInObjectNamesAreReported()
+    public function invalidCharactersInObjectNamesAreReported(): void
     {
         $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
         GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
@@ -293,7 +313,7 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function emptyConditionIsReported()
+    public function emptyConditionIsReported(): void
     {
         $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
         GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
@@ -307,7 +327,7 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @return array
      */
-    public function doubleSlashCommentsDataProvider()
+    public function doubleSlashCommentsDataProvider(): array
     {
         return [
             'valid, without spaces' => ['// valid, without spaces'],
@@ -319,8 +339,9 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider doubleSlashCommentsDataProvider
+     * @param string $typoScript
      */
-    public function doubleSlashCommentsAreValid($typoScript)
+    public function doubleSlashCommentsAreValid(string $typoScript): void
     {
         $this->typoScriptParser->parse($typoScript);
         $this->assertEmpty($this->typoScriptParser->errors);
@@ -329,7 +350,7 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @return array
      */
-    public function includeFileDataProvider()
+    public function includeFileDataProvider(): array
     {
         return [
             'TS code before not matching include' => [
@@ -350,8 +371,9 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider includeFileDataProvider
+     * @param string $typoScript
      */
-    public function includeFilesWithConditions($typoScript)
+    public function includeFilesWithConditions(string $typoScript): void
     {
         $resolvedIncludeLines = TypoScriptParser::checkIncludeLines($typoScript);
         $this->assertContains('foo = bar', $resolvedIncludeLines);
@@ -361,7 +383,7 @@ class TypoScriptParserTest extends UnitTestCase
     /**
      * @return array
      */
-    public function importFilesDataProvider()
+    public function importFilesDataProvider(): array
     {
         return [
             'Found include file is imported' => [
@@ -515,7 +537,8 @@ bennilove = before
 ### ERROR: No file or folder found for importing TypoScript on "EXT:core/Tests/Unit/**/*.typoscript".
 ###
 '
-            ],            'TypoScript file ending is automatically added' => [
+            ],
+            'TypoScript file ending is automatically added' => [
                 // Input TypoScript
                 'bennilove = before
 @import "EXT:core/Tests/Unit/TypoScript/Fixtures/setup"
@@ -536,8 +559,10 @@ test.TYPO3Forever.TypoScript = 1
     /**
      * @test
      * @dataProvider importFilesDataProvider
+     * @param string $typoScript
+     * @param string $expected
      */
-    public function importFiles($typoScript, $expected)
+    public function importFiles(string $typoScript, string $expected): void
     {
         $resolvedIncludeLines = TypoScriptParser::checkIncludeLines($typoScript);
         $this->assertEquals($expected, $resolvedIncludeLines);
@@ -549,7 +574,7 @@ test.TYPO3Forever.TypoScript = 1
      * @dataProvider typoScriptIsParsedToArrayDataProvider
      * @test
      */
-    public function typoScriptIsParsedToArray($typoScript, array $expected)
+    public function typoScriptIsParsedToArray(string $typoScript, array $expected): void
     {
         $this->typoScriptParser->parse($typoScript);
         $this->assertEquals($expected, $this->typoScriptParser->setup);
@@ -558,7 +583,7 @@ test.TYPO3Forever.TypoScript = 1
     /**
      * @return array
      */
-    public function typoScriptIsParsedToArrayDataProvider()
+    public function typoScriptIsParsedToArrayDataProvider(): array
     {
         return [
             'simple assignment' => [
@@ -627,7 +652,7 @@ test.TYPO3Forever.TypoScript = 1
             ],
             'nested structured assignment' => [
                 'lib {' . LF .
-                    'key = value' . LF .
+                'key = value' . LF .
                 '}',
                 [
                     'lib.' => [
@@ -637,7 +662,7 @@ test.TYPO3Forever.TypoScript = 1
             ],
             'nested structured assignment with escaped key inside' => [
                 'lib {' . LF .
-                    'key\\.nextkey = value' . LF .
+                'key\\.nextkey = value' . LF .
                 '}',
                 [
                     'lib.' => [
@@ -647,7 +672,7 @@ test.TYPO3Forever.TypoScript = 1
             ],
             'nested structured assignment with escaped key inside and escaped dots at the beginning' => [
                 '\\.lib {' . LF .
-                    '\\.key\\.nextkey = value' . LF .
+                '\\.key\\.nextkey = value' . LF .
                 '}',
                 [
                     '.lib.' => [
@@ -667,7 +692,7 @@ test.TYPO3Forever.TypoScript = 1
             ],
             'nested structured assignment with protected escaped key inside and protected escaped dots at the beginning' => [
                 '\\\\.lib {' . LF .
-                    '\\\\.key\\\\.nextkey = value' . LF .
+                '\\\\.key\\\\.nextkey = value' . LF .
                 '}',
                 [
                     '\\.' => [
@@ -681,7 +706,7 @@ test.TYPO3Forever.TypoScript = 1
             ],
             'nested structured assignment with escaped key' => [
                 'lib\\.anotherkey {' . LF .
-                    'key = value' . LF .
+                'key = value' . LF .
                 '}',
                 [
                     'lib.anotherkey.' => [
@@ -703,8 +728,8 @@ test.TYPO3Forever.TypoScript = 1
             ],
             'multiline assignment' => [
                 'key (' . LF .
-                    'first' . LF .
-                    'second' . LF .
+                'first' . LF .
+                'second' . LF .
                 ')',
                 [
                     'key' => 'first' . LF . 'second',
@@ -712,8 +737,8 @@ test.TYPO3Forever.TypoScript = 1
             ],
             'multiline assignment with escaped key' => [
                 'key\\.nextkey (' . LF .
-                    'first' . LF .
-                    'second' . LF .
+                'first' . LF .
+                'second' . LF .
                 ')',
                 [
                     'key.nextkey' => 'first' . LF . 'second',
@@ -779,7 +804,7 @@ test.TYPO3Forever.TypoScript = 1
             'multi-line slash comment' => [
                 'first = 1' . LF .
                 '/*' . LF .
-                    'ignore = me' . LF .
+                'ignore = me' . LF .
                 '*/' . LF .
                 'second = 2',
                 [
@@ -909,7 +934,7 @@ test.TYPO3Forever.TypoScript = 1
             ],
             'CSC example #2' => [
                 'linkParams.ATagParams {' . LF .
-                    'dataWrap = class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"' . LF .
+                'dataWrap = class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"' . LF .
                 '}',
                 [
                     'linkParams.' => [
@@ -921,7 +946,7 @@ test.TYPO3Forever.TypoScript = 1
             ],
             'CSC example #3' => [
                 'linkParams.ATagParams.dataWrap (' . LF .
-                    'class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"' . LF .
+                'class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"' . LF .
                 ')',
                 [
                     'linkParams.' => [
@@ -979,7 +1004,7 @@ test.TYPO3Forever.TypoScript = 1
     /**
      * @test
      */
-    public function setValCanBeCalledWithArrayValueParameter()
+    public function setValCanBeCalledWithArrayValueParameter(): void
     {
         $string = '';
         $setup = [];
@@ -990,7 +1015,7 @@ test.TYPO3Forever.TypoScript = 1
     /**
      * @test
      */
-    public function setValCanBeCalledWithStringValueParameter()
+    public function setValCanBeCalledWithStringValueParameter(): void
     {
         $string = '';
         $setup = [];
@@ -1001,10 +1026,16 @@ test.TYPO3Forever.TypoScript = 1
     /**
      * @test
      * @dataProvider parseNextKeySegmentReturnsCorrectNextKeySegmentDataProvider
+     * @param string $key
+     * @param string $expectedKeySegment
+     * @param string $expectedRemainingKey
      */
-    public function parseNextKeySegmentReturnsCorrectNextKeySegment($key, $expectedKeySegment, $expectedRemainingKey)
-    {
-        list($keySegment, $remainingKey) = $this->typoScriptParser->_call('parseNextKeySegment', $key);
+    public function parseNextKeySegmentReturnsCorrectNextKeySegment(
+        string $key,
+        string $expectedKeySegment,
+        string $expectedRemainingKey
+    ): void {
+        [$keySegment, $remainingKey] = $this->typoScriptParser->_call('parseNextKeySegment', $key);
         $this->assertSame($expectedKeySegment, $keySegment);
         $this->assertSame($expectedRemainingKey, $remainingKey);
     }
@@ -1012,7 +1043,7 @@ test.TYPO3Forever.TypoScript = 1
     /**
      * @return array
      */
-    public function parseNextKeySegmentReturnsCorrectNextKeySegmentDataProvider()
+    public function parseNextKeySegmentReturnsCorrectNextKeySegmentDataProvider(): array
     {
         return [
             'key without separator' => [

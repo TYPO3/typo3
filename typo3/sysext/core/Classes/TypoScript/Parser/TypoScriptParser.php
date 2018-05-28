@@ -402,7 +402,8 @@ class TypoScriptParser
                                     if ($line[0] === ':' && preg_match('/^:=\\s*([[:alpha:]]+)\\s*\\((.*)\\).*/', $line, $match)) {
                                         $tsFunc = $match[1];
                                         $tsFuncArg = $match[2];
-                                        list($currentValue) = $this->getVal($objStrName, $setup);
+                                        $val = $this->getVal($objStrName, $setup);
+                                        $currentValue = $val[0] ?? null;
                                         $tsFuncArg = str_replace(['\\\\', '\\n', '\\t'], ['\\', LF, TAB], $tsFuncArg);
                                         $newValue = $this->executeValueModifier($tsFunc, $tsFuncArg, $currentValue);
                                         if (isset($newValue)) {
@@ -540,7 +541,9 @@ class TypoScriptParser
                 $newValue = str_replace($modifierArgument, '', $currentValue);
                 break;
             case 'replaceString':
-                list($fromStr, $toStr) = explode('|', $modifierArgument, 2);
+                $modifierArgumentArray = explode('|', $modifierArgument, 2);
+                $fromStr = $modifierArgumentArray[0] ?? '';
+                $toStr = $modifierArgumentArray[1] ?? '';
                 $newValue = str_replace($fromStr, $toStr, $currentValue);
                 break;
             case 'addToList':
