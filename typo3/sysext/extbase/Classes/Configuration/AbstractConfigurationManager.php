@@ -241,7 +241,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
                 continue;
             }
             $overriddenSwitchableControllerActions[$controllerName] = ['actions' => $actions];
-            $nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'];
+            $nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'] ?? null;
             if (!is_array($nonCacheableActions)) {
                 // There are no non-cacheable actions, thus we can directly continue
                 // with the next controller name.

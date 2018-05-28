@@ -59,12 +59,12 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
     {
         $setup = $this->getTypoScriptSetup();
         $pluginConfiguration = [];
-        if (is_array($setup['plugin.']['tx_' . strtolower($extensionName) . '.'])) {
+        if (isset($setup['plugin.']['tx_' . strtolower($extensionName) . '.']) && is_array($setup['plugin.']['tx_' . strtolower($extensionName) . '.'])) {
             $pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . strtolower($extensionName) . '.']);
         }
         if ($pluginName !== null) {
             $pluginSignature = strtolower($extensionName . '_' . $pluginName);
-            if (is_array($setup['plugin.']['tx_' . $pluginSignature . '.'])) {
+            if (isset($setup['plugin.']['tx_' . $pluginSignature . '.']) && is_array($setup['plugin.']['tx_' . $pluginSignature . '.'])) {
                 ArrayUtility::mergeRecursiveWithOverrule(
                     $pluginConfiguration,
                     $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . $pluginSignature . '.'])
@@ -199,8 +199,8 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      */
     protected function mergeConfigurationIntoFrameworkConfiguration(array $frameworkConfiguration, array $configuration, $configurationPartName)
     {
-        if (is_array($configuration[$configurationPartName])) {
-            if (is_array($frameworkConfiguration[$configurationPartName])) {
+        if (isset($configuration[$configurationPartName]) && is_array($configuration[$configurationPartName])) {
+            if (isset($frameworkConfiguration[$configurationPartName]) && is_array($frameworkConfiguration[$configurationPartName])) {
                 ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration[$configurationPartName], $configuration[$configurationPartName]);
             } else {
                 $frameworkConfiguration[$configurationPartName] = $configuration[$configurationPartName];
