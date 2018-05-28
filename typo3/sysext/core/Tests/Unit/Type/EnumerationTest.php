@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\Type;
 
 /*
@@ -15,23 +17,21 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type;
  */
 
 use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration;
+use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration;
+use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\MissingDefaultEnumeration;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationDefinitionException;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class EnumerationTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfNoConstantsAreDefined()
+    public function constructorThrowsExceptionIfNoConstantsAreDefined(): void
     {
         $this->expectException(InvalidEnumerationValueException::class);
         $this->expectExceptionCode(1381512753);
@@ -42,18 +42,18 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfInvalidValueIsRequested()
+    public function constructorThrowsExceptionIfInvalidValueIsRequested(): void
     {
         $this->expectException(InvalidEnumerationValueException::class);
         $this->expectExceptionCode(1381512761);
 
-        new Enumeration\CompleteEnumeration('bar');
+        new CompleteEnumeration('bar');
     }
 
     /**
      * @test
      */
-    public function loadValuesThrowsExceptionIfGivenValueIsNotAvailableInEnumeration()
+    public function loadValuesThrowsExceptionIfGivenValueIsNotAvailableInEnumeration(): void
     {
         $this->expectException(InvalidEnumerationValueException::class);
         $this->expectExceptionCode(1381512807);
@@ -64,7 +64,7 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function loadValuesThrowsExceptionIfDisallowedTypeIsDefinedAsConstant()
+    public function loadValuesThrowsExceptionIfDisallowedTypeIsDefinedAsConstant(): void
     {
         $this->expectException(InvalidEnumerationDefinitionException::class);
         $this->expectExceptionCode(1381512797);
@@ -75,7 +75,7 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function loadValuesThrowsExceptionIfNoDefaultConstantIsDefinedAndNoValueIsGiven()
+    public function loadValuesThrowsExceptionIfNoDefaultConstantIsDefinedAndNoValueIsGiven(): void
     {
         $this->expectException(InvalidEnumerationValueException::class);
         $this->expectExceptionCode(1381512753);
@@ -86,7 +86,7 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function loadValuesThrowsExceptionIfValueIsDefinedMultipleTimes()
+    public function loadValuesThrowsExceptionIfValueIsDefinedMultipleTimes(): void
     {
         $this->expectException(InvalidEnumerationDefinitionException::class);
         $this->expectExceptionCode(1381512859);
@@ -96,8 +96,9 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * Array of value pairs and expected comparison result
+     * @return array
      */
-    public function looseEnumerationValues()
+    public function looseEnumerationValues(): array
     {
         return [
             [
@@ -126,8 +127,10 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      * @dataProvider looseEnumerationValues
+     * @param $testValue
+     * @param $expectedValue
      */
-    public function doesTypeLooseComparison($testValue, $expectedValue)
+    public function doesTypeLooseComparison($testValue, $expectedValue): void
     {
         $value = new Enumeration\CompleteEnumeration($testValue);
 
@@ -137,7 +140,7 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getConstantsReturnsArrayOfPossibleValuesWithoutDefault()
+    public function getConstantsReturnsArrayOfPossibleValuesWithoutDefault(): void
     {
         $expected = [
             'INTEGER_VALUE' => 1,
@@ -151,7 +154,7 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getConstantsReturnsArrayOfPossibleValuesWithDefaultIfRequested()
+    public function getConstantsReturnsArrayOfPossibleValuesWithDefaultIfRequested(): void
     {
         $expected = [
             'INTEGER_VALUE' => 1,
@@ -166,7 +169,7 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getConstantsCanBeCalledOnInstances()
+    public function getConstantsCanBeCalledOnInstances(): void
     {
         $enumeration = new Enumeration\CompleteEnumeration();
         $expected = [
@@ -175,158 +178,158 @@ class EnumerationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'STRING_VALUE' => 'foo',
         ];
 
-        $this->assertEquals($expected, $enumeration->getConstants());
+        $this->assertEquals($expected, $enumeration::getConstants());
     }
 
     /**
      * @test
      */
-    public function toStringReturnsValueAsString()
+    public function toStringReturnsValueAsString(): void
     {
-        $enumeration = new Enumeration\CompleteEnumeration();
+        $enumeration = new CompleteEnumeration();
         $this->assertSame('1', $enumeration->__toString());
     }
 
     /**
      * @test
      */
-    public function castReturnsObjectOfEnumerationTypeIfSimpleValueIsGiven()
+    public function castReturnsObjectOfEnumerationTypeIfSimpleValueIsGiven(): void
     {
-        $enumeration = Enumeration\CompleteEnumeration::cast(1);
-        $this->assertInstanceOf(\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class, $enumeration);
+        $enumeration = CompleteEnumeration::cast(1);
+        $this->assertInstanceOf(CompleteEnumeration::class, $enumeration);
     }
 
     /**
      * @test
      */
-    public function castReturnsObjectOfCalledEnumerationTypeIfCalledWithValueOfDifferentType()
+    public function castReturnsObjectOfCalledEnumerationTypeIfCalledWithValueOfDifferentType(): void
     {
         $initialEnumeration = new Enumeration\MissingDefaultEnumeration(1);
-        $enumeration = Enumeration\CompleteEnumeration::cast($initialEnumeration);
-        $this->assertInstanceOf(\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class, $enumeration);
+        $enumeration = CompleteEnumeration::cast($initialEnumeration);
+        $this->assertInstanceOf(CompleteEnumeration::class, $enumeration);
     }
 
     /**
      * @test
      */
-    public function castReturnsGivenObjectIfCalledWithValueOfSameType()
+    public function castReturnsGivenObjectIfCalledWithValueOfSameType(): void
     {
-        $initialEnumeration = new Enumeration\CompleteEnumeration(1);
-        $enumeration = Enumeration\CompleteEnumeration::cast($initialEnumeration);
+        $initialEnumeration = new CompleteEnumeration(1);
+        $enumeration = CompleteEnumeration::cast($initialEnumeration);
         $this->assertSame($initialEnumeration, $enumeration);
     }
 
     /**
      * @test
      */
-    public function castCastsStringToEnumerationWithCorrespondingValue()
+    public function castCastsStringToEnumerationWithCorrespondingValue(): void
     {
-        $value = new Enumeration\CompleteEnumeration(Enumeration\CompleteEnumeration::STRING_VALUE);
+        $value = new CompleteEnumeration(CompleteEnumeration::STRING_VALUE);
 
-        $this->assertSame((string)Enumeration\CompleteEnumeration::STRING_VALUE, (string)$value);
+        $this->assertSame(CompleteEnumeration::STRING_VALUE, (string)$value);
     }
 
     /**
      * @test
      */
-    public function castCastsIntegerToEnumerationWithCorrespondingValue()
+    public function castCastsIntegerToEnumerationWithCorrespondingValue(): void
     {
-        $value = new Enumeration\CompleteEnumeration(Enumeration\CompleteEnumeration::INTEGER_VALUE);
+        $value = new CompleteEnumeration(CompleteEnumeration::INTEGER_VALUE);
 
-        $this->assertSame((int)(string)Enumeration\CompleteEnumeration::INTEGER_VALUE, (int)(string)$value);
+        $this->assertSame((int)(string)CompleteEnumeration::INTEGER_VALUE, (int)(string)$value);
     }
 
     /**
      * @test
      */
-    public function equalsReturnsTrueIfIntegerIsGivenThatEqualsEnumerationsIntegerValue()
+    public function equalsReturnsTrueIfIntegerIsGivenThatEqualsEnumerationsIntegerValue(): void
     {
-        $enumeration = new Enumeration\CompleteEnumeration(1);
+        $enumeration = new CompleteEnumeration(1);
         $this->assertTrue($enumeration->equals(1));
     }
 
     /**
      * @test
      */
-    public function equalsReturnsTrueIfStringIsGivenThatEqualsEnumerationsIntegerValue()
+    public function equalsReturnsTrueIfStringIsGivenThatEqualsEnumerationsIntegerValue(): void
     {
-        $enumeration = new Enumeration\CompleteEnumeration(1);
+        $enumeration = new CompleteEnumeration(1);
         $this->assertTrue($enumeration->equals('1'));
     }
 
     /**
      * @test
      */
-    public function equalsReturnsTrueIfEqualEnumerationIsGiven()
+    public function equalsReturnsTrueIfEqualEnumerationIsGiven(): void
     {
-        $enumerationFoo = new Enumeration\CompleteEnumeration(1);
-        $enumerationBar = new Enumeration\CompleteEnumeration(1);
+        $enumerationFoo = new CompleteEnumeration(1);
+        $enumerationBar = new CompleteEnumeration(1);
         $this->assertTrue($enumerationFoo->equals($enumerationBar));
     }
 
     /**
      * @test
      */
-    public function equalsReturnsTrueIfDifferentEnumerationWithSameValueIsGiven()
+    public function equalsReturnsTrueIfDifferentEnumerationWithSameValueIsGiven(): void
     {
-        $enumerationFoo = new Enumeration\CompleteEnumeration(1);
-        $enumerationBar = new Enumeration\MissingDefaultEnumeration(1);
+        $enumerationFoo = new CompleteEnumeration(1);
+        $enumerationBar = new MissingDefaultEnumeration(1);
         $this->assertTrue($enumerationFoo->equals($enumerationBar));
     }
 
     /**
      * @test
      */
-    public function equalsReturnsFalseIfDifferentEnumerationWithDifferentValueIsGiven()
+    public function equalsReturnsFalseIfDifferentEnumerationWithDifferentValueIsGiven(): void
     {
-        $enumerationFoo = new Enumeration\CompleteEnumeration('foo');
-        $enumerationBar = new Enumeration\MissingDefaultEnumeration(1);
+        $enumerationFoo = new CompleteEnumeration('foo');
+        $enumerationBar = new MissingDefaultEnumeration(1);
         $this->assertFalse($enumerationFoo->equals($enumerationBar));
     }
 
     /**
      * @test
      */
-    public function equalsReturnsFalseIfEnumerationOfSameTypeWithDifferentValueIsGiven()
+    public function equalsReturnsFalseIfEnumerationOfSameTypeWithDifferentValueIsGiven(): void
     {
-        $enumerationFoo = new Enumeration\CompleteEnumeration(1);
-        $enumerationBar = new Enumeration\CompleteEnumeration('foo');
+        $enumerationFoo = new CompleteEnumeration(1);
+        $enumerationBar = new CompleteEnumeration('foo');
         $this->assertFalse($enumerationFoo->equals($enumerationBar));
     }
 
     /**
      * @test
      */
-    public function getNameProvidesNameForAvailableConstant()
+    public function getNameProvidesNameForAvailableConstant(): void
     {
-        $result = Enumeration\CompleteEnumeration::getName(Enumeration\CompleteEnumeration::INTEGER_VALUE);
+        $result = CompleteEnumeration::getName(CompleteEnumeration::INTEGER_VALUE);
         $this->assertSame('INTEGER_VALUE', $result);
     }
 
     /**
      * @test
      */
-    public function getNameReturnsEmptyStringForNotAvailableConstant()
+    public function getNameReturnsEmptyStringForNotAvailableConstant(): void
     {
-        $result = Enumeration\CompleteEnumeration::getName(42);
+        $result = CompleteEnumeration::getName(42);
         $this->assertSame('', $result);
     }
 
     /**
      * @test
      */
-    public function getHumanReadableNameProvidesNameForAvailableConstant()
+    public function getHumanReadableNameProvidesNameForAvailableConstant(): void
     {
-        $result = Enumeration\CompleteEnumeration::getHumanReadableName(Enumeration\CompleteEnumeration::INTEGER_VALUE);
+        $result = CompleteEnumeration::getHumanReadableName(CompleteEnumeration::INTEGER_VALUE);
         $this->assertSame('Integer Value', $result);
     }
 
     /**
      * @test
      */
-    public function getHumanReadableNameReturnsEmptyStringForNotAvailableConstant()
+    public function getHumanReadableNameReturnsEmptyStringForNotAvailableConstant(): void
     {
-        $result = Enumeration\CompleteEnumeration::getName(42);
+        $result = CompleteEnumeration::getName(42);
         $this->assertSame('', $result);
     }
 }

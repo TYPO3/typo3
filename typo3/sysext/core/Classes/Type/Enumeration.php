@@ -130,7 +130,7 @@ abstract class Enumeration implements TypeInterface
      */
     protected function setValue($value)
     {
-        $enumKey = array_search($value, static::$enumConstants[static::class]);
+        $enumKey = array_search((string)$value, static::$enumConstants[static::class]);
         if ($enumKey === false) {
             throw new Exception\InvalidEnumerationValueException(
                 sprintf('Invalid value "%s" for enumeration "%s"', $value, __CLASS__),
