@@ -22,9 +22,9 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler;
 use TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * A general purpose configuration manager used in backend mode.
@@ -62,10 +62,11 @@ class BackendConfigurationManager extends AbstractConfigurationManager
             // Get the root line
             $rootline = [];
             if ($pageId > 0) {
-                /** @var $sysPage PageRepository */
-                $sysPage = GeneralUtility::makeInstance(PageRepository::class);
-                // Get the rootline for the current page
-                $rootline = $sysPage->getRootLine($pageId, '', true);
+                try {
+                    $rootline = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+                } catch (\RuntimeException $e) {
+                    $rootline = [];
+                }
             }
             // This generates the constants/config + hierarchy info for the template.
             $template->runThroughTemplates($rootline, 0);

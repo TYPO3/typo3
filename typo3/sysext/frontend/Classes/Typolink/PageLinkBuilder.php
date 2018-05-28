@@ -287,7 +287,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // Find closest mount point
         // Gets rootline of linked-to page
-        $tCR_rootline = $tsfe->sys_page->getRootLine($pageId, '', true);
+        try {
+            $tCR_rootline = $tsfe->sys_page->getRootLine($pageId);
+        } catch (\RuntimeException $e) {
+            $tCR_rootline = [];
+        }
         $inverseTmplRootline = array_reverse($tsfe->tmpl->rootLine);
         $rl_mpArray = [];
         $startMPaccu = false;
