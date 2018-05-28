@@ -43,13 +43,15 @@ class AdminPanelInitiator implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
-
-            // Initialize admin panel since simulation settings are required here
             $beUser = $GLOBALS['BE_USER'];
             // set legacy config
             $beUser->extAdminConfig = $beUser->getTSConfig()['admPanel.'] ?? [];
             $adminPanelConfiguration = $beUser->extAdminConfig;
-            if (isset($adminPanelConfiguration['enable.'])) {
+            if (isset($adminPanelConfiguration['enable.']) &&
+                ($beUser->uc['TSFE_adminConfig']['display_top'] ?? false) &&
+                ($GLOBALS['TSFE']->config['config']['admPanel'] ?? false)
+            ) {
+                // only initialize if at least one module is enabled.
                 foreach ($adminPanelConfiguration['enable.'] as $value) {
                     if ($value) {
                         $adminPanelController = GeneralUtility::makeInstance(
