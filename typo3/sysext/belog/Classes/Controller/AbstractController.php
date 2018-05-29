@@ -124,7 +124,7 @@ abstract class AbstractController extends ActionController
     {
         // @TODO: Extbase backend modules rely on frontend TypoScript for view, persistence
         // and settings. Thus, we need a TypoScript root template, that then loads the
-        // ext_typoscript_setup.txt file of this module. This is nasty, but can not be
+        // ext_typoscript_setup.typoscript file of this module. This is nasty, but can not be
         // circumvented until there is a better solution in extbase.
         // For now we throw an exception if no settings are detected.
         if (empty($this->settings)) {

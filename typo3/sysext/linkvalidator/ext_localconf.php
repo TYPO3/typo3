@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:linkvalidator/Configuration/TsConfig/Page/pagetsconfig.txt">'
+    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:linkvalidator/Configuration/TsConfig/Page/pagetsconfig.tsconfig">'
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Linkvalidator\Task\ValidatorTask::class] = [

@@ -109,7 +109,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
         $this->importScenarioDataSet('LiveDefaultPages');
         $this->importScenarioDataSet('LiveDefaultElements');
         $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
         ]);
         $this->backendUser->workspace = 0;
     }

@@ -8,7 +8,7 @@ Overriding the FLUID templates
 
 At :ref:`typoscript` we have described the way content elements are rendered.
 
-By default these settings are done in the file :file:`setup.txt` which can be found in the
+By default these settings are done in the file :file:`setup.typoscript` which can be found in the
 folder :file:`EXT:fluid_styled_content/Configuration/TypoScript/`.
 
 
@@ -34,7 +34,7 @@ the same as `partialRootPaths` and `layoutRootPaths`:
       }
    }
 
-A content element is using a `templateName`, which is defined in :file:`setup.txt`. You
+A content element is using a `templateName`, which is defined in :file:`setup.typoscript`. You
 can override this value, but the template from the extension "fluid_styled_content" will
 not be loaded then, since its name is still the default value.
 

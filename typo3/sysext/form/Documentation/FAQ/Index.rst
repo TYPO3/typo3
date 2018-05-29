@@ -25,7 +25,7 @@ sitepackage ``EXT:my_site_package`` which contains your whole frontend
 integration.
 
 
-EXT:my_site_package/Configuration/TypoScript/setup.txt
+EXT:my_site_package/Configuration/TypoScript/setup.typoscript
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 First of all, register a new EXT:form configuration for the frontend via
@@ -73,12 +73,12 @@ Next, define the additional fluid template search paths via YAML.
    templates, register the new paths for the backend module as well.
 
 
-EXT:my_site_package/ext_typoscript_setup.txt
+EXT:my_site_package/ext_typoscript_setup.typoscript
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Register your EXT:form configuration for the backend via TypoScript. Read
 the :ref:`chapter <concepts-configuration-yamlregistration-backend>` to
-learn why we recommend using the concept behind ``ext_typoscript_setup.txt``.
+learn why we recommend using the concept behind ``ext_typoscript_setup.typoscript``.
 
 .. code-block:: typoscript
 

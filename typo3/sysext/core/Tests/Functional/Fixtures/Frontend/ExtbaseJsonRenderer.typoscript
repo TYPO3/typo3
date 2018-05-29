@@ -1,4 +1,4 @@
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:irre_tutorial/Configuration/TypoScript/setup.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:irre_tutorial/Configuration/TypoScript/setup.typoscript">
 
 page {
 	20 = COA

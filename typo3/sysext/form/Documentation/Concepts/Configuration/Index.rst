@@ -140,12 +140,12 @@ configuration of the backend ``module.tx_[pluginkey]`` is used.
 There are different ways to include the TypoScript configuration for the
 backend:
 
-- a) use a file called `ext_typoscript_setup.txt`,
+- a) use a file called `ext_typoscript_setup.typoscript`,
 - b) use the API function ``\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup()``,
 - c) add the configuration to your existing TypoScript template.
 
 We recommend using methods a and b. Here is why. The file
-:file:`ext_typoscript_setup.txt` can be stored within the root folder of
+:file:`ext_typoscript_setup.typoscript` can be stored within the root folder of
 your own site package. It will be automatically loaded in both frontend and
 backend of your TYPO3 installation. The API call (method b) does pretty
 much the same.
@@ -161,7 +161,7 @@ To sum it up: choose either method a or b, and you will be fine.
 
 .. _concepts-configuration-yamlregistration-backend-ext_typoscript_setup.txt:
 
-YAML registration for the backend via ext_typoscript_setup.txt
+YAML registration for the backend via ext_typoscript_setup.typoscript
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. code-block:: typoscript

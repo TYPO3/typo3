@@ -86,8 +86,8 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
         $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->contentRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository::class);
         $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TypoScript/setup.txt',
-            'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/ContentJsonRenderer.ts'
+            'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TypoScript/setup.typoscript',
+            'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/ContentJsonRenderer.typoscript'
 
         ]);
     }
