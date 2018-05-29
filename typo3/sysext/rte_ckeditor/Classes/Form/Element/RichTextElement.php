@@ -213,6 +213,7 @@ class RichTextElement extends AbstractFormElement
                 'fieldName'  => $this->data['fieldName'],
                 'recordType' => $this->data['recordTypeValue'],
                 'pid'        => $this->data['effectivePid'],
+                'richtextConfigurationName' => $this->data['parameterArray']['fieldConf']['config']['richtextConfigurationName']
             ]
         ];
 

@@ -61,6 +61,7 @@ class TcaTextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                         'config' => [
                             'type' => 'text',
                             'enableRichtext' => true,
+                            'richtextConfigurationName' => '',
                             'richtextConfiguration' => [
                                 'aConfig' => 'option',
                             ],
