@@ -125,6 +125,11 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         $this->contentLanguageService->init($this->contentsLanguage);
 
+        $tcaFieldConf = ['enableRichtext' => true];
+        if (!empty($queryParameters['P']['richtextConfigurationName'])) {
+            $tcaFieldConf['richtextConfiguration'] = $queryParameters['P']['richtextConfigurationName'];
+        }
+
         /** @var Richtext $richtextConfigurationProvider */
         $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
         $this->thisConfig = $richtextConfigurationProvider->getConfiguration(
@@ -132,7 +137,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             $this->parameters['fieldName'],
             (int)$this->parameters['pid'],
             $this->parameters['recordType'],
-            ['richtext' => true]
+            $tcaFieldConf
         );
         $this->buttonConfig = $this->thisConfig['buttons']['link'] ?? [];
     }
