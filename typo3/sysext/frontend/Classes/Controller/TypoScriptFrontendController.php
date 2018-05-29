@@ -1225,6 +1225,7 @@ class TypoScriptFrontendController
                     // Simulate date
                     $simTime = $backendUser->adminPanel->extGetFeAdminValue('preview', 'simulateDate');
                     if ($simTime) {
+                        $simTime -= date('Z', $simTime);
                         $GLOBALS['SIM_EXEC_TIME'] = $simTime;
                         $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
                     }
