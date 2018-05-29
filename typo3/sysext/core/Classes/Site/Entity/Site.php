@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Entity representing a single site with available languages
  */
-class Site
+class Site implements SiteInterface
 {
     protected const ERRORHANDLER_TYPE_PAGE = 'Page';
     protected const ERRORHANDLER_TYPE_FLUID = 'Fluid';
@@ -112,7 +112,8 @@ class Site
     }
 
     /**
-     * Gets the identifier of this site
+     * Gets the identifier of this site,
+     * mainly used when maintaining / configuring sites.
      *
      * @return string
      */
@@ -142,7 +143,7 @@ class Site
     }
 
     /**
-     * Returns all available langauges of this site
+     * Returns all available languages of this site
      *
      * @return SiteLanguage[]
      */

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -69,7 +70,7 @@ class SiteFinder
      *
      * @return array
      */
-    public function getBaseUris(): array
+    protected function getBaseUris(): array
     {
         $baseUrls = [];
         foreach ($this->sites as $site) {
@@ -87,10 +88,10 @@ class SiteFinder
      * Find a site by given root page id
      *
      * @param int $rootPageId
-     * @return Site
+     * @return SiteInterface
      * @throws SiteNotFoundException
      */
-    public function getSiteByRootPageId(int $rootPageId): Site
+    public function getSiteByRootPageId(int $rootPageId): SiteInterface
     {
         if (isset($this->mappingRootPageIdToIdentifier[$rootPageId])) {
             return $this->sites[$this->mappingRootPageIdToIdentifier[$rootPageId]];
@@ -140,10 +141,10 @@ class SiteFinder
      *
      * @param int $pageId
      * @param array $alternativeRootLine
-     * @return Site
+     * @return SiteInterface
      * @throws SiteNotFoundException
      */
-    public function getSiteByPageId(int $pageId, array $alternativeRootLine = null): Site
+    public function getSiteByPageId(int $pageId, array $alternativeRootLine = null): SiteInterface
     {
         if (is_array($alternativeRootLine)) {
             foreach ($alternativeRootLine as $pageInRootLine) {

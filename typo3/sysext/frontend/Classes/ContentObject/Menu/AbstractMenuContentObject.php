@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -2333,10 +2333,10 @@ abstract class AbstractMenuContentObject
     /**
      * Returns the currently configured "site" if a site is configured (= resolved) in the current request.
      *
-     * @return Site
+     * @return SiteInterface
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
-    protected function getCurrentSite(): Site
+    protected function getCurrentSite(): SiteInterface
     {
         $finder = GeneralUtility::makeInstance(SiteFinder::class);
         return $finder->getSiteByPageId((int)$this->getTypoScriptFrontendController()->id);
