@@ -1,0 +1,19 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{label} && {name}">
+    <div class="typo3-adminPanel-form-group">
+        <div class="typo3-adminPanel-form-select">
+            <label for="{name}" class="typo3-adminPanel-form-select-label">
+                <f:translate key="{label}" default="{label}" extensionName="adminpanel"/>
+            </label>
+            <select name="TSFE_ADMIN_PANEL[{name}]" id="{name}" class="typo3-adminPanel-form-select-input">
+                <option value="0"></option>
+                <f:for each="{options}" as="option">
+                    <option value="{option.{optionValue}}" {f:if(condition:'{option.{optionValue}} === {value}', then: 'selected')}>
+                        {option.{optionLabel}}
+                    </option>
+                </f:for>
+            </select>
+        </div>
+    </div>
+</f:if>
+</html>

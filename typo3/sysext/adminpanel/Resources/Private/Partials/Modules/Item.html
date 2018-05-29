@@ -1,0 +1,66 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="typo3-adminPanel-module{f:if(condition: uid, then: ' typo3-adminPanel-module-{uid}')}">
+    <div class="typo3-adminPanel-module-trigger" data-typo3-role="typo3-adminPanel-module-trigger">
+        <f:if condition="{icon}"><span class="typo3-adminPanel-module-trigger-icon">{icon -> f:format.raw()}</span></f:if>
+        <f:if condition="{label}"><span class="typo3-adminPanel-module-trigger-label">{label}</span></f:if>
+        <f:if condition="{information}"><span class="typo3-adminPanel-module-trigger-information">{information}</span></f:if>
+    </div>
+    <f:if condition="{mainContent} || {module.subModules}">
+        <div class="typo3-adminPanel-content" data-typo3-role="typo3-adminPanel-content">
+            <div class="typo3-adminPanel-content-header">
+                <div class="typo3-adminPanel-content-header-item typo3-adminPanel-content-header-title">
+                    <f:if condition="{icon}"><span class="typo3-adminPanel-content-header-title-icon">{icon -> f:format.raw()}</span></f:if>
+                    <f:if condition="{label}"><span class="typo3-adminPanel-content-header-title-label">{label}</span></f:if>
+                </div>
+                <div class="typo3-adminPanel-content-nav" data-typo3-role="typo3-adminPanel-content-tabs">
+                    <f:for each="{module.subModules}" as="sub" iteration="iteration">
+                        <a href="#" class="typo3-adminPanel-content-header-item{f:if(condition: iteration.isFirst, then: ' typo3-adminPanel-content-header-item-active')}" data-typo3-role="typo3-adminPanel-content-tab" data-typo3-tab-target="{sub.identifier}">{sub.label}</a>
+                    </f:for>
+                </div>
+                <f:if condition="{module.hasSubmoduleSettings}">
+                    <button type="button" class="typo3-adminPanel-content-header-item typo3-adminPanel-content-header-settings" data-typo3-role="typo3-adminPanel-content-settings">
+                        <core:icon identifier="actions-system-extension-configure" alternativeMarkupIdentifier="inline"/>
+                    </button>
+                </f:if>
+                <button type="button" class="typo3-adminPanel-content-header-item typo3-adminPanel-content-header-close" data-typo3-role="typo3-adminPanel-content-close">
+                    <core:icon identifier="actions-close" alternativeMarkupIdentifier="inline"/>
+                </button>
+            </div>
+            <f:if condition="{module.hasSubmoduleSettings}">
+                <div class="typo3-adminPanel-content-settings">
+                    <f:for each="{module.subModules}" as="sub">
+                        <f:if condition="{sub.settings}">
+                            <div class="typo3-adminPanel-content-settings-group">
+                                <h4 class="typo3-adminPanel-headline">Settings Group</h4>
+                                <f:format.raw>
+                                    {sub.settings}
+                                </f:format.raw>
+                            </div>
+                        </f:if>
+                    </f:for>
+                    <div class="typo3-adminPanel-form-group">
+                        <f:form.button class="typo3-adminPanel-btn typo3-adminPanel-btn-primary" data="{typo3-role: 'typo3-adminPanel-saveButton'}">Save</f:form.button>
+                    </div>
+                </div>
+            </f:if>
+            <div class="typo3-adminPanel-content-main">
+                <f:if condition="{mainContent}">
+                    <f:then>
+                        {mainContent -> f:format.raw()}
+                    </f:then>
+                    <f:else>
+                        <div class="typo3-adminPanel-content-panes">
+                            <f:for each="{module.subModules}" as="sub" iteration="subModulesIterator">
+                                <div class="typo3-adminPanel-content-panes-item{f:if(condition:'{subModulesIterator.isFirst}',then:' typo3-adminPanel-content-panes-item-active')}" data-typo3-role="typo3-adminPanel-content-pane" data-typo3-tab-id="{sub.identifier}">
+                                    <f:if condition="{sub.label}"><h1 class="typo3-adminPanel-headline">{sub.label}</h1></f:if>
+                                    <f:format.raw>{sub.content}</f:format.raw>
+                                </div>
+                            </f:for>
+                        </div>
+                    </f:else>
+                </f:if>
+            </div>
+        </div>
+    </f:if>
+</div>
+</html>

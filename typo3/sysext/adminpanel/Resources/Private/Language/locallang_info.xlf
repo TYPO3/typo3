@@ -6,6 +6,9 @@
             <trans-unit id="module.label">
                 <source>Info</source>
             </trans-unit>
+            <trans-unit id="module.shortinfo">
+                <source>(Load Time: %s ms)</source>
+            </trans-unit>
             <trans-unit id="imagesOnPage">
                 <source>Images on this page</source>
             </trans-unit>
@@ -44,6 +47,21 @@
             </trans-unit>
             <trans-unit id="totalParsetime">
                 <source>Total parsetime</source>
+            </trans-unit>
+            <trans-unit id="key">
+                <source>Key</source>
+            </trans-unit>
+            <trans-unit id="value">
+                <source>Value</source>
+            </trans-unit>
+            <trans-unit id="sub.general.label">
+                <source>General</source>
+            </trans-unit>
+            <trans-unit id="sub.php.label">
+                <source>PHP</source>
+            </trans-unit>
+            <trans-unit id="sub.request.label">
+                <source>REQUEST</source>
             </trans-unit>
         </body>
     </file>

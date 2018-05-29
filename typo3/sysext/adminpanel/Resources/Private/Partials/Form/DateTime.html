@@ -1,0 +1,16 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{label} && {name}">
+    <div class="typo3-adminPanel-form-group">
+        <div class="typo3-adminPanel-form-datetime">
+            <label for="{name}" class="typo3-adminPanel-form-datetime-label">
+                <f:translate key="{label}" default="{label}" extensionName="adminpanel"/>
+            </label>
+            <div class="typo3-adminPanel-form-datetime-input-group">
+                <input type="date" id="{name}-date-hr" class="typo3-adminPanel-form-datetime-input" data-target="{name}"/>
+                <input type="time" id="{name}-time-hr" class="typo3-adminPanel-form-datetime-input" data-target="{name}"/>
+            </div>
+            <input type="hidden" name="TSFE_ADMIN_PANEL[{name}]" id="{name}" value="{value}" />
+        </div>
+    </div>
+</f:if>
+</html>

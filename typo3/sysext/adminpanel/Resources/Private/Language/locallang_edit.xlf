@@ -4,6 +4,9 @@
 		  product-name="adminpanel">
 		<header/>
 		<body>
+			<trans-unit id="module.label">
+				<source>Edit</source>
+			</trans-unit>
 			<trans-unit id="displayFieldIcons">
 				<source>Display edit icons</source>
 			</trans-unit>

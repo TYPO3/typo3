@@ -16,12 +16,11 @@ namespace TYPO3\CMS\Adminpanel\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -29,52 +28,55 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AjaxController
 {
+    /**
+     * @var array
+     */
+    protected $adminPanelModuleConfiguration;
+
+    /**
+     * @var \TYPO3\CMS\Adminpanel\Service\ModuleLoader
+     */
+    protected $moduleLoader;
+
+    /**
+     * @var \TYPO3\CMS\Adminpanel\Service\ConfigurationService
+     */
+    private $configurationService;
+
+    /**
+     * @param ConfigurationService $configurationService
+     * @param ModuleLoader $moduleLoader
+     */
+    public function __construct(ConfigurationService $configurationService = null, ModuleLoader $moduleLoader = null)
+    {
+        $this->configurationService = $configurationService
+                                      ??
+                                      GeneralUtility::makeInstance(ConfigurationService::class);
+        $this->adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
+        $this->moduleLoader = $moduleLoader ?? GeneralUtility::makeInstance(ModuleLoader::class);
+    }
 
     /**
      * Save adminPanel data
      *
-     * @param ServerRequest $request
+     * @param ServerRequestInterface $request
      * @return JsonResponse
      */
-    public function saveDataAction(ServerRequest $request): JsonResponse
+    public function saveDataAction(ServerRequestInterface $request): JsonResponse
     {
-        $moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
-
-        $modules = $moduleLoader->getModulesFromConfiguration();
-
-        $input = $request->getParsedBody()['TSFE_ADMIN_PANEL'] ?? null;
-        $beUser = $this->getBackendUser();
-        if (is_array($input)) {
-            // Setting
-            $beUser->uc['TSFE_adminConfig'] = array_merge(
-                !is_array($beUser->uc['TSFE_adminConfig']) ? [] : $beUser->uc['TSFE_adminConfig'],
-                $input
-            );
-            unset($beUser->uc['TSFE_adminConfig']['action']);
-
-            /** @var \TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface $module */
-            foreach ($modules as $module) {
-                if ($module->isEnabled()) {
-                    $module->onSubmit($input);
-                }
-            }
-            // Saving
-            $beUser->writeUC();
-            // Flush fluid template cache
-            $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-            $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-            $cacheManager->getCache('fluid_template')->flush();
-        }
+        $this->configurationService->saveConfiguration(
+            $this->moduleLoader->validateSortAndInitializeModules($this->adminPanelModuleConfiguration),
+            $request
+        );
         return new JsonResponse(['success' => true]);
     }
 
     /**
      * Toggle admin panel active state via UC
      *
-     * @param \Psr\Http\Message\RequestInterface $request
      * @return \TYPO3\CMS\Core\Http\JsonResponse
      */
-    public function toggleActiveState(RequestInterface $request): JsonResponse
+    public function toggleActiveState(): JsonResponse
     {
         $backendUser = $this->getBackendUser();
         if ($backendUser->uc['TSFE_adminConfig']['display_top'] ?? false) {

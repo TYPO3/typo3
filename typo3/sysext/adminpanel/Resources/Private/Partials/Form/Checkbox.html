@@ -1,0 +1,13 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{label} && {name}">
+    <div class="typo3-adminPanel-form-group typo3-adminPanel-form-group-checkbox">
+        <div class="typo3-adminPanel-form-checkbox">
+            <input type="hidden" name="TSFE_ADMIN_PANEL[{name}]" value="0"/>
+            <input type="checkbox" id="{name}" name="TSFE_ADMIN_PANEL[{name}]" value="1" class="typo3-adminPanel-form-checkbox-input"{f:if(condition: value, then:' checked="checked"')} />
+            <label for="{name}" class="typo3-adminPanel-form-checkbox-label">
+                <f:translate key="{label}" default="{label}" extensionName="adminpanel"/>
+            </label>
+        </div>
+    </div>
+</f:if>
+</html>

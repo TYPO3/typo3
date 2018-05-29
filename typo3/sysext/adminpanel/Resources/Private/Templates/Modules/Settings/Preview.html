@@ -1,0 +1,28 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:render partial="Form/Checkbox" arguments="{
+    label: 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:showHiddenPages',
+    name: 'preview_showHiddenPages',
+    value: show.hiddenPages }" debug="false"/>
+<f:render partial="Form/Checkbox" arguments="{
+    label: 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:showHiddenRecords',
+    name: 'preview_showHiddenRecords',
+    value: show.hiddenRecords }" debug="false"/>
+<f:render partial="Form/Checkbox" arguments="{
+    label: 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:showFluidDebug',
+    name: 'preview_showFluidDebug',
+    value: show.fluidDebug }" debug="false"/>
+<f:render partial="Form/Hidden" arguments="{
+    name: 'preview_clearCacheId',
+    value: show.pageId }" debug="false"/>
+<f:render partial="Form/DateTime" arguments="{
+    label: 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:simulateDate',
+    name: 'preview_simulateDate',
+    value: simulateDate }" debug="false"/>
+<f:render partial="Form/Select" arguments="{
+    label: 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:simulateUserGroup',
+    name: 'preview_simulateUserGroup',
+    options: frontendUserGroups.availableGroups,
+    optionValue: 'uid',
+    optionLabel: 'title',
+    value: frontendUserGroups.selected }" debug="false"/>
+</html>

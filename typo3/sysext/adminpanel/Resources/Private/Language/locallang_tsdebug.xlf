@@ -6,6 +6,9 @@
             <trans-unit id="module.label">
                 <source>TypoScript</source>
             </trans-unit>
+            <trans-unit id="module.shortinfo">
+                <source>(%s Messages)</source>
+            </trans-unit>
             <trans-unit id="treeDisplay">
                 <source>Tree display</source>
             </trans-unit>
@@ -23,6 +26,9 @@
             </trans-unit>
             <trans-unit id="forceTemplateParsing">
                 <source>Force TS Rendering</source>
+            </trans-unit>
+            <trans-unit id="sub.waterfall.label">
+                <source>TS Tree</source>
             </trans-unit>
         </body>
     </file>

@@ -1,0 +1,40 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+<!-- TYPO3 admin panel start -->
+<f:format.raw>{resources}</f:format.raw>
+<f:if condition="{adminPanelActive}">
+    <f:format.raw>{moduleResources.css}</f:format.raw>
+    <f:format.raw>{moduleResources.js}</f:format.raw>
+</f:if>
+<form id="TSFE_ADMIN_PANEL_FORM" data-typo3-role="typo3-adminPanel" data-typo3-ajax-url="{saveUrl}" class="typo3-kidjls9dksoje typo3-adminPanel{f:if(condition: adminPanelActive, then: ' typo3-adminPanel-active')}">
+
+    <div class="typo3-adminPanel-bar">
+        <div class="typo3-adminPanel-module typo3-adminPanel-module-logo">
+            <div class="typo3-adminPanel-module-trigger">
+                <span class="typo3-adminPanel-module-trigger-icon"><core:icon identifier="information-typo3-version" alternativeMarkupIdentifier="inline"/></span>
+            </div>
+        </div>
+        <f:if condition="{adminPanelActive}">
+            <div class="typo3-adminPanel-module-group">
+                <f:render section="Module" debug="false"/>
+            </div>
+            <f:render section="Settings" debug="false"/>
+        </f:if>
+        <div class="typo3-adminPanel-module typo3-adminPanel-module-toggle">
+            <div class="typo3-adminPanel-module-trigger" data-typo3-role="typo3-adminPanel-trigger" data-typo3-ajax-url="{toggleActiveUrl}">
+                <span class="typo3-adminPanel-module-trigger-icon">
+                    <f:if condition="{adminPanelActive}">
+                        <f:then>
+                            <core:icon identifier="actions-edit-hide" alternativeMarkupIdentifier="inline"/>
+                        </f:then>
+                        <f:else>
+                            <core:icon identifier="actions-edit-unhide" alternativeMarkupIdentifier="inline"/>
+                        </f:else>
+                    </f:if>
+                </span>
+            </div>
+        </div>
+    </div>
+
+</form>
+<!-- TYPO3 admin panel end -->
+</html>

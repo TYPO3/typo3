@@ -2494,4 +2494,18 @@ return [
             'Deprecation-85666-TypoScriptFrontendController-initTemplate.rst',
         ],
     ],
+    'TYPO3\CMS\Adminpanel\View\AdminPanelView->isAdminModuleEnabled' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84584-AdminPanelViewIsAdminModuleEnabledAndExt_makeToolbarDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Adminpanel\View\AdminPanelView->ext_makeToolBar' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84584-AdminPanelViewIsAdminModuleEnabledAndExt_makeToolbarDeprecated.rst',
+        ],
+    ],
 ];

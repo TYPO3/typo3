@@ -1,0 +1,55 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+<f:section name="Module">
+
+    <f:for each="{modules}" as="module" iteration="iteration">
+        <f:if condition="{module.subModules}">
+            <f:variable name="uid">{iteration.index}</f:variable>
+            <f:variable name="icon"><core:icon identifier="{module.iconIdentifier}" alternativeMarkupIdentifier="inline"/></f:variable>
+            <f:variable name="label">{module.label}</f:variable>
+            <f:variable name="information">{module.shortInfo}</f:variable>
+            <f:render partial="Modules/Item" arguments="{module: module, uid: uid, icon: icon, label: label, information: information}" debug="false"/>
+        </f:if>
+    </f:for>
+
+    <f:if condition="{hookObjectModuleContent}">
+        <f:variable name="uid">hook</f:variable>
+        <f:variable name="icon"><core:icon identifier="actions-window-open" alternativeMarkupIdentifier="inline"/></f:variable>
+        <f:variable name="label"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:deprecatedModuleLabel"/></f:variable>
+        <f:variable name="mainContent">{hookObjectModuleContent}</f:variable>
+        <f:render partial="Modules/Item" arguments="{uid: uid, icon: icon, label: label, mainContent: mainContent}" debug="false"/>
+    </f:if>
+
+</f:section>
+<f:section name="Settings">
+
+    <f:variable name="uid">settings</f:variable>
+    <f:variable name="icon"><core:icon identifier="actions-system-extension-configure" alternativeMarkupIdentifier="inline"/></f:variable>
+    <f:variable name="label"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.label"/></f:variable>
+    <f:variable name="information">{module.shortInfo}</f:variable>
+    <f:variable name="mainContent">
+        <h1 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.label"/></h1>
+        <div class="typo3-adminPanel-card-group">
+            <f:for each="{modules}" as="module">
+                <f:if condition="{module.settings}">
+                    <div class="typo3-adminPanel-card">
+                        <div class="typo3-adminPanel-card-header">
+                            <h2 class="typo3-adminPanel-card-header-headline">
+                                <span class="typo3-adminPanel-card-header-icon"><core:icon identifier="{module.iconIdentifier}" alternativeMarkupIdentifier="inline"/></span>
+                                <span class="typo3-adminPanel-card-header-text">{module.label}</span>
+                            </h2>
+                        </div>
+                        <div class="typo3-adminPanel-card-body"><f:format.raw>{module.settings}</f:format.raw></div>
+                    </div>
+                </f:if>
+            </f:for>
+        </div>
+        <div class="typo3-adminPanel-form-group">
+            <button data-typo3-role="typo3-adminPanel-saveButton" class="typo3-adminPanel-btn typo3-adminPanel-btn-primary">
+                <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.updateButtonLabel"/>
+            </button>
+        </div>
+    </f:variable>
+    <f:render partial="Modules/Item" arguments="{uid: uid, icon: icon, label: label, information: information, mainContent: mainContent}" debug="false"/>
+</f:section>
+</html>

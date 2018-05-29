@@ -1,0 +1,87 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{info.noCache}">
+
+    <f:if condition="{info.imagesOnPage.total} > 0">
+        <h2 class="typo3-adminPanel-headline">Images</h2>
+        <div class="typo3-adminPanel-table-overflow">
+            <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+                <thead>
+                    <tr>
+                        <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:key"/></th>
+                        <th scope="col"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:value"/></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:imagesOnPage"/></th>
+                        <td>
+                            <f:variable name="typeClass" value="string" />
+                            <f:if condition="{info.imagesOnPage.total as integer} === {info.imagesOnPage.total}"><f:variable name="typeClass" value="integer" /></f:if>
+                            <f:if condition="{info.imagesOnPage.total as float} === {info.imagesOnPage.total}"><f:variable name="typeClass" value="float" /></f:if>
+                            <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}">{info.imagesOnPage.total}</pre>
+                        </td>
+                    </tr>
+                    <f:for each="{info.imagesOnPage.files}" as="file">
+                        <tr>
+                            <th scope="row" class="typo3-adminPanel-table-cell-key">
+                                {file.name}
+                            </th>
+                            <td>
+                                <f:variable name="typeClass" value="string" />
+                                <f:if condition="{file.sizeHuman as integer} === {file.sizeHuman}"><f:variable name="typeClass" value="integer" /></f:if>
+                                <f:if condition="{file.sizeHuman as float} === {file.sizeHuman}"><f:variable name="typeClass" value="float" /></f:if>
+                                <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}">{file.sizeHuman}</pre>
+                            </td>
+                        </tr>
+                    </f:for>
+                    <tr>
+                        <th scope="row" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:imagesSize"/></th>
+                        <td>
+                            <f:variable name="typeClass" value="string" />
+                            <f:if condition="{info.imagesOnPage.totalSize as integer} === {info.imagesOnPage.totalSize}"><f:variable name="typeClass" value="integer" /></f:if>
+                            <f:if condition="{info.imagesOnPage.totalSize as float} === {info.imagesOnPage.totalSize}"><f:variable name="typeClass" value="float" /></f:if>
+                            <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}">{info.imagesOnPage.totalSize}</pre>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </f:if>
+
+    <f:render partial="Data/TableKeyValue" arguments="{label: 'Document Size', data: '{
+        \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:DocumentSize\': \'{info.documentSize as integer}\'
+        }'}" debug="false"/>
+
+</f:if>
+
+<f:render partial="Data/TableKeyValue" arguments="{label: 'Page', data: '{
+    \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:pageUid\': info.pageUid,
+    \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:pageType\': info.pageType
+    }'}" debug="false"/>
+
+<f:render partial="Data/TableKeyValue" arguments="{label: 'Frontend User Group', data: '{
+    \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:groupList\': info.groupList
+    }'}" debug="false"/>
+
+<f:variable name="noCacheLabel">LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache_no</f:variable>
+<f:if condition="{info.noCache}"><f:variable name="noCacheLabel">LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache_yes</f:variable></f:if>
+<f:render partial="Data/TableKeyValue" arguments="{label: 'Cache', data: '{
+    \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache\': noCacheLabel
+    }'}" debug="false"/>
+
+<f:render partial="Data/TableKeyValue" arguments="{label: 'UserIntObjects', data: '{
+    \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:countUserInt\': info.countUserInt
+    }'}" debug="false"/>
+
+<f:if condition="{info.feUser.uid} > 0">
+    <f:render partial="Data/TableKeyValue" arguments="{label: 'Frontend User', data: '{
+        \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:feuserName\': info.feUser.username,
+        \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:feuserId\': info.feUser.uid,
+        }'}" debug="false"/>
+</f:if>
+
+<f:render partial="Data/TableKeyValue" arguments="{label: 'Total Parsetime', data: '{
+    \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:totalParsetime\': \'{info.totalParsetime} ms\'
+    }'}" debug="false"/>
+
+</html>

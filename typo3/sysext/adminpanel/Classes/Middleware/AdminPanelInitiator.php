@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AdminPanelInitiator implements MiddlewareInterface
 {
-
     /**
      * Initialize the adminPanel if
      * - backend user is logged in

@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -25,23 +25,40 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class CacheModule extends AbstractModule
 {
     /**
-     * Creates the content for the "cache" section ("module") of the Admin Panel
-     *
-     * @return string HTML content for the section. Consists of a string with table-rows with four columns.
+     * @return string
      */
-    public function getContent(): string
+    public function getIconIdentifier(): string
+    {
+        return 'apps-toolbar-menu-cache';
+    }
+
+    /**
+     * @return string
+     */
+    public function getSettings(): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = $this->extResources . '/Templates/Modules/Cache.html';
+        $templateNameAndPath = $this->extResources . '/Templates/Modules/Settings/Cache.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
         $view->setPartialRootPaths([$this->extResources . '/Partials']);
 
-        $view->assignMultiple([
-            'isEnabled' => $this->getBackendUser()->uc['TSFE_adminConfig']['display_cache'],
-            'noCache' => $this->getBackendUser()->uc['TSFE_adminConfig']['cache_noCache'],
-            'cacheLevels' => $this->getBackendUser()->uc['TSFE_adminConfig']['cache_clearCacheLevels'],
-            'currentId' => $this->getTypoScriptFrontendController()->id
-        ]);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $feCacheClear = $this->getBackendUser()->isAdmin() || $this->getBackendUser()->getTSConfig()['options.']['clearCache.']['pages'];
+
+        $view->assignMultiple(
+            [
+                'isEnabled' => $this->getBackendUser()->uc['TSFE_adminConfig']['display_cache'],
+                'noCache' => $this->getBackendUser()->uc['TSFE_adminConfig']['cache_noCache'],
+                'currentId' => $this->getTypoScriptFrontendController()->id,
+                'clearPageCacheUrl' => $feCacheClear ? (string)$uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'pages']) : '',
+                'clearCurrentPageCacheUrl' => (string)$uriBuilder->buildUriFromRoute(
+                    'tce_db',
+                    [
+                        'cacheCmd' => $this->getTypoScriptFrontendController()->id,
+                    ]
+                ),
+            ]
+        );
 
         return $view->render();
     }
@@ -66,40 +83,11 @@ class CacheModule extends AbstractModule
     /**
      * @inheritdoc
      */
-    public function initializeModule(ServerRequest $request): void
+    public function initializeModule(ServerRequestInterface $request): void
     {
-        if ($this->getConfigurationOption('noCache')) {
+        if ($this->configurationService->getConfigurationOption('cache', 'noCache')) {
             $this->getTypoScriptFrontendController()->set_no_cache('Admin Panel: No Caching', true);
         }
-    }
-
-    /**
-     * Clear cache on saving if requested
-     *
-     * @param array $input
-     */
-    public function onSubmit(array $input): void
-    {
-        if (($input['action']['clearCache'] ?? false) || isset($input['preview_showFluidDebug'])) {
-            $theStartId = (int)$input['cache_clearCacheId'];
-            $this->getTypoScriptFrontendController()
-                ->clearPageCacheContent_pidList(
-                    $this->getBackendUser()->extGetTreeList(
-                        $theStartId,
-                        (int)$this->getConfigurationOption('clearCacheLevels'),
-                        0,
-                        $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
-                    ) . $theStartId
-                );
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function showFormSubmitButton(): bool
-    {
-        return true;
     }
 
     /**
@@ -108,5 +96,13 @@ class CacheModule extends AbstractModule
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getJavaScriptFiles(): array
+    {
+        return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Cache.js'];
     }
 }

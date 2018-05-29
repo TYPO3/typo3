@@ -16,12 +16,8 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Admin Panel Info Module
@@ -29,39 +25,11 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class InfoModule extends AbstractModule
 {
     /**
-     * Creates the content for the "info" section ("module") of the Admin Panel
-     *
-     * @return string HTML content for the section. Consists of a string with table-rows with four columns.
-     * @see display()
+     * @inheritdoc
      */
-    public function getContent(): string
+    public function getIconIdentifier(): string
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = $this->extResources . '/Templates/Modules/Info.html';
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-        $view->setPartialRootPaths([$this->extResources . '/Partials']);
-        $tsfe = $this->getTypoScriptFrontendController();
-
-        /** @var UserAspect $frontendUserAspect */
-        $frontendUserAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
-        $view->assignMultiple([
-            'info' => [
-                'pageUid' => $tsfe->id,
-                'pageType' => $tsfe->type,
-                'groupList' => implode(',', $frontendUserAspect->getGroupIds()),
-                'noCache' => $this->isNoCacheEnabled(),
-                'countUserInt' => \count($tsfe->config['INTincScript'] ?? []),
-                'totalParsetime' => $this->getTimeTracker()->getParseTime(),
-                'feUser' => [
-                    'uid' => $frontendUserAspect->get('id'),
-                    'username' => $frontendUserAspect->get('username')
-                ],
-                'imagesOnPage' => $this->collectImagesOnPage(),
-                'documentSize' => $this->collectDocumentSize()
-            ]
-        ]);
-
-        return $view->render();
+        return 'actions-document-info';
     }
 
     /**
@@ -77,16 +45,20 @@ class InfoModule extends AbstractModule
      */
     public function getLabel(): string
     {
-        $locallangFileAndPath = 'LLL:' . $this->extResources . '/Language/locallang_info.xlf:module.label';
-        return $this->getLanguageService()->sL($locallangFileAndPath);
+        return $this->getLanguageService()->sL(
+            'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:module.label'
+        );
     }
 
     /**
-     * @return TypoScriptFrontendController
+     * @inheritdoc
      */
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
+    public function getShortInfo(): string
     {
-        return $GLOBALS['TSFE'];
+        $parseTime = $this->getTimeTracker()->getParseTime();
+        return sprintf($this->getLanguageService()->sL(
+            'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:module.shortinfo'
+        ), $parseTime);
     }
 
     /**
@@ -95,65 +67,5 @@ class InfoModule extends AbstractModule
     protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
-    }
-
-    /**
-     * Collects images from TypoScriptFrontendController and calculates the total size.
-     * Returns human readable image sizes for fluid template output
-     *
-     * @return array
-     */
-    protected function collectImagesOnPage(): array
-    {
-        $imagesOnPage = [
-            'files' => [],
-            'total' => 0,
-            'totalSize' => 0,
-            'totalSizeHuman' => GeneralUtility::formatSize(0)
-        ];
-
-        if ($this->isNoCacheEnabled() === false) {
-            return $imagesOnPage;
-        }
-
-        $count = 0;
-        $totalImageSize = 0;
-        if (!empty($this->getTypoScriptFrontendController()->imagesOnPage)) {
-            foreach ($this->getTypoScriptFrontendController()->imagesOnPage as $file) {
-                $fileSize = @filesize($file);
-                $imagesOnPage['files'][] = [
-                    'name' => $file,
-                    'size' => $fileSize,
-                    'sizeHuman' => GeneralUtility::formatSize($fileSize)
-                ];
-                $totalImageSize += $fileSize;
-                $count++;
-            }
-        }
-        $imagesOnPage['totalSize'] = GeneralUtility::formatSize($totalImageSize);
-        $imagesOnPage['total'] = $count;
-        return $imagesOnPage;
-    }
-
-    /**
-     * Gets the document size from the current page in a human readable format
-     * @return string
-     */
-    protected function collectDocumentSize(): string
-    {
-        $documentSize = 0;
-        if ($this->isNoCacheEnabled() === true) {
-            $documentSize = \mb_strlen($this->getTypoScriptFrontendController()->content, 'UTF-8');
-        }
-
-        return GeneralUtility::formatSize($documentSize);
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isNoCacheEnabled(): bool
-    {
-        return (bool)$this->getTypoScriptFrontendController()->no_cache;
     }
 }

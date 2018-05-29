@@ -7,671 +7,921 @@
 //
 // Load Variables
 //
-@import "variables/main";
 @import "bootstrap/variables";
+@import "variables/main";
 
 //
-// Shared Components
+// Variables
 //
-#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel,
-.typo3-editPanel-btn,
-.typo3-editPanel-link {
-    @import "component/icon";
+$adminPanel-zindex: 99990;
+$adminPanel-zindex-backdrop: 99991;
+$adminPanel-zindex-bar: 99992;
+$adminPanel-prefix: '#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel';
+$adminPanel-bg: $gray-darker;
+$adminPanel-color: $gray-lighter;
+$adminPanel-success: #629755;
+$adminPanel-danger: $brand-danger;
+
+// Bar
+$adminPanel-bar-height: 36px;
+$adminPanel-bar-bg: #424242;
+$adminPanel-bar-border-color: #383838;
+$adminPanel-bar-color: #fff;
+$adminPanel-bar-active-bg: #525252;
+$adminPanel-bar-hover-bg: #525252;
+
+// Header
+$adminPanel-header-height: 36px;
+$adminPanel-header-bg: #eaeaea;
+$adminPanel-header-border-color: #dadada;
+$adminPanel-header-color: #333;
+$adminPanel-header-active-bg: #fafafa;
+$adminPanel-header-hover-bg: #e1e1e1;
+
+// Content
+$adminPanel-content-padding: 20px;
+$adminPanel-content-bg: #fafafa;
+$adminPanel-content-border-color: #dadada;
+$adminPanel-content-color: #333;
+
+// Table
+$adminPanel-table-bg: #fff;
+$adminPanel-table-border: #e0e0e0;
+$adminPanel-table-header-bg: #e0e0e0;
+
+// Card
+$adminPanel-card-bg: #fff;
+$adminPanel-card-padding: 20px;
+
+// Input
+$adminPanel-input-bg: #fff;
+$adminPanel-input-border: #dadada;
+$adminPanel-input-hover-border: #cacaca;
+$adminPanel-input-border-radius: 2px;
+$adminPanel-input-vertical-padding: 1.25em;
+$adminPanel-input-horizontal-padding: 0.75em;
+
+//
+// Mixins
+//
+@mixin make-col($size, $columns: 12) {
+    flex: 0 0 percentage($size / $columns);
+    max-width: percentage($size / $columns);
 }
 
-/*!
- *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
- *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
- */
-
-/* FONT PATH
- * -------------------------- */
+//
+// Font Awesome
+//
 @font-face {
     font-family: 'TYPO3FontAwesome';
-    src: url('../../../../backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?v=4.6.3');
-    src: url('../../../../backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?#iefix&v=4.6.3') format('embedded-opentype'), url('../../../../backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2?v=4.6.3') format('woff2'), url('../../../../backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff?v=4.6.3') format('woff'), url('../../../../backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf?v=4.6.3') format('truetype'), url('../../../../backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg?v=4.6.3#fontawesomeregular') format('svg');
+    src: url('#{$fa-font-path}/fontawesome-webfont.eot?v=4.6.3');
+    src: url('#{$fa-font-path}/fontawesome-webfont.eot?#iefix&v=4.6.3') format('embedded-opentype'), url('#{$fa-font-path}/fontawesome-webfont.woff2?v=4.6.3') format('woff2'), url('#{$fa-font-path}/fontawesome-webfont.woff?v=4.6.3') format('woff'), url('#{$fa-font-path}/fontawesome-webfont.ttf?v=4.6.3') format('truetype'), url('#{$fa-font-path}/fontawesome-webfont.svg?v=4.6.3#fontawesomeregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
-/*!
- * Font Awesome icons are prefixed with #TSFE_ADMIN_PANEL_FORM to prevent issues with
- * CSS from the website that uses Font Awesome too.
- */
-#TSFE_ADMIN_PANEL_FORM,
-.typo3-feedit-element,
-.typo3-editPanel {
-    .fa:before {
-        display: inline-block;
-        font: normal normal normal 14px/1 TYPO3FontAwesome;
-        font-size: 15px;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        transform: translate(0, 0);
-    }
-
-    .fa-pencil:before {
-        content: "\f040";
-    }
-
-    .fa-angle-up:before {
-        content: "\f106";
-    }
-
-    .fa-angle-down:before {
-        content: "\f107";
-    }
-
-    .fa-toggle-off:before {
-        content: "\f204";
-    }
-
-    .fa-toggle-on:before {
-        content: "\f205";
-    }
-
-    .fa-google-plus-square:before {
-        content: "\f0d4";
-    }
-
-    .fa-trash:before {
-        content: "\f1f8";
-    }
-
-    .fa-history:before {
-        content: "\f1da";
-    }
-
-    .fa-list-alt:before {
-        content: "\f022";
-    }
-
-    .fa-plus-square:before {
-        content: "\f0fe";
-    }
-
-    .fa-arrows:before {
-        content: "\f047";
-    }
-
-    .fa-exclamation-circle:before {
-        content: "\f06a";
-    }
-
-    .fa-exclamation-triangle:before {
-        content: "\f071";
-    }
-
-    .fa-info-circle:before {
-        content: "\f05a";
-    }
-
-    .fa-caret-down:before {
-        content: "\f0d7";
-    }
-
-    .fa-caret-up:before {
-        content: "\f0d8";
-    }
-
-    .fa-bolt:before {
-        content: "\f0e7";
-    }
-}
-
 //
-// Placeholder
+// Reset
 //
-%adminpanelicon {
-    &:before {
-        display: inline-block;
-        font: normal normal normal 14px/1 TYPO3FontAwesome;
-        font-size: 15px;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        transform: translate(0, 0);
-    }
-}
-
-%basestyles {
-    background-color: #fafafa;
-    color: #333;
-    font-family: sans-serif;
-    font-size: 12px;
-    line-height: 1.35em;
-
-    a {
-        color: inherit;
-        text-decoration: none;
-    }
-}
-
-//
-// Container
-//
-#TSFE_ADMIN_PANEL_FORM {
-    display: block !important;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    max-width: 100%;
-    max-height: 100%;
-    z-index: 10002;
-    padding: 0;
-    margin: 0;
+#{$adminPanel-prefix} {
+    z-index: $adminPanel-zindex;
 
     * {
+        background: none;
+        border: 0;
+        box-shadow: none;
         box-sizing: border-box;
+        vertical-align: baseline;
+        letter-spacing: normal;
+        width: auto;
+        height: auto;
+        font-family: $font-family-sans-serif;
+        font-size: $font-size-base;
+        font-weight: normal;
+        white-space: normal;
+        margin: 0;
+        padding: 0;
     }
 
     *,
+    *:active,
     *:focus,
-    *:hover,
-    *:active {
-        outline: none;
-    }
-
-    *:before,
-    *:after {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
+    *:hover {
+        outline: 0;
     }
 }
 
 //
-// Panel
+// Shared Components
 //
-#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel {
-    @extend %basestyles;
-
-    border: 1px solid #cacaca;
-    max-height: 100vh;
-    max-width: 100%;
-    min-width: 280px;
-    border-left: 0;
-    border-bottom: 0;
-    border-top-left-radius: 2px;
-    display: flex;
-    flex-direction: column;
+#{$adminPanel-prefix} {
+    @import "component/icon";
 }
 
 //
-// Enabling
+// Backdrop
 //
-#TSFE_ADMIN_PANEL_FORM {
-    #typo3AdminPanelCollapse {
-        display: none;
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-backdrop {
+        z-index: $adminPanel-zindex-backdrop;
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+//
+// Bar
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-bar {
+        z-index: $adminPanel-zindex-bar;
+        display: flex;
+        flex-flow: row;
+        justify-content: stretch;
+        position: fixed;
+        bottom: 0;
+        left: auto;
+        right: 0;
+        height: $adminPanel-bar-height + 1px;
+        background-color: $adminPanel-bar-bg;
+        color: $adminPanel-bar-color;
+        border-bottom: 1px solid $adminPanel-bar-border-color;
     }
 
-    #typo3AdminPanelEnable:checked + #typo3AdminPanelCollapse + .typo3-adminPanel {
-        .typo3-adminPanel-header {
-            .typo3-adminPanel-header-enable-enabled {
-                display: inline;
-            }
+    &.typo3-adminPanel-active .typo3-adminPanel-bar {
+        left: 0;
+    }
 
-            .typo3-adminPanel-header-collapse {
+    @media (min-width: 768px) {
+        .typo3-adminPanel-bar {
+            right: 20px;
+        }
+
+        &.typo3-adminPanel-active .typo3-adminPanel-bar {
+            left: 20px;
+        }
+    }
+}
+
+//
+// Module
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-module {
+        display: flex;
+        padding: 0 10px;
+        align-items: center;
+        border-right: 1px solid $adminPanel-bar-border-color;
+    }
+
+    .typo3-adminPanel-module-settings {
+        margin-left: auto;
+    }
+
+    .typo3-adminPanel-module-logo + .typo3-adminPanel-module-toggle {
+        border-left: none;
+    }
+
+    .typo3-adminPanel-module-settings {
+        .typo3-adminPanel-module-trigger-label {
+            display: none;
+
+            @media (min-width: $screen-sm) {
                 display: block;
             }
         }
     }
 
-    #typo3AdminPanelCollapse:checked + .typo3-adminPanel {
-        .typo3-adminPanel-actions,
-        .typo3-adminPanel-body {
-            display: none;
+    .typo3-adminPanel-module-settings,
+    .typo3-adminPanel-module-toggle {
+        border-left: 1px solid $adminPanel-bar-border-color;
+        border-right: none;
+    }
+}
+
+//
+// Module Group
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-module-group {
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+    }
+}
+
+//
+// Trigger
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-module-trigger {
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        margin-left: -10px;
+        margin-right: -10px;
+        font-size: 12px;
+        color: #fff;
+        height: $adminPanel-bar-height;
+
+        > span {
+            white-space: nowrap;
+
+            + span {
+                margin-left: 4px;
+            }
+        }
+    }
+
+    .typo3-adminPanel-module-active .typo3-adminPanel-module-trigger {
+        background-color: $adminPanel-bar-active-bg;
+    }
+
+    [data-typo3-role="typo3-adminPanel-module-trigger"],
+    [data-typo3-role="typo3-adminPanel-trigger"] {
+        cursor: pointer;
+
+        &:focus,
+        &:hover {
+            background-color: $adminPanel-bar-hover-bg;
+        }
+    }
+
+    .typo3-adminPanel-module-trigger-icon {
+        .icon-color {
+            fill: currentColor;
         }
 
-        .typo3-adminPanel-header {
-            .typo3-adminPanel-header-collapse-enabled {
-                display: inline;
+        .icon-actions-edit-hide {
+            color: $adminPanel-success;
+        }
+
+        .icon-actions-edit-unhide {
+            color: $adminPanel-danger;
+        }
+    }
+
+    .typo3-adminPanel-module-trigger-information {
+        display: none;
+        opacity: 0.5;
+
+        @media (min-width: $screen-sm) {
+            display: block;
+        }
+    }
+}
+
+//
+// Content
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-content {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        bottom: $adminPanel-bar-height + 1;
+        top: 20vh;
+        left: 20px;
+        right: 20px;
+        background-color: $adminPanel-content-bg;
+        color: $adminPanel-content-color;
+        border-bottom: 1px solid $adminPanel-bar-border-color;
+    }
+
+    .typo3-adminPanel-content-main {
+        position: relative;
+        padding: 20px;
+        height: 100%;
+        overflow: auto;
+
+        > *:first-child {
+            margin-top: 0;
+        }
+
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .typo3-adminPanel-module-active {
+        .typo3-adminPanel-content {
+            display: flex;
+        }
+    }
+}
+
+//
+// Content Header
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-content-header {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: $adminPanel-header-height + 1;
+        flex-shrink: 0;
+        color: $adminPanel-header-color;
+        background-color: $adminPanel-header-bg;
+
+        &:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: $adminPanel-header-border-color;
+        }
+    }
+
+    .typo3-adminPanel-content-header-item {
+        display: flex;
+        align-items: center;
+        height: $adminPanel-header-height + 1;
+        padding: 0 10px;
+        border-right: 1px solid $adminPanel-header-border-color;
+        border-bottom: 1px solid $adminPanel-header-border-color;
+    }
+
+    a.typo3-adminPanel-content-header-item {
+        color: inherit;
+        text-decoration: none;
+        position: relative;
+
+        &:hover,
+        &:focus {
+            background-color: $adminPanel-header-hover-bg;
+        }
+
+        &.typo3-adminPanel-content-header-item-active {
+            background-color: $adminPanel-header-active-bg;
+
+            &:before {
+                content: '';
+                position: absolute;
+                bottom: -1px;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background-color: $adminPanel-header-active-bg;
+            }
+        }
+    }
+
+    .typo3-adminPanel-content-header-title {
+        position: relative;
+        color: $adminPanel-bar-color;
+        background-color: $adminPanel-bar-bg;
+        border-right: 1px solid $adminPanel-bar-border-color;
+
+        &:before {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: lighten($adminPanel-bar-border-color, 15%);
+        }
+
+        > span + span {
+            margin-left: 4px;
+        }
+    }
+
+    .typo3-adminPanel-content-header-settings,
+    .typo3-adminPanel-content-header-close {
+        cursor: pointer;
+        border-right: 0;
+        border-left: 1px solid $adminPanel-header-border-color;
+    }
+}
+
+//
+// Content Navigation
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-content-nav {
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+    }
+}
+
+//
+// Content Settings
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-content-settings {
+        flex-shrink: 0;
+        max-height: 50%;
+        overflow-y: auto;
+        display: none;
+        background-color: $adminPanel-content-bg;
+        padding: $adminPanel-content-padding;
+        border-bottom: 1px solid $adminPanel-content-border-color;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+
+        &.typo3-adminPanel-content-settings-active {
+            display: block;
+        }
+    }
+
+    .typo3-adminPanel-content-settings,
+    .typo3-adminPanel-content-settings-group {
+        > *:first-child {
+            margin-top: 0;
+        }
+
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .typo3-adminPanel-content-settings-group + .typo3-adminPanel-content-settings-group {
+        margin-top: $adminPanel-content-padding;
+        padding-top: $adminPanel-content-padding;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+}
+
+//
+// Tabs
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-content-panes {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+    }
+
+    .typo3-adminPanel-content-panes-item {
+        display: none;
+        overflow: auto;
+        height: 100%;
+        width: 100%;
+        padding: $adminPanel-content-padding;
+
+        > *:first-child {
+            margin-top: 0;
+        }
+
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .typo3-adminPanel-content-panes-item-active {
+        display: block;
+    }
+}
+
+//
+// Row
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-row {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0.25em 0;
+        margin-left: -0.75em;
+        margin-right: -0.75em;
+    }
+
+    .typo3-adminPanel-row-header {
+        > * {
+            font-weight: bold;
+        }
+    }
+
+    .typo3-adminPanel-col {
+        padding: 0.25em 0.75em;
+        word-break: break-all;
+    }
+
+    @for $i from 1 through 12 {
+        .typo3-adminPanel-col-#{$i} {
+            @include make-col($i);
+        }
+    }
+
+    @media (max-width: $screen-sm-max) {
+        @for $i from 1 through 12 {
+            .typo3-adminPanel-col-sm-#{$i} {
+                @include make-col($i);
             }
         }
     }
 }
 
 //
-// Header
+// Text
 //
-#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel {
-    .typo3-adminPanel-header {
-        position: relative;
-        background-color: $brand-notice;
-        color: #fafafa;
-        padding: 1em 3em;
-
-        .typo3-adminPanel-header-user:before {
-            content: ':';
-            margin-right: 0.5em;
-        }
-
-        .typo3-adminPanel-header-enable,
-        .typo3-adminPanel-header-collapse {
-            position: absolute;
-            cursor: pointer;
-            top: 50%;
-            left: 0;
-            padding: 1em;
-            transform: translate(0, -50%);
-        }
-
-        .typo3-adminPanel-header-collapse {
-            display: none;
-            left: auto;
-            right: 0;
-        }
-
-        .typo3-adminPanel-header-enable-enabled {
-            color: $brand-success;
-        }
-
-        .typo3-adminPanel-header-enable-disabled {
-            color: $brand-danger;
-        }
-
-        .typo3-adminPanel-header-collapse-enabled {
-            display: none;
-        }
-    }
-}
-
-//
-// Actions
-//
-#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel {
-    .typo3-adminPanel-actions {
-        text-align: right;
-        padding: 0 1em 0.75em;
-        background-color: $brand-notice;
-        color: #fafafa;
-    }
-}
-
-//
-// Body
-//
-#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel {
-    .typo3-adminPanel-body {
-        height: 100%;
-        overflow: auto;
-
-        > .typo3-adminPanel-section-title:first-child {
-            border-top: none;
-        }
-    }
-}
-
-//
-// Section
-//
-#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel {
-    .typo3-adminPanel-section-title {
-        position: relative;
-        overflow: hidden;
-        border-top: 1px solid #bbb;
-        background-color: #eee;
-        padding: 0.75em 3em 0.75em 1em;
-
-        &:hover {
-            background-color: #ddd;
-        }
-
-        a {
-            position: relative;
-            display: block;
-            padding: 0.75em 3em 0.75em 1em;
-            margin: -0.75em -3em -0.75em -1em;
-        }
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-headline {
+        font-weight: bold;
+        margin-top: 1.5em;
+        margin-bottom: 0.75em;
     }
 
-    .typo3-adminPanel-section-title-identifier {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        padding: 1em;
-        transform: translate(0, -50%);
-
-        @extend %adminpanelicon;
-
-        &:before {
-            content: "\f105";
-        }
-    }
-
-    .typo3-adminPanel-section-open {
-        .typo3-adminPanel-section-title-identifier:before {
-            content: "\f107 ";
-        }
-    }
-
-    .typo3-adminPanel-section-body {
-        padding: 0.75em 1em;
-    }
-}
-
-//
-// Inputs
-//
-#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel {
-    label {
-        display: block;
+    h1.typo3-adminPanel-headline {
         font-weight: normal;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
+        font-size: 1.75em;
     }
 
-    input[type=text],
-    select {
-        display: block;
-        width: 100%;
-        padding: 0.5em;
-        border: 1px solid #ccc;
-        margin: 0.5em 0;
-        font-size: inherit;
-
-        &:focus,
-        &:hover {
-            border-color: #aaa;
-        }
+    h2.typo3-adminPanel-headline {
+        font-weight: normal;
+        font-size: 1.5em;
     }
 
-    .typo3-adminPanel-form-group {
-        margin: 1em 0;
+    h3.typo3-adminPanel-headline {
+        font-size: 1.35em;
     }
 
-    .typo3-adminPanel-form-group-checkbox,
-    .typo3-adminPanel-form-group-radio {
-        margin: 0.5em 0;
-
-        label {
-            padding-left: 20px;
-        }
-
-        input[type=checkbox],
-        input[type=radio] {
-            float: left;
-            padding: 0;
-            margin: 1px 0 0 -20px;
-        }
+    h4.typo3-adminPanel-headline {
+        font-size: 1.25em;
     }
 }
 
 //
 // Table
 //
-#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel {
+#{$adminPanel-prefix} {
     .typo3-adminPanel-table-overflow {
-        max-width: 100%;
-        margin: 1em 0;
+        display: block;
+        width: 100%;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        border: 1px solid $adminPanel-table-border;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+
+        .typo3-adminPanel-table {
+            border: none;
+        }
     }
 
     .typo3-adminPanel-table {
         width: 100%;
-        border: 1px solid #ccc;
-        border-collapse: collapse;
+        max-width: 100%;
+        background-color: $adminPanel-table-bg;
+        display: table;
+        border-collapse: separate;
         border-spacing: 0;
-
-        td,
-        th {
-            text-align: left;
-            overflow: hidden;
-            position: relative;
-            vertical-align: top;
-            padding: 0.75em;
-        }
+        border: 1px solid $adminPanel-table-border;
 
         thead {
             tr {
-                background-color: rgba(0, 0, 0, 0.15);
+                background-color: $adminPanel-table-header-bg;
             }
 
-            td,
-            th {
-                font-weight: normal;
+            th,
+            td {
+                border-top: none;
             }
         }
 
+        th {
+            font-weight: bold;
+            text-align: inherit;
+
+            > span {
+                font-weight: bold;
+            }
+        }
+
+        tr {
+            font-family: inherit;
+        }
+
+        th,
+        td {
+            padding: 0.75em;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+    }
+
+    .typo3-adminPanel-table-debug {
         tbody {
-            tr:nth-of-type(odd) {
-                background-color: rgba(0, 0, 0, 0.05);
+            font-family: monospace;
+
+            * {
+                font-family: inherit;
+            }
+
+            td {
+                word-wrap: break-word;
             }
         }
     }
 
-    .typo3-adminPanel-table-cell-content {
-        word-wrap: break-word;
+    .typo3-adminPanel-table-cell-key {
+        width: 19%;
     }
 
     .typo3-adminPanel-table-cell-nowrap {
         white-space: nowrap;
     }
+}
 
-    .typo3-adminPanel-logRow-highlight {
-        background-color: #fcd3cf;
+//
+// Cards
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-card-group {
+        display: flex;
+        margin: -5px;
+        margin-bottom: 1em;
+        flex-wrap: wrap;
+
+        .typo3-adminPanel-card {
+            margin: 5px;
+            flex-grow: 1;
+            flex-shrink: 0;
+            max-width: 100%;
+        }
     }
 
-    .stackPointer {
-        color: maroon;
-        vertical-align: top;
+    .typo3-adminPanel-card {
+        background-color: $adminPanel-card-bg;
+        margin-bottom: 1em;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+    }
+
+    .typo3-adminPanel-card-header,
+    .typo3-adminPanel-card-body {
+        > *:first-child {
+            margin-top: 0;
+        }
+
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .typo3-adminPanel-card-header {
+        display: flex;
+        align-items: center;
+        padding: $adminPanel-card-padding;
+        padding-bottom: 0;
+    }
+
+    .typo3-adminPanel-card-header-headline {
+        display: flex;
+        align-items: center;
+    }
+
+    .typo3-adminPanel-card-header-icon {
+        position: relative;
+        height: 1em;
+        width: 1em;
+        opacity: 0.75;
+
+        .icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    .typo3-adminPanel-card-header-text {
+        padding-left: 0.5em;
+        font-size: 1.25em;
+    }
+
+    .typo3-adminPanel-card-body {
+        padding: $adminPanel-card-padding;
+    }
+}
+
+//
+// Dump
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-dump {
+        font-family: monospace;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        position: relative;
+        z-index: 99999;
+        word-break: break-all;
+    }
+
+    .typo3-adminPanel-dump-string {
+        color: #75a75a;
+
+        &:before,
+        &:after {
+            color: #bf6500;
+            content: '"';
+        }
+    }
+
+    .typo3-adminPanel-dump-float,
+    .typo3-adminPanel-dump-integer {
+        color: #538bb3;
+    }
+}
+
+//
+// Form
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-form-group {
+        display: block;
+        margin: 1.5em 0;
+    }
+
+    .typo3-adminPanel-form-group-checkbox {
+        + .typo3-adminPanel-form-group-checkbox {
+            margin-top: -0.5em;
+        }
+    }
+}
+
+//
+// Checkbox
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-form-checkbox {
+        padding-left: 1.75em;
+    }
+
+    .typo3-adminPanel-form-checkbox-label {
+        position: relative;
+        cursor: pointer;
+
+        &:before {
+            position: absolute;
+            top: 0;
+            left: -1.75em;
+            display: block;
+            width: 1.25em;
+            height: 1.25em;
+            pointer-events: none;
+            content: '';
+            user-select: none;
+            background-color: #dadada;
+            border-radius: $adminPanel-input-border-radius;
+        }
+
+        &:after {
+            position: absolute;
+            top: 0;
+            left: -1.75em;
+            display: block;
+            width: 1.25em;
+            height: 1.25em;
+            content: '';
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 50% 50%;
+        }
+    }
+
+    .typo3-adminPanel-form-checkbox-input {
+        display: none;
+
+        &:checked + .typo3-adminPanel-form-checkbox-label {
+            &:before {
+                background-color: #629755;
+            }
+
+            &:after {
+                background-image: url("data:image/svg+xml;charset=utf8, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/></svg>");
+            }
+        }
+    }
+}
+
+//
+// Select
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-form-select {
+        .typo3-adminPanel-form-select-label {
+            margin-bottom: 0.5em;
+            display: block;
+        }
+
+        .typo3-adminPanel-form-select-input {
+            padding: $adminPanel-input-horizontal-padding 3em $adminPanel-input-horizontal-padding $adminPanel-input-vertical-padding;
+            display: block;
+            border-radius: $adminPanel-input-border-radius;
+            border: 1px solid $adminPanel-input-border;
+            background: $adminPanel-input-bg url("data:image/svg+xml;charset=utf8, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='#333' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>") no-repeat right 0.75em center;
+            background-size: 8px 10px;
+            appearance: none;
+
+            &:hover,
+            &:focus {
+                border: 1px solid $adminPanel-input-hover-border;
+            }
+        }
+    }
+}
+
+//
+// DateTime
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-form-datetime {
+        .typo3-adminPanel-form-datetime-label {
+            margin-bottom: 0.5em;
+            display: block;
+        }
+
+        .typo3-adminPanel-form-datetime-input-group {
+            margin: -5px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .typo3-adminPanel-form-datetime-input {
+            flex-grow: 1;
+            flex-shrink: 0;
+            margin: 5px;
+            display: block;
+            padding: $adminPanel-input-horizontal-padding $adminPanel-input-vertical-padding;
+            border-radius: $adminPanel-input-border-radius;
+            border: 1px solid $adminPanel-input-border;
+            background-color: $adminPanel-input-bg;
+
+            &:hover,
+            &:focus {
+                border: 1px solid $adminPanel-input-hover-border;
+            }
+        }
     }
 }
 
 //
 // Button
 //
-#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel {
+#{$adminPanel-prefix} {
     .typo3-adminPanel-btn {
+        position: relative;
+        cursor: pointer;
+        color: inherit;
+        text-decoration: none;
+        padding: $adminPanel-input-horizontal-padding $adminPanel-input-vertical-padding;
         display: inline-block;
-        margin-bottom: 0;
-        padding: 6px 8px;
-        border: 1px solid transparent;
-        border-radius: 0;
-        font-weight: normal;
-        line-height: 1.5;
-        text-align: center;
-        vertical-align: middle;
-        touch-action: manipulation;
-        cursor: pointer;
-        white-space: nowrap;
-        user-select: none;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 1px solid $adminPanel-input-border;
+        border-radius: $adminPanel-input-border-radius;
 
-        &:focus,
         &:hover,
-        &:active {
-            outline: none;
+        &:focus {
+            z-index: 1;
+            background-color: rgba(0, 0, 0, 0.15);
+            border: 1px solid $adminPanel-input-hover-border;
         }
     }
 
-    .typo3-adminPanel-btn-default {
-        color: #333;
-        background-color: #eee;
-        border-color: #bbb;
-        cursor: pointer;
+    .typo3-adminPanel-btn-primary {
+        color: #fff;
+        background-color: #538bb3;
+        border: 1px solid darken(#538bb3, 10%);
 
-        &:hover {
-            background-color: #c4c4c4;
-        }
-    }
-
-    .typo3-adminPanel-btn-dark {
-        color: #fafafa;
-        background-color: #555;
-        border-color: rgba(0, 0, 0, 0.5);
-        cursor: pointer;
-
-        &:hover {
-            background-color: #444;
+        &:hover,
+        &:focus {
+            background-color: lighten(#538bb3, 5%);
+            border: 1px solid darken(#538bb3, 15%);
         }
     }
 
     .typo3-adminPanel-btn-group {
-        position: relative;
-        display: inline-block;
-        vertical-align: middle;
-
-        .typo3-adminPanel-btn + .typo3-adminPanel-btn {
-            margin-left: -1px;
+        &:after {
+            content: '';
+            display: table;
+            clear: both;
         }
-    }
-}
 
-//
-// Treeline
-//
-#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel {
-    .treeline-icon {
-        display: inline-block;
-        margin-right: 2px;
-        padding: 0;
-        height: 18px;
-        width: 16px;
-        white-space: nowrap;
-        overflow: hidden;
-        vertical-align: middle;
-    }
+        .typo3-adminPanel-btn {
+            border-radius: 0;
+            float: left;
 
-    .treeline-icon:after,
-    .treeline-icon:before {
-        position: absolute;
-        content: '';
-        margin-left: 7px;
-    }
+            &:first-child {
+                border-radius: $adminPanel-input-border-radius 0 0 $adminPanel-input-border-radius;
+            }
 
-    .treeline-icon:before {
-        top: 0;
-        height: 100%;
-        width: 2px;
-        margin-left: 7px;
-        border-left: 1px dotted #666;
-    }
+            &:last-child {
+                border-radius: 0 $adminPanel-input-border-radius $adminPanel-input-border-radius 0;
+            }
 
-    .treeline-icon:after {
-        border-top: 1px dotted #666;
-        height: 2px;
-        width: 8px;
-        margin-top: 8px;
-    }
-
-    .treeline-icon-jointop:before {
-        top: 50%;
-    }
-
-    .treeline-icon-joinbottom:before {
-        height: 26px;
-        margin-top: -8px;
-    }
-
-    .treeline-icon-line:after {
-        display: none;
-    }
-
-    .treeline-icon-blank {
-        display: none;
-    }
-
-    .treeline-icon-clear:before,
-    .treeline-icon-clear:after {
-        display: none;
-    }
-}
-
-//
-// Frontend Editing Styles
-//
-.typo3-feedit-element {
-    border: 1px solid #cacaca;
-    margin: 1em 0;
-}
-
-.typo3-editPanel {
-    @extend %basestyles;
-
-    display: block !important;
-    border-top: 1px solid #cacaca;
-    padding: 0.5em;
-
-    .typo3-editPanel-label {
-        margin-left: 1.5em;
-        display: inline-block;
-        vertical-align: middle;
-    }
-
-    .typo3-adminPanel-btn,
-    .typo3-editPanel-btn {
-        display: inline-block !important;
-        margin-bottom: 0;
-        padding: 6px 8px;
-        line-height: 1.5em;
-        border: 1px solid transparent;
-        border-radius: 0;
-        font-weight: normal;
-        text-align: center;
-        vertical-align: middle;
-        touch-action: manipulation;
-        cursor: pointer;
-        white-space: nowrap;
-        user-select: none;
-
-        &:focus,
-        &:hover,
-        &:active {
-            outline: none;
-        }
-    }
-
-    .typo3-adminPanel-btn-default,
-    .typo3-editPanel-btn-default {
-        color: #333;
-        background-color: #eee;
-        border-color: #bbb;
-        cursor: pointer;
-
-        &:hover {
-            background-color: #c4c4c4;
-        }
-    }
-
-    .typo3-adminPanel-form-group,
-    .typo3-editPanel-form-group {
-        margin-right: 0.5em;
-        display: inline-block;
-    }
-
-    .typo3-adminPanel-btn-group,
-    .typo3-editPanel-btn-group {
-        position: relative;
-        display: inline-block;
-        vertical-align: middle;
-
-        .typo3-adminPanel-btn + .typo3-adminPanel-btn,
-        .typo3-editPanel-btn + .typo3-editPanel-btn {
-            margin-left: -1px;
-        }
-    }
-}
-
-.typo3-adminPanel-btn,
-.typo3-editPanel-btn {
-    display: inline-block !important;
-}
-
-.typo3-feedit-element-hidden {
-    border-color: darken(#f8ecce, 20%);
-
-    .typo3-editPanel {
-        border-top-color: darken(#f8ecce, 20%);
-        background-color: #f8ecce;
-
-        .typo3-editPanel-btn-default {
-            border-color: darken(#f8ecce, 30%);
-            background-color: darken(#f8ecce, 10%);
-
-            &:hover {
-                background-color: darken(#f8ecce, 15%);
+            & + .typo3-adminPanel-btn {
+                margin-left: -1px;
             }
         }
     }

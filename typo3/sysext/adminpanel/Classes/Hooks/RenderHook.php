@@ -26,26 +26,25 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class RenderHook
 {
-
     /**
      * Hook to render the admin panel
      * We use a hook this late in the project to make sure all data is collected and can be displayed
-     *
      * As the main content is already rendered, we use a string replace on the content to append the adminPanel
      * to the HTML body.
      *
      * @param array $params
      * @param TypoScriptFrontendController $pObj
      */
-    public function renderAdminPanel(array $params, TypoScriptFrontendController $pObj)
+    public function renderAdminPanel(array $params, TypoScriptFrontendController $pObj): void
     {
-        if ($pObj->isBackendUserLoggedIn() &&
+        if (
+            $pObj->isBackendUserLoggedIn() &&
             $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication &&
-            (
-                !$GLOBALS['BE_USER']->extAdminConfig['hide'] && $pObj->config['config']['admPanel']
-            )
+            isset($GLOBALS['BE_USER']->getTSConfig()['admPanel.']['enable.']) &&
+            !$GLOBALS['BE_USER']->extAdminConfig['hide'] && $pObj->config['config']['admPanel']
         ) {
             $mainController = GeneralUtility::makeInstance(MainController::class);
+
             $pObj->content = str_ireplace(
                 '</body>',
                 $mainController->render() . '</body>',

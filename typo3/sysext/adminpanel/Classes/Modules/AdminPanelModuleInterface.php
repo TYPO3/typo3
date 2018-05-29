@@ -16,32 +16,13 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\ServerRequest;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Interface for admin panel modules registered via EXTCONF
- *
- * @internal until API is stable
  */
 interface AdminPanelModuleInterface
 {
-
-    /**
-     * Additional JavaScript code for this module
-     * (you should only use vanilla JS here, as you cannot
-     * rely on the web site providing a specific framework)
-     *
-     * @return string
-     */
-    public function getAdditionalJavaScriptCode(): string;
-
-    /**
-     * Module content as rendered HTML
-     *
-     * @return string
-     */
-    public function getContent(): string;
-
     /**
      * Identifier for this module,
      * for example "preview" or "cache"
@@ -58,11 +39,30 @@ interface AdminPanelModuleInterface
     public function getLabel(): string;
 
     /**
+     * Module Icon identifier - needs to be registered in iconRegistry
+     *
+     * @return string
+     */
+    public function getIconIdentifier(): string;
+
+    /**
+     * Displayed directly in the bar if module has content
+     *
+     * @return string
+     */
+    public function getShortInfo(): string;
+
+    /**
+     * @return string
+     */
+    public function getSettings(): string;
+
+    /**
      * Initialize the module - runs early in a TYPO3 request
      *
-     * @param \TYPO3\CMS\Core\Http\ServerRequest $request
+     * @param ServerRequestInterface $request
      */
-    public function initializeModule(ServerRequest $request): void;
+    public function initializeModule(ServerRequestInterface $request): void;
 
     /**
      * Module is enabled
@@ -76,38 +76,14 @@ interface AdminPanelModuleInterface
     public function isEnabled(): bool;
 
     /**
-     * Module is open
-     * -> module is enabled
-     * -> module panel is shown and open
-     *
-     * @return bool
-     */
-    public function isOpen(): bool;
-
-    /**
-     * Module is shown
-     * -> module is enabled
-     * -> module panel should be displayed
-     *
-     * @return bool
-     */
-    public function isShown(): bool;
-
-    /**
      * Executed on saving / submit of the configuration form
      * Can be used to react to changed settings
      * (for example: clearing a specific cache)
      *
-     * @param array $input
+     * @param array $configurationToSave
+     * @param ServerRequestInterface $request
      */
-    public function onSubmit(array $input): void;
-
-    /**
-     * Does this module need a form submit?
-     *
-     * @return bool
-     */
-    public function showFormSubmitButton(): bool;
+    public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void;
 
     /**
      * Returns a string array with javascript files that will be rendered after the module
@@ -115,4 +91,32 @@ interface AdminPanelModuleInterface
      * @return array
      */
     public function getJavaScriptFiles(): array;
+
+    /**
+     * Returns a string array with css files that will be rendered after the module
+     *
+     * @return array
+     */
+    public function getCssFiles(): array;
+
+    /**
+     * Set SubModules for current module
+     *
+     * @param AdminPanelSubModuleInterface[] $subModules
+     */
+    public function setSubModules(array $subModules): void;
+
+    /**
+     * Get SubModules for current module
+     *
+     * @return AdminPanelSubModuleInterface[]
+     */
+    public function getSubModules(): array;
+
+    /**
+     * Returns true if submodule has own settings
+     *
+     * @return bool
+     */
+    public function getHasSubmoduleSettings(): bool;
 }

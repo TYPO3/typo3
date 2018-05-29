@@ -1,0 +1,37 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{data}">
+    <h2 class="typo3-adminPanel-headline">{label}</h2>
+    <div class="typo3-adminPanel-table-overflow">
+        <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+            <thead>
+                <tr>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:key"/></th>
+                    <th scope="col"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:value"/></th>
+                </tr>
+            </thead>
+            <tbody>
+                <f:for each="{data}" as="val" key="key">
+                    <tr>
+                        <th scope="row" class="typo3-adminPanel-table-cell-key">
+                            <f:translate key="{key}" default="{key}" extensionName="adminpanel"/>
+                        </th>
+                        <td>
+                            <f:variable name="typeClass" value="string" />
+                            <f:if condition="{val as integer} === {val}"><f:variable name="typeClass" value="integer" /></f:if>
+                            <f:if condition="{val as float} === {val}"><f:variable name="typeClass" value="float" /></f:if>
+                            <f:switch expression="{typeClass}">
+                                <f:case value="string">
+                                    <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}"><f:if condition="{val}"><f:translate key="{val}" default="{val}" extensionName="adminpanel"/></f:if></pre>
+                                </f:case>
+                                <f:defaultCase>
+                                    <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}">{val}</pre>
+                                </f:defaultCase>
+                            </f:switch>
+                        </td>
+                    </tr>
+                </f:for>
+            </tbody>
+        </table>
+    </div>
+</f:if>
+</html>

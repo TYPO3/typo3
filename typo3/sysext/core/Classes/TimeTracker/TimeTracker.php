@@ -375,10 +375,9 @@ class TimeTracker implements SingletonInterface
         $keyLgd = $this->printConf['keyLgd'];
         $c = 0;
         foreach ($this->tsStackLog as $uniqueId => $data) {
+            $logRowClass = '';
             if ($this->highlightLongerThan && (int)$data['owntime'] > (int)$this->highlightLongerThan) {
                 $logRowClass = 'typo3-adminPanel-logRow-highlight';
-            } else {
-                $logRowClass = $c % 2 ? 'line-odd' : 'line-even';
             }
             $item = '';
             // If first...
@@ -410,7 +409,7 @@ class TimeTracker implements SingletonInterface
             $theLabel = GeneralUtility::fixed_lgd_cs($theLabel, -$keyLgd);
             $theLabel = $data['stackPointer'] ? '<span class="stackPointer">' . $theLabel . '</span>' : $theLabel;
             $keyLabel = $theLabel . $keyLabel;
-            $item .= '<td class="typo3-adminPanel-table-cell-nowrap ' . $logRowClass . '">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</td>';
+            $item .= '<th scope="row" class="typo3-adminPanel-table-cell-key ' . $logRowClass . '">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</th>';
             // Key value:
             $keyValue = $data['value'];
             $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime">' . $this->fw(htmlspecialchars($keyValue)) . '</td>';
@@ -448,7 +447,7 @@ class TimeTracker implements SingletonInterface
             $out .= '<tr>' . $item . '</tr>';
             $c++;
         }
-        $out = '<div class="typo3-adminPanel-table-overflow"><table class="typo3-adminPanel-table">' . $out . '</table></div>';
+        $out = '<div class="typo3-adminPanel-table-overflow"><table class="typo3-adminPanel-table typo3-adminPanel-table-debug">' . $out . '</table></div>';
         return $out;
     }
 

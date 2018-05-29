@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\Service\EditToolbarService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -34,30 +34,30 @@ class EditModule extends AbstractModule
      *
      * @return string HTML content for the section. Consists of a string with table-rows with four columns.
      */
-    public function getContent(): string
+    public function getSettings(): string
     {
+        $editToolbarService = GeneralUtility::makeInstance(EditToolbarService::class);
+        $toolbar = $editToolbarService->createToolbar();
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = $this->extResources . '/Templates/Modules/Edit.html';
+        $templateNameAndPath = $this->extResources . '/Templates/Modules/Settings/Edit.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
         $view->setPartialRootPaths([$this->extResources . '/Partials']);
-
-        $editToolbarService = GeneralUtility::makeInstance(EditToolbarService::class);
-        $view->assignMultiple([
-            'feEdit' => ExtensionManagementUtility::isLoaded('feedit'),
-            'display' => [
-                'edit' => $this->getBackendUser()->uc['TSFE_adminConfig']['display_edit'],
-                'fieldIcons' => $this->getConfigurationOption('displayFieldIcons'),
-                'displayIcons' => $this->getConfigurationOption('displayIcons'),
-            ],
-            'toolbar' => $editToolbarService->createToolbar(),
-            'script' => [
-                'pageUid' => (int)$this->getTypoScriptFrontendController()->page['uid'],
-                'pageModule' => $this->getPageModule(),
-                'backendScript' => BackendUtility::getBackendScript(),
-                't3BeSitenameMd5' => \md5('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']),
-            ],
-        ]);
-
+        $view->assignMultiple(
+            [
+                'feEdit' => ExtensionManagementUtility::isLoaded('feedit'),
+                'display' => [
+                    'fieldIcons' => $this->configurationService->getConfigurationOption('edit', 'displayFieldIcons'),
+                    'displayIcons' => $this->configurationService->getConfigurationOption('edit', 'displayIcons'),
+                ],
+                'toolbar' => $toolbar,
+                'script' => [
+                    'pageUid' => (int)$this->getTypoScriptFrontendController()->page['uid'],
+                    'pageModule' => $this->getPageModule(),
+                    'backendScript' => BackendUtility::getBackendScript(),
+                    't3BeSitenameMd5' => md5('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']),
+                ],
+            ]
+        );
         return $view->render();
     }
 
@@ -74,7 +74,7 @@ class EditModule extends AbstractModule
      */
     private function getPageModule(): string
     {
-        $pageModule = \trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? '');
+        $pageModule = trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? '');
         return BackendUtility::isModuleSetInTBE_MODULES($pageModule) ? $pageModule : 'web_layout';
     }
 
@@ -89,25 +89,34 @@ class EditModule extends AbstractModule
     /**
      * @inheritdoc
      */
+    public function getIconIdentifier(): string
+    {
+        return 'actions-open';
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getLabel(): string
     {
-        return $this->extGetLL('edit');
+        $locallangFileAndPath = 'LLL:' . $this->extResources . '/Language/locallang_edit.xlf:module.label';
+        return $this->getLanguageService()->sL($locallangFileAndPath);
     }
 
     /**
      * Initialize the edit module
      * Includes the frontend edit initialization
      *
-     * @param ServerRequest $request
+     * @param ServerRequestInterface $request
      *
      * @todo move into fe_edit (including the module)
      */
-    public function initializeModule(ServerRequest $request): void
+    public function initializeModule(ServerRequestInterface $request): void
     {
         $extFeEditLoaded = ExtensionManagementUtility::isLoaded('feedit');
         $typoScriptFrontend = $this->getTypoScriptFrontendController();
-        $typoScriptFrontend->displayEditIcons = $this->getConfigurationOption('displayIcons');
-        $typoScriptFrontend->displayFieldEditIcons = $this->getConfigurationOption('displayFieldIcons');
+        $typoScriptFrontend->displayEditIcons = $this->configurationService->getConfigurationOption('edit', 'displayIcons');
+        $typoScriptFrontend->displayFieldEditIcons = $this->configurationService->getConfigurationOption('edit', 'displayFieldIcons');
 
         if (GeneralUtility::_GP('ADMCMD_editIcons')) {
             $typoScriptFrontend->displayFieldEditIcons = '1';
@@ -121,18 +130,10 @@ class EditModule extends AbstractModule
     }
 
     /**
-     * @inheritdoc
-     */
-    public function showFormSubmitButton(): bool
-    {
-        return true;
-    }
-
-    /**
      * @return array
      */
     public function getJavaScriptFiles(): array
     {
-        return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit/OpenBackendHandler.js'];
+        return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.js'];
     }
 }

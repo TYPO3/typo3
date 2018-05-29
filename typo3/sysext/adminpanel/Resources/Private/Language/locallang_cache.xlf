@@ -7,26 +7,14 @@
             <trans-unit id="module.label">
                 <source>Cache</source>
             </trans-unit>
-            <trans-unit id="cache_noCache">
+            <trans-unit id="cache.no_cache">
                 <source>No caching</source>
             </trans-unit>
-            <trans-unit id="cache_doit">
-                <source>Clear cache now!</source>
+            <trans-unit id="cache.clear_current">
+                <source>Clear cache of current page</source>
             </trans-unit>
-            <trans-unit id="cache_clearLevels">
-                <source>Clear levels</source>
-            </trans-unit>
-            <trans-unit id="div_Levels_0">
-                <source>This page</source>
-            </trans-unit>
-            <trans-unit id="div_Levels_1">
-                <source>+ 1 sublevel</source>
-            </trans-unit>
-            <trans-unit id="div_Levels_2">
-                <source>+ 2 sublevels</source>
-            </trans-unit>
-            <trans-unit id="update">
-                <source>Update</source>
+            <trans-unit id="cache.clear_pages">
+                <source>Clear frontend cache</source>
             </trans-unit>
         </body>
     </file>

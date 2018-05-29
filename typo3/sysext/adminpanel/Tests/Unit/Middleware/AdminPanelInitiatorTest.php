@@ -18,12 +18,12 @@ namespace TYPO3\CMS\Adminpanel\Tests\Unit\Middleware;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Adminpanel\Controller\MainController;
 use TYPO3\CMS\Adminpanel\Middleware\AdminPanelInitiator;
 use TYPO3\CMS\Adminpanel\View\AdminPanelView;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -67,7 +67,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(MainController::class, $controller->reveal());
         GeneralUtility::addInstance(AdminPanelView::class, $this->prophesize(AdminPanelView::class)->reveal());
         $handler = $this->prophesizeHandler();
-        $request = $this->prophesize(ServerRequest::class);
+        $request = $this->prophesize(ServerRequestInterface::class);
         // Act
         $adminPanelInitiator = new AdminPanelInitiator();
         $adminPanelInitiator->process(
@@ -132,7 +132,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
         $controller = $this->prophesize(MainController::class);
         GeneralUtility::setSingletonInstance(MainController::class, $controller->reveal());
         $handler = $this->prophesizeHandler();
-        $request = $this->prophesize(ServerRequest::class);
+        $request = $this->prophesize(ServerRequestInterface::class);
         // Act
         $adminPanelInitiator = new AdminPanelInitiator();
         $adminPanelInitiator->process(

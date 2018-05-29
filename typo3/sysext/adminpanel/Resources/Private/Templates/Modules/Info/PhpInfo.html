@@ -1,0 +1,6 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:render partial="Data/TableKeyValue" arguments="{label: 'General', data: general}" debug="false"/>
+<f:render partial="Data/TableKeyValue" arguments="{label: 'Constants', data: constants.user}" debug="false"/>
+<h2 class="typo3-adminPanel-headline">Extensions</h2>
+<pre class="typo3-adminPanel-dump">{loadedExtensions}</pre>
+</html>

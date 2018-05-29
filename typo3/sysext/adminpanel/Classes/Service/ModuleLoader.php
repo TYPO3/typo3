@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Adminpanel\Service;
  */
 
 use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
+use TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -31,12 +32,13 @@ class ModuleLoader
     /**
      * Validates, sorts and initiates the registered modules
      *
+     * @param array $modules
+     * @param string $type
+     * @return AdminPanelModuleInterface[]|AdminPanelSubModuleInterface[]
      * @throws \RuntimeException
-     * @return AdminPanelModuleInterface[]
      */
-    public function getModulesFromConfiguration(): array
+    public function validateSortAndInitializeModules(array $modules, string $type = 'main'): array
     {
-        $modules = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
         if (empty($modules)) {
             return [];
         }
@@ -52,8 +54,9 @@ class ModuleLoader
                 !class_exists($configuration['module']) ||
                 !is_subclass_of(
                     $configuration['module'],
-                    AdminPanelModuleInterface::class
-                )) {
+                    ($type === 'main' ? AdminPanelModuleInterface::class : AdminPanelSubModuleInterface::class)
+                )
+            ) {
                 throw new \RuntimeException(
                     'The module "' .
                     $identifier .
@@ -69,11 +72,24 @@ class ModuleLoader
             $modules
         );
 
-        $finalModulesArr = [];
+        $moduleInstances = [];
         foreach ($orderedModules as $module) {
-            $finalModulesArr[] = GeneralUtility::makeInstance($module['module']);
+            $module = GeneralUtility::makeInstance($module['module']);
+            if ($module instanceof AdminPanelSubModuleInterface || ($module instanceof AdminPanelModuleInterface && $module->isEnabled())) {
+                $moduleInstances[] = $module;
+            }
         }
+        return $moduleInstances;
+    }
 
-        return $finalModulesArr;
+    /**
+     * Validates, sorts and initializes sub-modules
+     *
+     * @param array $modules
+     * @return AdminPanelSubModuleInterface[]
+     */
+    public function validateSortAndInitializeSubModules(array $modules): array
+    {
+        return $this->validateSortAndInitializeModules($modules, 'sub');
     }
 }
