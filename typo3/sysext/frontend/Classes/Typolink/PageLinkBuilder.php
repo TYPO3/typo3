@@ -157,14 +157,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             }
             unset($params);
         }
-        $absoluteUrlScheme = 'http';
+        $absoluteUrlScheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
         // URL shall be absolute:
         if (isset($conf['forceAbsoluteUrl']) && $conf['forceAbsoluteUrl']) {
             // Override scheme:
             if (isset($conf['forceAbsoluteUrl.']['scheme']) && $conf['forceAbsoluteUrl.']['scheme']) {
                 $absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
-            } elseif (GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-                $absoluteUrlScheme = 'https';
             }
             // If no domain records are defined, use current domain:
             $currentUrlScheme = parse_url(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
