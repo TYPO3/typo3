@@ -632,9 +632,8 @@ class CharsetConverter implements SingletonInterface
      * @param string $charset The charset to be initialized. Use lowercase charset always (the charset must match exactly with a filename in csconvtbl/ folder ([charset].tbl)
      * @return int Returns '1' if already loaded, '2' if the charset conversion table was found and parsed.
      * @throws UnknownCharsetException if no charset table was found
-     * @access private
      */
-    public function initCharset($charset)
+    protected function initCharset($charset)
     {
         // Only process if the charset is not yet loaded:
         if (!is_array($this->parsedCharsets[$charset])) {
@@ -698,9 +697,8 @@ class CharsetConverter implements SingletonInterface
      *
      * @param string $mode Mode ("case", "ascii", ...)
      * @return int Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
-     * @access private
      */
-    public function initUnicodeData($mode = null)
+    protected function initUnicodeData($mode = null)
     {
         // Cache files
         $cacheFileCase = Environment::getVarPath() . '/charset/cscase_utf-8.tbl';
@@ -935,9 +933,8 @@ class CharsetConverter implements SingletonInterface
      *
      * @param string $charset Charset for which to initialize case folding.
      * @return int Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
-     * @access private
      */
-    public function initCaseFolding($charset)
+    protected function initCaseFolding($charset)
     {
         // Only process if the case table is not yet loaded:
         if (is_array($this->caseFolding[$charset])) {
@@ -997,9 +994,8 @@ class CharsetConverter implements SingletonInterface
      *
      * @param string $charset Charset for which to initialize conversion.
      * @return int Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
-     * @access private
      */
-    public function initToASCII($charset)
+    protected function initToASCII($charset)
     {
         // Only process if the case table is not yet loaded:
         if (is_array($this->toASCII[$charset])) {
