@@ -84,7 +84,8 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
             $GLOBALS['TYPO3_REQUEST'] = $request;
         }
 
-        $this->controller->initializeRedirectUrlHandlers();
+        // @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
+        $this->controller->initializeRedirectUrlHandlers(true);
 
         // Hook for processing data submission to extensions
         // This is done at this point, because we need the config values

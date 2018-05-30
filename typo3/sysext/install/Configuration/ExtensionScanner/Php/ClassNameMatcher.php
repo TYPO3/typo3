@@ -684,4 +684,14 @@ return [
             'Deprecation-85120-JavaScriptEncoder.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\ExternalPageUrlHandler' => [
+        'restFiles' => [
+            'Deprecation-85124-RedirectingUrlHandlerHookConcept.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Http\UrlHandlerInterface' => [
+        'restFiles' => [
+            'Deprecation-85124-RedirectingUrlHandlerHookConcept.rst',
+        ],
+    ],
 ];

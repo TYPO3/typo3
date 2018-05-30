@@ -155,6 +155,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @var \TYPO3\CMS\Frontend\Http\UrlHandlerInterface[]
      * @see initializeRedirectUrlHandlers()
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
      */
     protected $activeUrlHandlers = [];
 
@@ -2758,14 +2759,20 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Loops over all configured URL handlers and registers all active handlers in the redirect URL handler array.
      *
+     * @param bool $calledFromCore if set to true, no deprecation warning will be triggered
      * @see $activeRedirectUrlHandlers
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0. Do not call this method anymore, and also ensure that all urlHandlers are migrated to PSR-15 middlewares.
      */
-    public function initializeRedirectUrlHandlers()
+    public function initializeRedirectUrlHandlers($calledFromCore = false)
     {
         $urlHandlers = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers'] ?? false;
         if (!$urlHandlers) {
+            if (!$calledFromCore) {
+                trigger_error('The method $TSFE->initializeRedirectUrlHandlers() will be removed in TYPO3 v10.0. Do not call this method anymore and implement UrlHandlers by PSR-15 middlewares instead.', E_USER_DEPRECATED);
+            }
             return;
         }
+        trigger_error('The system has registered RedirectUrlHandlers via $TYPO3_CONF_VARS[SC_OPTIONS][urlProcessing][urlHandlers]. This functionality will be removed in TYPO3 v10.0. Ensure that extensions using this functionality switch to PSR-15 middelwares instead.', E_USER_DEPRECATED);
 
         foreach ($urlHandlers as $identifier => $configuration) {
             if (empty($configuration) || !is_array($configuration)) {
@@ -2791,13 +2798,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Loops over all registered URL handlers and lets them process the current URL.
      *
      * If no handler has stopped the current process (e.g. by redirecting) and a
-     * the redirectUrl propert is not empty, the user will be redirected to this URL.
+     * the redirectUrl property is not empty, the user will be redirected to this URL.
      *
      * @internal Should be called by the FrontendRequestHandler only.
      * @return ResponseInterface|null
+     * @param bool $calledFromCore if set to true, no deprecation warning will be triggered
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0. Do not call this method anymore, and also ensure that all urlHandlers are migrated to PSR-15 middlewares.
      */
-    public function redirectToExternalUrl()
+    public function redirectToExternalUrl($calledFromCore = false)
     {
+        if (!$calledFromCore) {
+            trigger_error('The method $TSFE->redirectToExternalUrl() will be removed in TYPO3 v10.0. Do not call this method anymore and implement UrlHandlers by PSR-15 middlewares instead.', E_USER_DEPRECATED);
+        }
         foreach ($this->activeUrlHandlers as $redirectHandler) {
             $response = $redirectHandler->handle();
             if ($response instanceof ResponseInterface) {

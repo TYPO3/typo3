@@ -160,4 +160,9 @@ return [
             'Feature-84045-NewAdminPanelModuleAPI.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'urlProcessing\'][\'urlHandlers\']' => [
+        'restFiles' => [
+            'Deprecation-85124-RedirectingUrlHandlerHookConcept.rst',
+        ],
+    ],
 ];

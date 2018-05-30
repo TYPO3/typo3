@@ -21,6 +21,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Handles the redirection for external URL pages.
+ * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0. The functionality has been moved into a PSR-15 middleware.
  */
 class ExternalPageUrlHandler implements \TYPO3\CMS\Frontend\Http\UrlHandlerInterface
 {
@@ -28,6 +29,11 @@ class ExternalPageUrlHandler implements \TYPO3\CMS\Frontend\Http\UrlHandlerInter
      * @var string
      */
     protected $externalUrl = '';
+
+    public function __construct()
+    {
+        trigger_error('ExternalPageUrlHandler has been moved into a PSR-15 middleware and will be removed in TYPO3 v10.0. In order to modify the external page redirection, use a PSR-15 middleware as well', E_USER_DEPRECATED);
+    }
 
     /**
      * Checks if external URLs are enabled and if the current page points to an external URL.

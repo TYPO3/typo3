@@ -105,7 +105,8 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         // Store session data for fe_users
         $controller->storeSessionData();
 
-        $redirectResponse = $controller->redirectToExternalUrl();
+        // @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
+        $redirectResponse = $controller->redirectToExternalUrl(true);
         if ($redirectResponse instanceof ResponseInterface) {
             return $redirectResponse;
         }

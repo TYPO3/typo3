@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Http;
  * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers']
  *
  * It can be used to do custom URL processing during a Frontend request.
+ * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0 in favor of PSR-15 middlewares.
  */
 interface UrlHandlerInterface
 {
