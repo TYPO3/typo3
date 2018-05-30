@@ -28,6 +28,34 @@ abstract class AbstractService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
+    // General error - something went wrong
+    const ERROR_GENERAL = -1;
+
+    // During execution it showed that the service is not available and
+    // should be ignored. The service itself should call $this->setNonAvailable()
+    const ERROR_SERVICE_NOT_AVAILABLE = -2;
+
+    // Passed subtype is not possible with this service
+    const ERROR_WRONG_SUBTYPE = -3;
+
+    // Passed subtype is not possible with this service
+    const ERROR_NO_INPUT = -4;
+
+    // File not found which the service should process
+    const ERROR_FILE_NOT_FOUND = -20;
+
+    // File not readable
+    const ERROR_FILE_NOT_READABLE = -21;
+
+    // File not writable
+    // @todo: check writeable vs. writable
+    const ERROR_FILE_NOT_WRITEABLE = -22;
+
+    // Passed subtype is not possible with this service
+    const ERROR_PROGRAM_NOT_FOUND = -40;
+
+    // Passed subtype is not possible with this service
+    const ERROR_PROGRAM_FAILED = -41;
     /**
      * @var array service description array
      */
@@ -161,10 +189,10 @@ abstract class AbstractService implements LoggerAwareInterface
     /**
      * Puts an error on the error stack. Calling without parameter adds a general error.
      *
-     * @param int $errNum Error number (see T3_ERR_SV_* constants)
+     * @param int $errNum Error number (see class constants)
      * @param string $errMsg Error message
      */
-    public function errorPush($errNum = T3_ERR_SV_GENERAL, $errMsg = 'Unspecified error occurred')
+    public function errorPush($errNum = self::ERROR_GENERAL, $errMsg = 'Unspecified error occurred')
     {
         $this->error[] = ['nr' => $errNum, 'msg' => $errMsg];
         /** @var \TYPO3\CMS\Core\TimeTracker\TimeTracker $timeTracker */
@@ -263,7 +291,7 @@ abstract class AbstractService implements LoggerAwareInterface
         foreach ($progList as $prog) {
             if (!CommandUtility::checkCommand($prog)) {
                 // Program not found
-                $this->errorPush(T3_ERR_SV_PROG_NOT_FOUND, 'External program not found: ' . $prog);
+                $this->errorPush(self::ERROR_PROGRAM_NOT_FOUND, 'External program not found: ' . $prog);
                 $ret = false;
             }
         }
@@ -296,10 +324,10 @@ abstract class AbstractService implements LoggerAwareInterface
             if (@is_readable($absFile)) {
                 $checkResult = $absFile;
             } else {
-                $this->errorPush(T3_ERR_SV_FILE_READ, 'File is not readable: ' . $absFile);
+                $this->errorPush(self::ERROR_FILE_NOT_READABLE, 'File is not readable: ' . $absFile);
             }
         } else {
-            $this->errorPush(T3_ERR_SV_FILE_NOT_FOUND, 'File not found: ' . $absFile);
+            $this->errorPush(self::ERROR_FILE_NOT_FOUND, 'File not found: ' . $absFile);
         }
         return $checkResult;
     }
@@ -317,7 +345,7 @@ abstract class AbstractService implements LoggerAwareInterface
         if ($this->checkInputFile($absFile)) {
             $out = file_get_contents($absFile);
             if ($out === false) {
-                $this->errorPush(T3_ERR_SV_FILE_READ, 'Can not read from file: ' . $absFile);
+                $this->errorPush(self::ERROR_FILE_NOT_READABLE, 'Can not read from file: ' . $absFile);
             }
         }
         return $out;
@@ -340,7 +368,7 @@ abstract class AbstractService implements LoggerAwareInterface
                 @fwrite($fd, $content);
                 @fclose($fd);
             } else {
-                $this->errorPush(T3_ERR_SV_FILE_WRITE, 'Can not write to file: ' . $absFile);
+                $this->errorPush(self::ERROR_FILE_NOT_WRITEABLE, 'Can not write to file: ' . $absFile);
                 $absFile = false;
             }
         }
@@ -361,7 +389,7 @@ abstract class AbstractService implements LoggerAwareInterface
             $this->registerTempFile($absFile);
         } else {
             $ret = false;
-            $this->errorPush(T3_ERR_SV_FILE_WRITE, 'Can not create temp file.');
+            $this->errorPush(self::ERROR_FILE_NOT_WRITEABLE, 'Can not create temp file.');
         }
         return $ret;
     }

@@ -137,6 +137,7 @@ class SystemEnvironmentBuilder
         defined('TYPO3_OS') ?: define('TYPO3_OS', self::getTypo3Os());
 
         // Service error constants
+        // @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0, use the class constants in AbstractService instead.
         // General error - something went wrong
         define('T3_ERR_SV_GENERAL', -1);
         // During execution it showed that the service is not available and should be ignored. The service itself should call $this->setNonAvailable()

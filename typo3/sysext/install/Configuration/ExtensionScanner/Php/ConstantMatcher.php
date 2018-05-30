@@ -20,4 +20,49 @@ return [
             'Breaking-82296-UserAgentConstantRemoved.rst',
         ],
     ],
+    'T3_ERR_SV_GENERAL' => [
+        'restFiles' => [
+            'Deprecation-85123-ConstantsRelatedToServices.rst',
+        ],
+    ],
+    'T3_ERR_SV_NOT_AVAIL' => [
+        'restFiles' => [
+            'Deprecation-85123-ConstantsRelatedToServices.rst',
+        ],
+    ],
+    'T3_ERR_SV_WRONG_SUBTYPE' => [
+        'restFiles' => [
+            'Deprecation-85123-ConstantsRelatedToServices.rst',
+        ],
+    ],
+    'T3_ERR_SV_NO_INPUT' => [
+        'restFiles' => [
+            'Deprecation-85123-ConstantsRelatedToServices.rst',
+        ],
+    ],
+    'T3_ERR_SV_FILE_NOT_FOUND' => [
+        'restFiles' => [
+            'Deprecation-85123-ConstantsRelatedToServices.rst',
+        ],
+    ],
+    'T3_ERR_SV_FILE_READ' => [
+        'restFiles' => [
+            'Deprecation-85123-ConstantsRelatedToServices.rst',
+        ],
+    ],
+    'T3_ERR_SV_FILE_WRITE' => [
+        'restFiles' => [
+            'Deprecation-85123-ConstantsRelatedToServices.rst',
+        ],
+    ],
+    'T3_ERR_SV_PROG_NOT_FOUND' => [
+        'restFiles' => [
+            'Deprecation-85123-ConstantsRelatedToServices.rst',
+        ],
+    ],
+    'T3_ERR_SV_PROG_FAILED' => [
+        'restFiles' => [
+            'Deprecation-85123-ConstantsRelatedToServices.rst',
+        ],
+    ],
 ];
