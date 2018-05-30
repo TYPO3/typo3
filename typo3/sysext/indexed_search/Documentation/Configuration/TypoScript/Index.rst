@@ -237,15 +237,15 @@ search.defaultFreeIndexUidList
 
 
 
-.. _search-exactcount:
+.. _settings-exactcount:
 
-search.exactCount
+settings.exactCount
 """""""""""""""""
 
 .. container:: table-row
 
    Property
-         search.exactCount
+         settings.exactCount
 
    Data type
          boolean
