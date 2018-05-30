@@ -27,39 +27,39 @@ class TwitterCardMetaTagManager extends AbstractMetaTagManager
         'twitter:card' => [],
         'twitter:site' => [
             'allowedSubProperties' => [
-                'id',
+                'id' => [],
             ]
         ],
         'twitter:creator' => [
             'allowedSubProperties' => [
-                'id',
+                'id' => [],
             ]
         ],
         'twitter:description' => [],
         'twitter:title' => [],
         'twitter:image' => [
             'allowedSubProperties' => [
-                'alt',
+                'alt' => [],
             ]
         ],
         'twitter:player' => [
             'allowedSubProperties' => [
-                'width',
-                'height',
-                'stream',
+                'width' => [],
+                'height' => [],
+                'stream' => [],
             ]
         ],
         'twitter:app' => [
             'allowedSubProperties' => [
-                'name:iphone',
-                'id:iphone',
-                'url:iphone',
-                'name:ipad',
-                'id:ipad',
-                'url:ipad',
-                'name:googleplay',
-                'id:googleplay',
-                'url:googleplay',
+                'name:iphone' => [],
+                'id:iphone' => [],
+                'url:iphone' => [],
+                'name:ipad' => [],
+                'id:ipad' => [],
+                'url:ipad' => [],
+                'name:googleplay' => [],
+                'id:googleplay' => [],
+                'url:googleplay' => [],
             ]
         ],
     ];
