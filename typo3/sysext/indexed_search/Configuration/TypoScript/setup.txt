@@ -29,7 +29,9 @@ plugin.tx_indexedsearch {
 
 		rootPidList = {$plugin.tx_indexedsearch.settings.rootPidList}
 		page_links = 10
+		# @deprecated left for BC reasons, will be removed in 10
 		detectDomainRcords = 0
+		detectDomainRecords < .detectDomainRcords
 		defaultFreeIndexUidList =
 		searchSkipExtendToSubpagesChecking = 0
 		exactCount = 0

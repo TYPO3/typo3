@@ -1396,7 +1396,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                         $this->requiredFrontendUsergroups[$id][] = $v['fe_group'];
                     }
                     // Check sys_domain
-                    if ($this->settings['detectDomainRcords']) {
+                    if ($this->settings['detectDomainRecords']) {
                         $domainName = $this->getFirstSysDomainRecordForPage($v['uid']);
                         if ($domainName) {
                             $this->domainRecords[$id][] = $domainName;

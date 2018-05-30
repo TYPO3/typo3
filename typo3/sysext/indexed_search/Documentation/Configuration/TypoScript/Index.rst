@@ -15,22 +15,7 @@ TypoScript
 [Still missing the major parts here. Just use the object browser for
 now since that includes all options]
 
-
-.. _templatefile:
-
-templateFile
-""""""""""""
-
-.. container:: table-row
-
-   Property
-         templateFile
-
-   Data type
-         resource
-
-   Description
-         The template file, see examples in typo3/sysext/indexed\_search/pi/.
+Following options live under :typoscript:`plugin.tx_indexedsearch.settings`.
 
 
 .. _breadcrumbWrap:
@@ -55,13 +40,13 @@ breadcrumbWrap
 
 .. _show-forbiddenrecords:
 
-show.forbiddenRecords
-"""""""""""""""""""""
+displayForbiddenRecords
+"""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         show.forbiddenRecords
+         displayForbiddenRecords
 
    Data type
          boolean
@@ -74,13 +59,13 @@ show.forbiddenRecords
 
 .. _show-resultnumber:
 
-show.resultNumber
+displayResultNumber
 """""""""""""""""
 
 .. container:: table-row
 
    Property
-         show.resultNumber
+         displayResultNumber
 
    Data type
          boolean
@@ -88,16 +73,19 @@ show.resultNumber
    Description
          Display the numbers of search results.
 
+   Default
+         0
+
 
 .. _show-advancedsearchlink:
 
-show.advancedSearchLink
-"""""""""""""""""""""""
+displayAdvancedSearchLink
+"""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         show.advancedSearchLink
+         displayAdvancedSearchLink
 
    Data type
          boolean
@@ -134,13 +122,13 @@ blind.numberOfResults
 
 .. _search-rootpidlist:
 
-search.rootPidList
-""""""""""""""""""
+rootPidList
+"""""""""""
 
 .. container:: table-row
 
    Property
-         search.rootPidList
+         rootPidList
 
    Data type
          list of int
@@ -159,19 +147,19 @@ search.rootPidList
          site, use the possibility of searching in levels.
 
    Default
-         The current root-page id
+         Empty, which fall backs to the current root-page id
 
 
 
 .. _search-detect-sys-domain-records:
 
-search.detect\_sys\_domain\_records
-"""""""""""""""""""""""""""""""""""
+detectDomainRecords
+"""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         search.detect\_sys\_domain\_records
+         detectDomainRecords
 
    Data type
          boolean
@@ -184,13 +172,13 @@ search.detect\_sys\_domain\_records
 
 .. _search-detect-sys-domain-records-target:
 
-search.detect\_sys\_domain\_records.target
-""""""""""""""""""""""""""""""""""""""""""
+detectDomainRecords.target
+""""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         search.detect\_sys\_domain\_records.target
+         detectDomainRecords.target
 
    Data type
          string
@@ -202,13 +190,13 @@ search.detect\_sys\_domain\_records.target
 
 .. _search-medialist:
 
-search.mediaList
-""""""""""""""""
+mediaList
+"""""""""
 
 .. container:: table-row
 
    Property
-         search.mediaList
+         mediaList
 
    Data type
          string
@@ -220,13 +208,13 @@ search.mediaList
 
 .. _search-defaultfreeindexuidlist:
 
-search.defaultFreeIndexUidList
-""""""""""""""""""""""""""""""
+defaultFreeIndexUidList
+"""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         search.defaultFreeIndexUidList
+         defaultFreeIndexUidList
 
    Data type
          string
@@ -237,15 +225,15 @@ search.defaultFreeIndexUidList
 
 
 
-.. _search-exactcount:
+.. _settings-exactcount:
 
-search.exactCount
-"""""""""""""""""
+exactCount
+""""""""""
 
 .. container:: table-row
 
    Property
-         search.exactCount
+         exactCount
 
    Data type
          boolean
@@ -266,13 +254,13 @@ search.exactCount
 
 .. _search-skipextendtosubpageschecking:
 
-search.skipExtendToSubpagesChecking
-"""""""""""""""""""""""""""""""""""
+searchSkipExtendToSubpagesChecking
+""""""""""""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         search.skipExtendToSubpagesChecking
+         searchSkipExtendToSubpagesChecking
 
    Data type
          boolean
@@ -290,14 +278,14 @@ search.skipExtendToSubpagesChecking
          extendToSubpages will NOT be taken into account!
 
    Default
-         false
+         0
 
 
 
 .. _specconfs-pid:
 
-specConfs.[pid]
-"""""""""""""""
+specialConfiguration.[pid]
+""""""""""""""""""""""""""
 
 .. container:: table-row
 
@@ -331,8 +319,8 @@ specConfs.[pid]
 
 .. _specconfs-pid-pageicon:
 
-specConfs.[pid].pageIcon
-""""""""""""""""""""""""
+specialConfiguration.[pid].pageIcon
+"""""""""""""""""""""""""""""""""""
 
 .. container:: table-row
 
@@ -349,8 +337,8 @@ specConfs.[pid].pageIcon
 
 .. _specconfs-pid-csssuffix:
 
-specConfs.[pid].CSSsuffix
-"""""""""""""""""""""""""
+specialConfiguration.[pid].CSSsuffix
+""""""""""""""""""""""""""""""""""""
 
 .. container:: table-row
 
@@ -389,49 +377,16 @@ targetPid
          Set the target page UID for the extbase variant of the plugin.
 
 
-.. _whatis-stdwrap:
-
-whatis\_stdWrap
-"""""""""""""""
-
-.. container:: table-row
-
-   Property
-         whatis\_stdWrap
-
-   Data type
-         :ref:`stdWrap <t3tsref:stdwrap>`
-
-   Description
-         Parse input through the stdWrap function
-
-
-.. _resultlist-stdWrap:
-
-resultlist\_stdWrap
-"""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         resultlist\_stdWrap
-
-   Data type
-         :ref:`stdWrap <t3tsref:stdwrap>`
-
-   Description
-         Parse the result list through the stdWrap function
-
 
 .. _results-titleCropAfter:
 
-results\_titleCropAfter
-"""""""""""""""""""""""
+results.titleCropAfter
+""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         results\_titleCropAfter
+         results.titleCropAfter
 
    Data type
          int
@@ -443,13 +398,13 @@ results\_titleCropAfter
 
 .. _results-titleCropSignifier:
 
-results\_titleCropSignifier
-"""""""""""""""""""""""""""
+results.titleCropSignifier
+""""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         results\_titleCropSignifier
+         results.titleCropSignifier
 
    Data type
          string
@@ -461,13 +416,13 @@ results\_titleCropSignifier
 
 .. _results-summaryCropAfter:
 
-results\_summaryCropAfter
-"""""""""""""""""""""""""
+results.summaryCropAfter
+""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         results\_summaryCropAfter
+         results.summaryCropAfter
 
    Data type
          int
@@ -479,13 +434,13 @@ results\_summaryCropAfter
 
 .. _results-summaryCropSignifier:
 
-results\_summaryCropSignifier
-"""""""""""""""""""""""""""""
+results.summaryCropSignifier
+""""""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         results\_summaryCropSignifier
+         results.summaryCropSignifier
 
    Data type
          string
@@ -497,13 +452,13 @@ results\_summaryCropSignifier
 
 .. _results-hrefInSummaryCropAfter:
 
-results\_hrefInSummaryCropAfter
-"""""""""""""""""""""""""""""""
+results.hrefInSummaryCropAfter
+""""""""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         results\_hrefInSummaryCropAfter
+         results.hrefInSummaryCropAfter
 
    Data type
          int
@@ -515,13 +470,13 @@ results\_hrefInSummaryCropAfter
 
 .. _results-hrefInSummaryCropSignifier:
 
-results\_hrefInSummaryCropSignifier
-"""""""""""""""""""""""""""""""""""
+results.hrefInSummaryCropSignifier
+""""""""""""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         results\_hrefInSummaryCropSignifier
+         results.hrefInSummaryCropSignifier
 
    Data type
          string
@@ -533,13 +488,13 @@ results\_hrefInSummaryCropSignifier
 
 .. _results-markupSW_summaryMax:
 
-results\_markupSW_summaryMax
-""""""""""""""""""""""""""""
+results.markupSW_summaryMax
+"""""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         results\_markupSW_summaryMax
+         results.markupSW_summaryMax
 
    Data type
          int
@@ -551,13 +506,13 @@ results\_markupSW_summaryMax
 
 .. _results-markupSW_postPreLgd:
 
-results\_markupSW_postPreLgd
-""""""""""""""""""""""""""""
+results.markupSW_postPreLgd
+"""""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         results\_markupSW_postPreLgd
+         results.markupSW_postPreLgd
 
    Data type
          int
@@ -569,13 +524,13 @@ results\_markupSW_postPreLgd
 
 .. _results-markupSW_postPreLgd_offset:
 
-results\_markupSW_postPreLgd_offset
-"""""""""""""""""""""""""""""""""""
+results.markupSW_postPreLgd_offset
+""""""""""""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         results\_markupSW_postPreLgd_offset
+         results.markupSW_postPreLgd_offset
 
    Data type
          int
@@ -588,13 +543,13 @@ results\_markupSW_postPreLgd_offset
 
 .. _results-markupSW_divider:
 
-results\_markupSW_divider
-"""""""""""""""""""""""""
+results.markupSW_divider
+""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-         results\_markupSW_divider
+         results.markupSW_divider
 
    Data type
          string
@@ -602,23 +557,6 @@ results\_markupSW_divider
    Description
          Divider for highlighted searchwords in the summary
          Defaults to "..."
-
-
-.. _linkSectionTitles-stdWrap:
-
-linkSectionTitles
-"""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         linkSectionTitles
-
-   Data type
-         boolean
-
-   Description
-         Toggles whether section titles are linked or not
 
 
 .. _forwardSearchWordsInResultLink:
@@ -635,7 +573,8 @@ forwardSearchWordsInResultLink.no_cache
          boolean
 
    Description
-         Toggles whether result links add the no_cache parameter
+         Toggles whether result links add the no_cache parameter.
+         It is evaluated only if :typoscript:`forwardSearchWordsInResultLink = 1` is also set.
 
 
 [tsref:plugin.tx\_indexedsearch]
