@@ -77,11 +77,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected $moveJsFromHeaderToFooter = false;
 
     /**
-     * @var \TYPO3\CMS\Core\Charset\CharsetConverter
-     */
-    protected $csConvObj;
-
-    /**
      * @var \TYPO3\CMS\Core\Localization\Locales
      */
     protected $locales;
@@ -384,7 +379,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function __construct($templateFile = '')
     {
         $this->reset();
-        $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
         $this->locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
         if ($templateFile !== '') {
             $this->templateFile = $templateFile;

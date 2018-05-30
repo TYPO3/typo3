@@ -2312,4 +2312,9 @@ return [
             'Deprecation-85122-FunctionalityInCharsetConverter.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Resource\Driver\AbstractHierarchicalFilesystemDriver->getCharsetConversion' => [
+        'restFiles' => [
+            'Deprecation-85125-UsagesOfCharsetConverterInCore.rst'
+        ],
+    ],
 ];

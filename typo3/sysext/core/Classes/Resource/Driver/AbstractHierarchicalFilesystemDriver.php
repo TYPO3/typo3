@@ -26,6 +26,7 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
 {
     /**
      * @var CharsetConverter
+     * @deprecated instantiate CharsetConverter yourself in your driver implementation.
      */
     protected $charsetConversion;
 
@@ -33,9 +34,11 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
      * Gets the charset conversion object.
      *
      * @return CharsetConverter
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.ß. Instantiate the CharsetConverter object yourself in your driver class.
      */
     protected function getCharsetConversion()
     {
+        trigger_error('Shorthand method "getCharsetConversion()" within the FAL driver method will be removed in TYPO3 v10.0, instantiate CharsetConverter yourself.', E_USER_DEPRECATED);
         if (!isset($this->charsetConversion)) {
             $this->charsetConversion = GeneralUtility::makeInstance(CharsetConverter::class);
         }

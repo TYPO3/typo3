@@ -14,7 +14,6 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -156,11 +155,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $typoScriptService;
 
     /**
-     * @var CharsetConverter
-     */
-    protected $charsetConverter;
-
-    /**
      * @param \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService
      */
     public function injectTypoScriptService(\TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService)
@@ -176,7 +170,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function initialize($searchData = [])
     {
-        $this->charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         if (!is_array($searchData)) {
             $searchData = [];
         }

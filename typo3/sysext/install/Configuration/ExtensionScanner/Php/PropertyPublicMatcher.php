@@ -401,4 +401,14 @@ return [
             'Deprecation-85078-PageRepositoryVersioningPreview.rst',
         ],
     ],
+    'TYPO3\CMS\IndexedSearch\Lexer->csObj' => [
+        'restFiles' => [
+            'Deprecation-85125-UsagesOfCharsetConverterInCore.rst'
+        ],
+    ],
+    'TYPO3\CMS\IndexedSearch\Indexer->csObj' => [
+        'restFiles' => [
+            'Deprecation-85125-UsagesOfCharsetConverterInCore.rst'
+        ],
+    ],
 ];

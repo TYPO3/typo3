@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -29,6 +30,16 @@ use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
  */
 class Indexer
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * List of all deprecated public properties
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'csObj' => 'Using $csObj within Indexing is discouraged, the property will be removed in TYPO3 v10.0 - if needed instantiate CharsetConverter yourself.',
+    ];
+
     /**
      * @var array
      */
@@ -210,8 +221,9 @@ class Indexer
      * Charset class object
      *
      * @var \TYPO3\CMS\Core\Charset\CharsetConverter
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10 (also the instantiation in the init() method).
      */
-    public $csObj;
+    protected $csObj;
 
     /**
      * Metaphone object, if any
