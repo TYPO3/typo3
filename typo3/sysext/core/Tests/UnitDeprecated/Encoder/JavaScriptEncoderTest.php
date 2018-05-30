@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Encoder;
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Encoder;
 
 /*
  * This file is part of the TYPO3 CMS project.

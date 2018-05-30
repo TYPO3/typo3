@@ -679,4 +679,9 @@ return [
             'Deprecation-85102-PhpOptionsUtility.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Encoding\JavaScriptEncoder' => [
+        'restFiles' => [
+            'Deprecation-85120-JavaScriptEncoder.rst',
+        ],
+    ],
 ];

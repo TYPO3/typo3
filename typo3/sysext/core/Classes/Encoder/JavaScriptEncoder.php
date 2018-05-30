@@ -22,6 +22,7 @@ namespace TYPO3\CMS\Core\Encoder;
  * It encodes all characters except alphanumericals and the immune characters to a hex representation.
  * @copyright 2009-2010 The OWASP Foundation
  * @link http://www.owasp.org/index.php/ESAPI
+ * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
  */
 class JavaScriptEncoder implements \TYPO3\CMS\Core\SingletonInterface
 {
@@ -51,9 +52,11 @@ class JavaScriptEncoder implements \TYPO3\CMS\Core\SingletonInterface
      * Populates the $hex map of non-alphanumeric single-byte characters.
      *
      * Alphanumerical character are set to NULL in the matrix.
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
      */
     public function __construct()
     {
+        trigger_error('TYPO3\'s JavaScriptEncoder will be removed in TYPO3 v10.0, use PHPs native json_encode() or GeneralUtility::quoteJSvalue() instead.', E_USER_DEPRECATED);
         $this->charsetConversion = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
         for ($i = 0; $i < 256; $i++) {
             if ($i >= ord('0') && $i <= ord('9') || $i >= ord('A') && $i <= ord('Z') || $i >= ord('a') && $i <= ord('z')) {
