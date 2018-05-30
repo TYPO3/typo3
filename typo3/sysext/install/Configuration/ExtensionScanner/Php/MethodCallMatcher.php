@@ -2263,4 +2263,53 @@ return [
             'Deprecation-85012-OnlyValidateMethodParamsIfNeeded.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->parse_charset' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->convArray' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->utf8_to_entities' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->entities_to_utf8' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->crop' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->convCaseFirst' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->utf8_char2byte_pos' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
 ];

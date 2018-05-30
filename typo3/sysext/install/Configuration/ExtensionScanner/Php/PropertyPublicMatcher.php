@@ -391,4 +391,9 @@ return [
             'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->synonyms' => [
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
 ];

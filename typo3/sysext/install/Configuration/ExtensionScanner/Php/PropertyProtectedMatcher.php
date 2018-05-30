@@ -577,14 +577,39 @@ return [
             'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
         ],
     ],
-    'TYPO3\CMS\backend\Tree\View\PagePositionMap->getModConfigCache' => [
+    'TYPO3\CMS\Backend\Tree\View\PagePositionMap->getModConfigCache' => [
         'restFiles' => [
             'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
         ],
     ],
-    'TYPO3\CMS\backend\Tree\View\PagePositionMap->modConfigStr' => [
+    'TYPO3\CMS\Backend\Tree\View\PagePositionMap->modConfigStr' => [
         'restFiles' => [
             'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->noCharByteVal' => [
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->parsedCharsets' => [
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->toASCII' => [
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->twoByteSets' => [
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->eucBasedSets' => [
+        'restFiles' => [
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
         ],
     ],
 ];
