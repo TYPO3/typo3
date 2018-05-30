@@ -266,7 +266,7 @@ class IndexSearchRepository
                             $resultRows[] = $row;
                             // This may lead to a problem: If the result check is not stopped here, the search will take longer.
                             // However the result counter will not filter out grouped cHashes/pHashes that were not processed yet.
-                            // You can change this behavior using the "search.exactCount" property (see above).
+                            // You can change this behavior using the "settings.exactCount" property (see above).
                             if (!$this->useExactCount && $c + 1 > ($pointer + 1) * $this->numberOfResults) {
                                 break;
                             }
