@@ -2324,6 +2324,13 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-85113-LegacyBackendModuleRoutingMethods.rst',
-        ]
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPageShortcut' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-85130-TSFE-getPageShortcutMovedToPageRepository.rst',
+        ],
     ],
 ];

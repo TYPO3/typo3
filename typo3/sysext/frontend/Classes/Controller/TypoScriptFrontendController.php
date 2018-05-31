@@ -1444,7 +1444,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // whether a translation of the page overwrites the shortcut
             // target and we need to follow the new target
             $this->originalShortcutPage = $this->page;
-            $this->page = $this->getPageShortcut($this->page['shortcut'], $this->page['shortcut_mode'], $this->page['uid']);
+            $this->page = $this->sys_page->getPageShortcut($this->page['shortcut'], $this->page['shortcut_mode'], $this->page['uid']);
             $this->id = $this->page['uid'];
         }
         // If the page is a mountpoint which should be overlaid with the contents of the mounted page,
@@ -1516,7 +1516,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Get page shortcut; Finds the records pointed to by input value $SC (the shortcut value)
+     * Get page shortcut; Finds the records pointed to by input value $SC (the shortcut value).
      *
      * @param int $SC The value of the "shortcut" field from the pages record
      * @param int $mode The shortcut mode: 1 will select first subpage, 2 a random subpage, 3 the parent page; default is the page pointed to by $SC
@@ -1529,64 +1529,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @return mixed Returns the page record of the page that the shortcut pointed to.
      * @access private
      * @see getPageAndRootline()
+     * @deprecated As this method conceptually belongs to PageRepository, it is moved in PageRepository, and will be removed in TYPO3 v10.0.
      */
     public function getPageShortcut($SC, $mode, $thisUid, $itera = 20, $pageLog = [], $disableGroupCheck = false)
     {
-        $idArray = GeneralUtility::intExplode(',', $SC);
-        // Find $page record depending on shortcut mode:
-        switch ($mode) {
-            case PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
-
-            case PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
-                $pageArray = $this->sys_page->getMenu($idArray[0] ? $idArray[0] : $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . PageRepository::DOKTYPE_BE_USER_SECTION);
-                $pO = 0;
-                if ($mode == PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE && !empty($pageArray)) {
-                    $randval = (int)rand(0, count($pageArray) - 1);
-                    $pO = $randval;
-                }
-                $c = 0;
-                $page = [];
-                foreach ($pageArray as $pV) {
-                    if ($c === $pO) {
-                        $page = $pV;
-                        break;
-                    }
-                    $c++;
-                }
-                if (empty($page)) {
-                    $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. ' . 'However, this page has no accessible subpages.';
-                    throw new ShortcutTargetPageNotFoundException($message, 1301648328);
-                }
-                break;
-            case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
-                $parent = $this->sys_page->getPage($idArray[0] ? $idArray[0] : $thisUid, $disableGroupCheck);
-                $page = $this->sys_page->getPage($parent['pid'], $disableGroupCheck);
-                if (empty($page)) {
-                    $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. ' . 'However, the parent page is not accessible.';
-                    throw new ShortcutTargetPageNotFoundException($message, 1301648358);
-                }
-                break;
-            default:
-                $page = $this->sys_page->getPage($idArray[0], $disableGroupCheck);
-                if (empty($page)) {
-                    $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
-                    throw new ShortcutTargetPageNotFoundException($message, 1301648404);
-                }
-        }
-        // Check if short cut page was a shortcut itself, if so look up recursively:
-        if ($page['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
-            if (!in_array($page['uid'], $pageLog) && $itera > 0) {
-                $pageLog[] = $page['uid'];
-                $page = $this->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid'], $itera - 1, $pageLog, $disableGroupCheck);
-            } else {
-                $pageLog[] = $page['uid'];
-                $message = 'Page shortcuts were looping in uids ' . implode(',', $pageLog) . '...!';
-                $this->logger->error($message);
-                throw new \RuntimeException($message, 1294587212);
-            }
-        }
-        // Return resulting page:
-        return $page;
+        trigger_error('Method "TypoScriptFrontendController::getPageShortcut()" as been moved to PageRepository - use the page repository directly to call this functionality, as this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
+        return $this->sys_page->getPageShortcut($SC, $mode, $thisUid, $itera, $pageLog, $disableGroupCheck);
     }
 
     /**
@@ -2731,7 +2679,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if (!empty($originalShortcutPageOverlay['shortcut']) && $originalShortcutPageOverlay['shortcut'] != $this->id) {
                 // the translation of the original shortcut page has a different shortcut target!
                 // set the correct page and id
-                $shortcut = $this->getPageShortcut($originalShortcutPageOverlay['shortcut'], $originalShortcutPageOverlay['shortcut_mode'], $originalShortcutPageOverlay['uid']);
+                $shortcut = $this->sys_page->getPageShortcut($originalShortcutPageOverlay['shortcut'], $originalShortcutPageOverlay['shortcut_mode'], $originalShortcutPageOverlay['uid']);
                 $this->id = ($this->contentPid = $shortcut['uid']);
                 $this->page = $this->sys_page->getPage($this->id);
                 // Fix various effects on things like menus f.e.

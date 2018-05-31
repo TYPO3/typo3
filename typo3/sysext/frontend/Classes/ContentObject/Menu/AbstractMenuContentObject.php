@@ -1657,7 +1657,7 @@ abstract class AbstractMenuContentObject
         if ($this->menuArr[$key]['doktype'] == PageRepository::DOKTYPE_SHORTCUT && $this->menuArr[$key]['shortcut_mode'] != PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
             $menuItem = $this->determineOriginalShortcutPage($this->menuArr[$key]);
             try {
-                $shortcut = $tsfe->getPageShortcut(
+                $shortcut = $tsfe->sys_page->getPageShortcut(
                     $menuItem['shortcut'],
                     $menuItem['shortcut_mode'],
                     $menuItem['uid'],

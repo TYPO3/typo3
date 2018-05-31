@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
+use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -654,7 +655,7 @@ class PageRepository implements LoggerAwareInterface
      * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
      * @param bool $checkShortcuts Check if shortcuts exist, checks by default
      * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlaid localized fields, if any)
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
+     * @see self::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
      */
     public function getMenu($pageId, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = true)
     {
@@ -711,7 +712,7 @@ class PageRepository implements LoggerAwareInterface
      * @param bool $parentPages Switch to load pages (false) or child pages (true).
      * @return array page records
      *
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut()
+     * @see self::getPageShortcut()
      * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
      */
     protected function getSubpagesForPages(
@@ -880,6 +881,79 @@ class PageRepository implements LoggerAwareInterface
             // Neither shortcut target nor mode is set. Remove the page from the menu.
             $page = [];
         }
+        return $page;
+    }
+
+    /**
+     * Get page shortcut; Finds the records pointed to by input value $SC (the shortcut value)
+     *
+     * @param int $shortcutFieldValue The value of the "shortcut" field from the pages record
+     * @param int $shortcutMode The shortcut mode: 1 will select first subpage, 2 a random subpage, 3 the parent page; default is the page pointed to by $SC
+     * @param int $thisUid The current page UID of the page which is a shortcut
+     * @param int $iteration Safety feature which makes sure that the function is calling itself recursively max 20 times (since this function can find shortcuts to other shortcuts to other shortcuts...)
+     * @param array $pageLog An array filled with previous page uids tested by the function - new page uids are evaluated against this to avoid going in circles.
+     * @param bool $disableGroupCheck If true, the group check is disabled when fetching the target page (needed e.g. for menu generation)
+     *
+     * @throws \RuntimeException
+     * @throws ShortcutTargetPageNotFoundException
+     * @return mixed Returns the page record of the page that the shortcut pointed to.
+     * @access private
+     * @see getPageAndRootline()
+     */
+    public function getPageShortcut($shortcutFieldValue, $shortcutMode, $thisUid, $iteration = 20, $pageLog = [], $disableGroupCheck = false)
+    {
+        $idArray = GeneralUtility::intExplode(',', $shortcutFieldValue);
+        // Find $page record depending on shortcut mode:
+        switch ($shortcutMode) {
+            case self::SHORTCUT_MODE_FIRST_SUBPAGE:
+            case self::SHORTCUT_MODE_RANDOM_SUBPAGE:
+                $pageArray = $this->getMenu($idArray[0] ?: $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . self::DOKTYPE_BE_USER_SECTION);
+                $pO = 0;
+                if ($shortcutMode == self::SHORTCUT_MODE_RANDOM_SUBPAGE && !empty($pageArray)) {
+                    $pO = (int)rand(0, count($pageArray) - 1);
+                }
+                $c = 0;
+                $page = [];
+                foreach ($pageArray as $pV) {
+                    if ($c === $pO) {
+                        $page = $pV;
+                        break;
+                    }
+                    $c++;
+                }
+                if (empty($page)) {
+                    $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. However, this page has no accessible subpages.';
+                    throw new ShortcutTargetPageNotFoundException($message, 1301648328);
+                }
+                break;
+            case self::SHORTCUT_MODE_PARENT_PAGE:
+                $parent = $this->getPage($idArray[0] ?: $thisUid, $disableGroupCheck);
+                $page = $this->getPage($parent['pid'], $disableGroupCheck);
+                if (empty($page)) {
+                    $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. However, the parent page is not accessible.';
+                    throw new ShortcutTargetPageNotFoundException($message, 1301648358);
+                }
+                break;
+            default:
+                $page = $this->getPage($idArray[0], $disableGroupCheck);
+                if (empty($page)) {
+                    $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
+                    throw new ShortcutTargetPageNotFoundException($message, 1301648404);
+                }
+        }
+        // Check if short cut page was a shortcut itself, if so look up recursively:
+        if ($page['doktype'] == self::DOKTYPE_SHORTCUT) {
+            if (!in_array($page['uid'], $pageLog) && $iteration > 0) {
+                $pageLog[] = $page['uid'];
+                $page = $this->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid'], $iteration - 1, $pageLog, $disableGroupCheck);
+            } else {
+                $pageLog[] = $page['uid'];
+                $message = 'Page shortcuts were looping in uids ' . implode(',', $pageLog) . '...!';
+                $this->logger->error($message);
+                throw new \RuntimeException($message, 1294587212);
+            }
+        }
+        // Return resulting page:
         return $page;
     }
 
