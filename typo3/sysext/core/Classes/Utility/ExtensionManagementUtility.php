@@ -276,10 +276,15 @@ class ExtensionManagementUtility
     public static function addToAllTCAtypes($table, $newFieldsString, $typeList = '', $position = '')
     {
         $newFieldsString = trim($newFieldsString);
-        if ($newFieldsString === '' || !is_array($GLOBALS['TCA'][$table]['types'])) {
+        if ($newFieldsString === '' || !is_array($GLOBALS['TCA'][$table]['types'] ?? false)) {
             return;
         }
-        list($positionIdentifier, $entityName) = GeneralUtility::trimExplode(':', $position);
+        if ($position !== '') {
+            list($positionIdentifier, $entityName) = GeneralUtility::trimExplode(':', $position);
+        } else {
+            $positionIdentifier = '';
+            $entityName = '';
+        }
         $palettesChanged = [];
 
         foreach ($GLOBALS['TCA'][$table]['types'] as $type => &$typeDetails) {
@@ -637,7 +642,12 @@ class ExtensionManagementUtility
     {
         $list = $newList = trim($list, ", \t\n\r\0\x0B");
 
-        list($location, $positionName) = GeneralUtility::trimExplode(':', $insertionPosition, false, 2);
+        if ($insertionPosition !== '') {
+            list($location, $positionName) = GeneralUtility::trimExplode(':', $insertionPosition, false, 2);
+        } else {
+            $location = '';
+            $positionName = '';
+        }
 
         if ($location !== 'replace') {
             $insertionList = self::removeDuplicatesForInsertion($insertionList, $list);

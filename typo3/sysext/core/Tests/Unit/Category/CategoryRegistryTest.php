@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Category;
 
 /*
@@ -14,18 +15,16 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Category\CategoryRegistry;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for CategoryRegistry
  */
-class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CategoryRegistryTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var \TYPO3\CMS\Core\Category\CategoryRegistry
+     * @var CategoryRegistry
      */
     protected $subject;
 
@@ -37,11 +36,11 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * Sets up this test suite.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'] = 'pages';
         $GLOBALS['TCA']['pages']['columns'] = [];
-        $this->subject = new \TYPO3\CMS\Core\Category\CategoryRegistry();
+        $this->subject = new CategoryRegistry();
         $this->tables = [
             'first' => $this->getUniqueId('first'),
             'second' => $this->getUniqueId('second')
@@ -65,7 +64,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function doesAddReturnTrueOnDefinedTable()
+    public function doesAddReturnTrueOnDefinedTable(): void
     {
         $this->assertTrue($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
     }
@@ -73,7 +72,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function doesAddReturnTrueOnDefinedTableTheFirstTimeAndFalseTheSecondTime()
+    public function doesAddReturnTrueOnDefinedTableTheFirstTimeAndFalseTheSecondTime(): void
     {
         $this->assertTrue($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
         $this->assertFalse($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
@@ -82,7 +81,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function doesAddThrowExceptionOnEmptyTablename()
+    public function doesAddThrowExceptionOnEmptyTablename(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1369122038);
@@ -93,7 +92,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function doesAddThrowExceptionOnEmptyExtensionKey()
+    public function doesAddThrowExceptionOnEmptyExtensionKey(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1397836158);
@@ -104,29 +103,29 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function doesAddThrowExceptionOnInvalidTablename()
+    public function doesAddThrowExceptionOnInvalidTablename(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1369122038);
 
-        $this->subject->add('test_extension_a', [], 'categories');
+        $this->subject->add('test_extension_a', '', 'categories');
     }
 
     /**
      * @test
      */
-    public function doesAddThrowExceptionOnInvalidExtensionKey()
+    public function doesAddThrowExceptionOnInvalidExtensionKey(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1397836158);
 
-        $this->subject->add([], 'foo', 'categories');
+        $this->subject->add('', 'foo', 'categories');
     }
 
     /**
      * @test
      */
-    public function areMultipleElementsOfSameExtensionRegistered()
+    public function areMultipleElementsOfSameExtensionRegistered(): void
     {
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories');
         $this->subject->add('test_extension_a', $this->tables['second'], 'categories');
@@ -139,7 +138,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function areElementsOfDifferentExtensionsRegistered()
+    public function areElementsOfDifferentExtensionsRegistered(): void
     {
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories');
         $this->subject->add('test_extension_b', $this->tables['second'], 'categories');
@@ -152,7 +151,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function areElementsOfDifferentExtensionsOnSameTableRegistered()
+    public function areElementsOfDifferentExtensionsOnSameTableRegistered(): void
     {
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories1');
         $this->subject->add('test_extension_b', $this->tables['first'], 'categories2');
@@ -165,7 +164,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function areElementsOfSameExtensionOnSameTableRegistered()
+    public function areElementsOfSameExtensionOnSameTableRegistered(): void
     {
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories1');
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories2');
@@ -178,7 +177,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function areDatabaseDefinitionsOfAllElementsAvailable()
+    public function areDatabaseDefinitionsOfAllElementsAvailable(): void
     {
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories');
         $this->subject->add('test_extension_b', $this->tables['second'], 'categories');
@@ -186,7 +185,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         $definitions = $this->subject->getDatabaseTableDefinitions();
         $matches = [];
         preg_match_all('#CREATE TABLE\\s*([^ (]+)\\s*\\(\\s*([^ )]+)\\s+int\\(11\\)[^)]+\\);#mis', $definitions, $matches);
-        $this->assertEquals(2, count($matches[0]));
+        $this->assertCount(2, $matches[0]);
         $this->assertEquals($matches[1][0], $this->tables['first']);
         $this->assertEquals($matches[2][0], 'categories');
         $this->assertEquals($matches[1][1], $this->tables['second']);
@@ -196,14 +195,14 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function areDatabaseDefinitionsOfParticularExtensionAvailable()
+    public function areDatabaseDefinitionsOfParticularExtensionAvailable(): void
     {
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories');
         $this->subject->add('test_extension_b', $this->tables['second'], 'categories');
         $definitions = $this->subject->getDatabaseTableDefinition('test_extension_a');
         $matches = [];
         preg_match_all('#CREATE TABLE\\s*([^ (]+)\\s*\\(\\s*([^ )]+)\\s+int\\(11\\)[^)]+\\);#mis', $definitions, $matches);
-        $this->assertEquals(1, count($matches[0]));
+        $this->assertCount(1, $matches[0]);
         $this->assertEquals($matches[1][0], $this->tables['first']);
         $this->assertEquals($matches[2][0], 'categories');
     }
@@ -211,7 +210,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function areDefaultCategorizedTablesLoaded()
+    public function areDefaultCategorizedTablesLoaded(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'] = $this->tables['first'] . ',' . $this->tables['second'];
         $this->subject->applyTcaForPreRegisteredTables();
@@ -223,7 +222,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function canApplyTca()
+    public function canApplyTca(): void
     {
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories');
         $this->subject->add('test_extension_b', $this->tables['second'], 'categories');
@@ -236,7 +235,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function isRegisteredReturnsTrueIfElementIsAlreadyRegistered()
+    public function isRegisteredReturnsTrueIfElementIsAlreadyRegistered(): void
     {
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories');
         $this->assertTrue($this->subject->isRegistered($this->tables['first'], 'categories'));
@@ -245,7 +244,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function isRegisteredReturnsFalseIfElementIsNotRegistered()
+    public function isRegisteredReturnsFalseIfElementIsNotRegistered(): void
     {
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories');
         $this->assertFalse($this->subject->isRegistered($this->tables['first'], '_not_registered'));
@@ -255,7 +254,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function tabIsAddedForElement()
+    public function tabIsAddedForElement(): void
     {
         $this->subject->add('text_extension_a', $this->tables['first']);
         $this->subject->applyTcaForPreRegisteredTables();
@@ -268,7 +267,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function tabIsNotAddedForElementIfFieldListIsSpecified()
+    public function tabIsNotAddedForElementIfFieldListIsSpecified(): void
     {
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories', ['fieldList' => 'categories']);
         $this->subject->applyTcaForPreRegisteredTables();
@@ -281,7 +280,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function tabIsOnlyAddedForTypesThatAreSpecifiedInTypesList()
+    public function tabIsOnlyAddedForTypesThatAreSpecifiedInTypesList(): void
     {
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories', ['typesList' => '0']);
         $this->subject->applyTcaForPreRegisteredTables();
@@ -291,7 +290,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function tabIsAddedOnlyOncePerTable()
+    public function tabIsAddedOnlyOncePerTable(): void
     {
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories2');
@@ -308,7 +307,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function addAllowsSettingOfTheSameTableFieldTwice()
+    public function addAllowsSettingOfTheSameTableFieldTwice(): void
     {
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
         $result = $this->subject->add('text_extension_a', $this->tables['first'], 'categories1', [], true);
@@ -318,7 +317,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function addInitializesMissingTypes()
+    public function addInitializesMissingTypes(): void
     {
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
         $GLOBALS['TCA'][$this->tables['first']]['types']['newtypeafterfirstadd'] = ['showitem' => ''];
@@ -332,7 +331,7 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function addAddsOnlyOneSqlString()
+    public function addAddsOnlyOneSqlString(): void
     {
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
         $this->subject->add('text_extension_b', $this->tables['first'], 'categories1', [], true);
