@@ -253,18 +253,20 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 $persistenceIdentifier = $storage->getUid() . ':' . $file->getIdentifier();
 
                 $form = $this->load($persistenceIdentifier);
-                $forms[] = [
-                    'identifier' => $form['identifier'],
-                    'name' => isset($form['label']) ? $form['label'] : $form['identifier'],
-                    'persistenceIdentifier' => $persistenceIdentifier,
-                    'readOnly' => false,
-                    'removable' => true,
-                    'location' => 'storage',
-                    'duplicateIdentifier' => false,
-                    'invalid' => $form['invalid'],
-                    'error' => $form['error'],
-                ];
-                $identifiers[$form['identifier']]++;
+                if (isset($form['identifier'], $form['type']) && $form['type'] === 'Form') {
+                    $forms[] = [
+                        'identifier' => $form['identifier'],
+                        'name' => $form['label'] ?? $form['identifier'],
+                        'persistenceIdentifier' => $persistenceIdentifier,
+                        'readOnly' => $formReadOnly,
+                        'removable' => true,
+                        'location' => 'storage',
+                        'duplicateIdentifier' => false,
+                        'invalid' => $form['invalid'],
+                        'error' => $form['error'],
+                    ];
+                    $identifiers[$form['identifier']]++;
+                }
             }
             $storage->resetFileAndFolderNameFiltersToDefault();
         }
@@ -276,18 +278,20 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     continue;
                 }
                 $form = $this->load($relativePath . $fileInfo->getFilename());
-                $forms[] = [
-                    'identifier' => $form['identifier'],
-                    'name' => isset($form['label']) ? $form['label'] : $form['identifier'],
-                    'persistenceIdentifier' => $relativePath . $fileInfo->getFilename(),
-                    'readOnly' => $this->formSettings['persistenceManager']['allowSaveToExtensionPaths'] ? false: true,
-                    'removable' => $this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths'] ? true: false,
-                    'location' => 'extension',
-                    'duplicateIdentifier' => false,
-                    'invalid' => $form['invalid'],
-                    'error' => $form['error'],
-                ];
-                $identifiers[$form['identifier']]++;
+                if (isset($form['identifier'], $form['type']) && $form['type'] === 'Form') {
+                    $forms[] = [
+                        'identifier' => $form['identifier'],
+                        'name' => $form['label'] ?? $form['identifier'],
+                        'persistenceIdentifier' => $relativePath . $fileInfo->getFilename(),
+                        'readOnly' => $this->formSettings['persistenceManager']['allowSaveToExtensionPaths'] ? false: true,
+                        'removable' => $this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths'] ? true: false,
+                        'location' => 'extension',
+                        'duplicateIdentifier' => false,
+                        'invalid' => $form['invalid'],
+                        'error' => $form['error'],
+                    ];
+                    $identifiers[$form['identifier']]++;
+                }
             }
         }
 
