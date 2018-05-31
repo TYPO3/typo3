@@ -580,6 +580,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
                     $row['record_uid'] => 'edit'
                 ]
             ],
+            'columnsOnly' => $row['field'],
             'returnUrl' => $requestUri
         ]);
         $actionLinkOpen = '<a href="' . htmlspecialchars($url);
