@@ -1472,7 +1472,7 @@ class PageLayoutView implements LoggerAwareInterface
         if ($this->totalItems) {
             $result = $queryBuilder->execute();
             // Will return FALSE, if $result is invalid
-            $dbCount = $result->rowCount();
+            $dbCount = $queryBuilder->count('uid')->execute()->fetchColumn(0);
         }
         // If records were found, render the list
         if (!$dbCount) {
@@ -1723,7 +1723,7 @@ class PageLayoutView implements LoggerAwareInterface
 
         if ($depth >= 0) {
             $result = $queryBuilder->execute();
-            $rowCount = $result->rowCount();
+            $rowCount = $queryBuilder->count('uid')->execute()->fetchColumn(0);
             $count = 0;
             while ($row = $result->fetch()) {
                 BackendUtility::workspaceOL('pages', $row);

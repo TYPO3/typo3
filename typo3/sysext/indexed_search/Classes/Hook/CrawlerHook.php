@@ -279,7 +279,7 @@ class CrawlerHook
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($cfgRec['table2index']);
 
-            $result = $queryBuilder->select('*')
+            $baseQueryBuilder = $queryBuilder->select('*')
                 ->from($cfgRec['table2index'])
                 ->where(
                     $queryBuilder->expr()->eq(
@@ -290,7 +290,8 @@ class CrawlerHook
                         'uid',
                         $queryBuilder->createNamedParameter($session_data['uid'], \PDO::PARAM_INT)
                     )
-                )
+                );
+            $result = $baseQueryBuilder
                 ->setMaxResults($numberOfRecords)
                 ->orderBy('uid')
                 ->execute();
@@ -303,8 +304,9 @@ class CrawlerHook
                 $session_data['uid'] = $row['uid'];
             }
 
+            $rowCount = $baseQueryBuilder->count('uid')->execute()->fetchColumn(0);
             // Finally, set entry for next indexing of batch of records:
-            if ($result->rowCount()) {
+            if ($rowCount) {
                 $nparams = [
                     'indexConfigUid' => $cfgRec['uid'],
                     'url' => 'Records from UID#' . ($session_data['uid'] + 1) . '-?',

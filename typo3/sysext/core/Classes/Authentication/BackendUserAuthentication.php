@@ -2446,11 +2446,15 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 ->orderBy('tstamp')
                 ->execute();
 
+            $rowCount = $queryBuilder
+                ->count('uid')
+                ->execute()
+                ->fetchColumn(0);
             // Check for more than $max number of error failures with the last period.
-            if ($result->rowCount() > $max) {
+            if ($rowCount > $max) {
                 // OK, so there were more than the max allowed number of login failures - so we will send an email then.
                 $subject = 'TYPO3 Login Failure Warning (at ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
-                $email_body = 'There have been some attempts (' . $result->rowCount() . ') to login at the TYPO3
+                $email_body = 'There have been some attempts (' . $rowCount . ') to login at the TYPO3
 site "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ').
 
 This is a dump of the failures:
@@ -2469,7 +2473,7 @@ This is a dump of the failures:
                 $mail->setTo($email)->setSubject($subject)->setBody($email_body);
                 $mail->send();
                 // Logout written to log
-                $this->writelog(255, 4, 0, 3, 'Failure warning (%s failures within %s seconds) sent by email to %s', [$result->rowCount(), $secondsBack, $email]);
+                $this->writelog(255, 4, 0, 3, 'Failure warning (%s failures within %s seconds) sent by email to %s', [$rowCount, $secondsBack, $email]);
             }
         }
     }

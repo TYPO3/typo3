@@ -566,7 +566,7 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
 
         // Error case that is tested here: Do not return a valid parent row from db -> exception should be thrown
-        $statementProphecy->rowCount()->shouldBeCalled()->willReturn(0);
+        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderProphecy);
         $this->expectException(InvalidParentRowException::class);
         $this->expectExceptionCode(1463833794);
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
@@ -628,9 +628,10 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->where('uid = 1')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $statementProphecy->rowCount()->shouldBeCalled()->willReturn(1);
+        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderProphecy);
 
         // First db call returns $secondRow, second returns $thirdRow, which points back to $initialRow -> exception
+        $statementProphecy->fetchColumn(0)->willReturn(1);
         $statementProphecy->fetch()->willReturn($secondRow, $thirdRow);
 
         $this->expectException(InvalidParentRowLoopException::class);
@@ -694,7 +695,8 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->where('uid = 1')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $statementProphecy->rowCount()->shouldBeCalled()->willReturn(1);
+        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $statementProphecy->fetchColumn(0)->shouldBeCalled()->willReturn(1);
 
         // First db call returns $secondRow, second returns $thirdRow. $thirdRow has pid 0 and still no ds -> exception
         $statementProphecy->fetch()->willReturn($secondRow, $thirdRow);
@@ -833,7 +835,8 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->where('uid = 1')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $statementProphecy->rowCount()->shouldBeCalled()->willReturn(1);
+        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $statementProphecy->fetchColumn(0)->shouldBeCalled()->willReturn(1);
 
         // First db call returns $secondRow, second returns $thirdRow. $thirdRow resolves ds
         $statementProphecy->fetch()->willReturn($secondRow, $thirdRow);
@@ -888,8 +891,9 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $queryBuilderProphecy->createNamedParameter(2, 1)->willReturn(2);
         $expressionBuilderProphecy->eq('uid', 2)->shouldBeCalled()->willReturn('uid = 2');
         $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $statementProphecy->rowCount()->shouldBeCalled()->willReturn(1);
+        $statementProphecy->fetchColumn(0)->shouldBeCalled()->willReturn(1);
 
         // First db call returns $secondRow. $secendRow resolves DS and does not look further up
         $statementProphecy->fetch()->willReturn($secondRow);
@@ -948,8 +952,9 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $queryBuilderProphecy->createNamedParameter(2, 1)->willReturn(2);
         $expressionBuilderProphecy->eq('uid', 2)->shouldBeCalled()->willReturn('uid = 2');
         $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $statementProphecy->rowCount()->shouldBeCalled()->willReturn(1);
+        $statementProphecy->fetchColumn(0)->shouldBeCalled()->willReturn(1);
 
         // First db call returns $secondRow. $secendRow resolves DS and does not look further up
         $statementProphecy->fetch()->willReturn($secondRow);
@@ -1030,7 +1035,8 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $expressionBuilderProphecy->eq('uid', 2)->shouldBeCalled()->willReturn('uid = 2');
         $queryBuilderProphecy->where('uid = 2')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
-        $statementProphecy->rowCount()->shouldBeCalled()->willReturn(1);
+        $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $statementProphecy->fetchColumn(0)->shouldBeCalled()->willReturn(1);
 
         // First db call returns $secondRow. $secendRow resolves DS and does not look further up
         $statementProphecy->fetch()->willReturn($secondRow);

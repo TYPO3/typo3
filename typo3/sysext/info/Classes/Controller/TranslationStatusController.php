@@ -416,7 +416,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
         $row = $result->fetch();
         BackendUtility::workspaceOL('pages', $row);
         if (is_array($row)) {
-            $row['_COUNT'] = $result->rowCount();
+            $row['_COUNT'] = $queryBuilder->count('uid')->execute()->fetchColumn(0);
             $row['_HIDDEN'] = $row['hidden'] || (int)$row['endtime'] > 0 && (int)$row['endtime'] < $GLOBALS['EXEC_TIME'] || $GLOBALS['EXEC_TIME'] < (int)$row['starttime'];
         }
         $result->closeCursor();

@@ -1107,7 +1107,10 @@ class DatabaseRecordList
                     $this->showLimit = $this->totalItems;
                     $this->iLimit = $this->totalItems;
                 }
-                $dbCount = $queryResult->rowCount();
+                $dbCount = $queryBuilder
+                    ->count('uid')
+                    ->execute()
+                    ->fetchColumn(0);
             }
         }
         // If any records was selected, render the list:

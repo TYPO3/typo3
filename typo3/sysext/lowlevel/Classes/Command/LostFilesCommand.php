@@ -241,8 +241,9 @@ If you want to get more detailed information, use the --verbose option.')
                 ->orderBy('sorting', 'DESC')
                 ->execute();
 
+            $rowCount = $queryBuilder->count('hash')->execute()->fetchColumn(0);
             // We conclude that the file is lost
-            if ($result->rowCount() === 0) {
+            if ($rowCount === 0) {
                 $lostFiles[] = $value;
             }
         }

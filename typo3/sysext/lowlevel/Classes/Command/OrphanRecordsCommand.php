@@ -109,7 +109,8 @@ Manual repair suggestions:
                 ->execute();
 
             $totalOrphans = 0;
-            if ($result->rowCount()) {
+            $rowCount = $queryBuilder->count('uid')->execute()->fetchColumn(0);
+            if ($rowCount) {
                 $orphans[$tableName] = [];
                 while ($orphanRecord = $result->fetch()) {
                     $orphans[$tableName][$orphanRecord['uid']] = $orphanRecord['uid'];

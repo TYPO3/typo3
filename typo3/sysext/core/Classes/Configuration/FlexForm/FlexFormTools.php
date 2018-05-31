@@ -301,7 +301,11 @@ class FlexFormTools
                     )
                     )
                     ->execute();
-                if ($queryStatement->rowCount() !== 1) {
+                $rowCount = $queryBuilder
+                    ->count('uid')
+                    ->execute()
+                    ->fetchColumn(0);
+                if ($rowCount !== 1) {
                     throw new InvalidParentRowException(
                         'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
                         . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'

@@ -157,7 +157,11 @@ class SuggestWizardDefaultReceiver
             ->setFirstResult($start)
             ->setMaxResults(50)
             ->execute();
-        $allRowsCount = $result->rowCount();
+        $allRowsCount = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->table)
+            ->count('uid')
+            ->execute()
+            ->fetchColumn(0);
         if ($allRowsCount) {
             while ($row = $result->fetch()) {
                 // check if we already have collected the maximum number of records

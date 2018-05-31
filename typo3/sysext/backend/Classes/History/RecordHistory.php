@@ -349,7 +349,8 @@ class RecordHistory
                         )
                     )
                     ->execute();
-                if ($rows->rowCount() === 0) {
+                $rowCount = (int)$queryBuilder->count('uid')->execute()->fetchColumn(0);
+                if ($rowCount === 0) {
                     continue;
                 }
                 foreach ($rows as $row) {

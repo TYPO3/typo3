@@ -148,8 +148,11 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
             )
             ->execute();
 
-        $actualErrorLogEntries = $statement->rowCount();
-        if ($actualErrorLogEntries === $this->expectedErrorLogEntries) {
+        $actualErrorLogEntries = (int)$queryBuilder
+            ->count('uid')
+            ->execute()
+            ->fetchColumn(0);
+        if ($actualErrorLogEntries === (int)$this->expectedErrorLogEntries) {
             $this->assertSame($this->expectedErrorLogEntries, $actualErrorLogEntries);
         } else {
             $failureMessage = 'Expected ' . $this->expectedErrorLogEntries . ' entries in sys_log, but got ' . $actualErrorLogEntries . LF;
