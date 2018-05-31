@@ -321,7 +321,7 @@ class ExpressionBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
 
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quote('%,1,%', Argument::cetera())->shouldBeCalled()->willReturn("'%,1,%'");
+        $this->connectionProphet->quote(',1,', Argument::cetera())->shouldBeCalled()->willReturn("'%,1,%'");
         $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
             return '"' . $args[0] . '"';
         });
@@ -330,7 +330,7 @@ class ExpressionBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
         $result = $this->subject->inSet('aField', "'1'");
 
-        $this->assertSame('\',\'||"aField"||\',\' LIKE \'%,1,%\'', $result);
+        $this->assertSame('instr(\',\'||"aField"||\',\', \'%,1,%\')', $result);
     }
 
     /**
@@ -343,8 +343,8 @@ class ExpressionBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
 
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quote('%,\'Some\'Value,%', Argument::cetera())->shouldBeCalled()
-            ->willReturn("'%,''Some''Value,%'");
+        $this->connectionProphet->quote(',\'Some\'Value,', Argument::cetera())->shouldBeCalled()
+            ->willReturn("',''Some''Value,'");
         $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
             return '"' . $args[0] . '"';
         });
@@ -353,7 +353,7 @@ class ExpressionBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
         $result = $this->subject->inSet('aField', "'''Some''Value'");
 
-        $this->assertSame('\',\'||"aField"||\',\' LIKE \'%,\'\'Some\'\'Value,%\'', $result);
+        $this->assertSame('instr(\',\'||"aField"||\',\', \',\'\'Some\'\'Value,\')', $result);
     }
 
     /**

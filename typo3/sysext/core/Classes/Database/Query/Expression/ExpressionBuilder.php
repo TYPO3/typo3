@@ -347,18 +347,32 @@ class ExpressionBuilder
                         1476029421
                     );
                 }
-
-                return $this->comparison(
-                    implode('||', [
-                        $this->literal(','),
-                        $this->connection->quoteIdentifier($fieldName),
-                        $this->literal(','),
-                    ]),
-                    'LIKE',
-                    $this->literal(
-                        '%,' . $this->unquoteLiteral($value) . ',%'
+                $comparison = sprintf(
+                    'instr(%s, %s)',
+                    implode(
+                        '||',
+                        [
+                            $this->literal(','),
+                            $this->connection->quoteIdentifier($fieldName),
+                            $this->literal(','),
+                        ]
+                    ),
+                    $isColumn ?
+                        implode(
+                            '||',
+                            [
+                                $this->literal(','),
+                                // do not explicitly quote value as it is expected to be
+                                // quoted by the caller
+                                'cast(' . $value . ' as text)',
+                                $this->literal(','),
+                            ]
+                        )
+                        : $this->literal(
+                        ',' . $this->unquoteLiteral($value) . ','
                     )
                 );
+                return $comparison;
                 break;
             default:
                 return sprintf(
