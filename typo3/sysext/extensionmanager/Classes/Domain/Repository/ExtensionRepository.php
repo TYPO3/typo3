@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -338,17 +339,24 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $uidsOfCurrentVersion = $this->fetchMaximalVersionsForAllExtensions($repositoryUid);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable(self::TABLE_NAME);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable(self::TABLE_NAME);
+        $maxBindParameters = PlatformInformation::getMaxBindParameters(
+            $connection->getDatabasePlatform()
+        );
 
-        $queryBuilder
-            ->update(self::TABLE_NAME)
-            ->where(
-                $queryBuilder->expr()->in(
-                    'uid',
-                    $queryBuilder->createNamedParameter($uidsOfCurrentVersion, Connection::PARAM_INT_ARRAY)
+        foreach (array_chunk($uidsOfCurrentVersion, $maxBindParameters - 10) as $chunk) {
+            $queryBuilder
+                ->update(self::TABLE_NAME)
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
+                    )
                 )
-            )
-            ->set('current_version', 1)
-            ->execute();
+                ->set('current_version', 1)
+                ->execute();
+        }
     }
 
     /**

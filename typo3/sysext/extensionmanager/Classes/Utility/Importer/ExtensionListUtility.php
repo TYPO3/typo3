@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Importer;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser;
@@ -71,6 +72,21 @@ class ExtensionListUtility implements \SplObserver
         'serialized_dependencies',
         'update_comment'
     ];
+
+    /**
+     * Table name to be used to store extension models.
+     *
+     * @var string
+     */
+    protected static $tableName = 'tx_extensionmanager_domain_model_extension';
+
+    /**
+     * Maximum of rows that can be used in a bulk insert for the current
+     * database platform.
+     *
+     * @var int
+     */
+    protected $maxRowsPerChunk = 50;
 
     /**
      * Keeps indexes of fields that should not be quoted.
@@ -132,6 +148,19 @@ class ExtensionListUtility implements \SplObserver
                 1476108717
             );
         }
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable(self::$tableName);
+        $maxBindParameters = PlatformInformation::getMaxBindParameters(
+            $connection->getDatabasePlatform()
+        );
+        $countOfBindParamsPerRow = count(self::$fieldNames);
+        // flush at least chunks of 50 elements - in case the currently used
+        // database platform does not support that, the threshold is lowered
+        $this->maxRowsPerChunk = min(
+            $this->maxRowsPerChunk,
+            floor($maxBindParameters / $countOfBindParamsPerRow)
+        );
     }
 
     /**
@@ -171,12 +200,11 @@ class ExtensionListUtility implements \SplObserver
      */
     protected function loadIntoDatabase(AbstractExtensionXmlParser &$subject)
     {
-        // flush every 50 rows to database
-        if ($this->sumRecords !== 0 && $this->sumRecords % 50 === 0) {
+        if ($this->sumRecords !== 0 && $this->sumRecords % $this->maxRowsPerChunk === 0) {
             GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('tx_extensionmanager_domain_model_extension')
+                ->getConnectionForTable(self::$tableName)
                 ->bulkInsert(
-                    'tx_extensionmanager_domain_model_extension',
+                    self::$tableName,
                     $this->arrRows,
                     self::$fieldNames
                 );
