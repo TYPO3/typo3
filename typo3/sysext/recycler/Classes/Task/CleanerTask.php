@@ -234,7 +234,6 @@ class CleanerTask extends AbstractTask
                     && $fieldConfiguration['config']['internal_type'] === 'file'
                 ) {
                     $result[] = $fieldName;
-                    break;
                 }
             }
         }
