@@ -2313,13 +2313,15 @@ return [
         ],
     ],
     'TYPO3\CMS\Core\Resource\Driver\AbstractHierarchicalFilesystemDriver->getCharsetConversion' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-85125-UsagesOfCharsetConverterInCore.rst'
         ],
     ],
     'TYPO3\CMS\Backend\Routing\UriBuilder->buildUriFromModule' => [
-        'numberOfMandatoryArguments' => 0,
-        'maximumNumberOfArguments' => 0,
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-85113-LegacyBackendModuleRoutingMethods.rst',
         ]
