@@ -346,7 +346,7 @@ return [
                 'renderType' => 'selectCheckBox',
                 'items' => [
                     ['foo 1', 1, '', 'optional description'],
-                    ['foo 2', 2, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg', 'description'],
+                    ['foo 2', 2, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg', 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:translatedHelpTextForSelectCheckBox3'],
                     ['foo 3', 3, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
                     ['foo 4', 4],
                 ],

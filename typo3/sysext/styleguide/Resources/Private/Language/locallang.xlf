@@ -72,6 +72,9 @@
 			<trans-unit id="extConfTemplateLocalizedLabel" xml:space="preserve">
 				<source>A localized label</source>
 			</trans-unit>
+			<trans-unit id="translatedHelpTextForSelectCheckBox3" xml:space="preserve">
+				<source>A localized help text</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
