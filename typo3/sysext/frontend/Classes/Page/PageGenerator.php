@@ -533,6 +533,7 @@ class PageGenerator
             $pageRenderer->addFooterData($tsfe->cObj->cObjGet($tsfe->pSetup['footerData.'], 'footerData.'));
         }
         $tsfe->generatePageTitle();
+        $tsfe->generateMetaTags();
 
         static::generateMetaTagHtml(
             $tsfe->pSetup['meta.'] ?? [],

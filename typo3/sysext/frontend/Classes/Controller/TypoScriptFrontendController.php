@@ -34,12 +34,16 @@ use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -53,11 +57,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Http\UrlHandlerInterface;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
  * Class for the built TypoScript based frontend. Instantiated in
@@ -3431,6 +3437,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         $pageTitle = $this->altPageTitle ?: $this->page['title'] ?? '';
+        if (isset($this->page['seo_title']) && !empty($this->page['seo_title'])) {
+            $pageTitle = $this->page['seo_title'];
+        }
+
         $titleTagContent = $this->printTitle(
             $pageTitle,
             (bool)$this->config['config']['noPageTitle'],
@@ -3457,6 +3467,129 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->pageRenderer->setTitle($titleTagContent);
         }
         return (string)$titleTagContent;
+    }
+
+    /**
+     * Generate the meta tags that can be set in backend and add them to frontend by using the MetaTag API
+     */
+    public function generateMetaTags()
+    {
+        $metaTagManagerRegistry = MetaTagManagerRegistry::getInstance();
+
+        if (!empty($this->page['description'])) {
+            $manager = $metaTagManagerRegistry->getManagerForProperty('description');
+            $manager->addProperty('description', $this->page['description']);
+        }
+
+        if (!empty($this->page['og_title'])) {
+            $manager = $metaTagManagerRegistry->getManagerForProperty('og:title');
+            $manager->addProperty('og:title', $this->page['og_title']);
+        }
+
+        if (!empty($this->page['og_description'])) {
+            $manager = $metaTagManagerRegistry->getManagerForProperty('og:description');
+            $manager->addProperty('og:description', $this->page['og_description']);
+        }
+
+        if (!empty($this->page['og_image'])) {
+            $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
+            $fileCollector->addFilesFromRelation('pages', 'og_image', $this->page);
+            $manager = $metaTagManagerRegistry->getManagerForProperty('og:image');
+
+            $ogImages = $this->generateSocialImages($fileCollector->getFiles());
+            foreach ($ogImages as $ogImage) {
+                $subProperties = [];
+                $subProperties['url'] = $ogImage['url'];
+                $subProperties['width'] = $ogImage['width'];
+                $subProperties['height'] = $ogImage['height'];
+
+                if (!empty($ogImage['alternative'])) {
+                    $subProperties['alt'] = $ogImage['alternative'];
+                }
+
+                $manager->addProperty(
+                    'og:image',
+                    $ogImage['url'],
+                    $subProperties
+                );
+            }
+        }
+
+        if (!empty($this->page['twitter_title'])) {
+            $manager = $metaTagManagerRegistry->getManagerForProperty('twitter:title');
+            $manager->addProperty('twitter:title', $this->page['twitter_title']);
+        }
+
+        if (!empty($this->page['twitter_description'])) {
+            $manager = $metaTagManagerRegistry->getManagerForProperty('twitter:description');
+            $manager->addProperty('twitter:description', $this->page['twitter_description']);
+        }
+
+        if (!empty($this->page['twitter_image'])) {
+            $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
+            $fileCollector->addFilesFromRelation('pages', 'twitter_image', $this->page);
+            $manager = $metaTagManagerRegistry->getManagerForProperty('twitter:image');
+
+            $twitterImages = $this->generateSocialImages($fileCollector->getFiles());
+            foreach ($twitterImages as $twitterImage) {
+                $subProperties = [];
+
+                if (!empty($twitterImage['alternative'])) {
+                    $subProperties['alt'] = $twitterImage['alternative'];
+                }
+
+                $manager->addProperty(
+                    'twitter:image',
+                    $twitterImage['url'],
+                    $subProperties
+                );
+            }
+        }
+
+        $noIndex = ((bool)$this->page['no_index']) ? 'noindex' : 'index';
+        $noFollow = ((bool)$this->page['no_follow']) ? 'nofollow' : 'follow';
+
+        $manager = $metaTagManagerRegistry->getManagerForProperty('robots');
+        $manager->addProperty('robots', implode(',', [$noIndex, $noFollow]));
+    }
+
+    /**
+     * @param array $fileReferences
+     * @return array
+     */
+    protected function generateSocialImages(array $fileReferences): array
+    {
+        $imageService = GeneralUtility::makeInstance(ImageService::class);
+
+        $socialImages = [];
+
+        /** @var FileReference $file */
+        foreach ($fileReferences as $file) {
+            $arguments = $file->getProperties();
+            $cropVariantCollection = CropVariantCollection::create((string)$arguments['crop']);
+            $cropVariant = $arguments['cropVariant'] ?: 'default';
+            $cropArea = $cropVariantCollection->getCropArea($cropVariant);
+            $crop = $cropArea->makeAbsoluteBasedOnFile($file);
+
+            $cropInformation = $crop->asArray();
+
+            $processingConfiguration = [
+                'crop' => $crop
+            ];
+
+            $processedImage = $file->getOriginalFile()->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
+
+            $imageUri = $imageService->getImageUri($processedImage, true);
+
+            $socialImages[] = [
+                'url' => $imageUri,
+                'width' => floor($cropInformation['width']),
+                'height' => floor($cropInformation['height']),
+                'alternative' => $arguments['alternative'],
+            ];
+        }
+
+        return $socialImages;
     }
 
     /**
