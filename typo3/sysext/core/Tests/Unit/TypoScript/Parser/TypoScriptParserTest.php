@@ -261,6 +261,77 @@ class TypoScriptParserTest extends UnitTestCase
         $this->assertEquals($expected, $actualValue);
     }
 
+    public function executeGetEnvModifierDataProvider(): array
+    {
+        return [
+            'environment variable not set' => [
+                [],
+                'bar',
+                'FOO',
+                null,
+            ],
+            'empty environment variable' => [
+                ['FOO' => ''],
+                'bar',
+                'FOO',
+                '',
+            ],
+            'empty current value' => [
+                ['FOO' => 'baz'],
+                null,
+                'FOO',
+                'baz',
+            ],
+            'environment variable and current value set' => [
+                ['FOO' => 'baz'],
+                'bar',
+                'FOO',
+                'baz',
+            ],
+            'neither environment variable nor current value set' => [
+                [],
+                null,
+                'FOO',
+                null,
+            ],
+            'empty environment variable name' => [
+                ['FOO' => 'baz'],
+                'bar',
+                '',
+                null,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider executeGetEnvModifierDataProvider
+     * @param string $modifierName
+     * @param string $currentValue
+     * @param string $modifierArgument
+     * @param string $expected
+     */
+    public function executeGetEnvModifierReturnsModifiedResult(
+        array $environmentVariables,
+        ?string $currentValue,
+        string $modifierArgument,
+        ?string $expected
+    ): void {
+        foreach ($environmentVariables as $environmentVariable => $value) {
+            putenv($environmentVariable . '=' . $value);
+        }
+        $actualValue = $this->typoScriptParser->_call(
+            'executeValueModifier',
+            'getEnv',
+            $modifierArgument,
+            $currentValue
+        );
+        $this->assertEquals($expected, $actualValue);
+        foreach ($environmentVariables as $environmentVariable => $_) {
+            putenv($environmentVariable);
+        }
+    }
+
     /**
      * Data provider for executeValueModifierThrowsException
      *

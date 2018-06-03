@@ -527,7 +527,7 @@ class TypoScriptParser
      * @param string $modifierName TypoScript function called
      * @param string $modifierArgument Function arguments; In case of multiple arguments, the method must split on its own
      * @param string $currentValue Current TypoScript value
-     * @return string Modification result
+     * @return string|null Modified result or null for no modification
      */
     protected function executeValueModifier($modifierName, $modifierArgument = null, $currentValue = null)
     {
@@ -588,6 +588,12 @@ class TypoScriptParser
                     $elements = array_reverse($elements);
                 }
                 $newValue = implode(',', $elements);
+                break;
+            case 'getEnv':
+                $environmentValue = getenv(trim($modifierArgument));
+                if ($environmentValue !== false) {
+                    $newValue = $environmentValue;
+                }
                 break;
             default:
                 if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$modifierName])) {
