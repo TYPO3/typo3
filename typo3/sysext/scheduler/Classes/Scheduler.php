@@ -16,10 +16,12 @@ namespace TYPO3\CMS\Scheduler;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -447,6 +449,11 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
      */
     public function log($message, $status = 0, $code = '')
     {
+        // this method could be called from the constructor (via "cleanExecutionArrays") and no logger is instantiated
+        // by then, that's why check if the logger is available
+        if (!($this->logger instanceof LoggerInterface)) {
+            $this->setLogger(GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__));
+        }
         $message = trim('[scheduler]: ' . $code) . ' - ' . $message;
         switch ((int)$status) {
             // error (user problem)
