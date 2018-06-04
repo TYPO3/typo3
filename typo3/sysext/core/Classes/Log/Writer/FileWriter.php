@@ -35,6 +35,11 @@ class FileWriter extends AbstractWriter
     protected $logFile = '';
 
     /**
+     * @var string
+     */
+    protected $logFileInfix = '';
+
+    /**
      * Default log file path
      *
      * @var string
@@ -88,6 +93,11 @@ class FileWriter extends AbstractWriter
         if (self::$logFileHandlesCount[$this->logFile] <= 0) {
             $this->closeLogFile();
         }
+    }
+
+    public function setLogFileInfix(string $infix)
+    {
+        $this->logFileInfix = $infix;
     }
 
     /**
@@ -256,7 +266,11 @@ class FileWriter extends AbstractWriter
      */
     protected function getDefaultLogFileName()
     {
-        return Environment::getVarPath() . sprintf($this->defaultLogFileTemplate, substr(GeneralUtility::hmac($this->defaultLogFileTemplate, 'defaultLogFile'), 0, 10));
+        $namePart = substr(GeneralUtility::hmac($this->defaultLogFileTemplate, 'defaultLogFile'), 0, 10);
+        if ($this->logFileInfix !== '') {
+            $namePart = $this->logFileInfix . '_' . $namePart;
+        }
+        return Environment::getVarPath() . sprintf($this->defaultLogFileTemplate, $namePart);
     }
 
     /**
