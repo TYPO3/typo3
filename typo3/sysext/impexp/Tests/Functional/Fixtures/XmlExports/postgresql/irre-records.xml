@@ -249,26 +249,6 @@
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnasym_hotel_offer_rel" type="array">
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>1</pid>
-					<title>1</title>
-					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnasym_hotel:1" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnasym_hotel</table>
-						</element>
-						<element index="tx_irretutorial_mnasym_offer:2" type="array">
-							<id>2</id>
-							<table>tx_irretutorial_mnasym_offer</table>
-						</element>
-						<element index="tx_irretutorial_mnasym_price:1" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnasym_price</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
@@ -284,6 +264,26 @@
 						</element>
 						<element index="tx_irretutorial_mnasym_price:2" type="array">
 							<id>2</id>
+							<table>tx_irretutorial_mnasym_price</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>1</pid>
+					<title>1</title>
+					<relations index="rels" type="array">
+						<element index="tx_irretutorial_mnasym_hotel:1" type="array">
+							<id>1</id>
+							<table>tx_irretutorial_mnasym_hotel</table>
+						</element>
+						<element index="tx_irretutorial_mnasym_offer:2" type="array">
+							<id>2</id>
+							<table>tx_irretutorial_mnasym_offer</table>
+						</element>
+						<element index="tx_irretutorial_mnasym_price:1" type="array">
+							<id>1</id>
 							<table>tx_irretutorial_mnasym_price</table>
 						</element>
 					</relations>
@@ -359,22 +359,6 @@
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnattr_hotel_offer_rel" type="array">
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>1</pid>
-					<title>1</title>
-					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnattr_hotel:1" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnattr_hotel</table>
-						</element>
-						<element index="tx_irretutorial_mnattr_offer:1" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnattr_offer</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
@@ -386,6 +370,22 @@
 						</element>
 						<element index="tx_irretutorial_mnattr_offer:2" type="array">
 							<id>2</id>
+							<table>tx_irretutorial_mnattr_offer</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>1</pid>
+					<title>1</title>
+					<relations index="rels" type="array">
+						<element index="tx_irretutorial_mnattr_hotel:1" type="array">
+							<id>1</id>
+							<table>tx_irretutorial_mnattr_hotel</table>
+						</element>
+						<element index="tx_irretutorial_mnattr_offer:1" type="array">
+							<id>1</id>
 							<table>tx_irretutorial_mnattr_offer</table>
 						</element>
 					</relations>
@@ -552,22 +552,6 @@
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnsym_hotel_rel" type="array">
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>1</pid>
-					<title>1</title>
-					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnsym_hotel:1" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
-						</element>
-						<element index="tx_irretutorial_mnsym_hotel:2" type="array">
-							<id>2</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
@@ -579,6 +563,22 @@
 						</element>
 						<element index="tx_irretutorial_mnsym_hotel:3" type="array">
 							<id>3</id>
+							<table>tx_irretutorial_mnsym_hotel</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>1</pid>
+					<title>1</title>
+					<relations index="rels" type="array">
+						<element index="tx_irretutorial_mnsym_hotel:1" type="array">
+							<id>1</id>
+							<table>tx_irretutorial_mnsym_hotel</table>
+						</element>
+						<element index="tx_irretutorial_mnsym_hotel:2" type="array">
+							<id>2</id>
 							<table>tx_irretutorial_mnsym_hotel</table>
 						</element>
 					</relations>
@@ -629,8 +629,8 @@
 					<item index="1">1</item>
 				</table>
 				<table index="tx_irretutorial_mnasym_hotel_offer_rel" type="array">
-					<item index="1">1</item>
 					<item index="2">1</item>
+					<item index="1">1</item>
 				</table>
 				<table index="tx_irretutorial_mnasym_offer" type="array">
 					<item index="2">1</item>
@@ -645,8 +645,8 @@
 					<item index="2">1</item>
 				</table>
 				<table index="tx_irretutorial_mnattr_hotel_offer_rel" type="array">
-					<item index="1">1</item>
 					<item index="2">1</item>
+					<item index="1">1</item>
 				</table>
 				<table index="tx_irretutorial_mnattr_offer" type="array">
 					<item index="1">1</item>
@@ -672,8 +672,8 @@
 					<item index="1">1</item>
 				</table>
 				<table index="tx_irretutorial_mnsym_hotel_rel" type="array">
-					<item index="1">1</item>
 					<item index="2">1</item>
+					<item index="1">1</item>
 				</table>
 			</page_contents>
 		</pid_lookup>
@@ -687,24 +687,24 @@
 		<tablerow index="pages:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">0</field>
-				<field index="deleted">0</field>
 				<field index="perms_everybody">15</field>
-				<field index="hidden">0</field>
 				<field index="title">IRRE</field>
 				<field index="doktype">1</field>
+				<field index="pid">0</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tt_content:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="t3ver_oid">0</field>
-				<field index="hidden">0</field>
 				<field index="CType">text</field>
 				<field index="header">Test content</field>
+				<field index="pid">1</field>
 				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="t3ver_oid">0</field>
 				<field index="tx_irretutorial_1nff_hotels">2</field>
 				<field index="tx_irretutorial_1ncsv_hotels">1,2</field>
 			</fieldlist>
@@ -740,15 +740,15 @@
 		<tablerow index="tx_irretutorial_1ncsv_hotel:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">128</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Hotel 2 (csv)</field>
 				<field index="offers">3</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">128</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="offers" type="array">
@@ -765,15 +765,15 @@
 		<tablerow index="tx_irretutorial_1ncsv_hotel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">256</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Hotel 1 (csv)</field>
 				<field index="offers">1,2</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="offers" type="array">
@@ -794,15 +794,15 @@
 		<tablerow index="tx_irretutorial_1ncsv_offer:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">3</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">64</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Offer 2.2 (csv)</field>
 				<field index="prices">3</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">64</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="prices" type="array">
@@ -819,15 +819,15 @@
 		<tablerow index="tx_irretutorial_1ncsv_offer:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">128</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Offer 1.2 (csv)</field>
 				<field index="prices">2</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">128</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="prices" type="array">
@@ -844,15 +844,15 @@
 		<tablerow index="tx_irretutorial_1ncsv_offer:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">256</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Offer 1.1 (csv)</field>
 				<field index="prices">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="prices" type="array">
@@ -869,63 +869,63 @@
 		<tablerow index="tx_irretutorial_1ncsv_price:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">3</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">64</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Price 2.2.1 (csv)</field>
 				<field index="price">112</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">64</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1ncsv_price:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">128</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Price 1.2.1 (csv)</field>
 				<field index="price">90</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">128</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1ncsv_price:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">256</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Price 1.1.1 (csv)</field>
 				<field index="price">567</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1nff_hotel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="parentid">1</field>
 				<field index="parenttable">tt_content</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Hotel 1 (nff)</field>
 				<field index="offers">2</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">1</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="offers" type="array">
@@ -946,18 +946,18 @@
 		<tablerow index="tx_irretutorial_1nff_hotel:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">2</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="parentid">1</field>
 				<field index="parenttable">tt_content</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Hotel 2 (nff)</field>
 				<field index="offers">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">2</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="offers" type="array">
@@ -974,18 +974,18 @@
 		<tablerow index="tx_irretutorial_1nff_offer:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">3</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="parentid">2</field>
 				<field index="parenttable">tx_irretutorial_1nff_hotel</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Offer 2.1 (nff)</field>
 				<field index="prices">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">1</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="prices" type="array">
@@ -1002,18 +1002,18 @@
 		<tablerow index="tx_irretutorial_1nff_offer:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="parentid">1</field>
 				<field index="parenttable">tx_irretutorial_1nff_hotel</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Offer 1.1 (nff)</field>
 				<field index="prices">2</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">1</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="prices" type="array">
@@ -1034,18 +1034,18 @@
 		<tablerow index="tx_irretutorial_1nff_offer:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">2</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="parentid">1</field>
 				<field index="parenttable">tx_irretutorial_1nff_hotel</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Offer 1.2 (nff)</field>
 				<field index="prices">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">2</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="prices" type="array">
@@ -1062,87 +1062,87 @@
 		<tablerow index="tx_irretutorial_1nff_price:4" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">4</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="parentid">3</field>
 				<field index="parenttable">tx_irretutorial_1nff_offer</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Price 2.1.1 (nff)</field>
 				<field index="price">5467567</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">1</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1nff_price:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">3</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="parentid">2</field>
 				<field index="parenttable">tx_irretutorial_1nff_offer</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Price 1.2.1 (nff)</field>
 				<field index="price">678</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">1</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1nff_price:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="parentid">1</field>
 				<field index="parenttable">tx_irretutorial_1nff_offer</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Price 1.1.1 (nff)</field>
 				<field index="price">4</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">1</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1nff_price:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">2</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="parentid">1</field>
 				<field index="parenttable">tx_irretutorial_1nff_offer</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Price 1.1.2 (nff)</field>
 				<field index="price">869</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">2</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnasym_hotel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">256</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Hotel 1 (m:n ASym)</field>
 				<field index="offers">2</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="offers" type="array">
@@ -1160,20 +1160,20 @@
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_mnasym_hotel_offer_rel:1" type="array">
+		<tablerow index="tx_irretutorial_mnasym_hotel_offer_rel:2" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
+				<field index="uid">2</field>
 				<field index="hotelid">1</field>
-				<field index="offerid">2</field>
-				<field index="hotelsort">2</field>
+				<field index="offerid">1</field>
+				<field index="hotelsort">1</field>
 				<field index="offersort">1</field>
 				<field index="prices">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="hotelid" type="array">
@@ -1189,7 +1189,7 @@
 					<type>db</type>
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
-							<id>2</id>
+							<id>1</id>
 							<table>tx_irretutorial_mnasym_offer</table>
 						</element>
 					</relations>
@@ -1198,27 +1198,27 @@
 					<type>db</type>
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
-							<id>1</id>
+							<id>2</id>
 							<table>tx_irretutorial_mnasym_price</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_mnasym_hotel_offer_rel:2" type="array">
+		<tablerow index="tx_irretutorial_mnasym_hotel_offer_rel:1" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
+				<field index="uid">1</field>
 				<field index="hotelid">1</field>
-				<field index="offerid">1</field>
-				<field index="hotelsort">1</field>
+				<field index="offerid">2</field>
+				<field index="hotelsort">2</field>
 				<field index="offersort">1</field>
 				<field index="prices">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="hotelid" type="array">
@@ -1234,7 +1234,7 @@
 					<type>db</type>
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
-							<id>1</id>
+							<id>2</id>
 							<table>tx_irretutorial_mnasym_offer</table>
 						</element>
 					</relations>
@@ -1243,7 +1243,7 @@
 					<type>db</type>
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
-							<id>2</id>
+							<id>1</id>
 							<table>tx_irretutorial_mnasym_price</table>
 						</element>
 					</relations>
@@ -1253,15 +1253,15 @@
 		<tablerow index="tx_irretutorial_mnasym_offer:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">128</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Offer 2 (m:n ASym)</field>
 				<field index="hotels">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">128</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="hotels" type="array">
@@ -1278,15 +1278,15 @@
 		<tablerow index="tx_irretutorial_mnasym_offer:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">256</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Offer 1 (m:n ASym)</field>
 				<field index="hotels">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="hotels" type="array">
@@ -1303,47 +1303,47 @@
 		<tablerow index="tx_irretutorial_mnasym_price:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="parentid">2</field>
 				<field index="title">Price 2 1:1 (m:n ASym)</field>
 				<field index="price">45</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">1</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnasym_price:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="parentid">1</field>
 				<field index="title">Price 1 1:2 (m:n ASym)</field>
 				<field index="price">678</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">1</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnattr_hotel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">256</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Hotel 1 (m:n Attr)</field>
 				<field index="offers">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="offers" type="array">
@@ -1360,15 +1360,15 @@
 		<tablerow index="tx_irretutorial_mnattr_hotel:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">512</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Hotel 2 (m:n Attr)</field>
 				<field index="offers">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">512</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="offers" type="array">
@@ -1382,58 +1382,21 @@
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_mnattr_hotel_offer_rel:1" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
-				<field index="hotelid">1</field>
-				<field index="offerid">1</field>
-				<field index="hotelsort">1</field>
-				<field index="offersort">0</field>
-				<field index="quality">2</field>
-				<field index="allincl">1</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="hotelid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnattr_hotel</table>
-						</element>
-					</relations>
-				</field>
-				<field index="offerid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnattr_offer</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
 		<tablerow index="tx_irretutorial_mnattr_hotel_offer_rel:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="hotelid">2</field>
 				<field index="offerid">2</field>
 				<field index="hotelsort">1</field>
 				<field index="offersort">0</field>
 				<field index="quality">4</field>
 				<field index="allincl">0</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="hotelid" type="array">
@@ -1450,6 +1413,43 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>2</id>
+							<table>tx_irretutorial_mnattr_offer</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_irretutorial_mnattr_hotel_offer_rel:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">1</field>
+				<field index="hotelid">1</field>
+				<field index="offerid">1</field>
+				<field index="hotelsort">1</field>
+				<field index="offersort">0</field>
+				<field index="quality">2</field>
+				<field index="allincl">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="hotelid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_irretutorial_mnattr_hotel</table>
+						</element>
+					</relations>
+				</field>
+				<field index="offerid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
 							<table>tx_irretutorial_mnattr_offer</table>
 						</element>
 					</relations>
@@ -1459,15 +1459,15 @@
 		<tablerow index="tx_irretutorial_mnattr_offer:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">256</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Offer 1 (m:n Attr)</field>
 				<field index="hotels">0</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="hotels" type="array">
@@ -1484,15 +1484,15 @@
 		<tablerow index="tx_irretutorial_mnattr_offer:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">512</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Offer 2 (m:n Attr)</field>
 				<field index="hotels">0</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">512</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="hotels" type="array">
@@ -1509,15 +1509,15 @@
 		<tablerow index="tx_irretutorial_mnmmasym_hotel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">256</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Hotel 1 (m:n (MM) ASym)</field>
 				<field index="offers">2</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="offers" type="array">
@@ -1538,15 +1538,15 @@
 		<tablerow index="tx_irretutorial_mnmmasym_hotel:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">512</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Hotel 2 (m:n (MM) ASym)</field>
 				<field index="offers">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">512</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="offers" type="array">
@@ -1563,16 +1563,16 @@
 		<tablerow index="tx_irretutorial_mnmmasym_offer:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">3</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">64</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Offer 2.1 (m:n (MM) ASym)</field>
 				<field index="hotels">0</field>
 				<field index="prices">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">64</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="prices" type="array">
@@ -1589,16 +1589,16 @@
 		<tablerow index="tx_irretutorial_mnmmasym_offer:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">128</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Offer 1.2 (m:n (MM) ASym)</field>
 				<field index="hotels">0</field>
 				<field index="prices">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">128</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="prices" type="array">
@@ -1615,16 +1615,16 @@
 		<tablerow index="tx_irretutorial_mnmmasym_offer:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">256</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Offer 1.1 (m:n (MM) ASym)</field>
 				<field index="hotels">0</field>
 				<field index="prices">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="prices" type="array">
@@ -1641,63 +1641,63 @@
 		<tablerow index="tx_irretutorial_mnmmasym_price:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">3</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">64</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Price (m:n (MM) ASym)</field>
 				<field index="price">223</field>
 				<field index="offers">0</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">64</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnmmasym_price:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">128</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Price 1.2.2 (m:n (MM) ASym)</field>
 				<field index="price">567</field>
 				<field index="offers">0</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">128</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnmmasym_price:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">256</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Price 1.1.1 (m:n (MM) ASym)</field>
 				<field index="price">567</field>
 				<field index="offers">0</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnsym_hotel:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">128</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Hotel Branch 1.1 (mm sym)</field>
 				<field index="branches">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">128</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="branches" type="array">
@@ -1714,15 +1714,15 @@
 		<tablerow index="tx_irretutorial_mnsym_hotel:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">3</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">192</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Hotel branch 1.2 (mm sym)</field>
 				<field index="branches">0</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">192</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="branches" type="array">
@@ -1739,15 +1739,15 @@
 		<tablerow index="tx_irretutorial_mnsym_hotel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="sorting">256</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="title">Hotel 1 (mm sym)</field>
 				<field index="branches">2</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="branches" type="array">
@@ -1765,54 +1765,19 @@
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_mnsym_hotel_rel:1" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
-				<field index="hotelid">1</field>
-				<field index="branchid">2</field>
-				<field index="hotelsort">1</field>
-				<field index="branchsort">1</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="hotelid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
-						</element>
-					</relations>
-				</field>
-				<field index="branchid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>2</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
 		<tablerow index="tx_irretutorial_mnsym_hotel_rel:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="cruser_id">1</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l18n_parent">0</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 				<field index="hotelid">1</field>
 				<field index="branchid">3</field>
 				<field index="hotelsort">2</field>
 				<field index="branchsort">0</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="hotelid" type="array">
@@ -1829,6 +1794,41 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>3</id>
+							<table>tx_irretutorial_mnsym_hotel</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_irretutorial_mnsym_hotel_rel:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">1</field>
+				<field index="hotelid">1</field>
+				<field index="branchid">2</field>
+				<field index="hotelsort">1</field>
+				<field index="branchsort">1</field>
+				<field index="pid">1</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l18n_parent">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="hotelid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_irretutorial_mnsym_hotel</table>
+						</element>
+					</relations>
+				</field>
+				<field index="branchid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>2</id>
 							<table>tx_irretutorial_mnsym_hotel</table>
 						</element>
 					</relations>

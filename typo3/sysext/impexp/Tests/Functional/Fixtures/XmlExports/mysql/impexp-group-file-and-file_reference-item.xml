@@ -96,24 +96,24 @@
 		<tablerow index="pages:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
-				<field index="pid" type="integer">0</field>
-				<field index="deleted" type="integer">0</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="hidden" type="integer">0</field>
 				<field index="title">Root</field>
 				<field index="doktype" type="integer">1</field>
+				<field index="pid" type="integer">0</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_impexpgroupfiles_item:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
-				<field index="pid" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
 				<field index="title">Test item</field>
 				<field index="images">typo3_image4.jpg</field>
 				<field index="image_references">fileadmin/user_upload/typo3_image5.jpg</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="images" type="array">
@@ -139,7 +139,6 @@
 		<tablerow index="sys_file:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
-				<field index="pid" type="integer">0</field>
 				<field index="storage" type="integer">1</field>
 				<field index="type">2</field>
 				<field index="metadata" type="integer">0</field>
@@ -153,6 +152,7 @@
 				<field index="size" type="integer">7425</field>
 				<field index="creation_date" type="integer">1393432184</field>
 				<field index="modification_date" type="integer">1393432183</field>
+				<field index="pid" type="integer">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="storage" type="array">
@@ -169,9 +169,7 @@
 		<tablerow index="sys_file_storage:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
-				<field index="pid" type="integer">0</field>
 				<field index="name">fileadmin/ (auto-created)</field>
-				<field index="description" type="NULL"></field>
 				<field index="driver">Local</field>
 				<field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
 &lt;T3FlexForms&gt;
@@ -196,6 +194,8 @@
 				<field index="is_public" type="integer">1</field>
 				<field index="is_writable" type="integer">1</field>
 				<field index="is_online" type="integer">1</field>
+				<field index="pid" type="integer">0</field>
+				<field index="description" type="NULL"></field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="configuration" type="array">

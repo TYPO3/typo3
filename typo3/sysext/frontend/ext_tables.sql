@@ -15,21 +15,10 @@ CREATE TABLE cache_treelist (
 # Table structure for table 'fe_groups'
 #
 CREATE TABLE fe_groups (
-	uid int(11) unsigned NOT NULL auto_increment,
-	pid int(11) unsigned DEFAULT '0' NOT NULL,
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
 	title varchar(50) DEFAULT '' NOT NULL,
-	hidden tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	lockToDomain varchar(50) DEFAULT '' NOT NULL,
-	deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
-	description text,
 	subgroup tinytext,
-	TSconfig text,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
+	TSconfig text
 );
 
 
@@ -53,15 +42,9 @@ CREATE TABLE fe_sessions (
 # Table structure for table 'fe_users'
 #
 CREATE TABLE fe_users (
-	uid int(11) unsigned NOT NULL auto_increment,
-	pid int(11) unsigned DEFAULT '0' NOT NULL,
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	username varchar(255) DEFAULT '' NOT NULL,
 	password varchar(100) DEFAULT '' NOT NULL,
 	usergroup tinytext,
-	disable tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	starttime int(11) unsigned DEFAULT '0' NOT NULL,
-	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 	name varchar(160) DEFAULT '' NOT NULL,
 	first_name varchar(50) DEFAULT '' NOT NULL,
 	middle_name varchar(50) DEFAULT '' NOT NULL,
@@ -70,11 +53,7 @@ CREATE TABLE fe_users (
 	telephone varchar(30) DEFAULT '' NOT NULL,
 	fax varchar(30) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
 	lockToDomain varchar(50) DEFAULT '' NOT NULL,
-	deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
-	description text,
 	uc blob,
 	title varchar(40) DEFAULT '' NOT NULL,
 	zip varchar(10) DEFAULT '' NOT NULL,
@@ -87,7 +66,6 @@ CREATE TABLE fe_users (
 	lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
 	is_online int(10) unsigned DEFAULT '0' NOT NULL,
 
-	PRIMARY KEY (uid),
 	KEY parent (pid,username),
 	KEY username (username),
 	KEY is_online (is_online)
@@ -95,6 +73,8 @@ CREATE TABLE fe_users (
 
 #
 # Table structure for table 'pages_language_overlay'
+# Kept with all management fields like uid and pid for b/w compat reasons.
+# Table will be removed in v10 with removal of unifiedPageTranslationHandling feature toggle
 #
 CREATE TABLE pages_language_overlay (
 	uid int(11) NOT NULL auto_increment,
@@ -141,16 +121,8 @@ CREATE TABLE pages_language_overlay (
 # Table structure for table 'sys_domain'
 #
 CREATE TABLE sys_domain (
-	uid int(11) unsigned NOT NULL auto_increment,
-	pid int(11) unsigned DEFAULT '0' NOT NULL,
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	domainName varchar(255) DEFAULT '' NOT NULL,
-	sorting int(10) unsigned DEFAULT '0' NOT NULL,
 
-	PRIMARY KEY (uid),
 	KEY getSysDomain (hidden),
 	KEY getDomainStartPage (pid,hidden,domainName)
 );
@@ -159,42 +131,18 @@ CREATE TABLE sys_domain (
 # Table structure for table 'sys_template'
 #
 CREATE TABLE sys_template (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(255) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage int(11) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	sorting int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
 	title varchar(255) DEFAULT '' NOT NULL,
 	sitetitle varchar(255) DEFAULT '' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	starttime int(11) unsigned DEFAULT '0' NOT NULL,
-	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 	root tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	clear tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	include_static_file text,
 	constants text,
 	config text,
 	nextLevel varchar(5) DEFAULT '' NOT NULL,
-	description text,
 	basedOn tinytext,
-	deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	includeStaticAfterBasedOn tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	static_file_mode tinyint(4) unsigned DEFAULT '0' NOT NULL,
 
-	PRIMARY KEY (uid),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY parent (pid,deleted,hidden,sorting),
 	KEY roottemplate (deleted,hidden,root)
 );
 
@@ -202,24 +150,6 @@ CREATE TABLE sys_template (
 # Table structure for table 'tt_content'
 #
 CREATE TABLE tt_content (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(255) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage int(11) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-	editlock tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	sorting int(11) unsigned DEFAULT '0' NOT NULL,
 	CType varchar(255) DEFAULT '' NOT NULL,
 	header varchar(255) DEFAULT '' NOT NULL,
 	header_position varchar(6) DEFAULT '' NOT NULL,
@@ -237,7 +167,6 @@ CREATE TABLE tt_content (
 	media int(11) unsigned DEFAULT '0' NOT NULL,
 	layout int(11) unsigned DEFAULT '0' NOT NULL,
 	frame_class varchar(60) DEFAULT 'default' NOT NULL,
-	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	cols int(11) unsigned DEFAULT '0' NOT NULL,
 	spaceBefore smallint(5) unsigned DEFAULT '0' NOT NULL,
 	spaceAfter smallint(5) unsigned DEFAULT '0' NOT NULL,
@@ -245,11 +174,8 @@ CREATE TABLE tt_content (
 	space_after_class varchar(60) DEFAULT '' NOT NULL,
 	records text,
 	pages text,
-	starttime int(11) unsigned DEFAULT '0' NOT NULL,
-	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 	colPos int(11) unsigned DEFAULT '0' NOT NULL,
 	subheader varchar(255) DEFAULT '' NOT NULL,
-	fe_group varchar(100) DEFAULT '0' NOT NULL,
 	header_link varchar(1024) DEFAULT '' NOT NULL,
 	image_zoom tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	header_layout varchar(30) DEFAULT '0' NOT NULL,
@@ -264,14 +190,10 @@ CREATE TABLE tt_content (
 	date int(10) unsigned DEFAULT '0' NOT NULL,
 	recursive tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	imageheight mediumint(8) unsigned DEFAULT '0' NOT NULL,
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	pi_flexform mediumtext,
 	accessibility_title varchar(30) DEFAULT '' NOT NULL,
 	accessibility_bypass tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	accessibility_bypass_text varchar(30) DEFAULT '' NOT NULL,
-	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob,
-	l10n_source int(11) DEFAULT '0' NOT NULL,
 	selected_categories text,
 	category_field varchar(64) DEFAULT '' NOT NULL,
 	table_class varchar(60) DEFAULT '' NOT NULL,
@@ -281,9 +203,8 @@ CREATE TABLE tt_content (
 	table_header_position tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	table_tfoot tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
-	PRIMARY KEY (uid),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY parent (pid,sorting),
+	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY language (l18n_parent,sys_language_uid)
 );
 
@@ -291,30 +212,7 @@ CREATE TABLE tt_content (
 # Table structure for table 'backend_layout'
 #
 CREATE TABLE backend_layout (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(255) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage int(11) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	deleted tinyint(4) DEFAULT '0' NOT NULL,
-	sorting int(11) unsigned DEFAULT '0' NOT NULL,
 	title varchar(255) DEFAULT '' NOT NULL,
-	description text,
 	config text NOT NULL,
-	icon text,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid)
+	icon text
 );

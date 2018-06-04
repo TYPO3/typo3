@@ -13,6 +13,7 @@ return [
         'transOrigPointerField' => 'l18n_parent',
         'transOrigDiffSourceField' => 'l18n_diffsource',
         'delete'   => 'deleted',
+        'sortby' => 'sorting',
         'enablecolumns'  => [
             'disabled' => 'hidden'
         ],

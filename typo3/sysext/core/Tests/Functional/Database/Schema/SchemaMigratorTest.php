@@ -24,11 +24,12 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
- * Test case for \TYPO3\CMS\Core\Database\Schema\SchemaMigratorTest
+ * Test case
  */
-class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class SchemaMigratorTest extends FunctionalTestCase
 {
     /**
      * @var SqlReader
@@ -173,8 +174,6 @@ class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['add']
         );
 
-        $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
-        $this->assertEmpty($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']);
         $this->assertTrue($this->getTableDetails()->getColumn('aTestField')->getNotnull());
     }
 
@@ -191,8 +190,6 @@ class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['add']
         );
 
-        $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
-        $this->assertEmpty($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']);
         $this->assertFalse($this->getTableDetails()->getColumn('aTestField')->getNotnull());
         $this->assertNull($this->getTableDetails()->getColumn('aTestField')->getDefault());
     }

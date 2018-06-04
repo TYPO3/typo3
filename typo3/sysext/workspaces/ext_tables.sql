@@ -13,12 +13,7 @@ CREATE TABLE sys_preview (
 # Table structure for table 'sys_workspace'
 #
 CREATE TABLE sys_workspace (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-	tstamp int(11) DEFAULT '0' NOT NULL,
-	deleted tinyint(1) DEFAULT '0' NOT NULL,
 	title varchar(30) DEFAULT '' NOT NULL,
-	description varchar(255) DEFAULT '' NOT NULL,
 	adminusers varchar(4000) DEFAULT '' NOT NULL,
 	members varchar(4000) DEFAULT '' NOT NULL,
 	reviewers varchar(4000) DEFAULT '' NOT NULL,
@@ -41,10 +36,7 @@ CREATE TABLE sys_workspace (
 	publish_allow_notificaton_settings tinyint(3) DEFAULT '0' NOT NULL,
 	execute_notification_defaults varchar(255) DEFAULT '' NOT NULL,
 	execute_notification_preselection tinyint(3) DEFAULT '3' NOT NULL,
-	execute_allow_notificaton_settings tinyint(3) DEFAULT '0' NOT NULL,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
+	execute_allow_notificaton_settings tinyint(3) DEFAULT '0' NOT NULL
 );
 
 
@@ -52,11 +44,6 @@ CREATE TABLE sys_workspace (
 # Table structure for table 'sys_workspace_stage'
 #
 CREATE TABLE sys_workspace_stage (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-	tstamp int(11) DEFAULT '0' NOT NULL,
-	deleted tinyint(1) DEFAULT '0' NOT NULL,
-	sorting int(11) unsigned DEFAULT '0' NOT NULL,
 	title varchar(30) DEFAULT '' NOT NULL,
 	responsible_persons varchar(255) DEFAULT '' NOT NULL,
 	default_mailcomment text,
@@ -64,8 +51,5 @@ CREATE TABLE sys_workspace_stage (
 	parenttable tinytext NOT NULL,
 	notification_defaults varchar(255) DEFAULT '' NOT NULL,
 	allow_notificaton_settings tinyint(3) DEFAULT '0' NOT NULL,
-	notification_preselection tinyint(3) DEFAULT '8' NOT NULL,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
+	notification_preselection tinyint(3) DEFAULT '8' NOT NULL
 );

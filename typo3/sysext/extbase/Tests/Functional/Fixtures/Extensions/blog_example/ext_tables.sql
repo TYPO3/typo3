@@ -2,50 +2,19 @@
 # Table structure for table 'tx_blogexample_domain_model_blog'
 #
 CREATE TABLE tx_blogexample_domain_model_blog (
-	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-
 	title varchar(255) DEFAULT '' NOT NULL,
 	subtitle varchar(255) DEFAULT '',
 	description text NOT NULL,
 	logo tinyblob NOT NULL,
 	administrator int(11) DEFAULT '0' NOT NULL,
 
-	posts varchar(255) DEFAULT '' NOT NULL,
-
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	fe_group varchar(100) DEFAULT '0' NOT NULL,
-
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(30) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid)
+	posts varchar(255) DEFAULT '' NOT NULL
 );
 
 #
 # Table structure for table 'tx_blogexample_domain_model_post'
 #
 CREATE TABLE tx_blogexample_domain_model_post (
-	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-
 	blog int(11) DEFAULT '0' NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
@@ -55,112 +24,38 @@ CREATE TABLE tx_blogexample_domain_model_post (
 	content text NOT NULL,
 	tags int(11) unsigned DEFAULT '0' NOT NULL,
 	comments int(11) unsigned DEFAULT '0' NOT NULL,
-	related_posts int(11) unsigned DEFAULT '0' NOT NULL,
-
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	sorting tinyint(4) unsigned DEFAULT '0' NOT NULL,
-
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(30) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid)
+	related_posts int(11) unsigned DEFAULT '0' NOT NULL
 );
 
 #
 # Table structure for table 'tx_blogexample_domain_model_comment'
 #
 CREATE TABLE tx_blogexample_domain_model_comment (
-	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-
 	post int(11) DEFAULT '0' NOT NULL,
 
 	date datetime,
 	author varchar(255) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
-	content text NOT NULL,
-
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
+	content text NOT NULL
 );
 
 #
 # Table structure for table 'tx_blogexample_domain_model_person'
 #
 CREATE TABLE tx_blogexample_domain_model_person (
-	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-
 	firstname varchar(255) DEFAULT '' NOT NULL,
 	lastname varchar(255) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
 	tags int(11) unsigned DEFAULT '0' NOT NULL,
-	tags_special int(11) unsigned DEFAULT '0' NOT NULL,
-
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(30) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid)
+	tags_special int(11) unsigned DEFAULT '0' NOT NULL
 );
 
 #
 # Table structure for table 'tx_blogexample_domain_model_tag'
 #
 CREATE TABLE tx_blogexample_domain_model_tag (
-	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-
 	name varchar(255) DEFAULT '' NOT NULL,
-	posts int(11) unsigned DEFAULT '0' NOT NULL,
-
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
+	posts int(11) unsigned DEFAULT '0' NOT NULL
 );
 
 #
@@ -208,19 +103,7 @@ CREATE TABLE tx_blogexample_post_post_mm (
 # Table structure for table 'tx_blogexample_domain_model_dateexample'
 #
 CREATE TABLE tx_blogexample_domain_model_dateexample (
-	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-
 	datetime_int int(11) DEFAULT '0' NOT NULL,
 	datetime_text varchar(255) DEFAULT '' NOT NULL,
-	datetime_datetime datetime,
-
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
+	datetime_datetime datetime
 );

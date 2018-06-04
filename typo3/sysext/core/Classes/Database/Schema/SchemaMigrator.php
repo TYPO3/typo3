@@ -271,7 +271,10 @@ class SchemaMigrator
         // Flatten the array of arrays by one level
         $tables = array_merge(...$tables);
 
-        // Drop any definition of pages_language_overlay in SQL
+        $defaultTcaSchema = GeneralUtility::makeInstance(DefaultTcaSchema::class);
+        $tables = $defaultTcaSchema->enrich($tables);
+
+        // @deprecated (?!) Drop any definition of pages_language_overlay in SQL
         // will be removed in TYPO3 v10.0 once the feature is enabled by default
         if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('unifiedPageTranslationHandling')) {
             foreach ($tables as $k => $table) {

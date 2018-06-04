@@ -82,7 +82,6 @@ CREATE TABLE index_section (
   uniqid int(11) NOT NULL auto_increment,
   PRIMARY KEY (uniqid),
   KEY joinkey (phash,rl0),
-#  KEY phash_pid (phash,page_id),
   KEY page_id (page_id),
   KEY rl0 (rl0,rl1,phash),
   KEY rl0_2 (rl0,phash)
@@ -130,19 +129,10 @@ CREATE TABLE index_debug (
 # Table structure for table 'index_config'
 #
 CREATE TABLE index_config (
-  uid int(11) NOT NULL auto_increment,
-  pid int(11) DEFAULT '0' NOT NULL,
-  tstamp int(11) DEFAULT '0' NOT NULL,
-  crdate int(11) DEFAULT '0' NOT NULL,
-  cruser_id int(11) DEFAULT '0' NOT NULL,
-  hidden tinyint(4) DEFAULT '0' NOT NULL,
-  starttime int(11) DEFAULT '0' NOT NULL,
-
   set_id int(11) DEFAULT '0' NOT NULL,
   session_data mediumtext,
 
   title varchar(255) DEFAULT '' NOT NULL,
-  description text,
   type varchar(30) DEFAULT '' NOT NULL,
   depth int(11) unsigned DEFAULT '0' NOT NULL,
   table2index varchar(255) DEFAULT '' NOT NULL,
@@ -160,10 +150,7 @@ CREATE TABLE index_config (
   timer_offset int(11) DEFAULT '0' NOT NULL,
   url_deny text,
   recordsbatch int(11) DEFAULT '0' NOT NULL,
-  records_indexonchange tinyint(4) DEFAULT '0' NOT NULL,
-
-  PRIMARY KEY (uid),
-  KEY parent (pid)
+  records_indexonchange tinyint(4) DEFAULT '0' NOT NULL
 );
 
 

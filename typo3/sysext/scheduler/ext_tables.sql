@@ -22,17 +22,6 @@ CREATE TABLE tx_scheduler_task (
 # Table structure for table 'tx_scheduler_task_group'
 #
 CREATE TABLE tx_scheduler_task_group (
-	uid int(11) unsigned NOT NULL auto_increment,
-	pid int(11) unsigned DEFAULT '0' NOT NULL,
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	sorting int(11) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	groupName varchar(80) DEFAULT '' NOT NULL,
-	description text,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
+	description text
 );

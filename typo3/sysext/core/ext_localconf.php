@@ -72,12 +72,6 @@ $signalSlotDispatcher->connect(
 $signalSlotDispatcher->connect(
     'TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService',
     'tablesDefinitionIsBeingBuilt',
-    \TYPO3\CMS\Core\DataHandling\DatabaseSchemaService::class,
-    'getLocalizationRequiredDatabaseSchema'
-);
-$signalSlotDispatcher->connect(
-    'TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService',
-    'tablesDefinitionIsBeingBuilt',
     \TYPO3\CMS\Core\Cache\DatabaseSchemaService::class,
     'addCachingFrameworkRequiredDatabaseSchemaForSqlExpectedSchemaService'
 );
@@ -86,12 +80,6 @@ $signalSlotDispatcher->connect(
     'tablesDefinitionIsBeingBuilt',
     \TYPO3\CMS\Core\Category\CategoryRegistry::class,
     'addCategoryDatabaseSchemaToTablesDefinition'
-);
-$signalSlotDispatcher->connect(
-    \TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
-    'tablesDefinitionIsBeingBuilt',
-    \TYPO3\CMS\Core\DataHandling\DatabaseSchemaService::class,
-    'getLocalizationRequiredDatabaseSchemaForExtension'
 );
 
 unset($signalSlotDispatcher);

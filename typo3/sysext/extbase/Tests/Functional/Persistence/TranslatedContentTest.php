@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Response;
 
@@ -25,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Response;
  *
  * This test documents current behaviour of extbase which is inconsistent with TypoScript rendering of tt_content.
  */
-class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase
+class TranslatedContentTest extends AbstractDataHandlerActionTestCase
 {
     const VALUE_PageId = 89;
     const TABLE_Content = 'tt_content';
