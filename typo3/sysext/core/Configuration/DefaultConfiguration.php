@@ -1321,9 +1321,18 @@ return [
                             ]
                         ]
                     ]
+                ],
+                'deprecations' => [
+                    'writerConfiguration' => [
+                        \TYPO3\CMS\Core\Log\LogLevel::NOTICE => [
+                            \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
+                                'logFileInfix' => 'deprecations'
+                            ],
+                        ]
+                    ]
                 ]
             ]
-        ]
+        ],
     ],
     'USER' => [],
     'SC_OPTIONS' => [ // Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and values can then be anything that scripts wants to define for itself. The key "GLOBAL" is reserved.

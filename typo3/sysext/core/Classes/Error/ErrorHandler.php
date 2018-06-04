@@ -18,6 +18,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -132,6 +133,11 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         $logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
         $message = $logTitle . ': ' . $message;
 
+        if ($errorLevel === E_USER_DEPRECATED) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger('TYPO3.CMS.deprecations');
+            $logger->notice($message);
+            return true;
+        }
         if ($this->logger) {
             $this->logger->log(LogLevel::NOTICE - $severity, $message);
         }
