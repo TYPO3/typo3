@@ -41,6 +41,11 @@
 // </table>
 //
 
+// Revert Bootstrap $table-bg in order to allow DateTimePicker and dataTable <table>
+table {
+    background: transparent;
+}
+
 //
 // Default table styling
 //
