@@ -32,7 +32,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
     /**
      * @var array|null
      */
-    protected static $storageRowCache;
+    protected $storageRowCache;
 
     /**
      * @var string
@@ -62,8 +62,8 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
     public function findByUid($uid)
     {
         $this->initializeLocalCache();
-        if (isset(self::$storageRowCache[$uid])) {
-            return $this->factory->getStorageObject($uid, self::$storageRowCache[$uid]);
+        if (isset($this->storageRowCache[$uid])) {
+            return $this->factory->getStorageObject($uid, $this->storageRowCache[$uid]);
         }
         return null;
     }
@@ -73,7 +73,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
      */
     protected function initializeLocalCache()
     {
-        if (static::$storageRowCache === null) {
+        if ($this->storageRowCache === null) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($this->table);
 
@@ -87,19 +87,19 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
                 ->orderBy('name')
                 ->execute();
 
-            static::$storageRowCache = [];
+            $this->storageRowCache = [];
             while ($row = $result->fetch()) {
                 if (!empty($row['uid'])) {
-                    static::$storageRowCache[$row['uid']] = $row;
+                    $this->storageRowCache[$row['uid']] = $row;
                 }
             }
 
             // if no storage is created before or the user has not access to a storage
-            // static::$storageRowCache would have the value array()
+            // $this->storageRowCache would have the value array()
             // so check if there is any record. If no record is found, create the fileadmin/ storage
             // selecting just one row is enough
 
-            if (static::$storageRowCache === []) {
+            if ($this->storageRowCache === []) {
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionForTable($this->table);
 
@@ -114,7 +114,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
                         true
                     ) > 0) {
                         // reset to null to force reloading of storages
-                        static::$storageRowCache = null;
+                        $this->storageRowCache = null;
                         // call self for initialize Cache
                         $this->initializeLocalCache();
                     }
@@ -137,7 +137,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
         $driverRegistry = GeneralUtility::makeInstance(Driver\DriverRegistry::class);
 
         $storageObjects = [];
-        foreach (static::$storageRowCache as $storageRow) {
+        foreach ($this->storageRowCache as $storageRow) {
             if ($storageRow['driver'] !== $storageType) {
                 continue;
             }
@@ -167,7 +167,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
         $driverRegistry = GeneralUtility::makeInstance(Driver\DriverRegistry::class);
 
         $storageObjects = [];
-        foreach (static::$storageRowCache as $storageRow) {
+        foreach ($this->storageRowCache as $storageRow) {
             if ($driverRegistry->driverExists($storageRow['driver'])) {
                 $storageObjects[] = $this->factory->getStorageObject($storageRow['uid'], $storageRow);
             } else {
