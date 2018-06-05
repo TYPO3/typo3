@@ -235,4 +235,16 @@ class ConnectionPool
     {
         return $this->customDoctrineTypes;
     }
+
+    /**
+     * Reset internal list of connections. This is an internal method (for now)
+     * currently used in functional tests only to close connections and start
+     * new ones in between single tests.
+     *
+     * @internal May be changed or removed any point in time
+     */
+    public function resetConnections(): void
+    {
+        static::$connections = [];
+    }
 }

@@ -32,6 +32,8 @@ class RedisBackendTest extends FunctionalTestCase
      */
     protected function setUp()
     {
+        // Note this functional does NOT call parent::setUp() since it does
+        // not need a full blown instance and database
         if (!extension_loaded('redis')) {
             $this->markTestSkipped('redis extension was not available');
         }

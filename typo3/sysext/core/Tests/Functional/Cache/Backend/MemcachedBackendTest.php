@@ -29,7 +29,8 @@ class MemcachedBackendTest extends FunctionalTestCase
      */
     protected function setUp()
     {
-        parent::setUp();
+        // Note this functional does NOT call parent::setUp() since it does
+        // not need a full blown instance and database
         if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
             $this->markTestSkipped('Neither "memcache" nor "memcached" extension was available');
         }

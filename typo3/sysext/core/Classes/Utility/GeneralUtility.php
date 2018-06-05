@@ -4142,6 +4142,19 @@ class GeneralUtility
     }
 
     /**
+     * For testing purposes only!
+     * The functional test framework uses this to reset the internal $application context
+     * variable in between multiple tests before it is re-initialized using presetApplicationContext()
+     * which otherwise throws an exception if the internal variable is already set.
+     *
+     * @internal May be changed or removed any time
+     */
+    public static function resetApplicationContext(): void
+    {
+        static::$applicationContext = null;
+    }
+
+    /**
      * Get the ApplicationContext
      *
      * @return \TYPO3\CMS\Core\Core\ApplicationContext
