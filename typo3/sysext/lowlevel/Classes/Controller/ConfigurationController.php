@@ -21,8 +21,7 @@ use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\Backend\NullBackend;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -225,18 +224,11 @@ class ConfigurationController
         } elseif ($selectedTreeDetails['type'] === 'httpMiddlewareStacks') {
             // Keep the order of the keys
             $sortKeysByName = false;
-            // Fake a PHP frontend with a null backend to avoid PHP Opcache conflicts
-            // When using >requireOnce() multiple times in one request
-            $cache = GeneralUtility::makeInstance(
-                PhpFrontend::class,
-                'middleware',
-                GeneralUtility::makeInstance(NullBackend::class, 'Production')
-            );
             $stackResolver = GeneralUtility::makeInstance(
                 MiddlewareStackResolver::class,
                 GeneralUtility::makeInstance(PackageManager::class),
                 GeneralUtility::makeInstance(DependencyOrderingService::class),
-                $cache
+                GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core')
             );
             $renderArray = [];
             foreach (['frontend', 'backend'] as $stackName) {

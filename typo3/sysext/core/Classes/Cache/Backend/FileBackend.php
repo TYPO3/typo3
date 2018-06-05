@@ -402,4 +402,27 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
         $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
         return $this->isCacheFileExpired($pathAndFilename) ? false : require_once $pathAndFilename;
     }
+
+    /**
+     * Loads PHP code from the cache and require it right away.
+     *
+     * @param string $entryIdentifier An identifier which describes the cache entry to load
+     * @throws \InvalidArgumentException
+     * @return mixed Potential return value from the include operation
+     * @api
+     */
+    public function require(string $entryIdentifier)
+    {
+        if ($this->frozen) {
+            if (isset($this->cacheEntryIdentifiers[$entryIdentifier])) {
+                return require $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
+            }
+            return false;
+        }
+        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+            throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1532528246);
+        }
+        $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
+        return $this->isCacheFileExpired($pathAndFilename) ? false : require $pathAndFilename;
+    }
 }

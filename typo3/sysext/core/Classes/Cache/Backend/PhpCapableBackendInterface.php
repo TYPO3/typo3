@@ -30,4 +30,6 @@ interface PhpCapableBackendInterface extends BackendInterface
      * @api
      */
     public function requireOnce($entryIdentifier);
+
+    // @todo: Add require() as breaking patch in v10.0 to the interface
 }

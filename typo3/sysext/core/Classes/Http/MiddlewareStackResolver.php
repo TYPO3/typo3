@@ -64,7 +64,7 @@ class MiddlewareStackResolver
         // Check if the registered middlewares from all active packages have already been cached
         $cacheIdentifier = $this->getCacheIdentifier($stackName);
         if ($this->cache->has($cacheIdentifier)) {
-            return $this->cache->requireOnce($cacheIdentifier);
+            return $this->cache->require($cacheIdentifier);
         }
 
         $allMiddlewares = $this->loadConfiguration();

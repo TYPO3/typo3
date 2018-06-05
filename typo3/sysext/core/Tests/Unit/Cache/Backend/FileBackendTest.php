@@ -696,6 +696,93 @@ class FileBackendTest extends UnitTestCase
 
     /**
      * @test
+     * @dataProvider invalidEntryIdentifiers
+     * @param string $identifier
+     */
+    public function requireThrowsExceptionForInvalidIdentifier(string $identifier): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1532528246);
+        $mockCache = $this->createMock(AbstractFrontend::class);
+        $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
+
+        $backend = $this->getMockBuilder(FileBackend::class)
+            ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $backend->setCacheDirectory('vfs://Foo/');
+        $backend->setCache($mockCache);
+
+        $backend->require($identifier);
+    }
+
+    /**
+     * @test
+     */
+    public function requireIncludesAndReturnsResultOfIncludedPhpFile(): void
+    {
+        $mockCache = $this->createMock(AbstractFrontend::class);
+        $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
+        $backend = $this->getMockBuilder(FileBackend::class)
+            ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $backend->setCacheDirectory('vfs://Foo/');
+        $backend->setCache($mockCache);
+
+        $entryIdentifier = 'SomePhpEntry2';
+
+        $data = '<?php return "foo2"; ?>';
+        $backend->set($entryIdentifier, $data);
+
+        $loadedData = $backend->require($entryIdentifier);
+        $this->assertEquals('foo2', $loadedData);
+    }
+
+    /**
+     * @test
+     */
+    public function requireDoesNotCheckExpiryTimeIfBackendIsFrozen(): void
+    {
+        $mockCache = $this->createMock(AbstractFrontend::class);
+        $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
+        $backend = $this->getMockBuilder(FileBackend::class)
+            ->setMethods(['isCacheFileExpired'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $backend->setCacheDirectory('vfs://Foo/');
+        $backend->setCache($mockCache);
+
+        $backend->expects($this->once())->method('isCacheFileExpired'); // Indirectly called by freeze() -> get()
+
+        $data = '<?php return "foo"; ?>';
+        $backend->set('FooEntry2', $data);
+
+        $backend->freeze();
+
+        $loadedData = $backend->require('FooEntry2');
+        $this->assertEquals('foo', $loadedData);
+    }
+
+    /**
+     * @test
+     */
+    public function requireCanLoadSameEntryMultipleTimes(): void
+    {
+        $frontendProphecy = $this->prophesize(AbstractFrontend::class);
+        $frontendProphecy->getIdentifier()->willReturn('UnitTestCache');
+        $subject = new FileBackend('Testing');
+        $subject->setCacheDirectory('vfs://Foo/');
+        $subject->setCache($frontendProphecy->reveal());
+        $subject->set('BarEntry', '<?php return "foo"; ?>');
+        $loadedData = $subject->require('BarEntry');
+        $this->assertEquals('foo', $loadedData);
+        $loadedData = $subject->require('BarEntry');
+        $this->assertEquals('foo', $loadedData);
+    }
+
+    /**
+     * @test
      * @throws Exception
      */
     public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag(): void

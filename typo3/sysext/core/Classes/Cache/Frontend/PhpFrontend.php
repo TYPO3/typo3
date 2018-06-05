@@ -113,4 +113,19 @@ class PhpFrontend extends AbstractFrontend
     {
         return $this->backend->requireOnce($entryIdentifier);
     }
+
+    /**
+     * Loads PHP code from the cache and require() it right away. Note require()
+     * in comparison to requireOnce() is only "safe" if the cache entry only contain stuff
+     * that can be required multiple times during one request. For instance a class definition
+     * would fail here.
+     *
+     * @param string $entryIdentifier An identifier which describes the cache entry to load
+     * @return mixed Potential return value from the include operation
+     * @api
+     */
+    public function require(string $entryIdentifier)
+    {
+        return $this->backend->require($entryIdentifier);
+    }
 }

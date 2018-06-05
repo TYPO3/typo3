@@ -75,4 +75,16 @@ class PhpFrontendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $result = $cache->requireOnce('Foo-Bar');
         $this->assertSame('hello world!', $result);
     }
+
+    /**
+     * @test
+     */
+    public function requireCallsTheBackendsRequireMethod()
+    {
+        $mockBackend = $this->createMock(\TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class);
+        $mockBackend->expects($this->once())->method('require')->with('Foo-Bar')->will($this->returnValue('hello world!'));
+        $cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, 'PhpFrontend', $mockBackend);
+        $result = $cache->require('Foo-Bar');
+        $this->assertSame('hello world!', $result);
+    }
 }

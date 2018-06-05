@@ -1534,7 +1534,7 @@ tt_content.' . $key . $suffix . ' {
             /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
             $codeCache = self::getCacheManager()->getCache('cache_core');
             if ($codeCache->has($cacheIdentifier)) {
-                $codeCache->requireOnce($cacheIdentifier);
+                $codeCache->require($cacheIdentifier);
             } else {
                 self::loadSingleExtLocalconfFiles();
                 self::createExtLocalconfCacheEntry();
@@ -1632,7 +1632,7 @@ tt_content.' . $key . $suffix . ' {
             $cacheIdentifier = static::getBaseTcaCacheIdentifier();
             /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
             $codeCache = static::getCacheManager()->getCache('cache_core');
-            $cacheData = $codeCache->requireOnce($cacheIdentifier);
+            $cacheData = $codeCache->require($cacheIdentifier);
             if ($cacheData) {
                 $GLOBALS['TCA'] = $cacheData['tca'];
                 GeneralUtility::setSingletonInstance(
@@ -1778,7 +1778,7 @@ tt_content.' . $key . $suffix . ' {
             /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
             $codeCache = self::getCacheManager()->getCache('cache_core');
             if ($codeCache->has($cacheIdentifier)) {
-                $codeCache->requireOnce($cacheIdentifier);
+                $codeCache->require($cacheIdentifier);
             } else {
                 self::loadSingleExtTablesFiles();
                 self::createExtTablesCacheEntry();
