@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Setup\Tests\Unit\Controller;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Setup\Controller\SetupModuleController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Class SetupModuleControllerTest
+ * Test case
  */
-class SetupModuleControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SetupModuleControllerTest extends UnitTestCase
 {
     /**
      * @test

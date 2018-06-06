@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
+namespace TYPO3\CMS\Core\Tests\Unit\Messaging\Renderer;
 
 /*
  * This file is part of the TYPO3 CMS project.

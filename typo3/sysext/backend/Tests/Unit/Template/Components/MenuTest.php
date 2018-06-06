@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Tests\Template\Components;
+namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Backend\Tests\Template\Components;
 
 use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
 use TYPO3\CMS\Backend\Template\Components\MenuRegistry;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case for Menu
  */
-class MenuTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class MenuTest extends UnitTestCase
 {
     /**
      * Try setting an empty menu

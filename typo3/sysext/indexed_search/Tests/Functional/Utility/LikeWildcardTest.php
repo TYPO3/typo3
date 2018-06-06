@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\IndexedSearch\Tests\Unit\Utility;
+namespace TYPO3\CMS\IndexedSearch\Tests\Functional\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,15 +13,17 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * This class contains unit tests for the LikeQueryUtility
  */
-class LikeWildcardTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class LikeWildcardTest extends FunctionalTestCase
 {
     /**
      * @test

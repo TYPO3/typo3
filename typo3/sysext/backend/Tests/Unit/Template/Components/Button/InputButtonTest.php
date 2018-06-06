@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Tests\Template\Components\Buttons;
+namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components\Button;
 
 /*
  * This file is part of the TYPO3 CMS project.

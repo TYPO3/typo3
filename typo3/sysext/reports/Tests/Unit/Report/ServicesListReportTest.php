@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\Reports\Tests\Unit\Report;
+namespace TYPO3\CMS\Reports\Tests\Unit\Report;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -23,11 +23,12 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Reports\Controller\ReportController;
 use TYPO3\CMS\Reports\Report\ServicesListReport;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case for class ServicesListReport
+ * Test case
  */
-class ServicesListReportTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ServicesListReportTest extends UnitTestCase
 {
     /**
      * @var ServicesListReport

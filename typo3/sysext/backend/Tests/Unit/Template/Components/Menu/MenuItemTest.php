@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Tests\Template\Components\Menu;
+namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components\Menu;
 
 /*
  * This file is part of the TYPO3 CMS project.

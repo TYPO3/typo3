@@ -18,11 +18,12 @@ use PHPUnit\Framework\SkippedTestError;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for \TYPO3\CMS\Core\Locking\SimpleLockStrategy
+ * Test case
  */
-class SimpleLockStrategyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SimpleLockStrategyTest extends UnitTestCase
 {
     /**
      * @test

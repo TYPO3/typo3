@@ -38,5 +38,10 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Redirects\\": "Classes/"
 		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Redirects\\Tests\\": "Tests/"
+		}
 	}
 }

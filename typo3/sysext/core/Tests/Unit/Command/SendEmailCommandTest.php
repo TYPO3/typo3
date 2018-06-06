@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Core\Tests\Functional\Command;
+namespace TYPO3\CMS\Core\Tests\Unit\Command;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for the TYPO3\CMS\Core\Command\SendEmailCommand class.
+ * Test case
  */
 class SendEmailCommandTest extends UnitTestCase
 {

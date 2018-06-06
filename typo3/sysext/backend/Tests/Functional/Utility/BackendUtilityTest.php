@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
+namespace TYPO3\CMS\Backend\Tests\Functional\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case for TYPO3\CMS\Backend\Controller\Page\LocalizationController
  */
-class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class BackendUtilityTest extends FunctionalTestCase
 {
     /**
      * Sets up this test case.

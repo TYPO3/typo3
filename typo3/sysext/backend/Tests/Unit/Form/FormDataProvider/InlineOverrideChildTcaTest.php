@@ -1,5 +1,5 @@
 <?php
-namespace typo3\sysext\backend\Tests\Unit\Form\FormDataProvider;
+namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,11 +15,12 @@ namespace typo3\sysext\backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * InlineOverrideChildTca Test file
+ * Test case
  */
-class InlineOverrrideChildTcaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class InlineOverrideChildTcaTest extends UnitTestCase
 {
     /**
      * @var InlineOverrideChildTca

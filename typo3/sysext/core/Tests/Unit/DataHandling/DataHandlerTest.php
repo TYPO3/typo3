@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
+namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -24,11 +24,12 @@ use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DataHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DataHandlerTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES

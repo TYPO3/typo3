@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Tests\Unit\Form;
+namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
 /*
  * This file is part of the TYPO3 CMS project.

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\SysNote\Tests\Unit\Tca;
+namespace TYPO3\CMS\SysNote\Tests\Functional\Tca;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,8 +17,9 @@ namespace TYPO3\CMS\SysNote\Tests\Unit\Tca;
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class NoteVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class NoteVisibleFieldsTest extends FunctionalTestCase
 {
     /**
      * @var array

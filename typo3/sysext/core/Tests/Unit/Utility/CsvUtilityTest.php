@@ -1,4 +1,5 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,11 +15,12 @@
  */
 
 use TYPO3\CMS\Core\Utility\CsvUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test cases of CsvUtility
  */
-class CsvUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CsvUtilityTest extends UnitTestCase
 {
     /**
      * @return array

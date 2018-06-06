@@ -1,5 +1,5 @@
 <?php
-namespace typo3\sysext\backend\Tests\Unit\Form\Element;
+namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,12 +13,14 @@ namespace typo3\sysext\backend\Tests\Unit\Form\Element;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Form\Element\InputHiddenElement;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Tests for InputHiddenElement Form
  */
-class InputHiddenElementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class InputHiddenElementTest extends UnitTestCase
 {
     /**
      * @test

@@ -1,6 +1,6 @@
 <?php
 
-namespace TYPO3\CMS\Core\Tests\Unit\DataHandler\Localization;
+namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\Localization;
 
 /*
  * This file is part of the TYPO3 CMS project.

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
+namespace TYPO3\CMS\Backend\Tests\Unit\Form\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class FormEngineUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FormEngineUtilityTest extends UnitTestCase
 {
     /**
      * @test

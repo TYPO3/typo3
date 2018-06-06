@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Service;
+namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Service;
  */
 
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TypoScriptServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TypoScriptServiceTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
