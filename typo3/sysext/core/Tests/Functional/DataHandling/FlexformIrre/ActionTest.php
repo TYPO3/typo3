@@ -14,8 +14,14 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\FlexformIrre;
  * The TYPO3 project - inspiring people to share!
  */
 
-class ActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase
+use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+
+class ActionTest extends AbstractDataHandlerActionTestCase
 {
+    protected $coreExtensionsToLoad = [
+        'workspaces',
+    ];
+
     /**
      * @var array
      */
@@ -28,21 +34,13 @@ class ActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Abstr
      */
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/FlexformIrre/DataSet/';
 
-    protected function setUp()
-    {
-        $this->testExtensionsToLoad[] = 'typo3/sysext/version/';
-        $this->testExtensionsToLoad[] = 'typo3/sysext/workspaces/';
-
-        parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
-        $this->importScenarioDataSet('LiveDefaultElements');
-    }
-
     /**
      * @test
      */
     public function newVersionOfFileRelationInFlexformFieldIsCreatedOnSave()
     {
+        $this->importScenarioDataSet('LiveDefaultPages');
+        $this->importScenarioDataSet('LiveDefaultElements');
         $this->backendUser->workspace = 1;
         $GLOBALS['BE_USER']->workspace = 1;
         $this->getActionService()->modifyRecords(1, [
