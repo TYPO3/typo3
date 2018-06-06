@@ -10,6 +10,7 @@ CREATE TABLE tx_linkvalidator_link (
 	url_response text,
 	last_check int(11) DEFAULT '0' NOT NULL,
 	link_type varchar(50) DEFAULT '' NOT NULL,
+	needs_recheck int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid)
 );

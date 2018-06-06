@@ -109,6 +109,16 @@ class LinkValidatorReport
     protected $checkOptionsHtml = ['report' => [], 'check' => []];
 
     /**
+     * Information for last edited record
+     * @var array
+     */
+    protected $lastEditedRecord = [
+        'uid'   => 0,
+        'table' => '',
+        'field' => ''
+        ];
+
+    /**
      * Complete content (html) to be displayed
      *
      * @var string
@@ -151,6 +161,16 @@ class LinkValidatorReport
     protected $pObj;
 
     /**
+     * @var array
+     */
+    protected $searchFields;
+
+    /**
+     * @var string
+     */
+    protected $pidList;
+
+    /**
      * Init, called from parent object
      *
      * @param InfoModuleController $pObj A reference to the parent (calling) object
@@ -178,6 +198,12 @@ class LinkValidatorReport
             $prefix = 'report';
             $other = 'check';
         }
+
+        // get information for last edited record
+        $this->lastEditedRecord['uid'] = GeneralUtility::_GP('last_edited_record_uid') ?? 0;
+        $this->lastEditedRecord['table'] = GeneralUtility::_GP('last_edited_record_table') ?? '';
+        $this->lastEditedRecord['field'] = GeneralUtility::_GP('last_edited_record_field') ?? '';
+        $this->lastEditedRecord['timestamp'] = GeneralUtility::_GP('last_edited_record_timestamp') ?? '';
 
         // get searchLevel (number of levels of pages to check / show results)
         $this->searchLevel[$prefix] = GeneralUtility::_GP($prefix . '_search_levels');
@@ -245,9 +271,35 @@ class LinkValidatorReport
             . htmlspecialchars($this->getLanguageService()->getLL('label_refresh-link-list'))
             . '"/>';
         $this->linkAnalyzer = GeneralUtility::makeInstance(LinkAnalyzer::class);
-        $this->updateBrokenLinks();
+
+        $this->initializeLinkAnalyzer();
+        $updateLinkList = GeneralUtility::_GP('updateLinkList') ?? '';
+        if ($updateLinkList) {
+            $this->updateBrokenLinks();
+        } else {
+            if ($this->lastEditedRecord['uid']) {
+                if ($this->modTS['actionAfterEditRecord'] === 'recheck') {
+                    // recheck broken links for last edited reccord
+                    $this->linkAnalyzer->recheckLinks(
+                        $this->checkOpt['check'],
+                        $this->lastEditedRecord['uid'],
+                        $this->lastEditedRecord['table'],
+                        $this->lastEditedRecord['field'],
+                        (int)($this->lastEditedRecord['timestamp']),
+                        true
+                    );
+                } else {
+                    // mark broken links for last edited record as needing a recheck
+                    $this->linkAnalyzer->setNeedsRecheck(
+                        $this->lastEditedRecord['uid'],
+                        $this->lastEditedRecord['table']
+                    );
+                }
+            }
+        }
 
         $brokenLinkOverView = $this->linkAnalyzer->getLinkCounts($this->id);
+
         $this->checkOptionsHtml['report'] = $this->getCheckOptions($brokenLinkOverView, 'report');
         $this->checkOptionsHtml['check'] = $this->getCheckOptions($brokenLinkOverView, 'check');
         $this->render();
@@ -319,15 +371,19 @@ class LinkValidatorReport
     /**
      * Updates the table of stored broken links
      */
-    protected function updateBrokenLinks()
+    protected function initializeLinkAnalyzer()
     {
-        $searchFields = [];
+        $this->searchFields = [];
         // Get the searchFields from TypoScript
         foreach ($this->modTS['searchFields.'] as $table => $fieldList) {
             $fields = GeneralUtility::trimExplode(',', $fieldList, true);
             foreach ($fields as $field) {
-                if (!$searchFields || !is_array($searchFields[$table]) || !in_array($field, $searchFields[$table], true)) {
-                    $searchFields[$table][] = $field;
+                if (!$this->searchFields || !is_array($this->searchFields[$table]) || !in_array(
+                    $field,
+                    $this->searchFields[$table],
+                    true
+                )) {
+                    $this->searchFields[$table][] = $field;
                 }
             }
         }
@@ -335,7 +391,7 @@ class LinkValidatorReport
         if (!$rootLineHidden || $this->modTS['checkhidden'] == 1) {
             $permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
             // Get children pages
-            $pageList = $this->linkAnalyzer->extGetTreeList(
+            $this->pageList = $this->linkAnalyzer->extGetTreeList(
                 $this->id,
                 $this->searchLevel['check'],
                 0,
@@ -343,18 +399,20 @@ class LinkValidatorReport
                 $this->modTS['checkhidden']
             );
             if ($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden']) {
-                $pageList .= $this->id;
-                $pageList = $this->addPageTranslationsToPageList($pageList, $permsClause);
+                $this->pageList .= $this->id;
+                $this->pageList = $this->addPageTranslationsToPageList($this->pageList, $permsClause);
             }
 
-            $this->linkAnalyzer->init($searchFields, $pageList, $this->modTS);
-
-            // Check if button press
-            $update = GeneralUtility::_GP('updateLinkList');
-            if (!empty($update)) {
-                $this->linkAnalyzer->getLinkStatistics($this->checkOpt['check'], $this->modTS['checkhidden']);
-            }
+            $this->linkAnalyzer->init($this->searchFields, $this->pageList, $this->modTS);
         }
+    }
+
+    /**
+     * Check for broken links
+     */
+    protected function updateBrokenLinks()
+    {
+        $this->linkAnalyzer->getLinkStatistics($this->checkOpt['check'], $this->modTS['checkhidden']);
     }
 
     /**
@@ -626,7 +684,13 @@ class LinkValidatorReport
         // Construct link to edit the content element
         $requestUri = GeneralUtility::getIndpEnv('REQUEST_URI') .
             '&id=' . $this->id .
-            '&search_levels=' . $this->searchLevel['report'];
+            '&search_levels=' . $this->searchLevel['report'] .
+            // add record_uid as query parameter for rechecking after edit
+            '&last_edited_record_uid=' . $row['record_uid'] .
+            '&last_edited_record_table=' . $row['table_name'] .
+            '&last_edited_record_field=' . $row['field'] .
+            '&last_edited_record_timestamp=' . $row['timestamp'];
+
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
@@ -692,6 +756,9 @@ class LinkValidatorReport
         $lastRunDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $row['last_check']);
         $lastRunTime = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row['last_check']);
         $markerArray['lastcheck'] = htmlspecialchars(sprintf($languageService->getLL('list.msg.lastRun'), $lastRunDate, $lastRunTime));
+        if ($row['needs_recheck']) {
+            $markerArray['lastcheck'] .= '<br/><span class="error"> (' . htmlspecialchars($languageService->getLL('needs-recheck')) . ')</span>';
+        }
 
         // Return the table html code as string
         return $this->templateService->substituteMarkerArray($brokenLinksItemTemplate, $markerArray, '###|###', true, true);

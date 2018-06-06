@@ -210,6 +210,9 @@
 			<trans-unit id="label_refresh-link-list" resname="label_refresh-link-list">
 				<source>Refreshing link list, please stand by.</source>
 			</trans-unit>
+			<trans-unit id="needs-recheck" resname="needs-recheck">
+				<source>Needs recheck</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

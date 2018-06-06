@@ -261,6 +261,37 @@ showCheckLinkTab
 
 
 
+.. _actionAfterEditRecord:
+
+actionAfterEditRecord
+"""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         actionAfterEditRecord
+
+   Data type
+         string
+
+   Default
+         recheck
+
+   Possible values
+         recheck | setNeedsRecheck
+
+   Description
+         After a record is edited, the list of broken links may no longer be correct,
+         because broken links were changed or removed or new broken links added. Due
+         to this, the list of broken links should be updated.
+
+         Possible values are:
+
+         * **recheck**: The field is rechecked. (Warning: an RTE field may contain a number
+           of links, rechecking may lead to delays.)
+         * **setNeedsRecheck**: The entries in the list are marked as needing a recheck
+
+
 .. _mail-fromname:
 
 mail.fromname

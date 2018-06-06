@@ -29,6 +29,8 @@ mod.linkvalidator {
 
   checkhidden = 0
   showCheckLinkTab = 1
+  # recheck | setNeedsRecheck
+  actionAfterEditRecord = recheck
   mail {
     fromname = Linkvalidator
     fromemail = Linkvalidator@example.com
