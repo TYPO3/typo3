@@ -169,6 +169,8 @@ class ResourceCompressor
      */
     public function concatenateJsFiles(array $jsFiles)
     {
+        $concatenatedJsFileIsAsync = false;
+        $allFilesToConcatenateAreAsync = true;
         $filesToInclude = [];
         foreach ($jsFiles as $key => $fileOptions) {
             // invalid section found or no concatenation allowed, so continue
@@ -184,6 +186,11 @@ class ResourceCompressor
             } else {
                 $filesToInclude[$fileOptions['section']][] = $filenameFromMainDir;
             }
+            if (!empty($fileOptions['async']) && (bool)$fileOptions['async']) {
+                $concatenatedJsFileIsAsync = true;
+            } else {
+                $allFilesToConcatenateAreAsync = false;
+            }
             // remove the file from the incoming file array
             unset($jsFiles[$key]);
         }
@@ -197,7 +204,8 @@ class ResourceCompressor
                     'compress' => true,
                     'excludeFromConcatenation' => true,
                     'forceOnTop' => false,
-                    'allWrap' => ''
+                    'allWrap' => '',
+                    'async' => $concatenatedJsFileIsAsync && $allFilesToConcatenateAreAsync,
                 ];
                 // place the merged javascript on top of the JS files
                 $jsFiles = array_merge([$targetFile => $concatenatedOptions], $jsFiles);

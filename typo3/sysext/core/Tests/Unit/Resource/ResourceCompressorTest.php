@@ -287,7 +287,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @test
      */
-    public function concatenatedJsFileIsFlaggedToNotConcatenateAgain(): void
+    public function concatenateJsFileIsFlaggedToNotConcatenateAgain(): void
     {
         $fileName = 'fooFile.js';
         $concatenatedFileName = 'merged_' . $fileName;
@@ -307,6 +307,133 @@ class ResourceCompressorTest extends BaseTestCase
         $this->assertArrayHasKey($concatenatedFileName, $result);
         $this->assertArrayHasKey('excludeFromConcatenation', $result[$concatenatedFileName]);
         $this->assertTrue($result[$concatenatedFileName]['excludeFromConcatenation']);
+    }
+
+    /**
+     * @return array
+     */
+    public function concatenateJsFileAsyncDataProvider(): array
+    {
+        return [
+            'all files have no async' => [
+                [
+                    [
+                        'file' => 'file1.js',
+                        'excludeFromConcatenation' => false,
+                        'section' => 'top',
+                    ],
+                    [
+                        'file' => 'file2.js',
+                        'excludeFromConcatenation' => false,
+                        'section' => 'top',
+                    ],
+                ],
+                false
+            ],
+            'all files have async false' => [
+                [
+                    [
+                        'file' => 'file1.js',
+                        'excludeFromConcatenation' => false,
+                        'section' => 'top',
+                        'async' => false,
+                    ],
+                    [
+                        'file' => 'file2.js',
+                        'excludeFromConcatenation' => false,
+                        'section' => 'top',
+                        'async' => false,
+                    ],
+                ],
+                false
+            ],
+            'all files have async true' => [
+                [
+                    [
+                        'file' => 'file1.js',
+                        'excludeFromConcatenation' => false,
+                        'section' => 'top',
+                        'async' => true,
+                    ],
+                    [
+                        'file' => 'file2.js',
+                        'excludeFromConcatenation' => false,
+                        'section' => 'top',
+                        'async' => true,
+                    ],
+                ],
+                true
+            ],
+            'one file async true and one file async false' => [
+                [
+                    [
+                        'file' => 'file1.js',
+                        'excludeFromConcatenation' => false,
+                        'section' => 'top',
+                        'async' => true,
+                    ],
+                    [
+                        'file' => 'file2.js',
+                        'excludeFromConcatenation' => false,
+                        'section' => 'top',
+                        'async' => false,
+                    ],
+                ],
+                false
+            ],
+            'one file async true and one file async false but is excluded form concatenation' => [
+                [
+                    [
+                        'file' => 'file1.js',
+                        'excludeFromConcatenation' => false,
+                        'section' => 'top',
+                        'async' => true,
+                    ],
+                    [
+                        'file' => 'file2.js',
+                        'excludeFromConcatenation' => true,
+                        'section' => 'top',
+                        'async' => false,
+                    ],
+                ],
+                true
+            ],
+            'one file async false and one file async true but is excluded form concatenation' => [
+                [
+                    [
+                        'file' => 'file1.js',
+                        'excludeFromConcatenation' => false,
+                        'section' => 'top',
+                        'async' => false,
+                    ],
+                    [
+                        'file' => 'file2.js',
+                        'excludeFromConcatenation' => true,
+                        'section' => 'top',
+                        'async' => true,
+                    ],
+                ],
+                false
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider concatenateJsFileAsyncDataProvider
+     * @param string $input
+     * @param bool $expected
+     */
+    public function concatenateJsFileAddsAsyncPropertyIfAllFilesAreAsync(array $input, bool $expected): void
+    {
+        $concatenatedFileName = 'merged_foo.js';
+        $this->subject->expects($this->once())
+            ->method('createMergedJsFile')
+            ->will($this->returnValue($concatenatedFileName));
+
+        $result = $this->subject->concatenateJsFiles($input);
+
+        $this->assertSame($expected, $result[$concatenatedFileName]['async']);
     }
 
     /**
