@@ -249,7 +249,11 @@ abstract public class AbstractCoreSpec {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
-            jobs.add(new Job("Accept my " + requirementIdentifier + " 0" + i, new BambooKey("ACMY" + requirementIdentifier + "0" + i))
+            String formattedI = "" + i;
+            if (i < 10) {
+                formattedI = "0" + i;
+            }
+            jobs.add(new Job("Accept my " + requirementIdentifier + " " + formattedI, new BambooKey("ACMY" + requirementIdentifier + formattedI))
                 .description("Run acceptance tests" + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
@@ -265,7 +269,7 @@ abstract public class AbstractCoreSpec {
                             "./" + this.testingFrameworkBuildPath + "Scripts/splitAcceptanceTests.sh " + numberOfChunks + "\n"
                         ),
                     new CommandTask()
-                        .description("Execute codeception acceptance suite group " + i)
+                        .description("Execute codeception acceptance suite group " + formattedI)
                         .executable("codecept")
                         .argument("run Acceptance -d -g AcceptanceTests-Job-" + i + " -c " + this.testingFrameworkBuildPath + "AcceptanceTests.yml --xml reports.xml --html reports.html")
                         .environmentVariables(this.credentialsMysql)
@@ -285,6 +289,7 @@ abstract public class AbstractCoreSpec {
                     .shared(false)
                 )
                 .cleanWorkingDirectory(true)
+                .enabled(false)
             );
         }
 
@@ -301,8 +306,12 @@ abstract public class AbstractCoreSpec {
     protected ArrayList<Job> getJobsFunctionalTestsMysql(int numberOfChunks, Requirement requirement, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
-        for (int i=0; i<numberOfChunks; i++) {
-            jobs.add(new Job("Func mysql " + requirementIdentifier + " 0" + i, new BambooKey("FMY" + requirementIdentifier + "0" + i))
+        for (int i=1; i<=numberOfChunks; i++) {
+            String formattedI = "" + i;
+            if (i < 10) {
+                formattedI = "0" + i;
+            }
+            jobs.add(new Job("Func mysql " + requirementIdentifier + " " + formattedI, new BambooKey("FMY" + requirementIdentifier + formattedI))
                 .description("Run functional tests on mysql DB " + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
@@ -311,7 +320,7 @@ abstract public class AbstractCoreSpec {
                     this.getTaskComposerInstall(),
                     this.getTaskSplitFunctionalJobs(numberOfChunks),
                     new ScriptTask()
-                        .description("Run phpunit with functional chunk 0" + i)
+                        .description("Run phpunit with functional chunk " + formattedI)
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
@@ -344,8 +353,12 @@ abstract public class AbstractCoreSpec {
     protected ArrayList<Job> getJobsFunctionalTestsMssql(int numberOfChunks, Requirement requirement, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
-        for (int i=0; i<numberOfChunks; i++) {
-            jobs.add(new Job("Func mssql " + requirementIdentifier + " 0" + i, new BambooKey("FMS" + requirementIdentifier + "0" + i))
+        for (int i=1; i<=numberOfChunks; i++) {
+            String formattedI = "" + i;
+            if (i < 10) {
+                formattedI = "0" + i;
+            }
+            jobs.add(new Job("Func mssql " + requirementIdentifier + " " + formattedI, new BambooKey("FMS" + requirementIdentifier + formattedI))
                 .description("Run functional tests on mysql DB " + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
@@ -354,7 +367,7 @@ abstract public class AbstractCoreSpec {
                     this.getTaskComposerInstall(),
                     this.getTaskSplitFunctionalJobs(numberOfChunks),
                     new ScriptTask()
-                        .description("Run phpunit with functional chunk 0" + i)
+                        .description("Run phpunit with functional chunk " + formattedI)
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
@@ -388,8 +401,12 @@ abstract public class AbstractCoreSpec {
     protected ArrayList<Job> getJobsFunctionalTestsPgsql(int numberOfChunks, Requirement requirement, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
-        for (int i=0; i<numberOfChunks; i++) {
-            jobs.add(new Job("Func pgsql " + requirementIdentifier + " 0" + i, new BambooKey("FPG" + requirementIdentifier + "0" + i))
+        for (int i=1; i<=numberOfChunks; i++) {
+            String formattedI = "" + i;
+            if (i < 10) {
+                formattedI = "0" + i;
+            }
+            jobs.add(new Job("Func pgsql " + requirementIdentifier + " " + formattedI, new BambooKey("FPG" + requirementIdentifier + formattedI))
                 .description("Run functional tests on pgsql DB " + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
@@ -398,7 +415,7 @@ abstract public class AbstractCoreSpec {
                     this.getTaskComposerInstall(),
                     this.getTaskSplitFunctionalJobs(numberOfChunks),
                     new ScriptTask()
-                        .description("Run phpunit with functional chunk 0" + i)
+                        .description("Run phpunit with functional chunk " + formattedI)
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
@@ -718,8 +735,8 @@ abstract public class AbstractCoreSpec {
     protected ArrayList<Job> getJobUnitPhpRandom(int numberOfRuns, Requirement requirement, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
-        for (int i=0; i<numberOfRuns; i++) {
-            jobs.add(new Job("Unit " + requirementIdentifier + " random 0" + i, new BambooKey("UTR" + requirementIdentifier + "0" + i))
+        for (int i=1; i<=numberOfRuns; i++) {
+            jobs.add(new Job("Unit " + requirementIdentifier + " random " + i, new BambooKey("UTR" + requirementIdentifier + i))
                 .description("Run unit tests on " + requirementIdentifier + " in random order 0" + i)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
@@ -894,7 +911,7 @@ abstract public class AbstractCoreSpec {
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                "./" + this.testingFrameworkBuildPath + "Scripts/splitFunctionalTests.sh " + numberOfJobs
+                "./" + this.testingFrameworkBuildPath + "Scripts/splitFunctionalTests.php " + numberOfJobs + " -v"
             );
     }
 
