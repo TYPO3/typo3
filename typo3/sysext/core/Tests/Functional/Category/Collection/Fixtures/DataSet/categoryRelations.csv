@@ -1,0 +1,17 @@
+"tx_test_test",,,,
+,"uid","pid","title",
+,1,0,foo1,
+,2,0,foo2,
+,3,0,foo3,
+,4,0,foo4,
+,5,0,foo5,
+"sys_category",,,,
+,"uid","pid","title",
+,1,0,cat1,
+"sys_category_record_mm",,,,
+,"uid_local","uid_foreign","tablenames","fieldname"
+,1,1,tx_test_test,categories
+,1,2,tx_test_test,categories
+,1,3,tx_test_test,categories
+,1,4,tx_test_test,categories
+,1,5,tx_test_test,categories
