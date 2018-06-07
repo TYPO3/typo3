@@ -62,7 +62,7 @@ class GroupFileAndFileReferenceItemTest extends AbstractImportExportTestCase
         $out = $subject->compileMemoryToFileContent('xml');
 
         $this->assertXmlStringEqualsXmlFile(
-            __DIR__ . '/../Fixtures/XmlExports/' . $this->databasePlatform . '/impexp-group-file-and-file_reference-item.xml',
+            __DIR__ . '/../Fixtures/XmlExports/impexp-group-file-and-file_reference-item.xml',
             $out
         );
     }
@@ -82,7 +82,7 @@ class GroupFileAndFileReferenceItemTest extends AbstractImportExportTestCase
         $out = $subject->compileMemoryToFileContent('xml');
 
         $this->assertXmlStringEqualsXmlFile(
-            __DIR__ . '/../Fixtures/XmlExports/' . $this->databasePlatform . '/impexp-group-file-and-file_reference-item-but-images-not-included.xml',
+            __DIR__ . '/../Fixtures/XmlExports/impexp-group-file-and-file_reference-item-but-images-not-included.xml',
             $out
         );
 

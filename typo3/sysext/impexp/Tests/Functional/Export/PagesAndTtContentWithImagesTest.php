@@ -61,7 +61,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         $this->assertSame('', $errors);
 
         $this->assertXmlStringEqualsXmlFile(
-            __DIR__ . '/../Fixtures/XmlExports/' . $this->databasePlatform . '/pages-and-ttcontent-with-image.xml',
+            __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-with-image.xml',
             $out
         );
     }
@@ -87,7 +87,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         $this->assertSame($expectedErrors, $errors);
 
         $this->assertXmlStringEqualsXmlFile(
-            __DIR__ . '/../Fixtures/XmlExports/' . $this->databasePlatform . '/pages-and-ttcontent-with-corrupt-image.xml',
+            __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-with-corrupt-image.xml',
             $out
         );
     }
@@ -109,7 +109,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         $out = $subject->compileMemoryToFileContent('xml');
 
         $this->assertXmlStringEqualsXmlFile(
-            __DIR__ . '/../Fixtures/XmlExports/' . $this->databasePlatform . '/pages-and-ttcontent-with-image-but-not-included.xml',
+            __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-with-image-but-not-included.xml',
             $out
         );
 

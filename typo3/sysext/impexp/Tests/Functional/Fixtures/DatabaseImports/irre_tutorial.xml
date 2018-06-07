@@ -206,7 +206,7 @@
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
 		<l18n_diffsource></l18n_diffsource>
-		<sorting>1</sorting>
+		<sorting>3</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
 		<parentid>2</parentid>
@@ -254,7 +254,7 @@
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
 		<l18n_diffsource></l18n_diffsource>
-		<sorting>1</sorting>
+		<sorting>3</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
 		<parentid>2</parentid>
@@ -270,7 +270,7 @@
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
 		<l18n_diffsource></l18n_diffsource>
-		<sorting>1</sorting>
+		<sorting>4</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
 		<parentid>3</parentid>
@@ -369,7 +369,7 @@
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
 		<l18n_diffsource></l18n_diffsource>
-		<sorting>1</sorting>
+		<sorting>2</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
 		<parentid>2</parentid>

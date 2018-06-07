@@ -116,7 +116,7 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
         $out = $subject->compileMemoryToFileContent('xml');
 
         $this->assertXmlStringEqualsXmlFile(
-            __DIR__ . '/../Fixtures/XmlExports/' . $this->databasePlatform . '/pages-and-ttcontent.xml',
+            __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent.xml',
             $out
         );
     }

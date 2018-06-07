@@ -297,7 +297,7 @@ class IrreTutorialRecordsTest extends AbstractImportExportTestCase
         $out = $subject->compileMemoryToFileContent('xml');
 
         $this->assertXmlStringEqualsXmlFile(
-            __DIR__ . '/../Fixtures/XmlExports/' . $this->databasePlatform . '/irre-records.xml',
+            __DIR__ . '/../Fixtures/XmlExports/irre-records.xml',
             $out
         );
     }

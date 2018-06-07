@@ -136,7 +136,7 @@ class GroupFileAndFileReferenceItemInFlexFormTest extends AbstractImportExportTe
         $out = $subject->compileMemoryToFileContent('xml');
 
         $this->assertXmlStringEqualsXmlFile(
-            __DIR__ . '/../Fixtures/XmlExports/' . $this->databasePlatform . '/impexp-group-file-and-file_reference-item-in-ff.xml',
+            __DIR__ . '/../Fixtures/XmlExports/impexp-group-file-and-file_reference-item-in-ff.xml',
             $out
         );
     }

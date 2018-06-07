@@ -44,25 +44,12 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
     protected $testFilesToDelete = [];
 
     /**
-     * Different DBMS export different field types, the result XML is thus slightly different.
-     * This var is used to select a suitable XML export fixture to compare with.
-     *
-     * @var string
-     */
-    protected $databasePlatform;
-
-    /**
      * Set up for set up the backend user, initialize the language object
      * and creating the Export instance
      */
     protected function setUp()
     {
         parent::setUp();
-
-        $this->databasePlatform = $this->getConnectionPool()
-            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
-            ->getDatabasePlatform()
-            ->getName();
 
         $backendUser = $this->setUpBackendUserFromFixture(1);
         $backendUser->workspace = 0;
@@ -149,6 +136,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
                         list($fieldName, $order) = $orderPair;
                         $queryBuilder->addOrderBy($fieldName, $order);
                     }
+                    $queryBuilder->addOrderBy('uid', 'ASC');
 
                     $result = $queryBuilder->execute();
                     while ($row = $result->fetch()) {
