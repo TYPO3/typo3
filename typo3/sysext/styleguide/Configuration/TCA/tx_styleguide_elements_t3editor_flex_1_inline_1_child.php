@@ -13,6 +13,9 @@ return [
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'translationSource' => 'l10n_source',
+        'enablecolumns' => [
+            'disabled' => 'hidden',
+        ],
     ],
 
 

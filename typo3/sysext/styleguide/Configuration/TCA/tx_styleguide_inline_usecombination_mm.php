@@ -10,8 +10,6 @@ return [
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',
-            'starttime' => 'starttime',
-            'endtime' => 'endtime',
         ],
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',

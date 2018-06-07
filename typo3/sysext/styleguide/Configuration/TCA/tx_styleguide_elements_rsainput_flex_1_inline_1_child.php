@@ -13,6 +13,9 @@ return [
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'translationSource' => 'l10n_source',
+        'enablecolumns' => [
+            'disabled' => 'hidden',
+        ],
     ],
 
 
@@ -106,7 +109,7 @@ return [
             'showitem' => '
                 rsainput_1
                 --div--;meta,
-                        disable, starttime, endtime, sys_language_uid, l10n_parent, l10n_source,',
+                        disable, sys_language_uid, l10n_parent, l10n_source,',
         ],
     ],
 

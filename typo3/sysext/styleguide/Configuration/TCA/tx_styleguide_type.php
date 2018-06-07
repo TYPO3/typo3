@@ -17,8 +17,6 @@ return [
         'translationSource' => 'l10n_source',
         'enablecolumns' => [
             'disabled' => 'hidden',
-            'starttime' => 'starttime',
-            'endtime' => 'endtime',
         ],
         'type' => 'type',
     ],
@@ -36,33 +34,6 @@ return [
                     ],
                 ],
             ],
-        ],
-        'starttime' => [
-            'exclude' => 1,
-            'label' => 'Publish Date',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
-                'default' => '0'
-            ],
-            'l10n_mode' => 'exclude',
-            'l10n_display' => 'defaultAsReadonly'
-        ],
-        'endtime' => [
-            'exclude' => 1,
-            'label' => 'Expiration Date',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
-                'default' => '0',
-                'range' => [
-                    'upper' => mktime(0, 0, 0, 12, 31, 2020)
-                ]
-            ],
-            'l10n_mode' => 'exclude',
-            'l10n_display' => 'defaultAsReadonly'
         ],
         'sys_language_uid' => [
             'exclude' => 1,
