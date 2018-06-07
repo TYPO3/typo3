@@ -169,7 +169,6 @@ class Richtext
     {
         // Load PageTSconfig configuration
         $fullPageTsConfig = $this->getRtePageTsConfigOfPid($pid);
-        $fullPageTsConfig = !empty($fullPageTsConfig['properties']) ? $fullPageTsConfig['properties'] : [];
         $defaultPageTsConfigOverrides = $fullPageTsConfig['default.'] ?? null;
         $fieldSpecificPageTsConfigOverrides = $fullPageTsConfig['config.'][$table . '.'][$field . '.'] ?? null;
         unset($fullPageTsConfig['default.'], $fullPageTsConfig['config.']);

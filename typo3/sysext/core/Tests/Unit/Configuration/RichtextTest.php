@@ -32,22 +32,20 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'enableRichtext' => true,
         ];
         $pageTsConfig = [
-            'properties' => [
-                'classes.' => [
-                    'aClass' => 'aConfig',
-                ],
-                'default.' => [
-                    'removeComments' => '1',
-                ],
-                'config.' => [
-                    'aTable.' => [
-                        'aField.' => [
-                            'types.' => [
-                                'textmedia.' => [
-                                    'proc.' => [
-                                        'overruleMode' => 'myTransformation',
-                                    ],
-                                ]
+            'classes.' => [
+                'aClass' => 'aConfig',
+            ],
+            'default.' => [
+                'removeComments' => '1',
+            ],
+            'config.' => [
+                'aTable.' => [
+                    'aField.' => [
+                        'types.' => [
+                            'textmedia.' => [
+                                'proc.' => [
+                                    'overruleMode' => 'myTransformation',
+                                ],
                             ]
                         ]
                     ]
@@ -87,20 +85,18 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'enableRichtext' => true,
         ];
         $pageTsConfig = [
-            'properties' => [
-                'classes.' => [
-                    'aClass' => 'aConfig',
-                ],
-                'default.' => [
-                    'removeComments' => '1',
-                ],
-                'config.' => [
-                    'aTable.' => [
-                        'aField.' => [
-                            'proc.' => [
-                                'overruleMode' => 'myTransformation',
-                            ],
-                        ]
+            'classes.' => [
+                'aClass' => 'aConfig',
+            ],
+            'default.' => [
+                'removeComments' => '1',
+            ],
+            'config.' => [
+                'aTable.' => [
+                    'aField.' => [
+                        'proc.' => [
+                            'overruleMode' => 'myTransformation',
+                        ],
                     ]
                 ]
             ]
@@ -138,14 +134,12 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'enableRichtext' => true,
         ];
         $pageTsConfig = [
-            'properties' => [
-                'classes.' => [
-                    'aClass' => 'aConfig',
-                ],
-                'default.' => [
-                    'removeComments' => '1',
-                ],
-            ]
+            'classes.' => [
+                'aClass' => 'aConfig',
+            ],
+            'default.' => [
+                'removeComments' => '1',
+            ],
         ];
         $expected = [
             'classes.' => [
@@ -177,19 +171,17 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'enableRichtext' => true,
         ];
         $pageTsConfig = [
-            'properties' => [
+            'classes.' => [
+                'aClass' => 'aConfig',
+            ],
+            'default.' => [
                 'classes.' => [
-                    'aClass' => 'aConfig',
+                    'aClass' => 'anotherConfig',
                 ],
-                'default.' => [
-                    'classes.' => [
-                        'aClass' => 'anotherConfig',
-                    ],
-                    'editor.' => [
-                        'config.' => [
-                            'contentsCss' => 'my.css'
-                        ]
-                    ],
+                'editor.' => [
+                    'config.' => [
+                        'contentsCss' => 'my.css'
+                    ]
                 ],
             ],
         ];
@@ -232,26 +224,24 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'enableRichtext' => true,
         ];
         $pageTsConfig = [
-            'properties' => [
+            'classes.' => [
+                'aClass' => 'aConfig',
+            ],
+            'default.' => [
                 'classes.' => [
-                    'aClass' => 'aConfig',
+                    'aClass' => 'anotherConfig',
                 ],
-                'default.' => [
-                    'classes.' => [
-                        'aClass' => 'anotherConfig',
-                    ],
-                ],
-                'config.' => [
-                    'aTable.' => [
-                        'aField.' => [
-                            'classes.' => [
-                                'aClass' => 'aThirdConfig',
-                            ],
-                            'editor.' => [
-                                'config.' => [
-                                    'contentsCss' => 'my.css'
-                                ]
-                            ],
+            ],
+            'config.' => [
+                'aTable.' => [
+                    'aField.' => [
+                        'classes.' => [
+                            'aClass' => 'aThirdConfig',
+                        ],
+                        'editor.' => [
+                            'config.' => [
+                                'contentsCss' => 'my.css'
+                            ]
                         ],
                     ],
                 ],
@@ -298,39 +288,37 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'enableRichtext' => true,
         ];
         $pageTsConfig = [
-            'properties' => [
+            'classes.' => [
+                'aClass' => 'aConfig',
+            ],
+            'default.' => [
                 'classes.' => [
-                    'aClass' => 'aConfig',
+                    'aClass' => 'anotherConfig',
                 ],
-                'default.' => [
-                    'classes.' => [
-                        'aClass' => 'anotherConfig',
-                    ],
-                ],
-                'config.' => [
-                    'aTable.' => [
-                        'aField.' => [
-                            'classes.' => [
-                                'aClass' => 'aThirdConfig',
-                            ],
-                            'editor.' => [
-                                'config.' => [
-                                    'contentsCss' => 'my.css'
-                                ]
-                            ],
-                            'types.' => [
-                                'textmedia.' => [
-                                    'classes.' => [
-                                        'aClass' => 'aTypeSpecifcConfig',
-                                    ],
-                                    'editor.' => [
-                                        'config.' => [
-                                            'contentsCss' => 'your.css'
-                                        ]
-                                    ],
-                                ]
+            ],
+            'config.' => [
+                'aTable.' => [
+                    'aField.' => [
+                        'classes.' => [
+                            'aClass' => 'aThirdConfig',
+                        ],
+                        'editor.' => [
+                            'config.' => [
+                                'contentsCss' => 'my.css'
                             ]
                         ],
+                        'types.' => [
+                            'textmedia.' => [
+                                'classes.' => [
+                                    'aClass' => 'aTypeSpecifcConfig',
+                                ],
+                                'editor.' => [
+                                    'config.' => [
+                                        'contentsCss' => 'your.css'
+                                    ]
+                                ],
+                            ]
+                        ]
                     ],
                 ],
             ],
@@ -383,12 +371,10 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         ];
 
         $pageTsConfigArray = [
-            'properties' => [
-                'preset' => $presetKey,
-                'editor.' => [
-                    'config.' => [
-                        'width' => 200
-                    ],
+            'preset' => $presetKey,
+            'editor.' => [
+                'config.' => [
+                    'width' => 200
                 ],
             ],
         ];
