@@ -162,7 +162,13 @@ class SchemaMigratorTest extends FunctionalTestCase
     }
 
     /**
+     * Disabled on sqlite: It does not support adding a not null column to an existing
+     * table and throws "Cannot add a NOT NULL column with default value NULL". It's
+     * currently unclear if core should handle that by changing the alter table
+     * statement on the fly.
+     *
      * @test
+     * @group not-sqlite
      */
     public function notNullWithoutDefaultValue()
     {
@@ -198,6 +204,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      * @test
      * @group not-postgres
      * @group not-mssql
+     * @group not-sqlite
      */
     public function renameUnusedField()
     {
@@ -231,14 +238,18 @@ class SchemaMigratorTest extends FunctionalTestCase
     }
 
     /**
+     * Disabled on sqlite: It seems the platform is unable to drop columns for
+     * currently unknown reasons.
+     *
      * @test
+     * @group not-sqlite
      */
     public function dropUnusedField()
     {
         $connection = $this->connectionPool->getConnectionForTable($this->tableName);
         $fromSchema = $this->schemaManager->createSchema();
         $toSchema = clone $fromSchema;
-        $toSchema->getTable($this->tableName)->addColumn('zzz_deleted_testfield', 'integer');
+        $toSchema->getTable($this->tableName)->addColumn('zzz_deleted_testfield', 'integer', ['notnull' => false]);
         $statements = $fromSchema->getMigrateToSql(
             $toSchema,
             $connection->getDatabasePlatform()
@@ -279,6 +290,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      * @group not-postgres
+     * @group not-sqlite
      */
     public function installPerformsOnlyAddAndCreateOperations()
     {
@@ -293,7 +305,12 @@ class SchemaMigratorTest extends FunctionalTestCase
     }
 
     /**
+     * Disabled on sqlite: The platform seems to have issues with indexes
+     * for currently unknown reasons. If that is sorted out, this test can
+     * probably be enabled.
+     *
      * @test
+     * @group not-sqlite
      */
     public function installDoesNotAddIndexOnChangedColumn()
     {
@@ -308,6 +325,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      * @test
      * @group not-postgres
      * @group not-mssql
+     * @group not-sqlite
      */
     public function installCanPerformChangeOperations()
     {
@@ -325,6 +343,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      * @test
      * @group not-postgres
      * @group not-mssql
+     * @group not-sqlite
      */
     public function importStaticDataInsertsRecords()
     {
@@ -352,6 +371,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      * @test
      * @group not-postgres
      * @group not-mssql
+     * @group not-sqlite
      */
     public function changeTableEngine()
     {

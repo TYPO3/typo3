@@ -42,6 +42,7 @@ public class NightlySpec extends AbstractCoreSpec {
     protected int numberOfFunctionalMysqlJobs = 6;
     protected int numberOfFunctionalMssqlJobs = 6;
     protected int numberOfFunctionalPgsqlJobs = 6;
+    protected int numberOfFunctionalSqliteJobs = 10;
     protected int numberOfUnitRandomOrderJobs = 4;
 
     /**
@@ -94,6 +95,8 @@ public class NightlySpec extends AbstractCoreSpec {
         jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
+
+        jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(this.numberOfFunctionalSqliteJobs, this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.add(this.getJobUnitJavaScript());
 

@@ -50,6 +50,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
     protected int numberOfFunctionalMysqlJobs = 10;
     protected int numberOfFunctionalMssqlJobs = 10;
     protected int numberOfFunctionalPgsqlJobs = 10;
+    protected int numberOfFunctionalSqliteJobs = 10;
     protected int numberOfUnitRandomOrderJobs = 2;
 
     /**
@@ -102,6 +103,8 @@ public class PreMergeSpec extends AbstractCoreSpec {
         jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
+
+        jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(this.numberOfFunctionalSqliteJobs, this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.add(this.getJobUnitJavaScript());
 

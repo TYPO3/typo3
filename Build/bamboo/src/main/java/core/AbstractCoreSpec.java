@@ -73,6 +73,9 @@ abstract public class AbstractCoreSpec {
         " typo3DatabaseHost=\"localhost\"" +
         " typo3InstallToolPassword=\"klaus\"";
 
+    protected String credentialsSqlite =
+        "typo3DatabaseDriver=\"pdo_sqlite\"";
+
     /**
      * Default permissions on core plans
      *
@@ -425,6 +428,52 @@ abstract public class AbstractCoreSpec {
                 )
                 .finalTasks(
                     this.getTaskDeletePgsqlDatabases(),
+                    new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
+                        .resultDirectories("test-reports/phpunit.xml")
+                )
+                .requirements(
+                    requirement
+                )
+                .cleanWorkingDirectory(true)
+            );
+        }
+
+        return jobs;
+    }
+
+    /**
+     * Jobs for sqlite based functional tests
+     *
+     * @param int numberOfChunks
+     * @param Requirement requirement
+     * @param String requirementIdentifier
+     */
+    protected ArrayList<Job> getJobsFunctionalTestsSqlite(int numberOfChunks, Requirement requirement, String requirementIdentifier) {
+        ArrayList<Job> jobs = new ArrayList<Job>();
+
+        for (int i=1; i<=numberOfChunks; i++) {
+            String formattedI = "" + i;
+            if (i < 10) {
+                formattedI = "0" + i;
+            }
+            jobs.add(new Job("Func sqlite " + requirementIdentifier + " " + formattedI, new BambooKey("FSL" + requirementIdentifier + formattedI))
+                .description("Run functional tests on sqlite DB " + requirementIdentifier)
+                .pluginConfigurations(this.getDefaultJobPluginConfiguration())
+                .tasks(
+                    this.getTaskGitCloneRepository(),
+                    this.getTaskGitCherryPick(),
+                    this.getTaskComposerInstall(),
+                    this.getTaskSplitFunctionalJobs(numberOfChunks),
+                    new ScriptTask()
+                        .description("Run phpunit with functional chunk " + formattedI)
+                        .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                        .inlineBody(
+                            this.getScriptTaskBashInlineBody() +
+                            "./bin/phpunit --exclude-group not-sqlite --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
+                        )
+                        .environmentVariables(this.credentialsSqlite)
+                )
+                .finalTasks(
                     new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                         .resultDirectories("test-reports/phpunit.xml")
                 )

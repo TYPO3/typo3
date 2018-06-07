@@ -15,10 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Functional\Error;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+
 /**
- * Testcase for class \TYPO3\CMS\Core\Error\ErrorHandler
+ * Test case
  */
-class ErrorHandlerTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class ErrorHandlerTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -34,7 +36,11 @@ class ErrorHandlerTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
     ];
 
     /**
+     * Disabled on sqlite: It does not support init command "SET NAMES 'UTF8'". That's ok
+     * since this test is not about db platform support but error handling in core.
+     *
      * @test
+     * @group not-sqlite
      */
     public function handleErrorFetchesDeprecations()
     {
