@@ -94,10 +94,11 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
                 'sys_file',
         ];
 
-        $subject->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
-        $subject->export_addRecord('pages', BackendUtility::getRecord('pages', 2));
-        $subject->export_addRecord('tt_content', BackendUtility::getRecord('tt_content', 1));
-        $subject->export_addRecord('tt_content', BackendUtility::getRecord('tt_content', 2));
+        // @todo: Do not rely on BackendUtility::getRecord() in the test case itself
+        $subject->export_addRecord('pages', $this->forceStringsOnRowValues(BackendUtility::getRecord('pages', 1)));
+        $subject->export_addRecord('pages', $this->forceStringsOnRowValues(BackendUtility::getRecord('pages', 2)));
+        $subject->export_addRecord('tt_content', $this->forceStringsOnRowValues(BackendUtility::getRecord('tt_content', 1)));
+        $subject->export_addRecord('tt_content', $this->forceStringsOnRowValues(BackendUtility::getRecord('tt_content', 2)));
 
         $this->setPageTree($subject, 1, 1);
 

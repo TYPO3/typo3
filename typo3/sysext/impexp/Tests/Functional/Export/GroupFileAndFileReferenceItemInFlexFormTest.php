@@ -109,8 +109,9 @@ class GroupFileAndFileReferenceItemInFlexFormTest extends AbstractImportExportTe
             'sys_file_storage'
         ];
 
-        $subject->export_addRecord('pages', BackendUtility::getRecord('pages', 2));
-        $subject->export_addRecord('tx_impexpgroupfiles_item', BackendUtility::getRecord('tx_impexpgroupfiles_item', 2));
+        // @todo: Do not rely on BackendUtility::getRecord() in the test case itself
+        $subject->export_addRecord('pages', $this->forceStringsOnRowValues(BackendUtility::getRecord('pages', 2)));
+        $subject->export_addRecord('tx_impexpgroupfiles_item', $this->forceStringsOnRowValues(BackendUtility::getRecord('tx_impexpgroupfiles_item', 2)));
 
         $this->setPageTree($subject, 2, 0);
 

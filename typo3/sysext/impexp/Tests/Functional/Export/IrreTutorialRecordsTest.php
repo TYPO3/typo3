@@ -277,7 +277,8 @@ class IrreTutorialRecordsTest extends AbstractImportExportTestCase
 
         $subject->setRecordTypesIncludeFields($recordTypesIncludeFields);
 
-        $subject->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
+        // @todo: Do not rely on BackendUtility::getRecord() in the test case itself
+        $subject->export_addRecord('pages', $this->forceStringsOnRowValues(BackendUtility::getRecord('pages', 1)));
         $this->addRecordsForPid($subject, 1, array_keys($recordTypesIncludeFields));
 
         $this->setPageTree($subject, 1);

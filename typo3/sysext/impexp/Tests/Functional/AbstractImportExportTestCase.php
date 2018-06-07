@@ -152,11 +152,27 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
 
                     $result = $queryBuilder->execute();
                     while ($row = $result->fetch()) {
-                        $export->export_addRecord($table, $row);
+                        $export->export_addRecord($table, $this->forceStringsOnRowValues($row));
                     }
                 }
             }
         }
+    }
+
+    /**
+     * All not null values are forced to be strings to align
+     * db driver differences
+     *
+     * @param array $row
+     * @return array
+     */
+    protected function forceStringsOnRowValues(array $row): array
+    {
+        foreach ($row as $fieldName => $value) {
+            // Keep null but force everything else to string
+            $row[$fieldName] = $value === null ? $value : (string)$value;
+        }
+        return $row;
     }
 
     /**
