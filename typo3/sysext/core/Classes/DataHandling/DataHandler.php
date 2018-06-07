@@ -1464,7 +1464,8 @@ class DataHandler implements LoggerAwareInterface
             && $GLOBALS['TCA'][$table]['ctrl']['languageField']
             && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0
             && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-            && (int)$currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0) {
+            && (int)$currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0
+        ) {
             $originalLanguageRecord = $this->recordInfo($table, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
             BackendUtility::workspaceOL($table, $originalLanguageRecord);
             $originalLanguage_diffStorage = unserialize($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']]);
@@ -1568,7 +1569,9 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Add diff-storage information:
-        if ($diffStorageFlag && !isset($fieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']])) {
+        if ($diffStorageFlag
+            && !array_key_exists($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'], $fieldArray)
+        ) {
             // If the field is set it would probably be because of an undo-operation - in which case we should not update the field of course...
             $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] = serialize($originalLanguage_diffStorage);
         }
