@@ -24,11 +24,6 @@ use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 class IpAnonymizationAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {
     /**
-     * @var array Default number of days by table
-     */
-    protected $defaultNumberOfDays = [];
-
-    /**
      * Add additional fields
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
@@ -78,10 +73,6 @@ class IpAnonymizationAdditionalFieldProvider implements AdditionalFieldProviderI
         $fieldHtml = [];
         // Add table drop down html
         $fieldHtml[] = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '">' . implode(LF, $options) . '</select>';
-        // Add js array for default 'number of days' values
-        $fieldHtml[] = '<script type="text/javascript">/*<![CDATA[*/<!--';
-        $fieldHtml[] = 'var defaultNumberOfDays = ' . json_encode($this->defaultNumberOfDays) . ';';
-        $fieldHtml[] = '// -->/*]]>*/</script>';
         $fieldConfiguration = [
             'code' => implode(LF, $fieldHtml),
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.table',
@@ -102,22 +93,11 @@ class IpAnonymizationAdditionalFieldProvider implements AdditionalFieldProviderI
     protected function getNumberOfDaysAdditionalField(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
     {
         $fieldId = 'scheduler_ipAnonymization_numberOfDays';
-        // Initialize selected fields
-        $disabled = '';
         if (empty($taskInfo[$fieldId])) {
-            if ($parentObject->CMD === 'add') {
-                // In case of new task, set to 180 days
-                $taskInfo[$fieldId] = 180;
-            } elseif ($parentObject->CMD === 'edit') {
-                // In case of editing the task, set to currently selected value
-                $taskInfo[$fieldId] = $task->numberOfDays;
-                if ($task->numberOfDays === 0 && !isset($this->defaultNumberOfDays[$task->table])) {
-                    $disabled = ' disabled="disabled"';
-                }
-            }
+            $taskInfo[$fieldId] = $task->numberOfDays ?? 180;
         }
         $fieldName = 'tx_scheduler[' . $fieldId . ']';
-        $fieldHtml = '<input class="form-control" type="text" ' . 'name="' . $fieldName . '" ' . 'id="' . $fieldId . '" ' . $disabled . 'value="' . (int)$taskInfo['scheduler_ipAnonymization_numberOfDays'] . '" ' . 'size="4">';
+        $fieldHtml = '<input class="form-control" type="text" ' . 'name="' . $fieldName . '" ' . 'id="' . $fieldId . '" ' . 'value="' . (int)$taskInfo[$fieldId] . '" ' . 'size="4">';
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.numberOfDays',
@@ -138,15 +118,8 @@ class IpAnonymizationAdditionalFieldProvider implements AdditionalFieldProviderI
     protected function getMaskAdditionalField(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
     {
         $fieldId = 'scheduler_ipAnonymization_mask';
-        // Initialize selected fields
         if (empty($taskInfo[$fieldId])) {
-            if ($parentObject->CMD === 'add') {
-                // In case of new task, set to 180 days
-                $taskInfo[$fieldId] = 2;
-            } elseif ($parentObject->CMD === 'edit') {
-                // In case of editing the task, set to currently selected value
-                $taskInfo[$fieldId] = $task->mask;
-            }
+            $taskInfo[$fieldId] = $task->mask ?? 2;
         }
         $fieldName = 'tx_scheduler[' . $fieldId . ']';
 
