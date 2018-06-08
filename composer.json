@@ -56,7 +56,6 @@
 		"typo3/class-alias-loader": "^1.0",
 		"typo3/cms-cli": "^2.0",
 		"typo3/cms-composer-installers": "^2.0",
-		"typo3/cms-styleguide": "^9.1",
 		"typo3fluid/fluid": "^2.4"
 	},
 	"require-dev": {
@@ -64,6 +63,7 @@
 		"enm1989/chromedriver": "~2.30",
 		"fiunchinho/phpunit-randomizer": "^4.0",
 		"friendsofphp/php-cs-fixer": "^2.0",
+		"typo3/cms-styleguide": "^9.1",
 		"typo3/testing-framework": "^3.2"
 	},
 	"suggest": {

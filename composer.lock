@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81cf25375e17cbedc860a36cacd5d45b",
+    "content-hash": "fae1860a766922f01655060e86edf0b6",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1741,55 +1741,6 @@
                 "typo3"
             ],
             "time": "2018-04-05T21:00:40+00:00"
-        },
-        {
-            "name": "typo3/cms-styleguide",
-            "version": "9.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "511cd645830c1f70d066c341f70826a41496de8a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/511cd645830c1f70d066c341f70826a41496de8a",
-                "reference": "511cd645830c1f70d066c341f70826a41496de8a",
-                "shasum": ""
-            },
-            "replace": {
-                "styleguide": "*"
-            },
-            "type": "typo3-cms-extension",
-            "autoload": {
-                "psr-4": {
-                    "TYPO3\\CMS\\Styleguide\\": "Classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Felix Kopp",
-                    "email": "felix-source@phorax.com",
-                    "homepage": "http://phorax.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "TYPO3 CMS Core Team",
-                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
-                    "role": "Developer"
-                }
-            ],
-            "description": "TYPO3 CMS Extension to test everything in the TYPO3 Backend",
-            "homepage": "https://github.com/TYPO3/styleguide",
-            "keywords": [
-                "style guide",
-                "typo3",
-                "typo3 backend"
-            ],
-            "time": "2018-06-07T23:38:27+00:00"
         },
         {
             "name": "typo3fluid/fluid",
@@ -4401,6 +4352,55 @@
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "time": "2017-04-07T12:08:54+00:00"
+        },
+        {
+            "name": "typo3/cms-styleguide",
+            "version": "9.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3/styleguide.git",
+                "reference": "511cd645830c1f70d066c341f70826a41496de8a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/511cd645830c1f70d066c341f70826a41496de8a",
+                "reference": "511cd645830c1f70d066c341f70826a41496de8a",
+                "shasum": ""
+            },
+            "replace": {
+                "styleguide": "*"
+            },
+            "type": "typo3-cms-extension",
+            "autoload": {
+                "psr-4": {
+                    "TYPO3\\CMS\\Styleguide\\": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Felix Kopp",
+                    "email": "felix-source@phorax.com",
+                    "homepage": "http://phorax.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "TYPO3 CMS Core Team",
+                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TYPO3 CMS Extension to test everything in the TYPO3 Backend",
+            "homepage": "https://github.com/TYPO3/styleguide",
+            "keywords": [
+                "style guide",
+                "typo3",
+                "typo3 backend"
+            ],
+            "time": "2018-06-07T23:38:27+00:00"
         },
         {
             "name": "typo3/testing-framework",
