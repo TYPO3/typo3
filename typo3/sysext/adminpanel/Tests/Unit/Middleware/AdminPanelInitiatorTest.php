@@ -35,18 +35,12 @@ class AdminPanelInitiatorTest extends UnitTestCase
                 'display_top' => true
             ]
         ];
-        $typoScript = [
-            'config' => [
-                'admPanel' => 1
-            ]
-        ];
         $userAuthentication = $this->prophesize(FrontendBackendUserAuthentication::class);
         $userAuthentication->getTSConfig(Argument::any())->willReturn($tsConfig);
         $userAuthentication->uc = $uc;
         $GLOBALS['BE_USER'] = $userAuthentication->reveal();
 
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $tsfe->config = $typoScript;
         $GLOBALS['TSFE'] = $tsfe;
 
         $controller = $this->prophesize(MainController::class);
@@ -67,31 +61,6 @@ class AdminPanelInitiatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function processDoesNotCallInitializeIfAdminPanelIsNotEnabledInTypoScript(): void
-    {
-        $tsConfig = [
-            'admPanel.' => [
-                'enable.' => [
-                    'all',
-                ],
-            ],
-        ];
-        $uc = [
-            'TSFE_adminConfig' => [
-                'display_top' => true
-            ]
-        ];
-        $typoScript = [
-            'config' => [
-                'admPanel' => 0
-            ]
-        ];
-        $this->checkAdminPanelDoesNotCallInitialize($tsConfig, $uc, $typoScript);
-    }
-
-    /**
-     * @test
-     */
     public function processDoesNotCallInitializeIfAdminPanelIsNotEnabledInUC(): void
     {
         $tsConfig = [
@@ -106,12 +75,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
                 'display_top' => false
             ]
         ];
-        $typoScript = [
-            'config' => [
-                'admPanel' => 1
-            ]
-        ];
-        $this->checkAdminPanelDoesNotCallInitialize($tsConfig, $uc, $typoScript);
+        $this->checkAdminPanelDoesNotCallInitialize($tsConfig, $uc);
     }
 
     /**
@@ -127,12 +91,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
                 'display_top' => true
             ]
         ];
-        $typoScript = [
-            'config' => [
-                'admPanel' => 1
-            ]
-        ];
-        $this->checkAdminPanelDoesNotCallInitialize($tsConfig, $uc, $typoScript);
+        $this->checkAdminPanelDoesNotCallInitialize($tsConfig, $uc);
     }
 
     /**
@@ -140,7 +99,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
      * @param $uc
      * @param $typoScript
      */
-    protected function checkAdminPanelDoesNotCallInitialize($tsConfig, $uc, $typoScript): void
+    protected function checkAdminPanelDoesNotCallInitialize($tsConfig, $uc): void
     {
         $userAuthentication = $this->prophesize(FrontendBackendUserAuthentication::class);
         $userAuthentication->getTSConfig(Argument::any())->willReturn($tsConfig);
@@ -148,7 +107,6 @@ class AdminPanelInitiatorTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $userAuthentication->reveal();
 
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $tsfe->config = $typoScript;
         $GLOBALS['TSFE'] = $tsfe;
 
         $controller = $this->prophesize(MainController::class);
