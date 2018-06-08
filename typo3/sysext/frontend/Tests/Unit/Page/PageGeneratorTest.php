@@ -185,7 +185,6 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $tmpl = $this->prophesize(TemplateService::class);
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
-        $tsfe->generateMetaTags()->shouldBeCalled();
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
@@ -221,7 +220,6 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $tmpl = $this->prophesize(TemplateService::class);
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
-        $tsfe->generateMetaTags()->shouldBeCalled();
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
@@ -259,7 +257,6 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $tmpl = $this->prophesize(TemplateService::class);
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
-        $tsfe->generateMetaTags()->shouldBeCalled();
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
@@ -351,7 +348,6 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $tmpl = $this->prophesize(TemplateService::class);
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
-        $tsfe->generateMetaTags()->shouldBeCalled();
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();

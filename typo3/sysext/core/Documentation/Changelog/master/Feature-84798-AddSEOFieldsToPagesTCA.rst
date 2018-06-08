@@ -9,8 +9,9 @@ See :issue:`84798`
 Description
 ===========
 
-This feature adds SEO fields to Pages TCA. A new tab SEO now exists in the Page module which contains SEO related
-metadata. Other non-SEO metadata is still on the Metadata tab.
+A new system extension called SEO is introduced. This extension adds SEO fields to Pages TCA. When this extension is
+installed, a new tab SEO appears in the Page module which contains SEO related metadata. Other non-SEO metadata is
+still on the Metadata tab.
 
 
 Impact
@@ -29,4 +30,4 @@ New fields added to Pages table:
 - twitter_description
 - twitter_image
 
-.. index:: Backend, Database, TCA, ext:core
+.. index:: Backend, Database, TCA, ext:seo
