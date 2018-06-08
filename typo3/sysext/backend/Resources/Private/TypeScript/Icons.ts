@@ -122,7 +122,9 @@ class Icons {
           icon: JSON.stringify(icon)
         },
         success: (markup: string) => {
-          ClientStorage.set('icon_' + cacheIdentifier, markup);
+          if (markup.indexOf('t3js-icon') !== -1 && markup.indexOf('<span class="icon-markup">') !== -1) {
+            ClientStorage.set('icon_' + cacheIdentifier, markup);
+          }
           return markup;
         }
       }));
