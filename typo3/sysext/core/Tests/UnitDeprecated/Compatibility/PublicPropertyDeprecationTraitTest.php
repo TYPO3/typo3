@@ -18,6 +18,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Compatibility;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * Test case
+ */
 class PublicPropertyDeprecationTraitTest extends UnitTestCase
 {
     /**
