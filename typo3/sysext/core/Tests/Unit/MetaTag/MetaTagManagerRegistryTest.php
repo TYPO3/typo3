@@ -28,17 +28,9 @@ class MetaTagManagerRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function checkGetInstanceReturnsMetaTagManagerRegistryInstance()
-    {
-        return $this->assertInstanceOf(MetaTagManagerRegistry::class, MetaTagManagerRegistry::getInstance());
-    }
-
-    /**
-     * @test
-     */
     public function checkRegisterNonExistingManagerDoesntThrowErrorWhenFetchingManagers()
     {
-        $metaTagManagerRegistry = MetaTagManagerRegistry::getInstance();
+        $metaTagManagerRegistry = new MetaTagManagerRegistry();
 
         $metaTagManagerRegistry->registerManager('name', 'fake//class//name');
         $metaTagManagerRegistry->getAllManagers();

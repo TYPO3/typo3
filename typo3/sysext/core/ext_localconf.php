@@ -125,7 +125,7 @@ unset($extractorRegistry);
     'TCEMAIN.translateToMessage = Translate to %s:'
 );
 
-$metaTagManagerRegistry = \TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::getInstance();
+$metaTagManagerRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::class);
 $metaTagManagerRegistry->registerManager(
     'opengraph',
     \TYPO3\CMS\Core\MetaTag\OpenGraphMetaTagManager::class

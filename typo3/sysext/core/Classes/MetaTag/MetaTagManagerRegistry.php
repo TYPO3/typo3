@@ -20,6 +20,9 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * Holds all available meta tag managers
+ */
 class MetaTagManagerRegistry implements SingletonInterface
 {
     protected $registry = [];
@@ -29,16 +32,6 @@ class MetaTagManagerRegistry implements SingletonInterface
         $this->registry['generic'] = [
             'module' => GenericMetaTagManager::class
         ];
-    }
-
-    /**
-     * Returns instance of this class
-     *
-     * @return MetaTagManagerRegistry
-     */
-    public static function getInstance()
-    {
-        return GeneralUtility::makeInstance(self::class);
     }
 
     /**
@@ -70,6 +63,7 @@ class MetaTagManagerRegistry implements SingletonInterface
      */
     public function getManagerForProperty(string $property): MetaTagManagerInterface
     {
+        $property = strtolower($property);
         foreach ($this->getAllManagers() as $manager) {
             if ($manager->canHandleProperty($property)) {
                 return $manager;
@@ -77,7 +71,7 @@ class MetaTagManagerRegistry implements SingletonInterface
         }
 
         // Just a fallback because the GenericMetaTagManager is also registered in the list of MetaTagManagers
-        return GenericMetaTagManager::getInstance();
+        return GeneralUtility::makeInstance(GenericMetaTagManager::class);
     }
 
     /**

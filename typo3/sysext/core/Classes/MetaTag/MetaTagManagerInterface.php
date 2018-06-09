@@ -19,18 +19,12 @@ namespace TYPO3\CMS\Core\MetaTag;
 interface MetaTagManagerInterface
 {
     /**
-     * Gets instance of the manager
-     *
-     * @return MetaTagManagerInterface
-     */
-    public static function getInstance(): MetaTagManagerInterface;
-
-    /**
      * Add a property
      *
      * @param string $property
      * @param string $content
      * @param array $subProperties
+     * @param bool $replace
      * @param string $type
      */
     public function addProperty(string $property, string $content, array $subProperties = [], bool $replace = false, string $type = '');

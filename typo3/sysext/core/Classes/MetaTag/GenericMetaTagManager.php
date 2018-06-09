@@ -17,9 +17,12 @@ namespace TYPO3\CMS\Core\MetaTag;
  */
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class GenericMetaTagManager implements MetaTagManagerInterface, SingletonInterface
+/**
+ * Handles typical meta tags (non-grouped). Use AbstractMetaTagManager
+ * to create you own MetaTags, this class is final by design
+ */
+final class GenericMetaTagManager implements MetaTagManagerInterface, SingletonInterface
 {
     /**
      * The separator to define subproperties like og:image:width
@@ -41,6 +44,7 @@ class GenericMetaTagManager implements MetaTagManagerInterface, SingletonInterfa
      * @param string $property
      * @param string $content
      * @param array $subProperties
+     * @param bool $replace
      * @param string $type
      */
     public function addProperty(string $property, string $content, array $subProperties = [], bool $replace = false, string $type = 'name')
@@ -153,14 +157,6 @@ class GenericMetaTagManager implements MetaTagManagerInterface, SingletonInterfa
     public function removeAllProperties()
     {
         $this->properties = [];
-    }
-
-    /**
-     * @return MetaTagManagerInterface
-     */
-    public static function getInstance(): MetaTagManagerInterface
-    {
-        return GeneralUtility::makeInstance(__CLASS__);
     }
 
     /**

@@ -269,7 +269,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getAddedMetaTag()
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['whatDoesThisDo'], [], '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['whatDoesThisDo']);
         $subject->setMetaTag('nAme', 'Author', 'foobar');
         $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');
         $expectedResult = [
@@ -286,7 +286,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function overrideMetaTag()
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['whatDoesThisDo'], [], '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['whatDoesThisDo']);
         $subject->setMetaTag('nAme', 'Author', 'Axel Foley');
         $subject->setMetaTag('nAme', 'Author', 'foobar');
         $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');
@@ -304,7 +304,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function unsetAddedMetaTag()
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['whatDoesThisDo'], [], '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['whatDoesThisDo']);
         $subject->setMetaTag('nAme', 'Author', 'foobar');
         $subject->removeMetaTag('naMe', 'AUTHOR');
         $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');

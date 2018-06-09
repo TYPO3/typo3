@@ -374,6 +374,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected $endingSlash = '';
 
     /**
+     * @var MetaTagManagerRegistry
+     */
+    protected $metaTagRegistry;
+
+    /**
      * @param string $templateFile Declare the used template file. Omit this parameter will use default template
      */
     public function __construct($templateFile = '')
@@ -392,6 +397,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             '-->' . LF . '/*]]>*/' . LF . '</style>' . LF
         ];
 
+        $this->metaTagRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
     }
 
@@ -950,9 +956,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function setMetaTag(string $type, string $name, string $content, array $subProperties = [], $replace = true)
     {
-        /**
-         * Lowercase all the things
-         */
+        // Lowercase all the things
         $type = strtolower($type);
         $name = strtolower($name);
         if (!in_array($type, ['property', 'name', 'http-equiv'], true)) {
@@ -962,8 +966,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             );
         }
 
-        $metaTagManagerRegistry = MetaTagManagerRegistry::getInstance();
-        $manager = $metaTagManagerRegistry->getManagerForProperty($name);
+        $manager = $this->metaTagRegistry->getManagerForProperty($name);
         $manager->addProperty($name, $content, $subProperties, $replace, $type);
     }
 
@@ -977,14 +980,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getMetaTag(string $type, string $name): array
     {
-        /**
-         * Lowercase all the things
-         */
+        // Lowercase all the things
         $type = strtolower($type);
         $name = strtolower($name);
 
-        $metaTagManagerRegistry = MetaTagManagerRegistry::getInstance();
-        $manager = $metaTagManagerRegistry->getManagerForProperty($name);
+        $manager = $this->metaTagRegistry->getManagerForProperty($name);
         $propertyContent = $manager->getProperty($name, $type);
 
         if (!empty($propertyContent[0])) {
@@ -1005,14 +1005,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function removeMetaTag(string $type, string $name)
     {
-        /**
-         * Lowercase all the things
-         */
+        // Lowercase all the things
         $type = strtolower($type);
         $name = strtolower($name);
 
-        $metaTagManagerRegistry = MetaTagManagerRegistry::getInstance();
-        $manager = $metaTagManagerRegistry->getManagerForProperty($name);
+        $manager = $this->metaTagRegistry->getManagerForProperty($name);
         $manager->removeProperty($name, $type);
     }
 
@@ -1648,9 +1645,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function renderMetaTagsFromAPI()
     {
-        $metaTagManagerRegistry = MetaTagManagerRegistry::getInstance();
         $metaTags = [];
-        foreach ($metaTagManagerRegistry->getAllManagers() as $manager) {
+        $metaTagManagers = $this->metaTagRegistry->getAllManagers();
+        foreach ($metaTagManagers as $manager) {
             if ($properties = $manager->renderAllProperties()) {
                 $metaTags[] = $properties;
             }

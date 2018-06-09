@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\MetaTag;
  */
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractMetaTagManager implements MetaTagManagerInterface, SingletonInterface
 {
@@ -90,16 +89,6 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface, Single
      * @var array
      */
     protected $properties = [];
-
-    /**
-     * Gets instance of the manager
-     *
-     * @return MetaTagManagerInterface
-     */
-    public static function getInstance(): MetaTagManagerInterface
-    {
-        return GeneralUtility::makeInstance(__CLASS__);
-    }
 
     /**
      * Add a property
