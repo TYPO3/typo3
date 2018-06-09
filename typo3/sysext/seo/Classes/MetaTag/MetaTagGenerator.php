@@ -1,6 +1,7 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Seo\Generator;
+
+namespace TYPO3\CMS\Seo\MetaTag;
 
 /*
  * This file is part of the TYPO3 CMS project.

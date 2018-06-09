@@ -1,5 +1,7 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\MetaTag;
+declare(strict_types = 1);
+
+namespace TYPO3\CMS\Seo\Tests\Unit\MetaTag;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,7 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\MetaTag;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\MetaTag\OpenGraphMetaTagManager;
+use TYPO3\CMS\Seo\MetaTag\OpenGraphMetaTagManager;
 
 /**
  * Test case

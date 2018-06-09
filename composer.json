@@ -227,6 +227,7 @@
 			"TYPO3\\CMS\\Rsaauth\\Tests\\": "typo3/sysext/rsaauth/Tests/",
 			"TYPO3\\CMS\\Saltedpasswords\\Tests\\": "typo3/sysext/saltedpasswords/Tests/",
 			"TYPO3\\CMS\\Scheduler\\Tests\\": "typo3/sysext/scheduler/Tests/",
+			"TYPO3\\CMS\\Seo\\Tests\\": "typo3/sysext/seo/Tests/",
 			"TYPO3\\CMS\\Setup\\Tests\\": "typo3/sysext/setup/Tests/",
 			"TYPO3\\CMS\\SysAction\\Tests\\": "typo3/sysext/sys_action/Tests/",
 			"TYPO3\\CMS\\SysNote\\Tests\\": "typo3/sysext/sys_note/Tests/",

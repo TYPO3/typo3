@@ -127,19 +127,11 @@ unset($extractorRegistry);
 
 $metaTagManagerRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::class);
 $metaTagManagerRegistry->registerManager(
-    'opengraph',
-    \TYPO3\CMS\Core\MetaTag\OpenGraphMetaTagManager::class
-);
-$metaTagManagerRegistry->registerManager(
     'html5',
     \TYPO3\CMS\Core\MetaTag\Html5MetaTagManager::class
 );
 $metaTagManagerRegistry->registerManager(
     'edge',
     \TYPO3\CMS\Core\MetaTag\EdgeMetaTagManager::class
-);
-$metaTagManagerRegistry->registerManager(
-    'twitter',
-    \TYPO3\CMS\Core\MetaTag\TwitterCardMetaTagManager::class
 );
 unset($metaTagManagerRegistry);

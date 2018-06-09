@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\MetaTag;
 
 /*
@@ -17,8 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\MetaTag;
 use TYPO3\CMS\Core\MetaTag\GenericMetaTagManager;
 use TYPO3\CMS\Core\MetaTag\Html5MetaTagManager;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
-use TYPO3\CMS\Core\MetaTag\OpenGraphMetaTagManager;
-use TYPO3\CMS\Core\MetaTag\TwitterCardMetaTagManager;
+use TYPO3\CMS\Seo\MetaTag\OpenGraphMetaTagManager;
+use TYPO3\CMS\Seo\MetaTag\TwitterCardMetaTagManager;
 
 /**
  * Test case
