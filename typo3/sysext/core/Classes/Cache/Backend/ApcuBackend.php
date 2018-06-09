@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  */
 
 use TYPO3\CMS\Core\Cache;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -95,7 +96,7 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
     {
         parent::setCache($cache);
         $processUser = $this->getCurrentUserData();
-        $pathHash = GeneralUtility::shortMD5($this->getPathSite() . $processUser['name'] . $this->context . $cache->getIdentifier(), 12);
+        $pathHash = GeneralUtility::shortMD5(Environment::getProjectPath() . $processUser['name'] . $this->context . $cache->getIdentifier(), 12);
         $this->setIdentifierPrefix('TYPO3_' . $pathHash);
     }
 
@@ -108,16 +109,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
     protected function getCurrentUserData()
     {
         return extension_loaded('posix') ? posix_getpwuid(posix_geteuid()) : ['name' => 'default'];
-    }
-
-    /**
-     * Returns the PATH_site constant.
-     *
-     * @return string
-     */
-    protected function getPathSite()
-    {
-        return PATH_site;
     }
 
     /**

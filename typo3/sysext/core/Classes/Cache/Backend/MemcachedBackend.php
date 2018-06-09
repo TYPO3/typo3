@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Core\Environment;
 
 /**
  * A caching backend which stores cache entries by using Memcached.
@@ -33,7 +34,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
  * Each key is prepended with a prefix. By default prefix consists from two parts
  * separated by underscore character and ends in yet another underscore character:
  * - "TYPO3"
- * - Current site path obtained from the PATH_site constant
+ * - Current site path obtained from Environment::getProjectPath()
  * This prefix makes sure that keys from the different installations do not
  * conflict.
  *
@@ -208,7 +209,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     public function setCache(FrontendInterface $cache)
     {
         parent::setCache($cache);
-        $identifierHash = substr(md5(PATH_site . $this->context . $this->cacheIdentifier), 0, 12);
+        $identifierHash = substr(md5(Environment::getProjectPath() . $this->context . $this->cacheIdentifier), 0, 12);
         $this->identifierPrefix = 'TYPO3_' . $identifierHash . '_';
     }
 
@@ -221,7 +222,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @throws Exception if no cache frontend has been set.
      * @throws \InvalidArgumentException if the identifier is not valid or the final memcached key is longer than 250 characters
-     * @throws Exception\InvalidDataException if $data is not a string
      * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  *
  * @api
  */
-class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface
+class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInterface
 {
     const SEPARATOR = '^';
     const EXPIRYTIME_FORMAT = 'YmdHis';
@@ -98,11 +98,11 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 
     /**
      * Sets the directory where the cache files are stored. By default it is
-     * assumed that the directory is below the TYPO3_DOCUMENT_ROOT. However, an
+     * assumed that the directory is below TYPO3's Project Path. However, an
      * absolute path can be selected, too.
      *
-     * This method enables to use a cache path outside of document root. The final
-     * cache path is checked and created in createFinalCachDirectory(),
+     * This method enables to use a cache path outside of TYPO3's Project Path. The final
+     * cache path is checked and created in createFinalCacheDirectory(),
      * called by setCache() method, which is done _after_ the cacheDirectory
      * option was handled.
      *
@@ -112,24 +112,24 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
     public function setCacheDirectory($cacheDirectory)
     {
         // Skip handling if directory is a stream ressource
-        // This is used by unit tests with vfs:// directoryies
+        // This is used by unit tests with vfs:// directories
         if (strpos($cacheDirectory, '://')) {
             $this->temporaryCacheDirectory = $cacheDirectory;
             return;
         }
-        $documentRoot = PATH_site;
+        $documentRoot = Environment::getProjectPath() . '/';
         if ($open_basedir = ini_get('open_basedir')) {
             if (Environment::isWindows()) {
                 $delimiter = ';';
                 $cacheDirectory = str_replace('\\', '/', $cacheDirectory);
                 if (!preg_match('/[A-Z]:/', substr($cacheDirectory, 0, 2))) {
-                    $cacheDirectory = PATH_site . $cacheDirectory;
+                    $cacheDirectory = Environment::getProjectPath() . $cacheDirectory;
                 }
             } else {
                 $delimiter = ':';
                 if ($cacheDirectory[0] !== '/') {
                     // relative path to cache directory.
-                    $cacheDirectory = PATH_site . $cacheDirectory;
+                    $cacheDirectory = Environment::getProjectPath() . $cacheDirectory;
                 }
             }
             $basedirs = explode($delimiter, $open_basedir);

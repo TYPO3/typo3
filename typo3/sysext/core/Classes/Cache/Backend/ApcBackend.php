@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * A caching backend which stores cache entries by using APC.
  *
@@ -30,13 +32,13 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * Each key is prepended with a prefix. By default prefix consists from two parts
  * separated by underscore character and ends in yet another underscore character:
  * - "TYPO3"
- * - MD5 of path to TYPO3 and user running TYPO3
+ * - MD5 of path to TYPO3 project folder and user running TYPO3
  * This prefix makes sure that keys from the different installations do not
  * conflict.
  *
  * @api
  */
-class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface
+class ApcBackend extends AbstractBackend implements TaggableBackendInterface
 {
     /**
      * A prefix to separate stored data from other data possible stored in the APC
@@ -92,7 +94,7 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     {
         parent::setCache($cache);
         $processUser = $this->getCurrentUserData();
-        $pathHash = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($this->getPathSite() . $processUser['name'] . $this->context . $cache->getIdentifier(), 12);
+        $pathHash = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(Environment::getProjectPath() . $processUser['name'] . $this->context . $cache->getIdentifier(), 12);
         $this->setIdentifierPrefix('TYPO3_' . $pathHash);
     }
 
@@ -105,16 +107,6 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     protected function getCurrentUserData()
     {
         return extension_loaded('posix') ? posix_getpwuid(posix_geteuid()) : ['name' => 'default'];
-    }
-
-    /**
-     * Returns the PATH_site constant.
-     *
-     * @return string
-     */
-    protected function getPathSite()
-    {
-        return PATH_site;
     }
 
     /**

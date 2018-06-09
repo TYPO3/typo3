@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -95,8 +95,7 @@ class FileBackendTest extends UnitTestCase
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
         $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('tmp/foo');
-        // get PATH_site without trailing slash
-        $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
+        $path = Environment::getProjectPath();
         $this->assertEquals($path . '/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
     }
 
@@ -108,8 +107,7 @@ class FileBackendTest extends UnitTestCase
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
         $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('tmp/foo/');
-        // get PATH_site without trailing slash
-        $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
+        $path = Environment::getProjectPath();
         $this->assertEquals($path . '/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
     }
 
@@ -121,8 +119,7 @@ class FileBackendTest extends UnitTestCase
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
         $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('../tmp/foo');
-        // get PATH_site without trailing slash
-        $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
+        $path = Environment::getProjectPath();
         $this->assertEquals($path . '/../tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
     }
 
@@ -134,8 +131,7 @@ class FileBackendTest extends UnitTestCase
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
         $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('../tmp/foo/');
-        // get PATH_site without trailing slash
-        $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
+        $path = Environment::getProjectPath();
         $this->assertEquals($path . '/../tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
     }
 
