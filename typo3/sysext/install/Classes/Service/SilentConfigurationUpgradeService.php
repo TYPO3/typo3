@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
@@ -140,6 +141,45 @@ class SilentConfigurationUpgradeService
     public function __construct(ConfigurationManager $configurationManager = null)
     {
         $this->configurationManager = $configurationManager ?: GeneralUtility::makeInstance(ConfigurationManager::class);
+    }
+
+    /**
+     * Migration wizard to move configuration files from "<web-dir>/typo3conf/" to "config/"
+     * This applies to the files where all installation-wide configuration resides,
+     * and is called each time when the installer is hit.
+     *
+     * This only applies if the environment variable "TYPO3_PATH_APP" is used and the new configuration
+     * files are not in place yet.
+     *
+     * This functionality will be removed in TYPO3 v11, as all installations should be migrated by then.
+     * @internal
+     */
+    public function migrateConfigurationFiles()
+    {
+        if (Environment::getConfigPath() !== rtrim(PATH_typo3conf, '/')) {
+            if (!file_exists(Environment::getConfigPath())) {
+                GeneralUtility::mkdir(Environment::getConfigPath());
+            }
+
+            $filesToCheck = [
+                'LocalConfiguration.php',
+                'AdditionalConfiguration.php',
+                'AdditionalFactoryConfiguration.php',
+            ];
+            $reloadConfiguration = false;
+            foreach ($filesToCheck as $filename) {
+                $oldFilepath = PATH_typo3conf . $filename;
+                $newFilepath = Environment::getConfigPath() . '/' . $filename;
+
+                if (file_exists($oldFilepath) && !file_exists($newFilepath)) {
+                    $reloadConfiguration = true;
+                    rename($oldFilepath, $newFilepath);
+                }
+            }
+            if ($reloadConfiguration) {
+                $this->configurationManager->exportConfiguration();
+            }
+        }
     }
 
     /**

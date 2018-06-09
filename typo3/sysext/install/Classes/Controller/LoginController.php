@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -54,6 +55,7 @@ class LoginController extends AbstractController
         $view->assignMultiple([
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'loginToken' => $formProtection->generateToken('installTool', 'login'),
+            'configPath' => str_replace(Environment::getProjectPath(), '<project-path>', Environment::getConfigPath()),
         ]);
         return new JsonResponse([
             'success' => true,

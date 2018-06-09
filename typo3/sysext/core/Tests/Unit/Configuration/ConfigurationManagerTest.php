@@ -378,7 +378,7 @@ class ConfigurationManagerTest extends UnitTestCase
             $this->markTestSkipped('Test skipped if run on linux as root');
         }
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['getLocalConfigurationFileLocation']);
 
         $file = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $absoluteFile = Environment::getPublicPath() . '/' . $file;
@@ -387,7 +387,9 @@ class ConfigurationManagerTest extends UnitTestCase
         chmod($absoluteFile, 0444);
         clearstatcache();
 
-        $subject->_set('localConfigurationFile', $file);
+        $subject
+            ->method('getLocalConfigurationFileLocation')
+            ->will($this->returnValue($absoluteFile));
 
         $result = $subject->canWriteConfiguration();
 
@@ -402,7 +404,7 @@ class ConfigurationManagerTest extends UnitTestCase
     public function canWriteConfigurationReturnsTrueIfDirectoryAndFilesAreWritable(): void
     {
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['getLocalConfigurationFileLocation']);
 
         $directory = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $absoluteDirectory = Environment::getPublicPath() . '/' . $directory;
@@ -412,10 +414,12 @@ class ConfigurationManagerTest extends UnitTestCase
         $absoluteFile1 = Environment::getPublicPath() . '/' . $file;
         touch($absoluteFile1);
         $this->testFilesToDelete[] = $absoluteFile1;
-        $subject->_set('localConfigurationFile', $absoluteFile1);
-
         clearstatcache();
 
+        $subject
+            ->expects($this->any())
+            ->method('getLocalConfigurationFileLocation')
+            ->will($this->returnValue($absoluteFile1));
         $result = $subject->canWriteConfiguration();
 
         $this->assertTrue($result);
@@ -471,13 +475,16 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
 
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['getLocalConfigurationFileLocation']);
 
         $file = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $absoluteFile = Environment::getPublicPath() . '/' . $file;
         touch($absoluteFile);
         $this->testFilesToDelete[] = $absoluteFile;
-        $subject->_set('localConfigurationFile', $file);
+        $subject
+            ->expects($this->any())
+            ->method('getLocalConfigurationFileLocation')
+            ->will($this->returnValue($absoluteFile));
 
         $subject->createLocalConfigurationFromFactoryConfiguration();
     }
@@ -488,8 +495,11 @@ class ConfigurationManagerTest extends UnitTestCase
     public function createLocalConfigurationFromFactoryConfigurationWritesContentFromFactoryFile(): void
     {
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration']);
-        $subject->_set('localConfigurationFile', 'typo3temp/var/tests/' . $this->getUniqueId('dummy_'));
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration', 'getLocalConfigurationFileLocation']);
+        $subject
+            ->expects($this->any())
+            ->method('getLocalConfigurationFileLocation')
+            ->will($this->returnValue(PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('dummy_')));
 
         $factoryConfigurationFile = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '.php';
         $factoryConfigurationAbsoluteFile = Environment::getPublicPath() . '/' . $factoryConfigurationFile;
@@ -520,8 +530,11 @@ class ConfigurationManagerTest extends UnitTestCase
     public function createLocalConfigurationFromFactoryConfigurationMergesConfigurationWithAdditionalFactoryFile(): void
     {
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration']);
-        $subject->_set('localConfigurationFile', 'typo3temp/var/tests/' . $this->getUniqueId('dummy_'));
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration', 'getAdditionalFactoryConfigurationFileLocation', 'getLocalConfigurationFileLocation']);
+        $subject
+            ->expects($this->any())
+            ->method('getLocalConfigurationFileLocation')
+            ->will($this->returnValue(PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('dummy_')));
 
         $factoryConfigurationFile = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '.php';
         $factoryConfigurationAbsoluteFile = Environment::getPublicPath() . '/' . $factoryConfigurationFile;
@@ -549,6 +562,10 @@ class ConfigurationManagerTest extends UnitTestCase
         );
         $this->testFilesToDelete[] = $additionalFactoryConfigurationAbsoluteFile;
         $subject->_set('additionalFactoryConfigurationFile', $additionalFactoryConfigurationFile);
+        $subject
+            ->expects($this->any())
+            ->method('getAdditionalFactoryConfigurationFileLocation')
+            ->will($this->returnValue($additionalFactoryConfigurationAbsoluteFile));
 
         $subject
             ->expects($this->once())

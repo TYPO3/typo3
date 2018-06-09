@@ -109,7 +109,7 @@ class PackageManager implements SingletonInterface
     public function __construct(DependencyOrderingService $dependencyOrderingService = null)
     {
         $this->packagesBasePath = Environment::getPublicPath() . '/';
-        $this->packageStatesPathAndFilename = Environment::getPublicPath() . '/typo3conf/PackageStates.php';
+        $this->packageStatesPathAndFilename = Environment::getLegacyConfigPath() . '/PackageStates.php';
         if ($dependencyOrderingService === null) {
             trigger_error(self::class . ' without constructor based dependency injection has been deprecated in v9.2 and will not work in TYPO3 v10.', E_USER_DEPRECATED);
             $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);

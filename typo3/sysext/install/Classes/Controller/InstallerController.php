@@ -113,7 +113,7 @@ class InstallerController
     public function checkEnvironmentAndFoldersAction(): ResponseInterface
     {
         return new JsonResponse([
-            'success' => @is_file(Environment::getLegacyConfigPath() . '/LocalConfiguration.php'),
+            'success' => @is_file(Environment::getConfigPath() . '/LocalConfiguration.php'),
         ]);
     }
 
@@ -158,7 +158,7 @@ class InstallerController
         $structureFixMessageQueue = $structureFacade->fix();
         $errorsFromStructure = $structureFixMessageQueue->getAllMessages(FlashMessage::ERROR);
 
-        if (@is_dir(Environment::getLegacyConfigPath())) {
+        if (@is_dir(Environment::getConfigPath())) {
             $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
             $configurationManager->createLocalConfigurationFromFactoryConfiguration();
 
