@@ -9,6 +9,7 @@
 .. role:: typescript(code)
 .. role:: shell(code)
 .. role:: sql(code)
+.. role:: yaml(code)
 
 .. role:: ts(typoscript)
    :class: typoscript
