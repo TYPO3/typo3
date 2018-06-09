@@ -271,17 +271,44 @@ class SchemaMigrator
         // Flatten the array of arrays by one level
         $tables = array_merge(...$tables);
 
-        $defaultTcaSchema = GeneralUtility::makeInstance(DefaultTcaSchema::class);
-        $tables = $defaultTcaSchema->enrich($tables);
-
         // @deprecated (?!) Drop any definition of pages_language_overlay in SQL
         // will be removed in TYPO3 v10.0 once the feature is enabled by default
-        if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('unifiedPageTranslationHandling')) {
-            foreach ($tables as $k => $table) {
-                if ($table->getName() === 'pages_language_overlay') {
-                    unset($tables[$k]);
+        $disabledPagesLanguageOverlay = GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('unifiedPageTranslationHandling');
+
+        // Add default TCA fields
+        $defaultTcaSchema = GeneralUtility::makeInstance(DefaultTcaSchema::class);
+        $tables = $defaultTcaSchema->enrich($tables);
+        // Ensure the default TCA fields are ordered
+        foreach ($tables as $k => $table) {
+            if ($disabledPagesLanguageOverlay && $table->getName() === 'pages_language_overlay') {
+                unset($tables[$k]);
+                continue;
+            }
+            $prioritizedColumnNames = $defaultTcaSchema->getPrioritizedFieldNames($table->getName());
+            // no TCA table
+            if (empty($prioritizedColumnNames)) {
+                continue;
+            }
+
+            $prioritizedColumns = [];
+            $nonPrioritizedColumns = [];
+
+            foreach ($table->getColumns() as $columnObject) {
+                if (in_array($columnObject->getName(), $prioritizedColumnNames, true)) {
+                    $prioritizedColumns[] = $columnObject;
+                } else {
+                    $nonPrioritizedColumns[] = $columnObject;
                 }
             }
+
+            $tables[$k] = new Table(
+                $table->getName(),
+                array_merge($prioritizedColumns, $nonPrioritizedColumns),
+                $table->getIndexes(),
+                $table->getForeignKeys(),
+                0,
+                $table->getOptions()
+            );
         }
 
         return $tables;

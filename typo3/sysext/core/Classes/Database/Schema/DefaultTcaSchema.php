@@ -520,6 +520,89 @@ class DefaultTcaSchema
     }
 
     /**
+     * If the enrich() method adds fields, they should be added in the beginning of a table.
+     *
+     * @param string $tableName
+     * @return string[]
+     */
+    public function getPrioritizedFieldNames(string $tableName): array
+    {
+        if (!isset($GLOBALS['TCA'][$tableName])) {
+            return [];
+        }
+
+        $prioritizedFieldNames = [
+            'uid',
+            'pid'
+        ];
+
+        $tableDefinition = $GLOBALS['TCA']['ctrl'];
+
+        if (!empty($tableDefinition['crdate'])) {
+            $prioritizedFieldNames[] = $tableDefinition['crdate'];
+        }
+        if (!empty($tableDefinition['tstamp'])) {
+            $prioritizedFieldNames[] = $tableDefinition['tstamp'];
+        }
+        if (!empty($tableDefinition['cruser_id'])) {
+            $prioritizedFieldNames[] = $tableDefinition['cruser_id'];
+        }
+        if (!empty($tableDefinition['delete'])) {
+            $prioritizedFieldNames[] = $tableDefinition['delete'];
+        }
+        if (!empty($tableDefinition['enablecolumns']['disabled'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['disabled'];
+        }
+        if (!empty($tableDefinition['enablecolumns']['starttime'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['starttime'];
+        }
+        if (!empty($tableDefinition['enablecolumns']['endtime'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['endtime'];
+        }
+        if (!empty($tableDefinition['enablecolumns']['fe_group'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['fe_group'];
+        }
+        if (!empty($tableDefinition['languageField'])) {
+            $prioritizedFieldNames[] = $tableDefinition['languageField'];
+            if (!empty($tableDefinition['transOrigPointerField'])) {
+                $prioritizedFieldNames[] = $tableDefinition['transOrigPointerField'];
+                $prioritizedFieldNames[] = 'l10n_state';
+            }
+            if (!empty($tableDefinition['translationSource'])) {
+                $prioritizedFieldNames[] = $tableDefinition['translationSource'];
+            }
+            if (!empty($tableDefinition['transOrigDiffSourceField'])) {
+                $prioritizedFieldNames[] = $tableDefinition['transOrigDiffSourceField'];
+            }
+        }
+        if (!empty($tableDefinition['sortby'])) {
+            $prioritizedFieldNames[] = $tableDefinition['sortby'];
+        }
+        if (!empty($tableDefinition['descriptionColumn'])) {
+            $prioritizedFieldNames[] = $tableDefinition['descriptionColumn'];
+        }
+        if (!empty($tableDefinition['editlock'])) {
+            $prioritizedFieldNames[] = $tableDefinition['editlock'];
+        }
+        if (!empty($tableDefinition['origUid'])) {
+            $prioritizedFieldNames[] = $tableDefinition['origUid'];
+        }
+        if (!empty($tableDefinition['versioningWS'])) {
+            $prioritizedFieldNames[] = 't3ver_wsid';
+            $prioritizedFieldNames[] = 't3ver_oid';
+            $prioritizedFieldNames[] = 't3ver_state';
+            $prioritizedFieldNames[] = 't3ver_stage';
+            $prioritizedFieldNames[] = 't3ver_id';
+            $prioritizedFieldNames[] = 't3ver_move_id';
+            $prioritizedFieldNames[] = 't3ver_count';
+            $prioritizedFieldNames[] = 't3ver_tstamp';
+            $prioritizedFieldNames[] = 't3ver_label';
+        }
+
+        return $prioritizedFieldNames;
+    }
+
+    /**
      * True if table with given table name is defined within incoming $tables array
      *
      * @param Table[] $tables

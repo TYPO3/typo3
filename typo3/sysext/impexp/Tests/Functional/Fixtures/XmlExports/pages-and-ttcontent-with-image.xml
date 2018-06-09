@@ -189,10 +189,10 @@
 		<tablerow index="pages:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
+				<field index="pid">0</field>
 				<field index="perms_everybody">15</field>
 				<field index="title">Root</field>
 				<field index="doktype">1</field>
-				<field index="pid">0</field>
 				<field index="deleted">0</field>
 				<field index="hidden">0</field>
 			</fieldlist>
@@ -201,10 +201,10 @@
 		<tablerow index="pages:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
+				<field index="pid">1</field>
 				<field index="perms_everybody">15</field>
 				<field index="title">Dummy 1-2</field>
 				<field index="doktype">1</field>
-				<field index="pid">1</field>
 				<field index="deleted">0</field>
 				<field index="hidden">0</field>
 			</fieldlist>
@@ -213,11 +213,11 @@
 		<tablerow index="tt_content:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
+				<field index="pid">1</field>
 				<field index="CType">textpic</field>
 				<field index="header">Test content</field>
 				<field index="image">1</field>
 				<field index="header_link">file:1</field>
-				<field index="pid">1</field>
 				<field index="deleted">0</field>
 				<field index="hidden">0</field>
 				<field index="t3ver_oid">0</field>
@@ -255,9 +255,9 @@
 		<tablerow index="sys_language:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
+				<field index="pid">0</field>
 				<field index="title">Deutsch</field>
 				<field index="flag">de</field>
-				<field index="pid">0</field>
 				<field index="hidden">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
@@ -265,6 +265,7 @@
 		<tablerow index="sys_file_reference:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
+				<field index="pid">1</field>
 				<field index="uid_local">1</field>
 				<field index="uid_foreign">1</field>
 				<field index="tablenames">tt_content</field>
@@ -275,7 +276,6 @@
 				<field index="description" type="NULL"></field>
 				<field index="alternative" type="NULL"></field>
 				<field index="link"></field>
-				<field index="pid">1</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="uid_local" type="array">
@@ -292,6 +292,7 @@
 		<tablerow index="sys_file:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
+				<field index="pid">0</field>
 				<field index="storage">1</field>
 				<field index="type">2</field>
 				<field index="metadata">0</field>
@@ -304,7 +305,6 @@
 				<field index="size">7958</field>
 				<field index="creation_date">1389878273</field>
 				<field index="modification_date">1389878273</field>
-				<field index="pid">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="storage" type="array">
@@ -334,6 +334,7 @@
 		<tablerow index="sys_file_storage:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
+				<field index="pid">0</field>
 				<field index="name">fileadmin/ (auto-created)</field>
 				<field index="driver">Local</field>
 				<field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
@@ -359,7 +360,6 @@
 				<field index="is_public">1</field>
 				<field index="is_writable">1</field>
 				<field index="is_online">1</field>
-				<field index="pid">0</field>
 				<field index="description" type="NULL"></field>
 			</fieldlist>
 			<related index="rels" type="array">
@@ -376,13 +376,13 @@
 		<tablerow index="sys_file_metadata:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
+				<field index="pid">0</field>
 				<field index="file">1</field>
 				<field index="title">Dummy image</field>
 				<field index="width">400</field>
 				<field index="height">300</field>
 				<field index="description">This is a dummy image.</field>
 				<field index="alternative">Photo of program code</field>
-				<field index="pid">0</field>
 				<field index="sys_language_uid">0</field>
 				<field index="l10n_parent">0</field>
 			</fieldlist>
@@ -401,13 +401,13 @@
 		<tablerow index="sys_file_metadata:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
+				<field index="pid">0</field>
 				<field index="file">1</field>
 				<field index="title">Beispiel Bild</field>
 				<field index="width">400</field>
 				<field index="height">300</field>
 				<field index="description">Nur ein Beispielbild.</field>
 				<field index="alternative">Foto von Programmcode</field>
-				<field index="pid">0</field>
 				<field index="sys_language_uid">1</field>
 				<field index="l10n_parent">1</field>
 			</fieldlist>
