@@ -612,4 +612,29 @@ return [
             'Deprecation-85122-FunctionalityInCharsetConverter.rst'
         ],
     ],
+    'TYPO3\CMS\Setup\Controller\SetupModuleController->OLD_BE_USER' => [
+        'restFiles' => [
+            'Deprecation-85196-ProtectSetupModuleController.rst'
+        ],
+    ],
+    'TYPO3\CMS\Setup\Controller\SetupModuleController->MOD_MENU' => [
+        'restFiles' => [
+            'Deprecation-85196-ProtectSetupModuleController.rst'
+        ],
+    ],
+    'TYPO3\CMS\Setup\Controller\SetupModuleController->MOD_SETTINGS' => [
+        'restFiles' => [
+            'Deprecation-85196-ProtectSetupModuleController.rst'
+        ],
+    ],
+    'TYPO3\CMS\Setup\Controller\SetupModuleController->overrideConf' => [
+        'restFiles' => [
+            'Deprecation-85196-ProtectSetupModuleController.rst'
+        ],
+    ],
+    'TYPO3\CMS\Setup\Controller\SetupModuleController->languageUpdate' => [
+        'restFiles' => [
+            'Deprecation-85196-ProtectSetupModuleController.rst'
+        ],
+    ],
 ];

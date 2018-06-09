@@ -2403,4 +2403,18 @@ return [
             'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
         ],
     ],
+    'TYPO3\CMS\Setup\Controller\SetupModuleController->languageUpdate' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85196-ProtectSetupModuleController.rst'
+        ],
+    ],
+    'TYPO3\CMS\Setup\Controller\SetupModuleController->simulateUser' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85196-ProtectSetupModuleController.rst'
+        ],
+    ],
 ];
