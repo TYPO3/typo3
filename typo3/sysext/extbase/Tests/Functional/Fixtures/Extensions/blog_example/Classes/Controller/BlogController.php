@@ -16,6 +16,7 @@ namespace ExtbaseTeam\BlogExample\Controller;
  */
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 
 /**
  * BlogController
@@ -51,6 +52,43 @@ class BlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     /**
+     * @return string
+     */
+    public function testFormAction()
+    {
+        return 'testFormAction';
+    }
+
+    /**
+     * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $blogPost
+     * // needs to be imported entirely, else the annotationChecker script of bamboo will complain
+     * @IgnoreValidation("blogPost")
+     */
+    public function testForwardAction($blogPost)
+    {
+        $this->forward('testForwardTarget', null, null, ['blogPost' => $blogPost]);
+    }
+
+    /**
+     * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $blogPost
+     * @return string
+     */
+    public function testForwardTargetAction($blogPost)
+    {
+        return 'testForwardTargetAction';
+    }
+
+    /**
+     * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog
+     * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $blogPost
+     * @return string
+     */
+    public function testRelatedObjectAction($blog, $blogPost = null)
+    {
+        return 'testRelatedObject';
+    }
+
+    /**
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
      * @throws \RuntimeException
@@ -65,6 +103,17 @@ class BlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 1476122222
             );
         }
+    }
+
+    /**
+     * Disable the default error flash message, otherwise we get an error because the flash message
+     * session handling is not available during functional tests.
+     *
+     * @return bool
+     */
+    protected function getErrorFlashMessage()
+    {
+        return false;
     }
 
     /**

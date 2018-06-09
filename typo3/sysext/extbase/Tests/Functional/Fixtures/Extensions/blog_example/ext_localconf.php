@@ -5,7 +5,7 @@ defined('TYPO3_MODE') or die();
     'ExtbaseTeam.BlogExample',
     'Blogs',
     [
-        'Blog' => 'list',
+        'Blog' => 'list,testForm,testForward,testForwardTarget,testRelatedObject',
     ],
     []
 );
