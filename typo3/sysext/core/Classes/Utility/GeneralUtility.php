@@ -4012,7 +4012,7 @@ class GeneralUtility
     public static function getDeprecationLogFileName()
     {
         static::writeDeprecationLogFileEntry(__METHOD__ . ' is deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0');
-        return PATH_typo3conf . 'deprecation_' . self::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
+        return Environment::getVarPath() . '/log/deprecation_' . self::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
     }
 
     /**
@@ -4179,7 +4179,7 @@ class GeneralUtility
     {
         $date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
         // Write a longer message to the deprecation log
-        $destination = PATH_typo3conf . 'deprecation_' . self::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
+        $destination = Environment::getVarPath() . '/log/deprecation_' . self::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
         $file = @fopen($destination, 'a');
         if ($file) {
             @fwrite($file, $date . $msg . LF);
