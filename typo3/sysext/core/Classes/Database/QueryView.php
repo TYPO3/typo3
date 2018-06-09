@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Database;
 use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -936,7 +937,7 @@ class QueryView
         $fieldSetup = $conf;
         $out = '';
         if ($fieldSetup['type'] === 'files') {
-            $d = dir(PATH_site . $fieldSetup['uploadfolder']);
+            $d = dir(Environment::getPublicPath() . '/' . $fieldSetup['uploadfolder']);
             while (false !== ($entry = $d->read())) {
                 if ($entry === '.' || $entry === '..') {
                     continue;

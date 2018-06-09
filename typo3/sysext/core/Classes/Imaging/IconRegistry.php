@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Imaging;
 
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
@@ -554,7 +555,7 @@ class IconRegistry implements SingletonInterface
      */
     protected function getCachedBackendIcons()
     {
-        $cacheIdentifier = 'BackendIcons_' . sha1(TYPO3_version . PATH_site . 'BackendIcons');
+        $cacheIdentifier = 'BackendIcons_' . sha1(TYPO3_version . Environment::getProjectPath() . 'BackendIcons');
         /** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $assetsCache */
         $assetsCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
         $cacheEntry = $assetsCache->get($cacheIdentifier);

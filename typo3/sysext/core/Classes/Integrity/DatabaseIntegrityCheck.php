@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Integrity;
 
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -588,7 +589,7 @@ class DatabaseIntegrityCheck
         }
         $this->checkFileRefs = $newCheckFileRefs;
         foreach ($this->checkFileRefs as $folder => $fileArr) {
-            $path = PATH_site . $folder;
+            $path = Environment::getPublicPath() . '/' . $folder;
             if (@is_dir($path) && @is_readable($path)) {
                 $d = dir($path);
                 while ($entry = $d->read()) {
@@ -618,7 +619,7 @@ class DatabaseIntegrityCheck
                     if (preg_match('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/', $folder)) {
                         $file = $folder . '/' . $file;
                         $folder = '';
-                        $path = substr(PATH_site, 0, -1);
+                        $path = Environment::getPublicPath();
                     }
                     $temp = $this->whereIsFileReferenced($folder, $file);
                     $tempList = '';

@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -1400,7 +1401,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if ($isDevelopment) {
             $requireJsConfig['urlArgs'] = 'bust=' . $GLOBALS['EXEC_TIME'];
         } else {
-            $requireJsConfig['urlArgs'] = 'bust=' . GeneralUtility::hmac(TYPO3_version . PATH_site);
+            $requireJsConfig['urlArgs'] = 'bust=' . GeneralUtility::hmac(TYPO3_version . Environment::getProjectPath());
         }
         $corePath = ExtensionManagementUtility::extPath('core', 'Resources/Public/JavaScript/Contrib/');
         $corePath = PathUtility::getAbsoluteWebPath($corePath);

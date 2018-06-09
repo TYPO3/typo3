@@ -20,6 +20,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -435,9 +436,9 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param string $field Fieldname of source record (where reference is located)
      * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [field]
      * @param int $deleted Whether record is deleted-flagged or not
-     * @param string $ref_table For database references; the tablename the reference points to. Special keyword "_FILE" indicates that "ref_string" is a file reference either absolute or relative to PATH_site. Special keyword "_STRING" indicates some special usage (typ. softreference) where "ref_string" is used for the value.
+     * @param string $ref_table For database references; the tablename the reference points to. Special keyword "_FILE" indicates that "ref_string" is a file reference either absolute or relative to Environment::getPublicPath(). Special keyword "_STRING" indicates some special usage (typ. softreference) where "ref_string" is used for the value.
      * @param int $ref_uid For database references; The UID of the record (zero "ref_table" is "_FILE" or "_STRING")
-     * @param string $ref_string For "_FILE" or "_STRING" references: The filepath (relative to PATH_site or absolute) or other string.
+     * @param string $ref_string For "_FILE" or "_STRING" references: The filepath (relative to Environment::getPublicPath() or absolute) or other string.
      * @param int $sort The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
      * @param string $softref_key If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
      * @param string $softref_id Soft reference ID for key. Might be useful for replace operations.
@@ -474,7 +475,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param int $deleted Whether record is deleted-flagged or not
      * @param string $referencedTable In database references the tablename the reference points to. Keyword "_FILE" indicates that $referenceString is a file reference, keyword "_STRING" indicates special usage (typ. SoftReference) in $referenceString
      * @param int $referencedUid In database references the UID of the record (zero $referencedTable is "_FILE" or "_STRING")
-     * @param string $referenceString For "_FILE" or "_STRING" references: The filepath (relative to PATH_site or absolute) or other string.
+     * @param string $referenceString For "_FILE" or "_STRING" references: The filepath (relative to Environment::getPublicPath() or absolute) or other string.
      * @param int $sort The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
      * @param string $softReferenceKey If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
      * @param string $softReferenceId Soft reference ID for key. Might be useful for replace operations.
@@ -589,7 +590,7 @@ class ReferenceIndex implements LoggerAwareInterface
     {
         foreach ($items as $sort => $i) {
             $filePath = $i['ID_absFile'];
-            if (GeneralUtility::isFirstPartOfStr($filePath, PATH_site)) {
+            if (GeneralUtility::isFirstPartOfStr($filePath, Environment::getPublicPath())) {
                 $filePath = PathUtility::stripPathSitePrefix($filePath);
             }
             $this->relations[] = $this->createEntryDataUsingRecord(
@@ -1181,7 +1182,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
             }
         } else {
-            return 'ERROR: either "' . $refRec['ref_table'] . '" was not "_FILE" or file PATH_site+"' . $refRec['ref_string'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['ID_absFile'] . '") in sorting index "' . $refRec['sorting'] . '"';
+            return 'ERROR: either "' . $refRec['ref_table'] . '" was not "_FILE" or file Environment::getPublicPath()+"' . $refRec['ref_string'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['ID_absFile'] . '") in sorting index "' . $refRec['sorting'] . '"';
         }
 
         return false;
@@ -1306,15 +1307,12 @@ class ReferenceIndex implements LoggerAwareInterface
     /**
      * Returns destination path to an upload folder given by $folder
      *
-     * @param string $folder Folder relative to PATH_site
-     * @return string Input folder prefixed with PATH_site. No checking for existence is done. Output must be a folder without trailing slash.
+     * @param string $folder Folder relative to TYPO3's public folder ("site path")
+     * @return string Input folder prefixed with Environment::getPublicPath(). No checking for existence is done. Output must be a folder without trailing slash.
      */
     public function destPathFromUploadFolder($folder)
     {
-        if (!$folder) {
-            return substr(PATH_site, 0, -1);
-        }
-        return PATH_site . $folder;
+        return Environment::getPublicPath() . ($folder ? '/' . $folder : '');
     }
 
     /**

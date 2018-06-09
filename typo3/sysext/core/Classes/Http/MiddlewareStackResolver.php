@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Http;
  */
 
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend as PhpFrontendCache;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 
@@ -138,6 +139,6 @@ class MiddlewareStackResolver
      */
     protected function getCacheIdentifier(string $stackName): string
     {
-        return 'middlewares_' . $stackName . '_' . sha1(TYPO3_version . PATH_site);
+        return 'middlewares_' . $stackName . '_' . sha1(TYPO3_version . Environment::getProjectPath());
     }
 }

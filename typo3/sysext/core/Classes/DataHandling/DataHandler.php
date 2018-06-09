@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootExceptio
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -2193,7 +2194,7 @@ class DataHandler implements LoggerAwareInterface
                 // For logging..
                 $propArr = $this->getRecordProperties($table, $id);
                 // Get destination path:
-                $dest = PATH_site . $tcaFieldConf['uploadfolder'];
+                $dest = Environment::getPublicPath() . '/' . $tcaFieldConf['uploadfolder'];
                 // If we are updating:
                 if ($status === 'update') {
                     // Traverse the input values and convert to absolute filenames in case the update happens to an autoVersionized record.
@@ -2209,7 +2210,7 @@ class DataHandler implements LoggerAwareInterface
                         foreach ($valueArray as $key => $theFile) {
                             // If it is an already attached file...
                             if ($theFile === PathUtility::basename($theFile)) {
-                                $valueArray[$key] = PATH_site . $tcaFieldConf['uploadfolder'] . '/' . $theFile;
+                                $valueArray[$key] = Environment::getPublicPath() . '/' . $tcaFieldConf['uploadfolder'] . '/' . $theFile;
                             }
                         }
                     }
@@ -2361,10 +2362,10 @@ class DataHandler implements LoggerAwareInterface
                         if ($this->alternativeFilePath[$theFile]) {
                             // If alternative File Path is set for the file, then it was an import
                             // don't import the file if it already exists
-                            if (@is_file(PATH_site . $this->alternativeFilePath[$theFile])) {
-                                $theFile = PATH_site . $this->alternativeFilePath[$theFile];
+                            if (@is_file(Environment::getPublicPath() . '/' . $this->alternativeFilePath[$theFile])) {
+                                $theFile = Environment::getPublicPath() . '/' . $this->alternativeFilePath[$theFile];
                             } elseif (@is_file($theFile)) {
-                                $dest = PathUtility::dirname(PATH_site . $this->alternativeFilePath[$theFile]);
+                                $dest = PathUtility::dirname(Environment::getPublicPath() . '/' . $this->alternativeFilePath[$theFile]);
                                 if (!@is_dir($dest)) {
                                     GeneralUtility::mkdir_deep($dest);
                                 }
@@ -2380,7 +2381,7 @@ class DataHandler implements LoggerAwareInterface
                                     $fI = GeneralUtility::split_fileref($theEndFileName);
                                     // Check for allowed extension:
                                     if ($this->fileFunc->checkIfAllowed($fI['fileext'], $dest, $theEndFileName)) {
-                                        $theDestFile = PATH_site . $this->alternativeFilePath[$theFile];
+                                        $theDestFile = Environment::getPublicPath() . '/' . $this->alternativeFilePath[$theFile];
                                         // Write the file:
                                         if ($theDestFile) {
                                             GeneralUtility::upload_copy_move($theFile, $theDestFile);
@@ -2410,7 +2411,7 @@ class DataHandler implements LoggerAwareInterface
                         }
                         if (!empty($theFile)) {
                             $theFile = GeneralUtility::fixWindowsFilePath($theFile);
-                            if (GeneralUtility::isFirstPartOfStr($theFile, PATH_site)) {
+                            if (GeneralUtility::isFirstPartOfStr($theFile, Environment::getPublicPath())) {
                                 $theFile = PathUtility::stripPathSitePrefix($theFile);
                             }
                         }
@@ -4103,7 +4104,7 @@ class DataHandler implements LoggerAwareInterface
         // Traverse this array of files:
         $uploadFolder = $conf['internal_type'] === 'file' ? $conf['uploadfolder'] : '';
         // Prepend absolute paths to files
-        $dest = PATH_site . $uploadFolder;
+        $dest = Environment::getPublicPath() . '/' . $uploadFolder;
         $newValue = [];
         foreach ($theFileValues as $file) {
             if (trim($file)) {
@@ -4175,9 +4176,9 @@ class DataHandler implements LoggerAwareInterface
                 continue;
             }
             $fileInfo = [];
-            $fileInfo['exists'] = @is_file(PATH_site . $rteFileRecord['ref_string']);
+            $fileInfo['exists'] = @is_file(Environment::getPublicPath() . '/' . $rteFileRecord['ref_string']);
             $fileInfo['original'] = mb_substr($rteFileRecord['ref_string'], 0, -mb_strlen($filename)) . 'RTEmagicP_' . preg_replace('/\\.[[:alnum:]]+$/', '', mb_substr($filename, 10));
-            $fileInfo['original_exists'] = @is_file(PATH_site . $fileInfo['original']);
+            $fileInfo['original_exists'] = @is_file(Environment::getPublicPath() . '/' . $fileInfo['original']);
             // CODE from tx_impexp and class.rte_images.php adapted for use here:
             if (!$fileInfo['exists'] || !$fileInfo['original_exists']) {
                 $this->newlog('Trying to copy RTEmagic files (' . $rteFileRecord['ref_string'] . ' / ' . $fileInfo['original'] . ') but one or both were missing', 1);
@@ -4187,17 +4188,17 @@ class DataHandler implements LoggerAwareInterface
             $dirPrefix = PathUtility::dirname($rteFileRecord['ref_string']) . '/';
             $rteOrigName = PathUtility::basename($fileInfo['original']);
             // If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
-            if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/') && @is_dir(PATH_site . $dirPrefix)) {
+            if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/') && @is_dir(Environment::getPublicPath() . '/' . $dirPrefix)) {
                 // RTE:
                 // From the "original" RTE filename, produce a new "original" destination filename which is unused.
-                $origDestName = $this->fileFunc->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
+                $origDestName = $this->fileFunc->getUniqueName($rteOrigName, Environment::getPublicPath() . '/' . $dirPrefix);
                 // Create copy file name:
                 $pI = pathinfo($rteFileRecord['ref_string']);
                 $copyDestName = PathUtility::dirname($origDestName) . '/RTEmagicC_' . mb_substr(PathUtility::basename($origDestName), 10) . '.' . $pI['extension'];
                 if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)) {
                     // Making copies:
-                    GeneralUtility::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);
-                    GeneralUtility::upload_copy_move(PATH_site . $rteFileRecord['ref_string'], $copyDestName);
+                    GeneralUtility::upload_copy_move(Environment::getPublicPath() . '/' . $fileInfo['original'], $origDestName);
+                    GeneralUtility::upload_copy_move(Environment::getPublicPath() . '/' . $rteFileRecord['ref_string'], $copyDestName);
                     clearstatcache();
                     // Register this:
                     $this->RTEmagic_copyIndex[$rteFileRecord['tablename']][$rteFileRecord['recuid']][$rteFileRecord['field']][$rteFileRecord['ref_string']] = PathUtility::stripPathSitePrefix($copyDestName);
@@ -8293,7 +8294,7 @@ class DataHandler implements LoggerAwareInterface
     {
         $uploadFolder = $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'];
         if ($uploadFolder && trim($filelist) && $GLOBALS['TCA'][$table]['columns'][$field]['config']['internal_type'] === 'file') {
-            $uploadPath = PATH_site . $uploadFolder;
+            $uploadPath = Environment::getPublicPath() . '/' . $uploadFolder;
             $fileArray = GeneralUtility::trimExplode(',', $filelist, true);
             foreach ($fileArray as $theFile) {
                 $theFileFullPath = $uploadPath . '/' . $theFile;

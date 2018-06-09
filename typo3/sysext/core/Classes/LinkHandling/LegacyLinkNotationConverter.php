@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\LinkHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -98,7 +99,7 @@ class LegacyLinkNotationConverter
                 if (!$containsSlash
                     && trim($rootFileDat)
                     && (
-                        @is_file(PATH_site . $rootFileDat)
+                        @is_file(Environment::getPublicPath() . '/' . $rootFileDat)
                         || $fileExtension === 'php'
                         || $fileExtension === 'html'
                         || $fileExtension === 'htm'

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -170,7 +171,7 @@ class SoftReferenceIndex
                 $srcRef = htmlspecialchars_decode($attribs[0]['src']);
                 $pI = pathinfo($srcRef);
                 // If it looks like a local image, continue. Otherwise ignore it.
-                $absPath = GeneralUtility::getFileAbsFileName(PATH_site . $srcRef);
+                $absPath = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $srcRef);
                 if (!$pI['scheme'] && !$pI['query'] && $absPath && $srcRef !== 'clear.gif') {
                     // Initialize the element entry with info text here:
                     $tokenID = $this->makeTokenID($k);
@@ -485,7 +486,7 @@ class SoftReferenceIndex
         $containsSlash = strstr($rootFileDat, '/');
         $rFD_fI = pathinfo($rootFileDat);
         $fileExtension = strtolower($rFD_fI['extension']);
-        if (!$containsSlash && trim($rootFileDat) && (@is_file(PATH_site . $rootFileDat) || $fileExtension === 'php' || $fileExtension === 'html' || $fileExtension === 'htm')) {
+        if (!$containsSlash && trim($rootFileDat) && (@is_file(Environment::getPublicPath() . '/' . $rootFileDat) || $fileExtension === 'php' || $fileExtension === 'html' || $fileExtension === 'htm')) {
             $isLocalFile = 1;
         } elseif ($containsSlash) {
             // Adding this so realurl directories are linked right (non-existing).
