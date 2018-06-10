@@ -35,9 +35,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class TranslationServiceTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
      * @var ConfigurationManager
@@ -59,8 +59,6 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
@@ -89,15 +87,6 @@ class TranslationServiceTest extends UnitTestCase
 
         $this->store = GeneralUtility::makeInstance(LanguageStore::class);
         $this->store->initialize();
-    }
-
-    /**
-     * Tear down
-     */
-    public function tearDown(): void
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 
     /**

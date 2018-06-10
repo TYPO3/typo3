@@ -15,27 +15,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  */
 
 /**
- * Testcase for the file class of the TYPO3 FAL
+ * Test case
  */
 class FileReferenceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * @var array A backup of registered singleton instances
-     */
-    protected $singletonInstances = [];
-
-    protected function setUp()
-    {
-        $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-        \TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
-    }
-
-    protected function tearDown()
-    {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
-    }
-
     /**
      * @param array $fileReferenceProperties
      * @param array $originalFileProperties

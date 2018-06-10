@@ -20,40 +20,23 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * RemoteServer test
+ * Test case
  */
-class RemoteServerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RemoteServerTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer
+     * @var bool Reset singletons created by subject
      */
-    protected $subject;
+    protected $resetSingletonInstances = true;
 
     /**
      * @var FileReference[]|ObjectProphecy[]
      */
     protected $fileReferenceProphecies;
-
-    /**
-     * Set up
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer::class, ['__none']);
-    }
-
-    /**
-     * Tear down.
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-        unset($this->subject);
-        unset($this->fileReferenceProphecies);
-    }
 
     /**
      * @return array
@@ -129,7 +112,8 @@ class RemoteServerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $liveFileReferences = $this->getFileReferenceProphecies($fileFileReferenceList);
         $versionFileReferences = $this->getFileReferenceProphecies($versionFileReferenceList);
 
-        $result = $this->subject->_call(
+        $subject = $this->getAccessibleMock(RemoteServer::class, ['__none']);
+        $result = $subject->_call(
             'prepareFileReferenceDifferences',
             $liveFileReferences,
             $versionFileReferences,

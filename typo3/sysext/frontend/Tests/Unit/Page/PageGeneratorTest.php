@@ -21,11 +21,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageGenerator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class PageGeneratorTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
@@ -33,19 +34,11 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected static $suppressNotices = true;
 
     /**
-     * @var array A backup of registered singleton instances
+     * Tear down
      */
-    protected $singletonInstances = [];
-
-    protected function setUp()
-    {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-    }
-
     protected function tearDown()
     {
         GeneralUtility::purgeInstances();
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
 

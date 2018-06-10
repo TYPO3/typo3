@@ -39,6 +39,11 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 class ActionControllerTest extends UnitTestCase
 {
     /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
+    /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $actionController;

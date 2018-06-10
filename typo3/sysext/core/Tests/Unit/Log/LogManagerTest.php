@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Log\Processor\NullProcessor;
 use TYPO3\CMS\Core\Log\Writer\NullWriter;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -29,27 +28,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class LogManagerTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Log\LogManager
-     */
-    protected $logManagerInstance = null;
-
-    protected function setUp()
-    {
-        $this->logManagerInstance = GeneralUtility::makeInstance(LogManager::class);
-    }
-
-    protected function tearDown()
-    {
-        GeneralUtility::makeInstance(LogManager::class)->reset();
-        parent::tearDown();
-    }
-
-    /**
      * @test
      */
     public function logManagerReturnsLoggerWhenRequestedWithGetLogger()
     {
-        $this->assertInstanceOf(Logger::class, $this->logManagerInstance->getLogger('test'));
+        $this->assertInstanceOf(Logger::class, (new LogManager())->getLogger('test'));
     }
 
     /**
@@ -57,7 +40,7 @@ class LogManagerTest extends UnitTestCase
      */
     public function logManagerTurnsUnderScoreStyleLoggerNamesIntoDotStyleLoggerNames()
     {
-        $this->assertSame('test.a.b', $this->logManagerInstance->getLogger('test_a_b')->getName());
+        $this->assertSame('test.a.b', (new LogManager())->getLogger('test_a_b')->getName());
     }
 
     /**
@@ -65,7 +48,7 @@ class LogManagerTest extends UnitTestCase
      */
     public function logManagerTurnsNamespaceStyleLoggerNamesIntoDotStyleLoggerNames()
     {
-        $this->assertSame('test.a.b', $this->logManagerInstance->getLogger('test\\a\\b')->getName());
+        $this->assertSame('test.a.b', (new LogManager())->getLogger('test\\a\\b')->getName());
     }
 
     /**
@@ -74,9 +57,10 @@ class LogManagerTest extends UnitTestCase
     public function managerReturnsSameLoggerOnRepeatedRequest()
     {
         $loggerName = $this->getUniqueId('test.core.log');
-        $this->logManagerInstance->registerLogger($loggerName);
-        $logger1 = $this->logManagerInstance->getLogger($loggerName);
-        $logger2 = $this->logManagerInstance->getLogger($loggerName);
+        $logger = new LogManager();
+        $logger->registerLogger($loggerName);
+        $logger1 = $logger->getLogger($loggerName);
+        $logger2 = $logger->getLogger($loggerName);
         $this->assertSame($logger1, $logger2);
     }
 
@@ -93,8 +77,7 @@ class LogManagerTest extends UnitTestCase
                 $writer => []
             ]
         ];
-        /** @var $logger \TYPO3\CMS\Core\Log\Logger */
-        $logger = $this->logManagerInstance->getLogger($component);
+        $logger = (new LogManager())->getLogger($component);
         $writers = $logger->getWriters();
         $this->assertInstanceOf($writer, $writers[$level][0]);
     }
@@ -112,8 +95,7 @@ class LogManagerTest extends UnitTestCase
                 $processor => []
             ]
         ];
-        /** @var $logger \TYPO3\CMS\Core\Log\Logger */
-        $logger = $this->logManagerInstance->getLogger($component);
+        $logger = (new LogManager())->getLogger($component);
         $processors = $logger->getProcessors();
         $this->assertInstanceOf($processor, $processors[$level][0]);
     }

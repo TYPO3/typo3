@@ -14,15 +14,21 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for class \TYPO3\CMS\Core\Authentication\AuthenticationService
+ * Test case
  */
 class AuthenticationServiceTest extends UnitTestCase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
     /**
      * Date provider for processLoginReturnsCorrectData
      *

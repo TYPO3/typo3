@@ -21,12 +21,18 @@ use TYPO3\CMS\Core\MetaTag\Html5MetaTagManager;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Seo\MetaTag\OpenGraphMetaTagManager;
 use TYPO3\CMS\Seo\MetaTag\TwitterCardMetaTagManager;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class MetaTagManagerRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class MetaTagManagerRegistryTest extends UnitTestCase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
     /**
      * @test
      */

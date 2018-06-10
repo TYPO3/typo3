@@ -28,9 +28,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class InlineStackProcessorTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
      * Set up
@@ -38,22 +38,12 @@ class InlineStackProcessorTest extends UnitTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
         $cacheProphecy->set(Argument::cetera())->willReturn(false);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-    }
-
-    /**
-     * Tear down
-     */
-    protected function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 
     /**

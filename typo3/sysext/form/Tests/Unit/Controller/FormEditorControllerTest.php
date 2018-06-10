@@ -28,26 +28,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FormEditorControllerTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
-
-    /**
-     * Set up
-     */
-    public function setUp()
-    {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-    }
-
-    /**
-     * Tear down
-     */
-    public function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
-    }
+    protected $resetSingletonInstances = true;
 
     /**
      * @test

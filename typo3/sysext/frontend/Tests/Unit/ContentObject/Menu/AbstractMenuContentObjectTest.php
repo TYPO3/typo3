@@ -22,21 +22,17 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractMenuContentObjectTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
      */
     protected static $suppressNotices = true;
-
-    /**
-     * @var array
-     */
-    protected $singletonInstances = [];
 
     /**
      * @var AbstractMenuContentObject
@@ -56,7 +52,6 @@ class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\Un
             ->getMock();
         $GLOBALS['TSFE']->cObj = new ContentObjectRenderer();
         $GLOBALS['TSFE']->page = [];
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
     }
 
     /**
@@ -65,7 +60,6 @@ class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\Un
     protected function tearDown()
     {
         GeneralUtility::purgeInstances();
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
 

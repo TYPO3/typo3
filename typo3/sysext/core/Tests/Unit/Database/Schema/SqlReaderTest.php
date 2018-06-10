@@ -17,34 +17,25 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema;
  */
 
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Tests for SqlReader
+ * Test case
  */
 class SqlReaderTest extends UnitTestCase
 {
     /**
-     * @var SqlReader
+     * @var bool Reset singletons created by subject
      */
-    protected $subject;
-
-    /**
-     * Set up the test subject
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->subject = GeneralUtility::makeInstance(SqlReader::class);
-    }
+    protected $resetSingletonInstances = true;
 
     /**
      * @test
      */
     public function getStatementArraySplitsStatements()
     {
-        $result = $this->subject->getStatementArray(
+        $subject = new SqlReader();
+        $result = $subject->getStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
             'INSERT INTO aTestTable(`aTestField`) VALUES(1);'
@@ -59,7 +50,8 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getStatementArrayFiltersStatements()
     {
-        $result = $this->subject->getStatementArray(
+        $subject = new SqlReader();
+        $result = $subject->getStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
             'INSERT INTO aTestTable(`aTestField`) VALUES(1);',
@@ -74,7 +66,8 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getInsertStatementArrayResult()
     {
-        $result = $this->subject->getInsertStatementArray(
+        $subject = new SqlReader();
+        $result = $subject->getInsertStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
             'INSERT INTO aTestTable(`aTestField`) VALUES(1);'
@@ -89,7 +82,8 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getInsertStatementArrayResultWithNewline()
     {
-        $result = $this->subject->getInsertStatementArray(
+        $subject = new SqlReader();
+        $result = $subject->getInsertStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
             'INSERT INTO aTestTable(`aTestField`) ' .
@@ -106,7 +100,8 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getCreateTableStatementArrayResult()
     {
-        $result = $this->subject->getCreateTableStatementArray(
+        $subject = new SqlReader();
+        $result = $subject->getCreateTableStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
             'INSERT INTO aTestTable(`aTestField`) VALUES(1);'

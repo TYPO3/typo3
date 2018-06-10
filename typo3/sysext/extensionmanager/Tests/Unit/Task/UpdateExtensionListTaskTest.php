@@ -14,49 +14,28 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask;
+use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class UpdateExtensionListTaskTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class UpdateExtensionListTaskTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
-
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper
-     */
-    protected $repositoryHelper;
-
-    /**
-     * Set up
-     */
-    protected function setUp()
-    {
-        if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
-            $this->markTestSkipped('Tests need EXT:scheduler loaded.');
-        }
-        $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-        $this->repositoryHelper = $this->createMock(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class);
-    }
-
-    /**
-     * Tear down
-     */
-    protected function tearDown()
-    {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
-    }
+    protected $resetSingletonInstances = true;
 
     /**
      * @test
      */
     public function updateExtensionListTaskIsInstanceOfAbstractTask()
     {
-        $taskMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class)->getMock();
-        $this->assertInstanceOf(\TYPO3\CMS\Scheduler\Task\AbstractTask::class, $taskMock);
+        $taskMock = $this->getMockBuilder(UpdateExtensionListTask::class)->getMock();
+        $this->assertInstanceOf(AbstractTask::class, $taskMock);
     }
 
     /**
@@ -64,7 +43,8 @@ class UpdateExtensionListTaskTest extends \TYPO3\TestingFramework\Core\Unit\Unit
      */
     public function executeCallsUpdateExtListOfRepositoryHelper()
     {
-        $this->repositoryHelper
+        $repositoryHelper = $this->createMock(Helper::class);
+        $repositoryHelper
                 ->expects($this->once())
                 ->method('updateExtList');
 
@@ -72,8 +52,8 @@ class UpdateExtensionListTaskTest extends \TYPO3\TestingFramework\Core\Unit\Unit
         $objectManagerMock
                 ->expects($this->at(0))
                 ->method('get')
-                ->with(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class)
-                ->will($this->returnValue($this->repositoryHelper));
+                ->with(Helper::class)
+                ->will($this->returnValue($repositoryHelper));
 
         $persistenceManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)->getMock();
         $objectManagerMock
@@ -83,7 +63,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $objectManagerMock);
 
-        $task = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class)
+        $task = $this->getMockBuilder(UpdateExtensionListTask::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -95,12 +75,13 @@ class UpdateExtensionListTaskTest extends \TYPO3\TestingFramework\Core\Unit\Unit
      */
     public function executeCallsPersistAllOnPersistenceManager()
     {
+        $repositoryHelper = $this->createMock(Helper::class);
         $objectManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\ObjectManager::class)->getMock();
         $objectManagerMock
             ->expects($this->at(0))
             ->method('get')
-            ->with(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class)
-            ->will($this->returnValue($this->repositoryHelper));
+            ->with(Helper::class)
+            ->will($this->returnValue($repositoryHelper));
 
         $persistenceManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)->getMock();
         $persistenceManagerMock
@@ -114,8 +95,8 @@ class UpdateExtensionListTaskTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $objectManagerMock);
 
-        /** @var \TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask|PHPUnit_Framework_MockObject_MockObject $task */
-        $task = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class)
+        /** @var UpdateExtensionListTask|PHPUnit_Framework_MockObject_MockObject $task */
+        $task = $this->getMockBuilder(UpdateExtensionListTask::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();

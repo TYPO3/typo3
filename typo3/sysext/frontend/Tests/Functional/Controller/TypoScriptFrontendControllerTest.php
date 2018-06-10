@@ -19,11 +19,12 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class TypoScriptFrontendControllerTest extends FunctionalTestCase
 {
     /**
      * @var TypoScriptFrontendController

@@ -198,6 +198,7 @@ class AbstractSectionTest extends UnitTestCase
      */
     public function createElementThrowsExceptionIfTypeDefinitionNotInstanceOfFormElementInterface()
     {
+        $this->resetSingletonInstances = true;
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractSection $mockAbstractSection */
         $mockAbstractSection = $this->getAccessibleMockForAbstractClass(
             AbstractSection::class,

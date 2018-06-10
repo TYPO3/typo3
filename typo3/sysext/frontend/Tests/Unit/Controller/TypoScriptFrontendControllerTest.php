@@ -18,12 +18,18 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+ * Test case
  */
-class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TypoScriptFrontendControllerTest extends UnitTestCase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
     /**
      * Subject is not notice free, disable E_NOTICES
      */

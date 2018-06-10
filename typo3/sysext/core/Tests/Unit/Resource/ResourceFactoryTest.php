@@ -14,18 +14,21 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
- * Testcase for the factory of FAL
+ * Test case
  */
-class ResourceFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ResourceFactoryTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
-     * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+     * @var ResourceFactory
      */
     protected $subject;
 
@@ -34,15 +37,19 @@ class ResourceFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected $filesCreated = [];
 
+    /**
+     * Set up
+     */
     protected function setUp()
     {
-        $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, ['dummy'], [], '', false);
+        $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['dummy'], [], '', false);
     }
 
+    /**
+     * Tear down
+     */
     protected function tearDown()
     {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
         foreach ($this->filesCreated as $file) {
             unlink($file);
         }
@@ -93,9 +100,9 @@ class ResourceFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithRelativePath()
     {
-        /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Core\Resource\ResourceFactory */
+        /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|ResourceFactory */
         $subject = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Resource\ResourceFactory::class,
+            ResourceFactory::class,
             ['getFolderObjectFromCombinedIdentifier'],
             [],
             '',
@@ -113,9 +120,9 @@ class ResourceFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithAbsolutePath()
     {
-        /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Core\Resource\ResourceFactory */
+        /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|ResourceFactory */
         $subject = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Resource\ResourceFactory::class,
+            ResourceFactory::class,
             ['getFolderObjectFromCombinedIdentifier'],
             [],
             '',
@@ -133,7 +140,7 @@ class ResourceFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven()
     {
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
+        $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
         $filename = 'typo3temp/var/tests/4711.txt';
         $this->subject->expects($this->once())
             ->method('getFileObjectFromCombinedIdentifier')

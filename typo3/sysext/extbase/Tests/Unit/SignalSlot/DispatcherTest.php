@@ -31,6 +31,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DispatcherTest extends UnitTestCase
 {
     /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
+    /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $signalSlotDispatcher;

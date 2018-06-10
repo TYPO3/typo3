@@ -21,12 +21,18 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\CoreVersionService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class CoreVersionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CoreVersionServiceTest extends UnitTestCase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
     public function setUpApiResponse(string $url, array $responseData)
     {
         $response = new JsonResponse($responseData);

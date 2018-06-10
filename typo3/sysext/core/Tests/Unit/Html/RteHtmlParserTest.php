@@ -19,20 +19,27 @@ use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for \TYPO3\CMS\Core\Html\RteHtmlParser
+ * Test case
  */
 class RteHtmlParserTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Html\RteHtmlParser
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
+    /**
+     * @var RteHtmlParser
      */
     protected $subject = null;
 
+    /**
+     * Set up
+     */
     protected function setUp()
     {
         $this->subject = new RteHtmlParser();
         $this->subject->procOptions = [
-            'allowTagsOutside' => 'hr, address',
             'overruleMode' => 'default',
         ];
     }

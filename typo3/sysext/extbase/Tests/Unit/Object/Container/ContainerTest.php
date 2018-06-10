@@ -22,46 +22,39 @@ use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\ArgumentTestClassForPublicPropertyInjection;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\ProtectedPropertyInjectClass;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\PublicPropertyInjectClass;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ContainerTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\Container\Container
+     * @var bool Reset singletons created by subject
      */
-    protected $container;
+    protected $resetSingletonInstances = true;
+
+    /**
+     * @var Container
+     */
+    protected $subject;
 
     /**
      * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $logger;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\Container\ClassInfo
-     */
-    protected $cachedClassInfo;
-
     protected function setUp()
     {
-        // The mocked cache will always indicate that he has nothing in the cache to force that we get the real class info
-        $mockedCache = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\Container\ClassInfoCache::class)
-            ->setMethods(['get', 'set', 'has'])
-            ->getMock();
-        $mockedCache->expects($this->any())->method('get')->will($this->returnValue(false));
-        $mockedCache->expects($this->never())->method('has');
-
         $this->logger = $this->getMockBuilder(Logger::class)
             ->setMethods(['notice'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->container = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\Container\Container::class)
-            ->setMethods(['getLogger', 'getClassInfoCache'])
+        $this->subject = $this->getMockBuilder(Container::class)
+            ->setMethods(['getLogger'])
             ->getMock();
-        $this->container->expects($this->any())->method('getClassInfoCache')->will($this->returnValue($mockedCache));
-        $this->container->expects($this->any())->method('getLogger')->will($this->returnValue($this->logger));
+        $this->subject->expects($this->any())->method('getLogger')->will($this->returnValue($this->logger));
     }
 
     /**
@@ -69,7 +62,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceReturnsInstanceOfSimpleClass()
     {
-        $object = $this->container->getInstance('t3lib_object_tests_c');
+        $object = $this->subject->getInstance('t3lib_object_tests_c');
         $this->assertInstanceOf('t3lib_object_tests_c', $object);
     }
 
@@ -78,7 +71,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceReturnsInstanceOfSimpleNamespacedClass()
     {
-        $object = $this->container->getInstance(\TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\NamespacedClass::class);
+        $object = $this->subject->getInstance(\TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\NamespacedClass::class);
         $this->assertInstanceOf(\TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\NamespacedClass::class, $object);
     }
 
@@ -87,7 +80,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceReturnsInstanceOfAClassWithConstructorInjection()
     {
-        $object = $this->container->getInstance('t3lib_object_tests_b');
+        $object = $this->subject->getInstance('t3lib_object_tests_b');
         $this->assertInstanceOf('t3lib_object_tests_b', $object);
         $this->assertInstanceOf('t3lib_object_tests_c', $object->c);
     }
@@ -97,7 +90,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceReturnsInstanceOfAClassWithTwoLevelDependency()
     {
-        $object = $this->container->getInstance('t3lib_object_tests_a');
+        $object = $this->subject->getInstance('t3lib_object_tests_a');
         $this->assertInstanceOf('t3lib_object_tests_a', $object);
         $this->assertInstanceOf('t3lib_object_tests_c', $object->b->c);
     }
@@ -107,7 +100,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceReturnsInstanceOfAClassWithMixedSimpleTypeAndConstructorInjection()
     {
-        $object = $this->container->getInstance('t3lib_object_tests_amixed_array');
+        $object = $this->subject->getInstance('t3lib_object_tests_amixed_array');
         $this->assertInstanceOf('t3lib_object_tests_amixed_array', $object);
         $this->assertEquals(['some' => 'default'], $object->myvalue);
     }
@@ -117,7 +110,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceReturnsInstanceOfAClassWithMixedSimpleTypeAndConstructorInjectionWithNullDefaultValue()
     {
-        $object = $this->container->getInstance('t3lib_object_tests_amixed_null');
+        $object = $this->subject->getInstance('t3lib_object_tests_amixed_null');
         $this->assertInstanceOf('t3lib_object_tests_amixed_null', $object);
         $this->assertNull($object->myvalue);
     }
@@ -129,7 +122,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1292858051);
-        $this->container->getInstance('t3lib_object_tests_amixed_array_singleton', ['somevalue']);
+        $this->subject->getInstance('t3lib_object_tests_amixed_array_singleton', ['somevalue']);
     }
 
     /**
@@ -137,7 +130,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceReturnsInstanceOfAClassWithConstructorInjectionAndDefaultConstructorParameters()
     {
-        $object = $this->container->getInstance('t3lib_object_tests_amixed_array');
+        $object = $this->subject->getInstance('t3lib_object_tests_amixed_array');
         $this->assertInstanceOf('t3lib_object_tests_b', $object->b);
         $this->assertInstanceOf('t3lib_object_tests_c', $object->c);
         $this->assertEquals(['some' => 'default'], $object->myvalue);
@@ -149,7 +142,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstancePassesGivenParameterToTheNewObject()
     {
         $mockObject = $this->createMock('t3lib_object_tests_c');
-        $object = $this->container->getInstance('t3lib_object_tests_a', [$mockObject]);
+        $object = $this->subject->getInstance('t3lib_object_tests_a', [$mockObject]);
         $this->assertInstanceOf('t3lib_object_tests_a', $object);
         $this->assertSame($mockObject, $object->c);
     }
@@ -159,8 +152,8 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceReturnsAFreshInstanceIfObjectIsNoSingleton()
     {
-        $object1 = $this->container->getInstance('t3lib_object_tests_a');
-        $object2 = $this->container->getInstance('t3lib_object_tests_a');
+        $object1 = $this->subject->getInstance('t3lib_object_tests_a');
+        $object2 = $this->subject->getInstance('t3lib_object_tests_a');
         $this->assertNotSame($object1, $object2);
     }
 
@@ -169,8 +162,8 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceReturnsSameInstanceInstanceIfObjectIsSingleton()
     {
-        $object1 = $this->container->getInstance('t3lib_object_tests_singleton');
-        $object2 = $this->container->getInstance('t3lib_object_tests_singleton');
+        $object1 = $this->subject->getInstance('t3lib_object_tests_singleton');
+        $object2 = $this->subject->getInstance('t3lib_object_tests_singleton');
         $this->assertSame($object1, $object2);
     }
 
@@ -181,7 +174,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $this->expectException(CannotBuildObjectException::class);
         $this->expectExceptionCode(1295611406);
-        $this->container->getInstance('t3lib_object_tests_cyclic1WithSetterDependency');
+        $this->subject->getInstance('t3lib_object_tests_cyclic1WithSetterDependency');
     }
 
     /**
@@ -191,7 +184,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $this->expectException(CannotBuildObjectException::class);
         $this->expectExceptionCode(1295611406);
-        $this->container->getInstance('t3lib_object_tests_cyclic1');
+        $this->subject->getInstance('t3lib_object_tests_cyclic1');
     }
 
     /**
@@ -201,7 +194,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $this->expectException(UnknownClassException::class);
         $this->expectExceptionCode(1278450972);
-        $this->container->getInstance('nonextistingclass_bla');
+        $this->subject->getInstance('nonextistingclass_bla');
     }
 
     /**
@@ -209,7 +202,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceInitializesObjects()
     {
-        $instance = $this->container->getInstance('t3lib_object_tests_initializable');
+        $instance = $this->subject->getInstance('t3lib_object_tests_initializable');
         $this->assertTrue($instance->isInitialized());
     }
 
@@ -218,7 +211,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getEmptyObjectReturnsInstanceOfSimpleClass()
     {
-        $object = $this->container->getEmptyObject('t3lib_object_tests_c');
+        $object = $this->subject->getEmptyObject('t3lib_object_tests_c');
         $this->assertInstanceOf('t3lib_object_tests_c', $object);
     }
 
@@ -227,7 +220,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getEmptyObjectReturnsInstanceOfClassImplementingSerializable()
     {
-        $object = $this->container->getEmptyObject('t3lib_object_tests_serializable');
+        $object = $this->subject->getEmptyObject('t3lib_object_tests_serializable');
         $this->assertInstanceOf('t3lib_object_tests_serializable', $object);
     }
 
@@ -236,7 +229,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getEmptyObjectInitializesObjects()
     {
-        $object = $this->container->getEmptyObject('t3lib_object_tests_initializable');
+        $object = $this->subject->getEmptyObject('t3lib_object_tests_initializable');
         $this->assertTrue($object->isInitialized());
     }
 
@@ -245,7 +238,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function test_canGetChildClass()
     {
-        $object = $this->container->getInstance('t3lib_object_tests_b_child');
+        $object = $this->subject->getInstance('t3lib_object_tests_b_child');
         $this->assertInstanceOf('t3lib_object_tests_b_child', $object);
     }
 
@@ -254,8 +247,8 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function test_canInjectInterfaceInClass()
     {
-        $this->container->registerImplementation('t3lib_object_tests_someinterface', 't3lib_object_tests_someimplementation');
-        $object = $this->container->getInstance('t3lib_object_tests_needsinterface');
+        $this->subject->registerImplementation('t3lib_object_tests_someinterface', 't3lib_object_tests_someimplementation');
+        $object = $this->subject->getInstance('t3lib_object_tests_needsinterface');
         $this->assertInstanceOf('t3lib_object_tests_needsinterface', $object);
         $this->assertInstanceOf('t3lib_object_tests_someinterface', $object->dependency);
         $this->assertInstanceOf('t3lib_object_tests_someimplementation', $object->dependency);
@@ -266,7 +259,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function test_canBuildCyclicDependenciesOfSingletonsWithSetter()
     {
-        $object = $this->container->getInstance('t3lib_object_tests_resolveablecyclic1');
+        $object = $this->subject->getInstance('t3lib_object_tests_resolveablecyclic1');
         $this->assertInstanceOf('t3lib_object_tests_resolveablecyclic1', $object);
         $this->assertInstanceOf('t3lib_object_tests_resolveablecyclic1', $object->o2->o3->o1);
     }
@@ -277,7 +270,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function singletonWhichRequiresPrototypeViaSetterInjectionWorksAndAddsDebugMessage()
     {
         $this->logger->expects($this->once())->method('notice')->with('The singleton "t3lib_object_singletonNeedsPrototype" needs a prototype in "injectDependency". This is often a bad code smell; often you rather want to inject a singleton.');
-        $object = $this->container->getInstance('t3lib_object_singletonNeedsPrototype');
+        $object = $this->subject->getInstance('t3lib_object_singletonNeedsPrototype');
         $this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
     }
 
@@ -287,7 +280,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function singletonWhichRequiresSingletonViaSetterInjectionWorks()
     {
         $this->logger->expects($this->never())->method('notice');
-        $object = $this->container->getInstance('t3lib_object_singletonNeedsSingleton');
+        $object = $this->subject->getInstance('t3lib_object_singletonNeedsSingleton');
         $this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
     }
 
@@ -297,7 +290,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function prototypeWhichRequiresPrototypeViaSetterInjectionWorks()
     {
         $this->logger->expects($this->never())->method('notice');
-        $object = $this->container->getInstance('t3lib_object_prototypeNeedsPrototype');
+        $object = $this->subject->getInstance('t3lib_object_prototypeNeedsPrototype');
         $this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
     }
 
@@ -307,7 +300,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function prototypeWhichRequiresSingletonViaSetterInjectionWorks()
     {
         $this->logger->expects($this->never())->method('notice');
-        $object = $this->container->getInstance('t3lib_object_prototypeNeedsSingleton');
+        $object = $this->subject->getInstance('t3lib_object_prototypeNeedsSingleton');
         $this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
     }
 
@@ -317,7 +310,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function singletonWhichRequiresPrototypeViaConstructorInjectionWorksAndAddsDebugMessage()
     {
         $this->logger->expects($this->once())->method('notice')->with('The singleton "t3lib_object_singletonNeedsPrototypeInConstructor" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.');
-        $object = $this->container->getInstance('t3lib_object_singletonNeedsPrototypeInConstructor');
+        $object = $this->subject->getInstance('t3lib_object_singletonNeedsPrototypeInConstructor');
         $this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
     }
 
@@ -327,7 +320,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function singletonWhichRequiresSingletonViaConstructorInjectionWorks()
     {
         $this->logger->expects($this->never())->method('notice');
-        $object = $this->container->getInstance('t3lib_object_singletonNeedsSingletonInConstructor');
+        $object = $this->subject->getInstance('t3lib_object_singletonNeedsSingletonInConstructor');
         $this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
     }
 
@@ -337,7 +330,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function prototypeWhichRequiresPrototypeViaConstructorInjectionWorks()
     {
         $this->logger->expects($this->never())->method('notice');
-        $object = $this->container->getInstance('t3lib_object_prototypeNeedsPrototypeInConstructor');
+        $object = $this->subject->getInstance('t3lib_object_prototypeNeedsPrototypeInConstructor');
         $this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
     }
 
@@ -347,7 +340,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function prototypeWhichRequiresSingletonViaConstructorInjectionWorks()
     {
         $this->logger->expects($this->never())->method('notice');
-        $object = $this->container->getInstance('t3lib_object_prototypeNeedsSingletonInConstructor');
+        $object = $this->subject->getInstance('t3lib_object_prototypeNeedsSingletonInConstructor');
         $this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
     }
 
@@ -356,8 +349,8 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function isSingletonReturnsTrueForSingletonInstancesAndFalseForPrototypes()
     {
-        $this->assertTrue($this->container->isSingleton(\TYPO3\CMS\Extbase\Object\Container\Container::class));
-        $this->assertFalse($this->container->isSingleton(\TYPO3\CMS\Extbase\Core\Bootstrap::class));
+        $this->assertTrue($this->subject->isSingleton(Container::class));
+        $this->assertFalse($this->subject->isSingleton(\TYPO3\CMS\Extbase\Core\Bootstrap::class));
     }
 
     /**
@@ -365,8 +358,8 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function isPrototypeReturnsFalseForSingletonInstancesAndTrueForPrototypes()
     {
-        $this->assertFalse($this->container->isPrototype(\TYPO3\CMS\Extbase\Object\Container\Container::class));
-        $this->assertTrue($this->container->isPrototype(\TYPO3\CMS\Extbase\Core\Bootstrap::class));
+        $this->assertFalse($this->subject->isPrototype(Container::class));
+        $this->assertTrue($this->subject->isPrototype(\TYPO3\CMS\Extbase\Core\Bootstrap::class));
     }
 
     /************************************************
@@ -379,7 +372,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceGivesSimpleConstructorArgumentToClassInstance()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\SimpleTypeConstructorArgument::class,
             [true]
         );
@@ -392,7 +385,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceDoesNotInfluenceSimpleTypeConstructorArgumentIfNotGiven()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\SimpleTypeConstructorArgument::class
         );
         $this->assertFalse($object->foo);
@@ -405,7 +398,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceGivesExistingConstructorArgumentToClassInstance()
     {
         $argumentTestClass = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\MandatoryConstructorArgument::class,
             [$argumentTestClass]
         );
@@ -422,7 +415,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceInjectsNewInstanceOfClassToClassIfArgumentIsMandatory()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\MandatoryConstructorArgument::class
         );
         $this->assertInstanceOf(
@@ -441,7 +434,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceDoesNotInjectAnOptionalArgumentIfNotGiven()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\OptionalConstructorArgument::class
         );
         $this->assertInstanceOf(
@@ -457,7 +450,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceDoesNotInjectAnOptionalArgumentIfGivenArgumentIsNull()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\OptionalConstructorArgument::class,
             [null]
         );
@@ -475,7 +468,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceGivesExistingConstructorArgumentToClassInstanceIfArgumentIsGiven()
     {
         $argumentTestClass = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\OptionalConstructorArgument::class,
             [$argumentTestClass]
         );
@@ -494,7 +487,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $firstArgument = new Fixtures\ArgumentTestClass();
         $secondArgument = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\MandatoryConstructorArgumentTwo::class,
             [$firstArgument, $secondArgument]
         );
@@ -518,7 +511,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceInjectsTwoMandatoryArguments()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\MandatoryConstructorArgumentTwo::class
         );
         $this->assertInstanceOf(
@@ -546,7 +539,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceInjectsSecondMandatoryArgumentIfFirstIsGiven()
     {
         $firstArgument = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\MandatoryConstructorArgumentTwo::class,
             [$firstArgument]
         );
@@ -575,7 +568,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsGiven()
     {
         $secondArgument = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\MandatoryConstructorArgumentTwo::class,
             [null, $secondArgument]
         );
@@ -609,7 +602,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $firstArgument = new Fixtures\ArgumentTestClass();
         $secondArgument = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsSecondOptional::class,
             [$firstArgument, $secondArgument]
         );
@@ -633,7 +626,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsOptionalAndNoneAreGiven()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsSecondOptional::class
         );
         $this->assertInstanceOf(
@@ -653,7 +646,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsOptionalAndBothAreGivenAsNull()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsSecondOptional::class,
             [null, null]
         );
@@ -675,7 +668,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceGivesFirstArgumentToConstructorIfSecondIsOptionalAndFirstIsGiven()
     {
         $firstArgument = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsSecondOptional::class,
             [$firstArgument]
         );
@@ -697,7 +690,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceGivesFirstArgumentToConstructorIfSecondIsOptionalFirstIsGivenAndSecondIsGivenNull()
     {
         $firstArgument = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsSecondOptional::class,
             [$firstArgument, null]
         );
@@ -719,7 +712,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGivenAsNull()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsFirstOptional::class,
             [null]
         );
@@ -741,7 +734,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $first = new Fixtures\ArgumentTestClass();
         $second = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsFirstOptional::class,
             [$first, $second]
         );
@@ -766,7 +759,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGiven()
     {
         $first = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsFirstOptional::class,
             [$first]
         );
@@ -796,7 +789,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceOnFirstOptionalAndSecondMandatoryGivesSecondArgumentAsIsIfFirstIsGivenAsNullAndSecondIsGiven()
     {
         $second = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsFirstOptional::class,
             [null, $second]
         );
@@ -817,7 +810,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGivenAsNullAndSecondIsNull()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsFirstOptional::class,
             [null, null]
         );
@@ -839,7 +832,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $first = new Fixtures\ArgumentTestClass();
         $second = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsBothOptional::class,
             [$first, $second]
         );
@@ -863,7 +856,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceOnTwoOptionalGivesNoArgumentsToConstructorIfArgumentsAreNull()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsBothOptional::class,
             [null, null]
         );
@@ -881,7 +874,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceOnTwoOptionalGivesNoArgumentsToConstructorIfNoneAreGiven()
     {
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsBothOptional::class
         );
         $this->assertInstanceOf(
@@ -899,7 +892,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsObjectAndSecondIsNotGiven()
     {
         $first = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsBothOptional::class,
             [$first]
         );
@@ -921,7 +914,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsObjectAndSecondIsNull()
     {
         $first = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsBothOptional::class,
             [$first, null]
         );
@@ -943,7 +936,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsNullAndSecondIsObject()
     {
         $second = new Fixtures\ArgumentTestClass();
-        $object = $this->container->getInstance(
+        $object = $this->subject->getInstance(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsBothOptional::class,
             [null, $second]
         );

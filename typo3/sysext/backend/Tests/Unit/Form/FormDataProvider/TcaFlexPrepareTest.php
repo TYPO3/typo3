@@ -27,15 +27,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaFlexPrepareTest extends UnitTestCase
 {
-    /**
-     * @var array A backup of registered singleton instances
-     */
-    protected $singletonInstances = [];
-
     protected function setUp()
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-
         // Suppress cache foo in xml helpers of GeneralUtility
         /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
@@ -47,7 +40,6 @@ class TcaFlexPrepareTest extends UnitTestCase
     protected function tearDown()
     {
         GeneralUtility::purgeInstances();
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
 

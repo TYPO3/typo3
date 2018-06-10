@@ -14,11 +14,18 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test for ExtensionModelUtilityTest
  */
-class ExtensionModelUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ExtensionModelUtilityTest extends UnitTestCase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
     /**
      * @test
      */

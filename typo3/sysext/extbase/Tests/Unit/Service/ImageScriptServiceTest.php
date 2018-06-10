@@ -29,6 +29,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ImageScriptServiceTest extends UnitTestCase
 {
     /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
+    /**
      * @var ImageService
      */
     protected $subject;

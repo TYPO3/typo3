@@ -42,19 +42,21 @@ class ResourceStorageTest extends BaseTestCase
     protected static $suppressNotices = true;
 
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
      * @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
 
+    /**
+     * Set up
+     */
     protected function setUp()
     {
         parent::setUp();
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         /** @var FileRepository|\PHPUnit_Framework_MockObject_MockObject $fileRepositoryMock */
         $fileRepositoryMock = $this->createMock(FileRepository::class);
         GeneralUtility::setSingletonInstance(
@@ -67,12 +69,6 @@ class ResourceStorageTest extends BaseTestCase
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
         $cacheProphecy->set(Argument::cetera())->willReturn(false);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-    }
-
-    protected function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 
     /**

@@ -26,28 +26,17 @@ use TYPO3\CMS\Extbase\Mvc\Cli\Command;
 use TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli\Fixture\Command\MockCCommandController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class CommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CommandTest extends UnitTestCase
 {
     /**
-     * @var array
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances;
-
-    protected function setUp()
-    {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-        GeneralUtility::purgeInstances();
-    }
-
-    protected function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
-    }
+    protected $resetSingletonInstances = true;
 
     /**
      * @return array

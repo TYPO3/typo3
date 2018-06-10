@@ -53,9 +53,9 @@ class GeneralUtilityTest extends UnitTestCase
     protected static $suppressNotices = true;
 
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
      * @var \TYPO3\CMS\Core\Package\PackageManager
@@ -71,7 +71,6 @@ class GeneralUtilityTest extends UnitTestCase
         GeneralUtilityFixture::$isAllowedHostHeaderValueCallCount = 0;
         GeneralUtilityFixture::setAllowHostHeaderValue(false);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL;
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
 
@@ -80,7 +79,6 @@ class GeneralUtilityTest extends UnitTestCase
      */
     protected function tearDown()
     {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
         parent::tearDown();
     }

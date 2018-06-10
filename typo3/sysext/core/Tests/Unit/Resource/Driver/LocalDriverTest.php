@@ -30,19 +30,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\FileStreamWrapper;
 
 /**
- * Testcase for the local storage driver class of the TYPO3 VFS
+ * Test case
  */
 class LocalDriverTest extends BaseTestCase
 {
     /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
+    /**
      * @var LocalDriver
      */
     protected $localDriver;
-
-    /**
-     * @var array A backup of registered singleton instances
-     */
-    protected $singletonInstances = [];
 
     /**
      * @var array

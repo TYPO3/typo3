@@ -35,28 +35,21 @@ class MarkerBasedTemplateServiceTest extends UnitTestCase
     protected $templateService;
 
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
+    /**
+     * Set up
+     */
     protected function setUp(): void
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-
         /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache(Argument::cetera())->willReturn($cacheFrontendProphecy->reveal());
-
         $this->templateService = new MarkerBasedTemplateService();
-    }
-
-    protected function tearDown(): void
-    {
-        GeneralUtility::purgeInstances();
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 
     /**

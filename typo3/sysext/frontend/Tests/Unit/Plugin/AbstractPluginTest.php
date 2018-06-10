@@ -18,11 +18,12 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Frontend\Tests\Unit\Fixtures\ResultBrowserPluginHook;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+ * Test case
  */
-class AbstractPluginTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractPluginTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
@@ -138,6 +139,7 @@ class AbstractPluginTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function piSetPiVarDefaultsStdWrap($input, $expected)
     {
+        $this->resetSingletonInstances = true;
         $this->abstractPlugin->piVars = $this->defaultPiVars;
 
         $this->abstractPlugin->conf['_DEFAULT_PI_VARS.'] = $input;

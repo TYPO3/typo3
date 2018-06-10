@@ -14,12 +14,14 @@ namespace TYPO3\CMS\Core\Log;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * Global LogManager that keeps track of global logging information.
  *
  * Inspired by java.util.logging
  */
-class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterface
+class LogManager implements SingletonInterface, LogManagerInterface
 {
     /**
      * @var string

@@ -31,6 +31,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class RedirectServiceTest extends UnitTestCase
 {
     /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
+    /**
      * @var RedirectCacheService|ObjectProphecy
      */
     protected $redirectCacheServiceProphecy;
@@ -40,12 +45,9 @@ class RedirectServiceTest extends UnitTestCase
      */
     protected $redirectService;
 
-    protected $singletonInstances = [];
-
     protected function setUp()
     {
         parent::setUp();
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $loggerProphecy = $this->prophesize(LoggerInterface::class);
         $this->redirectCacheServiceProphecy = $this->prophesize(RedirectCacheService::class);
         $this->redirectService = new RedirectService();
@@ -358,14 +360,5 @@ class RedirectServiceTest extends UnitTestCase
 
         $uri = new Uri('https://example.com/?bar=2&baz=4&foo=1');
         self::assertEquals($uri, $result);
-    }
-
-    /**
-     * Tear down
-     */
-    public function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 }

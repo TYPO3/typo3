@@ -15,33 +15,17 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class CachingFrameworkGarbageCollectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CachingFrameworkGarbageCollectionTest extends UnitTestCase
 {
     /**
-     * @var array
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
-
-    /**
-     * Set up
-     */
-    protected function setUp()
-    {
-        $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-    }
-
-    /**
-     * Reset singleton instances
-     */
-    protected function tearDown()
-    {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
-    }
+    protected $resetSingletonInstances = true;
 
     /**
      * @test

@@ -31,31 +31,21 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DataStructureIdentifierHookTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
      * Set up
      */
     public function setUp()
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
         $cacheProphecy->set(Argument::cetera())->willReturn(false);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-    }
-
-    /**
-     * Tear down
-     */
-    public function tearDown(): void
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 
     /**

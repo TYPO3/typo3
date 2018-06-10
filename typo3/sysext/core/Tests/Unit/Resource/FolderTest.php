@@ -15,29 +15,23 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  */
 
 use org\bovigo\vfs\vfsStream;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for the storage collection class of the TYPO3 FAL
+ * Test case
  */
-class FolderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FolderTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     protected $basedir = 'basedir';
 
     protected function setUp()
     {
-        $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
         vfsStream::setup($this->basedir);
-    }
-
-    protected function tearDown()
-    {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 
     protected function createFolderFixture($path, $name, $mockedStorage = null)

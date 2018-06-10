@@ -37,6 +37,11 @@ class DataHandlerTest extends UnitTestCase
     protected static $suppressNotices = true;
 
     /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
+    /**
      * @var array A backup of registered singleton instances
      */
     protected $singletonInstances = [];
@@ -57,7 +62,6 @@ class DataHandlerTest extends UnitTestCase
     protected function setUp()
     {
         $GLOBALS['TCA'] = [];
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
@@ -67,18 +71,6 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->start([], '', $this->backEndUser);
     }
 
-    /**
-     * Tear down the tests
-     */
-    protected function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
-    }
-
-    //////////////////////////////////////
-    // Tests for the basic functionality
-    //////////////////////////////////////
     /**
      * @test
      */

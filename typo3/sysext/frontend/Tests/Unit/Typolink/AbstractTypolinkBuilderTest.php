@@ -35,9 +35,9 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     protected static $suppressNotices = true;
 
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
@@ -56,7 +56,6 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     {
         GeneralUtility::flushInternalRuntimeCaches();
 
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->createMockedLoggerAndLogManager();
 
         $this->templateServiceMock =
@@ -77,12 +76,6 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
         $this->frontendControllerMock->page =  [];
         $this->frontendControllerMock->sys_page = $pageRepositoryMock;
         $GLOBALS['TSFE'] = $this->frontendControllerMock;
-    }
-
-    protected function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 
     //////////////////////

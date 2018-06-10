@@ -20,22 +20,24 @@ use TYPO3\CMS\Rsaauth\Backend\CommandLineBackend;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case.
+ * Test case
  */
 class CommandLineBackendTest extends UnitTestCase
 {
     /**
-     * @var CommandLineBackend
+     * @var bool Reset singletons created by subject
      */
-    protected $subject = null;
+    protected $resetSingletonInstances = true;
 
+    /**
+     * Set up
+     */
     protected function setUp()
     {
         if (Environment::isWindows()) {
             $this->markTestSkipped('This test is not available on Windows as auto-detection of openssl path will fail.');
         }
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['rsaauth']['temporaryDirectory'] = '';
-        $this->subject = new CommandLineBackend();
     }
 
     /**
@@ -43,7 +45,8 @@ class CommandLineBackendTest extends UnitTestCase
      */
     public function createNewKeyPairCreatesReadyKeyPair()
     {
-        $keyPair = $this->subject->createNewKeyPair();
+        $subject = new CommandLineBackend();
+        $keyPair = $subject->createNewKeyPair();
         if ($keyPair === null) {
             $this->markTestSkipped('KeyPair could not be generated. Maybe openssl was not found.');
         }
@@ -56,7 +59,8 @@ class CommandLineBackendTest extends UnitTestCase
      */
     public function createNewKeyPairCreatesKeyPairWithDefaultExponent()
     {
-        $keyPair = $this->subject->createNewKeyPair();
+        $subject = new CommandLineBackend();
+        $keyPair = $subject->createNewKeyPair();
         if ($keyPair === null) {
             $this->markTestSkipped('KeyPair could not be generated. Maybe openssl was not found.');
         }
@@ -72,9 +76,10 @@ class CommandLineBackendTest extends UnitTestCase
      */
     public function createNewKeyPairCalledTwoTimesReturnsSameKeyPairInstance()
     {
+        $subject = new CommandLineBackend();
         $this->assertSame(
-            $this->subject->createNewKeyPair(),
-            $this->subject->createNewKeyPair()
+            $subject->createNewKeyPair(),
+            $subject->createNewKeyPair()
         );
     }
 }

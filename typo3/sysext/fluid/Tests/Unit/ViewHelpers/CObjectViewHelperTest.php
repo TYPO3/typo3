@@ -24,10 +24,15 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
- * Class CObjectViewHelperTest
+ * Test case
  */
 class CObjectViewHelperTest extends ViewHelperBaseTestcase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
     /**
      * @var CObjectViewHelper
      */

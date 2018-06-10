@@ -57,9 +57,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FlexFormToolsTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
      * Set up
@@ -67,7 +67,6 @@ class FlexFormToolsTest extends UnitTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         // Underlying static GeneralUtility::xml2array() uses caches that have to be mocked here
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
@@ -75,15 +74,6 @@ class FlexFormToolsTest extends UnitTestCase
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
         $cacheProphecy->set(Argument::cetera())->willReturn(false);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-    }
-
-    /**
-     * Tear down
-     */
-    protected function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 
     /**

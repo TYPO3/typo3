@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
@@ -30,28 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractFinisherTest extends UnitTestCase
 {
-    /**
-     * @var array A backup of registered singleton instances
-     */
-    protected $singletonInstances = [];
-
-    /**
-     * Set up
-     */
-    public function setUp()
-    {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-    }
-
-    /**
-     * Tear down
-     */
-    public function tearDown(): void
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
-    }
-
     /**
      * @test
      */

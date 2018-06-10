@@ -14,20 +14,18 @@ namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Encoder;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Encoder\JavaScriptEncoder;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
- * Test cases for TYPO3\CMS\Core\Encoder\JavaScriptEncoder.
+ * Test case
  */
-class JavaScriptEncoderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class JavaScriptEncoderTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Encoder\JavaScriptEncoder
+     * @var bool Reset singletons created by subject
      */
-    protected $subject = null;
-
-    protected function setUp()
-    {
-        $this->subject = new \TYPO3\CMS\Core\Encoder\JavaScriptEncoder();
-    }
+    protected $resetSingletonInstances = true;
 
     /**
      * Data provider for encodeEncodesCorrectly.
@@ -84,6 +82,7 @@ class JavaScriptEncoderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function encodeEncodesCorrectly($input, $expected)
     {
-        $this->assertSame($expected, $this->subject->encode($input));
+        $subject = new JavaScriptEncoder();
+        $this->assertSame($expected, $subject->encode($input));
     }
 }

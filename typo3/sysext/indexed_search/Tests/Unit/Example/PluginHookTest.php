@@ -15,35 +15,18 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit\Example;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Example\PluginHook;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * This class contains unit tests for the indexer
+ * Test case
  */
 class PluginHookTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
-
-    /**
-     * Indexer instance
-     *
-     * @var \TYPO3\CMS\IndexedSearch\Example\PluginHook
-     */
-    protected $subject;
-
-    /**
-     * Sets up the test
-     */
-    protected function setUp()
-    {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-        $this->subject = new PluginHook();
-    }
+    protected $resetSingletonInstances = true;
 
     /**
      * @test
@@ -55,7 +38,7 @@ class PluginHookTest extends UnitTestCase
             'rows' => []
         ];
 
-        $result = $this->subject->getDisplayResults_postProc($searchResult);
+        $result = (new PluginHook())->getDisplayResults_postProc($searchResult);
         self::assertSame($searchResult, $result);
     }
 
@@ -80,17 +63,7 @@ class PluginHookTest extends UnitTestCase
             ]
         ];
 
-        $result = $this->subject->getDisplayResults_postProc($searchResult);
+        $result = (new PluginHook())->getDisplayResults_postProc($searchResult);
         self::assertSame($expected, $result);
-    }
-
-    /**
-     * Tear down the tests
-     */
-    protected function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        unset($this->subject);
-        parent::tearDown();
     }
 }

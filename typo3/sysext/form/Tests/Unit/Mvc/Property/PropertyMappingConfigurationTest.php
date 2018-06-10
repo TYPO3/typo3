@@ -34,6 +34,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PropertyMappingConfigurationTest extends UnitTestCase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
     /** @var PropertyMappingConfiguration */
     protected $propertyMappingConfiguration;
 
@@ -49,12 +54,8 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|ProcessingRule */
     protected $processingRule;
 
-    protected $singletons = [];
-
     public function setUp()
     {
-        $this->singletons = GeneralUtility::getSingletonInstances();
-
         // Property Mapping Configuration
         $this->extbasePropertyMappingConfiguration = $this->getMockBuilder(ExtbasePropertyMappingConfiguration::class)
             ->setMethods(['setTypeConverterOptions'])
@@ -101,13 +102,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         // Property Mapping Configuration
         $this->propertyMappingConfiguration = new PropertyMappingConfiguration();
-    }
-
-    public function tearDown(): void
-    {
-        // Remove all singleton instances
-        GeneralUtility::resetSingletonInstances($this->singletons);
-        parent::tearDown();
     }
 
     /**

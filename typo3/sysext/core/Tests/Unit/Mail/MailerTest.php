@@ -22,15 +22,23 @@ use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeTransportFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for the TYPO3\CMS\Core\Mail\Mailer class.
+ * Test case
  */
 class MailerTest extends UnitTestCase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
     /**
      * @var Mailer
      */
     protected $subject;
 
+    /**
+     * Set up
+     */
     protected function setUp()
     {
         $this->subject = $this->getMockBuilder(Mailer::class)
@@ -39,9 +47,6 @@ class MailerTest extends UnitTestCase
             ->getMock();
     }
 
-    //////////////////////////
-    // Tests concerning TYPO3\CMS\Core\Mail\Mailer
-    //////////////////////////
     /**
      * @test
      */

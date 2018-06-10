@@ -30,23 +30,18 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class TcaCheckboxItemsTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * Tear down
      */
-    protected $singletonInstances = [];
-
-    protected function setUp()
-    {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-    }
-
     protected function tearDown()
     {
         GeneralUtility::purgeInstances();
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
 
-    public function checkboxConfigurationDataProvider()
+    /**
+     * @return array
+     */
+    public function checkboxConfigurationDataProvider(): array
     {
         return [
             'simpleCheckboxConfig' => [

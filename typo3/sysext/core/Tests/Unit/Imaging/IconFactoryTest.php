@@ -26,12 +26,17 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * TestCase for \TYPO3\CMS\Core\Imaging\IconFactory
+ * Test case
  */
 class IconFactoryTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Imaging\IconFactory
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
+    /**
+     * @var IconFactory
      */
     protected $subject = null;
 
@@ -88,7 +93,7 @@ class IconFactoryTest extends UnitTestCase
         $this->iconRegistryMock->isRegistered('tcarecords--default')->willReturn(false);
         $this->iconRegistryMock->isRegistered(Argument::any())->willReturn(true);
         $this->iconRegistryMock->isDeprecated(Argument::any())->willReturn(false);
-        $this->iconRegistryMock->getDefaultIconIdentifier(Argument::any())->willReturn('default-not-found');
+        $this->iconRegistryMock->getDefaultIconIdentifier()->willReturn('default-not-found');
         $this->iconRegistryMock->getIconIdentifierForMimeType('application/pdf')->willReturn('mimetypes-pdf');
         $this->iconRegistryMock->getIconIdentifierForMimeType('image/*')->willReturn('mimetypes-media-image');
         $this->iconRegistryMock->getIconIdentifierForMimeType(Argument::any())->willReturn(null);

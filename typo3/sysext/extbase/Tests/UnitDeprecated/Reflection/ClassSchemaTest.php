@@ -19,12 +19,18 @@ use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ClassSchemaTest extends UnitTestCase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
     public function testClassSchemaDetectsInjectProperties()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithInjectProperty::class);

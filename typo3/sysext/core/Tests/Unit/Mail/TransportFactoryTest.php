@@ -20,23 +20,17 @@ use TYPO3\CMS\Core\Mail\MemorySpool;
 use TYPO3\CMS\Core\Mail\TransportFactory;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeInvalidSpoolFixture;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeValidSpoolFixture;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for the TYPO3\CMS\Core\Mail\TransportFactory class.
+ * Test case
  */
 class TransportFactoryTest extends UnitTestCase
 {
     /**
-     * * @var TransportFactory
+     * @var bool Reset singletons created by subject
      */
-    protected $subject;
-
-    protected function setUp()
-    {
-        $this->subject = GeneralUtility::makeInstance(TransportFactory::class);
-    }
+    protected $resetSingletonInstances = true;
 
     /**
      * @test
@@ -60,8 +54,7 @@ class TransportFactoryTest extends UnitTestCase
         // Register fixture class
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\Swift_FileSpool::class]['className'] = Fixtures\FakeFileSpoolFixture::class;
 
-        /** @var \Swift_SpoolTransport $transport */
-        $transport = $this->subject->get($mailSettings);
+        $transport = (new TransportFactory())->get($mailSettings);
         $this->assertInstanceOf(\Swift_SpoolTransport::class, $transport);
 
         /** @var Fixtures\FakeFileSpoolFixture $spool */
@@ -94,8 +87,7 @@ class TransportFactoryTest extends UnitTestCase
         // Register fixture class
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][MemorySpool::class]['className'] = Fixtures\FakeMemorySpoolFixture::class;
 
-        /** @var \Swift_SpoolTransport $transport */
-        $transport = $this->subject->get($mailSettings);
+        $transport = (new TransportFactory())->get($mailSettings);
         $this->assertInstanceOf(\Swift_SpoolTransport::class, $transport);
 
         /** @var \Swift_MemorySpool $spool */
@@ -122,8 +114,7 @@ class TransportFactoryTest extends UnitTestCase
             'transport_spool_filepath' => Environment::getVarPath() . '/messages/',
         ];
 
-        /** @var \Swift_SpoolTransport $transport */
-        $transport = $this->subject->get($mailSettings);
+        $transport = (new TransportFactory())->get($mailSettings);
         $this->assertInstanceOf(\Swift_SpoolTransport::class, $transport);
 
         /** @var Fixtures\FakeValidSpoolFixture $spool */
@@ -155,7 +146,7 @@ class TransportFactoryTest extends UnitTestCase
             'transport_spool_filepath' => Environment::getVarPath() . '/messages/',
         ];
 
-        $this->subject->get($mailSettings);
+        (new TransportFactory())->get($mailSettings);
     }
 
     /**
@@ -177,7 +168,7 @@ class TransportFactoryTest extends UnitTestCase
             'transport_spool_filepath' => Environment::getVarPath() . '/messages/',
         ];
 
-        $transport = $this->subject->get($mailSettings);
+        $transport = (new TransportFactory())->get($mailSettings);
         $this->assertInstanceOf(\Swift_MailTransport::class, $transport);
     }
 }

@@ -14,8 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer;
+use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
+use TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer;
+
 /**
- * Test cases for RendererRegistry
+ * Test case
  */
 class RendererRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -23,11 +27,11 @@ class RendererRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      * Initialize a RendererRegistry and mock createRendererInstance()
      *
      * @param array $createsRendererInstances
-     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry
+     * @return \PHPUnit_Framework_MockObject_MockObject|RendererRegistry
      */
     protected function getTestRendererRegistry(array $createsRendererInstances = [])
     {
-        $rendererRegistry = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::class)
+        $rendererRegistry = $this->getMockBuilder(RendererRegistry::class)
             ->setMethods(['createRendererInstance'])
             ->getMock();
 
@@ -198,9 +202,10 @@ class RendererRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function getRendererReturnsCorrectInstance2()
     {
-        $rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
-        $rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer::class);
-        $rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer::class);
+        $this->resetSingletonInstances = true;
+        $rendererRegistry = RendererRegistry::getInstance();
+        $rendererRegistry->registerRendererClass(AudioTagRenderer::class);
+        $rendererRegistry->registerRendererClass(VideoTagRenderer::class);
 
         $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
         $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
@@ -209,6 +214,6 @@ class RendererRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 
         $renderer = $rendererRegistry->getRenderer($fileResourceMock);
 
-        $this->assertInstanceOf(\TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer::class, $renderer);
+        $this->assertInstanceOf(VideoTagRenderer::class, $renderer);
     }
 }

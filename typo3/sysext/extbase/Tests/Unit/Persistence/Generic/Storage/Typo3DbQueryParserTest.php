@@ -40,26 +40,11 @@ class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     protected static $suppressNotices = true;
 
     /**
-     * @var array
-     */
-    protected $singletonInstances;
-
-    /**
-     * Set up tests
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-    }
-
-    /**
      * Clean up after tests
      */
     protected function tearDown()
     {
         GeneralUtility::purgeInstances();
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
 

@@ -45,14 +45,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class TcaSelectItemsTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * Set up
      */
-    protected $singletonInstances = [];
-
     protected function setUp()
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-
         // Default LANG prophecy just returns incoming value as label if calling ->sL()
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->loadSingleTableDescription(Argument::cetera())->willReturn(null);
@@ -70,10 +66,12 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
     }
 
+    /**
+     * Tear down
+     */
     protected function tearDown()
     {
         GeneralUtility::purgeInstances();
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
 

@@ -15,33 +15,17 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class FlexFormServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FlexFormServiceTest extends UnitTestCase
 {
     /**
-     * @var array Backup of singletons
+     * @var bool Reset singletons created by subject
      */
-    protected $backupSingletons = [];
-
-    /**
-     * Set up
-     */
-    protected function setUp()
-    {
-        $this->backupSingletons = GeneralUtility::getSingletonInstances();
-    }
-
-    /**
-     * Tear down
-     */
-    protected function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->backupSingletons);
-        parent::tearDown();
-    }
+    protected $resetSingletonInstances = true;
 
     /**
      * @test

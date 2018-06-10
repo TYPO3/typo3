@@ -22,11 +22,12 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case for TcaFlexPrepare to render the functionality when a TCA migration happened
+ * Test case
  */
-class TcaFlexPrepareTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaFlexPrepareTest extends UnitTestCase
 {
     /**
      * @var TcaFlexPrepare
@@ -39,14 +40,10 @@ class TcaFlexPrepareTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $backendUserProphecy;
 
     /**
-     * @var array A backup of registered singleton instances
+     * Set up
      */
-    protected $singletonInstances = [];
-
     protected function setUp()
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-
         // Suppress cache foo in xml helpers of GeneralUtility
         /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
@@ -57,10 +54,12 @@ class TcaFlexPrepareTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->subject = new TcaFlexPrepare();
     }
 
+    /**
+     * Tear down
+     */
     protected function tearDown()
     {
         GeneralUtility::purgeInstances();
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
 

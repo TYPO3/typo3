@@ -39,14 +39,8 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
      */
     protected $subject;
 
-    /**
-     * @var array A backup of registered singleton instances
-     */
-    protected $singletonInstances = [];
-
     protected function setUp()
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
@@ -56,7 +50,6 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
     protected function tearDown()
     {
         GeneralUtility::purgeInstances();
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
 

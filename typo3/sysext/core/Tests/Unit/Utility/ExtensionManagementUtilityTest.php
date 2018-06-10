@@ -24,11 +24,12 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ExtensionManagementUtilityTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
@@ -36,29 +37,32 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
     protected static $suppressNotices = true;
 
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
      * @var \TYPO3\CMS\Core\Package\PackageManager
      */
     protected $backUpPackageManager;
 
+    /**
+     * Set up
+     */
     protected function setUp()
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->backUpPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
     }
 
+    /**
+     * Tear down
+     */
     protected function tearDown()
     {
         ExtensionManagementUtility::clearExtensionKeyMap();
         ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backUpPackageManager);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager(null);
         $GLOBALS['TYPO3_LOADED_EXT'] = new LoadedExtensionsArray($this->backUpPackageManager);
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
 

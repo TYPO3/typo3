@@ -14,11 +14,18 @@ namespace TYPO3\CMS\Core\Tests\Unit_Deprecated\Html;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
- * Testcase for \TYPO3\CMS\Core\Html\RteHtmlParser
+ * Test case
  */
-class RteHtmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RteHtmlParserTest extends UnitTestCase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
     /**
      * Subject is not notice free, disable E_NOTICES
      */

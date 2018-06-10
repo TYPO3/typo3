@@ -27,9 +27,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FileTest extends UnitTestCase
 {
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
      * @var ResourceStorage
@@ -38,19 +38,12 @@ class FileTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->storageMock = $this->createMock(ResourceStorage::class);
         $this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
 
         $mockedMetaDataRepository = $this->createMock(MetaDataRepository::class);
         $mockedMetaDataRepository->expects($this->any())->method('findByFile')->will($this->returnValue(['file' => 1]));
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $mockedMetaDataRepository);
-    }
-
-    protected function tearDown(): void
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 
     /**

@@ -27,6 +27,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ProcessedFileTest extends UnitTestCase
 {
     /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
+    /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Folder
      */
     protected $folderMock;

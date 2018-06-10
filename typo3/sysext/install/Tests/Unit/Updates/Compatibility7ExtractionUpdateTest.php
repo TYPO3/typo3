@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Install\Tests\Unit\Updates;
  */
 
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
@@ -25,7 +24,7 @@ use TYPO3\CMS\Install\Updates\Compatibility7ExtractionUpdate;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Class Compatibility7ExtractionUpdateTest
+ * Test case
  */
 class Compatibility7ExtractionUpdateTest extends UnitTestCase
 {
@@ -35,21 +34,20 @@ class Compatibility7ExtractionUpdateTest extends UnitTestCase
     protected $registry;
 
     /**
-     * @var SingletonInterface[]
+     * Set up
      */
-    protected $singletonInstances;
-
     protected function setUp()
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->registry = $this->prophesize(Registry::class);
         GeneralUtility::setSingletonInstance(Registry::class, $this->registry->reveal());
     }
 
+    /**
+     * Tear down
+     */
     protected function tearDown()
     {
         GeneralUtility::purgeInstances();
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
 

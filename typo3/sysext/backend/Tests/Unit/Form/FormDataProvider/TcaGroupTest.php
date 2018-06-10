@@ -30,20 +30,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class TcaGroupTest extends UnitTestCase
 {
     /**
-     * @var array
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances;
-
-    protected function setUp()
-    {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-    }
-
-    protected function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
-    }
+    protected $resetSingletonInstances = true;
 
     /**
      * @test

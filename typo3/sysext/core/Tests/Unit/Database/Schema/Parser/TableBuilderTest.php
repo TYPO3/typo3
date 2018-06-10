@@ -24,7 +24,6 @@ use Doctrine\DBAL\Types\SmallIntType;
 use Doctrine\DBAL\Types\TextType;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -32,6 +31,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TableBuilderTest extends UnitTestCase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
     /**
      * @var Table
      */
@@ -44,10 +48,10 @@ class TableBuilderTest extends UnitTestCase
     {
         parent::setUp();
         $sqlFile = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'Fixtures', 'tablebuilder.sql']));
-        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        $sqlReader = new SqlReader();
         $statements = $sqlReader->getCreateTableStatementArray($sqlFile);
 
-        $parser = GeneralUtility::makeInstance(Parser::class, $statements[0]);
+        $parser = new Parser($statements[0]);
         $this->table = $parser->parse()[0];
     }
 

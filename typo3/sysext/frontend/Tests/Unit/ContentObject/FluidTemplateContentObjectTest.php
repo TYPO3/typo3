@@ -34,9 +34,9 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     protected static $suppressNotices = true;
 
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
      * @var FluidTemplateContentObject|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
@@ -63,7 +63,6 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     protected function setUp()
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->contentObjectRenderer = $this->getMockBuilder(
             \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class
         )->getMock();
@@ -76,15 +75,6 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         $tsfe = $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
         $tsfe->tmpl = $this->getMockBuilder(\TYPO3\CMS\Core\TypoScript\TemplateService::class)->getMock();
         $GLOBALS['TSFE'] = $tsfe;
-    }
-
-    /**
-     * Tear down
-     */
-    protected function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 
     /**

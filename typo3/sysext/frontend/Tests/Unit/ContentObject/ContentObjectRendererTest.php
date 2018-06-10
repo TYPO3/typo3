@@ -55,11 +55,12 @@ use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+ * Test case
  */
-class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ContentObjectRendererTest extends UnitTestCase
 {
     /**
      * Subject is not notice free, disable E_NOTICES
@@ -67,9 +68,9 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     protected static $suppressNotices = true;
 
     /**
-     * @var array A backup of registered singleton instances
+     * @var bool Reset singletons created by subject
      */
-    protected $singletonInstances = [];
+    protected $resetSingletonInstances = true;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -125,8 +126,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      */
     protected function setUp()
     {
-        $this->singletonInstances = GeneralUtility::getSingletonInstances();
-
         $this->templateServiceMock =
             $this->getMockBuilder(TemplateService::class)
             ->setMethods(['getFileName', 'linkData'])->getMock();
@@ -156,12 +155,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $this->subject->setLogger($logger->reveal());
         $this->subject->setContentObjectClassMap($this->contentObjectMap);
         $this->subject->start([], 'tt_content');
-    }
-
-    protected function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances($this->singletonInstances);
-        parent::tearDown();
     }
 
     //////////////////////

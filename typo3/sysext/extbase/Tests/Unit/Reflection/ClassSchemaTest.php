@@ -21,30 +21,37 @@ use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ClassSchemaTest extends UnitTestCase
 {
     /**
      * @test
      */
     public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses()
     {
-        /** @var \TYPO3\CMS\Extbase\Reflection\ReflectionService $service */
+        $this->resetSingletonInstances = true;
         $service = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
         $classSchema = $service->getClassSchema(Fixture\DummyModel::class);
         $this->assertTrue($classSchema->isAggregateRoot());
     }
 
-    public function testClassSchemaHasConstructor()
+    /**
+     * @test
+     */
+    public function classSchemaHasConstructor()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithConstructorAndConstructorArguments::class);
         static::assertTrue($classSchema->hasConstructor());
     }
 
-    public function testClassSchemaDetectsConstructorArguments()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsConstructorArguments()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithConstructorAndConstructorArguments::class);
         static::assertTrue($classSchema->hasConstructor());
@@ -62,7 +69,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertSame([], $classSchema->getConstructorArguments());
     }
 
-    public function testClassSchemaDetectsConstructorArgumentsWithDependencies()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsConstructorArgumentsWithDependencies()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithConstructorAndConstructorArgumentsWithDependencies::class);
         static::assertTrue($classSchema->hasConstructor());
@@ -72,7 +82,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertSame(Fixture\DummyClassWithGettersAndSetters::class, $methodDefinition['params']['foo']['dependency']);
     }
 
-    public function testClassSchemaGetProperties()
+    /**
+     * @test
+     */
+    public function classSchemaGetProperties()
     {
         static::assertSame(
             [
@@ -93,14 +106,20 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         );
     }
 
-    public function testClassSchemaHasMethod()
+    /**
+     * @test
+     */
+    public function classSchemaHasMethod()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
         static::assertTrue($classSchema->hasMethod('publicMethod'));
         static::assertFalse($classSchema->hasMethod('nonExistentMethod'));
     }
 
-    public function testClassSchemaGetMethods()
+    /**
+     * @test
+     */
+    public function classSchemaGetMethods()
     {
         static::assertSame(
             [
@@ -122,7 +141,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         );
     }
 
-    public function testClassSchemaDetectsMethodVisibility()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsMethodVisibility()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
 
@@ -142,7 +164,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertTrue($methodDefinition['private']);
     }
 
-    public function testClassSchemaDetectsInjectProperties()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsInjectProperties()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithInjectDoctrineAnnotation::class);
         static::assertTrue($classSchema->hasInjectProperties());
@@ -161,7 +186,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertSame('AliasedClassSchemaTest', $injectProperties['propertyWithImportedAndAliasedClassName']);
     }
 
-    public function testClassSchemaDetectsInjectMethods()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsInjectMethods()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
         static::assertTrue($classSchema->hasInjectMethods());
@@ -182,13 +210,19 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertArrayHasKey('injectFoo', $injectMethods);
     }
 
-    public function testClassSchemaDetectsPropertiesWithLazyAnnotation()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsPropertiesWithLazyAnnotation()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithLazyDoctrineAnnotation::class);
         static::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')['annotations']['lazy']);
     }
 
-    public function testClassSchemaDetectsStaticMethods()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsStaticMethods()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
 
@@ -196,7 +230,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertTrue($methodDefinition['static']);
     }
 
-    public function testClassSchemaDetectsMandatoryParams()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsMandatoryParams()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
 
@@ -204,7 +241,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertFalse($methodDefinition['params']['param']['optional']);
     }
 
-    public function testClassSchemaDetectsNullableParams()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsNullableParams()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
 
@@ -212,7 +252,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertTrue($methodDefinition['params']['param']['nullable']);
     }
 
-    public function testClassSchemaDetectsDefaultValueParams()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsDefaultValueParams()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
 
@@ -220,7 +263,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertSame('foo', $methodDefinition['params']['param']['default']);
     }
 
-    public function testClassSchemaDetectsParamTypeFromTypeHint()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsParamTypeFromTypeHint()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
 
@@ -228,7 +274,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertSame('string', $methodDefinition['params']['param']['type']);
     }
 
-    public function testClassSchemaDetectsPropertyVisibility()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsPropertyVisibility()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
 
@@ -248,7 +297,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertTrue($propertyDefinition['private']);
     }
 
-    public function testClassSchemaDetectsInjectProperty()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsInjectProperty()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
 
@@ -256,7 +308,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertTrue($propertyDefinition['annotations']['inject']);
     }
 
-    public function testClassSchemaDetectsTransientProperty()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsTransientProperty()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
 
@@ -264,7 +319,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertTrue($propertyDefinition['annotations']['transient']);
     }
 
-    public function testClassSchemaDetectsCascadeProperty()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsCascadeProperty()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
 
@@ -272,7 +330,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertSame('remove', $propertyDefinition['annotations']['cascade']);
     }
 
-    public function testClassSchemaDetectsCascadePropertyOnlyWithVarAnnotation()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsCascadePropertyOnlyWithVarAnnotation()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
 
@@ -280,7 +341,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertNull($propertyDefinition['annotations']['cascade']);
     }
 
-    public function testClassSchemaDetectsIgnoreValidationAnnotation()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsIgnoreValidationAnnotation()
     {
         $classSchema = new ClassSchema(Fixture\DummyControllerWithIgnoreValidationDoctrineAnnotation::class);
         static::assertTrue(isset($classSchema->getMethod('someAction')['tags']['ignorevalidation']));
@@ -289,7 +353,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertFalse(in_array('baz', $classSchema->getMethod('someAction')['tags']['ignorevalidation'], true));
     }
 
-    public function testClassSchemaDetectsTypeAndElementType()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsTypeAndElementType()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
 
@@ -298,46 +365,71 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertSame(Fixture\DummyClassWithAllTypesOfProperties::class, $propertyDefinition['elementType']);
     }
 
-    public function testClassSchemaDetectsSingletons()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsSingletons()
     {
         static::assertTrue((new ClassSchema(Fixture\DummySingleton::class))->isSingleton());
     }
 
-    public function testClassSchemaDetectsModels()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsModels()
     {
         static::assertTrue((new ClassSchema(Fixture\DummyEntity::class))->isModel());
         static::assertTrue((new ClassSchema(Fixture\DummyValueObject::class))->isModel());
     }
 
-    public function testClassSchemaDetectsEntities()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsEntities()
     {
         static::assertTrue((new ClassSchema(Fixture\DummyEntity::class))->isEntity());
     }
 
-    public function testClassSchemaDetectsValueObjects()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsValueObjects()
     {
         static::assertTrue((new ClassSchema(Fixture\DummyValueObject::class))->isValueObject());
     }
 
-    public function testClassSchemaDetectsClassName()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsClassName()
     {
+        $this->resetSingletonInstances = true;
         static::assertSame(Fixture\DummyModel::class, (new ClassSchema(Fixture\DummyModel::class))->getClassName());
     }
 
-    public function testClassSchemaDetectsNonStaticProperties()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsNonStaticProperties()
     {
         static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('publicProperty'));
         static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedProperty'));
         static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('privateProperty'));
     }
 
-    public function testClassSchemaDetectsStaticProperties()
+    /**
+     * @test
+     */
+    public function classSchemaDetectsStaticProperties()
     {
         static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('publicStaticProperty'));
         static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedStaticProperty'));
         static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('privateStaticProperty'));
     }
 
+    /**
+     * @test
+     */
     public function testClassSchemaGetTags()
     {
         $tags = (new ClassSchema(Fixture\DummyClassWithTags::class))->getTags();
@@ -357,8 +449,8 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function classSchemaDetectsValidateAnnotationsModelProperties(): void
     {
+        $this->resetSingletonInstances = true;
         $classSchema = new ClassSchema(Fixture\DummyModel::class);
-
         static::assertSame(
             [
                 [
@@ -404,8 +496,8 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function classSchemaDetectsValidateAnnotationsOfControllerActions(): void
     {
+        $this->resetSingletonInstances = true;
         $classSchema = new ClassSchema(Fixture\DummyController::class);
-
         static::assertSame(
             [
                 [
@@ -451,6 +543,7 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForParamWithoutTypeHint()
     {
+        $this->resetSingletonInstances = true;
         $this->expectException(InvalidTypeHintException::class);
         $this->expectExceptionMessage('Missing type information for parameter "$fooParam" in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint->methodWithValidateAnnotationsAction(): Either use an @param annotation or use a type hint.');
         $this->expectExceptionCode(1515075192);
@@ -463,6 +556,7 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForMissingParam()
     {
+        $this->resetSingletonInstances = true;
         $this->expectException(InvalidValidationConfigurationException::class);
         $this->expectExceptionMessage('Invalid validate annotation in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParam->methodWithValidateAnnotationsAction(): The following validators have been defined for missing param "$fooParam": NotEmpty, StringLength');
         $this->expectExceptionCode(1515073585);

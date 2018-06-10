@@ -33,26 +33,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ErrorControllerTest extends UnitTestCase
 {
     /**
-     * @var array Backup of singleton instances
-     */
-    protected $backupSingletonInstances;
-
-    /**
-     * setUp() stores non singleton instances to reset in tearDown()
-     */
-    public function setUp()
-    {
-        parent::setUp();
-        $this->backupSingletonInstances = GeneralUtility::getSingletonInstances();
-    }
-
-    /**
-     * Purge instances and reset singleton instances
+     * Purge possibly left over instances
      */
     public function tearDown()
     {
         GeneralUtility::purgeInstances();
-        GeneralUtility::resetSingletonInstances($this->backupSingletonInstances);
         parent::tearDown();
     }
 
