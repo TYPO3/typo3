@@ -62,6 +62,11 @@ class FileContentParser
     protected $langObject;
 
     /**
+     * @var string Backup for setLocaleForServerFileSystem()
+     */
+    protected $lastLocale;
+
+    /**
      * Constructs this external parsers object
      */
     public function __construct()
@@ -714,22 +719,21 @@ class FileContentParser
      */
     protected function setLocaleForServerFileSystem($resetLocale = false)
     {
-        static $lastLocale = null;
         if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
             return;
         }
 
         if ($resetLocale) {
-            if ($lastLocale == null) {
+            if ($this->lastLocale == null) {
                 throw new \RuntimeException('Cannot reset locale to NULL.', 1357064326);
             }
-            setlocale(LC_CTYPE, $lastLocale);
-            $lastLocale = null;
+            setlocale(LC_CTYPE, $this->lastLocale);
+            $this->lastLocale = null;
         } else {
-            if ($lastLocale !== null) {
+            if ($this->lastLocale !== null) {
                 throw new \RuntimeException('Cannot set new locale as locale has already been changed before.', 1357064437);
             }
-            $lastLocale = setlocale(LC_CTYPE, 0);
+            $this->lastLocale = setlocale(LC_CTYPE, 0);
             setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
         }
     }

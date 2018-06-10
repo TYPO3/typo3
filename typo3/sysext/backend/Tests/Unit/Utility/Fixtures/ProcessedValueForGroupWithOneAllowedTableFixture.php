@@ -24,14 +24,19 @@ class ProcessedValueForGroupWithOneAllowedTableFixture extends \TYPO3\CMS\Backen
      */
     public static function getRecordWSOL($table, $uid, $fields = '*', $where = '', $useDeleteClause = true, $unsetMovePointers = false)
     {
-        static $called = 0;
-        ++$called;
-        if ($called === 1) {
-            return ['title' => 'Page 1'];
+        if ($uid == 1) {
+            return [
+                'uid' => 1,
+                'title' => 'Page 1'
+            ];
         }
-        if ($called === 2) {
-            return ['title' => 'Page 2'];
+        if ($uid == 2) {
+            return [
+                'uid' => 2,
+                'title' => 'Page 2'
+            ];
         }
+        throw new \RuntimeException('Unexpected call', 1528631951);
     }
 
     /**
@@ -39,13 +44,12 @@ class ProcessedValueForGroupWithOneAllowedTableFixture extends \TYPO3\CMS\Backen
      */
     public static function getRecordTitle($table, $row, $prep = false, $forceResult = true)
     {
-        static $called = 0;
-        ++$called;
-        if ($called === 1) {
+        if ($row['uid'] === 1) {
             return 'Page 1';
         }
-        if ($called === 2) {
+        if ($row['uid'] === 2) {
             return 'Page 2';
         }
+        throw new \RuntimeException('Unexpected call', 1528631952);
     }
 }

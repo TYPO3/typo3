@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,7 +41,6 @@ class EidUtility
     public static function initFeUser()
     {
         // Get TSFE instance. It knows how to initialize the user.
-        /** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
         $tsfe = self::getTSFE();
         $tsfe->initFEuser();
         // Return FE user object:
@@ -98,14 +98,15 @@ class EidUtility
     /**
      * Creating a single static cached instance of TSFE to use with this class.
      *
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController New instance of \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
-    private static function getTSFE()
+    private static function getTSFE(): TypoScriptFrontendController
     {
-        // Cached instance
-        static $tsfe = null;
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $tsfe = $runtimeCache->get('eidUtilityTsfe') ?: null;
         if ($tsfe === null) {
             $tsfe = GeneralUtility::makeInstance(TypoScriptFrontendController::class, null, 0, 0);
+            $runtimeCache->set('eidUtilityTsfe', $tsfe);
         }
         return $tsfe;
     }

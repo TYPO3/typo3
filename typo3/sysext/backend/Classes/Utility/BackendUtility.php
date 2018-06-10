@@ -364,12 +364,13 @@ class BackendUtility
      */
     public static function BEgetRootLine($uid, $clause = '', $workspaceOL = false, array $additionalFields = [])
     {
-        static $BEgetRootLine_cache = [];
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $beGetRootLineCache = $runtimeCache->get('backendUtilityBeGetRootLine') ?: [];
         $output = [];
         $pid = $uid;
         $ident = $pid . '-' . $clause . '-' . $workspaceOL . ($additionalFields ? '-' . implode(',', $additionalFields) : '');
-        if (is_array($BEgetRootLine_cache[$ident] ?? false)) {
-            $output = $BEgetRootLine_cache[$ident];
+        if (is_array($beGetRootLineCache[$ident] ?? false)) {
+            $output = $beGetRootLineCache[$ident];
         } else {
             $loopCheck = 100;
             $theRowArray = [];
@@ -422,7 +423,8 @@ class BackendUtility
                     $output[$c]['_ORIG_pid'] = $val['_ORIG_pid'];
                 }
             }
-            $BEgetRootLine_cache[$ident] = $output;
+            $beGetRootLineCache[$ident] = $output;
+            $runtimeCache->set('backendUtilityBeGetRootLine', $beGetRootLineCache);
         }
         return $output;
     }
@@ -439,10 +441,11 @@ class BackendUtility
      */
     protected static function getPageForRootline($uid, $clause, $workspaceOL, array $additionalFields = [])
     {
-        static $getPageForRootline_cache = [];
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $pageForRootlineCache = $runtimeCache->get('backendUtilityPageForRootLine') ?: [];
         $ident = $uid . '-' . $clause . '-' . $workspaceOL;
-        if (is_array($getPageForRootline_cache[$ident] ?? false)) {
-            $row = $getPageForRootline_cache[$ident];
+        if (is_array($pageForRootlineCache[$ident] ?? false)) {
+            $row = $pageForRootlineCache[$ident];
         } else {
             $queryBuilder = static::getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()
@@ -485,7 +488,8 @@ class BackendUtility
                     } else {
                         self::fixVersioningPid('pages', $row);
                     }
-                    $getPageForRootline_cache[$ident] = $row;
+                    $pageForRootlineCache[$ident] = $row;
+                    $runtimeCache->set('backendUtilityPageForRootLine', $pageForRootlineCache);
                 }
             }
         }
@@ -3466,16 +3470,12 @@ class BackendUtility
      */
     public static function getTSCpidCached($table, $uid, $pid)
     {
-        // A local first level cache
-        static $firstLevelCache;
-
-        if (!is_array($firstLevelCache)) {
-            $firstLevelCache = [];
-        }
-
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $firstLevelCache = $runtimeCache->get('backendUtilityTscPidCached') ?: [];
         $key = $table . ':' . $uid . ':' . $pid;
         if (!isset($firstLevelCache[$key])) {
             $firstLevelCache[$key] = static::getTSCpid($table, $uid, $pid);
+            $runtimeCache->set('backendUtilityTscPidCached', $firstLevelCache);
         }
         return $firstLevelCache[$key];
     }

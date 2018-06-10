@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Typolink;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\PageUriBuilder;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -353,7 +354,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function initializeMountPointMap(string $defaultMountPoints = null, string $mapRootPointList = null): array
     {
-        static $mountPointMap = [];
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $mountPointMap = $runtimeCache->get('pageLinkBuilderMountPointMap') ?: [];
         if (!empty($mountPointMap) || (empty($mapRootPointList) && empty($defaultMountPoints))) {
             return $mountPointMap;
         }
@@ -381,6 +383,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             }
             $this->populateMountPointMapForPageRecursively($mountPointMap, $p, $initMParray);
         }
+        $runtimeCache->set('pageLinkBuilderMountPointMap', $mountPointMap);
         return $mountPointMap;
     }
 

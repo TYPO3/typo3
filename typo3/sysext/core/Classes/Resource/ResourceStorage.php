@@ -2731,8 +2731,10 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Returns the destination path/fileName of a unique fileName/foldername in that path.
-     * If $theFile exists in $theDest (directory) the file have numbers appended up to $this->maxNumber. Hereafter a unique string will be appended.
-     * This function is used by fx. DataHandler when files are attached to records and needs to be uniquely named in the uploads/* folders
+     * If $theFile exists in $theDest (directory) the file have numbers appended up to $this->maxNumber.
+     * Hereafter a unique string will be appended.
+     * This function is used by fx. DataHandler when files are attached to records
+     * and needs to be uniquely named in the uploads/* folders
      *
      * @param FolderInterface $folder
      * @param string $theFile The input fileName to check
@@ -2744,14 +2746,9 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function getUniqueName(FolderInterface $folder, $theFile, $dontCheckForUnique = false)
     {
-        static $maxNumber = 99, $uniqueNamePrefix = '';
+        $maxNumber = 99;
         // Fetches info about path, name, extension of $theFile
         $origFileInfo = PathUtility::pathinfo($theFile);
-        // Adds prefix
-        if ($uniqueNamePrefix) {
-            $origFileInfo['basename'] = $uniqueNamePrefix . $origFileInfo['basename'];
-            $origFileInfo['filename'] = $uniqueNamePrefix . $origFileInfo['filename'];
-        }
         // Check if the file exists and if not - return the fileName...
         // The destinations file
         $theDestFile = $origFileInfo['basename'];

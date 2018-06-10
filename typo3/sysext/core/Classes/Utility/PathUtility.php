@@ -370,12 +370,6 @@ class PathUtility
      */
     public static function stripPathSitePrefix($path)
     {
-        static $pathSiteLength = null;
-
-        // calculate length when first needed
-        if (!isset($pathSiteLength)) {
-            $pathSiteLength = strlen(PATH_site);
-        }
-        return substr($path, $pathSiteLength);
+        return substr($path, strlen(PATH_site));
     }
 }

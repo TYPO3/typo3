@@ -21,6 +21,8 @@ use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Package\Package;
@@ -36,11 +38,12 @@ use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\TwoParametersConstructorFixture;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\FileStreamWrapper;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for class \TYPO3\CMS\Core\Utility\GeneralUtility
+ * Test case
  */
-class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class GeneralUtilityTest extends UnitTestCase
 {
     const NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
 
@@ -4539,6 +4542,12 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function xml2arrayHandlesWhitespaces(string $input)
     {
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
+        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $expected = [
             'data' => [
                 'settings.persistenceIdentifier' => [
@@ -4595,6 +4604,12 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function xml2arrayHandlesTagNamespaces(string $input)
     {
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
+        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $expected = [
             'data' => [
                 'settings.persistenceIdentifier' => [
@@ -4655,6 +4670,12 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function xml2arrayHandlesDocumentTag(string $input, string $docTag)
     {
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
+        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $expected = [
             'data' => [
                 'settings.persistenceIdentifier' => [
@@ -4705,6 +4726,12 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function xml2ArrayHandlesBigXmlContent(string $input, string $testValue)
     {
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
+        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $expected = [
             'data' => [
                 'settings.persistenceIdentifier' => [
@@ -4726,6 +4753,12 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function xml2ArrayFailsWithXmlContentBiggerThanTenMegabytes()
     {
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
+        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $input = '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
             <T3:T3FlexForms>
                 <data>
@@ -4820,6 +4853,12 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function xml2ArrayHandlesAttributeTypes(string $input, $expected)
     {
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
+        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $result = GeneralUtility::xml2array($input);
         $this->assertSame($expected, $result['index']['vDEF']);
     }

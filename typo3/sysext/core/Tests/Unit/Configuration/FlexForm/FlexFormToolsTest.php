@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm;
 use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidCombinedPointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
@@ -54,6 +56,36 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FlexFormToolsTest extends UnitTestCase
 {
+    /**
+     * @var array A backup of registered singleton instances
+     */
+    protected $singletonInstances = [];
+
+    /**
+     * Set up
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
+        // Underlying static GeneralUtility::xml2array() uses caches that have to be mocked here
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheProphecy->set(Argument::cetera())->willReturn(false);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+    }
+
+    /**
+     * Tear down
+     */
+    protected function tearDown()
+    {
+        GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        parent::tearDown();
+    }
+
     /**
      * @test
      */

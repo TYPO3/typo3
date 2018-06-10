@@ -247,11 +247,8 @@ class PreviewProcessing
      */
     protected function getGraphicalFunctionsObject()
     {
-        static $graphicalFunctionsObject = null;
-        if ($graphicalFunctionsObject === null) {
-            $graphicalFunctionsObject = GeneralUtility::makeInstance(GraphicalFunctions::class);
-            $graphicalFunctionsObject->init();
-        }
+        $graphicalFunctionsObject = GeneralUtility::makeInstance(GraphicalFunctions::class);
+        $graphicalFunctionsObject->init();
         return $graphicalFunctionsObject;
     }
 }

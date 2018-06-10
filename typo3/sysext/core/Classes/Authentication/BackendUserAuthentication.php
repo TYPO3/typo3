@@ -1664,7 +1664,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function getFileMountRecords()
     {
-        static $fileMountRecordCache = [];
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $fileMountRecordCache = $runtimeCache->get('backendUserAuthenticationFileMountRecords') ?: [];
 
         if (!empty($fileMountRecordCache)) {
             return $fileMountRecordCache;
@@ -1798,6 +1799,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
         }
 
+        $runtimeCache->set('backendUserAuthenticationFileMountRecords', $fileMountRecordCache);
         return $fileMountRecordCache;
     }
 

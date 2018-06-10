@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -95,13 +96,12 @@ class FormEngineUtility
      */
     public static function getTSconfigForTableRow($table, $row, $field = '')
     {
-        static $cache;
-        if ($cache === null) {
-            $cache = [];
-        }
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $cache = $runtimeCache->get('formEngineUtilityTsConfigForTableRow') ?: [];
         $cacheIdentifier = $table . ':' . $row['uid'];
         if (!isset($cache[$cacheIdentifier])) {
             $cache[$cacheIdentifier] = BackendUtility::getTCEFORM_TSconfig($table, $row);
+            $runtimeCache->set('formEngineUtilityTsConfigForTableRow', $cache);
         }
         if ($field && isset($cache[$cacheIdentifier][$field])) {
             return $cache[$cacheIdentifier][$field];

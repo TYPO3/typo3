@@ -15,7 +15,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -23,6 +27,35 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class InlineStackProcessorTest extends UnitTestCase
 {
+    /**
+     * @var array A backup of registered singleton instances
+     */
+    protected $singletonInstances = [];
+
+    /**
+     * Set up
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheProphecy->set(Argument::cetera())->willReturn(false);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+    }
+
+    /**
+     * Tear down
+     */
+    protected function tearDown()
+    {
+        GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        parent::tearDown();
+    }
+
     /**
      * @return array
      */

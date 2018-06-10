@@ -683,13 +683,10 @@ class WorkspaceVersionRecordsCommand extends Command
      */
     protected function getAllVersionableTables(): array
     {
-        static $tables;
-        if (!is_array($tables)) {
-            $tables = [];
-            foreach ($GLOBALS['TCA'] as $tableName => $config) {
-                if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-                    $tables[] = $tableName;
-                }
+        $tables = [];
+        foreach ($GLOBALS['TCA'] as $tableName => $config) {
+            if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
+                $tables[] = $tableName;
             }
         }
         return $tables;

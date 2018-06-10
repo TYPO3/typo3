@@ -250,16 +250,13 @@ class DeletedRecordsCommand extends Command
      */
     protected function getTablesWithDeletedFlags(): array
     {
-        static $tables;
-        if (!is_array($tables)) {
-            $tables = [];
-            foreach ($GLOBALS['TCA'] as $tableName => $configuration) {
-                if ($tableName !== 'pages' && isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
-                    $tables[$tableName] = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
-                }
+        $tables = [];
+        foreach ($GLOBALS['TCA'] as $tableName => $configuration) {
+            if ($tableName !== 'pages' && isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
+                $tables[$tableName] = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
             }
-            ksort($tables);
         }
+        ksort($tables);
         return $tables;
     }
 

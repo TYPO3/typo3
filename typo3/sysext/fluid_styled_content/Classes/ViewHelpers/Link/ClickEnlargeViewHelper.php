@@ -89,12 +89,8 @@ class ClickEnlargeViewHelper extends AbstractViewHelper
     /**
      * @return TypoScriptService
      */
-    protected static function getTypoScriptService()
+    protected static function getTypoScriptService(): TypoScriptService
     {
-        static $typoScriptService;
-        if ($typoScriptService === null) {
-            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-        }
-        return $typoScriptService;
+        return GeneralUtility::makeInstance(TypoScriptService::class);
     }
 }

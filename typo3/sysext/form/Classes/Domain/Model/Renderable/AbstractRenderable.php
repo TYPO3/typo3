@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Renderable;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -151,7 +152,8 @@ abstract class AbstractRenderable implements RenderableInterface
         }
 
         if (isset($options['validators'])) {
-            static $configurationHashes = [];
+            $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+            $configurationHashes = $runtimeCache->get('formAbstractRenderableConfigurationHashes') ?: [];
             foreach ($options['validators'] as $validatorConfiguration) {
                 $configurationHash = md5($this->getIdentifier() . json_encode($validatorConfiguration));
                 if (in_array($configurationHash, $configurationHashes)) {
@@ -159,6 +161,7 @@ abstract class AbstractRenderable implements RenderableInterface
                 }
                 $this->createValidator($validatorConfiguration['identifier'], $validatorConfiguration['options'] ?? []);
                 $configurationHashes[] = $configurationHash;
+                $runtimeCache->set('formAbstractRenderableConfigurationHashes', $configurationHashes);
             }
         }
 

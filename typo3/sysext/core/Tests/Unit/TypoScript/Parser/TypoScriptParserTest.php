@@ -16,6 +16,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Parser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -42,7 +45,7 @@ class TypoScriptParserTest extends UnitTestCase
     }
 
     /**
-     *
+     * Tear down
      */
     protected function tearDown(): void
     {
@@ -375,6 +378,14 @@ class TypoScriptParserTest extends UnitTestCase
      */
     public function includeFilesWithConditions(string $typoScript): void
     {
+        // This test triggers an BackendUtility::BEgetRootLine() down below, we need to suppress the cache call
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheProphecy->set(Argument::cetera())->willReturn(false);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+
         $resolvedIncludeLines = TypoScriptParser::checkIncludeLines($typoScript);
         $this->assertContains('foo = bar', $resolvedIncludeLines);
         $this->assertNotContains('INCLUDE_TYPOSCRIPT', $resolvedIncludeLines);

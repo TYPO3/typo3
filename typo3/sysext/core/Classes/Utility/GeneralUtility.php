@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Utility;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
@@ -1578,17 +1579,15 @@ class GeneralUtility
      */
     public static function xml2array($string, $NSprefix = '', $reportDocTag = false)
     {
-        static $firstLevelCache = [];
+        $runtimeCache = static::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $firstLevelCache = $runtimeCache->get('generalUtilityXml2Array') ?: [];
         $identifier = md5($string . $NSprefix . ($reportDocTag ? '1' : '0'));
         // Look up in first level cache
-        if (!empty($firstLevelCache[$identifier])) {
-            $array = $firstLevelCache[$identifier];
-        } else {
-            $array = self::xml2arrayProcess(trim($string), $NSprefix, $reportDocTag);
-            // Store content in first level cache
-            $firstLevelCache[$identifier] = $array;
+        if (empty($firstLevelCache[$identifier])) {
+            $firstLevelCache[$identifier] = self::xml2arrayProcess(trim($string), $NSprefix, $reportDocTag);
+            $runtimeCache->set('generalUtilityXml2Array', $firstLevelCache);
         }
-        return $array;
+        return $firstLevelCache[$identifier];
     }
 
     /**

@@ -278,6 +278,12 @@ abstract class AbstractTreeView
     public $recs = [];
 
     /**
+     * @var bool
+     * @deprecated since v9, will be removed in v10
+     */
+    private $setDataFromArrayDeprecationThrown = false;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -1015,10 +1021,9 @@ abstract class AbstractTreeView
      */
     public function setDataFromArray(&$dataArr, $traverse = false, $pid = 0)
     {
-        static $deprecationThrown = false;
-        if (!$deprecationThrown) {
+        if (!$this->setDataFromArrayDeprecationThrown) {
             // Throw deprecation only once for this recursive method
-            $deprecationThrown = true;
+            $this->setDataFromArrayDeprecationThrown = true;
             trigger_error('Method setDataFromArray() of AbstractTreeView has been deprecated', E_USER_DEPRECATED);
         }
 

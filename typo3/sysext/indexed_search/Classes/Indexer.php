@@ -960,7 +960,7 @@ class Indexer
     protected function createLocalPath($sourcePath)
     {
         $localPath = '';
-        static $pathFunctions = [
+        $pathFunctions = [
             'createLocalPathFromT3vars',
             'createLocalPathUsingAbsRefPrefix',
             'createLocalPathUsingDomainURL',
