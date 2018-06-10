@@ -18,6 +18,9 @@
 			<trans-unit id="overview.addSiteConfiguration">
 				<source>Add new site configuration for this site</source>
 			</trans-unit>
+			<trans-unit id="overview.deleteSiteConfiguration">
+				<source>Delete site configuration</source>
+			</trans-unit>
 			<trans-unit id="overview.baseUrl">
 				<source>Base URLs</source>
 			</trans-unit>

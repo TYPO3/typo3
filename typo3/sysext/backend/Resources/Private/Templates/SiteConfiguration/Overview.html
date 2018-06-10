@@ -66,7 +66,13 @@
                             <f:be.link route="site_configuration" parameters="{action: 'edit', site: page.siteIdentifier}" title="Edit" class="btn btn-default">
                                 <core:icon identifier="actions-open" />
                             </f:be.link>
-                            <f:be.link route="site_configuration" parameters="{action: 'delete', site:page.siteIdentifier}" title="Delete configuration" class="btn btn-default">
+                            <f:be.link route="site_configuration" parameters="{action: 'delete', site:page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration')}" class="btn btn-default t3js-modal-trigger"
+                                       data="{
+                                            toggle:'tooltip',
+                                            severity: 'error',
+                                            title:'{f:translate(key:\'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration\')}',
+                                            button-ok-text:'{f:translate(key:\'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:button.delete\')}'
+                                            }">
                                 <core:icon identifier="actions-delete" />
                             </f:be.link>
                         </f:if>

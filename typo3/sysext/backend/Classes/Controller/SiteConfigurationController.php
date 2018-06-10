@@ -85,6 +85,7 @@ class SiteConfigurationController
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'overview';
         $this->initializeView($action);
         $result = call_user_func_array([$this, $action . 'Action'], [$request]);
