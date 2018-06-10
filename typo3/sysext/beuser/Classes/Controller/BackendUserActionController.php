@@ -133,7 +133,14 @@ class BackendUserActionController extends ActionController
         if ($this->request->getControllerName() === 'BackendUser') {
             if ($this->request->getControllerActionName() === 'index') {
                 $returnUrl = (string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser');
-                $parameters = GeneralUtility::explodeUrl2Array('edit[be_users][0]=new&returnUrl=' . $returnUrl);
+                $parameters = [
+                    'edit' => [
+                        'be_users' => [
+                            0 => 'new'
+                        ]
+                    ],
+                    'returnUrl' => $returnUrl,
+                ];
                 $addUserLink = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
                 $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral');
                 $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL);
@@ -159,13 +166,20 @@ class BackendUserActionController extends ActionController
         }
         if ($this->request->getControllerName() === 'BackendUserGroup') {
             $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroupsMenu');
-            $returnUrl = rawurlencode((string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser', [
+            $returnUrl = (string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser', [
                 'tx_beuser_system_beusertxbeuser' => [
                     'action' => 'index',
                     'controller' => 'BackendUserGroup'
                 ]
-            ]));
-            $parameters = GeneralUtility::explodeUrl2Array('edit[be_groups][0]=new&returnUrl=' . $returnUrl);
+            ]);
+            $parameters = [
+                'edit' => [
+                    'be_groups' => [
+                        0 => 'new'
+                    ]
+                ],
+                'returnUrl' => $returnUrl,
+            ];
             $addUserLink = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
             $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral');
             $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL);
