@@ -46,7 +46,7 @@ delete from the task configuration screen.
 It's also possible to clean up all configured table by
 checking the "Clean all available tables" box. The configuration for
 the tables to clean up is stored in
-:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables']`.
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']`.
 The syntax is the following:
 
 - option :php:`expireField` can be used to point to a table field
@@ -67,7 +67,7 @@ Example
 
 ::
 
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] = array(
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'] = array(
            'tx_realurl_errorlog' => array(
                    'dateField' => 'tstamp',
                    'expirePeriod' => '180'
