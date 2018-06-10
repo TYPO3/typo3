@@ -72,9 +72,9 @@ class FalMetadataInheritanceCest
 
         $I->see('Set element specific value (No default)', '.t3js-form-field-eval-null-placeholder-checkbox');
 
-        $I->seeElement('//input[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[title]")]', ['placeholder' => '', 'value' => '']);
-        $I->seeElement('//input[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[alternative]")]', ['placeholder' => '', 'value' => '']);
-        $I->seeElement('//textarea[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[description]")]', ['placeholder' => '']);
+        $I->seeElementInDOM('//input[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[title]")]', ['placeholder' => '', 'value' => '']);
+        $I->seeElementInDOM('//input[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[alternative]")]', ['placeholder' => '', 'value' => '']);
+        $I->seeElementInDOM('//textarea[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[description]")]', ['placeholder' => '']);
         //textarea value is not in the attribute, so we need to check it separately
         $I->seeInField('//textarea[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[description]")]', '');
 
@@ -115,9 +115,9 @@ class FalMetadataInheritanceCest
         $I->see('(Default: "Test alternative")', '.t3js-form-field-eval-null-placeholder-checkbox');
         $I->see('(Default: "Test description")', '.t3js-form-field-eval-null-placeholder-checkbox');
 
-        $I->seeElement('//input[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[title]")]', ['placeholder' => 'Test title', 'value' => '']);
-        $I->seeElement('//input[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[alternative]")]', ['placeholder' => 'Test alternative', 'value' => '']);
-        $I->seeElement('//textarea[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[description]")]', ['placeholder' => 'Test description']);
+        $I->seeElementInDOM('//input[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[title]")]', ['placeholder' => 'Test title', 'value' => '']);
+        $I->seeElementInDOM('//input[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[alternative]")]', ['placeholder' => 'Test alternative', 'value' => '']);
+        $I->seeElementInDOM('//textarea[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[description]")]', ['placeholder' => 'Test description']);
         //textarea value is not in the attribute, so we need to check it separately
         $I->seeInField('//textarea[contains(@data-formengine-input-name, "data[sys_file_reference]") and contains(@data-formengine-input-name, "[description]")]', '');
     }
