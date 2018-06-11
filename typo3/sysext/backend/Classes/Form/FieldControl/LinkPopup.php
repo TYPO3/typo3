@@ -71,7 +71,7 @@ class LinkPopup extends AbstractNode
         $onClick[] = 'vHWin=window.open(';
         $onClick[] =    GeneralUtility::quoteJSvalue($url);
         $onClick[] =    '+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(';
-        $onClick[] =        'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value,300';
+        $onClick[] =        'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value';
         $onClick[] =    ')';
         $onClick[] =    '+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(';
         $onClick[] =        GeneralUtility::quoteJSvalue($itemName);
