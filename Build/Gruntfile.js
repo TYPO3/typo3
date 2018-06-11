@@ -183,9 +183,6 @@ module.exports = function (grunt) {
       form: {
         src: '<%= paths.form %>Public/Css/*.css'
       },
-      frontend: {
-        src: '<%= paths.frontend %>Public/Css/*.css'
-      },
       install: {
         src: '<%= paths.install %>Public/Css/*.css'
       },
