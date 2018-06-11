@@ -147,19 +147,20 @@ class SuggestWizardDefaultReceiver
      */
     public function queryTable(&$params, $recursionCounter = 0)
     {
+        $maxQueryResults = 50;
         $rows = [];
         $this->params = &$params;
-        $start = $recursionCounter * 50;
+        $start = $recursionCounter * $maxQueryResults;
         $this->prepareSelectStatement();
         $this->prepareOrderByStatement();
         $result = $this->queryBuilder->select('*')
             ->from($this->table)
             ->setFirstResult($start)
-            ->setMaxResults(50)
+            ->setMaxResults($maxQueryResults)
             ->execute();
-        $allRowsCount = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->table)
+        $allRowsCount = $this->queryBuilder
             ->count('uid')
+            ->resetQueryPart('orderBy')
             ->execute()
             ->fetchColumn(0);
         if ($allRowsCount) {
@@ -204,7 +205,7 @@ class SuggestWizardDefaultReceiver
             }
 
             // if there are less records than we need, call this function again to get more records
-            if (count($rows) < $this->maxItems && $allRowsCount >= 50 && $recursionCounter < $this->maxItems) {
+            if (count($rows) < $this->maxItems && $allRowsCount >= $maxQueryResults && $recursionCounter < $this->maxItems) {
                 $tmp = self::queryTable($params, ++$recursionCounter);
                 $rows = array_merge($tmp, $rows);
             }
