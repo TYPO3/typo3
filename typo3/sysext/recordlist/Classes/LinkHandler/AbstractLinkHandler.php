@@ -122,20 +122,8 @@ abstract class AbstractLinkHandler
         if (isset($tmpMount)) {
             $backendUser->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
         }
-        // Set temporary DB mounts
-        $alternativeWebmountPoint = (int)$backendUser->getSessionData('pageTree_temporaryMountPoint');
-        if ($alternativeWebmountPoint) {
-            $alternativeWebmountPoint = GeneralUtility::intExplode(',', $alternativeWebmountPoint);
-            $backendUser->setWebmounts($alternativeWebmountPoint);
-        } else {
-            // Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
-            $alternativeWebmountPoints = \trim($backendUser->getTSConfig()['options.']['pageTree.']['altElementBrowserMountPoints'] ?? '');
-            $appendAlternativeWebmountPoints = $backendUser->getTSConfig()['options.']['pageTree.']['altElementBrowserMountPoints.']['append'] ?? '';
-            if ($alternativeWebmountPoints) {
-                $alternativeWebmountPoints = GeneralUtility::intExplode(',', $alternativeWebmountPoints);
-                $this->getBackendUser()->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
-            }
-        }
+
+        $backendUser->initializeWebmountsForElementBrowser();
     }
 
     /**

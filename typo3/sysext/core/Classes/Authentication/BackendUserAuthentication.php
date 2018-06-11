@@ -1323,6 +1323,34 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
+     * Checks for alternative web mount points for the element browser.
+     *
+     * If there is a temporary mount point active in the page tree it will be used.
+     *
+     * If the User TSconfig options.pageTree.altElementBrowserMountPoints is not empty the pages configured
+     * there are used as web mounts If options.pageTree.altElementBrowserMountPoints.append is enabled,
+     * they are appended to the existing webmounts.
+     *
+     * @internal - do not use in your own extension
+     */
+    public function initializeWebmountsForElementBrowser()
+    {
+        $alternativeWebmountPoint = (int)$this->getSessionData('pageTree_temporaryMountPoint');
+        if ($alternativeWebmountPoint) {
+            $alternativeWebmountPoint = GeneralUtility::intExplode(',', $alternativeWebmountPoint);
+            $this->setWebmounts($alternativeWebmountPoint);
+            return;
+        }
+
+        $alternativeWebmountPoints = trim($this->getTSConfig()['options.']['pageTree.']['altElementBrowserMountPoints'] ?? '');
+        $appendAlternativeWebmountPoints = $this->getTSConfig()['options.']['pageTree.']['altElementBrowserMountPoints.']['append'] ?? '';
+        if ($alternativeWebmountPoints) {
+            $alternativeWebmountPoints = GeneralUtility::intExplode(',', $alternativeWebmountPoints);
+            $this->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
+        }
+    }
+
+    /**
      * Returns TRUE or FALSE, depending if an alert popup (a javascript confirmation) should be shown
      * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK).
      *

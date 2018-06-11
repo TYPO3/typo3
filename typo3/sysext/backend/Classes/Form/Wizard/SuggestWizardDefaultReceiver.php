@@ -120,6 +120,7 @@ class SuggestWizardDefaultReceiver
         if (isset($config['maxItemsInResultList'])) {
             $this->maxItems = $config['maxItemsInResultList'];
         }
+        $GLOBALS['BE_USER']->initializeWebmountsForElementBrowser();
         if ($this->table === 'pages') {
             $this->queryBuilder->andWhere(
                 QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW)),
