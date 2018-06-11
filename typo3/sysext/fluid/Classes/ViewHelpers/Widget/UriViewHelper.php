@@ -108,7 +108,7 @@ class UriViewHelper extends AbstractViewHelper
         if ($arguments['action'] ?? false) {
             $parameters['action'] = $arguments['action'];
         }
-        if ($arguments['format'] ?? '' !== '') {
+        if (($arguments['format'] ?? '') !== '') {
             $parameters['format'] = $arguments['format'];
         }
         return $uriBuilder->reset()

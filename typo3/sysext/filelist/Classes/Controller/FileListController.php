@@ -307,21 +307,21 @@ class FileListController extends ActionController
         // Set predefined value for DisplayBigControlPanel:
         $backendUser = $this->getBackendUser();
         $userTsConfig = $backendUser->getTSConfig();
-        if ($userTsConfig['options.']['file_list.']['enableDisplayBigControlPanel'] ?? '' === 'activated') {
+        if (($userTsConfig['options.']['file_list.']['enableDisplayBigControlPanel'] ?? '') === 'activated') {
             $this->MOD_SETTINGS['bigControlPanel'] = true;
-        } elseif ($userTsConfig['options.']['file_list.']['enableDisplayBigControlPanel'] ?? '' === 'deactivated') {
+        } elseif (($userTsConfig['options.']['file_list.']['enableDisplayBigControlPanel'] ?? '') === 'deactivated') {
             $this->MOD_SETTINGS['bigControlPanel'] = false;
         }
         // Set predefined value for DisplayThumbnails:
-        if ($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '' === 'activated') {
+        if (($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'activated') {
             $this->MOD_SETTINGS['displayThumbs'] = true;
-        } elseif ($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '' === 'deactivated') {
+        } elseif (($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'deactivated') {
             $this->MOD_SETTINGS['displayThumbs'] = false;
         }
         // Set predefined value for Clipboard:
-        if ($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '' === 'activated') {
+        if (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'activated') {
             $this->MOD_SETTINGS['clipBoard'] = true;
-        } elseif ($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '' === 'deactivated') {
+        } elseif (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'deactivated') {
             $this->MOD_SETTINGS['clipBoard'] = false;
         }
         // If user never opened the list module, set the value for displayThumbs
@@ -435,7 +435,7 @@ class FileListController extends ActionController
 
             $this->view->assign('checkboxes', [
                 'bigControlPanel' => [
-                    'enabled' => $userTsConfig['options.']['file_list.']['enableDisplayBigControlPanel'] ?? '' === 'selectable',
+                    'enabled' => ($userTsConfig['options.']['file_list.']['enableDisplayBigControlPanel'] ?? '') === 'selectable',
                     'label' => htmlspecialchars($this->getLanguageService()->getLL('bigControlPanel')),
                     'html' => BackendUtility::getFuncCheck(
                         $this->id,
@@ -447,7 +447,7 @@ class FileListController extends ActionController
                     ),
                 ],
                 'displayThumbs' => [
-                    'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '' === 'selectable',
+                    'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && ($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'selectable',
                     'label' => htmlspecialchars($this->getLanguageService()->getLL('displayThumbs')),
                     'html' => BackendUtility::getFuncCheck(
                         $this->id,
@@ -459,7 +459,7 @@ class FileListController extends ActionController
                     ),
                 ],
                 'enableClipBoard' => [
-                    'enabled' => $userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '' === 'selectable',
+                    'enabled' => ($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'selectable',
                     'label' => htmlspecialchars($this->getLanguageService()->getLL('clipBoard')),
                     'html' => BackendUtility::getFuncCheck(
                         $this->id,
