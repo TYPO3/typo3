@@ -66,7 +66,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "9.3.x-dev"
+			"dev-master": "9.4.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {
