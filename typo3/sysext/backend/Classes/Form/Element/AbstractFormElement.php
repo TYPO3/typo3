@@ -550,7 +550,7 @@ abstract class AbstractFormElement extends AbstractNode
                         'this.blur();' .
                         $onlyIfSelectedJS .
                         'vHWin=window.open(' . GeneralUtility::quoteJSvalue($url) . '+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(' .
-                                'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value,300' .
+                                'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value' .
                             ')' .
                             '+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName) . '),' .
                             GeneralUtility::quoteJSvalue('popUp' . $md5ID) . ',' .
