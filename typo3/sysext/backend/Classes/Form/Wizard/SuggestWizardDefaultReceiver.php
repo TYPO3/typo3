@@ -276,11 +276,11 @@ class SuggestWizardDefaultReceiver
 
             $rows = array_column(($rows ?: []), 'uid', 'uid');
             if (!count($rows)) {
-                $pageIds = array_keys($rows);
-                $pages = array_merge($pages, $pageIds);
-            } else {
                 break;
             }
+
+            $pageIds = array_keys($rows);
+            $pages = array_merge($pages, $pageIds);
         }
         return $pages;
     }
