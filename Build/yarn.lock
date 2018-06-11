@@ -673,8 +673,8 @@ chokidar@^1.4.1:
     fsevents "^1.0.0"
 
 chosen-js@^1.7.0:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/chosen-js/-/chosen-js-1.8.3.tgz#1f953aef905d9760c14b5facc839a5f47eb356ec"
+  version "1.8.5"
+  resolved "https://registry.yarnpkg.com/chosen-js/-/chosen-js-1.8.5.tgz#5863f8ba590afa317e77e1745e0348a7290c32f3"
 
 chownr@~1.0.1:
   version "1.0.1"
