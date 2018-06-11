@@ -1390,27 +1390,6 @@ abstract class AbstractItemProvider
         return $uid;
     }
 
-    /**
-     * Determine the static values in the item array
-     *
-     * Used by TcaSelectItems and TcaSelectTreeItems data providers
-     *
-     * @param array $itemArray All item records for the select field
-     * @param array $dynamicItemArray Item records from dynamic sources
-     * @return array
-     * @todo: Check method usage, it's probably bogus in select context and was removed from select tree already.
-     */
-    protected function getStaticValues($itemArray, $dynamicItemArray)
-    {
-        $staticValues = [];
-        foreach ($itemArray as $key => $item) {
-            if (!isset($dynamicItemArray[$key])) {
-                $staticValues[$item[1]] = $item;
-            }
-        }
-        return $staticValues;
-    }
-
     protected function getAllSites(): array
     {
         return GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
