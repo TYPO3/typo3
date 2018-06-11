@@ -10,10 +10,10 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'TYPO3 Skin Team',
     'author_email' => 'typo3-team-t3skin@lists.typo3.org',
     'author_company' => '',
-    'version' => '7.6.29',
+    'version' => '7.6.30',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.29',
+            'typo3' => '7.6.30',
         ],
         'conflicts' => [],
         'suggests' => [],

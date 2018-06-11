@@ -3,7 +3,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Fixture extension for functional tests for Inline Relational Record Editing IRRE',
     'description' => 'based on irre_tutorial extension created by Oliver Hader, see http://forge.typo3.org/projects/extension-irre_tutorial',
     'category' => 'example',
-    'version' => '7.6.29',
+    'version' => '7.6.30',
     'state' => 'beta',
     'uploadfolder' => 0,
     'createDirs' => '',
@@ -13,9 +13,9 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.29',
+            'typo3' => '7.6.30',
             'workspaces' => '0.0.0-',
-            'version' => '7.6.29',
+            'version' => '7.6.30',
         ],
         'conflicts' => [
         ],
