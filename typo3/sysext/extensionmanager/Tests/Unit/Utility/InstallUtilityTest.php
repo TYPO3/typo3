@@ -223,12 +223,12 @@ class InstallUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function processDatabaseUpdatesCallsUpdateDb()
+    public function processDatabaseUpdatesCallsUpdateDbWithExtTablesSql()
     {
         $extKey = $this->createFakeExtension();
         $extPath = PATH_site . 'typo3temp/var/tests/' . $extKey . '/';
         $extTablesFile = $extPath . 'ext_tables.sql';
-        $fileContent = 'DUMMY TEXT';
+        $fileContent = 'DUMMY TEXT TO COMPARE';
         file_put_contents($extTablesFile, $fileContent);
         $installMock = $this->getAccessibleMock(
             InstallUtility::class,
@@ -240,7 +240,7 @@ class InstallUtilityTest extends UnitTestCase
         $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)->getMock();
         $installMock->_set('dependencyUtility', $dependencyUtility);
 
-        $installMock->expects($this->once())->method('updateDbWithExtTablesSql');
+        $installMock->expects($this->once())->method('updateDbWithExtTablesSql')->with($this->stringStartsWith($fileContent));
         $installMock->processDatabaseUpdates($this->fakedExtensions[$extKey]);
     }
 

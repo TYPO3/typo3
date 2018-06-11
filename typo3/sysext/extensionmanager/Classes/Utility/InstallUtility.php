@@ -360,7 +360,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         }
         if ($extTablesSqlContent !== '') {
             try {
-                $this->updateDbWithExtTablesSql();
+                $this->updateDbWithExtTablesSql($extTablesSqlContent);
             } catch (\TYPO3\CMS\Core\Database\Schema\Exception\StatementException $e) {
                 throw new ExtensionManagerException(
                     $e->getMessage(),
@@ -449,18 +449,13 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $rawDefinitions The raw SQL statements from ext_tables.sql
      */
-    public function updateDbWithExtTablesSql($rawDefinitions = null)
+    public function updateDbWithExtTablesSql($rawDefinitions)
     {
         $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
-        if ($rawDefinitions !== null) {
-            $statements = $sqlReader->getCreateTableStatementArray($rawDefinitions);
-        } else {
-            // Read all ext_tables.sql files including new loaded extension
-            $statements = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
-        }
+        $statements = $sqlReader->getCreateTableStatementArray($rawDefinitions);
         if (count($statements) !== 0) {
             $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
-            $schemaMigrationService->install($statements, true);
+            $schemaMigrationService->install($statements);
         }
     }
 
@@ -606,7 +601,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionSiteRelPath
      */
-    public function importStaticSqlFile($extensionSiteRelPath)
+    protected function importStaticSqlFile($extensionSiteRelPath)
     {
         $extTablesStaticSqlRelFile = $extensionSiteRelPath . 'ext_tables_static+adt.sql';
         if (!$this->registry->get('extensionDataImport', $extTablesStaticSqlRelFile)) {

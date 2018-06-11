@@ -170,7 +170,7 @@ class ActionController extends AbstractController
         $registry = GeneralUtility::makeInstance(Registry::class);
         $registry->remove('extensionDataImport', $registryKey);
 
-        $this->installUtility->importStaticSqlFile($extension['siteRelPath']);
+        $this->installUtility->processDatabaseUpdates($extension);
 
         $this->redirect('index', 'List');
     }
