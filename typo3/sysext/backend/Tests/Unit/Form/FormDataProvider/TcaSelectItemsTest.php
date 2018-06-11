@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -63,6 +64,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheManagerProphecy->getCache('assets')->willReturn($cacheProphecy->reveal());
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
         $cacheProphecy->set(Argument::cetera())->willReturn(false);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -1895,6 +1897,27 @@ class TcaSelectItemsTest extends UnitTestCase
     }
 
     /**
+     * @return array
+     */
+    private function mockForeignTableItemsQuery(): array
+    {
+        [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
+
+        /** @var Statement|ObjectProphecy $statementProphet */
+        $statementProphet = $this->prophesize(Statement::class);
+
+        $queryBuilderProphet->select('fTable.uid', 'fTable.labelField')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->andWhere('`pages.uid` = `fTable.pid`')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
+
+        return [$connectionPoolProphet, $statementProphet];
+    }
+
+    /**
      * @test
      */
     public function addDataForeignTableHandlesForeignTableRows()
@@ -1942,18 +1965,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
 
-        list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection();
-
-        /** @var Statement|ObjectProphecy $statementProphet */
-        $statementProphet = $this->prophesize(Statement::class);
-
-        $queryBuilderProphet->select('fTable.uid', 'fTable.labelField')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->andWhere('`pages.uid` = `fTable.pid`')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
+        [$connectionPoolProphet, $statementProphet] = $this->mockForeignTableItemsQuery();
 
         // Two instances are needed due to the push/pop behavior of addInstance()
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
@@ -1987,6 +1999,104 @@ class TcaSelectItemsTest extends UnitTestCase
                 2 => null,
                 3 => null,
             ],
+        ];
+
+        $expected['databaseRow']['aField'] = [];
+
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataRemovesItemsThatAreRestictedByUserStorageAddedByForeignTable(): void
+    {
+        $input = [
+            'databaseRow' => [
+                'uid' => 5,
+                'aField' => '',
+            ],
+            'tableName' => 'aTable',
+            'effectivePid' => 42,
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'sys_file_storage',
+                            'foreign_table_prefix' => 'prefix for item labels',
+                            'items' => [],
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ]
+            ],
+            'rootline' => [],
+        ];
+
+        $GLOBALS['TCA']['sys_file_storage'] = [
+            'ctrl' => [
+                'label' => 'labelField',
+            ],
+            'columns' => [],
+        ];
+
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
+
+        $resourceStorageProphecy = $this->prophesize(ResourceStorage::class);
+        $resourceStorageProphecy->getUid()->willReturn(1);
+
+        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
+        $backendUserProphecy->getFileStorages()->shouldBeCalled()->willReturn(
+            [$resourceStorageProphecy->reveal()]
+        );
+
+        [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection('sys_file_storage');
+
+        /** @var Statement|ObjectProphecy $statementProphet */
+        $statementProphet = $this->prophesize(Statement::class);
+
+        $queryBuilderProphet->select('sys_file_storage.uid', 'sys_file_storage.labelField')
+            ->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->from('sys_file_storage')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->andWhere('`pages.uid` = `sys_file_storage.pid`')
+            ->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
+
+        // Two instances are needed due to the push/pop behavior of addInstance()
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
+        $counter = 0;
+        $statementProphet->fetch()->shouldBeCalled()->will(function ($args) use (&$counter) {
+            $counter++;
+            if ($counter >= 3) {
+                return false;
+            }
+            return [
+                'uid' => $counter,
+                'pid' => 0,
+                'labelField' => 'storageFolderLabel'
+            ];
+        });
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['items'] = [
+            0 => [
+                0 => 'prefix for item labels[LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title]',
+                1 => 1,
+                2 => 'default-not-found',
+                3 => null,
+            ]
         ];
 
         $expected['databaseRow']['aField'] = [];
@@ -2690,7 +2800,446 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataItemsProcFuncReceivesParameters()
+    public function addDataForeignTableItemsWillReceiveTheLabelFromForeignTableLabelField(): void
+    {
+        $input = [
+            'databaseRow' => [
+                'uid' => 5,
+                'aField' => 2
+            ],
+            'tableName' => 'aTable',
+            'effectivePid' => 42,
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'fTable',
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ]
+            ],
+            'rootline' => [],
+        ];
+
+        $GLOBALS['TCA']['fTable'] = [
+            'ctrl' => [
+                'label' => 'labelField',
+            ],
+            'columns' => [
+                'labelField' => []
+            ],
+        ];
+
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
+
+        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
+
+        [$connectionPoolProphet, $statementProphet] = $this->mockForeignTableItemsQuery();
+
+        // Two instances are needed due to the push/pop behavior of addInstance()
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
+        $counter = 0;
+        $statementProphet->fetch()->shouldBeCalled()->will(function ($args) use (&$counter) {
+            $counter++;
+            if ($counter >= 3) {
+                return false;
+            }
+            return [
+                'uid' => $counter,
+                'pid' => 23,
+                'labelField' => 'aLabel_' . $counter,
+                'aValue' => 'bar,',
+                'dbfield' => 'some data'
+            ];
+        });
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['items'] = [
+            0 => [
+                0 => 'aLabel_1',
+                1 => 1,
+                2 => 'default-not-found',
+                3 => null,
+            ],
+            1 => [
+                0 => 'aLabel_2',
+                1 => 2,
+                2 => 'default-not-found',
+                3 => null,
+            ],
+        ];
+
+        $expected['databaseRow']['aField'] = [
+            0 => '2' // the selected value stored in db
+        ];
+
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
+    }
+
+    /**
+     * This test case combines the use of itemsProcFunc and foreign_table
+     *
+     * In the itemsProcFunc we will iterate over the items given from foreign_table and filter out every item that
+     * does not have a uid of 2
+     *
+     * @test
+     */
+    public function addDataItemsProcFuncWillUseItemsFromForeignTable(): void
+    {
+        $input = [
+            'databaseRow' => [
+                'uid' => 5,
+                'aField' => ''
+            ],
+            'tableName' => 'aTable',
+            'effectivePid' => 42,
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'fTable',
+                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                                $filteredItems = [];
+                                // Iterate over given items to filter them
+                                foreach ($parameters['items'] as $item) {
+                                    if ($item[1] === 2) { // uid === 2
+                                        $filteredItems[] = [
+                                            $item[0],   // label
+                                            $item[1],   // uid
+                                            null,       // icon
+                                            null        // helpText
+                                        ];
+                                    }
+                                }
+                                $parameters['items'] = $filteredItems;
+                            },
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ]
+            ],
+            'rootline' => [],
+        ];
+
+        $GLOBALS['TCA']['fTable'] = [
+            'ctrl' => [
+                'label' => 'labelField',
+            ],
+            'columns' => [],
+        ];
+
+        // FileRepository to get the icon of the foreign table
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
+
+        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
+
+        [$connectionPoolProphet, $statementProphet] = $this->mockForeignTableItemsQuery();
+
+        // Two instances are needed due to the push/pop behavior of addInstance()
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
+        $counter = 0;
+
+        // simulates foreign_table containing two rows
+        $statementProphet->fetch()->shouldBeCalled()->will(function ($args) use (&$counter) {
+            $counter++;
+            if ($counter >= 3) {
+                return false;
+            }
+            return [
+                'uid' => $counter,
+                'pid' => 23,
+                'labelField' => 'aLabel will be replaced since the label column is not configured',
+                'aValue' => 'bar, irrelevant',
+                'dbfield' => 'some random data, irrelevant'
+            ];
+        });
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'renderType' => 'selectSingle',
+            'foreign_table' => 'fTable',
+            'items' => [
+                0 => [
+                    0 => '[LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title]',
+                    1 => 2,
+                    2 => null,
+                    3 => null,
+                ],
+            ],
+            'maxitems' => 99999
+        ];
+
+        $expected['databaseRow']['aField'] = [];
+
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
+    }
+
+    /**
+     * This test case combines the use of itemsProcFunc, foreign_table and pageTsConfig
+     *
+     * In the itemsProcFunc we will iterate over the items given from foreign_table and filter out every item that
+     * does not have a uid lower than 3.
+     * The pageTsConfig will remove the item with the uid=2 from the list so only one item with uid=1 will remain
+     *
+     * @test
+     */
+    public function addDataItemsProcFuncWillUseItemsFromForeignTableAndRemoveItemsByPageTsConfig(): void
+    {
+        $input = [
+            'databaseRow' => [
+                'uid' => 5,
+                'aField' => ''
+            ],
+            'tableName' => 'aTable',
+            'effectivePid' => 42,
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'fTable',
+                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                                $filteredItems = [];
+                                // Iterate over given items to filter them
+                                foreach ($parameters['items'] as $item) {
+                                    if ($item[1] < 3) { // uid < 2
+                                        $filteredItems[] = [
+                                            $item[0],   // label
+                                            $item[1],   // uid
+                                            null,       // icon
+                                            null        // helpText
+                                        ];
+                                    }
+                                }
+                                $parameters['items'] = $filteredItems;
+                            },
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ]
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'removeItems' => '2'
+                        ],
+                    ],
+                ],
+            ],
+            'rootline' => [],
+        ];
+
+        $GLOBALS['TCA']['fTable'] = [
+            'ctrl' => [
+                'label' => 'labelField',
+            ],
+            'columns' => [],
+        ];
+
+        // FileRepository to get the icon of the foreign table
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
+
+        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
+
+        [$connectionPoolProphet, $statementProphet] = $this->mockForeignTableItemsQuery();
+
+        // Two instances are needed due to the push/pop behavior of addInstance()
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
+        $counter = 0;
+
+        // simulates foreign_table containing two rows
+        $statementProphet->fetch()->shouldBeCalled()->will(function ($args) use (&$counter) {
+            $counter++;
+            if ($counter >= 3) {
+                return false;
+            }
+            return [
+                'uid' => $counter,
+                'pid' => 23,
+                'labelField' => 'aLabel will be replaced since the label column is not configured',
+                'randomDbField' => 'bar, irrelevant'
+            ];
+        });
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'renderType' => 'selectSingle',
+            'foreign_table' => 'fTable',
+            'items' => [
+                0 => [
+                    0 => '[LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title]',
+                    1 => 1,
+                    2 => null,
+                    3 => null,
+                ]
+            ],
+            'maxitems' => 99999
+        ];
+
+        $expected['databaseRow']['aField'] = [];
+
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
+    }
+
+    /**
+     * This test case combines the use of itemsProcFunc, foreign_table and pageTsConfig
+     *
+     * In the itemsProcFunc we will iterate over the items given from foreign_table and filter out every item that
+     * does not have the uid of 2.
+     * The pageTsConfig will add an item with the uid=12 to the list so only one item with uid=1 will remain
+     *
+     * @test
+     */
+    public function addDataItemsProcFuncWillUseItemsFromForeignTableAndAddItemsByPageTsConfig(): void
+    {
+        $input = [
+            'databaseRow' => [
+                'uid' => 5,
+                'aField' => ''
+            ],
+            'tableName' => 'aTable',
+            'effectivePid' => 42,
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'fTable',
+                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                                $filteredItems = [];
+                                // Iterate over given items to filter them
+                                foreach ($parameters['items'] as $item) {
+                                    if ($item[1] === 2) { // uid must be 2
+                                        $filteredItems[] = [
+                                            $item[0],   // label
+                                            $item[1],   // uid
+                                            null,       // icon
+                                            null        // helpText
+                                        ];
+                                    }
+                                }
+                                $parameters['items'] = $filteredItems;
+                            },
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ]
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'addItems.' => [
+                                '12' => 'Label of the added item'
+                            ]
+                        ],
+                    ],
+                ],
+            ],
+            'rootline' => [],
+        ];
+
+        $GLOBALS['TCA']['fTable'] = [
+            'ctrl' => [
+                'label' => 'labelField',
+            ],
+            'columns' => [],
+        ];
+
+        // FileRepository to get the icon of the foreign table
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
+
+        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
+
+        [$connectionPoolProphet, $statementProphet] = $this->mockForeignTableItemsQuery();
+
+        // Two instances are needed due to the push/pop behavior of addInstance()
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
+        $counter = 0;
+
+        // simulates foreign_table containing two rows
+        $statementProphet->fetch()->shouldBeCalled()->will(function ($args) use (&$counter) {
+            $counter++;
+            if ($counter >= 3) {
+                return false;
+            }
+            return [
+                'uid' => $counter,
+                'pid' => 23,
+                'labelField' => 'aLabel will be replaced since the label column is not configured',
+                'randomDbField' => 'bar, irrelevant'
+            ];
+        });
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'renderType' => 'selectSingle',
+            'foreign_table' => 'fTable',
+            'items' => [
+                0 => [
+                    0 => '[LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title]',
+                    1 => 2,
+                    2 => null,
+                    3 => null,
+                ],
+                1 => [
+                    0 => 'Label of the added item',
+                    1 => 12,
+                    2 => null,
+                    3 => null,
+                ],
+            ],
+            'maxitems' => 99999
+        ];
+
+        $expected['databaseRow']['aField'] = [];
+
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataItemsProcFuncReceivesParameters(): void
     {
         $input = [
             'tableName' => 'aTable',
