@@ -394,7 +394,7 @@ class ExtendedTemplateService extends TemplateService
      * @param string $parentType (unused)
      * @param string $parentValue (unused)
      * @param string $alphaSort sorts the array keys / tree by alphabet when set to 1
-     * @return array
+     * @return string
      */
     public function ext_getObjTree($arr, $depth_in, $depthData, $parentType = '', $parentValue = '', $alphaSort = '0')
     {

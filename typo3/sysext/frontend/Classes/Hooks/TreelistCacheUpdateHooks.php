@@ -322,9 +322,9 @@ class TreelistCacheUpdateHooks
      *
      * @param string $status DataHandler operation status, either 'new' or 'update'
      * @param array $updatedFields Array of updated fields
-     * @return string List of actions that happened to the page record
+     * @return array List of actions that happened to the page record
      */
-    protected function determineClearCacheActions($status, $updatedFields)
+    protected function determineClearCacheActions($status, $updatedFields): array
     {
         $actions = [];
         if ($status === 'new') {
