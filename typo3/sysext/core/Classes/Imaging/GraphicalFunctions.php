@@ -943,17 +943,8 @@ class GraphicalFunctions
         foreach ($stringParts as $strCfg) {
             $fontFile = GeneralUtility::getFileAbsFileName($strCfg['fontFile']);
             if (is_readable($fontFile)) {
-                /**
-                 * Calculate Bounding Box for part.
-                 * Due to a PHP bug, we must retry if $calc[2] is negative.
-                 *
-                 * @see https://bugs.php.net/bug.php?id=51315
-                 * @see https://bugs.php.net/bug.php?id=22513
-                 */
-                $try = 0;
-                do {
-                    $calc = imagettfbbox($this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
-                } while ($calc[2] < 0 && $try++ < 10);
+                // Calculate Bounding Box for part.
+                $calc = imagettfbbox($this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
                 // Calculate offsets:
                 if (empty($offsetInfo)) {
                     // First run, just copy over.
