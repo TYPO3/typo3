@@ -174,4 +174,48 @@ class SaveToDatabaseFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
 
         $saveToDatabaseFinisher->execute($this->prophesize(FinisherContext::class)->reveal());
     }
+
+    /**
+     * @test
+     */
+    public function prepareDataConvertsDateTimeToUnixTimestamp()
+    {
+        $elementsConfiguration = [
+            'date' => [
+                'mapOnDatabaseColumn' => 'date'
+            ]
+        ];
+
+        $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
+        $saveToDatabaseFinisher->method('getFormValues')->willReturn([
+            'date' => new \DateTime,
+        ]);
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
+        $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
+
+        $expected = '#^([0-9]{10})$#';
+        $this->assertEquals(1, preg_match($expected, $databaseData['date']));
+    }
+
+    /**
+     * @test
+     */
+    public function prepareDataConvertsDateTimeToFormat()
+    {
+        $elementsConfiguration = [
+            'date' => [
+                'mapOnDatabaseColumn' => 'date',
+                'dateFormat' => 'Y.m.d',
+            ]
+        ];
+
+        $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
+        $saveToDatabaseFinisher->method('getFormValues')->willReturn([
+            'date' => new \DateTime('2018-06-12'),
+        ]);
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
+        $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
+
+        self::assertSame('2018.06.12', $databaseData['date']);
+    }
 }
