@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Core\Log\Writer;
 
 /*
@@ -52,6 +53,18 @@ class FileWriter extends AbstractWriter
     protected static $logFileHandles = [];
 
     /**
+     * Keep track of used file handles by different fileWriter instances
+     * As the logger gets instantiated by class name but the resources
+     * are shared via the static $logFileHandles we need to track usage
+     * of file handles to avoid closing handles that are still needed
+     * by different instances. Only if the count is zero may the file
+     * handle be closed.
+     *
+     * @var array
+     */
+    protected static $logFileHandlesCount = [];
+
+    /**
      * Constructor, opens the log file handle
      *
      * @param array $options
@@ -71,7 +84,10 @@ class FileWriter extends AbstractWriter
      */
     public function __destruct()
     {
-        $this->closeLogFile();
+        self::$logFileHandlesCount[$this->logFile]--;
+        if (self::$logFileHandlesCount[$this->logFile] <= 0) {
+            $this->closeLogFile();
+        }
     }
 
     /**
@@ -88,7 +104,10 @@ class FileWriter extends AbstractWriter
         if (false === strpos($logFile, '://') && !PathUtility::isAbsolutePath($logFile)) {
             $logFile = GeneralUtility::getFileAbsFileName($logFile);
             if ($logFile === null) {
-                throw new InvalidLogWriterConfigurationException('Log file path "' . $relativeLogFile . '" is not valid!', 1444374805);
+                throw new InvalidLogWriterConfigurationException(
+                    'Log file path "' . $relativeLogFile . '" is not valid!',
+                    1444374805
+                );
             }
         }
         $this->logFile = $logFile;
@@ -153,6 +172,11 @@ class FileWriter extends AbstractWriter
      */
     protected function openLogFile()
     {
+        if (isset(self::$logFileHandlesCount[$this->logFile])) {
+            self::$logFileHandlesCount[$this->logFile]++;
+        } else {
+            self::$logFileHandlesCount[$this->logFile] = 1;
+        }
         if (isset(self::$logFileHandles[$this->logFile]) && is_resource(self::$logFileHandles[$this->logFile] ?? false)) {
             return;
         }
@@ -225,7 +249,6 @@ class FileWriter extends AbstractWriter
 
     /**
      * Returns the path to the default log file.
-     *
      * Uses the defaultLogFileTemplate and replaces the %s placeholder with a short MD5 hash
      * based on a static string and the current encryption key.
      *
@@ -234,5 +257,24 @@ class FileWriter extends AbstractWriter
     protected function getDefaultLogFileName()
     {
         return Environment::getVarPath() . sprintf($this->defaultLogFileTemplate, substr(GeneralUtility::hmac($this->defaultLogFileTemplate, 'defaultLogFile'), 0, 10));
+    }
+
+    /**
+     * Allow serialization of logger - reinitialize log file on unserializing
+     */
+    public function __wakeup()
+    {
+        self::$logFileHandlesCount[$this->logFile]++;
+        $this->setLogFile($this->logFile ?: $this->getDefaultLogFileName());
+    }
+
+    /**
+     * Property 'logFile' should be kept
+     *
+     * @return array
+     */
+    public function __sleep(): array
+    {
+        return ['logFile'];
     }
 }

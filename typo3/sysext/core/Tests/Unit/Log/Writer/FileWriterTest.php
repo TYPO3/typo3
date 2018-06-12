@@ -197,4 +197,28 @@ class FileWriterTest extends UnitTestCase
         $firstWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
         $secondWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
     }
+
+    /**
+     * @test
+     */
+    public function fileHandleIsNotClosedIfSecondFileWriterIsStillUsingSameFile()
+    {
+        $this->setUpVfsStream();
+
+        $firstWriter = $this->getMockBuilder(FileWriter::class)
+            ->setMethods(['closeLogFile'])
+            ->getMock();
+        $secondWriter = $this->getMockBuilder(FileWriter::class)
+            ->setMethods(['closeLogFile'])
+            ->getMock();
+
+        $firstWriter->expects($this->never())->method('closeLogFile');
+        $secondWriter->expects($this->once())->method('closeLogFile');
+
+        $logFilePrefix = $this->getUniqueId('unique');
+        $firstWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
+        $secondWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
+        $firstWriter->__destruct();
+        $secondWriter->__destruct();
+    }
 }
