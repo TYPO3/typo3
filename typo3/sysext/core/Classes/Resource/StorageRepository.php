@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class StorageRepository extends AbstractRepository
 {
     /**
-     * @var NULL|array‚
+     * @var array|null
      */
     protected static $storageRowCache = null;
 
