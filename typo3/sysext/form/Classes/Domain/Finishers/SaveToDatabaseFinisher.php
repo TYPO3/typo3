@@ -250,7 +250,11 @@ class SaveToDatabaseFinisher extends AbstractFinisher
                 }
             } elseif (is_array($elementValue)) {
                 $elementValue = implode(',', $elementValue);
+            } elseif ($elementValue instanceof \DateTimeInterface) {
+                $format = $elementsConfiguration[$elementIdentifier]['dateFormat'] ?? 'U';
+                $elementValue = $elementValue->format($format);
             }
+
             $databaseData[$elementsConfiguration[$elementIdentifier]['mapOnDatabaseColumn']] = $elementValue;
         }
         return $databaseData;

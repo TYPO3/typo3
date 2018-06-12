@@ -192,13 +192,13 @@ options.elements.<formElementIdentifier>.mapOnDatabaseColumn
       The value from the submitted form element with the identifier ``<formElementIdentifier>`` will be written into this database column.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.mapondatabasecolumn.savefileidentifierinsteadofuid:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.savefileidentifierinsteadofuid:
 
-options.elements.<formElementIdentifier>.mapOnDatabaseColumn.saveFileIdentifierInsteadOfUid
+options.elements.<formElementIdentifier>.saveFileIdentifierInsteadOfUid
 -------------------------------------------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.mapOnDatabaseColumn.saveFileIdentifierInsteadOfUid
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.saveFileIdentifierInsteadOfUid
 
 :aspect:`Data type`
       bool
@@ -225,13 +225,13 @@ options.elements.<formElementIdentifier>.mapOnDatabaseColumn.saveFileIdentifierI
       FAL identifier (1:/user_uploads/some_uploaded_pic.jpg) instead.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.mapondatabasecolumn.skipifvalueisempty:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.skipifvalueisempty:
 
-options.elements.<formElementIdentifier>.mapOnDatabaseColumn.skipIfValueIsEmpty
+options.elements.<formElementIdentifier>.skipIfValueIsEmpty
 -------------------------------------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.mapOnDatabaseColumn.skipIfValueIsEmpty
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.skipIfValueIsEmpty
 
 :aspect:`Data type`
       bool
@@ -253,6 +253,38 @@ options.elements.<formElementIdentifier>.mapOnDatabaseColumn.skipIfValueIsEmpty
       Set this to true if the database column should not be written if the value from the submitted form element with the identifier
       ``<formElementIdentifier>`` is empty (think about password fields etc.). Empty means strings without content, whitespace
       is valid content.
+
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.dateformat:
+
+options.elements.<formElementIdentifier>.dateFormat
+---------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.dateFormat
+
+:aspect:`Data type`
+      string
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      'U'
+
+:aspect:`Good to know`
+      - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
+      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+
+:aspect:`Description`
+      If the internal Datatype is \DateTime which is true for the form element types "DatePicker" and "Date",
+      the object needs to be converted into a string value.
+      This option allows you to define the format of the date.
+      You can use every format accepted by PHP's date() function (http://php.net/manual/en/function.date.php#refsect1-function.date-parameters).
+      The default value is "U" which means a Unix timestamp.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.databasecolumnmappings:

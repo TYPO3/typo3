@@ -2767,6 +2767,28 @@ elements.<formElementIdentifier>.saveFileIdentifierInsteadOfUid
       FAL identifier (1:/user_uploads/some_uploaded_pic.jpg) instead.
 
 
+.. _apireference-finisheroptions-savetodatabasefinisher-options-elements-<formelementidentifier>-dateformat:
+
+elements.<formElementIdentifier>.dateFormat
++++++++++++++++++++++++++++++++++++++++++++
+
+:aspect:`Data type`
+      string
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      'U'
+
+:aspect:`Description`
+      If the internal datatype is :php:`\DateTime` which is true for the form element types
+      :yaml:`DatePicker` and :yaml:`Date`, the object needs to be converted into a string value.
+      This option allows you to define the format of the date in case of such a conversion.
+      You can use every format accepted by the PHP :php:`date()` function (http://php.net/manual/en/function.date.php#refsect1-function.date-parameters).
+      The default value is "U" which leads to a Unix timestamp.
+
+
 .. _apireference-finisheroptions-savetodatabasefinisher-options-databasecolumnmappings:
 
 databaseColumnMappings
