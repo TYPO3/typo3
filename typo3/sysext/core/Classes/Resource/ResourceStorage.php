@@ -3064,6 +3064,7 @@ class ResourceStorage implements ResourceStorageInterface
 
         $recyclerFolder = null;
         $folder = $file->getParentFolder();
+        $rootFolder = $this->getRootLevelFolder(false);
 
         do {
             if ($folder->getRole() === FolderInterface::ROLE_RECYCLER) {
@@ -3078,7 +3079,7 @@ class ResourceStorage implements ResourceStorageInterface
             }
 
             $parentFolder = $folder->getParentFolder();
-            $isFolderLoop = $folder->getIdentifier() === $parentFolder->getIdentifier();
+            $isFolderLoop = $folder->getIdentifier() === $rootFolder->getIdentifier();
             $folder = $parentFolder;
         } while ($recyclerFolder === null && !$isFolderLoop);
 
