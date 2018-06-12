@@ -173,9 +173,8 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
     protected function setCompatibilityValues(ProcessedFile $processedImage)
     {
         if ($this->environmentService->isEnvironmentInFrontendMode()) {
-            $imageInfo = $this->getCompatibilityImageResourceValues($processedImage);
-            $GLOBALS['TSFE']->lastImageInfo = $imageInfo;
-            $GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
+            $GLOBALS['TSFE']->lastImageInfo = $this->getCompatibilityImageResourceValues($processedImage);
+            $GLOBALS['TSFE']->imagesOnPage[] = $processedImage->getPublicUrl();
         }
     }
 
@@ -189,24 +188,17 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getCompatibilityImageResourceValues(ProcessedFile $processedImage)
     {
-        $hash = $processedImage->calculateChecksum();
-        if (isset($GLOBALS['TSFE']->tmpl->fileCache[$hash])) {
-            $compatibilityImageResourceValues = $GLOBALS['TSFE']->tmpl->fileCache[$hash];
-        } else {
-            $compatibilityImageResourceValues = [
-                0 => $processedImage->getProperty('width'),
-                1 => $processedImage->getProperty('height'),
-                2 => $processedImage->getExtension(),
-                3 => $processedImage->getPublicUrl(),
-                'origFile' => $processedImage->getOriginalFile()->getPublicUrl(),
-                'origFile_mtime' => $processedImage->getOriginalFile()->getModificationTime(),
-                // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
-                // in order for the setup-array to create a unique filename hash.
-                'originalFile' => $processedImage->getOriginalFile(),
-                'processedFile' => $processedImage,
-                'fileCacheHash' => $hash
-            ];
-        }
-        return $compatibilityImageResourceValues;
+        return [
+            0 => $processedImage->getProperty('width'),
+            1 => $processedImage->getProperty('height'),
+            2 => $processedImage->getExtension(),
+            3 => $processedImage->getPublicUrl(),
+            'origFile' => $processedImage->getOriginalFile()->getPublicUrl(),
+            'origFile_mtime' => $processedImage->getOriginalFile()->getModificationTime(),
+            // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
+            // in order for the setup-array to create a unique filename hash.
+            'originalFile' => $processedImage->getOriginalFile(),
+            'processedFile' => $processedImage
+        ];
     }
 }

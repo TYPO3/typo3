@@ -4622,10 +4622,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $processingConfiguration['maskImages']['maskBottomImageMask'] = $bottomImg_mask['processedFile'];
                     }
                     $processedFileObject = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
-                    $hash = $processedFileObject->calculateChecksum();
-                    // store info in the TSFE template cache (kept for backwards compatibility)
-                    if ($processedFileObject->isProcessed() && !isset($tsfe->tmpl->fileCache[$hash])) {
-                        $tsfe->tmpl->fileCache[$hash] = [
+                    if ($processedFileObject->isProcessed()) {
+                        $imageResource = [
                             0 => $processedFileObject->getProperty('width'),
                             1 => $processedFileObject->getProperty('height'),
                             2 => $processedFileObject->getExtension(),
@@ -4635,11 +4633,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
                             // in order for the setup-array to create a unique filename hash.
                             'originalFile' => $fileObject,
-                            'processedFile' => $processedFileObject,
-                            'fileCacheHash' => $hash
+                            'processedFile' => $processedFileObject
                         ];
                     }
-                    $imageResource = $tsfe->tmpl->fileCache[$hash];
                 }
             }
         }
