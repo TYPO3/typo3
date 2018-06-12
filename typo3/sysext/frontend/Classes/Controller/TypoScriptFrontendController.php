@@ -63,6 +63,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Http\UrlHandlerInterface;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -879,7 +880,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             );
             $this->logger->emergency($message, ['exception' => $exception]);
             try {
-                $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($GLOBALS['TYPO3_REQUEST'], $message);
+                $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
+                    $GLOBALS['TYPO3_REQUEST'],
+                    $message,
+                    ['code' => PageAccessFailureReasons::DATABASE_CONNECTION_FAILED]
+                );
                 $this->sendResponseAndExit($response);
             } catch (ServiceUnavailableException $e) {
                 throw new ServiceUnavailableException($message, 1301648782);
@@ -1337,7 +1342,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $message = 'No pages are found on the rootlevel!';
                     $this->logger->alert($message);
                     try {
-                        $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($GLOBALS['TYPO3_REQUEST'], $message);
+                        $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
+                            $GLOBALS['TYPO3_REQUEST'],
+                            $message,
+                            ['code' => PageAccessFailureReasons::NO_PAGES_FOUND]
+                        );
                         $this->sendResponseAndExit($response);
                     } catch (ServiceUnavailableException $e) {
                         throw new ServiceUnavailableException($message, 1301648975);
@@ -1356,17 +1365,41 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         $timeTracker->pull();
         if ($this->pageNotFound) {
-            $pNotFoundMsg = [
-                1 => 'ID was not an accessible page',
-                2 => 'Subsection was found and not accessible',
-                3 => 'ID was outside the domain',
-                4 => 'The requested page alias does not exist'
-            ];
-            $message = $pNotFoundMsg[$this->pageNotFound];
-            if ($this->pageNotFound === 1 || $this->pageNotFound === 2) {
-                $response = GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction($GLOBALS['TYPO3_REQUEST'], $message, $this->getPageAccessFailureReasons());
-            } else {
-                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($GLOBALS['TYPO3_REQUEST'], $message, $this->getPageAccessFailureReasons());
+            switch ($this->pageNotFound) {
+                case 1:
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
+                        $GLOBALS['TYPO3_REQUEST'],
+                        'ID was not an accessible page',
+                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_PAGE_NOT_RESOLVED)
+                    );
+                    break;
+                case 2:
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
+                        $GLOBALS['TYPO3_REQUEST'],
+                        'Subsection was found and not accessible',
+                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_SUBSECTION_NOT_RESOLVED)
+                    );
+                    break;
+                case 3:
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $GLOBALS['TYPO3_REQUEST'],
+                        'ID was outside the domain',
+                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_HOST_PAGE_MISMATCH)
+                    );
+                    break;
+                case 4:
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $GLOBALS['TYPO3_REQUEST'],
+                        'The requested page alias does not exist',
+                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::PAGE_ALIAS_NOT_FOUND)
+                    );
+                    break;
+                default:
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $GLOBALS['TYPO3_REQUEST'],
+                        'Unspecified error',
+                        $this->getPageAccessFailureReasons()
+                    );
             }
             $this->sendResponseAndExit($response);
         }
@@ -1456,7 +1489,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $message = 'The requested page does not exist!';
                 $this->logger->error($message);
                 try {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($GLOBALS['TYPO3_REQUEST'], $message, $this->getPageAccessFailureReasons());
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $GLOBALS['TYPO3_REQUEST'],
+                        $message,
+                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::PAGE_NOT_FOUND)
+                    );
                     $this->sendResponseAndExit($response);
                 } catch (PageNotFoundException $e) {
                     throw new PageNotFoundException($message, 1301648780);
@@ -1468,7 +1505,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $message = 'The requested page does not exist!';
             $this->logger->error($message);
             try {
-                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($GLOBALS['TYPO3_REQUEST'], $message, $this->getPageAccessFailureReasons());
+                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                    $GLOBALS['TYPO3_REQUEST'],
+                    $message,
+                    $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_INVALID_PAGETYPE)
+                );
                 $this->sendResponseAndExit($response);
             } catch (PageNotFoundException $e) {
                 throw new PageNotFoundException($message, 1301648781);
@@ -1507,7 +1548,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $message = 'The requested page didn\'t have a proper connection to the tree-root!';
             $this->logger->error($message);
             try {
-                $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($GLOBALS['TYPO3_REQUEST'], $message, $this->getPageAccessFailureReasons());
+                $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
+                    $GLOBALS['TYPO3_REQUEST'],
+                    $message,
+                    $this->getPageAccessFailureReasons(PageAccessFailureReasons::ROOTLINE_BROKEN)
+                );
                 $this->sendResponseAndExit($response);
             } catch (ServiceUnavailableException $e) {
                 throw new ServiceUnavailableException($message, 1301648167);
@@ -1518,7 +1563,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if (empty($this->rootLine)) {
                 $message = 'The requested page was not accessible!';
                 try {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($GLOBALS['TYPO3_REQUEST'], $message, $this->getPageAccessFailureReasons());
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
+                        $GLOBALS['TYPO3_REQUEST'],
+                        $message,
+                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_GENERAL)
+                    );
                     $this->sendResponseAndExit($response);
                 } catch (ServiceUnavailableException $e) {
                     $this->logger->warning($message);
@@ -1750,11 +1799,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Analysing $this->pageAccessFailureHistory into a summary array telling which features disabled display and on which pages and conditions. That data can be used inside a page-not-found handler
      *
+     * @param string $failureReasonCode the error code to be attached (optional), see PageAccessFailureReasons list for details
      * @return array Summary of why page access was not allowed.
      */
-    public function getPageAccessFailureReasons()
+    public function getPageAccessFailureReasons(string $failureReasonCode = null)
     {
         $output = [];
+        if ($failureReasonCode) {
+            $output['code'] = $failureReasonCode;
+        }
         $combinedRecords = array_merge(is_array($this->pageAccessFailureHistory['direct_access']) ? $this->pageAccessFailureHistory['direct_access'] : [['fe_group' => 0]], is_array($this->pageAccessFailureHistory['sub_section']) ? $this->pageAccessFailureHistory['sub_section'] : []);
         if (!empty($combinedRecords)) {
             foreach ($combinedRecords as $k => $pagerec) {
@@ -2128,7 +2181,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $cHash_calc = $this->cacheHash->calculateCacheHash($this->cHash_array);
             if (!hash_equals($cHash_calc, $this->cHash)) {
                 if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($GLOBALS['TYPO3_REQUEST'], 'Request parameters could not be validated (&cHash comparison failed)');
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $GLOBALS['TYPO3_REQUEST'],
+                        'Request parameters could not be validated (&cHash comparison failed)',
+                        ['code' => PageAccessFailureReasons::CACHEHASH_COMPARISON_FAILED]
+                    );
                     $this->sendResponseAndExit($response);
                 } else {
                     $this->disableCache();
@@ -2156,7 +2213,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 if ($this->tempContent) {
                     $this->clearPageCacheContent();
                 }
-                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($GLOBALS['TYPO3_REQUEST'], 'Request parameters could not be validated (&cHash empty)');
+                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                    $GLOBALS['TYPO3_REQUEST'],
+                    'Request parameters could not be validated (&cHash empty)',
+                    ['code' => PageAccessFailureReasons::CACHEHASH_EMPTY]
+                );
                 $this->sendResponseAndExit($response);
             } else {
                 $this->disableCache();
@@ -2428,7 +2489,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $message = 'The page is not configured! [type=' . $this->type . '][' . $this->sPre . '].';
                     $this->logger->alert($message);
                     try {
-                        $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($GLOBALS['TYPO3_REQUEST'], $message);
+                        $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
+                            $GLOBALS['TYPO3_REQUEST'],
+                            $message,
+                            ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
+                        );
                         $this->sendResponseAndExit($response);
                     } catch (ServiceUnavailableException $e) {
                         $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
@@ -2477,7 +2542,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $message = 'No TypoScript template found!';
                 $this->logger->alert($message);
                 try {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($GLOBALS['TYPO3_REQUEST'], $message);
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
+                        $GLOBALS['TYPO3_REQUEST'],
+                        $message,
+                        ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
+                    );
                     $this->sendResponseAndExit($response);
                 } catch (ServiceUnavailableException $e) {
                     throw new ServiceUnavailableException($message, 1294587218);
@@ -2581,12 +2650,20 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 if ($this->sys_language_uid) {
                     // If requested translation is not available:
                     if (GeneralUtility::hideIfNotTranslated($this->page['l18n_cfg'])) {
-                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($GLOBALS['TYPO3_REQUEST'], 'Page is not available in the requested language.');
+                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                            $GLOBALS['TYPO3_REQUEST'],
+                            'Page is not available in the requested language.',
+                            ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
+                        );
                         $this->sendResponseAndExit($response);
                     } else {
                         switch ((string)$this->sys_language_mode) {
                             case 'strict':
-                                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($GLOBALS['TYPO3_REQUEST'], 'Page is not available in the requested language (strict).');
+                                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                                    $GLOBALS['TYPO3_REQUEST'],
+                                    'Page is not available in the requested language (strict).',
+                                    ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE]
+                                );
                                 $this->sendResponseAndExit($response);
                                 break;
                             case 'fallback':
@@ -2606,7 +2683,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                                         // The existing fallbacks have not been found, but instead of continuing
                                         // page rendering with default language, a "page not found" message should be shown
                                         // instead.
-                                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($GLOBALS['TYPO3_REQUEST'], 'Page is not available in the requested language (fallbacks did not apply).');
+                                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                                            $GLOBALS['TYPO3_REQUEST'],
+                                            'Page is not available in the requested language (fallbacks did not apply).',
+                                            ['code' => PageAccessFailureReasons::LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE]
+                                        );
                                         $this->sendResponseAndExit($response);
                                     }
                                 }
@@ -2631,7 +2712,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ((!$this->sys_language_uid || !$this->sys_language_content) && GeneralUtility::hideIfDefaultLanguage($this->page['l18n_cfg'])) {
             $message = 'Page is not available in default language.';
             $this->logger->error($message);
-            $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($GLOBALS['TYPO3_REQUEST'], $message);
+            $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $GLOBALS['TYPO3_REQUEST'],
+                $message,
+                ['code' => PageAccessFailureReasons::LANGUAGE_DEFAULT_NOT_AVAILABLE]
+            );
             $this->sendResponseAndExit($response);
         }
         $this->updateRootLinesWithTranslations();
