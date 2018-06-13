@@ -19,7 +19,11 @@
 		"typo3/cms": "*"
 	},
 	"replace": {
-		"backend": "*"
+		"backend": "*",
+		"typo3/cms-context-help": "*",
+		"typo3/cms-func-wizards": "*",
+		"typo3/cms-wizard-crpages": "*",
+		"typo3/cms-wizard-sortpages": "*"
 	},
 	"extra": {
 		"branch-alias": {

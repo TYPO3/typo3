@@ -62,7 +62,9 @@
 		"typo3/cms": "*"
 	},
 	"replace": {
-		"core": "*"
+		"core": "*",
+		"typo3/cms-lang": "*",
+		"typo3/cms-sv": "*"
 	},
 	"extra": {
 		"branch-alias": {

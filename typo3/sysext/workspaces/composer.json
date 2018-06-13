@@ -19,7 +19,8 @@
 		"typo3/cms": "*"
 	},
 	"replace": {
-		"workspaces": "*"
+		"workspaces": "*",
+		"typo3/cms-version": "*"
 	},
 	"extra": {
 		"branch-alias": {

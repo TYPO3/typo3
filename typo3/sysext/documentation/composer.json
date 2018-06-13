@@ -20,7 +20,6 @@
 	},
 	"replace": {
 		"documentation": "*",
-		"csh_manual": "*",
 		"typo3/cms-cshmanual": "*"
 	},
 	"extra": {

@@ -19,7 +19,8 @@
 		"typo3/cms": "*"
 	},
 	"replace": {
-		"info": "*"
+		"info": "*",
+		"typo3/cms-info-pagetsconfig": "*"
 	},
 	"extra": {
 		"branch-alias": {
