@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\IntegerType;
 use Psr\Log\LoggerAwareInterface;
@@ -7485,19 +7486,45 @@ class DataHandler implements LoggerAwareInterface
                 ->orderBy($sortRow, 'ASC')
                 ->addOrderBy('uid', 'ASC')
                 ->execute();
-            while ($row = $result->fetch()) {
-                $uid = (int)$row['uid'];
-                if ($uid) {
-                    $connection->update($table, [$sortRow => $i], ['uid' => (int)$uid]);
-                    // This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
-                    if ($uid == $return_SortNumber_After_This_Uid) {
-                        $i += $intervals;
-                        $returnVal = $i;
+            if ($connection->getDatabasePlatform() instanceof SqlitePlatform) {
+                // The default iteration behavior "fetch single row and update it" below can fail on sqlite.
+                // See https://bugs.php.net/bug.php?id=72267 and https://www.sqlite.org/isolation.html for details, money quote:
+                // "If changes occur on the same database connection after a query starts running but before the query completes,
+                // then the query might return a changed row more than once, or it might return a row that was previously deleted."
+                // In this resorting case, sqlite tends to run into infinite loops by returning the same rows over and over again
+                // with their already updated sorting values. As less memory efficient but safe solution, we just fetchAll() all
+                // rows into an array and update them in a second step.
+                $result = $result->fetchAll();
+                foreach ($result as $row) {
+                    $uid = (int)$row['uid'];
+                    if ($uid) {
+                        $connection->update($table, [$sortRow => $i], ['uid' => (int)$uid]);
+                        // This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
+                        if ($uid == $return_SortNumber_After_This_Uid) {
+                            $i += $intervals;
+                            $returnVal = $i;
+                        }
+                    } else {
+                        die('Fatal ERROR!! No Uid at resorting.');
                     }
-                } else {
-                    die('Fatal ERROR!! No Uid at resorting.');
+                    $i += $intervals;
                 }
-                $i += $intervals;
+            } else {
+                while ($row = $result->fetch()) {
+                    // fetch() and update() single rows in one go
+                    $uid = (int)$row['uid'];
+                    if ($uid) {
+                        $connection->update($table, [$sortRow => $i], ['uid' => (int)$uid]);
+                        // This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
+                        if ($uid == $return_SortNumber_After_This_Uid) {
+                            $i += $intervals;
+                            $returnVal = $i;
+                        }
+                    } else {
+                        die('Fatal ERROR!! No Uid at resorting.');
+                    }
+                    $i += $intervals;
+                }
             }
             return $returnVal;
         }

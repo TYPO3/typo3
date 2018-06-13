@@ -310,7 +310,6 @@ class SchemaMigratorTest extends FunctionalTestCase
      * probably be enabled.
      *
      * @test
-     * @group not-sqlite
      */
     public function installDoesNotAddIndexOnChangedColumn()
     {

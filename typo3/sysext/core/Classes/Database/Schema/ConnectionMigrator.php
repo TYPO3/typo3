@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Database\Schema;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
@@ -164,7 +165,9 @@ class ConnectionMigrator
                             $columnName = preg_replace('/\(\d+\)$/', '', $columnName);
                             // Strip mssql '[' and ']' from column names
                             $columnName = ltrim($columnName, '[');
-                            return rtrim($columnName, ']');
+                            $columnName = rtrim($columnName, ']');
+                            // Strip sqlite '"' from column names
+                            return trim($columnName, '"');
                         },
                         $addedIndex->getColumns()
                     );
@@ -1098,8 +1101,10 @@ class ConnectionMigrator
             $indexes = [];
             foreach ($table->getIndexes() as $key => $index) {
                 $indexName = $index->getName();
-                // PostgreSQL requires index names to be unique per database/schema.
-                if ($connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+                // PostgreSQL and sqlite require index names to be unique per database/schema.
+                if ($connection->getDatabasePlatform() instanceof PostgreSqlPlatform
+                    || $connection->getDatabasePlatform() instanceof SqlitePlatform
+                ) {
                     $indexName = $indexName . '_' . hash('crc32b', $table->getName() . '_' . $indexName);
                 }
 
