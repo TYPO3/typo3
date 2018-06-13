@@ -102,7 +102,8 @@ Manual repair suggestions:
                 ->where(
                     $queryBuilder->expr()->notIn(
                         'uid',
-                        $queryBuilder->createNamedParameter($idList, Connection::PARAM_INT_ARRAY)
+                        // do not use named parameter here as the list can get too long
+                        array_map('intval', $idList)
                     )
                 )
                 ->orderBy('uid')
