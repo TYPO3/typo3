@@ -1337,7 +1337,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function resolveSortingAndPidForNewRecord(string $table, int $pid, array $fieldArray): array
     {
-        $sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+        $sortColumn = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
         // Points to a page on which to insert the element, possibly in the top of the page
         if ($pid >= 0) {
             // Ensure that the "pid" is not a translated page ID, but the default page ID
@@ -1345,16 +1345,16 @@ class DataHandler implements LoggerAwareInterface
             // The numerical pid is inserted in the data array
             $fieldArray['pid'] = $pid;
             // If this table is sorted we better find the top sorting number
-            if ($sortRow) {
-                $fieldArray[$sortRow] = $this->getSortNumber($table, 0, $pid);
+            if ($sortColumn) {
+                $fieldArray[$sortColumn] = $this->getSortNumber($table, 0, $pid);
             }
-        } elseif ($sortRow) {
+        } elseif ($sortColumn) {
             // Points to another record before itself
             // If this table is sorted we better find the top sorting number
             // Because $pid is < 0, getSortNumber() returns an array
             $sortingInfo = $this->getSortNumber($table, 0, $pid);
             $fieldArray['pid'] = $sortingInfo['pid'];
-            $fieldArray[$sortRow] = $sortingInfo['sortNumber'];
+            $fieldArray[$sortColumn] = $sortingInfo['sortNumber'];
         } else {
             // Here we fetch the PID of the record that we point to
             $record = $this->recordInfo($table, abs($pid), 'pid');
@@ -4430,13 +4430,13 @@ class DataHandler implements LoggerAwareInterface
      */
     public function moveRecord_raw($table, $uid, $destPid)
     {
-        $sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+        $sortColumn = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
         $origDestPid = $destPid;
         // This is the actual pid of the moving to destination
         $resolvedPid = $this->resolvePid($table, $destPid);
         // Checking if the pid is negative, but no sorting row is defined. In that case, find the correct pid. Basically this check make the error message 4-13 meaning less... But you can always remove this check if you prefer the error instead of a no-good action (which is to move the record to its own page...)
         // $destPid>=0 because we must correct pid in case of versioning "page" types.
-        if (($destPid < 0 && !$sortRow) || $destPid >= 0) {
+        if (($destPid < 0 && !$sortColumn) || $destPid >= 0) {
             $destPid = $resolvedPid;
         }
         // Get this before we change the pid (for logging)
@@ -4458,8 +4458,8 @@ class DataHandler implements LoggerAwareInterface
         if ($table === 'pages') {
             $defaultLanguagePageId = $this->getDefaultLanguagePageId((int)$uid);
             if ($defaultLanguagePageId !== (int)$uid) {
-                $originalTranslationRecord = $this->recordInfo($table, $defaultLanguagePageId, 'pid,' . $sortRow);
-                $updateFields[$sortRow] = $originalTranslationRecord[$sortRow];
+                $originalTranslationRecord = $this->recordInfo($table, $defaultLanguagePageId, 'pid,' . $sortColumn);
+                $updateFields[$sortColumn] = $originalTranslationRecord[$sortColumn];
                 // Ensure that the PID is always the same as the default language page
                 $destPid = $originalTranslationRecord['pid'];
             }
@@ -4474,9 +4474,9 @@ class DataHandler implements LoggerAwareInterface
                 // Setting PID
                 $updateFields['pid'] = $destPid;
                 // Table is sorted by 'sortby'
-                if ($sortRow && !isset($updateFields[$sortRow])) {
+                if ($sortColumn && !isset($updateFields[$sortColumn])) {
                     $sortNumber = $this->getSortNumber($table, $uid, $destPid);
-                    $updateFields[$sortRow] = $sortNumber;
+                    $updateFields[$sortColumn] = $sortNumber;
                 }
                 // Check for child records that have also to be moved
                 $this->moveRecord_procFields($table, $uid, $destPid);
@@ -4520,7 +4520,7 @@ class DataHandler implements LoggerAwareInterface
                 $destPropArr = $this->getRecordProperties('pages', $destPid);
                 $this->log($table, $uid, 4, 0, 1, 'Attempt to move page \'%s\' (%s) to inside of its own rootline (at page \'%s\' (%s))', 10, [$propArr['header'], $uid, $destPropArr['header'], $destPid], $propArr['pid']);
             }
-        } elseif ($sortRow) {
+        } elseif ($sortColumn) {
             // Put after another record
             // Table is being sorted
             // Save the position to which the original record is requested to be moved
@@ -4535,8 +4535,8 @@ class DataHandler implements LoggerAwareInterface
                     $this->registerRecordIdForPageCacheClearing($table, $uid);
                     // We now update the pid and sortnumber (if not set for page translations)
                     $updateFields['pid'] = $destPid;
-                    if (!isset($updateFields[$sortRow])) {
-                        $updateFields[$sortRow] = $sortInfo['sortNumber'];
+                    if (!isset($updateFields[$sortColumn])) {
+                        $updateFields[$sortColumn] = $sortInfo['sortNumber'];
                     }
                     // Check for child records that have also to be moved
                     $this->moveRecord_procFields($table, $uid, $destPid);
@@ -7345,14 +7345,14 @@ class DataHandler implements LoggerAwareInterface
      */
     public function getSortNumber($table, $uid, $pid)
     {
-        if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
-            $sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+        $sortColumn = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
+        if ($sortColumn) {
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
             $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
 
             $queryBuilder
-                ->select($sortRow, 'pid', 'uid')
+                ->select($sortColumn, 'pid', 'uid')
                 ->from($table);
 
             // Sorting number is in the top
@@ -7360,7 +7360,7 @@ class DataHandler implements LoggerAwareInterface
                 // Fetches the first record under this pid
                 $row = $queryBuilder
                     ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
-                    ->orderBy($sortRow, 'ASC')
+                    ->orderBy($sortColumn, 'ASC')
                     ->setMaxResults(1)
                     ->execute()
                     ->fetch();
@@ -7368,16 +7368,16 @@ class DataHandler implements LoggerAwareInterface
                 if (!empty($row)) {
                     // The top record was the record it self, so we return its current sortnumber
                     if ($row['uid'] == $uid) {
-                        return $row[$sortRow];
+                        return $row[$sortColumn];
                     }
                     // If the pages sortingnumber < 1 we must resort the records under this pid
-                    if ($row[$sortRow] < 1) {
-                        $this->resorting($table, $pid, $sortRow, 0);
+                    if ($row[$sortColumn] < 1) {
+                        $this->resorting($table, $pid, $sortColumn, 0);
                         // First sorting number after resorting
                         return $this->sortIntervals;
                     }
                     // Sorting number between current top element and zero
-                    return floor($row[$sortRow] / 2);
+                    return floor($row[$sortColumn] / 2);
                 }
                 // No pages, so we choose the default value as sorting-number
                 // First sorting number if no elements.
@@ -7396,22 +7396,22 @@ class DataHandler implements LoggerAwareInterface
             // There was a record
             if (!empty($row)) {
                 // Look, if the record UID happens to be an offline record. If so, find its live version. Offline uids will be used when a page is versionized as "branch" so this is when we must correct - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
-                if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortRow . ',pid,uid')) {
+                if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {
                     $row = $lookForLiveVersion;
                 }
                 // Fetch move placeholder, since it might point to a new page in the current workspace
-                if ($movePlaceholder = BackendUtility::getMovePlaceholder($table, $row['uid'], 'uid,pid,' . $sortRow)) {
+                if ($movePlaceholder = BackendUtility::getMovePlaceholder($table, $row['uid'], 'uid,pid,' . $sortColumn)) {
                     $row = $movePlaceholder;
                 }
                 // If the record should be inserted after itself, keep the current sorting information:
                 if ((int)$row['uid'] === (int)$uid) {
-                    $sortNumber = $row[$sortRow];
+                    $sortNumber = $row[$sortColumn];
                 } else {
                     $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
                     $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
 
                     $subResults = $queryBuilder
-                            ->select($sortRow, 'pid', 'uid')
+                            ->select($sortColumn, 'pid', 'uid')
                             ->from($table)
                             ->where(
                                 $queryBuilder->expr()->eq(
@@ -7419,11 +7419,11 @@ class DataHandler implements LoggerAwareInterface
                                     $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
                                 ),
                                 $queryBuilder->expr()->gte(
-                                    $sortRow,
-                                    $queryBuilder->createNamedParameter($row[$sortRow], \PDO::PARAM_INT)
+                                    $sortColumn,
+                                    $queryBuilder->createNamedParameter($row[$sortColumn], \PDO::PARAM_INT)
                                 )
                             )
-                            ->orderBy($sortRow, 'ASC')
+                            ->orderBy($sortColumn, 'ASC')
                             ->setMaxResults(2)
                             ->execute()
                             ->fetchAll();
@@ -7433,15 +7433,15 @@ class DataHandler implements LoggerAwareInterface
                         // There was a record afterwards, fetch that
                         $subrow = array_pop($subResults);
                         // The sortNumber is found in between these values
-                        $sortNumber = $row[$sortRow] + floor(($subrow[$sortRow] - $row[$sortRow]) / 2);
+                        $sortNumber = $row[$sortColumn] + floor(($subrow[$sortColumn] - $row[$sortColumn]) / 2);
                         // The sortNumber happened NOT to be between the two surrounding numbers, so we'll have to resort the list
-                        if ($sortNumber <= $row[$sortRow] || $sortNumber >= $subrow[$sortRow]) {
+                        if ($sortNumber <= $row[$sortColumn] || $sortNumber >= $subrow[$sortColumn]) {
                             // By this special param, resorting reserves and returns the sortnumber after the uid
-                            $sortNumber = $this->resorting($table, $row['pid'], $sortRow, $row['uid']);
+                            $sortNumber = $this->resorting($table, $row['pid'], $sortColumn, $row['uid']);
                         }
                     } else {
                         // If after the last record in the list, we just add the sortInterval to the last sortvalue
-                        $sortNumber = $row[$sortRow] + $this->sortIntervals;
+                        $sortNumber = $row[$sortColumn] + $this->sortIntervals;
                     }
                 }
                 return ['pid' => $row['pid'], 'sortNumber' => $sortNumber];
@@ -7463,15 +7463,16 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $pid Pid in which to resort records.
-     * @param string $sortRow Sorting row
+     * @param string $sortColumn Column name used for sorting
      * @param int $return_SortNumber_After_This_Uid Uid of record from $table in this $pid and for which the return value will be set to a free sorting number after that record. This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
      * @return int|null If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
      * @access private
      * @see getSortNumber()
      */
-    public function resorting($table, $pid, $sortRow, $return_SortNumber_After_This_Uid)
+    public function resorting($table, $pid, $sortColumn, $return_SortNumber_After_This_Uid)
     {
-        if ($GLOBALS['TCA'][$table] && $sortRow && $GLOBALS['TCA'][$table]['ctrl']['sortby'] == $sortRow) {
+        $sortBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
+        if ($sortBy && $sortBy === $sortColumn) {
             $returnVal = 0;
             $intervals = $this->sortIntervals;
             $i = $intervals * 2;
@@ -7483,7 +7484,7 @@ class DataHandler implements LoggerAwareInterface
                 ->select('uid')
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
-                ->orderBy($sortRow, 'ASC')
+                ->orderBy($sortColumn, 'ASC')
                 ->addOrderBy('uid', 'ASC')
                 ->execute();
             if ($connection->getDatabasePlatform() instanceof SqlitePlatform) {
@@ -7498,7 +7499,7 @@ class DataHandler implements LoggerAwareInterface
                 foreach ($result as $row) {
                     $uid = (int)$row['uid'];
                     if ($uid) {
-                        $connection->update($table, [$sortRow => $i], ['uid' => (int)$uid]);
+                        $connection->update($table, [$sortColumn => $i], ['uid' => (int)$uid]);
                         // This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
                         if ($uid == $return_SortNumber_After_This_Uid) {
                             $i += $intervals;
@@ -7514,7 +7515,7 @@ class DataHandler implements LoggerAwareInterface
                     // fetch() and update() single rows in one go
                     $uid = (int)$row['uid'];
                     if ($uid) {
-                        $connection->update($table, [$sortRow => $i], ['uid' => (int)$uid]);
+                        $connection->update($table, [$sortColumn => $i], ['uid' => (int)$uid]);
                         // This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
                         if ($uid == $return_SortNumber_After_This_Uid) {
                             $i += $intervals;
@@ -7544,9 +7545,9 @@ class DataHandler implements LoggerAwareInterface
     protected function getPreviousLocalizedRecordUid($table, $uid, $pid, $language)
     {
         $previousLocalizedRecordUid = $uid;
-        if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
-            $sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
-            $select = [$sortRow, 'pid', 'uid'];
+        $sortColumn = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
+        if ($sortColumn) {
+            $select = [$sortColumn, 'pid', 'uid'];
             // For content elements, we also need the colPos
             if ($table === 'tt_content') {
                 $select[] = 'colPos';
@@ -7570,11 +7571,11 @@ class DataHandler implements LoggerAwareInterface
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                         ),
                         $queryBuilder->expr()->lt(
-                            $sortRow,
-                            $queryBuilder->createNamedParameter($row[$sortRow], \PDO::PARAM_INT)
+                            $sortColumn,
+                            $queryBuilder->createNamedParameter($row[$sortColumn], \PDO::PARAM_INT)
                         )
                     )
-                    ->orderBy($sortRow, 'DESC')
+                    ->orderBy($sortColumn, 'DESC')
                     ->setMaxResults(1);
                 if ($table === 'tt_content') {
                     $queryBuilder
