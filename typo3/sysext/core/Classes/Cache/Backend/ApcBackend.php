@@ -14,7 +14,11 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Exception;
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A caching backend which stores cache entries by using APC.
@@ -72,15 +76,15 @@ class ApcBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options - unused here
-     * @throws \TYPO3\CMS\Core\Cache\Exception
+     * @throws Exception
      */
     public function __construct($context, array $options = [])
     {
         if (!extension_loaded('apc')) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('The PHP extension "apc" or "apcu" must be installed and loaded in order to use the APC backend.', 1232985414);
+            throw new Exception('The PHP extension "apc" or "apcu" must be installed and loaded in order to use the APC backend.', 1232985414);
         }
         if (PHP_SAPI === 'cli' && ini_get('apc.enable_cli') == 0) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('The APC backend cannot be used because apc is disabled on CLI.', 1232985415);
+            throw new Exception('The APC backend cannot be used because apc is disabled on CLI.', 1232985415);
         }
         parent::__construct($context, $options);
     }
@@ -88,13 +92,13 @@ class ApcBackend extends AbstractBackend implements TaggableBackendInterface
     /**
      * Initializes the identifier prefix when setting the cache.
      *
-     * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache
+     * @param FrontendInterface $cache
      */
-    public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
+    public function setCache(FrontendInterface $cache)
     {
         parent::setCache($cache);
         $processUser = $this->getCurrentUserData();
-        $pathHash = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(Environment::getProjectPath() . $processUser['name'] . $this->context . $cache->getIdentifier(), 12);
+        $pathHash = GeneralUtility::shortMD5(Environment::getProjectPath() . $processUser['name'] . $this->context . $cache->getIdentifier(), 12);
         $this->setIdentifierPrefix('TYPO3_' . $pathHash);
     }
 
@@ -116,17 +120,17 @@ class ApcBackend extends AbstractBackend implements TaggableBackendInterface
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if $data is not a string
+     * @throws Exception if no cache frontend has been set.
+     * @throws InvalidDataException if $data is not a string
      * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
-        if (!$this->cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1232986818);
+        if (!$this->cache instanceof FrontendInterface) {
+            throw new Exception('No cache frontend has been set yet via setCache().', 1232986818);
         }
         if (!is_string($data)) {
-            throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1232986825);
+            throw new InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1232986825);
         }
         $tags[] = '%APCBE%' . $this->cacheIdentifier;
         $expiration = $lifetime ?? $this->defaultLifetime;
@@ -217,13 +221,13 @@ class ApcBackend extends AbstractBackend implements TaggableBackendInterface
     /**
      * Removes all cache entries of this cache.
      *
-     * @throws \TYPO3\CMS\Core\Cache\Exception
+     * @throws Exception
      * @api
      */
     public function flush()
     {
-        if (!$this->cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('Yet no cache frontend has been set via setCache().', 1232986971);
+        if (!$this->cache instanceof FrontendInterface) {
+            throw new Exception('Yet no cache frontend has been set via setCache().', 1232986971);
         }
         $this->flushByTag('%APCBE%' . $this->cacheIdentifier);
     }

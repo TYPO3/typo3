@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * @api
  */
-interface PhpCapableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface
+interface PhpCapableBackendInterface extends BackendInterface
 {
     /**
      * Loads PHP code from the cache and require_onces it right away.

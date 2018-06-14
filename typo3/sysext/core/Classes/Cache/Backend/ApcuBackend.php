@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Cache;
+use TYPO3\CMS\Core\Cache\Exception;
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -74,15 +76,15 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options - unused here
-     * @throws Cache\Exception
+     * @throws Exception
      */
     public function __construct($context, array $options = [])
     {
         if (!extension_loaded('apcu')) {
-            throw new Cache\Exception('The PHP extension "apcu" must be installed and loaded in order to use the APCu backend.', 1232985914);
+            throw new Exception('The PHP extension "apcu" must be installed and loaded in order to use the APCu backend.', 1232985914);
         }
         if (PHP_SAPI === 'cli' && ini_get('apc.enable_cli') == 0) {
-            throw new Cache\Exception('The APCu backend cannot be used because apcu is disabled on CLI.', 1232985915);
+            throw new Exception('The APCu backend cannot be used because apcu is disabled on CLI.', 1232985915);
         }
         parent::__construct($context, $options);
     }
@@ -90,9 +92,9 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
     /**
      * Initializes the identifier prefix when setting the cache.
      *
-     * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache
+     * @param FrontendInterface $cache
      */
-    public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
+    public function setCache(FrontendInterface $cache)
     {
         parent::setCache($cache);
         $processUser = $this->getCurrentUserData();
@@ -118,17 +120,17 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws Cache\Exception if no cache frontend has been set.
-     * @throws Cache\Exception\InvalidDataException if $data is not a string
+     * @throws Exception if no cache frontend has been set.
+     * @throws InvalidDataException if $data is not a string
      * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
-        if (!$this->cache instanceof Cache\Frontend\FrontendInterface) {
-            throw new Cache\Exception('No cache frontend has been set yet via setCache().', 1232986118);
+        if (!$this->cache instanceof FrontendInterface) {
+            throw new Exception('No cache frontend has been set yet via setCache().', 1232986118);
         }
         if (!is_string($data)) {
-            throw new Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1232986125);
+            throw new InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1232986125);
         }
         $tags[] = '%APCBE%' . $this->cacheIdentifier;
         $expiration = $lifetime ?? $this->defaultLifetime;
@@ -219,13 +221,13 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
     /**
      * Removes all cache entries of this cache.
      *
-     * @throws Cache\Exception
+     * @throws Exception
      * @api
      */
     public function flush()
     {
-        if (!$this->cache instanceof Cache\Frontend\FrontendInterface) {
-            throw new Cache\Exception('Yet no cache frontend has been set via setCache().', 1232986571);
+        if (!$this->cache instanceof FrontendInterface) {
+            throw new Exception('Yet no cache frontend has been set via setCache().', 1232986571);
         }
         $this->flushByTag('%APCBE%' . $this->cacheIdentifier);
     }

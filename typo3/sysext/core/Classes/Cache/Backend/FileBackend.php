@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Exception;
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -24,7 +27,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  *
  * @api
  */
-class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implements \TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface, \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface
+class FileBackend extends SimpleFileBackend implements FreezableBackendInterface, TaggableBackendInterface
 {
     const SEPARATOR = '^';
     const EXPIRYTIME_FORMAT = 'YmdHis';
@@ -98,9 +101,9 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
      * This method also detects if this backend is frozen and sets the internal
      * flag accordingly.
      *
-     * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The cache frontend
+     * @param FrontendInterface $cache The cache frontend
      */
-    public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
+    public function setCache(FrontendInterface $cache)
     {
         parent::setCache($cache);
         if (file_exists($this->cacheDirectory . 'FrozenCache.data')) {
@@ -117,15 +120,15 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @throws \RuntimeException
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
-     * @throws \TYPO3\CMS\Core\Cache\Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
+     * @throws InvalidDataException if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
+     * @throws Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
      * @throws \InvalidArgumentException
      * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         if (!is_string($data)) {
-            throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1204481674);
+            throw new InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1204481674);
         }
         if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073032);
@@ -142,9 +145,9 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
         $expiryTime = $lifetime === 0 ? 0 : $GLOBALS['EXEC_TIME'] + $lifetime;
         $metaData = str_pad($expiryTime, self::EXPIRYTIME_LENGTH) . implode(' ', $tags) . str_pad(strlen($data), self::DATASIZE_DIGITS);
         $result = file_put_contents($temporaryCacheEntryPathAndFilename, $data . $metaData);
-        \TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($temporaryCacheEntryPathAndFilename);
+        GeneralUtility::fixPermissions($temporaryCacheEntryPathAndFilename);
         if ($result === false) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('The temporary cache file "' . $temporaryCacheEntryPathAndFilename . '" could not be written.', 1204026251);
+            throw new Exception('The temporary cache file "' . $temporaryCacheEntryPathAndFilename . '" could not be written.', 1204026251);
         }
         $i = 0;
         $cacheEntryPathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
@@ -152,7 +155,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
             $i++;
         }
         if ($result === false) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('The cache file "' . $cacheEntryPathAndFilename . '" could not be written.', 1222361632);
+            throw new Exception('The cache file "' . $cacheEntryPathAndFilename . '" could not be written.', 1222361632);
         }
         if ($this->cacheEntryFileExtension === '.php') {
             GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($cacheEntryPathAndFilename);
@@ -252,7 +255,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
         $entryIdentifiers = [];
         $now = $GLOBALS['EXEC_TIME'];
         $cacheEntryFileExtensionLength = strlen($this->cacheEntryFileExtension);
-        for ($directoryIterator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\DirectoryIterator::class, $this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
+        for ($directoryIterator = GeneralUtility::makeInstance(\DirectoryIterator::class, $this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
             if ($directoryIterator->isDot()) {
                 continue;
             }

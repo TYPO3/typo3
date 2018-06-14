@@ -14,12 +14,15 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Exception;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+
 /**
  * A caching backend which stores cache entries during one script run.
  *
  * @api
  */
-class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
+class TransientMemoryBackend extends AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
 {
     /**
      * @var array
@@ -38,14 +41,13 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
+     * @throws Exception if no cache frontend has been set.
      * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
-        if (!$this->cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1238244992);
+        if (!$this->cache instanceof FrontendInterface) {
+            throw new Exception('No cache frontend has been set yet via setCache().', 1238244992);
         }
         $this->entries[$entryIdentifier] = $data;
         foreach ($tags as $tag) {

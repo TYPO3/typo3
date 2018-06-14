@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Exception;
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -134,12 +136,12 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options
-     * @throws \TYPO3\CMS\Core\Cache\Exception if php redis module is not loaded
+     * @throws Exception if php redis module is not loaded
      */
     public function __construct($context, array $options = [])
     {
         if (!extension_loaded('redis')) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('The PHP extension "redis" must be installed and loaded in order to use the redis backend.', 1279462933);
+            throw new Exception('The PHP extension "redis" must be installed and loaded in order to use the redis backend.', 1279462933);
         }
         parent::__construct($context, $options);
     }
@@ -147,7 +149,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
     /**
      * Initializes the redis backend
      *
-     * @throws \TYPO3\CMS\Core\Cache\Exception if access to redis with password is denied or if database selection fails
+     * @throws Exception if access to redis with password is denied or if database selection fails
      */
     public function initializeObject()
     {
@@ -165,13 +167,13 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
             if ($this->password !== '') {
                 $success = $this->redis->auth($this->password);
                 if (!$success) {
-                    throw new \TYPO3\CMS\Core\Cache\Exception('The given password was not accepted by the redis server.', 1279765134);
+                    throw new Exception('The given password was not accepted by the redis server.', 1279765134);
                 }
             }
             if ($this->database >= 0) {
                 $success = $this->redis->select($this->database);
                 if (!$success) {
-                    throw new \TYPO3\CMS\Core\Cache\Exception('The given database "' . $this->database . '" could not be selected.', 1279765144);
+                    throw new Exception('The given database "' . $this->database . '" could not be selected.', 1279765144);
                 }
             }
         }
@@ -308,7 +310,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, default lifetime is used. "0" means unlimited lifetime.
      * @throws \InvalidArgumentException if identifier is not valid
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if data is not a string
+     * @throws InvalidDataException if data is not a string
      * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
@@ -317,7 +319,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
             throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" which can\'t be converted to string.', 1377006651);
         }
         if (!is_string($data)) {
-            throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1279469941);
+            throw new InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1279469941);
         }
         $lifetime = $lifetime ?? $this->defaultLifetime;
         if (!is_int($lifetime)) {

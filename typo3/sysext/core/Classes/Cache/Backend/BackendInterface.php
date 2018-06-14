@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache;
+
 /**
  * A contract for a Cache Backend
  * @api
@@ -23,10 +25,10 @@ interface BackendInterface
     /**
      * Sets a reference to the cache frontend which uses this backend
      *
-     * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The frontend for this backend
+     * @param Cache\Frontend\FrontendInterface $cache The frontend for this backend
      * @api
      */
-    public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache);
+    public function setCache(Cache\Frontend\FrontendInterface $cache);
 
     /**
      * Saves data in the cache.

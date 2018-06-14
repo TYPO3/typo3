@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * @api
  */
-interface FreezableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface
+interface FreezableBackendInterface extends BackendInterface
 {
     /**
      * Freezes this cache backend.
