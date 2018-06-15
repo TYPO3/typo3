@@ -31,17 +31,19 @@ class CaseContentObject extends AbstractContentObject
             return '';
         }
 
-        $setCurrent = isset($conf['setCurrent.']) ? $this->cObj->stdWrap($conf['setCurrent'], $conf['setCurrent.']) : $conf['setCurrent'];
+        $setCurrent = isset($conf['setCurrent.'])
+            ? $this->cObj->stdWrap($conf['setCurrent'] ?? '', $conf['setCurrent.'])
+            : ($conf['setCurrent'] ?? null);
         if ($setCurrent) {
             $this->cObj->data[$this->cObj->currentValKey] = $setCurrent;
         }
         $key = isset($conf['key.']) ? $this->cObj->stdWrap($conf['key'], $conf['key.']) : $conf['key'];
-        $key = (string)$conf[$key] !== '' ? $key : 'default';
+        $key = isset($conf[$key]) && (string)$conf[$key] !== '' ? $key : 'default';
         // If no "default" property is available, then an empty string is returned
-        if ($key === 'default' && $conf['default'] === null) {
+        if ($key === 'default' && !isset($conf['default'])) {
             $theValue = '';
         } else {
-            $theValue = $this->cObj->cObjGetSingle($conf[$key], $conf[$key . '.'], $key);
+            $theValue = $this->cObj->cObjGetSingle($conf[$key], $conf[$key . '.'] ?? [], $key);
         }
         if (isset($conf['stdWrap.'])) {
             $theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);

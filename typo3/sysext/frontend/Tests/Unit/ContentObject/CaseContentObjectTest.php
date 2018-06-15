@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 /*
@@ -33,19 +35,14 @@ class CaseContentObjectTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @var CaseContentObject|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         /** @var TypoScriptFrontendController $tsfe */
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
@@ -73,7 +70,7 @@ class CaseContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderReturnsEmptyStringIfNoKeyMatchesAndIfNoDefaultObjectIsSet()
+    public function renderReturnsEmptyStringIfNoKeyMatchesAndIfNoDefaultObjectIsSet(): void
     {
         $conf = [
             'key' => 'not existing'
@@ -84,7 +81,7 @@ class CaseContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderReturnsContentFromDefaultObjectIfKeyDoesNotExist()
+    public function renderReturnsContentFromDefaultObjectIfKeyDoesNotExist(): void
     {
         $conf = [
             'key' => 'not existing',
