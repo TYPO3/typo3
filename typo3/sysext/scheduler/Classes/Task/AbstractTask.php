@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -437,11 +438,6 @@ abstract class AbstractTask implements LoggerAwareInterface
         // (we need to know that number, because it is returned at the end of the method)
         $numExecutions = count($runningExecutions);
         $runningExecutions[$numExecutions] = time();
-        // Define the context in which the script is running
-        $context = 'BE';
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
-            $context = 'CLI';
-        }
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('tx_scheduler_task')
             ->update(
@@ -449,7 +445,8 @@ abstract class AbstractTask implements LoggerAwareInterface
                 [
                     'serialized_executions' => serialize($runningExecutions),
                     'lastexecution_time' => time(),
-                    'lastexecution_context' => $context
+                    // Define the context in which the script is running
+                    'lastexecution_context' => Environment::isCli() ? 'CLI' : 'BE'
                 ],
                 [
                     'uid' => $this->taskUid

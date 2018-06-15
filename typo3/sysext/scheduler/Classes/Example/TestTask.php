@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Scheduler\Example;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -43,7 +44,7 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             // Get execution information
             $exec = $this->getExecution();
             // Get call method
-            if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
+            if (Environment::isCli()) {
                 $calledBy = 'CLI module dispatcher';
                 $site = '-';
             } else {
