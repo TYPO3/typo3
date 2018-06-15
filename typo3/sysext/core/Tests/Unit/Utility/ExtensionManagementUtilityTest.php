@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -73,7 +74,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     protected function createMockPackageManagerWithMockPackage($packageKey, $packageMethods = ['getPackagePath', 'getPackageKey'])
     {
-        $packagePath = PATH_site . 'typo3temp/var/tests/' . $packageKey . '/';
+        $packagePath = Environment::getVarPath() . '/tests/' . $packageKey . '/';
         GeneralUtility::mkdir_deep($packagePath);
         $this->testFilesToDelete[] = $packagePath;
         $package = $this->getMockBuilder(Package::class)
@@ -158,7 +159,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->getMock();
         $package->expects($this->once())
                 ->method('getPackagePath')
-                ->will($this->returnValue(PATH_site . 'foo/'));
+                ->will($this->returnValue(Environment::getPublicPath() . '/foo/'));
         $packageManager->expects($this->once())
                 ->method('isPackageActive')
                 ->with($this->equalTo('foo'))
@@ -168,7 +169,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 ->with('foo')
                 ->will($this->returnValue($package));
         ExtensionManagementUtility::setPackageManager($packageManager);
-        $this->assertSame(PATH_site . 'foo/bar.txt', ExtensionManagementUtility::extPath('foo', 'bar.txt'));
+        $this->assertSame(Environment::getPublicPath() . '/foo/bar.txt', ExtensionManagementUtility::extPath('foo', 'bar.txt'));
     }
 
     //////////////////////
@@ -1573,7 +1574,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function createExtTablesCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtTables()
     {
         $extensionName = $this->getUniqueId('foo');
-        $extTablesLocation = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_ext_tables') . '.php';
+        $extTablesLocation = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test_ext_tables') . '.php';
         $this->testFilesToDelete[] = $extTablesLocation;
         $uniqueStringInTables = $this->getUniqueId('foo');
         file_put_contents($extTablesLocation, "<?php\n\n$uniqueStringInTables\n\n?>");

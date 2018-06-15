@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Tests\Unit\Resource\ResourceCompressorTest\Fixtures\TestableResourceCompressor;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Testcase for the ResourceCompressor class
+ * Test case
  */
 class ResourceCompressorIntegrationTest extends BaseTestCase
 {
@@ -55,7 +56,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     public function constructorCreatesTargetDirectory()
     {
         $this->resourceCompressor = new TestableResourceCompressor();
-        $dir = PATH_site . $this->resourceCompressor->getTargetDirectory();
+        $dir = Environment::getPublicPath() . '/' . $this->resourceCompressor->getTargetDirectory();
         self::assertFileExists($dir);
     }
 
@@ -66,7 +67,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess'] = true;
         $this->resourceCompressor = new TestableResourceCompressor();
-        $htaccessPath = PATH_site . $this->resourceCompressor->getTargetDirectory() . '.htaccess';
+        $htaccessPath = Environment::getPublicPath() . '/' . $this->resourceCompressor->getTargetDirectory() . '.htaccess';
         self::assertStringEqualsFile($htaccessPath, $this->resourceCompressor->getHtaccessTemplate());
     }
 
@@ -77,7 +78,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess'] = false;
         $this->resourceCompressor = new TestableResourceCompressor();
-        $htaccessPath = PATH_site . $this->resourceCompressor->getTargetDirectory() . '.htaccess';
+        $htaccessPath = Environment::getPublicPath() . '/' . $this->resourceCompressor->getTargetDirectory() . '.htaccess';
         self::assertFileNotExists($htaccessPath);
     }
 
@@ -100,7 +101,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
         $expected = file_get_contents(
             $this->fixtureDirFromTest . 'expected' . DIRECTORY_SEPARATOR . 'merged-css_input_with_import.css'
         );
-        self::assertStringEqualsFile(GeneralUtility::fixWindowsFilePath(PATH_site . $mergedFile['file']), $expected);
+        self::assertStringEqualsFile(GeneralUtility::fixWindowsFilePath(Environment::getPublicPath() . '/' . $mergedFile['file']), $expected);
     }
 
     /**
@@ -108,7 +109,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
      */
     public function concatenateCssFilesWorksWithFileFromNonRootPath()
     {
-        $testFile = PATH_site . 'typo3temp/var/transient/css_input_with_import.css';
+        $testFile = Environment::getPublicPath() . '/typo3temp/var/transient/css_input_with_import.css';
         $this->testFilesToDelete[] = $testFile;
         copy(PATH_typo3 . $this->fixtureDir . 'css_input_with_import.css', $testFile);
         $files = [
@@ -125,12 +126,12 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
         $expected = file_get_contents(
             $this->fixtureDirFromTest . 'expected' . DIRECTORY_SEPARATOR . 'merged-css_input_with_import_non_root.css'
         );
-        self::assertStringEqualsFile(GeneralUtility::fixWindowsFilePath(PATH_site . $mergedFile['file']), $expected);
+        self::assertStringEqualsFile(GeneralUtility::fixWindowsFilePath(Environment::getPublicPath() . '/' . $mergedFile['file']), $expected);
     }
 
     public function tearDown()
     {
-        $this->testFilesToDelete[] = PATH_site . $this->resourceCompressor->getTargetDirectory();
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $this->resourceCompressor->getTargetDirectory();
         parent::tearDown();
     }
 }

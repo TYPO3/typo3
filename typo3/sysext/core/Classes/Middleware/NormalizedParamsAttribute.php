@@ -40,7 +40,15 @@ class NormalizedParamsAttribute implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = $request->withAttribute('normalizedParams', new NormalizedParams($request, $GLOBALS['TYPO3_CONF_VARS'], Environment::getCurrentScript(), PATH_site));
+        $request = $request->withAttribute(
+            'normalizedParams',
+            new NormalizedParams(
+                $request,
+                $GLOBALS['TYPO3_CONF_VARS'],
+                Environment::getCurrentScript(),
+                Environment::getPublicPath()
+            )
+        );
 
         // Set $request as global variable. This is needed in a transition phase until core code has been
         // refactored to have ServerRequest object available where it is needed. This global will be

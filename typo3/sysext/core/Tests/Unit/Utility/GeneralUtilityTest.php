@@ -1976,7 +1976,7 @@ class GeneralUtilityTest extends UnitTestCase
             '../typo3/alt_intro.php' => ['../typo3/alt_intro.php'],
             '../~userDirectory/index.php' => ['../~userDirectory/index.php'],
             '../typo3/index.php?var1=test-case&var2=~user' => ['../typo3/index.php?var1=test-case&var2=~user'],
-            PATH_site . 'typo3/alt_intro.php' => [PATH_site . 'typo3/alt_intro.php'],
+            Environment::getPublicPath() . '/typo3/alt_intro.php' => [Environment::getPublicPath() . '/typo3/alt_intro.php'],
         ];
     }
 
@@ -2110,7 +2110,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function unlink_tempfileRemovesValidFileInTypo3temp()
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-        $testFilename = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '.gif';
+        $testFilename = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test_') . '.gif';
         @copy($fixtureFile, $testFilename);
         GeneralUtility::unlink_tempfile($testFilename);
         $fileExists = file_exists($testFilename);
@@ -2123,7 +2123,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function unlink_tempfileRemovesHiddenFile()
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-        $testFilename = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('.test_') . '.gif';
+        $testFilename = Environment::getVarPath() . '/tests/' . $this->getUniqueId('.test_') . '.gif';
         @copy($fixtureFile, $testFilename);
         GeneralUtility::unlink_tempfile($testFilename);
         $fileExists = file_exists($testFilename);
@@ -2136,7 +2136,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function unlink_tempfileReturnsTrueIfFileWasRemoved()
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-        $testFilename = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '.gif';
+        $testFilename = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test_') . '.gif';
         @copy($fixtureFile, $testFilename);
         $returnValue = GeneralUtility::unlink_tempfile($testFilename);
         $this->assertTrue($returnValue);
@@ -2147,7 +2147,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function unlink_tempfileReturnsNullIfFileDoesNotExist()
     {
-        $returnValue = GeneralUtility::unlink_tempfile(PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('i_do_not_exist'));
+        $returnValue = GeneralUtility::unlink_tempfile(Environment::getVarPath() . '/tests/' . $this->getUniqueId('i_do_not_exist'));
         $this->assertNull($returnValue);
     }
 
@@ -2192,7 +2192,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $filePath = GeneralUtility::tempnam('foo');
         $this->testFilesToDelete[] = $filePath;
-        $this->assertStringStartsWith(PATH_site, $filePath);
+        $this->assertStringStartsWith(Environment::getPublicPath() . '/', $filePath);
     }
 
     //////////////////////////////////////
@@ -2700,7 +2700,7 @@ class GeneralUtilityTest extends UnitTestCase
             $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
-        $filename = PATH_site . 'typo3temp/var/tests/../../../typo3temp/var/tests/' . $this->getUniqueId('test_');
+        $filename = Environment::getVarPath() . '/tests/../../../typo3temp/var/tests/' . $this->getUniqueId('test_');
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
@@ -2716,15 +2716,15 @@ class GeneralUtilityTest extends UnitTestCase
             $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $filename = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
-        GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filename, '42');
-        $this->testFilesToDelete[] = PATH_site . $filename;
-        chmod(PATH_site . $filename, 482);
+        GeneralUtility::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $filename, '42');
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $filename;
+        chmod(Environment::getPublicPath() . '/' . $filename, 482);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
-        $this->assertEquals('0660', substr(decoct(fileperms(PATH_site . $filename)), 2));
+        $this->assertEquals('0660', substr(decoct(fileperms(Environment::getPublicPath() . '/' . $filename)), 2));
     }
 
     /**
@@ -2884,32 +2884,32 @@ class GeneralUtilityTest extends UnitTestCase
     {
         return [
             [
-                PATH_site . '../path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
-                'Input filepath "' . PATH_site . '../path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
+                Environment::getPublicPath() . '/../path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
+                'Input filepath "' . Environment::getPublicPath() . '/../path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
             ],
             [
-                PATH_site . 'dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
-                'Input filepath "' . PATH_site . 'dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
+                Environment::getPublicPath() . '/dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
+                'Input filepath "' . Environment::getPublicPath() . '/dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
             ],
             [
-                PATH_site . 'dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
-                'Input filepath "' . PATH_site . 'dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
+                Environment::getPublicPath() . '/dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
+                'Input filepath "' . Environment::getPublicPath() . '/dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
             ],
             [
                 '/dummy/path/awesome',
-                '"/dummy/path/" was not within directory PATH_site + "typo3temp/"'
+                '"/dummy/path/" was not within directory Environment::getPublicPath() + "/typo3temp/"'
             ],
             [
-                PATH_site . 'typo3conf/path',
-                '"' . PATH_site . 'typo3conf/" was not within directory PATH_site + "typo3temp/"',
+                Environment::getPublicPath() . '/typo3conf/path',
+                '"' . Environment::getPublicPath() . '/typo3conf/" was not within directory Environment::getPublicPath() + "/typo3temp/"',
             ],
             [
-                PATH_site . 'typo3temp/táylor/swíft',
+                Environment::getPublicPath() . '/typo3temp/táylor/swíft',
                 'Subdir, "táylor/", was NOT on the form "[[:alnum:]_]/+"',
             ],
             'Path instead of file given' => [
-                PATH_site . 'typo3temp/dummy/path/',
-                'Calculated file location didn\'t match input "' . PATH_site . 'typo3temp/dummy/path/".'
+                Environment::getPublicPath() . '/typo3temp/dummy/path/',
+                'Calculated file location didn\'t match input "' . Environment::getPublicPath() . '/typo3temp/dummy/path/".'
             ],
         ];
     }
@@ -2933,16 +2933,16 @@ class GeneralUtilityTest extends UnitTestCase
     {
         return [
             'Default text file' => [
-                PATH_site . 'typo3temp/var/paranoid/android.txt',
+                Environment::getPublicPath() . '/typo3temp/var/paranoid/android.txt',
             ],
             'Html file extension' => [
-                PATH_site . 'typo3temp/var/karma.html',
+                Environment::getPublicPath() . '/typo3temp/var/karma.html',
             ],
             'No file extension' => [
-                PATH_site . 'typo3temp/var/no-surprises',
+                Environment::getPublicPath() . '/typo3temp/var/no-surprises',
             ],
             'Deep directory' => [
-                PATH_site . 'typo3temp/var/climbing/up/the/walls',
+                Environment::getPublicPath() . '/typo3temp/var/climbing/up/the/walls',
             ],
         ];
     }
@@ -2996,8 +2996,8 @@ class GeneralUtilityTest extends UnitTestCase
     public function mkdirDeepCreatesDirectoryWithAndWithoutDoubleSlashesDataProvider()
     {
         return [
-            'no double slash if concatenated with PATH_site' => ['fileadmin/testDir1'],
-            'double slash if concatenated with PATH_site' => ['/fileadmin/testDir2'],
+            'no double slash if concatenated with Environment::getPublicPath()' => ['fileadmin/testDir1'],
+            'double slash if concatenated with Environment::getPublicPath()' => ['/fileadmin/testDir2'],
         ];
     }
 
@@ -3009,10 +3009,10 @@ class GeneralUtilityTest extends UnitTestCase
     {
         vfsStream::setup();
         // Load fixture files and folders from disk
-        FileStreamWrapper::init(PATH_site);
+        FileStreamWrapper::init(Environment::getPublicPath());
         FileStreamWrapper::registerOverlayPath('fileadmin', 'vfs://root/fileadmin', true);
-        GeneralUtility::mkdir_deep(PATH_site . $directoryToCreate);
-        $this->assertTrue(is_dir(PATH_site . $directoryToCreate));
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/' . $directoryToCreate);
+        $this->assertTrue(is_dir(Environment::getPublicPath() . '/' . $directoryToCreate));
         FileStreamWrapper::destroy();
     }
 
@@ -3027,11 +3027,11 @@ class GeneralUtilityTest extends UnitTestCase
         $directory = $this->getUniqueId('mkdirdeeptest_');
         $oldUmask = umask(19);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
-        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/' . $directory);
-        $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
+        GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $directory);
+        $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
         clearstatcache();
         umask($oldUmask);
-        $this->assertEquals('777', substr(decoct(fileperms(PATH_site . 'typo3temp/var/tests/' . $directory)), -3, 3));
+        $this->assertEquals('777', substr(decoct(fileperms(Environment::getVarPath() . '/tests/' . $directory)), -3, 3));
     }
 
     /**
@@ -3046,11 +3046,11 @@ class GeneralUtilityTest extends UnitTestCase
         $subDirectory = $directory . '/bar';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
         $oldUmask = umask(19);
-        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/' . $subDirectory);
-        $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
+        GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $subDirectory);
+        $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
         clearstatcache();
         umask($oldUmask);
-        $this->assertEquals('777', substr(decoct(fileperms(PATH_site . 'typo3temp/var/tests/' . $directory)), -3, 3));
+        $this->assertEquals('777', substr(decoct(fileperms(Environment::getVarPath() . '/tests/' . $directory)), -3, 3));
     }
 
     /**
@@ -3061,7 +3061,7 @@ class GeneralUtilityTest extends UnitTestCase
         if (Environment::isWindows()) {
             $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
-        $baseDirectory = PATH_site . 'typo3temp/var/tests/';
+        $baseDirectory = Environment::getVarPath() . '/tests/';
         $existingDirectory = $this->getUniqueId('test_existing_') . '/';
         $newSubDirectory = $this->getUniqueId('test_new_');
         @mkdir($baseDirectory . $existingDirectory);
@@ -3080,10 +3080,10 @@ class GeneralUtilityTest extends UnitTestCase
         if ($swapGroup !== false) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
-            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/' . $directory);
-            $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
+            GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $directory);
+            $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
             clearstatcache();
-            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/var/tests/' . $directory);
+            $resultDirectoryGroup = filegroup(Environment::getVarPath() . '/tests/' . $directory);
             $this->assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
@@ -3098,10 +3098,10 @@ class GeneralUtilityTest extends UnitTestCase
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
             $subDirectory = $directory . '/bar';
-            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/' . $subDirectory);
-            $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
+            GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $subDirectory);
+            $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
             clearstatcache();
-            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/var/tests/' . $directory);
+            $resultDirectoryGroup = filegroup(Environment::getVarPath() . '/tests/' . $directory);
             $this->assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
@@ -3116,10 +3116,10 @@ class GeneralUtilityTest extends UnitTestCase
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
             $subDirectory = $directory . '/bar';
-            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/' . $subDirectory);
-            $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
+            GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $subDirectory);
+            $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
             clearstatcache();
-            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/var/tests/' . $directory);
+            $resultDirectoryGroup = filegroup(Environment::getVarPath() . '/tests/' . $directory);
             $this->assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
@@ -3169,7 +3169,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303662956);
 
-        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/foo', []);
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/foo', []);
     }
 
     ///////////////////////////////
@@ -3181,7 +3181,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesFile()
     {
-        $file = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('file_');
+        $file = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
         touch($file);
         GeneralUtility::rmdir($file);
         $this->assertFalse(file_exists($file));
@@ -3192,7 +3192,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirReturnTrueIfFileWasRemoved()
     {
-        $file = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('file_');
+        $file = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
         touch($file);
         $this->assertTrue(GeneralUtility::rmdir($file));
     }
@@ -3202,7 +3202,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirReturnFalseIfNoFileWasRemoved()
     {
-        $file = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('file_');
+        $file = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
         $this->assertFalse(GeneralUtility::rmdir($file));
     }
 
@@ -3211,7 +3211,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesDirectory()
     {
-        $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_');
+        $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_');
         mkdir($directory);
         GeneralUtility::rmdir($directory);
         $this->assertFalse(file_exists($directory));
@@ -3222,7 +3222,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesDirectoryWithTrailingSlash()
     {
-        $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_') . '/';
+        $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_') . '/';
         mkdir($directory);
         GeneralUtility::rmdir($directory);
         $this->assertFalse(file_exists($directory));
@@ -3233,7 +3233,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirDoesNotRemoveDirectoryWithFilesAndReturnsFalseIfRecursiveDeletionIsOff()
     {
-        $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_') . '/';
+        $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_') . '/';
         mkdir($directory);
         $file = $this->getUniqueId('file_');
         touch($directory . $file);
@@ -3249,7 +3249,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesDirectoriesRecursiveAndReturnsTrue()
     {
-        $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_') . '/';
+        $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_') . '/';
         mkdir($directory);
         mkdir($directory . 'sub/');
         touch($directory . 'sub/file');
@@ -3263,10 +3263,10 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesLinkToDirectory()
     {
-        $existingDirectory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_') . '/';
+        $existingDirectory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('notExists_') . '/';
         mkdir($existingDirectory);
         $this->testFilesToDelete[] = $existingDirectory;
-        $symlinkName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
+        $symlinkName = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
         symlink($existingDirectory, $symlinkName);
         GeneralUtility::rmdir($symlinkName, true);
         $this->assertFalse(is_link($symlinkName));
@@ -3277,8 +3277,8 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesDeadLinkToDirectory()
     {
-        $notExistingDirectory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_') . '/';
-        $symlinkName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
+        $notExistingDirectory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('notExists_') . '/';
+        $symlinkName = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
         mkdir($notExistingDirectory);
         symlink($notExistingDirectory, $symlinkName);
         rmdir($notExistingDirectory);
@@ -3292,8 +3292,8 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesDeadLinkToFile()
     {
-        $notExistingFile = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_');
-        $symlinkName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
+        $notExistingFile = Environment::getVarPath() . '/tests/' . $this->getUniqueId('notExists_');
+        $symlinkName = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
         touch($notExistingFile);
         symlink($notExistingFile, $symlinkName);
         unlink($notExistingFile);
@@ -3698,7 +3698,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function splitFileRefReturnsFileTypeNotForFolders()
     {
         $directoryName = $this->getUniqueId('test_') . '.com';
-        $directoryPath = PATH_site . 'typo3temp/var/tests/';
+        $directoryPath = Environment::getVarPath() . '/tests/';
         $directory = $directoryPath . $directoryName;
         mkdir($directory, octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']));
         $fileInfo = GeneralUtility::split_fileref($directory);
@@ -4141,17 +4141,50 @@ class GeneralUtilityTest extends UnitTestCase
     public function getFileAbsFileNameDateprovider()
     {
         return [
-            'typo3/sysext/core/Resources/Public/Icons/Extension.png' => ['typo3/sysext/core/Resources/Public/Icons/Extension.png', PATH_site . 'typo3/sysext/core/Resources/Public/Icons/Extension.png'],
-            'sysext/core/Resources/Public/Icons/Extension.png' => ['sysext/core/Resources/Public/Icons/Extension.png', PATH_site . 'sysext/core/Resources/Public/Icons/Extension.png'],
-            './typo3/sysext/core/Resources/Public/Icons/Extension.png' => ['./typo3/sysext/core/Resources/Public/Icons/Extension.png', PATH_site . './typo3/sysext/core/Resources/Public/Icons/Extension.png'],
-            'fileadmin/foo.txt' => ['fileadmin/foo.txt', PATH_site . 'fileadmin/foo.txt'],
-            './fileadmin/foo.txt' => ['./fileadmin/foo.txt', PATH_site . './fileadmin/foo.txt'],
-            '../sysext/core/Resources/Public/Icons/Extension.png' => ['../sysext/core/Resources/Public/Icons/Extension.png', ''],
-            '../fileadmin/foo.txt' => ['../fileadmin/foo.txt', ''],
-            'PATH_site . ../sysext/core/Resources/Public/Icons/Extension.png' => [PATH_site . '../sysext/core/Resources/Public/Icons/Extension.png', ''],
-            'PATH_site . fileadmin/foo.txt' => [PATH_site . 'fileadmin/foo.txt', PATH_site . 'fileadmin/foo.txt'],
-            'PATH_site . typo3/sysext/core/Resources/Public/Icons/Extension.png' => [PATH_site . 'typo3/sysext/core/Resources/Public/Icons/Extension.png', PATH_site . 'typo3/sysext/core/Resources/Public/Icons/Extension.png'],
-            'EXT:foo/Resources/Public/Icons/Extension.png' => ['EXT:foo/Resources/Public/Icons/Extension.png', PATH_site . 'typo3/sysext/foo/Resources/Public/Icons/Extension.png']
+            'typo3/sysext/core/Resources/Public/Icons/Extension.png' => [
+                'typo3/sysext/core/Resources/Public/Icons/Extension.png',
+                Environment::getPublicPath() . '/typo3/sysext/core/Resources/Public/Icons/Extension.png'
+            ],
+            'sysext/core/Resources/Public/Icons/Extension.png' => [
+                'sysext/core/Resources/Public/Icons/Extension.png',
+                Environment::getPublicPath() . '/sysext/core/Resources/Public/Icons/Extension.png'
+            ],
+            './typo3/sysext/core/Resources/Public/Icons/Extension.png' => [
+                './typo3/sysext/core/Resources/Public/Icons/Extension.png',
+                Environment::getPublicPath() . '/./typo3/sysext/core/Resources/Public/Icons/Extension.png'
+            ],
+            'fileadmin/foo.txt' => [
+                'fileadmin/foo.txt',
+                Environment::getPublicPath() . '/fileadmin/foo.txt'
+            ],
+            './fileadmin/foo.txt' => [
+                './fileadmin/foo.txt',
+                Environment::getPublicPath() . '/./fileadmin/foo.txt'
+            ],
+            '../sysext/core/Resources/Public/Icons/Extension.png' => [
+                '../sysext/core/Resources/Public/Icons/Extension.png',
+                ''
+            ],
+            '../fileadmin/foo.txt' => [
+                '../fileadmin/foo.txt',
+                ''
+            ],
+            'Public web path . ../sysext/core/Resources/Public/Icons/Extension.png' => [
+                Environment::getPublicPath() . '/../sysext/core/Resources/Public/Icons/Extension.png',
+                ''
+            ],
+            'Public web path . fileadmin/foo.txt' => [
+                Environment::getPublicPath() . '/fileadmin/foo.txt',
+                Environment::getPublicPath() . '/fileadmin/foo.txt'
+            ],
+            'Public web path . typo3/sysext/core/Resources/Public/Icons/Extension.png' => [
+                Environment::getPublicPath() . '/typo3/sysext/core/Resources/Public/Icons/Extension.png',
+                Environment::getPublicPath() . '/typo3/sysext/core/Resources/Public/Icons/Extension.png'
+            ],
+            'EXT:foo/Resources/Public/Icons/Extension.png' => [
+                'EXT:foo/Resources/Public/Icons/Extension.png',
+                Environment::getPublicPath() . '/typo3/sysext/foo/Resources/Public/Icons/Extension.png'
+            ]
         ];
     }
 
@@ -4176,7 +4209,7 @@ class GeneralUtilityTest extends UnitTestCase
             ->getMock();
         $package->expects($this->any())
             ->method('getPackagePath')
-            ->will($this->returnValue(PATH_site . 'typo3/sysext/foo/'));
+            ->will($this->returnValue(Environment::getPublicPath() . '/typo3/sysext/foo/'));
         $packageManager->expects($this->any())
             ->method('isPackageActive')
             ->with($this->equalTo('foo'))
@@ -4301,12 +4334,12 @@ class GeneralUtilityTest extends UnitTestCase
     public function copyDirectoryCopiesFilesAndDirectoriesWithRelativePaths()
     {
         $sourceDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
-        $absoluteSourceDirectory = PATH_site . $sourceDirectory;
+        $absoluteSourceDirectory = Environment::getPublicPath() . '/' . $sourceDirectory;
         $this->testFilesToDelete[] = $absoluteSourceDirectory;
         GeneralUtility::mkdir($absoluteSourceDirectory);
 
         $targetDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
-        $absoluteTargetDirectory = PATH_site . $targetDirectory;
+        $absoluteTargetDirectory = Environment::getPublicPath() . '/' . $targetDirectory;
         $this->testFilesToDelete[] = $absoluteTargetDirectory;
 
         GeneralUtility::writeFileToTypo3tempDir($absoluteSourceDirectory . 'file', '42');
@@ -4325,12 +4358,12 @@ class GeneralUtilityTest extends UnitTestCase
     public function copyDirectoryCopiesFilesAndDirectoriesWithAbsolutePaths()
     {
         $sourceDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
-        $absoluteSourceDirectory = PATH_site . $sourceDirectory;
+        $absoluteSourceDirectory = Environment::getPublicPath() . '/' . $sourceDirectory;
         $this->testFilesToDelete[] = $absoluteSourceDirectory;
         GeneralUtility::mkdir($absoluteSourceDirectory);
 
         $targetDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
-        $absoluteTargetDirectory = PATH_site . $targetDirectory;
+        $absoluteTargetDirectory = Environment::getPublicPath() . '/' . $targetDirectory;
         $this->testFilesToDelete[] = $absoluteTargetDirectory;
 
         GeneralUtility::writeFileToTypo3tempDir($absoluteSourceDirectory . 'file', '42');
@@ -4445,7 +4478,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getAllFilesAndFoldersInPathReturnsArrayWithMd5Keys()
     {
-        $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_');
+        $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_');
         mkdir($directory);
         $filesAndDirectories = GeneralUtility::getAllFilesAndFoldersInPath([], $directory, '', true);
         $check = true;

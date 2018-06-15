@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Resource;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
@@ -207,7 +208,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 
     /**
      * Checks whether a file resides within a real storage in local file system.
-     * If no match is found, uid 0 is returned which is a fallback storage pointing to PATH_site.
+     * If no match is found, uid 0 is returned which is a fallback storage pointing to fileadmin in public web path.
      *
      * The file identifier is adapted accordingly to match the new storage's base path.
      *
@@ -463,9 +464,9 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      */
     public function retrieveFileOrFolderObject($input)
     {
-        // Remove PATH_site because absolute paths under Windows systems contain ':'
+        // Remove Environment::getPublicPath() because absolute paths under Windows systems contain ':'
         // This is done in all considered sub functions anyway
-        $input = str_replace(PATH_site, '', $input);
+        $input = str_replace(Environment::getPublicPath() . '/', '', $input);
 
         if (GeneralUtility::isFirstPartOfStr($input, 'file:')) {
             $input = substr($input, 5);
@@ -486,7 +487,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
                     return null;
                 }
 
-                $input = PathUtility::getRelativePath(PATH_site, PathUtility::dirname($input)) . PathUtility::basename($input);
+                $input = PathUtility::getRelativePath(Environment::getPublicPath() . '/', PathUtility::dirname($input)) . PathUtility::basename($input);
                 return $this->getFileObjectFromCombinedIdentifier($input);
             }
             return null;
@@ -494,7 +495,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         // this is a backwards-compatible way to access "0-storage" files or folders
         // eliminate double slashes, /./ and /../
         $input = PathUtility::getCanonicalPath(ltrim($input, '/'));
-        if (@is_file(PATH_site . $input)) {
+        if (@is_file(Environment::getPublicPath() . '/' . $input)) {
             // only the local file
             return $this->getFileObjectFromCombinedIdentifier($input);
         }
@@ -523,8 +524,8 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
             // please note that getStorageObject() might modify $folderIdentifier when
             // auto-detecting the best-matching storage to use
             $folderIdentifier = $parts[0];
-            // make sure to not use an absolute path, and remove PATH_site if it is prepended
-            if (GeneralUtility::isFirstPartOfStr($folderIdentifier, PATH_site)) {
+            // make sure to not use an absolute path, and remove Environment::getPublicPath if it is prepended
+            if (GeneralUtility::isFirstPartOfStr($folderIdentifier, Environment::getPublicPath() . '/')) {
                 $folderIdentifier = PathUtility::stripPathSitePrefix($parts[0]);
             }
         }

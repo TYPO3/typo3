@@ -42,7 +42,7 @@ class PathUtility
     public static function getAbsoluteWebPath($targetPath)
     {
         if (self::isAbsolutePath($targetPath)) {
-            if (strpos($targetPath, PATH_site) === 0) {
+            if (strpos($targetPath, Environment::getPublicPath()) === 0) {
                 $targetPath = self::stripPathSitePrefix($targetPath);
                 if (!Environment::isCli()) {
                     $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
@@ -362,7 +362,7 @@ class PathUtility
     }
 
     /**
-     * Strip first part of a path, equal to the length of PATH_site
+     * Strip first part of a path, equal to the length of public web path including trailing slash
      *
      * @param string $path
      * @return string
@@ -370,6 +370,6 @@ class PathUtility
      */
     public static function stripPathSitePrefix($path)
     {
-        return substr($path, strlen(PATH_site));
+        return substr($path, strlen(Environment::getPublicPath() . '/'));
     }
 }

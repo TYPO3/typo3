@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Localization\Parser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -105,16 +106,16 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
             return GeneralUtility::getFileAbsFileName(str_replace($fileName, $language . '.' . $fileName, $fileRef));
         }
 
-        // Analyse file reference:
-        // Is system:
-        if (GeneralUtility::isFirstPartOfStr($fileRef, PATH_typo3 . 'sysext/')) {
-            $validatedPrefix = PATH_typo3 . 'sysext/';
-        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, PATH_typo3 . 'ext/')) {
-            // Is global:
-            $validatedPrefix = PATH_typo3 . 'ext/';
-        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, PATH_typo3conf . 'ext/')) {
-            // Is local:
-            $validatedPrefix = PATH_typo3conf . 'ext/';
+        // Analyse file reference
+        if (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getPublicPath() . '/typo3/sysext/')) {
+            // Is system
+            $validatedPrefix = Environment::getPublicPath() . '/typo3/sysext/';
+        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getPublicPath() . '/typo3/ext/')) {
+            // Is global
+            $validatedPrefix = Environment::getPublicPath() . '/typo3/ext/';
+        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getPublicPath() . '/typo3conf/ext/')) {
+            // Is local
+            $validatedPrefix = Environment::getPublicPath() . '/typo3conf/ext/';
         } else {
             $validatedPrefix = '';
         }
@@ -128,7 +129,7 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
             // Add empty first-entry if not there.
             list($file_extPath, $file_fileName) = $temp;
             // The filename is prefixed with "[language key]." because it prevents the llxmltranslate tool from detecting it.
-            return PATH_site . 'typo3conf/l10n/' . $language . '/' . $extensionKey . '/' . ($file_extPath ? $file_extPath . '/' : '') . $language . '.' . $file_fileName;
+            return Environment::getPublicPath() . '/typo3conf/l10n/' . $language . '/' . $extensionKey . '/' . ($file_extPath ? $file_extPath . '/' : '') . $language . '.' . $file_fileName;
         }
         return null;
     }

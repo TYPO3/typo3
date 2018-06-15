@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  */
 
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -117,7 +118,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     {
         // only calculate baseURI if the storage does not enforce jumpUrl Script
         if ($this->hasCapability(ResourceStorage::CAPABILITY_PUBLIC)) {
-            if (GeneralUtility::isFirstPartOfStr($this->absoluteBasePath, PATH_site)) {
+            if (GeneralUtility::isFirstPartOfStr($this->absoluteBasePath, Environment::getPublicPath())) {
                 // use site-relative URLs
                 $temporaryBaseUri = rtrim(PathUtility::stripPathSitePrefix($this->absoluteBasePath), '/');
                 if ($temporaryBaseUri !== '') {
@@ -150,7 +151,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
 
         if (!empty($configuration['pathType']) && $configuration['pathType'] === 'relative') {
             $relativeBasePath = $configuration['basePath'];
-            $absoluteBasePath = PATH_site . $relativeBasePath;
+            $absoluteBasePath = Environment::getPublicPath() . '/' . $relativeBasePath;
         } else {
             $absoluteBasePath = $configuration['basePath'];
         }
@@ -167,7 +168,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
 
     /**
      * Returns the public URL to a file.
-     * For the local driver, this will always return a path relative to PATH_site.
+     * For the local driver, this will always return a path relative to public web path.
      *
      * @param string $identifier
      * @return string|null NULL if file is missing or deleted, the generated url otherwise
@@ -750,7 +751,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * This assumes that the local file exists, so no further check is done here!
      * After a successful the original file must not exist anymore.
      *
-     * @param string $localFilePath (within PATH_site)
+     * @param string $localFilePath within public web path
      * @param string $targetFolderIdentifier
      * @param string $newFileName optional, if not given original name is used
      * @param bool $removeOriginal if set the original file will be removed after successful operation
@@ -761,7 +762,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     public function addFile($localFilePath, $targetFolderIdentifier, $newFileName = '', $removeOriginal = true)
     {
         $localFilePath = $this->canonicalizeAndCheckFilePath($localFilePath);
-        // as for the "virtual storage" for backwards-compatibility, this check always fails, as the file probably lies under PATH_site
+        // as for the "virtual storage" for backwards-compatibility, this check always fails, as the file probably lies under public web path
         // thus, it is not checked here
         // @todo is check in storage
         if (GeneralUtility::isFirstPartOfStr($localFilePath, $this->absoluteBasePath) && $this->storageUid > 0) {

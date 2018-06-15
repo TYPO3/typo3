@@ -240,13 +240,13 @@ BE:
             description: 'If enabled, language labels will be shown with additional debug information.'
         fileadminDir:
             type: text
-            description: 'Path to the primary directory of files for editors. This is relative to PATH_site, DefaultStorage will be created with that configuration, do not access manually but via <code>\TYPO3\CMS\Core\Resource\ResourceFactory::getDefaultStorage().</code>'
+            description: 'Path to the primary directory of files for editors. This is relative to the public web dir, DefaultStorage will be created with that configuration, do not access manually but via <code>\TYPO3\CMS\Core\Resource\ResourceFactory::getDefaultStorage().</code>'
         RTE_imageStorageDir:
             type: text
             description: 'Default storage directory for Rich Text Editor files.'
         lockRootPath:
             type: text
-            description: 'This path is used to evaluate if paths outside of PATH_site should be allowed. Ending slash required!'
+            description: 'This path is used to evaluate if paths outside of public web path should be allowed. Ending slash required!'
         userHomePath:
             type: text
             description: 'Combined folder identifier of the directory where TYPO3 backend-users have their home-dirs. A combined folder identifier looks like this: [storageUid]:[folderIdentifier]. Eg. <code>2:users/</code>. A home for backend user 2 would be: <code>2:users/2/</code>. Ending slash required!'

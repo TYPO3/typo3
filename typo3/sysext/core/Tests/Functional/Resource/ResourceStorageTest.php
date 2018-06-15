@@ -14,22 +14,24 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class ResourceStorageTest extends FunctionalTestCase
 {
     protected function tearDown()
     {
         // cleanup manually created folders
-        foreach (glob(PATH_site . 'fileadmin/*') as $folderToRemove) {
+        foreach (glob(Environment::getPublicPath() . '/fileadmin/*') as $folderToRemove) {
             GeneralUtility::rmdir($folderToRemove, true);
         }
     }
@@ -44,10 +46,10 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
         $subject = (new StorageRepository())->findByUid(1);
         $subject->setEvaluatePermissions(false);
 
-        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/_processed_');
-        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/adirectory');
-        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/_processed_/');
-        file_put_contents(PATH_site . 'fileadmin/adirectory/bar.txt', 'myData');
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/_processed_');
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/adirectory');
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/_processed_/');
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/adirectory/bar.txt', 'myData');
         clearstatcache();
         $subject->addFileMount('/adirectory/', ['read_only' => false]);
         $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/adirectory/bar.txt');
@@ -78,12 +80,12 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $fileName = 'bar.txt';
         $this->setUpBackendUserFromFixture(1);
-        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/_processed_');
-        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/' . $targetDirectory);
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/_processed_');
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/' . $targetDirectory);
         if ($fileMountFolder !== $targetDirectory) {
-            GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/' . $fileMountFolder);
+            GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/' . $fileMountFolder);
         }
-        file_put_contents(PATH_site . 'fileadmin/' . $targetDirectory . '/' . $fileName, 'myData');
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/' . $targetDirectory . '/' . $fileName, 'myData');
         clearstatcache();
         $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/' . $targetDirectory . '/' . $fileName);
 
@@ -186,14 +188,14 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
         $this->setUpBackendUserFromFixture(1);
         $subject = (new StorageRepository())->findByUid(1);
 
-        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/foo');
-        file_put_contents(PATH_site . 'fileadmin/foo/bar.txt', 'myData');
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
         clearstatcache();
         $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1325842622);
-        $subject->replaceFile($file, PATH_site . $this->getUniqueId());
+        $subject->replaceFile($file, Environment::getPublicPath() . '/' . $this->getUniqueId());
     }
 
     /**
@@ -219,16 +221,16 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
         $this->setUpBackendUserFromFixture(1);
         $subject = (new StorageRepository())->findByUid(1);
 
-        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/foo');
-        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/_recycler_');
-        file_put_contents(PATH_site . 'fileadmin/foo/bar.txt', 'myData');
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/_recycler_');
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
         clearstatcache();
 
         $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $subject->deleteFile($file);
 
-        $this->assertTrue(file_exists(PATH_site . 'fileadmin/_recycler_/bar.txt'));
-        $this->assertFalse(file_exists(PATH_site . 'fileadmin/foo/bar.txt'));
+        $this->assertTrue(file_exists(Environment::getPublicPath() . '/fileadmin/_recycler_/bar.txt'));
+        $this->assertFalse(file_exists(Environment::getPublicPath() . '/fileadmin/foo/bar.txt'));
     }
 
     /**
@@ -240,13 +242,13 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
         $this->setUpBackendUserFromFixture(1);
         $subject = (new StorageRepository())->findByUid(1);
 
-        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/foo');
-        file_put_contents(PATH_site . 'fileadmin/foo/bar.txt', 'myData');
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
         clearstatcache();
 
         $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $subject->deleteFile($file);
 
-        $this->assertFalse(file_exists(PATH_site . 'fileadmin/foo/bar.txt'));
+        $this->assertFalse(file_exists(Environment::getPublicPath() . '/fileadmin/foo/bar.txt'));
     }
 }

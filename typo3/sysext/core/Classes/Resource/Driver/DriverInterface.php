@@ -119,7 +119,7 @@ interface DriverInterface
 
     /**
      * Returns the public URL to a file.
-     * Either fully qualified URL or relative to PATH_site (rawurlencoded).
+     * Either fully qualified URL or relative to public web path (rawurlencoded).
      *
      * @param string $identifier
      * @return string|null NULL if file is missing or deleted, the generated url otherwise
@@ -185,7 +185,7 @@ interface DriverInterface
      * further check is done here! After a successful the original file must
      * not exist anymore.
      *
-     * @param string $localFilePath (within PATH_site)
+     * @param string $localFilePath within public web path
      * @param string $targetFolderIdentifier
      * @param string $newFileName optional, if not given original name is used
      * @param bool $removeOriginal if set the original file will be removed

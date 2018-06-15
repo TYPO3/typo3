@@ -18,6 +18,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
@@ -1152,7 +1153,7 @@ class TypoScriptParser
             // Get alphabetically sorted file index in array
             $fileIndex = GeneralUtility::getAllFilesAndFoldersInPath([], $absDirPath, $includedFileExtensions);
             // Prepend file contents to $newString
-            $prefixLength = strlen(PATH_site);
+            $prefixLength = strlen(Environment::getPublicPath() . '/');
             foreach ($fileIndex as $absFileRef) {
                 $relFileRef = substr($absFileRef, $prefixLength);
                 self::includeFile($relFileRef, $cycle_counter, $returnFiles, $newString, $includedFiles, '', $absDirPath);

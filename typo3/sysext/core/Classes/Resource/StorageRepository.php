@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Resource;
  */
 
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -202,7 +203,7 @@ class StorageRepository extends AbstractRepository
      */
     public function createLocalStorage($name, $basePath, $pathType, $description = '', $default = false)
     {
-        $caseSensitive = $this->testCaseSensitivity($pathType === 'relative' ? PATH_site . $basePath : $basePath);
+        $caseSensitive = $this->testCaseSensitivity($pathType === 'relative' ? Environment::getPublicPath() . '/' . $basePath : $basePath);
         // create the FlexForm for the driver configuration
         $flexFormData = [
             'data' => [

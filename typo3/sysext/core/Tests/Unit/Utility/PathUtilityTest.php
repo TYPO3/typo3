@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for class \TYPO3\CMS\Core\Utility\PathUtility
+ * Test case
  */
 class PathUtilityTest extends UnitTestCase
 {
@@ -142,32 +142,32 @@ class PathUtilityTest extends UnitTestCase
         return [
             [
                 '/',
-                PATH_site . 'directory',
+                Environment::getPublicPath() . '/directory',
                 null
             ],
             [
-                PATH_site . 't3lib/',
-                PATH_site . 't3lib/',
+                Environment::getPublicPath() . '/t3lib/',
+                Environment::getPublicPath() . '/t3lib/',
                 ''
             ],
             [
-                PATH_site . 'typo3/',
-                PATH_site . 't3lib/',
+                Environment::getPublicPath() . '/typo3/',
+                Environment::getPublicPath() . '/t3lib/',
                 '../t3lib/'
             ],
             [
-                PATH_site,
-                PATH_site . 't3lib/',
+                Environment::getPublicPath() . '/',
+                Environment::getPublicPath() . '/t3lib/',
                 't3lib/'
             ],
             [
-                PATH_site . 't3lib/',
-                PATH_site . 't3lib/stddb/',
+                Environment::getPublicPath() . '/t3lib/',
+                Environment::getPublicPath() . '/t3lib/stddb/',
                 'stddb/'
             ],
             [
-                PATH_site . 'typo3/sysext/frontend/',
-                PATH_site . 't3lib/utility/',
+                Environment::getPublicPath() . '/typo3/sysext/frontend/',
+                Environment::getPublicPath() . '/t3lib/utility/',
                 '../../../t3lib/utility/'
             ],
         ];

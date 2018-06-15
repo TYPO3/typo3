@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\TypoScript;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
@@ -1373,7 +1374,7 @@ class TemplateService
 
         // if this is an URL, it can be returned directly
         $urlScheme = parse_url($file, PHP_URL_SCHEME);
-        if ($urlScheme === 'https' || $urlScheme === 'http' || is_file(PATH_site . $file)) {
+        if ($urlScheme === 'https' || $urlScheme === 'http' || is_file(Environment::getPublicPath() . '/' . $file)) {
             return $file;
         }
 

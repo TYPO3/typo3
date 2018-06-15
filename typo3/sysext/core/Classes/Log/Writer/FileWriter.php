@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class FileWriter extends AbstractWriter
 {
     /**
-     * Log file path, relative to PATH_site
+     * Log file path, relative to TYPO3's base project folder
      *
      * @var string
      */
@@ -93,7 +93,7 @@ class FileWriter extends AbstractWriter
     /**
      * Sets the path to the log file.
      *
-     * @param string $relativeLogFile path to the log file, relative to PATH_site
+     * @param string $relativeLogFile path to the log file, relative to public web dir
      * @return WriterInterface
      * @throws InvalidLogWriterConfigurationException
      */
@@ -212,7 +212,7 @@ class FileWriter extends AbstractWriter
         if (!@is_dir($logFileDirectory)) {
             GeneralUtility::mkdir_deep($logFileDirectory);
             // create .htaccess file if log file is within the site path
-            if (PathUtility::getCommonPrefix([PATH_site, $logFileDirectory]) === PATH_site) {
+            if (PathUtility::getCommonPrefix([Environment::getPublicPath() . '/', $logFileDirectory]) === (Environment::getPublicPath() . '/')) {
                 // only create .htaccess, if we created the directory on our own
                 $this->createHtaccessFile($logFileDirectory . '/.htaccess');
             }

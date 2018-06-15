@@ -57,7 +57,7 @@ class GeneralUtilityFilesystemFixture extends GeneralUtility
     /**
      * For testing we must skip the path checks
      *
-     * @param string $filepath Absolute file path to write to inside "typo3temp/". First part of this string must match PATH_site."typo3temp/"
+     * @param string $filepath Absolute file path to write to inside "typo3temp/". First part of this string must match Environment::getPublicPath() ."/typo3temp/"
      * @param string $content Content string to write
      * @return string Returns NULL on success, otherwise an error string telling about the problem.
      */

@@ -86,7 +86,7 @@ class LocalDriverTest extends BaseTestCase
      */
     protected function createRealTestdir(): string
     {
-        $basedir = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('fal-test-');
+        $basedir = Environment::getVarPath() . '/tests/' . $this->getUniqueId('fal-test-');
         mkdir($basedir);
         $this->testDirs[] = $basedir;
         return $basedir;
@@ -164,7 +164,7 @@ class LocalDriverTest extends BaseTestCase
 
         // This test checks if "/../" are properly filtered out (i.e. from "Base path" field of sys_file_storage)
         $relativeDriverConfiguration = [
-            'basePath' => PATH_site . 'typo3temp/var/tests/../../../typo3temp/var/tests/',
+            'basePath' => Environment::getVarPath() . '/tests/../../../typo3temp/var/tests/',
         ];
         $basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);
 
@@ -200,7 +200,7 @@ class LocalDriverTest extends BaseTestCase
             ->will(
                 $this->returnValue(true)
             );
-        $driver->_set('absoluteBasePath', PATH_site . 'un encö/ded %path/');
+        $driver->_set('absoluteBasePath', Environment::getPublicPath() . '/un encö/ded %path/');
         $driver->_call('determineBaseUrl');
         $baseUri = $driver->_get('baseUri');
         $this->assertEquals(rawurlencode('un encö') . '/' . rawurlencode('ded %path') . '/', $baseUri);
@@ -377,13 +377,13 @@ class LocalDriverTest extends BaseTestCase
         if (in_array($property, ['mtime', 'ctime', 'atime'])) {
             $expectedValue = $directory->getChild('Dummy.html')->filemtime();
         }
-        FileStreamWrapper::init(PATH_site);
+        FileStreamWrapper::init(Environment::getPublicPath() . '/');
         FileStreamWrapper::registerOverlayPath('fileadmin', 'vfs://root/fileadmin', false);
 
-        $subject = $this->createDriver(['basePath' => PATH_site . 'fileadmin']);
+        $subject = $this->createDriver(['basePath' => Environment::getPublicPath() . '/fileadmin']);
         $this->assertSame(
             $expectedValue,
-            $subject->getSpecificFileInformation(PATH_site . 'fileadmin/Dummy.html', '/', $property)
+            $subject->getSpecificFileInformation(Environment::getPublicPath() . '/fileadmin/Dummy.html', '/', $property)
         );
 
         FileStreamWrapper::destroy();
@@ -659,10 +659,10 @@ class LocalDriverTest extends BaseTestCase
         $root->addChild($subFolder);
         // Load fixture files and folders from disk
         vfsStream::copyFromFileSystem(__DIR__ . '/Fixtures/', $subFolder, 1024*1024);
-        FileStreamWrapper::init(PATH_site);
+        FileStreamWrapper::init(Environment::getPublicPath() . '/');
         FileStreamWrapper::registerOverlayPath('fileadmin/', 'vfs://root/fileadmin/', false);
 
-        $subject = $this->createDriver(['basePath' => PATH_site . 'fileadmin']);
+        $subject = $this->createDriver(['basePath' => Environment::getPublicPath() . '/fileadmin']);
 
         $subdirFileInfo = $subject->getFileInfoByIdentifier('Dummy.html');
         $this->assertEquals('/Dummy.html', $subdirFileInfo['identifier']);

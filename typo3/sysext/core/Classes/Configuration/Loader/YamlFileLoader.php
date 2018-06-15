@@ -37,7 +37,7 @@ class YamlFileLoader
     /**
      * Loads and parses a YAML file, and returns an array with the found data
      *
-     * @param string $fileName either relative to PATH_site or prefixed with EXT:...
+     * @param string $fileName either relative to TYPO3's base project folder or prefixed with EXT:...
      * @return array the configuration as array
      * @throws \RuntimeException when the file is empty or is of invalid format
      */
@@ -61,7 +61,7 @@ class YamlFileLoader
     /**
      * Put into a separate method to ease the pains with unit tests
      *
-     * @param string $fileName either relative to PATH_site or prefixed with EXT:...
+     * @param string $fileName either relative to TYPO3's base project folder or prefixed with EXT:...
      *
      * @return string the contents of the file
      * @throws \RuntimeException when the file was not accessible

@@ -2019,7 +2019,7 @@ class GeneralUtility
 
         // Setting main temporary directory name (standard)
         $allowedPathPrefixes = [
-            PATH_site . 'typo3temp' => 'PATH_site + "typo3temp/"'
+            Environment::getPublicPath() . '/typo3temp' => 'Environment::getPublicPath() + "/typo3temp/"'
         ];
         // Also allow project-path + /var/
         if (Environment::getVarPath() !== PATH_site . 'typo3temp/var') {

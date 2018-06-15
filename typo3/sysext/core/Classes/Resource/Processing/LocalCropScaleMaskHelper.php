@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -138,7 +139,7 @@ class LocalCropScaleMaskHelper
             }
         } else {
             $targetFileName = $this->getFilenameForImageCropScaleMask($task);
-            $temporaryFileName = PATH_site . 'typo3temp/' . $targetFileName;
+            $temporaryFileName = Environment::getPublicPath() . '/typo3temp/' . $targetFileName;
             $maskImage = $configuration['maskImages']['maskImage'];
             $maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
             if ($maskImage instanceof Resource\FileInterface && $maskBackgroundImage instanceof Resource\FileInterface) {

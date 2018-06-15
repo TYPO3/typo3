@@ -64,7 +64,7 @@ class ClassLoadingInformationGenerator
      * Returns class loading information for a single package
      *
      * @param PackageInterface $package The package to generate the class loading info for
-     * @param bool $useRelativePaths If set to TRUE, make the path relative to the current TYPO3 instance (PATH_site)
+     * @param bool $useRelativePaths If set to TRUE, make the path relative to the current TYPO3 public web path
      * @return array
      */
     public function buildClassLoadingInformationForPackage(PackageInterface $package, $useRelativePaths = false)

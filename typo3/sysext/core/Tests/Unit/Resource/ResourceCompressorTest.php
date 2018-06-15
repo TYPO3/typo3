@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -521,7 +522,7 @@ class ResourceCompressorTest extends BaseTestCase
         $cssContent = file_get_contents($cssFile);
         $compressedCss = $this->subject->_call('compressCssString', $cssContent);
         // we have to fix relative paths, if we aren't working on a file in our target directory
-        $relativeFilename = str_replace(PATH_site, '', $cssFile);
+        $relativeFilename = str_replace(Environment::getPublicPath() . '/', '', $cssFile);
         if (strpos($relativeFilename, $this->subject->_get('targetDirectory')) === false) {
             $compressedCss = $this->subject->_call('cssFixRelativeUrlPaths', $compressedCss, PathUtility::dirname($relativeFilename) . '/');
         }

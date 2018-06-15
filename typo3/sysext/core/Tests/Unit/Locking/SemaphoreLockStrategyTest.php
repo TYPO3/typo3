@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
  */
 
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for \TYPO3\CMS\Core\Locking\SemaphoreLockStrategy
+ * Test case
  */
-class SemaphoreLockStrategyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SemaphoreLockStrategyTest extends UnitTestCase
 {
     /**
      * Set up the tests

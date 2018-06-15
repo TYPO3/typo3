@@ -2131,9 +2131,9 @@ class GraphicalFunctions
             $theOutputName = $this->imageMagickConvert_forceFileNameBody;
             $this->imageMagickConvert_forceFileNameBody = '';
         }
-        // Making the temporary filename:
-        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/images/');
-        $output = PATH_site . 'typo3temp/assets/images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
+        // Making the temporary filename
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/images/');
+        $output = Environment::getPublicPath() . '/typo3temp/assets/images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
         if ($this->dontCheckForExistingTempFile || !file_exists($output)) {
             $this->imageMagickExec($imagefile, $output, $command, $frame);
         }
@@ -2210,7 +2210,7 @@ class GraphicalFunctions
     /**
      * Fetches the cached image dimensions from the cache. Does not check if the image file exists.
      *
-     * @param string $filePath Image file path, relative to PATH_site
+     * @param string $filePath Image file path, relative to public web path
      *
      * @return array|bool an array where [0]/[1] is w/h, [2] is extension and [3] is the file name,
      *                    or FALSE for a cache miss
@@ -2248,7 +2248,7 @@ class GraphicalFunctions
      *
      * This method does not check if the image file actually exists.
      *
-     * @param string $filePath Image file path, relative to PATH_site
+     * @param string $filePath Image file path, relative to public web path
      *
      * @return string the hash key (an SHA1 hash), will not be empty
      */
@@ -2260,7 +2260,7 @@ class GraphicalFunctions
     /**
      * Creates the status hash to check whether a file has been changed.
      *
-     * @param string $filePath Image file path, relative to PATH_site
+     * @param string $filePath Image file path, relative to public web path
      *
      * @return string the status hash (an SHA1 hash)
      */
@@ -2401,7 +2401,7 @@ class GraphicalFunctions
     /**
      * Call the identify command
      *
-     * @param string $imagefile The relative (to PATH_site) image filepath
+     * @param string $imagefile The relative to public web path image filepath
      * @return array|null Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
      */
     public function imageMagickIdentify($imagefile)
@@ -2441,8 +2441,8 @@ class GraphicalFunctions
      * Executes an ImageMagick "convert" on two filenames, $input and $output using $params before them.
      * Can be used for many things, mostly scaling and effects.
      *
-     * @param string $input The relative (to PATH_site) image filepath, input file (read from)
-     * @param string $output The relative (to PATH_site) image filepath, output filename (written to)
+     * @param string $input The relative to public web path image filepath, input file (read from)
+     * @param string $output The relative to public web path image filepath, output filename (written to)
      * @param string $params ImageMagick parameters
      * @param int $frame Optional, refers to which frame-number to select in the image. '' or 0
      * @return string The result of a call to PHP function "exec()
@@ -2467,10 +2467,10 @@ class GraphicalFunctions
      * Executes an ImageMagick "combine" (or composite in newer times) on four filenames - $input, $overlay and $mask as input files and $output as the output filename (written to)
      * Can be used for many things, mostly scaling and effects.
      *
-     * @param string $input The relative (to PATH_site) image filepath, bottom file
-     * @param string $overlay The relative (to PATH_site) image filepath, overlay file (top)
-     * @param string $mask The relative (to PATH_site) image filepath, the mask file (grayscale)
-     * @param string $output The relative (to PATH_site) image filepath, output filename (written to)
+     * @param string $input The relative to public web path image filepath, bottom file
+     * @param string $overlay The relative to public web path image filepath, overlay file (top)
+     * @param string $mask The relative to public web path image filepath, the mask file (grayscale)
+     * @param string $output The relative to public web path image filepath, output filename (written to)
      * @return string
      */
     public function combineExec($input, $overlay, $mask, $output)
@@ -2570,10 +2570,10 @@ class GraphicalFunctions
             return $theFile;
         }
 
-        if (!@is_dir(PATH_site . 'typo3temp/assets/images/')) {
-            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/images/');
+        if (!@is_dir(Environment::getPublicPath() . '/typo3temp/assets/images/')) {
+            GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/images/');
         }
-        $newFile = PATH_site . 'typo3temp/assets/images/' . md5($theFile . '|' . filemtime($theFile)) . ($output_png ? '.png' : '.gif');
+        $newFile = Environment::getPublicPath() . '/typo3temp/assets/images/' . md5($theFile . '|' . filemtime($theFile)) . ($output_png ? '.png' : '.gif');
         $cmd = CommandUtility::imageMagickCommand(
             'convert',
             '"' . $theFile . '" "' . $newFile . '"',

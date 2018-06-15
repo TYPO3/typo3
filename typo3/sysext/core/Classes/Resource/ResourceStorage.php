@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Registry;
@@ -1300,16 +1301,16 @@ class ResourceStorage implements ResourceStorageInterface
                     }
 
                     $queryParameterArray['token'] = GeneralUtility::hmac(implode('|', $queryParameterArray), 'resourceStorageDumpFile');
-                    $publicUrl = GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(PATH_site . 'index.php'));
+                    $publicUrl = GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'));
                     $publicUrl .= '?' . http_build_query($queryParameterArray, '', '&', PHP_QUERY_RFC3986);
                 }
 
                 // If requested, make the path relative to the current script in order to make it possible
                 // to use the relative file
                 if ($publicUrl !== null && $relativeToCurrentScript && !GeneralUtility::isValidUrl($publicUrl)) {
-                    $absolutePathToContainingFolder = PathUtility::dirname(PATH_site . $publicUrl);
+                    $absolutePathToContainingFolder = PathUtility::dirname(Environment::getPublicPath() . '/' . $publicUrl);
                     $pathPart = PathUtility::getRelativePathTo($absolutePathToContainingFolder);
-                    $filePart = substr(PATH_site . $publicUrl, strlen($absolutePathToContainingFolder) + 1);
+                    $filePart = substr(Environment::getPublicPath() . '/' . $publicUrl, strlen($absolutePathToContainingFolder) + 1);
                     $publicUrl = $pathPart . $filePart;
                 }
             }
@@ -1902,7 +1903,7 @@ class ResourceStorage implements ResourceStorageInterface
             } elseif ($conflictMode->equals(DuplicationBehavior::REPLACE)) {
                 $sourceFileIdentifier = substr($file->getCombinedIdentifier(), 0, strrpos($file->getCombinedIdentifier(), '/') + 1) . $targetFileName;
                 $sourceFile = $this->getResourceFactoryInstance()->getFileObjectFromCombinedIdentifier($sourceFileIdentifier);
-                $file = $this->replaceFile($sourceFile, PATH_site . $file->getPublicUrl());
+                $file = $this->replaceFile($sourceFile, Environment::getPublicPath() . '/' . $file->getPublicUrl());
             }
         } catch (\RuntimeException $e) {
         }

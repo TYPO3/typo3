@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
@@ -60,7 +61,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     protected function createMockPackageManagerWithMockPackage($packageKey, $packageMethods = ['getPackagePath', 'getPackageKey'])
     {
-        $packagePath = PATH_site . 'typo3temp/var/tests/' . $packageKey . '/';
+        $packagePath = Environment::getVarPath() . '/tests/' . $packageKey . '/';
         GeneralUtility::mkdir_deep($packagePath);
         $this->testFilesToDelete[] = $packagePath;
         $package = $this->getMockBuilder(Package::class)
@@ -142,7 +143,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->getMock();
         $package->expects($this->once())
                 ->method('getPackagePath')
-                ->will($this->returnValue(PATH_site . 'foo/'));
+                ->will($this->returnValue(Environment::getPublicPath() . '/foo/'));
         $packageManager->expects($this->once())
                 ->method('isPackageActive')
                 ->with($this->equalTo('foo'))
@@ -152,7 +153,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 ->with('foo')
                 ->will($this->returnValue($package));
         ExtensionManagementUtility::setPackageManager($packageManager);
-        $this->assertSame(PATH_site . 'foo/bar.txt', ExtensionManagementUtility::extPath('foo', 'bar.txt'));
+        $this->assertSame(Environment::getPublicPath() . '/foo/bar.txt', ExtensionManagementUtility::extPath('foo', 'bar.txt'));
     }
 
     //////////////////////

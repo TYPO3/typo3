@@ -150,7 +150,7 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Returns the relative path to the extension as measured from the PATH_site (frontend)
+     * Returns the relative path to the extension as measured from the public web path
      * If the extension is not loaded the function will die with an error message
      * Useful for images and links from the frontend
      *
@@ -1609,7 +1609,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getExtLocalconfCacheIdentifier()
     {
-        return 'ext_localconf_' . sha1(TYPO3_version . PATH_site . 'extLocalconf' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
+        return 'ext_localconf_' . sha1(TYPO3_version . Environment::getProjectPath() . 'extLocalconf' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
     }
 
     /**
@@ -1755,7 +1755,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getBaseTcaCacheIdentifier()
     {
-        return 'tca_base_' . sha1(TYPO3_version . PATH_site . 'tca_code' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
+        return 'tca_base_' . sha1(TYPO3_version . Environment::getProjectPath() . 'tca_code' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
     }
 
     /**
@@ -1857,7 +1857,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getExtTablesCacheIdentifier()
     {
-        return 'ext_tables_' . sha1(TYPO3_version . PATH_site . 'extTables' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
+        return 'ext_tables_' . sha1(TYPO3_version . Environment::getProjectPath() . 'extTables' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
     }
 
     /**

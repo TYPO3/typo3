@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -132,7 +133,7 @@ class ResourceFactoryTest extends UnitTestCase
             ->expects($this->once())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('typo3');
-        $subject->retrieveFileOrFolderObject(PATH_site . 'typo3');
+        $subject->retrieveFileOrFolderObject(Environment::getPublicPath() . '/typo3');
     }
 
     /**
@@ -146,8 +147,8 @@ class ResourceFactoryTest extends UnitTestCase
             ->method('getFileObjectFromCombinedIdentifier')
             ->with($filename);
         // Create and prepare test file
-        \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filename, '42');
-        $this->filesCreated[] = PATH_site . $filename;
+        \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $filename, '42');
+        $this->filesCreated[] = Environment::getPublicPath() . '/' . $filename;
         $this->subject->retrieveFileOrFolderObject($filename);
     }
 

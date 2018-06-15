@@ -90,7 +90,7 @@ class SimpleLockStrategyTest extends UnitTestCase
     public function invalidFileReferences()
     {
         return [
-            'not within PATH_site' => [tempnam(sys_get_temp_dir(), 'foo')],
+            'not within project path' => [tempnam(sys_get_temp_dir(), 'foo')],
             'directory traversal' => [Environment::getVarPath() . '/../var/lock/foo'],
             'directory traversal 2' => [Environment::getVarPath() . '/lock/../../var/lock/foo'],
             'within uploads' => [Environment::getPublicPath() . '/uploads/TYPO3-Lock-Test']

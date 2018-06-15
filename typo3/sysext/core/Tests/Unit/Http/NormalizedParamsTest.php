@@ -964,7 +964,7 @@ class NormalizedParamsTest extends UnitTestCase
             'PATH_INFO' => '/typo3/index.php',
         ];
         $pathThisScript = '/var/www/myInstance/Web/typo3/index.php';
-        $pathSite = '/var/www/myInstance/Web/';
+        $pathSite = '/var/www/myInstance/Web';
         $expected = 'http://www.domain.com/';
         $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
         $serverRequestProphecy->getServerParams()->willReturn($serverParams);
@@ -990,7 +990,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_HOST' => 'www.domain.com',
                 ],
                 '/var/www/myInstance/Web/typo3/index.php',
-                '/var/www/myInstance/Web/',
+                '/var/www/myInstance/Web',
                 '/'
             ],
             'in a sub directory' => [
@@ -999,7 +999,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_HOST' => 'www.domain.com',
                 ],
                 '/var/www/myInstance/Web/typo3/index.php',
-                '/var/www/myInstance/Web/',
+                '/var/www/myInstance/Web',
                 '/some/sub/dir/'
             ],
         ];
@@ -1033,7 +1033,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_HOST' => 'www.domain.com',
                 ],
                 '/var/www/myInstance/Web/typo3/index.php',
-                '/var/www/myInstance/Web/',
+                '/var/www/myInstance/Web',
                 'typo3/index.php?id=42&foo=bar'
             ],
             'in a sub directory' => [
@@ -1042,7 +1042,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_HOST' => 'www.domain.com',
                 ],
                 '/var/www/myInstance/Web/typo3/index.php',
-                '/var/www/myInstance/Web/',
+                '/var/www/myInstance/Web',
                 'typo3/index.php?id=42&foo=bar'
             ],
         ];

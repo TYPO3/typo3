@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser;
@@ -57,7 +58,7 @@ class LocallangXmlParserTest extends UnitTestCase
     protected static function getFixtureFilePath($filename)
     {
         // We have to take the whole relative path as otherwise this test fails on Windows systems
-        return PATH_site . 'typo3/sysext/core/Tests/Unit/Localization/Parser/Fixtures/' . $filename;
+        return Environment::getPublicPath() . '/typo3/sysext/core/Tests/Unit/Localization/Parser/Fixtures/' . $filename;
     }
 
     /**

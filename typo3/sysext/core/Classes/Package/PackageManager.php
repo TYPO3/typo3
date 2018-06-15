@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -30,7 +31,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * The default TYPO3 Package Manager
  */
-class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
+class PackageManager implements SingletonInterface
 {
     /**
      * @var DependencyOrderingService
@@ -66,7 +67,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * Absolute path leading to the various package directories
      * @var string
      */
-    protected $packagesBasePath = PATH_site;
+    protected $packagesBasePath;
 
     /**
      * Array of available packages, indexed by package key
@@ -107,7 +108,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function __construct(DependencyOrderingService $dependencyOrderingService = null)
     {
-        $this->packageStatesPathAndFilename = PATH_typo3conf . 'PackageStates.php';
+        $this->packagesBasePath = Environment::getPublicPath() . '/';
+        $this->packageStatesPathAndFilename = Environment::getPublicPath() . '/typo3conf/PackageStates.php';
         if ($dependencyOrderingService === null) {
             trigger_error(self::class . ' without constructor based dependency injection has been deprecated in v9.2 and will not work in TYPO3 v10.', E_USER_DEPRECATED);
             $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
@@ -1058,13 +1060,13 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     {
         if (count($this->packagesBasePaths) < 3) {
             // Check if the directory even exists and if it is not empty
-            if (is_dir(PATH_typo3conf . 'ext') && $this->hasSubDirectories(PATH_typo3conf . 'ext')) {
-                $this->packagesBasePaths['local'] = PATH_typo3conf . 'ext/*/';
+            if (is_dir(Environment::getPublicPath() . '/typo3conf/ext') && $this->hasSubDirectories(Environment::getPublicPath() . '/typo3conf/ext')) {
+                $this->packagesBasePaths['local'] = Environment::getPublicPath() . '/typo3conf/ext/*/';
             }
-            if (is_dir(PATH_typo3 . 'ext') && $this->hasSubDirectories(PATH_typo3 . 'ext')) {
-                $this->packagesBasePaths['global'] = PATH_typo3 . 'ext/*/';
+            if (is_dir(Environment::getPublicPath() . '/typo3/ext') && $this->hasSubDirectories(Environment::getPublicPath() . '/typo3/ext')) {
+                $this->packagesBasePaths['global'] = Environment::getPublicPath() . '/typo3/ext/*/';
             }
-            $this->packagesBasePaths['system'] = PATH_typo3 . 'sysext/*/';
+            $this->packagesBasePaths['system'] = Environment::getPublicPath() . '/typo3/sysext/*/';
         }
         return $this->packagesBasePaths;
     }

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -63,13 +64,13 @@ class ResourceCompressor
     public function __construct()
     {
         // we check for existence of our targetDirectory
-        if (!is_dir(PATH_site . $this->targetDirectory)) {
-            GeneralUtility::mkdir_deep(PATH_site . $this->targetDirectory);
+        if (!is_dir(Environment::getPublicPath() . '/' . $this->targetDirectory)) {
+            GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/' . $this->targetDirectory);
         }
         // if enabled, we check whether we should auto-create the .htaccess file
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess']) {
             // check whether .htaccess exists
-            $htaccessPath = PATH_site . $this->targetDirectory . '.htaccess';
+            $htaccessPath = Environment::getPublicPath() . '/' . $this->targetDirectory . '.htaccess';
             if (!file_exists($htaccessPath)) {
                 GeneralUtility::writeFile($htaccessPath, $this->htaccessTemplate);
             }
@@ -84,7 +85,7 @@ class ResourceCompressor
                 $this->gzipCompressionLevel = (int)$compressionLevel;
             }
         }
-        $this->setRootPath(TYPO3_MODE === 'BE' ? PATH_typo3 : PATH_site);
+        $this->setRootPath(TYPO3_MODE === 'BE' ? Environment::getPublicPath() . '/typo3/' : Environment::getPublicPath() . '/');
     }
 
     /**
@@ -286,7 +287,7 @@ class ResourceCompressor
         }
         $targetFile = $this->targetDirectory . 'merged-' . md5($unique) . '.' . $type;
         // if the file doesn't already exist, we create it
-        if (!file_exists(PATH_site . $targetFile)) {
+        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile)) {
             $concatenated = '';
             // concatenate all the files together
             foreach ($filesToInclude as $filename) {
@@ -307,7 +308,7 @@ class ResourceCompressor
             if ($type === 'css') {
                 $concatenated = $this->cssFixStatements($concatenated);
             }
-            GeneralUtility::writeFile(PATH_site . $targetFile, $concatenated);
+            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $targetFile, $concatenated);
         }
         return $targetFile;
     }
@@ -363,7 +364,7 @@ class ResourceCompressor
         $pathinfo = PathUtility::pathinfo($filenameAbsolute);
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
         // only create it, if it doesn't exist, yet
-        if (!file_exists(PATH_site . $targetFile) || $this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip')) {
+        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . '.gzip')) {
             $contents = $this->compressCssString(file_get_contents($filenameAbsolute));
             if (strpos($filename, $this->targetDirectory) === false) {
                 $contents = $this->cssFixRelativeUrlPaths($contents, PathUtility::dirname($filename) . '/');
@@ -415,7 +416,7 @@ class ResourceCompressor
         $pathinfo = PathUtility::pathinfo($filename);
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.js';
         // only create it, if it doesn't exist, yet
-        if (!file_exists(PATH_site . $targetFile) || $this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip')) {
+        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . '.gzip')) {
             $contents = file_get_contents($filenameAbsolute);
             $this->writeFileAndCompressed($targetFile, $contents);
         }
@@ -433,12 +434,12 @@ class ResourceCompressor
         /*
          * The various paths may have those values (e.g. if TYPO3 is installed in a subdir)
          * - docRoot = /var/www/html/
-         * - PATH_site = /var/www/html/sites/site1/
+         * - Environment::getPublicPath() = /var/www/html/sites/site1/
          * - $this->rootPath = /var/www/html/sites/site1/typo3
          *
          * The file names passed into this function may be either:
          * - relative to $this->rootPath
-         * - relative to PATH_site
+         * - relative to Environment::getPublicPath()
          * - relative to docRoot
          */
         $docRoot = GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT');
@@ -454,29 +455,28 @@ class ResourceCompressor
             }
             // the path is not within the root path, strip off the site path, the remaining logic below
             // takes care about adjusting the path correctly.
-            $filename = substr($absolutePath, strlen(PATH_site));
+            $filename = substr($absolutePath, strlen(Environment::getPublicPath() . '/'));
         }
         // if the file exists in the root path, just return the $filename
         if (is_file($this->rootPath . $fileNameWithoutSlash)) {
             return $fileNameWithoutSlash;
         }
         // if the file is from a special TYPO3 internal directory, add the missing typo3/ prefix
-        if (is_file(realpath(PATH_site . TYPO3_mainDir . $filename))) {
-            $filename = TYPO3_mainDir . $filename;
+        if (is_file(realpath(Environment::getPublicPath() . '/typo3/' . $filename))) {
+            $filename = 'typo3/' . $filename;
         }
-        // build the file path relatively to the PATH_site
+        // build the file path relative to the public web path
         if (strpos($filename, 'EXT:') === 0) {
             $file = GeneralUtility::getFileAbsFileName($filename);
         } elseif (strpos($filename, '../') === 0) {
-            $file = GeneralUtility::resolveBackPath(PATH_typo3 . $filename);
+            $file = GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/typo3/' . $filename);
         } else {
-            $file = PATH_site . $filename;
+            $file = Environment::getPublicPath() . '/' . $filename;
         }
 
         // check if the file exists, and if so, return the path relative to TYPO3_mainDir
         if (is_file($file)) {
-            $mainDirDepth = substr_count(TYPO3_mainDir, '/');
-            return str_repeat('../', $mainDirDepth) . str_replace(PATH_site, '', $file);
+            return '../' . str_replace(Environment::getPublicPath() . '/', '', $file);
         }
         // none of above conditions were met, fallback to default behaviour
         return $filename;
@@ -616,10 +616,10 @@ class ResourceCompressor
     protected function writeFileAndCompressed($filename, $contents)
     {
         // write uncompressed file
-        GeneralUtility::writeFile(PATH_site . $filename, $contents);
+        GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $contents);
         if ($this->createGzipped) {
             // create compressed version
-            GeneralUtility::writeFile(PATH_site . $filename . '.gzip', gzencode($contents, $this->gzipCompressionLevel));
+            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename . '.gzip', gzencode($contents, $this->gzipCompressionLevel));
         }
     }
 
@@ -636,7 +636,7 @@ class ResourceCompressor
         if ($this->createGzipped && strpos(GeneralUtility::getIndpEnv('HTTP_ACCEPT_ENCODING'), 'gzip') !== false) {
             $filename .= '.gzip';
         }
-        return PathUtility::getRelativePath($this->rootPath, PATH_site) . $filename;
+        return PathUtility::getRelativePath($this->rootPath, Environment::getPublicPath() . '/') . $filename;
     }
 
     /**
@@ -650,10 +650,10 @@ class ResourceCompressor
         $externalContent = GeneralUtility::getUrl($url);
         $filename = $this->targetDirectory . 'external-' . md5($url);
         // Write only if file does not exist OR md5 of the content is not the same as fetched one
-        if (!file_exists(PATH_site . $filename)
-            || (md5($externalContent) !== md5(file_get_contents(PATH_site . $filename)))
+        if (!file_exists(Environment::getPublicPath() . '/' . $filename)
+            || (md5($externalContent) !== md5(file_get_contents(Environment::getPublicPath() . '/' . $filename)))
         ) {
-            GeneralUtility::writeFile(PATH_site . $filename, $externalContent);
+            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $externalContent);
         }
         return $filename;
     }

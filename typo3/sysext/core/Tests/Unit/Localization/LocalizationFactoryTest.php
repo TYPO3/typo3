@@ -18,6 +18,7 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -59,7 +60,7 @@ class LocalizationFactoryTest extends UnitTestCase
 					</languageKey>
 				</data>
 			</T3locallang>';
-        $file = PATH_site . 'typo3temp/var/tests/' . $unique . '.xml';
+        $file = Environment::getVarPath() . '/tests/' . $unique . '.xml';
         GeneralUtility::writeFileToTypo3tempDir($file, $xml);
         $this->testFilesToDelete[] = $file;
 
