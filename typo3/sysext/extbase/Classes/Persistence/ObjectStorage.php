@@ -178,7 +178,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
             $this->positionCounter = 0;
         }
 
-        $this->removedObjectsPositions[spl_object_hash($object)] = $this->addedObjectsPositions[spl_object_hash($object)];
+        $this->removedObjectsPositions[spl_object_hash($object)] = $this->addedObjectsPositions[spl_object_hash($object)] ?? null;
         unset($this->addedObjectsPositions[spl_object_hash($object)]);
     }
 
