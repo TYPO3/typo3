@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Documentation\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -142,7 +143,7 @@ class DocumentRepository
         $basePath = 'typo3conf/Documentation/';
 
         $documents = [];
-        $documentKeys = GeneralUtility::get_dirs(PATH_site . $basePath);
+        $documentKeys = GeneralUtility::get_dirs(Environment::getPublicPath() . '/' . $basePath);
         // Early return in case no document keys were found
         if (!is_array($documentKeys)) {
             return $documents;
@@ -157,7 +158,7 @@ class DocumentRepository
                 ->setIcon($icon);
 
             $languagePath = $basePath . $documentKey . '/';
-            $languages = GeneralUtility::get_dirs(PATH_site . $languagePath);
+            $languages = GeneralUtility::get_dirs(Environment::getPublicPath() . '/' . $languagePath);
             foreach ($languages as $language) {
                 $metadata = $this->getMetadata($documentKey, $language);
                 if (!empty($metadata['extensionKey'])) {
@@ -171,7 +172,7 @@ class DocumentRepository
                     ->setDescription($metadata['description']);
 
                 $formatPath = $languagePath . $language . '/';
-                $formats = GeneralUtility::get_dirs(PATH_site . $formatPath);
+                $formats = GeneralUtility::get_dirs(Environment::getPublicPath() . '/' . $formatPath);
                 foreach ($formats as $format) {
                     $documentFile = '';
                     switch ($format) {
@@ -179,7 +180,7 @@ class DocumentRepository
                             // Try to find a valid index file
                             $indexFiles = ['Index.html', 'index.html', 'index.htm'];
                             foreach ($indexFiles as $indexFile) {
-                                if (file_exists(PATH_site . $formatPath . $format . '/' . $indexFile)) {
+                                if (file_exists(Environment::getPublicPath() . '/' . $formatPath . $format . '/' . $indexFile)) {
                                     $documentFile = $indexFile;
                                     break;
                                 }
@@ -187,7 +188,7 @@ class DocumentRepository
                             break;
                         case 'pdf':
                             // Retrieve first PDF
-                            $files = GeneralUtility::getFilesInDir(PATH_site . $formatPath . $format, 'pdf');
+                            $files = GeneralUtility::getFilesInDir(Environment::getPublicPath() . '/' . $formatPath . $format, 'pdf');
                             if (is_array($files) && !empty($files)) {
                                 $documentFile = current($files);
                             }
@@ -265,7 +266,7 @@ class DocumentRepository
      */
     protected function getMetadata($documentKey, $language)
     {
-        $documentPath = PATH_site . 'typo3conf/Documentation/' . $documentKey . '/' . $language . '/';
+        $documentPath = Environment::getPublicPath() . '/typo3conf/Documentation/' . $documentKey . '/' . $language . '/';
         $metadata = [
             'title' => $documentKey,
             'description' => '',

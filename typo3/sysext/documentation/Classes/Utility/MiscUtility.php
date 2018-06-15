@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Documentation\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -71,9 +72,9 @@ class MiscUtility
                 $icon = ExtensionManagementUtility::getExtensionIcon($extensionPath, true);
                 $icon = PathUtility::stripPathSitePrefix($icon);
             }
-        } elseif (is_file(PATH_site . $documentPath . 'icon.png')) {
+        } elseif (is_file(Environment::getPublicPath() . '/' . $documentPath . 'icon.png')) {
             $icon = $documentPath . 'icon.png';
-        } elseif (is_file(PATH_site . $documentPath . 'icon.gif')) {
+        } elseif (is_file(Environment::getPublicPath() . '/' . $documentPath . 'icon.gif')) {
             $icon = $documentPath . 'icon.gif';
         }
 

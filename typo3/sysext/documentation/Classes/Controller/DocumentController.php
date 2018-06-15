@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Documentation\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -170,7 +171,7 @@ class DocumentController extends ActionController
     {
         $basePath = 'typo3conf/Documentation/';
         $packageKey = $request->getParsedBody();
-        $isDirDeleted = GeneralUtility::rmdir(PATH_site . $basePath . $packageKey['documentationKey'], true);
+        $isDirDeleted = GeneralUtility::rmdir(Environment::getPublicPath() . '/' . $basePath . $packageKey['documentationKey'], true);
         if (!$isDirDeleted) {
             $this->addFlashMessage(LocalizationUtility::translate('deleteFailed', 'Documentation'), '', FlashMessage::ERROR);
         }
