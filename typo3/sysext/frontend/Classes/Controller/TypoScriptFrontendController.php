@@ -4122,10 +4122,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         } else {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
             // This is a hack to work around ___FILE___ resolving symbolic links
-            $PATH_site_real = PathUtility::dirname(realpath(Environment::getPublicPath() . '/typo3')) . '/';
+            $realWebPath = PathUtility::dirname(realpath(Environment::getPublicPath() . '/typo3')) . '/';
             $file = $trace[0]['file'];
-            if (strpos($file, $PATH_site_real) === 0) {
-                $file = str_replace($PATH_site_real, '', $file);
+            if (strpos($file, $realWebPath) === 0) {
+                $file = str_replace($realWebPath, '', $file);
             } else {
                 $file = str_replace(Environment::getPublicPath() . '/', '', $file);
             }

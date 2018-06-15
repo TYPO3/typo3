@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -37,22 +38,22 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ConfigurationManager
 {
     /**
-     * @var string Path to default TYPO3_CONF_VARS file, relative to PATH_site
+     * @var string Path to default TYPO3_CONF_VARS file, relative to the public web folder
      */
     protected $defaultConfigurationFile = 'typo3/sysext/core/Configuration/DefaultConfiguration.php';
 
     /**
-     * @var string Path to description file for TYPO3_CONF_VARS, relative to PATH_site
+     * @var string Path to description file for TYPO3_CONF_VARS, relative to the public web folder
      */
     protected $defaultConfigurationDescriptionFile = 'typo3/sysext/core/Configuration/DefaultConfigurationDescription.yaml';
 
     /**
-     * @var string Path to local overload TYPO3_CONF_VARS file, relative to PATH_site
+     * @var string Path to local overload TYPO3_CONF_VARS file, relative to the public web folder
      */
     protected $localConfigurationFile = 'typo3conf/LocalConfiguration.php';
 
     /**
-     * @var string Path to additional local file, relative to PATH_site
+     * @var string Path to additional local file, relative to the public web folder
      */
     protected $additionalConfigurationFile = 'typo3conf/AdditionalConfiguration.php';
 
@@ -100,7 +101,7 @@ class ConfigurationManager
      */
     public function getDefaultConfigurationFileLocation()
     {
-        return PATH_site . $this->defaultConfigurationFile;
+        return Environment::getPublicPath() . '/' . $this->defaultConfigurationFile;
     }
 
     /**
@@ -112,7 +113,7 @@ class ConfigurationManager
      */
     public function getDefaultConfigurationDescriptionFileLocation()
     {
-        return PATH_site . $this->defaultConfigurationDescriptionFile;
+        return Environment::getPublicPath() . '/' . $this->defaultConfigurationDescriptionFile;
     }
 
     /**
@@ -134,7 +135,7 @@ class ConfigurationManager
      */
     public function getLocalConfigurationFileLocation()
     {
-        return PATH_site . $this->localConfigurationFile;
+        return Environment::getPublicPath() . '/' . $this->localConfigurationFile;
     }
 
     /**
@@ -158,7 +159,7 @@ class ConfigurationManager
      */
     public function getAdditionalConfigurationFileLocation()
     {
-        return PATH_site . $this->additionalConfigurationFile;
+        return Environment::getPublicPath() . '/' . $this->additionalConfigurationFile;
     }
 
     /**
@@ -168,7 +169,7 @@ class ConfigurationManager
      */
     protected function getFactoryConfigurationFileLocation()
     {
-        return PATH_site . $this->factoryConfigurationFile;
+        return Environment::getPublicPath() . '/' . $this->factoryConfigurationFile;
     }
 
     /**
@@ -178,7 +179,7 @@ class ConfigurationManager
      */
     protected function getAdditionalFactoryConfigurationFileLocation()
     {
-        return PATH_site . $this->additionalFactoryConfigurationFile;
+        return Environment::getPublicPath() . '/' . $this->additionalFactoryConfigurationFile;
     }
 
     /**
@@ -320,7 +321,7 @@ class ConfigurationManager
     public function canWriteConfiguration()
     {
         $fileLocation = $this->getLocalConfigurationFileLocation();
-        return @is_writable(file_exists($fileLocation) ? $fileLocation : PATH_site . 'typo3conf/');
+        return @is_writable(file_exists($fileLocation) ? $fileLocation : Environment::getPublicPath() . '/typo3conf/');
     }
 
     /**
@@ -392,7 +393,7 @@ class ConfigurationManager
     public function writeAdditionalConfiguration(array $additionalConfigurationLines)
     {
         return GeneralUtility::writeFile(
-            PATH_site . $this->additionalConfigurationFile,
+            Environment::getPublicPath() . '/' . $this->additionalConfigurationFile,
             '<?php' . LF .
                 implode(LF, $additionalConfigurationLines) . LF
         );

@@ -2003,7 +2003,7 @@ class GeneralUtility
      * Writes $content to a filename in the typo3temp/ folder (and possibly one or two subfolders...)
      * Accepts an additional subdirectory in the file path!
      *
-     * @param string $filepath Absolute file path to write to inside "typo3temp/". First part of this string must match PATH_site."typo3temp/"
+     * @param string $filepath Absolute file path to write within the typo3temp/ or Environment::getVarPath() folder - the file path must be prefixed with this path
      * @param string $content Content string to write
      * @return string Returns NULL on success, otherwise an error string telling about the problem.
      */
@@ -2022,7 +2022,7 @@ class GeneralUtility
             Environment::getPublicPath() . '/typo3temp' => 'Environment::getPublicPath() + "/typo3temp/"'
         ];
         // Also allow project-path + /var/
-        if (Environment::getVarPath() !== PATH_site . 'typo3temp/var') {
+        if (Environment::getVarPath() !== Environment::getPublicPath() . '/typo3temp/var') {
             $relPath = substr(Environment::getVarPath(), strlen(Environment::getProjectPath()) + 1);
             $allowedPathPrefixes[Environment::getVarPath()] = 'ProjectPath + ' . $relPath;
         }
@@ -2820,7 +2820,7 @@ class GeneralUtility
                 // This can only be set by external entry scripts
                 if (defined('TYPO3_PATH_WEB')) {
                     $retVal = $url;
-                } elseif (Environment::getCurrentScript() && defined('PATH_site')) {
+                } elseif (Environment::getCurrentScript()) {
                     $lPath = PathUtility::stripPathSitePrefix(PathUtility::dirnameDuringBootstrap(Environment::getCurrentScript())) . '/';
                     $siteUrl = substr($url, 0, -strlen($lPath));
                     if (substr($siteUrl, -1) !== '/') {
@@ -3083,7 +3083,7 @@ class GeneralUtility
     /**
      * Returns the absolute filename of a relative reference, resolves the "EXT:" prefix
      * (way of referring to files inside extensions) and checks that the file is inside
-     * the PATH_site of the TYPO3 installation and implies a check with
+     * the TYPO3's base folder and implies a check with
      * \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr().
      *
      * @param string $filename The input filename/filepath to evaluate
@@ -3102,8 +3102,8 @@ class GeneralUtility
                 $filename = ExtensionManagementUtility::extPath($extKey) . $local;
             }
         } elseif (!static::isAbsPath($filename)) {
-            // is relative. Prepended with PATH_site
-            $filename = PATH_site . $filename;
+            // is relative. Prepended with the public web folder
+            $filename = Environment::getPublicPath() . '/' . $filename;
         } elseif (!(
                   static::isFirstPartOfStr($filename, Environment::getProjectPath())
                   || static::isFirstPartOfStr($filename, Environment::getPublicPath())
@@ -3147,7 +3147,7 @@ class GeneralUtility
     }
 
     /**
-     * Returns TRUE if the path is absolute, without backpath '..' and within the PATH_site OR within the lockRootPath
+     * Returns TRUE if the path is absolute, without backpath '..' and within TYPO3s project or public folder OR within the lockRootPath
      *
      * @param string $path File path to evaluate
      * @return bool
@@ -3189,11 +3189,11 @@ class GeneralUtility
      */
     public static function copyDirectory($source, $destination)
     {
-        if (strpos($source, PATH_site) === false) {
-            $source = PATH_site . $source;
+        if (strpos($source, Environment::getPublicPath() . '/') === false) {
+            $source = Environment::getPublicPath() . '/' . $source;
         }
-        if (strpos($destination, PATH_site) === false) {
-            $destination = PATH_site . $destination;
+        if (strpos($destination, Environment::getPublicPath() . '/') === false) {
+            $destination = Environment::getPublicPath() . '/' . $destination;
         }
         if (static::isAllowedAbsPath($source) && static::isAllowedAbsPath($destination)) {
             static::mkdir_deep($destination);
@@ -3287,7 +3287,7 @@ class GeneralUtility
     /**
      * Will move an uploaded file (normally in "/tmp/xxxxx") to a temporary filename in Environment::getProjectPath() . "var/" from where TYPO3 can use it.
      * Use this function to move uploaded files to where you can work on them.
-     * REMEMBER to use \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile() afterwards - otherwise temp-files will build up! They are NOT automatically deleted in PATH_site."typo3temp/"!
+     * REMEMBER to use \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile() afterwards - otherwise temp-files will build up! They are NOT automatically deleted in the temporary folder!
      *
      * @param string $uploadedFileName The temporary uploaded filename, eg. $_FILES['[upload field name here]']['tmp_name']
      * @return string If a new file was successfully created, return its filename, otherwise blank string.
@@ -3311,11 +3311,11 @@ class GeneralUtility
     }
 
     /**
-     * Deletes (unlink) a temporary filename in 'PATH_site."typo3temp/"' given as input.
-     * The function will check that the file exists, is in PATH_site."typo3temp/" and does not contain back-spaces ("../") so it should be pretty safe.
+     * Deletes (unlink) a temporary filename in the var/ or typo3temp folder given as input.
+     * The function will check that the file exists, is within TYPO3's var/ or typo3temp/ folder and does not contain back-spaces ("../") so it should be pretty safe.
      * Use this after upload_to_tempfile() or tempnam() from this class!
      *
-     * @param string $uploadedTempFileName Filepath for a file in PATH_site."typo3temp/". Must be absolute.
+     * @param string $uploadedTempFileName absolute file path - must reside within var/ or typo3temp/ folder.
      * @return bool Returns TRUE if the file was unlink()'ed
      * @see upload_to_tempfile(), tempnam()
      */
@@ -3326,7 +3326,7 @@ class GeneralUtility
             if (
                 self::validPathStr($uploadedTempFileName)
                 && (
-                    self::isFirstPartOfStr($uploadedTempFileName, PATH_site . 'typo3temp/')
+                    self::isFirstPartOfStr($uploadedTempFileName, Environment::getPublicPath() . '/typo3temp/')
                     || self::isFirstPartOfStr($uploadedTempFileName, Environment::getVarPath() . '/')
                 )
                 && @is_file($uploadedTempFileName)
@@ -3345,7 +3345,7 @@ class GeneralUtility
      *
      * @param string $filePrefix Prefix for temporary file
      * @param string $fileSuffix Suffix for temporary file, for example a special file extension
-     * @return string result from PHP function tempnam() with PATH_site . 'typo3temp/' set for temp path.
+     * @return string result from PHP function tempnam() with the temp/var folder prefixed.
      * @see unlink_tempfile(), upload_to_tempfile()
      */
     public static function tempnam($filePrefix, $fileSuffix = '')
@@ -3995,7 +3995,7 @@ class GeneralUtility
             $renderingContext->getControllerName(),
             $renderingContext->getControllerAction()
         );
-        $template = str_replace(PATH_site, '', $template);
+        $template = str_replace(Environment::getPublicPath() . '/', '', $template);
         $message = [];
         $message[] = '[' . $template . ']';
         $message[] = 'The property "' . $property . '" has been marked as deprecated.';
@@ -4013,7 +4013,7 @@ class GeneralUtility
     public static function getDeprecationLogFileName()
     {
         static::writeDeprecationLogFileEntry(__METHOD__ . ' is deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0');
-        return Environment::getVarPath() . '/log/deprecation_' . self::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
+        return Environment::getVarPath() . '/log/deprecation_' . self::shortMD5(Environment::getProjectPath() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
     }
 
     /**
@@ -4180,7 +4180,7 @@ class GeneralUtility
     {
         $date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
         // Write a longer message to the deprecation log
-        $destination = Environment::getVarPath() . '/log/deprecation_' . self::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
+        $destination = Environment::getVarPath() . '/log/deprecation_' . self::shortMD5(Environment::getProjectPath() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
         $file = @fopen($destination, 'a');
         if ($file) {
             @fwrite($file, $date . $msg . LF);

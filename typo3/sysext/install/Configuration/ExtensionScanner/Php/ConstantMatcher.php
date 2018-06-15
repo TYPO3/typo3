@@ -65,4 +65,10 @@ return [
             'Deprecation-85123-ConstantsRelatedToServices.rst',
         ],
     ],
+    'PATH_thisScript' => [
+        'restFiles' => [
+            'Feature-84153-IntroduceAGenericEnvironmentClass.rst',
+            'Deprecation-85285-DeprecatedSystemConstants.rst',
+        ],
+    ],
 ];

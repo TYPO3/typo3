@@ -92,7 +92,7 @@ class ClassLoadingInformation
         $activeExtensionPackages = static::getActiveExtensionPackages();
 
         /** @var ClassLoadingInformationGenerator  $generator */
-        $generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site, self::isTestingContext());
+        $generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, Environment::getPublicPath() . '/', self::isTestingContext());
         $classInfoFiles = $generator->buildAutoloadInformationFiles();
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile']);
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File']);
@@ -148,7 +148,7 @@ class ClassLoadingInformation
         $activeExtensionPackages = static::getActiveExtensionPackages();
 
         /** @var ClassLoadingInformationGenerator  $generator */
-        $generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site, self::isTestingContext());
+        $generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, Environment::getPublicPath() . '/', self::isTestingContext());
 
         $classInformation = $generator->buildClassLoadingInformationForPackage($package);
         $composerClassLoader->addClassMap($classInformation['classMap']);
@@ -167,9 +167,9 @@ class ClassLoadingInformation
     protected static function getClassLoadingInformationDirectory()
     {
         if (self::isTestingContext()) {
-            return PATH_site . self::AUTOLOAD_INFO_DIR_TESTS;
+            return Environment::getPublicPath() . '/' . self::AUTOLOAD_INFO_DIR_TESTS;
         }
-        return PATH_site . self::AUTOLOAD_INFO_DIR;
+        return Environment::getPublicPath() . '/' . self::AUTOLOAD_INFO_DIR;
     }
 
     /**

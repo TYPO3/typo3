@@ -188,10 +188,12 @@ class SystemEnvironmentBuilder
         }
 
         if (!defined('PATH_thisScript')) {
+            // @deprecated since v9, will be removed in v10
             define('PATH_thisScript', $scriptPath);
         }
         // Absolute path of the document root of the instance with trailing slash
         if (!defined('PATH_site')) {
+            // @deprecated since v9, will be removed in v10
             define('PATH_site', $rootPath . '/');
         }
         // Relative path from document root to typo3/ directory
