@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Install\FolderStructure\DirectoryNode;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
@@ -189,7 +190,7 @@ class RootNodeTest extends UnitTestCase
             '',
             false
         );
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
         touch($path);
         $this->testFilesToDelete[] = $path;
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -214,7 +215,7 @@ class RootNodeTest extends UnitTestCase
             '',
             false
         );
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
         touch($path);
         $this->testFilesToDelete[] = $path;
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));

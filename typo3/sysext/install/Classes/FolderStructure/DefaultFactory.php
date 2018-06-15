@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * Factory returns default folder structure object hierarchy
  */
@@ -43,8 +45,8 @@ class DefaultFactory
         $directoryPermission = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
 
         return [
-            // Cut off trailing forward / from PATH_site, so root node has no trailing slash like all others
-            'name' => substr(PATH_site, 0, -1),
+            // Note that root node has no trailing slash like all others
+            'name' => Environment::getPublicPath(),
             'targetPermission' => $directoryPermission,
             'children' => [
                 [
@@ -99,7 +101,7 @@ class DefaultFactory
                                     'name' => '.htaccess',
                                     'type' => FileNode::class,
                                     'targetPermission' => $filePermission,
-                                    'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/typo3temp-var-htaccess',
+                                    'targetContentFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/typo3temp-var-htaccess',
                                 ],
                                 [
                                     'name' => 'charset',
@@ -151,13 +153,13 @@ class DefaultFactory
                                     'name' => '.htaccess',
                                     'type' => FileNode::class,
                                     'targetPermission' => $filePermission,
-                                    'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-htaccess',
+                                    'targetContentFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-htaccess',
                                 ],
                                 [
                                     'name' => 'index.html',
                                     'type' => FileNode::class,
                                     'targetPermission' => $filePermission,
-                                    'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html',
+                                    'targetContentFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html',
                                 ],
                             ],
                         ],
@@ -186,13 +188,13 @@ class DefaultFactory
                                                     'name' => '.htaccess',
                                                     'type' => FileNode::class,
                                                     'targetPermission' => $filePermission,
-                                                    'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-user_upload-temp-importexport-htaccess',
+                                                    'targetContentFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-user_upload-temp-importexport-htaccess',
                                                 ],
                                                 [
                                                     'name' => 'index.html',
                                                     'type' => FileNode::class,
                                                     'targetPermission' => $filePermission,
-                                                    'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html',
+                                                    'targetContentFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html',
                                                 ],
                                             ],
                                         ],

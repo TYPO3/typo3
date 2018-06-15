@@ -199,7 +199,7 @@ abstract class AbstractNode
     }
 
     /**
-     * Cut off PATH_site from given path
+     * Cut off public web path from given path
      *
      * @param string $path Given path
      * @return string Relative path, but beginning with /
@@ -210,14 +210,14 @@ abstract class AbstractNode
         if ($path === null) {
             $path = $this->getAbsolutePath();
         }
-        $pathSiteWithoutTrailingSlash = substr(PATH_site, 0, -1);
-        if (strpos($path, $pathSiteWithoutTrailingSlash, 0) !== 0) {
+        $publicPath = Environment::getPublicPath();
+        if (strpos($path, $publicPath, 0) !== 0) {
             throw new Exception\InvalidArgumentException(
-                'PATH_site is not first part of given path',
+                'Public path is not first part of given path',
                 1366398198
             );
         }
-        $relativePath = substr($path, strlen($pathSiteWithoutTrailingSlash), strlen($path));
+        $relativePath = substr($path, strlen($publicPath), strlen($path));
         // Add a forward slash again, so we don't end up with an empty string
         if ($relativePath === '') {
             $relativePath = '/';

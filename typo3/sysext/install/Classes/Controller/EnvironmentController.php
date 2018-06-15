@@ -171,6 +171,8 @@ class EnvironmentController extends AbstractController
 
         $permissionCheck = GeneralUtility::makeInstance(DefaultPermissionsCheck::class);
 
+        $view->assign('publicPath', Environment::getPublicPath());
+
         return new JsonResponse([
             'success' => true,
             'errorStatus' => $errorQueue,
@@ -297,7 +299,7 @@ class EnvironmentController extends AbstractController
             ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
             'Testing true type'
         );
-        $outputFile = PATH_site . 'typo3temp/assets/images/installTool-' . StringUtility::getUniqueId('createTrueTypeFontTestImage') . '.gif';
+        $outputFile = Environment::getPublicPath() . '/typo3temp/assets/images/installTool-' . StringUtility::getUniqueId('createTrueTypeFontTestImage') . '.gif';
         imagegif($image, $outputFile);
         $fileExists = file_exists($outputFile);
         if ($fileExists) {
@@ -306,7 +308,7 @@ class EnvironmentController extends AbstractController
         return $this->getImageTestResponse([
             'fileExists' => $fileExists,
             'outputFile' => $outputFile,
-            'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Font.gif',
+            'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Font.gif',
         ]);
     }
 
@@ -412,7 +414,7 @@ class EnvironmentController extends AbstractController
                 'status' => $messages,
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Write-gif.gif',
+                'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Write-gif.gif',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -445,7 +447,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Write-png.png',
+                'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Write-png.png',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -478,7 +480,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Scale-gif.gif',
+                'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Scale-gif.gif',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -511,7 +513,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Scale-png.png',
+                'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Scale-png.png',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -544,7 +546,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Scale-jpg.jpg',
+                'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Scale-jpg.jpg',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -573,7 +575,7 @@ class EnvironmentController extends AbstractController
         $inputFile = $imageBasePath . 'TestInput/BackgroundOrange.gif';
         $overlayFile = $imageBasePath . 'TestInput/Test.jpg';
         $maskFile = $imageBasePath . 'TestInput/MaskBlackWhite.gif';
-        $resultFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix
+        $resultFile = $this->getImagesPath() . $imageProcessor->filenamePrefix
             . StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine1') . '.jpg';
         $imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile);
         $imResult = $imageProcessor->getImageDimensions($resultFile);
@@ -581,7 +583,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Combine-1.jpg',
+                'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Combine-1.jpg',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -610,7 +612,7 @@ class EnvironmentController extends AbstractController
         $inputFile = $imageBasePath . 'TestInput/BackgroundCombine.jpg';
         $overlayFile = $imageBasePath . 'TestInput/Test.jpg';
         $maskFile = $imageBasePath . 'TestInput/MaskCombine.jpg';
-        $resultFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix
+        $resultFile = $this->getImagesPath() . $imageProcessor->filenamePrefix
             . StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine2') . '.jpg';
         $imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile);
         $imResult = $imageProcessor->getImageDimensions($resultFile);
@@ -618,7 +620,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Combine-2.jpg',
+                'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Combine-2.jpg',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -648,13 +650,13 @@ class EnvironmentController extends AbstractController
             'color' => 'olive',
         ];
         $imageProcessor->makeBox($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $imResult = $imageProcessor->getImageDimensions($outputFile);
         $result = [
             'fileExists' => true,
             'outputFile' => $imResult[3],
-            'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Gdlib-simple.' . $gifOrPng,
+            'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Gdlib-simple.' . $gifOrPng,
             'command' => $imageProcessor->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -678,13 +680,13 @@ class EnvironmentController extends AbstractController
             'color' => 'olive',
         ];
         $imageProcessor->makeBox($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $imResult = $imageProcessor->getImageDimensions($outputFile);
         $result = [
             'fileExists' => true,
             'outputFile' => $imResult[3],
-            'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Gdlib-box.' . $gifOrPng,
+            'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Gdlib-box.' . $gifOrPng,
             'command' => $imageProcessor->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -715,13 +717,13 @@ class EnvironmentController extends AbstractController
         ];
         $conf['BBOX'] = $imageProcessor->calcBBox($conf);
         $imageProcessor->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $imResult = $imageProcessor->getImageDimensions($outputFile);
         $result = [
             'fileExists' => true,
             'outputFile' => $imResult[3],
-            'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Gdlib-text.' . $gifOrPng,
+            'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Gdlib-text.' . $gifOrPng,
             'command' => $imageProcessor->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -757,18 +759,18 @@ class EnvironmentController extends AbstractController
         ];
         $conf['BBOX'] = $imageProcessor->calcBBox($conf);
         $imageProcessor->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $conf['offset'] = '30,120';
         $conf['niceText'] = 1;
         $imageProcessor->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $imResult = $imageProcessor->getImageDimensions($outputFile);
         $result = [
             'fileExists' => true,
             'outputFile' => $imResult[3],
-            'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Gdlib-niceText.' . $gifOrPng,
+            'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Gdlib-niceText.' . $gifOrPng,
             'command' => $imageProcessor->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -804,12 +806,12 @@ class EnvironmentController extends AbstractController
         ];
         $conf['BBOX'] = $imageProcessor->calcBBox($conf);
         $imageProcessor->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $conf['offset'] = '30,120';
         $conf['niceText'] = 1;
         $imageProcessor->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $conf['offset'] = '30,160';
         $conf['niceText'] = 1;
@@ -822,13 +824,13 @@ class EnvironmentController extends AbstractController
         // Warning: Re-uses $image from above!
         $imageProcessor->makeShadow($image, $conf['shadow.'], $workArea, $conf);
         $imageProcessor->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath($imageProcessor) . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $imResult = $imageProcessor->getImageDimensions($outputFile);
         $result = [
             'fileExists' => true,
             'outputFile' => $imResult[3],
-            'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Gdlib-shadow.' . $gifOrPng,
+            'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Gdlib-shadow.' . $gifOrPng,
             'command' => $imageProcessor->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -903,7 +905,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => file_exists($imResult[3]),
                 'outputFile' => $imResult[3],
-                'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Read-' . $inputFormat . '.jpg',
+                'referenceFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Public/Images/TestReference/Read-' . $inputFormat . '.jpg',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -1066,12 +1068,11 @@ class EnvironmentController extends AbstractController
      * Return the temp image dir.
      * If not exist it will be created
      *
-     * @param GraphicalFunctions $imageProcessor
      * @return string
      */
-    protected function getImagesPath(GraphicalFunctions $imageProcessor): string
+    protected function getImagesPath(): string
     {
-        $imagePath = PATH_site . 'typo3temp/assets/images/';
+        $imagePath = Environment::getPublicPath() . '/typo3temp/assets/images/';
         if (!is_dir($imagePath)) {
             GeneralUtility::mkdir_deep($imagePath);
         }

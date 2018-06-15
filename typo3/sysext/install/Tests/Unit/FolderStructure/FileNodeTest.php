@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Install\FolderStructure\Exception;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
@@ -199,7 +200,7 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
@@ -776,7 +777,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('root_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('root_');
         \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
         $link = $this->getUniqueId('link_');

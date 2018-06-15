@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Service;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -31,7 +32,7 @@ class Typo3tempFileService
      */
     public function getDirectoryStatistics()
     {
-        $basePath = PATH_site . 'typo3temp/assets';
+        $basePath = Environment::getPublicPath() . '/typo3temp/assets';
         if (!is_dir($basePath)) {
             return [];
         }
@@ -74,7 +75,7 @@ class Typo3tempFileService
      */
     public function clearAssetsFolder(string $folderName)
     {
-        $basePath = PATH_site . 'typo3temp/assets/' . $folderName;
+        $basePath = Environment::getPublicPath() . '/typo3temp/assets/' . $folderName;
         if (empty($folderName) || !GeneralUtility::isAllowedAbsPath($basePath)) {
             throw new \RuntimeException(
                 'Path to folder ' . $folderName . ' not allowed.',

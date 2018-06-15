@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Install\FolderStructure\AbstractNode;
 use TYPO3\CMS\Install\FolderStructure\Exception;
@@ -136,8 +137,8 @@ class AbstractNodeTest extends FolderStructureTestCase
     {
         /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
-        $target = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
+        $target = Environment::getVarPath() . '/tests/' . $this->getUniqueId('notExists_');
         touch($target);
         symlink($target, $path);
         unlink($target);
@@ -338,7 +339,7 @@ class AbstractNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects($this->once())->method('getAbsolutePath')->will($this->returnValue(PATH_site));
+        $node->expects($this->once())->method('getAbsolutePath')->will($this->returnValue(Environment::getPublicPath()));
         $node->_call('getRelativePathBelowSiteRoot', null);
     }
 
@@ -349,7 +350,7 @@ class AbstractNodeTest extends FolderStructureTestCase
     {
         /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
-        $result = $node->_call('getRelativePathBelowSiteRoot', PATH_site);
+        $result = $node->_call('getRelativePathBelowSiteRoot', Environment::getPublicPath() . '/');
         $this->assertSame('/', $result);
     }
 
@@ -360,7 +361,7 @@ class AbstractNodeTest extends FolderStructureTestCase
     {
         /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
-        $result = $node->_call('getRelativePathBelowSiteRoot', PATH_site . 'foo/bar');
+        $result = $node->_call('getRelativePathBelowSiteRoot', Environment::getPublicPath() . '/foo/bar');
         $this->assertSame('/foo/bar', $result);
     }
 }

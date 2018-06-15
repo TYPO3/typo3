@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Report;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Reports\Status;
@@ -83,7 +84,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getInstallToolProtectionStatus()
     {
-        $enableInstallToolFile = PATH_site . EnableFileService::INSTALL_TOOL_ENABLE_FILE_PATH;
+        $enableInstallToolFile = Environment::getPublicPath() . '/' . EnableFileService::INSTALL_TOOL_ENABLE_FILE_PATH;
         $value = $GLOBALS['LANG']->getLL('status_disabled');
         $message = '';
         $severity = Status::OK;

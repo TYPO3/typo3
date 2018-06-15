@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Log\Logger;
@@ -206,8 +207,8 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate
 
         foreach ($fieldItems as $item) {
             $fileUid = null;
-            $sourcePath = PATH_site . $this->sourcePath . $item;
-            $targetDirectory = PATH_site . $fileadminDirectory . $this->targetPath;
+            $sourcePath = Environment::getPublicPath() . '/' . $this->sourcePath . $item;
+            $targetDirectory = Environment::getPublicPath() . '/' . $fileadminDirectory . $this->targetPath;
             $targetPath = $targetDirectory . PathUtility::basenameDuringBootstrap($item);
 
             // maybe the file was already moved, so check if the original file still exists

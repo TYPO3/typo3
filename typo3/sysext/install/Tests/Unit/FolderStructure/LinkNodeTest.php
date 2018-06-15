@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\LinkNode;
@@ -111,7 +112,7 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $this->assertInternalType('array', $node->getStatus());
     }
@@ -129,7 +130,7 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $node->expects($this->once())->method('isWindowsOs')->will($this->returnValue(true));
         $statusArray = $node->getStatus();
@@ -149,7 +150,7 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $node->expects($this->any())->method('isWindowsOs')->will($this->returnValue(false));
         $node->expects($this->once())->method('exists')->will($this->returnValue(false));
@@ -258,8 +259,8 @@ class LinkNodeTest extends UnitTestCase
     {
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
-        $target = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('linkTarget_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
+        $target = Environment::getVarPath() . '/tests/' . $this->getUniqueId('linkTarget_');
         touch($target);
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;
@@ -276,7 +277,7 @@ class LinkNodeTest extends UnitTestCase
     {
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('file_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
         touch($path);
         $this->testFilesToDelete[] = $path;
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
@@ -344,8 +345,8 @@ class LinkNodeTest extends UnitTestCase
      */
     public function isTargetCorrectReturnsTrueIfActualTargetIsIdenticalToSpecifiedTarget()
     {
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
-        $target = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('linkTarget_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
+        $target = Environment::getVarPath() . '/tests/' . $this->getUniqueId('linkTarget_');
         touch($target);
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;
@@ -371,8 +372,8 @@ class LinkNodeTest extends UnitTestCase
      */
     public function isTargetCorrectReturnsFalseIfActualTargetIsNotIdenticalToSpecifiedTarget()
     {
-        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
-        $target = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('linkTarget_');
+        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
+        $target = Environment::getVarPath() . '/tests/' . $this->getUniqueId('linkTarget_');
         touch($target);
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;

@@ -97,7 +97,7 @@ class CoreUpdateService
      */
     protected function discoverCurrentCoreSymlink()
     {
-        return PATH_site . 'typo3_src';
+        return Environment::getPublicPath() . '/typo3_src';
     }
 
     /**
@@ -166,7 +166,7 @@ class CoreUpdateService
         $folderStructureMessageQueue = $folderStructureFacade->getStatus();
         $folderStructureErrors = $folderStructureMessageQueue->getAllMessages(FlashMessage::ERROR);
         $folderStructureWarnings = $folderStructureMessageQueue->getAllMessages(FlashMessage::WARNING);
-        if (!empty($folderStructureErrors) || !empty($folderStructureWarnings) || !is_link(PATH_site . 'typo3_src')) {
+        if (!empty($folderStructureErrors) || !empty($folderStructureWarnings) || !is_link(Environment::getPublicPath() . '/typo3_src')) {
             $success = false;
             $this->messages->enqueue(new FlashMessage(
                 'To perform an update, the folder structure of this TYPO3 CMS instance must'
@@ -189,12 +189,12 @@ class CoreUpdateService
 
         if ($success) {
             // Explicit write check to document root
-            $file = PATH_site . StringUtility::getUniqueId('install-core-update-test-');
+            $file = Environment::getPublicPath() . '/' . StringUtility::getUniqueId('install-core-update-test-');
             $result = @touch($file);
             if (!$result) {
                 $success = false;
                 $this->messages->enqueue(new FlashMessage(
-                    'Could not write a file in path "' . PATH_site . '"!',
+                    'Could not write a file in path "' . Environment::getPublicPath() . '/"!',
                     'Automatic TYPO3 CMS core update not possible: No write access to document root',
                     FlashMessage::ERROR
                 ));
@@ -519,7 +519,7 @@ class CoreUpdateService
      */
     protected function getRelativePath($absolutePath)
     {
-        $sourcePath = explode(DIRECTORY_SEPARATOR, rtrim(PATH_site, DIRECTORY_SEPARATOR));
+        $sourcePath = explode(DIRECTORY_SEPARATOR, Environment::getPublicPath());
         $targetPath = explode(DIRECTORY_SEPARATOR, rtrim($absolutePath, DIRECTORY_SEPARATOR));
         while (count($sourcePath) && count($targetPath) && $sourcePath[0] === $targetPath[0]) {
             array_shift($sourcePath);

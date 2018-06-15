@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Install\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -34,13 +35,6 @@ class EnableFileService
      * @var string Maximum age of ENABLE_INSTALL_TOOL file before it gets removed (in seconds)
      */
     const INSTALL_TOOL_ENABLE_FILE_LIFETIME = 3600;
-
-    /**
-     * Path site property, needed for unit testing
-     *
-     * @var string
-     */
-    protected static $sitePath = PATH_site;
 
     /**
      * @return bool
@@ -92,7 +86,7 @@ class EnableFileService
         $result = true;
         $files = self::getFirstInstallFilePaths();
         foreach ($files as $file) {
-            $result = unlink(self::$sitePath . $file) && $result;
+            $result = unlink(Environment::getPublicPath() . '/' . $file) && $result;
         }
         return $result;
     }
@@ -181,7 +175,7 @@ class EnableFileService
      */
     protected static function getInstallToolEnableFilePath()
     {
-        return PATH_site . self::INSTALL_TOOL_ENABLE_FILE_PATH;
+        return Environment::getPublicPath() . '/' . self::INSTALL_TOOL_ENABLE_FILE_PATH;
     }
 
     /**
@@ -191,8 +185,8 @@ class EnableFileService
      */
     protected static function getFirstInstallFilePaths()
     {
-        $files = array_filter(scandir(self::$sitePath), function ($file) {
-            return @is_file(self::$sitePath . $file) && preg_match('~^' . self::FIRST_INSTALL_FILE_PATH . '.*~i', $file);
+        $files = array_filter(scandir(Environment::getPublicPath() . '/'), function ($file) {
+            return @is_file(Environment::getPublicPath() . '/' . $file) && preg_match('~^' . self::FIRST_INSTALL_FILE_PATH . '.*~i', $file);
         });
         return $files;
     }
