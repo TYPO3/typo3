@@ -451,7 +451,7 @@ class LoginController implements LoggerAwareInterface
     /**
      * Returns the uri of a relative reference, resolves the "EXT:" prefix
      * (way of referring to files inside extensions) and checks that the file is inside
-     * the PATH_site of the TYPO3 installation
+     * the project root of the TYPO3 installation
      *
      * @param string $filename The input filename/filepath to evaluate
      * @return string Returns the filename of $filename if valid, otherwise blank string.

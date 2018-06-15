@@ -1297,7 +1297,7 @@ class BackendUtility
      * @param string $field Field is pointing to the list of image files
      * @param string $backPath Back path prefix for image tag src="" field
      * @param string $thumbScript UNUSED since FAL
-     * @param string $uploaddir Optional: $uploaddir is the directory relative to PATH_site where the image files from the $field value is found (Is by default set to the entry in $GLOBALS['TCA'] for that field! so you don't have to!)
+     * @param string $uploaddir Optional: $uploaddir is the directory relative to Environment::getPublicPath() where the image files from the $field value is found (Is by default set to the entry in $GLOBALS['TCA'] for that field! so you don't have to!)
      * @param int $abs UNUSED
      * @param string $tparams Optional: $tparams is additional attributes for the image tags
      * @param int|string $size Optional: $size is [w]x[h] of the thumbnail. 64 is default.
@@ -3686,7 +3686,7 @@ class BackendUtility
      * Counting references to a record/file
      *
      * @param string $table Table name (or "_FILE" if its a file)
-     * @param string $ref Reference: If table, then int-uid, if _FILE, then file reference (relative to PATH_site)
+     * @param string $ref Reference: If table, then int-uid, if _FILE, then file reference (relative to Environment::getPublicPath())
      * @param string $msg Message with %s, eg. "There were %s records pointing to this file!
      * @param string|null $count Reference count
      * @return string Output string (or int count value if no msg string specified)
@@ -3707,7 +3707,7 @@ class BackendUtility
 
             // Look up the path:
             if ($table === '_FILE') {
-                if (!GeneralUtility::isFirstPartOfStr($ref, PATH_site)) {
+                if (!GeneralUtility::isFirstPartOfStr($ref, Environment::getPublicPath())) {
                     return '';
                 }
 

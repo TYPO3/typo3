@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
 
 /*
@@ -14,37 +15,32 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
  * The TYPO3 project - inspiring people to share!
  */
 
-/**
- * Testcase for class \TYPO3\CMS\Backend\Tree\TreeNode.
- */
-class TreeNodeTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
-{
-    //////////////////////
-    // Utility functions
-    //////////////////////
-    /**
-     * Returns the absolute fixtures path for this testcase.
-     *
-     * @return string the absolute fixtures path for this testcase, will not be empty
-     */
-    private function determineFixturesPath()
-    {
-        // We have to take the whole relative path as otherwise this test fails on Windows systems
-        return PATH_site . 'typo3/sysext/backend/Tests/Unit/Tree/Fixtures/';
-    }
+use TYPO3\CMS\Backend\Tree\TreeNode;
+use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
+use TYPO3\CMS\Backend\Tree\TreeRepresentationNode;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-    protected function setUpNodeTestData()
+/**
+ * Test case
+ */
+class TreeNodeTest extends UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function serializeFixture()
     {
-        $fixture = new \TYPO3\CMS\Backend\Tree\TreeNode();
+        $expected = trim(file_get_contents(__DIR__ . '/Fixtures/serialized.txt'));
+        $fixture = new TreeNode();
         $fixture->setId('Root');
-        $nodeCollection = new \TYPO3\CMS\Backend\Tree\TreeNodeCollection();
+        $nodeCollection = new TreeNodeCollection();
         for ($i = 0; $i < 10; ++$i) {
-            $node = new \TYPO3\CMS\Backend\Tree\TreeNode();
+            $node = new TreeNode();
             $node->setId($i);
             $node->setParentNode($fixture);
-            $subNodeCollection = new \TYPO3\CMS\Backend\Tree\TreeNodeCollection();
+            $subNodeCollection = new TreeNodeCollection();
             for ($j = 0; $j < 5; ++$j) {
-                $subNode = new \TYPO3\CMS\Backend\Tree\TreeRepresentationNode();
+                $subNode = new TreeRepresentationNode();
                 $subNode->setId($j);
                 $subNode->setLabel('SubTest');
                 $subNode->setType('Type');
@@ -58,19 +54,6 @@ class TreeNodeTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $nodeCollection->append($node);
         }
         $fixture->setChildNodes($nodeCollection);
-        return $fixture;
-    }
-
-    ///////////////
-    // Test cases
-    ///////////////
-    /**
-     * @test
-     */
-    public function serializeFixture()
-    {
-        $expected = trim(file_get_contents($this->determineFixturesPath() . 'serialized.txt'));
-        $fixture = $this->setUpNodeTestData();
         $serializedString = trim($fixture->serialize());
         $this->assertSame($expected, $serializedString);
     }
@@ -80,8 +63,8 @@ class TreeNodeTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function deserializeFixture()
     {
-        $source = trim(file_get_contents($this->determineFixturesPath() . 'serialized.txt'));
-        $node = new \TYPO3\CMS\Backend\Tree\TreeNode();
+        $source = trim(file_get_contents(__DIR__ . '/Fixtures/serialized.txt'));
+        $node = new TreeNode();
         $node->unserialize($source);
         $serializedString = $node->serialize();
         $this->assertSame($source, $serializedString);
@@ -92,9 +75,8 @@ class TreeNodeTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function compareNodes()
     {
-        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(['id' => '15']);
-        $otherNode = new \TYPO3\CMS\Backend\Tree\TreeNode(['id' => '5']);
-        $compareResult = $node->compareTo($otherNode);
+        $node = new TreeNode(['id' => '15']);
+        $otherNode = new TreeNode(['id' => '5']);
         $otherNode->setId('25');
         $compareResult = $node->compareTo($otherNode);
         $this->assertSame(-1, $compareResult);

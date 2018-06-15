@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -1229,24 +1230,24 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        mkdir(PATH_site . $directory);
-        $this->testFilesToDelete[] = PATH_site . $directory;
-        touch(PATH_site . $directory . 'anImage.gif');
-        touch(PATH_site . $directory . 'aFile.txt');
-        mkdir(PATH_site . $directory . '/subdir');
-        touch(PATH_site . $directory . '/subdir/anotherImage.gif');
+        mkdir(Environment::getPublicPath() . '/' . $directory);
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $directory;
+        touch(Environment::getPublicPath() . '/' . $directory . 'anImage.gif');
+        touch(Environment::getPublicPath() . '/' . $directory . 'aFile.txt');
+        mkdir(Environment::getPublicPath() . '/' . $directory . '/subdir');
+        touch(Environment::getPublicPath() . '/' . $directory . '/subdir/anotherImage.gif');
 
         $expectedItems = [
             0 => [
                 0 => 'anImage.gif',
                 1 => 'anImage.gif',
-                2 => PATH_site . $directory . 'anImage.gif',
+                2 => Environment::getPublicPath() . '/' . $directory . 'anImage.gif',
                 3 => null,
             ],
             1 => [
                 0 => 'subdir/anotherImage.gif',
                 1 => 'subdir/anotherImage.gif',
-                2 => PATH_site . $directory . 'subdir/anotherImage.gif',
+                2 => Environment::getPublicPath() . '/' . $directory . 'subdir/anotherImage.gif',
                 3 => null,
             ],
         ];
