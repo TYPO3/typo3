@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -74,7 +75,8 @@ class Application extends AbstractApplication
      */
     protected function checkIfEssentialConfigurationExists(): bool
     {
-        return file_exists($this->configurationManager->getLocalConfigurationFileLocation()) && file_exists(PATH_typo3conf . 'PackageStates.php');
+        return file_exists($this->configurationManager->getLocalConfigurationFileLocation())
+            && file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php');
     }
 
     /**

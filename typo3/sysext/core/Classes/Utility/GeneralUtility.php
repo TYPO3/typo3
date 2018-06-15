@@ -3440,16 +3440,16 @@ class GeneralUtility
             return str_replace($fileName, $language . '.' . $fileName, $fileRef);
         }
 
-        // Analyse file reference:
-        // Is system:
-        if (self::isFirstPartOfStr($fileRef, PATH_typo3 . 'sysext/')) {
-            $validatedPrefix = PATH_typo3 . 'sysext/';
-        } elseif (self::isFirstPartOfStr($fileRef, PATH_typo3 . 'ext/')) {
-            // Is global:
-            $validatedPrefix = PATH_typo3 . 'ext/';
-        } elseif (self::isFirstPartOfStr($fileRef, PATH_typo3conf . 'ext/')) {
-            // Is local:
-            $validatedPrefix = PATH_typo3conf . 'ext/';
+        // Analyse file reference
+        if (self::isFirstPartOfStr($fileRef, Environment::getFrameworkBasePath() . '/')) {
+            // Is system
+            $validatedPrefix = Environment::getFrameworkBasePath() . '/';
+        } elseif (self::isFirstPartOfStr($fileRef, Environment::getBackendPath() . '/ext/')) {
+            // Is global
+            $validatedPrefix = Environment::getBackendPath() . '/ext/';
+        } elseif (self::isFirstPartOfStr($fileRef, Environment::getExtensionsPath() . '/')) {
+            // Is local
+            $validatedPrefix = Environment::getExtensionsPath() . '/';
         } else {
             $validatedPrefix = '';
         }

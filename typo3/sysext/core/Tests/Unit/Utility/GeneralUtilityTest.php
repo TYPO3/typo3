@@ -2284,8 +2284,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getDirsReturnsArrayOfDirectoriesFromGivenDirectory()
     {
-        $path = PATH_typo3conf;
-        $directories = GeneralUtility::get_dirs($path);
+        $directories = GeneralUtility::get_dirs(Environment::getLegacyConfigPath() . '/');
         $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_ARRAY, $directories);
     }
 

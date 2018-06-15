@@ -375,7 +375,8 @@ class Bootstrap
             $configurationManager = new ConfigurationManager;
             static::$instance->setEarlyInstance(ConfigurationManager::class, $configurationManager);
         }
-        return file_exists($configurationManager->getLocalConfigurationFileLocation()) && file_exists(PATH_typo3conf . 'PackageStates.php');
+        return file_exists($configurationManager->getLocalConfigurationFileLocation())
+            && file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php');
     }
 
     /**

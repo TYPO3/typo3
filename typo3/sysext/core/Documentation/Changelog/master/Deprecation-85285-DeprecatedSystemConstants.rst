@@ -17,6 +17,12 @@ The following constants have been deprecated and should not be used any longer:
 * :php:`PATH_site`
   Use :php:`Environment::getPublicPath() . '/'` instead
 
+* :php:`PATH_typo3`
+  Use :php:`Environment::getPublicPath() . '/typo3/'` instead
+
+* :php:`PATH_typo3conf`
+  Use :php:`Environment::getPublicPath() . '/typo3conf'` instead
+
 
 Impact
 ======

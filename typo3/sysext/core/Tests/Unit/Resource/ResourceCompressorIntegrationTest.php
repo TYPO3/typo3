@@ -111,7 +111,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     {
         $testFile = Environment::getPublicPath() . '/typo3temp/var/transient/css_input_with_import.css';
         $this->testFilesToDelete[] = $testFile;
-        copy(PATH_typo3 . $this->fixtureDir . 'css_input_with_import.css', $testFile);
+        copy(Environment::getBackendPath() . '/' . $this->fixtureDir . 'css_input_with_import.css', $testFile);
         $files = [
             'sampleFile1' => [
                 'excludeFromConcatenation' => false,

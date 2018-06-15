@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -204,7 +205,7 @@ class LocalizationUtilityTest extends UnitTestCase
      */
     protected function getLanguageFilePath(string $extensionName): string
     {
-        return PATH_typo3 . 'sysext/' . $extensionName . '/Resources/Private/Language/locallang.xlf';
+        return Environment::getFrameworkBasePath() . '/' . $extensionName . '/Resources/Private/Language/locallang.xlf';
     }
 
     /**

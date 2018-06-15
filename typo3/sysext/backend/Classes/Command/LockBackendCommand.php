@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -72,6 +73,6 @@ class LockBackendCommand extends Command
      */
     protected function getLockFileName()
     {
-        return PATH_typo3conf . 'LOCK_BACKEND';
+        return Environment::getLegacyConfigPath() . '/LOCK_BACKEND';
     }
 }

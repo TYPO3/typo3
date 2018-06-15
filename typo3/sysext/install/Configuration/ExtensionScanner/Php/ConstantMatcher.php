@@ -71,4 +71,16 @@ return [
             'Deprecation-85285-DeprecatedSystemConstants.rst',
         ],
     ],
+    'PATH_typo3' => [
+        'restFiles' => [
+            'Feature-84153-IntroduceAGenericEnvironmentClass.rst',
+            'Deprecation-85285-DeprecatedSystemConstants.rst',
+        ],
+    ],
+    'PATH_typo3conf' => [
+        'restFiles' => [
+            'Feature-84153-IntroduceAGenericEnvironmentClass.rst',
+            'Deprecation-85285-DeprecatedSystemConstants.rst',
+        ],
+    ],
 ];

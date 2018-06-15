@@ -185,6 +185,69 @@ class Environment
     }
 
     /**
+     * Helper methods to easily find occurrences, however as these properties are not computed
+     * it is very possible that these methods will become obsolete in the near future.
+     */
+
+    /**
+     * Previously found under typo3conf/l10n/
+     * Please note that this might be gone at some point
+     *
+     * @return string
+     */
+    public static function getLabelsPath(): string
+    {
+        if (self::$publicPath === self::$projectPath) {
+            return self::getPublicPath() . '/typo3conf/l10n';
+        }
+        return self::getVarPath() . '/labels';
+    }
+
+    /**
+     * Previously known as PATH_typo3
+     * Please note that this might be gone at some point
+     *
+     * @return string
+     */
+    public static function getBackendPath(): string
+    {
+        return self::getPublicPath() . '/typo3';
+    }
+
+    /**
+     * Previously known as PATH_typo3 . 'sysext/'
+     * Please note that this might be gone at some point
+     *
+     * @return string
+     */
+    public static function getFrameworkBasePath(): string
+    {
+        return self::getPublicPath() . '/typo3/sysext';
+    }
+
+    /**
+     * Previously known as PATH_site . 'typo3conf/ext/'
+     * Please note that this might be gone at some point
+     *
+     * @return string
+     */
+    public static function getExtensionsPath(): string
+    {
+        return self::getPublicPath() . '/typo3conf/ext';
+    }
+
+    /**
+     * Previously known as PATH_typo3conf
+     * Please note that this might be gone at some point
+     *
+     * @return string
+     */
+    public static function getLegacyConfigPath(): string
+    {
+        return self::getPublicPath() . '/typo3conf';
+    }
+
+    /**
      * Whether this TYPO3 installation runs on windows
      *
      * @return bool

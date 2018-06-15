@@ -98,6 +98,11 @@ class SystemEnvironmentBuilder
      */
     protected static function defineBaseConstants()
     {
+        // Check one of the constants and return early if defined already
+        if (defined('TYPO3_version')) {
+            return;
+        }
+
         // This version, branch and copyright
         define('TYPO3_version', '9.4.0-dev');
         define('TYPO3_branch', '9.4');
@@ -198,13 +203,21 @@ class SystemEnvironmentBuilder
         }
         // Relative path from document root to typo3/ directory
         // Hardcoded to "typo3/"
-        define('TYPO3_mainDir', 'typo3/');
+        if (!defined('TYPO3_mainDir')) {
+            define('TYPO3_mainDir', 'typo3/');
+        }
         // Absolute path of the typo3 directory of the instance with trailing slash
         // Example "/var/www/instance-name/htdocs/typo3/"
-        define('PATH_typo3', PATH_site . TYPO3_mainDir);
+        if (!defined('PATH_typo3')) {
+            // @deprecated since v9, will be removed in v10
+            define('PATH_typo3', PATH_site . TYPO3_mainDir);
+        }
         // Absolute path to the typo3conf directory with trailing slash
         // Example "/var/www/instance-name/htdocs/typo3conf/"
-        define('PATH_typo3conf', PATH_site . 'typo3conf/');
+        if (!defined('PATH_typo3conf')) {
+            // @deprecated since v9, will be removed in v10
+            define('PATH_typo3conf', PATH_site . 'typo3conf/');
+        }
     }
 
     /**

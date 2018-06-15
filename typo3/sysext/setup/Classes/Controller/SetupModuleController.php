@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -668,7 +669,7 @@ class SetupModuleController
                     $localizedName = htmlspecialchars($name);
                 }
                 $localLabel = '  -  [' . htmlspecialchars($defaultName) . ']';
-                $available = is_dir(PATH_typo3conf . 'l10n/' . $locale);
+                $available = is_dir(Environment::getLegacyConfigPath() . '/l10n/' . $locale);
                 if ($available) {
                     $languageOptions[$defaultName] = '<option value="' . $locale . '"' . ($backendUser->uc['lang'] === $locale ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
                 }
@@ -678,7 +679,7 @@ class SetupModuleController
         $languageCode = '
             <select id="field_lang" name="data[lang]" class="form-control">' . implode('', $languageOptions) . '
             </select>';
-        if ($backendUser->uc['lang'] && !@is_dir(PATH_typo3conf . 'l10n/' . $backendUser->uc['lang'])) {
+        if ($backendUser->uc['lang'] && !@is_dir(Environment::getLegacyConfigPath() . '/l10n/' . $backendUser->uc['lang'])) {
             // TODO: The text constants have to be moved into language files
             $languageUnavailableWarning = 'The selected language "' . htmlspecialchars($language->getLL('lang_' . $backendUser->uc['lang'])) . '" is not available before the language files are installed.&nbsp;&nbsp;<br />&nbsp;&nbsp;' . ($backendUser->isAdmin() ? 'You can use the Language module to easily download new language files.' : 'Please ask your system administrator to do this.');
             $languageCode = '<br /><span class="label label-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $languageCode;

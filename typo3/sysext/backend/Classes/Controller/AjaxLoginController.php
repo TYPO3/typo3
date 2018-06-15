@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 
@@ -98,7 +99,7 @@ class AjaxLoginController
             'locked' => false
         ];
         $backendUser = $this->getBackendUser();
-        if (@is_file(PATH_typo3conf . 'LOCK_BACKEND')) {
+        if (@is_file(Environment::getLegacyConfigPath() . '/LOCK_BACKEND')) {
             $session['locked'] = true;
         } elseif (!isset($backendUser->user['uid'])) {
             $session['timed_out'] = true;

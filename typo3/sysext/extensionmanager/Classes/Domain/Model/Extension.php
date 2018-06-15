@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * Main extension model
  */
@@ -451,9 +453,9 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public static function returnInstallPaths()
     {
         $installPaths = [
-            'System' => PATH_typo3 . 'sysext/',
-            'Global' => PATH_typo3 . 'ext/',
-            'Local' => PATH_typo3conf . 'ext/'
+            'System' => Environment::getFrameworkBasePath() . '/',
+            'Global' => Environment::getBackendPath() . '/ext/',
+            'Local' => Environment::getExtensionsPath() . '/'
         ];
         return $installPaths;
     }
