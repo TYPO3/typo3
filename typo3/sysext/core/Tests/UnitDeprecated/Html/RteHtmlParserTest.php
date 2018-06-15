@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit_Deprecated\Html;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Html;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit_Deprecated\Html;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -27,18 +29,13 @@ class RteHtmlParserTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var \TYPO3\CMS\Core\Html\RteHtmlParser
+     * @var RteHtmlParser
      */
     protected $subject = null;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->subject = new \TYPO3\CMS\Core\Html\RteHtmlParser();
+        $this->subject = new RteHtmlParser();
         $this->subject->procOptions = [
             'allowTagsOutside' => 'hr, address',
             'overruleMode' => 'default'
@@ -48,7 +45,7 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * Data provider for linkWithAtSignCorrectlyTransformedOnWayToRTE
      */
-    public static function linkWithAtSignCorrectlyTransformedOnWayToRTEProvider()
+    public static function linkWithAtSignCorrectlyTransformedOnWayToRTEProvider(): array
     {
         return [
             'external url with @ sign' => [
@@ -65,8 +62,10 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider linkWithAtSignCorrectlyTransformedOnWayToRTEProvider
+     * @param $content
+     * @param $expectedResult
      */
-    public function linkWithAtSignCorrectlyTransformedOnWayToRTE($content, $expectedResult)
+    public function linkWithAtSignCorrectlyTransformedOnWayToRTE(string $content, string $expectedResult): void
     {
         $thisConfig = ['proc.' => $this->subject->procOptions];
         $this->assertEquals($expectedResult, $this->subject->RTE_transform($content, [], 'rte', $thisConfig));

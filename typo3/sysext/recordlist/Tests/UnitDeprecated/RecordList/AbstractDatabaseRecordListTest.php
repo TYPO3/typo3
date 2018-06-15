@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Recordlist\Tests\UnitDeprecated\RecordList;
 
 /*
@@ -17,26 +18,23 @@ namespace TYPO3\CMS\Recordlist\Tests\UnitDeprecated\RecordList;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class AbstractDatabaseRecordListTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractDatabaseRecordListTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @test
      * @dataProvider setTableDisplayOrderConvertsStringsDataProvider
      * @param array $input
      * @param array $expected
      */
-    public function setTableDisplayOrderConvertsStringInput(array $input, array $expected)
+    public function setTableDisplayOrderConvertsStringInput(array $input, array $expected): void
     {
-        /** @var AbstractDatabaseRecordList|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var AbstractDatabaseRecordList|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(AbstractDatabaseRecordList::class, ['dummy'], [], '', false);
         $subject->setTableDisplayOrder($input);
         $this->assertSame($expected, $subject->_get('tableDisplayOrder'));
@@ -45,7 +43,7 @@ class AbstractDatabaseRecordListTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @return array
      */
-    public function setTableDisplayOrderConvertsStringsDataProvider()
+    public function setTableDisplayOrderConvertsStringsDataProvider(): array
     {
         return [
             'no information at all' => [
@@ -96,7 +94,7 @@ class AbstractDatabaseRecordListTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function setTableDisplayOrderThrowsExceptionOnInvalidAfter()
+    public function setTableDisplayOrderThrowsExceptionOnInvalidAfter(): void
     {
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
@@ -113,7 +111,7 @@ class AbstractDatabaseRecordListTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function setTableDisplayOrderThrowsExceptionOnInvalidBefore()
+    public function setTableDisplayOrderThrowsExceptionOnInvalidBefore(): void
     {
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());

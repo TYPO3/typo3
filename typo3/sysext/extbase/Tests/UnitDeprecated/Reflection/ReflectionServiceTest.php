@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  */
 
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
@@ -24,13 +25,8 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
  * @link second test for reflection
  * @link second test for reflection with second value
  */
-class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ReflectionServiceTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @param array $foo The foo parameter
      * @return string

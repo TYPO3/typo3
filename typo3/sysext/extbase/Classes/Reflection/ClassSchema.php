@@ -574,7 +574,9 @@ class ClassSchema
      */
     public function getProperty($propertyName)
     {
-        return is_array($this->properties[$propertyName]) ? $this->properties[$propertyName] : [];
+        return isset($this->properties[$propertyName]) && is_array($this->properties[$propertyName])
+            ? $this->properties[$propertyName]
+            : [];
     }
 
     /**
