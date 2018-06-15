@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -169,7 +170,7 @@ If you want to get more detailed information, use the --verbose option.')
      *
      * @param array $excludedPaths list of paths to be excluded, can be uploads/pics/
      * @param string $customPaths list of paths to be checked instead of uploads/
-     * @return array an array of files (relative to PATH_site) that are not connected
+     * @return array an array of files (relative to Environment::getPublicPath()) that are not connected
      */
     protected function findLostFiles($excludedPaths = [], $customPaths = ''): array
     {
@@ -178,19 +179,19 @@ If you want to get more detailed information, use the --verbose option.')
         // Get all files
         $files = [];
         if (!empty($customPaths)) {
-            $customPaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $customPaths, true);
+            $customPaths = GeneralUtility::trimExplode(',', $customPaths, true);
             foreach ($customPaths as $customPath) {
-                if (false === realpath(PATH_site . $customPath)
-                    || !GeneralUtility::isFirstPartOfStr(realpath(PATH_site . $customPath), realpath(PATH_site))) {
+                if (false === realpath(Environment::getPublicPath() . '/' . $customPath)
+                    || !GeneralUtility::isFirstPartOfStr(realpath(Environment::getPublicPath() . '/' . $customPath), realpath(Environment::getPublicPath()))) {
                     throw new \Exception('The path: "' . $customPath . '" is invalid', 1450086736);
                 }
-                $files = GeneralUtility::getAllFilesAndFoldersInPath($files, PATH_site . $customPath);
+                $files = GeneralUtility::getAllFilesAndFoldersInPath($files, Environment::getPublicPath() . '/' . $customPath);
             }
         } else {
-            $files = GeneralUtility::getAllFilesAndFoldersInPath($files, PATH_site . 'uploads/');
+            $files = GeneralUtility::getAllFilesAndFoldersInPath($files, Environment::getPublicPath() . '/uploads/');
         }
 
-        $files = GeneralUtility::removePrefixPathFromList($files, PATH_site);
+        $files = GeneralUtility::removePrefixPathFromList($files, Environment::getPublicPath() . '/');
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');

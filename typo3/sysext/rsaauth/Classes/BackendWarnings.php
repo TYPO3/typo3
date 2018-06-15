@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Rsaauth;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -39,7 +40,7 @@ class BackendWarnings
             if ($path == '') {
                 // Path is empty
                 $warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/Resources/Private/Language/locallang.xlf:hook_empty_directory');
-            } elseif (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($path)) {
+            } elseif (!GeneralUtility::isAbsPath($path)) {
                 // Path is not absolute
                 $warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/Resources/Private/Language/locallang.xlf:hook_directory_not_absolute');
             } elseif (!@is_dir($path)) {
@@ -48,7 +49,7 @@ class BackendWarnings
             } elseif (!@is_writable($path)) {
                 // Directory is not writable
                 $warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/Resources/Private/Language/locallang.xlf:hook_directory_not_writable');
-            } elseif (substr($path, 0, strlen(PATH_site)) == PATH_site) {
+            } elseif (substr($path, 0, strlen(Environment::getPublicPath())) === Environment::getPublicPath()) {
                 // Directory is inside the site root
                 $warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/Resources/Private/Language/locallang.xlf:hook_directory_inside_siteroot');
             }

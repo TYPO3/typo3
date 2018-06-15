@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
@@ -195,7 +196,7 @@ If you want to get more detailed information, use the --verbose option.')
     /**
      * Find lost files in uploads/ folder
      *
-     * @return array an array of files (relative to PATH_site) that are not connected
+     * @return array an array of files (relative to Environment::getPublicPath()) that are not connected
      */
     protected function findAllReferencedRteImagesWithOriginals(): array
     {
@@ -234,9 +235,9 @@ If you want to get more detailed information, use the --verbose option.')
                     $original = 'RTEmagicP_' . preg_replace('/\\.[[:alnum:]]+$/', '', substr($filename, 10));
                     $original = substr($file, 0, -strlen($filename)) . $original;
                     $allRteImagesInUse[$file] = [
-                        'exists' => @is_file(PATH_site . $file),
+                        'exists' => @is_file(Environment::getPublicPath() . '/' . $file),
                         'original' => $original,
-                        'original_exists' => @is_file(PATH_site . $original),
+                        'original_exists' => @is_file(Environment::getPublicPath() . '/' . $original),
                         'count' => 0,
                         'softReferences' => []
                     ];
@@ -254,7 +255,7 @@ If you want to get more detailed information, use the --verbose option.')
      * Find all RTE files in uploads/ folder
      *
      * @param string $folder the name of the folder to start from
-     * @return array an array of files (relative to PATH_site) that are not connected
+     * @return array an array of files (relative to Environment::getPublicPath()) that are not connected
      */
     protected function findAllRteFilesInDirectory($folder = 'uploads/'): array
     {
@@ -262,8 +263,8 @@ If you want to get more detailed information, use the --verbose option.')
 
         // Get all files
         $files = [];
-        $files = GeneralUtility::getAllFilesAndFoldersInPath($files, PATH_site . $folder);
-        $files = GeneralUtility::removePrefixPathFromList($files, PATH_site);
+        $files = GeneralUtility::getAllFilesAndFoldersInPath($files, Environment::getPublicPath() . '/' . $folder);
+        $files = GeneralUtility::removePrefixPathFromList($files, Environment::getPublicPath() . '/');
 
         // Traverse files
         foreach ($files as $key => $value) {
@@ -328,9 +329,9 @@ If you want to get more detailed information, use the --verbose option.')
                     $dirPrefix = PathUtility::dirnameDuringBootstrap($fileName) . '/';
                     $rteOrigName = PathUtility::basenameDuringBootstrap($fileInfo['original']);
                     // If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
-                    if ($rteOrigName && strpos($dirPrefix, 'uploads/') === 0 && @is_dir(PATH_site . $dirPrefix)) {
+                    if ($rteOrigName && strpos($dirPrefix, 'uploads/') === 0 && @is_dir(Environment::getPublicPath() . '/' . $dirPrefix)) {
                         // From the "original" RTE filename, produce a new "original" destination filename which is unused.
-                        $origDestName = $fileProcObj->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
+                        $origDestName = $fileProcObj->getUniqueName($rteOrigName, Environment::getPublicPath() . '/' . $dirPrefix);
                         // Create copy file name
                         $pI = pathinfo($fileName);
                         $copyDestName = PathUtility::dirnameDuringBootstrap($origDestName) . '/RTEmagicC_' . substr(PathUtility::basenameDuringBootstrap($origDestName), 10) . '.' . $pI['extension'];
@@ -338,8 +339,8 @@ If you want to get more detailed information, use the --verbose option.')
                             $io->writeln('Copying file ' . PathUtility::basenameDuringBootstrap($fileName) . ' for record ' . $recordID . ' to ' . PathUtility::basenameDuringBootstrap($copyDestName));
                             if (!$dryRun) {
                                 // Making copies
-                                GeneralUtility::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);
-                                GeneralUtility::upload_copy_move(PATH_site . $fileName, $copyDestName);
+                                GeneralUtility::upload_copy_move(Environment::getPublicPath() . '/' . $fileInfo['original'], $origDestName);
+                                GeneralUtility::upload_copy_move(Environment::getPublicPath() . '/' . $fileName, $copyDestName);
                                 clearstatcache();
                                 if (@is_file($copyDestName)) {
                                     $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);

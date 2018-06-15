@@ -304,7 +304,7 @@
 				<source>Search all filenames for pattern</source>
 			</trans-unit>
 			<trans-unit id="filesearch_description">
-				<source>Will search recursively for filenames in the PATH_site (subdirs to the website path) matching a certain regex pattern.</source>
+				<source>Will search recursively for filenames inside sub directories of the public web folder (PublicPath) matching a certain regex pattern.</source>
 			</trans-unit>
 			<trans-unit id="refindex">
 				<source>Check and update global reference index</source>

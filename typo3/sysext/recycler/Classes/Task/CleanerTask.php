@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Recycler\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -210,7 +211,7 @@ class CleanerTask extends AbstractTask
 
         while ($row = $result->fetch()) {
             foreach ($fieldList as $fieldName) {
-                $uploadDir = PATH_site . $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['uploadfolder'] . '/';
+                $uploadDir = Environment::getPublicPath() . '/' . $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['uploadfolder'] . '/';
                 $fileList = GeneralUtility::trimExplode(',', $row[$fieldName]);
                 foreach ($fileList as $fileName) {
                     @unlink($uploadDir . $fileName);
