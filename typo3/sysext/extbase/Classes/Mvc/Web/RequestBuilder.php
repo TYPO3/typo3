@@ -140,7 +140,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         $this->defaultControllerName = (string)current(array_keys($configuration['controllerConfiguration']));
         $this->allowedControllerActions = [];
         foreach ($configuration['controllerConfiguration'] as $controllerName => $controllerActions) {
-            $this->allowedControllerActions[$controllerName] = $controllerActions['actions'];
+            $this->allowedControllerActions[$controllerName] = $controllerActions['actions'] ?? null;
         }
         if (!empty($configuration['format'])) {
             $this->defaultFormat = $configuration['format'];

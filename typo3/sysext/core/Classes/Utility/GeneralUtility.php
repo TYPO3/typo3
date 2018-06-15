@@ -2670,14 +2670,16 @@ class GeneralUtility
                     // This is for URL rewriters that store the original URI in a server variable (eg ISAPI_Rewriter for IIS: HTTP_X_REWRITE_URL)
                     list($v, $n) = explode('|', $GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']);
                     $retVal = $GLOBALS[$v][$n];
-                } elseif (!$_SERVER['REQUEST_URI']) {
+                } elseif (empty($_SERVER['REQUEST_URI'])) {
                     // This is for ISS/CGI which does not have the REQUEST_URI available.
-                    $retVal = '/' . ltrim(self::getIndpEnv('SCRIPT_NAME'), '/') . ($_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '');
+                    $retVal = '/' . ltrim(self::getIndpEnv('SCRIPT_NAME'), '/') . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
                 } else {
                     $retVal = '/' . ltrim($_SERVER['REQUEST_URI'], '/');
                 }
                 // Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
-                if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+                if (isset($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])
+                    && self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])
+                ) {
                     if (self::getIndpEnv('TYPO3_SSL') && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
                         $retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL'] . $retVal;
                     } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix']) {

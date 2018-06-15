@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web;
 
 /*
@@ -14,27 +16,29 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RequestBuilderTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var RequestBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $requestBuilder;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $mockConfigurationManager;
 
@@ -44,28 +48,31 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $configuration;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $mockObjectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\ExtensionService|\PHPUnit_Framework_MockObject_MockObject
+     * @var ExtensionService|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $mockExtensionService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\EnvironmentService|\PHPUnit_Framework_MockObject_MockObject
+     * @var EnvironmentService|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $mockEnvironmentService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Request|\PHPUnit_Framework_MockObject_MockObject
+     * @var Request|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $mockRequest;
 
-    protected function setUp()
+    /**
+     * Set up
+     */
+    protected function setUp(): void
     {
-        $this->requestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::class, ['dummy']);
+        $this->requestBuilder = $this->getAccessibleMock(RequestBuilder::class, ['dummy']);
         $this->configuration = [
             'userFunc' => 'Tx_Extbase_Dispatcher->dispatch',
             'pluginName' => 'Pi1',
@@ -84,22 +91,22 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ]
             ]
         ];
-        $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
-        $this->mockRequest = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
-        $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
-        $this->mockExtensionService = $this->createMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class);
-        $this->mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
+        $this->mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
+        $this->mockRequest = $this->createMock(Request::class);
+        $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
+        $this->mockExtensionService = $this->createMock(ExtensionService::class);
+        $this->mockEnvironmentService = $this->getMockBuilder(EnvironmentService::class)
             ->setMethods(['getServerRequestMethod'])
             ->getMock();
     }
 
     /**
      */
-    protected function injectDependencies()
+    protected function injectDependencies(): void
     {
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
-        $this->mockObjectManager->expects($this->any())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Web\Request::class)->will($this->returnValue($this->mockRequest));
+        $this->mockObjectManager->expects($this->any())->method('get')->with(Request::class)->will($this->returnValue($this->mockRequest));
         $this->requestBuilder->_set('objectManager', $this->mockObjectManager);
         $pluginNamespace = 'tx_' . strtolower($this->configuration['extensionName'] . '_' . $this->configuration['pluginName']);
         $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue($pluginNamespace));
@@ -111,7 +118,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildReturnsAWebRequestObject()
+    public function buildReturnsAWebRequestObject(): void
     {
         $this->injectDependencies();
         $request = $this->requestBuilder->build();
@@ -121,7 +128,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsRequestPluginName()
+    public function buildSetsRequestPluginName(): void
     {
         $this->injectDependencies();
         $this->mockRequest->expects($this->once())->method('setPluginName')->with('Pi1');
@@ -131,7 +138,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsRequestControllerExtensionName()
+    public function buildSetsRequestControllerExtensionName(): void
     {
         $this->injectDependencies();
         $this->mockRequest->expects($this->once())->method('setControllerExtensionName')->with('MyExtension');
@@ -141,7 +148,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsRequestControllerName()
+    public function buildSetsRequestControllerName(): void
     {
         $this->injectDependencies();
         $this->mockRequest->expects($this->once())->method('setControllerName')->with('TheFirstController');
@@ -151,7 +158,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsRequestControllerActionName()
+    public function buildSetsRequestControllerActionName(): void
     {
         $this->injectDependencies();
         $this->mockRequest->expects($this->once())->method('setControllerActionName')->with('show');
@@ -161,7 +168,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsRequestRequestUri()
+    public function buildSetsRequestRequestUri(): void
     {
         $this->injectDependencies();
         $expectedRequestUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
@@ -172,7 +179,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsRequestBaseUri()
+    public function buildSetsRequestBaseUri(): void
     {
         $this->injectDependencies();
         $expectedBaseUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
@@ -183,11 +190,11 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsRequestMethod()
+    public function buildSetsRequestMethod(): void
     {
         $this->injectDependencies();
         $expectedMethod = 'SomeRequestMethod';
-        $mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
+        $mockEnvironmentService = $this->getMockBuilder(EnvironmentService::class)
             ->setMethods(['getServerRequestMethod'])
             ->getMock();
         $mockEnvironmentService->expects($this->once())->method('getServerRequestMethod')->will($this->returnValue($expectedMethod));
@@ -199,12 +206,12 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsVendorNameIfConfigured()
+    public function buildSetsVendorNameIfConfigured(): void
     {
         $this->injectDependencies();
         $expectedVendor = 'Vendor';
         $this->configuration['vendorName'] = $expectedVendor;
-        $mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $mockConfigurationManager);
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
@@ -215,13 +222,13 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildDoesNotSetVendorNameIfNotConfiguredInSecondRequest()
+    public function buildDoesNotSetVendorNameIfNotConfiguredInSecondRequest(): void
     {
         $this->injectDependencies();
         $expectedVendor = 'Vendor';
         $this->configuration['vendorName'] = $expectedVendor;
 
-        $mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $mockConfigurationManager);
         $this->mockRequest->expects($this->once())->method('setControllerVendorName')->with($expectedVendor);
@@ -229,7 +236,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->requestBuilder->build();
 
         unset($this->configuration['vendorName']);
-        $mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $mockConfigurationManager);
 
@@ -240,12 +247,12 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildThrowsExceptionIfExtensionNameIsNotConfigured()
+    public function buildThrowsExceptionIfExtensionNameIsNotConfigured(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1289843275);
         unset($this->configuration['extensionName']);
-        $mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $mockConfigurationManager);
         $this->requestBuilder->build();
@@ -254,12 +261,12 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildThrowsExceptionIfPluginNameIsNotConfigured()
+    public function buildThrowsExceptionIfPluginNameIsNotConfigured(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1289843277);
         unset($this->configuration['pluginName']);
-        $mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $mockConfigurationManager);
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
@@ -269,7 +276,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildThrowsExceptionIfControllerConfigurationIsEmptyOrNotSet()
+    public function buildThrowsExceptionIfControllerConfigurationIsEmptyOrNotSet(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
@@ -283,7 +290,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildThrowsExceptionIfControllerConfigurationHasNoDefaultActionDefined()
+    public function buildThrowsExceptionIfControllerConfigurationHasNoDefaultActionDefined(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1295479651);
@@ -297,7 +304,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildThrowsExceptionIfNoDefaultControllerCanBeResolved()
+    public function buildThrowsExceptionIfNoDefaultControllerCanBeResolved(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
@@ -315,7 +322,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsParametersFromGetAndPostVariables()
+    public function buildSetsParametersFromGetAndPostVariables(): void
     {
         $this->configuration['extensionName'] = 'SomeExtensionName';
         $this->configuration['pluginName'] = 'SomePluginName';
@@ -343,14 +350,17 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ]
         ];
         $this->mockRequest->expects($this->at(8))->method('setArgument')->with('parameter1', 'value1');
-        $this->mockRequest->expects($this->at(9))->method('setArgument')->with('parameter2', ['parameter3' => 'value3', 'parameter4' => 'value4']);
+        $this->mockRequest->expects($this->at(9))->method('setArgument')->with(
+            'parameter2',
+            ['parameter3' => 'value3', 'parameter4' => 'value4']
+        );
         $this->requestBuilder->build();
     }
 
     /**
      * @test
      */
-    public function buildSetsFormatFromGetAndPostVariables()
+    public function buildSetsFormatFromGetAndPostVariables(): void
     {
         $this->configuration['extensionName'] = 'SomeExtensionName';
         $this->configuration['pluginName'] = 'SomePluginName';
@@ -372,7 +382,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildCorrectlySetsAllowedControllerActions()
+    public function buildCorrectlySetsAllowedControllerActions(): void
     {
         $this->injectDependencies();
         $expectedResult = [
@@ -405,7 +415,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildThrowsExceptionIfDefaultControllerCantBeDetermined()
+    public function buildThrowsExceptionIfDefaultControllerCantBeDetermined(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
@@ -420,7 +430,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsDefaultControllerIfNoControllerIsSpecified()
+    public function buildSetsDefaultControllerIfNoControllerIsSpecified(): void
     {
         $this->injectDependencies();
         $_GET = [
@@ -435,7 +445,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildCorrectlySetsSpecifiedControllerNameIfItsAllowedForTheCurrentPlugin()
+    public function buildCorrectlySetsSpecifiedControllerNameIfItsAllowedForTheCurrentPlugin(): void
     {
         $this->injectDependencies();
         $_GET = [
@@ -450,7 +460,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildThrowsInvalidControllerNameExceptionIfSpecifiedControllerIsNotAllowed()
+    public function buildThrowsInvalidControllerNameExceptionIfSpecifiedControllerIsNotAllowed(): void
     {
         $this->expectException(InvalidControllerNameException::class);
         $this->expectExceptionCode(1313855173);
@@ -469,7 +479,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildThrowsPageNotFoundExceptionIfEnabledAndSpecifiedControllerIsNotAllowed()
+    public function buildThrowsPageNotFoundExceptionIfEnabledAndSpecifiedControllerIsNotAllowed(): void
     {
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1313857897);
@@ -489,7 +499,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsDefaultControllerNameIfSpecifiedControllerIsNotAllowedAndCallDefaultActionIfActionCantBeResolvedIsSet()
+    public function buildSetsDefaultControllerNameIfSpecifiedControllerIsNotAllowedAndCallDefaultActionIfActionCantBeResolvedIsSet(): void
     {
         $this->configuration['mvc']['callDefaultActionIfActionCantBeResolved'] = 1;
         $this->injectDependencies();
@@ -506,7 +516,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildThrowsExceptionIfDefaultActionCantBeDetermined()
+    public function buildThrowsExceptionIfDefaultActionCantBeDetermined(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
@@ -521,7 +531,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsDefaultActionOfTheCurrentControllerIfNoActionIsSpecified()
+    public function buildSetsDefaultActionOfTheCurrentControllerIfNoActionIsSpecified(): void
     {
         $this->injectDependencies();
         $_GET = [
@@ -536,7 +546,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildCorrectlySetsSpecifiedActionNameForTheDefaultControllerIfItsAllowedForTheCurrentPlugin()
+    public function buildCorrectlySetsSpecifiedActionNameForTheDefaultControllerIfItsAllowedForTheCurrentPlugin(): void
     {
         $this->injectDependencies();
         $_GET = [
@@ -551,7 +561,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildCorrectlySetsSpecifiedActionNameForTheSpecifiedControllerIfItsAllowedForTheCurrentPlugin()
+    public function buildCorrectlySetsSpecifiedActionNameForTheSpecifiedControllerIfItsAllowedForTheCurrentPlugin(): void
     {
         $this->injectDependencies();
         $_GET = [
@@ -567,7 +577,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildThrowsInvalidActionNameExceptionIfSpecifiedActionIsNotAllowed()
+    public function buildThrowsInvalidActionNameExceptionIfSpecifiedActionIsNotAllowed(): void
     {
         $this->expectException(InvalidActionNameException::class);
         $this->expectExceptionCode(1313855175);
@@ -586,7 +596,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildThrowsPageNotFoundExceptionIfEnabledAndSpecifiedActionIsNotAllowed()
+    public function buildThrowsPageNotFoundExceptionIfEnabledAndSpecifiedActionIsNotAllowed(): void
     {
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1313857898);
@@ -606,7 +616,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function buildSetsDefaultActionNameIfSpecifiedActionIsNotAllowedAndCallDefaultActionIfActionCantBeResolvedIsSet()
+    public function buildSetsDefaultActionNameIfSpecifiedActionIsNotAllowedAndCallDefaultActionIfActionCantBeResolvedIsSet(): void
     {
         $this->configuration['mvc']['callDefaultActionIfActionCantBeResolved'] = 1;
         $this->injectDependencies();
@@ -626,7 +636,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @test
      * @see TYPO3\Flow\Tests\Unit\Utility\EnvironmentTest
      */
-    public function untangleFilesArrayTransformsTheFilesSuperglobalIntoAManageableForm()
+    public function untangleFilesArrayTransformsTheFilesSuperglobalIntoAManageableForm(): void
     {
         $convolutedFiles = [
             'a0' => [
@@ -827,7 +837,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                         ]
                     ]
                 ]
-            ]     ,
+            ],
             'error' => [
                 'name' => 'error_file.txt',
                 'type' => 'text/plain',
@@ -836,7 +846,7 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'size' => 120
             ]
         ];
-        $requestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::class, ['dummy'], [], '', false);
+        $requestBuilder = $this->getAccessibleMock(RequestBuilder::class, ['dummy'], [], '', false);
         $result = $requestBuilder->_call('untangleFilesArray', $convolutedFiles);
         $this->assertSame($untangledFiles, $result);
     }
