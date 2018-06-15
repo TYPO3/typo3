@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch;
 
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -802,7 +803,7 @@ class Indexer
                 if (GeneralUtility::isAllowedAbsPath($linkSource)) {
                     $localFile = $linkSource;
                 } else {
-                    $localFile = GeneralUtility::getFileAbsFileName(PATH_site . $linkSource);
+                    $localFile = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $linkSource);
                 }
                 if ($localFile && @is_file($localFile)) {
                     // Index local file:
@@ -1013,7 +1014,7 @@ class Indexer
         $baseURLLength = strlen($baseURL);
         if (substr($sourcePath, 0, $baseURLLength) == $baseURL) {
             $sourcePath = substr($sourcePath, $baseURLLength);
-            $localPath = PATH_site . $sourcePath;
+            $localPath = Environment::getPublicPath() . '/' . $sourcePath;
             if (!self::isAllowedLocalFile($localPath)) {
                 $localPath = '';
             }
@@ -1036,7 +1037,7 @@ class Indexer
             $absRefPrefixLength = strlen($absRefPrefix);
             if ($absRefPrefixLength > 0 && substr($sourcePath, 0, $absRefPrefixLength) == $absRefPrefix) {
                 $sourcePath = substr($sourcePath, $absRefPrefixLength);
-                $localPath = PATH_site . $sourcePath;
+                $localPath = Environment::getPublicPath() . '/' . $sourcePath;
                 if (!self::isAllowedLocalFile($localPath)) {
                     $localPath = '';
                 }
@@ -1057,7 +1058,7 @@ class Indexer
         $localPath = '';
         if ($sourcePath[0] === '/') {
             $sourcePath = substr($sourcePath, 1);
-            $localPath = PATH_site . $sourcePath;
+            $localPath = Environment::getPublicPath() . '/' . $sourcePath;
             if (!self::isAllowedLocalFile($localPath)) {
                 $localPath = '';
             }
@@ -1075,7 +1076,7 @@ class Indexer
     {
         $localPath = '';
         if (self::isRelativeURL($sourcePath)) {
-            $localPath = PATH_site . $sourcePath;
+            $localPath = Environment::getPublicPath() . '/' . $sourcePath;
             if (!self::isAllowedLocalFile($localPath)) {
                 $localPath = '';
             }
@@ -1104,7 +1105,7 @@ class Indexer
     protected static function isAllowedLocalFile($filePath)
     {
         $filePath = GeneralUtility::resolveBackPath($filePath);
-        $insideWebPath = substr($filePath, 0, strlen(PATH_site)) == PATH_site;
+        $insideWebPath = substr($filePath, 0, strlen(Environment::getPublicPath())) === Environment::getPublicPath();
         $isFile = is_file($filePath);
         return $insideWebPath && $isFile;
     }
@@ -1115,9 +1116,9 @@ class Indexer
      *
      ******************************************/
     /**
-     * Indexing a regular document given as $file (relative to PATH_site, local file)
+     * Indexing a regular document given as $file (relative to public web path, local file)
      *
-     * @param string $file Relative Filename, relative to PATH_site. It can also be an absolute path as long as it is inside the lockRootPath (validated with \TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()). Finally, if $contentTmpFile is set, this value can be anything, most likely a URL
+     * @param string $file Relative Filename, relative to public web path. It can also be an absolute path as long as it is inside the lockRootPath (validated with \TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()). Finally, if $contentTmpFile is set, this value can be anything, most likely a URL
      * @param bool $force If set, indexing is forced (despite content hashes, mtime etc).
      * @param string $contentTmpFile Temporary file with the content to read it from (instead of $file). Used when the $file is a URL.
      * @param string $altExtension File extension for temporary file.
@@ -1130,8 +1131,8 @@ class Indexer
         // Create abs-path:
         if (!$contentTmpFile) {
             if (!GeneralUtility::isAbsPath($file)) {
-                // Relative, prepend PATH_site:
-                $absFile = GeneralUtility::getFileAbsFileName(PATH_site . $file);
+                // Relative, prepend public web path:
+                $absFile = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $file);
             } else {
                 // Absolute, pass-through:
                 $absFile = $file;

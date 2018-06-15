@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -359,7 +360,7 @@ class CrawlerHook
                         }
                     }
                 }
-                $files = GeneralUtility::removePrefixPathFromList($files, PATH_site);
+                $files = GeneralUtility::removePrefixPathFromList($files, Environment::getPublicPath() . '/');
                 // traverse the items and create log entries:
                 foreach ($files as $path) {
                     $this->instanceCounter++;

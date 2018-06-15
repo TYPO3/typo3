@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -50,7 +51,7 @@ class IndexerTest extends UnitTestCase
      */
     public function extractHyperLinksReturnsCorrectFileUsingT3Vars()
     {
-        $temporaryFileName = tempnam(PATH_site . 'typo3temp/var/tests/', 't3unit-');
+        $temporaryFileName = tempnam(Environment::getVarPath() . '/tests/', 't3unit-');
         $this->testFilesToDelete[] = $temporaryFileName;
         $html = 'test <a href="testfile">test</a> test';
         $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] = [
@@ -65,14 +66,14 @@ class IndexerTest extends UnitTestCase
     /**
      * @test
      */
-    public function extractHyperLinksRecurnsCorrectPathWithBaseUrl()
+    public function extractHyperLinksReturnsCorrectPathWithBaseUrl()
     {
         $baseURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         $html = 'test <a href="' . $baseURL . 'index.php">test</a> test';
         $subject = new Indexer();
         $result = $subject->extractHyperLinks($html);
         $this->assertEquals(1, count($result));
-        $this->assertEquals(PATH_site . 'index.php', $result[0]['localPath']);
+        $this->assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 
     /**
@@ -84,7 +85,7 @@ class IndexerTest extends UnitTestCase
         $subject = new Indexer();
         $result = $subject->extractHyperLinks($html);
         $this->assertEquals(1, count($result));
-        $this->assertEquals(PATH_site . 'index.php', $result[0]['localPath']);
+        $this->assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 
     /**
@@ -92,12 +93,11 @@ class IndexerTest extends UnitTestCase
      */
     public function extractHyperLinksFindsCorrectPathForPathWithinTypo3Directory()
     {
-        $path = substr(PATH_typo3, strlen(PATH_site) - 1);
-        $html = 'test <a href="' . $path . 'index.php">test</a> test';
+        $html = 'test <a href="typo3/index.php">test</a> test';
         $subject = new Indexer();
         $result = $subject->extractHyperLinks($html);
         $this->assertEquals(1, count($result));
-        $this->assertEquals(PATH_typo3 . 'index.php', $result[0]['localPath']);
+        $this->assertEquals(Environment::getPublicPath() . '/typo3/index.php', $result[0]['localPath']);
     }
 
     /**
@@ -117,7 +117,7 @@ class IndexerTest extends UnitTestCase
         $subject = new Indexer();
         $result = $subject->extractHyperLinks($html);
         $this->assertEquals(1, count($result));
-        $this->assertEquals(PATH_site . 'index.php', $result[0]['localPath']);
+        $this->assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 
     /**
