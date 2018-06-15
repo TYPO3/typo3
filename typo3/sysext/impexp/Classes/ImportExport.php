@@ -759,7 +759,7 @@ abstract class ImportExport
                     }
                 }
                 // Check if file exists:
-                if (file_exists(PATH_site . $fI['relFileName'])) {
+                if (file_exists(Environment::getPublicPath() . '/' . $fI['relFileName'])) {
                     if ($this->update) {
                         $pInfo['updatePath'] .= 'File exists.';
                     } else {
@@ -769,7 +769,7 @@ abstract class ImportExport
                 // Check extension:
                 $fileProcObj = $this->getFileProcObj();
                 if ($fileProcObj->actionPerms['addFile']) {
-                    $testFI = GeneralUtility::split_fileref(PATH_site . $fI['relFileName']);
+                    $testFI = GeneralUtility::split_fileref(Environment::getPublicPath() . '/' . $fI['relFileName']);
                     if (!$this->allowPHPScripts && !$fileProcObj->checkIfAllowed($testFI['fileext'], $testFI['path'], $testFI['file'])) {
                         $pInfo['msg'] .= 'File extension was not allowed!';
                     }
@@ -916,16 +916,16 @@ abstract class ImportExport
     }
 
     /**
-     * Verifies that the input path (relative to PATH_site) is found in the backend users filemounts.
+     * Verifies that the input path relative to public web path is found in the backend users filemounts.
      * If it doesn't it will try to find another relative filemount for the user and return an alternative path prefix for the file.
      *
-     * @param string $dirPrefix Path relative to PATH_site
+     * @param string $dirPrefix Path relative to public web path
      * @param bool $noAlternative If set, Do not look for alternative path! Just return FALSE
      * @return string|bool If a path is available that will be returned, otherwise FALSE.
      */
     public function verifyFolderAccess($dirPrefix, $noAlternative = false)
     {
-        // Check the absolute path for PATH_site, if the user has access - no problem
+        // Check the absolute path for public web path, if the user has access - no problem
         try {
             ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($dirPrefix);
             return $dirPrefix;

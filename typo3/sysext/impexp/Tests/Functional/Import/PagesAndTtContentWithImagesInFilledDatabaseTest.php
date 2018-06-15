@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
@@ -59,13 +60,13 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
         );
         $subject->importData(0);
 
-        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
-        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2_01.jpg';
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg';
 
         $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithDifferentImageToExistingData.csv');
 
-        $this->assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
-        $this->assertFileEquals(__DIR__ . '/../Fixtures/FileAssertions/typo3_image2_01.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2_01.jpg');
+        $this->assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
+        $this->assertFileEquals(__DIR__ . '/../Fixtures/FileAssertions/typo3_image2_01.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg');
     }
 
     /**
@@ -90,11 +91,11 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
         );
         $subject->importData(0);
 
-        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
 
         $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithSameImageToExistingData.csv');
 
-        $this->assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
+        $this->assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
     }
 
     /**
@@ -138,9 +139,9 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
         );
         $subject->importData(0);
 
-        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
-        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/used-1.jpg';
-        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/used-2.jpg';
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/used-1.jpg';
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/used-2.jpg';
 
         // Expect mapping is updated: one content element should still reference new sys_file:2,
         // two others should reference new sys_file:3

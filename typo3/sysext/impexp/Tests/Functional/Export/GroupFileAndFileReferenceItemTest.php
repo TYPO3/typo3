@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
@@ -163,12 +164,10 @@ class GroupFileAndFileReferenceItemTest extends AbstractImportExportTestCase
             }
         }
 
-        // hacky, but the timestamp will change on every clone, so set the file
-        // modification timestamp to the asserted value
-        $success = @touch(PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg', 1393866824);
-        if (!$success) {
-            $this->markTestSkipped('Could not set file modification timestamp for a fixture binary file. This is required for running the test successful.');
-        }
+        // Hacky, but the timestamp will change on every clone, so set the file modification timestamp to the asserted value
+        $success = touch(Environment::getPublicPath() . '/uploads/tx_impexpgroupfiles/typo3_image4.jpg', 1393866824);
+        // Early fail if touching failed - indicates a broken functional test setup
+        $this->assertTrue($success, 'Could not set file modification timestamp for a fixture binary file.');
 
         $subject->export_addFilesFromRelations();
         $subject->export_addFilesFromSysFilesRecords();

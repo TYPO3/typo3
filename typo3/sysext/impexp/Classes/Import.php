@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Impexp;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
@@ -956,7 +957,7 @@ class Import extends ImportExport
     public function unlinkTempFiles()
     {
         foreach ($this->unlinkFiles as $fileName) {
-            if (GeneralUtility::isFirstPartOfStr($fileName, PATH_site . 'typo3temp/')) {
+            if (GeneralUtility::isFirstPartOfStr($fileName, Environment::getPublicPath() . '/typo3temp/')) {
                 GeneralUtility::unlink_tempfile($fileName);
                 clearstatcache();
                 if (is_file($fileName)) {
@@ -1434,11 +1435,11 @@ class Import extends ImportExport
             if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/')) {
                 // RTE:
                 // First, find unique RTE file name:
-                if (@is_dir(PATH_site . $dirPrefix)) {
+                if (@is_dir(Environment::getPublicPath() . '/' . $dirPrefix)) {
                     // From the "original" RTE filename, produce a new "original" destination filename which is unused.
                     // Even if updated, the image should be unique. Currently the problem with this is that it leaves a lot of unused RTE images...
                     $fileProcObj = $this->getFileProcObj();
-                    $origDestName = $fileProcObj->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
+                    $origDestName = $fileProcObj->getUniqueName($rteOrigName, Environment::getPublicPath() . '/' . $dirPrefix);
                     // Create copy file name:
                     $pI = pathinfo($relFileName);
                     $copyDestName = PathUtility::dirname($origDestName) . '/RTEmagicC_' . substr(PathUtility::basename($origDestName), 10) . '.' . $pI['extension'];
@@ -1459,7 +1460,7 @@ class Import extends ImportExport
                         $this->error('ERROR: The destination filenames "' . $copyDestName . '" and "' . $origDestName . '" either existed or have non-valid names');
                     }
                 } else {
-                    $this->error('ERROR: "' . PATH_site . $dirPrefix . '" was not a directory, so could not process file "' . $relFileName . '"');
+                    $this->error('ERROR: "' . Environment::getPublicPath() . '/' . $dirPrefix . '" was not a directory, so could not process file "' . $relFileName . '"');
                 }
             } elseif (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
                 // File in fileadmin/ folder:
@@ -1476,7 +1477,7 @@ class Import extends ImportExport
         } else {
             $this->error('ERROR: Could not find file ID in header.');
         }
-        // Return (new) filename relative to PATH_site:
+        // Return (new) filename relative to public web path
         return $relFileName;
     }
 
@@ -1507,11 +1508,11 @@ class Import extends ImportExport
 
             // Write main file:
             if ($updMode) {
-                $newName = PATH_site . $dirPrefix . $fileName;
+                $newName = Environment::getPublicPath() . '/' . $dirPrefix . $fileName;
             } else {
                 // Create unique filename:
                 $fileProcObj = $this->getFileProcObj();
-                $newName = $fileProcObj->getUniqueName($fileName, PATH_site . $dirPrefix);
+                $newName = $fileProcObj->getUniqueName($fileName, Environment::getPublicPath() . '/' . $dirPrefix);
             }
             if ($this->writeFileVerify($newName, $fileID)) {
                 // If the resource was an HTML/CSS file with resources attached, we will write those as well!
@@ -1524,9 +1525,9 @@ class Import extends ImportExport
                             if ($this->dat['files'][$res_fileID]['filename']) {
                                 // Resolve original filename:
                                 $relResourceFileName = $this->dat['files'][$res_fileID]['parentRelFileName'];
-                                $absResourceFileName = GeneralUtility::resolveBackPath(PATH_site . $origDirPrefix . $relResourceFileName);
+                                $absResourceFileName = GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/' . $origDirPrefix . $relResourceFileName);
                                 $absResourceFileName = GeneralUtility::getFileAbsFileName($absResourceFileName);
-                                if ($absResourceFileName && GeneralUtility::isFirstPartOfStr($absResourceFileName, PATH_site . $this->fileadminFolderName . '/')) {
+                                if ($absResourceFileName && GeneralUtility::isFirstPartOfStr($absResourceFileName, Environment::getPublicPath() . '/' . $this->fileadminFolderName . '/')) {
                                     $destDir = PathUtility::stripPathSitePrefix(PathUtility::dirname($absResourceFileName) . '/');
                                     if ($this->verifyFolderAccess($destDir, true) && $this->checkOrCreateDir($destDir)) {
                                         $this->writeFileVerify($absResourceFileName, $res_fileID);
@@ -1567,9 +1568,9 @@ class Import extends ImportExport
     }
 
     /**
-     * Writes a file from the import memory having $fileID to file name $fileName which must be an absolute path inside PATH_site
+     * Writes a file from the import memory having $fileID to file name $fileName which must be an absolute path inside public web path
      *
-     * @param string $fileName Absolute filename inside PATH_site to write to
+     * @param string $fileName Absolute filename inside public web path to write to
      * @param string $fileID File ID from import memory
      * @param bool $bypassMountCheck Bypasses the checking against filemounts - only for RTE files!
      * @return bool Returns TRUE if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
@@ -1615,7 +1616,7 @@ class Import extends ImportExport
     /**
      * Returns TRUE if directory exists  and if it doesn't it will create directory and return TRUE if that succeeded.
      *
-     * @param string $dirPrefix Directory to create. Having a trailing slash. Must be in fileadmin/. Relative to PATH_site
+     * @param string $dirPrefix Directory to create. Having a trailing slash. Must be in fileadmin/. Relative to public web path
      * @return bool TRUE, if directory exists (was created)
      */
     public function checkOrCreateDir($dirPrefix)
@@ -1628,8 +1629,8 @@ class Import extends ImportExport
             foreach ($filePathParts as $dirname) {
                 $pathAcc .= '/' . $dirname;
                 if (strlen($dirname)) {
-                    if (!@is_dir(PATH_site . $this->fileadminFolderName . $pathAcc)) {
-                        if (!GeneralUtility::mkdir(PATH_site . $this->fileadminFolderName . $pathAcc)) {
+                    if (!@is_dir(Environment::getPublicPath() . '/' . $this->fileadminFolderName . $pathAcc)) {
+                        if (!GeneralUtility::mkdir(Environment::getPublicPath() . '/' . $this->fileadminFolderName . $pathAcc)) {
                             $this->error('ERROR: Directory could not be created....B');
                             return false;
                         }

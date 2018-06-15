@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Impexp;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Html\HtmlParser;
@@ -354,7 +355,7 @@ class Export extends ImportExport
             if (isset($relation['type']) && $relation['type'] === 'file') {
                 foreach ($relation['newValueFiles'] as $key => $fileRelationData) {
                     $absoluteFilePath = $fileRelationData['ID_absFile'];
-                    if (GeneralUtility::isFirstPartOfStr($absoluteFilePath, PATH_site)) {
+                    if (GeneralUtility::isFirstPartOfStr($absoluteFilePath, Environment::getPublicPath())) {
                         $relatedFilePath = PathUtility::stripPathSitePrefix($absoluteFilePath);
                         $relations[$field]['newValueFiles'][$key]['ID'] = md5($relatedFilePath);
                     }
@@ -365,7 +366,7 @@ class Export extends ImportExport
                     foreach ($relation['flexFormRels']['file'] as $key => $subList) {
                         foreach ($subList as $subKey => $fileRelationData) {
                             $absoluteFilePath = $fileRelationData['ID_absFile'];
-                            if (GeneralUtility::isFirstPartOfStr($absoluteFilePath, PATH_site)) {
+                            if (GeneralUtility::isFirstPartOfStr($absoluteFilePath, Environment::getPublicPath())) {
                                 $relatedFilePath = PathUtility::stripPathSitePrefix($absoluteFilePath);
                                 $relations[$field]['flexFormRels']['file'][$key][$subKey]['ID'] = md5($relatedFilePath);
                             }
@@ -589,7 +590,7 @@ class Export extends ImportExport
                                 foreach ($elements as $subKey => $el) {
                                     if ($el['subst']['type'] === 'file' && $this->includeSoftref($el['subst']['tokenID'])) {
                                         // Create abs path and ID for file:
-                                        $ID_absFile = GeneralUtility::getFileAbsFileName(PATH_site . $el['subst']['relFileName']);
+                                        $ID_absFile = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $el['subst']['relFileName']);
                                         $ID = md5($el['subst']['relFileName']);
                                         if ($ID_absFile) {
                                             if (!$this->dat['files'][$ID]) {
@@ -615,7 +616,7 @@ class Export extends ImportExport
                         foreach ($elements as $subKey => $el) {
                             if ($el['subst']['type'] === 'file' && $this->includeSoftref($el['subst']['tokenID'])) {
                                 // Create abs path and ID for file:
-                                $ID_absFile = GeneralUtility::getFileAbsFileName(PATH_site . $el['subst']['relFileName']);
+                                $ID_absFile = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $el['subst']['relFileName']);
                                 $ID = md5($el['subst']['relFileName']);
                                 if ($ID_absFile) {
                                     if (!$this->dat['files'][$ID]) {
@@ -787,7 +788,7 @@ class Export extends ImportExport
                     if ($k % 2) {
                         $EXTres_absPath = GeneralUtility::resolveBackPath(PathUtility::dirname($fI['ID_absFile']) . '/' . $v);
                         $EXTres_absPath = GeneralUtility::getFileAbsFileName($EXTres_absPath);
-                        if ($EXTres_absPath && GeneralUtility::isFirstPartOfStr($EXTres_absPath, PATH_site . $this->fileadminFolderName . '/') && @is_file($EXTres_absPath)) {
+                        if ($EXTres_absPath && GeneralUtility::isFirstPartOfStr($EXTres_absPath, Environment::getPublicPath() . '/' . $this->fileadminFolderName . '/') && @is_file($EXTres_absPath)) {
                             $htmlResourceCaptured = true;
                             $EXTres_ID = md5($EXTres_absPath);
                             $this->dat['header']['files'][$fI['ID']]['EXT_RES_ID'][] = $EXTres_ID;
@@ -884,7 +885,7 @@ class Export extends ImportExport
                             // Add file_ID key to header - slightly "risky" way of doing this because if the calculation
                             // changes for the same value in $this->records[...] this will not work anymore!
                             if ($el['subst'] && $el['subst']['relFileName']) {
-                                $list[$lKey]['file_ID'] = md5(PATH_site . $el['subst']['relFileName']);
+                                $list[$lKey]['file_ID'] = md5(Environment::getPublicPath() . '/' . $el['subst']['relFileName']);
                             }
                         }
                     }
@@ -900,7 +901,7 @@ class Export extends ImportExport
                                 // Add file_ID key to header - slightly "risky" way of doing this because if the calculation
                                 // changes for the same value in $this->records[...] this will not work anymore!
                                 if ($el['subst'] && $el['subst']['relFileName']) {
-                                    $list[$lKey]['file_ID'] = md5(PATH_site . $el['subst']['relFileName']);
+                                    $list[$lKey]['file_ID'] = md5(Environment::getPublicPath() . '/' . $el['subst']['relFileName']);
                                 }
                             }
                         }

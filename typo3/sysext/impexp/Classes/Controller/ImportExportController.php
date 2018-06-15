@@ -269,7 +269,7 @@ class ImportExportController extends BaseScriptClass
      * Incoming array has syntax:
      * GETvar 'id' = import page id (must be readable)
      *
-     * file = 	(pointing to filename relative to PATH_site)
+     * file = pointing to filename relative to public web path
      *
      * [all relation fields are clear, but not files]
      * - page-tree is written first

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
@@ -51,14 +52,14 @@ class GroupFileAndFileReferenceItemInFlexFormTest extends AbstractImportExportTe
         );
         $subject->importData(0);
 
-        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image3.jpg';
-        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
-        $this->testFilesToDelete[] = PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg';
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image3.jpg';
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image5.jpg';
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/uploads/tx_impexpgroupfiles/typo3_image4.jpg';
 
         $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importGroupFileAndFileReferenceItemInFlexForm.csv');
 
-        $this->assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', PATH_site . 'fileadmin/user_upload/typo3_image3.jpg');
-        $this->assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
-        $this->assertFileEquals(__DIR__ . '/../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
+        $this->assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image3.jpg');
+        $this->assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image5.jpg');
+        $this->assertFileEquals(__DIR__ . '/../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', Environment::getPublicPath() . '/uploads/tx_impexpgroupfiles/typo3_image4.jpg');
     }
 }
