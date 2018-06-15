@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
@@ -46,7 +48,7 @@ class DebugUtility
             ob_start();
         }
 
-        if (TYPO3_MODE === 'BE' && !self::isCommandLine()) {
+        if (TYPO3_MODE === 'BE' && !Environment::isCli()) {
             $debug = self::renderDump($var);
             $debugPlain = PHP_EOL . self::renderDump($var, '', true, false);
             $script = '
@@ -219,19 +221,9 @@ class DebugUtility
      */
     protected static function renderDump($variable, $title = '', $plainText = null, $ansiColors = null)
     {
-        $plainText = $plainText ?? self::isCommandLine() && self::$plainTextOutput;
-        $ansiColors = $ansiColors ?? self::isCommandLine() && self::$ansiColorUsage;
+        $plainText = $plainText ?? Environment::isCli() && self::$plainTextOutput;
+        $ansiColors = $ansiColors ?? Environment::isCli() && self::$ansiColorUsage;
         return trim(DebuggerUtility::var_dump($variable, $title, 8, $plainText, $ansiColors, true));
-    }
-
-    /**
-     * Checks some constants to determine if we are in CLI context
-     *
-     * @return bool
-     */
-    protected static function isCommandLine()
-    {
-        return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) || PHP_SAPI === 'cli';
     }
 
     /**

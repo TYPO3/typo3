@@ -86,7 +86,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['pr
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['security'][] = \TYPO3\CMS\Install\Report\SecurityStatusReport::class;
 
 // Only add the environment status report if not in CLI mode
-if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
+if (!\TYPO3\CMS\Core\Core\Environment::isCli()) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['system'][] = \TYPO3\CMS\Install\Report\EnvironmentStatusReport::class;
 }
 

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -40,7 +41,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
      */
     public function __construct()
     {
-        if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
+        if (!Environment::isCli()) {
             throw new \RuntimeException('Creating a CLI-based user object on non-CLI level is not allowed', 1483971165);
         }
         if (!$this->isUserAllowedToLogin()) {

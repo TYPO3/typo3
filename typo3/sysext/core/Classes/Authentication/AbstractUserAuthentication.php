@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Authentication;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -404,7 +405,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // Make certain that NO user is set initially
         $this->user = null;
         // Set all possible headers that could ensure that the script is not cached on the client-side
-        if ($this->sendNoCacheHeaders && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
+        if ($this->sendNoCacheHeaders && !Environment::isCli()) {
             header('Expires: 0');
             header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
             $cacheControlHeader = 'no-cache, must-revalidate';
@@ -601,7 +602,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             }
             // Refuse login for _CLI users, if not processing a CLI request type
             // (although we shouldn't be here in case of a CLI request type)
-            if (strtoupper(substr($loginData['uname'], 0, 5)) === '_CLI_' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
+            if (strtoupper(substr($loginData['uname'], 0, 5)) === '_CLI_' && !Environment::isCli()) {
                 throw new \RuntimeException('TYPO3 Fatal Error: You have tried to login using a CLI user. Access prohibited!', 1270853931);
             }
         }

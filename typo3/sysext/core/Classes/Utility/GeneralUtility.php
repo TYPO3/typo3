@@ -2957,7 +2957,7 @@ class GeneralUtility
      */
     protected static function isInternalRequestType()
     {
-        return !defined('TYPO3_REQUESTTYPE') || (defined('TYPO3_REQUESTTYPE') && TYPO3_REQUESTTYPE & (TYPO3_REQUESTTYPE_INSTALL | TYPO3_REQUESTTYPE_CLI));
+        return Environment::isCli() || !defined('TYPO3_REQUESTTYPE') || (defined('TYPO3_REQUESTTYPE') && TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL);
     }
 
     /**
@@ -3045,7 +3045,7 @@ class GeneralUtility
     {
         $host = '';
         // If not called from the command-line, resolve on getIndpEnv()
-        if ($requestHost && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
+        if ($requestHost && !Environment::isCli()) {
             $host = self::getIndpEnv('HTTP_HOST');
         }
         if (!$host) {
