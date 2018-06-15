@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
@@ -101,7 +102,7 @@ class InstallUtilityTest extends UnitTestCase
     protected function tearDown()
     {
         foreach ($this->fakedExtensions as $fakeExtkey => $fakeExtension) {
-            $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $fakeExtkey;
+            $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $fakeExtkey;
         }
         parent::tearDown();
     }
@@ -115,7 +116,7 @@ class InstallUtilityTest extends UnitTestCase
     protected function createFakeExtension(): string
     {
         $extKey = strtolower($this->getUniqueId('testing'));
-        $absExtPath = PATH_site . 'typo3temp/var/tests/' . $extKey;
+        $absExtPath = Environment::getVarPath() . '/tests/' . $extKey;
         $relPath = 'typo3temp/var/tests/' . $extKey . '/';
         GeneralUtility::mkdir($absExtPath);
         $this->fakedExtensions[$extKey] = [
@@ -226,7 +227,7 @@ class InstallUtilityTest extends UnitTestCase
     public function processDatabaseUpdatesCallsUpdateDbWithExtTablesSql()
     {
         $extKey = $this->createFakeExtension();
-        $extPath = PATH_site . 'typo3temp/var/tests/' . $extKey . '/';
+        $extPath = Environment::getVarPath() . '/tests/' . $extKey . '/';
         $extTablesFile = $extPath . 'ext_tables.sql';
         $fileContent = 'DUMMY TEXT TO COMPARE';
         file_put_contents($extTablesFile, $fileContent);
@@ -287,7 +288,7 @@ class InstallUtilityTest extends UnitTestCase
     public function processDatabaseUpdatesCallsImportFile($fileName)
     {
         $extKey = $this->createFakeExtension();
-        $absPath = PATH_site . $this->fakedExtensions[$extKey]['siteRelPath'];
+        $absPath = Environment::getPublicPath() . '/' . $this->fakedExtensions[$extKey]['siteRelPath'];
         GeneralUtility::mkdir($absPath . '/Initialisation');
         file_put_contents($absPath . '/Initialisation/' . $fileName, 'DUMMY');
         $installMock = $this->getAccessibleMock(
@@ -342,7 +343,7 @@ class InstallUtilityTest extends UnitTestCase
     public function importT3DFileDoesNotImportFileIfAlreadyImported($fileName, $registryNameReturnsFalse, $registryNameReturnsTrue)
     {
         $extKey = $this->createFakeExtension();
-        $absPath = PATH_site . $this->fakedExtensions[$extKey]['siteRelPath'];
+        $absPath = Environment::getPublicPath() . '/' . $this->fakedExtensions[$extKey]['siteRelPath'];
         GeneralUtility::mkdir($absPath . 'Initialisation');
         file_put_contents($absPath . 'Initialisation/' . $fileName, 'DUMMY');
         $registryMock = $this->getMockBuilder(Registry::class)

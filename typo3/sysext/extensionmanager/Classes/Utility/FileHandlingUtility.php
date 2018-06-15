@@ -357,7 +357,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getAbsolutePath($relativePath)
     {
-        $absolutePath = GeneralUtility::getFileAbsFileName(GeneralUtility::resolveBackPath(PATH_site . $relativePath));
+        $absolutePath = GeneralUtility::getFileAbsFileName(GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/' . $relativePath));
         if (empty($absolutePath)) {
             throw new ExtensionManagerException('Illegal relative path given', 1350742864);
         }

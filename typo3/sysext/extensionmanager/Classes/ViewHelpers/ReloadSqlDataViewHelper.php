@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Registry;
@@ -48,7 +49,7 @@ class ReloadSqlDataViewHelper extends ActionViewHelper
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         $staticSqlDataFile = $extension['siteRelPath'] . 'ext_tables_static+adt.sql';
-        if (!file_exists(PATH_site . $staticSqlDataFile)) {
+        if (!file_exists(Environment::getPublicPath() . '/' . $staticSqlDataFile)) {
             return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
         }
 
@@ -59,7 +60,7 @@ class ReloadSqlDataViewHelper extends ActionViewHelper
         // We used to only store "1" in the database when data was imported
         // No need to compare file content here and just show the reload icon
         if (!empty($oldMd5Hash) && $oldMd5Hash !== 1) {
-            $currentMd5Hash = md5_file(PATH_site . $staticSqlDataFile);
+            $currentMd5Hash = md5_file(Environment::getPublicPath() . '/' . $staticSqlDataFile);
             $md5HashIsEqual = $oldMd5Hash === $currentMd5Hash;
         }
 

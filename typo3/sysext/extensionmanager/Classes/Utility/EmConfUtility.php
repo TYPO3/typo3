@@ -14,10 +14,13 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * Utility for dealing with ext_emconf
  */
-class EmConfUtility implements \TYPO3\CMS\Core\SingletonInterface
+class EmConfUtility implements SingletonInterface
 {
     /**
      * Returns the $EM_CONF array from an extensions ext_emconf.php file
@@ -28,7 +31,7 @@ class EmConfUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function includeEmConf(array $extension)
     {
         $_EXTKEY = $extension['key'];
-        $path = PATH_site . $extension['siteRelPath'] . 'ext_emconf.php';
+        $path = Environment::getPublicPath() . '/' . $extension['siteRelPath'] . 'ext_emconf.php';
         $EM_CONF = null;
         if (file_exists($path)) {
             include $path;

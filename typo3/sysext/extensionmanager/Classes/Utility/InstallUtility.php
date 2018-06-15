@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  */
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -353,7 +354,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function processDatabaseUpdates(array $extension)
     {
-        $extTablesSqlFile = PATH_site . $extension['siteRelPath'] . 'ext_tables.sql';
+        $extTablesSqlFile = Environment::getPublicPath() . '/' . $extension['siteRelPath'] . 'ext_tables.sql';
         $extTablesSqlContent = '';
         if (file_exists($extTablesSqlFile)) {
             $extTablesSqlContent .= file_get_contents($extTablesSqlFile);
@@ -564,7 +565,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
             $extensionSiteRelPath . 'Initialisation/data.xml'
         ];
         foreach ($possibleImportFiles as $possibleImportFile) {
-            if (!file_exists(PATH_site . $possibleImportFile)) {
+            if (!file_exists(Environment::getPublicPath() . '/' . $possibleImportFile)) {
                 continue;
             }
             $importFileToUse = $possibleImportFile;
@@ -573,7 +574,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
             /** @var ImportExportUtility $importExportUtility */
             $importExportUtility = $this->objectManager->get(ImportExportUtility::class);
             try {
-                $importResult = $importExportUtility->importT3DFile(PATH_site . $importFileToUse, 0);
+                $importResult = $importExportUtility->importT3DFile(Environment::getPublicPath() . '/' . $importFileToUse, 0);
                 $this->registry->set('extensionDataImport', $extensionSiteRelPath . 'Initialisation/dataImported', 1);
                 $this->emitAfterExtensionT3DImportSignal($importFileToUse, $importResult);
             } catch (\ErrorException $e) {
@@ -605,7 +606,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $extTablesStaticSqlRelFile = $extensionSiteRelPath . 'ext_tables_static+adt.sql';
         if (!$this->registry->get('extensionDataImport', $extTablesStaticSqlRelFile)) {
-            $extTablesStaticSqlFile = PATH_site . $extTablesStaticSqlRelFile;
+            $extTablesStaticSqlFile = Environment::getPublicPath() . '/' . $extTablesStaticSqlRelFile;
             $shortFileHash = '';
             if (file_exists($extTablesStaticSqlFile)) {
                 $extTablesStaticSqlContent = file_get_contents($extTablesStaticSqlFile);
@@ -638,10 +639,10 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $importRelFolder = $extensionSiteRelPath . 'Initialisation/Files';
         if (!$this->registry->get('extensionDataImport', $importRelFolder)) {
-            $importFolder = PATH_site . $importRelFolder;
+            $importFolder = Environment::getPublicPath() . '/' . $importRelFolder;
             if (file_exists($importFolder)) {
                 $destinationRelPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . $extensionKey;
-                $destinationAbsolutePath = PATH_site . $destinationRelPath;
+                $destinationAbsolutePath = Environment::getPublicPath() . '/' . $destinationRelPath;
                 if (!file_exists($destinationAbsolutePath) &&
                     GeneralUtility::isAllowedAbsPath($destinationAbsolutePath)
                 ) {
