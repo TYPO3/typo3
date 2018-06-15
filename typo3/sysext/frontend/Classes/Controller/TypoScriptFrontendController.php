@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
@@ -4121,12 +4122,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         } else {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
             // This is a hack to work around ___FILE___ resolving symbolic links
-            $PATH_site_real = PathUtility::dirname(realpath(PATH_site . 'typo3')) . '/';
+            $PATH_site_real = PathUtility::dirname(realpath(Environment::getPublicPath() . '/typo3')) . '/';
             $file = $trace[0]['file'];
             if (strpos($file, $PATH_site_real) === 0) {
                 $file = str_replace($PATH_site_real, '', $file);
             } else {
-                $file = str_replace(PATH_site, '', $file);
+                $file = str_replace(Environment::getPublicPath() . '/', '', $file);
             }
             $line = $trace[0]['line'];
             $trigger = $file . ' on line ' . $line;

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Imaging;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -340,12 +341,12 @@ class GifBuilder extends GraphicalFunctions
     public function gifBuild()
     {
         if ($this->setup) {
-            // Relative to PATH_site
+            // Relative to Environment::getPublicPath()
             $gifFileName = $this->fileName('assets/images/');
             // File exists
             if (!file_exists($gifFileName)) {
                 // Create temporary directory if not done:
-                GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/images/');
+                GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/images/');
                 // Create file:
                 $this->make();
                 $this->output($gifFileName);
@@ -690,7 +691,7 @@ class GifBuilder extends GraphicalFunctions
      * something like "GB_MD5HASH_myfilename_is_very_long_and_such.jpg"
      *
      * @param string $pre Filename prefix, eg. "GB_
-     * @return string The relative filepath (relative to PATH_site)
+     * @return string The filepath, relative to Environment::getPublicPath()
      * @access private
      */
     public function fileName($pre)

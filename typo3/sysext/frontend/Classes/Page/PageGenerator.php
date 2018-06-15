@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Page;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -242,7 +243,7 @@ class PageGenerator
         }
         if ($tsfe->pSetup['shortcutIcon']) {
             $favIcon = ltrim($tsfe->tmpl->getFileName($tsfe->pSetup['shortcutIcon']), '/');
-            $iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, PATH_site . $favIcon);
+            $iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, Environment::getPublicPath() . '/' . $favIcon);
             if ($iconFileInfo->isFile()) {
                 $iconMimeType = $iconFileInfo->getMimeType();
                 if ($iconMimeType) {
@@ -804,8 +805,8 @@ class PageGenerator
                 break;
         }
         // Write file
-        if ($script && !@is_file(PATH_site . $script)) {
-            GeneralUtility::writeFileToTypo3tempDir(PATH_site . $script, $str);
+        if ($script && !@is_file(Environment::getPublicPath() . '/' . $script)) {
+            GeneralUtility::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $script, $str);
         }
         return $script;
     }

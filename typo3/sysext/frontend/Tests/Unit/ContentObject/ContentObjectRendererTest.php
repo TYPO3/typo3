@@ -18,6 +18,7 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
@@ -3117,10 +3118,10 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function filelinkCreatesCorrectUrlForFileWithUrlEncodedSpecialChars()
     {
-        $fileNameAndPath = PATH_site . 'typo3temp/var/tests/phpunitJumpUrlTestFile with spaces & amps.txt';
+        $fileNameAndPath = Environment::getPublicPath() . '/typo3temp/var/tests/phpunitJumpUrlTestFile with spaces & amps.txt';
         file_put_contents($fileNameAndPath, 'Some test data');
-        $relativeFileNameAndPath = substr($fileNameAndPath, strlen(PATH_site));
-        $fileName = substr($fileNameAndPath, strlen(PATH_site . 'typo3temp/var/tests/'));
+        $relativeFileNameAndPath = substr($fileNameAndPath, strlen(Environment::getPublicPath()) + 1);
+        $fileName = substr($fileNameAndPath, strlen(Environment::getPublicPath() . '/typo3temp/var/tests/'));
 
         $expectedLink = str_replace('%2F', '/', rawurlencode($relativeFileNameAndPath));
         $result = $this->subject->filelink($fileName, ['path' => 'typo3temp/var/tests/']);

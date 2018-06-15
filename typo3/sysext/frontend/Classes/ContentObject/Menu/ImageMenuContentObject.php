@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -192,7 +193,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                     echo '<h3>Renumbered GIFBUILDER object:</h3>';
                     debug($gifCreator->setup);
                 }
-                GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/menu/');
+                GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/menu/');
                 $gifFileName = $gifCreator->fileName('assets/menu/');
                 // Gets the ImageMap from the cache...
                 $cache = $this->getCache();

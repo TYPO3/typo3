@@ -19,6 +19,7 @@ use Doctrine\DBAL\Driver\Statement;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -1038,7 +1039,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (!is_array($info)) {
             return '';
         }
-        if (is_file(PATH_site . $info['3'])) {
+        if (is_file(Environment::getPublicPath() . '/' . $info['3'])) {
             $source = $tsfe->absRefPrefix . str_replace('%2F', '/', rawurlencode($info['3']));
         } else {
             $source = $info[3];

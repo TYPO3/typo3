@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -179,7 +180,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         $this->standaloneView
             ->expects($this->any())
             ->method('setTemplatePathAndFilename')
-            ->with(PATH_site . 'typo3/sysext/core/bar.html');
+            ->with(Environment::getPublicPath() . '/typo3/sysext/core/bar.html');
         $this->subject->render(['file' => 'EXT:core/bar.html']);
     }
 
@@ -193,7 +194,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         $this->contentObjectRenderer
             ->expects($this->any())
             ->method('cObjGetSingle')
-            ->with('FILE', ['file' => PATH_site . 'foo/bar.html'])
+            ->with('FILE', ['file' => Environment::getPublicPath() . '/foo/bar.html'])
             ->will($this->returnValue('baz'));
 
         $this->standaloneView
@@ -204,7 +205,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         $this->subject->render([
             'template' => 'FILE',
             'template.' => [
-                'file' => PATH_site . 'foo/bar.html'
+                'file' => Environment::getPublicPath() . '/foo/bar.html'
             ]
         ]);
     }
@@ -276,7 +277,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         $this->standaloneView
             ->expects($this->once())
             ->method('setLayoutRootPaths')
-            ->with([PATH_site . 'foo/bar.html']);
+            ->with([Environment::getPublicPath() . '/foo/bar.html']);
         $this->subject->render(['layoutRootPath' => 'foo/bar.html']);
     }
 
@@ -325,7 +326,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         $this->standaloneView
             ->expects($this->once())
             ->method('setLayoutRootPaths')
-            ->with([10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html']);
+            ->with([10 => Environment::getPublicPath() . '/foo/bar.html', 20 => Environment::getPublicPath() . '/foo/bar2.html']);
         $this->subject->render(['layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']]);
     }
 
@@ -338,7 +339,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         $this->standaloneView
             ->expects($this->once())
             ->method('setLayoutRootPaths')
-            ->with([0 => PATH_site . 'foo/main.html', 10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html']);
+            ->with([0 => Environment::getPublicPath() . '/foo/main.html', 10 => Environment::getPublicPath() . '/foo/bar.html', 20 => Environment::getPublicPath() . '/foo/bar2.html']);
         $this->subject->render(['layoutRootPath' => 'foo/main.html', 'layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']]);
     }
 
@@ -351,7 +352,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         $this->standaloneView
             ->expects($this->once())
             ->method('setPartialRootPaths')
-            ->with([PATH_site . 'foo/bar.html']);
+            ->with([Environment::getPublicPath() . '/foo/bar.html']);
         $this->subject->render(['partialRootPath' => 'foo/bar.html']);
     }
 
@@ -400,7 +401,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         $this->standaloneView
             ->expects($this->once())
             ->method('setPartialRootPaths')
-            ->with([10 => PATH_site . 'foo', 20 => PATH_site . 'bar']);
+            ->with([10 => Environment::getPublicPath() . '/foo', 20 => Environment::getPublicPath() . '/bar']);
         $this->subject->render(['partialRootPaths.' => [10 => 'foo', 20 => 'bar']]);
     }
 
@@ -413,7 +414,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         $this->standaloneView
             ->expects($this->once())
             ->method('setPartialRootPaths')
-            ->with([0 => PATH_site . 'main', 10 => PATH_site . 'foo', 20 => PATH_site . 'bar']);
+            ->with([0 => Environment::getPublicPath() . '/main', 10 => Environment::getPublicPath() . '/foo', 20 => Environment::getPublicPath() . '/bar']);
         $this->subject->render(['partialRootPath' => 'main', 'partialRootPaths.' => [10 => 'foo', 20 => 'bar']]);
     }
 
