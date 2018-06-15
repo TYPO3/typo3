@@ -1502,7 +1502,7 @@ class PageRepository implements LoggerAwareInterface
             if ($ctrl['delete']) {
                 $constraints[] = $expressionBuilder->eq($table . '.' . $ctrl['delete'], 0);
             }
-            if ($ctrl['versioningWS']) {
+            if ($ctrl['versioningWS'] ?? false) {
                 if (!$this->versioningWorkspaceId) {
                     // Filter out placeholder records (new/moved/deleted items)
                     // in case we are NOT in a versioning preview (that means we are online!)
@@ -1545,7 +1545,7 @@ class PageRepository implements LoggerAwareInterface
                             $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
                         );
                     }
-                    if ($ctrl['enablecolumns']['fe_group'] && !$ignore_array['fe_group']) {
+                    if (($ctrl['enablecolumns']['fe_group'] ?? false) && !($ignore_array['fe_group'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['fe_group'];
                         $constraints[] = QueryHelper::stripLogicalOperatorPrefix(
                             $this->getMultipleGroupsWhereClause($field, $table)
@@ -1743,7 +1743,7 @@ class PageRepository implements LoggerAwareInterface
                     // Changing input record to the workspace version alternative:
                     $row = $wsAlt;
                     // Check if it is deleted/new
-                    $rowVersionState = VersionState::cast($row['t3ver_state']);
+                    $rowVersionState = VersionState::cast($row['t3ver_state'] ?? null);
                     if (
                         $rowVersionState->equals(VersionState::NEW_PLACEHOLDER)
                         || $rowVersionState->equals(VersionState::DELETE_PLACEHOLDER)

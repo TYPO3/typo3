@@ -257,12 +257,12 @@ class BackendUtility
 
         if (is_array($ctrl)) {
             if (is_array($ctrl['enablecolumns'])) {
-                if ($ctrl['enablecolumns']['disabled']) {
+                if ($ctrl['enablecolumns']['disabled'] ?? false) {
                     $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
                     $query->add($expressionBuilder->eq($field, 0));
                     $invQuery->add($expressionBuilder->neq($field, 0));
                 }
-                if ($ctrl['enablecolumns']['starttime']) {
+                if ($ctrl['enablecolumns']['starttime'] ?? false) {
                     $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
                     $query->add($expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME']));
                     $invQuery->add(
@@ -272,7 +272,7 @@ class BackendUtility
                         )
                     );
                 }
-                if ($ctrl['enablecolumns']['endtime']) {
+                if ($ctrl['enablecolumns']['endtime'] ?? false) {
                     $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
                     $query->add(
                         $expressionBuilder->orX(
