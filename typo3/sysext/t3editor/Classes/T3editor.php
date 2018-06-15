@@ -17,6 +17,7 @@ namespace TYPO3\CMS\T3editor;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -139,7 +140,7 @@ class T3editor implements SingletonInterface
      */
     protected function generateCacheIdentifier(string $key): string
     {
-        return $key . '_' . sha1(TYPO3_version . PATH_site . $key);
+        return $key . '_' . sha1(TYPO3_version . Environment::getProjectPath() . $key);
     }
 
     /**
