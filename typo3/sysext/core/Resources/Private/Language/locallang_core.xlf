@@ -412,6 +412,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.label.search_levels">
 				<source>Search levels</source>
 			</trans-unit>
+			<trans-unit id="labels.recordReadonly">
+				<source>The table is defined as readonly and can't be edited.</source>
+			</trans-unit>
 			<trans-unit id="alttext.suggestSearching">
 				<source>Searching...</source>
 			</trans-unit>
