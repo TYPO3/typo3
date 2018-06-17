@@ -561,11 +561,11 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                 $parsedAnnotations = $this->parseValidatorAnnotation($validateValue);
 
                 foreach ($parsedAnnotations['validators'] as $validator) {
-                    array_push($validateAnnotations, [
+                    $validateAnnotations[] = [
                         'argumentName' => $parsedAnnotations['argumentName'],
                         'validatorName' => $validator['validatorName'],
                         'validatorOptions' => $validator['validatorOptions']
-                    ]);
+                    ];
                 }
             }
         }
