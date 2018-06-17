@@ -211,7 +211,7 @@ Manual repair suggestions:
                 ->execute();
 
             while ($row = $result->fetch()) {
-                $allRecords = $this->findAllConnectedRecordsInPage($row['uid'], $depth, $allRecords);
+                $allRecords = $this->findAllConnectedRecordsInPage((int)$row['uid'], $depth, $allRecords);
             }
         }
 
@@ -221,7 +221,7 @@ Manual repair suggestions:
             if (is_array($versions)) {
                 foreach ($versions as $verRec) {
                     if (!$verRec['_CURRENT_VERSION']) {
-                        $allRecords = $this->findAllConnectedRecordsInPage($verRec['uid'], $depth, $allRecords);
+                        $allRecords = $this->findAllConnectedRecordsInPage((int)$verRec['uid'], $depth, $allRecords);
                     }
                 }
             }
