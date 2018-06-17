@@ -449,7 +449,7 @@ class TableController extends AbstractWizardController
                 $bodyText = $this->configurationArrayToString($this->TABLECFG['c']);
                 // Create cfgArr from the string based configuration - that way it is cleaned up
                 // and any incompatibilities will be removed!
-                $configuration = $this->configurationStringToArray($bodyText, $row[$this->colsFieldName]);
+                $configuration = $this->configurationStringToArray($bodyText, (int)$row[$this->colsFieldName]);
             }
             // If a save button has been pressed, then save the new field content:
             if ($_POST['_savedok'] || $_POST['_saveandclosedok']) {
@@ -494,7 +494,7 @@ class TableController extends AbstractWizardController
                 } else {
                     // Regular line based table configuration:
                     $columns = $row[$this->colsFieldName] ?? 0;
-                    $configuration = $this->configurationStringToArray($row[$this->P['field']], $columns);
+                    $configuration = $this->configurationStringToArray($row[$this->P['field']], (int)$columns);
                 }
             }
             $configuration = is_array($configuration) ? $configuration : [];
