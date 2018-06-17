@@ -96,7 +96,7 @@ class DoubleMetaPhoneUtility
             $this->current++;
         }
         // main loop
-        while (strlen($this->primary) < 4 || strlen($this->secondary < 4)) {
+        while (strlen($this->primary) < 4 || strlen($this->secondary) < 4) {
             if ($this->current >= $this->length) {
                 break;
             }
