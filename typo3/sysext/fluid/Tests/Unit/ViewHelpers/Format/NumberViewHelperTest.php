@@ -34,7 +34,7 @@ class NumberViewHelperTest extends ViewHelperBaseTestcase
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->setRenderChildrenClosure(
             function () {
-                return pi();
+                return M_PI;
             }
         );
     }
@@ -88,7 +88,7 @@ class NumberViewHelperTest extends ViewHelperBaseTestcase
     public function formatNumberWithThousandsSeparator()
     {
         $this->viewHelper->setRenderChildrenClosure(function () {
-            return pi() * 1000;
+            return M_PI * 1000;
         });
         $this->setArgumentsUnderTest(
             $this->viewHelper,

@@ -676,7 +676,7 @@ class GraphicalFunctions
      */
     public function txtPosition($conf, $workArea, $BB)
     {
-        $angle = (int)$conf['angle'] / 180 * pi();
+        $angle = (int)$conf['angle'] / 180 * M_PI;
         $conf['angle'] = 0;
         $straightBB = $this->calcBBox($conf);
         // offset, align, valign, workarea
@@ -1341,11 +1341,11 @@ class GraphicalFunctions
         $res = [];
         if ($distance && $iterations) {
             for ($a = 0; $a < $iterations; $a++) {
-                $yOff = round(sin(2 * pi() / $iterations * ($a + 1)) * 100 * $distance);
+                $yOff = round(sin(2 * M_PI / $iterations * ($a + 1)) * 100 * $distance);
                 if ($yOff) {
                     $yOff = (int)(ceil(abs($yOff / 100)) * ($yOff / abs($yOff)));
                 }
-                $xOff = round(cos(2 * pi() / $iterations * ($a + 1)) * 100 * $distance);
+                $xOff = round(cos(2 * M_PI / $iterations * ($a + 1)) * 100 * $distance);
                 if ($xOff) {
                     $xOff = (int)(ceil(abs($xOff / 100)) * ($xOff / abs($xOff)));
                 }

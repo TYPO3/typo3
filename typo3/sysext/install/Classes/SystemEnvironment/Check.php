@@ -250,7 +250,7 @@ class Check implements CheckInterface
     protected function checkPhpVersion()
     {
         $minimumPhpVersion = '7.2.0';
-        $currentPhpVersion = phpversion();
+        $currentPhpVersion = PHP_VERSION;
         if (version_compare($currentPhpVersion, $minimumPhpVersion) < 0) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'Your PHP version ' . $currentPhpVersion . ' is too old. TYPO3 CMS does not run'

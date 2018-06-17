@@ -57,7 +57,7 @@ class CommandApplication implements ApplicationInterface
      */
     protected function checkEnvironmentOrDie()
     {
-        if (php_sapi_name() !== 'cli') {
+        if (PHP_SAPI !== 'cli') {
             die('Not called from a command line interface (e.g. a shell or scheduler).' . LF);
         }
     }
