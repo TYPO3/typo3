@@ -33,7 +33,7 @@ class InstallerScripts implements InstallerScriptsRegistration
     {
         $scriptDispatcher->addInstallerScript(
             new EntryPoint(
-                dirname(dirname(__DIR__)) . '/Resources/Private/Php/backend.php',
+                dirname(__DIR__, 2) . '/Resources/Private/Php/backend.php',
                 'typo3/index.php'
             )
         );
