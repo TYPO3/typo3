@@ -114,12 +114,12 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
      */
-    protected $image = null;
+    protected $image;
 
     /**
      * @var \DateTime|null
      */
-    protected $lastlogin = null;
+    protected $lastlogin;
 
     /**
      * Constructs a new Front-End User

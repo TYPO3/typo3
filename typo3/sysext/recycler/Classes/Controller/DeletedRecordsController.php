@@ -33,7 +33,7 @@ class DeletedRecordsController
     /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
-    protected $runtimeCache = null;
+    protected $runtimeCache;
 
     /**
      * @var DataHandler

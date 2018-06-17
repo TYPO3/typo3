@@ -70,7 +70,7 @@ class SystemEnvironmentBuilder
      *
      * @var string[]
      */
-    protected static $disabledFunctions = null;
+    protected static $disabledFunctions;
 
     /**
      * Run base setup.

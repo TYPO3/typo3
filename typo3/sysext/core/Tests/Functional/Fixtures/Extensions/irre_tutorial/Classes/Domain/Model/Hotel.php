@@ -30,7 +30,7 @@ class Hotel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @Extbase\ORM\Lazy
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer>
      */
-    protected $offers = null;
+    protected $offers;
 
     /**
      * Initializes this object.

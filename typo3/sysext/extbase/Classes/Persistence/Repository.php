@@ -46,7 +46,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
      */
-    protected $defaultQuerySettings = null;
+    protected $defaultQuerySettings;
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager

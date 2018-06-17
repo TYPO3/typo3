@@ -85,7 +85,7 @@ class Import extends ImportExport
     /**
      * @var string|null
      */
-    protected $filesPathForImport = null;
+    protected $filesPathForImport;
 
     /**
      * @var array

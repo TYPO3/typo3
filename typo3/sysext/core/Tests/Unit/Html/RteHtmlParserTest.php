@@ -31,7 +31,7 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * @var RteHtmlParser
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Set up

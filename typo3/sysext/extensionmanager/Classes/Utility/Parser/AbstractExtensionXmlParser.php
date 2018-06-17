@@ -24,119 +24,119 @@ abstract class AbstractExtensionXmlParser extends AbstractXmlParser
      *
      * @var string
      */
-    protected $authorcompany = null;
+    protected $authorcompany;
 
     /**
      * Keeps current author mail address of an extension's version.
      *
      * @var string
      */
-    protected $authoremail = null;
+    protected $authoremail;
 
     /**
      * Keeps current author name of an extension's version.
      *
      * @var string
      */
-    protected $authorname = null;
+    protected $authorname;
 
     /**
      * Keeps current category of an extension's version.
      *
      * @var string
      */
-    protected $category = null;
+    protected $category;
 
     /**
      * Keeps current dependencies of an extension's version.
      *
      * @var string
      */
-    protected $dependencies = null;
+    protected $dependencies;
 
     /**
      * Keeps current description of an extension's version.
      *
      * @var string
      */
-    protected $description = null;
+    protected $description;
 
     /**
      * Keeps current download number sum of all extension's versions.
      *
      * @var string
      */
-    protected $extensionDownloadCounter = null;
+    protected $extensionDownloadCounter;
 
     /**
      * Keeps current key of an extension.
      *
      * @var string
      */
-    protected $extensionKey = null;
+    protected $extensionKey;
 
     /**
      * Keeps current upload date of an extension's version.
      *
      * @var string
      */
-    protected $lastuploaddate = null;
+    protected $lastuploaddate;
 
     /**
      * Keeps current owner username of an extension's version.
      *
      * @var string
      */
-    protected $ownerusername = null;
+    protected $ownerusername;
 
     /**
      * Keeps current reviewstate of an extension's version.
      *
      * @var string
      */
-    protected $reviewstate = null;
+    protected $reviewstate;
 
     /**
      * Keeps current state of an extension's version.
      *
      * @var string
      */
-    protected $state = null;
+    protected $state;
 
     /**
      * Keeps current t3x file hash of an extension's version.
      *
      * @var string
      */
-    protected $t3xfilemd5 = null;
+    protected $t3xfilemd5;
 
     /**
      * Keeps current title of an extension's version.
      *
      * @var string
      */
-    protected $title = null;
+    protected $title;
 
     /**
      * Keeps current upload comment of an extension's version.
      *
      * @var string
      */
-    protected $uploadcomment = null;
+    protected $uploadcomment;
 
     /**
      * Keeps current version number.
      *
      * @var string
      */
-    protected $version = null;
+    protected $version;
 
     /**
      * Keeps current download number of an extension's version.
      *
      * @var string
      */
-    protected $versionDownloadCounter = null;
+    protected $versionDownloadCounter;
 
     /**
      * Returns an assoziative array of all extension version properties.

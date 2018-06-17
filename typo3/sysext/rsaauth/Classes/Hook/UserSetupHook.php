@@ -28,7 +28,7 @@ class UserSetupHook
     /**
      * @var RsaEncryptionDecoder
      */
-    protected $rsaEncryptionDecoder = null;
+    protected $rsaEncryptionDecoder;
 
     /**
      * Decrypt all password fields which were encrypted.

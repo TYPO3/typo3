@@ -114,7 +114,7 @@ class FileListController extends ActionController
      *
      * @var FileList
      */
-    public $filelist = null;
+    public $filelist;
 
     /**
      * The name of the module

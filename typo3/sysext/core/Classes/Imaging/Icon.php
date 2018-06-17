@@ -56,7 +56,7 @@ class Icon
      *
      * @var Icon
      */
-    protected $overlayIcon = null;
+    protected $overlayIcon;
 
     /**
      * Contains the size string ("large", "small" or "default")

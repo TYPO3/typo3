@@ -214,7 +214,7 @@ function jumpToUrl(URL) {
     /**
      * @var PageRenderer
      */
-    protected $pageRenderer = null;
+    protected $pageRenderer;
 
     /**
      * Alternative template file

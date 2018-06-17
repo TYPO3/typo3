@@ -26,7 +26,7 @@ class DatePickerViewHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     /**
      * @var \TYPO3\CMS\Form\ViewHelpers\Form\DatePickerViewHelper
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Set up

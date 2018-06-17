@@ -37,7 +37,7 @@ class StorageFactory
      *
      * @var \TYPO3\CMS\Rsaauth\Storage\AbstractStorage
      */
-    protected static $storageInstance = null;
+    protected static $storageInstance;
 
     /**
      * Obtains a storage. This function will return a non-abstract class, which

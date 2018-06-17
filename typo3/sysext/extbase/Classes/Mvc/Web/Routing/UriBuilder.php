@@ -75,7 +75,7 @@ class UriBuilder
     /**
      * @var string
      */
-    protected $absoluteUriScheme = null;
+    protected $absoluteUriScheme;
 
     /**
      * @var bool
@@ -85,7 +85,7 @@ class UriBuilder
     /**
      * @var string
      */
-    protected $addQueryStringMethod = null;
+    protected $addQueryStringMethod;
 
     /**
      * @var array
@@ -100,7 +100,7 @@ class UriBuilder
     /**
      * @var int
      */
-    protected $targetPageUid = null;
+    protected $targetPageUid;
 
     /**
      * @var int
@@ -125,7 +125,7 @@ class UriBuilder
     /**
      * @var string
      */
-    protected $argumentPrefix = null;
+    protected $argumentPrefix;
 
     /**
      * @var \TYPO3\CMS\Extbase\Service\EnvironmentService

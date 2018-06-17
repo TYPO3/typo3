@@ -91,7 +91,7 @@ class TreeController
      *
      * @var array|null
      */
-    protected $domains = null;
+    protected $domains;
 
     /**
      * Instance of the icon factory, to be used for generating the items.

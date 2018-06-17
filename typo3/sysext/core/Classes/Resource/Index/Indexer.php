@@ -41,12 +41,12 @@ class Indexer
     /**
      * @var ResourceStorage
      */
-    protected $storage = null;
+    protected $storage;
 
     /**
      * @var ExtractorInterface[]
      */
-    protected $extractionServices = null;
+    protected $extractionServices;
 
     /**
      * @param ResourceStorage $storage

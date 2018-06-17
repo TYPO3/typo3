@@ -31,7 +31,7 @@ class IconTest extends UnitTestCase
     /**
      * @var Icon
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * @var string

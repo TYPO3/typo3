@@ -85,7 +85,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     /**
      * @var mixed
      */
-    protected $selectedValue = null;
+    protected $selectedValue;
 
     /**
      * Initialize arguments.

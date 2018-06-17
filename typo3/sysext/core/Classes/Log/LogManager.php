@@ -45,7 +45,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
      *
      * @var \TYPO3\CMS\Core\Log\Logger
      */
-    protected $rootLogger = null;
+    protected $rootLogger;
 
     /**
      * Unique ID of the request

@@ -75,7 +75,7 @@ class Uri implements UriInterface
      * The port of the URI (empty if it is the standard port for the scheme)
      * @var int|null
      */
-    protected $port = null;
+    protected $port;
 
     /**
      * The path part of the URI (can be empty or /)

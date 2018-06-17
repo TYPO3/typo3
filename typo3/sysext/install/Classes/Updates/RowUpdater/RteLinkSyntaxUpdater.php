@@ -64,7 +64,7 @@ class RteLinkSyntaxUpdater implements RowUpdaterInterface
     /**
      * @var LoggerInterface
      */
-    protected $logger = null;
+    protected $logger;
 
     /**
      * Get title

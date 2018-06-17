@@ -85,7 +85,7 @@ class FormResultCompiler
     /**
      * @var PageRenderer
      */
-    protected $pageRenderer = null;
+    protected $pageRenderer;
 
     /**
      * Merge existing data with the given result array

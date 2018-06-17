@@ -186,7 +186,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
     /**
      * @var \TYPO3\CMS\Core\Database\Connection
      */
-    protected $databaseConnection = null;
+    protected $databaseConnection;
 
     /**
      * Executes this finisher

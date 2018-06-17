@@ -243,7 +243,7 @@ abstract class ImportExport
      *
      * @var ExtendedFileUtility
      */
-    protected $fileProcObj = null;
+    protected $fileProcObj;
 
     /**
      * @var array

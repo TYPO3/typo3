@@ -102,14 +102,14 @@ class Rfc822AddressesParser
      *
      * @var string $error
      */
-    private $error = null;
+    private $error;
 
     /**
      * An internal counter/pointer.
      *
      * @var int $index
      */
-    private $index = null;
+    private $index;
 
     /**
      * The number of groups that have been found in the address list.
@@ -124,7 +124,7 @@ class Rfc822AddressesParser
      *
      * @var int $limit
      */
-    private $limit = null;
+    private $limit;
 
     /**
      * Sets up the object.

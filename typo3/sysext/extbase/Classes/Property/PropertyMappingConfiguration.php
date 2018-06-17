@@ -60,7 +60,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface
      */
-    protected $typeConverter = null;
+    protected $typeConverter;
 
     /**
      * List of allowed property names to be converted

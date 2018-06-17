@@ -30,14 +30,14 @@ class FileExtensionFilter
      *
      * @var array
      */
-    protected $allowedFileExtensions = null;
+    protected $allowedFileExtensions;
 
     /**
      * Disallowed file extensions. If NULL, no extension is disallowed (i.e. all are allowed).
      *
      * @var array
      */
-    protected $disallowedFileExtensions = null;
+    protected $disallowedFileExtensions;
 
     /**
      * Entry method for use as DataHandler "inline" field filter

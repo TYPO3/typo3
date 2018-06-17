@@ -68,7 +68,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     /**
      * @var Dispatcher
      */
-    protected $signalSlotDispatcher = null;
+    protected $signalSlotDispatcher;
 
     /**
      * @var int

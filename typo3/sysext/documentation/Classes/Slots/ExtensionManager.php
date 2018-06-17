@@ -29,7 +29,7 @@ class ExtensionManager
     /**
      * @var \TYPO3\CMS\Documentation\Domain\Model\Document[]
      */
-    protected static $documents = null;
+    protected static $documents;
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

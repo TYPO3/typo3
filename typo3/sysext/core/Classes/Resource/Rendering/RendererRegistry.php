@@ -34,7 +34,7 @@ class RendererRegistry implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var FileRendererInterface[]
      */
-    protected $instances = null;
+    protected $instances;
 
     /**
      * Returns an instance of this class

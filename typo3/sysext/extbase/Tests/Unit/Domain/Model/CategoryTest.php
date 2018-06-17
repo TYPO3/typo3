@@ -22,7 +22,7 @@ class CategoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Model\Category
      */
-    protected $fixture = null;
+    protected $fixture;
 
     protected function setUp()
     {

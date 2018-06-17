@@ -28,7 +28,7 @@ class CleanerFieldProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     /**
      * @var CleanerFieldProvider
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Sets up an instance of \TYPO3\CMS\Recycler\Task\CleanerFieldProvider

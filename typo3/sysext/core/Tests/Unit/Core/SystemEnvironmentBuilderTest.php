@@ -22,7 +22,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @var \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Set up testcase

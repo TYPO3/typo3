@@ -184,7 +184,7 @@ class BaseScriptClass
     /**
      * @var PageRenderer
      */
-    protected $pageRenderer = null;
+    protected $pageRenderer;
 
     /**
      * Initializes the backend module by setting internal variables, initializing the menu.

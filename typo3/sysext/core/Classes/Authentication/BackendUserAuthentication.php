@@ -175,7 +175,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Cache for checkWorkspaceCurrent()
      * @var array|null
      */
-    public $checkWorkspaceCurrent_cache = null;
+    public $checkWorkspaceCurrent_cache;
 
     /**
      * @var \TYPO3\CMS\Core\Resource\ResourceStorage[]

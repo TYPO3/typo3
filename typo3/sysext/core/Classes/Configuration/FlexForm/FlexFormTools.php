@@ -66,7 +66,7 @@ class FlexFormTools
      *
      * @var object
      */
-    public $callBackObj = null;
+    public $callBackObj;
 
     /**
      * Used for accumulation of clean XML

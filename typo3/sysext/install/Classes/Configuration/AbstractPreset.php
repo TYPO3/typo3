@@ -26,7 +26,7 @@ abstract class AbstractPreset implements PresetInterface
     /**
      * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
      */
-    protected $configurationManager = null;
+    protected $configurationManager;
 
     /**
      * @var string Name of preset, must be set by extending classes

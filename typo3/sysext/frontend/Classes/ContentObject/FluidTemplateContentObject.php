@@ -31,7 +31,7 @@ class FluidTemplateContentObject extends AbstractContentObject
     /**
      * @var StandaloneView
      */
-    protected $view = null;
+    protected $view;
 
     /**
      * @var ContentDataProcessor

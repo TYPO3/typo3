@@ -77,7 +77,7 @@ abstract class AbstractController extends ActionController
     /**
      * @var \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository
      */
-    protected $logEntryRepository = null;
+    protected $logEntryRepository;
 
     /**
      * @var BackendTemplateView

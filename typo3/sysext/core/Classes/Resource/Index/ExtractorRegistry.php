@@ -33,7 +33,7 @@ class ExtractorRegistry implements SingletonInterface
      *
      * @var ExtractorInterface[]
      */
-    protected $instances = null;
+    protected $instances;
 
     /**
      * Returns an instance of this class

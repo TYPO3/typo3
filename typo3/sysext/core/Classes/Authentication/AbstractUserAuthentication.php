@@ -283,7 +283,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @var array|null contains user- AND session-data from database (joined tables)
      * @internal
      */
-    public $user = null;
+    public $user;
 
     /**
      * Will be added to the url (eg. '&login=ab7ef8d...')

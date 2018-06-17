@@ -76,22 +76,22 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
-    protected $frontendControllerMock = null;
+    protected $frontendControllerMock;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|CacheFrontendInterface
      */
-    protected $cacheFrontendMock = null;
+    protected $cacheFrontendMock;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|TemplateService
      */
-    protected $templateServiceMock = null;
+    protected $templateServiceMock;
 
     /**
      * Default content object name -> class name map, shipped with TYPO3 CMS

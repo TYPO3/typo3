@@ -92,7 +92,7 @@ abstract class AbstractMenuContentObject
      *
      * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
      */
-    public $parent_cObj = null;
+    public $parent_cObj;
 
     /**
      * @var string
@@ -123,12 +123,12 @@ abstract class AbstractMenuContentObject
     /**
      * @var \TYPO3\CMS\Core\TypoScript\TemplateService
      */
-    public $tmpl = null;
+    public $tmpl;
 
     /**
      * @var \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    public $sys_page = null;
+    public $sys_page;
 
     /**
      * The base page-id of the menu.
@@ -208,7 +208,7 @@ abstract class AbstractMenuContentObject
     /**
      * @var ContentObjectRenderer
      */
-    public $WMcObj = null;
+    public $WMcObj;
 
     /**
      * Can be set to contain menu item arrays for sub-levels.

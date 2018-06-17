@@ -50,7 +50,7 @@ class GridDataService implements LoggerAwareInterface
      *
      * @var int
      */
-    protected $currentWorkspace = null;
+    protected $currentWorkspace;
 
     /**
      * Version record information (filtered, sorted and limited)
@@ -76,7 +76,7 @@ class GridDataService implements LoggerAwareInterface
     /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
-    protected $workspacesCache = null;
+    protected $workspacesCache;
 
     /**
      * @var array

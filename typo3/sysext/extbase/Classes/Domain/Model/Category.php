@@ -38,7 +38,7 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \TYPO3\CMS\Extbase\Domain\Model\Category|null
      * @Extbase\ORM\Lazy
      */
-    protected $parent = null;
+    protected $parent;
 
     /**
      * Gets the title.

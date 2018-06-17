@@ -105,7 +105,7 @@ abstract class AbstractTreeView
      *
      * @var array|null
      */
-    public $MOUNTS = null;
+    public $MOUNTS;
 
     /**
      * Database table to get the tree data from.

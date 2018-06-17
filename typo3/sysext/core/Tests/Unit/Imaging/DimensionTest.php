@@ -24,7 +24,7 @@ class DimensionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @var \TYPO3\CMS\Core\Imaging\Dimension
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * @var int

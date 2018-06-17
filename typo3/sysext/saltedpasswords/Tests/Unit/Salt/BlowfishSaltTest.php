@@ -26,7 +26,7 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @var \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt
      */
-    protected $objectInstance = null;
+    protected $objectInstance;
 
     /**
      * Sets up the fixtures for this testcase.

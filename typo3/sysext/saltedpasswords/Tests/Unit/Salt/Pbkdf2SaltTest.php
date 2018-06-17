@@ -28,7 +28,7 @@ class Pbkdf2SaltTest extends UnitTestCase
      *
      * @var Pbkdf2Salt
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Sets up the fixtures for this testcase.

@@ -24,7 +24,7 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface
     /**
      * @var string The response content
      */
-    protected $content = null;
+    protected $content;
 
     /**
      * Overrides and sets the content of the response

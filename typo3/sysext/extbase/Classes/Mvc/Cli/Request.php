@@ -40,7 +40,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface
     /**
      * @var string Name of the extension which is supposed to handle this request.
      */
-    protected $controllerExtensionName = null;
+    protected $controllerExtensionName;
 
     /**
      * The arguments for this request
@@ -69,7 +69,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Cli\Command | NULL
      */
-    protected $command = null;
+    protected $command;
 
     /**
      * @var string

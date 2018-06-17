@@ -22,7 +22,7 @@ class DebugExceptionHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     /**
      * @var \TYPO3\CMS\Core\Error\DebugExceptionHandler|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Sets up this test case.

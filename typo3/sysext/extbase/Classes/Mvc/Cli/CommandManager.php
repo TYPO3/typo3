@@ -29,12 +29,12 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
      */
-    protected $availableCommands = null;
+    protected $availableCommands;
 
     /**
      * @var array
      */
-    protected $shortCommandIdentifiers = null;
+    protected $shortCommandIdentifiers;
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager

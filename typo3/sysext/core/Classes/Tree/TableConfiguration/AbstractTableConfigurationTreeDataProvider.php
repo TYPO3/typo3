@@ -32,7 +32,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
     /**
      * @var \TYPO3\CMS\Backend\Tree\TreeNode
      */
-    protected $treeData = null;
+    protected $treeData;
 
     /**
      * @var string

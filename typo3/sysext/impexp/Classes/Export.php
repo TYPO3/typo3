@@ -121,7 +121,7 @@ class Export extends ImportExport
     /**
      * @var string|null
      */
-    protected $temporaryFilesPathForExport = null;
+    protected $temporaryFilesPathForExport;
 
     /**************************
      * Initialize

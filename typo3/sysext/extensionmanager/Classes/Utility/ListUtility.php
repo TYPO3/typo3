@@ -60,7 +60,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $availableExtensions = null;
+    protected $availableExtensions;
 
     /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility

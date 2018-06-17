@@ -47,12 +47,12 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var \DateTime|null
      */
-    protected $startDateAndTime = null;
+    protected $startDateAndTime;
 
     /**
      * @var \DateTime|null
      */
-    protected $endDateAndTime = null;
+    protected $endDateAndTime;
 
     /**
      * @var string

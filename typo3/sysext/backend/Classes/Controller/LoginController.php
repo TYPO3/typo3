@@ -64,7 +64,7 @@ class LoginController implements LoggerAwareInterface
      *
      * @var string
      */
-    protected $loginProviderIdentifier = null;
+    protected $loginProviderIdentifier;
 
     /**
      * List of registered and sorted login providers

@@ -35,7 +35,7 @@ class RsaEncryptionEncoder implements SingletonInterface
     /**
      * @var PageRenderer
      */
-    protected $pageRenderer = null;
+    protected $pageRenderer;
 
     /**
      * This method is called by the hook constructPostProcess

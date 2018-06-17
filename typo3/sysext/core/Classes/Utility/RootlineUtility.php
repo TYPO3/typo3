@@ -53,7 +53,7 @@ class RootlineUtility
     /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
-    protected static $cache = null;
+    protected static $cache;
 
     /**
      * @var array

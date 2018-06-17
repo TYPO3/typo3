@@ -40,19 +40,19 @@ class Request implements RequestInterface
     /**
      * @var string Name of the extension which is supposed to handle this request. This is the extension name converted to UpperCamelCase
      */
-    protected $controllerExtensionName = null;
+    protected $controllerExtensionName;
 
     /**
      * @var string vendor prefix
      */
-    protected $controllerVendorName = null;
+    protected $controllerVendorName;
 
     /**
      * Subpackage key of the controller which is supposed to handle this request.
      *
      * @var string
      */
-    protected $controllerSubpackageKey = null;
+    protected $controllerSubpackageKey;
 
     /**
      * @var string Object name of the controller which is supposed to handle this request.
@@ -94,14 +94,14 @@ class Request implements RequestInterface
      *
      * @var \TYPO3\CMS\Extbase\Mvc\Request
      */
-    protected $originalRequest = null;
+    protected $originalRequest;
 
     /**
      * If the request is a forward because of an error, these mapping results get filled here.
      *
      * @var \TYPO3\CMS\Extbase\Error\Result
      */
-    protected $originalRequestMappingResults = null;
+    protected $originalRequestMappingResults;
 
     /**
      * Sets the dispatched flag

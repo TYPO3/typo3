@@ -25,7 +25,7 @@ class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
     /**
      * @var AbstractHierarchicalFilesystemDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
-    protected $subject = null;
+    protected $subject;
 
     protected function setUp()
     {

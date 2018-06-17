@@ -24,7 +24,7 @@ class KeypairTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @var Keypair
      */
-    protected $subject = null;
+    protected $subject;
 
     protected function setUp()
     {

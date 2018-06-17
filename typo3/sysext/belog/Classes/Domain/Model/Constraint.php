@@ -79,13 +79,13 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Manual date start
      * @var \DateTime
      */
-    protected $manualDateStart = null;
+    protected $manualDateStart;
 
     /**
      * Manual date stop
      * @var \DateTime
      */
-    protected $manualDateStop = null;
+    protected $manualDateStop;
 
     /**
      * Whether the plugin is called in page context (submodule of Web > Info)

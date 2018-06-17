@@ -53,7 +53,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      *
      * @var string
      */
-    protected $baseUri = null;
+    protected $baseUri;
 
     /** @var array */
     protected $mappingFolderNameToRole = [

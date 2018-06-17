@@ -277,7 +277,7 @@ class FormDefinition extends AbstractCompositeRenderable
      *
      * @var string
      */
-    protected $persistenceIdentifier = null;
+    protected $persistenceIdentifier;
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager

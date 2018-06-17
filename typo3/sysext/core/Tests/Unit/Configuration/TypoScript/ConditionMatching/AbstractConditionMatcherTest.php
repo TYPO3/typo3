@@ -28,7 +28,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
     /**
      * @var ApplicationContext
      */
-    protected $backupApplicationContext = null;
+    protected $backupApplicationContext;
 
     /**
      * @var AbstractConditionMatcher|\PHPUnit_Framework_MockObject_MockObject

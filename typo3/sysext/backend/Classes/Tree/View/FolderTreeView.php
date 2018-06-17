@@ -37,7 +37,7 @@ class FolderTreeView extends AbstractTreeView
      *
      * @var ResourceStorage[]
      */
-    protected $storages = null;
+    protected $storages;
 
     /**
      * @var array

@@ -22,7 +22,7 @@ class FrontendUserGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup
      */
-    protected $subject = null;
+    protected $subject;
 
     protected function setUp()
     {

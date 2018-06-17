@@ -25,12 +25,12 @@ class FontawesomeIconProviderTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * @var Icon
      */
-    protected $icon = null;
+    protected $icon;
 
     /**
      * Set up

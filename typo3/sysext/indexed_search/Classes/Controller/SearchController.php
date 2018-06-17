@@ -78,7 +78,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @var \TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository
      */
-    protected $searchRepository = null;
+    protected $searchRepository;
 
     /**
      * Lexer object

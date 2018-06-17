@@ -38,7 +38,7 @@ class IconFactoryTest extends UnitTestCase
     /**
      * @var IconFactory
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * @var string

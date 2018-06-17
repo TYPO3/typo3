@@ -22,7 +22,7 @@ class GraphicalFunctionsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @var \TYPO3\CMS\Core\Imaging\GraphicalFunctions
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Set up

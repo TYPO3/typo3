@@ -81,7 +81,7 @@ class ImportExportController extends BaseScriptClass
     /**
      * @var LanguageService
      */
-    protected $lang = null;
+    protected $lang;
 
     /**
      * @var string
@@ -124,7 +124,7 @@ class ImportExportController extends BaseScriptClass
     /**
      * @var StandaloneView
      */
-    protected $standaloneView = null;
+    protected $standaloneView;
 
     /**
      * @var bool

@@ -24,49 +24,49 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
      *
      * @var string
      */
-    protected $country = null;
+    protected $country;
 
     /**
      * Keeps hostname of currently processed mirror.
      *
      * @var string
      */
-    protected $host = null;
+    protected $host;
 
     /**
      * Keeps path to mirrored TER of currently processed mirror.
      *
      * @var string
      */
-    protected $path = null;
+    protected $path;
 
     /**
      * Keeps sponsor link of currently processed mirror.
      *
      * @var string
      */
-    protected $sponsorlink = null;
+    protected $sponsorlink;
 
     /**
      * Keeps sponsor logo location of currently processed mirror.
      *
      * @var string
      */
-    protected $sponsorlogo = null;
+    protected $sponsorlogo;
 
     /**
      * Keeps sponsor name of currently processed mirror.
      *
      * @var string
      */
-    protected $sponsorname = null;
+    protected $sponsorname;
 
     /**
      * Keeps title of currently processed mirror.
      *
      * @var string
      */
-    protected $title = null;
+    protected $title;
 
     /**
      * Returns an associative array of all mirror properties.

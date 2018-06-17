@@ -22,7 +22,7 @@ class FileMountTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Model\FileMount
      */
-    protected $subject = null;
+    protected $subject;
 
     protected function setUp()
     {

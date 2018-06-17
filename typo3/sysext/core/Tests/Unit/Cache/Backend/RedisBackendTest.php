@@ -35,14 +35,14 @@ class RedisBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @var \TYPO3\CMS\Core\Cache\Backend\RedisBackend
      */
-    protected $backend = null;
+    protected $backend;
 
     /**
      * Own redis instance used in implementation tests
      *
      * @var Redis
      */
-    protected $redis = null;
+    protected $redis;
 
     /**
      * Set up this testcase

@@ -47,7 +47,7 @@ class ActionController extends AbstractController
      * @var ViewInterface
      * @api
      */
-    protected $view = null;
+    protected $view;
 
     /**
      * @var string

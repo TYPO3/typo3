@@ -143,7 +143,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @var bool
      */
-    protected $isOnline = null;
+    protected $isOnline;
 
     /**
      * @var bool

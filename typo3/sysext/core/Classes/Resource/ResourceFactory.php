@@ -66,7 +66,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      *
      * @var array
      */
-    protected $localDriverStorageCache = null;
+    protected $localDriverStorageCache;
 
     /**
      * @var Dispatcher

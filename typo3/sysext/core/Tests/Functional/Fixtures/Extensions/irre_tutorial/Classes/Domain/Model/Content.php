@@ -27,7 +27,7 @@ class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Hotel>
      */
-    protected $hotels = null;
+    protected $hotels;
 
     /**
      * Initializes this object.

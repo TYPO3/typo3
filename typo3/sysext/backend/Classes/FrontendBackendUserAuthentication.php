@@ -91,12 +91,12 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * @var \TYPO3\CMS\Adminpanel\View\AdminPanelView Instance of admin panel
      * @deprecated since TYPO3v9, property will be removed in TYPO3 v10 - see extension "adminpanel" for new API
      */
-    public $adminPanel = null;
+    public $adminPanel;
 
     /**
      * @var \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController
      */
-    public $frontendEdit = null;
+    public $frontendEdit;
 
     /**
      * @var array

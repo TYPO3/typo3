@@ -27,7 +27,7 @@ class HtmlParserTest extends UnitTestCase
     /**
      * @var \TYPO3\CMS\Core\Html\HtmlParser
      */
-    protected $subject = null;
+    protected $subject;
 
     protected function setUp(): void
     {

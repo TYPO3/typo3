@@ -46,7 +46,7 @@ class JavaScriptEncoder implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var \TYPO3\CMS\Core\Charset\CharsetConverter
      */
-    protected $charsetConversion = null;
+    protected $charsetConversion;
 
     /**
      * Populates the $hex map of non-alphanumeric single-byte characters.

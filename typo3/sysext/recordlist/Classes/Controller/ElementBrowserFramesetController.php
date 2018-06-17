@@ -37,7 +37,7 @@ class ElementBrowserFramesetController
     /**
      * @var PageRenderer
      */
-    protected $pageRenderer = null;
+    protected $pageRenderer;
 
     /**
      * Constructor

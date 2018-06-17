@@ -37,7 +37,7 @@ abstract class AbstractElementBrowser
     /**
      * @var PageRenderer
      */
-    protected $pageRenderer = null;
+    protected $pageRenderer;
 
     /**
      * URL of current request

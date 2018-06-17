@@ -37,22 +37,22 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      */
-    protected $objectManager = null;
+    protected $objectManager;
 
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
      */
-    protected $repositoryRepository = null;
+    protected $repositoryRepository;
 
     /**
      * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
      */
-    protected $listUtility = null;
+    protected $listUtility;
 
     /**
      * @var \TYPO3\CMS\Core\Localization\LanguageService
      */
-    protected $languageService = null;
+    protected $languageService;
 
     /**
      * Default constructor

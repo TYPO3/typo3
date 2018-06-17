@@ -30,7 +30,7 @@ abstract class AbstractContentObject
     /**
      * @var PageRenderer
      */
-    protected $pageRenderer = null;
+    protected $pageRenderer;
 
     /**
      * Default constructor.

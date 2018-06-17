@@ -58,7 +58,7 @@ class IndexSearchRepository
      *
      * @var string
      */
-    protected $sections = null;
+    protected $sections;
 
     /**
      * Search type
@@ -66,7 +66,7 @@ class IndexSearchRepository
      *
      * @var string
      */
-    protected $searchType = null;
+    protected $searchType;
 
     /**
      * Language uid
@@ -74,7 +74,7 @@ class IndexSearchRepository
      *
      * @var int
      */
-    protected $languageUid = null;
+    protected $languageUid;
 
     /**
      * Media type
@@ -82,7 +82,7 @@ class IndexSearchRepository
      *
      * @var int
      */
-    protected $mediaType = null;
+    protected $mediaType;
 
     /**
      * Sort order
@@ -90,7 +90,7 @@ class IndexSearchRepository
      *
      * @var string
      */
-    protected $sortOrder = null;
+    protected $sortOrder;
 
     /**
      * Descending sort order flag
@@ -98,7 +98,7 @@ class IndexSearchRepository
      *
      * @var bool
      */
-    protected $descendingSortOrderFlag = null;
+    protected $descendingSortOrderFlag;
 
     /**
      * Result page pointer

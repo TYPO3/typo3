@@ -183,7 +183,7 @@ class MiddlewareDispatcherTest extends UnitTestCase
         $dispatcher = new MiddlewareDispatcher($kernel);
 
         $dispatcher->add(new class($dispatcher) implements MiddlewareInterface {
-            private $dispatcher = null;
+            private $dispatcher;
 
             public function __construct(RequestHandlerInterface $dispatcher)
             {

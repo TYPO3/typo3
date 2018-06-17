@@ -26,12 +26,12 @@ class SvgIconProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * @var Icon
      */
-    protected $icon = null;
+    protected $icon;
 
     /**
      * Set up

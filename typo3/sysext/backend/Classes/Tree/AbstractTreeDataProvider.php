@@ -24,7 +24,7 @@ abstract class AbstractTreeDataProvider
      *
      * @var \TYPO3\CMS\Backend\Tree\TreeNode
      */
-    protected $rootNode = null;
+    protected $rootNode;
 
     /**
      * Returns the root node

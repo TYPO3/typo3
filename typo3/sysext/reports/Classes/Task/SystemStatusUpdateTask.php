@@ -32,7 +32,7 @@ class SystemStatusUpdateTask extends AbstractTask
      *
      * @var string
      */
-    protected $notificationEmail = null;
+    protected $notificationEmail;
 
     /**
      * Checkbox for to send all types of notification, not only problems

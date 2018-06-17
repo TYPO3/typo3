@@ -88,7 +88,7 @@ class GeneralUtility
      *
      * @var \TYPO3\CMS\Core\Core\ApplicationContext
      */
-    protected static $applicationContext = null;
+    protected static $applicationContext;
 
     /**
      * IDNA string cache
@@ -102,7 +102,7 @@ class GeneralUtility
      *
      * @var \Mso\IdnaConvert\IdnaConvert
      */
-    protected static $idnaConverter = null;
+    protected static $idnaConverter;
 
     /**
      * A list of supported CGI server APIs

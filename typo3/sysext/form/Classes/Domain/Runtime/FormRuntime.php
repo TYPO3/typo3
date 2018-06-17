@@ -116,7 +116,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      *
      * @var \TYPO3\CMS\Form\Domain\Model\FormElements\Page
      */
-    protected $currentPage = null;
+    protected $currentPage;
 
     /**
      * Reference to the page which has been shown on the last request (i.e.
@@ -124,7 +124,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      *
      * @var \TYPO3\CMS\Form\Domain\Model\FormElements\Page
      */
-    protected $lastDisplayedPage = null;
+    protected $lastDisplayedPage;
 
     /**
      * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService

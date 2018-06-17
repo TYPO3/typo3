@@ -69,7 +69,7 @@ class CommandUtility
      *
      * @var array
      */
-    protected static $paths = null;
+    protected static $paths;
 
     /**
      * Wrapper function for php exec function

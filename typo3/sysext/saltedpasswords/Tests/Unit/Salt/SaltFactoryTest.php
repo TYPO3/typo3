@@ -27,7 +27,7 @@ class SaltFactoryTest extends UnitTestCase
      *
      * @var \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface
      */
-    protected $objectInstance = null;
+    protected $objectInstance;
 
     /**
      * Sets up the fixtures for this testcase.

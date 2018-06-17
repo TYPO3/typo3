@@ -42,12 +42,12 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
-    protected $frontendControllerMock = null;
+    protected $frontendControllerMock;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|TemplateService
      */
-    protected $templateServiceMock = null;
+    protected $templateServiceMock;
 
     /**
      * Set up

@@ -35,7 +35,7 @@ class StandaloneView extends AbstractTemplateView
     /**
      * @var ObjectManager|null
      */
-    protected $objectManager = null;
+    protected $objectManager;
 
     /**
      * Constructor

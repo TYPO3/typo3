@@ -42,22 +42,22 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @var FluidTemplateContentObject|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $contentObjectRenderer = null;
+    protected $contentObjectRenderer;
 
     /**
      * @var StandaloneView|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $standaloneView = null;
+    protected $standaloneView;
 
     /**
      * @var Request|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $request = null;
+    protected $request;
 
     /**
      * Set up

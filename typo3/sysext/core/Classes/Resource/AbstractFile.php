@@ -38,7 +38,7 @@ abstract class AbstractFile implements FileInterface
      *
      * @var ResourceStorage
      */
-    protected $storage = null;
+    protected $storage;
 
     /**
      * The identifier of this file to identify it on the storage.

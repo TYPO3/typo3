@@ -28,7 +28,7 @@ class HelpToolbarItem implements ToolbarItemInterface
     /**
      * @var BackendModule
      */
-    protected $helpModuleMenu = null;
+    protected $helpModuleMenu;
 
     /**
      * Constructor

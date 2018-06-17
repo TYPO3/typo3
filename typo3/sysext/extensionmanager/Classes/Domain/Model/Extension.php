@@ -147,7 +147,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var \SplObjectStorage<\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency>
      */
-    protected $dependencies = null;
+    protected $dependencies;
 
     /**
      * @internal

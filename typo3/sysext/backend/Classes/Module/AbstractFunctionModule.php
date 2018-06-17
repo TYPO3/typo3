@@ -75,7 +75,7 @@ abstract class AbstractFunctionModule
     /**
      * @var BaseScriptClass
      */
-    public $extObj = null;
+    public $extObj;
 
     /**
      * Can be hardcoded to the name of a locallang.xlf file (from the same directory as the class file) to use/load
@@ -107,7 +107,7 @@ abstract class AbstractFunctionModule
     /**
      * @var PageRenderer
      */
-    protected $pageRenderer = null;
+    protected $pageRenderer;
 
     /**
      * Initialize the object

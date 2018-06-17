@@ -71,7 +71,7 @@ class Result
     /**
      * @var Result
      */
-    protected $parent = null;
+    protected $parent;
 
     /**
      * Injects the parent result and propagates the

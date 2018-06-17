@@ -30,12 +30,12 @@ abstract class AbstractNode
     /**
      * @var string|null Target permissions for unix, eg. '2775' or '0664' (4 characters string)
      */
-    protected $targetPermission = null;
+    protected $targetPermission;
 
     /**
      * @var NodeInterface|null Parent object of this structure node
      */
-    protected $parent = null;
+    protected $parent;
 
     /**
      * @var array Directories and root may have children, files and link always empty array

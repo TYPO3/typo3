@@ -26,7 +26,7 @@ class Md5SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @var \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt
      */
-    protected $objectInstance = null;
+    protected $objectInstance;
 
     /**
      * Sets up the fixtures for this testcase.

@@ -37,7 +37,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @var AbstractMenuContentObject
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Set up this testcase

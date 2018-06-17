@@ -33,14 +33,14 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
      *
      * @var \TYPO3\CMS\Backend\Tree\TreeNode
      */
-    protected $parentNode = null;
+    protected $parentNode;
 
     /**
      * Child Nodes
      *
      * @var \TYPO3\CMS\Backend\Tree\TreeNodeCollection
      */
-    protected $childNodes = null;
+    protected $childNodes;
 
     /**
      * Constructor

@@ -189,7 +189,7 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @var array|null
      */
-    protected $lnToScript = null;
+    protected $lnToScript;
 
     /**
      * @var array

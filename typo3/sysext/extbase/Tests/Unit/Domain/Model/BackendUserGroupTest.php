@@ -22,7 +22,7 @@ class BackendUserGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup
      */
-    protected $subject = null;
+    protected $subject;
 
     protected function setUp()
     {

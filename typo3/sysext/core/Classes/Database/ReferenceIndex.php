@@ -149,7 +149,7 @@ class ReferenceIndex implements LoggerAwareInterface
      *
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
-    protected $runtimeCache = null;
+    protected $runtimeCache;
 
     /**
      * Enables $runtimeCache and $recordCache

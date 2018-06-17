@@ -25,7 +25,7 @@ abstract class AbstractEncodingViewHelper extends AbstractViewHelper
     /**
      * @var string
      */
-    protected static $defaultEncoding = null;
+    protected static $defaultEncoding;
 
     /**
      * Resolve the default encoding. If none is set in Frontend or Backend, uses UTF-8.

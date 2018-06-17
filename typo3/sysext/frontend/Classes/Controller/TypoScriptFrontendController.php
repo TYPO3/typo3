@@ -130,7 +130,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @var array|null
      */
-    protected $originalMountPointPage = null;
+    protected $originalMountPointPage;
 
     /**
      * Gets set when we are processing a page of type shortcut in the early stages
@@ -140,7 +140,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var array|null
      * @see checkTranslatedShortcut()
      */
-    protected $originalShortcutPage = null;
+    protected $originalShortcutPage;
 
     /**
      * sys_page-object, pagefunctions
@@ -295,7 +295,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @var TemplateService
      */
-    public $tmpl = null;
+    public $tmpl;
 
     /**
      * Is set to the time-to-live time of cached pages. If FALSE, default is
@@ -716,7 +716,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * @var PageRenderer
      */
-    protected $pageRenderer = null;
+    protected $pageRenderer;
 
     /**
      * The page cache object, use this to save pages to the cache and to

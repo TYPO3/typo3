@@ -47,14 +47,14 @@ class Argument
      *
      * @var string
      */
-    protected $shortName = null;
+    protected $shortName;
 
     /**
      * Data type of this argument's value
      *
      * @var string
      */
-    protected $dataType = null;
+    protected $dataType;
 
     /**
      * TRUE if this argument is required
@@ -68,21 +68,21 @@ class Argument
      *
      * @var mixed
      */
-    protected $value = null;
+    protected $value;
 
     /**
      * Default value. Used if argument is optional.
      *
      * @var mixed
      */
-    protected $defaultValue = null;
+    protected $defaultValue;
 
     /**
      * A custom validator, used supplementary to the base validation
      *
      * @var \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
      */
-    protected $validator = null;
+    protected $validator;
 
     /**
      * The validation results. This can be asked if the argument has errors.

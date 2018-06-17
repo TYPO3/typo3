@@ -45,7 +45,7 @@ class Bootstrap
     /**
      * @var \TYPO3\CMS\Core\Core\Bootstrap
      */
-    protected static $instance = null;
+    protected static $instance;
 
     /**
      * @var array List of early instances

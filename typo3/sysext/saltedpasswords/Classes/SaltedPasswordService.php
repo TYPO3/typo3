@@ -52,7 +52,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
      *
      * @var \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface
      */
-    protected $objInstanceSaltedPW = null;
+    protected $objInstanceSaltedPW;
 
     /**
      * Indicates whether the salted password authentication has failed.

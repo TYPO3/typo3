@@ -33,7 +33,7 @@ class CleanerTaskTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|CleanerTask
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * sets up an instance of \TYPO3\CMS\Recycler\Task\CleanerTask

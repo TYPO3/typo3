@@ -30,7 +30,7 @@ class SaltFactory
      *
      * @var SaltInterface
      */
-    protected static $instance = null;
+    protected static $instance;
 
     /**
      * Returns list of all registered hashing methods. Used eg. in

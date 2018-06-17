@@ -404,7 +404,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * @var File Current file objects (during iterations over files)
      */
-    protected $currentFile = null;
+    protected $currentFile;
 
     /**
      * Set to TRUE by doConvertToUserIntObject() if USER object wants to become USER_INT

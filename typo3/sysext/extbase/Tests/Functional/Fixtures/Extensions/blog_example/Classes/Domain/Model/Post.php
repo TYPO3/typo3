@@ -24,7 +24,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var \ExtbaseTeam\BlogExample\Domain\Model\Blog
      */
-    protected $blog = null;
+    protected $blog;
 
     /**
      * @var string
@@ -35,17 +35,17 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var \DateTime
      */
-    protected $date = null;
+    protected $date;
 
     /**
      * @var \ExtbaseTeam\BlogExample\Domain\Model\Person
      */
-    protected $author = null;
+    protected $author;
 
     /**
      * @var \ExtbaseTeam\BlogExample\Domain\Model\Person
      */
-    protected $reviewer = null;
+    protected $reviewer;
 
     /**
      * @var string
@@ -56,25 +56,25 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Tag>
      */
-    protected $tags = null;
+    protected $tags;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>
      */
-    protected $categories = null;
+    protected $categories;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Comment>
      * @Extbase\ORM\Lazy
      * @Extbase\ORM\Cascade("remove")
      */
-    protected $comments = null;
+    protected $comments;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Post>
      * @Extbase\ORM\Lazy
      */
-    protected $relatedPosts = null;
+    protected $relatedPosts;
 
     /**
      * Constructs this post

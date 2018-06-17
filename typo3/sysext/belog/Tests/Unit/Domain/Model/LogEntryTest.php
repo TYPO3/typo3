@@ -22,7 +22,7 @@ class LogEntryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @var \TYPO3\CMS\Belog\Domain\Model\LogEntry
      */
-    protected $subject = null;
+    protected $subject;
 
     protected function setUp()
     {

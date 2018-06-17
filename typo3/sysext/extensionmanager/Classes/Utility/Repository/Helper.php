@@ -53,7 +53,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var \TYPO3\CMS\Extensionmanager\Domain\Model\Repository
      */
-    protected $repository = null;
+    protected $repository;
 
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository

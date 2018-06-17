@@ -40,7 +40,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var \Doctrine\Instantiator\InstantiatorInterface
      */
-    protected $instantiator = null;
+    protected $instantiator;
 
     /**
      * holds references of singletons

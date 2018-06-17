@@ -46,7 +46,7 @@ class BackendFactory
      *
      * @var AbstractBackend
      */
-    protected static $selectedBackend = null;
+    protected static $selectedBackend;
 
     /**
      * Obtains a backend. This function will return a non-abstract class, which

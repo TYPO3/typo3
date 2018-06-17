@@ -62,7 +62,7 @@ class TranslationService implements SingletonInterface
      *
      * @var string
      */
-    protected $languageKey = null;
+    protected $languageKey;
 
     /**
      * Pointer to alternative fall-back language to use
@@ -74,7 +74,7 @@ class TranslationService implements SingletonInterface
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
-    protected $configurationManager = null;
+    protected $configurationManager;
 
     /**
      * Return TranslationService as singleton

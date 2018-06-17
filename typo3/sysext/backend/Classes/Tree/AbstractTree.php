@@ -24,14 +24,14 @@ abstract class AbstractTree
      *
      * @var \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
      */
-    protected $dataProvider = null;
+    protected $dataProvider;
 
     /**
      * Tree Node Decorator
      *
      * @var \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
      */
-    protected $nodeRenderer = null;
+    protected $nodeRenderer;
 
     /**
      * @param \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider $dataProvider

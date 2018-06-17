@@ -22,7 +22,7 @@ class ProductionExceptionHandlerTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @var \TYPO3\CMS\Core\Error\ProductionExceptionHandler|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Sets up this test case.

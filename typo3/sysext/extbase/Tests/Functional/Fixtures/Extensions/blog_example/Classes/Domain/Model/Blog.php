@@ -58,12 +58,12 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @Extbase\ORM\Lazy
      * @Extbase\ORM\Cascade("remove")
      */
-    protected $posts = null;
+    protected $posts;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>
      */
-    protected $categories = null;
+    protected $categories;
 
     /**
      * The blog's administrator
@@ -71,7 +71,7 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \ExtbaseTeam\BlogExample\Domain\Model\Administrator
      * @Extbase\ORM\Lazy
      */
-    protected $administrator = null;
+    protected $administrator;
 
     /**
      * Constructs a new Blog

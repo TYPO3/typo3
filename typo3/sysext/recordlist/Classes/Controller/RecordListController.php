@@ -178,7 +178,7 @@ class RecordListController
     /**
      * @var PageRenderer
      */
-    protected $pageRenderer = null;
+    protected $pageRenderer;
 
     /**
      * @var IconFactory

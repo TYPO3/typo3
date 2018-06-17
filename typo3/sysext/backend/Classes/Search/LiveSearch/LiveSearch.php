@@ -78,7 +78,7 @@ class LiveSearch
     /**
      * @var \TYPO3\CMS\Backend\Search\LiveSearch\QueryParser
      */
-    protected $queryParser = null;
+    protected $queryParser;
 
     /**
      * Initialize access settings

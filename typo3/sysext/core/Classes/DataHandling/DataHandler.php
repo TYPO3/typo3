@@ -669,7 +669,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
      */
-    protected $outerMostInstance = null;
+    protected $outerMostInstance;
 
     /**
      * Internal cache for collecting records that should trigger cache clearing
@@ -691,7 +691,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
-    protected $runtimeCache = null;
+    protected $runtimeCache;
 
     /**
      * Prefix for the cache entries of nested element calls since the runtimeCache has a global scope.

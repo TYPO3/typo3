@@ -22,7 +22,7 @@ class ConstraintTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @var \TYPO3\CMS\Belog\Domain\Model\Constraint
      */
-    protected $subject = null;
+    protected $subject;
 
     protected function setUp()
     {

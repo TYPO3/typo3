@@ -27,12 +27,12 @@ class QueryFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory
      */
-    protected $queryFactory = null;
+    protected $queryFactory;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $dataMapper = null;
+    protected $dataMapper;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit_Framework_MockObject_MockObject

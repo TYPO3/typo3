@@ -29,7 +29,7 @@ class RsaAuthService extends AuthenticationService
     /**
      * @var RsaEncryptionDecoder
      */
-    protected $rsaEncryptionDecoder = null;
+    protected $rsaEncryptionDecoder;
 
     /**
      * Standard extension key for the service

@@ -47,12 +47,12 @@ class FilesContentObjectTest extends UnitTestCase
     /**
      * @var \TYPO3\CMS\Frontend\ContentObject\FilesContentObject|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
-    protected $tsfe = null;
+    protected $tsfe;
 
     /**
      * Set up

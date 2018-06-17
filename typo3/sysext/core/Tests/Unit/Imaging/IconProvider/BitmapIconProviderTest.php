@@ -25,12 +25,12 @@ class BitmapIconProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * @var \TYPO3\CMS\Core\Imaging\Icon
      */
-    protected $icon = null;
+    protected $icon;
 
     /**
      * Set up

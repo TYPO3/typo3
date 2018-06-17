@@ -29,7 +29,7 @@ class FileNode extends AbstractNode implements NodeInterface
     /**
      * @var string|null Target content of file. If NULL, target content is ignored
      */
-    protected $targetContent = null;
+    protected $targetContent;
 
     /**
      * Implement constructor

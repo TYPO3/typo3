@@ -52,7 +52,7 @@ class LocalizationUtility
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
-    protected static $configurationManager = null;
+    protected static $configurationManager;
 
     /**
      * Returns the localized label of the LOCAL_LANG key, $key.
