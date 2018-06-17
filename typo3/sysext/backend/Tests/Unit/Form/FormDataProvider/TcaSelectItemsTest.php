@@ -1202,7 +1202,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $result = (new TcaSelectItems)->addData($input);
 
-        $result['processedTca']['columns']['aField']['config']['items'][0][2] = str_replace([CR, LF, TAB], ['', '', ''], $result['processedTca']['columns']['aField']['config']['items'][0][2]);
+        $result['processedTca']['columns']['aField']['config']['items'][0][2] = str_replace([CR, LF, TAB], '', $result['processedTca']['columns']['aField']['config']['items'][0][2]);
         $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 

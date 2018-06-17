@@ -106,8 +106,7 @@ class RenderViewHelper extends AbstractViewHelper
         if (isset($this->arguments['partial'])) {
             $path = $this->renderingContext->getTemplatePaths()->getPartialPathAndFilename($partial);
             $path = PathUtility::stripPathSitePrefix($path);
-            $path = str_replace('typo3conf/ext/', 'EXT:', $path);
-            $path = str_replace('typo3/sysext/', 'EXT:', $path);
+            $path = str_replace(['typo3conf/ext/', 'typo3/sysext/'], 'EXT:', $path);
             $debugInfo['Partial'] = 'Partial: ' . $path;
         }
         if (isset($this->arguments['section'])) {

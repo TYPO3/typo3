@@ -291,7 +291,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         } else {
             $label = $this->getLanguageService()->sL(trim($string));
         }
-        $label = str_replace('"', '\\"', str_replace('\\\'', '\'', $label));
+        $label = str_replace(['\\\'', '"'], ['\'', '\\"'], $label);
         return $JScharCode ? GeneralUtility::quoteJSvalue($label) : $label;
     }
 

@@ -168,9 +168,8 @@ class LocalConfigurationValueService
 
             if ($dataType === 'multiline') {
                 // Force Unix line breaks in text areas
-                $value = str_replace(CR, '', $value);
                 // Preserve line breaks
-                $value = str_replace(LF, '\' . LF . \'', $value);
+                $value = str_replace([CR, LF], ['', '\' . LF . \''], $value);
             }
 
             if ($dataType === 'bool') {

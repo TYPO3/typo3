@@ -734,9 +734,9 @@ class TableController extends AbstractWizardController
         foreach ($this->TABLECFG['c'] as $a => $value) {
             foreach ($this->TABLECFG['c'][$a] as $b => $value2) {
                 $this->TABLECFG['c'][$a][$b] = str_replace(
-                    LF,
-                    '<br />',
-                    str_replace(CR, '', $this->TABLECFG['c'][$a][$b])
+                    [CR, LF],
+                    ['', '<br />'],
+                    $this->TABLECFG['c'][$a][$b]
                 );
             }
         }

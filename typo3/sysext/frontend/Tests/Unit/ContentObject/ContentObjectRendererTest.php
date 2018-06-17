@@ -1614,10 +1614,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:rootLine');
-        $cleanedResult = str_replace("\r", '', $result);
-        $cleanedResult = str_replace("\n", '', $cleanedResult);
-        $cleanedResult = str_replace("\t", '', $cleanedResult);
-        $cleanedResult = str_replace(' ', '', $cleanedResult);
+        $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
 
         $this->assertEquals($expectedResult, $cleanedResult);
     }
@@ -1639,10 +1636,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:fullRootLine');
-        $cleanedResult = str_replace("\r", '', $result);
-        $cleanedResult = str_replace("\n", '', $cleanedResult);
-        $cleanedResult = str_replace("\t", '', $cleanedResult);
-        $cleanedResult = str_replace(' ', '', $cleanedResult);
+        $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
 
         $this->assertEquals($expectedResult, $cleanedResult);
     }
@@ -1662,10 +1656,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:data');
-        $cleanedResult = str_replace("\r", '', $result);
-        $cleanedResult = str_replace("\n", '', $cleanedResult);
-        $cleanedResult = str_replace("\t", '', $cleanedResult);
-        $cleanedResult = str_replace(' ', '', $cleanedResult);
+        $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
 
         $this->assertEquals($expectedResult, $cleanedResult);
     }
@@ -1685,10 +1676,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:register');
-        $cleanedResult = str_replace("\r", '', $result);
-        $cleanedResult = str_replace("\n", '', $cleanedResult);
-        $cleanedResult = str_replace("\t", '', $cleanedResult);
-        $cleanedResult = str_replace(' ', '', $cleanedResult);
+        $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
 
         $this->assertEquals($expectedResult, $cleanedResult);
     }
@@ -1707,10 +1695,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:page');
-        $cleanedResult = str_replace("\r", '', $result);
-        $cleanedResult = str_replace("\n", '', $cleanedResult);
-        $cleanedResult = str_replace("\t", '', $cleanedResult);
-        $cleanedResult = str_replace(' ', '', $cleanedResult);
+        $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
 
         $this->assertEquals($expectedResult, $cleanedResult);
     }

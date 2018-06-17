@@ -189,8 +189,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
                 // Replace the MySQL backtick quote character with the actual quote character for the DBMS,
                 if ($field === 'SELECT') {
                     $quoteChar = $databasePlatform->getIdentifierQuoteCharacter();
-                    $value = str_replace('[', $quoteChar, $value);
-                    $value = str_replace(']', $quoteChar, $value);
+                    $value = str_replace(['[', ']'], [$quoteChar, $quoteChar], $value);
                 }
             }
             $this->assertEquals($value, $result[$field]);

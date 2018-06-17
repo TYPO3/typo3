@@ -431,9 +431,8 @@ class ArrayUtility
                 $lines .= ',' . LF;
             } elseif (is_string($value)) {
                 // Quote \ to \\
-                $stringContent = str_replace('\\', '\\\\', $value);
                 // Quote ' to \'
-                $stringContent = str_replace('\'', '\\\'', $stringContent);
+                $stringContent = str_replace(['\\', '\''], ['\\\\', '\\\''], $value);
                 $lines .= '\'' . $stringContent . '\'' . ',' . LF;
             } else {
                 throw new \RuntimeException('Objects are not supported', 1342294987);

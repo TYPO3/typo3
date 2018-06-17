@@ -75,8 +75,7 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
         if (is_string($source) && $configuration !== null) {
             $thousandsSeparator = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_THOUSANDS_SEPARATOR);
             $decimalPoint = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_DECIMAL_POINT);
-            $source = str_replace($thousandsSeparator, '', $source);
-            $source = str_replace($decimalPoint, '.', $source);
+            $source = str_replace([$thousandsSeparator, $decimalPoint], ['', '.'], $source);
         }
 
         if (!is_numeric($source)) {

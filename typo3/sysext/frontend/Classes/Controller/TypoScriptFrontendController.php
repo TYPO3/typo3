@@ -3045,8 +3045,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 		If this message does not disappear within ' . $seconds . ' seconds, please reload.';
             $message = $this->config['config']['message_page_is_being_generated'];
             if ((string)$message !== '') {
-                $message = str_replace('###TITLE###', $title, $message);
-                $message = str_replace('###REQUEST_URI###', $request_uri, $message);
+                $message = str_replace(['###TITLE###', '###REQUEST_URI###'], [$title, $request_uri], $message);
             } else {
                 $message = $stdMsg;
             }
