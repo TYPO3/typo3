@@ -248,21 +248,6 @@ class BlowfishSalt extends Md5Salt
     }
 
     /**
-     * Method determines if a given string is a valid salted hashed password.
-     *
-     * @param string $saltedPW String to check
-     * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
-     */
-    public function isValidSaltedPW(string $saltedPW): bool
-    {
-        $isValid = !strncmp($this->getSetting(), $saltedPW, strlen($this->getSetting()));
-        if ($isValid) {
-            $isValid = $this->isValidSalt($saltedPW);
-        }
-        return $isValid;
-    }
-
-    /**
      * Method sets log2 number of iterations for password stretching.
      *
      * @param int $hashCount log2 number of iterations for password stretching to set

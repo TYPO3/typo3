@@ -61,17 +61,6 @@ class ActionMenuViewHelper extends AbstractTagBasedViewHelper
     protected $childNodes = [];
 
     /**
-     * Setter for ChildNodes - as defined in ChildNodeAccessInterface
-     *
-     * @param array $childNodes Child nodes of this syntax tree node
-     * @api
-     */
-    public function setChildNodes(array $childNodes)
-    {
-        $this->childNodes = $childNodes;
-    }
-
-    /**
      * Initialize arguments.
      *
      * @api

@@ -138,16 +138,6 @@ class MockPlatform extends AbstractPlatform
     }
 
     /**
-     * Gets the default length of a varchar field.
-     *
-     * @return int
-     */
-    public function getVarcharDefaultLength()
-    {
-        return 255;
-    }
-
-    /**
      * Gets the name of the platform.
      *
      * @return string

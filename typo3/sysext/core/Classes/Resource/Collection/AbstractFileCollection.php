@@ -71,16 +71,6 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
     }
 
     /**
-     * Sets the title.
-     *
-     * @param string $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    /**
      * Return the key of the current element
      *
      * @return string

@@ -127,14 +127,6 @@ class DocumentController extends ActionController
     }
 
     /**
-     * @param Dispatcher $signalSlotDispatcher
-     */
-    public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher)
-    {
-        $this->signalSlotDispatcher = $signalSlotDispatcher;
-    }
-
-    /**
      * Lists the available documents.
      */
     public function listAction()

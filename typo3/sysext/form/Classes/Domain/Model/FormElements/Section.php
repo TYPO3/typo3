@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
-use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 
 /**
  * A Section, being part of a bigger Page
@@ -125,50 +124,6 @@ class Section extends AbstractSection implements FormElementInterface
         } else {
             $this->properties[$key] = $value;
         }
-    }
-
-    /**
-     * Set the rendering option $key to $value.
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return mixed
-     * @api
-     */
-    public function setRenderingOption(string $key, $value)
-    {
-        if (is_array($value) && isset($this->renderingOptions[$key]) && is_array($this->renderingOptions[$key])) {
-            ArrayUtility::mergeRecursiveWithOverrule($this->renderingOptions[$key], $value);
-            $this->renderingOptions[$key] = ArrayUtility::removeNullValuesRecursive($this->renderingOptions[$key]);
-        } elseif ($value === null) {
-            unset($this->renderingOptions[$key]);
-        } else {
-            $this->renderingOptions[$key] = $value;
-        }
-    }
-
-    /**
-     * Get all validators on the element
-     *
-     * @return \SplObjectStorage
-     * @internal
-     */
-    public function getValidators(): \SplObjectStorage
-    {
-        $formDefinition = $this->getRootForm();
-        return $formDefinition->getProcessingRule($this->getIdentifier())->getValidators();
-    }
-
-    /**
-     * Add a validator to the element
-     *
-     * @param ValidatorInterface $validator
-     * @api
-     */
-    public function addValidator(ValidatorInterface $validator)
-    {
-        $formDefinition = $this->getRootForm();
-        $formDefinition->getProcessingRule($this->getIdentifier())->addValidator($validator);
     }
 
     /**

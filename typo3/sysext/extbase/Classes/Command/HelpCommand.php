@@ -42,16 +42,6 @@ class HelpCommand extends \Symfony\Component\Console\Command\HelpCommand
     }
 
     /**
-     * Sets the command.
-     *
-     * @param Command $command The command to set
-     */
-    public function setCommand(Command $command)
-    {
-        $this->command = $command;
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)

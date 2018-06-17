@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 
 /**
@@ -70,19 +69,5 @@ class ActionMenuItemGroupViewHelper extends ActionMenuViewHelper
         }
         $this->tag->setContent($options);
         return $this->tag->render();
-    }
-
-    /**
-     * @param string $argumentsName
-     * @param string $closureName
-     * @param string $initializationPhpCode
-     * @param ViewHelperNode $node
-     * @param TemplateCompiler $compiler
-     */
-    public function compile($argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler)
-    {
-        // @TODO: replace with a true compiling method to make compilable!
-        $compiler->disable();
-        return null;
     }
 }

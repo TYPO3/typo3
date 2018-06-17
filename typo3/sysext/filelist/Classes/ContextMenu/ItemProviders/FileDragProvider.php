@@ -48,16 +48,6 @@ class FileDragProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abst
 
     /**
      * @param string $itemName
-     * @param string $type
-     * @return bool
-     */
-    protected function canRender(string $itemName, string $type): bool
-    {
-        return true;
-    }
-
-    /**
-     * @param string $itemName
      * @return array
      */
     protected function getAdditionalAttributes(string $itemName): array

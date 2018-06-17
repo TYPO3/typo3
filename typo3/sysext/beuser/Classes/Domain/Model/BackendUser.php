@@ -80,22 +80,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
     }
 
     /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    }
-
-    /**
      * @param string $fileMountPoints
      */
     public function setFileMountPoints($fileMountPoints)
