@@ -4477,10 +4477,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // In case the record to be moved turns out to be an offline version,
-        // we have to find the live version and work on that one (this case
-        // happens for pages with "branch" versioning type)
-        // @deprecated note: as "branch" versioning is deprecated since TYPO3 4.2, this
-        // functionality will be removed in TYPO3 4.7 (note by benni: a hook could replace this)
+        // we have to find the live version and work on that one.
         if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $uid, 'uid')) {
             $uid = $lookForLiveVersion['uid'];
         }
@@ -8459,9 +8456,6 @@ class DataHandler implements LoggerAwareInterface
                 ->execute()
                 ->fetch();
             // Look, if the record UID happens to be an offline record. If so, find its live version.
-            // Offline uids will be used when a page is versionized as "branch" so this is when we
-            // must correct - otherwise a pid of "-1" and a wrong sort-row number
-            // is returned which we don't want.
             if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, abs($pid), 'pid')) {
                 $row = $lookForLiveVersion;
             }
