@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
+use TYPO3\CMS\Core\Utility\Exception\NotImplementedMethodException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -2085,11 +2086,11 @@ class ResourceStorage implements ResourceStorageInterface
      * @param string $newFolderName
      *
      * @return bool
-     * @throws \RuntimeException
+     * @throws NotImplementedMethodException
      */
     protected function moveFolderBetweenStorages(Folder $folderToMove, Folder $targetParentFolder, $newFolderName)
     {
-        throw new \RuntimeException('Not yet implemented', 1476046361);
+        throw new NotImplementedMethodException('Not yet implemented', 1476046361);
     }
 
     /**
@@ -2142,11 +2143,11 @@ class ResourceStorage implements ResourceStorageInterface
      * @param string $newFolderName
      *
      * @return bool
-     * @throws \RuntimeException
+     * @throws NotImplementedMethodException
      */
     protected function copyFolderBetweenStorages(Folder $folderToCopy, Folder $targetParentFolder, $newFolderName)
     {
-        throw new \RuntimeException('Not yet implemented.', 1476046386);
+        throw new NotImplementedMethodException('Not yet implemented.', 1476046386);
     }
 
     /**

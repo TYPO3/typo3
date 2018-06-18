@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
+use TYPO3\CMS\Core\Utility\Exception\NotImplementedMethodException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -684,7 +685,7 @@ class ExtendedFileUtility extends BasicFileUtility
             } catch (ExistingTargetFileNameException $e) {
                 $this->writeLog(2, 1, 112, 'File "%s" already exists in folder "%s"!', [$sourceFileObject->getIdentifier(), $targetFolderObject->getIdentifier()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.FileAlreadyExistsInFolder', [$sourceFileObject->getIdentifier(), $targetFolderObject->getIdentifier()]);
-            } catch (\BadMethodCallException $e) {
+            } catch (NotImplementedMethodException $e) {
                 $this->writeLog(3, 1, 128, 'The function to copy a file between storages is not yet implemented', []);
                 $this->addMessageToFlashMessageQueue('FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented');
             } catch (\RuntimeException $e) {
@@ -715,7 +716,7 @@ class ExtendedFileUtility extends BasicFileUtility
             } catch (ExistingTargetFolderException $e) {
                 $this->writeLog(2, 1, 123, 'Target "%s" already exists!', [$targetFolderObject->getIdentifier()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.TargetAlreadyExists', [$targetFolderObject->getIdentifier()]);
-            } catch (\BadMethodCallException $e) {
+            } catch (NotImplementedMethodException $e) {
                 $this->writeLog(3, 1, 129, 'The function to copy a folder between storages is not yet implemented', []);
                 $this->addMessageToFlashMessageQueue('FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented');
             } catch (\RuntimeException $e) {
@@ -779,7 +780,7 @@ class ExtendedFileUtility extends BasicFileUtility
             } catch (ExistingTargetFileNameException $e) {
                 $this->writeLog(3, 1, 112, 'File "%s" already exists in folder "%s"!', [$sourceFileObject->getIdentifier(), $targetFolderObject->getIdentifier()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.FileAlreadyExistsInFolder', [$sourceFileObject->getIdentifier(), $targetFolderObject->getIdentifier()]);
-            } catch (\BadMethodCallException $e) {
+            } catch (NotImplementedMethodException $e) {
                 $this->writeLog(3, 1, 126, 'The function to move a file between storages is not yet implemented', []);
                 $this->addMessageToFlashMessageQueue('FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented');
             } catch (\RuntimeException $e) {
@@ -814,7 +815,7 @@ class ExtendedFileUtility extends BasicFileUtility
             } catch (ExistingTargetFolderException $e) {
                 $this->writeLog(3, 1, 123, 'Target "%s" already exists!', [$targetFolderObject->getIdentifier()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.TargetAlreadyExists', [$targetFolderObject->getIdentifier()]);
-            } catch (\BadMethodCallException $e) {
+            } catch (NotImplementedMethodException $e) {
                 $this->writeLog(3, 1, 127, 'The function to move a folder between storages is not yet implemented', []);
                 $this->addMessageToFlashMessageQueue('FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented', []);
             } catch (\RuntimeException $e) {
