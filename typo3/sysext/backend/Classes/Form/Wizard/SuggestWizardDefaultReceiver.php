@@ -309,7 +309,8 @@ class SuggestWizardDefaultReceiver
                     $queryBuilder->expr()->in(
                         'pid',
                         $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
-                    )
+                    ),
+                    $queryBuilder->expr()->eq('sys_language_uid', 0)
                 )
                 ->execute()
                 ->fetchAll();
