@@ -301,4 +301,18 @@ class YouTubeRendererTest extends UnitTestCase
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'no-cookie' => 0])
         );
     }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithModestbrandingIsCorrect()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;modestbranding=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 2, 'modestbranding' => 1])
+        );
+    }
 }
