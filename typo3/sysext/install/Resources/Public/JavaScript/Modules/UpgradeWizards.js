@@ -296,6 +296,10 @@ define([
               var percent = 100;
               if (numberOfWizardsTodo > 0) {
                 percent = ((numberOfWizards - numberOfWizardsTodo) / data.wizards.length) * 100;
+              } else {
+                list.find('.progress-bar')
+                  .removeClass('progress-bar-info')
+                  .addClass('progress-bar-success');
               }
               list.find('.progress-bar')
                 .css('width', percent + '%')
