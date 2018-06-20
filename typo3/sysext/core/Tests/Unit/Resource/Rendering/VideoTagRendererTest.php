@@ -127,7 +127,12 @@ class VideoTagRendererTest extends UnitTestCase
                     ]
                 ],
                 '<video muted="muted" foo="bar" data-js-required="yes" data-custom-id="video-123" width="300" height="200" controls playsinline><source src="//:path/myVideoFile" type="video/mp4"></video>',
-            ]
+            ],
+            [
+                '//:path/myVideoFile',
+                ['preload' => 'auto'],
+                '<video width="300" height="200" controls preload="auto"><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ],
         ];
     }
 
