@@ -9,13 +9,15 @@
 				</div>
 			</f:for>
 		</div>
-		<a class="left typo3-login-carousel-control" href="#loginNews" role="button" data-slide="prev">
+		<f:if condition="{loginNewsItems -> f:count()} > 1">
+			<a class="left typo3-login-carousel-control" href="#loginNews" role="button" data-slide="prev">
 			<i class="fa fa-angle-left"></i>
 			<span class="sr-only"><f:translate key="login.news.previous" /></span>
-		</a>
-		<a class="right typo3-login-carousel-control" href="#loginNews" role="button" data-slide="next">
-			<i class="fa fa-angle-right"></i>
-			<span class="sr-only"><f:translate key="login.news.next" /></span>
-		</a>
+			</a>
+			<a class="right typo3-login-carousel-control" href="#loginNews" role="button" data-slide="next">
+				<i class="fa fa-angle-right"></i>
+				<span class="sr-only"><f:translate key="login.news.next" /></span>
+			</a>
+		</f:if>
 	</div>
 </f:if>
