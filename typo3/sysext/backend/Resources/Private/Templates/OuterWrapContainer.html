@@ -1,8 +1,13 @@
 <h1><f:format.raw>{pageTitle}</f:format.raw></h1>
 
-<f:if condition="{infoBoxMessage}">
-	<f:be.infobox title="{infoBoxMessageTitle}">
-		{infoBoxMessage -> f:format.nl2br()}
+<f:if condition="{recordDescription}">
+	<f:be.infobox title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.recordInformation')}">
+		{recordDescription -> f:format.nl2br()}
+	</f:be.infobox>
+</f:if>
+<f:if condition="{recordReadonly}">
+	<f:be.infobox title="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.recordInformation')}">
+		{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.recordReadonly')}
 	</f:be.infobox>
 </f:if>
 

@@ -121,14 +121,13 @@ class OuterWrapContainer extends AbstractContainer
         $descriptionColumn = !empty($this->data['processedTca']['ctrl']['descriptionColumn'])
             ? $this->data['processedTca']['ctrl']['descriptionColumn'] : null;
         if ($descriptionColumn !== null) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.recordInformation');
-            $content = $this->data['databaseRow'][$descriptionColumn];
-            $view->assignMultiple([
-                'infoBoxMessageTitle' => $title,
-                'infoBoxMessage' => $content
-            ]);
+            $view->assign('recordDescription', $this->data['databaseRow'][$descriptionColumn]);
         }
-
+        $readOnlyRecord = !empty($this->data['processedTca']['ctrl']['readOnly'])
+            ? (bool)$this->data['processedTca']['ctrl']['readOnly'] : null;
+        if ($readOnlyRecord === true) {
+            $view->assign('recordReadonly', true);
+        }
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $result = $this->mergeChildReturnIntoExistingResult($result, $fieldInformationResult, false);
