@@ -1303,6 +1303,11 @@ abstract class AbstractItemProvider
             $value = strlen((string)$item[1]) > 0 ? $item[1] : '';
             $icon = $item[2] ?: null;
             $helpText = $item[3] ?: null;
+
+            if (is_string($helpText)) {
+                $helpText = $languageService->sL($helpText);
+            }
+
             $itemArray[$key] = [
                 $label,
                 $value,
