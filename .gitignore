@@ -32,6 +32,7 @@ nbproject
 phantomjsdriver.log
 #
 # Ignore build stuff
+/.ddev/*
 /Build/bower_components/*
 /Build/node_modules/*
 /Build/JavaScript
