@@ -98,15 +98,6 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     /**
      * @test
      */
-    public function getPageReturnsEmptyArrayWithHideIfDefaultLanguage()
-    {
-        $row = $this->pageRepo->getPage(501);
-        $this->assertSame([], $row);
-    }
-
-    /**
-     * @test
-     */
     public function getPageOverlayById()
     {
         $row = $this->pageRepo->getPageOverlay(1, 1);
