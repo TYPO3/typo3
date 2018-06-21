@@ -48,7 +48,7 @@ CREATE TABLE tx_irretutorial_1ncsv_offer (
 #
 CREATE TABLE tx_irretutorial_1ncsv_price (
 	title tinytext NOT NULL,
-	price tinytext DEFAULT '0.00' NOT NULL
+	price varchar(255) DEFAULT '0.00' NOT NULL
 );
 
 #######################################################################################################################
@@ -89,7 +89,7 @@ CREATE TABLE tx_irretutorial_1nff_price (
 	parenttable tinytext NOT NULL,
 	parentidentifier tinytext NOT NULL,
 	title tinytext NOT NULL,
-	price tinytext DEFAULT '0.00' NOT NULL
+	price varchar(255) DEFAULT '0.00' NOT NULL
 );
 
 #######################################################################################################################
@@ -135,7 +135,7 @@ CREATE TABLE tx_irretutorial_mnasym_offer (
 CREATE TABLE tx_irretutorial_mnasym_price (
 	parentid int(11) DEFAULT '0' NOT NULL,
 	title tinytext NOT NULL,
-	price tinytext DEFAULT '0.00' NOT NULL
+	price varchar(255) DEFAULT '0.00' NOT NULL
 );
 
 #######################################################################################################################
@@ -206,7 +206,7 @@ CREATE TABLE tx_irretutorial_mnmmasym_offer_price_rel (
 #
 CREATE TABLE tx_irretutorial_mnmmasym_price (
 	title tinytext NOT NULL,
-	price tinytext DEFAULT '0.00' NOT NULL,
+	price varchar(255) DEFAULT '0.00' NOT NULL,
 	offers int(11) DEFAULT '0' NOT NULL
 );
 
