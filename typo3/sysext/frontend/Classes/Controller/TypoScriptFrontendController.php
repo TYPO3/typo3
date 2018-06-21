@@ -24,6 +24,11 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -212,22 +217,25 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * a user really IS logged in. The group-list may show other groups (like added
      * by IP filter or so) even though there is no user.
      * @var bool
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "frontend.user" aspect.
      */
-    public $loginUser = false;
+    protected $loginUser = false;
 
     /**
      * (RO=readonly) The group list, sorted numerically. Group '0,-1' is the default
      * group, but other groups may be added by other means than a user being logged
      * in though...
      * @var string
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "frontend.user" aspect.
      */
-    public $gr_list = '';
+    protected $gr_list = '';
 
     /**
      * Flag that indicates if a backend user is logged in!
      * @var bool
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "backend.user" aspect.
      */
-    public $beUserLogin = false;
+    protected $beUserLogin = false;
 
     /**
      * Integer, that indicates which workspace is being previewed.
@@ -266,16 +274,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Flag indicating that hidden pages should be shown, selected and so on. This
      * goes for almost all selection of pages!
      * @var bool
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "visibility" aspect.
      */
-    public $showHiddenPage = false;
+    protected $showHiddenPage = false;
 
     /**
      * Flag indicating that hidden records should be shown. This includes
      * sys_template and even fe_groups in addition to all
      * other regular content. So in effect, this includes everything except pages.
      * @var bool
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "visibility" aspect.
      */
-    public $showHiddenRecords = false;
+    protected $showHiddenRecords = false;
 
     /**
      * Value that contains the simulated usergroup if any
@@ -774,6 +784,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected $requestedId;
 
     /**
+     * The context for keeping the current state, mostly related to current page information,
+     * backend user / frontend user access, workspaceId
+     *
+     * @var Context
+     */
+    protected $context;
+
+    /**
      * Class constructor
      * Takes a number of GET/POST input variable as arguments and stores them internally.
      * The processing of these variables goes on later in this class.
@@ -814,6 +832,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         $this->cacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class);
         $this->initCaches();
+        // Use the global context for now
+        $this->context = GeneralUtility::makeInstance(Context::class);
     }
 
     /**
@@ -926,43 +946,49 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function initUserGroups()
     {
+        $userGroups = [0];
         // This affects the hidden-flag selecting the fe_groups for the user!
         $this->fe_user->showHiddenRecords = $this->showHiddenRecords;
         // no matter if we have an active user we try to fetch matching groups which can be set without an user (simulation for instance!)
         $this->fe_user->fetchGroupData();
-        if (is_array($this->fe_user->user) && !empty($this->fe_user->groupData['uid'])) {
+        $isUserAndGroupSet = is_array($this->fe_user->user) && !empty($this->fe_user->groupData['uid']);
+        if ($isUserAndGroupSet) {
             // global flag!
             $this->loginUser = true;
-            // group -2 is not an existing group, but denotes a 'default' group when a user IS logged in. This is used to let elements be shown for all logged in users!
-            $this->gr_list = '0,-2';
-            $gr_array = $this->fe_user->groupData['uid'];
+            // group -2 is not an existing group, but denotes a 'default' group when a user IS logged in.
+            // This is used to let elements be shown for all logged in users!
+            $userGroups[] = -2;
+            $groupsFromUserRecord = $this->fe_user->groupData['uid'];
         } else {
             $this->loginUser = false;
-            // group -1 is not an existing group, but denotes a 'default' group when not logged in. This is used to let elements be hidden, when a user is logged in!
-            $this->gr_list = '0,-1';
+            // group -1 is not an existing group, but denotes a 'default' group when not logged in.
+            // This is used to let elements be hidden, when a user is logged in!
+            $userGroups[] = -1;
             if ($this->loginAllowedInBranch) {
                 // For cases where logins are not banned from a branch usergroups can be set based on IP masks so we should add the usergroups uids.
-                $gr_array = $this->fe_user->groupData['uid'];
+                $groupsFromUserRecord = $this->fe_user->groupData['uid'];
             } else {
                 // Set to blank since we will NOT risk any groups being set when no logins are allowed!
-                $gr_array = [];
+                $groupsFromUserRecord = [];
             }
         }
         // Clean up.
-        // Make unique...
-        $gr_array = array_unique($gr_array);
-        // sort
-        sort($gr_array);
-        if (!empty($gr_array) && !$this->loginAllowedInBranch_mode) {
-            $this->gr_list .= ',' . implode(',', $gr_array);
+        // Make unique and sort the groups
+        $groupsFromUserRecord = array_unique($groupsFromUserRecord);
+        if (!empty($groupsFromUserRecord) && !$this->loginAllowedInBranch_mode) {
+            sort($groupsFromUserRecord);
+            $userGroups = array_merge($userGroups, array_map('intval', $groupsFromUserRecord));
         }
 
+        $this->gr_list = implode(',', $userGroups);
+        $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, $userGroups));
+
         // For every 60 seconds the is_online timestamp for a logged-in user is updated
-        if ($this->loginUser) {
+        if ($isUserAndGroupSet) {
             $this->fe_user->updateOnlineTimestamp();
         }
 
-        $this->logger->debug('Valid usergroups for TSFE: ' . $this->gr_list);
+        $this->logger->debug('Valid usergroups for TSFE: ' . implode(',', $userGroups));
     }
 
     /**
@@ -972,7 +998,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function isUserOrGroupSet()
     {
-        return is_array($this->fe_user->user) || $this->gr_list !== '0,-1';
+        /** @var UserAspect $userAspect */
+        $userAspect = $this->context->getAspect('frontend.user');
+        return $userAspect->isUserOrGroupSet();
     }
 
     /**
@@ -1002,11 +1030,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function clear_preview()
     {
-        $this->showHiddenPage = false;
-        $this->showHiddenRecords = false;
-        $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
-        $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
-        $this->fePreview = 0;
+        if ($this->fePreview || $GLOBALS['EXEC_TIME'] !== $GLOBALS['SIM_EXEC_TIME'] || $this->showHiddenPage || $this->showHiddenRecords) {
+            $this->showHiddenPage = false;
+            $this->showHiddenRecords = false;
+            $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
+            $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
+            $this->fePreview = 0;
+            $this->context->setAspect('date', GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
+            $this->context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
+        }
     }
 
     /**
@@ -1016,7 +1048,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function isBackendUserLoggedIn()
     {
-        return (bool)$this->beUserLogin;
+        return (bool)$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
     }
 
     /**
@@ -1066,6 +1098,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
+        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $backendUserObject));
+        $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $backendUserObject ? $backendUserObject->workspace : 0));
         return $backendUserObject;
     }
 
@@ -1091,7 +1125,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Now, get the id, validate access etc:
         $this->fetch_the_id();
         // Check if backend user has read access to this page. If not, recalculate the id.
-        if ($this->beUserLogin && $this->fePreview && !$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
+        if ($this->isBackendUserLoggedIn() && $this->fePreview && !$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
             // Resetting
             $this->clear_preview();
             $this->fe_user->user[$this->fe_user->usergroup_column] = $originalFrontendUserGroups;
@@ -1107,10 +1141,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 if ($this->loginAllowedInBranch_mode === 'all') {
                     // Clear out user and group:
                     $this->fe_user->hideActiveLogin();
-                    $this->gr_list = '0,-1';
+                    $userGroups = [0, -1];
                 } else {
-                    $this->gr_list = '0,-2';
+                    $userGroups = [0, -2];
                 }
+                $this->gr_list = implode(',', $userGroups);
+                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, $userGroups));
                 // Fetching the id again, now with the preview settings reset.
                 $this->fetch_the_id();
             }
@@ -1153,6 +1189,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // The preview flag is set if the current page turns out to be hidden
         if ($this->id && $this->determineIdIsHiddenPage()) {
             $this->fePreview = 1;
+            /** @var VisibilityAspect $aspect */
+            $aspect = $this->context->getAspect('visibility');
+            $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, true, $aspect->includeHiddenContent(), $aspect->includeDeletedRecords());
+            $this->context->setAspect('visibility', $newAspect);
             $this->showHiddenPage = true;
         }
         // The preview flag will be set if an offline workspace will be previewed
@@ -1192,8 +1232,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         if ($this->whichWorkspace() > 0) {
             // Fetch overlay of page if in workspace and check if it is hidden
-            $pageSelectObject = GeneralUtility::makeInstance(PageRepository::class);
-            $pageSelectObject->init(false);
+            $customContext = clone $this->context;
+            $customContext->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $this->whichWorkspace()));
+            $customContext->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
+            $pageSelectObject = GeneralUtility::makeInstance(PageRepository::class, $customContext);
             $targetPage = $pageSelectObject->getWorkspaceVersionOfRecord($this->whichWorkspace(), 'pages', $page['uid']);
             $result = $targetPage === -1 || $targetPage === -2;
         } else {
@@ -1269,9 +1311,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $timeTracker = $this->getTimeTracker();
         $timeTracker->push('fetch_the_id initialize/');
         // Initialize the page-select functions.
-        $this->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        $this->sys_page->versioningWorkspaceId = $this->whichWorkspace();
-        $this->sys_page->init($this->showHiddenPage);
+        $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         // Set the valid usergroups for FE
         $this->initUserGroups();
         // Sets sys_page where-clause
@@ -1570,7 +1610,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
             if ($this->rootLine[$a]['doktype'] == PageRepository::DOKTYPE_BE_USER_SECTION) {
                 // If there is a backend user logged in, check if he has read access to the page:
-                if ($this->beUserLogin) {
+                if ($this->isBackendUserLoggedIn()) {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable('pages');
 
@@ -1647,7 +1687,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function checkPageGroupAccess($row, $groupList = null)
     {
         if ($groupList === null) {
-            $groupList = $this->gr_list;
+            /** @var UserAspect $userAspect */
+            $userAspect = $this->context->getAspect('frontend.user');
+            $groupList = $userAspect->getGroupIds();
         }
         if (!is_array($groupList)) {
             $groupList = explode(',', $groupList);
@@ -2129,9 +2171,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function initTemplate()
     {
         $this->tmpl = GeneralUtility::makeInstance(TemplateService::class);
-        $this->tmpl->setVerbose((bool)$this->beUserLogin);
+        $this->tmpl->setVerbose($this->isBackendUserLoggedIn());
         $this->tmpl->init();
-        $this->tmpl->tt_track = (bool)$this->beUserLogin;
+        $this->tmpl->tt_track = $this->isBackendUserLoggedIn();
     }
 
     /**
@@ -2279,7 +2321,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function headerNoCache()
     {
         $disableAcquireCacheData = false;
-        if ($this->beUserLogin) {
+        if ($this->isBackendUserLoggedIn()) {
             if (strtolower($_SERVER['HTTP_CACHE_CONTROL']) === 'no-cache' || strtolower($_SERVER['HTTP_PRAGMA']) === 'no-cache') {
                 $disableAcquireCacheData = true;
             }
@@ -2333,10 +2375,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Ensure the language base is used for the hash base calculation as well, otherwise TypoScript and page-related rendering
         // is not cached properly as we don't have any language-specific conditions anymore
         $siteBase = $this->getCurrentSiteLanguage() ? $this->getCurrentSiteLanguage()->getBase() : '';
+
+        // Fetch the list of user groups
+        /** @var UserAspect $userAspect */
+        $userAspect = $this->context->getAspect('frontend.user');
         $hashParameters = [
             'id' => (int)$this->id,
             'type' => (int)$this->type,
-            'gr_list' => (string)$this->gr_list,
+            'gr_list' => (string)implode(',', $userAspect->getGroupIds()),
             'MP' => (string)$this->MP,
             'siteBase' => $siteBase,
             'cHash' => $this->cHash_array,
@@ -3721,7 +3767,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // This variable will be TRUE unless cache headers are configured to be sent ONLY if a branch does not allow logins and logins turns out to be allowed anyway...
         $loginsDeniedCfg = empty($this->config['config']['sendCacheHeaders_onlyWhenLoginDeniedInBranch']) || empty($this->loginAllowedInBranch);
         // Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
-        if ($doCache && !$this->beUserLogin && !$this->doWorkspacePreview() && $loginsDeniedCfg) {
+        if ($doCache && !$this->isBackendUserLoggedIn() && !$this->doWorkspacePreview() && $loginsDeniedCfg) {
             // Build headers:
             $headers = [
                 'Expires: ' . gmdate('D, d M Y H:i:s T', $this->cacheExpires),
@@ -3739,7 +3785,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             ];
             $this->isClientCachable = false;
             // Now, if a backend user is logged in, tell him in the Admin Panel log what the caching status would have been:
-            if ($this->beUserLogin) {
+            if ($this->isBackendUserLoggedIn()) {
                 if ($doCache) {
                     $this->getTimeTracker()->setTSlogMessage('Cache-headers with max-age "' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']) . '" would have been sent');
                 } else {
@@ -3965,7 +4011,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function doWorkspacePreview()
     {
-        return $this->whichWorkspace() > 0;
+        return $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
     }
 
     /**
@@ -3973,9 +4019,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @return int returns workspace integer for which workspace is being preview. 0 if none (= live workspace).
      */
-    public function whichWorkspace()
+    public function whichWorkspace(): int
     {
-        return $this->beUserLogin ? $this->getBackendUser()->workspace : 0;
+        return $this->context->getPropertyFromAspect('workspace', 'id', 0);
     }
 
     /********************************************
@@ -4771,5 +4817,167 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
         }
         return null;
+    }
+
+    /**
+     * Deprecation messages for TYPO3 v9 - public properties of TSFE which have been moved as
+     * @todo: ensure that TypoScript conditions make use of this as well.
+     */
+
+    /**
+     * Checks if the property of the given name is set.
+     *
+     * Unmarked protected properties must return false as usual.
+     * Marked properties are evaluated by isset().
+     *
+     * This method is not called for public properties.
+     *
+     * @param string $propertyName
+     * @return bool
+     */
+    public function __isset(string $propertyName)
+    {
+        switch ($propertyName) {
+            case 'loginUser':
+                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.');
+                return isset($this->$propertyName);
+                break;
+            case 'gr_list':
+                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
+                return isset($this->$propertyName);
+            case 'beUserLogin':
+                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.');
+                return isset($this->$propertyName);
+            case 'showHiddenPage':
+                trigger_error('Property $TSFE->showHiddenPage is not in use anymore as this information is now stored within the visibility aspect.');
+                return isset($this->$propertyName);
+            case 'showHiddenRecords':
+                trigger_error('Property $TSFE->showHiddenRecords is not in use anymore as this information is now stored within the visibility aspect.');
+                return isset($this->$propertyName);
+        }
+        return false;
+    }
+
+    /**
+     * Gets the value of the property of the given name if tagged.
+     *
+     * The evaluation is done in the assumption that this method is never
+     * reached for a public property.
+     *
+     * @param string $propertyName
+     * @return mixed
+     */
+    public function __get(string $propertyName)
+    {
+        switch ($propertyName) {
+            case 'loginUser':
+                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.');
+                return $this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false);
+                break;
+            case 'gr_list':
+                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
+                return implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
+            case 'beUserLogin':
+                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.');
+                return $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
+            case 'showHiddenPage':
+                trigger_error('Property $TSFE->showHiddenPage is not in use anymore as this information is now stored within the visibility aspect.');
+                return $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false);
+            case 'showHiddenRecords':
+                trigger_error('Property $TSFE->showHiddenRecords is not in use anymore as this information is now stored within the visibility aspect.');
+                return $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false);
+        }
+        return $this->$propertyName;
+    }
+
+    /**
+     * Sets the property of the given name if tagged.
+     *
+     * Additionally it's allowed to set unknown properties.
+     *
+     * The evaluation is done in the assumption that this method is never
+     * reached for a public property.
+     *
+     * @param string $propertyName
+     * @param mixed $propertyValue
+     */
+    public function __set(string $propertyName, $propertyValue)
+    {
+        switch ($propertyName) {
+            case 'loginUser':
+                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.');
+                /** @var UserAspect $aspect */
+                $aspect = $this->context->getAspect('frontend.user');
+                if ($propertyValue) {
+                    $aspect = GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, $aspect->getGroupIds());
+                } else {
+                    $aspect = GeneralUtility::makeInstance(UserAspect::class, null, $aspect->getGroupIds());
+                }
+                $this->context->setAspect('frontend.user', $aspect);
+                break;
+            case 'gr_list':
+                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
+                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, GeneralUtility::intExplode(',', $propertyValue)));
+                break;
+            case 'beUserLogin':
+                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.');
+                if ($propertyValue) {
+                    $aspect = GeneralUtility::makeInstance(UserAspect::class, $GLOBALS['BE_USER']);
+                } else {
+                    $aspect = GeneralUtility::makeInstance(UserAspect::class);
+                }
+                $this->context->setAspect('backend.user', $aspect);
+                break;
+            case 'showHiddenPage':
+            case 'showHiddenRecords':
+                trigger_error('Property $TSFE->' . $propertyName . ' is not in use anymore as this information is now stored within the visibility aspect.');
+                /** @var VisibilityAspect $aspect */
+                $aspect = $this->context->getAspect('visibility');
+                if ($propertyName === 'showHiddenPage') {
+                    $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, (bool)$propertyValue, $aspect->includeHiddenContent(), $aspect->includeDeletedRecords());
+                } else {
+                    $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, $aspect->includeHiddenPages(), (bool)$propertyValue, $aspect->includeDeletedRecords());
+                }
+                $this->context->setAspect('visibility', $newAspect);
+                break;
+        }
+        $this->$propertyName = $propertyValue;
+    }
+
+    /**
+     * Unsets the property of the given name if tagged.
+     *
+     * @param string $propertyName
+     */
+    public function __unset(string $propertyName)
+    {
+        switch ($propertyName) {
+            case 'loginUser':
+                /** @var UserAspect $aspect */
+                $aspect = $this->context->getAspect('frontend.user');
+                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, null, $aspect->getGroupIds()));
+                break;
+            case 'gr_list':
+                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
+                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, []));
+                break;
+            case 'beUserLogin':
+                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.');
+                $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class));
+                break;
+            case 'showHiddenPage':
+            case 'showHiddenRecords':
+                trigger_error('Property $TSFE->' . $propertyName . ' is not in use anymore as this information is now stored within the visibility aspect.');
+                /** @var VisibilityAspect $aspect */
+                $aspect = $this->context->getAspect('visibility');
+                if ($propertyName === 'showHiddenPage') {
+                    $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, false, $aspect->includeHiddenContent(), $aspect->includeDeletedRecords());
+                } else {
+                    $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, $aspect->includeHiddenPages(), false, $aspect->includeDeletedRecords());
+                }
+                $this->context->setAspect('visibility', $newAspect);
+                break;
+        }
+        unset($this->$propertyName);
     }
 }

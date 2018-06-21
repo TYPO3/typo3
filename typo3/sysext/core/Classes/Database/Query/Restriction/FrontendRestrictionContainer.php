@@ -15,9 +15,11 @@ namespace TYPO3\CMS\Core\Database\Query\Restriction;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A collection of restrictions to be used in frontend context.
@@ -38,11 +40,19 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
     ];
 
     /**
+     * @var Context
+     */
+    protected $context;
+
+    /**
      * FrontendRestrictionContainer constructor.
      * Initializes the default restrictions for frontend requests
+     *
+     * @param Context $context
      */
-    public function __construct()
+    public function __construct(Context $context = null)
     {
+        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         foreach ($this->defaultRestrictionTypes as $restrictionType) {
             $this->add($this->createRestriction($restrictionType));
         }
@@ -59,14 +69,18 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {
         $constraints = [];
-        /** @var TypoScriptFrontendController $typoScriptFrontendController */
-        $typoScriptFrontendController = $GLOBALS['TSFE'];
         foreach ($this->restrictions as $restriction) {
             foreach ($queriedTables as $tableAlias => $tableName) {
                 $disableRestriction = false;
                 if ($restriction instanceof HiddenRestriction) {
+                    /** @var VisibilityAspect $visibilityAspect */
+                    $visibilityAspect = $this->context->getAspect('visibility');
                     // If display of hidden records is requested, we must disable the hidden restriction.
-                    $disableRestriction = $tableName === 'pages' ? $typoScriptFrontendController->showHiddenPage : $typoScriptFrontendController->showHiddenRecords;
+                    if ($tableName === 'pages') {
+                        $disableRestriction = $visibilityAspect->includeHiddenPages();
+                    } else {
+                        $disableRestriction = $visibilityAspect->includeHiddenContent();
+                    }
                 }
                 if (!$disableRestriction) {
                     $constraints[] = $restriction->buildExpression([$tableAlias => $tableName], $expressionBuilder);

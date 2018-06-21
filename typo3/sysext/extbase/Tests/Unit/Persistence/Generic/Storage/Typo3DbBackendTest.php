@@ -32,11 +32,16 @@ class Typo3DbBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected static $suppressNotices = true;
 
+    /**
+     * Due to nested PageRepository / FrontendRestriction Container issues, the Context object is set
+     * @var bool
+     */
+    protected $resetSingletonInstances = true;
+
     public function setUp()
     {
         parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->gr_list = '';
     }
 
     /**
@@ -151,6 +156,7 @@ class Typo3DbBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         /** @var $pageRepositoryMock \TYPO3\CMS\Frontend\Page\PageRepository|\PHPUnit_Framework_MockObject_MockObject */
         $pageRepositoryMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\PageRepository::class)
             ->setMethods(['movePlhOL', 'getWorkspaceVersionOfRecord'])
+            ->disableOriginalConstructor()
             ->getMock();
         $pageRepositoryMock->expects($this->once())->method('getWorkspaceVersionOfRecord')->with($workspaceUid, 'tx_foo', '42')->will($this->returnValue($workspaceVersion));
         $mockTypo3DbBackend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend::class, ['dummy'], [], '', false);

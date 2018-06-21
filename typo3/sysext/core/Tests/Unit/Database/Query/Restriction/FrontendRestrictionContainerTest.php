@@ -15,11 +15,19 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
 {
+    protected $resetSingletonInstances = true;
+
     public function frontendStatesDataProvider()
     {
         return [
@@ -29,7 +37,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'workspaceId' => 0,
                 'hiddenPagePreview' => false,
                 'hiddenRecordPreview' => false,
-                'feGroupList' => '0,-1',
+                'frontendUserGroups' => [0, -1],
                 'expectedSQL' => '("aTable"."deleted" = 0) AND (("aTable"."t3ver_state" <= 0) AND ("aTable"."pid" <> -1)) AND ("aTable"."myHiddenField" = 0) AND ("aTable"."myStartTimeField" <= 42) AND (("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 42)) AND (("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'0\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'-1\', "aTable"."myGroupField")))'
             ],
             'Live, with hidden record preview' => [
@@ -38,7 +46,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'workspaceId' => 0,
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
-                'feGroupList' => '0,-1',
+                'frontendUserGroups' => [0, -1],
                 'expectedSQL' => '("aTable"."deleted" = 0) AND (("aTable"."t3ver_state" <= 0) AND ("aTable"."pid" <> -1)) AND ("aTable"."myStartTimeField" <= 42) AND (("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 42)) AND (("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'0\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'-1\', "aTable"."myGroupField")))'
             ],
             'Workspace, with WS preview' => [
@@ -47,7 +55,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'workspaceId' => 1,
                 'hiddenPagePreview' => false,
                 'hiddenRecordPreview' => false,
-                'feGroupList' => '0,-1',
+                'frontendUserGroups' => [0, -1],
                 'expectedSQL' => '("aTable"."deleted" = 0) AND ((("aTable"."t3ver_wsid" = 0) OR ("aTable"."t3ver_wsid" = 1)) AND ("aTable"."pid" <> -1)) AND ("aTable"."myHiddenField" = 0) AND ("aTable"."myStartTimeField" <= 42) AND (("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 42)) AND (("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'0\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'-1\', "aTable"."myGroupField")))'
             ],
             'Workspace, with WS preview and hidden record preview' => [
@@ -56,7 +64,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'workspaceId' => 1,
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
-                'feGroupList' => '0,-1',
+                'frontendUserGroups' => [0, -1],
                 'expectedSQL' => '("aTable"."deleted" = 0) AND ((("aTable"."t3ver_wsid" = 0) OR ("aTable"."t3ver_wsid" = 1)) AND ("aTable"."pid" <> -1)) AND ("aTable"."myStartTimeField" <= 42) AND (("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 42)) AND (("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'0\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'-1\', "aTable"."myGroupField")))'
             ],
             'Live page, no preview' => [
@@ -65,7 +73,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'workspaceId' => 0,
                 'hiddenPagePreview' => false,
                 'hiddenRecordPreview' => false,
-                'feGroupList' => '0,-1',
+                'frontendUserGroups' => [0, -1],
                 'expectedSQL' => '("pages"."deleted" = 0) AND (("pages"."t3ver_state" <= 0) AND ("pages"."pid" <> -1)) AND ("pages"."hidden" = 0) AND ("pages"."starttime" <= 42) AND (("pages"."endtime" = 0) OR ("pages"."endtime" > 42)) AND (("pages"."fe_group" IS NULL) OR ("pages"."fe_group" = \'\') OR ("pages"."fe_group" = \'0\') OR (FIND_IN_SET(\'0\', "pages"."fe_group")) OR (FIND_IN_SET(\'-1\', "pages"."fe_group")))'
             ],
             'Live page, with hidden page preview' => [
@@ -74,7 +82,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'workspaceId' => 0,
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
-                'feGroupList' => '0,-1',
+                'frontendUserGroups' => [0, -1],
                 'expectedSQL' => '("pages"."deleted" = 0) AND (("pages"."t3ver_state" <= 0) AND ("pages"."pid" <> -1)) AND ("pages"."starttime" <= 42) AND (("pages"."endtime" = 0) OR ("pages"."endtime" > 42)) AND (("pages"."fe_group" IS NULL) OR ("pages"."fe_group" = \'\') OR ("pages"."fe_group" = \'0\') OR (FIND_IN_SET(\'0\', "pages"."fe_group")) OR (FIND_IN_SET(\'-1\', "pages"."fe_group")))'
             ],
             'Workspace page, with WS preview' => [
@@ -83,7 +91,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'workspaceId' => 1,
                 'hiddenPagePreview' => false,
                 'hiddenRecordPreview' => false,
-                'feGroupList' => '0,-1',
+                'frontendUserGroups' => [0, -1],
                 'expectedSQL' => '("pages"."deleted" = 0) AND ("pages"."pid" <> -1) AND ("pages"."hidden" = 0) AND ("pages"."starttime" <= 42) AND (("pages"."endtime" = 0) OR ("pages"."endtime" > 42)) AND (("pages"."fe_group" IS NULL) OR ("pages"."fe_group" = \'\') OR ("pages"."fe_group" = \'0\') OR (FIND_IN_SET(\'0\', "pages"."fe_group")) OR (FIND_IN_SET(\'-1\', "pages"."fe_group")))'
             ],
             'Workspace page, with WS preview and hidden pages preview' => [
@@ -92,7 +100,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'workspaceId' => 1,
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
-                'feGroupList' => '0,-1',
+                'frontendUserGroups' => [0, -1],
                 'expectedSQL' => '("pages"."deleted" = 0) AND ("pages"."pid" <> -1) AND ("pages"."starttime" <= 42) AND (("pages"."endtime" = 0) OR ("pages"."endtime" > 42)) AND (("pages"."fe_group" IS NULL) OR ("pages"."fe_group" = \'\') OR ("pages"."fe_group" = \'0\') OR (FIND_IN_SET(\'0\', "pages"."fe_group")) OR (FIND_IN_SET(\'-1\', "pages"."fe_group")))'
             ],
             'Live, no preview with alias' => [
@@ -101,7 +109,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'workspaceId' => 0,
                 'hiddenPagePreview' => false,
                 'hiddenRecordPreview' => false,
-                'feGroupList' => '0,-1',
+                'frontendUserGroups' => [0, -1],
                 'expectedSQL' => '("a"."deleted" = 0) AND (("a"."t3ver_state" <= 0) AND ("a"."pid" <> -1)) AND ("a"."myHiddenField" = 0) AND ("a"."myStartTimeField" <= 42) AND (("a"."myEndTimeField" = 0) OR ("a"."myEndTimeField" > 42)) AND (("a"."myGroupField" IS NULL) OR ("a"."myGroupField" = \'\') OR ("a"."myGroupField" = \'0\') OR (FIND_IN_SET(\'0\', "a"."myGroupField")) OR (FIND_IN_SET(\'-1\', "a"."myGroupField")))'
             ],
         ];
@@ -113,7 +121,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
      * @param int $workspaceId
      * @param bool $hiddenPagePreview
      * @param bool $hiddenRecordPreview
-     * @param string $feGroupList
+     * @param array $frontendUserGroups
      * @param string $expectedSQL
      *
      * @test
@@ -125,7 +133,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
         int $workspaceId,
         bool $hiddenPagePreview,
         bool $hiddenRecordPreview,
-        string $feGroupList,
+        array $frontendUserGroups,
         string $expectedSQL
     ) {
         $GLOBALS['TCA'] = [
@@ -160,20 +168,22 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'columns' => []
             ]
         ];
+        $context = new Context([
+            'visibility' => new VisibilityAspect($hiddenPagePreview, $hiddenRecordPreview),
+            'frontend.user' => new UserAspect(new FrontendUserAuthentication(), $frontendUserGroups),
+            'workspace' => new WorkspaceAspect($workspaceId)
+        ]);
+        GeneralUtility::setSingletonInstance(Context::class, $context);
 
         $pageRepository = $this->createMock(PageRepository::class);
+        $pageRepository->__set('context', $context);
         $pageRepository->versioningWorkspaceId = $workspaceId;
 
-        $typoScriptFrontendController = new \stdClass();
-        $typoScriptFrontendController->showHiddenPage = $hiddenPagePreview;
-        $typoScriptFrontendController->showHiddenRecords = $hiddenRecordPreview;
-        $typoScriptFrontendController->gr_list = $feGroupList;
-        $typoScriptFrontendController->sys_page = $pageRepository;
-
-        $GLOBALS['TSFE'] = $typoScriptFrontendController;
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->sys_page = $pageRepository;
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
 
-        $subject = new FrontendRestrictionContainer();
+        $subject = new FrontendRestrictionContainer($context);
         $expression = $subject->buildExpression([$tableAlias => $tableName], $this->expressionBuilder);
         $this->assertSame($expectedSQL, (string)$expression);
     }

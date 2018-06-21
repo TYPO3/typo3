@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Core\Console;
  * The TYPO3 project - inspiring people to share!
  */
 use Symfony\Component\Console\Input\ArgvInput;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -38,6 +43,7 @@ class CommandApplication implements ApplicationInterface
      */
     public function run(callable $execute = null)
     {
+        $this->initializeContext();
         $handler = GeneralUtility::makeInstance(CommandRequestHandler::class);
         $handler->handleRequest(new ArgvInput());
 
@@ -54,5 +60,19 @@ class CommandApplication implements ApplicationInterface
         if (php_sapi_name() !== 'cli') {
             die('Not called from a command line interface (e.g. a shell or scheduler).' . LF);
         }
+    }
+
+    /**
+     * Initializes the Context used for accessing data and finding out the current state of the application
+     * Will be moved to a DI-like concept once introduced, for now, this is a singleton
+     */
+    protected function initializeContext()
+    {
+        GeneralUtility::makeInstance(Context::class, [
+            'date' => new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])),
+            'visibility' => new VisibilityAspect(true, true),
+            'workspace' => new WorkspaceAspect(0),
+            'backend.user' => new UserAspect(null),
+        ]);
     }
 }

@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -77,12 +80,15 @@ class IfHasRoleViewHelper extends AbstractConditionViewHelper
     protected static function evaluateCondition($arguments = null)
     {
         $role = $arguments['role'];
-        if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE']->loginUser) {
+        /** @var UserAspect $userAspect */
+        $userAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
+        if (!$userAspect->isLoggedIn()) {
             return false;
         }
         if (is_numeric($role)) {
-            return is_array($GLOBALS['TSFE']->fe_user->groupData['uid']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['uid']);
+            $groupIds = $userAspect->getGroupIds();
+            return in_array((int)$role, $groupIds, true);
         }
-        return is_array($GLOBALS['TSFE']->fe_user->groupData['title']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['title']);
+        return in_array($role, $userAspect->getGroupNames(), true);
     }
 }

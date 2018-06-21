@@ -36,7 +36,6 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
         parent::setUp();
         $this->importDataSet(__DIR__ . '/fixtures.xml');
 
-        $GLOBALS['TSFE']->gr_list = '';
         $this->tsFrontendController = $this->getAccessibleMock(
             TypoScriptFrontendController::class,
             ['dummy'],

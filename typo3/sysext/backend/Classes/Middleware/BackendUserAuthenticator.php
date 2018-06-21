@@ -19,7 +19,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Initializes the backend user authentication object (BE_USER) and the global LANG object.
@@ -58,6 +63,8 @@ class BackendUserAuthenticator implements MiddlewareInterface
         // @todo: once this logic is in this method, the redirect URL should be handled as response here
         Bootstrap::initializeBackendAuthentication($this->isLoggedInBackendUserRequired($pathToRoute));
         Bootstrap::initializeLanguageObject();
+        // Register the backend user as aspect
+        $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), $GLOBALS['BE_USER']);
 
         return $handler->handle($request);
     }
@@ -72,5 +79,17 @@ class BackendUserAuthenticator implements MiddlewareInterface
     protected function isLoggedInBackendUserRequired(string $routePath): bool
     {
         return in_array($routePath, $this->publicRoutes, true);
+    }
+
+    /**
+     * Register the backend user as aspect
+     *
+     * @param Context $context
+     * @param BackendUserAuthentication $user
+     */
+    protected function setBackendUserAspect(Context $context, BackendUserAuthentication $user)
+    {
+        $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
+        $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
     }
 }

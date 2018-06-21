@@ -18,8 +18,12 @@ namespace TYPO3\CMS\Backend\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entry point for the TYPO3 Backend (HTTP requests)
@@ -58,6 +62,8 @@ class Application extends AbstractApplication
         if (!$this->checkIfEssentialConfigurationExists()) {
             return $this->installToolRedirect();
         }
+        // Set up the initial context
+        $this->initializeContext();
         return parent::handle($request);
     }
 
@@ -79,5 +85,17 @@ class Application extends AbstractApplication
     protected function installToolRedirect(): ResponseInterface
     {
         return new RedirectResponse('./install.php', 302);
+    }
+
+    /**
+     * Initializes the Context used for accessing data and finding out the current state of the application
+     * Will be moved to a DI-like concept once introduced, for now, this is a singleton
+     */
+    protected function initializeContext()
+    {
+        GeneralUtility::makeInstance(Context::class, [
+            'date' => new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])),
+            'visibility' => new VisibilityAspect(true, true)
+        ]);
     }
 }

@@ -19,6 +19,7 @@ use Doctrine\DBAL\Driver\Statement;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -6047,9 +6048,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function enableFields($table, $show_hidden = false, array $ignore_array = [])
     {
-        $tsfe = $this->getTypoScriptFrontendController();
-        $show_hidden = $show_hidden ?: ($table === 'pages' ? $tsfe->showHiddenPage : $tsfe->showHiddenRecords);
-        return $tsfe->sys_page->enableFields($table, (bool)$show_hidden, $ignore_array);
+        return $this->getTypoScriptFrontendController()->sys_page->enableFields($table, $show_hidden ? true : -1, $ignore_array);
     }
 
     /**
@@ -6106,7 +6105,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $addSelectFields,
                 $moreWhereClauses,
                 $prevId_array,
-                $tsfe->gr_list
+                GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1])
             ];
             $requestHash = md5(serialize($parameters));
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

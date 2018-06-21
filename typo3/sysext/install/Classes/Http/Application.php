@@ -16,8 +16,14 @@ namespace TYPO3\CMS\Install\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entry point for the TYPO3 Install Tool
@@ -52,12 +58,26 @@ class Application extends AbstractApplication
      */
     protected function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $this->initializeContext();
         foreach ($this->availableRequestHandlers as $handler) {
             if ($handler->canHandleRequest($request)) {
                 return $handler->handleRequest($request);
             }
         }
-
         throw new \TYPO3\CMS\Core\Exception('No suitable request handler found.', 1518448686);
+    }
+
+    /**
+     * Initializes the Context used for accessing data and finding out the current state of the application
+     * Will be moved to a DI-like concept once introduced, for now, this is a singleton
+     */
+    protected function initializeContext()
+    {
+        GeneralUtility::makeInstance(Context::class, [
+            'date' => new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])),
+            'visibility' => new VisibilityAspect(true, true, true),
+            'workspace' => new WorkspaceAspect(0),
+            'backend.user' => new UserAspect(),
+        ]);
     }
 }

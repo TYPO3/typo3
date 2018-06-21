@@ -14,7 +14,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Security\IfAuthenticatedViewHelper;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -28,10 +32,15 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $viewHelper;
 
+    /**
+     * @var Context
+     */
+    protected $context;
+
     protected function setUp()
     {
         parent::setUp();
-        $GLOBALS['TSFE'] = new \stdClass();
+        $this->context = GeneralUtility::makeInstance(Context::class);
         $this->viewHelper = new IfAuthenticatedViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
@@ -39,7 +48,7 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
 
     protected function tearDown()
     {
-        unset($GLOBALS['TSFE']);
+        GeneralUtility::removeSingletonInstance(Context::class, $this->context);
     }
 
     /**
@@ -47,7 +56,9 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperRendersThenChildIfFeUserIsLoggedIn()
     {
-        $GLOBALS['TSFE']->loginUser = 1;
+        $user = new FrontendUserAuthentication();
+        $user->user['uid'] = 13;
+        $this->context->setAspect('frontend.user', new UserAspect($user));
 
         $actualResult = $this->viewHelper->renderStatic(
             ['then' => 'then child', 'else' => 'else child'],
@@ -64,7 +75,7 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperRendersElseChildIfFeUserIsNotLoggedIn()
     {
-        $GLOBALS['TSFE']->loginUser = 0;
+        $this->context->setAspect('frontend.user', new UserAspect());
 
         $actualResult = $this->viewHelper->renderStatic(
             ['then' => 'then child', 'else' => 'else child'],

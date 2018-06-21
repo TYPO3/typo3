@@ -19,6 +19,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
@@ -66,6 +69,10 @@ class FrontendUserAuthenticator implements MiddlewareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
         }
+
+        // Register the frontend user as aspect
+        $this->setFrontendUserAspect(GeneralUtility::makeInstance(Context::class), $frontendUser);
+
         return $handler->handle($request);
     }
 
@@ -106,5 +113,16 @@ class FrontendUserAuthenticator implements MiddlewareInterface
             $frontendUser->dontSetCookie = false;
         }
         return $request;
+    }
+
+    /**
+     * Register the frontend user as aspect
+     *
+     * @param Context $context
+     * @param AbstractUserAuthentication $user
+     */
+    protected function setFrontendUserAspect(Context $context, AbstractUserAuthentication $user)
+    {
+        $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $user, $user === null ? [0, -1] : null));
     }
 }

@@ -200,7 +200,6 @@ abstract class AbstractTypolinkBuilder
                     (int)GeneralUtility::_GP('type')
             );
             $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-            $GLOBALS['TSFE']->sys_page->init(false);
             $GLOBALS['TSFE']->initTemplate();
         }
         return $GLOBALS['TSFE'];

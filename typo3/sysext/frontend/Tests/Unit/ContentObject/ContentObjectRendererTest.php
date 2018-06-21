@@ -15,8 +15,11 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  */
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -140,6 +143,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 '',
                 false
             );
+        $this->frontendControllerMock->_set('context', GeneralUtility::makeInstance(Context::class));
         $this->frontendControllerMock->tmpl = $this->templateServiceMock;
         $this->frontendControllerMock->config = [];
         $this->frontendControllerMock->page =  [];
@@ -4868,7 +4872,13 @@ class ContentObjectRendererTest extends UnitTestCase
         $param3,
         $will
     ) {
-        $GLOBALS['TSFE']->beUserLogin = $login;
+        if ($login) {
+            $backendUser = new BackendUserAuthentication();
+            $backendUser->user['uid'] = 13;
+            GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect($backendUser));
+        } else {
+            GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect());
+        }
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['editIcons'])->getMock();
         $subject
@@ -5076,7 +5086,13 @@ class ContentObjectRendererTest extends UnitTestCase
         $times,
         $will
     ) {
-        $GLOBALS['TSFE']->beUserLogin = $login;
+        if ($login) {
+            $backendUser = new BackendUserAuthentication();
+            $backendUser->user['uid'] = 13;
+            GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect($backendUser));
+        } else {
+            GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect());
+        }
         $conf = ['editPanel.' => [$this->getUniqueId('editPanel.')]];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['editPanel'])->getMock();

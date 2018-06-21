@@ -19,6 +19,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -48,7 +52,8 @@ class PageResolver implements MiddlewareInterface
         // No access? Then remove user & Re-evaluate the page-id
         if ($GLOBALS['TSFE']->isBackendUserLoggedIn() && !$GLOBALS['BE_USER']->doesUserHaveAccess($GLOBALS['TSFE']->page, Permission::PAGE_SHOW)) {
             unset($GLOBALS['BE_USER']);
-            $GLOBALS['TSFE']->beUserLogin = false;
+            // Register an empty backend user as aspect
+            $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), null);
             $this->checkAlternativeIdMethods($GLOBALS['TSFE']);
             $GLOBALS['TSFE']->determineId();
         }
@@ -65,6 +70,8 @@ class PageResolver implements MiddlewareInterface
      * Two options:
      * 1) Use PATH_INFO (also Apache) to extract id and type from that var. Does not require any special modules compiled with apache. (less typical)
      * 2) Using hook which enables features like those provided from "realurl" extension (AKA "Speaking URLs")
+     *
+     * @param TypoScriptFrontendController $tsfe
      */
     protected function checkAlternativeIdMethods(TypoScriptFrontendController $tsfe)
     {
@@ -73,5 +80,17 @@ class PageResolver implements MiddlewareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $tsfe);
         }
+    }
+
+    /**
+     * Register the backend user as aspect
+     *
+     * @param Context $context
+     * @param BackendUserAuthentication $user
+     */
+    protected function setBackendUserAspect(Context $context, BackendUserAuthentication $user = null)
+    {
+        $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
+        $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
     }
 }

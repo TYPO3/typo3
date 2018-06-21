@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Felogin\Controller;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Authentication\LoginType;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -153,7 +154,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
             $this->template = file_get_contents($template);
         }
         // Is user logged in?
-        $this->userIsLoggedIn = $this->frontendController->loginUser;
+        $this->userIsLoggedIn = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'isLoggedIn');
         // Redirect
         if ($this->conf['redirectMode'] && !$this->conf['redirectDisable'] && !$this->noRedirect) {
             $redirectUrl = $this->processRedirect();
@@ -659,7 +660,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
         if ($this->conf['redirectMode']) {
             $redirectMethods = GeneralUtility::trimExplode(',', $this->conf['redirectMode'], true);
             foreach ($redirectMethods as $redirMethod) {
-                if ($this->frontendController->loginUser && $this->logintype === LoginType::LOGIN) {
+                if ($this->userIsLoggedIn && $this->logintype === LoginType::LOGIN) {
                     // Logintype is needed because the login-page wouldn't be accessible anymore after a login (would always redirect)
                     switch ($redirMethod) {
                         case 'groupLogin':
@@ -785,7 +786,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                         'linkAccessRestrictedPages' => true
                     ]);
                     $redirect_url[] = $this->cObj->lastTypoLinkUrl;
-                } elseif ($this->logintype == '' && $redirMethod === 'logout' && $this->conf['redirectPageLogout'] && $this->frontendController->loginUser) {
+                } elseif ($this->logintype == '' && $redirMethod === 'logout' && $this->conf['redirectPageLogout'] && $this->userIsLoggedIn) {
                     // If logout and page not accessible
                     $redirect_url[] = $this->pi_getPageLink((int)$this->conf['redirectPageLogout']);
                 } elseif ($this->logintype === LoginType::LOGOUT) {

@@ -19,6 +19,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -79,7 +83,8 @@ class WorkspacePreview implements MiddlewareInterface
                         );
                         if ($previewUser) {
                             $GLOBALS['BE_USER'] = $previewUser;
-                            $GLOBALS['TSFE']->beUserLogin = true;
+                            // Register the preview user as aspect
+                            $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), $previewUser);
                         }
                     }
             }
@@ -90,7 +95,8 @@ class WorkspacePreview implements MiddlewareInterface
         // workspace preview module.
         if ($request->getQueryParams()['ADMCMD_noBeUser']) {
             $GLOBALS['BE_USER'] = null;
-            $GLOBALS['TSFE']->beUserLogin = false;
+            // Register the backend user as aspect
+            $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), null);
             // Caching is disabled, because otherwise generated URLs could include the ADMCMD_noBeUser parameter
             $GLOBALS['TSFE']->set_no_cache('GET Parameter ADMCMD_noBeUser was given', true);
         }
@@ -353,5 +359,17 @@ class WorkspacePreview implements MiddlewareInterface
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'] ?: GeneralUtility::makeInstance(LanguageService::class);
+    }
+
+    /**
+     * Register the backend user as aspect
+     *
+     * @param Context $context
+     * @param BackendUserAuthentication $user
+     */
+    protected function setBackendUserAspect(Context $context, BackendUserAuthentication $user = null)
+    {
+        $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
+        $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
     }
 }

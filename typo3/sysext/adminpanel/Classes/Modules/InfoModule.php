@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -40,17 +42,19 @@ class InfoModule extends AbstractModule
         $view->setPartialRootPaths([$this->extResources . '/Partials']);
         $tsfe = $this->getTypoScriptFrontendController();
 
+        /** @var UserAspect $frontendUserAspect */
+        $frontendUserAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
         $view->assignMultiple([
             'info' => [
                 'pageUid' => $tsfe->id,
                 'pageType' => $tsfe->type,
-                'groupList' => $tsfe->gr_list,
+                'groupList' => implode(',', $frontendUserAspect->getGroupIds()),
                 'noCache' => $this->isNoCacheEnabled(),
                 'countUserInt' => \count($tsfe->config['INTincScript'] ?? []),
                 'totalParsetime' => $this->getTimeTracker()->getParseTime(),
                 'feUser' => [
-                    'uid' => $tsfe->fe_user->user['uid'] ?? 0,
-                    'username' => $tsfe->fe_user->user['username'] ?? ''
+                    'uid' => $frontendUserAspect->get('id'),
+                    'username' => $frontendUserAspect->get('username')
                 ],
                 'imagesOnPage' => $this->collectImagesOnPage(),
                 'documentSize' => $this->collectDocumentSize()

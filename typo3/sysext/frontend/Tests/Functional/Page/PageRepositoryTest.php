@@ -35,7 +35,6 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     protected function setUp()
     {
         parent::setUp();
-        $GLOBALS['TSFE']->gr_list = '';
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
         $this->pageRepo = new PageRepository();
         $this->pageRepo->init(false);

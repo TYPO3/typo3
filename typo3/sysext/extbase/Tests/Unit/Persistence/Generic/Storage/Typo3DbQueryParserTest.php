@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
  */
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -632,7 +634,7 @@ class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             'delete' => 'deleted_column'
         ];
         $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->sys_page = new \TYPO3\CMS\Frontend\Page\PageRepository();
+        $GLOBALS['TSFE']->sys_page = new PageRepository(new Context());
         $GLOBALS['SIM_ACCESS_TIME'] = 123456789;
 
         $connectionProphet = $this->prophesize(Connection::class);
@@ -699,7 +701,7 @@ class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             'delete' => 'deleted_column'
         ];
         $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->sys_page = new \TYPO3\CMS\Frontend\Page\PageRepository();
+        $GLOBALS['TSFE']->sys_page = new PageRepository(new Context());
         $GLOBALS['SIM_ACCESS_TIME'] = 123456789;
 
         $connectionProphet = $this->prophesize(Connection::class);

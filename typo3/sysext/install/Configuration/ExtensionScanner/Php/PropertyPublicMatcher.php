@@ -411,4 +411,29 @@ return [
             'Deprecation-85125-UsagesOfCharsetConverterInCore.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Controller\TypoScriptFrontendController->showHiddenPage' => [
+        'restFiles' => [
+            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Controller\TypoScriptFrontendController->showHiddenRecords' => [
+        'restFiles' => [
+            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Controller\TypoScriptFrontendController->gr_list' => [
+        'restFiles' => [
+            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Controller\TypoScriptFrontendController->loginUser' => [
+        'restFiles' => [
+            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Controller\TypoScriptFrontendController->beUserLogin' => [
+        'restFiles' => [
+            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
+        ],
+    ],
 ];

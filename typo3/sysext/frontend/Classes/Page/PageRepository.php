@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Frontend\Page;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -179,6 +181,24 @@ class PageRepository implements LoggerAwareInterface
     const SHORTCUT_MODE_PARENT_PAGE = 3;
 
     /**
+     * @var Context
+     */
+    protected $context;
+
+    /**
+     * PageRepository constructor to set the base context, this will effectively remove the necessity for
+     * setting properties from the outside.
+     *
+     * @param Context $context
+     */
+    public function __construct(Context $context = null)
+    {
+        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
+        $this->versioningWorkspaceId = $this->context->getPropertyFromAspect('workspace', 'id');
+        $this->init($this->context->getPropertyFromAspect('visibility', 'includeHiddenPages'));
+    }
+
+    /**
      * init() MUST be run directly after creating a new template-object
      * This sets the internal variable $this->where_hid_del to the correct where
      * clause for page records taking deleted/hidden/starttime/endtime/t3ver_state
@@ -189,6 +209,10 @@ class PageRepository implements LoggerAwareInterface
      */
     public function init($show_hidden)
     {
+        // This usually happens only in tests.
+        if (!isset($GLOBALS['TCA']['pages'])) {
+            return;
+        }
         $this->where_groupAccess = '';
 
         if ($this->versioningWorkspaceId) {
@@ -1396,18 +1420,12 @@ class PageRepository implements LoggerAwareInterface
      */
     public function enableFields($table, $show_hidden = -1, $ignore_array = [], $noVersionPreview = false)
     {
-        if ($show_hidden === -1 && is_object($this->getTypoScriptFrontendController())) {
-            // If show_hidden was not set from outside and if TSFE is an object, set it
-            // based on showHiddenPage and showHiddenRecords from TSFE
-            $show_hidden = $table === 'pages'
-                ? $this->getTypoScriptFrontendController()->showHiddenPage
-                : $this->getTypoScriptFrontendController()->showHiddenRecords;
-        }
         if ($show_hidden === -1) {
-            $show_hidden = 0;
+            // If show_hidden was not set from outside, use the current context
+            $show_hidden = (int)$this->context->getPropertyFromAspect('visibility', $table === 'pages' ? 'includeHiddenPages' : 'includeHiddenContent', false);
         }
         // If show_hidden was not changed during the previous evaluation, do it here.
-        $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
+        $ctrl = $GLOBALS['TCA'][$table]['ctrl'] ?? null;
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table)
             ->expr();
@@ -1503,7 +1521,9 @@ class PageRepository implements LoggerAwareInterface
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table)
             ->expr();
-        $memberGroups = GeneralUtility::intExplode(',', $this->getTypoScriptFrontendController()->gr_list);
+        /** @var UserAspect $userAspect */
+        $userAspect = $this->context->getAspect('frontend.user');
+        $memberGroups = $userAspect->getGroupIds();
         $orChecks = [];
         // If the field is empty, then OK
         $orChecks[] = $expressionBuilder->eq($field, $expressionBuilder->literal(''));

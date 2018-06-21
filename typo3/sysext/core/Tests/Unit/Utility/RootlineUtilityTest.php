@@ -87,7 +87,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function isMountedPageWithoutMountPointsReturnsFalse(): void
     {
-        $this->subject->__construct(1);
+        $this->subject->__construct(1, '', $this->pageContextMock);
         $this->assertFalse($this->subject->isMountedPage());
     }
 
@@ -96,7 +96,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function isMountedPageWithMatchingMountPointParameterReturnsTrue(): void
     {
-        $this->subject->__construct(1, '1-99');
+        $this->subject->__construct(1, '1-99', $this->pageContextMock);
         $this->assertTrue($this->subject->isMountedPage());
     }
 
@@ -105,7 +105,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function isMountedPageWithNonMatchingMountPointParameterReturnsFalse(): void
     {
-        $this->subject->__construct(1, '99-99');
+        $this->subject->__construct(1, '99-99', $this->pageContextMock);
         $this->assertFalse($this->subject->isMountedPage());
     }
 
@@ -117,7 +117,7 @@ class RootlineUtilityTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1343464100);
 
-        $this->subject->__construct(1, '1-99');
+        $this->subject->__construct(1, '1-99', $this->pageContextMock);
         $this->subject->_call(
             'processMountedPage',
             ['uid' => 1],
@@ -130,7 +130,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function processMountedPageWithMountedPageNotThrowsException(): void
     {
-        $this->subject->__construct(1, '1-99');
+        $this->subject->__construct(1, '1-99', $this->pageContextMock);
         $this->assertNotEmpty($this->subject->_call(
             'processMountedPage',
             ['uid' => 1],
@@ -143,7 +143,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function processMountedPageWithMountedPageAddsMountedFromParameter(): void
     {
-        $this->subject->__construct(1, '1-99');
+        $this->subject->__construct(1, '1-99', $this->pageContextMock);
         $result = $this->subject->_call(
             'processMountedPage',
             ['uid' => 1],
@@ -158,7 +158,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function processMountedPageWithMountedPageAddsMountPointParameterToReturnValue(): void
     {
-        $this->subject->__construct(1, '1-99');
+        $this->subject->__construct(1, '1-99', $this->pageContextMock);
         $result = $this->subject->_call(
             'processMountedPage',
             ['uid' => 1],
@@ -173,7 +173,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function processMountedPageForMountPageIsOverlayAddsMountOLParameter(): void
     {
-        $this->subject->__construct(1, '1-99');
+        $this->subject->__construct(1, '1-99', $this->pageContextMock);
         $result = $this->subject->_call(
             'processMountedPage',
             ['uid' => 1],
@@ -188,7 +188,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function processMountedPageForMountPageIsOverlayAddsDataInformationAboutMountPage(): void
     {
-        $this->subject->__construct(1, '1-99');
+        $this->subject->__construct(1, '1-99', $this->pageContextMock);
         $result = $this->subject->_call('processMountedPage', ['uid' => 1], [
             'uid' => 99,
             'doktype' => PageRepository::DOKTYPE_MOUNTPOINT,
@@ -212,7 +212,7 @@ class RootlineUtilityTest extends UnitTestCase
             'mount_pid' => 1,
             'mount_pid_ol' => 0
         ];
-        $this->subject->__construct(1, '1-99');
+        $this->subject->__construct(1, '1-99', $this->pageContextMock);
         $result = $this->subject->_call('processMountedPage', ['uid' => 1], $mountPointPageData);
         $this->assertIsSubset($mountPointPageData, $result);
     }

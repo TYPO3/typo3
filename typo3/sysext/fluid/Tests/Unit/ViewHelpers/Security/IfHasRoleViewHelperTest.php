@@ -14,7 +14,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Security\IfHasRoleViewHelper;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -28,16 +32,22 @@ class IfHasRoleViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $viewHelper;
 
+    /**
+     * @var Context
+     */
+    protected $context;
+
     protected function setUp()
     {
         parent::setUp();
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->loginUser = 1;
-        $GLOBALS['TSFE']->fe_user = new \stdClass();
-        $GLOBALS['TSFE']->fe_user->groupData = [
+        $this->context = GeneralUtility::makeInstance(Context::class);
+        $user = new FrontendUserAuthentication();
+        $user->user['uid'] = 13;
+        $user->groupData = [
             'uid' => [1, 2],
             'title' => ['Editor', 'OtherRole']
         ];
+        $this->context->setAspect('frontend.user', new UserAspect($user, [1, 2]));
         $this->viewHelper = new IfHasRoleViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
@@ -45,7 +55,7 @@ class IfHasRoleViewHelperTest extends ViewHelperBaseTestcase
 
     protected function tearDown()
     {
-        unset($GLOBALS['TSFE']);
+        GeneralUtility::removeSingletonInstance(Context::class, $this->context);
     }
 
     /**

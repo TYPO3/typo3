@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+
 /**
  * Test case
  */
@@ -48,7 +50,8 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function setUp()
     {
-        $this->pageSelectObject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, ['getMultipleGroupsWhereClause']);
+        $this->pageSelectObject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, ['getMultipleGroupsWhereClause'], [], '', false);
+        $this->pageSelectObject->_set('context', new Context());
         $this->pageSelectObject->expects($this->any())->method('getMultipleGroupsWhereClause')->will($this->returnValue(' AND 1=1'));
     }
 

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -57,6 +59,6 @@ class IfAuthenticatedViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return isset($GLOBALS['TSFE']) && $GLOBALS['TSFE']->loginUser;
+        return GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'id', 0) > 0;
     }
 }

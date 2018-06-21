@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -28,6 +30,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ConditionMatcher extends AbstractConditionMatcher
 {
+    /**
+     * @var Context
+     */
+    protected $context;
+
+    /**
+     * @param Context $context optional context to fetch data from
+     */
+    public function __construct(Context $context = null)
+    {
+        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
+    }
+
     /**
      * Evaluates a TypoScript condition given as input,
      * eg. "[browser=net][...(other conditions)...]"
@@ -206,7 +221,9 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     protected function getGroupList()
     {
-        return $this->getTypoScriptFrontendController()->gr_list;
+        /** @var UserAspect $userAspect */
+        $userAspect = $this->context->getAspect('frontend.user');
+        return implode(',', $userAspect->getGroupIds());
     }
 
     /**
@@ -246,7 +263,8 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     protected function getUserId()
     {
-        return $this->getTypoScriptFrontendController()->fe_user->user['uid'];
+        $userAspect = $this->context->getAspect('frontend.user');
+        return $userAspect->get('id');
     }
 
     /**
@@ -256,7 +274,9 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     protected function isUserLoggedIn()
     {
-        return (bool)$this->getTypoScriptFrontendController()->loginUser;
+        /** @var UserAspect $userAspect */
+        $userAspect = $this->context->getAspect('frontend.user');
+        return $userAspect->isLoggedIn();
     }
 
     /**

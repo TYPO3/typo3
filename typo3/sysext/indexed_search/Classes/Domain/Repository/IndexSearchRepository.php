@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
 
 use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -177,7 +178,7 @@ class IndexSearchRepository
         $this->indexerObj = GeneralUtility::makeInstance(Indexer::class);
         $this->externalParsers = $externalParsers;
         $this->searchRootPageIdList = $searchRootPageIdList;
-        $this->frontendUserGroupList = $this->getTypoScriptFrontendController()->gr_list;
+        $this->frontendUserGroupList = implode(',', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
         // Should we use joinPagesForQuery instead of long lists of uids?
         if ($settings['searchSkipExtendToSubpagesChecking']) {
             $this->joinPagesForQuery = 1;

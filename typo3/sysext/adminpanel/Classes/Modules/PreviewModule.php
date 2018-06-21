@@ -17,6 +17,10 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  */
 
 use TYPO3\CMS\Adminpanel\Repositories\FrontendGroupsRepository;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -170,17 +174,20 @@ class PreviewModule extends AbstractModule
      */
     protected function initializeFrontendPreview()
     {
+        $context = GeneralUtility::makeInstance(Context::class);
         $tsfe = $this->getTypoScriptFrontendController();
         $tsfe->clear_preview();
         $tsfe->fePreview = 1;
-        $tsfe->showHiddenPage = (bool)$this->getConfigurationOption('showHiddenPages');
-        $tsfe->showHiddenRecords = (bool)$this->getConfigurationOption('showHiddenRecords');
+        $showHiddenPage = (bool)$this->getConfigurationOption('showHiddenPages');
+        $showHiddenRecords = (bool)$this->getConfigurationOption('showHiddenRecords');
         // Simulate date
         $simTime = $this->getConfigurationOption('simulateDate');
         if ($simTime) {
             $GLOBALS['SIM_EXEC_TIME'] = $simTime;
             $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
+            $context->setAspect('date', GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
         }
+        $context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class, $showHiddenPage, $showHiddenRecords));
         // simulate user
         $tsfe->simUserGroup = $this->getConfigurationOption('simulateUserGroup');
         if ($tsfe->simUserGroup) {
@@ -192,6 +199,7 @@ class PreviewModule extends AbstractModule
                     $tsfe->fe_user->usergroup_column => $tsfe->simUserGroup,
                 ];
             }
+            $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $tsfe->fe_user));
         }
         if (!$tsfe->simUserGroup && !$simTime && !$tsfe->showHiddenPage && !$tsfe->showHiddenRecords) {
             $tsfe->fePreview = 0;

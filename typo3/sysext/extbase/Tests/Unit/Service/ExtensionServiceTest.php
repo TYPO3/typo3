@@ -44,10 +44,15 @@ class ExtensionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     protected $extensionService;
 
+    /**
+     * Due to nested PageRepository / FrontendRestriction Container issues, the Context object is set
+     * @var bool
+     */
+    protected $resetSingletonInstances = true;
+
     protected function setUp()
     {
         $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->gr_list = '';
         $this->extensionService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class, ['dummy']);
         $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $this->extensionService->_set('configurationManager', $this->mockConfigurationManager);

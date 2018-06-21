@@ -62,7 +62,6 @@ class FrontendLoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     protected function setUp()
     {
         $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->gr_list = '0,-1';
         $this->testTableName = 'sys_domain';
         $this->testHostName = 'hostname.tld';
         $this->testSitePath = '/';
@@ -514,7 +513,7 @@ class FrontendLoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
         $this->accessibleFixture->_set('referer', 'http://www.example.com/snafu');
         /** @var TypoScriptFrontendController $tsfe */
         $tsfe = $this->accessibleFixture->_get('frontendController');
-        $tsfe->loginUser = true;
+        $this->accessibleFixture->_set('userIsLoggedIn', true);
         $this->assertSame(['http://www.example.com/snafu'], $this->accessibleFixture->_call('processRedirect'));
     }
 }

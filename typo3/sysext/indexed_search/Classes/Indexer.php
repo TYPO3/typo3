@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch;
 
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -295,8 +296,8 @@ class Indexer
                             // sys_language UID of the language of the indexing.
                             $this->conf['MP'] = $pObj->MP;
                             // MP variable, if any (Mount Points)
-                            $this->conf['gr_list'] = $pObj->gr_list;
                             // Group list
+                            $this->conf['gr_list'] = implode(',', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
                             $this->conf['cHash'] = $pObj->cHash;
                             // cHash string for additional parameters
                             $this->conf['cHash_array'] = $pObj->cHash_array;

@@ -22,6 +22,9 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -57,14 +60,9 @@ class BackendUserAuthenticator implements MiddlewareInterface
         // Initializing a possible logged-in Backend User
         // If the backend cookie is set,
         // we proceed and check if a backend user is logged in.
-        $GLOBALS['TSFE']->beUserLogin = false;
         $backendUserObject = null;
         if (isset($request->getCookieParams()[BackendUserAuthentication::getCookieName()])) {
             $backendUserObject = $this->initializeBackendUser();
-            // If the user is active now, let the controller know
-            if ($backendUserObject instanceof FrontendBackendUserAuthentication && !empty($backendUserObject->user['uid'])) {
-                $GLOBALS['TSFE']->beUserLogin = true;
-            }
         }
 
         $GLOBALS['BE_USER'] = $backendUserObject;
@@ -84,6 +82,7 @@ class BackendUserAuthenticator implements MiddlewareInterface
             Bootstrap::initializeLanguageObject();
             Bootstrap::initializeBackendRouter();
             Bootstrap::loadExtTables();
+            $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), $GLOBALS['BE_USER']);
         }
 
         return $handler->handle($request);
@@ -94,7 +93,7 @@ class BackendUserAuthenticator implements MiddlewareInterface
      *
      * @return FrontendBackendUserAuthentication|null the backend user object or null if there was no valid user found
      */
-    public function initializeBackendUser()
+    protected function initializeBackendUser()
     {
         // New backend user object
         $backendUserObject = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class);
@@ -108,5 +107,17 @@ class BackendUserAuthenticator implements MiddlewareInterface
             $backendUserObject = null;
         }
         return $backendUserObject;
+    }
+
+    /**
+     * Register the backend user as aspect
+     *
+     * @param Context $context
+     * @param BackendUserAuthentication $user
+     */
+    protected function setBackendUserAspect(Context $context, BackendUserAuthentication $user)
+    {
+        $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
+        $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
     }
 }

@@ -18,8 +18,14 @@ namespace TYPO3\CMS\Frontend\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entry point for the TYPO3 Frontend
@@ -58,6 +64,7 @@ class Application extends AbstractApplication
         if (!$this->checkIfEssentialConfigurationExists()) {
             return $this->installToolRedirect();
         }
+        $this->initializeContext();
         return parent::handle($request);
     }
 
@@ -80,5 +87,20 @@ class Application extends AbstractApplication
     {
         $path = TYPO3_mainDir . 'install.php';
         return new RedirectResponse($path, 302);
+    }
+
+    /**
+     * Initializes the Context used for accessing data and finding out the current state of the application
+     * Will be moved to a DI-like concept once introduced, for now, this is a singleton
+     */
+    protected function initializeContext()
+    {
+        GeneralUtility::makeInstance(Context::class, [
+            'date' => new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])),
+            'visibility' => new VisibilityAspect(),
+            'workspace' => new WorkspaceAspect(0),
+            'backend.user' => new UserAspect(null),
+            'frontend.user' => new UserAspect(null, [0, -1]),
+        ]);
     }
 }
