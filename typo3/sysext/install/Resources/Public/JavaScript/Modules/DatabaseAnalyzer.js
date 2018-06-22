@@ -32,7 +32,9 @@ define([
     selectorExecuteTrigger: '.t3js-databaseAnalyzer-execute',
     selectorOutputContainer: '.t3js-databaseAnalyzer-output',
     selectorSuggestionBlock: '.t3js-databaseAnalyzer-suggestion-block',
+    selectorSuggestionList: '.t3js-databaseAnalyzer-suggestion-list',
     selectorSuggestionLine: '.t3js-databaseAnalyzer-suggestion-line',
+    selectorSuggestionLineTemplate: '.t3js-databaseAnalyzer-suggestion-line-template',
     currentModal: {},
 
     initialize: function(currentModal) {
@@ -93,8 +95,7 @@ define([
                 }
                 aBlock.find('.t3js-databaseAnalyzer-suggestion-block-label').attr('for', 't3-install-' + key + '-checkbox');
                 element.children.forEach(function(line) {
-                  var aLine = modalContent.find(self.selectorSuggestionLine).clone();
-                  aLine.removeClass(self.selectorSuggestionLine.substr(1));
+                  var aLine = modalContent.find(self.selectorSuggestionLineTemplate).children().clone();
                   var hash = line.hash;
                   var $checkbox = aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox');
                   $checkbox.attr('id', 't3-install-db-' + hash).attr('data-hash', hash);
@@ -111,7 +112,7 @@ define([
                     aLine.find('.t3js-databaseAnalyzer-suggestion-line-count-value').text(line.rowCount);
                     aLine.find('.t3js-databaseAnalyzer-suggestion-line-count').show();
                   }
-                  aBlock.find('.t3js-databaseAnalyzer-suggestion-block-line').append(aLine);
+                  aBlock.find(self.selectorSuggestionList).append(aLine);
                 });
                 modalContent.find(self.selectorOutputContainer).append(aBlock.html());
               });
@@ -132,7 +133,7 @@ define([
       var self = this;
       var executeToken = self.currentModal.find('#t3js-databaseAnalyzer-execute-token').text();
       var selectedHashes = [];
-      self.currentModal.find('.t3js-databaseAnalyzer-output .t3js-databaseAnalyzer-suggestion-block-line input:checked').each(function() {
+      self.currentModal.find('.t3js-databaseAnalyzer-output .t3js-databaseAnalyzer-suggestion-line input:checked').each(function() {
         selectedHashes.push($(this).data('hash'));
       });
       $(this.selectorExecuteTrigger).prop('disabled', true);
