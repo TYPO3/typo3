@@ -453,6 +453,14 @@ return [
                 ],
             ],
         ],
+        'input_39' => [
+            'exclude' => 1,
+            'label' => 'input_39 eval=email',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'email',
+            ],
+        ],
 
 
         'inputdatetime_1' => [
@@ -1485,7 +1493,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;input,
-                    input_1, input_2, input_3, input_4, input_5, input_8, input_9, input_10,
+                    input_1, input_2, input_3, input_4, input_5, input_8, input_39, input_9, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19, input_20,
                     input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_14, input_28, input_29, input_38, input_30,
                     input_31, input_32, input_33, input_35, input_36, input_34, input_37,
