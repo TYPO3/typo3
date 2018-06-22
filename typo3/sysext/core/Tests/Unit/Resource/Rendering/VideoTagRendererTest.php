@@ -94,7 +94,12 @@ class VideoTagRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                 '//:path/myVideoFile',
                 ['controls' => 1, 'controlsList' => 'nodownload'],
                 '<video width="300" height="200" controls controlsList="nodownload"><source src="//:path/myVideoFile" type="video/mp4"></video>',
-            ]
+            ],
+            [
+                '//:path/myVideoFile',
+                ['preload' => 'auto'],
+                '<video width="300" height="200" controls preload="auto"><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ],
         ];
     }
 
