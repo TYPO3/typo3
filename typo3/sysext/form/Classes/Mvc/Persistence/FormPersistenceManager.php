@@ -111,6 +111,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             $yaml = $this->yamlSource->load([$file]);
         } catch (\Exception $e) {
             $yaml = [
+                'type' => 'Form',
                 'identifier' => $file->getCombinedIdentifier(),
                 'label' => $e->getMessage(),
                 'error' => [
