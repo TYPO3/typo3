@@ -205,7 +205,7 @@ class IpAnonymizationAdditionalFieldProvider implements AdditionalFieldProviderI
     public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
     {
         $task->table = $submittedData['scheduler_ipAnonymization_table'];
-        $task->mask = $submittedData['scheduler_ipAnonymization_mask'];
+        $task->mask = (int)$submittedData['scheduler_ipAnonymization_mask'];
         $task->numberOfDays = (int)$submittedData['scheduler_ipAnonymization_numberOfDays'];
     }
 

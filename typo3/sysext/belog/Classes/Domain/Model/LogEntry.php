@@ -313,6 +313,9 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getDetails()
     {
+        if ($this->type === 255) {
+            return str_replace('###IP###', $this->ip, $this->details);
+        }
         return $this->details;
     }
 
