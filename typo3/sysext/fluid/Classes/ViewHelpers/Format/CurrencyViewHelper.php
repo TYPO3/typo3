@@ -71,6 +71,7 @@ class CurrencyViewHelper extends AbstractViewHelper
         $this->registerArgument('prependCurrency', 'bool', 'Select if the currency sign should be prepended', false, false);
         $this->registerArgument('separateCurrency', 'bool', 'Separate the currency sign from the number by a single space, defaults to true due to backwards compatibility', false, true);
         $this->registerArgument('decimals', 'int', 'Set decimals places.', false, 2);
+        $this->registerArgument('useDash', 'bool', 'Use the dash instead of decimal 00', false, false);
     }
 
     /**
@@ -90,6 +91,7 @@ class CurrencyViewHelper extends AbstractViewHelper
         $prependCurrency = $arguments['prependCurrency'];
         $separateCurrency = $arguments['separateCurrency'];
         $decimals = $arguments['decimals'];
+        $useDash = $arguments['useDash'];
 
         $floatToFormat = $renderChildrenClosure();
         if (empty($floatToFormat)) {
@@ -98,6 +100,11 @@ class CurrencyViewHelper extends AbstractViewHelper
             $floatToFormat = (float)$floatToFormat;
         }
         $output = number_format($floatToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
+
+        if ($useDash && $floatToFormat === floor($floatToFormat)) {
+            $output = explode($decimalSeparator, $output)[0] . $decimalSeparator . '—';
+        }
+
         if ($currencySign !== '') {
             $currencySeparator = $separateCurrency ? ' ' : '';
             if ($prependCurrency === true) {
