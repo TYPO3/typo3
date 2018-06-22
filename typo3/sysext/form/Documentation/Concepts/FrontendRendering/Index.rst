@@ -1091,8 +1091,7 @@ Pure YAML is sufficient to add simple, static values:
 .. code-block:: yaml
 
    renderables:
-     fieldWithTranslationArguments:
-       identifier: field-with-translation-arguments
+     - identifier: field-with-translation-arguments
        type: Checkbox
        label: This is a %s feature
        renderingOptions:
@@ -1106,7 +1105,17 @@ This will produce the label: `This is a useful feature`.
 
 Alternatively, translation arguments can be set via
 :ts:`formDefinitionOverrides` in TypoScript. A common usecase is a checkbox for
-user confirmation linking to details of the topic:
+user confirmation linking to details of the topic. Here it makes sense to use
+YAML hashes instead of YAML lists to give sections named keys. This simplifies
+references in TypoScript a lot since named keys are way more readable and also
+keep the setup working in case elements are reordered. With lists and numeric
+keys the TypoScript setup would also need to be updated in this case.
+
+In the following example the list of :yaml:`renderables` has been replaced with
+a hash of :yaml:`renderables` and the field :yaml:`field-with-translation-arguments`
+has received a named key :yaml:`fieldWithTranslationArguments`. This key can be anything
+as long as it is unique on the same level, usually simply copying the :yaml:`identifier`
+should be enough:
 
 .. code-block:: yaml
 
@@ -1118,6 +1127,9 @@ user confirmation linking to details of the topic:
        renderingOptions:
          translation:
            translationFile: path/to/locallang.xlf
+
+The following TypoScript setup uses the named key :yaml:`fieldWithTranslationArguments` to refer
+to the field and adds a page URL as translation argument:
 
 .. code-block:: typoscript
 
@@ -1157,6 +1169,10 @@ user confirmation linking to details of the topic:
          }
       }
    }
+
+The :yaml:`Page` element of the form definition was not registered with a named key so a numeric
+key :yaml:`0` must be used which, as mentioned above, is prone to errors when more pages are added
+or pages are reordered.
 
 .. important::
 
