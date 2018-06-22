@@ -90,7 +90,7 @@ class VimeoRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200')
         );
     }
@@ -104,7 +104,7 @@ class VimeoRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?loop=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?loop=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['loop' => 1])
         );
     }
@@ -118,7 +118,7 @@ class VimeoRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
@@ -137,7 +137,7 @@ class VimeoRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $fileReferenceMock->expects($this->any())->method('getOriginalFile')->willReturn($fileResourceMock);
 
         $this->assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileReferenceMock, '300m', '200')
         );
     }
@@ -151,8 +151,36 @@ class VimeoRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithCustomAllowIsCorrect()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['allow' => 'foo; bar'])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithCustomAllowAndAutoplayIsCorrect()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['allow' => 'foo; bar', 'autoplay' => 1])
         );
     }
 }

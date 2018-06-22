@@ -118,6 +118,12 @@ class VimeoRenderer implements FileRendererInterface
         $src = sprintf('https://player.vimeo.com/video/%s?%s', $videoId, implode('&amp;', $urlParams));
 
         $attributes = ['allowfullscreen'];
+        if (!isset($options['allow'])) {
+            $options['allow'] = 'fullscreen';
+            if (!empty($options['autoplay'])) {
+                $options['allow'] = 'autoplay; fullscreen';
+            }
+        }
         if ((int)$width > 0) {
             $attributes[] = 'width="' . (int)$width . '"';
         }
@@ -127,7 +133,7 @@ class VimeoRenderer implements FileRendererInterface
         if (is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->config['config']['doctype'] !== 'html5') {
             $attributes[] = 'frameborder="0"';
         }
-        foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick'] as $key) {
+        foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick', 'allow'] as $key) {
             if (!empty($options[$key])) {
                 $attributes[] = $key . '="' . htmlspecialchars($options[$key]) . '"';
             }
