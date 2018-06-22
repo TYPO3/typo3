@@ -34,7 +34,7 @@ define([
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
               data.status.forEach((function(element) {
-                Notification.success(element.message);
+                Notification.success(element.title, element.message);
               }));
             }
           } else {

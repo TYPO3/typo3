@@ -80,7 +80,7 @@ class MaintenanceController extends AbstractController
         GeneralUtility::makeInstance(ClearCacheService::class)->clearAll();
         GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
         $messageQueue = (new FlashMessageQueue('install'))->enqueue(
-            new FlashMessage('Successfully cleared all caches and all available opcode caches.')
+            new FlashMessage('Successfully cleared all caches and all available opcode caches.', 'Caches cleared')
         );
         return new JsonResponse([
             'success' => true,
