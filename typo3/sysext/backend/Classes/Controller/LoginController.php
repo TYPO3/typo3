@@ -201,7 +201,7 @@ class LoginController
                 $logo = 'EXT:backend/Resources/Public/Images/typo3_orange.svg';
             }
             $this->getDocumentTemplate()->inDocStylesArray[] = '
-				.typo3-login-logo .typo3-login-image { max-width: 150px; }
+				.typo3-login-logo .typo3-login-image { max-width: 150px; height:100%;}
 			';
         }
         $logo = $this->getUriForFileName($logo);
