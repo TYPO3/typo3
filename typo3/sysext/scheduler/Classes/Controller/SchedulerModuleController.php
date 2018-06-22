@@ -701,6 +701,7 @@ class SchedulerModuleController
         $this->view->assign('returnUrl', (string)GeneralUtility::getIndpEnv('REQUEST_URI'));
         $this->view->assign('table', implode(LF, $table));
         $this->view->assign('now', $this->getServerTime());
+        $this->view->assign('frequencyOptions', (array)$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['frequencyOptions']);
 
         return $this->view->render();
     }

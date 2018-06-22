@@ -441,6 +441,18 @@
 			<trans-unit id="label.ipAnonymization.mask.2">
 				<source>Last 2 bytes for IPv4 / Interface &amp; SLA ID for IPv6</source>
 			</trans-unit>
+			<trans-unit id="command.example1">
+				<source>Every day-of-week from Monday through Friday. at 09:00 and 15:00</source>
+			</trans-unit>
+			<trans-unit id="command.example2">
+				<source>Every 2 hours</source>
+			</trans-unit>
+			<trans-unit id="command.example3">
+				<source>Every 20 minutes</source>
+			</trans-unit>
+			<trans-unit id="command.example4">
+				<source>Every Tuesday at 07:00</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

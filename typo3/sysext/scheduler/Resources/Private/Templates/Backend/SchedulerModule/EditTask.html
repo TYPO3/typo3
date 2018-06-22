@@ -97,7 +97,25 @@
     <div class="form-group">
         <f:be.labels.csh table="{csh}" field="task_frequency" label="{lang}label.frequency.long"/>
         <div class="form-control-wrap">
-            <input type="text" name="tx_scheduler[frequency]" class="form-control" id="task_frequency" value="{frequency}">
+          <div class="form-wizards-wrap">
+            <div class="form-wizards-element">
+              <input type="text" name="tx_scheduler[frequency]" class="form-control" id="task_frequency" value="{frequency}">
+            </div>
+            <f:if condition="{frequencyOptions}">
+              <div class="form-wizards-items-aside">
+                <div class="btn-group">
+                  <select
+                    class="form-control tceforms-select tceforms-wizardselect"
+                    onchange="document.getElementById('task_frequency').value=this.options[this.selectedIndex].value;this.blur();this.selectedIndex=0;">
+                    <option></option>
+                    <f:for each="{frequencyOptions}" as="label" key="command">
+                      <option value="{command}">{f:translate(key:label,default:label)} ({command})</option>
+                    </f:for>
+                  </select>
+                </div>
+              </div>
+            </f:if>
+          </div>
         </div>
     </div>
 </div>
