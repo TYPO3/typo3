@@ -91,7 +91,7 @@ class VimeoHelper extends AbstractOEmbedHelper
     protected function getOEmbedUrl($mediaId, $format = 'json')
     {
         return sprintf(
-            'https://vimeo.com/api/oembed.%s?url=%s',
+            'https://vimeo.com/api/oembed.%s?width=2048&url=%s',
             urlencode($format),
             urlencode(sprintf('https://vimeo.com/%s', $mediaId))
         );
