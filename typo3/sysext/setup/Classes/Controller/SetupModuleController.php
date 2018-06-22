@@ -518,6 +518,7 @@ class SetupModuleController
 
             switch ($type) {
                 case 'text':
+                case 'number':
                 case 'email':
                 case 'password':
                     $noAutocomplete = '';

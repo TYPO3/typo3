@@ -82,7 +82,8 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'csh' => 'showThumbs'
         ],
         'titleLen' => [
-            'type' => 'text',
+            'type' => 'number',
+            'class' => 'form-control-adapt',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:maxTitleLen',
             'csh' => 'maxTitleLen'
         ],
@@ -102,7 +103,8 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'csh' => 'showHiddenFilesAndFolders'
         ],
         'copyLevels' => [
-            'type' => 'text',
+            'type' => 'number',
+            'class' => 'form-control-adapt',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:copyLevels',
             'csh' => 'copyLevels'
         ],
@@ -128,7 +130,8 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'csh' => 'resizeTextareas_Flexible'
         ],
         'resizeTextareas_MaxHeight' => [
-            'type' => 'text',
+            'type' => 'number',
+            'class' => 'form-control-adapt',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:flexibleTextareas_MaxHeight',
             'csh' => 'flexibleTextareas_MaxHeight'
         ],
