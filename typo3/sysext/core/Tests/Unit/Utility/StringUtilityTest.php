@@ -242,4 +242,33 @@ class StringUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ['input[name=foo]', 'input\\[name\\=foo\\]'],
         ];
     }
+
+    /**
+     * @param string $input
+     * @param string $expectedValue
+     * @test
+     * @dataProvider removeByteOrderMarkDataProvider
+     */
+    public function removeByteOrderMark(string $input, string $expectedValue)
+    {
+        // assertContains is necessary as one test contains non-string characters
+        $this->assertSame($expectedValue, StringUtility::removeByteOrderMark(hex2bin($input)));
+    }
+
+    /**
+     * @return array
+     */
+    public function removeByteOrderMarkDataProvider(): array
+    {
+        return [
+            'BOM gets removed' => [
+                'efbbbf424f4d2061742074686520626567696e6e696e6720676574732072656d6f766564',
+                'BOM at the beginning gets removed'
+            ],
+            'No BOM available' => [
+                '4e6f20424f4d20617661696c61626c65',
+                'No BOM available',
+            ],
+        ];
+    }
 }

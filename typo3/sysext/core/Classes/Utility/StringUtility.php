@@ -107,4 +107,19 @@ class StringUtility
     {
         return preg_replace('/([#:.\\[\\],=@])/', '\\\\$1', $selector);
     }
+
+    /**
+     * Removes the Byte Order Mark (BOM) from the input string. This method supports UTF-8 encoded strings only!
+     *
+     * @param string $input
+     * @return string
+     */
+    public static function removeByteOrderMark(string $input): string
+    {
+        if (strpos($input, "\xef\xbb\xbf") === 0) {
+            $input = substr($input, 3);
+        }
+
+        return $input;
+    }
 }
