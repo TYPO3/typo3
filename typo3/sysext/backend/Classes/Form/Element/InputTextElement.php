@@ -210,12 +210,26 @@ class InputTextElement extends AbstractFormElement
         $fieldWizardResult = $this->renderFieldWizard();
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
+        $inputType = 'text';
+
+        if (in_array('email', $evalList, true)) {
+            $inputType = 'email';
+        } elseif (!empty(array_intersect($evalList, ['int', 'num']))) {
+            $inputType = 'number';
+
+            if (isset($config['range']['lower'])) {
+                $attributes['min'] = (int)$config['range']['lower'];
+            }
+            if (isset($config['range']['upper'])) {
+                $attributes['max'] = (int)$config['range']['upper'];
+            }
+        }
 
         $mainFieldHtml = [];
         $mainFieldHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =      '<div class="form-wizards-element">';
-        $mainFieldHtml[] =          '<input type="text"' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
+        $mainFieldHtml[] =          '<input type="' . $inputType . '"' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $mainFieldHtml[] =          '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
         $mainFieldHtml[] =      '</div>';
         $mainFieldHtml[] =      '<div class="form-wizards-items-aside">';
