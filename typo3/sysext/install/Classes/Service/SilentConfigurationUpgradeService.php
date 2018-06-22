@@ -515,11 +515,6 @@ class SilentConfigurationUpgradeService
             if ($currentProcessorMaskValue != 0) {
                 $changedValues['GFX/processor_allowTemporaryMasksAsPng'] = 0;
             }
-            if ($currentProcessorValue === 'GraphicsMagick') {
-                if ($currentProcessorEffectsValue != -1) {
-                    $changedValues['GFX/processor_effects'] = -1;
-                }
-            }
         }
         if (!empty($changedValues)) {
             $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
