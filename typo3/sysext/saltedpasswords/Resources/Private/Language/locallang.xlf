@@ -66,19 +66,6 @@
 			<trans-unit id="ext.saltedpasswords.configuration.message.backendSecurityLevelNotRsa">
 				<source>The "rsaauth" extension is installed, but TYPO3 is not configured to use it during login. Use the Install Tool to set the Login Security Level for the backend to "rsa" ($TYPO3_CONF_VARS['BE']['loginSecurityLevel'])</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsIntro">
-				<source>SaltedPasswords is used without any transfer encryption, this means your passwords are sent in plain text. Please install rsaauth to secure your passwords submits.</source>
-			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsFirstItem">
-				<source>Install the "rsaauth" extension and use the Install Tool to set the Login Security Level for the backend to "rsa" ($TYPO3_CONF_VARS['BE']['loginSecurityLevel'])</source>
-			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsSecondItem" xml:space="preserve">
-				<source>If you have the option to use SSL, you can also configure your backend for SSL usage:
-Use the Install Tool to set the Security-Level for the backend to "normal" ($TYPO3_CONF_VARS['BE']['loginSecurityLevel']) and the SSL-locking option to a value greater than "0" (see description - $TYPO3_CONF_VARS['BE']['lockSSL'])</source>
-			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsFootnote">
-				<source>It is also possible to use "lockSSL" and "rsa" Login Security Level at the same time.</source>
-			</trans-unit>
 			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSalted">
 				<source>SaltedPasswords has been configured to be the only authentication service for the backend. Additionally, usage of salted passwords is enforced (forceSalted). The result is that there is no chance to login with users not having a salted password hash.</source>
 			</trans-unit>

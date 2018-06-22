@@ -55,6 +55,10 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
 
         if ($request !== null) {
             $statuses['encryptedConnectionStatus'] = $this->getEncryptedConnectionStatus($request);
+            $lockSslStatus = $this->getLockSslStatus($request);
+            if ($lockSslStatus) {
+                $statuses['getLockSslStatus'] = $lockSslStatus;
+            }
         }
 
         return $statuses;
@@ -82,6 +86,32 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         }
 
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_encryptedConnectionStatus'), $value, $message, $severity);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ReportStatus
+     */
+    protected function getLockSslStatus(ServerRequestInterface $request): ?ReportStatus
+    {
+        /** @var \TYPO3\CMS\Core\Http\NormalizedParams $normalizedParams */
+        $normalizedParams = $request->getAttribute('normalizedParams');
+
+        if ($normalizedParams->isHttps()) {
+            $value = $this->getLanguageService()->getLL('status_ok');
+            $message = '';
+            $severity = ReportStatus::OK;
+
+            if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) {
+                $value = $this->getLanguageService()->getLL('status_insecure');
+                $message = $this->getLanguageService()->getLL('status_lockSslStatus_insecure');
+                $severity = ReportStatus::WARNING;
+            }
+
+            return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_lockSslStatus'), $value, $message, $severity);
+        }
+
+        return null;
     }
 
     /**

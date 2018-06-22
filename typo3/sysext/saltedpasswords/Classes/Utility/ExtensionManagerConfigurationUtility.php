@@ -192,17 +192,7 @@ class ExtensionManagerConfigurationUtility
                 $problems[] = $lang->getLL('ext.saltedpasswords.configuration.message.backendSecurityLevelNotRsa');
             }
         } else {
-            // This means that we don't use any encryption method
-            $this->setErrorLevel('warning');
-            $problems[] = $lang->getLL('ext.saltedpasswords.configuration.message.rsaInstructionsIntro') . '<br />
-				<ul>
-				<li>' . $lang->getLL('ext.saltedpasswords.configuration.message.rsaInstructionsFirstItem') . '</li>
-
-				<li>' . nl2br($lang->getLL('ext.saltedpasswords.configuration.message.rsaInstructionsSecondItem')) .
-                '</li>
-				</ul>
-				<br />
-				' . $lang->getLL('ext.saltedpasswords.configuration.message.rsaInstructionsFootnote');
+            $this->setErrorLevel('ok');
         }
         // Only saltedpasswords as authsservice
         if ($extConf['onlyAuthService']) {

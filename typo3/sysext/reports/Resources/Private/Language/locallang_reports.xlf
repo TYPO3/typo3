@@ -129,6 +129,12 @@
 			<trans-unit id="status_encryptedConnectionStatus_insecure">
 				<source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
 			</trans-unit>
+			<trans-unit id="status_lockSslStatus">
+				<source>Backend only accessible through HTTPS</source>
+			</trans-unit>
+			<trans-unit id="status_lockSslStatus_insecure">
+				<source><![CDATA[It is highly recommended to activate the option (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></source>
+			</trans-unit>
 			<trans-unit id="status_trustedHostsPattern">
 				<source>Trusted Hosts Pattern</source>
 			</trans-unit>
