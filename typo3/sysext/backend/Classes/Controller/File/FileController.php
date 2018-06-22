@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -42,6 +43,16 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  */
 class FileController
 {
+    use PublicMethodDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'initClipboard' => 'Using FileController::initClipboard() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'main' => 'Using FileController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
     /**
      * Array of file-operations.
      *
@@ -221,14 +232,8 @@ class FileController
     /**
      * Initialize the Clipboard. This will fetch the data about files to paste/delete if such an action has been sent.
      */
-    public function initClipboard(): void
+    protected function initClipboard(): void
     {
-        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if (end($backtrace)['class'] !== __CLASS__) {
-            // @deprecated since TYPO3 v9, this method will be set to protected in v10
-            trigger_error('Method initClipboard() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
-        }
         if (is_array($this->CB)) {
             $clipObj = GeneralUtility::makeInstance(Clipboard::class);
             $clipObj->initializeClipboard();
@@ -247,14 +252,8 @@ class FileController
      * Performing the file admin action:
      * Initializes the objects, setting permissions, sending data to object.
      */
-    public function main(): void
+    protected function main(): void
     {
-        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if (end($backtrace)['class'] !== __CLASS__) {
-            // @deprecated since TYPO3 v9, this method will be set to protected in v10
-            trigger_error('Method main() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
-        }
         // Initializing:
         $this->fileProcessor->setActionPermissions();
         $this->fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);

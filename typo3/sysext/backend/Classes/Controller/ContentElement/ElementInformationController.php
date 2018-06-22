@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -38,14 +39,22 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class ElementInformationController
 {
+    use PublicMethodDeprecationTrait;
     use PublicPropertyDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'getLabelForTableColumn' => 'Using ElementInformationController::getLabelForTableColumn() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
 
     /**
      * Properties which have been moved to protected status from public
      *
      * @var array
      */
-    protected $deprecatedPublicProperties = [
+    private $deprecatedPublicProperties = [
         'table' => 'Using $table of class ElementInformationController from the outside is discouraged, as this variable is only used for internal storage.',
         'uid' => 'Using $uid of class ElementInformationController from the outside is discouraged, as this variable is only used for internal storage.',
         'access' => 'Using $access of class ElementInformationController from the outside is discouraged, as this variable is only used for internal storage.',
@@ -497,15 +506,8 @@ class ElementInformationController
      * @param string $fieldName Column name
      * @return string label
      */
-    public function getLabelForTableColumn($tableName, $fieldName)
+    protected function getLabelForTableColumn($tableName, $fieldName)
     {
-        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if (end($backtrace)['class'] !== __CLASS__) {
-            // @deprecated since TYPO3 v9, this method will be set to protected in v10
-            trigger_error('Method getLabelForTableColumn() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
-        }
-
         if ($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] !== null) {
             $field = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
             if (trim($field) === '') {

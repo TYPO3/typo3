@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -38,12 +39,20 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class CreateFolderController
 {
+    use PublicMethodDeprecationTrait;
     use PublicPropertyDeprecationTrait;
 
     /**
      * @var array
      */
-    protected $deprecatedPublicProperties = [
+    private $deprecatedPublicMethods = [
+        'main' => 'Using CreateFolderController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicProperties = [
         'number' => 'Using $number of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
         'folderNumber' => 'Using $folderNumber of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
         'target' => 'Using $target of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
@@ -212,15 +221,8 @@ class CreateFolderController
     /**
      * Main function, rendering the main module content
      */
-    public function main()
+    protected function main()
     {
-        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if (end($backtrace)['class'] !== __CLASS__) {
-            // @deprecated since TYPO3 v9, this method will be set to protected in v10
-            trigger_error('Method main() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
-        }
-
         $lang = $this->getLanguageService();
         $assigns = [];
         $assigns['target'] = $this->target;

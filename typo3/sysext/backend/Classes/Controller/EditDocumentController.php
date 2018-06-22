@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -60,6 +61,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class EditDocumentController
 {
+    use PublicMethodDeprecationTrait;
     use PublicPropertyDeprecationTrait;
 
     /**
@@ -71,11 +73,23 @@ class EditDocumentController
     public const DOCUMENT_CLOSE_MODE_NO_REDIRECT = 4;
 
     /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'makeEditForm' => 'Using EditDocumentController::makeEditForm() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'compileForm' => 'Using EditDocumentController::compileForm() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'languageSwitch' => 'Using EditDocumentController::languageSwitch() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'getLanguages' => 'Using EditDocumentController::getLanguages() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'fixWSversioningInEditConf' => 'Using EditDocumentController::fixWSversioningInEditConf() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'getRecordForEdit' => 'Using EditDocumentController::getRecordForEdit() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
+    /**
      * Properties which have been moved to protected status from public
      *
      * @var array
      */
-    protected $deprecatedPublicProperties = [
+    private $deprecatedPublicProperties = [
         'editconf' => 'Using $editconf of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
         'defVals' => 'Using $defVals of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
         'overrideVals' => 'Using $overrideVals of class EditDocumentTemplate from the outside is discouraged, as this variable is only used for internal storage.',
@@ -1207,15 +1221,8 @@ class EditDocumentController
      *
      * @return string HTML form elements wrapped in tables
      */
-    public function makeEditForm(): string
+    protected function makeEditForm(): string
     {
-        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if (end($backtrace)['class'] !== __CLASS__) {
-            // @deprecated since TYPO3 v9, this method will be set to protected in v10
-            trigger_error('Method makeEditForm() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
-        }
-
         // Initialize variables
         $this->elementsData = [];
         $this->errorC = 0;
@@ -2069,15 +2076,8 @@ class EditDocumentController
      * @param string $editForm HTML form.
      * @return string Composite HTML
      */
-    public function compileForm(string $editForm): string
+    protected function compileForm(string $editForm): string
     {
-        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if (end($backtrace)['class'] !== __CLASS__) {
-            // @deprecated since TYPO3 v9, this method will be set to protected in v10
-            trigger_error('Method compileForm() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
-        }
-
         $formContent = '
             <form
                 action="' . htmlspecialchars($this->R_URI) . '"
@@ -2205,15 +2205,8 @@ class EditDocumentController
      * @param int $uid Uid for which to create a new language
      * @param int $pid|null Pid of the record
      */
-    public function languageSwitch(string $table, int $uid, $pid = null)
+    protected function languageSwitch(string $table, int $uid, $pid = null)
     {
-        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if (end($backtrace)['class'] !== __CLASS__) {
-            // @deprecated since TYPO3 v9, this method will be set to protected in v10
-            trigger_error('Method fixWSversioningInEditConf() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
-        }
-
         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
         /** @var UriBuilder $uriBuilder */
@@ -2436,15 +2429,8 @@ class EditDocumentController
      * @param string $table For pages we want all languages, for other records the languages of the page translations
      * @return array Language records including faked record for default language
      */
-    public function getLanguages(int $id, string $table = ''): array
+    protected function getLanguages(int $id, string $table = ''): array
     {
-        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if (end($backtrace)['class'] !== __CLASS__) {
-            // @deprecated since TYPO3 v9, this method will be set to protected in v10
-            trigger_error('Method getLanguages() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
-        }
-
         $languageService = $this->getLanguageService();
         $modPageTsConfig = BackendUtility::getPagesTSconfig($id)['mod.']['SHARED.'] ?? [];
         // Fallback non sprite-configuration
@@ -2524,15 +2510,8 @@ class EditDocumentController
      *
      * @param array|bool $mapArray Mapping between old and new ids if auto-versioning has been performed.
      */
-    public function fixWSversioningInEditConf($mapArray = false): void
+    protected function fixWSversioningInEditConf($mapArray = false): void
     {
-        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if (end($backtrace)['class'] !== __CLASS__) {
-            // @deprecated since TYPO3 v9, this method will be set to protected in v10
-            trigger_error('Method fixWSversioningInEditConf() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
-        }
-
         // Traverse the editConf array
         if (is_array($this->editconf)) {
             // Tables:
@@ -2578,15 +2557,8 @@ class EditDocumentController
      * @param int $theUid Record UID
      * @return array|false Returns record to edit, false if none
      */
-    public function getRecordForEdit(string $table, int $theUid)
+    protected function getRecordForEdit(string $table, int $theUid)
     {
-        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if (end($backtrace)['class'] !== __CLASS__) {
-            // @deprecated since TYPO3 v9, this method will be set to protected in v10
-            trigger_error('Method getRecordForEdit() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
-        }
-
         // Fetch requested record:
         $reqRecord = BackendUtility::getRecord($table, $theUid, 'uid,pid');
         if (is_array($reqRecord)) {

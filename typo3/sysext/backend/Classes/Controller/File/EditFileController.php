@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -42,12 +43,20 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class EditFileController
 {
+    use PublicMethodDeprecationTrait;
     use PublicPropertyDeprecationTrait;
 
     /**
      * @var array
      */
-    protected $deprecatedPublicProperties = [
+    private $deprecatedPublicMethods = [
+        'main' => 'Using EditFileController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicProperties = [
         'origTarget' => 'Using $origTarget of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
         'target' => 'Using $target of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
         'returnUrl' => 'Using $returnUrl of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
@@ -129,10 +138,23 @@ class EditFileController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        if ($response = $this->main()) {
+        if ($response = $this->process()) {
             return $response;
         }
+
         return new HtmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    /**
+     * Main function, rendering the actual content of the editing page
+     */
+    protected function main()
+    {
+        $response = $this->process();
+
+        if ($response instanceof RedirectResponse) {
+            HttpUtility::redirect($response->getHeaderLine('location'), $response->getStatusCode());
+        }
     }
 
     /**
@@ -191,18 +213,8 @@ class EditFileController
      *
      * @return ResponseInterface|null Possible redirect response
      */
-    public function main(): ?ResponseInterface
+    protected function process(): ?ResponseInterface
     {
-        // @deprecated Variable can be removed in v10
-        $deprecatedCaller = false;
-        // Foreign class call? Method will be protected in v10, giving core freedom to move stuff around
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if (end($backtrace)['class'] !== __CLASS__) {
-            // @deprecated since TYPO3 v9, this method will be set to protected in v10
-            trigger_error('Method main() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
-            $deprecatedCaller = true;
-        }
-
         $dataColumnDefinition = [
             'label' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:file'))
                 . ' ' . htmlspecialchars($this->target),
@@ -295,11 +307,7 @@ class EditFileController
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
 
-            if ($deprecatedCaller === true) {
-                HttpUtility::redirect($this->returnUrl, HttpUtility::HTTP_STATUS_500);
-            } else {
-                return new RedirectResponse($this->returnUrl, HttpUtility::HTTP_STATUS_500);
-            }
+            return new RedirectResponse($this->returnUrl, HttpUtility::HTTP_STATUS_500);
         }
 
         // Rendering of the output via fluid
