@@ -756,7 +756,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
             [
                 'default' => 0,
                 'notnull' => true,
-                'unsigned' => true,
+                'unsigned' => false,
             ]
         );
         $this->assertEquals($expectedColumn, $result[0]->getColumn('t3ver_stage'));

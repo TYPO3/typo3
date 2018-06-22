@@ -454,7 +454,7 @@ class DefaultTcaSchema
                     [
                         'default' => 0,
                         'notnull' => true,
-                        'unsigned' => true,
+                        'unsigned' => false,
                     ]
                 );
             }
