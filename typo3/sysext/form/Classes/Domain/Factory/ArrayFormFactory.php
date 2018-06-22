@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
+use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Exception\UnknownCompositRenderableException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\AbstractSection;
@@ -40,6 +41,7 @@ class ArrayFormFactory extends AbstractFormFactory
      * @param array $configuration
      * @param string $prototypeName
      * @return FormDefinition
+     * @throws RenderingException
      * @internal
      */
     public function build(array $configuration, string $prototypeName = null): FormDefinition
@@ -48,6 +50,10 @@ class ArrayFormFactory extends AbstractFormFactory
             $prototypeName = isset($configuration['prototypeName']) ? $configuration['prototypeName'] : 'standard';
         }
         $persistenceIdentifier = (isset($configuration['persistenceIdentifier'])) ? $configuration['persistenceIdentifier'] : null;
+
+        if ($configuration['invalid'] === true) {
+            throw new RenderingException($configuration['label'], 1529710560);
+        }
 
         $prototypeConfiguration = GeneralUtility::makeInstance(ObjectManager::class)
             ->get(ConfigurationService::class)
