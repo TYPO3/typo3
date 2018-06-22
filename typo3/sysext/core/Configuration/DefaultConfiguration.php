@@ -89,6 +89,7 @@ return [
          * @deprecated since 4.6 - will be removed in 6.2.
          */
         'curlTimeout' => 0,                        // Integer: Timeout value for cURL requests in seconds. 0 means to wait indefinitely. Deprecated since 4.6 - will be removed in 6.2. See below for http options.
+        'curlIpResolve' => CURL_IPRESOLVE_WHATEVER,    // <p>Integer (0, 1, 2). Specifies which IP protocol version to use for cURL requests</p><dl><dt>0</dt><dd>resolves addresses to all IP versions that your system allows</dd><dt>1</dt><dd>Resolve to IPv4 addresses</dd><dt>2</dt><dd>Resolve to IPv6 addresses</dd></dl>
         'textfile_ext' => 'txt,ts,typoscript,html,htm,css,tmpl,js,sql,xml,csv,xlf',    // Text file extensions. Those that can be edited. Executable PHP files may not be editable in webspace if disallowed!
         'mediafile_ext' => 'gif,jpg,jpeg,bmp,png,pdf,svg,ai,mp3,wav,mp4,webm,youtube,vimeo',    // Commalist of file extensions perceived as media files by TYPO3. Lowercase and no spaces between!
         'binPath' => '',                        // String: List of absolute paths where external programs should be searched for. Eg. <code>/usr/local/webbin/,/home/xyz/bin/</code>. (ImageMagick path have to be configured separately)

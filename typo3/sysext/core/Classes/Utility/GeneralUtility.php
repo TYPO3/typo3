@@ -2505,6 +2505,9 @@ class GeneralUtility
                     curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
                 }
             }
+            if (in_array((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlIpResolve'], array(CURL_IPRESOLVE_V4, CURL_IPRESOLVE_V6)) ) {
+                curl_setopt($ch, CURLOPT_IPRESOLVE, (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlIpResolve']);
+            }
             $content = curl_exec($ch);
             $curlInfo = curl_getinfo($ch);
 
