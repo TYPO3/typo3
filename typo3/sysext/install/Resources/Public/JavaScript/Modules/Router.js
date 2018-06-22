@@ -64,12 +64,13 @@ define([
 
         var modaltitle = $(this).closest('.card').find('.card-title').html();
         var requireModule = $(this).data('require');
+        var modalSize = $(this).data('modalSize') || Modal.sizes.large;
 
         Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done(function(icon) {
           var configuration = {
             type: Modal.types.default,
             title: modaltitle,
-            size: Modal.sizes.large,
+            size: modalSize,
             content: '<div class="modal-loading">' + icon + '</div>',
             additionalCssClasses: ['install-tool-modal'],
             callback: function (currentModal) {
