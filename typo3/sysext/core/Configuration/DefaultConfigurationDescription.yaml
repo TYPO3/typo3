@@ -135,7 +135,7 @@ SYS:
             description: 'timezone to force for all date() and mktime() functions. A list of supported values can be found at <a href="http://php.net/manual/en/timezones.php" target="_blank">php.net</a>. If this is not set, a valid fallback will be searched for by PHP (php.ini''s <a href="http://www.php.net/manual/en/datetime.configuration.php#ini.date.timezone" target="_blank">date.timezone</a> setting, server defaults, etc); and if no fallback is found, the value of "UTC" is used instead.'
         systemLog:
             type: bool
-            description: 'Enables the deprecated system log functionality. Log data is written the to the Logging API.'
+            description: 'Enables the deprecated system log functionality. Log data is written to the Logging API.'
         systemLogLevel:
             type: int
             allowedValues:
