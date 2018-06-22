@@ -549,8 +549,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         $this->configurationManager->expects($this->once())
             ->method('setLocalConfigurationValuesByPathValuePairs')
             ->withConsecutive(
-                [['GFX/processor_allowTemporaryMasksAsPng' => 0,
-                            'GFX/processor_effects' => -1]]
+                [['GFX/processor_allowTemporaryMasksAsPng' => 0]]
             );
 
         $this->expectException(RedirectException::class);
