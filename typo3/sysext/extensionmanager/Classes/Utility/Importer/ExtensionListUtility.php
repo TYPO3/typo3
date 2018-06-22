@@ -125,6 +125,14 @@ class ExtensionListUtility implements \SplObserver
     protected $objectManager;
 
     /**
+     * Only import extensions newer than this date (timestamp),
+     * see constructor
+     *
+     * @var int
+     */
+    protected $minimumDateToImport;
+
+    /**
      * Class constructor.
      *
      * Method retrieves and initializes extension XML parser instance.
@@ -161,6 +169,15 @@ class ExtensionListUtility implements \SplObserver
             $this->maxRowsPerChunk,
             floor($maxBindParameters / $countOfBindParamsPerRow)
         );
+        // Only import extensions that are compatible with 7.6 or higher.
+        // TER only allows to publish extensions with compatibility if the TYPO3 version has been released
+        // And 7.6 was released on 10th of November 2015.
+        // This effectively reduces the number of extensions imported into this TYPO3 installation
+        // by more than 70%. As long as the extensions.xml from TER includes these files, we need to "hack" this
+        // within TYPO3 Core.
+        // For TYPO3 v10.0, this date could be set to 2017-04-04 (8 LTS release).
+        // Also see https://decisions.typo3.org/t/reduce-size-of-extension-manager-db-table/329/
+        $this->minimumDateToImport = strtotime('2015-11-10T00:00:00+00:00');
     }
 
     /**
@@ -246,7 +263,9 @@ class ExtensionListUtility implements \SplObserver
     public function update(\SplSubject $subject)
     {
         if (is_subclass_of($subject, AbstractExtensionXmlParser::class)) {
-            $this->loadIntoDatabase($subject);
+            if ((int)$subject->getLastuploaddate() > $this->minimumDateToImport) {
+                $this->loadIntoDatabase($subject);
+            }
         }
     }
 }
