@@ -139,6 +139,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * @throws Exception\InvalidConfigurationException
      * @param array $configuration
      * @return string
+     * @throws Exception\InvalidPathException
      */
     protected function calculateBasePath(array $configuration)
     {

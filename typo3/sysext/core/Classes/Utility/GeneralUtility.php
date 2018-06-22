@@ -1488,18 +1488,18 @@ class GeneralUtility
             $tagName = $k;
             // Construct the tag name.
             // Use tag based on grand-parent + parent tag name
-            if (isset($options['grandParentTagMap'][$stackData['grandParentTagName'] . '/' . $stackData['parentTagName']])) {
+            if (isset($stackData['grandParentTagName'], $stackData['parentTagName'], $options['grandParentTagMap'][$stackData['grandParentTagName'] . '/' . $stackData['parentTagName']])) {
                 $attr .= ' index="' . htmlspecialchars($tagName) . '"';
                 $tagName = (string)$options['grandParentTagMap'][$stackData['grandParentTagName'] . '/' . $stackData['parentTagName']];
-            } elseif (isset($options['parentTagMap'][$stackData['parentTagName'] . ':_IS_NUM']) && MathUtility::canBeInterpretedAsInteger($tagName)) {
+            } elseif (isset($stackData['parentTagName'], $options['parentTagMap'][$stackData['parentTagName'] . ':_IS_NUM']) && MathUtility::canBeInterpretedAsInteger($tagName)) {
                 // Use tag based on parent tag name + if current tag is numeric
                 $attr .= ' index="' . htmlspecialchars($tagName) . '"';
                 $tagName = (string)$options['parentTagMap'][$stackData['parentTagName'] . ':_IS_NUM'];
-            } elseif (isset($options['parentTagMap'][$stackData['parentTagName'] . ':' . $tagName])) {
+            } elseif (isset($stackData['parentTagName'], $options['parentTagMap'][$stackData['parentTagName'] . ':' . $tagName])) {
                 // Use tag based on parent tag name + current tag
                 $attr .= ' index="' . htmlspecialchars($tagName) . '"';
                 $tagName = (string)$options['parentTagMap'][$stackData['parentTagName'] . ':' . $tagName];
-            } elseif (isset($options['parentTagMap'][$stackData['parentTagName']])) {
+            } elseif (isset($stackData['parentTagName'], $options['parentTagMap'][$stackData['parentTagName']])) {
                 // Use tag based on parent tag name:
                 $attr .= ' index="' . htmlspecialchars($tagName) . '"';
                 $tagName = (string)$options['parentTagMap'][$stackData['parentTagName']];
@@ -1513,7 +1513,7 @@ class GeneralUtility
                     $attr .= ' index="' . $tagName . '"';
                     $tagName = $options['useIndexTagForNum'] ?: 'numIndex';
                 }
-            } elseif ($options['useIndexTagForAssoc']) {
+            } elseif (!empty($options['useIndexTagForAssoc'])) {
                 // Use tag for all associative keys:
                 $attr .= ' index="' . htmlspecialchars($tagName) . '"';
                 $tagName = $options['useIndexTagForAssoc'];
@@ -1523,7 +1523,7 @@ class GeneralUtility
             // If the value is an array then we will call this function recursively:
             if (is_array($v)) {
                 // Sub elements:
-                if ($options['alt_options'][$stackData['path'] . '/' . $tagName]) {
+                if (isset($options['alt_options']) && $options['alt_options'][($stackData['path'] ?? '') . '/' . $tagName]) {
                     $subOptions = $options['alt_options'][$stackData['path'] . '/' . $tagName];
                     $clearStackPath = $subOptions['clearStackPath'];
                 } else {
@@ -1535,12 +1535,12 @@ class GeneralUtility
                 } else {
                     $content = $nl . self::array2xml($v, $NSprefix, $level + 1, '', $spaceInd, $subOptions, [
                             'parentTagName' => $tagName,
-                            'grandParentTagName' => $stackData['parentTagName'],
-                            'path' => $clearStackPath ? '' : $stackData['path'] . '/' . $tagName
+                            'grandParentTagName' => $stackData['parentTagName'] ?? '',
+                            'path' => $clearStackPath ? '' : ($stackData['path'] ?? '') . '/' . $tagName
                         ]) . ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '');
                 }
                 // Do not set "type = array". Makes prettier XML but means that empty arrays are not restored with xml2array
-                if ((int)$options['disableTypeAttrib'] != 2) {
+                if (!isset($options['disableTypeAttrib']) || (int)$options['disableTypeAttrib'] != 2) {
                     $attr .= ' type="array"';
                 }
             } else {

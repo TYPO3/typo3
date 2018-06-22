@@ -36,8 +36,8 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface
     {
         $driverConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'];
         foreach ($driverConfigurations as $shortName => $driverConfig) {
-            $shortName = $shortName ?: $driverConfig['shortName'];
-            $this->registerDriverClass($driverConfig['class'], $shortName, $driverConfig['label'] ?? null, $driverConfig['flexFormDS'] ?? null);
+            $shortName = $shortName ?: $driverConfig['shortName'] ?? '';
+            $this->registerDriverClass($driverConfig['class'] ?? '', $shortName, $driverConfig['label'] ?? '', $driverConfig['flexFormDS'] ?? '');
         }
     }
 

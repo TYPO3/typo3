@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 /*
@@ -26,6 +28,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
+use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -36,11 +39,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ResourceStorageTest extends BaseTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var bool Reset singletons created by subject
      */
@@ -54,7 +52,7 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         /** @var FileRepository|\PHPUnit_Framework_MockObject_MockObject $fileRepositoryMock */
@@ -80,13 +78,26 @@ class ResourceStorageTest extends BaseTestCase
      * @param array $storageRecord
      * @param array $mockedMethods
      */
-    protected function prepareSubject(array $configuration, $mockPermissionChecks = false, AbstractDriver $driverObject = null, array $storageRecord = [], array $mockedMethods = [])
-    {
-        $permissionMethods = ['assureFileAddPermissions', 'checkFolderActionPermission', 'checkFileActionPermission', 'checkUserActionPermission', 'checkFileExtensionPermission', 'isWithinFileMountBoundaries', 'assureFileRenamePermissions'];
+    protected function prepareSubject(
+        array $configuration,
+        bool $mockPermissionChecks = false,
+        AbstractDriver $driverObject = null,
+        array $storageRecord = [],
+        array $mockedMethods = []
+    ): void {
+        $permissionMethods = [
+            'assureFileAddPermissions',
+            'checkFolderActionPermission',
+            'checkFileActionPermission',
+            'checkUserActionPermission',
+            'checkFileExtensionPermission',
+            'isWithinFileMountBoundaries',
+            'assureFileRenamePermissions'
+        ];
         $configuration = $this->convertConfigurationArrayToFlexformXml($configuration);
         $overruleArray = ['configuration' => $configuration];
         ArrayUtility::mergeRecursiveWithOverrule($storageRecord, $overruleArray);
-        if ($driverObject == null) {
+        if ($driverObject === null) {
             $driverObject = $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
         }
         if ($mockPermissionChecks) {
@@ -98,7 +109,7 @@ class ResourceStorageTest extends BaseTestCase
             ->setMethods(array_unique($mockedMethods))
             ->setConstructorArgs([$driverObject, $storageRecord])
             ->getMock();
-        $this->subject->expects($this->any())->method('getIndexer')->will($this->returnValue($this->createMock(\TYPO3\CMS\Core\Resource\Index\Indexer::class)));
+        $this->subject->expects($this->any())->method('getIndexer')->will($this->returnValue($this->createMock(Indexer::class)));
         if ($mockPermissionChecks) {
             foreach ($permissionMethods as $method) {
                 $this->subject->expects($this->any())->method($method)->will($this->returnValue(true));
@@ -113,7 +124,7 @@ class ResourceStorageTest extends BaseTestCase
      * @return string
      * @see GeneralUtility::array2xml()
      */
-    protected function convertConfigurationArrayToFlexformXml(array $configuration)
+    protected function convertConfigurationArrayToFlexformXml(array $configuration): string
     {
         $flexFormArray = ['data' => ['sDEF' => ['lDEF' => []]]];
         foreach ($configuration as $key => $value) {
@@ -133,8 +144,11 @@ class ResourceStorageTest extends BaseTestCase
      * @param array $mockedDriverMethods
      * @return \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function createDriverMock($driverConfiguration, ResourceStorage $storageObject = null, $mockedDriverMethods = [])
-    {
+    protected function createDriverMock(
+        $driverConfiguration,
+        ResourceStorage $storageObject = null,
+        array $mockedDriverMethods = []
+    ) {
         $this->initializeVfs();
 
         if (!isset($driverConfiguration['basePath'])) {
@@ -163,7 +177,7 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @return array
      */
-    public function capabilitiesDataProvider()
+    public function capabilitiesDataProvider(): array
     {
         return [
             'only public' => [
@@ -208,8 +222,9 @@ class ResourceStorageTest extends BaseTestCase
      * @test
      * @dataProvider capabilitiesDataProvider
      * @TODO: Rewrite or move to functional suite
+     * @param array $capabilities
      */
-    public function capabilitiesOfStorageObjectAreCorrectlySet(array $capabilities)
+    public function capabilitiesOfStorageObjectAreCorrectlySet(array $capabilities): void
     {
         $this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
         $storageRecord = [
@@ -227,26 +242,41 @@ class ResourceStorageTest extends BaseTestCase
             null
         );
         $this->prepareSubject([], false, $mockedDriver, $storageRecord);
-        $this->assertEquals($capabilities['public'], $this->subject->isPublic(), 'Capability "public" is not correctly set.');
-        $this->assertEquals($capabilities['writable'], $this->subject->isWritable(), 'Capability "writable" is not correctly set.');
-        $this->assertEquals($capabilities['browsable'], $this->subject->isBrowsable(), 'Capability "browsable" is not correctly set.');
+        $this->assertEquals(
+            $capabilities['public'],
+            $this->subject->isPublic(),
+            'Capability "public" is not correctly set.'
+        );
+        $this->assertEquals(
+            $capabilities['writable'],
+            $this->subject->isWritable(),
+            'Capability "writable" is not correctly set.'
+        );
+        $this->assertEquals(
+            $capabilities['browsable'],
+            $this->subject->isBrowsable(),
+            'Capability "browsable" is not correctly set.'
+        );
     }
 
     /**
      * @test
      * @TODO: Rewrite or move to functional suite
      */
-    public function fileAndFolderListFiltersAreInitializedWithDefaultFilters()
+    public function fileAndFolderListFiltersAreInitializedWithDefaultFilters(): void
     {
         $this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
         $this->prepareSubject([]);
-        $this->assertEquals($GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['defaultFilterCallbacks'], $this->subject->getFileAndFolderNameFilters());
+        $this->assertEquals(
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['defaultFilterCallbacks'],
+            $this->subject->getFileAndFolderNameFilters()
+        );
     }
 
     /**
      * @test
      */
-    public function addFileFailsIfFileDoesNotExist()
+    public function addFileFailsIfFileDoesNotExist(): void
     {
         /** @var Folder|\PHPUnit_Framework_MockObject_MockObject $mockedFolder */
         $mockedFolder = $this->createMock(Folder::class);
@@ -259,7 +289,7 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function getPublicUrlReturnsNullIfStorageIsNotOnline()
+    public function getPublicUrlReturnsNullIfStorageIsNotOnline(): void
     {
         /** @var $driver LocalDriver|\PHPUnit_Framework_MockObject_MockObject */
         $driver = $this->getMockBuilder(LocalDriver::class)
@@ -283,7 +313,7 @@ class ResourceStorageTest extends BaseTestCase
      *
      * @return array
      */
-    public function checkFolderPermissionsFilesystemPermissionsDataProvider()
+    public function checkFolderPermissionsFilesystemPermissionsDataProvider(): array
     {
         return [
             'read action on readable/writable folder' => [
@@ -311,12 +341,15 @@ class ResourceStorageTest extends BaseTestCase
      * @param array $permissionsFromDriver The permissions as returned from the driver
      * @param bool $expectedResult
      */
-    public function checkFolderPermissionsRespectsFilesystemPermissions($action, $permissionsFromDriver, $expectedResult)
-    {
+    public function checkFolderPermissionsRespectsFilesystemPermissions(
+        string $action,
+        array $permissionsFromDriver,
+        bool $expectedResult
+    ): void {
         /** @var $mockedDriver LocalDriver|\PHPUnit_Framework_MockObject_MockObject */
         $mockedDriver = $this->createMock(LocalDriver::class);
         $mockedDriver->expects($this->any())->method('getPermissions')->will($this->returnValue($permissionsFromDriver));
-        /** @var $mockedFolder Folder|\PHPUnit_Framework_MockObject_MockObject  */
+        /** @var $mockedFolder Folder|\PHPUnit_Framework_MockObject_MockObject */
         $mockedFolder = $this->createMock(Folder::class);
         // Let all other checks pass
         /** @var $subject ResourceStorage|\PHPUnit_Framework_MockObject_MockObject */
@@ -335,7 +368,7 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function checkUserActionPermissionsAlwaysReturnsTrueIfNoUserPermissionsAreSet()
+    public function checkUserActionPermissionsAlwaysReturnsTrueIfNoUserPermissionsAreSet(): void
     {
         $this->prepareSubject([]);
         $this->assertTrue($this->subject->checkUserActionPermission('read', 'folder'));
@@ -344,14 +377,17 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function checkUserActionPermissionReturnsFalseIfPermissionIsSetToZero()
+    public function checkUserActionPermissionReturnsFalseIfPermissionIsSetToZero(): void
     {
         $this->prepareSubject([]);
         $this->subject->setUserPermissions(['readFolder' => true, 'writeFile' => true]);
         $this->assertTrue($this->subject->checkUserActionPermission('read', 'folder'));
     }
 
-    public function checkUserActionPermission_arbitraryPermissionDataProvider()
+    /**
+     * @return array
+     */
+    public function checkUserActionPermission_arbitraryPermissionDataProvider(): array
     {
         return [
             'all lower cased' => [
@@ -379,7 +415,7 @@ class ResourceStorageTest extends BaseTestCase
      * @test
      * @dataProvider checkUserActionPermission_arbitraryPermissionDataProvider
      */
-    public function checkUserActionPermissionAcceptsArbitrarilyCasedArguments(array $permissions, $action, $type)
+    public function checkUserActionPermissionAcceptsArbitrarilyCasedArguments(array $permissions, string $action, string $type): void
     {
         $this->prepareSubject([]);
         $this->subject->setUserPermissions($permissions);
@@ -389,7 +425,7 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function userActionIsDisallowedIfPermissionIsSetToFalse()
+    public function userActionIsDisallowedIfPermissionIsSetToFalse(): void
     {
         $this->prepareSubject([]);
         $this->subject->setEvaluatePermissions(true);
@@ -400,7 +436,7 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function userActionIsDisallowedIfPermissionIsNotSet()
+    public function userActionIsDisallowedIfPermissionIsNotSet(): void
     {
         $this->prepareSubject([]);
         $this->subject->setEvaluatePermissions(true);
@@ -411,7 +447,7 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function getEvaluatePermissionsWhenSetFalse()
+    public function getEvaluatePermissionsWhenSetFalse(): void
     {
         $this->prepareSubject([]);
         $this->subject->setEvaluatePermissions(false);
@@ -421,7 +457,7 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function getEvaluatePermissionsWhenSetTrue()
+    public function getEvaluatePermissionsWhenSetTrue(): void
     {
         $this->prepareSubject([]);
         $this->subject->setEvaluatePermissions(true);
@@ -433,7 +469,7 @@ class ResourceStorageTest extends BaseTestCase
      * @group integration
      * @TODO: Rewrite or move to functional suite
      */
-    public function setFileContentsUpdatesObjectProperties()
+    public function setFileContentsUpdatesObjectProperties(): void
     {
         $this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
         $this->initializeVfs();
@@ -489,7 +525,7 @@ class ResourceStorageTest extends BaseTestCase
      * @group integration
      * @TODO: Rewrite or move to functional suite
      */
-    public function moveFileCallsDriversMethodsWithCorrectArguments()
+    public function moveFileCallsDriversMethodsWithCorrectArguments(): void
     {
         $this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
         $localFilePath = '/path/to/localFile';
@@ -523,7 +559,11 @@ class ResourceStorageTest extends BaseTestCase
             ->setConstructorArgs([['basePath' => $this->getMountRootUrl()]])
             ->getMock();
         $mockedDriver->expects($this->once())->method('getFileInfoByIdentifier')->will($this->returnValue($fileInfoDummy));
-        $mockedDriver->expects($this->once())->method('addFile')->with($localFilePath, '/targetFolder/', $this->equalTo('file.ext'))->will($this->returnValue('/targetFolder/file.ext'));
+        $mockedDriver->expects($this->once())->method('addFile')->with(
+            $localFilePath,
+            '/targetFolder/',
+            $this->equalTo('file.ext')
+        )->will($this->returnValue('/targetFolder/file.ext'));
         /** @var $subject ResourceStorage */
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->setMethods(['assureFileMovePermissions'])
@@ -537,7 +577,7 @@ class ResourceStorageTest extends BaseTestCase
      * @group integration
      * @TODO: Rewrite or move to functional suite
      */
-    public function storageUsesInjectedFilemountsToCheckForMountBoundaries()
+    public function storageUsesInjectedFilemountsToCheckForMountBoundaries(): void
     {
         $this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
         $mockedFile = $this->getSimpleFileMock('/mountFolder/file');
@@ -558,7 +598,7 @@ class ResourceStorageTest extends BaseTestCase
      * @test
      * @TODO: Rewrite or move to functional suite
      */
-    public function createFolderChecksIfParentFolderExistsBeforeCreatingFolder()
+    public function createFolderChecksIfParentFolderExistsBeforeCreatingFolder(): void
     {
         $this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
         $mockedParentFolder = $this->getSimpleFolderMock('/someFolder/');
@@ -573,7 +613,7 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function deleteFolderThrowsExceptionIfFolderIsNotEmptyAndRecursiveDeleteIsDisabled()
+    public function deleteFolderThrowsExceptionIfFolderIsNotEmptyAndRecursiveDeleteIsDisabled(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1325952534);
@@ -594,13 +634,16 @@ class ResourceStorageTest extends BaseTestCase
      * @test
      * @TODO: Rewrite or move to functional suite
      */
-    public function createFolderCallsDriverForFolderCreation()
+    public function createFolderCallsDriverForFolderCreation(): void
     {
         $this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
         $mockedParentFolder = $this->getSimpleFolderMock('/someFolder/');
         $this->prepareSubject([], true);
         $mockedDriver = $this->createDriverMock([], $this->subject);
-        $mockedDriver->expects($this->once())->method('createFolder')->with($this->equalTo('newFolder'), $this->equalTo('/someFolder/'))->will($this->returnValue(true));
+        $mockedDriver->expects($this->once())->method('createFolder')->with(
+            $this->equalTo('newFolder'),
+            $this->equalTo('/someFolder/')
+        )->will($this->returnValue(true));
         $mockedDriver->expects($this->once())->method('folderExists')->with($this->equalTo('/someFolder/'))->will($this->returnValue(true));
         $this->subject->createFolder('newFolder', $mockedParentFolder);
     }
@@ -609,7 +652,7 @@ class ResourceStorageTest extends BaseTestCase
      * @test
      * @TODO: Rewrite or move to functional suite
      */
-    public function createFolderCanRecursivelyCreateFolders()
+    public function createFolderCanRecursivelyCreateFolders(): void
     {
         $this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
         $this->addToMount(['someFolder' => []]);
@@ -626,7 +669,7 @@ class ResourceStorageTest extends BaseTestCase
      * @test
      * @TODO: Rewrite or move to functional suite
      */
-    public function createFolderUsesRootFolderAsParentFolderIfNotGiven()
+    public function createFolderUsesRootFolderAsParentFolderIfNotGiven(): void
     {
         $this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
         $this->prepareSubject([], true);
@@ -640,7 +683,7 @@ class ResourceStorageTest extends BaseTestCase
      * @test
      * @TODO: Rewrite or move to functional suite
      */
-    public function createFolderCreatesNestedStructureEvenIfPartsAlreadyExist()
+    public function createFolderCreatesNestedStructureEvenIfPartsAlreadyExist(): void
     {
         $this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
         $this->addToMount([
@@ -658,7 +701,7 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function createFolderThrowsExceptionIfParentFolderDoesNotExist()
+    public function createFolderThrowsExceptionIfParentFolderDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1325689164);
@@ -672,7 +715,7 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function renameFileRenamesFileAsRequested()
+    public function renameFileRenamesFileAsRequested(): void
     {
         $mockedDriver = $this->createDriverMock([], $this->subject);
         $mockedDriver->expects($this->once())->method('renameFile')->will($this->returnValue('bar'));
@@ -688,13 +731,25 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function renameFileRenamesWithUniqueNameIfConflictAndConflictModeIsRename()
+    public function renameFileRenamesWithUniqueNameIfConflictAndConflictModeIsRename(): void
     {
         $mockedDriver = $this->createDriverMock([], $this->subject);
-        $mockedDriver->expects($this->any())->method('renameFile')->will($this->onConsecutiveCalls($this->throwException(new ExistingTargetFileNameException('foo', 1489593090)), 'bar_01'));
+        $mockedDriver->expects($this->any())->method('renameFile')->will($this->onConsecutiveCalls($this->throwException(new ExistingTargetFileNameException(
+            'foo',
+            1489593090
+        )), 'bar_01'));
         //$mockedDriver->expects($this->at(1))->method('renameFile')->will($this->returnValue('bar_01'));
-        $mockedDriver->expects($this->any())->method('sanitizeFileName')->will($this->onConsecutiveCalls('bar', 'bar_01'));
-        $this->prepareSubject([], true, $mockedDriver, [], ['emitPreFileRenameSignal', 'emitPostFileRenameSignal', 'getUniqueName']);
+        $mockedDriver->expects($this->any())->method('sanitizeFileName')->will($this->onConsecutiveCalls(
+            'bar',
+            'bar_01'
+        ));
+        $this->prepareSubject(
+            [],
+            true,
+            $mockedDriver,
+            [],
+            ['emitPreFileRenameSignal', 'emitPostFileRenameSignal', 'getUniqueName']
+        );
         /** @var File $file */
         $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
         $this->subject->expects($this->once())->method('getUniqueName')->will($this->returnValue('bar_01'));
@@ -707,10 +762,13 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function renameFileThrowsExceptionIfConflictAndConflictModeIsCancel()
+    public function renameFileThrowsExceptionIfConflictAndConflictModeIsCancel(): void
     {
         $mockedDriver = $this->createDriverMock([], $this->subject);
-        $mockedDriver->expects($this->once())->method('renameFile')->will($this->throwException(new ExistingTargetFileNameException('foo', 1489593099)));
+        $mockedDriver->expects($this->once())->method('renameFile')->will($this->throwException(new ExistingTargetFileNameException(
+            'foo',
+            1489593099
+        )));
         $this->prepareSubject([], true, $mockedDriver, [], ['emitPreFileRenameSignal', 'emitPostFileRenameSignal']);
         /** @var File $file */
         $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
@@ -721,12 +779,21 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
-    public function renameFileReplacesIfConflictAndConflictModeIsReplace()
+    public function renameFileReplacesIfConflictAndConflictModeIsReplace(): void
     {
         $mockedDriver = $this->createDriverMock([], $this->subject);
-        $mockedDriver->expects($this->once())->method('renameFile')->will($this->throwException(new ExistingTargetFileNameException('foo', 1489593098)));
+        $mockedDriver->expects($this->once())->method('renameFile')->will($this->throwException(new ExistingTargetFileNameException(
+            'foo',
+            1489593098
+        )));
         $mockedDriver->expects($this->any())->method('sanitizeFileName')->will($this->returnValue('bar'));
-        $this->prepareSubject([], true, $mockedDriver, [], ['emitPreFileRenameSignal', 'emitPostFileRenameSignal', 'replaceFile', 'getPublicUrl', 'getResourceFactoryInstance']);
+        $this->prepareSubject([], true, $mockedDriver, [], [
+            'emitPreFileRenameSignal',
+            'emitPostFileRenameSignal',
+            'replaceFile',
+            'getPublicUrl',
+            'getResourceFactoryInstance'
+        ]);
         $this->subject->expects($this->once())->method('getPublicUrl')->will($this->returnValue('somePath'));
         $resourceFactory = $this->prophesize(ResourceFactory::class);
         $file = $this->prophesize(FileInterface::class);

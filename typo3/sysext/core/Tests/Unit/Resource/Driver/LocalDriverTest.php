@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 /*
@@ -125,7 +126,11 @@ class LocalDriverTest extends BaseTestCase
         }
         /** @var LocalDriver $driver */
         $mockedDriverMethods[] = 'isPathValid';
-        $driver = $this->getAccessibleMock(LocalDriver::class, $mockedDriverMethods, [$driverConfiguration]);
+        $driver = $this->getAccessibleMock(
+            LocalDriver::class,
+            $mockedDriverMethods,
+            [$driverConfiguration]
+        );
         $driver->expects($this->any())
             ->method('isPathValid')
             ->will(
@@ -193,7 +198,13 @@ class LocalDriverTest extends BaseTestCase
     public function determineBaseUrlUrlEncodesUriParts(): void
     {
         /** @var LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
-        $driver = $this->getAccessibleMock(LocalDriver::class, ['hasCapability'], [], '', false);
+        $driver = $this->getAccessibleMock(
+            LocalDriver::class,
+            ['hasCapability'],
+            [],
+            '',
+            false
+        );
         $driver->expects($this->once())
             ->method('hasCapability')
             ->with(ResourceStorage::CAPABILITY_PUBLIC)
@@ -364,7 +375,7 @@ class LocalDriverTest extends BaseTestCase
     /**
      * @test
      * @dataProvider getSpecificFileInformationDataProvider
-     * @param $expectedValue
+     * @param string|int $expectedValue
      * @param string $property
      */
     public function getSpecificFileInformationReturnsRequestedFileInformation($expectedValue, string $property): void
@@ -373,7 +384,7 @@ class LocalDriverTest extends BaseTestCase
         $subFolder = vfsStream::newDirectory('fileadmin');
         $root->addChild($subFolder);
         // Load fixture files and folders from disk
-        $directory = vfsStream::copyFromFileSystem(__DIR__ . '/Fixtures/', $subFolder, 1024*1024);
+        $directory = vfsStream::copyFromFileSystem(__DIR__ . '/Fixtures/', $subFolder, 1024 * 1024);
         if (in_array($property, ['mtime', 'ctime', 'atime'])) {
             $expectedValue = $directory->getChild('Dummy.html')->filemtime();
         }
@@ -563,7 +574,10 @@ class LocalDriverTest extends BaseTestCase
             'baseUri' => $baseUri
         ]);
         $publicUrl = $subject->getPublicUrl($fileIdentifier);
-        $this->assertTrue(GeneralUtility::isValidUrl($publicUrl), 'getPublicUrl did not return a valid URL:' . $publicUrl);
+        $this->assertTrue(
+            GeneralUtility::isValidUrl($publicUrl),
+            'getPublicUrl did not return a valid URL:' . $publicUrl
+        );
     }
 
     /**
@@ -579,7 +593,11 @@ class LocalDriverTest extends BaseTestCase
         $this->assertEquals($fileContents, $subject->getFileContents('/file.ext'), 'File contents could not be read');
         $newFileContents = 'asdfgh';
         $subject->setFileContents('/file.ext', $newFileContents);
-        $this->assertEquals($newFileContents, $subject->getFileContents('/file.ext'), 'New file contents could not be read.');
+        $this->assertEquals(
+            $newFileContents,
+            $subject->getFileContents('/file.ext'),
+            'New file contents could not be read.'
+        );
     }
 
     /**
@@ -640,7 +658,7 @@ class LocalDriverTest extends BaseTestCase
             ]
         );
         /** @var $subject LocalDriver */
-        list($basedir, $subject) = $this->prepareRealTestEnvironment();
+        [$basedir, $subject] = $this->prepareRealTestEnvironment();
         mkdir($basedir . '/someDir');
         $subject->createFile('testfile.txt', '/someDir');
         $this->assertEquals((int)$testpattern, (int)(decoct(fileperms($basedir . '/someDir/testfile.txt') & 0777)));
@@ -658,7 +676,7 @@ class LocalDriverTest extends BaseTestCase
         $subFolder = vfsStream::newDirectory('fileadmin');
         $root->addChild($subFolder);
         // Load fixture files and folders from disk
-        vfsStream::copyFromFileSystem(__DIR__ . '/Fixtures/', $subFolder, 1024*1024);
+        vfsStream::copyFromFileSystem(__DIR__ . '/Fixtures/', $subFolder, 1024 * 1024);
         FileStreamWrapper::init(Environment::getPublicPath() . '/');
         FileStreamWrapper::registerOverlayPath('fileadmin/', 'vfs://root/fileadmin/', false);
 
@@ -706,7 +724,7 @@ class LocalDriverTest extends BaseTestCase
         $this->addToMount($dirStructure);
         $subject = $this->createDriver(
             [],
-                // Mocked because finfo() can not deal with vfs streams and throws warnings
+            // Mocked because finfo() can not deal with vfs streams and throws warnings
             ['getMimeTypeOfFile']
         );
         $fileList = $subject->getFilesInFolder('/');
@@ -731,7 +749,7 @@ class LocalDriverTest extends BaseTestCase
         $this->addToMount($dirStructure);
         $subject = $this->createDriver(
             [],
-                // Mocked because finfo() can not deal with vfs streams and throws warnings
+            // Mocked because finfo() can not deal with vfs streams and throws warnings
             ['getMimeTypeOfFile']
         );
         $fileList = $subject->getFilesInFolder('/', 0, 0, true);
@@ -801,7 +819,7 @@ class LocalDriverTest extends BaseTestCase
         $this->addToMount($dirStructure);
         $subject = $this->createDriver(
             [],
-                // Mocked because finfo() can not deal with vfs streams and throws warnings
+            // Mocked because finfo() can not deal with vfs streams and throws warnings
             ['getMimeTypeOfFile']
         );
         $filterCallbacks = [
@@ -926,7 +944,7 @@ class LocalDriverTest extends BaseTestCase
 
     /**
      * @test
-     * @covers LocalDriver::getFileForLocalProcessing
+     * @covers \TYPO3\CMS\Core\Resource\Driver\LocalDriver::getFileForLocalProcessing
      */
     public function getFileForLocalProcessingCreatesCopyOfFileByDefault(): void
     {
@@ -981,7 +999,7 @@ class LocalDriverTest extends BaseTestCase
     public function permissionsAreCorrectlyRetrievedForAllowedFile(): void
     {
         /** @var $subject LocalDriver */
-        list($basedir, $subject) = $this->prepareRealTestEnvironment();
+        [$basedir, $subject] = $this->prepareRealTestEnvironment();
         touch($basedir . '/someFile');
         chmod($basedir . '/someFile', 448);
         clearstatcache();
@@ -993,13 +1011,13 @@ class LocalDriverTest extends BaseTestCase
      */
     public function permissionsAreCorrectlyRetrievedForForbiddenFile(): void
     {
-        if (function_exists('posix_getegid') && posix_getegid() === 0) {
+        if (\function_exists('posix_getegid') && posix_getegid() === 0) {
             $this->markTestSkipped('Test skipped if run on linux as root');
         } elseif (Environment::isWindows()) {
             $this->markTestSkipped('Test skipped if run on Windows system');
         }
         /** @var $subject LocalDriver */
-        list($basedir, $subject) = $this->prepareRealTestEnvironment();
+        [$basedir, $subject] = $this->prepareRealTestEnvironment();
         touch($basedir . '/someForbiddenFile');
         chmod($basedir . '/someForbiddenFile', 0);
         clearstatcache();
@@ -1012,7 +1030,7 @@ class LocalDriverTest extends BaseTestCase
     public function permissionsAreCorrectlyRetrievedForAllowedFolder(): void
     {
         /** @var $subject LocalDriver */
-        list($basedir, $subject) = $this->prepareRealTestEnvironment();
+        [$basedir, $subject] = $this->prepareRealTestEnvironment();
         mkdir($basedir . '/someFolder');
         chmod($basedir . '/someFolder', 448);
         clearstatcache();
@@ -1030,7 +1048,7 @@ class LocalDriverTest extends BaseTestCase
             $this->markTestSkipped('Test skipped if run on Windows system');
         }
         /** @var $subject LocalDriver */
-        list($basedir, $subject) = $this->prepareRealTestEnvironment();
+        [$basedir, $subject] = $this->prepareRealTestEnvironment();
         mkdir($basedir . '/someForbiddenFolder');
         chmod($basedir . '/someForbiddenFolder', 0);
         clearstatcache();
@@ -1185,7 +1203,7 @@ class LocalDriverTest extends BaseTestCase
         ]);
         $subject = $this->createDriver(
             [],
-                // Mocked because finfo() can not deal with vfs streams and throws warnings
+            // Mocked because finfo() can not deal with vfs streams and throws warnings
             ['getMimeTypeOfFile']
         );
         $newIdentifier = $subject->moveFileWithinStorage('/someFile', '/targetFolder/', 'file');
@@ -1284,8 +1302,12 @@ class LocalDriverTest extends BaseTestCase
      * @param string $newFolderName
      * @param string $expectedNewIdentifier
      */
-    public function renamingFoldersChangesFolderNameOnDisk(array $filesystemStructure, string $oldFolderIdentifier, string $newFolderName, string $expectedNewIdentifier)
-    {
+    public function renamingFoldersChangesFolderNameOnDisk(
+        array $filesystemStructure,
+        string $oldFolderIdentifier,
+        string $newFolderName,
+        string $expectedNewIdentifier
+    ): void {
         $this->addToMount($filesystemStructure);
         $subject = $this->createDriver();
         $mapping = $subject->renameFolder($oldFolderIdentifier, $newFolderName);
@@ -1418,7 +1440,10 @@ class LocalDriverTest extends BaseTestCase
         $subject = $this->createDriver();
         $mappingInformation = $subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'sourceFolder');
         $this->assertEquals('/targetFolder/sourceFolder/file', $mappingInformation['/sourceFolder/file']);
-        $this->assertEquals('/targetFolder/sourceFolder/subFolder/file', $mappingInformation['/sourceFolder/subFolder/file']);
+        $this->assertEquals(
+            '/targetFolder/sourceFolder/subFolder/file',
+            $mappingInformation['/sourceFolder/subFolder/file']
+        );
         $this->assertEquals('/targetFolder/sourceFolder/subFolder/', $mappingInformation['/sourceFolder/subFolder/']);
     }
 
@@ -1459,7 +1484,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function copyFolderWithinStorageCopiesSingleSubFolderToNewFolderName(): void
     {
-        list($basePath, $subject) = $this->prepareRealTestEnvironment();
+        [$basePath, $subject] = $this->prepareRealTestEnvironment();
         GeneralUtility::mkdir_deep($basePath . '/sourceFolder/subFolder');
         GeneralUtility::mkdir_deep($basePath . '/targetFolder');
 
@@ -1472,7 +1497,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function copyFolderWithinStorageCopiesFileInSingleSubFolderToNewFolderName(): void
     {
-        list($basePath, $subject) = $this->prepareRealTestEnvironment();
+        [$basePath, $subject] = $this->prepareRealTestEnvironment();
         GeneralUtility::mkdir_deep($basePath . '/sourceFolder/subFolder');
         GeneralUtility::mkdir_deep($basePath . '/targetFolder');
         file_put_contents($basePath . '/sourceFolder/subFolder/file', $this->getUniqueId());

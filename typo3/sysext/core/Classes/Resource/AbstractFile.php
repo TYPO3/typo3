@@ -422,7 +422,7 @@ abstract class AbstractFile implements FileInterface
      */
     public function getCombinedIdentifier()
     {
-        if (is_array($this->properties) && MathUtility::canBeInterpretedAsInteger($this->properties['storage'])) {
+        if (!empty($this->properties['storage']) && MathUtility::canBeInterpretedAsInteger($this->properties['storage'])) {
             $combinedIdentifier = $this->properties['storage'] . ':' . $this->getIdentifier();
         } else {
             $combinedIdentifier = $this->getStorage()->getUid() . ':' . $this->getIdentifier();

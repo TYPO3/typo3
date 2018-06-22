@@ -210,7 +210,7 @@ class File extends AbstractFile
             $this->name = $properties['name'];
         }
 
-        if ($this->properties['uid'] != 0 && isset($properties['uid'])) {
+        if (isset($properties['uid']) && $this->properties['uid'] != 0) {
             unset($properties['uid']);
         }
         foreach ($properties as $key => $value) {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
@@ -25,11 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ResourceCompressorIntegrationTest extends BaseTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @var TestableResourceCompressor
      */
     protected $resourceCompressor;
@@ -44,7 +40,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
      */
     protected $fixtureDirFromTest;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->fixtureDir = 'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/';
         $this->fixtureDirFromTest = GeneralUtility::fixWindowsFilePath(__DIR__ . '/ResourceCompressorTest/Fixtures/');
@@ -53,7 +49,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     /**
      * @test
      */
-    public function constructorCreatesTargetDirectory()
+    public function constructorCreatesTargetDirectory(): void
     {
         $this->resourceCompressor = new TestableResourceCompressor();
         $dir = Environment::getPublicPath() . '/' . $this->resourceCompressor->getTargetDirectory();
@@ -63,7 +59,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     /**
      * @test
      */
-    public function constructorCreatesHtaccessFileIfSet()
+    public function constructorCreatesHtaccessFileIfSet(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess'] = true;
         $this->resourceCompressor = new TestableResourceCompressor();
@@ -74,7 +70,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     /**
      * @test
      */
-    public function constructorDoesNotCreateHtaccessFileIfSetToFalse()
+    public function constructorDoesNotCreateHtaccessFileIfSetToFalse(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess'] = false;
         $this->resourceCompressor = new TestableResourceCompressor();
@@ -85,7 +81,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     /**
      * @test
      */
-    public function concatenateCssFiles()
+    public function concatenateCssFiles(): void
     {
         $files = [
             'sampleFile1' => [
@@ -107,7 +103,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     /**
      * @test
      */
-    public function concatenateCssFilesWorksWithFileFromNonRootPath()
+    public function concatenateCssFilesWorksWithFileFromNonRootPath(): void
     {
         $testFile = Environment::getPublicPath() . '/typo3temp/var/transient/css_input_with_import.css';
         $this->testFilesToDelete[] = $testFile;
@@ -129,7 +125,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
         self::assertStringEqualsFile(GeneralUtility::fixWindowsFilePath(Environment::getPublicPath() . '/' . $mergedFile['file']), $expected);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $this->resourceCompressor->getTargetDirectory();
         parent::tearDown();

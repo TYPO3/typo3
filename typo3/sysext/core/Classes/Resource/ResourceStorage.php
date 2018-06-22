@@ -171,14 +171,14 @@ class ResourceStorage implements ResourceStorageInterface
     public function __construct(Driver\DriverInterface $driver, array $storageRecord)
     {
         $this->storageRecord = $storageRecord;
-        $this->configuration = $this->getResourceFactoryInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
+        $this->configuration = $this->getResourceFactoryInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration'] ?? '');
         $this->capabilities =
-            ($this->storageRecord['is_browsable'] ? self::CAPABILITY_BROWSABLE : 0) |
-            ($this->storageRecord['is_public'] ? self::CAPABILITY_PUBLIC : 0) |
-            ($this->storageRecord['is_writable'] ? self::CAPABILITY_WRITABLE : 0);
+            ($this->storageRecord['is_browsable'] ?? null ? self::CAPABILITY_BROWSABLE : 0) |
+            ($this->storageRecord['is_public'] ?? null ? self::CAPABILITY_PUBLIC : 0) |
+            ($this->storageRecord['is_writable'] ?? null ? self::CAPABILITY_WRITABLE : 0);
 
         $this->driver = $driver;
-        $this->driver->setStorageUid($storageRecord['uid']);
+        $this->driver->setStorageUid($storageRecord['uid'] ?? null);
         $this->driver->mergeConfigurationCapabilities($this->capabilities);
         try {
             $this->driver->processConfiguration();
@@ -272,7 +272,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getUid()
     {
-        return (int)$this->storageRecord['uid'];
+        return (int)($this->storageRecord['uid'] ?? 0);
     }
 
     /**
