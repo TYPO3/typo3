@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Installs EXT:adminpanel
@@ -33,6 +34,9 @@ class AdminPanelInstall extends AbstractDownloadExtensionUpdate
      */
     protected $extensionKey = 'adminpanel';
 
+    /**
+     * @var array
+     */
     protected $extensionDetails = [
         'adminpanel' => [
             'title' => 'TYPO3 Admin Panel',
@@ -64,6 +68,34 @@ class AdminPanelInstall extends AbstractDownloadExtensionUpdate
     }
 
     /**
+     * Second step: Ask user to install the extension
+     *
+     * @param string $inputPrefix input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
+     * @return string HTML output
+     */
+    public function getUserInput($inputPrefix)
+    {
+        return '
+            <div class="panel panel-danger">
+                <div class="panel-heading">Are you really sure?</div>
+                <div class="panel-body">
+                    <p>You should install EXT:adminpanel only if you really need it.</p>
+                    <p>This update wizard cannot check if the extension was installed before the update.</p>
+                    <p>Are you really sure, you want to install EXT:adminpanel?</p>
+                    <div class="btn-group clearfix" data-toggle="buttons">
+                        <label class="btn btn-default active">
+                            <input type="radio" name="' . $inputPrefix . '[install]" value="0" checked="checked" /> no, don\'t install
+                        </label>
+                        <label class="btn btn-default">
+                            <input type="radio" name="' . $inputPrefix . '[install]" value="1" /> yes, please install
+                        </label>
+                    </div>
+                </div>
+            </div>
+        ';
+    }
+
+    /**
      * Performs the update
      *
      * @param array $databaseQueries Queries done in this update
@@ -72,9 +104,23 @@ class AdminPanelInstall extends AbstractDownloadExtensionUpdate
      */
     public function performUpdate(array &$databaseQueries, &$customMessage): bool
     {
-        $updateSuccessful = $this->installExtension($this->extensionKey, $customMessage);
-        if ($updateSuccessful) {
+        $requestParams = GeneralUtility::_GP('install');
+        if (!isset($requestParams['values']['adminpanelExtension']['install'])) {
+            return false;
+        }
+        $install = (int)$requestParams['values']['adminpanelExtension']['install'];
+
+        if ($install === 1) {
+            // user decided to install extension, install and mark wizard as done
+            $updateSuccessful = $this->installExtension($this->extensionKey, $customMessage);
+            if ($updateSuccessful) {
+                $this->markWizardAsDone();
+                return true;
+            }
+        } else {
+            // user decided to not install extension, mark wizard as done
             $this->markWizardAsDone();
+            return true;
         }
         return $updateSuccessful;
     }
