@@ -59,7 +59,6 @@ searchFields.[key]
 
             pages = media,url
             tt_content = bodytext,header_link,records
-            tt_news = bodytext,links
 
 
 
@@ -278,7 +277,6 @@ Example
            searchFields {
                    pages = media,url
                    tt_content = bodytext,header_link,records
-                   tt_news = bodytext,links
            }
            linktypes = db,file,external
            checkhidden = 0
