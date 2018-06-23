@@ -692,8 +692,7 @@ define(['jquery',
       // Null checkboxes without placeholder click event handler
       $(this).closest('.t3js-formengine-field-item').toggleClass('disabled');
     }).on('change', '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]', function(e) {
-      $(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-placeholder').toggle();
-      $(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-formfield').toggle();
+      FormEngine.toggleCheckboxField($(this));
     }).on('change', '.t3js-l10n-state-container input[type=radio]', function(event) {
       // Change handler for "l10n_state" field changes
       var $me = $(this);
@@ -942,15 +941,24 @@ define(['jquery',
    */
   FormEngine.initializeNullWithPlaceholderCheckboxes = function() {
     $('.t3js-form-field-eval-null-placeholder-checkbox').each(function() {
-      // Set initial state of both div's (one containing actual field, other containing placeholder field)
-      // depending on whether checkbox is checked or not
-      var $checkbox = $(this).find('input[type="checkbox"]');
-      if ($checkbox.attr('checked')) {
-        $(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-placeholder').hide();
-      } else {
-        $(this).closest('.t3js-formengine-field-item').find('.t3js-formengine-placeholder-formfield').hide();
-      }
+      FormEngine.toggleCheckboxField($(this).find('input[type="checkbox"]'));
     });
+  };
+
+  /**
+   * Set initial state of both div's (one containing actual field, other containing placeholder field)
+   * depending on whether checkbox is checked or not
+   * @param $checkbox
+   */
+  FormEngine.toggleCheckboxField = function($checkbox) {
+    var $item = $checkbox.closest('.t3js-formengine-field-item');
+    if ($checkbox.prop('checked')) {
+      $item.find('.t3js-formengine-placeholder-placeholder').hide();
+      $item.find('.t3js-formengine-placeholder-formfield').show();
+    } else {
+      $item.find('.t3js-formengine-placeholder-placeholder').show();
+      $item.find('.t3js-formengine-placeholder-formfield').hide();
+    }
   };
 
   /**
