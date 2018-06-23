@@ -53,6 +53,13 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if (empty($page)) {
             throw new UnableToLinkException('Page id "' . $linkDetails['typoLinkParameter'] . '" was not found, so "' . $linkText . '" was not linked.', 1490987336, null, $linkText);
         }
+        $language = empty($page['_PAGES_OVERLAY']) ? 0 : $page['_PAGES_OVERLAY_LANGUAGE'];
+        if ($language === 0 && GeneralUtility::hideIfDefaultLanguage($page['l18n_cfg'])) {
+            throw new UnableToLinkException('Default language of page  "' . $linkDetails['typoLinkParameter'] . '" is hidden, so "' . $linkText . '" was not linked.', 1529527301, null, $linkText);
+        }
+        if ($language > 0 && !isset($page['_PAGES_OVERLAY']) && GeneralUtility::hideIfNotTranslated($page['l18n_cfg'])) {
+            throw new UnableToLinkException('Fallback to default language of page "' . $linkDetails['typoLinkParameter'] . '" is disabled, so "' . $linkText . '" was not linked.', 1529527488, null, $linkText);
+        }
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'] as $classData) {
