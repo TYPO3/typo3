@@ -551,25 +551,17 @@ class SiteConfigurationController
             ->setHref('#')
             ->setClasses('t3js-editform-close')
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
+            ->setShowLabelText(true)
             ->setIcon($iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
         $saveButton = $buttonBar->makeInputButton()
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
             ->setName('_savedok')
             ->setValue('1')
+            ->setShowLabelText(true)
             ->setForm('siteConfigurationController')
             ->setIcon($iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
-        $saveAndCloseButton = $buttonBar->makeInputButton()
-            ->setName('_saveandclosedok')
-            ->setClasses('t3js-editform-submitButton')
-            ->setValue('1')
-            ->setForm('siteConfigurationController')
-            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
-            ->setIcon($iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
-        $saveSplitButton = $buttonBar->makeSplitButton();
-        $saveSplitButton->addItem($saveButton, true);
-        $saveSplitButton->addItem($saveAndCloseButton);
         $buttonBar->addButton($closeButton);
-        $buttonBar->addButton($saveSplitButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+        $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
     }
 
     /**
