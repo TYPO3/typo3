@@ -1106,11 +1106,14 @@ class DatabaseRecordList
                 if ($this->csvOutput) {
                     $this->showLimit = $this->totalItems;
                     $this->iLimit = $this->totalItems;
+                    $dbCount = $this->totalItems;
+                } else {
+                    if ($this->firstElementNumber + $this->showLimit <= $this->totalItems) {
+                        $dbCount = $this->showLimit + 2;
+                    } else {
+                        $dbCount = $this->totalItems - $this->firstElementNumber + 2;
+                    }
                 }
-                $dbCount = $queryBuilder
-                    ->count('uid')
-                    ->execute()
-                    ->fetchColumn(0);
             }
         }
         // If any records was selected, render the list:
