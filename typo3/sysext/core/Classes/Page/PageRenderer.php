@@ -1081,6 +1081,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if (!$type) {
             $type = 'text/javascript';
         }
+        $name .= '_jsFooterLibrary';
         if (!in_array(strtolower($name), $this->jsLibs)) {
             $this->jsLibs[strtolower($name)] = [
                 'file' => $file,
