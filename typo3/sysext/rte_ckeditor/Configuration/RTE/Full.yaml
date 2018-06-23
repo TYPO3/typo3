@@ -37,6 +37,7 @@ editor:
       - "/"
       - { name: basicstyles, groups: [ basicstyles, align, cleanup ] }
       - { name: paragraph,   groups: [ list, indent, blocks, align, bidi ] }
+      - { name: specialcharacters,   groups: [ insertcharacters ] }
       - "/"
       - { name: styles }
 
