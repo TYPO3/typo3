@@ -19,7 +19,7 @@ editor:
       - { name: clipboard, groups: [ clipboard, cleanup, undo ] }
       - { name: editing, groups: [ spellchecker ] }
       - { name: insert, groups: [ insert ] }
-      - { name: tools, groups: [ table, specialchar ] }
+      - { name: tools, groups: [ table, specialchar, insertcharacters ] }
       - { name: document, groups: [ mode ] }
 
     justifyClasses:
