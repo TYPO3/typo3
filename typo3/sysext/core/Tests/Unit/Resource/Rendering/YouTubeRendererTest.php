@@ -152,7 +152,7 @@ class YouTubeRendererTest extends UnitTestCase
         return [
             'no options given' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                null
+                []
             ],
             'with option controls = foo as invalid string' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
