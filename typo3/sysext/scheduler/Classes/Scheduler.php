@@ -249,6 +249,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function saveTask(Task\AbstractTask $task)
     {
+        $result = true;
         $taskUid = $task->getTaskUid();
         if (!empty($taskUid)) {
             try {
@@ -270,14 +271,18 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
                 'task_group' => $task->getTaskGroup(),
                 'serialized_task_object' => serialize($task)
             ];
-            $result = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('tx_scheduler_task')
-                ->update(
-                    'tx_scheduler_task',
-                    $fields,
-                    ['uid' => $taskUid],
-                    ['serialized_task_object' => Connection::PARAM_LOB]
-                );
+            try {
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable('tx_scheduler_task')
+                    ->update(
+                        'tx_scheduler_task',
+                        $fields,
+                        ['uid' => $taskUid],
+                        ['serialized_task_object' => Connection::PARAM_LOB]
+                    );
+            } catch (\Doctrine\DBAL\DBALException $e) {
+                $result = false;
+            }
         } else {
             $result = false;
         }
