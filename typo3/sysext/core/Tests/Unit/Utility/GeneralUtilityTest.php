@@ -3956,20 +3956,77 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function deniedFilesDataProvider()
+    public function deniedFilesWithoutDenyPatternDataProvider(): array
     {
         return [
             'Nul character in file' => ['image' . "\0" . '.gif'],
             'Nul character in file with .php' => ['image.php' . "\0" . '.gif'],
-            'Regular .php file' => ['file.php'],
-            'Regular .php5 file' => ['file.php5'],
-            'Regular .php3 file' => ['file.php3'],
-            'Regular .phpsh file' => ['file.phpsh'],
-            'Regular .phtml file' => ['file.phtml'],
-            'Regular .pht file' => ['file.pht'],
-            'PHP file in the middle' => ['file.php.txt'],
-            '.htaccess file' => ['.htaccess'],
+            'Nul character and UTF-8 in file' => ['Ссылка' . "\0" . '.gif'],
+            'Nul character and Latin-1 in file' => ['ÉÐØ' . "\0" . '.gif'],
         ];
+    }
+
+    /**
+     * Tests whether verifyFilenameAgainstDenyPattern detects files with nul character without file deny pattern.
+     *
+     * @param string $deniedFile
+     * @test
+     * @dataProvider deniedFilesWithoutDenyPatternDataProvider
+     */
+    public function verifyNulCharacterFilesAgainstPatternWithoutFileDenyPattern(string $deniedFile)
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] = '';
+        $this->assertFalse(GeneralUtility::verifyFilenameAgainstDenyPattern($deniedFile));
+    }
+
+    /**
+     * @return array
+     */
+    public function deniedFilesWithDefaultDenyPatternDataProvider(): array
+    {
+        $data = [
+            'Nul character in file' => ['image' . "\0", '.gif'],
+            'Nul character in file with .php' => ['image.php' . "\0", '.gif'],
+            'Nul character and UTF-8 in file' => ['Ссылка' . "\0", '.gif'],
+            'Nul character and Latin-1 in file' => ['ÉÐØ' . "\0", '.gif'],
+            'Regular .php file' => ['file' , '.php'],
+            'Lower umlaut .php file' => ['üWithFile', '.php'],
+            'Upper umlaut .php file' => ['fileWithÜ', '.php'],
+            'invalid UTF-8-sequence' => ["\xc0" . 'file', '.php'],
+            'Could be overlong NUL in some UTF-8 implementations, invalid in RFC3629' => ["\xc0\x80" . 'file', '.php'],
+            'Regular .php5 file' => ['file', '.php5'],
+            'Regular .php3 file' => ['file', '.php3'],
+            'Regular .phpsh file' => ['file', '.phpsh'],
+            'Regular .phtml file' => ['file', '.phtml'],
+            'Regular .pht file' => ['file', '.pht'],
+            'PHP file in the middle' => ['file', '.php.txt'],
+            '.htaccess file' => ['', '.htaccess'],
+        ];
+
+        // Mixing with regular utf-8
+        $utf8Characters = 'Ссылка';
+        foreach ($data as $key => $value) {
+            if ($value[0] === '') {
+                continue;
+            }
+            $data[$key . ' with UTF-8 characters prepended'] = [$utf8Characters . $value[0], $value[1]];
+            $data[$key . ' with UTF-8 characters appended'] = [$value[0] . $utf8Characters, $value[1]];
+        }
+
+        // combine to single value
+        $data = array_map(
+            function (array $values): array {
+                return [implode('', $values)];
+            },
+            $data
+        );
+
+        // Encoding with UTF-16
+        foreach ($data as $key => $value) {
+            $data[$key . ' encoded with UTF-16'] = [mb_convert_encoding($value[0], 'UTF-16')];
+        }
+
+        return $data;
     }
 
     /**
@@ -3977,11 +4034,38 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @param string $deniedFile
      * @test
-     * @dataProvider deniedFilesDataProvider
+     * @dataProvider deniedFilesWithDefaultDenyPatternDataProvider
      */
     public function verifyFilenameAgainstDenyPatternDetectsNotAllowedFiles($deniedFile)
     {
         $this->assertFalse(GeneralUtility::verifyFilenameAgainstDenyPattern($deniedFile));
+    }
+
+    /**
+     * @return array
+     */
+    public function allowedFilesDataProvider(): array
+    {
+        return [
+            'Regular .gif file' => ['image.gif'],
+            'Regular uppercase .gif file' => ['IMAGE.gif'],
+            'UTF-8 .gif file' => ['Ссылка.gif'],
+            'Lower umlaut .jpg file' => ['üWithFile.jpg'],
+            'Upper umlaut .png file' => ['fileWithÜ.png'],
+            'Latin-1 .gif file' => ['ÉÐØ.gif']
+        ];
+    }
+
+    /**
+     * Tests whether verifyFilenameAgainstDenyPattern accepts allowed files.
+     *
+     * @param string $allowedFile
+     * @test
+     * @dataProvider allowedFilesDataProvider
+     */
+    public function verifyFilenameAgainstDenyPatternAcceptAllowedFiles(string $allowedFile)
+    {
+        $this->assertTrue(GeneralUtility::verifyFilenameAgainstDenyPattern($allowedFile));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////

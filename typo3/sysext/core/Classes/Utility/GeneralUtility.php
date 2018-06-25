@@ -3250,9 +3250,9 @@ class GeneralUtility
     {
         $pattern = '/[[:cntrl:]]/';
         if ((string)$filename !== '' && (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] !== '') {
-            $pattern = '/(?:[[:cntrl:]]|' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] . ')/i';
+            $pattern = '/(?:[[:cntrl:]]|' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] . ')/iu';
         }
-        return !preg_match($pattern, $filename);
+        return preg_match($pattern, $filename) === 0;
     }
 
     /**
