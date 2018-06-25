@@ -51,6 +51,7 @@ editor:
       - font
       - find
       - bidi
+      - selectall
 
     removePlugins:
       - image
