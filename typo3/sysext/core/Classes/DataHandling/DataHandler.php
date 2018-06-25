@@ -4393,14 +4393,16 @@ class DataHandler
         // This is the actual pid of the moving to destination
         $resolvedPid = $this->resolvePid($table, $destPid);
         // Finding out, if the record may be moved from where it is. If the record is a non-page, then it depends on edit-permissions.
-        // If the record is a page, then there are two options: If the page is moved within itself, (same pid) it's edit-perms of the pid. If moved to another place then its both delete-perms of the pid and new-page perms on the destination.
+        // If the record is a page, then there are two options: If the page is moved within itself,
+        // (same pid) it's edit-perms of the pid. If moved to another place then its both delete-perms of the pid and new-page perms on the destination.
         if ($table !== 'pages' || $resolvedPid == $moveRec['pid']) {
             // Edit rights for the record...
             $mayMoveAccess = $this->checkRecordUpdateAccess($table, $uid);
         } else {
             $mayMoveAccess = $this->doesRecordExist($table, $uid, 'delete');
         }
-        // Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new), unless the pages are moved on the same pid, then edit-rights are checked
+        // Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new),
+        // unless the pages are moved on the same pid, then edit-rights are checked
         if ($table !== 'pages' || $resolvedPid != $moveRec['pid']) {
             // Insert rights for the record...
             $mayInsertAccess = $this->checkRecordInsertAccess($table, $resolvedPid, 4);
@@ -4606,14 +4608,14 @@ class DataHandler
      * If child records are found, they are also move to the new $destPid.
      *
      * @param string $table Record Table
-     * @param string $uid Record UID
-     * @param string $destPid Position to move to
+     * @param int $uid Record UID
+     * @param int $destPid Position to move to
      */
     public function moveRecord_procFields($table, $uid, $destPid)
     {
         $conf = $GLOBALS['TCA'][$table]['columns'];
         $row = BackendUtility::getRecordWSOL($table, $uid);
-        if (is_array($row)) {
+        if (is_array($row) && (int)$destPid !== (int)$row['pid']) {
             foreach ($row as $field => $value) {
                 $this->moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf[$field]['config']);
             }
