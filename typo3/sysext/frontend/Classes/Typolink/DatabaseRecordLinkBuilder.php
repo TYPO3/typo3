@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Typolink;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * Builds a TypoLink to a database record
@@ -62,6 +63,14 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         // Unset the parameter part of the given TypoScript configuration while keeping
         // config that has been set in addition.
         unset($conf['parameter.']);
+
+        $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
+        $parameterFromDb = $typoLinkCodecService->decode($conf['parameter']);
+        unset($parameterFromDb['url']);
+        $parameterFromTypoScript = $typoLinkCodecService->decode($typoScriptConfiguration['parameter']);
+        $parameter = array_replace_recursive($parameterFromTypoScript, array_filter($parameterFromDb));
+        $typoScriptConfiguration['parameter'] = $typoLinkCodecService->encode($parameter);
+
         $typoScriptConfiguration = array_replace_recursive($conf, $typoScriptConfiguration);
 
         if (!empty($linkDetails['fragment'])) {
