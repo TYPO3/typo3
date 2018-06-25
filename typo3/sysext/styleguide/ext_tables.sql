@@ -49,6 +49,7 @@ CREATE TABLE tx_styleguide_elements_basic (
 	input_36 text,
 	input_37 text,
 	input_38 text,
+	input_39 text,
 
 	inputdatetime_1 text,
 	inputdatetime_2 date,
