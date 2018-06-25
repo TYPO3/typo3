@@ -121,8 +121,10 @@ CKEDITOR.plugins.add('autolinking', {
       };
 
       editor.on('key', function(evt) {
-        if (evt.data.keyCode === spaceChar || evt.data.keyCode === tabChar || evt.data.keyCode === enterChar) {
-          editor.autolinking(evt);
+        if (this.mode !== 'source') {
+          if (evt.data.keyCode === spaceChar || evt.data.keyCode === tabChar || evt.data.keyCode === enterChar) {
+            editor.autolinking(evt);
+          }
         }
       });
     });
