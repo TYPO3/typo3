@@ -566,6 +566,7 @@ var inline = {
         $(objectIdPrefix + records[current + 1 - cAdj] + '_div')
       );
       this.redrawSortingButtons(objectPrefix, records);
+      $(document).trigger('inline:sorting-changed');
     }
 
     return false;

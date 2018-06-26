@@ -155,6 +155,7 @@ define(['jquery',
         tolerance: 'pointer',
         stop: function() {
           me.setActionStatus();
+          $(document).trigger('flexform:sorting-changed');
         }
       });
     });
