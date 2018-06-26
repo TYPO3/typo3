@@ -47,3 +47,18 @@ $GLOBALS['TBE_STYLES']['skins']['backend'] = [
     'pages_new',
     'EXT:backend/Resources/Private/Language/locallang_pages_new_csh.xlf'
 );
+
+// Csh manual
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+    'help',
+    'cshmanual',
+    'top',
+    '',
+    [
+        'routeTarget' => \TYPO3\CMS\Backend\Controller\HelpController::class . '::handleRequest',
+        'name' => 'help_cshmanual',
+        'access' => 'user,group',
+        'icon' => 'EXT:backend/Resources/Public/Icons/module-cshmanual.svg',
+        'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod_help_cshmanual.xlf',
+    ]
+);

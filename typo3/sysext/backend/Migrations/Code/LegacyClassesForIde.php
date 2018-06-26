@@ -20,3 +20,12 @@ namespace TYPO3\CMS\Backend\Form\Wizard {
     {
     }
 }
+
+namespace TYPO3\CMS\Cshmanual\Domain\Repository {
+    /**
+     * @deprecated since v9, will be removed in v10
+     */
+    class TableManualRepository extends \TYPO3\CMS\Backend\Domain\Repository\TableManualRepository
+    {
+    }
+}

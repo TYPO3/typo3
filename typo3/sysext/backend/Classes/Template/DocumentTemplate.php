@@ -16,7 +16,9 @@ namespace TYPO3\CMS\Backend\Template;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -503,6 +505,17 @@ function jumpToUrl(URL) {
         // this logic will be changed once Twitter bootstrap 4 is included
         $this->pageRenderer->addJsFile('EXT:core/Resources/Public/JavaScript/Contrib/bootstrap/bootstrap.js');
 
+        // csh manual require js module & moduleUrl
+        if (TYPO3_MODE === 'BE' && $this->getBackendUser() && !empty($this->getBackendUser()->user)) {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
+            $this->pageRenderer->addInlineSetting(
+                'ContextHelp',
+                'moduleUrl',
+                (string)$uriBuilder->buildUriFromRoute('help_cshmanual', ['action' => 'detail'])
+            );
+        }
+
         // hook for additional headerData
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'] ?? [] as $hookFunction) {
             $hookParameters = [
@@ -966,5 +979,13 @@ function jumpToUrl(URL) {
             $urlPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
         }
         return $urlPrefix . $filename;
+    }
+
+    /**
+     * @return BackendUserAuthentication|null
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'] ?? null;
     }
 }

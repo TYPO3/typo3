@@ -46,6 +46,7 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
                     || $userConfig['startModule'] === 'help_AboutmodulesAboutmodules'
                     || $userConfig['startModule'] === 'help_AboutAboutmodules'
                     || $userConfig['startModule'] === 'help_CshmanualCshmanual'
+                    || $userConfig['startModule'] === 'help_DocumentationCshmanual'
                 ) {
                     $needsExecution = true;
                     break;
@@ -53,7 +54,7 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
             }
         }
         if ($needsExecution) {
-            $description = 'The backend user setting startModule is changed for the extensions about/aboutmodules a d help/cshmanual. Update all'
+            $description = 'The backend user setting startModule is changed for the extensions about/aboutmodules and help/cshmanual. Update all'
                 . ' backend users that use EXT:aboutmodules and EXT:cshmanual as startModule.';
         }
         return $needsExecution;
@@ -78,8 +79,12 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
                     || $userConfig['startModule'] === 'help_AboutmodulesAboutmodules'
                     || $userConfig['startModule'] === 'help_AboutAboutmodules'
                     || $userConfig['startModule'] === 'help_CshmanualCshmanual'
+                    || $userConfig['startModule'] === 'help_DocumentationCshmanual'
                 ) {
-                    $userConfig['startModule'] = $userConfig['startModule'] === 'help_CshmanualCshmanual' ? 'help_DocumentationCshmanual' : 'help_AboutAbout';
+                    $userConfig['startModule'] = 'help_AboutAbout';
+                    if ($userConfig['startModule'] === 'help_CshmanualCshmanual' || $userConfig['startModule'] === 'help_DocumentationCshmanual') {
+                        $userConfig['startModule'] = 'help_BackendCshmanual';
+                    }
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
                     $queryBuilder->update('be_users')
                         ->where(

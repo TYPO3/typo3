@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Documentation\Controller;
+namespace TYPO3\CMS\Backend\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Documentation\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Domain\Repository\TableManualRepository;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -26,12 +27,11 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Documentation\Domain\Repository\TableManualRepository;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
- * Main help module controller
+ * Main "CSH help" module controller
  */
 class HelpController
 {
@@ -105,10 +105,10 @@ class HelpController
     {
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->setTemplate($templateName);
-        $this->view->setTemplateRootPaths(['EXT:documentation/Resources/Private/Templates/Help']);
-        $this->view->setPartialRootPaths(['EXT:documentation/Resources/Private/Partials']);
-        $this->view->setLayoutRootPaths(['EXT:documentation/Resources/Private/Layouts']);
-        $this->view->getRequest()->setControllerExtensionName('Documentation');
+        $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ContextSensitiveHelp']);
+        $this->view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $this->view->getRequest()->setControllerExtensionName('Backend');
         $this->view->assign('copyright', BackendUtility::TYPO3_copyRightNotice());
     }
 
@@ -165,7 +165,9 @@ class HelpController
             'table' => $table,
             'key' => $mainKey,
             'field' => $field,
-            'manuals' => $field === '*' ? $this->tableManualRepository->getTableManual($mainKey) : [$this->tableManualRepository->getSingleManual($mainKey, $field)],
+            'manuals' => $field === '*'
+                ? $this->tableManualRepository->getTableManual($mainKey)
+                : [$this->tableManualRepository->getSingleManual($mainKey, $field)],
         ]);
     }
 

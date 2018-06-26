@@ -19,8 +19,7 @@
 		"typo3/cms": "*"
 	},
 	"replace": {
-		"documentation": "*",
-		"typo3/cms-cshmanual": "*"
+		"documentation": "*"
 	},
 	"extra": {
 		"branch-alias": {
@@ -28,8 +27,7 @@
 		},
 		"typo3/cms": {
 			"Package": {
-				"partOfFactoryDefault": true,
-				"partOfMinimalUsableSystem": true
+				"partOfFactoryDefault": true
 			},
 			"extension-key": "documentation"
 		},

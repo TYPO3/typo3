@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Documentation\Domain\Repository;
+namespace TYPO3\CMS\Backend\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,28 +14,18 @@ namespace TYPO3\CMS\Documentation\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Controller\HelpController;
+use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Table manual repository
+ * Table manual repository for csh manual handling
  */
 class TableManualRepository
 {
-    /**
-     * @var \TYPO3\CMS\Documentation\Service\AccessService
-     */
-    protected $accessService;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->accessService = GeneralUtility::makeInstance(\TYPO3\CMS\Documentation\Service\AccessService::class);
-    }
-
     /**
      * Get the manual of the given table
      *
@@ -48,12 +38,12 @@ class TableManualRepository
 
         // Load descriptions for table $table
         $this->getLanguageService()->loadSingleTableDescription($table);
-        if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $this->accessService->checkAccess('tables_select', $table)) {
+        if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $this->checkAccess('tables_select', $table)) {
             // Reserved for header of table
             $parts[0] = '';
             // Traverse table columns as listed in TCA_DESCR
             foreach ($GLOBALS['TCA_DESCR'][$table]['columns'] as $field => $_) {
-                if (!$this->isExcludableField($table, $field) || $this->accessService->checkAccess('non_exclude_fields', $table . ':' . $field)) {
+                if (!$this->isExcludableField($table, $field) || $this->checkAccess('non_exclude_fields', $table . ':' . $field)) {
                     if (!$field) {
                         // Header
                         $parts[0] = $this->getItem($table, '', true);
@@ -101,7 +91,7 @@ class TableManualRepository
         $lang->loadSingleTableDescription('xMOD_csh_corebe');
         $this->renderTableOfContentItem($mode, 'xMOD_csh_corebe', 'core', $outputSections, $tocArray, $cshKeys);
         // Backend Modules
-        $loadModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
+        $loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
         $loadModules->load($GLOBALS['TBE_MODULES']);
         foreach ($loadModules->modules as $mainMod => $info) {
             $cshKey = '_MOD_' . $mainMod;
@@ -123,7 +113,7 @@ class TableManualRepository
         foreach ($tcaKeys as $table) {
             // Load descriptions for table $table
             $lang->loadSingleTableDescription($table);
-            if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $this->accessService->checkAccess('tables_select', $table)) {
+            if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $this->checkAccess('tables_select', $table)) {
                 $this->renderTableOfContentItem($mode, $table, 'tables', $outputSections, $tocArray, $cshKeys);
             }
         }
@@ -140,7 +130,7 @@ class TableManualRepository
             }
         }
 
-        if ($mode === \TYPO3\CMS\Documentation\Controller\HelpController::TOC_ONLY) {
+        if ($mode === HelpController::TOC_ONLY) {
             return $tocArray;
         }
 
@@ -294,11 +284,11 @@ class TableManualRepository
                     $accessAllowed = true;
                     // Check if table exists and current user can access it
                     if (!empty($table)) {
-                        $accessAllowed = !$this->getTableSetup($table) || $this->accessService->checkAccess('tables_select', $table);
+                        $accessAllowed = !$this->getTableSetup($table) || $this->checkAccess('tables_select', $table);
                     }
                     // Check if field exists and is excludable or user can access it
                     if ($accessAllowed && !empty($field)) {
-                        $accessAllowed = !$this->isExcludableField($table, $field) || $this->accessService->checkAccess('non_exclude_fields', $table . ':' . $field);
+                        $accessAllowed = !$this->isExcludableField($table, $field) || $this->checkAccess('non_exclude_fields', $table . ':' . $field);
                     }
                     // Check read access
                     if ($accessAllowed && isset($GLOBALS['TCA_DESCR'][$table])) {
@@ -403,6 +393,31 @@ class TableManualRepository
             return $tableSetup['columns'][$field];
         }
         return [];
+    }
+
+    /**
+     * Check if current backend user has access to given identifier
+     *
+     * @param string $type The type
+     * @param string $identifier The search string in access list
+     * @return bool TRUE if the user has access
+     */
+    protected function checkAccess($type, $identifier)
+    {
+        if (!empty($type) && !empty($identifier)) {
+            return $this->getBackendUser()->check($type, $identifier);
+        }
+        return false;
+    }
+
+    /**
+     * Returns the current BE user.
+     *
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 
     /**
