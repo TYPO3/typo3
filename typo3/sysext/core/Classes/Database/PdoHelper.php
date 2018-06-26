@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Core\Database;
 
 /**
  * A helper class for handling PDO databases
+ *
+ * @deprecated and will be removed in TYPO3 v10.0
  */
 class PdoHelper
 {
@@ -29,9 +31,11 @@ class PdoHelper
      * @param \PDO $databaseHandle
      * @param string $pdoDriver
      * @param string $pathAndFilename
+     * @deprecated and will be removed in TYPO3 v10.0
      */
     public static function importSql(\PDO $databaseHandle, $pdoDriver, $pathAndFilename)
     {
+        trigger_error('Class will be removed in TYPO3 v10', E_USER_DEPRECATED);
         $sql = file($pathAndFilename, FILE_IGNORE_NEW_LINES & FILE_SKIP_EMPTY_LINES);
         // Remove MySQL style key length delimiters (yuck!) if we are not setting up a MySQL db
         if (substr($pdoDriver, 0, 5) !== 'mysql') {
