@@ -1028,6 +1028,11 @@ class EditDocumentController
             }
         }
 
+        // Always use live workspace record uid for the preview
+        if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ?? false && $recordArray['t3ver_oid'] > 0) {
+            $recordId = $recordArray['t3ver_oid'];
+        }
+
         // map record data to GET parameters
         if (isset($previewConfiguration['fieldToParameterMap.'])) {
             foreach ($previewConfiguration['fieldToParameterMap.'] as $field => $parameterName) {
