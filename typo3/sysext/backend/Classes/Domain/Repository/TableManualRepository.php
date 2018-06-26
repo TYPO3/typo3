@@ -76,7 +76,7 @@ class TableManualRepository
     /**
      * Get TOC sections
      *
-     * @param string $mode
+     * @param int $mode e.g. HelpController::TOC_ONLY
      * @return array
      */
     public function getSections($mode)
