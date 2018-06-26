@@ -30,10 +30,6 @@
                 "../typo3/sysext/core/Resources/Public/JavaScript/*",
                 "../typo3/sysext/core/Resources/Private/TypeScript/*"
             ],
-            "TYPO3/CMS/Documentation/*": [
-                "../typo3/sysext/documentation/Resources/Public/JavaScript/*",
-                "../typo3/sysext/documentation/Resources/Private/TypeScript/*"
-            ],
             "TYPO3/CMS/Extensionmanager/*": [
                 "../typo3/sysext/extensionmanager/Resources/Public/JavaScript/*",
                 "../typo3/sysext/extensionmanager/Resources/Private/TypeScript/*"
