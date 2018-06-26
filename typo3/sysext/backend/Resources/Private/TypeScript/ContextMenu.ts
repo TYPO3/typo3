@@ -194,7 +194,6 @@ class ContextMenu {
 
         const callbackName = $me.data('callback-action');
         const callbackModule = $me.data('callback-module');
-        // var clickItem = $(this);
         if ($me.data('callback-module')) {
           require([callbackModule], (callbackModuleCallback: any): void => {
             callbackModuleCallback[callbackName].bind($me)(this.record.table, this.record.uid);

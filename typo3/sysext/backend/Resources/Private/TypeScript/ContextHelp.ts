@@ -97,7 +97,6 @@ class ContextHelp {
       $('.popover').each((index: number, popover: Element): void => {
         const $popover = $(popover);
         if ($popover.has(e.target).length) {
-          console.log($popover.data('bs.popover'));
           this.showHelpPopup($popover.data('bs.popover').$element);
         }
       });
