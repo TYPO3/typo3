@@ -190,6 +190,14 @@ class RichTextElement extends AbstractFormElement
                             FormEngine.Validation.validate();
                             FormEngine.Validation.markFieldAsChanged($(\'#' . $fieldId . '\'));
                         });
+                        $(document).on(\'inline:sorting-changed\', function() {
+                            CKEDITOR.instances["' . $fieldId . '"].destroy();
+                            CKEDITOR.replace("' . $fieldId . '", ' . json_encode($configuration) . ');
+                        });
+                        $(document).on(\'flexform:sorting-changed\', function() {
+                            CKEDITOR.instances["' . $fieldId . '"].destroy();
+                            CKEDITOR.replace("' . $fieldId . '", ' . json_encode($configuration) . ');
+                        });
                     });
                 });
         }';

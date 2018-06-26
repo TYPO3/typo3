@@ -575,6 +575,7 @@ var inline = {
       );
       this.redrawSortingButtons(objectPrefix, records);
       $(formObj).addClass('has-change');
+      $(document).trigger('inline:sorting-changed');
       $(document).trigger('change');
     }
 
