@@ -333,6 +333,7 @@ CREATE TABLE sys_file_metadata (
 	alternative text,
 
 	PRIMARY KEY (uid),
+	KEY pid (pid),
 	KEY file (file),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY fal_filelist (l10n_parent,sys_language_uid)
