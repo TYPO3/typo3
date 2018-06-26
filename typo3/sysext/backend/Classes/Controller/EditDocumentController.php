@@ -1022,7 +1022,7 @@ class EditDocumentController
         $linkParameters = [];
         $table = $this->previewData['table'] ?: $this->firstEl['table'];
         $recordId = $this->previewData['id'] ?: $this->firstEl['uid'];
-        $previewConfiguration = $pageTsConfig['TCEMAIN.']['preview.'][$table . '.'] ?? [];
+        $previewConfiguration = BackendUtility::getPagesTSconfig($previewPageId)['TCEMAIN.']['preview.'][$table . '.'] ?? [];
         $recordArray = BackendUtility::getRecord($table, $recordId);
 
         // language handling
@@ -1103,10 +1103,10 @@ class EditDocumentController
             $currentPageId = MathUtility::convertToPositiveInteger($pageId);
         }
 
-        $previewConfiguration = $pageTsConfig['TCEMAIN.']['preview.'][$table . '.'] ?? [];
+        $previewConfiguration = BackendUtility::getPagesTSconfig($currentPageId)['TCEMAIN.']['preview.'][$table . '.'] ?? [];
 
         if (isset($previewConfiguration['previewPageId'])) {
-            $previewPageId = $previewConfiguration['previewPageId'];
+            $previewPageId = (int)$previewConfiguration['previewPageId'];
         }
         // if no preview page was configured
         if (!$previewPageId) {
