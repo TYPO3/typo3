@@ -178,14 +178,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
             }
         }
 
-        if (!empty($this->currentLinkParts['class'])) {
-            // Only keep last class value (others are automatically added again by required option)
-            // https://review.typo3.org/#/c/29643
-            $currentClasses = GeneralUtility::trimExplode(' ', $this->currentLinkParts['class'], true);
-            if (count($currentClasses) > 1) {
-                $this->currentLinkParts['class'] = end($currentClasses);
-            }
-        }
         parent::initCurrentUrl();
     }
 
