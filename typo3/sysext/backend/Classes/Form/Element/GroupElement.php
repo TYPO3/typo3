@@ -28,6 +28,17 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class GroupElement extends AbstractFormElement
 {
     /**
+     * Default field information enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldInformation = [
+        'tcaDescription' => [
+            'renderType' => 'tcaDescription',
+        ],
+    ];
+
+    /**
      * Default field controls for this element.
      *
      * @var array
@@ -175,10 +186,15 @@ class GroupElement extends AbstractFormElement
             );
         }
 
+        $fieldInformationResult = $this->renderFieldInformation();
+        $fieldInformationHtml = $fieldInformationResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+
         if (isset($config['readOnly']) && $config['readOnly']) {
             // Return early if element is read only
             $html = [];
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
+            $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<select';
@@ -286,10 +302,6 @@ class GroupElement extends AbstractFormElement
         if ($maxItems !== 1 && $size !== 1) {
             $selectorAttributes['multiple'] = 'multiple';
         }
-
-        $fieldInformationResult = $this->renderFieldInformation();
-        $fieldInformationHtml = $fieldInformationResult['html'];
-        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         $fieldControlResult = $this->renderFieldControl();
         $fieldControlHtml = $fieldControlResult['html'];

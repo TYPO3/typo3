@@ -28,6 +28,17 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class SelectSingleElement extends AbstractFormElement
 {
     /**
+     * Default field information enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldInformation = [
+        'tcaDescription' => [
+            'renderType' => 'tcaDescription',
+        ],
+    ];
+
+    /**
      * Default field wizards enabled for this element.
      *
      * @var array
@@ -200,9 +211,7 @@ class SelectSingleElement extends AbstractFormElement
 
         $html = [];
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
-        if (!$disabled) {
-            $html[] = $fieldInformationHtml;
-        }
+        $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap">';
         $html[] =       '<div class="form-wizards-wrap">';
         $html[] =           '<div class="form-wizards-element">';

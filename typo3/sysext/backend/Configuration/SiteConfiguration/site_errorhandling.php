@@ -16,6 +16,7 @@ return [
     'columns' => [
         'errorCode' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_errorhandling.errorCode',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required, trim, int',
@@ -35,11 +36,6 @@ return [
                         ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode.0', '0'],
                     ],
                 ],
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'errorHandler' => [
@@ -53,56 +49,32 @@ return [
                     ['Show Content from Page', 'Page'],
                     ['PHP Class (must implement the PageErrorHandlerInterface)', 'PHP'],
                 ],
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'errorFluidTemplate' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidTemplate',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_errorhandling.errorFluidTemplate',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'errorFluidTemplatesRootPath' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidTemplatesRootPath',
             'config' => [
                 'type' => 'input',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'errorFluidLayoutsRootPath' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidLayoutsRootPath',
             'config' => [
                 'type' => 'input',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'errorFluidPartialsRootPath' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidPartialsRootPath',
             'config' => [
                 'type' => 'input',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'errorContentSource' => [
@@ -111,11 +83,6 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputLink',
                 'eval' => 'required',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
                 'fieldControl' => [
                     'linkPopup' => [
                         'options' => [
@@ -127,14 +94,10 @@ return [
         ],
         'errorPhpClassFQCN' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorPhpClassFQCN',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_errorhandling.errorPhpClassFQCN',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
     ],

@@ -20,21 +20,25 @@ use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
- * Provides field information texts for form engine fields concerning site configuration module
+ * Render localized ['columns']['theField']['description'] text as default
+ * field information node. This is typically displayed in elements below the
+ * element label and the field content.
  */
-class SiteConfiguration extends AbstractNode
+class TcaDescription extends AbstractNode
 {
     /**
      * Handler for single nodes
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $resultArray = $this->initializeResultArray();
-        $fieldInformationText = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:' . $this->data['tableName'] . '.' . $this->data['fieldName']);
-        if ($fieldInformationText !== $this->data['fieldName']) {
-            $resultArray['html'] = $fieldInformationText;
+        if (!empty($this->data['parameterArray']['fieldConf']['description'])) {
+            $fieldInformationText = $this->getLanguageService()->sL($this->data['parameterArray']['fieldConf']['description']);
+            if (trim($fieldInformationText) !== '') {
+                $resultArray['html'] = htmlspecialchars($fieldInformationText);
+            }
         }
         return $resultArray;
     }
@@ -44,7 +48,7 @@ class SiteConfiguration extends AbstractNode
      *
      * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

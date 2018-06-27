@@ -22,11 +22,22 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class NoneElement extends AbstractFormElement
 {
     /**
+     * Default field information enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldInformation = [
+        'tcaDescription' => [
+            'renderType' => 'tcaDescription',
+        ],
+    ];
+
+    /**
      * This will render a non-editable display of the content of the field.
      *
-     * @return string The HTML code for the TCEform field
+     * @return array The HTML code for the TCEform field
      */
-    public function render()
+    public function render(): array
     {
         $resultArray = $this->initializeResultArray();
 

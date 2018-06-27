@@ -21,11 +21,6 @@ return [
                 'size' => 1,
                 'min' => 1,
                 'max' => 1,
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'title' => [
@@ -35,11 +30,6 @@ return [
                 'size' => 10,
                 'eval' => 'required',
                 'placeholder' => 'English',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'navigationTitle' => [
@@ -48,37 +38,24 @@ return [
                 'type' => 'input',
                 'size' => 10,
                 'placeholder' => 'English',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'base' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.base',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.base',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required',
                 'default' => '/',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'locale' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.locale',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.locale',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required',
                 'placeholder' => 'en_US.UTF-8',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'iso-639-1' => [
@@ -88,11 +65,6 @@ return [
                 'renderType' => 'selectSingle',
                 // Fed by data provider
                 'items' => [],
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'hreflang' => [
@@ -100,11 +72,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'placeholder' => 'en-US',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'direction' => [
@@ -117,25 +84,16 @@ return [
                     ['Left to Right', 'ltr', ''],
                     ['Right to Left', 'rtl', ''],
                 ],
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'typo3Language' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.typo3Language',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.typo3Language',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 // Fed by data provider
                 'items' => [],
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
                 'default' => 'default'
             ],
         ],
@@ -404,11 +362,6 @@ return [
                         'disabled' => false,
                     ],
                 ],
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'fallbackType' => [
@@ -421,11 +374,6 @@ return [
                 'items' => [
                     ['No fallback (strict)', 'strict'],
                     ['Fallback to other language', 'fallback'],
-                ],
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
                 ],
             ],
         ],
@@ -441,11 +389,6 @@ return [
                 'foreign_table' => 'sys_language',
                 'size' => 5,
                 'min' => 0,
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
     ],

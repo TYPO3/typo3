@@ -82,6 +82,10 @@ class FlexFormElementContainer extends AbstractContainer
                     'label' => $parameterArray['label'],
                 ];
 
+                if (isset($flexFormFieldArray['description']) && !empty($flexFormFieldArray['description'])) {
+                    $fakeParameterArray['fieldConf']['description'] = $flexFormFieldArray['description'];
+                }
+
                 $alertMsgOnChange = '';
                 if (isset($fakeParameterArray['fieldConf']['onChange']) && $fakeParameterArray['fieldConf']['onChange'] === 'reload') {
                     if ($this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
@@ -138,6 +142,7 @@ class FlexFormElementContainer extends AbstractContainer
 
                 // Possible line breaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace (?!)
                 $processedTitle = str_replace('\\n', '<br />', htmlspecialchars($fakeParameterArray['fieldConf']['label']));
+
                 $html = [];
                 $html[] = '<div class="form-section">';
                 $html[] =    '<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';

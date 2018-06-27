@@ -63,6 +63,17 @@ class InlineControlContainer extends AbstractContainer
     protected $requireJsModules = [];
 
     /**
+     * Default field information enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldInformation = [
+        'tcaDescription' => [
+            'renderType' => 'tcaDescription',
+        ],
+    ];
+
+    /**
      * @var array Default wizards
      */
     protected $defaultFieldWizard = [
@@ -270,6 +281,11 @@ class InlineControlContainer extends AbstractContainer
         }
         // Wrap all inline fields of a record with a <div> (like a container)
         $html = '<div class="form-group" id="' . $nameObject . '">';
+
+        $fieldInformationResult = $this->renderFieldInformation();
+        $html .= $fieldInformationResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+
         // Add the level links before all child records:
         if ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'top') {
             $html .= '<div class="form-group t3js-formengine-validation-marker">' . $levelLinks . $localizationLinks . '</div>';

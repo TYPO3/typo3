@@ -26,6 +26,17 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class InputDateTimeElement extends AbstractFormElement
 {
     /**
+     * Default field information enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldInformation = [
+        'tcaDescription' => [
+            'renderType' => 'tcaDescription',
+        ],
+    ];
+
+    /**
      * Default field wizards enabled for this element.
      *
      * @var array
@@ -91,11 +102,16 @@ class InputDateTimeElement extends AbstractFormElement
         $size = MathUtility::forceIntegerInRange($config['size'] ?? $defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $width = (int)$this->formMaxWidth($size);
 
+        $fieldInformationResult = $this->renderFieldInformation();
+        $fieldInformationHtml = $fieldInformationResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+
         if (isset($config['readOnly']) && $config['readOnly']) {
             // Early return for read only fields
             $itemValue = $this->formatValue($format, $itemValue);
             $html = [];
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
+            $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
@@ -159,10 +175,6 @@ class InputDateTimeElement extends AbstractFormElement
             // and pass on the ISO format to JS.
             $itemValue = gmdate('c', (int)$itemValue);
         }
-
-        $fieldInformationResult = $this->renderFieldInformation();
-        $fieldInformationHtml = $fieldInformationResult['html'];
-        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         $fieldWizardResult = $this->renderFieldWizard();
         $fieldWizardHtml = $fieldWizardResult['html'];

@@ -22,6 +22,17 @@ namespace TYPO3\CMS\Backend\Form\Element;
 class SelectTreeElement extends AbstractFormElement
 {
     /**
+     * Default field information enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldInformation = [
+        'tcaDescription' => [
+            'renderType' => 'tcaDescription',
+        ],
+    ];
+
+    /**
      * @var array Default wizards
      */
     protected $defaultFieldWizard = [
@@ -124,9 +135,7 @@ class SelectTreeElement extends AbstractFormElement
 
         $html = [];
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
-        if ($readOnly === 'false') {
-            $html[] = $fieldInformationHtml;
-        }
+        $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap">';
         $html[] =       '<div class="form-wizards-wrap">';
         $html[] =           '<div class="form-wizards-element">';

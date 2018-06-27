@@ -29,6 +29,17 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class SelectMultipleSideBySideElement extends AbstractFormElement
 {
     /**
+     * Default field information enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldInformation = [
+        'tcaDescription' => [
+            'renderType' => 'tcaDescription',
+        ],
+    ];
+
+    /**
      * Default field controls for this element.
      *
      * @var array
@@ -325,6 +336,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
     protected function renderReadOnly()
     {
         $languageService = $this->getLanguageService();
+        $resultArray = $this->initializeResultArray();
 
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
@@ -363,8 +375,13 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             }
         }
 
+        $fieldInformationResult = $this->renderFieldInformation();
+        $fieldInformationHtml = $fieldInformationResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+
         $html = [];
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
+        $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
         $html[] =       '<div class="form-wizards-element">';
         $html[] =           '<label>';
@@ -389,7 +406,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $resultArray = $this->initializeResultArray();
         $resultArray['html'] = implode(LF, $html);
         return $resultArray;
     }

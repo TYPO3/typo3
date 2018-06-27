@@ -30,6 +30,17 @@ class CheckboxLabeledToggleElement extends AbstractFormElement
     private $iconRegistry;
 
     /**
+     * Default field information enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldInformation = [
+        'tcaDescription' => [
+            'renderType' => 'tcaDescription',
+        ],
+    ];
+
+    /**
      * Default field wizards enabled for this element.
      *
      * @var array
@@ -129,9 +140,7 @@ class CheckboxLabeledToggleElement extends AbstractFormElement
 
         $html = [];
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
-        if (!$disabled) {
-            $html[] = $fieldInformationHtml;
-        }
+        $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
         $html[] =       '<div class="form-wizards-element">';
         $html[] =           $elementHtml;

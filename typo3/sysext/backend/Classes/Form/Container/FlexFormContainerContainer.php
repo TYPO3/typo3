@@ -82,6 +82,8 @@ class FlexFormContainerContainer extends AbstractContainer
             $containerTitle = $languageService->sL(trim($flexFormDataStructureArray['title']));
         }
 
+        $resultArray = $this->initializeResultArray();
+
         $html = [];
         $html[] = '<div class="t3-form-field-container-flexsections t3-flex-section t3js-flex-section">';
         $html[] =    '<input class="t3-flex-control t3js-flex-control-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value="" />';
@@ -113,7 +115,6 @@ class FlexFormContainerContainer extends AbstractContainer
         $html[] =    '</div>';
         $html[] = '</div>';
 
-        $resultArray = $this->initializeResultArray();
         $resultArray['html'] = implode(LF, $html);
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $containerContentResult, false);
 

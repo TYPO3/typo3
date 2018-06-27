@@ -26,6 +26,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FlexFormTabsContainer extends AbstractContainer
 {
     /**
+     * Default field information enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldInformation = [
+        'tcaDescription' => [
+            'renderType' => 'tcaDescription',
+        ],
+    ];
+
+    /**
      * Entry method
      *
      * @return array As defined in initializeResultArray() of AbstractNode
@@ -42,6 +53,7 @@ class FlexFormTabsContainer extends AbstractContainer
         $flexFormRowData = $this->data['flexFormRowData'];
 
         $resultArray = $this->initializeResultArray();
+
         $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/Tabs';
 
         $domIdPrefix = 'DTM-' . GeneralUtility::shortMD5($this->data['parameterArray']['itemFormElName']);
@@ -94,7 +106,11 @@ class FlexFormTabsContainer extends AbstractContainer
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childReturn, false);
         }
 
-        $resultArray['html'] = $this->renderTabMenu($tabElements, $domIdPrefix);
+        $fieldInformationResult = $this->renderFieldInformation();
+        $resultArray['html'] = '<div>' . $fieldInformationResult['html'] . '</div>';
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+
+        $resultArray['html'] .= $this->renderTabMenu($tabElements, $domIdPrefix);
         return $resultArray;
     }
 

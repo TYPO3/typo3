@@ -11,6 +11,7 @@ return [
     'columns' => [
         'identifier' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.identifier',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site.identifier',
             'config' => [
                 'type' => 'input',
                 'size' => 35,
@@ -18,11 +19,6 @@ return [
                 // identifier is used as directory name - allow a-z,0-9,_,- as chars only.
                 // unique is additionally checked server side
                 'eval' => 'required,lower,alphanum_x',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'rootPageId' => [
@@ -33,23 +29,14 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'pages',
                 'foreign_table_where' => ' AND (is_siteroot=1 OR (pid=0 AND doktype IN (1,6,7))) AND l10n_parent = 0 ORDER BY pid, sorting',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'base' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.base',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site.base',
             'config' => [
                 'type' => 'input',
                 'eval' => 'required',
-                'fieldInformation' => [
-                    'SiteConfigurationModuleFieldInformation' => [
-                        'renderType' => 'SiteConfigurationModuleFieldInformation',
-                    ],
-                ],
             ],
         ],
         'languages' => [

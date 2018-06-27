@@ -49,6 +49,17 @@ class T3editorElement extends AbstractFormElement
     protected $extPath = '';
 
     /**
+     * Default field information enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldInformation = [
+        'tcaDescription' => [
+            'renderType' => 'tcaDescription',
+        ],
+    ];
+
+    /**
      * Default field wizards enabled for this element.
      *
      * @var array

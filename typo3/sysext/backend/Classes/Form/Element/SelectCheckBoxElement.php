@@ -28,6 +28,17 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class SelectCheckBoxElement extends AbstractFormElement
 {
     /**
+     * Default field information enabled for this element.
+     *
+     * @var array
+     */
+    protected $defaultFieldInformation = [
+        'tcaDescription' => [
+            'renderType' => 'tcaDescription',
+        ],
+    ];
+
+    /**
      * Default field wizards enabled for this element.
      *
      * @var array
@@ -145,9 +156,7 @@ class SelectCheckBoxElement extends AbstractFormElement
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
-            if (!$disabled) {
-                $html[] = $fieldInformationHtml;
-            }
+            $html[] = $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
 

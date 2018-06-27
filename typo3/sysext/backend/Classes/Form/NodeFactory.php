@@ -98,6 +98,9 @@ class NodeFactory
         'fieldInformation' => NodeExpansion\FieldInformation::class,
         'fieldWizard' => NodeExpansion\FieldWizard::class,
 
+        // Element information
+        'tcaDescription' => FieldInformation\TcaDescription::class,
+
         // Element wizards
         'defaultLanguageDifferences' => FieldWizard\DefaultLanguageDifferences::class,
         'fileThumbnails' => FieldWizard\FileThumbnails::class,
