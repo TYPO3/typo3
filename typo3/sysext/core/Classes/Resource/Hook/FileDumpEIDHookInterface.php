@@ -23,7 +23,8 @@ interface FileDumpEIDHookInterface
     /**
      * Perform custom security/access when accessing file
      * Method should issue 403 if access is rejected
-     * or 401 if authentication is required
+     * or 401 if authentication is required via an authorized HTTP authorization scheme.
+     * A 401 header must be accompanied by a www-authenticate header!
      *
      * @param \TYPO3\CMS\Core\Resource\ResourceInterface $file
      */
