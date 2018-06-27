@@ -76,6 +76,9 @@ class InputDateTimeElement extends AbstractFormElement
         } elseif (in_array('datetime', $evalList, true)) {
             $format = 'datetime';
             $defaultInputWidth = 13;
+        } elseif (in_array('datetimesec', $evalList, true)) {
+            $format = 'datetimesec';
+            $defaultInputWidth = 16;
         } elseif (in_array('time', $evalList, true)) {
             $format = 'time';
         } elseif (in_array('timesec', $evalList, true)) {
@@ -83,7 +86,7 @@ class InputDateTimeElement extends AbstractFormElement
         } else {
             throw new \RuntimeException(
                 'Field "' . $fieldName . '" in table "' . $table . '" with renderType "inputDataTime" needs'
-                . '"eval" set to either "date", "datetime", "time" or "timesec"',
+                . '"eval" set to either "date", "datetime", "datetimesec", "time" or "timesec"',
                 1483823746
             );
         }

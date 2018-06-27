@@ -223,6 +223,12 @@ abstract class AbstractFormElement extends AbstractNode
                     $itemValue = BackendUtility::datetime((int)$itemValue);
                 }
                 break;
+            case 'datetimesec':
+                // compatibility with "eval" (type "input")
+                if ($itemValue !== '' && !is_null($itemValue)) {
+                    $itemValue = BackendUtility::datetimesec((int)$itemValue);
+                }
+                break;
             case 'time':
                 // compatibility with "eval" (type "input")
                 if ($itemValue !== '' && $itemValue !== null) {
