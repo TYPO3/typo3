@@ -1163,6 +1163,20 @@ class BackendUtility
             $value
         );
     }
+    
+    /**
+     * Returns $tstamp formatted as "ddmmyy hhmmss" (According to $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] AND $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']) + ":s"
+     *
+     * @param int $value Time stamp, seconds
+     * @return string Formatted time
+     */
+    public static function datetimesec($value)
+    {
+        return date(
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ':s',
+            $value
+        );
+    }
 
     /**
      * Returns $value (in seconds) formatted as hh:mm:ss
@@ -2246,6 +2260,16 @@ class BackendUtility
                         }
                         if (!empty($value)) {
                             $l = self::datetime($value);
+                        }
+                    } elseif (GeneralUtility::inList($theColConf['eval'] ?? '', 'datetimesec')) {
+                        // Handle native datetime field
+                        if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'datetime') {
+                            $value = $value === $dateTimeFormats['datetime']['empty'] ? 0 : (int)strtotime($value);
+                        } else {
+                            $value = (int)$value;
+                        }
+                        if (!empty($value)) {
+                            $l = self::datetimesec($value);
                         }
                     } else {
                         $l = $value;
