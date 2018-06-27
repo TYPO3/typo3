@@ -111,7 +111,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
      * @param string $targetType must be "DateTime"
      * @param array $convertedChildProperties not used currently
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @return \DateTime|\TYPO3\CMS\Extbase\Error\Error
+     * @return \DateTimeInterface|\TYPO3\CMS\Extbase\Error\Error
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -159,7 +159,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
             return new \TYPO3\CMS\Extbase\Validation\Error('The date "%s" was not recognized (for format "%s").', 1307719788, [$dateAsString, $dateFormat]);
         }
         if (is_array($source)) {
-            $this->overrideTimeIfSpecified($date, $source);
+            $date = $this->overrideTimeIfSpecified($date, $source);
         }
         return $date;
     }
@@ -190,7 +190,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
         if ($configuration === null) {
             return self::DEFAULT_DATE_FORMAT;
         }
-        $dateFormat = $configuration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class, self::CONFIGURATION_DATE_FORMAT);
+        $dateFormat = $configuration->getConfigurationValue(DateTimeConverter::class, self::CONFIGURATION_DATE_FORMAT);
         if ($dateFormat === null) {
             return self::DEFAULT_DATE_FORMAT;
         }
@@ -203,17 +203,18 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
     /**
      * Overrides hour, minute & second of the given date with the values in the $source array
      *
-     * @param \DateTime $date
+     * @param \DateTimeInterface $date
      * @param array $source
+     * @return \DateTimeInterface
      */
-    protected function overrideTimeIfSpecified(\DateTime $date, array $source)
+    protected function overrideTimeIfSpecified(\DateTimeInterface $date, array $source): \DateTimeInterface
     {
         if (!isset($source['hour']) && !isset($source['minute']) && !isset($source['second'])) {
-            return;
+            return $date;
         }
         $hour = isset($source['hour']) ? (int)$source['hour'] : 0;
         $minute = isset($source['minute']) ? (int)$source['minute'] : 0;
         $second = isset($source['second']) ? (int)$source['second'] : 0;
-        $date->setTime($hour, $minute, $second);
+        return $date->setTime($hour, $minute, $second);
     }
 }

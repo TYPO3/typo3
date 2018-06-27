@@ -3,6 +3,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Comment;
 use ExtbaseTeam\BlogExample\Domain\Model\DateExample;
+use ExtbaseTeam\BlogExample\Domain\Model\DateTimeImmutableExample;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -60,6 +61,7 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
 
         $this->assertEquals($date->getTimestamp(), $existingComment->getDate()->getTimestamp());
     }
+
     /**
      * @test
      */
@@ -118,5 +120,65 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
         $example = $this->persistenceManager->getObjectByIdentifier($uid, DateExample::class);
 
         $this->assertEquals($example->getDatetimeDatetime()->getTimestamp(), $date->getTimestamp());
+    }
+
+    /**
+     * @test
+     */
+    public function dateTimeImmutableIntIsHandledAsDateTime()
+    {
+        $subject = new DateTimeImmutableExample();
+        $date = new \DateTimeImmutable('2018-07-24T20:40:00');
+        $subject->setDatetimeImmutableInt($date);
+
+        $this->persistenceManager->add($subject);
+        $this->persistenceManager->persistAll();
+        $uid = $this->persistenceManager->getIdentifierByObject($subject);
+        $this->persistenceManager->clearState();
+
+        /** @var DateTimeImmutableExample $subject */
+        $subject = $this->persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
+
+        $this->assertEquals($date, $subject->getDatetimeImmutableInt());
+    }
+
+    /**
+     * @test
+     */
+    public function dateTimeImmutableTextIsHandledAsDateTime()
+    {
+        $subject = new DateTimeImmutableExample();
+        $date = new \DateTimeImmutable('2018-07-24T20:40:00');
+        $subject->setDatetimeImmutableText($date);
+
+        $this->persistenceManager->add($subject);
+        $this->persistenceManager->persistAll();
+        $uid = $this->persistenceManager->getIdentifierByObject($subject);
+        $this->persistenceManager->clearState();
+
+        /** @var DateTimeImmutableExample $subject */
+        $subject = $this->persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
+
+        $this->assertEquals($date, $subject->getDatetimeImmutableText());
+    }
+
+    /**
+     * @test
+     */
+    public function dateTimeImmutableDateTimeIsHandledAsDateTime()
+    {
+        $subject = new DateTimeImmutableExample();
+        $date = new \DateTimeImmutable('2018-07-24T20:40:00');
+        $subject->setDatetimeImmutableDatetime($date);
+
+        $this->persistenceManager->add($subject);
+        $this->persistenceManager->persistAll();
+        $uid = $this->persistenceManager->getIdentifierByObject($subject);
+        $this->persistenceManager->clearState();
+
+        /** @var DateTimeImmutableExample $subject */
+        $subject = $this->persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
+
+        $this->assertSame($date->getTimestamp(), $subject->getDatetimeImmutableDatetime()->getTimestamp());
     }
 }

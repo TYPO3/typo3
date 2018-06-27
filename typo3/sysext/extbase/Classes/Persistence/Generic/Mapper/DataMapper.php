@@ -302,10 +302,15 @@ class DataMapper
                             $this->fetchRelated($object, $propertyName, $row[$columnName])
                         );
                         break;
+                    case is_subclass_of($propertyData['type'], \DateTimeInterface::class):
+                            $propertyValue = $this->mapDateTime(
+                                $row[$columnName],
+                                $columnMap->getDateTimeStorageFormat(),
+                                $propertyData['type']
+                            );
+                        break;
                     default:
-                        if ($propertyData['type'] === 'DateTime' || in_array('DateTime', class_parents($propertyData['type']))) {
-                            $propertyValue = $this->mapDateTime($row[$columnName], $columnMap->getDateTimeStorageFormat(), $propertyData['type']);
-                        } elseif (TypeHandlingUtility::isCoreType($propertyData['type'])) {
+                        if (TypeHandlingUtility::isCoreType($propertyData['type'])) {
                             $propertyValue = $this->mapCoreType($propertyData['type'], $row[$columnName]);
                         } else {
                             $propertyValue = $this->mapObjectToClassProperty(
@@ -342,9 +347,9 @@ class DataMapper
      * @param int|string $value Unix timestamp or date/datetime/time value
      * @param string|null $storageFormat Storage format for native date/datetime/time fields
      * @param string|null $targetType The object class name to be created
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
-    protected function mapDateTime($value, $storageFormat = null, $targetType = 'DateTime')
+    protected function mapDateTime($value, $storageFormat = null, $targetType = \DateTime::class)
     {
         $dateTimeTypes = QueryHelper::getDateTimeTypes();
 
@@ -739,7 +744,7 @@ class DataMapper
             $parameter = (int)$input;
         } elseif (is_int($input)) {
             $parameter = $input;
-        } elseif ($input instanceof \DateTime) {
+        } elseif ($input instanceof \DateTimeInterface) {
             if ($columnMap !== null && $columnMap->getDateTimeStorageFormat() !== null) {
                 $storageFormat = $columnMap->getDateTimeStorageFormat();
                 $timeZoneToStore = clone $input;

@@ -119,3 +119,11 @@ CREATE TABLE tx_blogexample_domain_model_info (
 	name varchar(255) DEFAULT '' NOT NULL,
 	post int(11) DEFAULT '0' NOT NULL
 );
+
+# Table structure for table 'tx_blogexample_domain_model_datetimeimmutableexample'
+#
+CREATE TABLE tx_blogexample_domain_model_datetimeimmutableexample (
+	datetime_immutable_int int(11) DEFAULT '0' NOT NULL,
+	datetime_immutable_text varchar(255) DEFAULT '' NOT NULL,
+	datetime_immutable_datetime datetime
+);
