@@ -211,7 +211,7 @@ define([
 
     handleAjaxError: function(xhr) {
       var message = '';
-      if (xhr.status === 401) {
+      if (xhr.status === 403) {
         // Install tool session expired - depending on context render error message or login
         var context = $(this.selectorBody).data('context');
         if (context === 'backend') {

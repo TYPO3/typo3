@@ -171,7 +171,7 @@ class RequestHandler implements RequestHandlerInterface
                 || !$this->checkSessionLifetime($session)
                 || !$session->isAuthorized()
             ) {
-                return new HtmlResponse('', 401, ['WWW-Authenticate' => 'FormBased']);
+                return new HtmlResponse('', 403);
             }
             $session->refreshSession();
             if (!array_key_exists($controllerName, $this->controllers)) {

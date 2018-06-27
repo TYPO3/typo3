@@ -86,9 +86,6 @@
 			<trans-unit id="site_errorhandling.errorCode.403">
 				<source>403 (Forbidden)</source>
 			</trans-unit>
-			<trans-unit id="site_errorhandling.errorCode.401">
-				<source>401 (Unauthorized)</source>
-			</trans-unit>
 			<trans-unit id="site_errorhandling.errorCode.500">
 				<source>500 (Internal Server Error)</source>
 			</trans-unit>

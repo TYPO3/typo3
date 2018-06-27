@@ -100,10 +100,10 @@ config.yaml
           # href to the content source to display (accepts both fully qualified URLs as well as TYPO3 internal link syntax
           errorContentSource: 't3://page?uid=8'
         -
-          errorCode: '401'
+          errorCode: '403'
           errorHandler: Fluid
           # Path to the Template File to show
-          errorFluidTemplate: 'EXT:my_extension/Resources/Private/Templates/ErrorPages/401.html'
+          errorFluidTemplate: 'EXT:my_extension/Resources/Private/Templates/ErrorPages/403.html'
           # Optional Templates root path
           errorFluidTemplatesRootPath: 'EXT:my_extension/Resources/Private/Templates/ErrorPages'
           # Optional Layouts root path
@@ -154,7 +154,7 @@ subset of TCA features is supported.
 In practice the configuration can be extended, but only with very simple fields like the basic config type :php:`input`,
 and even for this one not all features are possible, for example the :php:`eval` options are limited. The code throws
 exceptions or just ignores settings it does not support. While some of the limits may be relaxed a bit over time, many
-will be kept. The goal is to allow developers to extend the site configuration with a couple of simple things like 
+will be kept. The goal is to allow developers to extend the site configuration with a couple of simple things like
 an input field for a Google API key. However it is **not possible to extend with complex TCA** like inline relations,
 database driven select fields, Flex Form handling and similar.
 
