@@ -74,6 +74,7 @@ class LiveSearch {
       minChars: 2,
       width: '100%',
       groupBy: 'typeLabel',
+      noCache: true,
       containerClass: Identifiers.toolbarItem.substr(1, Identifiers.toolbarItem.length),
       appendTo: Identifiers.containerSelector + ' .dropdown-menu',
       forceFixPosition: false,
