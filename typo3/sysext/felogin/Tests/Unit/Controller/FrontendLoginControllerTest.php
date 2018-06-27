@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -509,7 +510,7 @@ class FrontendLoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
         ];
 
         $this->accessibleFixture->_set('conf', $conf);
-        $this->accessibleFixture->_set('logintype', 'login');
+        $this->accessibleFixture->_set('logintype', LoginType::LOGIN);
         $this->accessibleFixture->_set('referer', 'http://www.example.com/snafu');
         /** @var TypoScriptFrontendController $tsfe */
         $tsfe = $this->accessibleFixture->_get('frontendController');

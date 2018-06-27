@@ -569,7 +569,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $loginData = $this->getLoginFormData();
         $this->logger->debug('Login data', $loginData);
         // Active logout (eg. with "logout" button)
-        if ($loginData['status'] === 'logout') {
+        if ($loginData['status'] === LoginType::LOGOUT) {
             if ($this->writeStdLog) {
                 // $type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid
                 $this->writelog(255, 2, 0, 2, 'User %s logged out', [$this->user['username']], '', 0, 0);
@@ -592,7 +592,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
 
         // Active login (eg. with login form).
-        if (!$haveSession && $loginData['status'] === 'login') {
+        if (!$haveSession && $loginData['status'] === LoginType::LOGIN) {
             $activeLogin = true;
             $this->logger->debug('Active login (eg. with login form)');
             // check referrer for submitted login values
@@ -608,7 +608,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
 
         // Cause elevation of privilege, make sure regenerateSessionId is called later on
-        if ($anonymousSession && $loginData['status'] === 'login') {
+        if ($anonymousSession && $loginData['status'] === LoginType::LOGIN) {
             $activeLogin = true;
         }
 
@@ -1275,7 +1275,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $loginData['uident'] = GeneralUtility::_POST($this->formfield_uident);
         }
         // Only process the login data if a login is requested
-        if ($loginData['status'] === 'login') {
+        if ($loginData['status'] === LoginType::LOGIN) {
             $loginData = $this->processLoginData($loginData);
         }
         $loginData = array_map('trim', $loginData);

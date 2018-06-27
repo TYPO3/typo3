@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Felogin\Controller;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -176,7 +177,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
             }
         }
         // Process the redirect
-        if (($this->logintype === 'login' || $this->logintype === 'logout') && $this->redirectUrl && !$this->noRedirect) {
+        if (($this->logintype === LoginType::LOGIN || $this->logintype === LoginType::LOGOUT) && $this->redirectUrl && !$this->noRedirect) {
             if (!$this->frontendController->fe_user->isCookieSet() && $this->userIsLoggedIn) {
                 $content .= $this->cObj->stdWrap($this->pi_getLL('cookie_warning'), $this->conf['cookieWarning_stdWrap.']);
             } else {
@@ -529,7 +530,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
         $subpartArray = ($linkpartArray = ($markerArray = []));
         $gpRedirectUrl = '';
         $markerArray['###LEGEND###'] = htmlspecialchars($this->pi_getLL('oLabel_header_welcome'));
-        if ($this->logintype === 'login') {
+        if ($this->logintype === LoginType::LOGIN) {
             if ($this->userIsLoggedIn) {
                 // login success
                 $markerArray['###STATUS_HEADER###'] = $this->getDisplayText('success_header', $this->conf['successHeader_stdWrap.']);
@@ -562,7 +563,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                 $gpRedirectUrl = GeneralUtility::_GP('redirect_url');
             }
         } else {
-            if ($this->logintype === 'logout') {
+            if ($this->logintype === LoginType::LOGOUT) {
                 // login form after logout
                 $markerArray['###STATUS_HEADER###'] = $this->getDisplayText('logout_header', $this->conf['logoutHeader_stdWrap.']);
                 $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('logout_message', $this->conf['logoutMessage_stdWrap.']);
@@ -658,7 +659,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
         if ($this->conf['redirectMode']) {
             $redirectMethods = GeneralUtility::trimExplode(',', $this->conf['redirectMode'], true);
             foreach ($redirectMethods as $redirMethod) {
-                if ($this->frontendController->loginUser && $this->logintype === 'login') {
+                if ($this->frontendController->loginUser && $this->logintype === LoginType::LOGIN) {
                     // Logintype is needed because the login-page wouldn't be accessible anymore after a login (would always redirect)
                     switch ($redirMethod) {
                         case 'groupLogin':
@@ -768,7 +769,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                             }
                             break;
                     }
-                } elseif ($this->logintype === 'login') {
+                } elseif ($this->logintype === LoginType::LOGIN) {
                     // after login-error
                     switch ($redirMethod) {
                         case 'loginError':
@@ -787,7 +788,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                 } elseif ($this->logintype == '' && $redirMethod === 'logout' && $this->conf['redirectPageLogout'] && $this->frontendController->loginUser) {
                     // If logout and page not accessible
                     $redirect_url[] = $this->pi_getPageLink((int)$this->conf['redirectPageLogout']);
-                } elseif ($this->logintype === 'logout') {
+                } elseif ($this->logintype === LoginType::LOGOUT) {
                     // after logout
                     // Hook for general actions after after logout has been confirmed
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed'] ?? [] as $_funcRef) {

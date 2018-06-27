@@ -49,7 +49,7 @@ class AuthenticationService extends AbstractAuthenticationService
      */
     public function getUser()
     {
-        if ($this->login['status'] !== 'login') {
+        if ($this->login['status'] !== LoginType::LOGIN) {
             return false;
         }
         if ((string)$this->login['uident_text'] === '') {
