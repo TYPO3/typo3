@@ -95,7 +95,8 @@ return [
 
         'special_custom_1' => [
             'exclude' => 1,
-            'label' => 'special_custom_1, identical to be_groups custom_options',
+            'label' => 'special_custom_1, identical to be_groups custom_options description',
+            'description' => 'field description',
             'config' => [
                 // @todo: register a "custom" option so something is shown here
                 'type' => 'select',
@@ -105,7 +106,8 @@ return [
         ],
         'special_exclude_1' => [
             'exclude' => 1,
-            'label' => 'special_exclude_1, identical to be_groups non_exclude_fields',
+            'label' => 'special_exclude_1, identical to be_groups non_exclude_fields description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
@@ -116,7 +118,8 @@ return [
         ],
         'special_explicitvalues_1' => [
             'exclude' => 1,
-            'label' => 'special_explicitvalues_1, identical to be_groups explicit_allowdeny',
+            'label' => 'special_explicitvalues_1, identical to be_groups explicit_allowdeny description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
@@ -125,7 +128,8 @@ return [
         ],
         'special_languages_1' => [
             'exclude' => 1,
-            'label' => 'special_languages_1, identical to be_groups allowed_languages',
+            'label' => 'special_languages_1, identical to be_groups allowed_languages description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
@@ -134,7 +138,8 @@ return [
         ],
         'special_modlistgroup_1' => [
             'exclude' => 1,
-            'label' => 'special_modlistgroup_1, identical to be_groups groupMods',
+            'label' => 'special_modlistgroup_1, identical to be_groups groupMods description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
@@ -145,7 +150,8 @@ return [
         ],
         'special_pagetypes_1' => [
             'exclude' => 1,
-            'label' => 'special_pagetypes_1, identical to be_groups pagetypes_select',
+            'label' => 'special_pagetypes_1, identical to be_groups pagetypes_select description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
@@ -156,7 +162,8 @@ return [
         ],
         'special_tables_1' => [
             'exclude' => 1,
-            'label' => 'special_tables_1, identical to be_groups tables_modify & tables_select',
+            'label' => 'special_tables_1, identical to be_groups tables_modify & tables_select description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
@@ -188,7 +195,8 @@ return [
         ],
         'special_usermods_1' => [
             'exclude' => 1,
-            'label' => 'special_usermods_1, identical to be_users userMods',
+            'label' => 'special_usermods_1, identical to be_users userMods description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',

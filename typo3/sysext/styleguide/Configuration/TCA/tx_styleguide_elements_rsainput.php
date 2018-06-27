@@ -97,10 +97,21 @@ return [
 
         'rsainput_1' => [
             'exclude' => 1,
-            'label' => 'rsainput_1',
+            'label' => 'rsainput_1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'rsaInput',
+            ],
+        ],
+        'rsainput_2' => [
+            'exclude' => 1,
+            'label' => 'rsainput_2 readOnly description',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'rsaInput',
+                'readOnly' => true,
             ],
         ],
         'rsainput_inline_1' => [
@@ -209,7 +220,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;rsainput,
-                    rsainput_1,
+                    rsainput_1, rsainput_2,
                 --div--;inline,
                     rsainput_inline_1,
                 --div--;flex,

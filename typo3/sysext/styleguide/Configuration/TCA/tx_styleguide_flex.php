@@ -97,7 +97,8 @@ return [
 
         'flex_5' => [
             'exclude' => 1,
-            'label' => 'flex_5 no sheets',
+            'label' => 'flex_5 no sheets description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'flex',
                 'ds' => [
@@ -151,6 +152,7 @@ return [
         'flex_1' => [
             'exclude' => 1,
             'label' => 'flex_1 sheet description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'flex',
                 'ds' => [
@@ -252,7 +254,8 @@ return [
                                                         <el>
                                                             <input_1>
                                                                 <TCEforms>
-                                                                    <label>input_1</label>
+                                                                    <label>input_1 description</label>
+                                                                    <description>field description</description>
                                                                     <config>
                                                                         <type>input</type>
                                                                     </config>

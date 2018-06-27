@@ -97,7 +97,8 @@ return [
 
         'rte_1' => [
             'exclude' => 1,
-            'label' => 'rte_1',
+            'label' => 'rte_1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'text',
                 'enableRichtext' => true,

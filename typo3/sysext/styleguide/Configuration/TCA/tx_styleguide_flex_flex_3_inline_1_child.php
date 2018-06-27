@@ -91,7 +91,8 @@ return [
             ]
         ],
         'input_1' => [
-            'label' => 'input_1',
+            'label' => 'input_1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'input',
             ],

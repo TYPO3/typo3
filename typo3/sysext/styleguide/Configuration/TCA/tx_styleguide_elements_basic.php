@@ -96,7 +96,8 @@ return [
         'input_1' => [
             'l10n_mode' => 'prefixLangTitle',
             'exclude' => 1,
-            'label' => 'input_1',
+            'label' => 'input_1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'input',
                 'behaviour' => [
@@ -155,7 +156,7 @@ return [
         ],
         'input_10' => [
             'exclude' => 1,
-            'label' => 'input_10 eval=is_in, is_in=abc123',
+            'label' => 'input_10 eval=is_in is_in=abc123',
             'config' => [
                 'type' => 'input',
                 'eval' => 'is_in',
@@ -260,7 +261,7 @@ return [
         ],
         'input_25' => [
             'exclude' => 1,
-            'label' => 'input_25 eval=int, default=0, range lower=-2, range upper=2',
+            'label' => 'input_25 eval=int default=0 range lower=-2 range upper=2',
             'config' => [
                 'type' => 'input',
                 'eval' => 'int',
@@ -289,7 +290,7 @@ return [
         ],
         'input_28' => [
             'exclude' => 1,
-            'label' => 'input_28 placeholder=__row|input_26, mode=useOrOverridePlaceholder, eval=null, default=null',
+            'label' => 'input_28 placeholder=__row|input_26 mode=useOrOverridePlaceholder eval=null default=null',
             'config' => [
                 'type' => 'input',
                 'placeholder' => '__row|input_26',
@@ -300,7 +301,8 @@ return [
         ],
         'input_29' => [
             'exclude' => 1,
-            'label' => 'input_29 link',
+            'label' => 'input_29 renderType=inputLink description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputLink',
@@ -308,7 +310,7 @@ return [
         ],
         'input_30' => [
             'exclude' => 1,
-            'label' => 'input_30 slider, step=10, width=200, eval=trim,int',
+            'label' => 'input_30 slider step=10 width=200 eval=trim,int',
             'config' => [
                 'type' => 'input',
                 'size' => 5,
@@ -326,7 +328,7 @@ return [
         ],
         'input_31' => [
             'exclude' => 1,
-            'label' => 'input_31 slider, default=14.5, step=0.5, width=150, eval=trim,double2',
+            'label' => 'input_31 slider default=14.5 step=0.5 width=150 eval=trim,double2',
             'config' => [
                 'type' => 'input',
                 'size' => 5,
@@ -379,7 +381,8 @@ return [
         ],
         'input_34' => [
             'exclude' => 1,
-            'label' => 'input_34 renderType=colorpicker',
+            'label' => 'input_34 renderType=colorpicker description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'colorpicker',
@@ -424,7 +427,7 @@ return [
         ],
         'input_37' => [
             'exclude' => 1,
-            'label' => 'input_37 renderType=colorpicker, valuePicker',
+            'label' => 'input_37 renderType=colorpicker valuePicker',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'colorpicker',
@@ -461,11 +464,41 @@ return [
                 'eval' => 'email',
             ],
         ],
+        'input_40' => [
+            'exclude' => 1,
+            'label' => 'input_40 readOnly description',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'input',
+                'readOnly' => true,
+            ],
+        ],
+        'input_41' => [
+            'exclude' => 1,
+            'label' => 'input_41     renderType=inputLink readOnly description',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputLink',
+                'readOnly' => true,
+            ],
+        ],
+        'input_42' => [
+            'exclude' => 1,
+            'label' => 'input_42 renderType=colorpicker readOnly description',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'colorpicker',
+                'readOnly' => true,
+            ],
+        ],
 
 
         'inputdatetime_1' => [
             'exclude' => 1,
-            'label' => 'inputdatetime_1 eval=date',
+            'label' => 'inputdatetime_1 eval=date description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -523,7 +556,8 @@ return [
         ],
         'inputdatetime_7' => [
             'exclude' => 1,
-            'label' => 'inputdatetime_7 eval=date readOnly',
+            'label' => 'inputdatetime_7 eval=date readOnly description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -564,7 +598,8 @@ return [
 
 
         'text_1' => [
-            'l10n_mode' => 'prefixLangTitle',
+            'l10n_mode' => 'prefixLangTitle description',
+            'description' => 'field description',
             'exclude' => 1,
             'label' => 'text_1',
             'config' => [
@@ -644,7 +679,8 @@ return [
         ],
         'text_9' => [
             'exclude' => 1,
-            'label' => 'text_9 readOnly=1',
+            'label' => 'text_9 readOnly=1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'text',
                 'readOnly' => 1,
@@ -685,14 +721,6 @@ return [
                 'placeholder' => '__row|text_12',
             ],
         ],
-        'text_18' => [
-            'exclude' => 1,
-            'label' => 'text_18, eval=null',
-            'config' => [
-                'type' => 'text',
-                'eval' => 'null',
-            ],
-        ],
         'text_14' => [
             'exclude' => 1,
             'label' => 'text_14 placeholder=__row|text_12, mode=useOrOverridePlaceholder, eval=null',
@@ -728,10 +756,30 @@ return [
             ],
         ],
         'text_17' => [
-            'label' => 'text_17 renderType=textTable',
+            'label' => 'text_17 renderType=textTable description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'text',
                 'renderType' => 'textTable',
+                'cols' => '40',
+                'rows' => '5',
+            ],
+        ],
+        'text_18' => [
+            'exclude' => 1,
+            'label' => 'text_18, eval=null',
+            'config' => [
+                'type' => 'text',
+                'eval' => 'null',
+            ],
+        ],
+        'text_19' => [
+            'label' => 'text_19 renderType=textTable readOnly description',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'text',
+                'renderType' => 'textTable',
+                'readOnly' => true,
                 'cols' => '40',
                 'rows' => '5',
             ],
@@ -741,6 +789,7 @@ return [
         'checkbox_1' => [
             'exclude' => 1,
             'label' => 'checkbox_1',
+            'description' => 'field description',
             'config' => [
                 'type' => 'check',
             ]
@@ -827,7 +876,8 @@ return [
         ],
         'checkbox_9' => [
             'exclude' => 1,
-            'label' => 'checkbox_9 readonly=1',
+            'label' => 'checkbox_9 readonly=1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'check',
                 'readOnly' => 1,
@@ -952,7 +1002,8 @@ return [
         ],
         'checkbox_17' => [
             'exclude' => 1,
-            'label' => 'checkbox_17 single checkbox with toggle',
+            'label' => 'checkbox_17 renderType=checkboxToggle single description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -968,7 +1019,7 @@ return [
         ],
         'checkbox_18' => [
             'exclude' => 1,
-            'label' => 'checkbox_18 single checkbox with toggle inverted state display',
+            'label' => 'checkbox_18 renderType=checkboxToggle single inverted state display',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -985,7 +1036,8 @@ return [
         ],
         'checkbox_19' => [
             'exclude' => 1,
-            'label' => 'checkbox_19 single checkbox with labeled toggle',
+            'label' => 'checkbox_19 renderType=checkboxLabeledToggle single description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxLabeledToggle',
@@ -1001,7 +1053,7 @@ return [
         ],
         'checkbox_20' => [
             'exclude' => 1,
-            'label' => 'checkbox_20 single checkbox with multiple labeled toggles',
+            'label' => 'checkbox_20 renderType=checkboxLabeledToggle multiple',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxLabeledToggle',
@@ -1030,7 +1082,7 @@ return [
         ],
         'checkbox_21' => [
             'exclude' => 1,
-            'label' => 'checkbox_21 single checkbox with labeled toggle inverted state display',
+            'label' => 'checkbox_21 renderType=checkboxLabeledToggle single inverted state display',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxLabeledToggle',
@@ -1047,7 +1099,7 @@ return [
         ],
         'checkbox_24' => [
             'exclude' => 1,
-            'label' => 'checkbox_24 multiple toggles checkbox',
+            'label' => 'checkbox_24 renderType=checkboxToggle multiple',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -1072,11 +1124,48 @@ return [
                 'cols' => '4',
             ]
         ],
+        'checkbox_25' => [
+            'exclude' => 1,
+            'label' => 'checkbox_25 renderType=checkboxToggle single readOnly description',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'readOnly' => true,
+                'items' => [
+                    [
+                        0 => 'foo',
+                        1 => '',
+                        'labelChecked' => 'Enabled',
+                        'labelUnchecked' => 'Disabled'
+                    ]
+                ],
+            ]
+        ],
+        'checkbox_26' => [
+            'exclude' => 1,
+            'label' => 'checkbox_26 renderType=checkboxLabeledToggle single readOnly description',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxLabeledToggle',
+                'readOnly' => true,
+                'items' => [
+                    [
+                        0 => 'foo',
+                        1 => '',
+                        'labelChecked' => 'Enabled',
+                        'labelUnchecked' => 'Disabled',
+                    ]
+                ],
+            ]
+        ],
 
 
         'radio_1' => [
             'exclude' => 1,
-            'label' => 'radio_1 three options, one without label',
+            'label' => 'radio_1 three options, one without label description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'radio',
                 'items' => [
@@ -1155,7 +1244,8 @@ return [
         ],
         'radio_6' => [
             'exclude' => 1,
-            'label' => 'radio_6 readonly=1',
+            'label' => 'radio_6 readonly=1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'radio',
                 'readOnly' => 1,
@@ -1169,7 +1259,8 @@ return [
 
         'none_1' => [
             'exclude' => 1,
-            'label' => 'none_1 pass_content=1',
+            'label' => 'none_1 pass_content=1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'none',
                 'pass_content' => 1,
@@ -1270,7 +1361,8 @@ return [
                                         <el>
                                             <input_1>
                                                 <TCEforms>
-                                                    <label>input_1 renderType inputLink</label>
+                                                    <label>input_1 renderType inputLink description</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>input</type>
                                                         <renderType>inputLink</renderType>
@@ -1291,6 +1383,7 @@ return [
                                             <input_2>
                                                 <TCEforms>
                                                     <label>input_2 renderyType textTable</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>text</type>
                                                         <renderType>textTable</renderType>
@@ -1332,7 +1425,8 @@ return [
                                         <el>
                                             <inputDateTime_1>
                                                 <TCEforms>
-                                                    <label>inputDateTime_1 eval=date</label>
+                                                    <label>inputDateTime_1 eval=date description</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>input</type>
                                                         <renderType>inputDateTime</renderType>
@@ -1407,7 +1501,8 @@ return [
                                         <el>
                                             <text_1>
                                                 <TCEforms>
-                                                    <label>text_1 cols=20, rows=4</label>
+                                                    <label>text_1 cols=20, rows=4 description</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>text</type>
                                                         <cols>20</cols>
@@ -1428,7 +1523,8 @@ return [
                                         <el>
                                             <check_1>
                                                 <TCEforms>
-                                                    <label>check_1</label>
+                                                    <label>check_1 description</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>check</type>
                                                         <items>
@@ -1458,7 +1554,8 @@ return [
                                         <el>
                                             <radio_1>
                                                 <TCEforms>
-                                                    <label>radio_1</label>
+                                                    <label>radio_1 description</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>radio</type>
                                                         <items>
@@ -1493,19 +1590,21 @@ return [
         '0' => [
             'showitem' => '
                 --div--;input,
-                    input_1, input_2, input_3, input_4, input_5, input_8, input_39, input_9, input_10,
+                    input_1, input_40, input_2, input_3, input_4, input_5, input_8, input_39, input_9, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19, input_20,
-                    input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_14, input_28, input_29, input_38, input_30,
-                    input_31, input_32, input_33, input_35, input_36, input_34, input_37,
+                    input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_14, input_28, input_29,
+                    input_41, input_38, input_30, input_31, input_32, input_33, input_35, input_36, input_34, input_42,
+                    input_37,
                 --div--;inputDateTime,
                     inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5,
                     inputdatetime_6, inputdatetime_7, inputdatetime_8, inputdatetime_9, inputdatetime_10,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
-                    text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17,
+                    text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
                 --div--;check,
-                    checkbox_1, checkbox_2, checkbox_17, checkbox_18, checkbox_24, checkbox_19, checkbox_20, checkbox_21, checkbox_22, checkbox_23, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
-                    checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16,
+                    checkbox_1, checkbox_9, checkbox_2, checkbox_17, checkbox_25, checkbox_18, checkbox_24, checkbox_19, checkbox_26,
+                    checkbox_20, checkbox_21, checkbox_22, checkbox_23, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8,
+                    checkbox_10, checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16,
                 --div--;radio,
                     radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
                 --div--;none,

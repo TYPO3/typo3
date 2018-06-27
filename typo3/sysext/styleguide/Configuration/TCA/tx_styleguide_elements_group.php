@@ -97,7 +97,8 @@ return [
 
         'group_db_1' => [
             'exclude' => 1,
-            'label' => 'group_db_1 allowed=be_users,be_groups',
+            'label' => 'group_db_1 allowed=be_users,be_groups description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -180,7 +181,8 @@ return [
         ],
         'group_db_5' => [
             'exclude' => 1,
-            'label' => 'group_db_5 readOnly=1',
+            'label' => 'group_db_5 readOnly=1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -201,7 +203,8 @@ return [
 
         'group_file_1' => [
             'exclude' => 1,
-            'label' => 'group_file_1',
+            'label' => 'group_file_1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
@@ -244,7 +247,8 @@ return [
 
         'group_folder_1' => [
             'exclude' => 1,
-            'label' => 'group_folder_1',
+            'label' => 'group_folder_1 desription',
+            'description' => 'field description',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'folder',
@@ -282,7 +286,8 @@ return [
                                         <el>
                                             <group_db_1>
                                                 <TCEforms>
-                                                    <label>group_db_1</label>
+                                                    <label>group_db_1 description</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>group</type>
                                                         <internal_type>db</internal_type>

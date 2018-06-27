@@ -95,7 +95,8 @@ return [
 
         'select_single_1' => [
             'exclude' => 1,
-            'label' => 'select_single_1 two items, long text',
+            'label' => 'select_single_1 two items, long text description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -263,14 +264,45 @@ return [
                 ],
             ],
         ],
+        'select_single_14' => [
+            'exclude' => 1,
+            'label' => 'select_single_14 two items readOnly description',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'readOnly' => true,
+                'items' => [
+                    ['bar', 'bar'],
+                ],
+            ],
+        ],
 
 
         'select_singlebox_1' => [
             'exclude' => 1,
-            'label' => 'select_singlebox_1',
+            'label' => 'select_singlebox_1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingleBox',
+                'items' => [
+                    ['foo 1', 1],
+                    ['foo 2', 2],
+                    ['divider', '--div--'],
+                    ['foo 3', 3],
+                    ['foo 4', 4],
+                ],
+            ],
+        ],
+        'select_singlebox_2' => [
+            'exclude' => 1,
+            'label' => 'select_singlebox_1 readOnly description',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingleBox',
+                'readOnly' => true,
                 'items' => [
                     ['foo 1', 1],
                     ['foo 2', 2],
@@ -284,7 +316,8 @@ return [
 
         'select_checkbox_1' => [
             'exclude' => 1,
-            'label' => 'select_checkbox_1',
+            'label' => 'select_checkbox_1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
@@ -323,11 +356,27 @@ return [
                 ],
             ],
         ],
+        'select_checkbox_4' => [
+            // @todo: readOnly select checkbox renders no body?!
+            'exclude' => 1,
+            'label' => 'select_checkbox_4 readOnly description',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectCheckBox',
+                'readOnly' => true,
+                'items' => [
+                    ['foo 1', 1],
+                    ['foo 2', 2],
+                ],
+            ],
+        ],
 
 
         'select_multiplesidebyside_1' => [
             'exclude' => 1,
-            'label' => 'select_multiplesidebyside_1 autoSizeMax=5, size=3',
+            'label' => 'select_multiplesidebyside_1 autoSizeMax=5, size=3 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -439,11 +488,35 @@ return [
                 ],
             ],
         ],
+        'select_multiplesidebyside_7' => [
+            'exclude' => 1,
+            'label' => 'select_multiplesidebyside_7 readonly description',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'items' => [
+                    ['foo 1', 1],
+                    ['foo 2', 2],
+                    ['a divider', '--div--'],
+                    ['foo 3', 3],
+                    ['foo 4', 4],
+                    ['foo 5', 5],
+                    ['foo 6', 6],
+                ],
+                'readOnly' => true,
+                'size' => 3,
+                'autoSizeMax' => 5,
+                'multiple' => true,
+            ],
+        ],
+
 
 
         'select_tree_1' => [
             'exclude' => 1,
-            'label' => 'select_tree_1 pages, showHeader=true, expandAll=true, size=20, order by sorting, static items',
+            'label' => 'select_tree_1 pages, showHeader=true, expandAll=true, size=20, order by sorting, static items, description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
@@ -527,7 +600,8 @@ return [
         ],
         'select_tree_5' => [
             'exclude' => 1,
-            'label' => 'select_tree_5 pages, readOnly, showHeader=true',
+            'label' => 'select_tree_5 pages, readOnly, showHeader=true description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
@@ -602,7 +676,8 @@ return [
                                         <el>
                                             <select_single_1>
                                                 <TCEforms>
-                                                    <label>select_single_1</label>
+                                                    <label>select_single_1 description</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>select</type>
                                                         <renderType>selectSingle</renderType>
@@ -632,7 +707,8 @@ return [
                                         <el>
                                             <select_checkxox_1>
                                                 <TCEforms>
-                                                    <label>select_checkxox_1</label>
+                                                    <label>select_checkxox_1 description</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>select</type>
                                                         <renderType>selectCheckBox</renderType>
@@ -662,7 +738,8 @@ return [
                                         <el>
                                             <select_tree_1>
                                                 <TCEforms>
-                                                    <label>select_tree_1</label>
+                                                    <label>select_tree_1 description</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>select</type>
                                                         <renderType>selectTree</renderType>
@@ -720,7 +797,8 @@ return [
                                         <el>
                                             <select_multiplesidebyside_1>
                                                 <TCEforms>
-                                                    <label>select_multiplesidebyside_1</label>
+                                                    <label>select_multiplesidebyside_1 description</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>select</type>
                                                         <renderType>selectMultipleSideBySide</renderType>
@@ -787,7 +865,8 @@ return [
                                                         <el>
                                                             <select_tree_1>
                                                                 <TCEforms>
-                                                                    <label>select_tree_1 pages</label>
+                                                                    <label>select_tree_1 pages description</label>
+                                                                    <description>field description</description>
                                                                     <config>
                                                                         <type>select</type>
                                                                         <renderType>selectTree</renderType>
@@ -829,14 +908,15 @@ return [
                 --div--;renderType=selectSingle,
                     select_single_1, select_single_2, select_single_3, select_single_4, select_single_5,
                     select_single_7, select_single_12, select_single_8, select_single_13, select_single_10,
-                    select_single_11,
+                    select_single_11, select_single_14,
                 --div--;renderType=selectSingleBox,
-                    select_singlebox_1,
+                    select_singlebox_1, select_singlebox_2,
                 --div--;renderType=selectCheckBox,
-                    select_checkbox_1, select_checkbox_2, select_checkbox_3,
+                    select_checkbox_1, select_checkbox_2, select_checkbox_3, select_checkbox_4,
                 --div--;renderType=selectMultipleSideBySide,
                     select_multiplesidebyside_1, select_multiplesidebyside_2, select_multiplesidebyside_3,
                     select_multiplesidebyside_4, select_multiplesidebyside_5, select_multiplesidebyside_6,
+                    select_multiplesidebyside_7,
                 --div--;renderType=selectTree,
                     select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6,
                 --div--;in flex,

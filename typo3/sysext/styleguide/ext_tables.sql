@@ -50,6 +50,9 @@ CREATE TABLE tx_styleguide_elements_basic (
 	input_37 text,
 	input_38 text,
 	input_39 text,
+	input_40 text,
+	input_41 text,
+	input_42 text,
 
 	inputdatetime_1 text,
 	inputdatetime_2 date,
@@ -80,6 +83,7 @@ CREATE TABLE tx_styleguide_elements_basic (
 	text_16 text,
 	text_17 text,
 	text_18 text,
+	text_19 text,
 
 	checkbox_1 int(11) DEFAULT '0' NOT NULL,
 	checkbox_2 int(11) DEFAULT '0' NOT NULL,
@@ -104,6 +108,8 @@ CREATE TABLE tx_styleguide_elements_basic (
 	checkbox_22 int(11) DEFAULT '0' NOT NULL,
 	checkbox_23 int(11) DEFAULT '0' NOT NULL,
 	checkbox_24 int(11) DEFAULT '0' NOT NULL,
+	checkbox_25 int(11) DEFAULT '0' NOT NULL,
+	checkbox_26 int(11) DEFAULT '0' NOT NULL,
 
 	radio_1 int(11) DEFAULT '0' NOT NULL,
 	radio_2 int(11) DEFAULT '0' NOT NULL,
@@ -148,6 +154,7 @@ CREATE TABLE tx_styleguide_elements_group (
 
 CREATE TABLE tx_styleguide_elements_rsainput (
 	rsainput_1 text,
+	rsainput_2 text,
 	rsainput_inline_1 text,
 	rsainput_flex_1 text
 );
@@ -208,12 +215,15 @@ CREATE TABLE tx_styleguide_elements_select (
 	select_single_11 text,
 	select_single_12 text,
 	select_single_13 text,
+	select_single_14 text,
 
 	select_singlebox_1 text,
+	select_singlebox_2 text,
 
 	select_checkbox_1 text,
 	select_checkbox_2 text,
 	select_checkbox_3 text,
+	select_checkbox_4 text,
 
 	select_multiplesidebyside_1 text,
 	select_multiplesidebyside_2 text,
@@ -221,6 +231,7 @@ CREATE TABLE tx_styleguide_elements_select (
 	select_multiplesidebyside_4 text,
 	select_multiplesidebyside_5 text,
 	select_multiplesidebyside_6 text,
+	select_multiplesidebyside_7 text,
 
 	select_tree_1 text,
 	select_tree_2 text,

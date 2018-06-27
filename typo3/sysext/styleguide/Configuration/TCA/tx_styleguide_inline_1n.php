@@ -95,7 +95,8 @@ return [
 
         'inline_1' => [
             'exclude' => 1,
-            'label' => 'inline_1',
+            'label' => 'inline_1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_styleguide_inline_1n_child',

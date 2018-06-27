@@ -98,6 +98,7 @@ return [
         't3editor_1' => [
             'exclude' => 1,
             'label' => 't3editor_1 format=html, rows=7',
+            'description' => 'field description',
             'config' => [
                 'type' => 'text',
                 'renderType' => 't3editor',
@@ -152,7 +153,8 @@ return [
                                         <el>
                                             <t3editor_1>
                                                 <TCEforms>
-                                                    <label>t3editor_1</label>
+                                                    <label>t3editor_1 description</label>
+                                                    <description>field description</description>
                                                     <config>
                                                         <type>text</type>
                                                         <renderType>t3editor</renderType>
@@ -181,7 +183,8 @@ return [
                                                         <el>
                                                             <t3editor_1>
                                                                 <TCEforms>
-                                                                    <label>t3editor_1</label>
+                                                                    <label>t3editor_1 description</label>
+                                                                    <description>field description</description>
                                                                     <config>
                                                                         <type>text</type>
                                                                         <renderType>t3editor</renderType>

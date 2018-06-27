@@ -91,7 +91,8 @@ return [
             ]
         ],
         't3editor_1' => [
-            'label' => 't3editor_1',
+            'label' => 't3editor_1 description',
+            'description' => 'field description',
             'config' => [
                 'type' => 'text',
                 'renderType' => 't3editor',

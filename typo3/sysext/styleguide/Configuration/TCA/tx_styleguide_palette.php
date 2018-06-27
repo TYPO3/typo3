@@ -90,6 +90,7 @@ return [
         'palette_1_1' => [
             'exclude' => 1,
             'label' => 'palette_1_1',
+            'description' => 'field description',
             'config' => [
                 'type' => 'check',
                 'default' => 1,
