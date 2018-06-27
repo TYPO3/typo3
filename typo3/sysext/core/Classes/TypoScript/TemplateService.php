@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\TypoScript;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -357,6 +358,42 @@ class TemplateService
     protected $queryBuilderRestrictions;
 
     /**
+     * @var Context
+     */
+    protected $context;
+
+    /**
+     * @param Context|null $context
+     */
+    public function __construct(Context $context = null)
+    {
+        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
+        $this->initializeDatabaseQueryRestrictions();
+        if ($this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false) || $GLOBALS['SIM_ACCESS_TIME'] !== $GLOBALS['ACCESS_TIME']) {
+            // Set the simulation flag, if simulation is detected!
+            $this->simulationHiddenOrTime = 1;
+        }
+
+        // Sets the paths from where TypoScript resources are allowed to be used:
+        $this->allowedPaths = [
+            $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
+            // fileadmin/ path
+            'uploads/',
+            'typo3temp/',
+            TYPO3_mainDir . 'ext/',
+            TYPO3_mainDir . 'sysext/',
+            'typo3conf/ext/'
+        ];
+        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']) {
+            $pathArr = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'], true);
+            foreach ($pathArr as $p) {
+                // Once checked for path, but as this may run from typo3/mod/web/ts/ dir, that'll not work!! So the paths ar uncritically included here.
+                $this->allowedPaths[] = $p;
+            }
+        }
+    }
+
+    /**
      * @return bool
      */
     public function getProcessExtensionStatics()
@@ -383,15 +420,14 @@ class TemplateService
 
     /**
      * Initialize
-     * MUST be called directly after creating a new template-object
      *
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::initTemplate()
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function init()
     {
+        trigger_error('Method will be removed in TYPO3 v10, __construct() does the job', E_USER_DEPRECATED);
         $this->initializeDatabaseQueryRestrictions();
-
-        if ($this->getTypoScriptFrontendController()->showHiddenRecords || $GLOBALS['SIM_ACCESS_TIME'] !== $GLOBALS['ACCESS_TIME']) {
+        if ($this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false) || $GLOBALS['SIM_ACCESS_TIME'] !== $GLOBALS['ACCESS_TIME']) {
             // Set the simulation flag, if simulation is detected!
             $this->simulationHiddenOrTime = 1;
         }
@@ -420,10 +456,11 @@ class TemplateService
      */
     protected function initializeDatabaseQueryRestrictions()
     {
+        $includeHiddenRecords = $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false);
         // $this->whereClause is used only to select templates from sys_template.
         // $GLOBALS['SIM_ACCESS_TIME'] is used so that we're able to simulate a later time as a test...
         $this->whereClause = 'AND deleted=0 ';
-        if (!$this->getTypoScriptFrontendController()->showHiddenRecords) {
+        if (!$includeHiddenRecords) {
             $this->whereClause .= 'AND hidden=0 ';
         }
         $this->whereClause .= 'AND (starttime<=' . $GLOBALS['SIM_ACCESS_TIME'] . ') AND (endtime=0 OR endtime>' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
@@ -431,9 +468,8 @@ class TemplateService
         // set up the query builder restrictions
         $this->queryBuilderRestrictions = GeneralUtility::makeInstance(DefaultRestrictionContainer::class);
 
-        if ($this->getTypoScriptFrontendController()->showHiddenRecords) {
-            $this->queryBuilderRestrictions
-                ->removeByType(HiddenRestriction::class);
+        if ($includeHiddenRecords) {
+            $this->queryBuilderRestrictions->removeByType(HiddenRestriction::class);
         }
     }
 

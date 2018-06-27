@@ -90,6 +90,6 @@ class BackendUserAuthenticator implements MiddlewareInterface
     protected function setBackendUserAspect(Context $context, BackendUserAuthentication $user)
     {
         $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
-        $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
+        $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user->workspace));
     }
 }

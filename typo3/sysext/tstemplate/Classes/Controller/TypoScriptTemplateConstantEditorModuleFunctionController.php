@@ -61,7 +61,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
     public function initialize_editor($pageId, $template_uid = 0)
     {
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $this->templateService->init();
 
         // Get the row of the first VISIBLE template of the page. whereclause like the frontend.
         $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $template_uid);

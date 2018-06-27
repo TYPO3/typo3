@@ -953,7 +953,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $userGroups = [0];
         // This affects the hidden-flag selecting the fe_groups for the user!
-        $this->fe_user->showHiddenRecords = $this->showHiddenRecords;
+        $this->fe_user->showHiddenRecords = $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false);
         // no matter if we have an active user we try to fetch matching groups which can be set without an user (simulation for instance!)
         $this->fe_user->fetchGroupData();
         $isUserAndGroupSet = is_array($this->fe_user->user) && !empty($this->fe_user->groupData['uid']);
@@ -1035,7 +1035,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function clear_preview()
     {
-        if ($this->fePreview || $GLOBALS['EXEC_TIME'] !== $GLOBALS['SIM_EXEC_TIME'] || $this->showHiddenPage || $this->showHiddenRecords) {
+        if ($this->fePreview
+            || $GLOBALS['EXEC_TIME'] !== $GLOBALS['SIM_EXEC_TIME']
+            || $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false)
+            || $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false)
+        ) {
             $this->showHiddenPage = false;
             $this->showHiddenRecords = false;
             $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
@@ -2231,9 +2235,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function initTemplate()
     {
-        $this->tmpl = GeneralUtility::makeInstance(TemplateService::class);
+        $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context);
         $this->tmpl->setVerbose($this->isBackendUserLoggedIn());
-        $this->tmpl->init();
         $this->tmpl->tt_track = $this->isBackendUserLoggedIn();
     }
 

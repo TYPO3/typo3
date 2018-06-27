@@ -689,7 +689,6 @@ class CrawlerHook
     public function getUidRootLineForClosestTemplate($id)
     {
         $tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
-        $tmpl->init();
         // Gets the rootLine
         $sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
         $rootLine = $sys_page->getRootLine($id);

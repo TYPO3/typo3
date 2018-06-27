@@ -123,6 +123,6 @@ class FrontendUserAuthenticator implements MiddlewareInterface
      */
     protected function setFrontendUserAspect(Context $context, AbstractUserAuthentication $user)
     {
-        $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $user, $user === null ? [0, -1] : null));
+        $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
     }
 }

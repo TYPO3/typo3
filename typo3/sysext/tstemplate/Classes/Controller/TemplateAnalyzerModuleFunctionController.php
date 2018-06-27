@@ -88,7 +88,6 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
     {
         // Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $this->templateService->init();
 
         // Gets the rootLine
         $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);

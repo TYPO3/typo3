@@ -405,7 +405,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     public function noTemplate($newStandardTemplate = 0)
     {
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $this->templateService->init();
 
         $moduleContent['state'] = InfoboxViewHelper::STATE_INFO;
 
@@ -456,7 +455,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     public function templateMenu()
     {
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $this->templateService->init();
 
         $all = $this->templateService->ext_getAllTemplates($this->id);
         if (count($all) > 1) {

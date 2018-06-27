@@ -51,6 +51,7 @@ class CaseContentObjectTest extends UnitTestCase
             ->getMock();
         $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)
             ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
             ->getMock();
         $tsfe->config = [];
         $tsfe->page = [];

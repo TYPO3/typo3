@@ -1993,14 +1993,6 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
-    }
-
-    /**
      * Returns the current BE user.
      *
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication

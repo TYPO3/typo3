@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Form\Domain\Runtime;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,7 +38,7 @@ use TYPO3\CMS\Form\Domain\Renderer\RendererInterface;
 use TYPO3\CMS\Form\Domain\Runtime\Exception\PropertyMappingException;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * This class implements the *runtime logic* of a form, i.e. deciding which
@@ -351,13 +352,13 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected function getHoneypotNameFromSession(Page $page)
     {
-        if ($this->getTypoScriptFrontendController()->loginUser) {
-            $honeypotNameFromSession = $this->getTypoScriptFrontendController()->fe_user->getKey(
+        if ($this->isFrontendUserAuthenticated()) {
+            $honeypotNameFromSession = $this->getFrontendUser()->getKey(
                 'user',
                 self::HONEYPOT_NAME_SESSION_IDENTIFIER . $this->getIdentifier() . $page->getIdentifier()
             );
         } else {
-            $honeypotNameFromSession = $this->getTypoScriptFrontendController()->fe_user->getKey(
+            $honeypotNameFromSession = $this->getFrontendUser()->getKey(
                 'ses',
                 self::HONEYPOT_NAME_SESSION_IDENTIFIER . $this->getIdentifier() . $page->getIdentifier()
             );
@@ -371,19 +372,30 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected function setHoneypotNameInSession(Page $page, string $honeypotName)
     {
-        if ($this->getTypoScriptFrontendController()->loginUser) {
-            $this->getTypoScriptFrontendController()->fe_user->setKey(
+        if ($this->isFrontendUserAuthenticated()) {
+            $this->getFrontendUser()->setKey(
                 'user',
                 self::HONEYPOT_NAME_SESSION_IDENTIFIER . $this->getIdentifier() . $page->getIdentifier(),
                 $honeypotName
             );
         } else {
-            $this->getTypoScriptFrontendController()->fe_user->setKey(
+            $this->getFrontendUser()->setKey(
                 'ses',
                 self::HONEYPOT_NAME_SESSION_IDENTIFIER . $this->getIdentifier() . $page->getIdentifier(),
                 $honeypotName
             );
         }
+    }
+
+    /**
+     * Necessary to know if honeypot information should be stored in the user session info, or in the anonymous session
+     *
+     * @return bool true when a frontend user is logged, otherwise false
+     */
+    protected function isFrontendUserAuthenticated(): bool
+    {
+        return (bool)GeneralUtility::makeInstance(Context::class)
+            ->getPropertyFromAspect('frontend.user', 'isLoggedIn', false);
     }
 
     /**
@@ -922,10 +934,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * @return TypoScriptFrontendController
+     * @return FrontendUserAuthentication
      */
-    protected function getTypoScriptFrontendController()
+    protected function getFrontendUser(): FrontendUserAuthentication
     {
-        return $GLOBALS['TSFE'];
+        return $GLOBALS['TSFE']->fe_user;
     }
 }

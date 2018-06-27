@@ -108,11 +108,11 @@ class Context implements SingletonInterface
     }
 
     /**
-     * Returns a propert yfrom the aspect, but only if the property is found.
+     * Returns a property from the aspect, but only if the property is found.
      *
      * @param string $name
      * @param string $property
-     * @param null $default
+     * @param mixed $default
      * @return mixed|null
      * @throws AspectNotFoundException
      */

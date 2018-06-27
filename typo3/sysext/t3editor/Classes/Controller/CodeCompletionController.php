@@ -59,7 +59,6 @@ class CodeCompletionController
     protected function getMergedTemplates($pageId)
     {
         $tsParser = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $tsParser->init();
         // Gets the rootLine
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
         // This generates the constants/config + hierarchy info for the template.

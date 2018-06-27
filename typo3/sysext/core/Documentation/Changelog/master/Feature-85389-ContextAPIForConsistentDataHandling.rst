@@ -88,7 +88,9 @@ It is recommended to read data from the current global Context for custom extens
     $userIsLoggedIn = $context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
 
 
-Additionally, if custom DB queries need to be made, this can be solved via cloning the Context API
+If an aspect needs to be added, or a middleware replaces an aspect, the main context object can be altered.
+
+However, if custom DB queries need to be made, it is strongly recommended to clone the context object:
 
 .. code-block:: php
 
@@ -101,6 +103,13 @@ Additionally, if custom DB queries need to be made, this can be solved via cloni
     $sysPage = GeneralUtility::makeInstance(PageRepository::class, $localContextWithoutFrontendUser);
     $pageRow = $sysPage->getPage($pageId);
 
+
+As a rule of thumb:
+- If new code is written that is depending on external factors for querying data, ensure that a context object
+can be handed in via e.g. the constructor.
+- If you are sure, that the consuming class is NOT altering the context object, the main context object can be used
+- If the consuming class, e.g. ContentObjectRenderer is altering the context object, it is recommended to hand in a clone
+of a context.
 
 Further development
 ===================

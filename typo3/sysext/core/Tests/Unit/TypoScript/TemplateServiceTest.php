@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
  */
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Package\Package;
@@ -55,11 +56,14 @@ class TemplateServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         $GLOBALS['TYPO3_LOADED_EXT'] = [];
-        $this->templateService = new TemplateService();
+        $GLOBALS['SIM_ACCESS_TIME'] = time();
+        $GLOBALS['ACCESS_TIME'] = time();
+        $this->templateService = new TemplateService(new Context());
         $this->templateService->tt_track = false;
         $this->templateServiceMock = $this->getAccessibleMock(
             TemplateService::class,
-            ['dummy']
+            ['dummy'],
+            [new Context()]
         );
         $this->templateServiceMock->tt_track = false;
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
@@ -226,7 +230,7 @@ class TemplateServiceTest extends UnitTestCase
      */
     public function getFileNameReturnsNullIfDirectory(): void
     {
-        $this->assertNull($this->templateService->getFileName(__DIR__));
+        $this->assertNull($this->templateService->getFileName('typo3/'));
     }
 
     /**

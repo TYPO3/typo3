@@ -58,7 +58,6 @@ class BackendConfigurationManager extends AbstractConfigurationManager
             $template->tt_track = 0;
             // Explicitly trigger processing of extension static files
             $template->setProcessExtensionStatics(true);
-            $template->init();
             // Get the root line
             $rootline = [];
             if ($pageId > 0) {

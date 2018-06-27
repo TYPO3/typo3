@@ -128,7 +128,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
     {
         // Defined global here!
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $this->templateService->init();
 
         // Gets the rootLine
         $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
