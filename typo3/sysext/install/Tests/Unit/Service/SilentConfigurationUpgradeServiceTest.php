@@ -537,7 +537,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $currentLocalConfiguration = [
             ['GFX/processor', 'GraphicsMagick'],
             ['GFX/processor_allowTemporaryMasksAsPng', 1],
-            ['GFX/processor_effects', 0]
+            ['GFX/processor_effects', false],
         ];
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -553,9 +553,11 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ->method('getDefaultConfigurationValueByPath');
         $this->configurationManager->expects($this->once())
             ->method('setLocalConfigurationValuesByPathValuePairs')
-            ->withConsecutive(
-                [['GFX/processor_allowTemporaryMasksAsPng' => 0]]
-            );
+            ->withConsecutive([
+                [
+                    'GFX/processor_allowTemporaryMasksAsPng' => 0,
+                ]
+            ]);
 
         $this->expectException(ConfigurationChangedException::class);
 
@@ -581,7 +583,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $currentLocalConfiguration = [
             ['GFX/processor', ''],
             ['GFX/processor_allowTemporaryMasksAsPng', 0],
-            ['GFX/processor_effects', 0]
+            ['GFX/processor_effects', 0],
         ];
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -601,6 +603,64 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
         $silentConfigurationUpgradeServiceInstance->_call('setImageMagickDetailSettings');
+    }
+
+    /**
+     * @test
+     * @dataProvider graphicsProcessorEffects
+     *
+     * @param mixed $currentValue
+     * @param bool $expectedMigratedValue
+     */
+    public function migratesGraphicsProcessorEffects($currentValue, $expectedMigratedValue)
+    {
+        /** @var ConfigurationManager|\Prophecy\Prophecy\ObjectProphecy */
+        $configurationManager = $this->prophesize(ConfigurationManager::class);
+        $configurationManager->getLocalConfigurationValueByPath('GFX/processor')->willReturn('GraphicsMagick');
+        $configurationManager->getLocalConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng')->willReturn(false);
+        $configurationManager->getLocalConfigurationValueByPath('GFX/processor_effects')->willReturn($currentValue);
+        $configurationManager->setLocalConfigurationValuesByPathValuePairs([
+            'GFX/processor_effects' => $expectedMigratedValue,
+        ])->shouldBeCalled();
+
+        $this->expectException(ConfigurationChangedException::class);
+
+        $silentConfigurationUpgradeService = new SilentConfigurationUpgradeService($configurationManager->reveal());
+
+        $this->callInaccessibleMethod($silentConfigurationUpgradeService, 'setImageMagickDetailSettings');
+    }
+
+    /**
+     * @return array
+     */
+    public function graphicsProcessorEffects(): array
+    {
+        return [
+            'integer 1' => [
+                1,
+                true,
+            ],
+            'integer 0' => [
+                0,
+                false,
+            ],
+            'integer -1' => [
+                -1,
+                false,
+            ],
+            'string "1"' => [
+                '1',
+                true,
+            ],
+            'string "0"' => [
+                '0',
+                false,
+            ],
+            'string "-1"' => [
+                '-1',
+                false,
+            ],
+        ];
     }
 
     /**

@@ -40,7 +40,7 @@ class GraphicsMagickPreset extends AbstractImagePreset
         'GFX/processor_path' => '',
         'GFX/processor_path_lzw' => '',
         'GFX/processor' => 'GraphicsMagick',
-        'GFX/processor_effects' => -1,
+        'GFX/processor_effects' => false,
         'GFX/processor_allowTemporaryMasksAsPng' => false,
         'GFX/processor_colorspace' => 'RGB',
     ];

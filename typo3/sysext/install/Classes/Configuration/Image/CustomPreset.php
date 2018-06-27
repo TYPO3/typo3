@@ -29,7 +29,7 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
         'GFX/processor_path' => '',
         'GFX/processor_path_lzw' => '',
         'GFX/processor' => '',
-        'GFX/processor_effects' => 0,
+        'GFX/processor_effects' => false,
         'GFX/processor_allowTemporaryMasksAsPng' => true,
         'GFX/processor_colorspace' => '',
     ];

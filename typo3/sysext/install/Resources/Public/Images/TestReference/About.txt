@@ -10,7 +10,7 @@ $TYPO3_CONF_VARS['GFX']['TTFdpi'] = '96';
 $TYPO3_CONF_VARS['GFX']['gdlib_png'] = '1';
 $TYPO3_CONF_VARS['GFX']['processor_path'] = '/usr/bin/';
 $TYPO3_CONF_VARS['GFX']['processor'] = 'im5';
-$TYPO3_CONF_VARS['GFX']['processor_effects'] = '1';
+$TYPO3_CONF_VARS['GFX']['processor_effects'] = true;
 $TYPO3_CONF_VARS['GFX']['gdlib_2'] = 1;
 
 - PHP / GD configuration:

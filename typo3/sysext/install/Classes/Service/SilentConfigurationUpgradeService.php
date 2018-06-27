@@ -433,21 +433,21 @@ class SilentConfigurationUpgradeService
     {
         $changedValues = [];
         try {
-            $currentImValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_enabled');
+            $currentEnabledValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_enabled');
         } catch (MissingArrayPathException $e) {
-            $currentImValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_enabled');
+            $currentEnabledValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_enabled');
         }
 
         try {
-            $currentImPathValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_path');
+            $currentPathValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_path');
         } catch (MissingArrayPathException $e) {
-            $currentImPathValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_path');
+            $currentPathValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_path');
         }
 
         try {
-            $currentImPathLzwValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_path_lzw');
+            $currentPathLzwValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_path_lzw');
         } catch (MissingArrayPathException $e) {
-            $currentImPathLzwValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_path_lzw');
+            $currentPathLzwValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_path_lzw');
         }
 
         try {
@@ -462,11 +462,11 @@ class SilentConfigurationUpgradeService
             $currentThumbnailsValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/thumbnails');
         }
 
-        if (!$currentImValue) {
-            if ($currentImPathValue != '') {
+        if (!$currentEnabledValue) {
+            if ($currentPathValue != '') {
                 $changedValues['GFX/processor_path'] = '';
             }
-            if ($currentImPathLzwValue != '') {
+            if ($currentPathLzwValue != '') {
                 $changedValues['GFX/processor_path_lzw'] = '';
             }
             if ($currentImageFileExtValue !== 'gif,jpg,jpeg,png') {
@@ -512,6 +512,10 @@ class SilentConfigurationUpgradeService
         }
 
         if ((string)$currentProcessorValue !== '') {
+            if (!is_bool($currentProcessorEffectsValue)) {
+                $changedValues['GFX/processor_effects'] = (int)$currentProcessorEffectsValue > 0;
+            }
+
             if ($currentProcessorMaskValue != 0) {
                 $changedValues['GFX/processor_allowTemporaryMasksAsPng'] = 0;
             }
