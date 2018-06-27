@@ -463,12 +463,6 @@ class SilentConfigurationUpgradeService
             $currentProcessorMaskValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng');
         }
 
-        try {
-            $currentProcessorEffectsValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_effects');
-        } catch (\RuntimeException $e) {
-            $currentProcessorEffectsValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_effects');
-        }
-
         if ((string)$currentProcessorValue !== '') {
             if ($currentProcessorMaskValue != 0) {
                 $changedValues['GFX/processor_allowTemporaryMasksAsPng'] = 0;

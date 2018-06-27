@@ -532,7 +532,6 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         $currentLocalConfiguration = [
             ['GFX/processor', 'GraphicsMagick'],
             ['GFX/processor_allowTemporaryMasksAsPng', 1],
-            ['GFX/processor_effects', 0]
         ];
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -541,7 +540,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
                 'setLocalConfigurationValuesByPathValuePairs',
             ]
         );
-        $this->configurationManager->expects($this->exactly(3))
+        $this->configurationManager->expects($this->exactly(2))
             ->method('getLocalConfigurationValueByPath')
             ->will($this->returnValueMap($currentLocalConfiguration));
         $this->configurationManager->expects($this->never())
@@ -576,7 +575,6 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         $currentLocalConfiguration = [
             ['GFX/processor', ''],
             ['GFX/processor_allowTemporaryMasksAsPng', 0],
-            ['GFX/processor_effects', 0]
         ];
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -585,7 +583,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
                 'setLocalConfigurationValuesByPathValuePairs',
             ]
         );
-        $this->configurationManager->expects($this->exactly(3))
+        $this->configurationManager->expects($this->exactly(2))
             ->method('getLocalConfigurationValueByPath')
             ->will($this->returnValueMap($currentLocalConfiguration));
         $this->configurationManager->expects($this->never())
