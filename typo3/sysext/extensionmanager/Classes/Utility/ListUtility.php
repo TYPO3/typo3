@@ -270,9 +270,14 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         foreach ($extensions as &$properties) {
             $extIconPath = PATH_site . $properties['siteRelPath'] . $properties['ext_icon'];
-            $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $extIconPath);
-            $properties['ext_icon_width'] = $imageInfo->getWidth();
-            $properties['ext_icon_height'] = $imageInfo->getHeight();
+            if (@is_file($extIconPath)) {
+                $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $extIconPath);
+                $properties['ext_icon_width'] = $imageInfo->getWidth();
+                $properties['ext_icon_height'] = $imageInfo->getHeight();
+            } else {
+                $properties['ext_icon_width'] = 0;
+                $properties['ext_icon_height'] = 0;
+            }
         }
         unset($properties);
         return $extensions;
