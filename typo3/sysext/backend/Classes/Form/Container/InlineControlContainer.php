@@ -406,7 +406,7 @@ class InlineControlContainer extends AbstractContainer
         }
         // Create the link:
         $icon = $icon ? $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() : '';
-        $link = $this->wrapWithAnchor($icon . $title, '#', $attributes);
+        $link = $this->wrapWithAnchor($icon . ' ' . $title, '#', $attributes);
         return '<div' . ($className ? ' class="' . $className . '"' : '') . 'title="' . $title . '">' . $link . '</div>';
     }
 
