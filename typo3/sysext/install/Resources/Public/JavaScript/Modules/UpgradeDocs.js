@@ -22,7 +22,8 @@ define([
   'TYPO3/CMS/Install/Severity',
   'TYPO3/CMS/Backend/Notification',
   'bootstrap',
-  'chosen'
+  'chosen',
+  'jquery.clearable'
 ], function($, Router, ProgressBar, InfoBox, Severity, Notification) {
   'use strict';
 
@@ -82,6 +83,7 @@ define([
             modalContent.find('[data-toggle="tooltip"]').tooltip({container: 'body'});
             self.chosenField = modalContent.find(self.selectorChosenField);
             self.fulltextSearchField = modalContent.find(self.selectorFulltextSearch);
+            self.fulltextSearchField.clearable().focus();
             self.initializeChosenSelector();
             self.chosenField.on('change', function() {
               self.combinedFilterSearch();
