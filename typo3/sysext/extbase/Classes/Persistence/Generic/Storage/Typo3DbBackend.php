@@ -17,7 +17,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
@@ -52,13 +53,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      * @var DataMapper
      */
     protected $dataMapper;
-
-    /**
-     * The TYPO3 page repository. Used for language and workspace overlay
-     *
-     * @var PageRepository
-     */
-    protected $pageRepository;
 
     /**
      * @var ConfigurationManagerInterface
@@ -563,34 +557,32 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             return $rows;
         }
 
-        $pageRepository = $this->getPageRepository();
-        if (is_object($this->getTSFE())) {
-            if ($workspaceUid !== null) {
-                $pageRepository->versioningWorkspaceId = $workspaceUid;
-            }
+        $context = $this->objectManager->get(Context::class);
+        if ($workspaceUid === null) {
+            $workspaceUid = $context->getPropertyFromAspect('workspace', 'id');
         } else {
-            if ($workspaceUid === null) {
-                $workspaceUid = $this->getBeUser()->workspace;
-            }
-            $pageRepository->versioningWorkspaceId = $workspaceUid;
+            // A custom query is needed, so a custom context is cloned
+            $workspaceUid = (int)$workspaceUid;
+            $context = clone $context;
+            $context->setAspect('workspace', $this->objectManager->get(WorkspaceAspect::class, $workspaceUid));
         }
+        $pageRepository = $this->objectManager->get(PageRepository::class, $context);
 
         // Fetches the move-placeholder in case it is supported
         // by the table and if there's only one row in the result set
         // (applying this to all rows does not work, since the sorting
         // order would be destroyed and possible limits not met anymore)
-        if (!empty($pageRepository->versioningWorkspaceId)
+        if (!empty($workspaceUid)
             && BackendUtility::isTableWorkspaceEnabled($tableName)
             && count($rows) === 1
         ) {
-            $versionId = $pageRepository->versioningWorkspaceId;
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
             $queryBuilder->getRestrictions()->removeAll();
             $movePlaceholder = $queryBuilder->select($tableName . '.*')
                 ->from($tableName)
                 ->where(
                     $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(3, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($versionId, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($workspaceUid, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('t3ver_move_id', $queryBuilder->createNamedParameter($rows[0]['uid'], \PDO::PARAM_INT))
                 )
                 ->setMaxResults(1)
@@ -649,22 +641,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             }
         }
         return $overlaidRows;
-    }
-
-    /**
-     * @return PageRepository
-     */
-    protected function getPageRepository()
-    {
-        if (!$this->pageRepository instanceof PageRepository) {
-            if ($this->environmentService->isEnvironmentInFrontendMode() && is_object($this->getTSFE())) {
-                $this->pageRepository = $this->getTSFE()->sys_page;
-            } else {
-                $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-            }
-        }
-
-        return $this->pageRepository;
     }
 
     /**
@@ -746,13 +722,5 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     protected function getTSFE()
     {
         return $GLOBALS['TSFE'] ?? null;
-    }
-
-    /**
-     * @return BackendUserAuthentication|null
-     */
-    protected function getBeUser()
-    {
-        return $GLOBALS['BE_USER'] ?? null;
     }
 }

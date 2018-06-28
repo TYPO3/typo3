@@ -16,11 +16,15 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
 
 use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Test case
@@ -152,15 +156,25 @@ class Typo3DbBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->getMock();
 
         $workspaceUid = 2;
+
+        $objectManagerMock = $this->getMockBuilder(ObjectManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $sourceMock = new \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector('tx_foo', 'Tx_Foo');
-        /** @var $pageRepositoryMock \TYPO3\CMS\Frontend\Page\PageRepository|\PHPUnit_Framework_MockObject_MockObject */
-        $pageRepositoryMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\PageRepository::class)
+        /** @var $pageRepositoryMock PageRepository|\PHPUnit_Framework_MockObject_MockObject */
+        $pageRepositoryMock = $this->getMockBuilder(PageRepository::class)
             ->setMethods(['movePlhOL', 'getWorkspaceVersionOfRecord'])
             ->disableOriginalConstructor()
             ->getMock();
         $pageRepositoryMock->expects($this->once())->method('getWorkspaceVersionOfRecord')->with($workspaceUid, 'tx_foo', '42')->will($this->returnValue($workspaceVersion));
+        $pageRepositoryMock->versioningWorkspaceId = $workspaceUid;
+        $context = new Context([
+            'workspace' => new WorkspaceAspect($workspaceUid)
+        ]);
+        $objectManagerMock->expects($this->at(0))->method('get')->with(Context::class)->willReturn($context);
+        $objectManagerMock->expects($this->at(1))->method('get')->with(PageRepository::class, $context)->willReturn($pageRepositoryMock);
         $mockTypo3DbBackend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend::class, ['dummy'], [], '', false);
-        $mockTypo3DbBackend->_set('pageRepository', $pageRepositoryMock);
-        $this->assertSame([$comparisonRow], $mockTypo3DbBackend->_call('doLanguageAndWorkspaceOverlay', $sourceMock, [$row], $mockQuerySettings, $workspaceUid));
+        $mockTypo3DbBackend->injectObjectManager($objectManagerMock);
+        $this->assertSame([$comparisonRow], $mockTypo3DbBackend->_call('doLanguageAndWorkspaceOverlay', $sourceMock, [$row], $mockQuerySettings));
     }
 }
