@@ -222,7 +222,7 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
      */
     protected function canBeCopied(): bool
     {
-        return $this->record->checkActionPermission('read') && !$this->isRecordInClipboard('copy');
+        return $this->record->checkActionPermission('read') && $this->record->checkActionPermission('copy') && !$this->isRecordInClipboard('copy');
     }
 
     /**
@@ -278,6 +278,9 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
      */
     protected function isRecordInClipboard(string $mode = ''): bool
     {
+        if ($mode !== '' && !$this->record->checkActionPermission($mode)) {
+            return false;
+        }
         $isSelected = '';
         // Pseudo table name for use in the clipboard.
         $table = '_FILE';
