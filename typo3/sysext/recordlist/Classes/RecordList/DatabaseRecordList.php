@@ -1493,11 +1493,27 @@ class DatabaseRecordList
             } elseif ($fCol === '_LOCALIZATION_b') {
                 // deliberately empty
             } else {
-                $pageId = $table === 'pages' ? $row['uid'] : $row['pid'];
-                $tmpProc = BackendUtility::getProcessedValueExtra($table, $fCol, $row[$fCol], 100, $row['uid'], true, $pageId);
-                $theData[$fCol] = $this->linkUrlMail(htmlspecialchars($tmpProc), $row[$fCol]);
-                if ($this->csvOutput) {
-                    $row[$fCol] = BackendUtility::getProcessedValueExtra($table, $fCol, $row[$fCol], 0, $row['uid']);
+                // if field-type in TCA == select||inline && custom items function is set, use its return value instead of normal process
+				if(is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$fCol]) 
+					&& ($GLOBALS['TCA'][$table]['columns'][$fCol]['config']['type'] == 'inline' || $GLOBALS['TCA'][$table]['columns'][$fCol]['config']['type'] == 'select')
+					&& array_key_exists('itemsProcFunc',$GLOBALS['TCA'][$table]['columns'][$fCol]['config'])) {
+					$customCallArray = explode('->',$GLOBALS['TCA'][$table]['columns'][$fCol]['config']['itemsProcFunc']);
+					$customCallController = $customCallArray[0];
+					$customCallFunction = $customCallArray[1];
+					/** @var ObjectManager $objectManager */
+					$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+					$tmpItems = $objectManager->get($customCallController)->$customCallFunction();
+					foreach($tmpItems as $tmpItem) {
+						if($tmpItem[1] == $row[$fCol]) { $tmpProc = $tmpItem[0]; }
+						$theData[$fCol] = $this->linkUrlMail(htmlspecialchars($tmpProc), $row[$fCol]);
+					}
+				} else {
+                    $pageId = $table === 'pages' ? $row['uid'] : $row['pid'];
+                    $tmpProc = BackendUtility::getProcessedValueExtra($table, $fCol, $row[$fCol], 100, $row['uid'], true, $pageId);
+                    $theData[$fCol] = $this->linkUrlMail(htmlspecialchars($tmpProc), $row[$fCol]);
+                    if ($this->csvOutput) {
+                        $row[$fCol] = BackendUtility::getProcessedValueExtra($table, $fCol, $row[$fCol], 0, $row['uid']);
+                    }
                 }
             }
         }
