@@ -88,6 +88,7 @@ class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 ],
                 'master' => [
                     'Breaking-13579-Issue.rst' => implode("\n", $content_13579),
+                    'Important-13579-Issue.rst' => implode("\n", $content_13579),
                     'Index.rst' => '',
                 ],
             ],
@@ -151,6 +152,15 @@ class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
+    public function findDocumentsRespectsFilesWithSameIssueNumber()
+    {
+        $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog'));
+        $this->assertCount(2, $result['master']);
+    }
+
+    /**
+     * @test
+     */
     public function extractingTagsProvidesTagsAsDesired()
     {
         $expected = [
@@ -158,7 +168,8 @@ class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             'cat:Important',
         ];
         $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog'));
-        self::assertEquals($expected, $result['2.0'][98574]['tags']);
+        $key = md5('vfs://root/Changelog/2.0/Important-98574-Issue.rst');
+        self::assertEquals($expected, $result['2.0'][$key]['tags']);
     }
 
     /**
