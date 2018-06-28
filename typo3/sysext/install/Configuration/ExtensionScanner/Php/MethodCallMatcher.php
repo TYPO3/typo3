@@ -2417,4 +2417,11 @@ return [
             'Deprecation-85196-ProtectSetupModuleController.rst'
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->getFileName' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85445-TemplateService-getFileName.rst'
+        ],
+    ],
 ];

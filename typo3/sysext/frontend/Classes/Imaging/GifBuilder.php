@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
  * GIFBUILDER
@@ -675,13 +676,17 @@ class GifBuilder extends GraphicalFunctions
      * Returns the reference to a "resource" in TypoScript.
      *
      * @param string $file The resource value.
-     * @return string Returns the relative filepath
+     * @return string|null Returns the relative filepath or null if it's invalid
      * @access private
      * @see TemplateService::getFileName()
      */
     public function checkFile($file)
     {
-        return $GLOBALS['TSFE']->tmpl->getFileName($file);
+        try {
+            return GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file);
+        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+            return null;
+        }
     }
 
     /**

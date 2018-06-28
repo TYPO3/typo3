@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for \TYPO3\CMS\Core\TypoScript\TemplateService
+ * Test case
  */
 class TemplateServiceTest extends UnitTestCase
 {
@@ -206,39 +206,5 @@ class TemplateServiceTest extends UnitTestCase
 
         $this->templateServiceMock->_set('rootLine', $originalRootline);
         $this->templateServiceMock->updateRootlineData($newInvalidRootline);
-    }
-
-    /**
-     * @test
-     */
-    public function getFileNameReturnsUrlCorrectly(): void
-    {
-        $this->assertSame('http://example.com', $this->templateService->getFileName('http://example.com'));
-        $this->assertSame('https://example.com', $this->templateService->getFileName('https://example.com'));
-    }
-
-    /**
-     * @test
-     */
-    public function getFileNameReturnsFileCorrectly(): void
-    {
-        $this->assertSame('typo3/index.php', $this->templateService->getFileName('typo3/index.php'));
-    }
-
-    /**
-     * @test
-     */
-    public function getFileNameReturnsNullIfDirectory(): void
-    {
-        $this->assertNull($this->templateService->getFileName('typo3/'));
-    }
-
-    /**
-     * @test
-     */
-    public function getFileNameReturnsNullWithInvalidFileName(): void
-    {
-        $this->assertNull($this->templateService->getFileName('  '));
-        $this->assertNull($this->templateService->getFileName('something/../else'));
     }
 }

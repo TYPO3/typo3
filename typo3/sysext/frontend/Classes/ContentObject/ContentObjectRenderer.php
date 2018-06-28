@@ -63,6 +63,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
@@ -4537,7 +4538,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $fileArray = (array)$fileArray;
         }
         $imageResource = null;
-        $tsfe = $this->getTypoScriptFrontendController();
         if ($file === 'GIFBUILDER') {
             /** @var GifBuilder $gifCreator */
             $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
@@ -4644,16 +4644,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // If image was processed by GIFBUILDER:
         // ($imageResource indicates that it was processed the regular way)
         if (!isset($imageResource)) {
-            $theImage = $tsfe->tmpl->getFileName($file);
-            if ($theImage) {
+            try {
+                $theImage = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize((string)$file);
                 $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-                /** @var $gifCreator GifBuilder */
                 $gifCreator->init();
                 $info = $gifCreator->imageMagickConvert($theImage, 'WEB');
                 $info['origFile'] = $theImage;
                 // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
                 $info['origFile_mtime'] = @filemtime($theImage);
                 $imageResource = $info;
+            } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                // do nothing in case the file path is invalid
             }
         }
         // Hook 'getImgResource': Post-processing of image resources
@@ -4921,7 +4922,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $tsfe->sL('LLL:' . $key);
                         break;
                     case 'path':
-                        $retVal = $tsfe->tmpl->getFileName($key);
+                        try {
+                            $retVal = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($key);
+                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                            // do nothing in case the file path is invalid
+                            $retVal = null;
+                        }
                         break;
                     case 'cobj':
                         switch ($key) {

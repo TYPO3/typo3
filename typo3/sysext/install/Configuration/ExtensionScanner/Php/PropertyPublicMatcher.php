@@ -411,29 +411,34 @@ return [
             'Deprecation-85125-UsagesOfCharsetConverterInCore.rst'
         ],
     ],
-    'TYPO3\CMS\Core\Controller\TypoScriptFrontendController->showHiddenPage' => [
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->showHiddenPage' => [
         'restFiles' => [
             'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
         ],
     ],
-    'TYPO3\CMS\Core\Controller\TypoScriptFrontendController->showHiddenRecords' => [
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->showHiddenRecords' => [
         'restFiles' => [
             'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
         ],
     ],
-    'TYPO3\CMS\Core\Controller\TypoScriptFrontendController->gr_list' => [
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->gr_list' => [
         'restFiles' => [
             'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
         ],
     ],
-    'TYPO3\CMS\Core\Controller\TypoScriptFrontendController->loginUser' => [
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->loginUser' => [
         'restFiles' => [
             'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
         ],
     ],
-    'TYPO3\CMS\Core\Controller\TypoScriptFrontendController->beUserLogin' => [
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->beUserLogin' => [
         'restFiles' => [
             'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->fileCache' => [
+        'restFiles' => [
+            'Deprecation-85445-TemplateService-getFileName.rst'
         ],
     ],
 ];

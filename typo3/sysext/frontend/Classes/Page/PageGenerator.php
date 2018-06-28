@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
  * Class for starting TypoScript page generation
@@ -91,9 +92,11 @@ class PageGenerator
             $pageRenderer->enableMoveJsFromHeaderToFooter();
         }
         if ($tsfe->config['config']['pageRendererTemplateFile']) {
-            $file = $tsfe->tmpl->getFileName($tsfe->config['config']['pageRendererTemplateFile']);
-            if ($file) {
+            try {
+                $file = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($tsfe->config['config']['pageRendererTemplateFile']);
                 $pageRenderer->setTemplateFile($file);
+            } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                // do nothing
             }
         }
         $headerComment = $tsfe->config['config']['headerComment'];
@@ -242,15 +245,19 @@ class PageGenerator
             $pageRenderer->setBaseUrl($tsfe->baseUrl);
         }
         if ($tsfe->pSetup['shortcutIcon']) {
-            $favIcon = ltrim($tsfe->tmpl->getFileName($tsfe->pSetup['shortcutIcon']), '/');
-            $iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, Environment::getPublicPath() . '/' . $favIcon);
-            if ($iconFileInfo->isFile()) {
-                $iconMimeType = $iconFileInfo->getMimeType();
-                if ($iconMimeType) {
-                    $iconMimeType = ' type="' . $iconMimeType . '"';
-                    $pageRenderer->setIconMimeType($iconMimeType);
+            try {
+                $favIcon = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($tsfe->pSetup['shortcutIcon']);
+                $iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, Environment::getPublicPath() . '/' . $favIcon);
+                if ($iconFileInfo->isFile()) {
+                    $iconMimeType = $iconFileInfo->getMimeType();
+                    if ($iconMimeType) {
+                        $iconMimeType = ' type="' . $iconMimeType . '"';
+                        $pageRenderer->setIconMimeType($iconMimeType);
+                    }
+                    $pageRenderer->setFavIcon(PathUtility::getAbsoluteWebPath($tsfe->absRefPrefix . $favIcon));
                 }
-                $pageRenderer->setFavIcon(PathUtility::getAbsoluteWebPath($tsfe->absRefPrefix . $favIcon));
+            } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                // do nothing
             }
         }
         // Including CSS files
@@ -290,7 +297,15 @@ class PageGenerator
                     if (isset($cssFileConfig['if.']) && !$tsfe->cObj->checkIf($cssFileConfig['if.'])) {
                         continue;
                     }
-                    $ss = $cssFileConfig['external'] ? $CSSfile : $tsfe->tmpl->getFileName($CSSfile);
+                    if ($cssFileConfig['external']) {
+                        $ss = $CSSfile;
+                    } else {
+                        try {
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($CSSfile);
+                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                            $ss = null;
+                        }
+                    }
                     if ($ss) {
                         if ($cssFileConfig['import']) {
                             if (!$cssFileConfig['external'] && $ss[0] !== '/') {
@@ -324,7 +339,15 @@ class PageGenerator
                     if (isset($cssFileConfig['if.']) && !$tsfe->cObj->checkIf($cssFileConfig['if.'])) {
                         continue;
                     }
-                    $ss = $cssFileConfig['external'] ? $CSSfile : $tsfe->tmpl->getFileName($CSSfile);
+                    if ($cssFileConfig['external']) {
+                        $ss = $CSSfile;
+                    } else {
+                        try {
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($CSSfile);
+                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                            $ss = null;
+                        }
+                    }
                     if ($ss) {
                         if ($cssFileConfig['import']) {
                             if (!$cssFileConfig['external'] && $ss[0] !== '/') {
@@ -388,7 +411,15 @@ class PageGenerator
                     if (isset($tsfe->pSetup['includeJSLibs.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSLibs.'][$key . '.']['if.'])) {
                         continue;
                     }
-                    $ss = $tsfe->pSetup['includeJSLibs.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);
+                    if ($tsfe->pSetup['includeJSLibs.'][$key . '.']['external']) {
+                        $ss = $JSfile;
+                    } else {
+                        try {
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
+                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                            $ss = null;
+                        }
+                    }
                     if ($ss) {
                         $jsFileConfig = &$tsfe->pSetup['includeJSLibs.'][$key . '.'];
                         $type = $jsFileConfig['type'];
@@ -424,7 +455,15 @@ class PageGenerator
                     if (isset($tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['if.'])) {
                         continue;
                     }
-                    $ss = $tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);
+                    if ($tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['external']) {
+                        $ss = $JSfile;
+                    } else {
+                        try {
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
+                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                            $ss = null;
+                        }
+                    }
                     if ($ss) {
                         $jsFileConfig = &$tsfe->pSetup['includeJSFooterlibs.'][$key . '.'];
                         $type = $jsFileConfig['type'];
@@ -461,7 +500,15 @@ class PageGenerator
                     if (isset($tsfe->pSetup['includeJS.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJS.'][$key . '.']['if.'])) {
                         continue;
                     }
-                    $ss = $tsfe->pSetup['includeJS.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);
+                    if ($tsfe->pSetup['includeJS.'][$key . '.']['external']) {
+                        $ss = $JSfile;
+                    } else {
+                        try {
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
+                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                            $ss = null;
+                        }
+                    }
                     if ($ss) {
                         $jsConfig = &$tsfe->pSetup['includeJS.'][$key . '.'];
                         $type = $jsConfig['type'];
@@ -496,7 +543,15 @@ class PageGenerator
                     if (isset($tsfe->pSetup['includeJSFooter.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSFooter.'][$key . '.']['if.'])) {
                         continue;
                     }
-                    $ss = $tsfe->pSetup['includeJSFooter.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);
+                    if ($tsfe->pSetup['includeJSFooter.'][$key . '.']['external']) {
+                        $ss = $JSfile;
+                    } else {
+                        try {
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
+                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                            $ss = null;
+                        }
+                    }
                     if ($ss) {
                         $jsConfig = &$tsfe->pSetup['includeJSFooter.'][$key . '.'];
                         $type = $jsConfig['type'];

@@ -13,9 +13,11 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
  * Contains FILE class object.
@@ -32,22 +34,25 @@ class FileContentObject extends AbstractContentObject
     {
         $theValue = '';
         $file = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
-        $file = $this->getTypoScriptFrontendController()->tmpl->getFileName($file);
-        if ($file !== null && file_exists($file)) {
-            $fileInfo = GeneralUtility::split_fileref($file);
-            $extension = $fileInfo['fileext'];
-            if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
-                $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $file);
-                $altParameters = trim($this->cObj->getAltParam($conf, false));
-                $theValue = '<img src="'
-                            . htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix . $file)
-                            . '" width="' . (int)$imageInfo->getWidth() . '" height="' . (int)$imageInfo->getHeight()
-                            . '"' . $this->cObj->getBorderAttr(' border="0"') . ' ' . $altParameters . ' />';
-            } elseif (filesize($file) < 1024 * 1024) {
-                $theValue = file_get_contents($file);
+        try {
+            $file = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file);
+            if (file_exists($file)) {
+                $fileInfo = GeneralUtility::split_fileref($file);
+                $extension = $fileInfo['fileext'];
+                if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
+                    $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $file);
+                    $altParameters = trim($this->cObj->getAltParam($conf, false));
+                    $theValue = '<img src="'
+                        . htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix . $file)
+                        . '" width="' . (int)$imageInfo->getWidth() . '" height="' . (int)$imageInfo->getHeight()
+                        . '"' . $this->cObj->getBorderAttr(' border="0"') . ' ' . $altParameters . ' />';
+                } elseif (filesize($file) < 1024 * 1024) {
+                    $theValue = file_get_contents($file);
+                }
             }
+        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+            // do nothing
         }
-
         $linkWrap = isset($conf['linkWrap.']) ? $this->cObj->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
         if ($linkWrap) {
             $theValue = $this->cObj->linkWrap($theValue, $linkWrap);

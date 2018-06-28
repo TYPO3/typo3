@@ -87,11 +87,6 @@ class ContentObjectRendererTest extends UnitTestCase
     protected $frontendControllerMock;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|CacheFrontendInterface
-     */
-    protected $cacheFrontendMock;
-
-    /**
      * @var \PHPUnit_Framework_MockObject_MockObject|TemplateService
      */
     protected $templateServiceMock;
@@ -132,7 +127,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $this->templateServiceMock =
             $this->getMockBuilder(TemplateService::class)
-            ->setMethods(['getFileName', 'linkData'])->getMock();
+            ->setMethods(['linkData'])->getMock();
         $pageRepositoryMock =
             $this->getAccessibleMock(PageRepository::class, ['getRawRecord', 'getMountPointInfo']);
         $this->frontendControllerMock =
@@ -194,11 +189,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getImgResourceCallsGetImgResourcePostProcessHook()
     {
-        $this->templateServiceMock
-            ->expects($this->atLeastOnce())
-            ->method('getFileName')
-            ->with('typo3/clear.gif')
-            ->will($this->returnValue('typo3/clear.gif'));
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(CacheFrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_imagesizes')->willReturn($cacheProphecy->reveal());
+        $cacheProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheProphecy->set(Argument::cetera())->willReturn(false);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $this->subject->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
@@ -214,7 +210,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ->will($this->returnCallback([$this, 'isGetImgResourceHookCalledCallback']));
         $getImgResourceHookObjects = [$getImgResourceHookMock];
         $this->subject->_setRef('getImgResourceHookObjects', $getImgResourceHookObjects);
-        $this->subject->getImgResource('typo3/clear.gif', []);
+        $this->subject->getImgResource('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', []);
     }
 
     /**
@@ -229,8 +225,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function isGetImgResourceHookCalledCallback($file, $fileArray, $imageResource, $parent)
     {
-        $this->assertEquals('typo3/clear.gif', $file);
-        $this->assertEquals('typo3/clear.gif', $imageResource['origFile']);
+        $this->assertEquals('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', $file);
+        $this->assertEquals('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', $imageResource['origFile']);
         $this->assertTrue(is_array($fileArray));
         $this->assertTrue($parent instanceof ContentObjectRenderer);
         return $imageResource;
@@ -1583,10 +1579,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypePath()
     {
-        $filenameIn = $this->getUniqueId('someValue');
-        $filenameOut = $this->getUniqueId('someValue');
-        $this->templateServiceMock->expects($this->atLeastOnce())->method('getFileName')->with($filenameIn)->will($this->returnValue($filenameOut));
-        $this->assertEquals($filenameOut, $this->subject->getData('path:' . $filenameIn));
+        $filenameIn = 'typo3/sysext/frontend/Public/Icons/Extension.svg';
+        $this->assertEquals($filenameIn, $this->subject->getData('path:' . $filenameIn));
     }
 
     /**

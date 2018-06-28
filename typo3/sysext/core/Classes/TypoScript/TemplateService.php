@@ -25,15 +25,19 @@ use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
  * Template object that is responsible for generating the TypoScript template based on template records.
@@ -63,6 +67,7 @@ class TemplateService
         'sectionsMatch' => 'Using $sectionsMatch of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
         'frames' => 'Using $frames of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
         'MPmap' => 'Using $MPmap of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
+        'fileCache' => 'Using $fileCache of class TemplateService from the outside is discouraged, the property will be removed in v10.',
     ];
 
     /**
@@ -296,8 +301,9 @@ class TemplateService
      * Used by getFileName for caching of references to file resources
      *
      * @var array
+     * @deprecated Will be removed in v10
      */
-    public $fileCache = [];
+    protected $fileCache = [];
 
     /**
      * Keys are frame names and values are type-values, which must be used to refer correctly to the content of the frames.
@@ -1389,52 +1395,32 @@ class TemplateService
      *
      * @param string $fileFromSetup TypoScript "resource" data type value.
      * @return string|null Resulting filename, is either a full absolute URL or a relative path. Returns NULL if invalid filename or a directory is given
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     public function getFileName($fileFromSetup)
     {
-        $file = trim($fileFromSetup);
-        if (!$file) {
-            return null;
-        }
-        if (strpos($file, '../') !== false) {
-            if ($this->tt_track) {
-                $this->getTimeTracker()->setTSlogMessage('File path "' . $file . '" contained illegal string "../"!', 3);
+        trigger_error('TemplateService->getFileName() will be removed in TYPO3 v10.0. Use FilePathSanitizer->sanitize() of EXT:frontend instead.', E_USER_DEPRECATED);
+        try {
+            $file = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize((string)$fileFromSetup);
+            $hash = md5($file);
+            if (!isset($this->fileCache[$hash])) {
+                $this->fileCache[$hash] = $file;
             }
-            return null;
-        }
-        // Cache
-        $hash = md5($file);
-        if (isset($this->fileCache[$hash])) {
-            return $this->fileCache[$hash];
-        }
-
-        // if this is an URL, it can be returned directly
-        $urlScheme = parse_url($file, PHP_URL_SCHEME);
-        if ($urlScheme === 'https' || $urlScheme === 'http' || is_file(Environment::getPublicPath() . '/' . $file)) {
             return $file;
-        }
-
-        // this call also resolves EXT:myext/ files
-        $file = GeneralUtility::getFileAbsFileName($file);
-        if (!$file) {
+        } catch (InvalidFileNameException $e) {
+            // Empty file name
+        } catch (InvalidPathException $e) {
+            if ($this->tt_track) {
+                $this->getTimeTracker()->setTSlogMessage('File path "' . $fileFromSetup . '" contained illegal string "../"!', 3);
+            }
+        } catch (FileDoesNotExistException $e) {
             if ($this->tt_track) {
                 $this->getTimeTracker()->setTSlogMessage('File "' . $fileFromSetup . '" was not found!', 3);
             }
-            return null;
-        }
-
-        $file = PathUtility::stripPathSitePrefix($file);
-
-        // Check if the found file is in the allowed paths
-        foreach ($this->allowedPaths as $val) {
-            if (GeneralUtility::isFirstPartOfStr($file, $val)) {
-                $this->fileCache[$hash] = $file;
-                return $file;
+        } catch (InvalidFileException $e) {
+            if ($this->tt_track) {
+                $this->getTimeTracker()->setTSlogMessage('"' . $fileFromSetup . '" was not located in the allowed paths: (' . implode(',', $this->allowedPaths) . ')', 3);
             }
-        }
-
-        if ($this->tt_track) {
-            $this->getTimeTracker()->setTSlogMessage('"' . $file . '" was not located in the allowed paths: (' . implode(',', $this->allowedPaths) . ')', 3);
         }
         return null;
     }

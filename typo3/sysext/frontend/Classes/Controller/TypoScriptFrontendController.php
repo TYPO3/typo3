@@ -65,6 +65,7 @@ use TYPO3\CMS\Frontend\Http\UrlHandlerInterface;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
  * Class for the built TypoScript based frontend. Instantiated in
@@ -2534,9 +2535,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $this->config['rootLine'] = $this->tmpl->rootLine;
                     // Class for render Header and Footer parts
                     if ($this->pSetup['pageHeaderFooterTemplateFile']) {
-                        $file = $this->tmpl->getFileName($this->pSetup['pageHeaderFooterTemplateFile']);
-                        if ($file) {
+                        try {
+                            $file = GeneralUtility::makeInstance(FilePathSanitizer::class)
+                                ->sanitize((string)$this->pSetup['pageHeaderFooterTemplateFile']);
                             $this->pageRenderer->setTemplateFile($file);
+                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                            // do nothing
                         }
                     }
                 }
