@@ -40,6 +40,7 @@ define([
       minChars: 2,
       width: '100%',
       groupBy: 'typeLabel',
+      noCache: true,
       containerClass: toolbarItem.substr(1, toolbarItem.length),
       appendTo: containerSelector + ' .dropdown-menu',
       forceFixPosition: false,
