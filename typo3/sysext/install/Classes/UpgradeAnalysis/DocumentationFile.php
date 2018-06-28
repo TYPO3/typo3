@@ -110,9 +110,8 @@ class DocumentationFile
         $entry['content'] = file_get_contents($file);
         $entry['parsedContent'] = $this->parseContent($entry['content']);
         $entry['file_hash'] = md5($entry['content']);
-        $issueNumber = $this->extractIssueNumber($headline);
 
-        return [$issueNumber => $entry];
+        return [md5($file) => $entry];
     }
 
     /**
@@ -197,17 +196,6 @@ class DocumentationFile
             $index++;
         }
         return trim($lines[$index]);
-    }
-
-    /**
-     * Get issue number from headline
-     *
-     * @param string $headline
-     * @return int
-     */
-    protected function extractIssueNumber(string $headline): int
-    {
-        return (int)substr($headline, strpos($headline, '#') + 1, 5);
     }
 
     /**
