@@ -87,7 +87,25 @@ class VimeoRenderer implements FileRendererInterface
      * @param bool $usedPathsRelativeToCurrentScript See $file->getPublicUrl()
      * @return string
      */
-    public function render(FileInterface $file, $width, $height, array $options = null, $usedPathsRelativeToCurrentScript = false)
+    public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
+    {
+        $options = $this->collectOptions($options, $file);
+        $src = $this->createVimeoUrl($options, $file);
+        $attributes = $this->collectIframeAttributes($width, $height, $options);
+
+        return sprintf(
+            '<iframe src="%s"%s></iframe>',
+            $src,
+            empty($attributes) ? '' : ' ' . implode(' ', $attributes)
+        );
+    }
+
+    /**
+     * @param array $options
+     * @param FileInterface $file
+     * @return array
+     */
+    protected function collectOptions(array $options, FileInterface $file)
     {
         // Check for an autoplay option at the file reference itself, if not overridden yet.
         if (!isset($options['autoplay']) && $file instanceof FileReference) {
@@ -96,6 +114,25 @@ class VimeoRenderer implements FileRendererInterface
                 $options['autoplay'] = $autoplay;
             }
         }
+
+        if (!isset($options['allow'])) {
+            $options['allow'] = 'fullscreen';
+            if (!empty($options['autoplay'])) {
+                $options['allow'] = 'autoplay; fullscreen';
+            }
+        }
+
+        return $options;
+    }
+
+    /**
+     * @param array $options
+     * @param FileInterface $file
+     * @return string
+     */
+    protected function createVimeoUrl(array $options, FileInterface $file)
+    {
+        $videoId = $this->getVideoIdFromFile($file);
 
         $urlParams = [];
         if (!empty($options['autoplay'])) {
@@ -108,22 +145,33 @@ class VimeoRenderer implements FileRendererInterface
         $urlParams[] = 'byline=' . (int)!empty($options['showinfo']);
         $urlParams[] = 'portrait=0';
 
+        return sprintf('https://player.vimeo.com/video/%s?%s', $videoId, implode('&amp;', $urlParams));
+    }
+
+    /**
+     * @param FileInterface $file
+     * @return string
+     */
+    protected function getVideoIdFromFile(FileInterface $file)
+    {
         if ($file instanceof FileReference) {
             $orgFile = $file->getOriginalFile();
         } else {
             $orgFile = $file;
         }
 
-        $videoId = $this->getOnlineMediaHelper($file)->getOnlineMediaId($orgFile);
-        $src = sprintf('https://player.vimeo.com/video/%s?%s', $videoId, implode('&amp;', $urlParams));
+        return $this->getOnlineMediaHelper($file)->getOnlineMediaId($orgFile);
+    }
 
+    /**
+     * @param int|string $width
+     * @param int|string $height
+     * @param array $options
+     * @return array
+     */
+    protected function collectIframeAttributes($width, $height, array $options)
+    {
         $attributes = ['allowfullscreen'];
-        if (!isset($options['allow'])) {
-            $options['allow'] = 'fullscreen';
-            if (!empty($options['autoplay'])) {
-                $options['allow'] = 'autoplay; fullscreen';
-            }
-        }
         if ((int)$width > 0) {
             $attributes[] = 'width="' . (int)$width . '"';
         }
@@ -138,11 +186,6 @@ class VimeoRenderer implements FileRendererInterface
                 $attributes[] = $key . '="' . htmlspecialchars($options[$key]) . '"';
             }
         }
-
-        return sprintf(
-            '<iframe src="%s"%s></iframe>',
-            $src,
-            empty($attributes) ? '' : ' ' . implode(' ', $attributes)
-        );
+        return $attributes;
     }
 }
