@@ -159,14 +159,6 @@ class PageRepository implements LoggerAwareInterface
     protected $cache_getMountPointInfo = [];
 
     /**
-     * @var array
-     */
-    protected $tableNamesAllowedOnRootLevel = [
-        'sys_file_metadata',
-        'sys_category',
-    ];
-
-    /**
      * Computed properties that are added to database rows.
      *
      * @var array
@@ -658,80 +650,79 @@ class PageRepository implements LoggerAwareInterface
             }
             $hookObject->getRecordOverlay_preProcess($table, $row, $sys_language_content, $OLmode, $this);
         }
-        if ($row['uid'] > 0 && ($row['pid'] > 0 || in_array($table, $this->tableNamesAllowedOnRootLevel, true))) {
-            if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
-                // Return record for ALL languages untouched
-                // TODO: Fix call stack to prevent this situation in the first place
-                if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== -1) {
-                    // Will not be able to work with other tables (Just didn't implement it yet;
-                    // Requires a scan over all tables [ctrl] part for first FIND the table that
-                    // carries localization information for this table (which could even be more
-                    // than a single table) and then use that. Could be implemented, but obviously
-                    // takes a little more....) Will try to overlay a record only if the
-                    // sys_language_content value is larger than zero.
-                    if ($sys_language_content > 0) {
-                        // Must be default language, otherwise no overlaying
-                        if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0) {
-                            // Select overlay record:
-                            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                                ->getQueryBuilderForTable($table);
-                            $queryBuilder->setRestrictions(
-                                GeneralUtility::makeInstance(FrontendRestrictionContainer::class)
-                            );
-                            $olrow = $queryBuilder->select('*')
-                                ->from($table)
-                                ->where(
-                                    $queryBuilder->expr()->eq(
-                                        'pid',
-                                        $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
-                                    ),
-                                    $queryBuilder->expr()->eq(
-                                        $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                                        $queryBuilder->createNamedParameter($sys_language_content, \PDO::PARAM_INT)
-                                    ),
-                                    $queryBuilder->expr()->eq(
-                                        $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                                        $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)
-                                    )
-                                )
-                                ->setMaxResults(1)
-                                ->execute()
-                                ->fetch();
 
-                            $this->versionOL($table, $olrow);
-                            // Merge record content by traversing all fields:
-                            if (is_array($olrow)) {
-                                if (isset($olrow['_ORIG_uid'])) {
-                                    $row['_ORIG_uid'] = $olrow['_ORIG_uid'];
-                                }
-                                if (isset($olrow['_ORIG_pid'])) {
-                                    $row['_ORIG_pid'] = $olrow['_ORIG_pid'];
-                                }
-                                foreach ($row as $fN => $fV) {
-                                    if ($fN !== 'uid' && $fN !== 'pid' && isset($olrow[$fN])) {
-                                        $row[$fN] = $olrow[$fN];
-                                    } elseif ($fN === 'uid') {
-                                        $row['_LOCALIZED_UID'] = $olrow['uid'];
-                                    }
-                                }
-                            } elseif ($OLmode === 'hideNonTranslated' && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0) {
-                                // Unset, if non-translated records should be hidden. ONLY done if the source
-                                // record really is default language and not [All] in which case it is allowed.
-                                unset($row);
+        $tableControl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
+
+        if (!empty($tableControl['languageField'])
+            // Return record for ALL languages untouched
+            // TODO: Fix call stack to prevent this situation in the first place
+            && (int)$row[$tableControl['languageField']] !== -1
+            && !empty($tableControl['transOrigPointerField'])
+            && $row['uid'] > 0
+            && ($row['pid'] > 0 || in_array($tableControl['rootLevel'] ?? false, [true, 1, -1], true))) {
+            // Will try to overlay a record only if the sys_language_content value is larger than zero.
+            if ($sys_language_content > 0) {
+                // Must be default language, otherwise no overlaying
+                if ((int)$row[$tableControl['languageField']] === 0) {
+                    // Select overlay record:
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable($table);
+                    $queryBuilder->setRestrictions(
+                        GeneralUtility::makeInstance(FrontendRestrictionContainer::class)
+                    );
+                    $olrow = $queryBuilder->select('*')
+                        ->from($table)
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'pid',
+                                $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                $tableControl['languageField'],
+                                $queryBuilder->createNamedParameter($sys_language_content, \PDO::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                $tableControl['transOrigPointerField'],
+                                $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)
+                            )
+                        )
+                        ->setMaxResults(1)
+                        ->execute()
+                        ->fetch();
+
+                    $this->versionOL($table, $olrow);
+                    // Merge record content by traversing all fields:
+                    if (is_array($olrow)) {
+                        if (isset($olrow['_ORIG_uid'])) {
+                            $row['_ORIG_uid'] = $olrow['_ORIG_uid'];
+                        }
+                        if (isset($olrow['_ORIG_pid'])) {
+                            $row['_ORIG_pid'] = $olrow['_ORIG_pid'];
+                        }
+                        foreach ($row as $fN => $fV) {
+                            if ($fN !== 'uid' && $fN !== 'pid' && isset($olrow[$fN])) {
+                                $row[$fN] = $olrow[$fN];
+                            } elseif ($fN === 'uid') {
+                                $row['_LOCALIZED_UID'] = $olrow['uid'];
                             }
-                        } elseif ($sys_language_content != $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]) {
-                            unset($row);
                         }
-                    } else {
-                        // When default language is displayed, we never want to return a record carrying
-                        // another language!
-                        if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0) {
-                            unset($row);
-                        }
+                    } elseif ($OLmode === 'hideNonTranslated' && (int)$row[$tableControl['languageField']] === 0) {
+                        // Unset, if non-translated records should be hidden. ONLY done if the source
+                        // record really is default language and not [All] in which case it is allowed.
+                        unset($row);
                     }
+                } elseif ($sys_language_content != $row[$tableControl['languageField']]) {
+                    unset($row);
+                }
+            } else {
+                // When default language is displayed, we never want to return a record carrying
+                // another language!
+                if ($row[$tableControl['languageField']] > 0) {
+                    unset($row);
                 }
             }
         }
+
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
             if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {
@@ -739,6 +730,7 @@ class PageRepository implements LoggerAwareInterface
             }
             $hookObject->getRecordOverlay_postProcess($table, $row, $sys_language_content, $OLmode, $this);
         }
+
         return $row;
     }
 
