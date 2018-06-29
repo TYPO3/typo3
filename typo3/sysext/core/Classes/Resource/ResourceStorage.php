@@ -1678,6 +1678,7 @@ class ResourceStorage implements ResourceStorageInterface
     {
         // Check if user is allowed to edit
         $this->assureFileWritePermissions($file);
+        $this->emitPreFileSetContentsSignal($file, $contents);
         // Call driver method to update the file and update file index entry afterwards
         $result = $this->driver->setFileContents($file->getIdentifier(), $contents);
         if ($file instanceof File) {
@@ -1702,6 +1703,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function createFile($fileName, Folder $targetFolderObject)
     {
         $this->assureFileAddPermissions($targetFolderObject, $fileName);
+        $this->emitPreFileCreateSignal($fileName, $targetFolderObject);
         $newFileIdentifier = $this->driver->createFile($fileName, $targetFolderObject->getIdentifier());
         $this->emitPostFileCreateSignal($newFileIdentifier, $targetFolderObject);
         return $this->getResourceFactoryInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $newFileIdentifier);
@@ -2565,6 +2567,17 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
+     * Emits the file pre-create signal
+     *
+     * @param string $fileName
+     * @param Folder $targetFolder
+     */
+    protected function emitPreFileCreateSignal(string $fileName, Folder $targetFolder)
+    {
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFileCreate, [$fileName, $targetFolder]);
+    }
+
+    /**
      * Emits the file post-create signal
      *
      * @param string $newFileIdentifier
@@ -2593,6 +2606,17 @@ class ResourceStorage implements ResourceStorageInterface
     protected function emitPostFileDeleteSignal(FileInterface $file)
     {
         $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFileDelete, [$file]);
+    }
+
+    /**
+     * Emits the file pre-set-contents signal
+     *
+     * @param FileInterface $file
+     * @param mixed $content
+     */
+    protected function emitPreFileSetContentsSignal(FileInterface $file, $content)
+    {
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFileSetContents, [$file, $content]);
     }
 
     /**
