@@ -255,8 +255,6 @@ class DataStructureIdentifierHook
                 $sheetElements['settings.finishers.' . $finisherIdentifier . '.' . $optionKey] = $elementConfiguration;
             }
 
-            ksort($sheetElements);
-
             $sheet[$sheetIdentifier]['ROOT']['el'] = $sheetElements;
             ArrayUtility::mergeRecursiveWithOverrule($sheets['sheets'], $sheet);
         }
