@@ -589,6 +589,14 @@ body {
             .t3-form-form-composit-element-selected {
                 outline-color: $brand-primary;
             }
+
+            & > .ui-sortable-handle {
+                margin: 0;
+
+                div.t3-form-form-element-body {
+                    border-bottom: 0;
+                }
+            }
         }
 
         .t3-form-element-composit.sortable-hover > .ui-sortable-handle,
@@ -622,6 +630,10 @@ body {
             margin-bottom: 1em;
             border: 1px solid $panel-default-heading-bg;
             background-color: #fff;
+
+            &:first-of-type {
+                margin-top: 1em;
+            }
 
             &:hover {
                 .t3-form-validator-list {
