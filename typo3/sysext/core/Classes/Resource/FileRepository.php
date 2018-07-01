@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
@@ -83,10 +82,6 @@ class FileRepository extends AbstractRepository
                 ->getQueryBuilderForTable('sys_file_reference');
 
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-            if ($GLOBALS['TSFE']->sys_page->showHiddenRecords) {
-                $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
-            }
-
             $res = $queryBuilder
                 ->select('uid')
                 ->from('sys_file_reference')
