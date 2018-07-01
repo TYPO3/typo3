@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Frontend\Aspect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+
 /**
  * Class FileMetadataTranslationAspect
  *
@@ -38,23 +41,14 @@ class FileMetadataOverlayAspect
             return;
         }
         $overlaidMetaData = $data->getArrayCopy();
-        $this->getTsfe()->sys_page->versionOL('sys_file_metadata', $overlaidMetaData);
-        $overlaidMetaData = $this->getTsfe()->sys_page->getRecordOverlay(
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $pageRepository->versionOL('sys_file_metadata', $overlaidMetaData);
+        $overlaidMetaData = $pageRepository->getLanguageOverlay(
             'sys_file_metadata',
-            $overlaidMetaData,
-            $this->getTsfe()->sys_language_content,
-            $this->getTsfe()->sys_language_contentOL
+            $overlaidMetaData
         );
         if ($overlaidMetaData !== null) {
             $data->exchangeArray($overlaidMetaData);
         }
-    }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getTsfe()
-    {
-        return $GLOBALS['TSFE'];
     }
 }

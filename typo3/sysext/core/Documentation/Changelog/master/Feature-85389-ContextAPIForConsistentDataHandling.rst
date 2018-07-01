@@ -58,6 +58,7 @@ The new Context API replaces lots of places known for a very long time:
 * DateTimeAspect replaces :php:`$GLOBALS['SIM_EXEC_TIME']` and :php:`$GLOBALS['EXEC_TIME']`
 * VisibilityAspect replaces :php:`$GLOBALS['TSFE']->showHiddenPages` and :php:`$GLOBALS['TSFE']->showHiddenRecords`
 * WorkspaceAspect replaces :php:`$GLOBALS['BE_USER']->workspace`
+* LanguageAspect replaces various properties related to language Id, overlay and fallback logic, mostly within Frontend
 * UserAspect replaces various calls and checks on :php:`$GLOBALS['BE_USER']` and :php:`$GLOBALS['TSFE']->fe_user`
 options when only some information is needed.
 
@@ -69,6 +70,7 @@ TYPO3 Core comes with the following Aspects within the global context:
 * backend.user
 * workspace
 * visibility
+* language
 
 Usage
 =====
@@ -115,7 +117,7 @@ Further development
 ===================
 
 There will be additional aspects that will be introduced in TYPO3 Core. Also see PSR-15 middlewares shipped with TYPO3
-Frontend or Backend to see how aspects can be modified.
+Frontend or Backend to see how aspects can be modified and set.
 
 Aspects eventually will become the successor of Database Restrictions, as they contain all information
 necessary to restrict a database query.

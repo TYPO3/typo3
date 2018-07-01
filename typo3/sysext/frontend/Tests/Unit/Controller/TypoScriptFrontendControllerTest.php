@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -44,6 +45,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         GeneralUtility::flushInternalRuntimeCaches();
         $this->subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
+        $this->subject->_set('context', new Context());
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '170928423746123078941623042360abceb12341234231';
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();

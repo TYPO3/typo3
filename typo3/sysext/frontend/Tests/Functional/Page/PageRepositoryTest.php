@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Page;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -81,8 +82,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getMenuPageOverlay()
     {
-        $subject = new PageRepository();
-        $subject->sys_language_uid = 1;
+        $subject = new PageRepository(new Context([
+            'language' => new LanguageAspect(1)
+        ]));
 
         $rows = $subject->getMenu([2, 3], 'uid, title');
         $this->assertEquals('Attrappe 1-2-5', $rows[5]['title']);
@@ -150,8 +152,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPagesOverlayByIdSingle()
     {
-        $subject = new PageRepository();
-        $subject->sys_language_uid = 1;
+        $subject = new PageRepository(new Context([
+            'language' => new LanguageAspect(1)
+        ]));
         $rows = $subject->getPagesOverlay([1]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(1, $rows);
@@ -169,8 +172,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPagesOverlayByIdMultiple()
     {
-        $subject = new PageRepository();
-        $subject->sys_language_uid = 1;
+        $subject = new PageRepository(new Context([
+            'language' => new LanguageAspect(1)
+        ]));
         $rows = $subject->getPagesOverlay([1, 5]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(2, $rows);
@@ -195,8 +199,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPagesOverlayByIdMultipleSomeNotOverlaid()
     {
-        $subject = new PageRepository();
-        $subject->sys_language_uid = 1;
+        $subject = new PageRepository(new Context([
+            'language' => new LanguageAspect(1)
+        ]));
         $rows = $subject->getPagesOverlay([1, 4, 5, 8]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(2, $rows);
@@ -220,7 +225,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $subject = new PageRepository();
         $origRow = $subject->getPage(1);
 
-        $subject->sys_language_uid = 1;
+        $subject = new PageRepository(new Context([
+            'language' => new LanguageAspect(1)
+        ]));
         $rows = $subject->getPagesOverlay([$origRow]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(1, $rows);
@@ -242,7 +249,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $orig1 = $subject->getPage(1);
         $orig2 = $subject->getPage(5);
 
-        $subject->sys_language_uid = 1;
+        $subject = new PageRepository(new Context([
+            'language' => new LanguageAspect(1)
+        ]));
         $rows = $subject->getPagesOverlay([1 => $orig1, 5 => $orig2]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(2, $rows);
@@ -272,7 +281,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $orig2 = $subject->getPage(7);
         $orig3 = $subject->getPage(9);
 
-        $subject->sys_language_uid = 1;
+        $subject = new PageRepository(new Context([
+            'language' => new LanguageAspect(1)
+        ]));
         $rows = $subject->getPagesOverlay([$orig1, $orig2, $orig3]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(3, $rows);

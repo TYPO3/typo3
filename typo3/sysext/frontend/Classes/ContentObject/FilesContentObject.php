@@ -189,15 +189,8 @@ class FilesContentObject extends AbstractContentObject
             $element = $pageRepository->getRawRecord($referencesForeignTable, $referencesForeignUid);
 
             $pageRepository->versionOL($referencesForeignTable, $element, true);
-            if ($referencesForeignTable === 'pages') {
-                $element = $pageRepository->getPageOverlay($element);
-            } else {
-                $element = $pageRepository->getRecordOverlay(
-                    $referencesForeignTable,
-                    $element,
-                    $GLOBALS['TSFE']->sys_language_content,
-                    $GLOBALS['TSFE']->sys_language_contentOL
-                );
+            if (is_array($element)) {
+                $element = $pageRepository->getLanguageOverlay($referencesForeignTable, $element);
             }
         }
 

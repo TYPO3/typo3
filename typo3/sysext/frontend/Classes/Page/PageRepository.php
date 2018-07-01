@@ -18,6 +18,8 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -55,6 +57,7 @@ class PageRepository implements LoggerAwareInterface
         'workspaceCache' => 'Using $workspaceCache of class PageRepository from the outside is discouraged, as this only reflects a local runtime cache.',
         'error_getRootLine' => 'Using $error_getRootLine of class PageRepository from the outside is deprecated as this property only exists for legacy reasons.',
         'error_getRootLine_failPid' => 'Using $error_getRootLine_failPid of class PageRepository from the outside is deprecated as this property only exists for legacy reasons.',
+        'sys_language_uid' => 'Using $sys_language_uid of class PageRepository from the outside is deprecated as this information is now stored within the Context Language Aspect given by the constructor.',
     ];
 
     /**
@@ -75,8 +78,10 @@ class PageRepository implements LoggerAwareInterface
 
     /**
      * @var int
+     * @deprecated will be removed in TYPO3 v10, all occurrences should be replaced with the language->id() aspect property in TYPO3 v10.0
+     * However, the usage within the class is kept as the property could be overwritten by third-party classes
      */
-    public $sys_language_uid = 0;
+    protected $sys_language_uid = 0;
 
     /**
      * If TRUE, versioning preview of other record versions is allowed. THIS MUST
@@ -200,6 +205,7 @@ class PageRepository implements LoggerAwareInterface
         if (isset($GLOBALS['TCA']['pages'])) {
             $this->init($this->context->getPropertyFromAspect('visibility', 'includeHiddenPages'));
             $this->where_groupAccess = $this->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
+            $this->sys_language_uid = (int)$this->context->getPropertyFromAspect('language', 'id', 0);
         }
     }
 
@@ -439,6 +445,42 @@ class PageRepository implements LoggerAwareInterface
         }
         $this->cache_getPageIdFromAlias[$alias] = 0;
         return 0;
+    }
+
+    /**
+     * Master helper method to overlay a record to a language.
+     *
+     * Be aware that for pages the languageId is taken, and for all other records the contentId.
+     * This might change through a feature switch in the future.
+     *
+     * @param string $table the name of the table, should be a TCA table with localization enabled
+     * @param array $row the current (full-fletched) record.
+     * @return array|null
+     */
+    public function getLanguageOverlay(string $table, array $row)
+    {
+        // table is not localizable, so return directly
+        if (!isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])) {
+            return $row;
+        }
+        try {
+            /** @var LanguageAspect $languageAspect */
+            $languageAspect = $this->context->getAspect('language');
+            if ($languageAspect->doOverlays()) {
+                if ($table === 'pages') {
+                    return $this->getPageOverlay($row, $languageAspect->getId());
+                }
+                return $this->getRecordOverlay(
+                    $table,
+                    $row,
+                    $languageAspect->getContentId(),
+                    $languageAspect->getOverlayType() === $languageAspect::OVERLAYS_MIXED ? '1' : 'hideNonTranslated'
+                );
+            }
+        } catch (AspectNotFoundException $e) {
+            // no overlays
+        }
+        return $row;
     }
 
     /**
@@ -1071,7 +1113,7 @@ class PageRepository implements LoggerAwareInterface
         } else {
             $ignoreMPerrors = false;
         }
-        $rootline = GeneralUtility::makeInstance(RootlineUtility::class, $uid, $MP, $this);
+        $rootline = GeneralUtility::makeInstance(RootlineUtility::class, $uid, $MP, $this->context);
         try {
             return $rootline->get();
         } catch (\RuntimeException $ex) {

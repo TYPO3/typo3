@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -105,20 +107,16 @@ class Typo3QuerySettings implements QuerySettingsInterface
         if (TYPO3_MODE === 'BE' && $configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')) {
             $this->setIgnoreEnableFields(true);
         }
-
-        // TYPO3 CMS language defaults
-        $this->setLanguageUid(0);
-        $this->setLanguageMode(null);
-        $this->setLanguageOverlayMode(false);
-
-        // Set correct language uid for frontend handling
-        if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE'])) {
-            $this->setLanguageUid((int)$GLOBALS['TSFE']->sys_language_content);
-            $this->setLanguageOverlayMode($GLOBALS['TSFE']->sys_language_contentOL ?: false);
-            $this->setLanguageMode($GLOBALS['TSFE']->sys_language_mode ?: null);
-        } elseif ((int)GeneralUtility::_GP('L')) {
-            // Set language from 'L' parameter
-            $this->setLanguageUid((int)GeneralUtility::_GP('L'));
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
+        $this->setLanguageUid($languageAspect->getContentId());
+        if ($languageAspect->getContentId()) {
+            $this->setLanguageOverlayMode($languageAspect->getLegacyOverlayType() ?: false);
+            $this->setLanguageMode($languageAspect->getLegacyLanguageMode() ?: null);
+        } else {
+            // Kept for backwards-compatibility
+            $this->setLanguageOverlayMode(false);
+            $this->setLanguageMode(null);
         }
     }
 

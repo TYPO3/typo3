@@ -94,12 +94,8 @@ class RecordsContentObject extends AbstractContentObject
                         // Versioning preview
                         $GLOBALS['TSFE']->sys_page->versionOL($val['table'], $row);
                         // Language overlay
-                        if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
-                            if ($val['table'] === 'pages') {
-                                $row = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
-                            } else {
-                                $row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($val['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
-                            }
+                        if (is_array($row)) {
+                            $row = $GLOBALS['TSFE']->sys_page->getLanguageOverlay($val['table'], $row);
                         }
                     }
                     // Might be unset during the overlay process

@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\SingletonInterface;
  * - visibility
  * - frontend.user
  * - backend.user
+ * - language
  */
 class Context implements SingletonInterface
 {
@@ -78,6 +79,9 @@ class Context implements SingletonInterface
         }
         if (!$this->hasAspect('workspace')) {
             $this->setAspect('workspace', new WorkspaceAspect());
+        }
+        if (!$this->hasAspect('language')) {
+            $this->setAspect('language', new LanguageAspect());
         }
     }
 

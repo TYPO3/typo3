@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -550,12 +552,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * (master language) - but not necessarily the content which could be falling
      * back to default (see sys_language_content)
      * @var int
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - use LanguageAspect->getId() instead.
      */
     public $sys_language_uid = 0;
 
     /**
      * Site language mode for content fall back.
      * @var string
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - use LanguageAspect->getFallbackChain() instead.
      */
     public $sys_language_mode = '';
 
@@ -563,8 +567,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Site content selection uid (can be different from sys_language_uid if content
      * is to be selected from a fall-back language. Depends on sys_language_mode)
      * @var int
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - use LanguageAspect->getContentId() instead.
      */
-    public $sys_language_content = 0;
+    protected $sys_language_content = 0;
 
     /**
      * Site content overlay flag; If set - and sys_language_content is > 0 - ,
@@ -574,8 +579,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * This flag is set based on TypoScript config.sys_language_overlay setting
      *
      * @var int|string
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - use LanguageAspect->getOverlayType() instead.
      */
-    public $sys_language_contentOL = 0;
+    protected $sys_language_contentOL = 0;
 
     /**
      * Is set to the iso code of the sys_language_content if that is properly defined
@@ -1598,12 +1604,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (empty($this->page) || (int)$this->page[$GLOBALS['TCA']['pages']['ctrl']['languageField']] === 0) {
             return;
         }
-        $this->sys_language_uid = (int)$this->page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
-        $this->sys_language_content = $this->sys_language_uid;
+        $languageId = (int)$this->page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
         $this->page = $this->sys_page->getPage($this->page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']]);
+        $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $languageId));
         $this->id = $this->page['uid'];
         // For common best-practice reasons, this is set, however, will be optional for new routing mechanisms
-        $this->mergingWithGetVars(['L' => $this->sys_language_uid]);
+        $this->mergingWithGetVars(['L' => $languageId]);
     }
 
     /**
@@ -2605,99 +2611,97 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // Get values from site language
         if ($siteLanguage) {
-            $this->sys_language_uid = ($this->sys_language_content = $siteLanguage->getLanguageId());
-            $this->sys_language_mode = $siteLanguage->getFallbackType();
-            if ($this->sys_language_mode === 'fallback') {
-                $fallbackOrder = $siteLanguage->getFallbackLanguageIds();
-                $fallbackOrder[] = 'pageNotFound';
-            }
+            $languageAspect = LanguageAspectFactory::createFromSiteLanguage($siteLanguage);
         } else {
-            // Get values from TypoScript, if not set before
-            if ($this->sys_language_uid === 0) {
-                $this->sys_language_uid = ($this->sys_language_content = (int)$this->config['config']['sys_language_uid']);
-            }
-            list($this->sys_language_mode, $fallbackOrder) = GeneralUtility::trimExplode(';', $this->config['config']['sys_language_mode']);
-            if (!empty($fallbackOrder)) {
-                $fallBackOrder = GeneralUtility::trimExplode(',', $fallbackOrder);
-            } else {
-                $fallBackOrder = [0];
-            }
+            $languageAspect = LanguageAspectFactory::createFromTypoScript($this->config['config'] ?? []);
         }
 
-        $this->sys_language_contentOL = $this->config['config']['sys_language_overlay'];
+        $languageId = $languageAspect->getId();
+        $languageContentId = $languageAspect->getContentId();
+
         // If sys_language_uid is set to another language than default:
-        if ($this->sys_language_uid > 0) {
+        if ($languageAspect->getId() > 0) {
             // check whether a shortcut is overwritten by a translated page
             // we can only do this now, as this is the place where we get
             // to know about translations
-            $this->checkTranslatedShortcut();
+            $this->checkTranslatedShortcut($languageAspect->getId());
             // Request the overlay record for the sys_language_uid:
-            $olRec = $this->sys_page->getPageOverlay($this->id, $this->sys_language_uid);
+            $olRec = $this->sys_page->getPageOverlay($this->id, $languageAspect->getId());
             if (empty($olRec)) {
-                // If no OL record exists and a foreign language is asked for...
-                if ($this->sys_language_uid) {
-                    // If requested translation is not available:
-                    if (GeneralUtility::hideIfNotTranslated($this->page['l18n_cfg'])) {
-                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                            $GLOBALS['TYPO3_REQUEST'],
-                            'Page is not available in the requested language.',
-                            ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
-                        );
-                        $this->sendResponseAndExit($response);
-                    } else {
-                        switch ((string)$this->sys_language_mode) {
-                            case 'strict':
-                                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                                    $GLOBALS['TYPO3_REQUEST'],
-                                    'Page is not available in the requested language (strict).',
-                                    ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE]
-                                );
-                                $this->sendResponseAndExit($response);
-                                break;
-                            case 'fallback':
-                            case 'content_fallback':
-                                // Setting content uid (but leaving the sys_language_uid) when a content_fallback
-                                // value was found.
-                                foreach ($fallBackOrder ?? [] as $orderValue) {
-                                    if ($orderValue === '0' || $orderValue === 0 || $orderValue === '') {
-                                        $this->sys_language_content = 0;
-                                        break;
-                                    }
-                                    if (MathUtility::canBeInterpretedAsInteger($orderValue) && !empty($this->sys_page->getPageOverlay($this->id, (int)$orderValue))) {
-                                        $this->sys_language_content = (int)$orderValue;
-                                        break;
-                                    }
-                                    if ($orderValue === 'pageNotFound') {
-                                        // The existing fallbacks have not been found, but instead of continuing
-                                        // page rendering with default language, a "page not found" message should be shown
-                                        // instead.
-                                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                                            $GLOBALS['TYPO3_REQUEST'],
-                                            'Page is not available in the requested language (fallbacks did not apply).',
-                                            ['code' => PageAccessFailureReasons::LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE]
-                                        );
-                                        $this->sendResponseAndExit($response);
-                                    }
+                // If requested translation is not available:
+                if (GeneralUtility::hideIfNotTranslated($this->page['l18n_cfg'])) {
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $GLOBALS['TYPO3_REQUEST'],
+                        'Page is not available in the requested language.',
+                        ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
+                    );
+                    $this->sendResponseAndExit($response);
+                } else {
+                    switch ((string)$languageAspect->getLegacyLanguageMode()) {
+                        case 'strict':
+                            $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                                $GLOBALS['TYPO3_REQUEST'],
+                                'Page is not available in the requested language (strict).',
+                                ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE]
+                            );
+                            $this->sendResponseAndExit($response);
+                            break;
+                        case 'fallback':
+                        case 'content_fallback':
+                            // Setting content uid (but leaving the sys_language_uid) when a content_fallback
+                            // value was found.
+                            foreach ($languageAspect->getFallbackChain() ?? [] as $orderValue) {
+                                if ($orderValue === '0' || $orderValue === 0 || $orderValue === '') {
+                                    $languageContentId = 0;
+                                    break;
                                 }
-                                break;
-                            case 'ignore':
-                                $this->sys_language_content = $this->sys_language_uid;
-                                break;
-                            default:
-                                // Default is that everything defaults to the default language...
-                                $this->sys_language_uid = ($this->sys_language_content = 0);
-                        }
+                                if (MathUtility::canBeInterpretedAsInteger($orderValue) && !empty($this->sys_page->getPageOverlay($this->id, (int)$orderValue))) {
+                                    $languageContentId = (int)$orderValue;
+                                    break;
+                                }
+                                if ($orderValue === 'pageNotFound') {
+                                    // The existing fallbacks have not been found, but instead of continuing
+                                    // page rendering with default language, a "page not found" message should be shown
+                                    // instead.
+                                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                                        $GLOBALS['TYPO3_REQUEST'],
+                                        'Page is not available in the requested language (fallbacks did not apply).',
+                                        ['code' => PageAccessFailureReasons::LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE]
+                                    );
+                                    $this->sendResponseAndExit($response);
+                                }
+                            }
+                            break;
+                        case 'ignore':
+                            $languageContentId = $languageAspect->getId();
+                            break;
+                        default:
+                            // Default is that everything defaults to the default language...
+                            $languageId = ($languageContentId = 0);
                     }
                 }
             } else {
                 // Setting sys_language if an overlay record was found (which it is only if a language is used)
-                $this->page = $this->sys_page->getPageOverlay($this->page, $this->sys_language_uid);
+                $this->page = $this->sys_page->getPageOverlay($this->page, $languageAspect->getId());
             }
+
+            // Define the language aspect again now
+            $languageAspect = GeneralUtility::makeInstance(
+                LanguageAspect::class,
+                $languageId,
+                $languageContentId,
+                $languageAspect->getOverlayType(),
+                $languageAspect->getFallbackChain()
+            );
         }
-        // Setting sys_language_uid inside sys-page:
-        $this->sys_page->sys_language_uid = $this->sys_language_uid;
+
+        // Set the language aspect
+        $this->context->setAspect('language', $languageAspect);
+
+        // Setting sys_language_uid inside sys-page by creating a new page repository
+        $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         // If default translation is not available:
-        if ((!$this->sys_language_uid || !$this->sys_language_content) && GeneralUtility::hideIfDefaultLanguage($this->page['l18n_cfg'])) {
+        if ((!$languageAspect->getContentId() || !$languageAspect->getId()) && GeneralUtility::hideIfDefaultLanguage($this->page['l18n_cfg'])) {
             $message = 'Page is not available in default language.';
             $this->logger->error($message);
             $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
@@ -2707,17 +2711,20 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             );
             $this->sendResponseAndExit($response);
         }
-        $this->updateRootLinesWithTranslations();
+
+        if ($languageAspect->getId() > 0) {
+            $this->updateRootLinesWithTranslations();
+        }
 
         // Finding the ISO code for the currently selected language
         // fetched by the sys_language record when not fetching content from the default language
         if ($siteLanguage = $this->getCurrentSiteLanguage()) {
             $this->sys_language_isocode = $siteLanguage->getTwoLetterIsoCode();
-        } elseif ($this->sys_language_content > 0) {
+        } elseif ($languageAspect->getContentId() > 0) {
             // using sys_language_content because the ISO code only (currently) affect content selection from FlexForms - which should follow "sys_language_content"
             // Set the fourth parameter to TRUE in the next two getRawRecord() calls to
             // avoid versioning overlay to be applied as it generates an SQL error
-            $sys_language_row = $this->sys_page->getRawRecord('sys_language', $this->sys_language_content, 'language_isocode,static_lang_isocode');
+            $sys_language_row = $this->sys_page->getRawRecord('sys_language', $languageAspect->getContentId(), 'language_isocode,static_lang_isocode');
             if (is_array($sys_language_row) && !empty($sys_language_row['language_isocode'])) {
                 $this->sys_language_isocode = $sys_language_row['language_isocode'];
             }
@@ -2746,10 +2753,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function updateRootLinesWithTranslations()
     {
-        if ($this->sys_language_uid) {
-            $this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
-            $this->tmpl->updateRootlineData($this->rootLine);
-        }
+        $this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
+        $this->tmpl->updateRootlineData($this->rootLine);
     }
 
     /**
@@ -2789,11 +2794,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * target than the original language page.
      * If that is the case, things get corrected to follow that alternative
      * shortcut
+     * @param int $languageId
      */
-    protected function checkTranslatedShortcut()
+    protected function checkTranslatedShortcut(int $languageId)
     {
         if (!is_null($this->originalShortcutPage)) {
-            $originalShortcutPageOverlay = $this->sys_page->getPageOverlay($this->originalShortcutPage['uid'], $this->sys_language_uid);
+            $originalShortcutPageOverlay = $this->sys_page->getPageOverlay($this->originalShortcutPage['uid'], $languageId);
             if (!empty($originalShortcutPageOverlay['shortcut']) && $originalShortcutPageOverlay['shortcut'] != $this->id) {
                 // the translation of the original shortcut page has a different shortcut target!
                 // set the correct page and id
@@ -4911,10 +4917,21 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function __isset(string $propertyName)
     {
         switch ($propertyName) {
+            case 'sys_language_uid':
+                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.');
+                return isset($this->$propertyName);
+            case 'sys_language_content':
+                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.');
+                return isset($this->$propertyName);
+            case 'sys_language_contentOL':
+                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.');
+                return isset($this->$propertyName);
+            case 'sys_language_mode':
+                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.');
+                return isset($this->$propertyName);
             case 'loginUser':
                 trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.');
                 return isset($this->$propertyName);
-                break;
             case 'gr_list':
                 trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
                 return isset($this->$propertyName);
@@ -4943,10 +4960,22 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function __get(string $propertyName)
     {
         switch ($propertyName) {
+            case 'sys_language_uid':
+                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.');
+                return $this->context->getPropertyFromAspect('language', 'id', 0);
+            case 'sys_language_content':
+                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.');
+                return $this->context->getPropertyFromAspect('language', 'contentId', 0);
+            case 'sys_language_contentOL':
+                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.');
+                return $this->context->getPropertyFromAspect('language', 'legacyOverlayType', '0');
+                break;
+            case 'sys_language_mode':
+                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.');
+                return $this->context->getPropertyFromAspect('language', 'legacyLanguageMode', '');
             case 'loginUser':
                 trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.');
                 return $this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false);
-                break;
             case 'gr_list':
                 trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
                 return implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
@@ -4977,6 +5006,66 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function __set(string $propertyName, $propertyValue)
     {
         switch ($propertyName) {
+            case 'sys_language_uid':
+                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.');
+                /** @var LanguageAspect $aspect */
+                $aspect = $this->context->getAspect('language');
+                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, (int)$propertyValue, $aspect->getContentId(), $aspect->getOverlayType(), $aspect->getFallbackChain()));
+                break;
+            case 'sys_language_content':
+                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.');
+                /** @var LanguageAspect $aspect */
+                $aspect = $this->context->getAspect('language');
+                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), (int)$propertyValue, $aspect->getOverlayType(), $aspect->getFallbackChain()));
+                break;
+            case 'sys_language_contentOL':
+                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.');
+                /** @var LanguageAspect $aspect */
+                $aspect = $this->context->getAspect('language');
+                switch ((string)$propertyValue) {
+                    case 'hideNonTranslated':
+                        $overlayType = LanguageAspect::OVERLAYS_ON_WITH_FLOATING;
+                        break;
+                    case '1':
+                        $overlayType = LanguageAspect::OVERLAYS_MIXED;
+                        break;
+                    default:
+                        $overlayType = LanguageAspect::OVERLAYS_OFF;
+                }
+                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), $overlayType, $aspect->getFallbackChain()));
+                break;
+            case 'sys_language_mode':
+                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.');
+                /** @var LanguageAspect $aspect */
+                $aspect = $this->context->getAspect('language');
+                switch ((string)$propertyValue) {
+                    case 'strict':
+                        $fallBackOrder = [];
+                        break;
+                    // Ignore anything if a page cannot be found, and resolve pageId=0 instead.
+                    case 'ignore':
+                        $fallBackOrder = [-1];
+                        break;
+                    case 'fallback':
+                    case 'content_fallback':
+                        if (!empty($propertyValue)) {
+                            $fallBackOrder = GeneralUtility::trimExplode(',', $propertyValue);
+                            // no strict typing explictly done here
+                            if (!in_array(0, $fallBackOrder) && !in_array('pageNotFound', $fallBackOrder)) {
+                                $fallBackOrder[] = 'pageNotFound';
+                            }
+                        } else {
+                            $fallBackOrder = [0];
+                        }
+                        break;
+                    case '':
+                        $fallBackOrder = ['off'];
+                        break;
+                    default:
+                        $fallBackOrder = [0];
+                }
+                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), $aspect->getOverlayType(), $fallBackOrder));
+                break;
             case 'loginUser':
                 trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.');
                 /** @var UserAspect $aspect */
@@ -5025,6 +5114,28 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function __unset(string $propertyName)
     {
         switch ($propertyName) {
+            case 'sys_language_uid':
+                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.');
+                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class));
+                break;
+            case 'sys_language_content':
+                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.');
+                /** @var LanguageAspect $aspect */
+                $aspect = $this->context->getAspect('language');
+                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), 0, $aspect->getOverlayType()));
+                break;
+            case 'sys_language_contentOL':
+                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.');
+                /** @var LanguageAspect $aspect */
+                $aspect = $this->context->getAspect('language');
+                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), LanguageAspect::OVERLAYS_OFF));
+                break;
+            case 'sys_language_mode':
+                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.');
+                /** @var LanguageAspect $aspect */
+                $aspect = $this->context->getAspect('language');
+                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), $aspect->getOverlayType(), ['off']));
+                break;
             case 'loginUser':
                 /** @var UserAspect $aspect */
                 $aspect = $this->context->getAspect('frontend.user');

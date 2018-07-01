@@ -3,9 +3,24 @@ declare(strict_types = 1);
 
 namespace TYPO3\CMS\Adminpanel\Service;
 
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -30,13 +45,15 @@ class EditToolbarService
      */
     public function createToolbar(): string
     {
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $tsfe = $this->getTypoScriptFrontendController();
         //  If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
         $moduleName = BackendUtility::getPagesTSconfig($tsfe->page['uid'])['mod.']['newContentElementWizard.']['override'] ?? 'new_content_element';
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $perms = $this->getBackendUser()->calcPerms($tsfe->page);
-        $langAllowed = $this->getBackendUser()->checkLanguageAccess($tsfe->sys_language_uid);
+        $langAllowed = $this->getBackendUser()->checkLanguageAccess($languageAspect->getId());
         $id = $tsfe->id;
         $returnUrl = GeneralUtility::getIndpEnv('REQUEST_URI');
         $classes = 'typo3-adminPanel-btn typo3-adminPanel-btn-default';
@@ -69,8 +86,8 @@ class EditToolbarService
                 'id' => $id,
                 'returnUrl' => $returnUrl,
             ];
-            if (!empty($tsfe->sys_language_uid)) {
-                $linkParameters['sys_language_uid'] = $tsfe->sys_language_uid;
+            if (!empty($languageAspect->getId())) {
+                $linkParameters['sys_language_uid'] = $languageAspect->getId();
             }
             $link = (string)$uriBuilder->buildUriFromRoute($moduleName, $linkParameters);
             $icon = $iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render();
@@ -156,7 +173,7 @@ class EditToolbarService
         }
 
         // Edit Page Overlay
-        if ($perms & Permission::PAGE_EDIT && $tsfe->sys_language_uid && $langAllowed) {
+        if ($perms & Permission::PAGE_EDIT && $languageAspect->getId() > 0 && $langAllowed) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('pages');
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
@@ -170,7 +187,7 @@ class EditToolbarService
                     ),
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($tsfe->sys_language_uid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($languageAspect->getId(), \PDO::PARAM_INT)
                     )
                 )
                 ->setMaxResults(1)

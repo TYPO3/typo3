@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -36,11 +39,6 @@ class RootlineUtilityTest extends UnitTestCase
     protected $subject;
 
     /**
-     * @var PageRepository|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $pageContextMock;
-
-    /**
      * @throws \ReflectionException
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
@@ -51,11 +49,10 @@ class RootlineUtilityTest extends UnitTestCase
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('cache_rootline')->willReturn($cacheFrontendProphecy->reveal());
 
-        $this->pageContextMock = $this->createMock(PageRepository::class);
         $this->subject = $this->getAccessibleMock(
             RootlineUtility::class,
             ['enrichWithRelationFields'],
-            [1, '', $this->pageContextMock]
+            [1, '', new Context()]
         );
     }
 
@@ -87,7 +84,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function isMountedPageWithoutMountPointsReturnsFalse(): void
     {
-        $this->subject->__construct(1, '', $this->pageContextMock);
+        $this->subject->__construct(1, '', new Context());
         $this->assertFalse($this->subject->isMountedPage());
     }
 
@@ -96,7 +93,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function isMountedPageWithMatchingMountPointParameterReturnsTrue(): void
     {
-        $this->subject->__construct(1, '1-99', $this->pageContextMock);
+        $this->subject->__construct(1, '1-99', new Context());
         $this->assertTrue($this->subject->isMountedPage());
     }
 
@@ -105,7 +102,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function isMountedPageWithNonMatchingMountPointParameterReturnsFalse(): void
     {
-        $this->subject->__construct(1, '99-99', $this->pageContextMock);
+        $this->subject->__construct(1, '99-99', new Context());
         $this->assertFalse($this->subject->isMountedPage());
     }
 
@@ -117,7 +114,7 @@ class RootlineUtilityTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1343464100);
 
-        $this->subject->__construct(1, '1-99', $this->pageContextMock);
+        $this->subject->__construct(1, '1-99', new Context());
         $this->subject->_call(
             'processMountedPage',
             ['uid' => 1],
@@ -130,7 +127,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function processMountedPageWithMountedPageNotThrowsException(): void
     {
-        $this->subject->__construct(1, '1-99', $this->pageContextMock);
+        $this->subject->__construct(1, '1-99', new Context());
         $this->assertNotEmpty($this->subject->_call(
             'processMountedPage',
             ['uid' => 1],
@@ -143,7 +140,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function processMountedPageWithMountedPageAddsMountedFromParameter(): void
     {
-        $this->subject->__construct(1, '1-99', $this->pageContextMock);
+        $this->subject->__construct(1, '1-99', new Context());
         $result = $this->subject->_call(
             'processMountedPage',
             ['uid' => 1],
@@ -158,7 +155,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function processMountedPageWithMountedPageAddsMountPointParameterToReturnValue(): void
     {
-        $this->subject->__construct(1, '1-99', $this->pageContextMock);
+        $this->subject->__construct(1, '1-99', new Context());
         $result = $this->subject->_call(
             'processMountedPage',
             ['uid' => 1],
@@ -173,7 +170,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function processMountedPageForMountPageIsOverlayAddsMountOLParameter(): void
     {
-        $this->subject->__construct(1, '1-99', $this->pageContextMock);
+        $this->subject->__construct(1, '1-99', new Context());
         $result = $this->subject->_call(
             'processMountedPage',
             ['uid' => 1],
@@ -188,7 +185,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function processMountedPageForMountPageIsOverlayAddsDataInformationAboutMountPage(): void
     {
-        $this->subject->__construct(1, '1-99', $this->pageContextMock);
+        $this->subject->__construct(1, '1-99', new Context());
         $result = $this->subject->_call('processMountedPage', ['uid' => 1], [
             'uid' => 99,
             'doktype' => PageRepository::DOKTYPE_MOUNTPOINT,
@@ -212,7 +209,7 @@ class RootlineUtilityTest extends UnitTestCase
             'mount_pid' => 1,
             'mount_pid_ol' => 0
         ];
-        $this->subject->__construct(1, '1-99', $this->pageContextMock);
+        $this->subject->__construct(1, '1-99', new Context());
         $result = $this->subject->_call('processMountedPage', ['uid' => 1], $mountPointPageData);
         $this->assertIsSubset($mountPointPageData, $result);
     }
@@ -308,14 +305,16 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function getCacheIdentifierContainsAllContextParameters(): void
     {
-        $this->pageContextMock->sys_language_uid = 8;
-        $this->pageContextMock->versioningWorkspaceId = 15;
-        $this->subject->__construct(42, '47-11', $this->pageContextMock);
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(15));
+        $context->setAspect('language', new LanguageAspect(8, 8, LanguageAspect::OVERLAYS_OFF));
+        $this->subject->__construct(42, '47-11', $context);
         $this->assertSame('42_47-11_8_15', $this->subject->getCacheIdentifier());
-        $this->subject->__construct(42, '47-11', $this->pageContextMock);
+        $this->subject->__construct(42, '47-11', $context);
         $this->assertSame('42_47-11_8_15', $this->subject->getCacheIdentifier());
-        $this->pageContextMock->versioningWorkspaceId = 0;
-        $this->subject->__construct(42, '47-11', $this->pageContextMock);
+
+        $context->setAspect('workspace', new WorkspaceAspect(0));
+        $this->subject->__construct(42, '47-11', $context);
         $this->assertSame('42_47-11_8_0', $this->subject->getCacheIdentifier());
     }
 
@@ -332,9 +331,11 @@ class RootlineUtilityTest extends UnitTestCase
             '',
             false
         );
-        $this->pageContextMock->sys_language_uid = 8;
-        $this->pageContextMock->versioningWorkspaceId = 15;
-        $this->subject->__construct(42, '47-11,48-12', $this->pageContextMock);
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(15));
+        $context->setAspect('language', new LanguageAspect(8, 8, LanguageAspect::OVERLAYS_OFF));
+
+        $this->subject->__construct(42, '47-11,48-12', $context);
         $this->assertTrue($cacheFrontendMock->isValidEntryIdentifier($this->subject->getCacheIdentifier()));
     }
 }

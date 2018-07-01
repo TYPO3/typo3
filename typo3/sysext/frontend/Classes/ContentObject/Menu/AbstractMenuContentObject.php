@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -669,6 +671,8 @@ abstract class AbstractMenuContentObject
 
         $tsfe->register['languages_HMENU'] = implode(',', $languageItems);
 
+        $currentLanguageId = $this->getCurrentLanguageAspect()->getId();
+
         foreach ($languageItems as $sUid) {
             // Find overlay record:
             if ($sUid) {
@@ -682,9 +686,9 @@ abstract class AbstractMenuContentObject
                 (!$sUid || empty($lRecs)) ||
                 !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && empty($lRecs)
             ) {
-                $iState = $tsfe->sys_language_uid == $sUid ? 'USERDEF2' : 'USERDEF1';
+                $iState = $currentLanguageId == $sUid ? 'USERDEF2' : 'USERDEF1';
             } else {
-                $iState = $tsfe->sys_language_uid == $sUid ? 'ACT' : 'NO';
+                $iState = $currentLanguageId == $sUid ? 'ACT' : 'NO';
             }
             if ($this->conf['addQueryString']) {
                 $getVars = $this->parent_cObj->getQueryArguments(
@@ -1283,13 +1287,13 @@ abstract class AbstractMenuContentObject
         ) {
             // Checks if the default language version can be shown:
             // Block page is set, if l18n_cfg allows plus: 1) Either default language or 2) another language but NO overlay record set for page!
-            $tsfe = $this->getTypoScriptFrontendController();
-            $blockPage = GeneralUtility::hideIfDefaultLanguage($data['l18n_cfg']) && (!$tsfe->sys_language_uid || $tsfe->sys_language_uid && !$data['_PAGES_OVERLAY']);
+            $languageId = $this->getCurrentLanguageAspect()->getId();
+            $blockPage = GeneralUtility::hideIfDefaultLanguage($data['l18n_cfg']) && (!$languageId || $languageId && !$data['_PAGES_OVERLAY']);
             if (!$blockPage) {
                 // Checking if a page should be shown in the menu depending on whether a translation exists:
                 $tok = true;
                 // There is an alternative language active AND the current page requires a translation:
-                if ($tsfe->sys_language_uid && GeneralUtility::hideIfNotTranslated($data['l18n_cfg'])) {
+                if ($languageId && GeneralUtility::hideIfNotTranslated($data['l18n_cfg'])) {
                     if (!$data['_PAGES_OVERLAY']) {
                         $tok = false;
                     }
@@ -1298,9 +1302,8 @@ abstract class AbstractMenuContentObject
                 if ($tok) {
                     // Checking if "&L" should be modified so links to non-accessible pages will not happen.
                     if ($this->conf['protectLvar']) {
-                        $languageUid = (int)$tsfe->config['config']['sys_language_uid'];
-                        if ($languageUid && ($this->conf['protectLvar'] === 'all' || GeneralUtility::hideIfNotTranslated($data['l18n_cfg']))) {
-                            $olRec = $tsfe->sys_page->getPageOverlay($data['uid'], $languageUid);
+                        if ($languageId && ($this->conf['protectLvar'] === 'all' || GeneralUtility::hideIfNotTranslated($data['l18n_cfg']))) {
+                            $olRec = $tsfe->sys_page->getPageOverlay($data['uid'], $languageId);
                             if (empty($olRec)) {
                                 // If no page translation record then page can NOT be accessed in
                                 // the language pointed to by "&L" and therefore we protect the link by setting "&L=0"
@@ -1753,7 +1756,7 @@ abstract class AbstractMenuContentObject
     {
         // Check if modification is required
         if (
-            $this->getTypoScriptFrontendController()->sys_language_uid > 0
+            $this->getCurrentLanguageAspect()->getId() > 0
             && empty($page['shortcut'])
             && !empty($page['uid'])
             && !empty($page['_PAGES_OVERLAY'])
@@ -1938,6 +1941,7 @@ abstract class AbstractMenuContentObject
         $recs = $this->sys_page->getMenu($uid, 'uid,pid,doktype,mount_pid,mount_pid_ol,nav_hide,shortcut,shortcut_mode,l18n_cfg');
         $hasSubPages = false;
         $bannedUids = $this->getBannedUids();
+        $languageId = $this->getCurrentLanguageAspect()->getId();
         foreach ($recs as $theRec) {
             // no valid subpage if the document type is excluded from the menu
             if (GeneralUtility::inList($this->doktypeExcludeList, $theRec['doktype'])) {
@@ -1950,13 +1954,13 @@ abstract class AbstractMenuContentObject
             }
             // No valid subpage if the default language should be shown and the page settings
             // are excluding the visibility of the default language
-            if (!$this->getTypoScriptFrontendController()->sys_language_uid && GeneralUtility::hideIfDefaultLanguage($theRec['l18n_cfg'])) {
+            if (!$languageId && GeneralUtility::hideIfDefaultLanguage($theRec['l18n_cfg'])) {
                 continue;
             }
             // No valid subpage if the alternative language should be shown and the page settings
             // are requiring a valid overlay but it doesn't exists
             $hideIfNotTranslated = GeneralUtility::hideIfNotTranslated($theRec['l18n_cfg']);
-            if ($this->getTypoScriptFrontendController()->sys_language_uid && $hideIfNotTranslated && !$theRec['_PAGES_OVERLAY']) {
+            if ($languageId && $hideIfNotTranslated && !$theRec['_PAGES_OVERLAY']) {
                 continue;
             }
             // No valid subpage if the subpage is banned by excludeUidList
@@ -2231,8 +2235,13 @@ abstract class AbstractMenuContentObject
         $result = [];
         while ($row = $statement->fetch()) {
             $this->sys_page->versionOL('tt_content', $row);
-            if ($tsfe->sys_language_contentOL && $basePageRow['_PAGES_OVERLAY_LANGUAGE']) {
-                $row = $this->sys_page->getRecordOverlay('tt_content', $row, $basePageRow['_PAGES_OVERLAY_LANGUAGE'], $tsfe->sys_language_contentOL);
+            if ($this->getCurrentLanguageAspect()->doOverlays() && $basePageRow['_PAGES_OVERLAY_LANGUAGE']) {
+                $row = $this->sys_page->getRecordOverlay(
+                    'tt_content',
+                    $row,
+                    $basePageRow['_PAGES_OVERLAY_LANGUAGE'],
+                    $this->getCurrentLanguageAspect()->getOverlayType() === LanguageAspect::OVERLAYS_MIXED ? '1' : 'hideNonTranslated'
+                );
             }
             if ($this->mconf['sectionIndex.']['type'] !== 'all') {
                 $doIncludeInSectionIndex = $row['sectionIndex'] >= 1;
@@ -2290,6 +2299,11 @@ abstract class AbstractMenuContentObject
     protected function getTypoScriptFrontendController()
     {
         return $GLOBALS['TSFE'];
+    }
+
+    protected function getCurrentLanguageAspect(): LanguageAspect
+    {
+        return GeneralUtility::makeInstance(Context::class)->getAspect('language');
     }
 
     /**

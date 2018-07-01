@@ -246,10 +246,10 @@ page {
 				title.data = page:title
 			}
 			tsfe.children {
-				sys_language_uid.data = tsfe:sys_language_uid
-				sys_language_mode.data = tsfe:sys_language_mode
-				sys_language_content.data = tsfe:sys_language_content
-				sys_language_contentOL.data = tsfe:sys_language_contentOL
+				sys_language_uid.data = context:language:id
+				sys_language_mode.data = context:language:legacyLanguageMode
+				sys_language_content.data = context:language:contentId
+				sys_language_contentOL.data = context:language:legacyOverlayType
 			}
 		}
 		stdWrap.postUserFunc.as = Scope

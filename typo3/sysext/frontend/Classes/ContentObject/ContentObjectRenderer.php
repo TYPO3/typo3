@@ -20,6 +20,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -6391,20 +6392,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $tsfe->sys_page->versionOL($tableName, $row, true);
 
             // Language overlay:
-            if (is_array($row) && $tsfe->sys_language_contentOL) {
-                if ($tableName === 'pages') {
-                    $row = $tsfe->sys_page->getPageOverlay($row);
-                } else {
-                    $row = $tsfe->sys_page->getRecordOverlay(
-                        $tableName,
-                        $row,
-                        $tsfe->sys_language_content,
-                        $tsfe->sys_language_contentOL
-                    );
-                }
+            if (is_array($row)) {
+                $row = $tsfe->sys_page->getLanguageOverlay($tableName, $row);
             }
 
-            // Might be unset in the sys_language_contentOL
+            // Might be unset in the language overlay
             if (is_array($row)) {
                 $records[] = $row;
             }
@@ -6802,9 +6794,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         if (!empty($languageField)) {
             // The sys_language record UID of the content of the page
-            $sys_language_content = (int)$tsfe->sys_language_content;
+            /** @var LanguageAspect $languageAspect */
+            $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
 
-            if ($tsfe->sys_language_contentOL && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
+            if ($languageAspect->doOverlays() && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
                 // Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will
                 // OVERLAY the records with localized versions!
                 $languageQuery = $expressionBuilder->in($languageField, [0, -1]);
@@ -6817,12 +6810,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $languageQuery,
                         $expressionBuilder->andX(
                             $expressionBuilder->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], 0),
-                            $expressionBuilder->eq($languageField, $sys_language_content)
+                            $expressionBuilder->eq($languageField, $languageAspect->getContentId())
                         )
                     );
                 }
             } else {
-                $languageQuery = $expressionBuilder->eq($languageField, $sys_language_content);
+                $languageQuery = $expressionBuilder->eq($languageField, $languageAspect->getContentId());
             }
             $constraints[] = $languageQuery;
         }

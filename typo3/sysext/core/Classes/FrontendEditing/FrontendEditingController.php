@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\FrontendEditing;
  */
 
 use TYPO3\CMS\Adminpanel\View\AdminPanelView;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
@@ -483,21 +485,18 @@ class FrontendEditingController
     protected function allowedToEditLanguage($table, array $currentRecord)
     {
         // If no access right to record languages, return immediately
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
         if ($table === 'pages') {
-            $lang = $GLOBALS['TSFE']->sys_language_uid;
+            $lang = $languageAspect->getId();
         } elseif ($table === 'tt_content') {
-            $lang = $GLOBALS['TSFE']->sys_language_content;
+            $lang = $languageAspect->getContentId();
         } elseif ($GLOBALS['TCA'][$table]['ctrl']['languageField']) {
             $lang = $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
         } else {
             $lang = -1;
         }
-        if ($GLOBALS['BE_USER']->checkLanguageAccess($lang)) {
-            $languageAccess = true;
-        } else {
-            $languageAccess = false;
-        }
-        return $languageAccess;
+        return $GLOBALS['BE_USER']->checkLanguageAccess($lang);
     }
 
     /**

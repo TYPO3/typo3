@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -162,6 +163,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
         $pluginSignature = strtolower($extensionName . '_' . $pluginName);
         if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
             if (!array_key_exists($pluginSignature, $this->targetPidPluginCache)) {
+                $languageId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('tt_content');
                 $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
@@ -180,7 +182,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
                         ),
                         $queryBuilder->expr()->eq(
                             'sys_language_uid',
-                            $queryBuilder->createNamedParameter($GLOBALS['TSFE']->sys_language_uid, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
                         )
                     )
                     ->setMaxResults(2)

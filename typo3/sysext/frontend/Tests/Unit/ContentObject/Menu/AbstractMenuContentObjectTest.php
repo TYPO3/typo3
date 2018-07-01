@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -129,7 +131,8 @@ class AbstractMenuContentObjectTest extends UnitTestCase
 
         $this->prepareSectionIndexTest();
         $this->subject->mconf['sectionIndex.']['type'] = 'all';
-        $GLOBALS['TSFE']->sys_language_contentOL = 1;
+        $context = GeneralUtility::makeInstance(Context::class);
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
         $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(['_PAGES_OVERLAY_LANGUAGE' => 1]));
         $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->willReturn($statementProphet->reveal());
         $this->subject->sys_page->expects($this->once())->method('getRecordOverlay')->will($this->returnValue(['uid' => 0, 'header' => 'OVERLAID']));

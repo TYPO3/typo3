@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -94,9 +95,16 @@ class RootlineUtility
     /**
      * Rootline Context
      *
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository
+     * @var PageRepository
      */
     protected $pageContext;
+
+    /**
+     * Query context
+     *
+     * @var Context
+     */
+    protected $context;
 
     /**
      * @var string
@@ -111,34 +119,27 @@ class RootlineUtility
     /**
      * @param int $uid
      * @param string $mountPointParameter
-     * @param \TYPO3\CMS\Frontend\Page\PageRepository $context
+     * @param PageRepository|Context $context - @deprecated PageRepository is used until TYPO3 v9.4, but now the third parameter should be a Context object
      * @throws \RuntimeException
      */
-    public function __construct($uid, $mountPointParameter = '', PageRepository $context = null)
+    public function __construct($uid, $mountPointParameter = '', $context = null)
     {
         $this->pageUid = (int)$uid;
         $this->mountPointParameter = trim($mountPointParameter);
-        if ($context === null) {
-            if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->sys_page)) {
-                $this->pageContext = $GLOBALS['TSFE']->sys_page;
-            } else {
-                $this->pageContext = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-            }
-        } else {
+        if ($context instanceof PageRepository) {
+            trigger_error('Calling RootlineUtility with PageRepository as third parameter will be unsupported with TYPO3 v10.0. Use a Context object directly', E_USER_DEPRECATED);
             $this->pageContext = $context;
+            $this->context = GeneralUtility::makeInstance(Context::class);
+        } else {
+            if (!($context instanceof Context)) {
+                $context = GeneralUtility::makeInstance(Context::class);
+            }
+            $this->context = $context;
+            $this->pageContext = GeneralUtility::makeInstance(PageRepository::class, $context);
         }
-        $this->initializeObject();
-    }
 
-    /**
-     * Initialize a state to work with
-     *
-     * @throws \RuntimeException
-     */
-    protected function initializeObject()
-    {
-        $this->languageUid = (int)$this->pageContext->sys_language_uid;
-        $this->workspaceUid = (int)$this->pageContext->versioningWorkspaceId;
+        $this->languageUid = $this->context->getPropertyFromAspect('language', 'id', 0);
+        $this->workspaceUid = $this->context->getPropertyFromAspect('workspace', 'id', 0);
         if ($this->mountPointParameter !== '') {
             if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
                 throw new \RuntimeException('Mount-Point Pages are disabled for this installation. Cannot resolve a Rootline for a page with Mount-Points', 1343462896);
@@ -394,9 +395,7 @@ class RootlineUtility
         if ($parentUid > 0) {
             // Get rootline of (and including) parent page
             $mountPointParameter = !empty($this->parsedMountPointParameters) ? $this->mountPointParameter : '';
-            /** @var $rootline \TYPO3\CMS\Core\Utility\RootlineUtility */
-            $rootline = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\RootlineUtility::class, $parentUid, $mountPointParameter, $this->pageContext);
-            $rootline = $rootline->get();
+            $rootline = GeneralUtility::makeInstance(self::class, $parentUid, $mountPointParameter, $this->context)->get();
             // retrieve cache tags of parent rootline
             foreach ($rootline as $entry) {
                 $cacheTags[] = 'pageId_' . $entry['uid'];

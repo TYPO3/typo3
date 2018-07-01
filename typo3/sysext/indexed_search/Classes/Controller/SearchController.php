@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  */
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
@@ -1321,7 +1322,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function linkPage($pageUid, $row = [], $markUpSwParams = [])
     {
-        $pageLanguage = $GLOBALS['TSFE']->sys_language_content;
+        $pageLanguage = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'contentId', 0);
         // Parameters for link
         $urlParameters = (array)unserialize($row['cHashParams']);
         // Add &type and &MP variable:

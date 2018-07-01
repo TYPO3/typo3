@@ -17,6 +17,7 @@ namespace TYPO3\CMS\IndexedSearch;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -284,7 +285,9 @@ class Indexer
             if (!$disableFrontendIndexing || $this->crawlerActive) {
                 if (!$pObj->page['no_search']) {
                     if (!$pObj->no_cache) {
-                        if ((int)$pObj->sys_language_uid === (int)$pObj->sys_language_content) {
+                        /** @var LanguageAspect $languageAspect */
+                        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
+                        if ($languageAspect->getId() === $languageAspect->getContentId()) {
                             // Setting up internal configuration from config array:
                             $this->conf = [];
                             // Information about page for which the indexing takes place
@@ -292,7 +295,7 @@ class Indexer
                             // Page id
                             $this->conf['type'] = $pObj->type;
                             // Page type
-                            $this->conf['sys_language_uid'] = $pObj->sys_language_uid;
+                            $this->conf['sys_language_uid'] = $languageAspect->getId();
                             // sys_language UID of the language of the indexing.
                             $this->conf['MP'] = $pObj->MP;
                             // MP variable, if any (Mount Points)
@@ -337,7 +340,7 @@ class Indexer
                             $this->init();
                             $this->indexTypo3PageContent();
                         } else {
-                            $this->log_setTSlogMessage('Index page? No, ->sys_language_uid was different from sys_language_content which indicates that the page contains fall-back content and that would be falsely indexed as localized content.');
+                            $this->log_setTSlogMessage('Index page? No, languageId was different from contentId which indicates that the page contains fall-back content and that would be falsely indexed as localized content.');
                         }
                     } else {
                         $this->log_setTSlogMessage('Index page? No, page was set to "no_cache" and so cannot be indexed.');

@@ -1018,11 +1018,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             $this->currentSiteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
         } else {
             $pageId = 0;
-            $languageId = 0;
+            $languageId = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
 
             if (TYPO3_MODE === 'FE') {
                 $pageId = $this->getTypoScriptFrontendController()->id;
-                $languageId = $this->getTypoScriptFrontendController()->sys_language_uid;
             }
 
             $fakeSiteConfiguration = [
