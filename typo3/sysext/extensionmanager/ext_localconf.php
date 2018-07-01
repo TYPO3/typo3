@@ -1,6 +1,5 @@
 <?php
 defined('TYPO3_MODE') or die();
-
 // Register extension list update task
 $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extensionmanager'], ['allowed_classes' => false]);
 if (empty($extConf['offlineMode'])) {
@@ -11,7 +10,6 @@ if (empty($extConf['offlineMode'])) {
         'additionalFields' => '',
     ];
 }
-
 if (TYPO3_MODE === 'BE') {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController::class;
     if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
@@ -22,20 +20,7 @@ if (TYPO3_MODE === 'BE') {
             \TYPO3\CMS\Core\Package\PackageManager::class,
             'scanAvailablePackages'
         );
-        $signalSlotDispatcher->connect(
-            \TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
-            'tablesDefinitionIsBeingBuilt',
-            \TYPO3\CMS\Core\Cache\DatabaseSchemaService::class,
-            'addCachingFrameworkRequiredDatabaseSchemaForInstallUtility'
-        );
-        $signalSlotDispatcher->connect(
-            \TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
-            'tablesDefinitionIsBeingBuilt',
-            \TYPO3\CMS\Core\Category\CategoryRegistry::class,
-            'addExtensionCategoryDatabaseSchemaToTablesDefinition'
-        );
         unset($signalSlotDispatcher);
     }
 }
-
 unset($extConf);

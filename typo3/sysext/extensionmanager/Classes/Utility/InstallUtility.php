@@ -174,22 +174,33 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Helper function to install an extension
      * also processes db updates and clears the cache if the extension asks for it
      *
-     * @param string $extensionKey
+     * @param array $extensionKeys
      * @throws ExtensionManagerException
      */
-    public function install($extensionKey)
+    public function install(...$extensionKeys)
     {
-        $extension = $this->enrichExtensionWithDetails($extensionKey, false);
-        $this->loadExtension($extensionKey);
-        if (!empty($extension['clearcacheonload']) || !empty($extension['clearCacheOnLoad'])) {
+        $flushCaches = false;
+        foreach ($extensionKeys as $extensionKey) {
+            $this->loadExtension($extensionKey);
+            $extension = $this->enrichExtensionWithDetails($extensionKey, false);
+            $this->saveDefaultConfiguration($extensionKey);
+            if (!empty($extension['clearcacheonload']) || !empty($extension['clearCacheOnLoad'])) {
+                $flushCaches = true;
+            }
+        }
+
+        if ($flushCaches) {
             $this->cacheManager->flushCaches();
         } else {
             $this->cacheManager->flushCachesInGroup('system');
         }
         $this->reloadCaches();
-        $this->processExtensionSetup($extensionKey);
+        $this->updateDatabase($extensionKeys);
 
-        $this->emitAfterExtensionInstallSignal($extensionKey);
+        foreach ($extensionKeys as $extensionKey) {
+            $this->processExtensionSetup($extensionKey);
+            $this->emitAfterExtensionInstallSignal($extensionKey);
+        }
     }
 
     /**
@@ -199,10 +210,9 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $extension = $this->enrichExtensionWithDetails($extensionKey, false);
         $this->ensureConfiguredDirectoriesExist($extension);
-        $this->importInitialFiles($extension['siteRelPath'], $extensionKey);
-        $this->processDatabaseUpdates($extension);
-        $this->processRuntimeDatabaseUpdates($extensionKey);
-        $this->saveDefaultConfiguration($extensionKey);
+        $this->importInitialFiles($extension['siteRelPath'] ?? '', $extensionKey);
+        $this->importStaticSqlFile($extension['siteRelPath']);
+        $this->importT3DFile($extension['siteRelPath']);
     }
 
     /**
@@ -397,20 +407,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Gets all database updates due to runtime configuration, like caching framework or
-     * category api for example
-     *
-     * @param string $extensionKey
-     */
-    protected function processRuntimeDatabaseUpdates($extensionKey)
-    {
-        $sqlString = $this->emitTablesDefinitionIsBeingBuiltSignal($extensionKey);
-        if (!empty($sqlString)) {
-            $this->updateDbWithExtTablesSql(implode(LF . LF . LF . LF, $sqlString));
-        }
-    }
-
-    /**
      * Emits a signal to manipulate the tables definitions
      *
      * @param string $extensionKey
@@ -455,6 +451,39 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     protected function reloadOpcache()
     {
         GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
+    }
+
+    /**
+     * Executes all safe database statements.
+     * Tables and fields are created and altered. Nothing gets deleted or renamed here.
+     *
+     * @param array $extensionKeys
+     */
+    protected function updateDatabase(array $extensionKeys)
+    {
+        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        $schemaMigrator = GeneralUtility::makeInstance(SchemaMigrator::class);
+        $sqlStatements = [];
+        $sqlStatements[] = $sqlReader->getTablesDefinitionString();
+        foreach ($extensionKeys as $extensionKey) {
+            $sqlStatements += $this->emitTablesDefinitionIsBeingBuiltSignal($extensionKey);
+        }
+        $sqlStatements = $sqlReader->getCreateTableStatementArray(implode(LF . LF, array_filter($sqlStatements)));
+        $updateStatements = $schemaMigrator->getUpdateSuggestions($sqlStatements);
+
+        $updateStatements = array_merge_recursive(...array_values($updateStatements));
+        $selectedStatements = [];
+        foreach (['add', 'change', 'create_table', 'change_table'] as $action) {
+            if (empty($updateStatements[$action])) {
+                continue;
+            }
+            $selectedStatements = array_merge(
+                $selectedStatements,
+                array_combine(array_keys($updateStatements[$action]), array_fill(0, count($updateStatements[$action]), true))
+            );
+        }
+
+        $schemaMigrator->migrate($sqlStatements, $selectedStatements);
     }
 
     /**

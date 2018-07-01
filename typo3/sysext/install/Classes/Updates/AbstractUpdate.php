@@ -181,9 +181,7 @@ abstract class AbstractUpdate
         $installUtility = GeneralUtility::makeInstance(
             \TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class
         );
-        foreach ($extensionKeys as $extension) {
-            $installUtility->install($extension);
-        }
+        $installUtility->install($extensionKeys);
     }
 
     /**

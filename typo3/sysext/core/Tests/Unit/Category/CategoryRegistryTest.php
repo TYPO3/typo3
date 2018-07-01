@@ -323,15 +323,4 @@ class CategoryRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             substr_count($GLOBALS['TCA'][$this->tables['first']]['types']['newtypeafterfirstadd']['showitem'], '--div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category')
         );
     }
-
-    /**
-     * @test
-     */
-    public function addAddsOnlyOneSqlString()
-    {
-        $this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
-        $this->subject->add('text_extension_b', $this->tables['first'], 'categories1', [], true);
-        $sqlData = $this->subject->addExtensionCategoryDatabaseSchemaToTablesDefinition([], 'text_extension_a');
-        $this->assertEmpty($sqlData['sqlString'][0]);
-    }
 }
