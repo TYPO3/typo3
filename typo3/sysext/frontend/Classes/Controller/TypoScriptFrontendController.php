@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
@@ -1320,12 +1319,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $timeTracker = $this->getTimeTracker();
         $timeTracker->push('fetch_the_id initialize/');
-        // Initialize the page-select functions.
-        $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         // Set the valid usergroups for FE
         $this->initUserGroups();
-        // Sets sys_page where-clause
-        $this->setSysPageWhereClause();
+        // Initialize the PageRepository has to be done after the frontend usergroups are initialized / resolved, as
+        // frontend group aspect is modified before
+        $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         // If $this->id is a string, it's an alias
         $this->checkAndSetAlias();
         // The id and type is set to the integer-value - just to be sure...
@@ -1864,21 +1862,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->getPageAndRootline();
             }
         }
-    }
-
-    /**
-     * Sets sys_page where-clause
-     */
-    protected function setSysPageWhereClause()
-    {
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('pages')
-            ->getExpressionBuilder();
-        $this->sys_page->where_hid_del = ' AND ' . (string)$expressionBuilder->andX(
-            QueryHelper::stripLogicalOperatorPrefix($this->sys_page->where_hid_del),
-            $expressionBuilder->lt('pages.doktype', 200)
-        );
-        $this->sys_page->where_groupAccess = $this->sys_page->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
     }
 
     /**

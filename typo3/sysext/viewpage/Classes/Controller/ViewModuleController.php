@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Controller for viewing the frontend
@@ -208,12 +209,10 @@ class ViewModuleController
             $domainName = $this->getDomainName($pageId);
             $languageParameter = $languageId ? '&L=' . $languageId : '';
             // Mount point overlay: Set new target page id and mp parameter
-            /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPage */
-            $sysPage = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-            $sysPage->init(false);
+            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             $mountPointMpParameter = '';
             $finalPageIdToShow = $pageId;
-            $mountPointInformation = $sysPage->getMountPointInfo($pageId);
+            $mountPointInformation = $pageRepository->getMountPointInfo($pageId);
             if ($mountPointInformation && $mountPointInformation['overlay']) {
                 // New page id
                 $finalPageIdToShow = $mountPointInformation['mount_pid'];

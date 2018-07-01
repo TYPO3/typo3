@@ -2772,9 +2772,8 @@ class BackendUtility
         }
 
         // Check a mount point needs to be previewed
-        $sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-        $sys_page->init(false);
-        $mountPointInfo = $sys_page->getMountPointInfo($pageUid);
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $mountPointInfo = $pageRepository->getMountPointInfo($pageUid);
 
         if ($mountPointInfo && $mountPointInfo['overlay']) {
             $pageUid = $mountPointInfo['mount_pid'];

@@ -195,7 +195,12 @@ class PageRepository implements LoggerAwareInterface
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->versioningWorkspaceId = $this->context->getPropertyFromAspect('workspace', 'id');
-        $this->init($this->context->getPropertyFromAspect('visibility', 'includeHiddenPages'));
+        // Only set up the where clauses for pages when TCA is set. This usually happens only in tests.
+        // Once all tests are written very well, this can be removed again
+        if (isset($GLOBALS['TCA']['pages'])) {
+            $this->init($this->context->getPropertyFromAspect('visibility', 'includeHiddenPages'));
+            $this->where_groupAccess = $this->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
+        }
     }
 
     /**
@@ -209,32 +214,34 @@ class PageRepository implements LoggerAwareInterface
      */
     public function init($show_hidden)
     {
-        // This usually happens only in tests.
-        if (!isset($GLOBALS['TCA']['pages'])) {
-            return;
-        }
         $this->where_groupAccess = '';
 
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages')
+            ->expr();
         if ($this->versioningWorkspaceId) {
             // For version previewing, make sure that enable-fields are not
             // de-selecting hidden pages - we need versionOL() to unset them only
             // if the overlay record instructs us to.
             // Clear where_hid_del and restrict to live and current workspaces
-            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages')
-                ->expr();
             $this->where_hid_del = ' AND ' . $expressionBuilder->andX(
                 $expressionBuilder->eq('pages.deleted', 0),
                 $expressionBuilder->orX(
                     $expressionBuilder->eq('pages.t3ver_wsid', 0),
                     $expressionBuilder->eq('pages.t3ver_wsid', (int)$this->versioningWorkspaceId)
-                )
+                ),
+                $expressionBuilder->lt('pages.doktype', 200)
             );
         } else {
             // add starttime / endtime, and check for hidden/deleted
             // Filter out new/deleted place-holder pages in case we are NOT in a
             // versioning preview (that means we are online!)
-            $this->where_hid_del = $this->enableFields('pages', $show_hidden, ['fe_group' => true], true);
+            $this->where_hid_del = ' AND ' . (string)$expressionBuilder->andX(
+                QueryHelper::stripLogicalOperatorPrefix(
+                    $this->enableFields('pages', $show_hidden, ['fe_group' => true], true)
+                ),
+                $expressionBuilder->lt('pages.doktype', 200)
+            );
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] ?? false)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] as $classRef) {
@@ -267,7 +274,6 @@ class PageRepository implements LoggerAwareInterface
      *
      * @see PageRepository::where_groupAccess
      * @see PageRepository::where_hid_del
-     * @see PageRepository::init()
      *
      * By default the usergroup access check is enabled. Use the second method argument
      * to disable the usergroup access check.
@@ -1518,12 +1524,16 @@ class PageRepository implements LoggerAwareInterface
      */
     public function getMultipleGroupsWhereClause($field, $table)
     {
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($table)
-            ->expr();
+        if (!$this->context->hasAspect('frontend.user')) {
+            return '';
+        }
         /** @var UserAspect $userAspect */
         $userAspect = $this->context->getAspect('frontend.user');
         $memberGroups = $userAspect->getGroupIds();
+
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($table)
+            ->expr();
         $orChecks = [];
         // If the field is empty, then OK
         $orChecks[] = $expressionBuilder->eq($field, $expressionBuilder->literal(''));

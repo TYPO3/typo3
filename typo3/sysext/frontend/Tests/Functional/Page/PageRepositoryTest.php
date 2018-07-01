@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Page;
  */
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -27,17 +29,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 {
     protected $coreExtensionsToLoad = ['frontend'];
 
-    /**
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository
-     */
-    protected $pageRepo;
-
     protected function setUp()
     {
         parent::setUp();
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
-        $this->pageRepo = new PageRepository();
-        $this->pageRepo->init(false);
     }
 
     /**
@@ -45,7 +40,8 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getMenuSingleUidRoot()
     {
-        $rows = $this->pageRepo->getMenu(1, 'uid, title');
+        $subject = new PageRepository();
+        $rows = $subject->getMenu(1, 'uid, title');
         $this->assertArrayHasKey(2, $rows);
         $this->assertArrayHasKey(3, $rows);
         $this->assertArrayHasKey(4, $rows);
@@ -57,7 +53,8 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getMenuSingleUidSubpage()
     {
-        $rows = $this->pageRepo->getMenu(2, 'uid, title');
+        $subject = new PageRepository();
+        $rows = $subject->getMenu(2, 'uid, title');
         $this->assertArrayHasKey(5, $rows);
         $this->assertArrayHasKey(6, $rows);
         $this->assertArrayHasKey(7, $rows);
@@ -69,7 +66,8 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getMenuMultipleUid()
     {
-        $rows = $this->pageRepo->getMenu([2, 3], 'uid, title');
+        $subject = new PageRepository();
+        $rows = $subject->getMenu([2, 3], 'uid, title');
         $this->assertArrayHasKey(5, $rows);
         $this->assertArrayHasKey(6, $rows);
         $this->assertArrayHasKey(7, $rows);
@@ -83,9 +81,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getMenuPageOverlay()
     {
-        $this->pageRepo->sys_language_uid = 1;
+        $subject = new PageRepository();
+        $subject->sys_language_uid = 1;
 
-        $rows = $this->pageRepo->getMenu([2, 3], 'uid, title');
+        $rows = $subject->getMenu([2, 3], 'uid, title');
         $this->assertEquals('Attrappe 1-2-5', $rows[5]['title']);
         $this->assertEquals('Attrappe 1-2-6', $rows[6]['title']);
         $this->assertEquals('Dummy 1-2-7', $rows[7]['title']);
@@ -99,7 +98,8 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPageOverlayById()
     {
-        $row = $this->pageRepo->getPageOverlay(1, 1);
+        $subject = new PageRepository();
+        $row = $subject->getPageOverlay(1, 1);
         $this->assertOverlayRow($row);
         $this->assertEquals('Wurzel 1', $row['title']);
         $this->assertEquals('901', $row['_PAGES_OVERLAY_UID']);
@@ -111,7 +111,8 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPageOverlayByIdWithoutTranslation()
     {
-        $row = $this->pageRepo->getPageOverlay(4, 1);
+        $subject = new PageRepository();
+        $row = $subject->getPageOverlay(4, 1);
         $this->assertInternalType('array', $row);
         $this->assertCount(0, $row);
     }
@@ -121,8 +122,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPageOverlayByRow()
     {
-        $orig = $this->pageRepo->getPage(1);
-        $row = $this->pageRepo->getPageOverlay($orig, 1);
+        $subject = new PageRepository();
+        $orig = $subject->getPage(1);
+        $row = $subject->getPageOverlay($orig, 1);
         $this->assertOverlayRow($row);
         $this->assertEquals(1, $row['uid']);
         $this->assertEquals('Wurzel 1', $row['title']);
@@ -135,8 +137,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPageOverlayByRowWithoutTranslation()
     {
-        $orig = $this->pageRepo->getPage(4);
-        $row = $this->pageRepo->getPageOverlay($orig, 1);
+        $subject = new PageRepository();
+        $orig = $subject->getPage(4);
+        $row = $subject->getPageOverlay($orig, 1);
         $this->assertInternalType('array', $row);
         $this->assertEquals(4, $row['uid']);
         $this->assertEquals('Dummy 1-4', $row['title']);//original title
@@ -147,8 +150,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPagesOverlayByIdSingle()
     {
-        $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay([1]);
+        $subject = new PageRepository();
+        $subject->sys_language_uid = 1;
+        $rows = $subject->getPagesOverlay([1]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(1, $rows);
         $this->assertArrayHasKey(0, $rows);
@@ -165,8 +169,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPagesOverlayByIdMultiple()
     {
-        $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay([1, 5]);
+        $subject = new PageRepository();
+        $subject->sys_language_uid = 1;
+        $rows = $subject->getPagesOverlay([1, 5]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(2, $rows);
         $this->assertArrayHasKey(0, $rows);
@@ -190,8 +195,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPagesOverlayByIdMultipleSomeNotOverlaid()
     {
-        $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay([1, 4, 5, 8]);
+        $subject = new PageRepository();
+        $subject->sys_language_uid = 1;
+        $rows = $subject->getPagesOverlay([1, 4, 5, 8]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(2, $rows);
         $this->assertArrayHasKey(0, $rows);
@@ -211,10 +217,11 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPagesOverlayByRowSingle()
     {
-        $origRow = $this->pageRepo->getPage(1);
+        $subject = new PageRepository();
+        $origRow = $subject->getPage(1);
 
-        $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay([$origRow]);
+        $subject->sys_language_uid = 1;
+        $rows = $subject->getPagesOverlay([$origRow]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(1, $rows);
         $this->assertArrayHasKey(0, $rows);
@@ -231,11 +238,12 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPagesOverlayByRowMultiple()
     {
-        $orig1 = $this->pageRepo->getPage(1);
-        $orig2 = $this->pageRepo->getPage(5);
+        $subject = new PageRepository();
+        $orig1 = $subject->getPage(1);
+        $orig2 = $subject->getPage(5);
 
-        $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay([1 => $orig1, 5 => $orig2]);
+        $subject->sys_language_uid = 1;
+        $rows = $subject->getPagesOverlay([1 => $orig1, 5 => $orig2]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(2, $rows);
         $this->assertArrayHasKey(1, $rows);
@@ -259,12 +267,13 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function getPagesOverlayByRowMultipleSomeNotOverlaid()
     {
-        $orig1 = $this->pageRepo->getPage(1);
-        $orig2 = $this->pageRepo->getPage(7);
-        $orig3 = $this->pageRepo->getPage(9);
+        $subject = new PageRepository();
+        $orig1 = $subject->getPage(1);
+        $orig2 = $subject->getPage(7);
+        $orig3 = $subject->getPage(9);
 
-        $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay([$orig1, $orig2, $orig3]);
+        $subject->sys_language_uid = 1;
+        $rows = $subject->getPagesOverlay([$orig1, $orig2, $orig3]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(3, $rows);
         $this->assertArrayHasKey(0, $rows);
@@ -301,7 +310,8 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         // Register hook mock object
         GeneralUtility::addInstance($className, $getPageHookMock);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'][] = $className;
-        $this->pageRepo->getPage(42, false);
+        $subject = new PageRepository();
+        $subject->getPage(42, false);
     }
 
     /**
@@ -309,19 +319,22 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function initSetsPublicPropertyCorrectlyForWorkspacePreview()
     {
-        $this->pageRepo->versioningWorkspaceId = 2;
-        $this->pageRepo->init(false);
+        $workspaceId = 2;
+        $subject = new PageRepository(new Context([
+            'workspace' => new WorkspaceAspect($workspaceId)
+        ]));
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
 
         $expectedSQL = sprintf(
-            ' AND (%s = 0) AND ((%s = 0) OR (%s = 2))',
+            ' AND (%s = 0) AND ((%s = 0) OR (%s = 2)) AND (%s < 200)',
             $connection->quoteIdentifier('pages.deleted'),
             $connection->quoteIdentifier('pages.t3ver_wsid'),
-            $connection->quoteIdentifier('pages.t3ver_wsid')
+            $connection->quoteIdentifier('pages.t3ver_wsid'),
+            $connection->quoteIdentifier('pages.doktype')
         );
 
-        $this->assertSame($expectedSQL, $this->pageRepo->where_hid_del);
+        $this->assertSame($expectedSQL, $subject->where_hid_del);
     }
 
     /**
@@ -331,21 +344,21 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     {
         $GLOBALS['SIM_ACCESS_TIME'] = 123;
 
-        $this->pageRepo->versioningWorkspaceId = 0;
-        $this->pageRepo->init(false);
+        $subject = new PageRepository(new Context());
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
         $expectedSQL = sprintf(
-            ' AND (%s = 0) AND (%s <= 0) AND (%s = 0) AND (%s <= 123) AND ((%s = 0) OR (%s > 123))',
+            ' AND ((%s = 0) AND (%s <= 0) AND (%s = 0) AND (%s <= 123) AND ((%s = 0) OR (%s > 123))) AND (%s < 200)',
             $connection->quoteIdentifier('pages.deleted'),
             $connection->quoteIdentifier('pages.t3ver_state'),
             $connection->quoteIdentifier('pages.hidden'),
             $connection->quoteIdentifier('pages.starttime'),
             $connection->quoteIdentifier('pages.endtime'),
-            $connection->quoteIdentifier('pages.endtime')
+            $connection->quoteIdentifier('pages.endtime'),
+            $connection->quoteIdentifier('pages.doktype')
         );
 
-        $this->assertSame($expectedSQL, $this->pageRepo->where_hid_del);
+        $this->assertSame($expectedSQL, $subject->where_hid_del);
     }
 
     ////////////////////////////////
@@ -359,12 +372,12 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     {
         // initialization
         $wsid = 987654321;
-
         // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
-        $this->pageRepo->versioningWorkspaceId = $wsid;
-        $this->pageRepo->init(false);
+        $subject = new PageRepository(new Context([
+            'workspace' => new WorkspaceAspect($wsid)
+        ]));
 
-        $pageRec = $this->pageRepo->getPage(11);
+        $pageRec = $subject->getPage(11);
 
         $this->assertEquals(11, $pageRec['uid']);
         $this->assertEquals(11, $pageRec['t3ver_oid']);
@@ -382,10 +395,11 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $wsid = 987654321;
 
         // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
-        $this->pageRepo->versioningWorkspaceId = $wsid;
-        $this->pageRepo->init(false);
+        $subject = new PageRepository(new Context([
+            'workspace' => new WorkspaceAspect($wsid)
+        ]));
 
-        $pageRec = $this->pageRepo->getWorkspaceVersionOfRecord($wsid, 'pages', 11);
+        $pageRec = $subject->getWorkspaceVersionOfRecord($wsid, 'pages', 11);
 
         $this->assertEquals(12, $pageRec['uid']);
         $this->assertEquals(11, $pageRec['t3ver_oid']);
@@ -410,10 +424,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             ]
         ];
 
-        $this->pageRepo->versioningWorkspaceId = 0;
-        $this->pageRepo->init(false);
+        $subject = new PageRepository(new Context());
 
-        $conditions = $this->pageRepo->enableFields($table);
+        $conditions = $subject->enableFields($table);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
 
         $this->assertThat(
@@ -440,10 +453,11 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             ]
         ];
 
-        $this->pageRepo->versioningWorkspaceId = 13;
-        $this->pageRepo->init(false);
+        $subject = new PageRepository(new Context([
+            'workspace' => new WorkspaceAspect(13)
+        ]));
 
-        $conditions = $this->pageRepo->enableFields($table);
+        $conditions = $subject->enableFields($table);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
 
         $this->assertThat(
@@ -470,10 +484,11 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             ]
         ];
 
-        $this->pageRepo->versioningWorkspaceId = 2;
-        $this->pageRepo->init(false);
+        $subject = new PageRepository(new Context([
+            'workspace' => new WorkspaceAspect(2)
+        ]));
 
-        $conditions = $this->pageRepo->enableFields($table);
+        $conditions = $subject->enableFields($table);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
 
         $this->assertThat(
@@ -495,10 +510,11 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             ]
         ];
 
-        $this->pageRepo->versioningWorkspaceId = 23;
-        $this->pageRepo->init(false);
+        $subject = new PageRepository(new Context([
+            'workspace' => new WorkspaceAspect(23)
+        ]));
 
-        $conditions = $this->pageRepo->enableFields($table, -1, [], true);
+        $conditions = $subject->enableFields($table, -1, [], true);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
 
         $this->assertThat(
