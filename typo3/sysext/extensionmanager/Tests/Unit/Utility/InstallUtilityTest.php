@@ -54,7 +54,8 @@ class InstallUtilityTest extends UnitTestCase
     {
         $this->extensionKey = 'dummy';
         $this->extensionData = [
-            'key' => $this->extensionKey
+            'key' => $this->extensionKey,
+            'siteRelPath' => '',
         ];
         $this->installMock = $this->getAccessibleMock(
             InstallUtility::class,
@@ -62,8 +63,9 @@ class InstallUtilityTest extends UnitTestCase
                 'isLoaded',
                 'loadExtension',
                 'unloadExtension',
-                'processDatabaseUpdates',
-                'processRuntimeDatabaseUpdates',
+                'updateDatabase',
+                'importStaticSqlFile',
+                'importT3DFile',
                 'reloadCaches',
                 'processCachingFrameworkUpdates',
                 'saveDefaultConfiguration',
@@ -71,7 +73,7 @@ class InstallUtilityTest extends UnitTestCase
                 'enrichExtensionWithDetails',
                 'ensureConfiguredDirectoriesExist',
                 'importInitialFiles',
-                'emitAfterExtensionInstallSignal'
+                'emitAfterExtensionInstallSignal',
             ],
             [],
             '',
@@ -128,11 +130,11 @@ class InstallUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function installCallsProcessRuntimeDatabaseUpdates()
+    public function installCallsUpdateDatabase()
     {
         $this->installMock->expects($this->once())
-            ->method('processRuntimeDatabaseUpdates')
-            ->with($this->extensionKey);
+            ->method('updateDatabase')
+            ->with([$this->extensionKey]);
 
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
         $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
@@ -197,7 +199,7 @@ class InstallUtilityTest extends UnitTestCase
         $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->expects($this->once())->method('reloadCaches');
-        $this->installMock->install('dummy');
+        $this->installMock->install($this->extensionKey);
     }
 
     /**
@@ -208,8 +210,8 @@ class InstallUtilityTest extends UnitTestCase
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
         $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
-        $this->installMock->expects($this->once())->method('saveDefaultConfiguration')->with('dummy');
-        $this->installMock->install('dummy');
+        $this->installMock->expects($this->once())->method('saveDefaultConfiguration')->with($this->extensionKey);
+        $this->installMock->install($this->extensionKey);
     }
 
     /**

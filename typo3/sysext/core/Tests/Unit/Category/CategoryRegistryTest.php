@@ -327,15 +327,4 @@ class CategoryRegistryTest extends UnitTestCase
             substr_count($GLOBALS['TCA'][$this->tables['first']]['types']['newtypeafterfirstadd']['showitem'], '--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category')
         );
     }
-
-    /**
-     * @test
-     */
-    public function addAddsOnlyOneSqlString(): void
-    {
-        $this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
-        $this->subject->add('text_extension_b', $this->tables['first'], 'categories1', [], true);
-        $sqlData = $this->subject->addExtensionCategoryDatabaseSchemaToTablesDefinition([], 'text_extension_a');
-        $this->assertEmpty($sqlData['sqlString'][0]);
-    }
 }

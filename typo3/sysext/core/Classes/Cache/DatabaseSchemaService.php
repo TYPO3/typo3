@@ -48,20 +48,6 @@ class DatabaseSchemaService
      * tables definitions string
      *
      * @param array $sqlString
-     * @param string $extensionKey
-     * @return array
-     */
-    public function addCachingFrameworkRequiredDatabaseSchemaForInstallUtility(array $sqlString, $extensionKey)
-    {
-        $sqlString[] = $this->getCachingFrameworkRequiredDatabaseSchema();
-        return [$sqlString, $extensionKey];
-    }
-
-    /**
-     * A slot method to inject the required caching framework database tables to the
-     * tables definitions string
-     *
-     * @param array $sqlString
      * @return array
      */
     public function addCachingFrameworkRequiredDatabaseSchemaForSqlExpectedSchemaService(array $sqlString)

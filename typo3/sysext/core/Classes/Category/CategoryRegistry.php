@@ -443,20 +443,6 @@ class CategoryRegistry implements SingletonInterface
     }
 
     /**
-     * A slot method to inject the required category database fields of an
-     * extension to the tables definition string
-     *
-     * @param array $sqlString
-     * @param string $extensionKey
-     * @return array
-     */
-    public function addExtensionCategoryDatabaseSchemaToTablesDefinition(array $sqlString, $extensionKey)
-    {
-        $sqlString[] = $this->getDatabaseTableDefinition($extensionKey);
-        return ['sqlString' => $sqlString, 'extensionKey' => $extensionKey];
-    }
-
-    /**
      * @return LanguageService
      */
     protected function getLanguageService()
