@@ -9,7 +9,8 @@ See :issue:`84244`
 Description
 ===========
 
-It is now possible to add additional query restrictions by adding class names as key to :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions']`
+It is now possible to add additional query restrictions by adding class names as key to
+:php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions']`
 These restriction objects will be added to any select query executed using the QueryBuilder.
 
 If these added restriction objects additionally implement :php:`\TYPO3\CMS\Core\Database\Query\Restriction\EnforceableQueryRestrictionInterface`
@@ -21,7 +22,7 @@ If an enforced restriction must be removed, it can still be removed with :php:`$
 Implementers of custom restrictions can therefore have their restrictions always enforced, or even not applied at all,
 by returning an empty expression in certain cases.
 
-To add a custom restriction class, use the following snippet in a `ext_localconf.php` file of your extension:
+To add a custom restriction class, use the following snippet in a :file:`ext_localconf.php` file of your extension:
 
 .. code-block:: php
 
@@ -38,8 +39,8 @@ Impact
 Restrictions added by third party extensions will impact the whole system. Therefore this API does not allow removing restrictions
 added by the system and adding restrictions should be handled with care.
 
-Removing third party restrictions is possible, by setting the option value `disabled` for a restriction to `true`
-in global TYPO3 configuration or `ext_localconf.php` of an extension, like shown below.
+Removing third party restrictions is possible, by setting the option value :php:`disabled` for a restriction to :php:`true`
+in global TYPO3 configuration or :php:`ext_localconf.php` of an extension, like shown below.
 
 .. code-block:: php
 
