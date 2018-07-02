@@ -102,11 +102,11 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
             }
             $minDim = $this->mconf['min'];
             if ($minDim) {
-                $minDim = $this->parent_cObj->calcIntExplode(',', $minDim . ',');
+                $minDim = $this->calcIntExplode($minDim . ',');
             }
             $maxDim = $this->mconf['max'];
             if ($maxDim) {
-                $maxDim = $this->parent_cObj->calcIntExplode(',', $maxDim . ',');
+                $maxDim = $this->calcIntExplode($maxDim . ',');
             }
             if ($minDim) {
                 $conf[$items] = $conf[$items - 1];
@@ -553,5 +553,22 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
             $this->WMresult = $this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
         }
         return $this->WMcObj->wrap($this->WMresult, $this->mconf['wrap']) . $this->WMextraScript;
+    }
+
+    /**
+     * This explodes a comma-list into an array where the values are parsed through ContentObjectRender::calc() and cast to (int)(so you are sure to have integers in the output array)
+     * Used to split and calculate min and max values for GMENUs.
+     *
+     * @param string $string The string with parts in (where each part is evaluated by ->calc())
+     * @return array And array with evaluated values.
+     * @see ContentObjectRenderer::calc(), makeGifs()
+     */
+    protected function calcIntExplode($string)
+    {
+        $temp = explode(',', $string);
+        foreach ($temp as $key => $val) {
+            $temp[$key] = (int)$this->parent_cObj->calc($val);
+        }
+        return $temp;
     }
 }

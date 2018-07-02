@@ -2424,4 +2424,11 @@ return [
             'Deprecation-85445-TemplateService-getFileName.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->calcIntExplode' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85451-ContentObjectRenderer-calcIntExplodeDeprecated.rst'
+        ],
+    ],
 ];
