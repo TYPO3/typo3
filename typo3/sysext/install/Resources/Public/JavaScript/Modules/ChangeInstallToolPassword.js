@@ -25,7 +25,7 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
-    selectorChangeToken: '#t3js-changeInstallToolPassword-token',
+    selectorModuleContent: '.t3js-module-content',
     selectorChangeTrigger: '.t3js-changeInstallToolPassword-change',
     selectorOutputContainer: '.t3js-changeInstallToolPassword-output',
     currentModal: {},
@@ -65,7 +65,7 @@ define([
 
     change: function() {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorChangeToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('install-tool-token');
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',

@@ -28,9 +28,9 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
+    selectorModuleContent: '.t3js-module-content',
     selectorContentContainer: '.t3js-extensionConfiguration-content',
     selectorFormListener: '.t3js-extensionConfiguration-form',
-    selectorWriteToken: '#t3js-extensionConfiguration-write-token',
     selectorOutputContainer: '.t3js-extensionConfiguration-output',
     selectorSearchInput: '.t3js-extensionConfiguration-search',
 
@@ -112,7 +112,7 @@ define([
      */
     write: function($form) {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorWriteToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('extension-configuration-write-token');
       var extensionConfiguration = {};
       $.each($form.serializeArray(), function() {
         extensionConfiguration[this.name] = this.value;

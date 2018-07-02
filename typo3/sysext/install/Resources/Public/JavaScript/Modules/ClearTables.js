@@ -27,7 +27,7 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
-    selectorClearToken: '#t3js-clearTables-clear-token',
+    selectorModuleContent: '.t3js-module-content',
     selectorClearTrigger: '.t3js-clearTables-clear',
     selectorStatsTrigger: '.t3js-clearTables-stats',
     selectorOutputContainer: '.t3js-clearTables-output',
@@ -90,7 +90,7 @@ define([
 
     clear: function(table) {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorClearToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('clear-tables-clear-token');
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',

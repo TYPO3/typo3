@@ -27,10 +27,8 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
-    selectorGetContentToken: '#t3js-presets-getContent-token',
-    selectorActivateToken: '#t3js-presets-activate-token',
+    selectorModuleContent: '.t3js-presets-content',
     selectorActivateTrigger: '.t3js-presets-activate',
-    selectorContentContainer: '.t3js-presets-content',
     selectorOutputContainer: '.t3js-presets-output',
     selectorImageExecutable: '.t3js-presets-image-executable',
     selectorImageExecutableTrigger: '.t3js-presets-image-executable-trigger',
@@ -79,9 +77,9 @@ define([
 
     activate: function() {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorActivateToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('presets-activate-token');
       var postData = {};
-      $(self.currentModal.find(this.selectorContentContainer + ' form').serializeArray()).each(function() {
+      $(self.currentModal.find(this.selectorModuleContent + ' form').serializeArray()).each(function() {
         postData[this.name] = this.value;
       });
       postData['install[action]'] = 'presetsActivate';

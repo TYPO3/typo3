@@ -28,7 +28,7 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
-    selectorSendToken: '#t3js-mailTest-token',
+    selectorModuleContent: '.t3js-module-content',
     selectorForm: '#t3js-mailTest-form',
     selectorEmail: '.t3js-mailTest-email',
     selectorOutputContainer: '.t3js-mailTest-output',
@@ -65,7 +65,7 @@ define([
 
     send: function() {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorSendToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('mail-test-token');
       var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().html(message);

@@ -27,7 +27,7 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
-    selectorDeleteToken: '#t3js-clearTypo3temp-delete-token',
+    selectorModuleContent: '.t3js-module-content',
     selectorDeleteTrigger: '.t3js-clearTypo3temp-delete',
     selectorOutputContainer: '.t3js-clearTypo3temp-output',
     selectorStatContainer: '.t3js-clearTypo3temp-stat-container',
@@ -89,7 +89,7 @@ define([
 
     delete: function(folder) {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorDeleteToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('clear-typo3temp-delete-token');
       $.ajax({
         method: 'POST',
         url: Router.getUrl(),

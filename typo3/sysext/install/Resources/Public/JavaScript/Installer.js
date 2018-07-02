@@ -29,12 +29,9 @@ require([
 
   var Installer = {
     selectorBody: '.t3js-body',
+    selectorModuleContent: '.t3js-module-content',
     selectorMainContent: '.t3js-installer-content',
     selectorProgressBar: '.t3js-installer-progress',
-    selectorExecuteDatabaseConnectToken: '#t3js-installer-databaseConnect-execute-token',
-    selectorExecuteDatabaseSelectToken: '#t3js-installer-databaseSelect-execute-token',
-    selectorExecuteDatabaseDataToken: '#t3js-installer-databaseData-execute-token',
-    selectorExecuteDefaultConfigurationToken: '#t3js-installer-defaultConfiguration-execute-token',
     selectorDatabaseConnectOutput: '.t3js-installer-databaseConnect-output',
     selectorDatabaseSelectOutput: '.t3js-installer-databaseSelect-output',
     selectorDatabaseDataOutput: '.t3js-installer-databaseData-output',
@@ -296,7 +293,7 @@ require([
       var $outputContainer = $(this.selectorDatabaseConnectOutput);
       var postData = {
         'install[action]': 'executeDatabaseConnect',
-        'install[token]': $(self.selectorExecuteDatabaseConnectToken).text()
+        'install[token]': $(self.selectorModuleContent).data('installer-database-connect-execute-token')
       };
       $($(this.selectorBody + ' form').serializeArray()).each(function() {
         postData[this.name] = this.value;
@@ -355,7 +352,7 @@ require([
       var $outputContainer = $(this.selectorDatabaseSelectOutput);
       var postData = {
         'install[action]': 'executeDatabaseSelect',
-        'install[token]': $(self.selectorExecuteDatabaseSelectToken).text()
+        'install[token]': $(self.selectorModuleContent).data('installer-database-select-execute-token')
       };
       $($(this.selectorBody + ' form').serializeArray()).each(function() {
         postData[this.name] = this.value;
@@ -414,7 +411,7 @@ require([
       var $outputContainer = $(this.selectorDatabaseDataOutput);
       var postData = {
         'install[action]': 'executeDatabaseData',
-        'install[token]': $(self.selectorExecuteDatabaseDataToken).text()
+        'install[token]': $(self.selectorModuleContent).data('installer-database-data-execute-token')
       };
       $($(this.selectorBody + ' form').serializeArray()).each(function() {
         postData[this.name] = this.value;
@@ -459,7 +456,7 @@ require([
       var self = this;
       var postData = {
         'install[action]': 'executeDefaultConfiguration',
-        'install[token]': $(self.selectorExecuteDefaultConfigurationToken).text()
+        'install[token]': $(self.selectorModuleContent).data('installer-default-configuration-execute-token')
       };
       $($(this.selectorBody + ' form').serializeArray()).each(function() {
         postData[this.name] = this.value;

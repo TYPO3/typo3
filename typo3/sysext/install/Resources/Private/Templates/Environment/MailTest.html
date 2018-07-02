@@ -18,26 +18,25 @@
 	</li>
 </ul>
 
-<div style="display:none">
-	<div id="t3js-mailTest-token">{mailTestToken}</div>
+<div class="t3js-module-content" data-mail-test-token="{mailTestToken}">
+	<div class="t3js-mailTest-output"></div>
+
+	<form id="t3js-mailTest-form">
+		<div class="form-group">
+			<label for="t3-install-checkmail">Email address:</label>
+			<input
+				id="t3-install-checkmail"
+				type="email"
+				class="t3-install-form-input-text form-control t3js-mailTest-email"
+				required
+			/>
+		</div>
+		<button
+			class="btn btn-default"
+			type="submit"
+		>
+			Send test mail
+		</button>
+	</form>
+
 </div>
-
-<div class="t3js-mailTest-output"></div>
-
-<form id="t3js-mailTest-form">
-	<div class="form-group">
-		<label for="t3-install-checkmail">Email address:</label>
-		<input
-			id="t3-install-checkmail"
-			type="email"
-			class="t3-install-form-input-text form-control t3js-mailTest-email"
-			required
-		/>
-	</div>
-	<button
-		class="btn btn-default"
-		type="submit"
-	>
-		Send test mail
-	</button>
-</form>

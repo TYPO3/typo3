@@ -8,10 +8,7 @@
 	Changed values are written to LocalConfiguration.php. The optional file AdditionalConfiguration.php is not controlled by the TYPO3’s core and may override certain settings. Administrators must maintain AdditionalConfiguration.php manually and should be used with caution.
 </p>
 
-<div style="display:none;">
-	<div id="t3js-presets-activate-token">{presetsActivateToken}</div>
-</div>
-<div class="t3js-presets-content">
+<div class="t3js-presets-content" data-presets-activate-token="{presetsActivateToken}">
 	<form method="post" class="form-horizontal">
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 			<f:for each="{presetFeatures}" as="feature">

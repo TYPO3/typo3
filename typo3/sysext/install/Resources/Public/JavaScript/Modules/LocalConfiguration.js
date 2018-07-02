@@ -28,10 +28,10 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
+    selectorModuleContent: '.t3js-module-content',
     selectorToggleAllTrigger: '.t3js-localConfiguration-toggleAll',
     selectorWriteTrigger: '.t3js-localConfiguration-write',
     selectorSearchTrigger: '.t3js-localConfiguration-search',
-    selectorWriteToken: '#t3js-localConfiguration-write-token',
     selectorContentContainer: '.t3js-localConfiguration-content',
     selectorOutputContainer: '.t3js-localConfiguration-output',
     currentModal: {},
@@ -125,7 +125,7 @@ define([
 
     write: function() {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorWriteToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('local-configuration-write-token');
       var configurationValues = {};
       self.currentModal.find('.t3js-localConfiguration-pathValue').each(function(i, element) {
         var $element = $(element);

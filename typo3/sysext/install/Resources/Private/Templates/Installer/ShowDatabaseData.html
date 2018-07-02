@@ -1,84 +1,82 @@
-<div style="display: none;">
-	<div id="t3js-installer-databaseData-execute-token">{executeDatabaseDataToken}</div>
-</div>
+<div class="t3js-module-content" data-installer-database-data-execute-token="{executeDatabaseDataToken}">
+	<h3>Create Administrative User / Specify Site Name</h3>
 
-<h3>Create Administrative User / Specify Site Name</h3>
+	<p>
+		Use this account to log into the backend of your site.
+	</p>
+	<p>
+		The password you provide for this account is also used to access the <strong>Install Tool</strong>.
+	</p>
+	<p>
+		On this page you can also set a name for your new website.
+	</p>
 
-<p>
-	Use this account to log into the backend of your site.
-</p>
-<p>
-	The password you provide for this account is also used to access the <strong>Install Tool</strong>.
-</p>
-<p>
-	On this page you can also set a name for your new website.
-</p>
+	<div class="t3js-installer-databaseData-output"></div>
 
-<div class="t3js-installer-databaseData-output"></div>
-
-<div class="row">
-	<div class="col-md-6">
-		<form method="post" id="stepInstaller-databaseData" class="t3-install-form-label-before form-horizontal">
-			<input type="hidden" value="execute" name="install[set]" />
-			<div class="form-group">
-				<label for="password" class="control-label col-md-2">Username</label>
-				<div class="col-md-10">
-					<input
-						class="t3-install-form-input-text form-control"
-						name="install[values][username]"
-						id="username"
-						placeholder="admin"
-						autocomplete="off"
-					/>
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="password" class="control-label col-md-2">Password</label>
-				<div class="col-md-10">
-					<input
-						class="t3-install-form-input-text t3-install-form-password-strength form-control"
-						name="install[values][password]"
-						id="password"
-						type="password"
-						autocomplete="off"
-					/>
-					<div class="checkbox">
-						<label>
-							<input
-								type="checkbox"
-								id="show-password"
-								onchange="if (this.checked==true) { document.getElementById('password').type='text'; } else { document.getElementById('password').type='password'; }"
-							/>
-							Show password
-						</label>
+	<div class="row">
+		<div class="col-md-6">
+			<form method="post" id="stepInstaller-databaseData" class="t3-install-form-label-before form-horizontal">
+				<input type="hidden" value="execute" name="install[set]" />
+				<div class="form-group">
+					<label for="password" class="control-label col-md-2">Username</label>
+					<div class="col-md-10">
+						<input
+							class="t3-install-form-input-text form-control"
+							name="install[values][username]"
+							id="username"
+							placeholder="admin"
+							autocomplete="off"
+						/>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-2"></div>
-				<div class="col-md-10">
-					<div class="alert alert-warning">
-						If compromised, this account will provide an attacker with complete access to your installation. A strong password is recommended. Include lower and upper case characters, special characters and numbers. Your password must be at least eight characters long.
+				<div class="form-group">
+					<label for="password" class="control-label col-md-2">Password</label>
+					<div class="col-md-10">
+						<input
+							class="t3-install-form-input-text t3-install-form-password-strength form-control"
+							name="install[values][password]"
+							id="password"
+							type="password"
+							autocomplete="off"
+						/>
+						<div class="checkbox">
+							<label>
+								<input
+									type="checkbox"
+									id="show-password"
+									onchange="if (this.checked==true) { document.getElementById('password').type='text'; } else { document.getElementById('password').type='password'; }"
+								/>
+								Show password
+							</label>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="form-group">
-
-				<label for="sitename" class="control-label col-md-2">Site name</label>
-				<div class="col-md-10">
-
-					<input
-						class="t3-install-form-input-text form-control"
-						name="install[values][sitename]"
-						id="sitename"
-						type="text"
-						value="{siteName}"
-					/>
+				<div class="row">
+					<div class="col-md-2"></div>
+					<div class="col-md-10">
+						<div class="alert alert-warning">
+							If compromised, this account will provide an attacker with complete access to your installation. A strong password is recommended. Include lower and upper case characters, special characters and numbers. Your password must be at least eight characters long.
+						</div>
+					</div>
 				</div>
-			</div>
-			<button class="btn btn-success t3js-installer-databaseData-execute">
-				Continue
-			</button>
-		</form>
+				<div class="form-group">
+
+					<label for="sitename" class="control-label col-md-2">Site name</label>
+					<div class="col-md-10">
+
+						<input
+							class="t3-install-form-input-text form-control"
+							name="install[values][sitename]"
+							id="sitename"
+							type="text"
+							value="{siteName}"
+						/>
+					</div>
+				</div>
+				<button class="btn btn-success t3js-installer-databaseData-execute">
+					Continue
+				</button>
+			</form>
+		</div>
 	</div>
 </div>

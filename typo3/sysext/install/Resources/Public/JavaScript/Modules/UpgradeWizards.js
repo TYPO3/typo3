@@ -28,7 +28,7 @@ define([
 
     return {
       selectorModalBody: '.t3js-modal-body',
-      selectorMarkUndoneToken: '#t3js-upgradeWizards-markUndone-token',
+      selectorModuleContent: '.t3js-module-content',
       selectorOutputWizardsContainer: '.t3js-upgradeWizards-wizards-output',
       selectorOutputDoneContainer: '.t3js-upgradeWizards-done-output',
       selectorWizardsBlockingAddsTemplate: '.t3js-upgradeWizards-blocking-adds-template',
@@ -47,12 +47,10 @@ define([
       selectorWizardsListRowTitle: '.t3js-upgradeWizards-list-row-title',
       selectorWizardsListRowExplanation: '.t3js-upgradeWizards-list-row-explanation',
       selectorWizardsListRowExecute: '.t3js-upgradeWizards-list-row-execute',
-      selectorWizardsInputToken: '#t3js-upgradeWizards-input-token',
       selectorWizardsInputTemplate: '.t3js-upgradeWizards-input',
       selectorWizardsInputTitle: '.t3js-upgradeWizards-input-title',
       selectorWizardsInputHtml: '.t3js-upgradeWizards-input-html',
       selectorWizardsInputPerform: '.t3js-upgradeWizards-input-perform',
-      selectorWizardsExecuteToken: '#t3js-upgradeWizards-execute-token',
 
       loadingMessage: ProgressBar.render(Severity.loading, 'Loading...', ''),
 
@@ -320,7 +318,7 @@ define([
 
       wizardInput: function(identifier) {
         var self = this;
-        var executeToken = self.currentModal.find(this.selectorWizardsInputToken).text();
+        var executeToken = self.currentModal.find(this.selectorModuleContent).data('upgrade-wizards-input-token');
         var modalContent = this.currentModal.find(self.selectorModalBody);
         var $outputContainer = self.currentModal.find(self.selectorOutputWizardsContainer);
         $outputContainer.empty().html(this.loadingMessage);
@@ -362,7 +360,7 @@ define([
 
       wizardExecute: function(identifier) {
         var self = this;
-        var executeToken = self.currentModal.find(this.selectorWizardsExecuteToken).text();
+        var executeToken = self.currentModal.find(self.selectorModuleContent).data('upgrade-wizards-execute-token');
         var modalContent = this.currentModal.find(self.selectorModalBody);
         console.log(identifier);
         var postData = {
@@ -459,7 +457,7 @@ define([
 
       markUndone: function(identifier) {
         var self = this;
-        var executeToken = self.currentModal.find(this.selectorMarkUndoneToken).text();
+        var executeToken = self.currentModal.find(self.selectorModuleContent).data('upgrade-wizards-mark-undone-token');
         var modalContent = this.currentModal.find(self.selectorModalBody);
         var $outputContainer = this.currentModal.find(this.selectorOutputDoneContainer);
         $outputContainer.empty().html(this.loadingMessage);

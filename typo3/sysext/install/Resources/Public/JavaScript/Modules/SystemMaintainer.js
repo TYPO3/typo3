@@ -29,8 +29,8 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
+    selectorModuleContent: '.t3js-module-content',
     selectorWriteTrigger: '.t3js-systemMaintainer-write',
-    selectorWriteToken: '#t3js-systemMaintainer-write-token',
     selectorOutputContainer: '.t3js-systemMaintainer-output',
     selectorChosenContainer: '.t3js-systemMaintainer-chosen',
     selectorChosenField: '.t3js-systemMaintainer-chosen-select',
@@ -106,7 +106,7 @@ define([
 
     write: function() {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorWriteToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('system-maintainer-write-token');
       var selectedUsers = self.currentModal.find(this.selectorChosenField).val();
       $.ajax({
         method: 'POST',

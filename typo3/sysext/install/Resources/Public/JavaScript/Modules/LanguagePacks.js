@@ -27,21 +27,18 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
+    selectorModuleContent: '.t3js-module-content',
     selectorOutputContainer: '.t3js-languagePacks-output',
     selectorContentContainer: '.t3js-languagePacks-mainContent',
     selectorActivateLanguage: '.t3js-languagePacks-activateLanguage',
-    selectorActivateLanguageToken: '#t3js-languagePacks-activateLanguage-token',
     selectorActivateLanguageIcon: '#t3js-languagePacks-activate-icon',
     selectorAddLanguageToggle: '.t3js-languagePacks-addLanguage-toggle',
     selectorLanguageInactive: '.t3js-languagePacks-inactive',
     selectorDeactivateLanguage: '.t3js-languagePacks-deactivateLanguage',
-    selectorDeactivateLanguageToken: '#t3js-languagePacks-deactivateLanguage-token',
     selectorDeactivateLanguageIcon: '#t3js-languagePacks-deactivate-icon',
     selectorUpdate: '.t3js-languagePacks-update',
-    selectorUpdatePackToken: '#t3js-languagePacks-updatePack-token',
     selectorLanguageUpdateIcon: '#t3js-languagePacks-languageUpdate-icon',
     selectorExtensionPackMissesIcon: '#t3js-languagePacks-extensionPack-misses-icon',
-    selectorUpdateIsoTimesToken: '#t3js-languagePacks-updateIsoTimes-token',
     selectorNotifications: '.t3js-languagePacks-notifications',
 
     currentModal: {},
@@ -132,7 +129,7 @@ define([
         data: {
           'install': {
             'action': 'languagePacksActivateLanguage',
-            'token': self.currentModal.find(this.selectorActivateLanguageToken).text(),
+            'token': self.currentModal.find(self.selectorModuleContent).data('language-packs-activate-language-token'),
             'iso': iso
           }
         },
@@ -171,7 +168,7 @@ define([
         data: {
           'install': {
             'action': 'languagePacksDeactivateLanguage',
-            'token': self.currentModal.find(this.selectorDeactivateLanguageToken).text(),
+            'token': self.currentModal.find(self.selectorModuleContent).data('language-packs-deactivate-language-token'),
             'iso': iso
           }
         },
@@ -236,7 +233,7 @@ define([
             data: {
               'install': {
                 'action': 'languagePacksUpdatePack',
-                'token': self.currentModal.find(self.selectorUpdatePackToken).text(),
+                'token': self.currentModal.find(self.selectorModuleContent).data('language-packs-update-pack-token'),
                 'iso': iso,
                 'extension': extension
               }
@@ -293,7 +290,7 @@ define([
             data: {
               'install': {
                 'action': 'languagePacksUpdateIsoTimes',
-                'token': self.currentModal.find(self.selectorUpdateIsoTimesToken).text(),
+                'token': self.currentModal.find(self.selectorModuleContent).data('language-packs-update-iso-times-token'),
                 'isos': isos
               }
             },

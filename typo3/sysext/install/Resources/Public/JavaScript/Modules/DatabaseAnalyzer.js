@@ -28,6 +28,7 @@ define([
   return {
 
     selectorModalBody: '.t3js-modal-body',
+    selectorModuleContent: '.t3js-module-content',
     selectorAnalyzeTrigger: '.t3js-databaseAnalyzer-analyze',
     selectorExecuteTrigger: '.t3js-databaseAnalyzer-execute',
     selectorOutputContainer: '.t3js-databaseAnalyzer-output',
@@ -131,7 +132,7 @@ define([
 
     execute: function() {
       var self = this;
-      var executeToken = self.currentModal.find('#t3js-databaseAnalyzer-execute-token').text();
+      var executeToken = self.currentModal.find(self.selectorModuleContent).data('database-analyzer-execute-token');
       var selectedHashes = [];
       self.currentModal.find('.t3js-databaseAnalyzer-output .t3js-databaseAnalyzer-suggestion-line input:checked').each(function() {
         selectedHashes.push($(this).data('hash'));

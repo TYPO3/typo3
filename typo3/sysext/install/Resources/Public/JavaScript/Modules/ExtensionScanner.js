@@ -22,10 +22,8 @@ define(['jquery',
 
   return {
     selectorModalBody: '.t3js-modal-body',
+    selectorModuleContent: '.t3js-module-content',
     listOfAffectedRestFileHashes: [],
-    selectorFilesToken: '#t3js-extensionScanner-files-token',
-    selectorScanFileToken: '#t3js-extensionScanner-scan-file-token',
-    selectorMarkFullyScannedRestFilesToken: '#t3js-extensionScanner-mark-fully-scanned-rest-files-token',
     selectorExtensionContainer: '.t3js-extensionScanner-extension',
     selectorNumberOfFiles: '.t3js-extensionScanner-number-of-files',
     selectorScanSingleTrigger: '.t3js-extensionScanner-scan-single',
@@ -150,7 +148,7 @@ define(['jquery',
           data: {
             'install': {
               'action': 'extensionScannerMarkFullyScannedRestFiles',
-              'token': self.currentModal.find(self.selectorMarkFullyScannedRestFilesToken).text(),
+              'token': self.currentModal.find(self.selectorModuleContent).data('extension-scanner-mark-fully-scanned-rest-files-token'),
               'hashes': self.uniqueArray(this.listOfAffectedRestFileHashes)
             }
           },
@@ -186,7 +184,7 @@ define(['jquery',
      */
     scanSingleExtension: function(extension) {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorFilesToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('extension-scanner-files-token');
       var modalContent = this.currentModal.find(self.selectorModalBody);
       var $extensionContainer = this.currentModal.find(this.getExtensionSelector(extension));
       var hitTemplate = '#t3js-extensionScanner-file-hit-template';
@@ -223,7 +221,7 @@ define(['jquery',
                   data: {
                     'install': {
                       'action': 'extensionScannerScanFile',
-                      'token': self.currentModal.find(self.selectorScanFileToken).text(),
+                      'token': self.currentModal.find(self.selectorModuleContent).data('extension-scanner-scan-file-token'),
                       'extension': extension,
                       'file': file
                     }

@@ -28,8 +28,8 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
+    selectorModuleContent: '.t3js-module-content',
     selectorCreateForm: '#t3js-createAdmin-form',
-    selectorCreateToken: '#t3js-createAdmin-token',
     selectorCreateTrigger: '.t3js-createAdmin-create',
     selectorOutputContainer: '.t3js-createAdmin-output',
     currentModal: {},
@@ -70,7 +70,7 @@ define([
 
     create: function() {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorCreateToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('create-admin-token');
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',

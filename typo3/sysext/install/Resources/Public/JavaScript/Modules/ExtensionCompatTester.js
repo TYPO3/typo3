@@ -28,9 +28,7 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
-    selectorLoadExtLocalconfToken: '#t3js-extensionCompatTester-loadExtLocalconf-token',
-    selectorLoadExtTablesToken: '#t3js-extensionCompatTester-loadExtTables-token',
-    selectorUninstallExtensionToken: '#t3js-extensionCompatTester-uninstallExtension-token',
+    selectorModuleContent: '.t3js-module-content',
     selectorCheckTrigger: '.t3js-extensionCompatTester-check',
     selectorUninstallTrigger: '.t3js-extensionCompatTester-uninstall',
     selectorOutputContainer: '.t3js-extensionCompatTester-output',
@@ -113,7 +111,7 @@ define([
 
     loadExtLocalconf: function(extension) {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorLoadExtLocalconfToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('extension-compat-tester-load-ext_localconf-token');
       var $ajax = $.ajax({
         url: Router.getUrl(),
         method: 'POST',
@@ -137,7 +135,7 @@ define([
 
     loadExtTables: function(extension) {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorLoadExtTablesToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('extension-compat-tester-load-ext_tables-token');
       var $ajax = $.ajax({
         url: Router.getUrl(),
         method: 'POST',
@@ -166,12 +164,11 @@ define([
      */
     uninstallExtension: function(extension) {
       var self = this;
-      var executeToken = self.currentModal.find(self.selectorUninstallExtensionToken).text();
+      var executeToken = self.currentModal.find(self.selectorModuleContent).data('extension-compat-tester-uninstall-extension-token');
       var modalContent = self.currentModal.find(self.selectorModalBody);
       var $outputContainer = $(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.append(message);
-      console.log('ExtensionCompatTester.js@174', extension, executeToken);
       $.ajax({
         url: Router.getUrl(),
         cache: false,

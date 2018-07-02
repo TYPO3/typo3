@@ -29,9 +29,8 @@ define([
 
   return {
     selectorModalBody: '.t3js-modal-body',
+    selectorModuleContent: '.t3js-module-content',
     selectorContentContainer: '.t3js-upgradeDocs-content',
-    selectorMarkReadToken: '#t3js-upgradeDocs-markRead-token',
-    selectorUnmarkReadToken: '#t3js-upgradeDocs-unmarkRead-token',
     selectorRestFileItem: '.upgrade_analysis_item_to_filter',
     selectorFulltextSearch: '.t3js-upgradeDocs-fulltext-search',
     selectorChosenField: '.t3js-upgradeDocs-chosen-select',
@@ -206,7 +205,7 @@ define([
 
     markRead: function(element) {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorMarkReadToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('upgrade-cocs-mark-read-token');
       var $button = $(element).closest('a');
       $button.toggleClass('t3js-upgradeDocs-unmarkRead t3js-upgradeDocs-markRead');
       $button.find('i').toggleClass('fa-check fa-ban');
@@ -229,7 +228,7 @@ define([
 
     unmarkRead: function(element) {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorUnmarkReadToken).text();
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('upgrade-docs-unmark-read-token');
       var $button = $(element).closest('a');
       var version = $button.closest('.panel').data('item-version');
       $button.toggleClass('t3js-upgradeDocs-markRead t3js-upgradeDocs-unmarkRead');

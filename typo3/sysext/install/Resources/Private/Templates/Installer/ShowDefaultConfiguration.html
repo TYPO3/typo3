@@ -1,49 +1,47 @@
-<div style="display: none;">
-	<div id="t3js-installer-defaultConfiguration-execute-token">{executeDefaultConfigurationToken}</div>
-</div>
+<div class="t3js-module-content" data-installer-default-configuration-execute-token="{executeDefaultConfigurationToken}">
+	<h3>Installation Complete</h3>
 
-<h3>Installation Complete</h3>
+	<p>
+		The Installation Wizard can create an empty page at the root of your website to help get you started. If you would like to use this option select "Create empty starting page".
+	</p>
 
-<p>
-	The Installation Wizard can create an empty page at the root of your website to help get you started. If you would like to use this option select "Create empty starting page".
-</p>
+	<div class="t3js-installer-defaultConfiguration-output"></div>
 
-<div class="t3js-installer-defaultConfiguration-output"></div>
+	<f:if condition="!{composerMode}">
+		<div class="alert alert-notice">
+			<h4>Want a pre-configured site?</h4>
+			<p>
+				You currently have an empty installation of TYPO3. If you would like to view a list of pre-configured distributions select “download list of distributions” from the list below.
+				<strong>Note: This may take some time to load.</strong>
+			</p>
+		</div>
+	</f:if>
 
-<f:if condition="!{composerMode}">
-	<div class="alert alert-notice">
-		<h4>Want a pre-configured site?</h4>
-		<p>
-			You currently have an empty installation of TYPO3. If you would like to view a list of pre-configured distributions select “download list of distributions” from the list below.
-			<strong>Note: This may take some time to load.</strong>
-		</p>
-	</div>
-</f:if>
-
-<form method="post">
-	<div class="form-group">
-		<f:if condition="!{composerMode}">
+	<form method="post">
+		<div class="form-group">
+			<f:if condition="!{composerMode}">
+				<div class="radio">
+					<label for="load-distributions">
+						<input type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
+						Yes, download the list of distributions
+					</label>
+				</div>
+			</f:if>
 			<div class="radio">
-				<label for="load-distributions">
-					<input type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
-					Yes, download the list of distributions
+				<label for="create-site">
+					<input type="radio" id="create-site" name="install[values][sitesetup]" value="createsite" />
+					Create empty starting page
 				</label>
 			</div>
-		</f:if>
-		<div class="radio">
-			<label for="create-site">
-				<input type="radio" id="create-site" name="install[values][sitesetup]" value="createsite" />
-				Create empty starting page
-			</label>
+			<div class="radio">
+				<label for="do-nothing">
+					<input type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" checked="checked" />
+					Take me straight to the backend
+				</label>
+			</div>
 		</div>
-		<div class="radio">
-			<label for="do-nothing">
-				<input type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" checked="checked" />
-				Take me straight to the backend
-			</label>
-		</div>
-	</div>
-	<button class="btn btn-success t3js-installer-defaultConfiguration-execute">
-		Open the TYPO3 Backend
-	</button>
-</form>
+		<button class="btn btn-success t3js-installer-defaultConfiguration-execute">
+			Open the TYPO3 Backend
+		</button>
+	</form>
+</div>
