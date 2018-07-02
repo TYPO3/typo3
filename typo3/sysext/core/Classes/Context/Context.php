@@ -56,9 +56,9 @@ class Context implements SingletonInterface
      *
      * @param array|null $defaultAspects
      */
-    public function __construct(array $defaultAspects = null)
+    public function __construct(array $defaultAspects = [])
     {
-        foreach ($defaultAspects ?? [] as $name => $defaultAspect) {
+        foreach ($defaultAspects as $name => $defaultAspect) {
             if ($defaultAspect instanceof AspectInterface) {
                 $this->aspects[$name] = $defaultAspect;
             }

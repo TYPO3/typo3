@@ -47,7 +47,7 @@ override a certain aspect locally.
 A huge benefit when using the Context API is a strong decoupling of various architectural failures within
 TYPO3 Core, which are now "Context aware" and not depending if a certain global object is available.
 
-This will not unify the code quality, but also introduce a better standard, where hard intermingling within
+This will not only unify the code quality, but also introduce a better standard, where hard intermingling within
 Extbase, PageRepository and TypoScriptFrontendController can be found.
 
 Impact

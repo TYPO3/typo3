@@ -53,6 +53,7 @@ class WorkspaceAspectTest extends UnitTestCase
     public function getThrowsExceptionOnInvalidArgument()
     {
         $this->expectException(AspectPropertyNotFoundException::class);
+        $this->expectExceptionCode(1527779447);
         $subject = new WorkspaceAspect();
         $subject->get('football');
     }

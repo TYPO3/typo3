@@ -219,7 +219,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      *
      * @return string The usergroup list of the current user
      */
-    protected function getGroupList()
+    protected function getGroupList(): string
     {
         /** @var UserAspect $userAspect */
         $userAspect = $this->context->getAspect('frontend.user');
@@ -261,7 +261,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      *
      * @return int The id of the current user
      */
-    protected function getUserId()
+    protected function getUserId(): int
     {
         $userAspect = $this->context->getAspect('frontend.user');
         return $userAspect->get('id');
@@ -272,7 +272,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      *
      * @return bool Determines if a user is logged in
      */
-    protected function isUserLoggedIn()
+    protected function isUserLoggedIn(): bool
     {
         /** @var UserAspect $userAspect */
         $userAspect = $this->context->getAspect('frontend.user');

@@ -38,6 +38,7 @@ class DateTimeAspectTest extends UnitTestCase
     public function getThrowsExceptionOnInvalidArgument()
     {
         $this->expectException(AspectPropertyNotFoundException::class);
+        $this->expectExceptionCode(1527778767);
         $dateObject = new \DateTimeImmutable('2018-07-15', new \DateTimeZone('Europe/Moscow'));
         $subject = new DateTimeAspect($dateObject);
         $subject->get('football');

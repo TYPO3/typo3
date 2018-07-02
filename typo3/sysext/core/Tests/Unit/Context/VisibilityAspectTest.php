@@ -60,6 +60,7 @@ class VisibilityAspectTest extends UnitTestCase
     public function getThrowsExceptionOnInvalidArgument()
     {
         $this->expectException(AspectPropertyNotFoundException::class);
+        $this->expectExceptionCode(1527780439);
         $subject = new VisibilityAspect();
         $subject->get('football');
     }

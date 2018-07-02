@@ -44,4 +44,4 @@ Use Context API / Aspects instead to read from this information:
 - :php:`$context->getPropertyFromAspect('backend.user', 'isLoggedIn')` instead of :php:`$TSFE->beUserLogin`
 - :php:`$context->getPropertyFromAspect('frontend.user', 'groupIds')` instead of :php:`$TSFE->gr_list`
 
-.. index:: Frontend, PHP-API, PartiallyScanned
+.. index:: Frontend, PHP-API, FullyScanned

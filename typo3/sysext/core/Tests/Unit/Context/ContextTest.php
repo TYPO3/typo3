@@ -108,6 +108,7 @@ class ContextTest extends UnitTestCase
         ]);
 
         $this->expectException(AspectNotFoundException::class);
+        $this->expectExceptionCode(1527777641);
         $subject->getAspect('uncoolio');
     }
 
@@ -135,6 +136,7 @@ class ContextTest extends UnitTestCase
         ]);
 
         $this->expectException(AspectNotFoundException::class);
+        $this->expectExceptionCode(1527777868);
         $subject->getPropertyFromAspect('uncoolio', 'does not matter');
     }
 

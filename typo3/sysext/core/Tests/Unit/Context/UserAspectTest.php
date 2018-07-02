@@ -202,6 +202,7 @@ class UserAspectTest extends UnitTestCase
     public function getThrowsExceptionOnInvalidArgument()
     {
         $this->expectException(AspectPropertyNotFoundException::class);
+        $this->expectExceptionCode(1529996567);
         $subject = new UserAspect();
         $subject->get('football');
     }
