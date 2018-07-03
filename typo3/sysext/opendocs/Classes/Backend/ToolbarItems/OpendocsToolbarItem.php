@@ -31,12 +31,12 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     /**
      * @var array
      */
-    protected $openDocs;
+    protected $openDocs = [];
 
     /**
      * @var array
      */
-    protected $recentDocs;
+    protected $recentDocs = [];
 
     /**
      * @var IconFactory
@@ -74,8 +74,11 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     public function loadDocsFromUserSession()
     {
         $backendUser = $this->getBackendUser();
-        list($this->openDocs, ) = $backendUser->getModuleData('FormEngine', 'ses');
-        $this->recentDocs = $backendUser->getModuleData('opendocs::recent');
+        $openDocs = $backendUser->getModuleData('FormEngine', 'ses');
+        if ($openDocs !== null) {
+            list($this->openDocs, ) = $openDocs;
+        }
+        $this->recentDocs = $backendUser->getModuleData('opendocs::recent') ?: [];
     }
 
     /**
