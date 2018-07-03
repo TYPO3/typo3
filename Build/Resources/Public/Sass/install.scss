@@ -35,6 +35,7 @@ $grid-float-breakpoint: $screen-md-min;
 @import "typo3/element_docheader";
 @import "typo3/element_message";
 @import "typo3/element_table";
+@import "typo3/element_tab";
 
 //
 // Include modules
@@ -102,10 +103,6 @@ img.logo {
 
 .alert-notice {
     @include alert-variant($btn-default-bg, $btn-default-border, $btn-default-color);
-}
-
-.nav-pills > li > a {
-    border-radius: 0;
 }
 
 h1:first-child {

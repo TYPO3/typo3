@@ -1,16 +1,15 @@
-{namespace i=TYPO3\CMS\Install\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers" data-namespace-typo3-fluid="true">
+
 <div class="panel panel-default panel-flat">
-	<div class="panel-heading" role="tab" id="heading{sectionName}">
+	<div class="panel-heading" role="tab" id="heading-{sectionName}">
 		<h3 class="panel-title">
-			<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{sectionName}"
-				aria-expanded="true" aria-controls="collapse{sectionName}" class="collapsed"
-			>
+			<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{sectionName}" aria-expanded="true" aria-controls="collapse-{sectionName}" class="collapsed">
 				<span class="caret"></span>
 				<strong>{sectionData.description}</strong> [{sectionName}]
 			</a>
 		</h3>
 	</div>
-	<div id="collapse{sectionName}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{sectionName}">
+	<div id="collapse-{sectionName}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{sectionName}">
 		<f:for each="{sectionData.items}" as="item">
 			<a id="{sectionName}-{item.key}"></a>
 			<div class="item">
@@ -44,11 +43,9 @@
 						<f:then>
 							<div class="form-group">
 								<span class="help-block">{item.description -> f:format.raw()}</span>
-								<select
-									data-path="{sectionName}/{item.key}"
-									class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue">
+								<select data-path="{sectionName}/{item.key}" class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue">
 									<f:for each="{item.allowedValues}" key="optionKey" as="optionLabel">
-										<option value="{optionKey}" {f:if(condition:'{item.value} == {optionKey}', then: 'selected="selected"')}>{optionLabel} ({optionKey})</option>
+										<option value="{optionKey}" {f:if(condition: '{item.value} == {optionKey}', then: 'selected="selected"')}>{optionLabel} ({optionKey})</option>
 									</f:for>
 								</select>
 							</div>
@@ -84,10 +81,10 @@
 								<div class="form-group">
 									<span class="help-block">{item.description -> f:format.raw()}</span>
 									<input
-											type="password"
-											value="{item.value}"
-											data-path="{sectionName}/{item.key}"
-											class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+										type="password"
+										value="{item.value}"
+										data-path="{sectionName}/{item.key}"
+										class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
 									/>
 								</div>
 							</f:if>
@@ -131,3 +128,5 @@
 		</f:for>
 	</div>
 </div>
+
+</html>

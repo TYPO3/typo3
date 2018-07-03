@@ -1,6 +1,7 @@
-<div>
-	<h1>Upgrade</h1>
-</div>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<h1>Upgrade</h1>
+
 <div class="card-container">
 	<div class="card card-size-fixed-small">
 		<div class="card-header">
@@ -11,7 +12,7 @@
 			<p class="card-text">Update your TYPO3 installation (support for symbolic links required).</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/CoreUpdate">Update Core</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/CoreUpdate">Update Core</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -23,7 +24,7 @@
 			<p class="card-text">Finalises the upgrade process when moving to a major release.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/UpgradeWizards">Run Upgrade Wizard</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/UpgradeWizards">Run Upgrade Wizard</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -35,7 +36,7 @@
 			<p class="card-text">View and search for important changes that have been made for every major and minor release of TYPO3.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/UpgradeDocs">View Upgrade Documentation</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/UpgradeDocs">View Upgrade Documentation</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -48,7 +49,7 @@
 			</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/TcaExtTablesCheck">Check TCA</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/TcaExtTablesCheck">Check TCA</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -60,7 +61,7 @@
 			<p class="card-text">Checks the compatibility of all active extensions against the current (installed) version of TYPO3.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-modal-size="small" data-require="TYPO3/CMS/Install/ExtensionCompatTester">Check Extension Compatibility</a>
+			<a href="#" class="btn btn-default" data-modal-size="small" data-require="TYPO3/CMS/Install/ExtensionCompatTester">Check Extension Compatibility</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -72,7 +73,7 @@
 			<p class="card-text">Identifies any third-party extensions that contain an outdated TCA configuration which should be adapted for the current (installed) version of TYPO3.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/TcaMigrationsCheck">Check TCA Migrations</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/TcaMigrationsCheck">Check TCA Migrations</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -84,7 +85,9 @@
 			<p class="card-text">Scan extensions for usage of deprecated or outdated TYPO3 API calls.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/ExtensionScanner">Scan Extension Files</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/ExtensionScanner">Scan Extension Files</a>
 		</div>
 	</div>
 </div>
+
+</html>

@@ -30,7 +30,6 @@ define([
   return {
     selectorModalBody: '.t3js-modal-body',
     selectorModuleContent: '.t3js-module-content',
-    selectorContentContainer: '.t3js-upgradeDocs-content',
     selectorRestFileItem: '.upgrade_analysis_item_to_filter',
     selectorFulltextSearch: '.t3js-upgradeDocs-fulltext-search',
     selectorChosenField: '.t3js-upgradeDocs-chosen-select',
@@ -70,9 +69,6 @@ define([
     getContent: function() {
       var self = this;
       var modalContent = this.currentModal.find(self.selectorModalBody);
-      var outputContainer = $(this.selectorContentContainer);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      outputContainer.empty().html(message);
       $.ajax({
         url: Router.getUrl('upgradeDocsGetContent'),
         cache: false,

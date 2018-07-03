@@ -1,6 +1,7 @@
-<div>
-	<h1>Environment</h1>
-</div>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<h1>Environment</h1>
+
 <div class="card-container">
 	<div class="card card-size-fixed-small">
 		<div class="card-header">
@@ -11,7 +12,7 @@
 			<p class="card-text">Gives an overview of your host environment including its web server, PHP version and selected database.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-modal-size="small" data-require="TYPO3/CMS/Install/SystemInformation">Show System Information</a>
+			<a href="#" class="btn btn-default" data-modal-size="small" data-require="TYPO3/CMS/Install/SystemInformation">Show System Information</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -23,7 +24,7 @@
 			<p class="card-text">Analyzes your host environment, identifying any issues that may prevent TYPO3 from running correctly.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/EnvironmentCheck">Check Environment</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/EnvironmentCheck">Check Environment</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -35,7 +36,7 @@
 			<p class="card-text">Analyzes your folder structure, checking files and directories for correct permissions and identifying any files or directories that may be missing from your installation.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/FolderStructure">Check Directory Status</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/FolderStructure">Check Directory Status</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -47,7 +48,7 @@
 			<p class="card-text">Outputs detailed information about your installation of PHP. Including version details and enabled PHP extensions.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/PhpInfo">View PHP Info</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/PhpInfo">View PHP Info</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -59,7 +60,7 @@
 			<p class="card-text">Test your mail configuration by sending out a dummy email via TYPO3.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/MailTest">Test Mail Setup</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/MailTest">Test Mail Setup</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -71,7 +72,9 @@
 			<p class="card-text">Creates test images and compares them against a set of reference images to help ensure that image processing is working correctly within your environment.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/ImageProcessing">Test Images</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/ImageProcessing">Test Images</a>
 		</div>
 	</div>
 </div>
+
+</html>

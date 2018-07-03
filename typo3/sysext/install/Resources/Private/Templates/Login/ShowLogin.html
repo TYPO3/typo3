@@ -1,8 +1,4 @@
-{namespace i=TYPO3\CMS\Install\ViewHelpers}
-
-<div style="display:none">
-	<div id="t3js-login-token">{loginToken}</div>
-</div>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <div class="container">
 	<div class="page-header">
@@ -14,7 +10,7 @@
 
 	</div>
 	<div id="t3-install-box-body">
-		<form method="post" class="form-inline" id="t3-install-form-login">
+		<form method="post" class="form-inline" id="t3-install-form-login" data-login-token="{loginToken}">
 			<div class="form-group">
 				<label for="t3-install-form-password">Password</label>
 				<input id="t3-install-form-password" type="password" name="install[password]" class="t3-install-form-input-text form-control" autofocus="autofocus" />
@@ -50,3 +46,5 @@
 		</div>
 	</div>
 </div>
+
+</html>

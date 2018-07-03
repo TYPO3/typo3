@@ -35,7 +35,7 @@
             position: relative;
         }
 
-        &.panel-default .panel-heading {
+        &.panel-default > .panel-heading {
             background: $gray-lighter;
         }
 

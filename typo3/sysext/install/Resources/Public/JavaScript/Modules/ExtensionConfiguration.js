@@ -29,7 +29,6 @@ define([
   return {
     selectorModalBody: '.t3js-modal-body',
     selectorModuleContent: '.t3js-module-content',
-    selectorContentContainer: '.t3js-extensionConfiguration-content',
     selectorFormListener: '.t3js-extensionConfiguration-form',
     selectorOutputContainer: '.t3js-extensionConfiguration-output',
     selectorSearchInput: '.t3js-extensionConfiguration-search',

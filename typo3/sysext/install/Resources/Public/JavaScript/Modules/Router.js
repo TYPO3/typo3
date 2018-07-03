@@ -48,42 +48,41 @@ define([
         }
       });
 
-      $(document).on('click', '.card [data-inline]', function(e) {
+      $(document).on('click', '.card .btn', function(e) {
         e.preventDefault();
+
         var $me = $(e.currentTarget);
-        var requireModule = $me.closest('[data-inline]').data('require');
-        require([requireModule], function(aModule) {
-          if (typeof aModule.initialize !== 'undefined') {
-            aModule.initialize($me);
-          }
-        });
-      });
-
-      $(document).on('click', '.t3js-install-open-modal', function (e) {
-        e.preventDefault();
-
-        var modaltitle = $(this).closest('.card').find('.card-title').html();
-        var requireModule = $(this).data('require');
-        var modalSize = $(this).data('modalSize') || Modal.sizes.large;
-
-        Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done(function(icon) {
-          var configuration = {
-            type: Modal.types.default,
-            title: modaltitle,
-            size: modalSize,
-            content: '<div class="modal-loading">' + icon + '</div>',
-            additionalCssClasses: ['install-tool-modal'],
-            callback: function (currentModal) {
-              require([requireModule], function(aModule) {
-                if (typeof aModule.initialize !== 'undefined') {
-                  aModule.initialize(currentModal);
-                }
-              });
+        var requireModule = $me.data('require');
+        var inlineState = $me.data('inline');
+        var isInline = typeof inlineState !== 'undefined' && parseInt(inlineState) === 1;
+        if (isInline) {
+          require([requireModule], function(aModule) {
+            if (typeof aModule.initialize !== 'undefined') {
+              aModule.initialize($me);
             }
+          });
+        } else {
+          var modalTitle = $me.closest('.card').find('.card-title').html();
+          var modalSize = $me.data('modalSize') || Modal.sizes.large;
 
-          };
-          Modal.advanced(configuration);
-        });
+          Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done(function(icon) {
+            var configuration = {
+              type: Modal.types.default,
+              title: modalTitle,
+              size: modalSize,
+              content: '<div class="modal-loading">' + icon + '</div>',
+              additionalCssClasses: ['install-tool-modal'],
+              callback: function (currentModal) {
+                require([requireModule], function (aModule) {
+                  if (typeof aModule.initialize !== 'undefined') {
+                    aModule.initialize(currentModal);
+                  }
+                });
+              }
+            };
+            Modal.advanced(configuration);
+          });
+        }
       });
 
       this.executeSilentConfigurationUpdate();
@@ -303,7 +302,7 @@ define([
         data: {
           'install': {
             'action': 'login',
-            'token': $('#t3js-login-token').text(),
+            'token': $('[data-login-token]').data('login-token'),
             'password': $('.t3-install-form-input-text').val()
           }
         },
@@ -342,20 +341,6 @@ define([
         success: function(data) {
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             outputContainer.empty().append(data.html);
-
-            /**
-            // Each card head can have a t3js-require class and a data-require attribute
-            // with the name of a requireJS module. Those are loaded here and initialize()
-            // is executed if exists.
-            $('.t3js-require').each(function() {
-              var module = $(this).data('require');
-              require([module], function(aModule) {
-                if (typeof aModule.initialize !== 'undefined') {
-                  aModule.initialize();
-                }
-              });
-            });
-*/
           } else {
             var message = InfoBox.render(Severity.error, 'Something went wrong', '');
             outputContainer.empty().append(message);

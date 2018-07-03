@@ -32,7 +32,6 @@ define([
     selectorToggleAllTrigger: '.t3js-localConfiguration-toggleAll',
     selectorWriteTrigger: '.t3js-localConfiguration-write',
     selectorSearchTrigger: '.t3js-localConfiguration-search',
-    selectorContentContainer: '.t3js-localConfiguration-content',
     selectorOutputContainer: '.t3js-localConfiguration-output',
     currentModal: {},
 

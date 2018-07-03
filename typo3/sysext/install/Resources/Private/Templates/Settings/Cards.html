@@ -1,6 +1,7 @@
-<div>
-	<h1>Settings</h1>
-</div>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<h1>Settings</h1>
+
 <div class="card-container">
 	<div class="card card-size-fixed-small">
 		<div class="card-header">
@@ -11,7 +12,7 @@
 			<p class="card-text">Set a new password for the Install Tool when accessed in Standalone mode.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-modal-size="small" data-require="TYPO3/CMS/Install/ChangeInstallToolPassword">Change Install Tool Password</a>
+			<a href="#" class="btn btn-default" data-modal-size="small" data-require="TYPO3/CMS/Install/ChangeInstallToolPassword">Change Install Tool Password</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -23,7 +24,7 @@
 			<p class="card-text">Specify which backend administrators have access to the Admin Tools module and Install Tool when accessed in Standalone Mode.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-modal-size="medium" data-require="TYPO3/CMS/Install/SystemMaintainer">Manage System Maintainers</a>
+			<a href="#" class="btn btn-default" data-modal-size="medium" data-require="TYPO3/CMS/Install/SystemMaintainer">Manage System Maintainers</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -35,7 +36,7 @@
 			<p class="card-text">Configure image processing, debug/live mode and mail settings.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/Presets">Choose Preset</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/Presets">Choose Preset</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -47,7 +48,7 @@
 			<p class="card-text">Modify settings written to LocalConfiguration.php.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/LocalConfiguration">Configure options</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/LocalConfiguration">Configure options</a>
 		</div>
 	</div>
 	<div class="card card-size-fixed-small">
@@ -59,10 +60,9 @@
 			<p class="card-text">Configure settings for all enabled extensions.</p>
 		</div>
 		<div class="card-footer">
-			<a href="#" class="btn btn-default t3js-install-open-modal t3js-require" data-require="TYPO3/CMS/Install/ExtensionConfiguration">Configure extensions</a>
+			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/ExtensionConfiguration">Configure extensions</a>
 		</div>
 	</div>
 </div>
 
-
-
+</html>
