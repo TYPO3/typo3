@@ -61,7 +61,7 @@ class ExtensionModelUtility
     public function convertDependenciesToObjects($dependencies)
     {
         $dependenciesObject = new \SplObjectStorage();
-        $unserializedDependencies = unserialize($dependencies);
+        $unserializedDependencies = unserialize($dependencies, ['allowed_classes' => false]);
         if (!is_array($unserializedDependencies)) {
             return $dependenciesObject;
         }

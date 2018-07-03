@@ -403,7 +403,7 @@ abstract class AbstractExtensionXmlParser extends AbstractXmlParser
     protected function convertDependencies($dependencies)
     {
         $newDependencies = [];
-        $dependenciesArray = unserialize($dependencies);
+        $dependenciesArray = unserialize($dependencies, ['allowed_classes' => false]);
         if (is_array($dependenciesArray)) {
             foreach ($dependenciesArray as $version) {
                 if (!empty($version['kind']) && !empty($version['extensionKey'])) {
