@@ -1,4 +1,4 @@
-﻿.. include:: ../Includes.txt
+.. include:: ../Includes.txt
 
 
 .. _adding-your-own-content-elements:
@@ -139,10 +139,23 @@ setup.txt
 ---------
 
 As defined in `Configuration/TCA/Overrides/tt_content.php`, this file is in the directory
-`Configuration/TypoScript` of our own extension. You can have two options in the TypoScript:
+`Configuration/TypoScript` of our own extension.
 
-- Send all the data from the tt\_content table for this particular content element
-  directly to a Fluid template
+To ensure your custom content element templates can be found you need to extend the global
+:typoscript:`templateRootPaths` with a path within your extension:
+
+.. code-block:: typoscript
+
+   lib.contentElement {
+      templateRootPaths {
+         200 = EXT:your_extension_key/Resources/Private/Templates/
+      }
+   }
+
+You can use an arbitrary index (`200` here), just make sure it is unique. If you use partials
+and layouts, you need to do the same for :typoscript:`partialRootPaths` and :typoscript:`layoutRootPaths`.
+
+Now you can register the rendering of your custom content element using a Fluid template:
 
   .. code-block:: typoscript
 
@@ -153,11 +166,20 @@ As defined in `Configuration/TCA/Overrides/tt_content.php`, this file is in the 
         }
      }
 
-- Or use data processors in front of the view to do some data manipulation or other stuff
-  you would like to do before sending everything to the view. First tell the FLUIDTEMPLATE
-  content object what the name of the template is by using the parameter `templateName`,
-  then add the full class name for the data processor. You can send your own parameters
-  to the processor as well:
+In this example a :typoscript:`FLUIDTEMPLATE` content object is created using a copy from
+:typoscript:`lib.contentElement` with a template identified by the :typoscript:`templateName`
+`NewContentElement`. This will load a `NewContentElement.html` template file from the
+:typoscript:`templateRootPaths`.
+
+.. note::
+
+   The :typoscript:`lib.contentElement` path is defined in
+   :file:`EXT:fluid_styled_content/Configuration/TypoScript/Helper/ContentElement.typoscript`.
+
+You can use data processors for some data manipulation or other stuff you would like to do
+before sending everything to the view. This is done in the :typoscript:`dataProcessing` section
+where you can add an arbitrary number of data processors, each with a fully qualified class name
+(FQCN) and optional parameters to be used in the data processor:
 
 .. code-block:: typoscript
 
@@ -171,17 +193,6 @@ As defined in `Configuration/TCA/Overrides/tt_content.php`, this file is in the 
                useHere = theConfigurationOfTheDataProcessor
             }
          }
-      }
-   }
-
-You need to add the templateRootPath to your own extension as well, and if you are using
-it, partialRootPaths and layoutRootPaths:
-
-.. code-block:: typoscript
-
-   lib.contentElement {
-      templateRootPaths {
-         200 = EXT:your_extension_key/Resources/Private/Templates/
       }
    }
 
