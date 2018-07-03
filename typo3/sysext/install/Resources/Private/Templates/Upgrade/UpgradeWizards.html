@@ -4,12 +4,7 @@
 	records or explicitly install extensions that ship with the latest TYPO3 version.
 </p>
 
-<div
-	class="t3js-module-content"
-	data-upgrade-wizards-mark-undone-token="{upgradeWizardsMarkUndoneToken}"
-	data-upgrade-wizards-input-token="{upgradeWizardsInputToken}"
-	data-upgrade-wizards-execute-token="{upgradeWizardsExecuteToken}"
->
+<div style="display: none">
 	<div class="t3js-upgradeWizards-blocking-charset-template">
 		<p>
 			The default database charset of the main MySQL database is not utf-8.
@@ -115,4 +110,12 @@
 	flag can be reset by selecting specific wizards from the list below, so the according wizards
 	show up as possible upgrade wizards again.
 </p>
-<div class="t3js-upgradeWizards-done-output"></div>
+
+<div
+	class="t3js-module-content"
+	data-upgrade-wizards-mark-undone-token="{upgradeWizardsMarkUndoneToken}"
+	data-upgrade-wizards-input-token="{upgradeWizardsInputToken}"
+	data-upgrade-wizards-execute-token="{upgradeWizardsExecuteToken}"
+>
+	<div class="t3js-upgradeWizards-done-output"></div>
+</div>
