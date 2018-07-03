@@ -829,4 +829,14 @@ return [
             'Deprecation-85996-ExtensionManagerCommandController.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject' => [
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject' => [
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
 ];

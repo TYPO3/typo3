@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -175,7 +176,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
      * @param string $pref Can be "before" or "after" and determines which kind of image to create (basically this is the prefix of the TypoScript properties that are read from the ->I['val'] array
      * @return string The resulting HTML of the image, if any.
      */
-    public function getBeforeAfter($pref)
+    protected function getBeforeAfter($pref)
     {
         $res = '';
         if ($imgInfo = $this->WMcObj->getImgResource($this->I['val'][$pref . 'Img'], $this->I['val'][$pref . 'Img.'])) {
@@ -203,10 +204,9 @@ class TextMenuContentObject extends AbstractMenuContentObject
      * Called right before the traversing of $this->result begins.
      * Can be used for various initialization
      *
-     * @access private
      * @see writeMenu()
      */
-    public function extProc_init()
+    protected function extProc_init()
     {
     }
 
@@ -214,10 +214,9 @@ class TextMenuContentObject extends AbstractMenuContentObject
      * Called right before the creation of the link for the menu item
      *
      * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
-     * @access private
      * @see writeMenu()
      */
-    public function extProc_beforeLinking($key)
+    protected function extProc_beforeLinking($key)
     {
     }
 
@@ -226,10 +225,9 @@ class TextMenuContentObject extends AbstractMenuContentObject
      * This function MUST set $this->WMresult.=[HTML for menu item] to add the generated menu item to the internal accumulation of items.
      *
      * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
-     * @access private
      * @see writeMenu()
      */
-    public function extProc_afterLinking($key)
+    protected function extProc_afterLinking($key)
     {
         // Add part to the accumulated result + fetch submenus
         if (!$this->I['spacer']) {
@@ -245,10 +243,9 @@ class TextMenuContentObject extends AbstractMenuContentObject
      * @param string $item The current content of the menu item, $this->I['theItem'], passed along.
      * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
      * @return string The modified version of $item, going back into $this->I['theItem']
-     * @access private
      * @see writeMenu()
      */
-    public function extProc_beforeAllWrap($item, $key)
+    protected function extProc_beforeAllWrap($item, $key)
     {
         return $item;
     }
@@ -257,10 +254,9 @@ class TextMenuContentObject extends AbstractMenuContentObject
      * Called before the writeMenu() function returns (only if a menu was generated)
      *
      * @return string The total menu content should be returned by this function
-     * @access private
      * @see writeMenu()
      */
-    public function extProc_finish()
+    protected function extProc_finish()
     {
         // stdWrap:
         if (is_array($this->mconf['stdWrap.'])) {

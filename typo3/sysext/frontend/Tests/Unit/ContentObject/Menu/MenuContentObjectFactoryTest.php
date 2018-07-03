@@ -39,7 +39,7 @@ class MenuContentObjectFactoryTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     public function getMenuObjectByTypeReturnsObjectForRegisteredMenuType()
     {
         $factory = new MenuContentObjectFactory;
-        $this->assertInternalType('object', $factory->getMenuObjectByType('GMENU'));
+        $this->assertInternalType('object', $factory->getMenuObjectByType('TMENU'));
     }
 
     /**
@@ -48,7 +48,7 @@ class MenuContentObjectFactoryTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     public function getMenuObjectByTypeReturnsObjectWithLowercasedMenuType()
     {
         $factory = new MenuContentObjectFactory;
-        $this->assertInternalType('object', $factory->getMenuObjectByType('gmenu'));
+        $this->assertInternalType('object', $factory->getMenuObjectByType('tmenu'));
     }
 
     /**
@@ -58,8 +58,8 @@ class MenuContentObjectFactoryTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     {
         $factory = new MenuContentObjectFactory;
         $selfClassName = static::class;
-        $factory->registerMenuType('GMENU', $selfClassName);
-        $this->assertInstanceOf($selfClassName, $factory->getMenuObjectByType('GMENU'));
+        $factory->registerMenuType('TMENU', $selfClassName);
+        $this->assertInstanceOf($selfClassName, $factory->getMenuObjectByType('TMENU'));
     }
 
     /**

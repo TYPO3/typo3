@@ -4267,6 +4267,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($key) {
             switch ($key) {
                 case 'mouseOver':
+                    trigger_error('Calling $TSFE->setJS("mouseOver") will be removed in TYPO3 v10.0. If necessary, use setJS() with your recommended code.', E_USER_DEPRECATED);
+                    // Rollover functionality will be removed in TYPO3 v10.0
                     $this->additionalJavaScript[$key] = '		// JS function for mouse-over
 		function over(name, imgObj) {	//
 			if (document[name]) {document[name].src = eval(name+"_h.src");}

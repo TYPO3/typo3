@@ -23,9 +23,16 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
  * ImageMap based menus
+ *
+ * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
  */
 class ImageMenuContentObject extends AbstractMenuContentObject
 {
+    public function __construct()
+    {
+        trigger_error('IMGMENU and ImageMenuContentObject will be removed in TYPO3 v10.0, you should build accessible websites with TMENU/Text, and optional images on top, which can be achieved with TypoScript.', E_USER_DEPRECATED);
+    }
+
     /**
      * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
      * Calls makeImageMap() to generate the image map image-file

@@ -724,6 +724,167 @@ return [
             'Deprecation-68748-DeprecateAbstractContentObjectgetContentObject.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->subMenu' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->link' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->procesItemStates' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->changeLinksForAccessRestrictedPages' => [
+        'numberOfMandatoryArguments' => 4,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->isNext' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->isActive' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->isCurrent' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->isSubMenu' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->isItemState' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->accessKey' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->userProcess' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->setATagParts' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->getPageTitle' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->getMPvar' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->getDoktypeExcludeWhere' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->getBannedUids' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuTypoLink' => [
+        'numberOfMandatoryArguments' => 4,
+        'maximumNumberOfArguments' => 7,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_RO' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_init' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_beforeLinking' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_afterLinking' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_beforeAllWrap' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_fisish' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->URLqMark' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
@@ -915,6 +1076,48 @@ return [
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-80527-Marker-relatedMethodsInContentObjectRenderer.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->getBeforeAfter' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_init' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_beforeLinking' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_afterLinking' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_beforeAllWrap' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_finish' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85902-IMGMENUGMENU.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->beLoginLinkIPList' => [

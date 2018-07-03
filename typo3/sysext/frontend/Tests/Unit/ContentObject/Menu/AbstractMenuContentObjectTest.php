@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -76,9 +77,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphet->getConnectionForTable('tt_content')->willReturn($connectionProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
-
-        $this->subject->sys_page = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\PageRepository::class)->getMock();
-        $this->subject->parent_cObj = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
     }
 
     /**
@@ -87,7 +85,9 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     public function sectionIndexReturnsEmptyArrayIfTheRequestedPageCouldNotBeFetched()
     {
         $this->prepareSectionIndexTest();
-        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(null));
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository->expects($this->once())->method('getPage')->will($this->returnValue(null));
+        $this->subject->_set('sys_page', $pageRepository);
         $result = $this->subject->_call('sectionIndex', 'field');
         $this->assertEquals($result, []);
     }
@@ -98,8 +98,10 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     public function sectionIndexUsesTheInternalIdIfNoPageIdWasGiven()
     {
         $this->prepareSectionIndexTest();
-        $this->subject->id = 10;
-        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(null))->with(10);
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository->expects($this->once())->method('getPage')->will($this->returnValue(null))->with(10);
+        $this->subject->_set('sys_page', $pageRepository);
+        $this->subject->_set('id', 10);
         $result = $this->subject->_call('sectionIndex', 'field');
         $this->assertEquals($result, []);
     }
@@ -112,8 +114,15 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1337334849);
         $this->prepareSectionIndexTest();
-        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue([]));
-        $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(0));
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository->expects($this->once())->method('getPage')->will($this->returnValue([]));
+        $this->subject->_set('sys_page', $pageRepository);
+        $this->subject->_set('id', 10);
+
+        $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
+        $cObject->expects($this->once())->method('exec_getQuery')->will($this->returnValue(0));
+        $this->subject->_set('parent_cObj', $cObject);
+
         $this->subject->_call('sectionIndex', 'field');
     }
 
@@ -126,12 +135,23 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $statementProphet->fetch()->shouldBeCalledTimes(2)->willReturn(['uid' => 0, 'header' => 'NOT_OVERLAID'], false);
 
         $this->prepareSectionIndexTest();
-        $this->subject->mconf['sectionIndex.']['type'] = 'all';
+        $this->subject->_set('mconf', [
+            'sectionIndex.' => [
+                'type' => 'all'
+            ]
+        ]);
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
-        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(['_PAGES_OVERLAY_LANGUAGE' => 1]));
-        $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->willReturn($statementProphet->reveal());
-        $this->subject->sys_page->expects($this->once())->method('getRecordOverlay')->will($this->returnValue(['uid' => 0, 'header' => 'OVERLAID']));
+
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context])->getMock();
+        $pageRepository->expects($this->once())->method('getPage')->will($this->returnValue(['_PAGES_OVERLAY_LANGUAGE' => 1]));
+        $pageRepository->expects($this->once())->method('getRecordOverlay')->will($this->returnValue(['uid' => 0, 'header' => 'OVERLAID']));
+        $this->subject->_set('sys_page', $pageRepository);
+
+        $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
+        $cObject->expects($this->once())->method('exec_getQuery')->willReturn($statementProphet->reveal());
+        $this->subject->_set('parent_cObj', $cObject);
+
         $result = $this->subject->_call('sectionIndex', 'field');
         $this->assertEquals($result[0]['title'], 'OVERLAID');
     }
@@ -189,10 +209,21 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $statementProphet->fetch()->willReturn($dataRow, false);
 
         $this->prepareSectionIndexTest();
-        $this->subject->mconf['sectionIndex.']['type'] = 'header';
-        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue([]));
-        $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')
-            ->willReturn($statementProphet->reveal());
+        $this->subject->_set('mconf', [
+            'sectionIndex.' => [
+                'type' => 'header'
+            ]
+        ]);
+
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository->expects($this->once())->method('getPage')->will($this->returnValue(['_PAGES_OVERLAY_LANGUAGE' => 1]));
+        $pageRepository->expects($this->once())->method('getPage')->will($this->returnValue([]));
+        $this->subject->_set('sys_page', $pageRepository);
+
+        $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
+        $cObject->expects($this->once())->method('exec_getQuery')->willReturn($statementProphet->reveal());
+        $this->subject->_set('parent_cObj', $cObject);
+
         $result = $this->subject->_call('sectionIndex', 'field');
         $this->assertCount($expectedAmount, $result);
     }
@@ -238,17 +269,24 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $statementProphet->fetch()->willReturn([]);
 
         $this->prepareSectionIndexTest();
-        $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue([]));
-        $this->subject->mconf['sectionIndex.'] = $configuration;
+        $this->subject->_set('mconf', ['sectionIndex.' => $configuration]);
+
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository->expects($this->once())->method('getPage')->will($this->returnValue([]));
+        $this->subject->_set('sys_page', $pageRepository);
+
         $queryConfiguration = [
             'pidInList' => 12,
             'orderBy' => 'field',
             'languageField' => 'sys_language_uid',
             'where' => $whereClausePrefix
         ];
-        $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')
-            ->with('tt_content', $queryConfiguration)
-            ->willReturn($statementProphet->reveal());
+
+        $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
+        $cObject->expects($this->once())->method('exec_getQuery')
+            ->with('tt_content', $queryConfiguration)->willReturn($statementProphet->reveal());
+        $this->subject->_set('parent_cObj', $cObject);
+
         $this->subject->_call('sectionIndex', 'field', 12);
     }
 
@@ -305,18 +343,21 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $runtimeCacheMock = $this->getMockBuilder(VariableFrontend::class)->setMethods(['get', 'set'])->disableOriginalConstructor()->getMock();
         $runtimeCacheMock->expects($this->once())->method('get')->with($this->anything())->willReturn(false);
         $runtimeCacheMock->expects($this->once())->method('set')->with($this->anything(), ['result' => $expectedResult]);
-        $this->subject = $this->getMockBuilder(AbstractMenuContentObject::class)->setMethods(['getRuntimeCache'])->getMockForAbstractClass();
+
+        $proxyClassName = $this->buildAccessibleProxy(AbstractMenuContentObject::class);
+        $this->subject = $this->getMockForAbstractClass($proxyClassName, [], '', true, true, true, ['getRuntimeCache']);
         $this->subject->expects($this->once())->method('getRuntimeCache')->willReturn($runtimeCacheMock);
         $this->prepareSectionIndexTest();
-        $this->subject->parent_cObj = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
 
-        $this->subject->sys_page->expects($this->once())->method('getMenu')->will($this->returnValue($menu));
-        $this->subject->menuArr = [
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository->expects($this->once())->method('getMenu')->will($this->returnValue($menu));
+        $this->subject->_set('sys_page', $pageRepository);
+        $this->subject->_set('menuArr', [
             0 => ['uid' => 1]
-        ];
-        $this->subject->conf['excludeUidList'] = $excludeUidList;
+        ]);
+        $this->subject->_set('conf', ['excludeUidList' => $excludeUidList]);
 
-        $this->assertEquals($expectedResult, $this->subject->isItemState('IFSUB', 0));
+        $this->assertEquals($expectedResult, $this->subject->_call('isItemState', 'IFSUB', 0));
     }
 
     /**
@@ -557,14 +598,15 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      * @param string $addParams
      * @param string $typeOverride
      */
-    public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, $useCacheHash = true, array $page, $oTarget, $no_cache, $script, $overrideArray = '', $addParams = '', $typeOverride = '')
+    public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, $useCacheHash, array $page, $oTarget, $no_cache, $script, $overrideArray = '', $addParams = '', $typeOverride = '')
     {
-        $this->subject->parent_cObj = $this->getMockBuilder(ContentObjectRenderer::class)
+        $cObject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['typoLink'])
             ->getMock();
-        $this->subject->mconf = $mconf;
+        $cObject->expects($this->once())->method('typoLink')->with('|', $expected);
+        $this->subject->_set('parent_cObj', $cObject);
+        $this->subject->_set('mconf', $mconf);
         $this->subject->_set('useCacheHash', $useCacheHash);
-        $this->subject->parent_cObj->expects($this->once())->method('typoLink')->with('|', $expected);
-        $this->subject->menuTypoLink($page, $oTarget, $no_cache, $script, $overrideArray, $addParams, $typeOverride);
+        $this->subject->_call('menuTypoLink', $page, $oTarget, $no_cache, $script, $overrideArray, $addParams, $typeOverride);
     }
 }

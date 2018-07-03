@@ -23,9 +23,16 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
  * Extension class creating graphic based menus (PNG or GIF files)
+ *
+ * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
  */
 class GraphicalMenuContentObject extends AbstractMenuContentObject
 {
+    public function __construct()
+    {
+        trigger_error('GMENU and GraphicalMenuContentObject will be removed in TYPO3 v10.0, you should build accessible websites with TMENU/Text, and optional images on top, which can be achieved with TypoScript.', E_USER_DEPRECATED);
+    }
+
     /**
      * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
      * Calls makeGifs() for all "normal" items and if configured for, also the "rollover" items.
@@ -470,10 +477,9 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      * Called right before the traversing of $this->result begins.
      * Can be used for various initialization
      *
-     * @internal
      * @see writeMenu()
      */
-    public function extProc_init()
+    protected function extProc_init()
     {
     }
 
@@ -481,10 +487,9 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      * Called after all processing for RollOver of an element has been done.
      *
      * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found OR $this->result['RO'][$key] where the configuration for that elements RO version is found!
-     * @internal
      * @see writeMenu()
      */
-    public function extProc_RO($key)
+    protected function extProc_RO($key)
     {
     }
 
@@ -492,10 +497,9 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      * Called right before the creation of the link for the menu item
      *
      * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
-     * @internal
      * @see writeMenu()
      */
-    public function extProc_beforeLinking($key)
+    protected function extProc_beforeLinking($key)
     {
     }
 
@@ -506,10 +510,9 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      * Further this calls the subMenu function in the parent class to create any submenu there might be.
      *
      * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
-     * @internal
      * @see writeMenu(), AbstractMenuContentObject::subMenu()
      */
-    public function extProc_afterLinking($key)
+    protected function extProc_afterLinking($key)
     {
         // Add part to the accumulated result + fetch submenus
         if (!$this->I['spacer']) {
@@ -525,10 +528,9 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      * @param string $item The current content of the menu item, $this->I['theItem'], passed along.
      * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found (unused)
      * @return string The modified version of $item, going back into $this->I['theItem']
-     * @internal
      * @see writeMenu()
      */
-    public function extProc_beforeAllWrap($item, $key)
+    protected function extProc_beforeAllWrap($item, $key)
     {
         return $item;
     }
@@ -537,10 +539,9 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      * Called before the writeMenu() function returns (only if a menu was generated)
      *
      * @return string The total menu content should be returned by this function
-     * @internal
      * @see writeMenu()
      */
-    public function extProc_finish()
+    protected function extProc_finish()
     {
         // stdWrap:
         if (is_array($this->mconf['stdWrap.'])) {

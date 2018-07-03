@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -41,53 +43,116 @@ use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
  */
 abstract class AbstractMenuContentObject
 {
+    use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
+
+    protected $deprecatedPublicProperties = [
+        'menuNumber' => 'Using $menuNumber of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'entryLevel' => 'Using $entryLevel of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'spacerIDList' => 'Using $spacerIDList of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'doktypeExcludeList' => 'Using $doktypeExcludeList of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'alwaysActivePIDlist' => 'Using $alwaysActivePIDlist of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'imgNamePrefix' => 'Using $imgNamePrefix of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
+        'imgNameNotRandom' => 'Using $imgNameNotRandom of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
+        'debug' => 'Using $debug of cObject HMENU from the outside is discouraged, as this variable is not in use anymore and will be removed in TYPO3 v10.0.',
+        'GMENU_fixKey' => 'Using $GMENU_fixKey of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
+        'MP_array' => 'Using $MP_array of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'conf' => 'Using $conf of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'mconf' => 'Using $mconf of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'tmpl' => 'Using $tmpl of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'sys_page' => 'Using $sys_page of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'id' => 'Using $id of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'nextActive' => 'Using $nextActive of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'menuArr' => 'Using $menuArr of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'hash' => 'Using $hash of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'result' => 'Using $result of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'rL_uidRegister' => 'Using $rL_uidRegister of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'INPfixMD5' => 'Using $INPfixMD5 of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
+        'I' => 'Using $I of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'WMresult' => 'Using $WMresult of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
+        'WMfreezePrefix' => 'Using $WMfreezePrefix of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
+        'WMmenuItems' => 'Using $WMmenuItems of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
+        'WMsubmenuObjSuffixes' => 'Using $WMsubmenuObjSuffixes of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
+        'WMextraScript' => 'Using $WMextraScript of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
+        'WMcObj' => 'Using $WMcObj of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
+        'alternativeMenuTempArray' => 'Using $alternativeMenuTempArray of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+        'nameAttribute' => 'Using $nameAttribute of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
+    ];
+
+    protected $deprecatedPublicMethods = [
+        'subMenu' => 'Using subMenu() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'link' => 'Using link() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'procesItemStates' => 'Using procesItemStates() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'changeLinksForAccessRestrictedPages' => 'Using changeLinksForAccessRestrictedPages() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'isNext' => 'Using isNext() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'isActive' => 'Using isActive() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'isCurrent' => 'Using isCurrent() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'isSubMenu' => 'Using isSubMenu() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'isItemState' => 'Using isItemState() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'accessKey' => 'Using accessKey() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'userProcess' => 'Using userProcess() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'setATagParts' => 'Using setATagParts() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'getPageTitle' => 'Using getPageTitle() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'getMPvar' => 'Using getMPvar() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'getDoktypeExcludeWhere' => 'Using getDoktypeExcludeWhere() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'getBannedUids' => 'Using getBannedUids() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'menuTypoLink' => 'Using menuTypoLink() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
+        'extProc_RO' => 'Using extProc_RO() within HMENU extensions is discouraged, as rollover functionality will be removed in TYPO3 v10.0.',
+        'extProc_init' => 'Using extProc_init() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
+        'extProc_beforeLinking' => 'Using extProc_beforeLinking() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
+        'extProc_afterLinking' => 'Using extProc_afterLinking() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
+        'extProc_beforeAllWrap' => 'Using extProc_beforeAllWrap() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
+        'extProc_finish' => 'Using extProc_finish() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
+        'getBeforeAfter' => 'Using getBeforeAfter() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
+    ];
+
     /**
      * tells you which menu number this is. This is important when getting data from the setup
      *
      * @var int
      */
-    public $menuNumber = 1;
+    protected $menuNumber = 1;
 
     /**
      * 0 = rootFolder
      *
      * @var int
      */
-    public $entryLevel = 0;
+    protected $entryLevel = 0;
 
     /**
      * The doktype-number that defines a spacer
      *
      * @var string
      */
-    public $spacerIDList = '199';
+    protected $spacerIDList = '199';
 
     /**
      * Doktypes that define which should not be included in a menu
      *
      * @var string
      */
-    public $doktypeExcludeList = '6';
+    protected $doktypeExcludeList = '6';
 
     /**
      * @var int[]
      */
-    public $alwaysActivePIDlist = [];
+    protected $alwaysActivePIDlist = [];
 
     /**
      * @var string
      */
-    public $imgNamePrefix = 'img';
+    protected $imgNamePrefix = 'img';
 
     /**
      * @var int
      */
-    public $imgNameNotRandom = 0;
+    protected $imgNameNotRandom = 0;
 
     /**
      * @var bool
      */
-    public $debug = false;
+    protected $debug = false;
 
     /**
      * Loaded with the parent cObj-object when a new HMENU is made
@@ -99,45 +164,45 @@ abstract class AbstractMenuContentObject
     /**
      * @var string
      */
-    public $GMENU_fixKey = 'gmenu';
+    protected $GMENU_fixKey = 'gmenu';
 
     /**
      * accumulation of mount point data
      *
      * @var string[]
      */
-    public $MP_array = [];
+    protected $MP_array = [];
 
     /**
      * HMENU configuration
      *
      * @var array
      */
-    public $conf = [];
+    protected $conf = [];
 
     /**
      * xMENU configuration (TMENU, GMENU etc)
      *
      * @var array
      */
-    public $mconf = [];
+    protected $mconf = [];
 
     /**
      * @var \TYPO3\CMS\Core\TypoScript\TemplateService
      */
-    public $tmpl;
+    protected $tmpl;
 
     /**
      * @var \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    public $sys_page;
+    protected $sys_page;
 
     /**
      * The base page-id of the menu.
      *
      * @var int
      */
-    public $id;
+    protected $id;
 
     /**
      * Holds the page uid of the NEXT page in the root line from the page pointed to by entryLevel;
@@ -145,24 +210,24 @@ abstract class AbstractMenuContentObject
      *
      * @var string
      */
-    public $nextActive;
+    protected $nextActive;
 
     /**
      * The array of menuItems which is built
      *
      * @var array[]
      */
-    public $menuArr;
+    protected $menuArr;
 
     /**
      * @var string
      */
-    public $hash;
+    protected $hash;
 
     /**
      * @var array
      */
-    public $result = [];
+    protected $result = [];
 
     /**
      * Is filled with an array of page uid numbers + RL parameters which are in the current
@@ -170,61 +235,61 @@ abstract class AbstractMenuContentObject
      *
      * @var array
      */
-    public $rL_uidRegister;
+    protected $rL_uidRegister;
 
     /**
      * @var string
      */
-    public $INPfixMD5;
+    protected $INPfixMD5;
 
     /**
      * @var mixed[]
      */
-    public $I;
+    protected $I;
 
     /**
      * @var string
      */
-    public $WMresult;
+    protected $WMresult;
 
     /**
      * @var string
      */
-    public $WMfreezePrefix;
+    protected $WMfreezePrefix;
 
     /**
      * @var int
      */
-    public $WMmenuItems;
+    protected $WMmenuItems;
 
     /**
      * @var array[]
      */
-    public $WMsubmenuObjSuffixes;
+    protected $WMsubmenuObjSuffixes;
 
     /**
      * @var string
      */
-    public $WMextraScript;
+    protected $WMextraScript;
 
     /**
      * @var ContentObjectRenderer
      */
-    public $WMcObj;
+    protected $WMcObj;
 
     /**
      * Can be set to contain menu item arrays for sub-levels.
      *
      * @var string
      */
-    public $alternativeMenuTempArray = '';
+    protected $alternativeMenuTempArray = '';
 
     /**
      * Will be 'id' in XHTML-mode
      *
      * @var string
      */
-    public $nameAttribute = 'name';
+    protected $nameAttribute = 'name';
 
     /**
      * TRUE to use cHash in generated link (normally only for the language
@@ -240,6 +305,11 @@ abstract class AbstractMenuContentObject
      * @var int|null
      */
     protected $parentMenuArrItemKey;
+
+    /**
+     * @var array
+     */
+    protected $parentMenuArr;
 
     /**
      * The initialization of the object. This just sets some internal variables.
@@ -1330,10 +1400,8 @@ abstract class AbstractMenuContentObject
      *
      * @param int $splitCount Number of menu items in the menu
      * @return array An array with two keys: array($NOconf,$ROconf) - where $NOconf contains the resolved configuration for each item when NOT rolled-over and $ROconf contains the ditto for the mouseover state (if any)
-     *
-     * @internal
      */
-    public function procesItemStates($splitCount)
+    protected function procesItemStates($splitCount)
     {
         // Prepare normal settings
         if (!is_array($this->mconf['NO.']) && $this->mconf['NO']) {
@@ -1592,9 +1660,8 @@ abstract class AbstractMenuContentObject
      * @param string $altTarget Alternative target
      * @param string $typeOverride Alternative type
      * @return array Returns an array with A-tag attributes as key/value pairs (HREF, TARGET and onClick)
-     * @internal
      */
-    public function link($key, $altTarget = '', $typeOverride = '')
+    protected function link($key, $altTarget = '', $typeOverride = '')
     {
         $runtimeCache = $this->getRuntimeCache();
         $cacheId = 'menu-generated-links-' . md5($key . $altTarget . $typeOverride . serialize($this->menuArr[$key]));
@@ -1781,7 +1848,7 @@ abstract class AbstractMenuContentObject
      * @param string $mainTarget Main target value
      * @param string $typeOverride Type number override if any
      */
-    public function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)
+    protected function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)
     {
         // If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
         if ($this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages'] !== 'NONE' && !$this->getTypoScriptFrontendController()->checkPageGroupAccess($page)) {
@@ -1807,9 +1874,8 @@ abstract class AbstractMenuContentObject
      * @param int $uid Page id of the current page for which a submenu MAY be produced (if conditions are met)
      * @param string $objSuffix Object prefix, see ->start()
      * @return string HTML content of the submenu
-     * @internal
      */
-    public function subMenu($uid, $objSuffix = '')
+    protected function subMenu($uid, $objSuffix = '')
     {
         // Setting alternative menu item array if _SUB_MENU has been defined in the current ->menuArr
         $altArray = '';
@@ -1865,10 +1931,9 @@ abstract class AbstractMenuContentObject
      * @param int $uid Page uid to evaluate.
      * @param string $MPvar MPvar for the current position of item.
      * @return bool TRUE if page with $uid is active
-     * @internal
      * @see subMenu()
      */
-    public function isNext($uid, $MPvar = '')
+    protected function isNext($uid, $MPvar = '')
     {
         // Check for always active PIDs:
         if (!empty($this->alwaysActivePIDlist) && in_array((int)$uid, $this->alwaysActivePIDlist, true)) {
@@ -1887,9 +1952,8 @@ abstract class AbstractMenuContentObject
      * @param int $uid Page uid to evaluate.
      * @param string $MPvar MPvar for the current position of item.
      * @return bool TRUE if page with $uid is active
-     * @internal
      */
-    public function isActive($uid, $MPvar = '')
+    protected function isActive($uid, $MPvar = '')
     {
         // Check for always active PIDs:
         if (!empty($this->alwaysActivePIDlist) && in_array((int)$uid, $this->alwaysActivePIDlist, true)) {
@@ -1908,9 +1972,8 @@ abstract class AbstractMenuContentObject
      * @param int $uid Page uid to evaluate.
      * @param string $MPvar MPvar for the current position of item.
      * @return bool TRUE if page $uid = $this->getTypoScriptFrontendController()->id
-     * @internal
      */
-    public function isCurrent($uid, $MPvar = '')
+    protected function isCurrent($uid, $MPvar = '')
     {
         $testUid = $uid . ($MPvar ? ':' . $MPvar : '');
         return $uid && end($this->rL_uidRegister) === 'ITEM:' . $testUid;
@@ -1922,9 +1985,8 @@ abstract class AbstractMenuContentObject
      *
      * @param int $uid Page uid for which to search for a submenu
      * @return bool Returns TRUE if there was a submenu with items found
-     * @internal
      */
-    public function isSubMenu($uid)
+    protected function isSubMenu($uid)
     {
         $cacheId = 'menucontentobject-is-submenu-decision-' . $uid;
         $runtimeCache = $this->getRuntimeCache();
@@ -1982,10 +2044,9 @@ abstract class AbstractMenuContentObject
      * @param string $kind The item state to evaluate (SPC, IFSUB, ACT etc... but no xxxRO states of course)
      * @param int $key Key pointing to menu item from ->menuArr
      * @return bool Returns TRUE if state matches
-     * @internal
      * @see procesItemStates()
      */
-    public function isItemState($kind, $key)
+    protected function isItemState($kind, $key)
     {
         $natVal = false;
         // If any value is set for ITEM_STATE the normal evaluation is discarded
@@ -2026,9 +2087,8 @@ abstract class AbstractMenuContentObject
      *
      * @param string $title Menu item title.
      * @return array Returns an array with keys "code" ("accesskey" attribute for the img-tag) and "alt" (text-addition to the "alt" attribute) if an access key was defined. Otherwise array was empty
-     * @internal
      */
-    public function accessKey($title)
+    protected function accessKey($title)
     {
         $tsfe = $this->getTypoScriptFrontendController();
         // The global array ACCESSKEY is used to globally control if letters are already used!!
@@ -2055,9 +2115,8 @@ abstract class AbstractMenuContentObject
      * @param string $mConfKey Key pointing for the property in the current ->mconf array holding possibly parameters to pass along to the function/method. Currently the keys used are "IProcFunc" and "itemArrayProcFunc".
      * @param mixed $passVar A variable to pass to the user function and which should be returned again from the user function. The idea is that the user function modifies this variable according to what you want to achieve and then returns it. For "itemArrayProcFunc" this variable is $this->menuArr, for "IProcFunc" it is $this->I
      * @return mixed The processed $passVar
-     * @internal
      */
-    public function userProcess($mConfKey, $passVar)
+    protected function userProcess($mConfKey, $passVar)
     {
         if ($this->mconf[$mConfKey]) {
             $funcConf = $this->mconf[$mConfKey . '.'];
@@ -2069,10 +2128,8 @@ abstract class AbstractMenuContentObject
 
     /**
      * Creates the <A> tag parts for the current item (in $this->I, [A1] and [A2]) based on other information in this array (like $this->I['linkHREF'])
-     *
-     * @internal
      */
-    public function setATagParts()
+    protected function setATagParts()
     {
         $params = trim($this->I['val']['ATagParams']) . $this->I['accessKey']['code'];
         $params = $params !== '' ? ' ' . $params : '';
@@ -2086,9 +2143,8 @@ abstract class AbstractMenuContentObject
      * @param string $title The current page title
      * @param string $nav_title The current value of the navigation title
      * @return string Returns the navigation title if it is NOT blank, otherwise the page title.
-     * @internal
      */
-    public function getPageTitle($title, $nav_title)
+    protected function getPageTitle($title, $nav_title)
     {
         return trim($nav_title) !== '' ? $nav_title : $title;
     }
@@ -2100,7 +2156,7 @@ abstract class AbstractMenuContentObject
      * @return string MP vars for element.
      * @see link()
      */
-    public function getMPvar($key)
+    protected function getMPvar($key)
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
             $localMP_array = $this->MP_array;
@@ -2117,9 +2173,8 @@ abstract class AbstractMenuContentObject
      * Returns where clause part to exclude 'not in menu' pages
      *
      * @return string where clause part.
-     * @internal
      */
-    public function getDoktypeExcludeWhere()
+    protected function getDoktypeExcludeWhere()
     {
         return $this->doktypeExcludeList ? ' AND pages.doktype NOT IN (' . $this->doktypeExcludeList . ')' : '';
     }
@@ -2128,9 +2183,8 @@ abstract class AbstractMenuContentObject
      * Returns an array of banned UIDs (from excludeUidList)
      *
      * @return array Array of banned UIDs
-     * @internal
      */
-    public function getBannedUids()
+    protected function getBannedUids()
     {
         $excludeUidList = isset($this->conf['excludeUidList.'])
             ? $this->parent_cObj->stdWrap($this->conf['excludeUidList'], $this->conf['excludeUidList.'])
@@ -2156,7 +2210,7 @@ abstract class AbstractMenuContentObject
      * @param int|string $typeOverride "type" value, empty string means "not set"
      * @return array See linkData
      */
-    public function menuTypoLink($page, $oTarget, $no_cache, $script, $overrideArray = '', $addParams = '', $typeOverride = '')
+    protected function menuTypoLink($page, $oTarget, $no_cache, $script, $overrideArray = '', $addParams = '', $typeOverride = '')
     {
         $conf = [
             'parameter' => is_array($overrideArray) && $overrideArray['uid'] ? $overrideArray['uid'] : $page['uid']
