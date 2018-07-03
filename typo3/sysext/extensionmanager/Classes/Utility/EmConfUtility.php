@@ -51,7 +51,7 @@ class EmConfUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function constructEmConf(array $extensionData, \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension = null)
     {
         if (is_object($extension) && empty($extensionData['EM_CONF']['constraints'])) {
-            $extensionData['EM_CONF']['constraints'] = unserialize($extension->getSerializedDependencies());
+            $extensionData['EM_CONF']['constraints'] = unserialize($extension->getSerializedDependencies(), ['allowed_classes' => false]);
         }
         $emConf = $this->fixEmConf($extensionData['EM_CONF']);
         $emConf = var_export($emConf, true);

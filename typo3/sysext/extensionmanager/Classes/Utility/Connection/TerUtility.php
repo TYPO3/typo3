@@ -102,7 +102,7 @@ class TerUtility
                     throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzuncompress() function is not available!', 1342859463);
                 }
             }
-            $listArr = unserialize($dat);
+            $listArr = unserialize($dat, ['allowed_classes' => false]);
             if (!is_array($listArr)) {
                 throw new ExtensionManagerException('Error: Unserialized information was not an array - strange!', 1342859489);
             }
@@ -131,7 +131,7 @@ class TerUtility
             }
         }
         if (md5($parts[2]) === $parts[0]) {
-            $output = unserialize($parts[2]);
+            $output = unserialize($parts[2], ['allowed_classes' => false]);
             if (!is_array($output)) {
                 throw new ExtensionManagerException('Error: Content could not be unserialized to an array. Strange (since MD5 hashes match!)', 1344761938);
             }
