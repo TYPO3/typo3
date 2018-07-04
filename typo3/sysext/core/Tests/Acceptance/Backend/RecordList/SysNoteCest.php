@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\RecordList;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,11 +15,9 @@ declare(strict_types = 1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\RecordList;
-
 use Facebook\WebDriver\WebDriverKeys;
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
  * Cases concerning sys_note records
@@ -26,22 +25,18 @@ use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
 class SysNoteCest
 {
     /**
-     * @param Admin $I
-     *
-     * @throws \Exception
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      * @param PageTree $pageTree
-     *
-     * @throws \Exception
      */
-    public function notesEntryCanBeEdited(Admin $I, PageTree $pageTree)
+    public function notesEntryCanBeEdited(BackendTester $I, PageTree $pageTree)
     {
         $I->wantToTest('whether sysnote entries can be edited via the Internal Notes section in List View');
 

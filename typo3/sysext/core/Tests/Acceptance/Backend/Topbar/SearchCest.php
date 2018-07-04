@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
 
 /*
@@ -14,8 +15,8 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Topbar;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 
 /**
  * Test the search module in the top bar
@@ -30,17 +31,17 @@ class SearchCest
     public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function searchAndTestIfAutocompletionWorks(Admin $I)
+    public function searchAndTestIfAutocompletionWorks(BackendTester $I)
     {
         $I->cantSeeElement(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
         $I->fillField('#live-search-box', 'adm');
@@ -55,9 +56,9 @@ class SearchCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function searchForFancyTextAndCheckEmptyResultInfo(Admin $I)
+    public function searchForFancyTextAndCheckEmptyResultInfo(BackendTester $I)
     {
         $I->fillField('#live-search-box', 'Kasper = Jesus # joh316');
         $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector, 100);
@@ -71,9 +72,9 @@ class SearchCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkIfTheShowAllLinkPointsToTheListViewWithSearchResults(Admin $I)
+    public function checkIfTheShowAllLinkPointsToTheListViewWithSearchResults(BackendTester $I)
     {
         $I->fillField('#live-search-box', 'fileadmin');
         $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);

@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\AcceptanceInstallSqlite;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Tests\Acceptance\Install\Sqlite;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,15 +15,18 @@ namespace TYPO3\CMS\Core\Tests\AcceptanceInstallSqlite;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
+
 /**
- * Click through installer, go to backend, check blank site in FE works
+ * Click through installer, go to backend, install introduction package
  */
-class InstallWithSqliteBlankPageCest
+class IntroductionPackageCest
 {
     /**
-     * @param \AcceptanceTester $I
+     * @param InstallTester $I
+     * @env sqlite
      */
-    public function installTypo3OnSqlite(\AcceptanceTester $I)
+    public function installTypo3OnSqlite(InstallTester $I)
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');
@@ -45,7 +49,7 @@ class InstallWithSqliteBlankPageCest
 
         // DefaultConfiguration step - load distributions
         $I->waitForText('Installation Complete');
-        $I->click('#create-site');
+        $I->click('#load-distributions');
         $I->click('Open the TYPO3 Backend');
 
         // Verify backend login successful
@@ -58,8 +62,20 @@ class InstallWithSqliteBlankPageCest
         $I->seeCookie('be_lastLoginProvider');
         $I->seeCookie('be_typo_user');
 
+        // Loading might take some time
+        $I->wait(10);
+        $I->switchToIFrame('list_frame');
+        $I->waitForText('Get preconfigured distribution', 30);
+        $I->click('.t3-button-action-installdistribution');
+        $I->waitForText('You successfully installed the distribution \'introduction\'', 240);
+
         // Verify default frontend is rendered
         $I->amOnPage('/');
-        $I->waitForText('Welcome to a default website made with TYPO3');
+        $I->waitForText('Let us introduce you to TYPO3', 30);
+        $I->waitForText('Make it your own');
+
+        // Verify link
+        $I->click('[title="Features"]');
+        $I->waitForText('Feature Complete Out-of-the-box', 30);
     }
 }

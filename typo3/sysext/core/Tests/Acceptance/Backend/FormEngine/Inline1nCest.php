@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FormEngine;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,18 +16,25 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  */
 
 use Facebook\WebDriver\WebDriverKeys;
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\ModalDialog;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
  * Tests for inline 1n
  */
 class Inline1nCest
 {
-    public function _before(Admin $I, PageTree $pageTree)
+    /**
+     * Open styleguide inline 1n page in list module
+     *
+     * @param BackendTester $I
+     * @param PageTree $pageTree
+     * @throws \Exception
+     */
+    public function _before(BackendTester $I, PageTree $pageTree)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
 
         $I->click('List');
         $I->waitForElement('svg .nodes .node');
@@ -42,7 +50,7 @@ class Inline1nCest
     /**
      * @param Admin $I
      */
-    public function checkIfExpandsAndCollapseShowInput(Admin $I)
+    public function checkIfExpandsAndCollapseShowInput(BackendTester $I)
     {
         $I->wantTo('Expands the inline Element');
         $I->click('div[data-toggle="formengine-inline"]', '#data-52-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
@@ -57,7 +65,7 @@ class Inline1nCest
     /**
      * @param Admin $I
      */
-    public function hideAndUnhideInline1nInlineElement(Admin $I)
+    public function hideAndUnhideInline1nInlineElement(BackendTester $I)
     {
         $I->wantTo('Can hide a Inline Element');
         $I->click('a span[data-identifier="actions-edit-hide"]', '#data-52-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
@@ -70,7 +78,7 @@ class Inline1nCest
     /**
      * @param Admin $I
      */
-    public function createInline1nInlineElement(Admin $I)
+    public function createInline1nInlineElement(BackendTester $I)
     {
         $I->click('span[data-identifier="actions-add"]', 'div.typo3-newRecordLink');
 
@@ -95,7 +103,7 @@ class Inline1nCest
      * @depends createInline1nInlineElement
      * @param Admin $I
      */
-    public function checkIfCanSortingInlineElement(Admin $I)
+    public function checkIfCanSortingInlineElement(BackendTester $I)
     {
         $I->wantTo('Can sort an Inline Element');
         $I->click('a span[data-identifier="actions-move-down"]', '#data-52-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
@@ -115,7 +123,7 @@ class Inline1nCest
     /**
      * @param Admin $I
      */
-    public function changeInline1nInlineInput(Admin $I)
+    public function changeInline1nInlineInput(BackendTester $I)
     {
         $I->click('div[data-toggle="formengine-inline"]', '#data-52-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
         $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]');
@@ -131,7 +139,7 @@ class Inline1nCest
      * @param Admin $I
      * @param ModalDialog $modalDialog
      */
-    public function deleteInline1nInlineElement(Admin $I, ModalDialog $modalDialog)
+    public function deleteInline1nInlineElement(BackendTester $I, ModalDialog $modalDialog)
     {
         $inlineElementToDelete = '#data-52-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div';
         $I->wantTo('Cancel the delete dialog');
@@ -158,7 +166,7 @@ class Inline1nCest
      * @param $fieldLabel
      * @param $testValue
      */
-    protected function fillFieldByLabel(Admin $I, $fieldLabel, $testValue)
+    protected function fillFieldByLabel(BackendTester $I, $fieldLabel, $testValue)
     {
         $fieldContext = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
             $fieldLabel

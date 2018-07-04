@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Extensionmanager;
 
 /*
@@ -15,7 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Extensionmanager;
  */
 
 use Facebook\WebDriver\WebDriverKeys;
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Tests for the "Get Extensions view" of the extension manager
@@ -23,11 +24,11 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 class GetExtensionsCest
 {
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
 
         $I->click('Extensions', '#menu');
         $I->switchToContentFrame();
@@ -41,27 +42,27 @@ class GetExtensionsCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkRetrievedExtensionsFromTerAreDisplayed(Admin $I)
+    public function checkRetrievedExtensionsFromTerAreDisplayed(BackendTester $I)
     {
         $I->see('superext');
         $I->see('neededext');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkPageBrowserDisplaysTwoRecords(Admin $I)
+    public function checkPageBrowserDisplaysTwoRecords(BackendTester $I)
     {
         $I->seeElement('.pagination-wrap');
         $I->see('Records 1 - 2');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkSearchFilterListFindsExtensionKey(Admin $I)
+    public function checkSearchFilterListFindsExtensionKey(BackendTester $I)
     {
         $I->fillField('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', 'superext');
         $I->click('Go');
@@ -84,9 +85,9 @@ class GetExtensionsCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkSearchFilterListFindsPartOfExtensionKey(Admin $I)
+    public function checkSearchFilterListFindsPartOfExtensionKey(BackendTester $I)
     {
         $I->fillField('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', 'ext');
         $I->click('Go');

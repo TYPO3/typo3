@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FormEngine;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,7 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Category tree tests
@@ -22,17 +23,17 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 class CategoryTreeCest
 {
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkIfCategoryListIsAvailable(Admin $I)
+    public function checkIfCategoryListIsAvailable(BackendTester $I)
     {
         // A sub-element of web module is show
         $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
@@ -43,9 +44,9 @@ class CategoryTreeCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function editCategoryItem(Admin $I)
+    public function editCategoryItem(BackendTester $I)
     {
         // A sub-element of web module is show
         $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');

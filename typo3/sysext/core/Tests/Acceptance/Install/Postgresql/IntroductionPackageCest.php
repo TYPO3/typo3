@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\AcceptanceInstallMysql;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Tests\Acceptance\Install\Postgresql;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,15 +15,20 @@ namespace TYPO3\CMS\Core\Tests\AcceptanceInstallMysql;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Codeception\Scenario;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
+
 /**
- * Click through installer, go to backend, check blank site in FE works
+ * Click through installer, go to backend, install introduction package
  */
-class InstallWithMysqlBlankPageCest
+class IntroductionPackageCest
 {
     /**
-     * @param \AcceptanceTester $I
+     * @param InstallTester $I
+     * @param Scenario $scenario
+     * @env postgresql
      */
-    public function installTypo3OnMysql(\AcceptanceTester $I)
+    public function installTypo3OnPgSql(InstallTester $I, Scenario $scenario)
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');
@@ -34,14 +40,10 @@ class InstallWithMysqlBlankPageCest
 
         // DatabaseConnection step
         $I->waitForText('Select database');
-        $I->fillField('#t3-install-step-mysqliManualConfiguration-username', getenv('typo3DatabaseUsername'));
-        $I->fillField('#t3-install-step-mysqliManualConfiguration-password', getenv('typo3DatabasePassword'));
-        $I->click('Continue');
-
-        // DatabaseSelect step
-        $I->waitForText('Select a database');
-        $I->click('#t3-install-form-db-select-type-new');
-        $I->fillField('#t3-install-step-database-new', getenv('typo3DatabaseName') . '_atimysql');
+        $I->selectOption('#t3js-connect-database-driver', 'Manually configured PostgreSQL connection');
+        $I->fillField('#t3-install-step-postgresManualConfiguration-username', $scenario->current('typo3InstallPostgresqlDatabaseUsername'));
+        // password intentionally not filled. Postgres authenticates with the shell user.
+        $I->fillField('#t3-install-step-postgresManualConfiguration-database', $scenario->current('typo3InstallPostgresqlDatabaseName'));
         $I->click('Continue');
 
         // DatabaseData step
@@ -50,9 +52,9 @@ class InstallWithMysqlBlankPageCest
         $I->fillField('#password', 'password');
         $I->click('Continue');
 
-        // DefaultConfiguration step - Create empty page
+        // DefaultConfiguration step - load distributions
         $I->waitForText('Installation Complete');
-        $I->click('#create-site');
+        $I->click('#load-distributions');
         $I->click('Open the TYPO3 Backend');
 
         // Verify backend login successful
@@ -65,8 +67,20 @@ class InstallWithMysqlBlankPageCest
         $I->seeCookie('be_lastLoginProvider');
         $I->seeCookie('be_typo_user');
 
+        // Loading might take some time
+        $I->wait(10);
+        $I->switchToIFrame('list_frame');
+        $I->waitForText('Get preconfigured distribution', 30);
+        $I->click('.t3-button-action-installdistribution');
+        $I->waitForText('You successfully installed the distribution \'introduction\'', 240);
+
         // Verify default frontend is rendered
         $I->amOnPage('/');
-        $I->waitForText('Welcome to a default website made with TYPO3');
+        $I->waitForText('Let us introduce you to TYPO3', 30);
+        $I->waitForText('Make it your own');
+
+        // Verify link
+        $I->click('[title="Features"]');
+        $I->waitForText('Feature Complete Out-of-the-box', 30);
     }
 }

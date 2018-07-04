@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Template;
 
 /*
@@ -14,7 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Template;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Template tests
@@ -22,11 +23,11 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 class TemplateCest
 {
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
 
         $I->see('Template');
         $I->click('Template');
@@ -37,9 +38,9 @@ class TemplateCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(Admin $I)
+    public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(BackendTester $I)
     {
         $I->wantTo('show templates overview on root page (uid = 0)');
         $I->switchToMainFrame();
@@ -69,9 +70,9 @@ class TemplateCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function addANewSiteTemplate(Admin $I)
+    public function addANewSiteTemplate(BackendTester $I)
     {
         $I->wantTo('create a new site template');
         $I->switchToMainFrame();

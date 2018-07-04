@@ -1,0 +1,38 @@
+class_name: BackendTester
+modules:
+  enabled:
+    - WebDriver:
+        url: http://master:8000/typo3temp/var/tests/acceptance
+        browser: chrome
+        wait: 1
+        host: chrome
+    - \TYPO3\TestingFramework\Core\Acceptance\Helper\Acceptance
+    - \TYPO3\TestingFramework\Core\Acceptance\Helper\Login:
+        sessions:
+            # This sessions must exist in the database fixture to get a logged in state.
+            editor: ff83dfd81e20b34c27d3e97771a4525a
+            admin: 886526ce72b86870739cc41991144ec1
+    - Asserts
+
+extensions:
+    enabled:
+        - TYPO3\TestingFramework\Core\Acceptance\Extension\BackendCoreEnvironment
+
+env:
+  headless:
+    modules:
+      config:
+        WebDriver:
+          host: localhost
+          port: 9515
+          url: http://localhost:8000/typo3temp/var/tests/acceptance
+          capabilities:
+            # Disable the "scroll to element before clicking" behavior as this breaks tests
+            # where for example a fixed docbar is used. Selenium scrolls to the element before
+            # clicking it and then complains that it can't click the element because another elemnt
+            # is overlaying it.
+            # You have to ensure that the element is in the viewport by your own before clicking it!
+            # You can simply do that by scrolling to it.
+            elementScrollBehavior: 1
+            chromeOptions:
+              args: ["--headless", "--no-sandbox", "window-size=1280x1024", "--proxy-server='direct://'", "--proxy-bypass-list=*", "--disable-gpu"]

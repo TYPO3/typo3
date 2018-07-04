@@ -1,6 +1,5 @@
 <?php
 declare(strict_types = 1);
-
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\BackendUser;
 
 /*
@@ -16,7 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\BackendUser;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Tests concerning the listing of BeUser groups
@@ -24,11 +23,11 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 class ListGroupCest
 {
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
 
         $I->see('Backend users');
         $I->click('Backend users');
@@ -39,7 +38,10 @@ class ListGroupCest
         $I->canSee('Backend User Group Listing', 'h1');
     }
 
-    public function canEditBeGroupsFromListView(Admin $I)
+    /**
+     * @param BackendTester $I
+     */
+    public function canEditBeGroupsFromListView(BackendTester $I)
     {
         $groupname = $I->grabTextFrom('table.table-striped > tbody > tr:nth-child(1) > td.col-title > a > b');
 
@@ -53,9 +55,9 @@ class ListGroupCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function canEditSubGroupFromListView(Admin $I)
+    public function canEditSubGroupFromListView(BackendTester $I)
     {
         $I->amGoingTo('test the subgroup edit form');
         $groupname = $I->grabTextFrom('table.table-striped > tbody > tr:nth-child(2) > td:nth-child(3) > a:nth-child(1)');
@@ -64,13 +66,13 @@ class ListGroupCest
     }
 
     /**
-     * @param Admin $I
-     * @param string $groupname
+     * @param BackendTester $I
+     * @param string $groupName
      */
-    private function openAndCloseTheEditForm(Admin $I, string $groupname): void
+    private function openAndCloseTheEditForm(BackendTester $I, string $groupName): void
     {
-        $I->waitForText('Edit Backend usergroup "' . $groupname . '" on root level', 120);
-        $I->see('Edit Backend usergroup "' . $groupname . '" on root level', 'h1');
+        $I->waitForText('Edit Backend usergroup "' . $groupName . '" on root level', 120);
+        $I->see('Edit Backend usergroup "' . $groupName . '" on root level', 'h1');
 
         $I->click('div.module-docheader .btn.t3js-editform-close');
         $I->waitForElementVisible('table.table-striped');

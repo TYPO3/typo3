@@ -1,7 +1,6 @@
 <?php
 declare(strict_types = 1);
-
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FormEngine;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,17 +15,23 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
- * Tests for inline 1n
+ * Tests for fal metadata checks
  */
 class FalMetadataInheritanceCest
 {
-    public function _before(Admin $I, PageTree $pageTree)
+    /**
+     * Call backend and open page module of styleguide page
+     *
+     * @param BackendTester $I
+     * @param PageTree $pageTree
+     */
+    public function _before(BackendTester $I, PageTree $pageTree)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
         $this->goToPageModule($I, $pageTree);
     }
 
@@ -38,11 +43,11 @@ class FalMetadataInheritanceCest
      * - modifies image metadata
      * - checks if metadata is propagated to tt_content
      *
-     * @param Admin $I
+     * @param BackendTester $I
      * @param PageTree $pageTree
      * @throws \Exception
      */
-    public function checkIfUpdatedFileMetadataIsUpdatedInContent(Admin $I, PageTree $pageTree)
+    public function checkIfUpdatedFileMetadataIsUpdatedInContent(BackendTester $I, PageTree $pageTree)
     {
         $I->amGoingTo('Create new CE with image');
         $I->click('.t3js-page-new-ce a');
@@ -130,12 +135,12 @@ class FalMetadataInheritanceCest
      *
      * test for https://forge.typo3.org/issues/81235
      *
-     * @param Admin $I
+     * @param BackendTester $I
      * @param PageTree $pageTree
      * @throws \Exception
      * @depends checkIfUpdatedFileMetadataIsUpdatedInContent
      */
-    public function checkIfFileMetadataIsInheritedInContent(Admin $I)
+    public function checkIfFileMetadataIsInheritedInContent(BackendTester $I)
     {
         $I->amGoingTo('Create new CE with image with filled metadata');
         $I->click('.t3js-page-new-ce a');
@@ -187,12 +192,14 @@ class FalMetadataInheritanceCest
     }
 
     /**
-     * @param Admin $I
+     * Open page module of styleguide page
+     *
+     * @param BackendTester $I
      * @param PageTree $pageTree
-     * @throws \Exception
      */
-    protected function goToPageModule(Admin $I, PageTree $pageTree)
+    private function goToPageModule(BackendTester $I, PageTree $pageTree)
     {
+        $I->switchToMainFrame();
         $I->click('Page');
         $I->waitForElement('svg .nodes .node');
         $pageTree->openPath(['styleguide TCA demo']);

@@ -58,6 +58,8 @@ class NodeVisitor extends NodeVisitorAbstract
                     'api', 'author', 'category', 'copyright', 'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal', 'license', 'link', 'method', 'package', 'param', 'property', 'property-read', 'property-write', 'return', 'see', 'since', 'source', 'subpackage', 'throws', 'todo', 'TODO', 'usedby', 'uses', 'var', 'version',
                     // PHPUnit tags
                     'codeCoverageIgnore', 'codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd', 'test', 'covers', 'dataProvider', 'group', 'skip', 'depends', 'expectedException', 'before',
+                    // codeception tags
+                    'env',
                     // PHPCheckStyle
                     'SuppressWarnings', 'noinspection',
                     // Extbase related (deprecated)

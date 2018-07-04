@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Page;
 
 /*
@@ -15,25 +16,28 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Page;
  */
 
 use PHPUnit\Framework\SkippedTestError;
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Page and page tree related tests.
  */
 class AddPageInPageModuleCest
 {
-    public function _before(Admin $I)
+    /**
+     * @param BackendTester $I
+     */
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
     }
 
     /**
      * This test case is used to check if a page can be added with the page module.
      * It also tests to remove the new page with the page tree context menu.
      *
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function addAndDeletePage(Admin $I)
+    public function addAndDeletePage(BackendTester $I)
     {
         // @todo: Fix in high load scenarios or throw away
         $this->skipUnstable();

@@ -1,6 +1,5 @@
 <?php
 declare(strict_types = 1);
-
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FileList;
 
 /*
@@ -16,7 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FileList;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Cases concerning sys_file_metadata records
@@ -24,21 +23,17 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 class FileMetaDataCest
 {
     /**
-     * @param Admin $I
-     *
-     * @throws \Exception
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
-     *
-     * @throws \Exception
+     * @param BackendTester $I
      */
-    public function metaDataCanBeEdited(Admin $I)
+    public function metaDataCanBeEdited(BackendTester $I)
     {
         $I->wantToTest('Metadata can be edited through search list results');
         $I->click('Filelist');

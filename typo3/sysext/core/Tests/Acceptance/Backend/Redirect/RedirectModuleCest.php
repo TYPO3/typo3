@@ -1,6 +1,5 @@
 <?php
 declare(strict_types = 1);
-
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Redirect;
 
 /*
@@ -16,7 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Redirect;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Tests concerning Redirects Module
@@ -25,11 +24,11 @@ class RedirectModuleCest
 {
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
 
         $I->click('Redirects');
         $I->switchToContentFrame();
@@ -37,9 +36,9 @@ class RedirectModuleCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function createNewRecordIfNoneExist(Admin $I)
+    public function createNewRecordIfNoneExist(BackendTester $I)
     {
         $I->amGoingTo('create a new redirects record while none are in the system, yet');
         $I->canSee('No redirects found!');
@@ -63,9 +62,9 @@ class RedirectModuleCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function canEditRecordFromListView(Admin $I)
+    public function canEditRecordFromListView(BackendTester $I)
     {
         $sourceHost = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(1)');
         $sourcePath = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(2) > a');
@@ -80,10 +79,10 @@ class RedirectModuleCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      * @param string $name
      */
-    private function openAndCloseTheEditForm(Admin $I, string $name): void
+    private function openAndCloseTheEditForm(BackendTester $I, string $name): void
     {
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Edit Redirect "' . $name . '" on root level');

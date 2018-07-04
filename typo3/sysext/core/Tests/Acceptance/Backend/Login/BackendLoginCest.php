@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Login;
 
 /*
@@ -14,7 +15,8 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Login;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Topbar;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 
 /**
  * Various backend login related tests
@@ -25,9 +27,9 @@ class BackendLoginCest
      * Call backend login page and verify login button changes color on mouse over,
      * verifies page is available and CSS is properly loaded.
      *
-     * @param \AcceptanceTester $I
+     * @param BackendTester $I
      */
-    public function loginButtonMouseOver(\AcceptanceTester $I)
+    public function loginButtonMouseOver(BackendTester $I)
     {
         $I->wantTo('check login functions');
         $I->amOnPage('/typo3/index.php');
@@ -52,9 +54,9 @@ class BackendLoginCest
      * Call backend login page and submit invalid login data.
      * Verifies login is not accepted and an error message is rendered.
      *
-     * @param \AcceptanceTester $I
+     * @param BackendTester $I
      */
-    public function loginDeniedWithInvalidCredentials(\AcceptanceTester $I)
+    public function loginDeniedWithInvalidCredentials(BackendTester $I)
     {
         $I->wantTo('check login functions');
         $I->amOnPage('/typo3/index.php');
@@ -82,9 +84,9 @@ class BackendLoginCest
     /**
      * Login a admin user and logout again
      *
-     * @param \AcceptanceTester $I
+     * @param BackendTester $I
      */
-    public function loginWorksAsAdminUser(\AcceptanceTester $I)
+    public function loginWorksAsAdminUser(BackendTester $I)
     {
         $I->wantTo('login with admin');
         $this->login($I, 'admin', 'password');
@@ -99,9 +101,9 @@ class BackendLoginCest
     /**
      * Login as a non-admin user, check visible modules and logout again
      *
-     * @param \AcceptanceTester $I
+     * @param BackendTester $I
      */
-    public function loginWorksAsEditorUser(\AcceptanceTester $I)
+    public function loginWorksAsEditorUser(BackendTester $I)
     {
         $this->login($I, 'editor', 'password');
 
@@ -123,11 +125,11 @@ class BackendLoginCest
     /**
      * Helper method for user login on backend login screen
      *
-     * @param \AcceptanceTester $I
+     * @param BackendTester $I
      * @param string $username
      * @param string $password
      */
-    protected function login(\AcceptanceTester $I, string $username, string $password)
+    protected function login(BackendTester $I, string $username, string $password)
     {
         $I->amGoingTo('Step\Backend\Login username: ' . $username);
         $I->amOnPage('/typo3/index.php');
@@ -145,9 +147,9 @@ class BackendLoginCest
     /**
      * Logout user by clicking logout button in toolbar
      *
-     * @param \AcceptanceTester $I
+     * @param BackendTester $I
      */
-    protected function logout(\AcceptanceTester $I)
+    protected function logout(BackendTester $I)
     {
         $I->amGoingTo('step backend login');
         $I->amGoingTo('logout');

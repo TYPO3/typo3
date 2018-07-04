@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FormEngine;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,17 +15,23 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
- * Tests for ElementsGroupelement fields
+ * Tests for styleguide group element fields
  */
 class ElementsGroupCest
 {
-    public function _before(Admin $I, PageTree $pageTree)
+    /**
+     * Open list module of styleguide elements group page
+     *
+     * @param BackendTester $I
+     * @param PageTree $pageTree
+     */
+    public function _before(BackendTester $I, PageTree $pageTree)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
 
         $I->click('List');
         $pageTree->openPath(['styleguide TCA demo', 'elements group']);
@@ -39,9 +46,9 @@ class ElementsGroupCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function sortElementsInGroup(Admin $I)
+    public function sortElementsInGroup(BackendTester $I)
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
@@ -70,13 +77,13 @@ class ElementsGroupCest
         $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > a.t3js-btn-moveoption-up');
         $I->see($selectOption1, $select . ' > option:nth-last-child(2)');
 
-        $I->amGoingTo('put ' . print_r($multiselect, 1) . ' on first position');
+        $I->amGoingTo('put ' . print_r($multiselect, true) . ' on first position');
         $I->selectOption($select, $multiselect);
         $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > a.t3js-btn-moveoption-top');
         $I->see($multiselect[0], $select . ' > option:nth-child(1)');
         $I->see($multiselect[1], $select . ' > option:nth-child(2)');
 
-        $I->amGoingTo('put ' . print_r($multiselect, 1) . ' one position down');
+        $I->amGoingTo('put ' . print_r($multiselect, true) . ' one position down');
         $I->selectOption($select, $multiselect);
         $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > a.t3js-btn-moveoption-down');
         $I->see($multiselect[0], $select . ' > option:nth-child(2)');
@@ -84,9 +91,9 @@ class ElementsGroupCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function addARecordWithRecordBrowserGroup(Admin $I)
+    public function addARecordWithRecordBrowserGroup(BackendTester $I)
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
@@ -106,9 +113,9 @@ class ElementsGroupCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function addTwoRecordWithRecordBrowserGroup(Admin $I)
+    public function addTwoRecordWithRecordBrowserGroup(BackendTester $I)
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
@@ -130,9 +137,9 @@ class ElementsGroupCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function searchForARecordWithRecordBrowserGroup(Admin $I)
+    public function searchForARecordWithRecordBrowserGroup(BackendTester $I)
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';

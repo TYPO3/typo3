@@ -60,3 +60,5 @@ phantomjsdriver.log
 #
 # root .htaccess file
 /.htaccess
+
+typo3/sysext/core/Tests/Acceptance/Support/_generated/

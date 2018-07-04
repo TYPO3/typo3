@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
 
 /*
@@ -14,8 +15,8 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Topbar;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 
 /**
  * Tests for the help module in the topbar
@@ -30,18 +31,18 @@ class HelpCest
     public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-helptoolbaritem';
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
-     * @return Admin
+     * @param BackendTester $I
+     * @return BackendTester
      */
-    public function canSeeModuleInTopbar(Admin $I)
+    public function canSeeModuleInTopbar(BackendTester $I)
     {
         $I->canSeeElement(self::$topBarModuleSelector);
         return $I;
@@ -49,9 +50,9 @@ class HelpCest
 
     /**
      * @depends canSeeModuleInTopbar
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function seeStyleguideInHelpModule(Admin $I)
+    public function seeStyleguideInHelpModule(BackendTester $I)
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->canSee('Styleguide', self::$topBarModuleSelector);

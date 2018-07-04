@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,25 +16,20 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
  */
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree;
 
 /**
- * Acceptance test for the TYPO3 logo in the topbar
+ * @see AbstractPageTree
  */
-class LogoCest
+class PageTree extends AbstractPageTree
 {
     /**
+     * Inject our core AcceptanceTester actor into ModalDialog
+     *
      * @param BackendTester $I
      */
-    public function _before(BackendTester $I)
+    public function __construct(BackendTester $I)
     {
-        $I->useExistingSession('admin');
-    }
-
-    /**
-     * @param BackendTester $I
-     */
-    public function checkIfTypo3LogoIsLinked(BackendTester $I)
-    {
-        $I->seeElement('//div[@class="topbar-header-site"]/a[@href="./"]');
+        $this->tester = $I;
     }
 }

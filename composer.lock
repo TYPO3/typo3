@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f62eab6aa1190b064eca1d92cf446797",
+    "content-hash": "6f16d9031c0614955697202f7c44bc49",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4404,39 +4404,37 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "3.8.1",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "024448439a037445f712ed9b60a3da293d594aaf"
+                "reference": "0155dc11572dd7722506ea0005a0e1c24ce89bdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/024448439a037445f712ed9b60a3da293d594aaf",
-                "reference": "024448439a037445f712ed9b60a3da293d594aaf",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/0155dc11572dd7722506ea0005a0e1c24ce89bdf",
+                "reference": "0155dc11572dd7722506ea0005a0e1c24ce89bdf",
                 "shasum": ""
             },
             "require": {
                 "mikey179/vfsstream": "~1.6.0",
                 "phpunit/phpunit": "^7.1",
-                "typo3/cms-backend": "^9.2",
-                "typo3/cms-core": "^9.2",
-                "typo3/cms-extbase": "^9.2",
-                "typo3/cms-fluid": "^9.2",
-                "typo3/cms-frontend": "^9.2",
+                "typo3/cms-backend": "^9.3",
+                "typo3/cms-core": "^9.3",
+                "typo3/cms-extbase": "^9.3",
+                "typo3/cms-fluid": "^9.3",
+                "typo3/cms-frontend": "^9.3",
                 "typo3fluid/fluid": "^2.5"
             },
             "suggest": {
                 "codeception/codeception": "^2.4",
-                "typo3/cms-saltedpasswords": "^9.2",
+                "typo3/cms-saltedpasswords": "^9.3",
                 "typo3/cms-styleguide": "^9.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "TYPO3\\TestingFramework\\": "Classes/",
-                    "TYPO3\\CMS\\Core\\Tests\\": "compat/core/",
-                    "TYPO3\\CMS\\Fluid\\Tests\\": "compat/fluid/"
+                    "TYPO3\\TestingFramework\\": "Classes/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4462,7 +4460,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2018-06-13T17:03:55+00:00"
+            "time": "2018-07-07T08:51:19+00:00"
         },
         {
             "name": "webmozart/assert",

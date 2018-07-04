@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Extensionmanager;
 
 /*
@@ -15,7 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Extensionmanager;
  */
 
 use Codeception\Util\Locator;
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Tests for the "Install list view" of the extension manager
@@ -23,11 +24,11 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 class InstalledExtensionsCest
 {
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
 
         $I->click('Extensions', '#menu');
         $I->switchToContentFrame();
@@ -35,9 +36,9 @@ class InstalledExtensionsCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkSearchFiltersList(Admin $I)
+    public function checkSearchFiltersList(BackendTester $I)
     {
         $I->seeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', [10, 100]);
 
@@ -59,9 +60,9 @@ class InstalledExtensionsCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkIfUploadFormAppears(Admin $I)
+    public function checkIfUploadFormAppears(BackendTester $I)
     {
         $I->cantSeeElement('.module-body .uploadForm');
         $I->click('a[title="Upload Extension .t3x/.zip"]', '.module-docheader');
@@ -69,9 +70,9 @@ class InstalledExtensionsCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkUninstallingAndInstallingAnExtension(Admin $I)
+    public function checkUninstallingAndInstallingAnExtension(BackendTester $I)
     {
         $I->wantTo('Check if uninstalling and installing an extension with backend module removes and adds the module from the module menu.');
         $I->amGoingTo('uninstall extension belog');

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
 
 /*
@@ -15,9 +16,9 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
  */
 
 use Codeception\Scenario;
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\ModalDialog;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Topbar;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
+use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 
 /**
  * Test for the "Bookmark" functionality
@@ -39,18 +40,18 @@ class BookmarkCest
     protected static $docHeaderBookmarkButtonSelector = '.module-docheader .btn[title="Create a bookmark to this page"]';
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
-     * @return Admin
+     * @param BackendTester $I
+     * @return BackendTester
      */
-    public function checkThatBookmarkListIsInitiallyEmpty(Admin $I)
+    public function checkThatBookmarkListIsInitiallyEmpty(BackendTester $I)
     {
         $this->clickBookmarkDropdownToggleInTopbar($I);
         $I->cantSeeElement(self::$topBarModuleSelector . ' .shortcut');
@@ -59,11 +60,11 @@ class BookmarkCest
 
     /**
      * @depends checkThatBookmarkListIsInitiallyEmpty
-     * @param Admin $I
+     * @param BackendTester $I
      * @param ModalDialog $dialog
-     * @return Admin
+     * @return BackendTester
      */
-    public function checkThatAddingABookmarkAddsItemToTheBookmarkList(Admin $I, ModalDialog $dialog, Scenario $scenario)
+    public function checkThatAddingABookmarkAddsItemToTheBookmarkList(BackendTester $I, ModalDialog $dialog, Scenario $scenario)
     {
         // open the scheduler module as we would like to put it into the bookmark liste
         $I->click('Scheduler', '.scaffold-modulemenu');
@@ -98,10 +99,10 @@ class BookmarkCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      * @depends checkThatAddingABookmarkAddsItemToTheBookmarkList
      */
-    public function checkIfBookmarkItemLinksToTarget(Admin $I)
+    public function checkIfBookmarkItemLinksToTarget(BackendTester $I)
     {
         $this->clickBookmarkDropdownToggleInTopbar($I);
         $I->click('Scheduled tasks', self::$topBarModuleSelector);
@@ -110,10 +111,10 @@ class BookmarkCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      * @depends checkThatAddingABookmarkAddsItemToTheBookmarkList
      */
-    public function checkIfEditBookmarkItemWorks(Admin $I)
+    public function checkIfEditBookmarkItemWorks(BackendTester $I)
     {
         $this->clickBookmarkDropdownToggleInTopbar($I);
         $firstShortcutSelector = self::$topBarModuleSelector . ' .t3js-topbar-shortcut';
@@ -129,10 +130,10 @@ class BookmarkCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      * @depends checkThatAddingABookmarkAddsItemToTheBookmarkList
      */
-    public function checkIfDeleteBookmarkWorks(Admin $I, ModalDialog $dialog)
+    public function checkIfDeleteBookmarkWorks(BackendTester $I, ModalDialog $dialog)
     {
         $this->clickBookmarkDropdownToggleInTopbar($I);
 
@@ -144,9 +145,9 @@ class BookmarkCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    protected function clickBookmarkDropdownToggleInTopbar(Admin $I)
+    protected function clickBookmarkDropdownToggleInTopbar(BackendTester $I)
     {
         $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownToggleSelector);
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);

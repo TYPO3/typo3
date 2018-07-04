@@ -56,6 +56,12 @@ abstract public class AbstractCoreSpec {
         " typo3DatabaseHost=\"localhost\"" +
         " typo3InstallToolPassword=\"klaus\"";
 
+    protected String installCredentialsMysql =
+        "typo3InstallMysqlDatabaseName=\"func_install\"" +
+        " typo3InstallMysqlDatabaseUsername=\"funcu\"" +
+        " typo3InstallMysqlDatabasePassword=\"funcp\"" +
+        " typo3InstallMysqlDatabaseHost=\"localhost\"";
+
     protected String credentialsMssql =
         "typo3DatabaseDriver=\"sqlsrv\"" +
         " typo3DatabaseName=\"func\"" +
@@ -63,15 +69,18 @@ abstract public class AbstractCoreSpec {
         " typo3DatabaseUsername=\"SA\"" +
         " typo3DatabaseHost=\"localhost\"" +
         " typo3DatabasePort=\"1433\"" +
-        " typo3DatabaseCharset=\"utf-8\"" +
-        " typo3InstallToolPassword=\"klaus\"";
+        " typo3DatabaseCharset=\"utf-8\"";
 
     protected String credentialsPgsql =
         "typo3DatabaseDriver=\"pdo_pgsql\"" +
         " typo3DatabaseName=\"func\"" +
         " typo3DatabaseUsername=\"bamboo\"" +
-        " typo3DatabaseHost=\"localhost\"" +
-        " typo3InstallToolPassword=\"klaus\"";
+        " typo3DatabaseHost=\"localhost\"";
+
+    protected String installCredentialsPgsql =
+        "typo3InstallPostgresqlDatabaseName=\"func_atipgsql\"" +
+        " typo3InstallPostgresqlDatabaseUsername=\"bamboo\"" +
+        " typo3InstallPostgresqlDatabaseHost=\"localhost\"";
 
     protected String credentialsSqlite =
         "typo3DatabaseDriver=\"pdo_sqlite\"";
@@ -181,14 +190,14 @@ abstract public class AbstractCoreSpec {
                 this.getTaskComposerInstall(),
                 this.getTaskPrepareAcceptanceTest(),
                 new CommandTask()
-                    .description("Execute codeception AcceptanceInstallMysql suite")
+                    .description("Install TYPO3 on mysql")
                     .executable("codecept")
-                    .argument("run AcceptanceInstallMysql -d -c " + this.testingFrameworkBuildPath + "AcceptanceTestsInstallMysql.yml --xml reports.xml --html reports.html")
-                    .environmentVariables(this.credentialsMysql)
+                    .argument("run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql,headless --xml reports.xml --html reports.html")
+                    .environmentVariables(this.installCredentialsMysql)
             )
             .finalTasks(
                 new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
-                    .resultDirectories("typo3temp/var/tests/AcceptanceReportsInstallMysql/reports.xml"),
+                    .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml"),
                 this.getTaskDeleteMysqlDatabases(),
                 this.getTaskTearDownAcceptanceTestSetup()
             )
@@ -197,7 +206,7 @@ abstract public class AbstractCoreSpec {
             )
             .artifacts(new Artifact()
                 .name("Test Report")
-                .copyPattern("typo3temp/var/tests/AcceptanceReportsInstallMysql/")
+                .copyPattern("typo3temp/var/tests/AcceptanceReports/")
                 .shared(false)
             )
             .cleanWorkingDirectory(true);
@@ -219,14 +228,14 @@ abstract public class AbstractCoreSpec {
             this.getTaskComposerInstall(),
             this.getTaskPrepareAcceptanceTest(),
             new CommandTask()
-                .description("Execute codeception AcceptanceInstallPgsql suite")
+                .description("Install TYPO3 on postgresql")
                 .executable("codecept")
-                .argument("run AcceptanceInstallPgsql -d -c " + this.testingFrameworkBuildPath + "AcceptanceTestsInstallPgsql.yml --xml reports.xml --html reports.html")
-                .environmentVariables(this.credentialsPgsql)
+                .argument("run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=postgresql,headless --xml reports.xml --html reports.html")
+                .environmentVariables(this.installCredentialsPgsql)
         )
         .finalTasks(
             new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
-                .resultDirectories("typo3temp/var/tests/AcceptanceReportsInstallPgsql/reports.xml"),
+                .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml"),
             this.getTaskDeletePgsqlDatabases(),
             this.getTaskTearDownAcceptanceTestSetup()
         )
@@ -235,7 +244,7 @@ abstract public class AbstractCoreSpec {
         )
         .artifacts(new Artifact()
             .name("Test Report")
-            .copyPattern("typo3temp/var/tests/AcceptanceReportsInstallPgsql/")
+            .copyPattern("typo3temp/var/tests/AcceptanceReports/")
             .shared(false)
         )
         .cleanWorkingDirectory(true);
@@ -257,14 +266,13 @@ abstract public class AbstractCoreSpec {
             this.getTaskComposerInstall(),
             this.getTaskPrepareAcceptanceTest(),
             new CommandTask()
-                .description("Execute codeception AcceptanceInstallSqlite suite")
+                .description("Install TYPO3 on sqlite")
                 .executable("codecept")
-                .argument("run AcceptanceInstallSqlite -d -c " + this.testingFrameworkBuildPath + "AcceptanceTestsInstallSqlite.yml --xml reports.xml --html reports.html")
-                .environmentVariables(this.credentialsSqlite)
+                .argument("run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=sqlite,headless --xml reports.xml --html reports.html")
         )
         .finalTasks(
             new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
-                .resultDirectories("typo3temp/var/tests/AcceptanceReportsInstallSqlite/reports.xml"),
+                .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml"),
             this.getTaskTearDownAcceptanceTestSetup()
         )
         .requirements(
@@ -272,7 +280,7 @@ abstract public class AbstractCoreSpec {
         )
         .artifacts(new Artifact()
             .name("Test Report")
-            .copyPattern("typo3temp/var/tests/AcceptanceReportsInstallSqlite/")
+            .copyPattern("typo3temp/var/tests/AcceptanceReports/")
             .shared(false)
         )
         .cleanWorkingDirectory(true);
