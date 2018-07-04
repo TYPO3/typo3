@@ -57,7 +57,7 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
                 // 'Foo\Bar::aMethod()' -> strong match
                 $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name->name;
                 if (!$isArgumentUnpackingUsed
-                    && in_array($fqdnClassWithMethod, array_keys($this->matcherDefinitions), true)
+                    && array_key_exists($fqdnClassWithMethod, $this->matcherDefinitions)
                     && count($node->args) > $this->matcherDefinitions[$fqdnClassWithMethod]['maximumNumberOfArguments']
                 ) {
                     $this->matches[] = [
@@ -70,7 +70,7 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
                     ];
                 }
             } elseif ($node->class instanceof Variable
-                && in_array($node->name->name, array_keys($this->flatMatcherDefinitions), true)
+                && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
             ) {
                 $match = [
                     'restFiles' => [],

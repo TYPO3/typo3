@@ -480,7 +480,7 @@ class DatabaseIntegrityCheck
                                     $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
                                 )
                             );
-                        } elseif (in_array($fieldType, [Type::BLOB], true)) {
+                        } elseif ($fieldType === Type::BLOB) {
                             $whereClause[] = $queryBuilder->expr()->andX(
                                 $queryBuilder->expr()->isNotNull($fieldName),
                                 $queryBuilder->expr()

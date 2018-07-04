@@ -165,7 +165,7 @@ class ReviewController extends ActionController
         } else {
             if ((string)GeneralUtility::_GP('workspace') !== '') {
                 $switchWs = (int)GeneralUtility::_GP('workspace');
-                if (in_array($switchWs, array_keys($wsList)) && $activeWorkspace != $switchWs) {
+                if (array_key_exists($switchWs, $wsList) && $activeWorkspace != $switchWs) {
                     $activeWorkspace = $switchWs;
                     $backendUser->setWorkspace($activeWorkspace);
                     $performWorkspaceSwitch = true;

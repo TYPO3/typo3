@@ -49,7 +49,7 @@ class PropertyProtectedMatcher extends AbstractCoreMatcher
             && $node instanceof PropertyFetch
             && $node->name instanceof Identifier
             && $node->var->name !== 'this'
-            && in_array($node->name->name, array_keys($this->flatMatcherDefinitions), true)
+            && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
         ) {
             $match = [
                 'restFiles' => [],

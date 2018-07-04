@@ -51,7 +51,7 @@ class MethodArgumentUnusedMatcher extends AbstractCoreMatcher
         if (!$this->isFileIgnored($node)
             && !$this->isLineIgnored($node)
             && $node instanceof MethodCall
-            && in_array($node->name->name, array_keys($this->flatMatcherDefinitions), true)
+            && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
         ) {
             $match = [
                 'restFiles' => [],

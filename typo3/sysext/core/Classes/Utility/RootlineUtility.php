@@ -421,7 +421,7 @@ class RootlineUtility
      */
     public function isMountedPage()
     {
-        return in_array($this->pageUid, array_keys($this->parsedMountPointParameters));
+        return array_key_exists($this->pageUid, $this->parsedMountPointParameters);
     }
 
     /**

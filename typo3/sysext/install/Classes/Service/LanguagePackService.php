@@ -201,7 +201,7 @@ class LanguagePackService
         // Sanitize extension and iso code
         $availableLanguages = $this->getAvailableLanguages();
         $activeLanguages = $this->getActiveLanguages();
-        if (!in_array($iso, array_keys($availableLanguages), true) || !in_array($iso, $activeLanguages, true)) {
+        if (!array_key_exists($iso, $availableLanguages) || !in_array($iso, $activeLanguages, true)) {
             throw new \RuntimeException('Language iso code ' . (string)$iso . ' not available or active', 1520117054);
         }
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);

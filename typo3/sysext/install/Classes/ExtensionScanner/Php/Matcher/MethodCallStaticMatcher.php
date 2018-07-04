@@ -62,7 +62,7 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
             if ($node->class instanceof FullyQualified) {
                 // 'Foo\Bar::deprecated()' -> strong match
                 $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name->name;
-                if (in_array($fqdnClassWithMethod, array_keys($this->matcherDefinitions), true)) {
+                if (array_key_exists($fqdnClassWithMethod, $this->matcherDefinitions)) {
                     $this->matches[] = [
                         'restFiles' => $this->matcherDefinitions[$fqdnClassWithMethod]['restFiles'],
                         'line' => $node->getAttribute('startLine'),
@@ -71,7 +71,7 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
                     ];
                 }
             } elseif ($node->class instanceof Variable
-                && in_array($node->name->name, array_keys($this->flatMatcherDefinitions), true)
+                && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
             ) {
                 $match = [
                     'restFiles' => [],

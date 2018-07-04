@@ -49,7 +49,7 @@ class FunctionCallMatcher extends AbstractCoreMatcher
             && !$this->isLineIgnored($node)
             && $node instanceof FuncCall
             && $node->name instanceof FullyQualified
-            && in_array($node->name->toString(), array_keys($this->matcherDefinitions), true)
+            && array_key_exists($node->name->toString(), $this->matcherDefinitions)
         ) {
             $functionName = $node->name->toString();
             $matchDefinition = $this->matcherDefinitions[$functionName];

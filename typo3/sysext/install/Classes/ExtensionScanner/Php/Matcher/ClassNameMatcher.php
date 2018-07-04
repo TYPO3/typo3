@@ -46,7 +46,7 @@ class ClassNameMatcher extends AbstractCoreMatcher
             && $node instanceof FullyQualified
         ) {
             $fullyQualifiedClassName = $node->toString();
-            if (in_array($fullyQualifiedClassName, array_keys($this->matcherDefinitions), true)) {
+            if (array_key_exists($fullyQualifiedClassName, $this->matcherDefinitions)) {
                 $this->matches[] = [
                     'restFiles' => $this->matcherDefinitions[$fullyQualifiedClassName]['restFiles'],
                     'line' => $node->getAttribute('startLine'),

@@ -46,7 +46,7 @@ class ConstantMatcher extends AbstractCoreMatcher
         if (!$this->isFileIgnored($node)
             && !$this->isLineIgnored($node)
             && $node instanceof ConstFetch
-            && in_array($node->name->toString(), array_keys($this->matcherDefinitions), true)
+            && array_key_exists($node->name->toString(), $this->matcherDefinitions)
         ) {
             // Access to constants is detected as strong match
             $this->matches[] = [

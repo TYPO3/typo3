@@ -109,7 +109,10 @@ class SaltedPasswordsUtility
     {
         $extConf = self::returnExtConf($mode);
         $classNameToUse = \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class;
-        if (in_array($extConf['saltedPWHashingMethod'], array_keys(\TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getRegisteredSaltedHashingMethods()))) {
+        if (array_key_exists(
+            $extConf['saltedPWHashingMethod'],
+            \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getRegisteredSaltedHashingMethods()
+        )) {
             $classNameToUse = $extConf['saltedPWHashingMethod'];
         }
         return $classNameToUse;

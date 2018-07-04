@@ -48,7 +48,7 @@ class PropertyPublicMatcher extends AbstractCoreMatcher
             && !$this->isLineIgnored($node)
             && $node instanceof PropertyFetch
             && $node->name instanceof Identifier
-            && in_array($node->name->name, array_keys($this->flatMatcherDefinitions), true)
+            && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
         ) {
             $match = [
                 'restFiles' => [],

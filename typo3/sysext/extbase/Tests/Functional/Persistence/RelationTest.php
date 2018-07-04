@@ -1369,7 +1369,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
      */
     protected function countDistinctIds(array $ids)
     {
-        return count(array_count_values($ids));
+        return count(array_unique($ids));
     }
 
     /**

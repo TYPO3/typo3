@@ -47,7 +47,7 @@ class PropertyExistsStaticMatcher extends AbstractCoreMatcher
             && $node instanceof Property
             && $node->isStatic()
             && !$node->isPrivate()
-            && in_array($node->props[0]->name->name, array_keys($this->matcherDefinitions), true)
+            && array_key_exists($node->props[0]->name->name, $this->matcherDefinitions)
         ) {
             $propertyName = $node->props[0]->name->name;
             $match = [

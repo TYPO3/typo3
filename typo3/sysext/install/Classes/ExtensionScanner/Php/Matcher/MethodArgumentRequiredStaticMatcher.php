@@ -58,7 +58,7 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
                 $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name->name;
                 $numberOfArguments = count($node->args);
                 if (!$isArgumentUnpackingUsed
-                    && in_array($fqdnClassWithMethod, array_keys($this->matcherDefinitions), true)
+                    && array_key_exists($fqdnClassWithMethod, $this->matcherDefinitions)
                     && $numberOfArguments < $this->matcherDefinitions[$fqdnClassWithMethod]['numberOfMandatoryArguments']
                     // maximum number of arguments is just a measure agains false positives
                     && $numberOfArguments <= $this->matcherDefinitions[$fqdnClassWithMethod]['maximumNumberOfArguments']
@@ -73,7 +73,7 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
                     ];
                 }
             } elseif ($node->class instanceof Variable
-                && in_array($node->name->name, array_keys($this->flatMatcherDefinitions), true)
+                && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
             ) {
                 $match = [
                     'restFiles' => [],

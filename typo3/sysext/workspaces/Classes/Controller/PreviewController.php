@@ -131,7 +131,7 @@ class PreviewController
         list(, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
         $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces();
         $activeWorkspace = $this->getBackendUser()->workspace;
-        if ($previewWS !== null && in_array($previewWS, array_keys($availableWorkspaces)) && $activeWorkspace != $previewWS) {
+        if ($previewWS !== null && array_key_exists($previewWS, $availableWorkspaces) && $activeWorkspace != $previewWS) {
             $activeWorkspace = $previewWS;
             $this->getBackendUser()->setWorkspace($activeWorkspace);
             BackendUtility::setUpdateSignal('updatePageTree');

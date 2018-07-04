@@ -48,7 +48,7 @@ class ClassConstantMatcher extends AbstractCoreMatcher
             && !$this->isLineIgnored($node)
             && $node instanceof ClassConstFetch
             && $node->class instanceof FullyQualified
-            && in_array($node->class->toString() . '::' . $node->name, array_keys($this->matcherDefinitions), true)
+            && array_key_exists($node->class->toString() . '::' . $node->name, $this->matcherDefinitions)
         ) {
             // No weak test implemented - combination class::const name tested
             $this->matches[] = [
