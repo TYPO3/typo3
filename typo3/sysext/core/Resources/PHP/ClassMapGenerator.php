@@ -82,7 +82,7 @@ class ClassMapGenerator
                 continue;
             }
 
-            if ($blacklist && preg_match($blacklist, strtr($filePath, '\\', '/'))) {
+            if ($blacklist && preg_match($blacklist, str_replace('\\', '/', $filePath))) {
                 continue;
             }
 
@@ -96,7 +96,10 @@ class ClassMapGenerator
 
                 if (!isset($map[$class])) {
                     $map[$class] = $filePath;
-                } elseif ($io && $map[$class] !== $filePath && !preg_match('{/(test|fixture|example|stub)s?/}i', strtr($map[$class] . ' ' . $filePath, '\\', '/'))) {
+                } elseif ($io && $map[$class] !== $filePath && !preg_match(
+                    '{/(test|fixture|example|stub)s?/}i',
+                        str_replace('\\', '/', $map[$class] . ' ' . $filePath)
+                )) {
                     $io->writeError(
                         '<warning>Warning: Ambiguous class resolution, "' . $class . '"' .
                         ' was found in both "' . $map[$class] . '" and "' . $filePath . '", the first will be used.</warning>'

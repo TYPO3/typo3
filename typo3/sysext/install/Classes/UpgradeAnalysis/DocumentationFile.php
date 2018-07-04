@@ -55,7 +55,7 @@ class DocumentationFile
             $this->registry = new Registry();
         }
         $this->changelogPath = $changelogDir !== '' ? $changelogDir : realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog');
-        $this->changelogPath = strtr($this->changelogPath, '\\', '/');
+        $this->changelogPath = str_replace('\\', '/', $this->changelogPath);
     }
 
     /**
@@ -75,7 +75,7 @@ class DocumentationFile
         $versionDirectories = scandir($path);
 
         $fileInfo = pathinfo($path);
-        $absolutePath = strtr($fileInfo['dirname'], '\\', '/') . '/' . $fileInfo['basename'];
+        $absolutePath = str_replace('\\', '/', $fileInfo['dirname']) . '/' . $fileInfo['basename'];
         foreach ($versionDirectories as $version) {
             $directory = $absolutePath . '/' . $version;
             $documentationFiles += $this->getDocumentationFilesForVersion($directory, $version);
@@ -226,7 +226,7 @@ class DocumentationFile
         $documentationFiles = [];
         if ($this->isRelevantDirectory($docDirectory, $version)) {
             $documentationFiles[$version] = [];
-            $absolutePath = strtr(PathUtility::dirname($docDirectory), '\\', '/') . '/' . $version;
+            $absolutePath = str_replace('\\', '/', PathUtility::dirname($docDirectory)) . '/' . $version;
             $rstFiles = scandir($docDirectory);
             foreach ($rstFiles as $file) {
                 $fileInfo = pathinfo($file);

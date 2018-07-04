@@ -84,8 +84,8 @@ class ServerRequestFactory
             }
             if (!empty($value)) {
                 if (strpos($key, 'HTTP_') === 0) {
-                    $name = strtr(substr($key, 5), '_', ' ');
-                    $name = strtr(ucwords(strtolower($name)), ' ', '-');
+                    $name = str_replace('_', ' ', substr($key, 5));
+                    $name = str_replace(' ', '-', ucwords(strtolower($name)));
                     $name = strtolower($name);
                     $headers[$name] = $value;
                 } elseif (strpos($key, 'CONTENT_') === 0) {
