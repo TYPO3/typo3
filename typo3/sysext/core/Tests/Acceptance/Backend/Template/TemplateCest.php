@@ -27,16 +27,11 @@ class TemplateCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
 
         $I->see('Template');
         $I->click('Template');
 
-        // switch to content iframe
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
         $I->see('Template tools');
     }
@@ -47,18 +42,18 @@ class TemplateCest
     public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(Admin $I)
     {
         $I->wantTo('show templates overview on root page (uid = 0)');
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
         // click on root page
         $I->click('.node.identifier-0_0');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
         $I->see('This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.');
 
         $I->wantTo('show templates overview on website root page (uid = 1 and pid = 0)');
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
         // click on website root page
         $I->click('.node.identifier-0_1');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForText('No template');
         $I->see('There was no template on this page!');
         $I->see('You need to create a template record below in order to edit your configuration.');
@@ -79,9 +74,9 @@ class TemplateCest
     public function addANewSiteTemplate(Admin $I)
     {
         $I->wantTo('create a new site template');
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
         $I->click('.node.identifier-0_1');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForText('Create new website');
         $I->click("//input[@name='newWebsite']");
         $I->waitForText('Edit constants for template');

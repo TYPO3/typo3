@@ -33,10 +33,6 @@ class SysNoteCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
     }
 
     /**
@@ -51,10 +47,10 @@ class SysNoteCest
 
         $I->amGoingTo('create a record');
         $I->click('List');
-        $I->waitForElementNotVisible('div#nprogress');
+        $I->waitForElementNotVisible('#nprogress');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
 
         $I->click('.module-docheader .btn[title="Create new record"]');
         $I->wait(0.2);

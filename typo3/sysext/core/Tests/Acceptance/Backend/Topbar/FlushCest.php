@@ -35,10 +35,6 @@ class FlushCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
     }
 
     /**
@@ -48,7 +44,6 @@ class FlushCest
     public function canSeeModuleInTopbar(Admin $I)
     {
         $I->canSeeElement(self::$topBarModuleSelector);
-
         return $I;
     }
 

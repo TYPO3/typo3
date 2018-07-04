@@ -30,14 +30,9 @@ class RedirectModuleCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
 
         $I->click('Redirects');
-        $I->switchToIFrame('list_frame');
-        $I->waitForElementNotVisible('div#nprogress');
+        $I->switchToContentFrame();
         $I->canSee('Redirect Management', 'h1');
     }
 

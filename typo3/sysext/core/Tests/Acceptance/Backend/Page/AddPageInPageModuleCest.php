@@ -25,10 +25,6 @@ class AddPageInPageModuleCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
     }
 
     /**
@@ -64,8 +60,7 @@ class AddPageInPageModuleCest
         $I->waitForElementVisible($contextMenuNew, 30);
         $I->click($contextMenuNew);
 
-        // Switch to content frame
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
 
         // New page select position wizard
         $I->click('i[title="Insert the new page here"]');
@@ -96,7 +91,7 @@ class AddPageInPageModuleCest
         $I->waitForElement($pageTitleInput);
         $I->assertEquals('Testpage', $I->grabValueFrom($pageTitleInput), 'Value in input field.');
         $I->dontSeeElement($pageTitleFieldset . ' > div > div.t3js-formengine-validation-marker.has-error');
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
 
         // Check tree
         $I->waitForElement($typo3NavigationContainer);

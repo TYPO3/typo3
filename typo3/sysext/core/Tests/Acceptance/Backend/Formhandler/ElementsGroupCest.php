@@ -25,15 +25,10 @@ class ElementsGroupCest
     public function _before(Admin $I, PageTree $pageTree)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
 
         $I->click('List');
         $pageTree->openPath(['styleguide TCA demo', 'elements group']);
-        $I->switchToIFrame('list_frame');
-        $I->waitForElementNotVisible('div#nprogess', 30);
+        $I->switchToContentFrame();
 
         $I->executeJS('window.name="TYPO3Main";');
 
@@ -106,7 +101,7 @@ class ElementsGroupCest
         $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
 
         $I->switchToWindow();
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 5);
     }
 
@@ -130,7 +125,7 @@ class ElementsGroupCest
         $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
 
         $I->switchToWindow();
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 6);
     }
 
@@ -178,7 +173,7 @@ class ElementsGroupCest
         $I->switchToWindow();
         $I->click('.t3js-modal-close');
 
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->see('admin', 'select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"]');
         $I->click('.btn-toolbar button.btn:nth-child(2)');
         $I->click('button[name="_savedok"]');

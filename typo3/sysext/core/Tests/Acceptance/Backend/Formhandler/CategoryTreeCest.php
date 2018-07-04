@@ -27,11 +27,6 @@ class CategoryTreeCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForElementNotVisible('div#nprogess', 30);
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
     }
 
     /**
@@ -42,7 +37,7 @@ class CategoryTreeCest
         // A sub-element of web module is show
         $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
         $I->click('#web_list');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElement('#recordlist-sys_category');
         $I->seeNumberOfElements('#recordlist-sys_category table > tbody > tr', [5, 100]);
     }
@@ -55,7 +50,7 @@ class CategoryTreeCest
         // A sub-element of web module is show
         $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
         $I->click('#web_list');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         // Collapse all tables and expand category again - ensures category fits into window
         $I->executeJS('$(\'.icon-actions-view-list-collapse\').click();');
         $I->wait(1);

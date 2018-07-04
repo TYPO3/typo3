@@ -25,10 +25,6 @@ class PageModuleCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
     }
 
     /**
@@ -37,7 +33,7 @@ class PageModuleCest
     public function checkThatPageModuleHasAHeadline(Admin $I)
     {
         $I->click('Page');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->canSee('Web>Page module', 'h4');
     }
 }

@@ -28,14 +28,9 @@ class TasksCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
         $I->see('Scheduler', '#system_txschedulerM1');
         $I->click('Scheduler', '#system_txschedulerM1');
-        // switch to content iframe
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
     }
 
     /**
@@ -119,11 +114,11 @@ class TasksCest
         $I->click('Cancel', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
 
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->wantTo('Still see and can click the Delete button as the deletion has been canceled');
         $I->click('//a[contains(@data-original-title, "Delete")]');
         $modalDialog->clickButtonInDialog('OK');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->see('The task was successfully deleted.');
         $I->see('No tasks defined yet');
     }

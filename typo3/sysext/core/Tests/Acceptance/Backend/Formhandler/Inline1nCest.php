@@ -27,15 +27,11 @@ class Inline1nCest
     public function _before(Admin $I, PageTree $pageTree)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
 
         $I->click('List');
         $I->waitForElement('svg .nodes .node');
         $pageTree->openPath(['styleguide TCA demo', 'inline 1n']);
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
 
         $I->waitForText('inline 1n', 20);
         $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_1n a[data-original-title="Edit record"]';
@@ -142,7 +138,7 @@ class Inline1nCest
         $I->click('a span[data-identifier="actions-edit-delete"]', $inlineElementToDelete);
         $modalDialog->clickButtonInDialog('button[name="no"]');
         // switch form Dialogbox back to IFrame
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->seeElement($inlineElementToDelete);
 
         $I->wantTo('Accept the delete dialog');
@@ -153,7 +149,7 @@ class Inline1nCest
         $I->click('button[name="yes"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
         // switch form Dialogbox back to IFrame
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElementNotVisible($inlineElementToDelete);
     }
 

@@ -27,17 +27,11 @@ class ListUserCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
 
         $I->see('Backend users');
         $I->click('Backend users');
 
-        // switch to content iframe
-        $I->switchToIFrame('list_frame');
-        $I->waitForElementNotVisible('div#nprogess');
+        $I->switchToContentFrame();
     }
 
     /**

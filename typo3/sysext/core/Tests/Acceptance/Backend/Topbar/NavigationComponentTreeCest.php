@@ -60,7 +60,7 @@ class NavigationComponentTreeCest
         $I->switchToIFrame('nav_frame');
         $I->waitForElement('.t3js-module-body');
         $I->see('fileadmin', '.t3js-module-body');
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
         $I->wantTo('check File Module for Collapse');
         $I->click('button.t3js-topbar-button-navigationcomponent');
         $I->waitForElementNotVisible('.scaffold-content-navigation-expanded');
@@ -69,6 +69,6 @@ class NavigationComponentTreeCest
         $I->switchToIFrame('nav_frame');
         $I->waitForElement('.t3js-module-body');
         $I->see('fileadmin', '.t3js-module-body');
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
     }
 }

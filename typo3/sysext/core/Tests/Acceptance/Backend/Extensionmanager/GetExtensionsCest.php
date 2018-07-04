@@ -28,20 +28,16 @@ class GetExtensionsCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
 
         $I->click('Extensions', '#menu');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElementVisible('#typo3-extension-list');
 
         $I->selectOption('[name="ExtensionManagerModuleMenu"]', 'Get Extensions');
         $I->waitForElementVisible('#terTable_wrapper');
 
         // We expect exact two extensions created from the Fixtures
-        $I->canSeeNumberOfElements('#terTable tbody tr', 2);
+        $I->seeNumberOfElements('#terTable tbody tr', 2);
     }
 
     /**
@@ -58,8 +54,8 @@ class GetExtensionsCest
      */
     public function checkPageBrowserDisplaysTwoRecords(Admin $I)
     {
-        $I->canSeeElement('.pagination-wrap');
-        $I->canSee('Records 1 - 2');
+        $I->seeElement('.pagination-wrap');
+        $I->see('Records 1 - 2');
     }
 
     /**
@@ -72,9 +68,9 @@ class GetExtensionsCest
         // @todo do something about the double loading of the table, it is rendered twice (not double, but once, then retrieve extension list loader, then second time)
         $I->waitForElementVisible('#terSearchTable');
         $I->wait(3);
-        $I->waitForElementNotVisible('div#nprogess');
-        $I->canSeeNumberOfElements('#terSearchTable tbody tr', 1);
-        $I->canSee('Super Extension');
+        $I->waitForElementNotVisible('#nprogess');
+        $I->seeNumberOfElements('#terSearchTable tbody tr', 1);
+        $I->see('Super Extension');
 
         $I->amGoingTo('search extension neededext and submit with enter');
 
@@ -83,8 +79,8 @@ class GetExtensionsCest
         $I->waitForElementVisible('#terSearchTable');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
-        $I->canSeeNumberOfElements('#terSearchTable tbody tr', 1);
-        $I->canSee('Needed Extension');
+        $I->seeNumberOfElements('#terSearchTable tbody tr', 1);
+        $I->see('Needed Extension');
     }
 
     /**
@@ -95,10 +91,10 @@ class GetExtensionsCest
         $I->fillField('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', 'ext');
         $I->click('Go');
         $I->waitForElementVisible('#terSearchTable');
-        $I->canSeeNumberOfElements('#terSearchTable tbody tr', 2);
+        $I->seeNumberOfElements('#terSearchTable tbody tr', 2);
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
-        $I->canSee('Super Extension');
-        $I->canSee('Needed Extension');
+        $I->see('Super Extension');
+        $I->see('Needed Extension');
     }
 }

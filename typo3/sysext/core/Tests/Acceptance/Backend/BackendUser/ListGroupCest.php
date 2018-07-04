@@ -29,18 +29,12 @@ class ListGroupCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
 
         $I->see('Backend users');
         $I->click('Backend users');
 
-        // switch to content iframe
-        $I->switchToIFrame('list_frame');
-        $I->waitForElementNotVisible('div#nprogess');
-        $I->selectOption('div.module-docheader  select.t3-js-jumpMenuBox', 'Backend user groups');
+        $I->switchToContentFrame();
+        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Backend user groups');
         $I->waitForElementVisible('table.table-striped');
         $I->canSee('Backend User Group Listing', 'h1');
     }
@@ -75,11 +69,12 @@ class ListGroupCest
      */
     private function openAndCloseTheEditForm(Admin $I, string $groupname): void
     {
-        $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->canSee('Edit Backend usergroup "' . $groupname . '" on root level');
+        $I->waitForText('Edit Backend usergroup "' . $groupname . '" on root level', 120);
+        $I->see('Edit Backend usergroup "' . $groupname . '" on root level', 'h1');
 
         $I->click('div.module-docheader .btn.t3js-editform-close');
         $I->waitForElementVisible('table.table-striped');
-        $I->canSee('Backend User Group Listing', 'h1');
+        $I->waitForText('Backend User Group Listing', 120);
+        $I->see('Backend User Group Listing', 'h1');
     }
 }

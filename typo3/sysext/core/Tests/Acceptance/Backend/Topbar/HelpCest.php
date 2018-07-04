@@ -35,10 +35,6 @@ class HelpCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
     }
 
     /**
@@ -48,7 +44,6 @@ class HelpCest
     public function canSeeModuleInTopbar(Admin $I)
     {
         $I->canSeeElement(self::$topBarModuleSelector);
-
         return $I;
     }
 
@@ -61,7 +56,7 @@ class HelpCest
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->canSee('Styleguide', self::$topBarModuleSelector);
         $I->click('Styleguide', self::$topBarModuleSelector);
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->see('TYPO3 CMS Backend Styleguide', 'h1');
     }
 }

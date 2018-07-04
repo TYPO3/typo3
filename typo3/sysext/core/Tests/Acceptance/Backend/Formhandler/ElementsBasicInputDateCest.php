@@ -31,15 +31,10 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
     public function _before(Admin $I, PageTree $pageTree)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
 
         $I->click('List');
         $pageTree->openPath(['styleguide TCA demo', 'elements basic']);
-        $I->switchToIFrame('list_frame');
-        $I->waitForElementNotVisible('div#nprogess', 30);
+        $I->switchToContentFrame();
 
         // Open record and wait until form is ready
         $I->waitForText('elements basic', 20);

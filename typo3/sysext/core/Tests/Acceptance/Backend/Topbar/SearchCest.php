@@ -35,10 +35,6 @@ class SearchCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
     }
 
     /**
@@ -53,7 +49,7 @@ class SearchCest
         $I->canSee('Backend user', self::$topBarModuleSelector);
         $I->click('admin', self::$topBarModuleSelector);
 
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "admin" on root level');
     }
@@ -85,7 +81,7 @@ class SearchCest
         $I->canSee('fileadmin/ (auto-created)', self::$topBarModuleSelector);
         $I->click('.t3js-live-search-show-all', self::$topBarModuleSelector);
 
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElementVisible('form[name="dblistForm"]');
         $I->canSee('fileadmin/ (auto-created)');
     }

@@ -31,10 +31,6 @@ class FileMetaDataCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
     }
 
     /**
@@ -47,8 +43,7 @@ class FileMetaDataCest
         $I->wantToTest('Metadata can be edited through search list results');
         $I->click('Filelist');
 
-        $I->switchToIFrame('list_frame');
-        $I->waitForElementNotVisible('div#nprogress');
+        $I->switchToContentFrame();
         $I->canSee('fileadmin/ (auto-created)');
 
         $I->fillField('tx_filelist_file_filelistlist[searchWord]', 'bus');
