@@ -218,10 +218,10 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
                 if ($expectedArgumentType !== 'boolean') {
                     return $possibleValue;
                 }
-                if (array_search($possibleValue, ['on', '1', 'y', 'yes', 'true', 'TRUE']) !== false) {
+                if (in_array($possibleValue, ['on', '1', 'y', 'yes', 'true', 'TRUE'], true)) {
                     return true;
                 }
-                if (array_search($possibleValue, ['off', '0', 'n', 'no', 'false', 'FALSE']) !== false) {
+                if (in_array($possibleValue, ['off', '0', 'n', 'no', 'false', 'FALSE'], true)) {
                     return false;
                 }
                 array_unshift($rawCommandLineArguments, $possibleValue);

@@ -313,10 +313,10 @@ class ObjectAccess
         if (!is_object($object)) {
             throw new \InvalidArgumentException('$object must be an object, ' . gettype($object) . ' given.', 1259828920);
         }
-        if ($object instanceof \stdClass && array_search($propertyName, array_keys(get_object_vars($object))) !== false) {
+        if ($object instanceof \stdClass && array_key_exists($propertyName, get_object_vars($object))) {
             return true;
         }
-        if (array_search($propertyName, array_keys(get_class_vars(get_class($object)))) !== false) {
+        if (array_key_exists($propertyName, get_class_vars(get_class($object)))) {
             return true;
         }
         return is_callable([$object, self::buildSetterMethodName($propertyName)]);

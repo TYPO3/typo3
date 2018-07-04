@@ -289,7 +289,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         foreach ($this->modTS['searchFields.'] as $table => $fieldList) {
             $fields = GeneralUtility::trimExplode(',', $fieldList, true);
             foreach ($fields as $field) {
-                if (!$searchFields || !is_array($searchFields[$table]) || array_search($field, $searchFields[$table]) === false) {
+                if (!$searchFields || !is_array($searchFields[$table]) || !in_array($field, $searchFields[$table], true)) {
                     $searchFields[$table][] = $field;
                 }
             }
