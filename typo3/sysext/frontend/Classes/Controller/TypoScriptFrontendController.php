@@ -1975,7 +1975,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         // Create response:
         // Simply boolean; Just shows TYPO3 error page with reason:
-        if (strtolower($code) === 'true' || (string)$code === '1' || gettype($code) === 'boolean') {
+        if (strtolower($code) === 'true' || (string)$code === '1' || is_bool($code)) {
             echo GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
                 'Page Not Found',
                 'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . $reason : '')

@@ -144,7 +144,7 @@ class ErrorController
         $response = null;
         $content = '';
         // Simply boolean; Just shows TYPO3 error page with reason:
-        if (gettype($errorHandler) === 'boolean' || strtolower($errorHandler) === 'true' || (string)$errorHandler === '1') {
+        if (is_bool($errorHandler) || strtolower($errorHandler) === 'true' || (string)$errorHandler === '1') {
             $content = GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
                 'Page Not Found',
                 'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . $reason : '')

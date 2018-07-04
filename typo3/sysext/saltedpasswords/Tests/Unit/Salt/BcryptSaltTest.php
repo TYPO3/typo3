@@ -77,7 +77,7 @@ class BcryptSaltTest extends UnitTestCase
     {
         $hash = $this->subject->getHashedPassword('password');
         $this->assertNotNull($hash);
-        $this->assertEquals('string', gettype($hash));
+        $this->assertTrue(is_string($hash));
     }
 
     /**
