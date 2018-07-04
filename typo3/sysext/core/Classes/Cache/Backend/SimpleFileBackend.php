@@ -164,7 +164,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
                 $documentRoot = '';
             }
             if (Environment::isWindows()) {
-                if (substr($cacheDirectory, 0, strlen($documentRoot)) === $documentRoot) {
+                if (strpos($cacheDirectory, $documentRoot) === 0) {
                     $documentRoot = '';
                 }
             }

@@ -85,7 +85,7 @@ class ClassNamingUtility
     {
         $matches = [];
 
-        if (substr($controllerObjectName, 0, 9) === 'TYPO3\\CMS') {
+        if (strpos($controllerObjectName, 'TYPO3\\CMS') === 0) {
             $extensionName = '^(?P<vendorName>[^\\\\]+\\\[^\\\\]+)\\\(?P<extensionName>[^\\\\]+)';
         } else {
             $extensionName = '^(?P<vendorName>[^\\\\]+)\\\\(?P<extensionName>[^\\\\]+)';

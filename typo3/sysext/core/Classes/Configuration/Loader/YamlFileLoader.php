@@ -151,7 +151,7 @@ class YamlFileLoader
      */
     protected function isPlaceholder($value): bool
     {
-        return is_string($value) && substr($value, 0, 1) === '%' && substr($value, -1) === '%';
+        return is_string($value) && strpos($value, '%') === 0 && substr($value, -1) === '%';
     }
 
     /**

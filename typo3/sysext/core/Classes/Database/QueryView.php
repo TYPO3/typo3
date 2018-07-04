@@ -957,7 +957,7 @@ class QueryView
         }
         if ($fieldSetup['type'] === 'multiple') {
             foreach ($fieldSetup['items'] as $key => $val) {
-                if (substr($val[0], 0, 4) === 'LLL:') {
+                if (strpos($val[0], 'LLL:') === 0) {
                     $value = $this->languageService->sL($val[0]);
                 } else {
                     $value = $val[0];
@@ -972,7 +972,7 @@ class QueryView
         }
         if ($fieldSetup['type'] === 'binary') {
             foreach ($fieldSetup['items'] as $Key => $val) {
-                if (substr($val[0], 0, 4) === 'LLL:') {
+                if (strpos($val[0], 'LLL:') === 0) {
                     $value = $this->languageService->sL($val[0]);
                 } else {
                     $value = $val[0];
@@ -988,7 +988,7 @@ class QueryView
             $useTablePrefix = 0;
             if ($fieldSetup['items']) {
                 foreach ($fieldSetup['items'] as $key => $val) {
-                    if (substr($val[0], 0, 4) === 'LLL:') {
+                    if (strpos($val[0], 'LLL:') === 0) {
                         $value = $this->languageService->sL($val[0]);
                     } else {
                         $value = $val[0];
@@ -1049,7 +1049,7 @@ class QueryView
                     if ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items']) {
                         $items = $GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'];
                         foreach ($items as $labelArray) {
-                            if (substr($labelArray[0], 0, 4) === 'LLL:') {
+                            if (strpos($labelArray[0], 'LLL:') === 0) {
                                 $labelFieldSelect[$labelArray[1]] = $this->languageService->sL($labelArray[0]);
                             } else {
                                 $labelFieldSelect[$labelArray[1]] = $labelArray[0];
@@ -1061,7 +1061,7 @@ class QueryView
                     if ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items']) {
                         $items = $GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'];
                         foreach ($items as $altLabelArray) {
-                            if (substr($altLabelArray[0], 0, 4) === 'LLL:') {
+                            if (strpos($altLabelArray[0], 'LLL:') === 0) {
                                 $altLabelFieldSelect[$altLabelArray[1]] = $this->languageService->sL($altLabelArray[0]);
                             } else {
                                 $altLabelFieldSelect[$altLabelArray[1]] = $altLabelArray[0];

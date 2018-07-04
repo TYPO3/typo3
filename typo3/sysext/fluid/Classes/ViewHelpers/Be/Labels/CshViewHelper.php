@@ -103,7 +103,7 @@ class CshViewHelper extends AbstractBackendViewHelper
             $moduleName = $currentRequest->getPluginName();
             $table = '_MOD_' . $moduleName;
         }
-        if (substr($label, 0, 4) === 'LLL:') {
+        if (strpos($label, 'LLL:') === 0) {
             $label = htmlspecialchars(self::getLanguageService()->sL($label));
         }
         $label = '<label>' . $label . '</label>';

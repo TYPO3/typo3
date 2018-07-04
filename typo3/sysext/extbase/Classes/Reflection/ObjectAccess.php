@@ -251,13 +251,13 @@ class ObjectAccess
                 }
             }
             $methodName = $method->getName();
-            if (substr($methodName, 0, 2) === 'is') {
+            if (strpos($methodName, 'is') === 0) {
                 $declaredPropertyNames[] = lcfirst(substr($methodName, 2));
             }
-            if (substr($methodName, 0, 3) === 'get') {
+            if (strpos($methodName, 'get') === 0) {
                 $declaredPropertyNames[] = lcfirst(substr($methodName, 3));
             }
-            if (substr($methodName, 0, 3) === 'has') {
+            if (strpos($methodName, 'has') === 0) {
                 $declaredPropertyNames[] = lcfirst(substr($methodName, 3));
             }
         }
@@ -290,7 +290,7 @@ class ObjectAccess
             $declaredPropertyNames = array_keys(get_class_vars(get_class($object)));
         }
         foreach (get_class_methods($object) as $methodName) {
-            if (substr($methodName, 0, 3) === 'set' && is_callable([$object, $methodName])) {
+            if (strpos($methodName, 'set') === 0 && is_callable([$object, $methodName])) {
                 $declaredPropertyNames[] = lcfirst(substr($methodName, 3));
             }
         }

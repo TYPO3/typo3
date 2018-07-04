@@ -259,14 +259,14 @@ class TableManualRepository
             if ($itemValue) {
                 $reference = GeneralUtility::trimExplode(':', $itemValue);
                 $referenceUrl = GeneralUtility::trimExplode('|', $itemValue);
-                if (substr($referenceUrl[1], 0, 4) === 'http') {
+                if (strpos($referenceUrl[1], 'http') === 0) {
                     // URL reference
                     $lines[] = [
                         'url' => $referenceUrl[1],
                         'title' => $referenceUrl[0],
                         'target' => '_blank'
                     ];
-                } elseif (substr($referenceUrl[1], 0, 5) === 'FILE:') {
+                } elseif (strpos($referenceUrl[1], 'FILE:') === 0) {
                     // File reference
                     $fileName = GeneralUtility::getFileAbsFileName(substr($referenceUrl[1], 5));
                     if ($fileName && @is_file($fileName)) {

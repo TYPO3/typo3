@@ -165,11 +165,11 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         $this->memcache = new $memcachedPlugin;
         $defaultPort = $this->usedPeclModule === 'memcache' ? ini_get('memcache.default_port') : 11211;
         foreach ($this->servers as $server) {
-            if (substr($server, 0, 7) === 'unix://') {
+            if (strpos($server, 'unix://') === 0) {
                 $host = $server;
                 $port = 0;
             } else {
-                if (substr($server, 0, 6) === 'tcp://') {
+                if (strpos($server, 'tcp://') === 0) {
                     $server = substr($server, 6);
                 }
                 if (strpos($server, ':') !== false) {
@@ -290,7 +290,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     public function get($entryIdentifier)
     {
         $value = $this->memcache->get($this->identifierPrefix . $entryIdentifier);
-        if (is_string($value) && substr($value, 0, 14) === 'TYPO3*chunked:') {
+        if (is_string($value) && strpos($value, 'TYPO3*chunked:') === 0) {
             list(, $chunkCount) = explode(':', $value);
             $value = '';
             for ($chunkNumber = 1; $chunkNumber < $chunkCount; $chunkNumber++) {

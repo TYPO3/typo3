@@ -134,7 +134,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             return;
         }
         // Constraint for a group
-        if (substr($userOrGroup, 0, 3) === 'gr-') {
+        if (strpos($userOrGroup, 'gr-') === 0) {
             $groupId = (int)substr($userOrGroup, 3);
             $userIds = [];
             foreach ($this->beUserList as $userId => $userData) {
@@ -148,7 +148,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 // If there are no group members -> use -1 as constraint to not find anything
                 $queryConstraints[] = $query->in('userid', [-1]);
             }
-        } elseif (substr($userOrGroup, 0, 3) === 'us-') {
+        } elseif (strpos($userOrGroup, 'us-') === 0) {
             $queryConstraints[] = $query->equals('userid', (int)substr($userOrGroup, 3));
         } elseif ($userOrGroup === '-1') {
             $queryConstraints[] = $query->equals('userid', (int)$GLOBALS['BE_USER']->user['uid']);

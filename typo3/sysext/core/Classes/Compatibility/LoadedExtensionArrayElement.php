@@ -69,7 +69,7 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
         $pathSite = Environment::getPublicPath() . '/';
         $pathSiteLength = strlen($pathSite);
         $absolutePackagePath = $this->package->getPackagePath();
-        if (substr($absolutePackagePath, 0, $pathSiteLength) === $pathSite) {
+        if (strpos($absolutePackagePath, $pathSite) === 0) {
             $relativePackagePathToPathSite = substr($absolutePackagePath, $pathSiteLength);
             $relativePackagePathToPathSiteSegments = explode('/', $relativePackagePathToPathSite);
             $packageType = null;

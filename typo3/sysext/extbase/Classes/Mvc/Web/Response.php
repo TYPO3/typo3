@@ -201,7 +201,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      */
     public function setHeader($name, $value, $replaceExistingHeader = true)
     {
-        if (strtoupper(substr($name, 0, 4)) === 'HTTP') {
+        if (stripos($name, 'HTTP') === 0) {
             throw new \InvalidArgumentException('The HTTP status header must be set via setStatus().', 1220541963);
         }
         if ($replaceExistingHeader === true || !isset($this->headers[$name])) {

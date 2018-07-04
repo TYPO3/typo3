@@ -123,7 +123,7 @@ class ListController extends AbstractWizardController
             is_array($origRow) ? $origRow : ['pid' => $this->P['pid']]
         );
         // Set [params][pid]
-        if (substr($this->P['params']['pid'], 0, 3) === '###' && substr($this->P['params']['pid'], -3) === '###') {
+        if (strpos($this->P['params']['pid'], '###') === 0 && substr($this->P['params']['pid'], -3) === '###') {
             $keyword = substr($this->P['params']['pid'], 3, -3);
             if (strpos($keyword, 'PAGE_TSCONFIG_') === 0) {
                 $this->pid = (int)$TSconfig[$this->P['field']][$keyword];

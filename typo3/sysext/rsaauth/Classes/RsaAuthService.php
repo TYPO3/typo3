@@ -60,7 +60,7 @@ class RsaAuthService extends AuthenticationService
         $isProcessed = false;
         if ($passwordTransmissionStrategy === 'rsa') {
             $password = $loginData['uident'];
-            if (substr($password, 0, 4) === 'rsa:') {
+            if (strpos($password, 'rsa:') === 0) {
                 $decryptedPassword = $this->getRsaEncryptionDecoder()->decrypt($password);
                 if ($decryptedPassword !== $password) {
                     $loginData['uident_text'] = $decryptedPassword;

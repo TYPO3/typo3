@@ -252,7 +252,7 @@ class PagePositionMap
         $code = '<ul class="list-tree">';
 
         foreach ($lines as $line) {
-            if ((substr($line, 0, 3) === '<ul') || (substr($line, 0, 4) === '</ul')) {
+            if ((strpos($line, '<ul') === 0) || (strpos($line, '</ul') === 0)) {
                 $code .= $line;
             } else {
                 $code .= '<li>' . $line . '</li>';

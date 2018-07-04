@@ -807,7 +807,7 @@ class PageLayoutView implements LoggerAwareInterface
                         $theData[$field] = '&nbsp;<strong>ID</strong>';
                         break;
                     default:
-                        if (substr($field, 0, 6) === 'table_') {
+                        if (strpos($field, 'table_') === 0) {
                             $f2 = substr($field, 6);
                             if ($GLOBALS['TCA'][$f2]) {
                                 $theData[$field] = '&nbsp;' .
@@ -1816,7 +1816,7 @@ class PageLayoutView implements LoggerAwareInterface
                     }
                     break;
                 default:
-                    if (substr($field, 0, 6) === 'table_') {
+                    if (strpos($field, 'table_') === 0) {
                         $f2 = substr($field, 6);
                         if ($GLOBALS['TCA'][$f2]) {
                             $c = $this->numberOfRecords($f2, $row['uid']);

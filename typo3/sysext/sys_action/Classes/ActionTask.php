@@ -619,7 +619,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
     protected function fixUsername($username, $prefix)
     {
         $prefix = trim($prefix);
-        if (substr($username, 0, strlen($prefix)) === $prefix) {
+        if (strpos($username, $prefix) === 0) {
             $username = substr($username, strlen($prefix));
         }
         return $prefix . $username;
@@ -799,7 +799,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         $content = '';
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('lowlevel')) {
             $sql_query = unserialize($record['t2_data']);
-            if (!is_array($sql_query) || is_array($sql_query) && strtoupper(substr(trim($sql_query['qSelect']), 0, 6)) === 'SELECT') {
+            if (!is_array($sql_query) || is_array($sql_query) && stripos(trim($sql_query['qSelect']), 'SELECT') === 0) {
                 $actionContent = '';
                 $fullsearch = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryView::class);
                 $fullsearch->formW = 40;

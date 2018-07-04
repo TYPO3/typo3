@@ -514,7 +514,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                     list($attribArray) = $this->get_tag_attributes($v, true);
                     $absoluteUrl = trim($attribArray['src']);
                     // Transform the src attribute into an absolute url, if it not already
-                    if (strtolower(substr($absoluteUrl, 0, 4)) !== 'http') {
+                    if (stripos($absoluteUrl, 'http') !== 0) {
                         // If site is in a subpath (eg. /~user_jim/) this path needs to be removed because it will be added with $siteUrl
                         $attribArray['src'] = preg_replace('#^' . preg_quote($sitePath, '#') . '#', '', $attribArray['src']);
                         $attribArray['src'] = $siteUrl . $attribArray['src'];
@@ -995,8 +995,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             // Wrapping the line in <p> tags if not already wrapped and does not contain an hr tag
             if (!preg_match('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', $parts[$k])) {
                 $testStr = strtolower(trim($parts[$k]));
-                if (substr($testStr, 0, 4) !== '<div' || substr($testStr, -6) !== '</div>') {
-                    if (substr($testStr, 0, 2) !== '<p' || substr($testStr, -4) !== '</p>') {
+                if (strpos($testStr, '<div') !== 0 || substr($testStr, -6) !== '</div>') {
+                    if (strpos($testStr, '<p') !== 0 || substr($testStr, -4) !== '</p>') {
                         // Only set p-tags if there is not already div or p tags:
                         $parts[$k] = '<p>' . $parts[$k] . '</p>';
                     }
@@ -1107,7 +1107,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     {
         $info = [];
         $url = trim($url);
-        if (substr(strtolower($url), 0, 7) === 'mailto:') {
+        if (strpos(strtolower($url), 'mailto:') === 0) {
             $info['url'] = trim(substr($url, 7));
             $info['type'] = 'email';
         } elseif (strpos($url, '?file:') !== false) {
@@ -1129,7 +1129,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             $siteUrl_parts = parse_url($url);
             $curUrl_parts = parse_url($curURL);
             // Hosts should match
-            if ($siteUrl_parts['host'] == $curUrl_parts['host'] && (!$info['relScriptPath'] || defined('TYPO3_mainDir') && substr($info['relScriptPath'], 0, strlen(TYPO3_mainDir)) == TYPO3_mainDir)) {
+            if ($siteUrl_parts['host'] == $curUrl_parts['host'] && (!$info['relScriptPath'] || defined('TYPO3_mainDir') && strpos($info['relScriptPath'], TYPO3_mainDir) === 0)) {
                 // If the script path seems to match or is empty (FE-EDIT)
                 // New processing order 100502
                 $uP = parse_url($info['relUrl']);

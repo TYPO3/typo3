@@ -1042,7 +1042,7 @@ class PackageManager implements SingletonInterface
         if (!is_object($manifest)) {
             throw new Exception\InvalidPackageManifestException('Invalid composer manifest in package path: ' . $packagePath, 1348146451);
         }
-        if (isset($manifest->type) && substr($manifest->type, 0, 10) === 'typo3-cms-') {
+        if (isset($manifest->type) && strpos($manifest->type, 'typo3-cms-') === 0) {
             $packageKey = PathUtility::basename($packagePath);
             return preg_replace('/[^A-Za-z0-9._-]/', '', $packageKey);
         }

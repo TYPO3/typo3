@@ -1050,7 +1050,7 @@ For each website you need a TypoScript template on the main page of your website
 
         // check if database charset is utf-8 - also allow utf8mb4
         $defaultDatabaseCharset = $this->getDefaultDatabaseCharset($dbName);
-        if (substr($defaultDatabaseCharset, 0, 4) !== 'utf8') {
+        if (strpos($defaultDatabaseCharset, 'utf8') !== 0) {
             $result = new FlashMessage(
                 'Your database uses character set "' . $defaultDatabaseCharset . '", '
                 . 'but only "utf8" is supported with TYPO3. You probably want to change this before proceeding.',

@@ -791,12 +791,12 @@ class IndexSearchRepository
                 $expressionBuilder->in('ISEC.rl0', GeneralUtility::intExplode(',', $this->searchRootPageIdList, true))
             );
         }
-        if (substr($this->sections, 0, 4) === 'rl1_') {
+        if (strpos($this->sections, 'rl1_') === 0) {
             $whereClause->add(
                 $expressionBuilder->in('ISEC.rl1', GeneralUtility::intExplode(',', substr($this->sections, 4)))
             );
             $match = true;
-        } elseif (substr($this->sections, 0, 4) === 'rl2_') {
+        } elseif (strpos($this->sections, 'rl2_') === 0) {
             $whereClause->add(
                 $expressionBuilder->in('ISEC.rl2', GeneralUtility::intExplode(',', substr($this->sections, 4)))
             );
@@ -804,7 +804,7 @@ class IndexSearchRepository
         } else {
             // Traversing user configured fields to see if any of those are used to limit search to a section:
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] ?? [] as $fieldName => $rootLineLevel) {
-                if (substr($this->sections, 0, strlen($fieldName) + 1) == $fieldName . '_') {
+                if (strpos($this->sections, $fieldName . '_') === 0) {
                     $whereClause->add(
                         $expressionBuilder->in(
                             'ISEC.' . $fieldName,
@@ -1073,7 +1073,7 @@ class IndexSearchRepository
         // If any of the ranking sortings are selected, we must make a
         // join with the word/rel-table again, because we need to
         // calculate ranking based on all search-words found.
-        if (substr($this->sortOrder, 0, 5) === 'rank_') {
+        if (strpos($this->sortOrder, 'rank_') === 0) {
             $queryBuilder
                 ->from('index_words', 'IW')
                 ->from('index_rel', 'IR')

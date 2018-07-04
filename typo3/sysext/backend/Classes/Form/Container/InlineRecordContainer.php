@@ -399,7 +399,7 @@ class InlineRecordContainer extends AbstractContainer
             'localize' => '',
             'locked' => '',
         ];
-        $isNewItem = substr($rec['uid'], 0, 3) === 'NEW';
+        $isNewItem = strpos($rec['uid'], 'NEW') === 0;
         $isParentExisting = MathUtility::canBeInterpretedAsInteger($data['inlineParentUid']);
         $tcaTableCtrl = $GLOBALS['TCA'][$foreignTable]['ctrl'];
         $tcaTableCols = $GLOBALS['TCA'][$foreignTable]['columns'];

@@ -555,7 +555,7 @@ class QueryGenerator
         // Traverse:
         foreach ($queryConfig as $key => $conf) {
             $fieldName = '';
-            if (substr($conf['type'], 0, 6) === 'FIELD_') {
+            if (strpos($conf['type'], 'FIELD_') === 0) {
                 $fieldName = substr($conf['type'], 6);
                 $fieldType = $this->fields[$fieldName]['type'];
             } elseif ($conf['type'] === 'newlevel') {
@@ -610,7 +610,7 @@ class QueryGenerator
             $subscript = $parent . '[' . $key . ']';
             $lineHTML = [];
             $lineHTML[] = $this->mkOperatorSelect($this->name . $subscript, $conf['operator'], $c, $conf['type'] !== 'FIELD_');
-            if (substr($conf['type'], 0, 6) === 'FIELD_') {
+            if (strpos($conf['type'], 'FIELD_') === 0) {
                 $fieldName = substr($conf['type'], 6);
                 $this->fieldName = $fieldName;
                 $fieldType = $this->fields[$fieldName]['type'];
@@ -811,7 +811,7 @@ class QueryGenerator
         }
         if ($fieldSetup['type'] === 'multiple') {
             foreach ($fieldSetup['items'] as $key => $val) {
-                if (substr($val[0], 0, 4) === 'LLL:') {
+                if (strpos($val[0], 'LLL:') === 0) {
                     $value = $languageService->sL($val[0]);
                 } else {
                     $value = $val[0];
@@ -825,7 +825,7 @@ class QueryGenerator
         }
         if ($fieldSetup['type'] === 'binary') {
             foreach ($fieldSetup['items'] as $key => $val) {
-                if (substr($val[0], 0, 4) === 'LLL:') {
+                if (strpos($val[0], 'LLL:') === 0) {
                     $value = $languageService->sL($val[0]);
                 } else {
                     $value = $val[0];
@@ -842,7 +842,7 @@ class QueryGenerator
             $dontPrefixFirstTable = 0;
             if ($fieldSetup['items']) {
                 foreach ($fieldSetup['items'] as $key => $val) {
-                    if (substr($val[0], 0, 4) === 'LLL:') {
+                    if (strpos($val[0], 'LLL:') === 0) {
                         $value = $languageService->sL($val[0]);
                     } else {
                         $value = $val[0];
@@ -906,7 +906,7 @@ class QueryGenerator
                     $altLabelField = $GLOBALS['TCA'][$from_table]['ctrl']['label_alt'];
                     if ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items']) {
                         foreach ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'] as $labelArray) {
-                            if (substr($labelArray[0], 0, 4) === 'LLL:') {
+                            if (strpos($labelArray[0], 'LLL:') === 0) {
                                 $labelFieldSelect[$labelArray[1]] = $languageService->sL($labelArray[0]);
                             } else {
                                 $labelFieldSelect[$labelArray[1]] = $labelArray[0];
@@ -917,7 +917,7 @@ class QueryGenerator
                     $altLabelFieldSelect = [];
                     if ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items']) {
                         foreach ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] as $altLabelArray) {
-                            if (substr($altLabelArray[0], 0, 4) === 'LLL:') {
+                            if (strpos($altLabelArray[0], 'LLL:') === 0) {
                                 $altLabelFieldSelect[$altLabelArray[1]] = $languageService->sL($altLabelArray[0]);
                             } else {
                                 $altLabelFieldSelect[$altLabelArray[1]] = $altLabelArray[0];

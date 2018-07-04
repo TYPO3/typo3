@@ -643,7 +643,7 @@ class Import extends ImportExport
         foreach ($pidsFromTree as $origPid => $newPid) {
             if ($newPid >= 0 && $this->dontIgnorePid('pages', $origPid)) {
                 // If the page had a new id (because it was created) use that instead!
-                if (substr($this->import_newId_pids[$origPid], 0, 3) === 'NEW') {
+                if (strpos($this->import_newId_pids[$origPid], 'NEW') === 0) {
                     if ($this->import_mapId['pages'][$origPid]) {
                         $mappedPid = $this->import_mapId['pages'][$origPid];
                         $cmd_data['pages'][$mappedPid]['move'] = $newPid;

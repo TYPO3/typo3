@@ -256,7 +256,7 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
                 $this->databaseHandle = GeneralUtility::makeInstance(\PDO::class, $this->dataSourceName, $this->username, $this->password);
             }
             $this->databaseHandle->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            if (substr($this->pdoDriver, 0, 5) === 'mysql') {
+            if (strpos($this->pdoDriver, 'mysql') === 0) {
                 $this->databaseHandle->exec('SET SESSION sql_mode=\'ANSI\';');
             }
         } catch (\PDOException $e) {
@@ -298,7 +298,7 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
     {
         $sql = file($pathAndFilename, FILE_IGNORE_NEW_LINES & FILE_SKIP_EMPTY_LINES);
         // Remove MySQL style key length delimiters (yuck!) if we are not setting up a MySQL db
-        if (substr($pdoDriver, 0, 5) !== 'mysql') {
+        if (strpos($pdoDriver, 'mysql') !== 0) {
             $sql = preg_replace('/"\\([0-9]+\\)/', '"', $sql);
         }
         $statement = '';

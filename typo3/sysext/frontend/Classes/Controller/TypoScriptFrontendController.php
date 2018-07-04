@@ -2814,7 +2814,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 // As str_* methods are locale aware and turkish has no upper case I
                 // Class autoloading and other checks depending on case changing break with turkish locale LC_CTYPE
                 // @see http://bugs.php.net/bug.php?id=35050
-                if (substr($locale, 0, 2) !== 'tr') {
+                if (strpos($locale, 'tr') !== 0) {
                     setlocale(LC_CTYPE, ...$availableLocales);
                 }
                 setlocale(LC_MONETARY, ...$availableLocales);

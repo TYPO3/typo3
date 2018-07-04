@@ -430,7 +430,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                     // domains. absRefPrefix can contain domain name, which will screw up
                     // the link to the external domain.
                     $prefixLength = strlen($tsfe->absRefPrefix);
-                    if (substr($LD['totalURL'], 0, $prefixLength) === $tsfe->absRefPrefix) {
+                    if (strpos($LD['totalURL'], $tsfe->absRefPrefix) === 0) {
                         $LD['totalURL'] = substr($LD['totalURL'], $prefixLength);
                     }
                 }

@@ -119,7 +119,7 @@ class CommandLineBackend extends AbstractBackend
             // Ok, we got the private key. Get the modulus.
             $command = $this->opensslPath . ' rsa -noout -modulus -in ' . escapeshellarg($privateKeyFile);
             $value = CommandUtility::exec($command);
-            if (substr($value, 0, 8) === 'Modulus=') {
+            if (strpos($value, 'Modulus=') === 0) {
                 $publicKey = substr($value, 8);
 
                 $keyPair->setExponent(self::DEFAULT_EXPONENT);
@@ -171,7 +171,7 @@ class CommandLineBackend extends AbstractBackend
         if ($this->opensslPath) {
             // If path exists, test that command runs and can produce output
             $test = CommandUtility::exec($this->opensslPath . ' version');
-            $result = substr($test, 0, 8) === 'OpenSSL ';
+            $result = strpos($test, 'OpenSSL ') === 0;
         }
         return $result;
     }

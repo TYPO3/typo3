@@ -329,7 +329,7 @@ class TcaMigration
                                 $newDefaultExtrasArray = [];
                                 foreach ($defaultExtrasArray as $fieldExtraField) {
                                     // There might be multiple enabled wizards separated by | ... split them
-                                    if (substr($fieldExtraField, 0, 8) === 'wizards[') {
+                                    if (strpos($fieldExtraField, 'wizards[') === 0) {
                                         $enabledWizards = substr($fieldExtraField, 8, strlen($fieldExtraField) - 8); // Cut off "wizards[
                                         $enabledWizards = substr($enabledWizards, 0, strlen($enabledWizards) - 1);
                                         $enabledWizardsArray = GeneralUtility::trimExplode('|', $enabledWizards, true);
@@ -753,7 +753,7 @@ class TcaMigration
                     $defaultExtrasArray = GeneralUtility::trimExplode(':', $originalValue, true);
                     $isRichtextField = false;
                     foreach ($defaultExtrasArray as $defaultExtrasField) {
-                        if (substr($defaultExtrasField, 0, 8) === 'richtext') {
+                        if (strpos($defaultExtrasField, 'richtext') === 0) {
                             $isRichtextField = true;
                             $fieldConfig['config']['enableRichtext'] = true;
                             $fieldConfig['config']['richtextConfiguration'] = 'default';
@@ -783,7 +783,7 @@ class TcaMigration
                         $defaultExtrasArray = GeneralUtility::trimExplode(':', $originalValue, true);
                         $isRichtextField = false;
                         foreach ($defaultExtrasArray as $defaultExtrasField) {
-                            if (substr($defaultExtrasField, 0, 8) === 'richtext') {
+                            if (strpos($defaultExtrasField, 'richtext') === 0) {
                                 $isRichtextField = true;
                                 $fieldConfig['config']['enableRichtext'] = true;
                                 $fieldConfig['config']['richtextConfiguration'] = 'default';
@@ -1184,7 +1184,7 @@ class TcaMigration
                                 $defaultExtrasArray = GeneralUtility::trimExplode(':', $defaultExtras, true);
                                 $newDefaultExtrasArray = [];
                                 foreach ($defaultExtrasArray as $fieldExtraField) {
-                                    if (substr($fieldExtraField, 0, 8) === 'wizards[') {
+                                    if (strpos($fieldExtraField, 'wizards[') === 0) {
                                         $enabledWizards = substr($fieldExtraField, 8, strlen($fieldExtraField) - 8); // Cut off "wizards[
                                         $enabledWizards = substr($enabledWizards, 0, strlen($enabledWizards) - 1);
                                         $enabledWizardsArray = GeneralUtility::trimExplode('|', $enabledWizards, true);

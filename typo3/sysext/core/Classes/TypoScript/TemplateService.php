@@ -963,7 +963,7 @@ class TemplateService
         }
         // If "Default (include before if root flag is set)" is set OR
         // "Always include before this template record" AND root-flag are set
-        if ($staticFileMode == 1 || $staticFileMode == 0 && substr($templateID, 0, 4) === 'sys_' && $row['root']) {
+        if ($staticFileMode == 1 || $staticFileMode == 0 && strpos($templateID, 'sys_') === 0 && $row['root']) {
             $this->addExtensionStatics($idList, $templateID, $pid);
         }
         // Include Static Template Records after all other TypoScript has been included.

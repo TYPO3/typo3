@@ -49,7 +49,7 @@ class BackendWarnings
             } elseif (!@is_writable($path)) {
                 // Directory is not writable
                 $warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/Resources/Private/Language/locallang.xlf:hook_directory_not_writable');
-            } elseif (substr($path, 0, strlen(Environment::getPublicPath())) === Environment::getPublicPath()) {
+            } elseif (strpos($path, Environment::getPublicPath()) === 0) {
                 // Directory is inside the site root
                 $warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/Resources/Private/Language/locallang.xlf:hook_directory_inside_siteroot');
             }

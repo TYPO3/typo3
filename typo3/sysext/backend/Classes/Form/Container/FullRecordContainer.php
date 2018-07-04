@@ -50,7 +50,7 @@ class FullRecordContainer extends AbstractContainer
 
         // Streamline the fields array
         // First, make sure there is always a --div-- definition for the first element
-        if (substr($fieldsArray[0], 0, 7) !== '--div--') {
+        if (strpos($fieldsArray[0], '--div--') !== 0) {
             array_unshift($fieldsArray, '--div--;LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.generalTab');
         }
         // If first tab has no label definition, add "general" label
@@ -61,7 +61,7 @@ class FullRecordContainer extends AbstractContainer
         // If there are at least two --div-- definitions, inner container will be a TabContainer, else a NoTabContainer
         $tabCount = 0;
         foreach ($fieldsArray as $field) {
-            if (substr($field, 0, 7) === '--div--') {
+            if (strpos($field, '--div--') === 0) {
                 $tabCount++;
             }
         }

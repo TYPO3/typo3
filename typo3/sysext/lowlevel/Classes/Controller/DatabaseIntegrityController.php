@@ -233,7 +233,7 @@ class DatabaseIntegrityController
         $addConditionCheck = GeneralUtility::_GP('qG_ins');
         $setLimitToStart = false;
         foreach ($OLD_MOD_SETTINGS as $key => $val) {
-            if (substr($key, 0, 5) === 'query' && $this->MOD_SETTINGS[$key] != $val && $key !== 'queryLimit' && $key !== 'use_listview') {
+            if (strpos($key, 'query') === 0 && $this->MOD_SETTINGS[$key] != $val && $key !== 'queryLimit' && $key !== 'use_listview') {
                 $setLimitToStart = true;
                 if ($key === 'queryTable' && !$addConditionCheck) {
                     $this->MOD_SETTINGS['queryConfig'] = '';

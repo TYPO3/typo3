@@ -346,7 +346,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
         }
         // Print a message telling which words in which sections we searched for
-        if (substr($this->searchData['sections'], 0, 2) === 'rl') {
+        if (strpos($this->searchData['sections'], 'rl') === 0) {
             $result['searchedInSectionInfo'] = LocalizationUtility::translate('result.inSection', 'IndexedSearch') . ' "' . $this->getPathFromPageId(substr($this->searchData['sections'], 4)) . '"';
         }
 
@@ -393,7 +393,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $resultRows = $newResultRows;
         $this->resultSections = [];
         if ($freeIndexUid <= 0 && $this->searchData['group'] === 'sections') {
-            $rl2flag = substr($this->searchData['sections'], 0, 2) === 'rl';
+            $rl2flag = strpos($this->searchData['sections'], 'rl') === 0;
             $sections = [];
             foreach ($resultRows as $row) {
                 $id = $row['rl0'] . '-' . $row['rl1'] . ($rl2flag ? '-' . $row['rl2'] : '');
@@ -682,7 +682,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             } else {
                 // Default creation / finding of icon:
                 $icon = '';
-                if ($imageType === '0' || substr($imageType, 0, 2) === '0:') {
+                if ($imageType === '0' || strpos($imageType, '0:') === 0) {
                     if (is_array($specRowConf['pageIcon'])) {
                         $this->iconFileNameCache[$imageType] = $GLOBALS['TSFE']->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon']);
                     } else {

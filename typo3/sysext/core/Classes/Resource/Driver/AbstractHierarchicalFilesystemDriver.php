@@ -70,7 +70,7 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
 
         // filePath must be valid
         // Special case is required by vfsStream in Unit Test context
-        if (!$this->isPathValid($filePath) && substr($filePath, 0, 6) !== 'vfs://') {
+        if (!$this->isPathValid($filePath) && strpos($filePath, 'vfs://') !== 0) {
             throw new InvalidPathException('File ' . $filePath . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
         }
         return $filePath;

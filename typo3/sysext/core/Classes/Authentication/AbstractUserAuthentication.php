@@ -632,7 +632,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             }
             // Refuse login for _CLI users, if not processing a CLI request type
             // (although we shouldn't be here in case of a CLI request type)
-            if (strtoupper(substr($loginData['uname'], 0, 5)) === '_CLI_' && !Environment::isCli()) {
+            if (stripos($loginData['uname'], '_CLI_') === 0 && !Environment::isCli()) {
                 throw new \RuntimeException('TYPO3 Fatal Error: You have tried to login using a CLI user. Access prohibited!', 1270853931);
             }
         }

@@ -228,13 +228,13 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      */
     public function __call($methodName, $arguments)
     {
-        if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
+        if (strpos($methodName, 'findBy') === 0 && strlen($methodName) > 7) {
             $propertyName = lcfirst(substr($methodName, 6));
             $query = $this->createQuery();
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute();
             return $result;
         }
-        if (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
+        if (strpos($methodName, 'findOneBy') === 0 && strlen($methodName) > 10) {
             $propertyName = lcfirst(substr($methodName, 9));
             $query = $this->createQuery();
 
@@ -245,7 +245,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
             if (is_array($result)) {
                 return $result[0] ?? null;
             }
-        } elseif (substr($methodName, 0, 7) === 'countBy' && strlen($methodName) > 8) {
+        } elseif (strpos($methodName, 'countBy') === 0 && strlen($methodName) > 8) {
             $propertyName = lcfirst(substr($methodName, 7));
             $query = $this->createQuery();
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();

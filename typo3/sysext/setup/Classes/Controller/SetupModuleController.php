@@ -484,7 +484,7 @@ class SetupModuleController
                 continue;
             }
 
-            if (substr($fieldName, 0, 8) === '--div--;') {
+            if (strpos($fieldName, '--div--;') === 0) {
                 if ($firstTabLabel === '') {
                     // First tab
                     $tabLabel = $this->getLabel(substr($fieldName, 8), '', false);
@@ -820,7 +820,7 @@ class SetupModuleController
      */
     protected function getLabel($str, $key = '', $addLabelTag = true)
     {
-        if (substr($str, 0, 4) === 'LLL:') {
+        if (strpos($str, 'LLL:') === 0) {
             $out = htmlspecialchars($this->getLanguageService()->sL($str));
         } else {
             $out = htmlspecialchars($str);

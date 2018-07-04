@@ -143,7 +143,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getImageFromSourceString($src, $treatIdAsReference)
     {
-        if ($this->environmentService->isEnvironmentInBackendMode() && substr($src, 0, 3) === '../') {
+        if ($this->environmentService->isEnvironmentInBackendMode() && strpos($src, '../') === 0) {
             $src = substr($src, 3);
         }
         if (MathUtility::canBeInterpretedAsInteger($src)) {

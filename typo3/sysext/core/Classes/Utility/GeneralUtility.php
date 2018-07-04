@@ -383,7 +383,7 @@ class GeneralUtility
                     // Modulo is 0 if this is a 8-bit-boundary
                     $maskIntModulo = $maskInt % 8;
                     $numFullCharactersUntilBoundary = (int)($maskInt / 8);
-                    if (substr($testBin, 0, $numFullCharactersUntilBoundary) !== substr($baseIPBin, 0, $numFullCharactersUntilBoundary)) {
+                    if (strpos($testBin, substr($baseIPBin, 0, $numFullCharactersUntilBoundary)) !== 0) {
                         $success = false;
                     } elseif ($maskIntModulo > 0) {
                         // If not an 8-bit-boundary, check bits of last character
@@ -1658,7 +1658,7 @@ class GeneralUtility
                 $documentTag = $tagName;
             }
             // Test for name space:
-            $tagName = $NSprefix && substr($tagName, 0, strlen($NSprefix)) == $NSprefix ? substr($tagName, strlen($NSprefix)) : $tagName;
+            $tagName = $NSprefix && strpos($tagName, $NSprefix) === 0 ? substr($tagName, strlen($NSprefix)) : $tagName;
             // Test for numeric tag, encoded on the form "nXXX":
             $testNtag = substr($tagName, 1);
             // Closing tag.

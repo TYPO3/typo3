@@ -723,7 +723,7 @@ class NewRecordController
                             $_EXTKEY = '';
                             if ($nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
                                 // Try to extract extension name
-                                if (substr($v['ctrl']['title'], 0, 8) === 'LLL:EXT:') {
+                                if (strpos($v['ctrl']['title'], 'LLL:EXT:') === 0) {
                                     $_EXTKEY = substr($v['ctrl']['title'], 8);
                                     $_EXTKEY = substr($_EXTKEY, 0, strpos($_EXTKEY, '/'));
                                     if ($_EXTKEY !== '') {
