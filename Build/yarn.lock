@@ -14,9 +14,25 @@
   dependencies:
     "@types/jquery" "*"
 
+"@types/chrome@^0.0.69":
+  version "0.0.69"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.69.tgz#1d45bb79dd712b05704e4411f9eff3f270e19651"
+  dependencies:
+    "@types/filesystem" "*"
+
 "@types/ckeditor@0.0.46":
   version "0.0.46"
   resolved "https://registry.yarnpkg.com/@types/ckeditor/-/ckeditor-0.0.46.tgz#9ab258c8344f3ff8a8847069dbab11fd5210bd61"
+
+"@types/filesystem@*":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@types/filesystem/-/filesystem-0.0.28.tgz#3fd7735830f2c7413cb5ac45780bc45904697b0e"
+  dependencies:
+    "@types/filewriter" "*"
+
+"@types/filewriter@*":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@types/filewriter/-/filewriter-0.0.28.tgz#c054e8af4d9dd75db4e63abc76f885168714d4b3"
 
 "@types/imagesloaded@^4.1.1":
   version "4.1.1"

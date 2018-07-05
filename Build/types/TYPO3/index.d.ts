@@ -9,6 +9,7 @@ declare namespace TYPO3 {
   export let DebugConsole: any;
   export let Icons: any;
   export let InfoWindow: any;
+  export let LoginRefresh: any;
   export let ModuleMenu: any;
   export let Notification: any;
   export let Modal: any;
@@ -19,6 +20,7 @@ declare namespace TYPO3 {
   export let Utility: any;
   export const lang: any;
   export const settings: any;
+  export const configuration: any;
   export namespace CMS {
     export namespace Backend {
       export class FormEngineValidation {
