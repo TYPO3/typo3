@@ -2045,12 +2045,13 @@ class GeneralUtility
             } else {
                 $configuration = [];
             }
-
+            $includeHeader = (int)$includeHeader;
+            $method = $includeHeader === 2 ? 'HEAD' : 'GET';
             try {
                 if (isset($report)) {
                     $report['lib'] = 'GuzzleHttp';
                 }
-                $response = $requestFactory->request($url, 'GET', $configuration);
+                $response = $requestFactory->request($url, $method, $configuration);
             } catch (RequestException $exception) {
                 if (isset($report)) {
                     $report['error'] = $exception->getCode();
@@ -2059,14 +2060,10 @@ class GeneralUtility
                 }
                 return false;
             }
-
             $content = '';
-
             // Add the headers to the output
-            $includeHeader = (int)$includeHeader;
             if ($includeHeader) {
                 $parsedURL = parse_url($url);
-                $method = $includeHeader === 2 ? 'HEAD' : 'GET';
                 $content = $method . ' ' . (isset($parsedURL['path']) ? $parsedURL['path'] : '/')
                     . ($parsedURL['query'] ? '?' . $parsedURL['query'] : '') . ' HTTP/1.0' . CRLF
                     . 'Host: ' . $parsedURL['host'] . CRLF
@@ -2080,10 +2077,9 @@ class GeneralUtility
                 // Headers are separated from the body with two CRLFs
                 $content .= CRLF;
             }
-            // If not just headers are requested, add the body
-            if ($includeHeader !== 2) {
-                $content .= $response->getBody()->getContents();
-            }
+
+            $content .= $response->getBody()->getContents();
+
             if (isset($report)) {
                 if ($response->getStatusCode() >= 300 && $response->getStatusCode() < 400) {
                     $report['http_code'] = $response->getStatusCode();
