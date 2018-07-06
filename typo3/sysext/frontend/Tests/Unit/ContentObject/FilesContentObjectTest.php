@@ -89,7 +89,7 @@ class FilesContentObjectTest extends UnitTestCase
     /**
      * @return array
      */
-    public function renderReturnsFilesForFileReferencesDataProvider()
+    public function renderReturnsFilesForFileReferencesDataProvider(): array
     {
         return [
             'One file reference' => [
@@ -228,8 +228,10 @@ class FilesContentObjectTest extends UnitTestCase
     /**
      * @test
      * @dataProvider renderReturnsFilesForFileReferencesDataProvider
+     * @param array $configuration
+     * @param string $expected
      */
-    public function renderReturnsFilesForFileReferences($configuration, $expected)
+    public function renderReturnsFilesForFileReferences(array $configuration, string $expected): void
     {
         $fileReferenceMap = [];
         for ($i = 1; $i < 4; $i++) {
@@ -270,7 +272,7 @@ class FilesContentObjectTest extends UnitTestCase
     /**
      * @return array
      */
-    public function renderReturnsFilesForFilesDataProvider()
+    public function renderReturnsFilesForFilesDataProvider(): array
     {
         return [
             'One file' => [
@@ -409,8 +411,10 @@ class FilesContentObjectTest extends UnitTestCase
     /**
      * @test
      * @dataProvider renderReturnsFilesForFilesDataProvider
+     * @param array $configuration
+     * @param string $expected
      */
-    public function renderReturnsFilesForFiles($configuration, $expected)
+    public function renderReturnsFilesForFiles(array $configuration, string $expected): void
     {
         $fileMap = [];
         for ($i = 1; $i < 4; $i++) {
@@ -451,7 +455,7 @@ class FilesContentObjectTest extends UnitTestCase
     /**
      * @return array
      */
-    public function renderReturnsFilesForCollectionsDataProvider()
+    public function renderReturnsFilesForCollectionsDataProvider(): array
     {
         return [
             'One collection' => [
@@ -627,8 +631,10 @@ class FilesContentObjectTest extends UnitTestCase
     /**
      * @test
      * @dataProvider renderReturnsFilesForCollectionsDataProvider
+     * @param array $configuration
+     * @param string $expected
      */
-    public function renderReturnsFilesForCollections($configuration, $expected)
+    public function renderReturnsFilesForCollections(array $configuration, string $expected): void
     {
         $collectionMap = [];
         $fileCount = 1;
@@ -680,7 +686,7 @@ class FilesContentObjectTest extends UnitTestCase
     /**
      * @return array
      */
-    public function renderReturnsFilesForFoldersDataProvider()
+    public function renderReturnsFilesForFoldersDataProvider(): array
     {
         return [
             'One folder' => [
@@ -887,8 +893,11 @@ class FilesContentObjectTest extends UnitTestCase
     /**
      * @test
      * @dataProvider renderReturnsFilesForFoldersDataProvider
+     * @param array $configuration
+     * @param string $expected
+     * @param bool $recursive
      */
-    public function renderReturnsFilesForFolders($configuration, $expected, $recursive = false)
+    public function renderReturnsFilesForFolders(array $configuration, string $expected, bool $recursive = false): void
     {
         $folderMap = [];
         $folders = [];
@@ -936,7 +945,11 @@ class FilesContentObjectTest extends UnitTestCase
                     ->method('getFiles')
                     ->will($this->returnValue($filesArrayForFolder[$i]));
             } else {
-                $recursiveFiles = array_merge($filesArrayForFolder[3], $filesArrayForFolder[1], $filesArrayForFolder[2]);
+                $recursiveFiles = array_merge(
+                    $filesArrayForFolder[3],
+                    $filesArrayForFolder[1],
+                    $filesArrayForFolder[2]
+                );
                 $folderMapInfo[1]->expects($this->any())
                     ->method('getFiles')
                     ->will($this->returnValue($recursiveFiles));

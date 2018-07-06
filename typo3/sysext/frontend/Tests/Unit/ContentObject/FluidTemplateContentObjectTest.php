@@ -16,12 +16,14 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
@@ -65,26 +67,26 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     protected function setUp()
     {
         $this->contentObjectRenderer = $this->getMockBuilder(
-            \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class
+            ContentObjectRenderer::class
         )->getMock();
         $this->subject = $this->getAccessibleMock(
-            \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
+            FluidTemplateContentObject::class,
             ['initializeStandaloneViewInstance'],
             [$this->contentObjectRenderer]
         );
-        /** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-        $tsfe = $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
-        $tsfe->tmpl = $this->getMockBuilder(\TYPO3\CMS\Core\TypoScript\TemplateService::class)->getMock();
+        /** @var $tsfe TypoScriptFrontendController */
+        $tsfe = $this->createMock(TypoScriptFrontendController::class);
+        $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)->getMock();
         $GLOBALS['TSFE'] = $tsfe;
     }
 
     /**
      * Add a mock standalone view to subject
      */
-    protected function addMockViewToSubject()
+    protected function addMockViewToSubject(): void
     {
-        $this->standaloneView = $this->createMock(\TYPO3\CMS\Fluid\View\StandaloneView::class);
-        $this->request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)->getMock();
+        $this->standaloneView = $this->createMock(StandaloneView::class);
+        $this->request = $this->getMockBuilder(Request::class)->getMock();
         $this->standaloneView
             ->expects($this->any())
             ->method('getRequest')
@@ -95,7 +97,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function constructSetsContentObjectRenderer()
+    public function constructSetsContentObjectRenderer(): void
     {
         $this->assertSame($this->contentObjectRenderer, $this->subject->getContentObjectRenderer());
     }
@@ -103,7 +105,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsInitializeStandaloneViewInstance()
+    public function renderCallsInitializeStandaloneViewInstance(): void
     {
         $this->addMockViewToSubject();
         $this->subject
@@ -115,7 +117,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsTemplateServiceGetFileNameForGivenTemplateFile()
+    public function renderCallsTemplateServiceGetFileNameForGivenTemplateFile(): void
     {
         $this->addMockViewToSubject();
         /** @var $templateService \PHPUnit_Framework_MockObject_MockObject */
@@ -130,7 +132,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsStandardWrapForGivenTemplateFileWithStandardWrap()
+    public function renderCallsStandardWrapForGivenTemplateFileWithStandardWrap(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
@@ -143,7 +145,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsStandardWrapForGivenTemplateRootPathsWithStandardWrap()
+    public function renderCallsStandardWrapForGivenTemplateRootPathsWithStandardWrap(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
@@ -174,7 +176,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderSetsTemplateFileInView()
+    public function renderSetsTemplateFileInView(): void
     {
         $this->addMockViewToSubject();
         $this->standaloneView
@@ -187,7 +189,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderSetsTemplateFileByTemplateInView()
+    public function renderSetsTemplateFileByTemplateInView(): void
     {
         $this->addMockViewToSubject();
 
@@ -213,7 +215,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderSetsTemplateFileByTemplateNameInView()
+    public function renderSetsTemplateFileByTemplateNameInView(): void
     {
         $this->addMockViewToSubject();
 
@@ -228,10 +230,11 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
 
         $this->subject->render(
             [
-            'templateName' => 'foo',
-            'templateRootPaths.' => [
-                0 => 'dummyPath1/',
-                1 => 'dummyPath2/']
+                'templateName' => 'foo',
+                'templateRootPaths.' => [
+                    0 => 'dummyPath1/',
+                    1 => 'dummyPath2/'
+                ]
             ]
         );
     }
@@ -239,7 +242,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderSetsTemplateFileByTemplateNameStdWrapInView()
+    public function renderSetsTemplateFileByTemplateNameStdWrapInView(): void
     {
         $this->addMockViewToSubject();
 
@@ -259,11 +262,12 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
 
         $this->subject->render(
             [
-            'templateName' => 'TEXT',
-            'templateName.' => ['value' => 'bar'],
-            'templateRootPaths.' => [
-                0 => 'dummyPath1/',
-                1 => 'dummyPath2/']
+                'templateName' => 'TEXT',
+                'templateName.' => ['value' => 'bar'],
+                'templateRootPaths.' => [
+                    0 => 'dummyPath1/',
+                    1 => 'dummyPath2/'
+                ]
             ]
         );
     }
@@ -271,7 +275,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderSetsLayoutRootPathInView()
+    public function renderSetsLayoutRootPathInView(): void
     {
         $this->addMockViewToSubject();
         $this->standaloneView
@@ -284,7 +288,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsStandardWrapForLayoutRootPath()
+    public function renderCallsStandardWrapForLayoutRootPath(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
@@ -297,7 +301,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function layoutRootPathsHasStdWrapSupport()
+    public function layoutRootPathsHasStdWrapSupport(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
@@ -320,33 +324,43 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function fallbacksForLayoutRootPathAreSet()
+    public function fallbacksForLayoutRootPathAreSet(): void
     {
         $this->addMockViewToSubject();
         $this->standaloneView
             ->expects($this->once())
             ->method('setLayoutRootPaths')
-            ->with([10 => Environment::getPublicPath() . '/foo/bar.html', 20 => Environment::getPublicPath() . '/foo/bar2.html']);
+            ->with([
+                10 => Environment::getPublicPath() . '/foo/bar.html',
+                20 => Environment::getPublicPath() . '/foo/bar2.html'
+            ]);
         $this->subject->render(['layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']]);
     }
 
     /**
      * @test
      */
-    public function fallbacksForLayoutRootPathAreAppendedToLayoutRootPath()
+    public function fallbacksForLayoutRootPathAreAppendedToLayoutRootPath(): void
     {
         $this->addMockViewToSubject();
         $this->standaloneView
             ->expects($this->once())
             ->method('setLayoutRootPaths')
-            ->with([0 => Environment::getPublicPath() . '/foo/main.html', 10 => Environment::getPublicPath() . '/foo/bar.html', 20 => Environment::getPublicPath() . '/foo/bar2.html']);
-        $this->subject->render(['layoutRootPath' => 'foo/main.html', 'layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']]);
+            ->with([
+                0 => Environment::getPublicPath() . '/foo/main.html',
+                10 => Environment::getPublicPath() . '/foo/bar.html',
+                20 => Environment::getPublicPath() . '/foo/bar2.html'
+            ]);
+        $this->subject->render([
+            'layoutRootPath' => 'foo/main.html',
+            'layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']
+        ]);
     }
 
     /**
      * @test
      */
-    public function renderSetsPartialRootPathInView()
+    public function renderSetsPartialRootPathInView(): void
     {
         $this->addMockViewToSubject();
         $this->standaloneView
@@ -359,7 +373,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function partialRootPathsHasStdWrapSupport()
+    public function partialRootPathsHasStdWrapSupport(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
@@ -382,7 +396,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsStandardWrapForPartialRootPath()
+    public function renderCallsStandardWrapForPartialRootPath(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
@@ -395,7 +409,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function fallbacksForPartialRootPathAreSet()
+    public function fallbacksForPartialRootPathAreSet(): void
     {
         $this->addMockViewToSubject();
         $this->standaloneView
@@ -408,20 +422,24 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function fallbacksForPartialRootPathAreAppendedToPartialRootPath()
+    public function fallbacksForPartialRootPathAreAppendedToPartialRootPath(): void
     {
         $this->addMockViewToSubject();
         $this->standaloneView
             ->expects($this->once())
             ->method('setPartialRootPaths')
-            ->with([0 => Environment::getPublicPath() . '/main', 10 => Environment::getPublicPath() . '/foo', 20 => Environment::getPublicPath() . '/bar']);
+            ->with([
+                0 => Environment::getPublicPath() . '/main',
+                10 => Environment::getPublicPath() . '/foo',
+                20 => Environment::getPublicPath() . '/bar'
+            ]);
         $this->subject->render(['partialRootPath' => 'main', 'partialRootPaths.' => [10 => 'foo', 20 => 'bar']]);
     }
 
     /**
      * @test
      */
-    public function renderSetsFormatInView()
+    public function renderSetsFormatInView(): void
     {
         $this->addMockViewToSubject();
         $this->standaloneView
@@ -434,7 +452,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsStandardWrapForFormat()
+    public function renderCallsStandardWrapForFormat(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
@@ -447,7 +465,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderSetsExtbasePluginNameInRequest()
+    public function renderSetsExtbasePluginNameInRequest(): void
     {
         $this->addMockViewToSubject();
         $this->request
@@ -465,7 +483,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsStandardWrapForExtbasePluginName()
+    public function renderCallsStandardWrapForExtbasePluginName(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
@@ -486,7 +504,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderSetsExtbaseControllerExtensionNameInRequest()
+    public function renderSetsExtbaseControllerExtensionNameInRequest(): void
     {
         $this->addMockViewToSubject();
         $this->request
@@ -504,7 +522,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsStandardWrapForExtbaseControllerExtensionName()
+    public function renderCallsStandardWrapForExtbaseControllerExtensionName(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
@@ -525,7 +543,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderSetsExtbaseControllerNameInRequest()
+    public function renderSetsExtbaseControllerNameInRequest(): void
     {
         $this->addMockViewToSubject();
         $this->request
@@ -543,7 +561,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsStandardWrapForExtbaseControllerName()
+    public function renderCallsStandardWrapForExtbaseControllerName(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
@@ -564,7 +582,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderSetsExtbaseControllerActionNameInRequest()
+    public function renderSetsExtbaseControllerActionNameInRequest(): void
     {
         $this->addMockViewToSubject();
         $this->request
@@ -582,7 +600,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsStandardWrapForExtbaseControllerActionName()
+    public function renderCallsStandardWrapForExtbaseControllerActionName(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
@@ -603,7 +621,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderAssignsSettingsArrayToView()
+    public function renderAssignsSettingsArrayToView(): void
     {
         $this->addMockViewToSubject();
 
@@ -643,7 +661,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderThrowsExceptionForNotAllowedVariableData()
+    public function renderThrowsExceptionForNotAllowedVariableData(): void
     {
         $this->addMockViewToSubject();
         $configuration = [
@@ -662,7 +680,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderThrowsExceptionForNotAllowedVariableCurrent()
+    public function renderThrowsExceptionForNotAllowedVariableCurrent(): void
     {
         $this->addMockViewToSubject();
         $configuration = [
@@ -681,7 +699,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsCObjGetSingleForAllowedVariable()
+    public function renderCallsCObjGetSingleForAllowedVariable(): void
     {
         $this->addMockViewToSubject();
         $configuration = [
@@ -702,7 +720,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderAssignsRenderedContentObjectVariableToView()
+    public function renderAssignsRenderedContentObjectVariableToView(): void
     {
         $this->addMockViewToSubject();
         $configuration = [
@@ -727,7 +745,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderAssignsContentObjectRendererDataToView()
+    public function renderAssignsContentObjectRendererDataToView(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer->data = ['foo'];
@@ -741,7 +759,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderAssignsContentObjectRendererCurrentValueToView()
+    public function renderAssignsContentObjectRendererCurrentValueToView(): void
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer->data = ['currentKey' => 'currentValue'];
@@ -756,7 +774,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsRenderOnStandaloneViewie()
+    public function renderCallsRenderOnStandaloneViewie(): void
     {
         $this->addMockViewToSubject();
         $this->standaloneView
@@ -768,7 +786,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function renderCallsStandardWrapOnResultStringIfGivenInConfiguration()
+    public function renderCallsStandardWrapOnResultStringIfGivenInConfiguration(): void
     {
         $this->addMockViewToSubject();
         $configuration = [
@@ -794,9 +812,15 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
      * @test
      * @dataProvider headerAssetDataProvider
      */
-    public function renderFluidTemplateAssetsIntoPageRendererRendersAndAttachesAssets($viewMock, $expectedHeader, $expectedFooter)
-    {
-        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->setMethods(['addHeaderData', 'addFooterData'])->getMock();
+    public function renderFluidTemplateAssetsIntoPageRendererRendersAndAttachesAssets(
+        $viewMock,
+        $expectedHeader,
+        $expectedFooter
+    ): void {
+        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->setMethods([
+            'addHeaderData',
+            'addFooterData'
+        ])->getMock();
         if (!empty(trim($expectedHeader))) {
             $pageRendererMock->expects($this->once())->method('addHeaderData')->with($expectedHeader);
         } else {
@@ -821,17 +845,41 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @return array
      */
-    public function headerAssetDataProvider()
+    public function headerAssetDataProvider(): array
     {
         $viewWithHeaderData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithHeaderData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn('custom-header-data');
-        $viewWithHeaderData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn(null);
+        $viewWithHeaderData->expects($this->at(0))->method('renderSection')->with(
+            'HeaderAssets',
+            $this->anything(),
+            true
+        )->willReturn('custom-header-data');
+        $viewWithHeaderData->expects($this->at(1))->method('renderSection')->with(
+            'FooterAssets',
+            $this->anything(),
+            true
+        )->willReturn(null);
         $viewWithFooterData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithFooterData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn(null);
-        $viewWithFooterData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn('custom-footer-data');
+        $viewWithFooterData->expects($this->at(0))->method('renderSection')->with(
+            'HeaderAssets',
+            $this->anything(),
+            true
+        )->willReturn(null);
+        $viewWithFooterData->expects($this->at(1))->method('renderSection')->with(
+            'FooterAssets',
+            $this->anything(),
+            true
+        )->willReturn('custom-footer-data');
         $viewWithBothData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithBothData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn('custom-header-data');
-        $viewWithBothData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn('custom-footer-data');
+        $viewWithBothData->expects($this->at(0))->method('renderSection')->with(
+            'HeaderAssets',
+            $this->anything(),
+            true
+        )->willReturn('custom-header-data');
+        $viewWithBothData->expects($this->at(1))->method('renderSection')->with(
+            'FooterAssets',
+            $this->anything(),
+            true
+        )->willReturn('custom-footer-data');
         return [
             [$viewWithHeaderData, 'custom-header-data', null],
             [$viewWithFooterData, null, 'custom-footer-data'],
