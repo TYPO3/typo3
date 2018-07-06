@@ -41,4 +41,6 @@ Use https:// for any site, especially for pages which transfer passwords, includ
 The usage of a secure connection is also enforced by the browsers which mark http:// pages that
 collect passwords or credit cards as insecure. In long-term all http:// sites will be marked as insecure.
 
+If you deactivate EXT:rsaauth, remember to also set [TYPO3_CONF_VARS][BE][loginSecurityLevel] and [TYPO3_CONF_VARS][FE][loginSecurityLevel] from 'rsa' to 'normal'. 
+
 .. index:: Backend, Frontend, NotScanned
