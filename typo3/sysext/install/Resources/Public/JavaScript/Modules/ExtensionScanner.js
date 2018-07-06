@@ -96,8 +96,10 @@ define(['jquery',
         .text('0%');
       self.setProgressForAll();
       $extensions.each(function() {
-        var extension = $(this).data('extension');
+        var $me = $(this);
+        var extension = $me.data('extension');
         self.scanSingleExtension(extension);
+        $me.data('scanned', true);
       });
     },
 
