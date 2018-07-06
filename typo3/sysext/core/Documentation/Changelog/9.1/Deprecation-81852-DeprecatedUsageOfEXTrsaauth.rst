@@ -41,4 +41,8 @@ Use https:// for any site, especially for pages which transfer passwords, includ
 The usage of a secure connection is also enforced by the browsers which mark http:// pages that
 collect passwords or credit cards as insecure. In long-term all http:// sites will be marked as insecure.
 
+After removing rsaauth, the :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']` and
+:php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel']` must be set to :php:`normal`,
+otherwise login will not be possible.
+
 .. index:: Backend, Frontend, NotScanned
