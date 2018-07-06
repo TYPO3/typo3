@@ -33,20 +33,25 @@ define(['jquery',
       this.currentModal = currentModal;
       self.getData();
 
-      currentModal.on('click', this.selectorScanSingleTrigger, function(e) {
-        // Scan a single extension
-        var extension = $(e.target).data('extension');
+      currentModal.on('show.bs.collapse', self.selectorExtensionContainer, function(e) {
+        // Scan a single extension by opening the panel
+        var $me = $(e.currentTarget);
+        if (typeof $me.data('scanned') === 'undefined') {
+          var extension = $me.data('extension');
+          self.scanSingleExtension(extension);
+          $me.data('scanned', true);
+        }
+      }).on('click', self.selectorScanSingleTrigger, function(e) {
+        // Scan a single extension by clicking "Rescan"
         e.preventDefault();
-        self.scanSingleExtension(extension);
-        return false;
-      });
 
-      currentModal.on('click', '.t3js-extensionScanner-scan-all', function(e) {
+        var extension = $(e.currentTarget).closest(self.selectorExtensionContainer).data('extension');
+        self.scanSingleExtension(extension);
+      }).on('click', '.t3js-extensionScanner-scan-all', function(e) {
         // Scan all button
         e.preventDefault();
         var $extensions = currentModal.find(self.selectorExtensionContainer);
         self.scanAll($extensions);
-        return false;
       });
     },
 
