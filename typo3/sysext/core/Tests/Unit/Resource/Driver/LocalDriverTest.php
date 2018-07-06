@@ -965,11 +965,11 @@ class LocalDriverTest extends BaseTestCase
         $fileContents = 'asdfgh';
         $this->addToMount([
             'someDir' => [
-                'someFile' => $fileContents
+                'someFile.ext' => $fileContents
             ]
         ]);
         $subject = $this->createDriver();
-        $filePath = GeneralUtility::fixWindowsFilePath($subject->_call('copyFileToTemporaryPath', '/someDir/someFile'));
+        $filePath = GeneralUtility::fixWindowsFilePath($subject->_call('copyFileToTemporaryPath', '/someDir/someFile.ext'));
         $this->testFilesToDelete[] = $filePath;
         $this->assertContains('/typo3temp/var/transient/', $filePath);
         $this->assertEquals($fileContents, file_get_contents($filePath));
