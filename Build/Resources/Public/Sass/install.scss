@@ -34,6 +34,7 @@ $grid-float-breakpoint: $screen-md-min;
 //
 @import "typo3/element_docheader";
 @import "typo3/element_message";
+@import "typo3/element_panel";
 @import "typo3/element_table";
 @import "typo3/element_tab";
 
@@ -113,48 +114,6 @@ h1:first-child {
     &-functions,
     &-buttons {
         min-height: 20px;
-    }
-}
-
-.caret {
-    border: 0;
-    padding-left: 10px;
-
-    &:after {
-        position: relative;
-        top: -8px;
-        left: -10px;
-        content: $fa-var-caret-down;
-        font-family: FontAwesome;
-    }
-}
-
-.collapsed .caret {
-    &:after {
-        content: $fa-var-caret-right;
-        font-family: FontAwesome;
-    }
-}
-
-.panel-heading {
-    position: relative;
-
-    .panel-checkbox {
-        margin: 0;
-        position: absolute;
-        left: 1em;
-        top: 50%;
-        transform: translate(0, -50%);
-    }
-
-    .panel-checkbox + .panel-title {
-        padding-left: 18px;
-    }
-
-    .message {
-        display: block;
-        padding-left: 16px;
-        margin-top: 5px;
     }
 }
 

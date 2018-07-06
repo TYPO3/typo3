@@ -57,13 +57,6 @@ $panel-lg-padding: 35px;
 }
 
 .panel-collapsed {
-    .panel-heading {
-        .caret {
-            @include transition(all 0.25s ease-in-out);
-            @include rotate(-90deg);
-        }
-    }
-
     .panel-collapse {
         display: none;
         visibility: hidden;
@@ -72,6 +65,18 @@ $panel-lg-padding: 35px;
 
 .panel,
 .panel-collapse {
+    .panel-heading {
+        .caret {
+            @include transition(all 0.25s ease-in-out);
+        }
+
+        .collapsed {
+            .caret {
+                @include rotate(-90deg);
+            }
+        }
+    }
+
     > .alert {
         border: none;
         border-top: 1px solid $panel-default-border;
