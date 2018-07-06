@@ -6465,7 +6465,7 @@ class DataHandler
                 $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                 if ($registerDBList[$table][$id][$field] && ($foreignTable = $fieldConf['foreign_table'])) {
                     $newValueArray = [];
-                    $origValueArray = explode(',', $value);
+                    $origValueArray = is_array($value) ? $value : explode(',', $value);
                     // Update the uids of the copied records, but also take care about new records:
                     foreach ($origValueArray as $childId) {
                         $newValueArray[] = $this->autoVersionIdMap[$foreignTable][$childId] ? $this->autoVersionIdMap[$foreignTable][$childId] : $childId;
