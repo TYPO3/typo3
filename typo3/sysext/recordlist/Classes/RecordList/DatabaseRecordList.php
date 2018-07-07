@@ -1952,16 +1952,18 @@ class DatabaseRecordList
         // Enables to hide the move elements for localized records - doesn't make much sense to perform these options for them
         // For page translations these icons should never be shown
         $isL10nOverlay = $table === 'pages' && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
-        // If the listed table is 'pages' we have to request the permission settings for each page:
-        $localCalcPerms = 0;
         if ($table === 'pages') {
+            // If the listed table is 'pages' we have to request the permission settings for each page.
             $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
+        } else {
+            // If the listed table is not 'pages' we have to request the permission settings from the parent page
+            $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $row['pid']));
         }
         $permsEdit = $table === 'pages'
                      && $backendUser->checkLanguageAccess(0)
                      && $localCalcPerms & Permission::PAGE_EDIT
                      || $table !== 'pages'
-                        && $this->calcPerms & Permission::CONTENT_EDIT
+                        && $localCalcPerms & Permission::CONTENT_EDIT
                         && $backendUser->recordEditAccessInternals($table, $row);
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
         // "Show" link (only pages and tt_content elements)
