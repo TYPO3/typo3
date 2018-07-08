@@ -204,8 +204,8 @@ class CommandTest extends UnitTestCase
             'withDescription'
         );
 
-        $expected = 'Longer Description' . PHP_EOL .
-            'Multine' . PHP_EOL . PHP_EOL .
+        $expected = 'Longer Description' . LF .
+            'Multine' . LF . LF .
             'Much Multiline';
 
         static::assertEquals($expected, $commandController->getDescription());
