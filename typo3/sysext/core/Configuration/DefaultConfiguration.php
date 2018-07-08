@@ -1045,7 +1045,7 @@ return [
         'groupHomePath' => '',
         'userUploadDir' => '',
         'warning_email_addr' => '',
-        'warning_mode' => '',
+        'warning_mode' => 0,
         'lockIP' => 4,
         'sessionTimeout' => 28800,  // a backend user logged in for 8 hours
         'IPmaskList' => '',

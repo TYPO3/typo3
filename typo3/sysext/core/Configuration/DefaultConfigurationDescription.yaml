@@ -260,8 +260,12 @@ BE:
             type: text
             description: 'Email address that will receive notification whenever an attempt to login to the Install Tool is made and that will also receive warnings whenever more than 3 failed backend login attempts (regardless of user) are detected within an hour.'
         warning_mode:
-            type: bit
-            description: 'Bit 1: If set, <code>warning_email_addr</code> will be notified every time a backend user logs in. Bit 2: If set, <code>warning_email_addr</code> will be notified every time an ADMIN backend user logs in.'
+            type: int
+            allowedValues:
+              '0': 'Do not send notification-emails upon backend-login'
+              '1': 'Send a notification-email every time a backend user logs in'
+              '2': 'Send a notification-email every time an ADMIN backend user logs in'
+            description: 'Send emails to <code>warning_email_addr</code> upon backend-login'
         lockIP:
             type: int
             allowedValues:
