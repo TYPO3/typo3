@@ -350,7 +350,7 @@ BE:
               <p>If disabled the last modification date of the file will be appended as a query-string.</p>
         debug:
             type: bool
-            description: 'If enabled, the loginrefresh is disabled and pageRenderer is set to debug mode. Furthermore the fieldname is prepended to the label of fields. Use this to debug the backend only!'
+            description: 'If enabled, the loginrefresh is disabled and pageRenderer is set to debug mode. Furthermore the fieldname is appended to the label of fields. Use this to debug the backend only!'
 FE:
     type: container
     description: 'Frontend'
