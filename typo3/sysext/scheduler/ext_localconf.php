@@ -113,7 +113,7 @@ $ipAnonymizeCollectionTaskOptions['tables'] = isset($ipAnonymizeCollectionTaskOp
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class] = [
     'extension' => 'scheduler',
     'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:ipAnonymization.name',
-    'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:tableGarbageCollection.description',
+    'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:ipAnonymization.description',
     'additionalFields' => \TYPO3\CMS\Scheduler\Task\IpAnonymizationAdditionalFieldProvider::class,
     'options' => $ipAnonymizeCollectionTaskOptions
 ];
