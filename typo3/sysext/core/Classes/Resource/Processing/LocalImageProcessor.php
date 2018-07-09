@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  */
 
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -23,21 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LocalImageProcessor implements ProcessorInterface
 {
-    /**
-     * @var \TYPO3\CMS\Core\Log\Logger
-     */
-    protected $logger;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        /** @var $logManager LogManager */
-        $logManager = GeneralUtility::makeInstance(LogManager::class);
-        $this->logger = $logManager->getLogger(__CLASS__);
-    }
-
     /**
      * Returns TRUE if this processor can process the given task.
      *

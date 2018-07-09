@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
@@ -1942,12 +1943,12 @@ tt_content.' . $key . $suffix . ' {
         // Update the category registry
         $result = CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName, $options, $override);
         if ($result === false) {
-            $message = CategoryRegistry::class . ': no category registered for table "%s". Key was already registered.';
-            /** @var $logger \TYPO3\CMS\Core\Log\Logger */
-            $logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
-            $logger->warning(
-                sprintf($message, $tableName)
-            );
+            GeneralUtility::makeInstance(LogManager::class)
+                ->getLogger(__CLASS__)
+                ->warning(sprintf(
+                    CategoryRegistry::class . ': no category registered for table "%s". Key was already registered.',
+                    $tableName
+                ));
         }
     }
 }

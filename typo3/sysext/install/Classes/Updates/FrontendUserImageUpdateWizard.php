@@ -14,12 +14,12 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 use Doctrine\DBAL\DBALException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -31,8 +31,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Upgrade wizard which goes through all files referenced in fe_users::image
  * and creates sys_file records as well as sys_file_reference records for each hit.
  */
-class FrontendUserImageUpdateWizard extends AbstractUpdate
+class FrontendUserImageUpdateWizard extends AbstractUpdate implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
 
     /**
      * Number of records fetched per database query
@@ -49,11 +50,6 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
      * @var ResourceStorage
      */
     protected $storage;
-
-    /**
-     * @var Logger
-     */
-    protected $logger;
 
     /**
      * Table to migrate records from
@@ -98,14 +94,6 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
      * @var array
      */
     protected $recordOffset = [];
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-    }
 
     /**
      * Initialize the storage repository.

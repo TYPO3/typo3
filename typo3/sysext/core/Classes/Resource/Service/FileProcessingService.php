@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Resource\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -40,11 +39,6 @@ class FileProcessingService
      */
     protected $signalSlotDispatcher;
 
-    /**
-     * @var \TYPO3\CMS\Core\Log\Logger
-     */
-    protected $logger;
-
     const SIGNAL_PreFileProcess = 'preFileProcess';
     const SIGNAL_PostFileProcess = 'postFileProcess';
 
@@ -58,10 +52,6 @@ class FileProcessingService
     {
         $this->storage = $storage;
         $this->driver = $driver;
-
-        /** @var $logManager LogManager */
-        $logManager = GeneralUtility::makeInstance(LogManager::class);
-        $this->logger = $logManager->getLogger(__CLASS__);
     }
 
     /**

@@ -62,7 +62,6 @@ class ImportExportUtility
         // Check for errors during the import process:
         $errors = $import->printErrorLog();
         if ($errors !== '') {
-            /** @var \TYPO3\CMS\Core\Log\Logger $logger */
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
             $logger->warning($errors);
 

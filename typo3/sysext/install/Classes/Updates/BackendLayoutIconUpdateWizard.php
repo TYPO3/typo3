@@ -15,11 +15,11 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 use Doctrine\DBAL\DBALException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -30,8 +30,10 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Upgrade wizard which goes through all files referenced in backend_layout.icon
  * and creates sys_file records as well as sys_file_reference records for each hit.
  */
-class BackendLayoutIconUpdateWizard extends AbstractUpdate
+class BackendLayoutIconUpdateWizard extends AbstractUpdate implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var string
      */
@@ -41,11 +43,6 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate
      * @var ResourceStorage
      */
     protected $storage;
-
-    /**
-     * @var Logger
-     */
-    protected $logger;
 
     /**
      * Table to migrate records from
@@ -75,14 +72,6 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate
      * @var string
      */
     protected $targetPath = '_migrated/backend_layouts/';
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-    }
 
     /**
      * Checks if an update is needed

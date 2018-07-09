@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Extbase\SignalSlot;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Log\Logger;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -48,7 +48,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
     protected $slots = [];
 
     /**
-     * @var Logger
+     * @var LoggerInterface
      */
     protected $logger;
 

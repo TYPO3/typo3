@@ -605,7 +605,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
                 $this->registry->set('extensionDataImport', $extensionSiteRelPath . 'Initialisation/dataImported', 1);
                 $this->emitAfterExtensionT3DImportSignal($importFileToUse, $importResult);
             } catch (\ErrorException $e) {
-                /** @var \TYPO3\CMS\Core\Log\Logger $logger */
                 $logger = $this->objectManager->get(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
                 $logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, $e->getMessage());
             }

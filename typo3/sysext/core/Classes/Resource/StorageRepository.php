@@ -14,18 +14,21 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Repository for accessing the file mounts
  */
-class StorageRepository extends AbstractRepository
+class StorageRepository extends AbstractRepository implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var array|null
      */
@@ -50,20 +53,6 @@ class StorageRepository extends AbstractRepository
      * @var string
      */
     protected $driverField = 'driver';
-
-    /**
-     * @var \TYPO3\CMS\Core\Log\Logger
-     */
-    protected $logger;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        /** @var $logManager LogManager */
-        $logManager = GeneralUtility::makeInstance(LogManager::class);
-        $this->logger = $logManager->getLogger(__CLASS__);
-    }
 
     /**
      * @param int $uid
