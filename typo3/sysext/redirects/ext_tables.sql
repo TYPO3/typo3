@@ -9,7 +9,7 @@ CREATE TABLE sys_redirect (
 	force_https tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	keep_query_parameters tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	target varchar(255) DEFAULT '' NOT NULL,
-	target_statuscode int(11) DEFAULT '0' NOT NULL,
+	target_statuscode int(11) DEFAULT '307' NOT NULL,
 
 	hitcount int(11) DEFAULT '0' NOT NULL,
 	lasthiton int(11) DEFAULT '0' NOT NULL,
