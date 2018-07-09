@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Belog\Controller;
 
 /*
@@ -17,7 +18,6 @@ namespace TYPO3\CMS\Belog\Controller;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
-use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,8 +26,18 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * Count newest exceptions for the system information menu
  */
-class SystemInformationController extends AbstractController
+class SystemInformationController
 {
+    /**
+     * @var array
+     */
+    protected $backendUserConfiguration;
+
+    public function __construct(array $backendUserConfiguration = null)
+    {
+        $this->backendUserConfiguration = $backendUserConfiguration ?? $GLOBALS['BE_USER']->uc;
+    }
+
     /**
      * Modifies the SystemInformation array
      *
@@ -35,27 +45,15 @@ class SystemInformationController extends AbstractController
      */
     public function appendMessage(SystemInformationToolbarItem $systemInformationToolbarItem)
     {
-        $constraint = $this->getConstraintFromBeUserData();
-        if ($constraint === null) {
-            $constraint = $this->objectManager->get(Constraint::class);
-        }
-
-        $timestamp = $constraint->getStartTimestamp();
-        $backendUser = $this->getBackendUserAuthentication();
-        if (isset($backendUser->uc['systeminformation'])) {
-            $systemInformationUc = json_decode($backendUser->uc['systeminformation'], true);
-            if (isset($systemInformationUc['system_BelogLog']['lastAccess'])) {
-                $timestamp = $systemInformationUc['system_BelogLog']['lastAccess'];
-            }
-        }
-
-        $this->setStartAndEndTimeFromTimeSelector($constraint);
         // we can't use the extbase repository here as the required TypoScript may not be parsed yet
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
         $count = $queryBuilder->count('error')
             ->from('sys_log')
             ->where(
-                $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($timestamp, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->gte(
+                    'tstamp',
+                    $queryBuilder->createNamedParameter($this->fetchLastAccessTimestamp(), \PDO::PARAM_INT)
+                ),
                 $queryBuilder->expr()->in(
                     'error',
                     $queryBuilder->createNamedParameter([-1, 1, 2], Connection::PARAM_INT_ARRAY)
@@ -67,7 +65,14 @@ class SystemInformationController extends AbstractController
         if ($count > 0) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $systemInformationToolbarItem->addSystemMessage(
-                sprintf(LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'), $count, (string)$uriBuilder->buildUriFromRoute('system_BelogLog', ['tx_belog_system_beloglog' => ['constraint' => ['action' => -1]]])),
+                sprintf(
+                    LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'),
+                    $count,
+                    (string)$uriBuilder->buildUriFromRoute(
+                        'system_BelogLog',
+                        ['tx_belog_system_beloglog' => ['constraint' => ['action' => -1]]]
+                    )
+                ),
                 InformationStatus::STATUS_ERROR,
                 $count,
                 'system_BelogLog',
@@ -76,25 +81,16 @@ class SystemInformationController extends AbstractController
         }
     }
 
-    /**
-     * Get module states (the constraint object) from user data
-     *
-     * @return \TYPO3\CMS\Belog\Domain\Model\Constraint|null
-     */
-    protected function getConstraintFromBeUserData()
+    protected function fetchLastAccessTimestamp(): int
     {
-        $serializedConstraint = $this->getBackendUserAuthentication()->getModuleData(ToolsController::class);
-        if (!is_string($serializedConstraint) || empty($serializedConstraint)) {
-            return null;
+        if (!isset($this->backendUserConfiguration['systeminformation'])) {
+            return 0;
         }
-        return @unserialize($serializedConstraint);
-    }
+        $systemInformationUc = json_decode($this->backendUserConfiguration['systeminformation'], true);
+        if (!isset($systemInformationUc['system_BelogLog']['lastAccess'])) {
+            return 0;
+        }
 
-    /**
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
-    {
-        return $GLOBALS['BE_USER'];
+        return (int)$systemInformationUc['system_BelogLog']['lastAccess'];
     }
 }
