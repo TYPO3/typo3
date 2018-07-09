@@ -526,7 +526,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
             $db->admin_query('DROP TABLE IF EXISTS ' . $table);
             $res = $db->admin_query($query);
             if ($res === false) {
-                $errors[] = 'Error: You have an error in your SQL syntax;' . PHP_EOL . $string;
+                $errors[] = 'Error: You have an error in your SQL syntax;' . PHP_EOL . $query;
             } elseif ($insertCount[$table]) {
                 $insertStatements = $this->installToolSqlParser->getTableInsertStatements($statements, $table);
                 foreach ($insertStatements as $statement) {
