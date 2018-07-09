@@ -51,15 +51,21 @@ class RedisSessionBackendTest extends FunctionalTestCase
         if (!extension_loaded('redis')) {
             $this->markTestSkipped('redis extension was not available');
         }
-        try {
-            if (!@fsockopen('127.0.0.1', 6379)) {
-                $this->markTestSkipped('redis server not reachable');
-            }
-        } catch (\Exception $e) {
-            $this->markTestSkipped('redis server not reachable');
+        if (!getenv('typo3TestingRedisHost')) {
+            $this->markTestSkipped('environment variable "typo3TestingRedisHost" must be set to run this test');
         }
+        // Note we assume that if that typo3TestingRedisHost env is set, we can use that for testing,
+        // there is no test to see if the daemon is actually up and running. Tests will fail if env
+        // is set but daemon is down.
+
+        // We know this env is set, otherwise setUp() would skip the tests
+        $redisHost = getenv('typo3TestingRedisHost');
+        // If typo3TestingRedisPort env is set, use it, otherwise fall back to standard port
+        $env = getenv('typo3TestingRedisPort');
+        $redisPort = is_string($env) ? (int)$env : 6379;
+
         $redis = new \Redis();
-        $redis->connect('127.0.0.1');
+        $redis->connect($redisHost, $redisPort);
         $redis->select(0);
         // Clear db to ensure no sessions exist currently
         $redis->flushDB();
@@ -69,8 +75,8 @@ class RedisSessionBackendTest extends FunctionalTestCase
             'default',
             [
                 'database' => 0,
-                'port' => 6379,
-                'hostname' => 'localhost',
+                'port' => $redisPort,
+                'hostname' => $redisHost
             ]
         );
     }

@@ -42,8 +42,9 @@ class IntroductionPackageCest
         $I->waitForText('Select database');
         $I->selectOption('#t3js-connect-database-driver', 'Manually configured PostgreSQL connection');
         $I->fillField('#t3-install-step-postgresManualConfiguration-username', $scenario->current('typo3InstallPostgresqlDatabaseUsername'));
-        // password intentionally not filled. Postgres authenticates with the shell user.
+        $I->fillField('#t3-install-step-postgresManualConfiguration-password', $scenario->current('typo3InstallPostgresqlDatabasePassword'));
         $I->fillField('#t3-install-step-postgresManualConfiguration-database', $scenario->current('typo3InstallPostgresqlDatabaseName'));
+        $I->fillField('#t3-install-step-postgresManualConfiguration-host', $scenario->current('typo3InstallPostgresqlDatabaseHost'));
         $I->click('Continue');
 
         // DatabaseData step

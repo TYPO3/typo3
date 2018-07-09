@@ -45,23 +45,22 @@ abstract public class AbstractCoreSpec {
     protected static String projectName = "TYPO3 Core";
     protected static String projectKey = "CORE";
 
-    protected String composerRootVersionEnvironment = "COMPOSER_ROOT_VERSION=9.3.0@dev";
+    protected String composerRootVersionEnvironment = "COMPOSER_ROOT_VERSION=9.4.0@dev";
 
     protected String testingFrameworkBuildPath = "vendor/typo3/testing-framework/Resources/Core/Build/";
 
+    /**
+     * @todo This can be removed if acceptance mysql tests are rewritten and active again
+     */
     protected String credentialsMysql =
-        "typo3DatabaseName=\"func\"" +
-        " typo3DatabaseUsername=\"funcu\"" +
+        "typo3DatabaseName=\"func_test\"" +
+        " typo3DatabaseUsername=\"root\"" +
         " typo3DatabasePassword=\"funcp\"" +
-        " typo3DatabaseHost=\"localhost\"" +
-        " typo3InstallToolPassword=\"klaus\"";
+        " typo3DatabaseHost=\"mariadb10\"";
 
-    protected String installCredentialsMysql =
-        "typo3InstallMysqlDatabaseName=\"func_install\"" +
-        " typo3InstallMysqlDatabaseUsername=\"funcu\"" +
-        " typo3InstallMysqlDatabasePassword=\"funcp\"" +
-        " typo3InstallMysqlDatabaseHost=\"localhost\"";
-
+    /**
+     * @todo This can be removed if acceptance mssql functional tests work again
+     */
     protected String credentialsMssql =
         "typo3DatabaseDriver=\"sqlsrv\"" +
         " typo3DatabaseName=\"func\"" +
@@ -70,20 +69,6 @@ abstract public class AbstractCoreSpec {
         " typo3DatabaseHost=\"localhost\"" +
         " typo3DatabasePort=\"1433\"" +
         " typo3DatabaseCharset=\"utf-8\"";
-
-    protected String credentialsPgsql =
-        "typo3DatabaseDriver=\"pdo_pgsql\"" +
-        " typo3DatabaseName=\"func\"" +
-        " typo3DatabaseUsername=\"bamboo\"" +
-        " typo3DatabaseHost=\"localhost\"";
-
-    protected String installCredentialsPgsql =
-        "typo3InstallPostgresqlDatabaseName=\"func_atipgsql\"" +
-        " typo3InstallPostgresqlDatabaseUsername=\"bamboo\"" +
-        " typo3InstallPostgresqlDatabaseHost=\"localhost\"";
-
-    protected String credentialsSqlite =
-        "typo3DatabaseDriver=\"pdo_sqlite\"";
 
     /**
      * Default permissions on core plans
@@ -158,56 +143,83 @@ abstract public class AbstractCoreSpec {
 
     /**
      * Job composer validate
+     *
+     * @param String requirementIdentifier
      */
-    protected Job getJobComposerValidate() {
+    protected Job getJobComposerValidate(String requirementIdentifier) {
         return new Job("Validate composer.json", new BambooKey("VC"))
         .description("Validate composer.json before actual tests are executed")
         .pluginConfigurations(this.getDefaultJobPluginConfiguration())
         .tasks(
             this.getTaskGitCloneRepository(),
             this.getTaskGitCherryPick(),
-            new CommandTask()
+            new ScriptTask()
                 .description("composer validate")
-                .executable("composer").argument("validate")
+                .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                .inlineBody(
+                    this.getScriptTaskBashInlineBody() +
+                    this.getScriptTaskComposer(requirementIdentifier) +
+                    "composer validate"
+                )
                 .environmentVariables(this.composerRootVersionEnvironment)
+        )
+        .requirements(
+            this.getRequirementDocker10()
         )
         .cleanWorkingDirectory(true);
     }
 
     /**
-     * Job acceptance test installs system on mysql
+     * Job acceptance test installs system on mariadb
      *
-     * @param Requirement requirement
-     * @param String requirementIdentfier
+     * @param String requirementIdentifier
      */
-    protected Job getJobAcceptanceTestInstallMysql(Requirement requirement, String requirementIdentifier) {
+    protected Job getJobAcceptanceTestInstallMysql(String requirementIdentifier) {
         return new Job("Accept inst my " + requirementIdentifier, new BambooKey("ACINSTMY" + requirementIdentifier))
-            .description("Install TYPO3 on mysql and load introduction package " + requirementIdentifier)
+            .description("Install TYPO3 on mariadb and load introduction package " + requirementIdentifier)
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(),
+                this.getTaskComposerInstall(requirementIdentifier),
                 this.getTaskPrepareAcceptanceTest(),
-                new CommandTask()
-                    .description("Install TYPO3 on mysql")
-                    .executable("codecept")
-                    .argument("run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql,headless --xml reports.xml --html reports.html")
-                    .environmentVariables(this.installCredentialsMysql)
+                this.getTaskDockerDependenciesAcceptanceInstallMariadb10(),
+                new ScriptTask()
+                    .description("Install TYPO3 on mariadb 10")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "function codecept() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        -e typo3InstallMysqlDatabaseHost=${typo3InstallMysqlDatabaseHost} \\\n" +
+                        "        -e typo3InstallMysqlDatabaseName=${typo3InstallMysqlDatabaseName} \\\n" +
+                        "        -e typo3InstallMysqlDatabaseUsername=${typo3InstallMysqlDatabaseUsername} \\\n" +
+                        "        -e typo3InstallMysqlDatabasePassword=${typo3InstallMysqlDatabasePassword} \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./bin/codecept $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --xml reports.xml --html reports.html\n"
+                    )
             )
             .finalTasks(
+                this.getTaskStopDockerDependencies(),
                 new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
-                    .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml"),
-                this.getTaskDeleteMysqlDatabases(),
-                this.getTaskTearDownAcceptanceTestSetup()
-            )
-            .requirements(
-                requirement
+                    .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml")
             )
             .artifacts(new Artifact()
                 .name("Test Report")
                 .copyPattern("typo3temp/var/tests/AcceptanceReports/")
                 .shared(false)
+            )
+            .requirements(
+                this.getRequirementDocker10()
             )
             .cleanWorkingDirectory(true);
     }
@@ -215,37 +227,54 @@ abstract public class AbstractCoreSpec {
     /**
      * Job acceptance test installs system and introduction package on pgsql
      *
-     * @param Requirement requirement
-     * @param String requirementIdentfier
+     * @param String requirementIdentifier
      */
-    protected Job getJobAcceptanceTestInstallPgsql(Requirement requirement, String requirementIdentifier) {
+    protected Job getJobAcceptanceTestInstallPgsql(String requirementIdentifier) {
         return new Job("Accept inst pg " + requirementIdentifier, new BambooKey("ACINSTPG" + requirementIdentifier))
         .description("Install TYPO3 on pgsql and load introduction package " + requirementIdentifier)
         .pluginConfigurations(this.getDefaultJobPluginConfiguration())
         .tasks(
             this.getTaskGitCloneRepository(),
             this.getTaskGitCherryPick(),
-            this.getTaskComposerInstall(),
+            this.getTaskComposerInstall(requirementIdentifier),
             this.getTaskPrepareAcceptanceTest(),
-            new CommandTask()
-                .description("Install TYPO3 on postgresql")
-                .executable("codecept")
-                .argument("run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=postgresql,headless --xml reports.xml --html reports.html")
-                .environmentVariables(this.installCredentialsPgsql)
+            this.getTaskDockerDependenciesAcceptanceInstallPostgres10(),
+            new ScriptTask()
+                .description("Install TYPO3 on postgresql 10")
+                .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                .inlineBody(
+                    this.getScriptTaskBashInlineBody() +
+                    "function codecept() {\n" +
+                    "    docker run \\\n" +
+                    "        -u ${HOST_UID} \\\n" +
+                    "        -v /etc/passwd:/etc/passwd \\\n" +
+                    "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                    "        -e typo3InstallPostgresqlDatabaseHost=${typo3InstallPostgresqlDatabaseHost} \\\n" +
+                    "        -e typo3InstallPostgresqlDatabaseName=${typo3InstallPostgresqlDatabaseName} \\\n" +
+                    "        -e typo3InstallPostgresqlDatabaseUsername=${typo3InstallPostgresqlDatabaseUsername} \\\n" +
+                    "        -e typo3InstallPostgresqlDatabasePassword=${typo3InstallPostgresqlDatabasePassword} \\\n" +
+                    "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                    "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                    "        --rm \\\n" +
+                    "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                    "        bin/bash -c \"cd ${PWD}; ./bin/codecept $*\"\n" +
+                    "}\n" +
+                    "\n" +
+                    "codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=postgresql --xml reports.xml --html reports.html\n"
+                )
         )
         .finalTasks(
+            this.getTaskStopDockerDependencies(),
             new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
-                .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml"),
-            this.getTaskDeletePgsqlDatabases(),
-            this.getTaskTearDownAcceptanceTestSetup()
-        )
-        .requirements(
-            requirement
+                .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml")
         )
         .artifacts(new Artifact()
             .name("Test Report")
             .copyPattern("typo3temp/var/tests/AcceptanceReports/")
             .shared(false)
+        )
+        .requirements(
+            this.getRequirementDocker10()
         )
         .cleanWorkingDirectory(true);
     }
@@ -253,35 +282,50 @@ abstract public class AbstractCoreSpec {
     /**
      * Job acceptance test installs system and introduction package on sqlite
      *
-     * @param Requirement requirement
-     * @param String requirementIdentfier
+     * @param String requirementIdentifier
      */
-    protected Job getJobAcceptanceTestInstallSqlite(Requirement requirement, String requirementIdentifier) {
+    protected Job getJobAcceptanceTestInstallSqlite(String requirementIdentifier) {
         return new Job("Accept inst sq " + requirementIdentifier, new BambooKey("ACINSTSQ" + requirementIdentifier))
         .description("Install TYPO3 on sqlite and load introduction package " + requirementIdentifier)
         .pluginConfigurations(this.getDefaultJobPluginConfiguration())
         .tasks(
             this.getTaskGitCloneRepository(),
             this.getTaskGitCherryPick(),
-            this.getTaskComposerInstall(),
+            this.getTaskComposerInstall(requirementIdentifier),
             this.getTaskPrepareAcceptanceTest(),
-            new CommandTask()
+            this.getTaskDockerDependenciesAcceptanceInstallSqlite(),
+            new ScriptTask()
                 .description("Install TYPO3 on sqlite")
-                .executable("codecept")
-                .argument("run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=sqlite,headless --xml reports.xml --html reports.html")
+                .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                .inlineBody(
+                    this.getScriptTaskBashInlineBody() +
+                    "function codecept() {\n" +
+                    "    docker run \\\n" +
+                    "        -u ${HOST_UID} \\\n" +
+                    "        -v /etc/passwd:/etc/passwd \\\n" +
+                    "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                    "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                    "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                    "        --rm \\\n" +
+                    "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                    "        bin/bash -c \"cd ${PWD}; ./bin/codecept $*\"\n" +
+                    "}\n" +
+                    "\n" +
+                    "codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=sqlite --xml reports.xml --html reports.html\n"
+                )
         )
         .finalTasks(
+            this.getTaskStopDockerDependencies(),
             new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
-                .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml"),
-            this.getTaskTearDownAcceptanceTestSetup()
-        )
-        .requirements(
-            requirement
+                .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml")
         )
         .artifacts(new Artifact()
             .name("Test Report")
             .copyPattern("typo3temp/var/tests/AcceptanceReports/")
             .shared(false)
+        )
+        .requirements(
+            this.getRequirementDocker10()
         )
         .cleanWorkingDirectory(true);
     }
@@ -289,11 +333,12 @@ abstract public class AbstractCoreSpec {
     /**
      * Jobs for mysql based acceptance tests
      *
+     * @todo Currently disabled and broken
+     *
      * @param int numberOfChunks
-     * @param Requirement requirement
      * @param String requirementIdentifier
      */
-    protected ArrayList<Job> getJobsAcceptanceTestsMysql(int numberOfChunks, Requirement requirement, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsAcceptanceTestsMysql(int numberOfChunks, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -307,7 +352,7 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(),
+                    this.getTaskComposerInstall(requirementIdentifier),
                     this.getTaskPrepareAcceptanceTest(),
                     new ScriptTask()
                         .description("Split acceptance tests")
@@ -323,18 +368,17 @@ abstract public class AbstractCoreSpec {
                         .environmentVariables(this.credentialsMysql)
                 )
                 .finalTasks(
+                    this.getTaskStopDockerDependencies(),
                     new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
-                        .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml"),
-                    this.getTaskDeleteMysqlDatabases(),
-                    this.getTaskTearDownAcceptanceTestSetup()
-                )
-                .requirements(
-                    requirement
+                        .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml")
                 )
                 .artifacts(new Artifact()
                     .name("Test Report")
                     .copyPattern("typo3temp/var/tests/AcceptanceReports/")
                     .shared(false)
+                )
+                .requirements(
+                    this.getRequirementDocker10()
                 )
                 .cleanWorkingDirectory(true)
                 .enabled(false)
@@ -348,10 +392,9 @@ abstract public class AbstractCoreSpec {
      * Jobs for mysql based functional tests
      *
      * @param int numberOfChunks
-     * @param Requirement requirement
      * @param String requirementIdentifier
      */
-    protected ArrayList<Job> getJobsFunctionalTestsMysql(int numberOfChunks, Requirement requirement, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsFunctionalTestsMysql(int numberOfChunks, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -365,24 +408,42 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(),
-                    this.getTaskSplitFunctionalJobs(numberOfChunks),
+                    this.getTaskComposerInstall(requirementIdentifier),
+                    this.getTaskDockerDependenciesFunctionalMariadb10(),
+                    this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
                     new ScriptTask()
                         .description("Run phpunit with functional chunk " + formattedI)
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
-                            "./bin/phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
+                            "function phpunit() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /etc/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        -e typo3DatabaseName=func_test \\\n" +
+                            "        -e typo3DatabaseUsername=root \\\n" +
+                            "        -e typo3DatabasePassword=funcp \\\n" +
+                            "        -e typo3DatabaseHost=mariadb10 \\\n" +
+                            "        -e typo3TestingRedisHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_redis4_1 \\\n" +
+                            "        -e typo3TestingMemcachedHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_memcached1-5_1 \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; ./bin/phpunit $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
                         )
-                        .environmentVariables(this.credentialsMysql)
                 )
                 .finalTasks(
-                    this.getTaskDeleteMysqlDatabases(),
+                    this.getTaskStopDockerDependencies(),
                     new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                         .resultDirectories("test-reports/phpunit.xml")
                 )
                 .requirements(
-                    requirement
+                    this.getRequirementDocker10()
                 )
                 .cleanWorkingDirectory(true)
             );
@@ -394,11 +455,12 @@ abstract public class AbstractCoreSpec {
     /**
      * Jobs for mssql based functional tests
      *
+     * @todo Currently disabled and broken
+     *
      * @param int numberOfChunks
-     * @param Requirement requirement
      * @param String requirementIdentifier
      */
-    protected ArrayList<Job> getJobsFunctionalTestsMssql(int numberOfChunks, Requirement requirement, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsFunctionalTestsMssql(int numberOfChunks, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -412,8 +474,8 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(),
-                    this.getTaskSplitFunctionalJobs(numberOfChunks),
+                    this.getTaskComposerInstall(requirementIdentifier),
+                    this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
                     new ScriptTask()
                         .description("Run phpunit with functional chunk " + formattedI)
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -424,12 +486,12 @@ abstract public class AbstractCoreSpec {
                         .environmentVariables(this.credentialsMssql)
                 )
                 .finalTasks(
-                    this.getTaskDeleteMssqlDatabases(),
+                    this.getTaskStopDockerDependencies(),
                     new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                         .resultDirectories("test-reports/phpunit.xml")
                 )
                 .requirements(
-                    requirement
+                    this.getRequirementDocker10()
                 )
                 .cleanWorkingDirectory(true)
                 .enabled(false)
@@ -443,10 +505,9 @@ abstract public class AbstractCoreSpec {
      * Jobs for pgsql based functional tests
      *
      * @param int numberOfChunks
-     * @param Requirement requirement
      * @param String requirementIdentifier
      */
-    protected ArrayList<Job> getJobsFunctionalTestsPgsql(int numberOfChunks, Requirement requirement, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsFunctionalTestsPgsql(int numberOfChunks, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -460,24 +521,43 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(),
-                    this.getTaskSplitFunctionalJobs(numberOfChunks),
+                    this.getTaskComposerInstall(requirementIdentifier),
+                    this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
+                    this.getTaskDockerDependenciesFunctionalPostgres10(),
                     new ScriptTask()
                         .description("Run phpunit with functional chunk " + formattedI)
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
-                            "./bin/phpunit --exclude-group not-postgres --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
+                            "function phpunit() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /etc/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        -e typo3DatabaseDriver=pdo_pgsql \\\n" +
+                            "        -e typo3DatabaseName=bamboo \\\n" +
+                            "        -e typo3DatabaseUsername=bamboo \\\n" +
+                            "        -e typo3DatabaseHost=postgres10 \\\n" +
+                            "        -e typo3DatabasePassword=funcp \\\n" +
+                            "        -e typo3TestingRedisHost=redis4 \\\n" +
+                            "        -e typo3TestingMemcachedHost=memcached1-5 \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; ./bin/phpunit $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "phpunit --exclude-group not-postgres --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
                         )
-                        .environmentVariables(this.credentialsPgsql)
                 )
                 .finalTasks(
-                    this.getTaskDeletePgsqlDatabases(),
+                    this.getTaskStopDockerDependencies(),
                     new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                         .resultDirectories("test-reports/phpunit.xml")
                 )
                 .requirements(
-                    requirement
+                    this.getRequirementDocker10()
                 )
                 .cleanWorkingDirectory(true)
             );
@@ -490,10 +570,9 @@ abstract public class AbstractCoreSpec {
      * Jobs for sqlite based functional tests
      *
      * @param int numberOfChunks
-     * @param Requirement requirement
      * @param String requirementIdentifier
      */
-    protected ArrayList<Job> getJobsFunctionalTestsSqlite(int numberOfChunks, Requirement requirement, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsFunctionalTestsSqlite(int numberOfChunks, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -507,23 +586,39 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(),
-                    this.getTaskSplitFunctionalJobs(numberOfChunks),
+                    this.getTaskComposerInstall(requirementIdentifier),
+                    this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
+                    this.getTaskDockerDependenciesFunctionalSqlite(),
                     new ScriptTask()
                         .description("Run phpunit with functional chunk " + formattedI)
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
-                            "./bin/phpunit --exclude-group not-sqlite --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
+                            "function phpunit() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /etc/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        -e typo3DatabaseDriver=pdo_sqlite \\\n" +
+                            "        -e typo3TestingRedisHost=redis4 \\\n" +
+                            "        -e typo3TestingMemcachedHost=memcached1-5 \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; ./bin/phpunit $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "phpunit --exclude-group not-sqlite --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
                         )
-                        .environmentVariables(this.credentialsSqlite)
                 )
                 .finalTasks(
+                    this.getTaskStopDockerDependencies(),
                     new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                         .resultDirectories("test-reports/phpunit.xml")
                 )
                 .requirements(
-                    requirement
+                    this.getRequirementDocker10()
                 )
                 .cleanWorkingDirectory(true)
             );
@@ -534,33 +629,48 @@ abstract public class AbstractCoreSpec {
 
     /**
      * Job with integration test checking for valid @xy annotations
+     *
+     * @param String requirementIdentifier
      */
-    protected Job getJobIntegrationAnnotations() {
+    protected Job getJobIntegrationAnnotations(String requirementIdentifier) {
         return new Job("Integration annotations", new BambooKey("IANNO"))
             .description("Check docblock-annotations by executing Build/Scripts/annotationChecker.php script")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(),
+                this.getTaskComposerInstall(requirementIdentifier),
                 new ScriptTask()
                     .description("Execute annotations check script")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "./Build/Scripts/annotationChecker.php\n"
+                        "function annotationChecker() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./Build/Scripts/annotationChecker.php $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "annotationChecker"
                     )
             )
             .requirements(
-                this.getRequirementPhpVersion72()
+                this.getRequirementDocker10()
             )
             .cleanWorkingDirectory(true);
     }
 
     /**
      * Job with various smaller script tests
+     *
+     * @param String requirementIdentifier
      */
-    protected Job getJobIntegrationVarious() {
+    protected Job getJobIntegrationVarious(String requirementIdentifier) {
         // Exception code checker, xlf, permissions, rst file check
         return new Job("Integration various", new BambooKey("CDECC"))
             .description("Checks duplicate exceptions, git submodules, xlf files, permissions, rst")
@@ -568,7 +678,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(),
+                this.getTaskComposerInstall(requirementIdentifier),
                 new ScriptTask()
                     .description("Run duplicate exception code check script")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -605,7 +715,18 @@ abstract public class AbstractCoreSpec {
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "./Build/Scripts/validateRstFiles.php"
+                        "function validateRstFiles() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./Build/Scripts/validateRstFiles.php $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "validateRstFiles"
                     ),
                 new ScriptTask()
                     .description("Run path length check")
@@ -619,62 +740,117 @@ abstract public class AbstractCoreSpec {
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "./Build/Scripts/extensionScannerRstFileReferences.php"
+                        "function extensionScannerRstFileReferences() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./Build/Scripts/extensionScannerRstFileReferences.php $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "extensionScannerRstFileReferences"
                     ),
                 new ScriptTask()
                     .description("Run functional fixture csv format checker")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "./Build/Scripts/checkIntegrityCsvFixtures.php"
+                        "function checkIntegrityCsvFixtures() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./Build/Scripts/checkIntegrityCsvFixtures.php $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "checkIntegrityCsvFixtures"
                     ),
                 new ScriptTask()
                     .description("Run composer.json integrity check")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "./Build/Scripts/checkIntegrityComposer.php"
-                   )
-           )
+                        "function checkIntegrityComposer() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./Build/Scripts/checkIntegrityComposer.php $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "checkIntegrityComposer"
+                    )
+            )
             .requirements(
-                this.getRequirementPhpVersion72()
+                this.getRequirementDocker10()
             )
             .cleanWorkingDirectory(true);
     }
 
     /**
      * Job for javascript unit tests
+     *
+     * @param String requirementIdentifier
      */
-    protected Job getJobUnitJavaScript() {
+    protected Job getJobUnitJavaScript(String requirementIdentifier) {
         return new Job("Unit JavaScript", new BambooKey("JSUT"))
             .description("Run JavaScript unit tests")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(),
+                this.getTaskComposerInstall(requirementIdentifier),
                 new ScriptTask()
                     .description("yarn install in Build/ dir")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
+                        "function yarn() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        -e HOME=${HOME} \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}/Build; yarn $*\"\n" +
+                        "}\n" +
+                        "\n" +
                         "yarn install"
-                    )
-                    .workingSubdirectory("Build/"),
+                    ),
                 new ScriptTask()
                     .description("Run tests")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "./Build/node_modules/karma/bin/karma start " + this.testingFrameworkBuildPath + "Configuration/JSUnit/karma.conf.js --single-run"
+                        "function karma() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        -e HOME=${HOME} \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./Build/node_modules/karma/bin/karma $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "karma start " + this.testingFrameworkBuildPath + "Configuration/JSUnit/karma.conf.js --single-run"
                     )
             )
             .finalTasks(
                 new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                     .resultDirectories("typo3temp/var/tests/*")
-            )
-            .requirements(
-                this.getRequirementPhpVersion72()
             )
             .artifacts(
                 new Artifact()
@@ -683,16 +859,18 @@ abstract public class AbstractCoreSpec {
                     .location("Build/target/site/clover")
                     .shared(false)
             )
+            .requirements(
+                this.getRequirementDocker10()
+            )
             .cleanWorkingDirectory(true);
     }
 
     /**
      * Job for PHP lint
      *
-     * @param Requirement requirement
-     * @param String requirementIdentfier
+     * @param String requirementIdentifier
      */
-    protected Job getJobLintPhp(Requirement requirement, String requirementIdentifier) {
+    protected Job getJobLintPhp(String requirementIdentifier) {
         return new Job("Lint " + requirementIdentifier, new BambooKey("L" + requirementIdentifier))
             .description("Run php -l on source files for linting " + requirementIdentifier)
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
@@ -704,19 +882,33 @@ abstract public class AbstractCoreSpec {
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "find . -name \\*.php -print0 | xargs -0 -n1 -P2 php -l >/dev/null\n"
+                        "function runLint() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        -e HOME=${HOME} \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; find . -name \\*.php -print0 | xargs -0 -n1 -P2 php -n -c /etc/php/cli-no-xdebug/php.ini -l >/dev/null\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "runLint"
                     )
             )
             .requirements(
-                requirement
+                this.getRequirementDocker10()
             )
             .cleanWorkingDirectory(true);
     }
 
     /**
      * Job for lint npm scss and typescript
+     *
+     * @param String requirementIdentifier
      */
-    protected Job getJobLintScssTs() {
+    protected Job getJobLintScssTs(String requirementIdentifier) {
         return new Job("Lint scss ts", new BambooKey("LSTS"))
             .description("Run npm lint, run npm run build-js")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
@@ -728,19 +920,58 @@ abstract public class AbstractCoreSpec {
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
+                        "function yarn() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        -e HOME=${HOME} \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}/Build; yarn $*\"\n" +
+                        "}\n" +
+                        "\n" +
                         "yarn install"
-                    )
-                    .workingSubdirectory("Build/"),
-                new NpmTask()
+                    ),
+                new ScriptTask()
                     .description("Run npm lint")
-                    .nodeExecutable("Node.js")
-                    .workingSubdirectory("Build/")
-                    .command("run lint"),
-                new NpmTask()
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "function npm() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        -e HOME=${HOME} \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}/Build; npm $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "npm run lint"
+                    ),
+                new ScriptTask()
                     .description("Run npm build-js")
-                    .nodeExecutable("Node.js")
-                    .workingSubdirectory("Build/")
-                    .command("run build-js"),
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "function npm() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        -e HOME=${HOME} \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}/Build; npm $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "npm run build-js"
+                    ),
                 new ScriptTask()
                     .description("git status to check for changed files after build-js")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -750,7 +981,7 @@ abstract public class AbstractCoreSpec {
                     )
             )
             .requirements(
-                new Requirement("system.imageVersion")
+                this.getRequirementDocker10()
             )
             .cleanWorkingDirectory(true);
     }
@@ -758,31 +989,44 @@ abstract public class AbstractCoreSpec {
     /**
      * Job for unit testing PHP
      *
-     * @param Requirement requirement
-     * @param String requirementIdentfier
+     * @param String requirementIdentifier
      */
-    protected Job getJobUnitPhp(Requirement requirement, String requirementIdentifier) {
+    protected Job getJobUnitPhp(String requirementIdentifier) {
         return new Job("Unit " + requirementIdentifier, new BambooKey("UT" + requirementIdentifier))
             .description("Run unit tests " + requirementIdentifier)
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(),
+                this.getTaskComposerInstall(requirementIdentifier),
+                this.getTaskDockerDependenciesUnit(),
                 new ScriptTask()
                     .description("Run phpunit")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTests.xml"
+                        "function phpunit() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTests.xml"
                     )
             )
             .finalTasks(
+                this.getTaskStopDockerDependencies(),
                 new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                     .resultDirectories("test-reports/phpunit.xml")
             )
             .requirements(
-                requirement
+                this.getRequirementDocker10()
             )
             .cleanWorkingDirectory(true);
     }
@@ -790,31 +1034,44 @@ abstract public class AbstractCoreSpec {
     /**
      * Job for unit testing deprecated PHP
      *
-     * @param Requirement requirement
-     * @param String requirementIdentfier
+     * @param String requirementIdentifier
      */
-    protected Job getJobUnitDeprecatedPhp(Requirement requirement, String requirementIdentifier) {
+    protected Job getJobUnitDeprecatedPhp(String requirementIdentifier) {
         return new Job("Unit deprecated " + requirementIdentifier, new BambooKey("UTD" + requirementIdentifier))
             .description("Run deprecated unit tests " + requirementIdentifier)
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(),
+                this.getTaskComposerInstall(requirementIdentifier),
+                this.getTaskDockerDependenciesUnit(),
                 new ScriptTask()
                     .description("Run phpunit")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTestsDeprecated.xml"
+                        "function phpunit() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTestsDeprecated.xml"
                     )
             )
             .finalTasks(
+                this.getTaskStopDockerDependencies(),
                 new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                     .resultDirectories("test-reports/phpunit.xml")
             )
             .requirements(
-                requirement
+                this.getRequirementDocker10()
             )
             .cleanWorkingDirectory(true);
     }
@@ -823,10 +1080,9 @@ abstract public class AbstractCoreSpec {
      * Jobs for unit testing PHP in random test order
      *
      * @param int numberOfRuns
-     * @param Requirement requirement
-     * @param String requirementIdentfier
+     * @param String requirementIdentifier
      */
-    protected ArrayList<Job> getJobUnitPhpRandom(int numberOfRuns, Requirement requirement, String requirementIdentifier) {
+    protected ArrayList<Job> getJobUnitPhpRandom(int numberOfRuns, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfRuns; i++) {
@@ -836,21 +1092,35 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(),
+                    this.getTaskComposerInstall(requirementIdentifier),
+                    this.getTaskDockerDependenciesUnit(),
                     new ScriptTask()
                         .description("Run phpunit-randomizer")
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
-                            "php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit-randomizer --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTests.xml --order rand"
+                            "function phpunitRandomizer() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /etc/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit-randomizer $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "phpunitRandomizer --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTests.xml --order rand"
                         )
                 )
                 .finalTasks(
+                    this.getTaskStopDockerDependencies(),
                     new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                         .resultDirectories("test-reports/phpunit.xml")
                 )
                 .requirements(
-                    requirement
+                    this.getRequirementDocker10()
                 )
                 .cleanWorkingDirectory(true)
             );
@@ -865,8 +1135,7 @@ abstract public class AbstractCoreSpec {
     protected Task getTaskGitCloneRepository() {
         return new VcsCheckoutTask()
             .description("Checkout git core")
-            .checkoutItems(new CheckoutItem().defaultRepository())
-            .cleanCheckout(true);
+            .checkoutItems(new CheckoutItem().defaultRepository());
     }
 
     /**
@@ -890,168 +1159,187 @@ abstract public class AbstractCoreSpec {
 
     /**
      * Task definition to execute composer install
+     *
+     * @param String requirementIdentifier
      */
-    protected Task getTaskComposerInstall() {
-        return new CommandTask()
+    protected Task getTaskComposerInstall(String requirementIdentifier) {
+        return new ScriptTask()
             .description("composer install")
-            .executable("composer")
-            .argument("install -n")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                this.getScriptTaskComposer(requirementIdentifier) +
+                "composer install -n"
+            )
             .environmentVariables(this.composerRootVersionEnvironment);
     }
 
     /**
-     * Task to prepare an acceptance test starting selenium and others
+     * Task to prepare an acceptance test
      */
     protected Task getTaskPrepareAcceptanceTest() {
         return new ScriptTask()
-            .description("Start php web server, chromedriver, prepare environment")
+            .description("Prepare acceptance test environment")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                "php -n -c /etc/php/cli-no-xdebug/php.ini -S localhost:8000 >/dev/null 2>&1 &\n" +
-                "echo $! > phpserver.pid\n" +
-                "\n" +
-                "./bin/chromedriver --url-base=/wd/hub >/dev/null 2>&1 &\n" +
-                "echo $! > chromedriver.pid\n" +
-                "\n" +
                 "mkdir -p typo3temp/var/tests/\n"
             );
     }
 
     /**
-     * Task to delete any created mysql test databases, used as final task
+     * Start docker sibling containers to execute acceptance tests on mariadb
      */
-    protected Task getTaskDeleteMysqlDatabases() {
+    protected Task getTaskDockerDependenciesAcceptanceInstallMariadb10() {
         return new ScriptTask()
-            .description("Delete mysql test dbs")
+            .description("Start docker siblings for acceptance test install mariadb")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                "DB_STARTS_WITH=\"func_\"\n" +
-                "MUSER=\"funcu\"\n" +
-                "MPWD=\"funcp\"\n" +
-                "MYSQL=\"mysql\"\n" +
-                "DBS=\"$($MYSQL -u $MUSER -p\"$MPWD\" -Bse 'show databases')\"\n" +
-                "\n" +
-                "for db in $DBS; do\n" +
-                "    if [[ \"$db\" == $DB_STARTS_WITH* ]]; then\n" +
-                "        echo \"Deleting $db\"\n" +
-                "        $MYSQL -u $MUSER -p\"$MPWD\" -Bse \"drop database $db\"\n" +
-                "    fi\n" +
-                "done\n"
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_acceptance_install_mariadb10"
             );
     }
 
     /**
-     * Task to delete any created mssql test databases, used as final task
+     * Start docker sibling containers to execute acceptance tests on postgres
      */
-    protected Task getTaskDeleteMssqlDatabases() {
+    protected Task getTaskDockerDependenciesAcceptanceInstallPostgres10() {
         return new ScriptTask()
-            .description("Delete mssql test dbs")
+            .description("Start docker siblings for acceptance test install postgres")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                "DBS=`/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Test1234!' -Q 'select name from sys.databases' | grep '^func_'`\n" +
-                "\n" +
-                "for db in $DBS; do\n" +
-                "    echo \"Deleteing $db\"\n" +
-                "    /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Test1234!' -Q \"drop database $db\"\n" +
-                "done\n"
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_acceptance_install_postgres10"
             );
     }
 
     /**
-     * Task to delete any created pgsql test databases, used as final task
+     * Start docker sibling containers to execute acceptance tests on sqlite
      */
-    protected Task getTaskDeletePgsqlDatabases() {
+    protected Task getTaskDockerDependenciesAcceptanceInstallSqlite() {
         return new ScriptTask()
-            .description("Delete pgsql test dbs")
+            .description("Start docker siblings for acceptance test install sqlite")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                "DB_STARTS_WITH=\"func_\"\n" +
-                "PGUSER=\"bamboo\"\n" +
-                "DBS=\"$(/usr/bin/psql -qtA -c 'SELECT datname FROM pg_database WHERE datistemplate = false;' postgres)\"\n" +
-                "\n" +
-                "for db in $DBS; do\n" +
-                "    if [[ \"$db\" == $DB_STARTS_WITH* ]]; then\n" +
-                "        echo \"Deleting $db\"\n" +
-                "        /usr/bin/psql -qtA -c \"DROP DATABASE $db\" postgres\n" +
-                "    fi\n" +
-                "done\n"
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_acceptance_install_sqlite"
             );
     }
 
     /**
-     * Task to stop selenium and friends, opposite of getTaskPrepareAcceptanceTest, used as final task
+     * Start docker sibling containers to execute functional tests on mariadb
      */
-    protected Task getTaskTearDownAcceptanceTestSetup() {
+    protected Task getTaskDockerDependenciesFunctionalMariadb10() {
         return new ScriptTask()
-            .description("Stop acceptance test services like chromedriver and friends")
+            .description("Start docker siblings for functional tests on mariadb")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                "kill -9 `cat phpserver.pid`\n" +
-                "kill `cat chromedriver.pid`\n"
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_functional_mariadb10"
+            );
+    }
+
+    /**
+     * Start docker sibling containers to execute functional tests on postgres
+     */
+    protected Task getTaskDockerDependenciesFunctionalPostgres10() {
+        return new ScriptTask()
+            .description("Start docker siblings for functional tests on postgres10")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_functional_postgres10"
+            );
+    }
+
+    /**
+     * Start docker sibling containers to execute functional tests on sqlite
+     */
+    protected Task getTaskDockerDependenciesFunctionalSqlite() {
+        return new ScriptTask()
+            .description("Start docker siblings for functional tests on sqlite")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_functional_sqlite"
+            );
+    }
+
+    /**
+     * Start docker sibling containers to execute unit tests
+     */
+    protected Task getTaskDockerDependenciesUnit() {
+        return new ScriptTask()
+            .description("Start docker siblings for unit tests")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_unit"
+            );
+    }
+
+    /**
+     * Stop started docker containers
+     */
+    protected Task getTaskStopDockerDependencies() {
+        return new ScriptTask()
+            .description("Stop docker siblings")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                "cd Build/testing-docker/bamboo\n" +
+                "docker-compose down -v"
             );
     }
 
     /**
      * Task to split functional jobs into chunks
+     *
+     * @param int numberOfJobs
+     * @param String requirementIdentifier
      */
-    protected Task getTaskSplitFunctionalJobs(int numberOfJobs) {
+    protected Task getTaskSplitFunctionalJobs(int numberOfJobs, String requirementIdentifier) {
         return new ScriptTask()
             .description("Create list of test files to execute per job")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                "./" + this.testingFrameworkBuildPath + "Scripts/splitFunctionalTests.php " + numberOfJobs + " -v"
+                "function splitFunctionalTests() {\n" +
+                "    docker run \\\n" +
+                "        -u ${HOST_UID} \\\n" +
+                "        -v /etc/passwd:/etc/passwd \\\n" +
+                "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                "        --rm \\\n" +
+                "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                "        bin/bash -c \"cd ${PWD}; ./" + this.testingFrameworkBuildPath + "Scripts/splitFunctionalTests.php $*\"\n" +
+                "}\n" +
+                "\n" +
+                "splitFunctionalTests " + numberOfJobs + " -v"
             );
     }
 
     /**
-     * Requirement for php 7.0
+     * Requirement for docker 1.0 set by bamboo-agents
      */
-    protected Requirement getRequirementPhpVersion70() {
-        return new Requirement("system.phpVersion")
-            .matchValue("7.0")
+    protected Requirement getRequirementDocker10() {
+        return new Requirement("system.hasDocker")
+            .matchValue("1.0")
             .matchType(Requirement.MatchType.EQUALS);
-    }
-
-    /**
-     * Requirement for php 7.1
-     */
-    protected Requirement getRequirementPhpVersion71() {
-        return new Requirement("system.phpVersion")
-            .matchValue("7.1")
-            .matchType(Requirement.MatchType.EQUALS);
-    }
-
-    /**
-     * Requirement for php 7.2
-     */
-    protected Requirement getRequirementPhpVersion72() {
-        return new Requirement("system.phpVersion")
-            .matchValue("7.2")
-            .matchType(Requirement.MatchType.EQUALS);
-    }
-
-    /**
-     * Requirement for php 7.0 or 7.1
-     */
-    protected Requirement getRequirementPhpVersion70Or71() {
-        return new Requirement("system.phpVersion")
-            .matchValue("7\\.0|7\\.1")
-            .matchType(Requirement.MatchType.MATCHES);
-    }
-
-    /**
-     * Requirement for php 7.0 or 7.1 or 7.2
-     */
-    protected Requirement getRequirementPhpVersion70Or71Or72() {
-        return new Requirement("system.phpVersion")
-            .matchValue("7\\.0|7\\.1|7\\.2")
-            .matchType(Requirement.MatchType.MATCHES);
     }
 
     /**
@@ -1065,6 +1353,30 @@ abstract public class AbstractCoreSpec {
             "    bash \"$0\" \"$@\"\n" +
             "    exit \"$?\"\n" +
             "fi\n" +
+            "\n" +
+            "set -x\n" +
+            "\n";
+    }
+
+    /**
+     * A bash function aliasing 'composer' as docker command
+     *
+     * @param String requirementIdentifier
+     */
+    protected String getScriptTaskComposer(String requirementIdentifier) {
+        return
+            "function composer() {\n" +
+            "    docker run \\\n" +
+            "        -u ${HOST_UID} \\\n" +
+            "        -v /etc/passwd:/etc/passwd \\\n" +
+            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+            "        -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} \\\n" +
+            "        -e HOME=${HOME} \\\n" +
+            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+            "        --rm \\\n" +
+            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+            "        bin/bash -c \"cd ${PWD}; composer $*\"\n" +
+            "}\n" +
             "\n";
     }
 }

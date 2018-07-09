@@ -76,48 +76,44 @@ public class PreMergeSpec extends AbstractCoreSpec {
     Plan createPlan() {
         // PREPARATION stage
         ArrayList<Job> jobsPreparationStage = new ArrayList<Job>();
-
         jobsPreparationStage.add(this.getJobBuildLabels());
-
-        jobsPreparationStage.add(this.getJobCglCheckGitCommit());
-
-        jobsPreparationStage.add(this.getJobComposerValidate());
-
         Stage stagePreparation = new Stage("Preparation")
             .jobs(jobsPreparationStage.toArray(new Job[jobsPreparationStage.size()]));
+
+        // EARLY stage
+        ArrayList<Job> jobsEarlyStage = new ArrayList<Job>();
+        jobsEarlyStage.add(this.getJobCglCheckGitCommit("PHP72"));
+        jobsEarlyStage.add(this.getJobComposerValidate("PHP72"));
+        Stage stageEarly = new Stage("Early")
+            .jobs(jobsEarlyStage.toArray(new Job[jobsEarlyStage.size()]));
 
         // MAIN stage
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion72(), "PHP72"));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(this.getRequirementPhpVersion72(), "PHP72"));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallSqlite(this.getRequirementPhpVersion72(), "PHP72"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP72"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallSqlite("PHP72"));
 
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion72(), "PHP72"));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, "PHP72"));
 
-        jobsMainStage.add(this.getJobIntegrationAnnotations());
+        jobsMainStage.add(this.getJobIntegrationAnnotations("PHP72"));
 
-        jobsMainStage.add(this.getJobIntegrationVarious());
+        jobsMainStage.add(this.getJobIntegrationVarious("PHP72"));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(this.numberOfFunctionalSqliteJobs, "PHP72"));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
+        jobsMainStage.add(this.getJobUnitJavaScript("PHP72"));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
+        jobsMainStage.add(this.getJobLintPhp("PHP72"));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(this.numberOfFunctionalSqliteJobs, this.getRequirementPhpVersion72(), "PHP72"));
+        jobsMainStage.add(this.getJobLintScssTs("PHP72"));
 
-        jobsMainStage.add(this.getJobUnitJavaScript());
-
-        jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion72(), "PHP72"));
-
-        jobsMainStage.add(this.getJobLintScssTs());
-
-        jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion72(), "PHP72"));
-
-        jobsMainStage.add(this.getJobUnitDeprecatedPhp(this.getRequirementPhpVersion72(), "PHP72"));
-
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, this.getRequirementPhpVersion72(), "PHP72"));
+        jobsMainStage.add(this.getJobUnitPhp("PHP72"));
+        jobsMainStage.add(this.getJobUnitDeprecatedPhp("PHP72"));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP72"));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
@@ -128,6 +124,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
             .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(
                 stagePreparation,
+                stageEarly,
                 stageMainStage
             )
             .linkedRepositories("git.typo3.org Core")
@@ -188,30 +185,46 @@ public class PreMergeSpec extends AbstractCoreSpec {
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody("echo \"I'm just here for the labels!\"")
             )
+            .requirements(
+                this.getRequirementDocker10()
+            )
             .cleanWorkingDirectory(true);
     }
 
     /**
      * Job checking CGL of last git commit
+     *
+     * @param String requirementIdentifier
      */
-    protected Job getJobCglCheckGitCommit() {
+    protected Job getJobCglCheckGitCommit(String requirementIdentifier) {
         return new Job("Integration CGL", new BambooKey("CGLCHECK"))
             .description("Check coding guidelines by executing Build/Scripts/cglFixMyCommit.sh script")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(),
+                this.getTaskComposerInstall(requirementIdentifier),
                 new ScriptTask()
                     .description("Execute cgl check script")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "./Build/Scripts/cglFixMyCommit.sh dryrun\n"
+                        "function cglFixMyCommit() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./Build/Scripts/cglFixMyCommit.sh $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "cglFixMyCommit dryrun\n"
                     )
             )
             .requirements(
-                this.getRequirementPhpVersion72()
+                this.getRequirementDocker10()
             )
             .cleanWorkingDirectory(true);
     }

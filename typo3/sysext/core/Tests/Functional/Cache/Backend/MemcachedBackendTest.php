@@ -24,7 +24,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class MemcachedBackendTest extends FunctionalTestCase
 {
-
     /**
      * Sets up this test case
      */
@@ -34,13 +33,28 @@ class MemcachedBackendTest extends FunctionalTestCase
         if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
             $this->markTestSkipped('Neither "memcache" nor "memcached" extension was available');
         }
-        try {
-            if (!@fsockopen('localhost', 11211)) {
-                $this->markTestSkipped('memcached not reachable');
-            }
-        } catch (\Exception $e) {
-            $this->markTestSkipped('memcached not reachable');
+        if (!getenv('typo3TestingMemcachedHost')) {
+            $this->markTestSkipped('environment variable "typo3TestingMemcachedHost" must be set to run this test');
         }
+        // Note we assume that if that typo3TestingMemcachedHost env is set, we can use that for testing,
+        // there is no test to see if the daemon is actually up and running. Tests will fail if env
+        // is set but daemon is down.
+    }
+
+    /**
+     * Initialize MemcacheBackend ($subject)
+     */
+    protected function initializeSubject(): MemcachedBackend
+    {
+        // We know this env is set, otherwise setUp() would skip the tests
+        $memcachedHost = getenv('typo3TestingMemcachedHost');
+        // If typo3TestingMemcachedPort env is set, use it, otherwise fall back to standard port
+        $env = getenv('typo3TestingMemcachedPort');
+        $memcachedPort = is_string($env) ? (int)$env : 11211;
+
+        $subject = new MemcachedBackend('Testing', [ 'servers' => [$memcachedHost . ':' . $memcachedPort] ]);
+        $subject->initializeObject();
+        return $subject;
     }
 
     /**
@@ -48,8 +62,7 @@ class MemcachedBackendTest extends FunctionalTestCase
      */
     public function setThrowsExceptionIfNoFrontEndHasBeenSet()
     {
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
 
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1207149215);
@@ -76,8 +89,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $identifier = $this->getUniqueId('MyIdentifier');
@@ -93,8 +105,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $data = 'Some data';
@@ -111,8 +122,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $data = [
@@ -141,8 +151,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $data = str_repeat('abcde', 1024 * 1024);
@@ -159,8 +168,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $data = 'Some data';
@@ -178,8 +186,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $data = 'Some data';
@@ -198,8 +205,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $data = 'Some data';
@@ -219,8 +225,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $data = 'Some data';
@@ -238,8 +243,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $identifier = $this->getUniqueId('NonExistingIdentifier');
@@ -254,8 +258,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $identifier = $this->getUniqueId('NonExistingIdentifier');
@@ -270,8 +273,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $data = 'some data' . microtime();
@@ -292,8 +294,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $data = 'some data' . microtime();
@@ -314,8 +315,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('cache_pages');
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $subject->initializeObject();
+        $subject = $this->initializeSubject();
         $subject->setCache($frontendProphecy->reveal());
 
         $data = 'some data' . microtime();
@@ -335,14 +335,12 @@ class MemcachedBackendTest extends FunctionalTestCase
     {
         $thisFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $thisFrontendProphecy->getIdentifier()->willReturn('thisCache');
-        $thisBackend = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $thisBackend->initializeObject();
+        $thisBackend = $this->initializeSubject();
         $thisBackend->setCache($thisFrontendProphecy->reveal());
 
         $thatFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $thatFrontendProphecy->getIdentifier()->willReturn('thatCache');
-        $thatBackend = new MemcachedBackend('Testing', [ 'servers' => ['localhost:11211'] ]);
-        $thatBackend->initializeObject();
+        $thatBackend = $this->initializeSubject();
         $thatBackend->setCache($thatFrontendProphecy->reveal());
 
         $thisBackend->set('thisEntry', 'Hello');
