@@ -152,8 +152,8 @@ class MaintenanceController extends AbstractController
         $messageQueue = new FlashMessageQueue('install');
         if (Environment::isComposerMode()) {
             $messageQueue->enqueue(new FlashMessage(
-                '',
                 'Skipped generating additional class loading information in composer mode.',
+                '',
                 FlashMessage::NOTICE
             ));
         } else {
