@@ -27,9 +27,7 @@ class Viewport {
   public readonly consumerScope: any = ConsumerScope;
 
   constructor() {
-    $((): void => {
-      this.initialize();
-    });
+    $((): void => this.initialize());
     this.NavigationContainer = new NavigationContainer(this.consumerScope);
     this.ContentContainer = new ContentContainer(this.consumerScope);
   }

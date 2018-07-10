@@ -151,7 +151,7 @@ class ModuleMenu {
   }
 
   constructor() {
-    this.initialize();
+    $((): void => this.initialize());
   }
 
   /**
