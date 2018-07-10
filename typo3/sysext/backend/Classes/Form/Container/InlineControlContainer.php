@@ -338,15 +338,22 @@ class InlineControlContainer extends AbstractContainer
         if (is_array($config['customControls'])) {
             $html .= '<div id="' . $nameObject . '_customControls">';
             foreach ($config['customControls'] as $customControlConfig) {
+                if (!isset($customControlConfig['userFunc'])) {
+                    trigger_error('Support for customControl without a userFunc key will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+                    $customControlConfig = [
+                        'userFunc' => $customControlConfig
+                    ];
+                }
                 $parameters = [
                     'table' => $table,
                     'field' => $field,
                     'row' => $row,
                     'nameObject' => $nameObject,
                     'nameForm' => $nameForm,
-                    'config' => $config
+                    'config' => $config,
+                    'customControlConfig' => $customControlConfig,
                 ];
-                $html .= GeneralUtility::callUserFunction($customControlConfig, $parameters, $this);
+                $html .= GeneralUtility::callUserFunction($customControlConfig['userFunc'], $parameters, $this);
             }
             $html .= '</div>';
         }
