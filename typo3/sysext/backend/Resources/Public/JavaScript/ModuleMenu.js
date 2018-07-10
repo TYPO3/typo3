@@ -355,7 +355,7 @@ require(
 
     };
     // start the module menu app
-    TYPO3.ModuleMenu.App.initialize();
+    $(document).ready(function() { TYPO3.ModuleMenu.App.initialize(); });
     return TYPO3.ModuleMenu;
   }
 );

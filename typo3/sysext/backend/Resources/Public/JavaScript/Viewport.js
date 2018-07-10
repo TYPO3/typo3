@@ -124,7 +124,9 @@ define(
       ContentContainer: {
         // @deprecated since TYPO3 v8, will be removed in v9.
         // Use top.TYPO3.Backend.ContentContainer.get() instead of top.TYPO3.Backend.ContentContainer.iframe
-        'iframe': $('.t3js-scaffold-content-module-iframe')[0].contentWindow,
+        get 'iframe'() {
+          return ContentContainer.get();
+        },
         get: function() {
           return $('.t3js-scaffold-content-module-iframe')[0].contentWindow;
         },
@@ -168,7 +170,7 @@ define(
     };
 
     // start the module menu app
-    TYPO3.Backend.initialize();
+    $(document).ready(function() { TYPO3.Backend.initialize(); });
     return TYPO3.Backend;
   }
 );
