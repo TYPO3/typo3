@@ -19,6 +19,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -70,13 +71,21 @@ class LanguagePackCommand extends Command
             $isos = $languagePackService->getActiveLanguages();
         }
 
-        $output->writeln(sprintf(
-            '<info>Updating language packs of all activated extensions for locale(s) "%s"</info>',
-            implode('", "', $isos)
-        ));
+        if ($output->isVerbose()) {
+            $output->writeln(sprintf(
+                '<info>Updating language packs of all activated extensions for locale(s) "%s"</info>',
+                implode('", "', $isos)
+            ));
+        }
 
         $extensions = $languagePackService->getExtensionLanguagePackDetails();
-        $progressBar = new ProgressBar($output, count($isos) * count($extensions));
+
+        if (!$output->isVerbose()) {
+            $progressBarOutput = new NullOutput();
+        } else {
+            $progressBarOutput = $output;
+        }
+        $progressBar = new ProgressBar($progressBarOutput, count($isos) * count($extensions));
         $languagePackService->updateMirrorBaseUrl();
         foreach ($isos as $iso) {
             foreach ($extensions as $extension) {
