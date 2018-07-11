@@ -1665,14 +1665,14 @@ abstract class AbstractMenuContentObject
     protected function link($key, $altTarget = '', $typeOverride = '')
     {
         $runtimeCache = $this->getRuntimeCache();
-        $cacheId = 'menu-generated-links-' . md5($key . $altTarget . $typeOverride . serialize($this->menuArr[$key]));
+        $MP_var = $this->getMPvar($key);
+        $cacheId = 'menu-generated-links-' . md5($key . $altTarget . $typeOverride . $MP_var . serialize($this->menuArr[$key]));
         $runtimeCachedLink = $runtimeCache->get($cacheId);
         if ($runtimeCachedLink !== false) {
             return $runtimeCachedLink;
         }
 
         // Mount points:
-        $MP_var = $this->getMPvar($key);
         $MP_params = $MP_var ? '&MP=' . rawurlencode($MP_var) : '';
         // Setting override ID
         if ($this->mconf['overrideId'] || $this->menuArr[$key]['overrideId']) {
