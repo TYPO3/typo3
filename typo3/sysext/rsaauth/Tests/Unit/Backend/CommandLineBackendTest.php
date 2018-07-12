@@ -28,10 +28,6 @@ class CommandLineBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     protected function setUp()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('This test is not available on Windows as auto-detection of openssl path will fail.');
-        }
-
         $this->subject = new CommandLineBackend();
     }
 
@@ -40,6 +36,7 @@ class CommandLineBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function createNewKeyPairCreatesReadyKeyPair()
     {
+        $this->skipIfWindows();
         $keyPair = $this->subject->createNewKeyPair();
         if ($keyPair === null) {
             $this->markTestSkipped('KeyPair could not be generated. Maybe openssl was not found.');
@@ -53,6 +50,7 @@ class CommandLineBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function createNewKeyPairCreatesKeyPairWithDefaultExponent()
     {
+        $this->skipIfWindows();
         $keyPair = $this->subject->createNewKeyPair();
         if ($keyPair === null) {
             $this->markTestSkipped('KeyPair could not be generated. Maybe openssl was not found.');
@@ -69,9 +67,49 @@ class CommandLineBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function createNewKeyPairCalledTwoTimesReturnsSameKeyPairInstance()
     {
+        $this->skipIfWindows();
         $this->assertSame(
             $this->subject->createNewKeyPair(),
             $this->subject->createNewKeyPair()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotAllowUnserialization()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1531336156);
+
+        $subject = new CommandLineBackend();
+        $serialized = serialize($subject);
+        unserialize($serialized);
+    }
+
+    /**
+     * @test
+     */
+    public function unsetsPathsOnUnserialization()
+    {
+        try {
+            $subject = $this->getAccessibleMock(CommandLineBackend::class);
+            $subject->_set('opensslPath', 'foo');
+            $subject->_set('temporaryDirectory', 'foo');
+            $serialized = serialize($subject);
+            unserialize($serialized);
+        } catch (\RuntimeException $e) {
+            $this->assertNull($subject->_get('opensslPath'));
+            $this->assertNull($subject->_get('temporaryDirectory'));
+        }
+    }
+
+    protected function skipIfWindows()
+    {
+        if (TYPO3_OS === 'WIN') {
+            $this->markTestSkipped(
+                'This test is not available on Windows as auto-detection of openssl path will fail.'
+            );
+        }
     }
 }
