@@ -443,6 +443,13 @@ class SoftReferenceIndex
         // we define various keys below, "url" might be misleading
         unset($finalTagParts['url']);
 
+        if (stripos(rawurldecode(trim($link_param)), 'phar://') === 0) {
+            throw new \RuntimeException(
+                'phar scheme not allowed as soft reference target',
+                1530030672
+            );
+        }
+
         // Parse URL:
         $pU = @parse_url($link_param);
 
