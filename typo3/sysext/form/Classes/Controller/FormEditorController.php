@@ -28,8 +28,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
+use TYPO3\CMS\Form\Exception;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Form\Type\FormDefinitionArray;
@@ -75,14 +77,21 @@ class FormEditorController extends AbstractBackendController
             throw new PersistenceManagerException('Edit a extension formDefinition is not allowed.', 1478265661);
         }
 
+        $configurationService = $this->objectManager->get(ConfigurationService::class);
         $formDefinition = $this->formPersistenceManager->load($formPersistenceIdentifier);
-        $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
-        $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
+
+        if ($prototypeName === null) {
+            $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
+        } else {
+            // Loading a form definition with another prototype is currently not implemented but is planned in the future.
+            // This safety check is a preventive measure.
+            $selectablePrototypeNames = $configurationService->getSelectablePrototypeNamesDefinedInFormEditorSetup();
+            if (!in_array($prototypeName, $selectablePrototypeNames, true)) {
+                throw new Exception(sprintf('The prototype name "%s" is not configured within "formManager.selectablePrototypesConfiguration" ', $prototypeName), 1528625039);
+            }
+        }
 
         $formDefinition['prototypeName'] = $prototypeName;
-        $formDefinition = $this->filterEmptyArrays($formDefinition);
-
-        $configurationService = $this->objectManager->get(ConfigurationService::class);
         $this->prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
 
         $formDefinition = $this->transformFormDefinitionForFormEditor($formDefinition);
@@ -153,7 +162,7 @@ class FormEditorController extends AbstractBackendController
     public function saveFormAction(string $formPersistenceIdentifier, FormDefinitionArray $formDefinition)
     {
         $formDefinition = $formDefinition->getArrayCopy();
-        $formDefinition = $this->filterEmptyArrays($formDefinition);
+
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
             if (method_exists($hookObj, 'beforeFormSave')) {
@@ -170,6 +179,10 @@ class FormEditorController extends AbstractBackendController
 
         try {
             $this->formPersistenceManager->save($formPersistenceIdentifier, $formDefinition);
+            $configurationService = $this->objectManager->get(ConfigurationService::class);
+            $this->prototypeConfiguration = $configurationService->getPrototypeConfiguration($formDefinition['prototypeName']);
+            $formDefinition = $this->transformFormDefinitionForFormEditor($formDefinition);
+            $response['formDefinition'] = $formDefinition;
         } catch (PersistenceManagerException $e) {
             $response = [
                 'status' => 'error',
@@ -177,8 +190,6 @@ class FormEditorController extends AbstractBackendController
                 'code' => $e->getCode(),
             ];
         }
-
-        $response['formDefinition'] = $formDefinition;
 
         $this->view->assign('response', $response);
         // saveFormAction uses the extbase JsonView::class.
@@ -201,9 +212,10 @@ class FormEditorController extends AbstractBackendController
     public function renderFormPageAction(FormDefinitionArray $formDefinition, int $pageIndex, string $prototypeName = null): string
     {
         $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
+        $formDefinition = $formDefinition->getArrayCopy();
 
         $formFactory = $this->objectManager->get(ArrayFormFactory::class);
-        $formDefinition = $formFactory->build($formDefinition->getArrayCopy(), $prototypeName);
+        $formDefinition = $formFactory->build($formDefinition, $prototypeName);
         $formDefinition->setRenderingOption('previewMode', true);
         $form = $formDefinition->bind($this->request, $this->response);
         $form->setCurrentSiteLanguage($this->buildFakeSiteLanguage(0, 0));
@@ -458,6 +470,7 @@ class FormEditorController extends AbstractBackendController
     }
 
     /**
+     * @todo move this to FormDefinitionConversionService
      * @param array $formDefinition
      * @return array
      */
@@ -475,7 +488,16 @@ class FormEditorController extends AbstractBackendController
             }
         }
 
-        return $this->transformMultiValueElementsForFormEditor($formDefinition, $multiValueProperties);
+        $formDefinition = $this->filterEmptyArrays($formDefinition);
+
+        // @todo: replace with rte parsing
+        $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
+        $formDefinition = $this->transformMultiValueElementsForFormEditor($formDefinition, $multiValueProperties);
+
+        $formDefinitionConversionService = $this->getFormDefinitionConversionService();
+        $formDefinition = $formDefinitionConversionService->addHmacData($formDefinition);
+
+        return $formDefinition;
     }
 
     /**
@@ -571,6 +593,14 @@ class FormEditorController extends AbstractBackendController
         }
 
         return $array;
+    }
+
+    /**
+     * @return FormDefinitionConversionService
+     */
+    protected function getFormDefinitionConversionService(): FormDefinitionConversionService
+    {
+        return GeneralUtility::makeInstance(FormDefinitionConversionService::class);
     }
 
     /**
