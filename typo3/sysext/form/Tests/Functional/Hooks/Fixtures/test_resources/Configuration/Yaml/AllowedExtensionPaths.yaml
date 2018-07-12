@@ -1,0 +1,6 @@
+TYPO3:
+    CMS:
+        Form:
+            persistenceManager:
+                allowedExtensionPaths:
+                    110: EXT:test_resources/Configuration/Form/
