@@ -241,7 +241,7 @@ class EnvironmentController extends AbstractController
                 ->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
                 ->setSubject($this->getEmailSubject())
                 ->setBody('<html><body>html test content</body></html>', 'text/html')
-                ->addPart('TEST CONTENT')
+                ->addPart('plain test content', 'text/plain')
                 ->send();
             $messages->enqueue(new FlashMessage(
                 'Recipient: ' . $recipient,
