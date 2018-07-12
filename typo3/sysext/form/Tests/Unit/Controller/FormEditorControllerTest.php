@@ -33,6 +33,15 @@ class FormEditorControllerTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
+     * Set up
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 12345;
+    }
+
+    /**
      * @test
      */
     public function getInsertRenderablesPanelConfigurationReturnsGroupedAndSortedConfiguration(): void
