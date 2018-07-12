@@ -430,6 +430,12 @@ class Import extends ImportExport
                     $importFolder = $storage->getFolder($folderName);
                 }
 
+                $this->callHook('before_addSysFileRecord', [
+                    'fileRecord' => $fileRecord,
+                    'importFolder' => $importFolder,
+                    'temporaryFile' => $temporaryFile
+                ]);
+
                 try {
                     /** @var $newFile File */
                     $newFile = $storage->addFile($temporaryFile, $importFolder, $fileRecord['name']);

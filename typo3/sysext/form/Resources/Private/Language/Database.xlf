@@ -203,6 +203,9 @@
             <trans-unit id="formManager.duplicate_identifier" xml:space="preserve">
                 <source>Duplicate identifier!</source>
             </trans-unit>
+            <trans-unit id="formManager.deprecated_file_extension" xml:space="preserve">
+                <source>Unsupported file extension!</source>
+            </trans-unit>
 
             <trans-unit id="formManager.selectablePrototypesConfiguration.standard.label" xml:space="preserve">
                 <source>Standard</source>
