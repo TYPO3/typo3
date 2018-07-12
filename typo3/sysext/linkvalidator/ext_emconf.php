@@ -10,11 +10,11 @@ $EM_CONF[$_EXTKEY] = [
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'author_company' => 'Connecta AG / cab services ag / Infoglobe',
-    'version' => '7.6.30',
+    'version' => '7.6.31',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.30',
-            'info' => '7.6.30',
+            'typo3' => '7.6.31',
+            'info' => '7.6.31',
         ],
         'conflicts' => [],
         'suggests' => [],
