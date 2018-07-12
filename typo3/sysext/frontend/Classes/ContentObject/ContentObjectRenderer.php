@@ -6345,6 +6345,13 @@ class ContentObjectRenderer
      */
     protected function detectLinkTypeFromLinkParameter($linkParameter)
     {
+        if (stripos(rawurldecode(trim($linkParameter)), 'phar://') === 0) {
+            throw new \RuntimeException(
+                'phar scheme not allowed as soft reference target',
+                1530030673
+            );
+        }
+
         // Parse URL:
         $scheme = parse_url($linkParameter, PHP_URL_SCHEME);
         // Detecting kind of link:

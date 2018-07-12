@@ -4311,6 +4311,37 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+      * @return array
+      */
+     public function detectLinkTypeFromLinkParameterThrowExceptionWithPharReferencesDataProvider()
+     {
+         return [
+             'URL encoded local' => [
+                 'phar%3a//some-file.jpg',
+             ],
+             'URL encoded absolute' => [
+                 'phar%3a///path/some-file.jpg',
+             ],
+             'not URL encoded local' => [
+                 'phar://some-file.jpg',
+             ],
+             'not URL encoded absolute' => [
+                 'phar:///path/some-file.jpg',
+             ],
+         ];
+     }
+
+     /**
+      * @test
+      * @dataProvider detectLinkTypeFromLinkParameterThrowExceptionWithPharReferencesDataProvider
+      */
+     public function detectLinkTypeFromLinkParameterThrowExceptionWithPharReferences($pharUrl)
+     {
+         $this->setExpectedException(\RuntimeException::class, '', 1530030673);
+         $this->subject->_call('detectLinkTypeFromLinkParameter', $pharUrl);
+     }
+
+    /**
      * @return array
      */
     public function typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider()
