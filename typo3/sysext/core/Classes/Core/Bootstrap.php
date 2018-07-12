@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\IO\PharStreamWrapper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -388,7 +389,8 @@ class Bootstrap
     public function loadConfigurationAndInitialize($allowCaching = true, $packageManagerClassName = \TYPO3\CMS\Core\Package\PackageManager::class)
     {
         $this->populateLocalConfiguration()
-            ->initializeErrorHandling();
+            ->initializeErrorHandling()
+            ->initializeIO();
         if (!$allowCaching) {
             $this->disableCoreCache();
         }
@@ -716,6 +718,17 @@ class Bootstrap
             GeneralUtility::makeInstance($exceptionHandlerClassName);
         }
         return $this;
+    }
+
+    /**
+     * Initializes IO and stream wrapper related behavior.
+     */
+    protected function initializeIO()
+    {
+        if (in_array('phar', stream_get_wrappers())) {
+            stream_wrapper_unregister('phar');
+            stream_wrapper_register('phar', PharStreamWrapper::class);
+        }
     }
 
     /**
