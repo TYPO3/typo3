@@ -38,29 +38,9 @@ use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
 class YamlSource
 {
     /**
-     * Will be set if the PHP YAML Extension is installed.
-     * Having this installed massively improves YAML parsing performance.
-     *
-     * @var bool
-     * @see http://pecl.php.net/package/yaml
-     */
-    protected $usePhpYamlExtension = false;
-
-    /**
      * @var FilePersistenceSlot
      */
     protected $filePersistenceSlot;
-
-    /**
-     * Use PHP YAML Extension if installed.
-     * @internal
-     */
-    public function __construct()
-    {
-        if (extension_loaded('yaml')) {
-            $this->usePhpYamlExtension = true;
-        }
-    }
 
     /**
      * @param FilePersistenceSlot $filePersistenceSlot
@@ -107,17 +87,7 @@ class YamlSource
             }
 
             try {
-                if ($this->usePhpYamlExtension) {
-                    $loadedConfiguration = @yaml_parse($rawYamlContent);
-                    if ($loadedConfiguration === false) {
-                        throw new ParseErrorException(
-                            'A parse error occurred while parsing file "' . $fileIdentifier . '".',
-                            1391894094
-                        );
-                    }
-                } else {
-                    $loadedConfiguration = Yaml::parse($rawYamlContent);
-                }
+                $loadedConfiguration = Yaml::parse($rawYamlContent);
 
                 if (is_array($loadedConfiguration)) {
                     $configuration = array_replace_recursive($configuration, $loadedConfiguration);
