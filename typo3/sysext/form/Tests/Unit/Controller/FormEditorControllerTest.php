@@ -38,7 +38,7 @@ class FormEditorControllerTest extends UnitTestCase
     public function setUp()
     {
         parent::setUp();
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 12345;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
     }
 
     /**

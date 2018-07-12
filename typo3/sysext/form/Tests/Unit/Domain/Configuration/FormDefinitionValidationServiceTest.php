@@ -24,6 +24,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FormDefinitionValidationServiceTest extends UnitTestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+    }
 
     /**
      * @test
@@ -346,7 +351,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
     public function validateAllPropertyValuesFromCreatableFormElementDataProvider(): array
     {
         $encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 12345;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
         $sessionToken = '54321';
         $identifier = 'text-1';
@@ -367,6 +372,9 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 'hmac' => GeneralUtility::hmac(serialize([$identifier, 'test', 'xxx']), $sessionToken),
             ],
         ];
+
+        // be aware that backup globals does not impact globals used in data providers as these are called before the setUp/tearDown is done
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $encryptionKeyBackup;
 
         return [
             [
@@ -467,7 +475,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
     public function validateAllPropertyValuesFromCreatablePropertyCollectionElementDataProvider(): array
     {
         $encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 12345;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
         $sessionToken = '54321';
         $identifier = 'text-1';
@@ -489,6 +497,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
             ],
         ];
 
+        // be aware that backup globals does not impact globals used in data providers as these are called before the setUp/tearDown is done
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $encryptionKeyBackup;
 
         return [
