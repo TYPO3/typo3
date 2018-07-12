@@ -494,7 +494,7 @@ class ConfigurationService implements SingletonInterface
                 $propertyPathsFromHook = $hookObj->addAdditionalPropertyPaths($validationDto);
                 if (!is_array($propertyPathsFromHook)) {
                     $message = 'Return value of "%s->addAdditionalPropertyPaths() must be type "array"';
-                    throw new PropertyException(sprintf($message, $className), 1528633966);
+                    throw new PropertyException(sprintf($message, $className), 1528633965);
                 }
                 $configuration = $this->addAdditionalPropertyPathsFromHook(
                     $className,
