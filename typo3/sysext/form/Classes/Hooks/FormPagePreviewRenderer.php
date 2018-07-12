@@ -21,11 +21,13 @@ use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
+use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -68,8 +70,18 @@ class FormPagePreviewRenderer implements PageLayoutViewDrawItemHookInterface
                     $formPersistenceManager = GeneralUtility::makeInstance(ObjectManager::class)->get(FormPersistenceManagerInterface::class);
 
                     try {
-                        $formDefinition = $formPersistenceManager->load($persistenceIdentifier);
-                        $formLabel = $formDefinition['label'];
+                        if (
+                            StringUtility::endsWith($persistenceIdentifier, FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION)
+                            || strpos($persistenceIdentifier, 'EXT:') === 0
+                        ) {
+                            $formDefinition = $formPersistenceManager->load($persistenceIdentifier);
+                            $formLabel = $formDefinition['label'];
+                        } else {
+                            $formLabel = sprintf(
+                                $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
+                                $persistenceIdentifier
+                            );
+                        }
                     } catch (ParseErrorException $e) {
                         $formLabel = sprintf(
                             $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidPersistenceIdentifier'),

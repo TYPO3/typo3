@@ -251,6 +251,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
                 [
                     'persistenceIdentifier' => 'hugo1',
                     'name' => 'myHugo1',
+                    'location' => 'extension',
                 ],
                 [
                     'myHugo1 (hugo1)',
@@ -263,6 +264,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
                     'persistenceIdentifier' => 'Error.yaml',
                     'label' => 'Test Error Label',
                     'name' => 'Test Error Name',
+                    'location' => 'extension',
                     'invalid' => true,
                 ],
                 [
