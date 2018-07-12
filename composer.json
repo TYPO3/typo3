@@ -121,9 +121,6 @@
 		],
 		"gerrit:setup:preCommitHook:disable": [
 			"TYPO3\\CMS\\Composer\\Scripts\\InstallerScripts::disablePreCommitHook"
-		],
-		"post-autoload-dump": [
-			"@gerrit:setup:commitMessageHook:enable"
 		]
 	},
 	"scripts-descriptions": {
