@@ -36,7 +36,9 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
      */
     public function setUp()
     {
+        parent::setUp();
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 12345;
     }
 
     /**
