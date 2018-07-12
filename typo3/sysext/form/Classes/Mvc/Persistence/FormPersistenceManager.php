@@ -297,39 +297,33 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             }
         }
 
-        foreach ($this->getAccessibleExtensionFolders() as $relativePath => $fullPath) {
-            $relativePath = rtrim($relativePath, '/') . '/';
-            foreach (new \DirectoryIterator($fullPath) as $fileInfo) {
-                if ($fileInfo->getExtension() !== 'yaml') {
-                    continue;
-                }
-                $form = $this->load($relativePath . $fileInfo->getFilename());
-                if (isset($form['identifier'], $form['type']) && $form['type'] === 'Form') {
-                    if ($this->hasValidFileExtension($fileInfo->getFilename())) {
-                        $forms[] = [
-                            'identifier' => $form['identifier'],
-                            'name' => $form['label'] ?? $form['identifier'],
-                            'persistenceIdentifier' => $relativePath . $fileInfo->getFilename(),
-                            'readOnly' => $this->formSettings['persistenceManager']['allowSaveToExtensionPaths'] ? false: true,
-                            'removable' => $this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths'] ? true: false,
-                            'location' => 'extension',
-                            'duplicateIdentifier' => false,
-                            'invalid' => $form['invalid'],
-                        ];
-                        $identifiers[$form['identifier']]++;
-                    } else {
-                        $forms[] = [
-                            'identifier' => $form['identifier'],
-                            'name' => $form['label'] ?? $form['identifier'],
-                            'persistenceIdentifier' => $relativePath . $fileInfo->getFilename(),
-                            'readOnly' => true,
-                            'removable' => false,
-                            'location' => 'extension',
-                            'duplicateIdentifier' => false,
-                            'invalid' => false,
-                            'deprecatedFileExtension' => true,
-                        ];
-                    }
+        foreach ($this->retrieveYamlFilesFromExtensionFolders() as $fullPath => $fileName) {
+            $form = $this->load($fullPath);
+            if (isset($form['identifier'], $form['type']) && $form['type'] === 'Form') {
+                if ($this->hasValidFileExtension($fileName)) {
+                    $forms[] = [
+                        'identifier' => $form['identifier'],
+                        'name' => $form['label'] ?? $form['identifier'],
+                        'persistenceIdentifier' => $fullPath,
+                        'readOnly' => $this->formSettings['persistenceManager']['allowSaveToExtensionPaths'] ? false: true,
+                        'removable' => $this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths'] ? true: false,
+                        'location' => 'extension',
+                        'duplicateIdentifier' => false,
+                        'invalid' => $form['invalid'],
+                    ];
+                    $identifiers[$form['identifier']]++;
+                } else {
+                    $forms[] = [
+                        'identifier' => $form['identifier'],
+                        'name' => $form['label'] ?? $form['identifier'],
+                        'persistenceIdentifier' => $fullPath,
+                        'readOnly' => true,
+                        'removable' => false,
+                        'location' => 'extension',
+                        'duplicateIdentifier' => false,
+                        'invalid' => false,
+                        'deprecatedFileExtension' => true,
+                    ];
                 }
             }
         }
@@ -379,6 +373,29 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         }
 
         return $filesFromStorageFolders;
+    }
+
+    /**
+     * Retrieves yaml files from extension folders for further processing.
+     * At this time it's not determined yet, whether these files contain form data.
+     *
+     * @return File[]
+     * @internal
+     */
+    public function retrieveYamlFilesFromExtensionFolders(): array
+    {
+        $filesFromExtensionFolders = [];
+
+        foreach ($this->getAccessibleExtensionFolders() as $relativePath => $fullPath) {
+            foreach (new \DirectoryIterator($fullPath) as $fileInfo) {
+                if ($fileInfo->getExtension() !== 'yaml') {
+                    continue;
+                }
+                $filesFromExtensionFolders[$relativePath . $fileInfo->getFilename()] = $fileInfo->getFilename();
+            }
+        }
+
+        return $filesFromExtensionFolders;
     }
 
     /**
