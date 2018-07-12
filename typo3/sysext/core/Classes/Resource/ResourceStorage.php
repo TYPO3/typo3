@@ -1828,7 +1828,7 @@ class ResourceStorage implements ResourceStorageInterface
                 throw new Exception\ExistingTargetFileNameException('The target file already exists', 1329850997);
             }
         }
-        $this->emitPreFileMoveSignal($file, $targetFolder);
+        $this->emitPreFileMoveSignal($file, $targetFolder, $sanitizedTargetFileName);
         $sourceStorage = $file->getStorage();
         // Call driver method to move the file and update the index entry
         try {
@@ -2501,10 +2501,11 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param Folder $targetFolder
+     * @param string $targetFileName
      */
-    protected function emitPreFileMoveSignal(FileInterface $file, Folder $targetFolder)
+    protected function emitPreFileMoveSignal(FileInterface $file, Folder $targetFolder, string $targetFileName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFileMove, [$file, $targetFolder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFileMove, [$file, $targetFolder, $targetFileName]);
     }
 
     /**

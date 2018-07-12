@@ -1013,6 +1013,10 @@ class ExtendedFileUtility extends BasicFileUtility
             $this->writeLog(9, 1, 100, 'File "%s" was not saved! File extension rejected!', [$fileObject->getIdentifier()]);
             $this->addMessageToFlashMessageQueue('FileUtility.FileWasNotSaved', [$fileObject->getIdentifier()]);
             return false;
+        } catch (\RuntimeException $e) {
+            $this->writeLog(9, 1, 100, 'File "%s" was not saved! File extension rejected!', [$fileObject->getIdentifier()]);
+            $this->addMessageToFlashMessageQueue('FileUtility.FileWasNotSaved', [$fileObject->getIdentifier()]);
+            return false;
         }
     }
 

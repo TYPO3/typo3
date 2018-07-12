@@ -62,7 +62,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ],
         ]);
 
-        $input = 'EXT:form/Resources/Forms/_example.yaml';
+        $input = 'EXT:form/Resources/Forms/_example.form.yaml';
         $mockFormPersistenceManager->_call('load', $input);
     }
 
@@ -100,7 +100,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ],
         ]);
 
-        $input = 'EXT:form/Resources/Forms/_example.yaml';
+        $input = 'EXT:form/Resources/Forms/_example.form.yaml';
         $mockFormPersistenceManager->_call('save', $input, []);
     }
 
@@ -123,7 +123,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ],
         ]);
 
-        $input = 'EXT:form/Resources/Forms/_example.yaml';
+        $input = 'EXT:form/Resources/Forms/_example.form.yaml';
         $mockFormPersistenceManager->_call('save', $input, []);
     }
 
@@ -160,7 +160,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->method('exists')
             ->willReturn(false);
 
-        $input = '-1:/user_uploads/_example.yaml';
+        $input = '-1:/user_uploads/_example.form.yaml';
         $mockFormPersistenceManager->_call('delete', $input);
     }
 
@@ -187,7 +187,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ],
         ]);
 
-        $input = 'EXT:form/Resources/Forms/_example.yaml';
+        $input = 'EXT:form/Resources/Forms/_example.form.yaml';
         $mockFormPersistenceManager->_call('delete', $input);
     }
 
@@ -215,7 +215,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ],
         ]);
 
-        $input = 'EXT:form/Resources/Forms/_example.yaml';
+        $input = 'EXT:form/Resources/Forms/_example.form.yaml';
         $mockFormPersistenceManager->_call('delete', $input);
     }
 
@@ -257,7 +257,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->method('exists')
             ->willReturn(true);
 
-        $input = '-1:/user_uploads/_example.yaml';
+        $input = '-1:/user_uploads/_example.form.yaml';
         $mockFormPersistenceManager->_call('delete', $input);
     }
 
@@ -278,7 +278,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ],
         ]);
 
-        $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.yaml';
+        $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.form.yaml';
         $this->assertTrue($mockFormPersistenceManager->_call('exists', $input));
     }
 
@@ -349,7 +349,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->method('getStorageByUid')
             ->willReturn($mockStorage);
 
-        $input = '-1:/user_uploads/_example.yaml';
+        $input = '-1:/user_uploads/_example.form.yaml';
         $this->assertTrue($mockFormPersistenceManager->_call('exists', $input));
     }
 
@@ -430,7 +430,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->willReturn(false);
 
         $input = 'example';
-        $expected = '-1:/user_uploads/example_2.yaml';
+        $expected = '-1:/user_uploads/example_2.form.yaml';
         $this->assertSame($expected, $mockFormPersistenceManager->_call('getUniquePersistenceIdentifier', $input, '-1:/user_uploads/'));
     }
 
@@ -456,7 +456,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->willReturn(false);
 
         $input = 'example';
-        $expected = '#^-1:/user_uploads/example_([0-9]{10}).yaml$#';
+        $expected = '#^-1:/user_uploads/example_([0-9]{10}).form.yaml$#';
 
         $returnValue = $mockFormPersistenceManager->_call('getUniquePersistenceIdentifier', $input, '-1:/user_uploads/');
         $this->assertEquals(1, preg_match($expected, $returnValue));

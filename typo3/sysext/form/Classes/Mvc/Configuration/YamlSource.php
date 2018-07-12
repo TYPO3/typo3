@@ -21,11 +21,13 @@ use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
+use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
 
 /**
  * Configuration source based on YAML files
@@ -45,6 +47,11 @@ class YamlSource
     protected $usePhpYamlExtension = false;
 
     /**
+     * @var FilePersistenceSlot
+     */
+    protected $filePersistenceSlot;
+
+    /**
      * Use PHP YAML Extension if installed.
      * @internal
      */
@@ -53,6 +60,14 @@ class YamlSource
         if (extension_loaded('yaml')) {
             $this->usePhpYamlExtension = true;
         }
+    }
+
+    /**
+     * @param FilePersistenceSlot $filePersistenceSlot
+     */
+    public function injectFilePersistenceSlot(FilePersistenceSlot $filePersistenceSlot)
+    {
+        $this->filePersistenceSlot = $filePersistenceSlot;
     }
 
     /**
@@ -139,6 +154,16 @@ class YamlSource
 
         if ($fileToSave instanceof File) {
             try {
+                $this->filePersistenceSlot->allowInvocation(
+                    FilePersistenceSlot::COMMAND_FILE_SET_CONTENTS,
+                    $this->buildCombinedIdentifier(
+                        $fileToSave->getParentFolder(),
+                        $fileToSave->getName()
+                    ),
+                    $this->filePersistenceSlot->getContentSignature(
+                        $header . LF . $yaml
+                    )
+                );
                 $fileToSave->setContents($header . LF . $yaml);
             } catch (InsufficientFileAccessPermissionsException $e) {
                 throw new FileWriteException($e->getMessage(), 1512582753, $e);
@@ -181,5 +206,20 @@ class YamlSource
             }
         }
         return $header;
+    }
+
+    /**
+     * @param FolderInterface $folder
+     * @param string $fileName
+     * @return string
+     */
+    protected function buildCombinedIdentifier(FolderInterface $folder, string $fileName): string
+    {
+        return sprintf(
+            '%d:%s%s',
+            $folder->getStorage()->getUid(),
+            $folder->getIdentifier(),
+            $fileName
+        );
     }
 }
