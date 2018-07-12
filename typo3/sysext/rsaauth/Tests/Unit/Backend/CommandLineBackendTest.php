@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Rsaauth\Tests\Unit\Backend;
 
 /*
@@ -34,9 +35,6 @@ class CommandLineBackendTest extends UnitTestCase
      */
     protected function setUp()
     {
-        if (Environment::isWindows()) {
-            $this->markTestSkipped('This test is not available on Windows as auto-detection of openssl path will fail.');
-        }
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['rsaauth']['temporaryDirectory'] = '';
     }
 
@@ -45,6 +43,7 @@ class CommandLineBackendTest extends UnitTestCase
      */
     public function createNewKeyPairCreatesReadyKeyPair()
     {
+        $this->skipIfWindows();
         $subject = new CommandLineBackend();
         $keyPair = $subject->createNewKeyPair();
         if ($keyPair === null) {
@@ -59,6 +58,7 @@ class CommandLineBackendTest extends UnitTestCase
      */
     public function createNewKeyPairCreatesKeyPairWithDefaultExponent()
     {
+        $this->skipIfWindows();
         $subject = new CommandLineBackend();
         $keyPair = $subject->createNewKeyPair();
         if ($keyPair === null) {
@@ -76,10 +76,50 @@ class CommandLineBackendTest extends UnitTestCase
      */
     public function createNewKeyPairCalledTwoTimesReturnsSameKeyPairInstance()
     {
+        $this->skipIfWindows();
         $subject = new CommandLineBackend();
         $this->assertSame(
             $subject->createNewKeyPair(),
             $subject->createNewKeyPair()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotAllowUnserialization(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1531336156);
+
+        $subject = new CommandLineBackend();
+        $serialized = serialize($subject);
+        unserialize($serialized);
+    }
+
+    /**
+     * @test
+     */
+    public function unsetsPathsOnUnserialization(): void
+    {
+        try {
+            $subject = $this->getAccessibleMock(CommandLineBackend::class);
+            $subject->_set('opensslPath', 'foo');
+            $subject->_set('temporaryDirectory', 'foo');
+            $serialized = serialize($subject);
+            unserialize($serialized);
+        } catch (\RuntimeException $e) {
+            $this->assertNull($subject->_get('opensslPath'));
+            $this->assertNull($subject->_get('temporaryDirectory'));
+        }
+    }
+
+    protected function skipIfWindows(): void
+    {
+        if (Environment::isWindows()) {
+            $this->markTestSkipped(
+                'This test is not available on Windows as auto-detection of openssl path will fail.'
+            );
+        }
     }
 }
