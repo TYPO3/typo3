@@ -65,6 +65,20 @@ class CommandLineBackend extends AbstractBackend
     }
 
     /**
+     * Denies deserialization.
+     */
+    public function __wakeup()
+    {
+        $this->opensslPath = null;
+        $this->temporaryDirectory = null;
+
+        throw new \RuntimeException(
+            __CLASS__ . ' cannot be unserialized',
+            1531336156
+        );
+    }
+
+    /**
      * Creates a new key pair for the encryption or gets the existing key pair (if one already has been generated).
      *
      * There should only be one key pair per request because the second private key would overwrites the first private
