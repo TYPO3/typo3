@@ -397,6 +397,8 @@ class TemplateService
                 $this->allowedPaths[] = $p;
             }
         }
+
+        $this->tt_track = $this->verbose = (bool)$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
     }
 
     /**

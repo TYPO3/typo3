@@ -36,7 +36,6 @@ class TemplateServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->templateService = new TemplateService(new Context());
-        $this->templateService->tt_track = false;
     }
 
     /**

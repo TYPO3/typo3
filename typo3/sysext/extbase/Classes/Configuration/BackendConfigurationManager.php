@@ -55,7 +55,7 @@ class BackendConfigurationManager extends AbstractConfigurationManager
             /** @var $template TemplateService */
             $template = GeneralUtility::makeInstance(TemplateService::class);
             // do not log time-performance information
-            $template->tt_track = 0;
+            $template->tt_track = false;
             // Explicitly trigger processing of extension static files
             $template->setProcessExtensionStatics(true);
             // Get the root line

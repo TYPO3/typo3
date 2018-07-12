@@ -59,13 +59,11 @@ class TemplateServiceTest extends UnitTestCase
         $GLOBALS['SIM_ACCESS_TIME'] = time();
         $GLOBALS['ACCESS_TIME'] = time();
         $this->templateService = new TemplateService(new Context());
-        $this->templateService->tt_track = false;
         $this->templateServiceMock = $this->getAccessibleMock(
             TemplateService::class,
             ['dummy'],
             [new Context()]
         );
-        $this->templateServiceMock->tt_track = false;
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
 

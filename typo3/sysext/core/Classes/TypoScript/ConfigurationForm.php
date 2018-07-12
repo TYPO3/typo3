@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\TypoScript;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -53,13 +54,14 @@ class ConfigurationForm extends ExtendedTemplateService
     protected $ext_realValues = [];
 
     /**
-     * Deprecate this class
+     * @param Context|null $context
      */
-    public function __construct()
+    public function __construct(Context $context = null)
     {
+        parent::__construct($context);
+        // Deprecate this class
         trigger_error('Class ConfigurationForm has been deprecated with v9 and will be removed in v10', E_USER_DEPRECATED);
     }
-
     /**
      * @param string $configTemplate
      * @return array

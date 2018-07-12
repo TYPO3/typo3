@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\TypoScript;
 
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -33,13 +34,6 @@ use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatch
  */
 class ExtendedTemplateService extends TemplateService
 {
-    /**
-     * Disabled in backend context
-     *
-     * @var bool
-     */
-    public $tt_track = false;
-
     /**
      * @var array
      */
@@ -240,6 +234,17 @@ class ExtendedTemplateService extends TemplateService
      * @var array
      */
     protected $inlineJavaScript = [];
+
+    /**
+     * @param Context|null $context
+     */
+    public function __construct(Context $context = null)
+    {
+        parent::__construct($context);
+        // Disabled in backend context
+        $this->tt_track = false;
+        $this->verbose = false;
+    }
 
     /**
      * Gets the inline JavaScript.

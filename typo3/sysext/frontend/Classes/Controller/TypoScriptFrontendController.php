@@ -2220,8 +2220,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function initTemplate()
     {
         $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context);
-        $this->tmpl->setVerbose($this->isBackendUserLoggedIn());
-        $this->tmpl->tt_track = $this->isBackendUserLoggedIn();
     }
 
     /**
