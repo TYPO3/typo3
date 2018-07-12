@@ -15,13 +15,15 @@ namespace TYPO3\CMS\Form\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -36,10 +38,41 @@ use TYPO3\CMS\Install\Updates\AbstractUpdate;
  */
 class FormFileExtensionUpdate extends AbstractUpdate
 {
+
     /**
      * @var string
      */
     protected $title = 'Rename form definition file extension from .yaml to .form.yaml';
+
+    /**
+     * @var FormPersistenceManager
+     */
+    protected $persistenceManager;
+
+    /**
+     * @var YamlSource
+     */
+    protected $yamlSource;
+
+    /**
+     * @var ResourceFactory
+     */
+    protected $resourceFactory;
+
+    /**
+     * @var ReferenceIndex
+     */
+    protected $referenceIndex;
+
+    /**
+     * @var FlexFormTools
+     */
+    protected $flexFormTools;
+
+    /**
+     * @var Connection
+     */
+    protected $connection;
 
     /**
      * Checks whether updates are required.
@@ -50,21 +83,65 @@ class FormFileExtensionUpdate extends AbstractUpdate
     public function checkForUpdate(&$description)
     {
         $updateNeeded = false;
-
-        $allStorageFormFiles = $this->getAllStorageFormFilesWithOldNaming();
-        $referencedExtensionFormFiles = $this->groupReferencedExtensionFormFiles(
-            $this->getReferencedFormFilesWithOldNaming()
-        );
-
         $information = [];
-        if (count($allStorageFormFiles) > 0) {
-            $updateNeeded = true;
-            $information[] = 'Form configuration files were found that should be migrated to be named .form.yaml.';
+
+        $this->persistenceManager = $this->getObjectManager()->get(FormPersistenceManager::class);
+        $this->yamlSource = $this->getObjectManager()->get(YamlSource::class);
+        $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+
+        foreach ($this->getFormDefinitionsInformation() as $formDefinitionInformation) {
+            if (
+                (
+                    $formDefinitionInformation['hasNewFileExtension'] === true
+                    && $formDefinitionInformation['hasReferencesForOldFileExtension'] === false
+                    && $formDefinitionInformation['hasReferencesForNewFileExtension'] === false
+                )
+                || (
+                    $formDefinitionInformation['hasNewFileExtension'] === false
+                    && $formDefinitionInformation['location'] === 'extension'
+                    && $formDefinitionInformation['hasReferencesForOldFileExtension'] === false
+                    && $formDefinitionInformation['hasReferencesForNewFileExtension'] === false
+                )
+            ) {
+                continue;
+            }
+
+            if (
+                $formDefinitionInformation['hasNewFileExtension'] === false
+                && $formDefinitionInformation['location'] === 'storage'
+            ) {
+                $updateNeeded = true;
+                $information['rename'] = 'Form definition files were found that should be migrated to be named .form.yaml.';
+            }
+
+            if (
+                $formDefinitionInformation['hasNewFileExtension']
+                && $formDefinitionInformation['hasReferencesForOldFileExtension']
+            ) {
+                $updateNeeded = true;
+                $information['updateReference'] = 'Referenced form definition files found that should be updated.';
+            }
+
+            if (
+                $formDefinitionInformation['referencesForOldFileExtensionNeedsFlexformUpdates'] === true
+                || $formDefinitionInformation['referencesForNewFileExtensionNeedsFlexformUpdates'] === true
+            ) {
+                $updateNeeded = true;
+                if ($formDefinitionInformation['hasNewFileExtension'] === true) {
+                    $information['updateReference'] = 'Referenced form definition files found that should be updated.';
+                } else {
+                    if ($formDefinitionInformation['location'] === 'storage') {
+                        $information['updateReference'] = 'Referenced form definition files found that should be updated.';
+                    } else {
+                        $information['manualStepsNeeded'] =
+                            'There are references to form definitions which are located in extensions and thus cannot be renamed automatically by this wizard.'
+                          . 'This form definitions from extensions that do not end with .form.yaml have to be renamed by hand!'
+                          . 'After that you can run this wizard again to migrate the references.';
+                    }
+                }
+            }
         }
-        if (count($referencedExtensionFormFiles) > 0) {
-            $updateNeeded = true;
-            $information[] = 'Referenced extension form configuration files found that should be updated.';
-        }
+
         $description = implode('<br>', $information);
 
         return $updateNeeded;
@@ -81,62 +158,146 @@ class FormFileExtensionUpdate extends AbstractUpdate
     {
         $messages = [];
 
-        $allStorageFormFiles = $this->getAllStorageFormFilesWithOldNaming();
-        $referencedFormFiles = $this->getReferencedFormFilesWithOldNaming();
-        $referencedExtensionFormFiles = $this->groupReferencedExtensionFormFiles($referencedFormFiles);
-        $filePersistenceSlot = GeneralUtility::makeInstance(FilePersistenceSlot::class);
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $connection = $connectionPool->getConnectionForTable('tt_content');
-        $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
-        $persistenceManager = $this->getObjectManager()->get(FormPersistenceManager::class);
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $filePersistenceSlot = GeneralUtility::makeInstance(FilePersistenceSlot::class);
+
+        $this->connection = $connectionPool->getConnectionForTable('tt_content');
+        $this->persistenceManager = $this->getObjectManager()->get(FormPersistenceManager::class);
+        $this->yamlSource = $this->getObjectManager()->get(YamlSource::class);
+        $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $this->referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
+        $this->flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
 
         $filePersistenceSlot->defineInvocation(
             FilePersistenceSlot::COMMAND_FILE_RENAME,
             true
         );
 
-        // Processing all files in a regular file abstraction layer storage
-        foreach ($allStorageFormFiles as $file) {
-            $oldPersistenceIdentifier = $file->getCombinedIdentifier();
+        $formDefinitionsInformation = $this->getFormDefinitionsInformation();
+        foreach ($formDefinitionsInformation as $currentPersistenceIdentifier => $formDefinitionInformation) {
+            if (
+                (
+                    $formDefinitionInformation['hasNewFileExtension'] === true
+                    && $formDefinitionInformation['hasReferencesForOldFileExtension'] === false
+                    && $formDefinitionInformation['hasReferencesForNewFileExtension'] === false
+                )
+                || (
+                    $formDefinitionInformation['hasNewFileExtension'] === false
+                    && $formDefinitionInformation['location'] === 'extension'
+                    && $formDefinitionInformation['hasReferencesForOldFileExtension'] === false
+                    && $formDefinitionInformation['hasReferencesForNewFileExtension'] === false
+                )
+            ) {
+                continue;
+            }
 
-            $newPossiblePersistenceIdentifier = $persistenceManager->getUniquePersistenceIdentifier(
-                $file->getNameWithoutExtension(),
-                $file->getParentFolder()->getCombinedIdentifier()
-            );
-            $newFileName = PathUtility::pathinfo(
-                $newPossiblePersistenceIdentifier,
-                PATHINFO_BASENAME
-            );
+            if (
+                $formDefinitionInformation['hasNewFileExtension'] === true
+                && (
+                    $formDefinitionInformation['hasReferencesForOldFileExtension'] === true
+                    || $formDefinitionInformation['hasReferencesForNewFileExtension'] === true
+                )
+            ) {
+                foreach ($formDefinitionInformation['referencesForOldFileExtension'] as $referenceForOldFileExtension) {
+                    $newFlexformXml = $this->generateNewFlexformForReference(
+                        $referenceForOldFileExtension,
+                        $referenceForOldFileExtension['sheetIdentifiersWhichNeedsUpdate'],
+                        $formDefinitionInformation['persistenceIdentifier']
+                    );
+                    $this->updateContentReference(
+                        $referenceForOldFileExtension['ttContentUid'],
+                        $newFlexformXml,
+                        true
+                    );
+                }
 
-            try {
-                $file->rename($newFileName, DuplicationBehavior::RENAME);
-                $newPersistenceIdentifier = $file->getCombinedIdentifier();
-            } catch (\Exception $e) {
-                $messages[] = sprintf(
-                    'Failed to rename identifier "%s" to "%s"',
-                    $oldPersistenceIdentifier,
-                    $newFileName
+                foreach ($formDefinitionInformation['referencesForNewFileExtension'] as $referenceForNewFileExtension) {
+                    $newFlexformXml = $this->generateNewFlexformForReference(
+                        $referenceForNewFileExtension,
+                        $referenceForNewFileExtension['sheetIdentifiersWhichNeedsUpdate']
+                    );
+                    $this->updateContentReference(
+                        $referenceForNewFileExtension['ttContentUid'],
+                        $newFlexformXml
+                    );
+                }
+
+                continue;
+            }
+
+            if ($formDefinitionInformation['location'] === 'storage') {
+                $file = $formDefinitionInformation['file'];
+
+                $newPossiblePersistenceIdentifier = $this->persistenceManager->getUniquePersistenceIdentifier(
+                    $file->getNameWithoutExtension(),
+                    $file->getParentFolder()->getCombinedIdentifier()
                 );
-                continue;
-            }
+                $newFileName = PathUtility::pathinfo(
+                    $newPossiblePersistenceIdentifier,
+                    PATHINFO_BASENAME
+                );
 
-            // Update referenced FlexForm in tt_content elements (if any)
-            $dataItems = $this->filterReferencedFormFilesByIdentifier(
-                $referencedFormFiles,
-                $oldPersistenceIdentifier
-            );
-            if (count($dataItems) === 0) {
-                continue;
-            }
+                try {
+                    $file->rename($newFileName, DuplicationBehavior::RENAME);
+                    $newPersistenceIdentifier = $file->getCombinedIdentifier();
+                } catch (\Exception $e) {
+                    $messages[] = sprintf(
+                        'Failed to rename form definition "%s" to "%s".',
+                        $formDefinitionInformation['persistenceIdentifier'],
+                        $newFileName
+                    );
+                    continue;
+                }
 
-            foreach ($dataItems as $dataItem) {
-                // No reference index update needed since file UID not changed
-                $this->updateContentReference(
-                    $connection,
-                    $dataItem,
-                    $oldPersistenceIdentifier,
-                    $newPersistenceIdentifier
+                if (
+                    $formDefinitionInformation['hasReferencesForOldFileExtension'] === true
+                    || $formDefinitionInformation['hasReferencesForNewFileExtension'] === true
+                ) {
+                    foreach ($formDefinitionInformation['referencesForOldFileExtension'] as $referenceForOldFileExtension) {
+                        $sheetIdentifiersWhichNeedsUpdate = $this->getSheetIdentifiersWhichNeedsUpdate(
+                            $referenceForOldFileExtension['flexform'],
+                            $formDefinitionsInformation,
+                            $currentPersistenceIdentifier,
+                            $formDefinitionInformation['persistenceIdentifier'],
+                            $newPersistenceIdentifier
+                        );
+                        $newFlexformXml = $this->generateNewFlexformForReference(
+                            $referenceForOldFileExtension,
+                            $sheetIdentifiersWhichNeedsUpdate,
+                            $newPersistenceIdentifier
+                        );
+                        $this->updateContentReference(
+                            $referenceForOldFileExtension['ttContentUid'],
+                            $newFlexformXml
+                        );
+                    }
+
+                    foreach ($formDefinitionInformation['referencesForNewFileExtension'] as $referenceForNewFileExtension) {
+                        $sheetIdentifiersWhichNeedsUpdate = $this->getSheetIdentifiersWhichNeedsUpdate(
+                            $referenceForNewFileExtension['flexform'],
+                            $formDefinitionsInformation,
+                            $currentPersistenceIdentifier,
+                            $formDefinitionInformation['persistenceIdentifier'],
+                            $newPersistenceIdentifier
+                        );
+                        $newFlexformXml = $this->generateNewFlexformForReference(
+                            $referenceForNewFileExtension,
+                            $sheetIdentifiersWhichNeedsUpdate,
+                            $newPersistenceIdentifier
+                        );
+                        $this->updateContentReference(
+                            $referenceForNewFileExtension['ttContentUid'],
+                            $newFlexformXml
+                        );
+                    }
+                }
+            } else {
+                $messages[] = sprintf(
+                    'Failed to rename form definition "%s" to "%s". You have to be rename it by hand!. '
+                  . 'After that you can run this wizard again to migrate the references.',
+                    $formDefinitionInformation['persistenceIdentifier'],
+                    $this->getNewPersistenceIdentifier($formDefinitionInformation['persistenceIdentifier'])
                 );
             }
         }
@@ -145,50 +306,6 @@ class FormFileExtensionUpdate extends AbstractUpdate
             FilePersistenceSlot::COMMAND_FILE_RENAME,
             null
         );
-
-        // Processing all referenced files being part of some extension
-        foreach ($referencedExtensionFormFiles as $identifier => $dataItems) {
-            $oldFilePath = GeneralUtility::getFileAbsFileName(
-                ltrim($identifier, '/')
-            );
-            $newFilePath = $this->upgradeFilename($oldFilePath);
-
-            if (!file_exists($newFilePath)) {
-                $messages[] = sprintf(
-                    'Failed to update content reference of identifier "0:%s"'
-                    . ' (probably not renamed yet using ".form.yaml" suffix)',
-                    $identifier
-                );
-                continue;
-            }
-
-            $oldExtensionIdentifier = preg_replace(
-                '#^/typo3conf/ext/#',
-                'EXT:',
-                $identifier
-            );
-            $newExtensionIdentifier = $this->upgradeFilename(
-                $oldExtensionIdentifier
-            );
-
-            foreach ($dataItems as $dataItem) {
-                $result = $this->updateContentReference(
-                    $connection,
-                    $dataItem,
-                    $oldExtensionIdentifier,
-                    $newExtensionIdentifier
-                );
-                if (!$result) {
-                    continue;
-                }
-                // Update reference index since extension file probably
-                // has been renamed or duplicated without invoking FAL API
-                $referenceIndex->updateRefIndexTable(
-                    'tt_content',
-                    (int)$dataItem['recuid']
-                );
-            }
-        }
 
         if (count($messages) > 0) {
             $customMessage = 'The following issues occurred during performing updates:'
@@ -200,121 +317,403 @@ class FormFileExtensionUpdate extends AbstractUpdate
     }
 
     /**
-     * @param Connection $connection
-     * @param array $dataItem
-     * @param string $oldIdentifier
-     * @param string $newIdentifier
-     * @return bool
+     * @return array
      */
-    protected function updateContentReference(
-        Connection $connection,
-        array $dataItem,
-        string $oldIdentifier,
-        string $newIdentifier
-    ): bool {
-        if ($oldIdentifier === $newIdentifier) {
-            return false;
-        }
-
-        $flexForm = str_replace(
-            $oldIdentifier,
-            $newIdentifier,
-            $dataItem['pi_flexform']
-        );
-
-        $connection->update(
-            'tt_content',
-            ['pi_flexform' => $flexForm],
-            ['uid' => (int)$dataItem['recuid']]
-        );
-
-        return true;
-    }
-
-    /**
-     * Upgrades filename to end with ".form.yaml", e.g.
-     * + "file.yaml"      -> "file.form.yaml"
-     * + "file.form.yaml" -> "file.form.yaml" (unchanged)
-     *
-     * @param string $filename
-     * @return string
-     */
-    protected function upgradeFilename(string $filename): string
+    protected function getFormDefinitionsInformation(): array
     {
-        return preg_replace(
-            '#(?<!\.form).yaml$#',
-            '.form.yaml',
-            $filename
+        $formDefinitionsInformation = array_merge(
+            $this->getFormDefinitionsInformationFromStorages(),
+            $this->getFormDefinitionsInformationFromExtensions()
         );
-    }
 
-    /**
-     * @return File[]
-     */
-    protected function getAllStorageFormFilesWithOldNaming(): array
-    {
-        $persistenceManager = $this->getObjectManager()
-            ->get(FormPersistenceManager::class);
-        $yamlSource = $this->getObjectManager()
-            ->get(YamlSource::class);
+        $formDefinitionsInformation = $this->enrichFormDefinitionsInformationWithDataFromReferences($formDefinitionsInformation);
 
-        return array_filter(
-            $persistenceManager->retrieveYamlFilesFromStorageFolders(),
-            function (File $file) use ($yamlSource) {
-                $isNewFormFile = StringUtility::endsWith(
-                    $file->getName(),
-                    FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION
-                );
-                if ($isNewFormFile) {
-                    return false;
-                }
-
-                try {
-                    $form = $yamlSource->load([$file]);
-                    return !empty($form['identifier'])
-                        && ($form['type'] ?? null) === 'Form';
-                } catch (\Exception $exception) {
-                }
-                return false;
-            }
-        );
+        return $formDefinitionsInformation;
     }
 
     /**
      * @return array
      */
-    protected function getReferencedFormFilesWithOldNaming(): array
+    protected function getFormDefinitionsInformationFromStorages(): array
+    {
+        $formDefinitionsInformation =  [];
+
+        foreach ($this->persistenceManager->retrieveYamlFilesFromStorageFolders() as $file) {
+            $persistenceIdentifier = $file->getCombinedIdentifier();
+
+            $formDefinition = $this->getFormDefinition($file);
+            if (empty($formDefinition)) {
+                continue;
+            }
+
+            $formDefinitionsInformation[$persistenceIdentifier] = $this->setFormDefinitionInformationData(
+                $persistenceIdentifier,
+                $formDefinition,
+                $file,
+                'storage'
+            );
+        }
+
+        return $formDefinitionsInformation;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getFormDefinitionsInformationFromExtensions(): array
+    {
+        $formDefinitionsInformation =  [];
+
+        foreach ($this->persistenceManager->retrieveYamlFilesFromExtensionFolders() as $persistenceIdentifier => $_) {
+            try {
+                $file = $this->resourceFactory->retrieveFileOrFolderObject($persistenceIdentifier);
+            } catch (\Exception $exception) {
+                continue;
+            }
+
+            $formDefinition = $this->getFormDefinition($file);
+            if (empty($formDefinition)) {
+                continue;
+            }
+
+            $formDefinitionsInformation[$persistenceIdentifier] = $this->setFormDefinitionInformationData(
+                $persistenceIdentifier,
+                $formDefinition,
+                $file,
+                'extension'
+            );
+        }
+
+        return $formDefinitionsInformation;
+    }
+
+    /**
+     * @param string $persistenceIdentifier
+     * @param array $formDefinition
+     * @param File $file
+     * @param string $localtion
+     * @return array
+     */
+    protected function setFormDefinitionInformationData(
+        string $persistenceIdentifier,
+        array $formDefinition,
+        File $file,
+        string $localtion
+    ): array {
+        return [
+            'location' => $localtion,
+            'persistenceIdentifier' => $persistenceIdentifier,
+            'prototypeName' => $formDefinition['prototypeName'],
+            'formIdentifier' => $formDefinition['identifier'],
+            'file' => $file,
+            'referencesForOldFileExtension' => [],
+            'referencesForNewFileExtension' => [],
+            'hasNewFileExtension' => $this->hasNewFileExtension($persistenceIdentifier),
+            'hasReferencesForOldFileExtension' => false,
+            'hasReferencesForNewFileExtension' => false,
+            'referencesForOldFileExtensionNeedsFlexformUpdates' => false,
+            'referencesForNewFileExtensionNeedsFlexformUpdates' => false,
+        ];
+    }
+
+    /**
+     * @param array $formDefinitionsInformation
+     * @return array
+     */
+    protected function enrichFormDefinitionsInformationWithDataFromReferences(array $formDefinitionsInformation): array
+    {
+        foreach ($this->getAllFlexformFieldsFromFormPlugins() as $pluginData) {
+            if (empty($pluginData['pi_flexform'])) {
+                continue;
+            }
+            $flexform = GeneralUtility::xml2array($pluginData['pi_flexform']);
+            $referencedPersistenceIdentifier = $this->getPersistenceIdentifierFromFlexform($flexform);
+            $referenceHasNewFileExtension = $this->hasNewFileExtension($referencedPersistenceIdentifier);
+            $possibleOldReferencedPersistenceIdentifier = $this->getOldPersistenceIdentifier($referencedPersistenceIdentifier);
+            $possibleNewReferencedPersistenceIdentifier = $this->getNewPersistenceIdentifier($referencedPersistenceIdentifier);
+
+            $referenceData = [
+                'scope' => null,
+                'ttContentUid' => (int)$pluginData['uid'],
+                'flexform' => $flexform,
+                'sheetIdentifiersWhichNeedsUpdate' => [],
+            ];
+
+            $targetPersistenceIdentifier = null;
+            if (array_key_exists($referencedPersistenceIdentifier, $formDefinitionsInformation)) {
+                $targetPersistenceIdentifier = $referencedPersistenceIdentifier;
+                if ($referenceHasNewFileExtension) {
+                    $referenceData['scope'] = 'referencesForNewFileExtension';
+                } else {
+                    $referenceData['scope'] = 'referencesForOldFileExtension';
+                }
+            } else {
+                if ($referenceHasNewFileExtension) {
+                    if (array_key_exists($possibleOldReferencedPersistenceIdentifier, $formDefinitionsInformation)) {
+                        $targetPersistenceIdentifier = $possibleOldReferencedPersistenceIdentifier;
+                        $referenceData['scope'] = 'referencesForNewFileExtension';
+                    } else {
+                        // There is no existing file for this reference
+                        continue;
+                    }
+                } else {
+                    if (array_key_exists($possibleNewReferencedPersistenceIdentifier, $formDefinitionsInformation)) {
+                        $targetPersistenceIdentifier = $possibleNewReferencedPersistenceIdentifier;
+                        $referenceData['scope'] = 'referencesForOldFileExtension';
+                    } else {
+                        // There is no existing file for this reference
+                        continue;
+                    }
+                }
+            }
+
+            $referenceData['sheetIdentifiersWhichNeedsUpdate'] = $this->getSheetIdentifiersWhichNeedsUpdate(
+                $flexform,
+                $formDefinitionsInformation,
+                $targetPersistenceIdentifier,
+                $possibleOldReferencedPersistenceIdentifier,
+                $possibleNewReferencedPersistenceIdentifier
+            );
+
+            $scope = $referenceData['scope'];
+
+            $formDefinitionsInformation[$targetPersistenceIdentifier][$scope][] = $referenceData;
+            if ($scope === 'referencesForOldFileExtension') {
+                $formDefinitionsInformation[$targetPersistenceIdentifier]['hasReferencesForOldFileExtension'] = true;
+                $formDefinitionsInformation[$targetPersistenceIdentifier]['referencesForOldFileExtensionNeedsFlexformUpdates'] = !empty($referenceData['sheetIdentifiersWhichNeedsUpdate']);
+            } else {
+                $formDefinitionsInformation[$targetPersistenceIdentifier]['hasReferencesForNewFileExtension'] = true;
+                $formDefinitionsInformation[$targetPersistenceIdentifier]['referencesForNewFileExtensionNeedsFlexformUpdates'] = !empty($referenceData['sheetIdentifiersWhichNeedsUpdate']);
+            }
+        }
+
+        return $formDefinitionsInformation;
+    }
+
+    /**
+     * @param array $flexform
+     * @param array $formDefinitionsInformation
+     * @param string $targetPersistenceIdentifier
+     * @param string $possibleOldReferencedPersistenceIdentifier
+     * @param string $possibleNewReferencedPersistenceIdentifier
+     * @return array
+     */
+    protected function getSheetIdentifiersWhichNeedsUpdate(
+        array $flexform,
+        array $formDefinitionsInformation,
+        string $targetPersistenceIdentifier,
+        string $possibleOldReferencedPersistenceIdentifier,
+        string $possibleNewReferencedPersistenceIdentifier
+    ): array {
+        $sheetIdentifiersWhichNeedsUpdate = [];
+
+        $sheetIdentifiers = $this->getSheetIdentifiersForFinisherOverrides($flexform);
+        foreach ($sheetIdentifiers as $currentSheetIdentifier => $finisherIdentifier) {
+            $sheetIdentifierForOldPersistenceIdentifier = $this->buildExpectedSheetIdentifier(
+                $possibleOldReferencedPersistenceIdentifier,
+                $formDefinitionsInformation[$targetPersistenceIdentifier]['prototypeName'],
+                $formDefinitionsInformation[$targetPersistenceIdentifier]['formIdentifier'],
+                $finisherIdentifier
+            );
+
+            $sheetIdentifierForNewPersistenceIdentifier = $this->buildExpectedSheetIdentifier(
+                $possibleNewReferencedPersistenceIdentifier,
+                $formDefinitionsInformation[$targetPersistenceIdentifier]['prototypeName'],
+                $formDefinitionsInformation[$targetPersistenceIdentifier]['formIdentifier'],
+                $finisherIdentifier
+            );
+
+            if (
+                $currentSheetIdentifier === $sheetIdentifierForOldPersistenceIdentifier
+                && !array_key_exists($sheetIdentifierForNewPersistenceIdentifier, $sheetIdentifiers)
+            ) {
+                $sheetIdentifiersWhichNeedsUpdate[$currentSheetIdentifier] = $sheetIdentifierForNewPersistenceIdentifier;
+            }
+        }
+
+        return $sheetIdentifiersWhichNeedsUpdate;
+    }
+
+    /**
+     * @param array $flexform
+     * @return array
+     */
+    protected function getSheetIdentifiersForFinisherOverrides(array $flexform): array
+    {
+        $sheetIdentifiers = [];
+        foreach ($this->getFinisherSheetsFromFlexform($flexform) as $sheetIdentifier => $sheetData) {
+            $firstSheetItemOptionPath = array_shift(array_keys($sheetData['lDEF']));
+            preg_match('#^settings\.finishers\.(.*)\..+$#', $firstSheetItemOptionPath, $matches);
+            if (!isset($matches[1])) {
+                continue;
+            }
+            $finisherIdentifier = $matches[1];
+            $sheetIdentifiers[$sheetIdentifier] = $finisherIdentifier;
+        }
+
+        return $sheetIdentifiers;
+    }
+
+    /**
+     * @param array $flexform
+     * @return array
+     */
+    protected function getFinisherSheetsFromFlexform(array $flexform): array
+    {
+        if (!isset($flexform['data'])) {
+            return [];
+        }
+
+        return array_filter(
+            $flexform['data'],
+            function ($key) {
+                return $key !== 'sDEF' && strlen($key) === 32;
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
+    /**
+     * @param array $flexform
+     * @return string
+     */
+    protected function getPersistenceIdentifierFromFlexform(array $flexform): string
+    {
+        return $flexform['data']['sDEF']['lDEF']['settings.persistenceIdentifier']['vDEF'] ?? '';
+    }
+
+    /**
+     * @param array $referenceData
+     * @param array $sheetIdentifiersWhichNeedsUpdate
+     * @param string $newPersistenceIdentifier
+     * @return string
+     */
+    protected function generateNewFlexformForReference(
+        array $referenceData,
+        array $sheetIdentifiersWhichNeedsUpdate,
+        string $newPersistenceIdentifier = ''
+    ): string {
+        $flexform = $referenceData['flexform'];
+        if (!empty($newPersistenceIdentifier)) {
+            $flexform['data']['sDEF']['lDEF']['settings.persistenceIdentifier']['vDEF'] = $newPersistenceIdentifier;
+        }
+
+        foreach ($sheetIdentifiersWhichNeedsUpdate as $oldSheetIdentifier => $newSheetIdentifier) {
+            $flexform['data'][$newSheetIdentifier] = $flexform['data'][$oldSheetIdentifier];
+            unset($flexform['data'][$oldSheetIdentifier]);
+        }
+
+        return $this->flexFormTools->flexArray2Xml($flexform, true);
+    }
+
+    /**
+     * @param string $persistenceIdentifier
+     * @return bool
+     */
+    protected function hasNewFileExtension(string $persistenceIdentifier): bool
+    {
+        return StringUtility::endsWith(
+            $persistenceIdentifier,
+            FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION
+        );
+    }
+
+    /**
+     * @param array $formDefinition
+     * @return bool
+     */
+    protected function looksLikeAFormDefinition(array $formDefinition): bool
+    {
+        return isset($formDefinition['identifier'], $formDefinition['type']) && $formDefinition['type'] === 'Form';
+    }
+
+    /**
+     * @param string $persistenceIdentifier
+     * @return string
+     */
+    protected function getOldPersistenceIdentifier(string $persistenceIdentifier): string
+    {
+        return preg_replace(
+            '
+            #^(.*)(\.form\.yaml)$#',
+            '${1}.yaml',
+            $persistenceIdentifier
+        );
+    }
+
+    /**
+     * @param string $persistenceIdentifier
+     * @return string
+     */
+    protected function getNewPersistenceIdentifier(string $persistenceIdentifier): string
+    {
+        return preg_replace(
+            '#(?<!\.form).yaml$#',
+            '.form.yaml',
+            $persistenceIdentifier
+        );
+    }
+
+    /**
+     * @param string $persistenceIdentifier
+     * @param string $prototypeName
+     * @param string $formIdentifier
+     * @param string $finisherIdentifier
+     * @return string
+     */
+    protected function buildExpectedSheetIdentifier(
+        string $persistenceIdentifier,
+        string $prototypeName,
+        string $formIdentifier,
+        string $finisherIdentifier
+    ): string {
+        return md5(
+            implode('', [
+                $persistenceIdentifier,
+                $prototypeName,
+                $formIdentifier,
+                $finisherIdentifier
+            ])
+        );
+    }
+
+    /**
+     * @param File $file
+     * @return array
+     */
+    protected function getFormDefinition(File $file): array
+    {
+        try {
+            $formDefinition = $this->yamlSource->load([$file]);
+
+            if (!$this->looksLikeAFormDefinition($formDefinition)) {
+                $formDefinition = [];
+            }
+        } catch (\Exception $exception) {
+            $formDefinition = [];
+        }
+
+        return $formDefinition;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAllFlexformFieldsFromFormPlugins(): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_refindex');
-        $queryBuilder->getRestrictions()->removeAll();
+            ->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
         $records = $queryBuilder
-            ->select(
-                'f.identifier AS identifier',
-                'f.uid AS uid',
-                'f.storage AS storage',
-                'r.recuid AS recuid',
-                't.pi_flexform AS pi_flexform'
-            )
-            ->from('sys_refindex', 'r')
-            ->innerJoin('r', 'sys_file', 'f', 'r.ref_uid = f.uid')
-            ->innerJoin('r', 'tt_content', 't', 'r.recuid = t.uid')
+            ->select('uid', 'pi_flexform')
+            ->from('tt_content')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'r.ref_table',
-                    $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'r.softref_key',
-                    $queryBuilder->createNamedParameter('formPersistenceIdentifier', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'r.deleted',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->notLike(
-                    'f.identifier',
-                    $queryBuilder->createNamedParameter('%.form.yaml', \PDO::PARAM_STR)
+                    'CType',
+                    $queryBuilder->createNamedParameter('form_formframework', \PDO::PARAM_STR)
                 )
             )
             ->execute()
@@ -324,66 +723,35 @@ class FormFileExtensionUpdate extends AbstractUpdate
     }
 
     /**
-     * @param array $referencedFormFiles
-     * @return array
+     * @param int $uid
+     * @param string $flexform
+     * @param bool $updateRefindex
      */
-    protected function groupReferencedExtensionFormFiles(
-        array $referencedFormFiles
-    ): array {
-        $referencedExtensionFormFiles = [];
+    protected function updateContentReference(
+        int $uid,
+        string $flexform,
+        bool $updateRefindex = false
+    ): void {
+        $this->connection->update(
+            'tt_content',
+            ['pi_flexform' => $flexform],
+            ['uid' => $uid]
+        );
 
-        foreach ($referencedFormFiles as $referencedFormFile) {
-            $identifier = $referencedFormFile['identifier'];
-            if ((int)$referencedFormFile['storage'] !== 0
-                || strpos($identifier, '/typo3conf/ext/') !== 0
-            ) {
-                continue;
-            }
-            $referencedExtensionFormFiles[$identifier][] = $referencedFormFile;
+        if (!$updateRefindex) {
+            return;
         }
 
-        return $referencedExtensionFormFiles;
-    }
-
-    /**
-     * @param array $referencedFormFiles
-     * @param string $identifier
-     * @return array
-     */
-    protected function filterReferencedFormFilesByIdentifier(
-        array $referencedFormFiles,
-        string $identifier
-    ): array {
-        return array_filter(
-            $referencedFormFiles,
-            function (array $referencedFormFile) use ($identifier) {
-                $referencedFormFileIdentifier = sprintf(
-                    '%d:%s',
-                    $referencedFormFile['storage'],
-                    $referencedFormFile['identifier']
-                );
-                return $referencedFormFileIdentifier === $identifier;
-            }
-        );
-    }
-
-    /**
-     * @param FolderInterface $folder
-     * @return string
-     */
-    protected function buildCombinedIdentifier(FolderInterface $folder): string
-    {
-        return sprintf(
-            '%d:%s',
-            $folder->getStorage()->getUid(),
-            $folder->getIdentifier()
+        $this->referenceIndex->updateRefIndexTable(
+            'tt_content',
+            $uid
         );
     }
 
     /**
      * @return ObjectManager
      */
-    protected function getObjectManager()
+    protected function getObjectManager(): ObjectManager
     {
         return GeneralUtility::makeInstance(ObjectManager::class);
     }
