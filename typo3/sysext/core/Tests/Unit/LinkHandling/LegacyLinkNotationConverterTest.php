@@ -280,4 +280,36 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
         $subject = new LinkService();
         $this->assertEquals($expected, $subject->asString($parameters));
     }
+
+    /**
+     * @return array
+     */
+    public function resolveThrowExceptionWithPharReferencesDataProvider(): array
+    {
+        return [
+            'URL encoded local' => [
+                'phar%3a//some-file.jpg',
+            ],
+            'URL encoded absolute' => [
+                'phar%3a///path/some-file.jpg',
+            ],
+            'not URL encoded local' => [
+                'phar://some-file.jpg',
+            ],
+            'not URL encoded absolute' => [
+                'phar:///path/some-file.jpg',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider resolveThrowExceptionWithPharReferencesDataProvider
+     */
+    public function resolveThrowExceptionWithPharReferences(string $pharUrl)
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1530030673);
+        (new LegacyLinkNotationConverter())->resolve($pharUrl);
+    }
 }
