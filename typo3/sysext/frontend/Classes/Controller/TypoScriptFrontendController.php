@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
+use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
@@ -60,6 +61,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Http\UrlHandlerInterface;
@@ -1479,20 +1481,24 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // If no page, we try to find the page before in the rootLine.
             // Page is 'not found' in case the id itself was not an accessible page. code 1
             $this->pageNotFound = 1;
-            $this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
-            if (!empty($this->rootLine)) {
-                $c = count($this->rootLine) - 1;
-                while ($c > 0) {
-                    // Add to page access failure history:
-                    $this->pageAccessFailureHistory['direct_access'][] = $this->rootLine[$c];
-                    // Decrease to next page in rootline and check the access to that, if OK, set as page record and ID value.
-                    $c--;
-                    $this->id = $this->rootLine[$c]['uid'];
-                    $this->page = $this->sys_page->getPage($this->id);
-                    if (!empty($this->page)) {
-                        break;
+            try {
+                $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
+                if (!empty($this->rootLine)) {
+                    $c = count($this->rootLine) - 1;
+                    while ($c > 0) {
+                        // Add to page access failure history:
+                        $this->pageAccessFailureHistory['direct_access'][] = $this->rootLine[$c];
+                        // Decrease to next page in rootline and check the access to that, if OK, set as page record and ID value.
+                        $c--;
+                        $this->id = $this->rootLine[$c]['uid'];
+                        $this->page = $this->sys_page->getPage($this->id);
+                        if (!empty($this->page)) {
+                            break;
+                        }
                     }
                 }
+            } catch (RootLineException $e) {
+                $this->rootLine = [];
             }
             // If still no page...
             if (empty($this->page)) {
@@ -1552,7 +1558,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->id = $this->page['uid'];
         }
         // Gets the rootLine
-        $this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
+        try {
+            $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
+        } catch (RootLineException $e) {
+            $this->rootLine = [];
+        }
         // If not rootline we're off...
         if (empty($this->rootLine)) {
             $message = 'The requested page didn\'t have a proper connection to the tree-root!';
@@ -1587,7 +1597,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $el = reset($this->rootLine);
                 $this->id = $el['uid'];
                 $this->page = $this->sys_page->getPage($this->id);
-                $this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
+                try {
+                    $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
+                } catch (RootLineException $e) {
+                    $this->rootLine = [];
+                }
             }
         }
     }
@@ -2754,7 +2768,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function updateRootLinesWithTranslations()
     {
-        $this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
+        try {
+            $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
+        } catch (RootLineException $e) {
+            $this->rootLine = [];
+        }
         $this->tmpl->updateRootlineData($this->rootLine);
     }
 
@@ -4692,15 +4710,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (!array_key_exists($targetPid, $this->domainDataCache)) {
             $result = null;
             $sysDomainData = $this->getSysDomainCache();
-            $rootline = $this->sys_page->getRootLine($targetPid);
-            // walk the rootline downwards from the target page
-            // to the root page, until a domain record is found
-            foreach ($rootline as $pageInRootline) {
-                $pidInRootline = $pageInRootline['uid'];
-                if (isset($sysDomainData[$pidInRootline])) {
-                    $result = $sysDomainData[$pidInRootline];
-                    break;
+            try {
+                $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $targetPid, null, $this->context)->get();
+                // walk the rootline downwards from the target page
+                // to the root page, until a domain record is found
+                foreach ($rootLine as $pageInRootline) {
+                    $pidInRootline = $pageInRootline['uid'];
+                    if (isset($sysDomainData[$pidInRootline])) {
+                        $result = $sysDomainData[$pidInRootline];
+                        break;
+                    }
                 }
+            } catch (RootLineException $e) {
+                // Do nothing
             }
             $this->domainDataCache[$targetPid] = $result;
         }

@@ -177,10 +177,4 @@ return [
             'Breaking-84877-MethodsOfLocalizationRepositoryChanged.rst',
         ],
     ],
-    'TYPO3\CMS\Frontend\Page\PageRepository->getRootLine' => [
-        'maximumNumberOfArguments' => 2,
-        'restFiles' => [
-            'Deprecation-85105-3rdMethodArgumentInPageRepository-getRootLine.rst',
-        ],
-    ],
 ];

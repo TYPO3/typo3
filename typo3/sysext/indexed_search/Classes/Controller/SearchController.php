@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -577,9 +579,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $pathId = $row['data_page_id'] ?: $row['page_id'];
         $pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
-        $rl = $GLOBALS['TSFE']->sys_page->getRootLine($pathId, $pathMP);
         $specConf = $this->settings['specialConfiguration']['0'];
-        if (is_array($rl)) {
+        try {
+            $rl = GeneralUtility::makeInstance(RootlineUtility::class, $pathId, $pathMP)->get();
             foreach ($rl as $dat) {
                 if (is_array($this->settings['specialConfiguration'][$dat['uid']])) {
                     $specConf = $this->settings['specialConfiguration'][$dat['uid']];
@@ -587,6 +589,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     break;
                 }
             }
+        } catch (RootLineException $e) {
+            // do nothing
         }
         return $specConf;
     }
@@ -1389,43 +1393,47 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if (!isset($this->pathCache[$identStr])) {
             $this->requiredFrontendUsergroups[$id] = [];
             $this->domainRecords[$id] = [];
-            $rl = $GLOBALS['TSFE']->sys_page->getRootLine($id, $pathMP);
-            $path = '';
-            $pageCount = count($rl);
-            if (is_array($rl) && !empty($rl)) {
-                $excludeDoktypesFromPath = GeneralUtility::trimExplode(
-                    ',',
-                    $this->settings['results']['pathExcludeDoktypes'] ?? '',
-                    true
-                );
-                $breadcrumbWrap = $this->settings['breadcrumbWrap'] ?? '/';
-                $breadcrumbWraps = GeneralUtility::makeInstance(TypoScriptService::class)
-                    ->explodeConfigurationForOptionSplit(['wrap' => $breadcrumbWrap], $pageCount);
-                foreach ($rl as $k => $v) {
-                    if (in_array($v['doktype'], $excludeDoktypesFromPath, false)) {
-                        continue;
-                    }
-                    // Check fe_user
-                    if ($v['fe_group'] && ($v['uid'] == $id || $v['extendToSubpages'])) {
-                        $this->requiredFrontendUsergroups[$id][] = $v['fe_group'];
-                    }
-                    // Check sys_domain
-                    if ($this->settings['detectDomainRecords']) {
-                        $domainName = $this->getFirstSysDomainRecordForPage($v['uid']);
-                        if ($domainName) {
-                            $this->domainRecords[$id][] = $domainName;
-                            // Set path accordingly
-                            $path = $domainName . $path;
+            try {
+                $rl = GeneralUtility::makeInstance(RootlineUtility::class, $id, $pathMP)->get();
+                $path = '';
+                $pageCount = count($rl);
+                if (!empty($rl)) {
+                    $excludeDoktypesFromPath = GeneralUtility::trimExplode(
+                        ',',
+                        $this->settings['results']['pathExcludeDoktypes'] ?? '',
+                        true
+                    );
+                    $breadcrumbWrap = $this->settings['breadcrumbWrap'] ?? '/';
+                    $breadcrumbWraps = GeneralUtility::makeInstance(TypoScriptService::class)
+                        ->explodeConfigurationForOptionSplit(['wrap' => $breadcrumbWrap], $pageCount);
+                    foreach ($rl as $k => $v) {
+                        if (in_array($v['doktype'], $excludeDoktypesFromPath, false)) {
+                            continue;
+                        }
+                        // Check fe_user
+                        if ($v['fe_group'] && ($v['uid'] == $id || $v['extendToSubpages'])) {
+                            $this->requiredFrontendUsergroups[$id][] = $v['fe_group'];
+                        }
+                        // Check sys_domain
+                        if ($this->settings['detectDomainRecords']) {
+                            $domainName = $this->getFirstSysDomainRecordForPage($v['uid']);
+                            if ($domainName) {
+                                $this->domainRecords[$id][] = $domainName;
+                                // Set path accordingly
+                                $path = $domainName . $path;
+                                break;
+                            }
+                        }
+                        // Stop, if we find that the current id is the current root page.
+                        if ($v['uid'] == $GLOBALS['TSFE']->config['rootLine'][0]['uid']) {
+                            array_pop($breadcrumbWraps);
                             break;
                         }
+                        $path = $GLOBALS['TSFE']->cObj->wrap(htmlspecialchars($v['title']), array_pop($breadcrumbWraps)['wrap']) . $path;
                     }
-                    // Stop, if we find that the current id is the current root page.
-                    if ($v['uid'] == $GLOBALS['TSFE']->config['rootLine'][0]['uid']) {
-                        array_pop($breadcrumbWraps);
-                        break;
-                    }
-                    $path = $GLOBALS['TSFE']->cObj->wrap(htmlspecialchars($v['title']), array_pop($breadcrumbWraps)['wrap']) . $path;
                 }
+            } catch (RootLineException $e) {
+                $path = '';
             }
             $this->pathCache[$identStr] = $path;
         }

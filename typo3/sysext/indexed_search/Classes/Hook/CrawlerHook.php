@@ -20,8 +20,10 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Crawler hook for indexed search. Works with the "crawler" extension
@@ -688,18 +690,21 @@ class CrawlerHook
      */
     public function getUidRootLineForClosestTemplate($id)
     {
-        $tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
-        // Gets the rootLine
-        $sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-        $rootLine = $sys_page->getRootLine($id);
-        // This generates the constants/config + hierarchy info for the template.
-        $tmpl->runThroughTemplates($rootLine, 0);
-        // Root line uids
-        $rootline_uids = [];
-        foreach ($tmpl->rootLine as $rlkey => $rldat) {
-            $rootline_uids[$rlkey] = $rldat['uid'];
+        $rootLineUids = [];
+        try {
+            // Gets the rootLine
+            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $id)->get();
+            // This generates the constants/config + hierarchy info for the template.
+            $tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
+            $tmpl->runThroughTemplates($rootLine);
+            // Root line uids
+            foreach ($tmpl->rootLine as $rlkey => $rldat) {
+                $rootLineUids[$rlkey] = $rldat['uid'];
+            }
+        } catch (RootLineException $e) {
+            // do nothing
         }
-        return $rootline_uids;
+        return $rootLineUids;
     }
 
     /**

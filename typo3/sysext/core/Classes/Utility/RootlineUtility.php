@@ -19,6 +19,11 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Exception\Page\BrokenRootLineException;
+use TYPO3\CMS\Core\Exception\Page\CircularRootLineException;
+use TYPO3\CMS\Core\Exception\Page\MountPointsDisabledException;
+use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
+use TYPO3\CMS\Core\Exception\Page\PagePropertyRelationNotFoundException;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -120,7 +125,7 @@ class RootlineUtility
      * @param int $uid
      * @param string $mountPointParameter
      * @param PageRepository|Context $context - @deprecated PageRepository is used until TYPO3 v9.4, but now the third parameter should be a Context object
-     * @throws \RuntimeException
+     * @throws MountPointsDisabledException
      */
     public function __construct($uid, $mountPointParameter = '', $context = null)
     {
@@ -142,7 +147,7 @@ class RootlineUtility
         $this->workspaceUid = $this->context->getPropertyFromAspect('workspace', 'id', 0);
         if ($this->mountPointParameter !== '') {
             if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
-                throw new \RuntimeException('Mount-Point Pages are disabled for this installation. Cannot resolve a Rootline for a page with Mount-Points', 1343462896);
+                throw new MountPointsDisabledException('Mount-Point Pages are disabled for this installation. Cannot resolve a Rootline for a page with Mount-Points', 1343462896);
             }
             $this->parseMountPointParameter();
         }
@@ -225,7 +230,7 @@ class RootlineUtility
      * Queries the database for the page record and returns it.
      *
      * @param int $uid Page id
-     * @throws \RuntimeException
+     * @throws PageNotFoundException
      * @return array
      */
     protected function getRecordArray($uid)
@@ -246,7 +251,7 @@ class RootlineUtility
                 ->execute()
                 ->fetch();
             if (empty($row)) {
-                throw new \RuntimeException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
+                throw new PageNotFoundException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
             }
             $this->pageContext->versionOL('pages', $row, false, true);
             $this->pageContext->fixVersioningPid('pages', $row);
@@ -259,7 +264,7 @@ class RootlineUtility
             }
         }
         if (!is_array(self::$pageRecordCache[$currentCacheIdentifier])) {
-            throw new \RuntimeException('Broken rootline. Could not resolve page with uid ' . $uid . '.', 1343464101);
+            throw new PageNotFoundException('Broken rootline. Could not resolve page with uid ' . $uid . '.', 1343464101);
         }
         return self::$pageRecordCache[$currentCacheIdentifier];
     }
@@ -269,7 +274,7 @@ class RootlineUtility
      *
      * @param int $uid page ID
      * @param array $pageRecord Page record (possibly overlaid) to be extended with relations
-     * @throws \RuntimeException
+     * @throws PagePropertyRelationNotFoundException
      * @return array $pageRecord with additional relations
      */
     protected function enrichWithRelationFields($uid, array $pageRecord)
@@ -341,7 +346,7 @@ class RootlineUtility
                     try {
                         $statement = $queryBuilder->execute();
                     } catch (DBALException $e) {
-                        throw new \RuntimeException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($table), 1343589452);
+                        throw new PagePropertyRelationNotFoundException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($table), 1343589452);
                     }
                     $relatedUids = [];
                     while ($row = $statement->fetch()) {
@@ -376,7 +381,7 @@ class RootlineUtility
     /**
      * Actual function to generate the rootline and cache it
      *
-     * @throws \RuntimeException
+     * @throws CircularRootLineException
      */
     protected function generateRootlineCache()
     {
@@ -400,7 +405,7 @@ class RootlineUtility
             foreach ($rootline as $entry) {
                 $cacheTags[] = 'pageId_' . $entry['uid'];
                 if ($entry['uid'] == $this->pageUid) {
-                    throw new \RuntimeException('Circular connection in rootline for page with uid ' . $this->pageUid . ' found. Check your mountpoint configuration.', 1343464103);
+                    throw new CircularRootLineException('Circular connection in rootline for page with uid ' . $this->pageUid . ' found. Check your mountpoint configuration.', 1343464103);
                 }
             }
         } else {
@@ -428,7 +433,7 @@ class RootlineUtility
      *
      * @param array $mountedPageData page record array of mounted page
      * @param array $mountPointPageData page record array of mount point page
-     * @throws \RuntimeException
+     * @throws BrokenRootLineException
      * @return array
      */
     protected function processMountedPage(array $mountedPageData, array $mountPointPageData)
@@ -436,7 +441,7 @@ class RootlineUtility
         $mountPid = $mountPointPageData['mount_pid'] ?? null;
         $uid = $mountedPageData['uid'] ?? null;
         if ($mountPid != $uid) {
-            throw new \RuntimeException('Broken rootline. Mountpoint parameter does not match the actual rootline. mount_pid (' . $mountPid . ') does not match page uid (' . $uid . ').', 1343464100);
+            throw new BrokenRootLineException('Broken rootline. Mountpoint parameter does not match the actual rootline. mount_pid (' . $mountPid . ') does not match page uid (' . $uid . ').', 1343464100);
         }
         // Current page replaces the original mount-page
         $mountUid = $mountPointPageData['uid'] ?? null;

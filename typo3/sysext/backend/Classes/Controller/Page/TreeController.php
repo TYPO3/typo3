@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -29,7 +30,7 @@ use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -327,7 +328,6 @@ class TreeController
     {
         $backendUser = $this->getBackendUser();
         $repository = GeneralUtility::makeInstance(PageTreeRepository::class, (int)$backendUser->workspace);
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
 
         $entryPoints = (int)($backendUser->uc['pageTree_temporaryMountPoint'] ?? 0);
         if ($entryPoints > 0) {
@@ -353,7 +353,11 @@ class TreeController
             }
 
             if (!empty($this->backgroundColors) && is_array($this->backgroundColors)) {
-                $entryPointRootLine = $pageRepository->getRootLine($entryPoint);
+                try {
+                    $entryPointRootLine = GeneralUtility::makeInstance(RootlineUtility::class, $entryPoint)->get();
+                } catch (RootLineException $e) {
+                    $entryPointRootLine = [];
+                }
                 foreach ($entryPointRootLine as $rootLineEntry) {
                     $parentUid = $rootLineEntry['uid'];
                     if (!empty($this->backgroundColors[$parentUid]) && empty($this->backgroundColors[$entryPoint])) {

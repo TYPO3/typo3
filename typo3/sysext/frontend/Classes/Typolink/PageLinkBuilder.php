@@ -20,9 +20,11 @@ use TYPO3\CMS\Backend\Routing\PageUriBuilder;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\ContentObject\TypolinkModifyLinkConfigForPageLinksHookInterface;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -294,8 +296,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // Find closest mount point
         // Gets rootline of linked-to page
         try {
-            $tCR_rootline = $tsfe->sys_page->getRootLine($pageId);
-        } catch (\RuntimeException $e) {
+            $tCR_rootline = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+        } catch (RootLineException $e) {
             $tCR_rootline = [];
         }
         $inverseTmplRootline = array_reverse($tsfe->tmpl->rootLine);

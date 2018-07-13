@@ -2424,6 +2424,13 @@ return [
             'Deprecation-85445-TemplateService-getFileName.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->getRootLine' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85557-PageRepository-getRootLine.rst'
+        ],
+    ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->calcIntExplode' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
