@@ -4853,10 +4853,16 @@ class DataHandler implements LoggerAwareInterface
             return false;
         }
 
-        $pass = !BackendUtility::getRecordLocalization($table, $uid, $language, 'AND pid=' . (int)$row['pid']);
+        $recordLocalizations = BackendUtility::getRecordLocalization($table, $uid, $language, 'AND pid=' . (int)$row['pid']);
 
-        if (!$pass) {
-            $this->newlog('Localization failed; There already was a localization for this language of the record ' . $table . ':' . $uid . '!', 1);
+        if (!empty($recordLocalizations)) {
+            $this->newlog(sprintf(
+                'Localization failed: there already are localizations (%s) for language %d of the "%s" record %d!',
+                implode(', ', array_column($recordLocalizations, 'uid')),
+                $language,
+                $table,
+                $uid
+            ), 1);
             return false;
         }
 
