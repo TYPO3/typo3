@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a8192024da87bd27d79d2ff271bee38",
+    "content-hash": "a19861b85fd39ac72029439831396301",
     "packages": [
         {
             "name": "cogpowered/finediff",
