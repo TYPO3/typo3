@@ -180,7 +180,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->standaloneView
             ->expects($this->any())
             ->method('setTemplatePathAndFilename')
-            ->with(Environment::getPublicPath() . '/typo3/sysext/core/bar.html');
+            ->with(Environment::getFrameworkBasePath() . '/core/bar.html');
         $this->subject->render(['file' => 'EXT:core/bar.html']);
     }
 

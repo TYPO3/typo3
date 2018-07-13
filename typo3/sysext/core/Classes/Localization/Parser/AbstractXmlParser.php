@@ -86,7 +86,7 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
     }
 
     /**
-     * Checks if a localized file is found in typo3conf/l10n/ (e.g. a language pack was downloaded in the backend)
+     * Checks if a localized file is found in labels pack (e.g. a language pack was downloaded in the backend)
      * or if $sameLocation is set, then checks for a file located in "{language}.locallang.xlf" at the same directory
      *
      * @param string $fileRef Absolute file reference to locallang file
@@ -107,15 +107,15 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
         }
 
         // Analyse file reference
-        if (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getPublicPath() . '/typo3/sysext/')) {
+        if (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getFrameworkBasePath() . '/')) {
             // Is system
-            $validatedPrefix = Environment::getPublicPath() . '/typo3/sysext/';
-        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getPublicPath() . '/typo3/ext/')) {
+            $validatedPrefix = Environment::getFrameworkBasePath() . '/';
+        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getBackendPath() . '/ext/')) {
             // Is global
-            $validatedPrefix = Environment::getPublicPath() . '/typo3/ext/';
-        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getPublicPath() . '/typo3conf/ext/')) {
+            $validatedPrefix = Environment::getBackendPath() . '/ext/';
+        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getExtensionsPath() . '/')) {
             // Is local
-            $validatedPrefix = Environment::getPublicPath() . '/typo3conf/ext/';
+            $validatedPrefix = Environment::getExtensionsPath() . '/';
         } else {
             $validatedPrefix = '';
         }
@@ -129,7 +129,7 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
             // Add empty first-entry if not there.
             list($file_extPath, $file_fileName) = $temp;
             // The filename is prefixed with "[language key]." because it prevents the llxmltranslate tool from detecting it.
-            return Environment::getPublicPath() . '/typo3conf/l10n/' . $language . '/' . $extensionKey . '/' . ($file_extPath ? $file_extPath . '/' : '') . $language . '.' . $file_fileName;
+            return Environment::getLabelsPath() . '/' . $language . '/' . $extensionKey . '/' . ($file_extPath ? $file_extPath . '/' : '') . $language . '.' . $file_fileName;
         }
         return null;
     }

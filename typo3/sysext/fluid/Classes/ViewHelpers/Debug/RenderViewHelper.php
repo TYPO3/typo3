@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Debug;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -105,8 +106,16 @@ class RenderViewHelper extends AbstractViewHelper
         $debugInfo = [];
         if (isset($this->arguments['partial'])) {
             $path = $this->renderingContext->getTemplatePaths()->getPartialPathAndFilename($partial);
+            $path = str_replace(
+                [
+                    Environment::getBackendPath() . '/ext/',
+                    Environment::getExtensionsPath() . '/',
+                    Environment::getFrameworkBasePath() . '/'
+                ],
+                'EXT:',
+                $path
+            );
             $path = PathUtility::stripPathSitePrefix($path);
-            $path = str_replace(['typo3conf/ext/', 'typo3/sysext/'], 'EXT:', $path);
             $debugInfo['Partial'] = 'Partial: ' . $path;
         }
         if (isset($this->arguments['section'])) {

@@ -157,7 +157,7 @@ class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImportExpor
 
         $subject->loadFile(
             // Files are parallel to the fixture .xml file in a folder - impexp tests for /../ not allowed in path, so we set an absolute path here
-            Environment::getPublicPath() . '/typo3/sysext/impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-but-not-included.xml',
+            Environment::getFrameworkBasePath() . '/impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-but-not-included.xml',
             1
         );
         $subject->importData(0);

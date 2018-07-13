@@ -2736,8 +2736,8 @@ class GeneralUtilityTest extends UnitTestCase
                 '"/dummy/path/" was not within directory Environment::getPublicPath() + "/typo3temp/"'
             ],
             [
-                Environment::getPublicPath() . '/typo3conf/path',
-                '"' . Environment::getPublicPath() . '/typo3conf/" was not within directory Environment::getPublicPath() + "/typo3temp/"',
+                Environment::getLegacyConfigPath() . '/path',
+                '"' . Environment::getLegacyConfigPath() . '/" was not within directory Environment::getPublicPath() + "/typo3temp/"',
             ],
             [
                 Environment::getPublicPath() . '/typo3temp/táylor/swíft',
@@ -3835,12 +3835,12 @@ class GeneralUtilityTest extends UnitTestCase
                 Environment::getPublicPath() . '/fileadmin/foo.txt'
             ],
             'Public web path . typo3/sysext/core/Resources/Public/Icons/Extension.png' => [
-                Environment::getPublicPath() . '/typo3/sysext/core/Resources/Public/Icons/Extension.png',
-                Environment::getPublicPath() . '/typo3/sysext/core/Resources/Public/Icons/Extension.png'
+                Environment::getFrameworkBasePath() . '/core/Resources/Public/Icons/Extension.png',
+                Environment::getFrameworkBasePath() . '/core/Resources/Public/Icons/Extension.png'
             ],
             'EXT:foo/Resources/Public/Icons/Extension.png' => [
                 'EXT:foo/Resources/Public/Icons/Extension.png',
-                Environment::getPublicPath() . '/typo3/sysext/foo/Resources/Public/Icons/Extension.png'
+                Environment::getFrameworkBasePath() . '/foo/Resources/Public/Icons/Extension.png'
             ]
         ];
     }

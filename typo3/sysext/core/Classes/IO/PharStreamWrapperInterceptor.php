@@ -56,7 +56,7 @@ class PharStreamWrapperInterceptor implements \TYPO3\PharStreamWrapper\Assertabl
         if (GeneralUtility::validPathStr($path)
             && GeneralUtility::isFirstPartOfStr(
                 $path,
-                Environment::getPublicPath() . '/typo3conf/ext/'
+                Environment::getExtensionsPath()
             )
         ) {
             return true;

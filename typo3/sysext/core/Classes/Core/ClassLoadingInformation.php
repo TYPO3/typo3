@@ -33,12 +33,12 @@ class ClassLoadingInformation
     /**
      * Base directory storing all autoload information
      */
-    const AUTOLOAD_INFO_DIR = 'typo3conf/autoload/';
+    const AUTOLOAD_INFO_DIR = 'autoload/';
 
     /**
      * Base directory storing all autoload information in testing context
      */
-    const AUTOLOAD_INFO_DIR_TESTS = 'typo3conf/autoload-tests/';
+    const AUTOLOAD_INFO_DIR_TESTS = 'autoload-tests/';
 
     /**
      * Name of file that contains all classes-filename mappings
@@ -167,9 +167,9 @@ class ClassLoadingInformation
     protected static function getClassLoadingInformationDirectory()
     {
         if (self::isTestingContext()) {
-            return Environment::getPublicPath() . '/' . self::AUTOLOAD_INFO_DIR_TESTS;
+            return Environment::getLegacyConfigPath() . '/' . self::AUTOLOAD_INFO_DIR_TESTS;
         }
-        return Environment::getPublicPath() . '/' . self::AUTOLOAD_INFO_DIR;
+        return Environment::getLegacyConfigPath() . '/' . self::AUTOLOAD_INFO_DIR;
     }
 
     /**

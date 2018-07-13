@@ -143,7 +143,7 @@ class LanguagePackService
             ];
             $extension['packs'] = [];
             foreach ($activeLanguages as $iso) {
-                $isLanguagePackDownloaded = is_dir(GeneralUtility::getFileAbsFileName('typo3conf/l10n/' . $iso . '/' . $key . '/'));
+                $isLanguagePackDownloaded = is_dir(Environment::getLabelsPath() . '/' . $iso . '/' . $key . '/');
                 $lastUpdate = $this->registry->get('languagePacks', $iso . '-' . $key);
                 $extension['packs'][] = [
                     'iso' => $iso,
@@ -245,7 +245,7 @@ class LanguagePackService
             $packageUrl = $key[0] . '/' . $key[1] . '/' . $key . '-l10n/' . $key . '-l10n-' . $iso . '.zip';
         }
 
-        $absoluteLanguagePath = GeneralUtility::getFileAbsFileName('typo3conf/l10n/' . $iso . '/');
+        $absoluteLanguagePath = Environment::getLabelsPath() . '/' . $iso . '/';
         $absoluteExtractionPath = $absoluteLanguagePath . $key . '/';
         $absolutePathToZipFile = Environment::getVarPath() . '/transient/' . $key . '-l10n-' . $iso . '.zip';
 

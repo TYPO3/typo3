@@ -75,14 +75,14 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
             $varPath . '/charset/' => 2,
             $varPath . '/lock/' => 2,
             $sitePath . '/typo3conf/' => 2,
-            $sitePath . '/typo3conf/ext/' => 0,
-            $sitePath . '/typo3conf/l10n/' => 0,
+            Environment::getExtensionsPath() => 0,
+            Environment::getLabelsPath() => 0,
             $sitePath . '/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] => -1,
             $sitePath . '/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '_temp_/' => 0,
         ];
 
         if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowGlobalInstall']) {
-            $checkWritable[TYPO3_mainDir . 'ext/'] = -1;
+            $checkWritable[Environment::getBackendPath() . '/ext/'] = -1;
         }
 
         foreach ($checkWritable as $path => $requirementLevel) {

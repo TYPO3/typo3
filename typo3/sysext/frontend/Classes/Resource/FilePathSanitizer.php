@@ -53,9 +53,9 @@ class FilePathSanitizer
             $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
             'uploads/',
             'typo3temp/',
-            TYPO3_mainDir . 'ext/',
-            TYPO3_mainDir . 'sysext/',
-            'typo3conf/ext/'
+            PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
+            PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
+            PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
         ];
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'])) {
             $paths = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'], true);

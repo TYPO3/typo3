@@ -481,7 +481,7 @@ class UpgradeController extends AbstractController
      */
     public function extensionScannerGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $extensionsInTypo3conf = (new Finder())->directories()->in(Environment::getPublicPath() . '/typo3conf/ext')->depth(0)->sortByName();
+        $extensionsInTypo3conf = (new Finder())->directories()->in(Environment::getExtensionsPath())->depth(0)->sortByName();
         $view = $this->initializeStandaloneView($request, 'Upgrade/ExtensionScanner.html');
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
@@ -506,7 +506,7 @@ class UpgradeController extends AbstractController
     {
         // Get and validate path
         $extension = $request->getParsedBody()['install']['extension'];
-        $extensionBasePath = Environment::getPublicPath() . '/typo3conf/ext/' . $extension;
+        $extensionBasePath = Environment::getExtensionsPath() . '/' . $extension;
         if (empty($extension) || !GeneralUtility::isAllowedAbsPath($extensionBasePath)) {
             throw new \RuntimeException(
                 'Path to extension ' . $extension . ' not allowed.',
@@ -594,7 +594,7 @@ class UpgradeController extends AbstractController
     {
         // Get and validate path and file
         $extension = $request->getParsedBody()['install']['extension'];
-        $extensionBasePath = Environment::getPublicPath() . '/typo3conf/ext/' . $extension;
+        $extensionBasePath = Environment::getExtensionsPath() . '/' . $extension;
         if (empty($extension) || !GeneralUtility::isAllowedAbsPath($extensionBasePath)) {
             throw new \RuntimeException(
                 'Path to extension ' . $extension . ' not allowed.',

@@ -83,7 +83,7 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
     {
         $view = new StandaloneView();
         $view->setTemplatePathAndFilename(
-            'typo3/sysext/adminpanel/Resources/Private/Templates/Modules/Debug/QueryInformation.html'
+            'EXT:adminpanel/Resources/Private/Templates/Modules/Debug/QueryInformation.html'
         );
         $this->getLanguageService()->includeLLFile('EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf');
         $view->assignMultiple($data->getArrayCopy());

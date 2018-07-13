@@ -108,7 +108,7 @@ class PackageManager implements SingletonInterface
     public function __construct(DependencyOrderingService $dependencyOrderingService = null)
     {
         $this->packagesBasePath = Environment::getPublicPath() . '/';
-        $this->packageStatesPathAndFilename = Environment::getPublicPath() . '/typo3conf/PackageStates.php';
+        $this->packageStatesPathAndFilename = Environment::getLegacyConfigPath() . '/PackageStates.php';
         if ($dependencyOrderingService === null) {
             trigger_error(self::class . ' without constructor based dependency injection has been deprecated in v9.2 and will not work in TYPO3 v10.', E_USER_DEPRECATED);
             $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
@@ -1075,13 +1075,13 @@ class PackageManager implements SingletonInterface
     {
         if (count($this->packagesBasePaths) < 3) {
             // Check if the directory even exists and if it is not empty
-            if (is_dir(Environment::getPublicPath() . '/typo3conf/ext') && $this->hasSubDirectories(Environment::getPublicPath() . '/typo3conf/ext')) {
-                $this->packagesBasePaths['local'] = Environment::getPublicPath() . '/typo3conf/ext/*/';
+            if (is_dir(Environment::getExtensionsPath()) && $this->hasSubDirectories(Environment::getExtensionsPath())) {
+                $this->packagesBasePaths['local'] = Environment::getExtensionsPath() . '/*/';
             }
-            if (is_dir(Environment::getPublicPath() . '/typo3/ext') && $this->hasSubDirectories(Environment::getPublicPath() . '/typo3/ext')) {
-                $this->packagesBasePaths['global'] = Environment::getPublicPath() . '/typo3/ext/*/';
+            if (is_dir(Environment::getBackendPath() . '/ext') && $this->hasSubDirectories(Environment::getBackendPath() . '/ext')) {
+                $this->packagesBasePaths['global'] = Environment::getBackendPath() . '/ext/*/';
             }
-            $this->packagesBasePaths['system'] = Environment::getPublicPath() . '/typo3/sysext/*/';
+            $this->packagesBasePaths['system'] = Environment::getFrameworkBasePath() . '/*/';
         }
         return $this->packagesBasePaths;
     }

@@ -58,7 +58,7 @@ class LocallangXmlParserTest extends UnitTestCase
     protected static function getFixtureFilePath($filename)
     {
         // We have to take the whole relative path as otherwise this test fails on Windows systems
-        return Environment::getPublicPath() . '/typo3/sysext/core/Tests/Unit/Localization/Parser/Fixtures/' . $filename;
+        return Environment::getFrameworkBasePath() . '/core/Tests/Unit/Localization/Parser/Fixtures/' . $filename;
     }
 
     /**

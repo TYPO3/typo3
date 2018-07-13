@@ -39,7 +39,7 @@ class XliffParserTest extends UnitTestCase
     protected function setUp()
     {
         // We have to take the whole relative path as otherwise this test fails on Windows systems
-        $fixturePath = Environment::getPublicPath() . '/typo3/sysext/core/Tests/Unit/Localization/Parser/Fixtures/';
+        $fixturePath = Environment::getFrameworkBasePath() . '/core/Tests/Unit/Localization/Parser/Fixtures/';
         $this->xliffFileNames = [
             'locallang' => $fixturePath . 'locallang.xlf',
             'locallang_override' => $fixturePath . 'locallang_override.xlf',

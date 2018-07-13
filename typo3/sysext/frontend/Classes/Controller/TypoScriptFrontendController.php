@@ -4182,15 +4182,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         $search = [
             '"typo3temp/',
-            '"typo3conf/ext/',
-            '"' . TYPO3_mainDir . 'ext/',
-            '"' . TYPO3_mainDir . 'sysext/'
+            '"' . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
+            '"' . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
+            '"' . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
         ];
         $replace = [
             '"' . $this->absRefPrefix . 'typo3temp/',
-            '"' . $this->absRefPrefix . 'typo3conf/ext/',
-            '"' . $this->absRefPrefix . TYPO3_mainDir . 'ext/',
-            '"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/'
+            '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
+            '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
+            '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
         ];
         /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
@@ -4417,7 +4417,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         } else {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
             // This is a hack to work around ___FILE___ resolving symbolic links
-            $realWebPath = PathUtility::dirname(realpath(Environment::getPublicPath() . '/typo3')) . '/';
+            $realWebPath = PathUtility::dirname(realpath(Environment::getBackendPath())) . '/';
             $file = $trace[0]['file'];
             if (strpos($file, $realWebPath) === 0) {
                 $file = str_replace($realWebPath, '', $file);

@@ -85,7 +85,7 @@ class ResourceCompressor
                 $this->gzipCompressionLevel = (int)$compressionLevel;
             }
         }
-        $this->setRootPath(TYPO3_MODE === 'BE' ? Environment::getPublicPath() . '/typo3/' : Environment::getPublicPath() . '/');
+        $this->setRootPath(TYPO3_MODE === 'BE' ? Environment::getBackendPath() . '/' : Environment::getPublicPath() . '/');
     }
 
     /**
@@ -462,14 +462,14 @@ class ResourceCompressor
             return $fileNameWithoutSlash;
         }
         // if the file is from a special TYPO3 internal directory, add the missing typo3/ prefix
-        if (is_file(realpath(Environment::getPublicPath() . '/typo3/' . $filename))) {
+        if (is_file(realpath(Environment::getBackendPath() . '/' . $filename))) {
             $filename = 'typo3/' . $filename;
         }
         // build the file path relative to the public web path
         if (strpos($filename, 'EXT:') === 0) {
             $file = GeneralUtility::getFileAbsFileName($filename);
         } elseif (strpos($filename, '../') === 0) {
-            $file = GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/typo3/' . $filename);
+            $file = GeneralUtility::resolveBackPath(Environment::getBackendPath() . '/' . $filename);
         } else {
             $file = Environment::getPublicPath() . '/' . $filename;
         }

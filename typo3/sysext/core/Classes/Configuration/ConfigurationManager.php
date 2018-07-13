@@ -40,32 +40,32 @@ class ConfigurationManager
     /**
      * @var string Path to default TYPO3_CONF_VARS file, relative to the public web folder
      */
-    protected $defaultConfigurationFile = 'typo3/sysext/core/Configuration/DefaultConfiguration.php';
+    protected $defaultConfigurationFile = 'core/Configuration/DefaultConfiguration.php';
 
     /**
      * @var string Path to description file for TYPO3_CONF_VARS, relative to the public web folder
      */
-    protected $defaultConfigurationDescriptionFile = 'typo3/sysext/core/Configuration/DefaultConfigurationDescription.yaml';
+    protected $defaultConfigurationDescriptionFile = 'core/Configuration/DefaultConfigurationDescription.yaml';
 
     /**
      * @var string Path to local overload TYPO3_CONF_VARS file, relative to the public web folder
      */
-    protected $localConfigurationFile = 'typo3conf/LocalConfiguration.php';
+    protected $localConfigurationFile = 'LocalConfiguration.php';
 
     /**
      * @var string Path to additional local file, relative to the public web folder
      */
-    protected $additionalConfigurationFile = 'typo3conf/AdditionalConfiguration.php';
+    protected $additionalConfigurationFile = 'AdditionalConfiguration.php';
 
     /**
      * @var string Path to factory configuration file used during installation as LocalConfiguration boilerplate
      */
-    protected $factoryConfigurationFile = 'typo3/sysext/core/Configuration/FactoryConfiguration.php';
+    protected $factoryConfigurationFile = 'core/Configuration/FactoryConfiguration.php';
 
     /**
      * @var string Path to possible additional factory configuration file delivered by packages
      */
-    protected $additionalFactoryConfigurationFile = 'typo3conf/AdditionalFactoryConfiguration.php';
+    protected $additionalFactoryConfigurationFile = 'AdditionalFactoryConfiguration.php';
 
     /**
      * Writing to these configuration paths is always allowed,
@@ -101,7 +101,7 @@ class ConfigurationManager
      */
     public function getDefaultConfigurationFileLocation()
     {
-        return Environment::getPublicPath() . '/' . $this->defaultConfigurationFile;
+        return Environment::getFrameworkBasePath() . '/' . $this->defaultConfigurationFile;
     }
 
     /**
@@ -113,7 +113,7 @@ class ConfigurationManager
      */
     public function getDefaultConfigurationDescriptionFileLocation()
     {
-        return Environment::getPublicPath() . '/' . $this->defaultConfigurationDescriptionFile;
+        return Environment::getFrameworkBasePath() . '/' . $this->defaultConfigurationDescriptionFile;
     }
 
     /**
@@ -135,7 +135,7 @@ class ConfigurationManager
      */
     public function getLocalConfigurationFileLocation()
     {
-        return Environment::getPublicPath() . '/' . $this->localConfigurationFile;
+        return Environment::getLegacyConfigPath() . '/' . $this->localConfigurationFile;
     }
 
     /**
@@ -159,7 +159,7 @@ class ConfigurationManager
      */
     public function getAdditionalConfigurationFileLocation()
     {
-        return Environment::getPublicPath() . '/' . $this->additionalConfigurationFile;
+        return Environment::getLegacyConfigPath() . '/' . $this->additionalConfigurationFile;
     }
 
     /**
@@ -169,7 +169,7 @@ class ConfigurationManager
      */
     protected function getFactoryConfigurationFileLocation()
     {
-        return Environment::getPublicPath() . '/' . $this->factoryConfigurationFile;
+        return Environment::getFrameworkBasePath() . '/' . $this->factoryConfigurationFile;
     }
 
     /**
@@ -321,7 +321,7 @@ class ConfigurationManager
     public function canWriteConfiguration()
     {
         $fileLocation = $this->getLocalConfigurationFileLocation();
-        return @is_writable(file_exists($fileLocation) ? $fileLocation : Environment::getPublicPath() . '/typo3conf/');
+        return @is_writable(file_exists($fileLocation) ? $fileLocation : Environment::getLegacyConfigPath() . '/');
     }
 
     /**
