@@ -121,7 +121,7 @@ class TestSetup extends Action\AbstractAction
                 ->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
                 ->setSubject($this->getEmailSubject())
                 ->setBody('<html><body>html test content</body></html>', 'text/html')
-                ->addPart('TEST CONTENT')
+                ->addPart('plain test content', 'text/plain')
                 ->send();
             $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
             $message->setTitle('Test mail sent');
