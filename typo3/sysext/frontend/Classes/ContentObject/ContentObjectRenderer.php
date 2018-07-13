@@ -6064,9 +6064,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param bool $show_hidden If set, then you want NOT to filter out hidden records. Otherwise hidden record are filtered based on the current preview settings.
      * @param array $ignore_array Array you can pass where keys can be "disabled", "starttime", "endtime", "fe_group" (keys from "enablefields" in TCA) and if set they will make sure that part of the clause is not added. Thus disables the specific part of the clause. For previewing etc.
      * @return string The part of the where clause on the form " AND [fieldname]=0 AND ...". Eg. " AND hidden=0 AND starttime < 123345567
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     public function enableFields($table, $show_hidden = false, array $ignore_array = [])
     {
+        trigger_error('cObj->enableFields() will be removed in TYPO3 v10. should be used from the PageRepository->enableFields() functionality directly.', E_USER_DEPRECATED);
         return $this->getTypoScriptFrontendController()->sys_page->enableFields($table, $show_hidden ? true : -1, $ignore_array);
     }
 
@@ -6825,7 +6827,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $constraints[] = QueryHelper::stripLogicalOperatorPrefix($tsfe->sys_page->where_hid_del);
             $constraints[] = QueryHelper::stripLogicalOperatorPrefix($tsfe->sys_page->where_groupAccess);
         } else {
-            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($this->enableFields($table, false, $enableFieldsIgnore));
+            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($tsfe->sys_page->enableFields($table, -1, $enableFieldsIgnore));
         }
 
         // MAKE WHERE:

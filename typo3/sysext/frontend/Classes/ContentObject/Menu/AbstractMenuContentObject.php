@@ -798,7 +798,7 @@ abstract class AbstractMenuContentObject
         $loadDB = GeneralUtility::makeInstance(RelationHandler::class);
         $loadDB->setFetchAllFields(true);
         $loadDB->start($specialValue, 'pages');
-        $loadDB->additionalWhere['pages'] = $this->parent_cObj->enableFields('pages', false, $skippedEnableFields);
+        $loadDB->additionalWhere['pages'] = $this->sys_page->enableFields('pages', -1, $skippedEnableFields);
         $loadDB->getFromDB();
         $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class, $this->parent_cObj);
         foreach ($loadDB->itemArray as $val) {

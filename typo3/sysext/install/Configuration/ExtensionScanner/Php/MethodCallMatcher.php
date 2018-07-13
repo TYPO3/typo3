@@ -2438,6 +2438,13 @@ return [
             'Deprecation-85555-TypoScriptFrontendController-getUniqueId.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->enableFields' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85558-ContentObjectRenderer-enableFields.rst'
+        ],
+    ],
     'TYPO3\CMS\Scheduler\Classes\Controller\SchedulerModuleController->addMessage' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 2,
