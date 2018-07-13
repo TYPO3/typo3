@@ -2431,6 +2431,13 @@ return [
             'Deprecation-85451-ContentObjectRenderer-calcIntExplodeDeprecated.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getUniqueId' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85555-TypoScriptFrontendController-getUniqueId.rst',
+        ],
+    ],
     'TYPO3\CMS\Scheduler\Classes\Controller\SchedulerModuleController->addMessage' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 2,

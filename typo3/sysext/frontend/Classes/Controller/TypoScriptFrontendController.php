@@ -688,6 +688,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * IDs we already rendered for this page (to make sure they are unique)
      * @var array
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      */
     private $usedUniqueIds = [];
 
@@ -4341,9 +4342,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $desired The desired id. If already used it is suffixed with a number
      * @return string The unique id
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - as this functionality is not needed anymore and does not belong in this Class conceptually.
      */
     public function getUniqueId($desired = '')
     {
+        trigger_error('Calling TSFE->getUniqueId() will be removed in TYPO3 v10.0, implement this functionality on your own with a proper Singleton Pattern which can be used outside of the frontend scope as well, if needed.', E_USER_DEPRECATED);
         if ($desired === '') {
             // id has to start with a letter to reach XHTML compliance
             $uniqueId = 'a' . $this->uniqueHash();
