@@ -487,13 +487,17 @@ class PageRepository implements LoggerAwareInterface
      * Returns the relevant page overlay record fields
      *
      * @param mixed $pageInput If $pageInput is an integer, it's the pid of the pageOverlay record and thus the page overlay record is returned. If $pageInput is an array, it's a page-record and based on this page record the language record is found and OVERLAID before the page record is returned.
-     * @param int $lUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
+     * @param int $languageUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
      * @throws \UnexpectedValueException
      * @return array Page row which is overlaid with language_overlay record (or the overlay record alone)
      */
-    public function getPageOverlay($pageInput, $lUid = -1)
+    public function getPageOverlay($pageInput, $languageUid = null)
     {
-        $rows = $this->getPagesOverlay([$pageInput], $lUid);
+        if ($languageUid === -1) {
+            trigger_error('Calling getPageOverlay() with "-1" as languageId is discouraged and will be unsupported in TYPO3 v10.0. Omit the parameter or use "null" instead.', E_USER_DEPRECATED);
+            $languageUid = null;
+        }
+        $rows = $this->getPagesOverlay([$pageInput], $languageUid);
         // Always an array in return
         return $rows[0] ?? [];
     }
@@ -502,21 +506,24 @@ class PageRepository implements LoggerAwareInterface
      * Returns the relevant page overlay record fields
      *
      * @param array $pagesInput Array of integers or array of arrays. If each value is an integer, it's the pids of the pageOverlay records and thus the page overlay records are returned. If each value is an array, it's page-records and based on this page records the language records are found and OVERLAID before the page records are returned.
-     * @param int $lUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
+     * @param int $languageUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
      * @throws \UnexpectedValueException
      * @return array Page rows which are overlaid with language_overlay record.
      *               If the input was an array of integers, missing records are not
      *               included. If the input were page rows, untranslated pages
      *               are returned.
      */
-    public function getPagesOverlay(array $pagesInput, $lUid = -1)
+    public function getPagesOverlay(array $pagesInput, $languageUid = null)
     {
         if (empty($pagesInput)) {
             return [];
         }
         // Initialize:
-        if ($lUid < 0) {
-            $lUid = $this->sys_language_uid;
+        if ($languageUid === null) {
+            $languageUid = $this->sys_language_uid;
+        } elseif ($languageUid < 0) {
+            trigger_error('Calling getPagesOverlay() with "-1" as languageId is discouraged and will be unsupported in TYPO3 v10.0. Omit the parameter or use "null" instead.', E_USER_DEPRECATED);
+            $languageUid = $this->sys_language_uid;
         }
         $row = null;
         foreach ($pagesInput as &$origPage) {
@@ -525,12 +532,12 @@ class PageRepository implements LoggerAwareInterface
                 if (!$hookObject instanceof PageRepositoryGetPageOverlayHookInterface) {
                     throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
                 }
-                $hookObject->getPageOverlay_preProcess($origPage, $lUid, $this);
+                $hookObject->getPageOverlay_preProcess($origPage, $languageUid, $this);
             }
         }
         unset($origPage);
         // If language UID is different from zero, do overlay:
-        if ($lUid) {
+        if ($languageUid) {
             $page_ids = [];
 
             $origPage = reset($pagesInput);
@@ -562,7 +569,7 @@ class PageRepository implements LoggerAwareInterface
                     ),
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($lUid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($languageUid, \PDO::PARAM_INT)
                     )
                 )
                 ->execute();
@@ -573,7 +580,7 @@ class PageRepository implements LoggerAwareInterface
                 if (is_array($row)) {
                     $row['_PAGES_OVERLAY'] = true;
                     $row['_PAGES_OVERLAY_UID'] = $row['uid'];
-                    $row['_PAGES_OVERLAY_LANGUAGE'] = $lUid;
+                    $row['_PAGES_OVERLAY_LANGUAGE'] = $languageUid;
                     $origUid = $row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
                     // Unset vital fields that are NOT allowed to be overlaid:
                     unset($row['uid']);
