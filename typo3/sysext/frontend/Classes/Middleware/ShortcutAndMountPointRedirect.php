@@ -22,6 +22,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Checks mount points, shortcuts and redirects to the target.
@@ -49,7 +50,7 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
 
         // See if the current page is of doktype "External URL", if so, do a redirect as well.
         if (empty($this->controller->config['config']['disablePageExternalUrl'] ?? null)
-            && $this->controller->sys_page::DOKTYPE_LINK === (int)$this->controller->page['doktype']) {
+            && PageRepository::DOKTYPE_LINK === (int)$this->controller->page['doktype']) {
             $externalUrl = $this->prefixExternalPageUrl(
                 $this->controller->page['url'],
                 $request->getAttribute('normalizedParams')->getSiteUrl()
