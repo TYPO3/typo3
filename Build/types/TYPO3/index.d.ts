@@ -30,6 +30,16 @@ declare namespace TYPO3 {
       export class FormEngine {
         public readonly Validation: FormEngineValidation;
       }
+
+      export class Wizard {
+        public addSlide(identifier: string, title: string, content: string, severity: number, callback?: Function): Wizard;
+        public lockNextStep(): JQuery;
+        public unlockNextStep(): JQuery;
+        public getComponent(): JQuery;
+        public addFinalProcessingSlide(callback?: Function): JQueryXHR;
+        public show(): Wizard;
+        public dismiss(): Wizard;
+      }
     }
   }
 }
@@ -47,6 +57,10 @@ declare module 'TYPO3/CMS/Backend/FormEngineValidation' {
 
 declare module 'TYPO3/CMS/Backend/FormEngine' {
   export = new TYPO3.CMS.Backend.FormEngine();
+}
+
+declare module 'TYPO3/CMS/Backend/Wizard' {
+  export = new TYPO3.CMS.Backend.Wizard();
 }
 
 // type definition for global namespace object
