@@ -472,7 +472,7 @@ class PharStreamWrapper
 
         while (count($parts)) {
             $currentPath = implode('/', $parts);
-            if (file_exists($currentPath)) {
+            if (@file_exists($currentPath)) {
                 return $currentPath;
             }
             array_pop($parts);
