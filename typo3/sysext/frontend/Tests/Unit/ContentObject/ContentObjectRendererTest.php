@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -1666,6 +1667,24 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $filenameIn = 'typo3/sysext/frontend/Public/Icons/Extension.svg';
         $this->assertEquals($filenameIn, $this->subject->getData('path:' . $filenameIn));
+    }
+
+    /**
+     * Checks if getData() works with type "context"
+     *
+     * @test
+     */
+    public function getDataWithTypeContext(): void
+    {
+        $context = new Context([
+            'workspace' => new WorkspaceAspect(3),
+            'frontend.user' => new UserAspect(new FrontendUserAuthentication(), [0, -1])
+        ]);
+        GeneralUtility::setSingletonInstance(Context::class, $context);
+        $this->assertEquals(3, $this->subject->getData('context:workspace:id'));
+        $this->assertEquals('0,-1', $this->subject->getData('context:frontend.user:groupIds'));
+        $this->assertEquals(false, $this->subject->getData('context:frontend.user:isLoggedIn'));
+        $this->assertEquals(false, $this->subject->getData('context:frontend.user:foozball'));
     }
 
     /**

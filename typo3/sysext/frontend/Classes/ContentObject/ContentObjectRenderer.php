@@ -4987,6 +4987,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $retVal = '';
                         }
                         break;
+                    case 'context':
+                        $context = GeneralUtility::makeInstance(Context::class);
+                        list($aspectName, $propertyName) = GeneralUtility::trimExplode(':', $key, true, 2);
+                        $retVal = $context->getPropertyFromAspect($aspectName, $propertyName, '');
+                        if (is_array($retVal)) {
+                            $retVal = implode(',', $retVal);
+                        }
+                        if (!is_scalar($retVal)) {
+                            $retVal = '';
+                        }
                 }
             }
 
