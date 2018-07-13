@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser;
 /**
  * Scans a MySQL CREATE TABLE statement for tokens.
  */
-class Lexer extends \Doctrine\Common\Lexer
+class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
 {
     // All tokens that are not valid identifiers must be < 100
     const T_NONE = 1;
