@@ -15,8 +15,10 @@ namespace TYPO3\CMS\Core\Database\Query\Restriction;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -46,8 +48,9 @@ class FrontendWorkspaceRestriction implements QueryRestrictionInterface
      */
     public function __construct(int $workspaceId = null, bool $includeRowsForWorkspacePreview = null, bool $enforceLiveRowsOnly = true)
     {
-        $this->workspaceId = $workspaceId ?? $GLOBALS['TSFE']->sys_page->versioningWorkspaceId;
-        $this->includeRowsForWorkspacePreview = $includeRowsForWorkspacePreview ?? $GLOBALS['TSFE']->sys_page->versioningWorkspaceId > 0;
+        $globalWorkspaceId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');
+        $this->workspaceId = $workspaceId ?? $globalWorkspaceId;
+        $this->includeRowsForWorkspacePreview = $includeRowsForWorkspacePreview ?? $globalWorkspaceId > 0;
         $this->enforceLiveRowsOnly = $enforceLiveRowsOnly;
     }
 

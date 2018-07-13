@@ -161,16 +161,15 @@ class Typo3DbBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $sourceMock = new \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector('tx_foo', 'Tx_Foo');
-        /** @var $pageRepositoryMock PageRepository|\PHPUnit_Framework_MockObject_MockObject */
-        $pageRepositoryMock = $this->getMockBuilder(PageRepository::class)
-            ->setMethods(['movePlhOL', 'getWorkspaceVersionOfRecord'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $pageRepositoryMock->expects($this->once())->method('getWorkspaceVersionOfRecord')->with($workspaceUid, 'tx_foo', '42')->will($this->returnValue($workspaceVersion));
-        $pageRepositoryMock->versioningWorkspaceId = $workspaceUid;
         $context = new Context([
             'workspace' => new WorkspaceAspect($workspaceUid)
         ]);
+        /** @var $pageRepositoryMock PageRepository|\PHPUnit_Framework_MockObject_MockObject */
+        $pageRepositoryMock = $this->getMockBuilder(PageRepository::class)
+            ->setMethods(['movePlhOL', 'getWorkspaceVersionOfRecord'])
+            ->setConstructorArgs([$context])
+            ->getMock();
+        $pageRepositoryMock->expects($this->once())->method('getWorkspaceVersionOfRecord')->with($workspaceUid, 'tx_foo', '42')->will($this->returnValue($workspaceVersion));
         $objectManagerMock->expects($this->at(0))->method('get')->with(Context::class)->willReturn($context);
         $objectManagerMock->expects($this->at(1))->method('get')->with(PageRepository::class, $context)->willReturn($pageRepositoryMock);
         $mockTypo3DbBackend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend::class, ['dummy'], [], '', false);

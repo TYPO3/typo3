@@ -461,6 +461,11 @@ return [
             'Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->versioningWorkspaceId' => [
+        'restFiles' => [
+            'Deprecation-85556-PageRepository-versioningWorkspaceId.rst'
+        ],
+    ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->fileCache' => [
         'restFiles' => [
             'Deprecation-85445-TemplateService-getFileName.rst'

@@ -6723,8 +6723,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'orderBy' => null,
         ];
 
+        $isInWorkspace = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'isOffline');
         $considerMovePlaceholders = (
-            $tsfe->sys_page->versioningWorkspaceId > 0 && $table !== 'pages'
+            $isInWorkspace && $table !== 'pages'
             && !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
         );
 

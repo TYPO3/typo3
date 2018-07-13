@@ -58,6 +58,7 @@ class PageRepository implements LoggerAwareInterface
         'error_getRootLine' => 'Using $error_getRootLine of class PageRepository from the outside is deprecated as this property only exists for legacy reasons.',
         'error_getRootLine_failPid' => 'Using $error_getRootLine_failPid of class PageRepository from the outside is deprecated as this property only exists for legacy reasons.',
         'sys_language_uid' => 'Using $sys_language_uid of class PageRepository from the outside is deprecated as this information is now stored within the Context Language Aspect given by the constructor.',
+        'versioningWorkspaceId' => 'Using $versioningWorkspaceId of class PageRepository from the outside is deprecated as this information is now stored within the Context Workspace Aspect given by the constructor.',
     ];
 
     /**
@@ -100,8 +101,9 @@ class PageRepository implements LoggerAwareInterface
      * user!
      *
      * @var int
+     * @deprecated This method will be kept protected from TYPO3 v10.0 on, instantiate a new pageRepository object with a custom workspace aspect to override this setting.
      */
-    public $versioningWorkspaceId = 0;
+    protected $versioningWorkspaceId = 0;
 
     /**
      * @var array

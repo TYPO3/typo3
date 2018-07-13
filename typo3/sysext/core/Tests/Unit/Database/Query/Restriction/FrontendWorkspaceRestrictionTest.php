@@ -16,10 +16,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
  */
 
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
+/**
+ * Test case
+ */
 class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @test
      */
@@ -32,12 +36,6 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
                 ],
             ]
         ];
-
-        $pageRepository = $this->createMock(PageRepository::class);
-        $pageRepository->versioningWorkspaceId = 0;
-
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->sys_page = $pageRepository;
 
         $subject = new FrontendWorkspaceRestriction(0);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
@@ -57,9 +55,6 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
             ]
         ];
 
-        $pageRepository = $this->createMock(PageRepository::class);
-        $pageRepository->versioningWorkspaceId = 42;
-
         $subject = new FrontendWorkspaceRestriction(42, true);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         $this->assertSame('(("aTable"."t3ver_wsid" = 0) OR ("aTable"."t3ver_wsid" = 42)) AND ("aTable"."pid" <> -1)', (string)$expression);
@@ -77,9 +72,6 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
                 ],
             ]
         ];
-
-        $pageRepository = $this->createMock(PageRepository::class);
-        $pageRepository->versioningWorkspaceId = 42;
 
         $subject = new FrontendWorkspaceRestriction(42, true, false);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
