@@ -26,7 +26,7 @@ class ImportExportHook
     /**
      * @param array $params
      */
-    public function beforeAddSysFileRecordOnImport(array $params): void
+    public function beforeAddSysFileRecordOnImport(array $params)
     {
         $fileRecord = $params['fileRecord'];
         $temporaryFile = $params['temporaryFile'];
