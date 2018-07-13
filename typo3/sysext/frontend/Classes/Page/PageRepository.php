@@ -1654,7 +1654,7 @@ class PageRepository implements LoggerAwareInterface
             }
             // If workspace ids matches and ID of current online version is found, look up
             // the PID value of that:
-            if ($oid && ((int)$this->versioningWorkspaceId === 0 && $this->checkWorkspaceAccess($wsid) || (int)$wsid === (int)$this->versioningWorkspaceId)) {
+            if ($oid && (int)$wsid === (int)$this->versioningWorkspaceId) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                 $queryBuilder->getRestrictions()
                     ->removeAll()
@@ -1970,9 +1970,11 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param int $wsid Workspace ID
      * @return bool true if the backend user has access to a certain workspace
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use $BE_USER->checkWorkspace() directly if necessary.
      */
     public function checkWorkspaceAccess($wsid)
     {
+        trigger_error('PageRepository->checkWorkspaceAccess() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         if (!$this->getBackendUser() || !ExtensionManagementUtility::isLoaded('workspaces')) {
             return false;
         }
@@ -2055,6 +2057,7 @@ class PageRepository implements LoggerAwareInterface
      * Returns the current BE user.
      *
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @deprecated will be removed in TYPO3 v10.0 as will not be used anymore then because checkWorkspaceAccess() will be removed.
      */
     protected function getBackendUser()
     {

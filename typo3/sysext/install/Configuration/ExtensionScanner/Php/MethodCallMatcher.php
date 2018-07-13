@@ -2445,7 +2445,7 @@ return [
             'Deprecation-85558-ContentObjectRenderer-enableFields.rst'
         ],
     ],
-    'TYPO3\CMS\Scheduler\Classes\Controller\SchedulerModuleController->addMessage' => [
+    'TYPO3\CMS\Scheduler\Controller\SchedulerModuleController->addMessage' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
@@ -2471,6 +2471,13 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-65578-ConfigconcatenateJsAndCssAndConcatenateFiles.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->checkWorkspaceAccess' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85554-PageRepository-checkWorkspaceAccess.rst',
         ],
     ],
 ];
