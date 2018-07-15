@@ -70,36 +70,38 @@ public class PreMergeSpec extends AbstractCoreSpec {
     Plan createPlan() {
         // PREPARATION stage
         ArrayList<Job> jobsPreparationStage = new ArrayList<Job>();
-
         jobsPreparationStage.add(this.getJobBuildLabels());
-
-        jobsPreparationStage.add(this.getJobComposerValidate());
-
         Stage stagePreparation = new Stage("Preparation")
             .jobs(jobsPreparationStage.toArray(new Job[jobsPreparationStage.size()]));
+
+        // EARLY stage
+        ArrayList<Job> jobsEarlyStage = new ArrayList<Job>();
+        jobsEarlyStage.add(this.getJobComposerValidate("PHP72"));
+        Stage stageEarly = new Stage("Early")
+            .jobs(jobsEarlyStage.toArray(new Job[jobsEarlyStage.size()]));
 
         // MAIN stage
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
-        jobsMainStage.add(this.getJobIntegrationVarious());
+        jobsMainStage.add(this.getJobIntegrationVarious("PHP72"));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion55(), "PHP55"));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion56(), "PHP56"));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion70(), "PHP70"));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion71(), "PHP71"));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP55"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP56"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP70"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP71"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP72"));
 
-        jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion55(), "PHP55"));
-        jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion56(), "PHP56"));
-        jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion70(), "PHP70"));
-        jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion71(), "PHP71"));
-        jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion72(), "PHP72"));
+        jobsMainStage.add(this.getJobLintPhp("PHP55"));
+        jobsMainStage.add(this.getJobLintPhp("PHP56"));
+        jobsMainStage.add(this.getJobLintPhp("PHP70"));
+        jobsMainStage.add(this.getJobLintPhp("PHP71"));
+        jobsMainStage.add(this.getJobLintPhp("PHP72"));
 
-        jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion55(), "PHP55"));
-        jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion56(), "PHP56"));
-        jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion70(), "PHP70"));
-        jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion71(), "PHP71"));
-        jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion72(), "PHP72"));
+        jobsMainStage.add(this.getJobUnitPhp("PHP55"));
+        jobsMainStage.add(this.getJobUnitPhp("PHP56"));
+        jobsMainStage.add(this.getJobUnitPhp("PHP70"));
+        jobsMainStage.add(this.getJobUnitPhp("PHP71"));
+        jobsMainStage.add(this.getJobUnitPhp("PHP72"));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
@@ -110,6 +112,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
             .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(
                 stagePreparation,
+                stageEarly,
                 stageMainStage
             )
             .linkedRepositories("git.typo3.org Core 7.6")
@@ -169,6 +172,9 @@ public class PreMergeSpec extends AbstractCoreSpec {
                 new ScriptTask()
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody("echo \"I'm just here for the labels!\"")
+            )
+            .requirements(
+                this.getRequirementDocker10()
             )
             .cleanWorkingDirectory(true);
     }

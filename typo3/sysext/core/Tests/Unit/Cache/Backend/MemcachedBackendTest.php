@@ -15,13 +15,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  */
 
 use TYPO3\CMS\Core\Cache\Backend\MemcachedBackend;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Testcase for the cache to memcached backend
  *
  * This file is a backport from FLOW3
  */
-class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class MemcachedBackendTest extends UnitTestCase
 {
     /**
      * Sets up this testcase
@@ -33,13 +34,32 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
             $this->markTestSkipped('Neither "memcache" nor "memcached" extension is available');
         }
-        try {
-            if (!@fsockopen('localhost', 11211)) {
-                $this->markTestSkipped('memcached not reachable');
-            }
-        } catch (\Exception $e) {
-            $this->markTestSkipped('memcached not reachable');
+        if (!getenv('typo3TestingMemcachedHost')) {
+            $this->markTestSkipped('environment variable "typo3TestingMemcachedHost" must be set to run this test');
         }
+        // Note we assume that if that typo3TestingMemcachedHost env is set, we can use that for testing,
+        // there is no test to see if the daemon is actually up and running. Tests will fail if env
+        // is set but daemon is down.
+    }
+
+    /**
+     * Initialize MemcacheBackend ($subject)
+     */
+    protected function initializeSubject()
+    {
+        // We know this env is set, otherwise setUp() would skip the tests
+        $memcachedHost = getenv('typo3TestingMemcachedHost');
+        // If typo3TestingMemcachedPort env is set, use it, otherwise fall back to standard port
+        $env = getenv('typo3TestingMemcachedPort');
+        $memcachedPort = is_string($env) ? (int)$env : 11211;
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, [], [], '', false);
+
+        $subject = new MemcachedBackend('Testing', [ 'servers' => [$memcachedHost . ':' . $memcachedPort] ]);
+        $subject->setCache($cache);
+        $subject->initializeObject();
+        return $subject;
     }
 
     /**
@@ -48,8 +68,13 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setThrowsExceptionIfNoFrontEndHasBeenSet()
     {
-        $backendOptions = ['servers' => ['localhost:11211']];
-        $backend = new MemcachedBackend('Testing', $backendOptions);
+        // We know this env is set, otherwise setUp() would skip the tests
+        $memcachedHost = getenv('typo3TestingMemcachedHost');
+        // If typo3TestingMemcachedPort env is set, use it, otherwise fall back to standard port
+        $env = getenv('typo3TestingMemcachedPort');
+        $memcachedPort = is_string($env) ? (int)$env : 11211;
+
+        $backend = new MemcachedBackend('Testing', [ 'servers' => [$memcachedHost . ':' . $memcachedPort] ]);
         $backend->initializeObject();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
@@ -71,7 +96,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function itIsPossibleToSetAndCheckExistenceInCache()
     {
-        $backend = $this->setUpBackend();
+        $backend = $this->initializeSubject();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
         $backend->set($identifier, $data);
@@ -84,7 +109,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function itIsPossibleToSetAndGetEntry()
     {
-        $backend = $this->setUpBackend();
+        $backend = $this->initializeSubject();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
         $backend->set($identifier, $data);
@@ -97,7 +122,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function itIsPossibleToRemoveEntryFromCache()
     {
-        $backend = $this->setUpBackend();
+        $backend = $this->initializeSubject();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
         $backend->set($identifier, $data);
@@ -111,7 +136,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function itIsPossibleToOverwriteAnEntryInTheCache()
     {
-        $backend = $this->setUpBackend();
+        $backend = $this->initializeSubject();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
         $backend->set($identifier, $data);
@@ -126,7 +151,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag()
     {
-        $backend = $this->setUpBackend();
+        $backend = $this->initializeSubject();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
         $backend->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
@@ -141,7 +166,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setRemovesTagsFromPreviousSet()
     {
-        $backend = $this->setUpBackend();
+        $backend = $this->initializeSubject();
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
         $backend->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
@@ -155,7 +180,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function hasReturnsFalseIfTheEntryDoesntExist()
     {
-        $backend = $this->setUpBackend();
+        $backend = $this->initializeSubject();
         $identifier = $this->getUniqueId('NonExistingIdentifier');
         $inCache = $backend->has($identifier);
         $this->assertFalse($inCache, '"has" did not return FALSE when checking on non existing identifier');
@@ -166,7 +191,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function removeReturnsFalseIfTheEntryDoesntExist()
     {
-        $backend = $this->setUpBackend();
+        $backend = $this->initializeSubject();
         $identifier = $this->getUniqueId('NonExistingIdentifier');
         $inCache = $backend->remove($identifier);
         $this->assertFalse($inCache, '"remove" did not return FALSE when checking on non existing identifier');
@@ -177,7 +202,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function flushByTagRemovesCacheEntriesWithSpecifiedTag()
     {
-        $backend = $this->setUpBackend();
+        $backend = $this->initializeSubject();
         $data = 'some data' . microtime();
         $backend->set('BackendMemcacheTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
         $backend->set('BackendMemcacheTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
@@ -193,7 +218,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function flushRemovesAllCacheEntries()
     {
-        $backend = $this->setUpBackend();
+        $backend = $this->initializeSubject();
         $data = 'some data' . microtime();
         $backend->set('BackendMemcacheTest1', $data);
         $backend->set('BackendMemcacheTest2', $data);
@@ -209,18 +234,23 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function flushRemovesOnlyOwnEntries()
     {
-        $backendOptions = ['servers' => ['localhost:11211']];
+         // We know this env is set, otherwise setUp() would skip the tests
+        $memcachedHost = getenv('typo3TestingMemcachedHost');
+        // If typo3TestingMemcachedPort env is set, use it, otherwise fall back to standard port
+        $env = getenv('typo3TestingMemcachedPort');
+        $memcachedPort = is_string($env) ? (int)$env : 11211;
+
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thisCache */
         $thisCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, [], [], '', false);
         $thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
-        $thisBackend = new MemcachedBackend('Testing', $backendOptions);
+        $thisBackend = new MemcachedBackend('Testing', [ 'servers' => [$memcachedHost . ':' . $memcachedPort] ]);
         $thisBackend->setCache($thisCache);
         $thisBackend->initializeObject();
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thatCache */
         $thatCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, [], [], '', false);
         $thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
-        $thatBackend = new MemcachedBackend('Testing', $backendOptions);
+        $thatBackend = new MemcachedBackend('Testing', [ 'servers' => [$memcachedHost . ':' . $memcachedPort] ]);
         $thatBackend->setCache($thatCache);
         $thatBackend->initializeObject();
         $thisBackend->set('thisEntry', 'Hello');
@@ -238,7 +268,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function largeDataIsStored()
     {
-        $backend = $this->setUpBackend();
+        $backend = $this->initializeSubject();
         $data = str_repeat('abcde', 1024 * 1024);
         $backend->set('tooLargeData', $data);
         $this->assertTrue($backend->has('tooLargeData'));
@@ -250,11 +280,23 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setTagsOnlyOnceToIdentifier()
     {
-        $backendOptions = ['servers' => ['localhost:11211']];
+        // We know this env is set, otherwise setUp() would skip the tests
+        $memcachedHost = getenv('typo3TestingMemcachedHost');
+        // If typo3TestingMemcachedPort env is set, use it, otherwise fall back to standard port
+        $env = getenv('typo3TestingMemcachedPort');
+        $memcachedPort = is_string($env) ? (int)$env : 11211;
+
+        $accessibleClassName = $this->buildAccessibleProxy(MemcachedBackend::class);
+        $backend = new $accessibleClassName('Testing', [ 'servers' => [$memcachedHost . ':' . $memcachedPort] ]);
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, [], [], '', false);
+        $backend->setCache($cache);
+        $backend->initializeObject();
+
         $identifier = $this->getUniqueId('MyIdentifier');
         $tags = ['UnitTestTag%test', 'UnitTestTag%boring'];
 
-        $backend = $this->setUpBackend($backendOptions, true);
         $backend->_call('addIdentifierToTags', $identifier, $tags);
         $this->assertSame(
             $tags,
@@ -266,30 +308,5 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $tags,
             $backend->_call('findTagsByIdentifier', $identifier)
         );
-    }
-
-    /**
-     * Sets up the memcached backend used for testing
-     *
-     * @param array $backendOptions Options for the memcache backend
-     * @param bool $accessible TRUE if backend should be encapsulated in accessible proxy otherwise FALSE.
-     * @return \TYPO3\CMS\Core\Tests\AccessibleObjectInterface|MemcachedBackend
-     */
-    protected function setUpBackend(array $backendOptions = [], $accessible = false)
-    {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, [], [], '', false);
-        if ($backendOptions == []) {
-            $backendOptions = ['servers' => ['localhost:11211']];
-        }
-        if ($accessible) {
-            $accessibleClassName = $this->buildAccessibleProxy(MemcachedBackend::class);
-            $backend = new $accessibleClassName('Testing', $backendOptions);
-        } else {
-            $backend = new MemcachedBackend('Testing', $backendOptions);
-        }
-        $backend->setCache($cache);
-        $backend->initializeObject();
-        return $backend;
     }
 }

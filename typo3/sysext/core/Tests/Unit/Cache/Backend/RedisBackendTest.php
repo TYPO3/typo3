@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+
 /**
  * Testcase for the cache to redis backend
  *
@@ -25,9 +27,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * to the internal data structure are done.
  *
  * Warning:
- * The unit tests use and flush redis database numbers 0 and 1!
+ * The unit tests use and flush redis database numbers 0 and 1 on the
+ * redis host specified by environment variable typo3RedisHost
  */
-class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class RedisBackendTest extends UnitTestCase
 {
     /**
      * If set, the tearDown() method will flush the cache used by this unit test.
@@ -39,7 +42,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * Own redis instance used in implementation tests
      *
-     * @var Redis
+     * @var \Redis
      */
     protected $redis = null;
 
@@ -51,13 +54,12 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if (!extension_loaded('redis')) {
             $this->markTestSkipped('redis extension was not available');
         }
-        try {
-            if (!@fsockopen('127.0.0.1', 6379)) {
-                $this->markTestSkipped('redis server not reachable');
-            }
-        } catch (\Exception $e) {
-            $this->markTestSkipped('redis server not reachable');
+        if (!getenv('typo3TestingRedisHost')) {
+            $this->markTestSkipped('environment variable "typo3TestingRedisHost" must be set to run this test');
         }
+        // Note we assume that if that typo3TestingRedisHost env is set, we can use that for testing,
+        // there is no test to see if the daemon is actually up and running. Tests will fail if env
+        // is set but daemon is down.
     }
 
     /**
@@ -69,6 +71,11 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, [], [], '', false);
         $mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('TestCache'));
+        // We know this env is set, otherwise setUp() would skip the tests
+        $backendOptions['hostname'] = getenv('typo3TestingRedisHost');
+        // If typo3TestingRedisPort env is set, use it, otherwise fall back to standard port
+        $env = getenv('typo3TestingRedisPort');
+        $backendOptions['port'] = is_string($env) ? (int)$env : 6379;
         $this->backend = new \TYPO3\CMS\Core\Cache\Backend\RedisBackend('Testing', $backendOptions);
         $this->backend->setCache($mockCache);
         $this->backend->initializeObject();
@@ -79,8 +86,14 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUpRedis()
     {
+        // We know this env is set, otherwise setUp() would skip the tests
+        $redisHost = getenv('typo3TestingRedisHost');
+        // If typo3TestingRedisPort env is set, use it, otherwise fall back to standard port
+        $env = getenv('typo3TestingRedisPort');
+        $redisPort = is_string($env) ? (int)$env : 6379;
+
         $this->redis = new \Redis();
-        $this->redis->connect('127.0.0.1', 6379);
+        $this->redis->connect($redisHost, $redisPort);
     }
 
     /**
