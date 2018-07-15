@@ -216,7 +216,9 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     public function disconnectIfConnectedDisconnects()
     {
         $this->assertTrue($this->subject->isConnected());
-        $this->subject->setDatabaseHost('127.0.0.1');
+        $env = getenv('typo3DatabaseHost');
+        $databaseHost = is_string($env) ? trim($env) : '127.0.0.1';
+        $this->subject->setDatabaseHost($databaseHost);
         $this->assertFalse($this->subject->isConnected());
     }
 

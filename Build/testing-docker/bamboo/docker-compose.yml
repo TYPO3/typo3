@@ -1,0 +1,134 @@
+version: '2.3'
+services:
+  chrome:
+    image: selenium/standalone-chrome:3.12
+    networks:
+      - test
+  mariadb10:
+    image: mariadb:10.1
+    environment:
+      MYSQL_ROOT_PASSWORD: funcp
+    tmpfs:
+      - /var/lib/mysql/:rw,noexec,nosuid
+    networks:
+      - test
+  postgres9-5:
+    image: postgres:9.5
+    environment:
+      POSTGRES_PASSWORD: funcp
+      POSTGRES_USER: ${HOST_USER}
+    volumes:
+      - /etc/passwd:/etc/passwd,ro
+    tmpfs:
+      - /var/lib/postgresql/data:rw,noexec,nosuid
+    networks:
+      - test
+  redis4:
+    image: redis:4-alpine
+    networks:
+      - test
+  memcached1-5:
+    image: memcached:1.5-alpine
+    networks:
+      - test
+  web:
+    image: typo3gmbh/php72:latest
+    user: ${HOST_UID}
+    stop_grace_period: 1s
+    networks:
+      - test
+    volumes:
+      - bamboo-data:/srv/bamboo/xml-data/build-dir
+    command: php -n -c /etc/php/cli-no-xdebug/php.ini -S web:8000 -t /srv/bamboo/xml-data/build-dir/${bamboo_buildKey}
+
+  start_dependencies_acceptance_install_mariadb10:
+    image: alpine:3.8
+    links:
+      - mariadb10
+      - chrome
+      - web
+    networks:
+      - test
+    command: >
+      /bin/sh -c "
+        echo Waiting for db start...;
+        while ! nc -z mariadb10 3306;
+        do
+          sleep 1;
+        done;
+        echo Connected!;
+      "
+
+  start_dependencies_acceptance_install_postgres9-5:
+    image: alpine:3.8
+    links:
+      - postgres9-5
+      - chrome
+      - web
+    networks:
+      - test
+    command: >
+      /bin/sh -c "
+        echo Waiting for db start...;
+        while ! nc -z postgres9-5 5432;
+        do
+          sleep 1;
+        done;
+        echo Connected!;
+      "
+
+  start_dependencies_functional_mariadb10:
+    image: alpine:3.8
+    links:
+      - mariadb10
+      - redis4
+      - memcached1-5
+    networks:
+      - test
+    command: >
+      /bin/sh -c "
+        echo Waiting for db start...;
+        while ! nc -z mariadb10 3306;
+        do
+          sleep 1;
+        done;
+        echo Connected!;
+      "
+
+  start_dependencies_functional_postgres9-5:
+    image: alpine:3.8
+    links:
+      - postgres9-5
+      - redis4
+      - memcached1-5
+    networks:
+      - test
+    command: >
+      /bin/sh -c "
+        echo Waiting for db start...;
+        while ! nc -z postgres9-5 5432;
+        do
+          sleep 1;
+        done;
+        echo Connected!;
+      "
+
+  start_dependencies_unit:
+    image: alpine:3.8
+    links:
+      - redis4
+      - memcached1-5
+    command: >
+      /bin/sh -c "
+        sleep 1;
+      "
+
+networks:
+  test:
+    external:
+      name: ${BAMBOO_COMPOSE_PROJECT_NAME}_test
+
+volumes:
+  bamboo-data:
+    external:
+      name: ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data
