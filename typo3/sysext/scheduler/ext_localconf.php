@@ -132,3 +132,12 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['frequencyOptions'] = [
     '*/20 * * * *' =>  'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:command.example3',
     '0 7 * * 2' =>  'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:command.example4',
 ];
+
+// Add system information toolbar item
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)
+    ->connect(
+        \TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem::class,
+        'getSystemInformation',
+        \TYPO3\CMS\Scheduler\SystemInformation\ToolbarItemProvider::class,
+        'getItem'
+    );

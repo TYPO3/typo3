@@ -471,6 +471,15 @@
 			<trans-unit id="command.example4">
 				<source>Every Tuesday at 07:00</source>
 			</trans-unit>
+			<trans-unit id="systemmessage.noLastRun">
+				<source><![CDATA[It seems the Scheduler has never yet run. Please check your <a href="%1$s">configuration</a>.]]></source>
+			</trans-unit>
+			<trans-unit id="systeminformation.lastRunLabel">
+				<source>Last Scheduler run</source>
+			</trans-unit>
+			<trans-unit id="systeminformation.lastRunValue">
+				<source>%1$s at %2$s, Duration %3$s, (started %4$s)</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
