@@ -22,15 +22,12 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 /**
- * Test case documenting an Extbase translation handling of tt_content consistent with TypoScript.
+ * This test is an Extbase version of the \TYPO3\CMS\Frontend\Tests\Functional\Rendering\LocalizedContentRenderingTest
+ * scenarios are the same, just a way of fetching content is different
  *
- * The old inconsistent handling is tested here:
- * @see \TYPO3\CMS\Extbase\Tests\Functional\Persistence\TranslatedContentLegacyTest
- *
- * This test has the same scenarios as in the TypoScript version:
- * @see \TYPO3\CMS\Frontend\Tests\Functional\Rendering\LocalizedContentRenderingTest
+ * This test documents current behaviour of extbase which is inconsistent with TypoScript rendering of tt_content.
  */
-class TranslatedContentTest extends AbstractDataHandlerActionTestCase
+class TranslatedContentLegacyTest extends AbstractDataHandlerActionTestCase
 {
     const VALUE_PageId = 89;
     const TABLE_Content = 'tt_content';
@@ -97,7 +94,7 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
         ]);
         $this->addTypoScriptToTemplateRecord(
             1,
-            'config.tx_extbase.features.consistentTranslationOverlayHandling = 1'
+            'config.tx_extbase.features.consistentTranslationOverlayHandling = 0'
         );
     }
 
@@ -193,46 +190,46 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
         $this->assertThat(
             $responseSections,
             $this->getRequestSectionHasRecordConstraint()
-                ->setTable(self::TABLE_Content)
-                ->setField('header')
-                ->setValues(...$visibleHeaders)
+                 ->setTable(self::TABLE_Content)
+                 ->setField('header')
+                 ->setValues(...$visibleHeaders)
         );
         $this->assertThat(
             $responseSections,
             $this->getRequestSectionDoesNotHaveRecordConstraint()
-                ->setTable(self::TABLE_Content)
-                ->setField('header')
-                ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
+                 ->setTable(self::TABLE_Content)
+                 ->setField('header')
+                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
         );
 
         //assert FAL relations
         $visibleFiles = ['T3BOARD'];
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
-            ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
+                                                  ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
+                                                  ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
         $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
-            ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
+                                                  ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
+                                                  ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
         $visibleFiles = ['Kasper2'];
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
-            ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
+                                                  ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
+                                                  ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
         $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
-            ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
+                                                  ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
+                                                  ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
         //assert Categories
         $visibleCategories = ['Category 1', 'Category 3 - not translated'];
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('categories')
-            ->setTable('sys_category')->setField('title')->setValues(...$visibleCategories));
+                                                  ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('categories')
+                                                  ->setTable('sys_category')->setField('title')->setValues(...$visibleCategories));
 
         $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('categories')
-            ->setTable('sys_category')->setField('title')->setValues(...$this->getNonVisibleCategoryTitles($visibleCategories)));
+                                                  ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('categories')
+                                                  ->setTable('sys_category')->setField('title')->setValues(...$this->getNonVisibleCategoryTitles($visibleCategories)));
     }
 
     /**
@@ -250,125 +247,12 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = 0
                                     config.sys_language_mode =',
                 'visibleRecords' => [
-                    300 => [
-                        'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
-                    ],
-                    301 => [
-                        'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
-                    ],
-                    303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language']
-                    ],
-                    308 => [
-                        'header' => '[DK] UnHidden Element #4',
-                        'image' => []
-                    ],
-                ],
-            ],
-            [
-                'typoScript' => 'config.sys_language_overlay = 0
-                                config.sys_language_mode = content_fallback',
-                'visibleRecords' => [
-                    300 => [
-                        'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
-                    ],
-                    301 => [
-                        'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
-                    ],
-                    303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language']
-                    ],
-                    308 => [
-                        'header' => '[DK] UnHidden Element #4',
-                        'image' => []
-                    ],
-                ],
-            ],
-            [
-                'typoScript' => 'config.sys_language_overlay = 0
-                                config.sys_language_mode = content_fallback;1,0',
-                'visibleRecords' => [
-                    300 => [
-                        'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
-                    ],
-                    301 => [
-                        'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
-                    ],
-                    303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language']
-                    ],
-                    308 => [
-                        'header' => '[DK] UnHidden Element #4',
-                        'image' => []
-                    ],
-                ],
-            ],
-            [
-                'typoScript' => 'config.sys_language_overlay = 0
-                                config.sys_language_mode = strict',
-                'visibleRecords' => [
-                    300 => [
-                        'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
-                    ],
-                    301 => [
-                        'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
-                    ],
-                    303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language']
-                    ],
-                    308 => [
-                        'header' => '[DK] UnHidden Element #4',
-                        'image' => []
-                    ],
-                ],
-            ],
-            [
-                'typoScript' => 'config.sys_language_overlay = 0
-                                config.sys_language_mode = ignore',
-                'visibleRecords' => [
-                    300 => [
-                        'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
-                    ],
-                    301 => [
-                        'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
-                    ],
-                    303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language']
-                    ],
-                    308 => [
-                        'header' => '[DK] UnHidden Element #4',
-                        'image' => []
-                    ],
-                ],
-            ],
-            5 => [
-                'typoScript' => 'config.sys_language_overlay = 1
-                                config.sys_language_mode =',
-                'visibleRecords' => [
+                    // todo all uids are wrong, these should be the uids of the translations
+                    // todo the images are wrong as these should be translated
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
@@ -376,7 +260,148 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper'],
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
+                    ],
+                ],
+            ],
+            [
+                'typoScript' => 'config.sys_language_overlay = 0
+                                config.sys_language_mode = content_fallback',
+                'visibleRecords' => [
+                    // todo as above, the wrong elements are shown and the images are not translated
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
+                    ],
+                ],
+            ],
+            [
+                'typoScript' => 'config.sys_language_overlay = 0
+                                config.sys_language_mode = content_fallback;1,0',
+                'visibleRecords' => [
+                    // todo just wrong see other cases
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
+                    ],
+                ],
+            ],
+            [
+                'typoScript' => 'config.sys_language_overlay = 0
+                                config.sys_language_mode = strict',
+                'visibleRecords' => [
+                    // todo just wrong see other cases
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                        'categories' => ['[Translate to Dansk:] Category 1'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                ],
+            ],
+            [
+                'typoScript' => 'config.sys_language_overlay = 0
+                                config.sys_language_mode = ignore',
+                'visibleRecords' => [
+                    // todo just wrong see other cases
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
+                    ],
+                ],
+            ],
+            5 => [
+                'typoScript' => 'config.sys_language_overlay = 1
+                                config.sys_language_mode =',
+                'visibleRecords' => [
+                    // todo just wrong see other cases
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
+
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
                     ],
                 ],
             ],
@@ -386,10 +411,12 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
+
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
@@ -397,7 +424,15 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
                     ],
                 ],
             ],
@@ -407,10 +442,11 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback;1,0',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
@@ -418,7 +454,15 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
                     ],
                 ],
             ],
@@ -426,18 +470,19 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = strict',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
-                    ],
-                    298 => [
-                        'header' => 'Regular Element #2',
-                        'image' => ['Kasper2'],
+                        'categories' => ['[Translate to Dansk:] Category 1'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
                     ],
                 ],
             ],
@@ -445,10 +490,11 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = ignore',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
@@ -456,24 +502,47 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
                     ],
                 ],
             ],
             // Expected behaviour:
             // Non translated default language elements are not shown, because of hideNonTranslated.
+            // Here we see it's not working - Regular Element #2 is still shown despite it's not translated to Dansk
+            // The same with relations (images and categories)
             10 => [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode =',
                 'visibleRecords' => [
+                    // todo too many records and wrong images
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
                     ],
                 ],
             ],
@@ -481,14 +550,27 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback',
                 'visibleRecords' => [
+                    // todo same as #10
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
                     ],
                 ],
             ],
@@ -496,14 +578,27 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback;1,0',
                 'visibleRecords' => [
+                    // todo same as #10
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
                     ],
                 ],
             ],
@@ -514,14 +609,19 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = strict',
                 'visibleRecords' => [
+                    // todo same as #10
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
+                        'categories' => ['[Translate to Dansk:] Category 1'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
                     ],
                 ],
             ],
@@ -529,14 +629,27 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = ignore',
                 'visibleRecords' => [
+                    // todo same as #10
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
+                        'image' => ['T3BOARD'],
+                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
                     ],
                 ],
             ],
@@ -562,38 +675,38 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
         $this->assertThat(
             $responseSections,
             $this->getRequestSectionHasRecordConstraint()
-                ->setTable(self::TABLE_Content)
-                ->setField('header')
-                ->setValues(...$visibleHeaders)
+                 ->setTable(self::TABLE_Content)
+                 ->setField('header')
+                 ->setValues(...$visibleHeaders)
         );
         $this->assertThat(
             $responseSections,
             $this->getRequestSectionDoesNotHaveRecordConstraint()
-                ->setTable(self::TABLE_Content)
-                ->setField('header')
-                ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
+                 ->setTable(self::TABLE_Content)
+                 ->setField('header')
+                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
         );
 
         foreach ($visibleRecords as $ttContentUid => $properties) {
             $visibleFileTitles = $properties['image'];
             if (!empty($visibleFileTitles)) {
                 $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-                    ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
-                    ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
+                                                          ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
+                                                          ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
             }
             $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-                ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
-                ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
+                                                      ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
+                                                      ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
 
             $visibleCategoryTitles = $properties['categories'] ?? [];
             if (!empty($visibleCategoryTitles)) {
                 $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-                    ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('categories')
-                    ->setTable('sys_category')->setField('title')->setValues(...$visibleCategoryTitles));
+                                                          ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('categories')
+                                                          ->setTable('sys_category')->setField('title')->setValues(...$visibleCategoryTitles));
             }
             $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-                ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('categories')
-                ->setTable('sys_category')->setField('title')->setValues(...$this->getNonVisibleCategoryTitles($visibleCategoryTitles)));
+                                                      ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('categories')
+                                                      ->setTable('sys_category')->setField('title')->setValues(...$this->getNonVisibleCategoryTitles($visibleCategoryTitles)));
         }
     }
 
@@ -645,19 +758,24 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback;1,0',
                 'visibleRecords' => [
-                    300 => [
-                        'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
-                    ],
-                    301 => [
+                    // todo there is something wrong with the result
+                    297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
+                        'image' => ['T3BOARD'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
                         'image' => ['[T3BOARD] Image added to DK element without default language'],
                     ],
-                    308 => [
+                    307 => [
                         'header' => '[DK] UnHidden Element #4',
                         'image' => [],
                     ],
@@ -673,9 +791,18 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = ignore',
                 'visibleRecords' => [
-                    302 => [
+                    // todo there is something wrong with the result
+                    297 => [
                         'header' => '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
-                        'image' => ['[T3BOARD] image translated to DE from DK'],
+                        'image' => ['T3BOARD'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
+                    ],
+                    299 => [
+                        'header' => 'Regular Element #3',
+                        'image' => ['Kasper']
                     ],
                     304 => [
                         'header' => '[DE] Without default language',
@@ -728,7 +855,7 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'visibleRecords' => [
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
+                        'image' => ['T3BOARD'], // todo this is wrong and should contain both translated images for #1
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
@@ -736,7 +863,16 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper'] // todo this is wrong and should contain both translated images for #3
+                    ],
+                    // todo those records shouldn't be here at all
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
                     ],
                 ],
             ],
@@ -752,7 +888,7 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'visibleRecords' => [
                     297 => [
                         'header' => '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
-                        'image' => ['[T3BOARD] image translated to DE from DK'],
+                        'image' => ['T3BOARD'],
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
@@ -760,7 +896,11 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper']
+                    ],
+                    304 => [
+                        'header' => '[DE] Without default language',
+                        'image' => [],
                     ],
                 ],
             ],
@@ -804,13 +944,27 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback;1,0',
                 'visibleRecords' => [
+                    // todo this is totally different to TS rendering, we shall see default content only
+                    // because the page is not translated and we have content_fallback active
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => [],
+                        'image' => ['T3BOARD'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                        'image' => ['Kasper']
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
+                    307 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
                     ],
                 ],
             ],
@@ -826,7 +980,19 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'visibleRecords' => [
                     297 => [
                         'header' => '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
-                        'image' => ['[T3BOARD] image translated to DE from DK'],
+                        'image' => ['T3BOARD'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper2'],
+                    ],
+                    299 => [
+                        'header' => 'Regular Element #3',
+                        'image' => ['Kasper']
+                    ],
+                    304 => [
+                        'header' => '[DE] Without default language',
+                        'image' => [],
                     ],
                 ],
             ],
@@ -856,32 +1022,32 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
 
         if ($statusCode === 200) {
             $responseSections = ResponseContent::fromString((string)$response->getBody())
-                ->getSections('Extbase:list()');
+                                               ->getSections('Extbase:list()');
             $this->assertThat(
                 $responseSections,
                 $this->getRequestSectionHasRecordConstraint()
-                    ->setTable(self::TABLE_Content)
-                    ->setField('header')
-                    ->setValues(...$visibleHeaders)
+                     ->setTable(self::TABLE_Content)
+                     ->setField('header')
+                     ->setValues(...$visibleHeaders)
             );
             $this->assertThat(
                 $responseSections,
                 $this->getRequestSectionDoesNotHaveRecordConstraint()
-                    ->setTable(self::TABLE_Content)
-                    ->setField('header')
-                    ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
+                     ->setTable(self::TABLE_Content)
+                     ->setField('header')
+                     ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
             );
 
             foreach ($visibleRecords as $ttContentUid => $properties) {
                 $visibleFileTitles = $properties['image'];
                 if (!empty($visibleFileTitles)) {
                     $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-                        ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
-                        ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
+                                                              ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
+                                                              ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
                 }
                 $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-                    ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
-                    ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
+                                                          ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
+                                                          ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
             }
         }
 
@@ -898,17 +1064,17 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+                'visibleRecordHeaders' => ['Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+                'visibleRecordHeaders' => ['Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+                'visibleRecordHeaders' => ['Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
@@ -918,64 +1084,64 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+                'visibleRecordHeaders' => ['Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
             5 => [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #3'],
             ],
             // Expected behaviour:
             // Not translated element #2 is shown because sys_language_overlay = 1 (with sys_language_overlay = hideNonTranslated, it would be hidden)
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #3'],
             ],
-            // Expected behaviour:
-            // Element #3 is not translated in PL and it is translated in DK. It's not shown as content_fallback is not related to single CE level
-            // but on page level - and this page is translated to Polish, so no fallback is happening
+//             Expected behaviour:
+//             Element #3 is not translated in PL and it is translated in DK. It's not shown as content_fallback is not related to single CE level
+//             but on page level - and this page is translated to Polish, so no fallback is happening
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #3'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = strict',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #3'],
             ],
             // Expected behaviour:
             // Non translated default language elements are not shown, because of hideNonTranslated
             10 => [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = strict',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
             ]
         ];
     }
@@ -1000,16 +1166,16 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
         $this->assertThat(
             $responseSections,
             $this->getRequestSectionHasRecordConstraint()
-                ->setTable(self::TABLE_Content)
-                ->setField('header')
-                ->setValues(...$visibleHeaders)
+                 ->setTable(self::TABLE_Content)
+                 ->setField('header')
+                 ->setValues(...$visibleHeaders)
         );
         $this->assertThat(
             $responseSections,
             $this->getRequestSectionDoesNotHaveRecordConstraint()
-                ->setTable(self::TABLE_Content)
-                ->setField('header')
-                ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
+                 ->setTable(self::TABLE_Content)
+                 ->setField('header')
+                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
         );
     }
 

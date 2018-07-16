@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface
 {
     /**
-     * @var DataMapper
+     * @var ?DataMapper
      */
     protected $dataMapper;
 
@@ -69,12 +69,14 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
      * @param DomainObjectInterface $parentObject The object instance this proxy is part of
      * @param string $propertyName The name of the proxied property in it's parent
      * @param mixed $fieldValue The raw field value.
+     * @param ?DataMapper $dataMapper
      */
-    public function __construct($parentObject, $propertyName, $fieldValue)
+    public function __construct($parentObject, $propertyName, $fieldValue, ?DataMapper $dataMapper = null)
     {
         $this->parentObject = $parentObject;
         $this->propertyName = $propertyName;
         $this->fieldValue = $fieldValue;
+        $this->dataMapper = $dataMapper;
     }
 
     /**
@@ -82,7 +84,9 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
      */
     public function initializeObject()
     {
-        $this->dataMapper = $this->objectManager->get(DataMapper::class);
+        if (!$this->dataMapper) {
+            $this->dataMapper = $this->objectManager->get(DataMapper::class);
+        }
     }
 
     /**

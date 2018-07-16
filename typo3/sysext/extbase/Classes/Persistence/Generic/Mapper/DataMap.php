@@ -243,7 +243,7 @@ class DataMap
      */
     public function getColumnMap($propertyName)
     {
-        return $this->columnMaps[$propertyName];
+        return $this->columnMaps[$propertyName] ?? null;
     }
 
     /**

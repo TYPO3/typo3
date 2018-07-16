@@ -1037,7 +1037,7 @@ class ConnectionMigrator
     {
         $connectionNames = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames();
 
-        if (array_key_exists($tableName, (array)$GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])) {
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName])) {
             return in_array($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName], $connectionNames, true)
                 ? $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName]
                 : ConnectionPool::DEFAULT_CONNECTION_NAME;

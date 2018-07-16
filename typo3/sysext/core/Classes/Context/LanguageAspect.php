@@ -47,7 +47,7 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  * - usually you fetch language 0 and -1, then take the "contentId" and "overlay" them
  *    - here you have two choices
  *          1. "on" if there is no overlay, do not render the default language records ("hideNonTranslated")
- *          2. "mixed" - if there no overlay, just keep the default language, possibility to have mixed languages - config.sys_language_overlay = 1
+ *          2. "mixed" - if there is no overlay, just keep the default language, possibility to have mixed languages - config.sys_language_overlay = 1
  *          3. "off" - do not do overlay, only fetch records available in the current "contentId" (see above), and do not care about overlays or fallbacks - fallbacks could be an option here, actually that is placed on top
  *          4. "includeFloating" - on + includeRecordsWithoutDefaultTranslation
  */

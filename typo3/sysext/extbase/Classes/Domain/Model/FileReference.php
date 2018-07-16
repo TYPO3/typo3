@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+
 /**
  * A file reference object (File Abstraction Layer)
  *
@@ -30,6 +32,19 @@ class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
     protected $uidLocal;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     */
+    protected $configurationManager;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+    }
+
+    /**
      * @param \TYPO3\CMS\Core\Resource\ResourceInterface $originalResource
      */
     public function setOriginalResource(\TYPO3\CMS\Core\Resource\ResourceInterface $originalResource)
@@ -44,7 +59,11 @@ class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
     public function getOriginalResource()
     {
         if ($this->originalResource === null) {
-            $this->originalResource = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($this->getUid());
+            $uid = $this->getUid();
+            if ($this->configurationManager->isFeatureEnabled('consistentTranslationOverlayHandling')) {
+                $uid = $this->_localizedUid;
+            }
+            $this->originalResource = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($uid);
         }
 
         return $this->originalResource;

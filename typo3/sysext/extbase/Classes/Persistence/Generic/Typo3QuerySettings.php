@@ -82,6 +82,8 @@ class Typo3QuerySettings implements QuerySettingsInterface
     protected $languageOverlayMode = true;
 
     /**
+     * Language Mode is NOT used when consistentTranslationOverlayHandling is enabled
+     *
      * Representing sys_language_mode only valid for current context
      *
      * @var string
@@ -221,6 +223,8 @@ class Typo3QuerySettings implements QuerySettingsInterface
     }
 
     /**
+     * Language Mode is NOT used when consistentTranslationOverlayHandling is enabled
+     *
      * @param string $languageMode NULL, "content_fallback", "strict" or "ignore"
      * @return QuerySettingsInterface instance of $this to allow method chaining
      * @api
@@ -232,6 +236,8 @@ class Typo3QuerySettings implements QuerySettingsInterface
     }
 
     /**
+     * Language Mode is NOT used when consistentTranslationOverlayHandling is enabled
+     *
      * @return string NULL, "content_fallback", "strict" or "ignore"
      */
     public function getLanguageMode()

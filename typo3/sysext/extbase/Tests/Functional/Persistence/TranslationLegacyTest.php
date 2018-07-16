@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
-class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class TranslationLegacyTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var array
@@ -74,10 +74,11 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
         $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $configuration = [
-            'features' => ['consistentTranslationOverlayHandling' => 1]
+            'features' => ['consistentTranslationOverlayHandling' => 0]
         ];
         $configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
+
         $this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
     }
 
@@ -161,12 +162,11 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(1);
-
         $this->assertFalse($querySettings->getLanguageOverlayMode());
         $this->assertNull($querySettings->getLanguageMode());
 
         $postCount = $query->execute()->count();
-        $this->assertSame(2, $postCount);
+        $this->assertSame(3, $postCount);
     }
 
     /**
@@ -185,7 +185,7 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
         $postCount = $query->execute()->count();
 
-        $this->assertSame(1, $postCount);
+        $this->assertSame(3, $postCount);
     }
 
     /**
@@ -207,9 +207,10 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
 
-        $this->assertCount(2, $posts);
+        $this->assertCount(3, $posts);
         $this->assertSame('A EN:Post2', $posts[0]->getTitle());
         $this->assertSame('B EN:Post1', $posts[1]->getTitle());
+        $this->assertSame('Post3', $posts[2]->getTitle());
     }
 
     /**
@@ -233,8 +234,10 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
 
-        $this->assertCount(1, $posts);
+        $this->assertCount(3, $posts);
         $this->assertSame('GR:Post1', $posts[0]->getTitle());
+        $this->assertSame('Post2', $posts[1]->getTitle());
+        $this->assertSame('Post3', $posts[2]->getTitle());
     }
 
     /**
@@ -258,8 +261,10 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
 
-        $this->assertCount(1, $posts);
+        $this->assertCount(3, $posts);
         $this->assertSame('GR:Post1', $posts[0]->getTitle());
+        $this->assertSame('Post2', $posts[1]->getTitle());
+        $this->assertSame('Post3', $posts[2]->getTitle());
     }
 
     /**
@@ -281,39 +286,10 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
 
-        $this->assertCount(2, $posts);
+        $this->assertCount(3, $posts);
         $this->assertSame('A EN:Post2', $posts[0]->getTitle());
         $this->assertSame('B EN:Post1', $posts[1]->getTitle());
-    }
-
-    /**
-     * This test shows that ordering by blog title works
-     * however the default language blog title is used
-     *
-     * @test
-     */
-    public function orderingByBlogTitle()
-    {
-        $query = $this->postRepository->createQuery();
-
-        $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds([1]);
-        $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(1);
-        $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
-
-        $query->setOrderings([
-            'blog.title' => QueryInterface::ORDER_ASCENDING,
-            'uid' => QueryInterface::ORDER_ASCENDING
-        ]);
-
-        /** @var Post[]|array $posts */
-        $posts = $query->execute()->toArray();
-
-        $this->assertCount(2, $posts);
-        $this->assertSame('B EN:Post1', $posts[0]->getTitle());
-        $this->assertSame('A EN:Post2', $posts[1]->getTitle());
+        $this->assertSame('Post3', $posts[2]->getTitle());
     }
 
     /**
@@ -345,6 +321,9 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
     /**
      * This test checks whether setIgnoreEnableFields(true) affects translated record too.
      * It's expected that when ignoring enable fields, the hidden translated record is shown.
+     * This is related to https://forge.typo3.org/issues/68672
+     *
+     * This tests documents current, buggy behaviour!
      *
      * @test
      */
@@ -364,44 +343,11 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         /** @var Post[] $posts */
         $posts = $query->execute()->toArray();
 
-        $this->assertCount(2, $posts);
-
-        $this->assertSame('GR:Post1', $posts[0]->getTitle());
-        $this->assertSame('GR:Post10', $posts[1]->getTitle());
-    }
-
-    /**
-     * This test checks whether setIgnoreEnableFields(true) affects translated record too.
-     * It's expected that when ignoring enable fields, the hidden translated record is shown.
-     * This is related to https://forge.typo3.org/issues/68672
-     *
-     * This tests documents current, buggy behaviour!
-     *
-     * @test
-     */
-    public function fetchingHiddenPostsReturnsHiddenOverlayOverlayEnabled()
-    {
-        $query = $this->postRepository->createQuery();
-
-        $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds([1]);
-        $querySettings->setRespectSysLanguage(true);
-        $querySettings->setIgnoreEnableFields(true);
-        $querySettings->setLanguageUid(2);
-        $querySettings->setLanguageOverlayMode(true);
-        //we need it to have stable results on pgsql
-        $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
-
-        /** @var Post[] $posts */
-        $posts = $query->execute()->toArray();
-
         $this->assertCount(4, $posts);
-
-        $this->assertSame('GR:Post1', $posts[0]->getTitle());
-        $this->assertSame('Post2', $posts[1]->getTitle());
-        $this->assertSame('Post3', $posts[2]->getTitle());
-        // once the issue is fixed this assertion should be GR:Post10
+        //This assertion is wrong, once the issue https://forge.typo3.org/issues/68672
+        //is fixed, the following assertion should be used.
         $this->assertSame('Post10', $posts[3]->getTitle());
+        //$this->assertSame('GR:Post10', $posts[3]->getTitle());
     }
 
     /**
@@ -421,30 +367,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('title', 'GR:Post1'));
-        /** @var Post[]|array $posts */
-        $posts = $query->execute()->toArray();
-        $this->assertCount(1, $posts);
-        $this->assertSame('GR:Post1', $posts[0]->getTitle());
-    }
-
-    /**
-     * Test checking if we can query db records by value of the child object
-     * Note that only child objects from language 0 are taken into account
-     *
-     * @test
-     */
-    public function fetchingTranslatedPostByBlogTitle()
-    {
-        $query = $this->postRepository->createQuery();
-        $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds([1]);
-        $querySettings->setRespectSysLanguage(true);
-        $querySettings->setLanguageUid(2);
-        $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
-
-        $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
-        $query->matching($query->equals('blog.title', 'Blog1'));
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
         $this->assertCount(1, $posts);
@@ -489,10 +411,8 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $query->matching($query->equals('tags.name', 'Tag1'));
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
-        $this->assertCount(2, $posts);
+        $this->assertCount(3, $posts);
         $this->assertSame('A EN:Post2', $posts[0]->getTitle());
-        $this->assertSame(1, count($posts[0]->getTags()));
-        $this->assertSame('B EN:Post1', $posts[1]->getTitle());
-        $this->assertSame(2, count($posts[1]->getTags()));
+        $this->assertSame('Post3', $posts[2]->getTitle());
     }
 }

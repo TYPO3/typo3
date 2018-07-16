@@ -106,6 +106,12 @@ class Query implements QueryInterface
     protected $querySettings;
 
     /**
+     * @var ?QueryInterface
+     * @internal
+     */
+    protected $parentQuery;
+
+    /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
@@ -145,6 +151,24 @@ class Query implements QueryInterface
     public function __construct($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return ?QueryInterface
+     * @internal
+     */
+    public function getParentQuery(): ?QueryInterface
+    {
+        return $this->parentQuery;
+    }
+
+    /**
+     * @param ?QueryInterface $parentQuery
+     * @internal
+     */
+    public function setParentQuery(?QueryInterface $parentQuery): void
+    {
+        $this->parentQuery = $parentQuery;
     }
 
     /**

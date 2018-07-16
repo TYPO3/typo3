@@ -15,10 +15,12 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  */
 
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException;
 use TYPO3\CMS\Extbase\Persistence;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
@@ -67,6 +69,25 @@ class DataMapper
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
     protected $signalSlotDispatcher;
+
+    /**
+     * @var ConfigurationManagerInterface
+     */
+    protected $configurationManager;
+
+    /**
+     * @var ?QueryInterface
+     */
+    protected $query;
+
+    /**
+     * DataMapper constructor.
+     * @param ?QueryInterface $query
+     */
+    public function __construct(?QueryInterface $query = null)
+    {
+        $this->query = $query;
+    }
 
     /**
      * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
@@ -122,6 +143,14 @@ class DataMapper
     public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
     {
         $this->signalSlotDispatcher = $signalSlotDispatcher;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
     }
 
     /**
@@ -347,12 +376,12 @@ class DataMapper
         $propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
         if ($enableLazyLoading === true && $propertyMetaData['annotations']['lazy']) {
             if ($propertyMetaData['type'] === Persistence\ObjectStorage::class) {
-                $result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue);
+                $result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue, $this);
             } else {
                 if (empty($fieldValue)) {
                     $result = null;
                 } else {
-                    $result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class, $parentObject, $propertyName, $fieldValue);
+                    $result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class, $parentObject, $propertyName, $fieldValue, $this);
                 }
             }
         } else {
@@ -408,11 +437,32 @@ class DataMapper
      */
     protected function getPreparedQuery(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '')
     {
-        $columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
+        $dataMap = $this->getDataMap(get_class($parentObject));
+        $columnMap = $dataMap->getColumnMap($propertyName);
         $type = $this->getType(get_class($parentObject), $propertyName);
         $query = $this->queryFactory->create($type);
+        if ($this->query) {
+            $query->setParentQuery($this->query);
+        }
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->getQuerySettings()->setRespectSysLanguage(false);
+
+        if ($this->configurationManager->isFeatureEnabled('consistentTranslationOverlayHandling')) {
+            //we always want to overlay relations as most of the time they are stored in db using default lang uids
+            $query->getQuerySettings()->setLanguageOverlayMode(true);
+            if ($this->query) {
+                $query->getQuerySettings()->setLanguageUid($this->query->getQuerySettings()->getLanguageUid());
+
+                if ($dataMap->getLanguageIdColumnName() !== null && !$this->query->getQuerySettings()->getRespectSysLanguage()) {
+                    //pass language of parent record to child objects, so they can be overlaid correctly in case
+                    //e.g. findByUid is used.
+                    //the languageUid is used for getRecordOverlay later on, despite RespectSysLanguage being false
+                    $languageUid = (int)$parentObject->_getProperty('_languageUid');
+                    $query->getQuerySettings()->setLanguageUid($languageUid);
+                }
+            }
+        }
+
         if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
             if ($columnMap->getChildSortByFieldName() !== null) {
                 $query->setOrderings([$columnMap->getChildSortByFieldName() => Persistence\QueryInterface::ORDER_ASCENDING]);

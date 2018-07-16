@@ -35,7 +35,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
     private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+     * @var ?DataMapper
      */
     protected $dataMapper;
 
@@ -94,13 +94,15 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
      * @param DomainObjectInterface $parentObject The object instance this proxy is part of
      * @param string $propertyName The name of the proxied property in it's parent
      * @param mixed $fieldValue The raw field value.
+     * @param ?DataMapper $dataMapper
      */
-    public function __construct($parentObject, $propertyName, $fieldValue)
+    public function __construct($parentObject, $propertyName, $fieldValue, ?DataMapper $dataMapper = null)
     {
         $this->parentObject = $parentObject;
         $this->propertyName = $propertyName;
         $this->fieldValue = $fieldValue;
         reset($this->storage);
+        $this->dataMapper = $dataMapper;
     }
 
     /**
@@ -108,7 +110,9 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
      */
     public function initializeObject()
     {
-        $this->dataMapper = $this->objectManager->get(DataMapper::class);
+        if (!$this->dataMapper) {
+            $this->dataMapper = $this->objectManager->get(DataMapper::class);
+        }
     }
 
     /**

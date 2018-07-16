@@ -81,6 +81,8 @@ interface QuerySettingsInterface
     public function getLanguageOverlayMode();
 
     /**
+     * Language Mode is NOT used when consistentTranslationOverlayHandling is enabled
+     *
      * @param string $languageMode NULL, "content_fallback", "strict" or "ignore"
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
      * @api
@@ -88,6 +90,8 @@ interface QuerySettingsInterface
     public function setLanguageMode($languageMode);
 
     /**
+     * Language Mode is NOT used when consistentTranslationOverlayHandling is enabled
+     *
      * @return string NULL, "content_fallback", "strict" or "ignore"
      */
     public function getLanguageMode();

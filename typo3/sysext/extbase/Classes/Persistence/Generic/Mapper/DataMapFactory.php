@@ -137,7 +137,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
         $tableName = $this->resolveTableName($className);
         $columnMapping = [];
         $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $classSettings = $frameworkConfiguration['persistence']['classes'][$className];
+        $classSettings = $frameworkConfiguration['persistence']['classes'][$className] ?? null;
         if ($classSettings !== null) {
             if (isset($classSettings['subclasses']) && is_array($classSettings['subclasses'])) {
                 $subclasses = $this->resolveSubclassesRecursive($frameworkConfiguration['persistence']['classes'], $classSettings['subclasses']);
@@ -424,7 +424,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
         $columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby'] ?? null);
         $columnMap->setParentKeyFieldName($columnConfiguration['foreign_field'] ?? null);
         $columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field'] ?? null);
-        if (is_array($columnConfiguration['foreign_match_fields'])) {
+        if (is_array($columnConfiguration['foreign_match_fields'] ?? null)) {
             $columnMap->setRelationTableMatchFields($columnConfiguration['foreign_match_fields']);
         }
         return $columnMap;
