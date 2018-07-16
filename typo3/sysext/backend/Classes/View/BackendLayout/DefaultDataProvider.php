@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\Common\Collections\Expr\Comparison;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -155,12 +155,12 @@ class DefaultDataProvider implements DataProviderInterface
                     $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->comparison(
                             $queryBuilder->createNamedParameter($pageTsConfigId[$fieldName], \PDO::PARAM_INT),
-                            Comparison::EQ,
+                            ExpressionBuilder::EQ,
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                         ),
                         $queryBuilder->expr()->comparison(
                             $queryBuilder->createNamedParameter($storagePid, \PDO::PARAM_INT),
-                            Comparison::EQ,
+                            ExpressionBuilder::EQ,
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                         )
                     ),
@@ -177,7 +177,7 @@ class DefaultDataProvider implements DataProviderInterface
                     $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->comparison(
                             $queryBuilder->createNamedParameter($pageTsConfigId[$fieldName], \PDO::PARAM_INT),
-                            Comparison::EQ,
+                            ExpressionBuilder::EQ,
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
