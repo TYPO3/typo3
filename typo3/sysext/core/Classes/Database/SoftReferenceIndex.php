@@ -14,11 +14,15 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
@@ -190,7 +194,7 @@ class SoftReferenceIndex implements SingletonInterface
     public function findRef_typolink_tag($content)
     {
         // Parse string for special TYPO3 <link> tag:
-        $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+        $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         $linkService = GeneralUtility::makeInstance(LinkService::class);
         $linkTags = $htmlParser->splitTags('a', $content);
         // Traverse result:
@@ -202,6 +206,7 @@ class SoftReferenceIndex implements SingletonInterface
                         $linkDetails = $linkService->resolve($matches[1]);
                         if ($linkDetails['type'] === LinkService::TYPE_FILE && preg_match('/file\?uid=(\d+)/', $matches[1], $fileIdMatch)) {
                             $token = $this->makeTokenID($key);
+                            $elements[$key]['matchString'] = $linkTags[$key];
                             $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $linkTags[$key]);
                             $elements[$key]['subst'] = [
                                 'type' => 'db',
@@ -211,15 +216,37 @@ class SoftReferenceIndex implements SingletonInterface
                             ];
                         } elseif ($linkDetails['type'] === LinkService::TYPE_PAGE && preg_match('/page\?uid=(\d+)#?(\d+)?/', $matches[1], $pageAndAnchorMatches)) {
                             $token = $this->makeTokenID($key);
-                            $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $linkTags[$key]);
+                            $content = '{softref:' . $token . '}';
+                            $elements[$key]['matchString'] = $linkTags[$key];
                             $elements[$key]['subst'] = [
                                 'type' => 'db',
-                                'recordRef' => 'pages:' . $linkDetails['pageuid'] . (isset($pageAndAnchorMatches[2]) ? '#c' . $pageAndAnchorMatches[2] : ''),
+                                'recordRef' => 'pages:' . $linkDetails['pageuid'],
                                 'tokenID' => $token,
-                                'tokenValue' => $linkDetails['pageuid'] . (isset($pageAndAnchorMatches[2]) ? '#c' . $pageAndAnchorMatches[2] : '')
+                                'tokenValue' => $linkDetails['pageuid']
                             ];
+                            if (isset($pageAndAnchorMatches[2]) && $pageAndAnchorMatches[2] !== '') {
+                                // Anchor is assumed to point to a content elements:
+                                if (MathUtility::canBeInterpretedAsInteger($pageAndAnchorMatches[2])) {
+                                    // Initialize a new entry because we have a new relation:
+                                    $newTokenID = $this->makeTokenID('setTypoLinkPartsElement:anchor:' . $key);
+                                    $elements[$newTokenID . ':' . $key] = [];
+                                    $elements[$newTokenID . ':' . $key]['matchString'] = 'Anchor Content Element: ' . $pageAndAnchorMatches[2];
+                                    $content .= '#{softref:' . $newTokenID . '}';
+                                    $elements[$newTokenID . ':' . $key]['subst'] = [
+                                        'type' => 'db',
+                                        'recordRef' => 'tt_content:' . $pageAndAnchorMatches[2],
+                                        'tokenID' => $newTokenID,
+                                        'tokenValue' => $pageAndAnchorMatches[2]
+                                    ];
+                                } else {
+                                    // Anchor is a hardcoded string
+                                    $content .= '#' . $pageAndAnchorMatches[2];
+                                }
+                            }
+                            $linkTags[$key] = str_replace($matches[1], $content, $linkTags[$key]);
                         } elseif ($linkDetails['type'] === LinkService::TYPE_URL) {
                             $token = $this->makeTokenID($key);
+                            $elements[$key]['matchString'] = $linkTags[$key];
                             $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $linkTags[$key]);
                             $elements[$key]['subst'] = [
                                 'type' => 'external',
@@ -234,7 +261,7 @@ class SoftReferenceIndex implements SingletonInterface
                     // keep the legacy code for now
                     $typolinkValue = preg_replace('/<LINK[[:space:]]+/i', '', substr($foundValue, 0, -1));
                     $tLP = $this->getTypoLinkParts($typolinkValue);
-                    $linkTags[$k] = '<LINK ' . $this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k) . '>';
+                    $linkTags[$key] = '<LINK ' . $this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $key) . '>';
                 }
             }
         }
@@ -364,7 +391,7 @@ class SoftReferenceIndex implements SingletonInterface
      * The extraction is based on how \TYPO3\CMS\Frontend\ContentObject::typolink() behaves.
      *
      * @param string $typolinkValue TypoLink value.
-     * @return array Array with the properties of the input link specified. The key "LINK_TYPE" will reveal the type. If that is blank it could not be determined.
+     * @return array Array with the properties of the input link specified. The key "type" will reveal the type. If that is blank it could not be determined.
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink()
      * @see setTypoLinkPartsElement()
      */
@@ -383,86 +410,43 @@ class SoftReferenceIndex implements SingletonInterface
             );
         }
 
-        // Parse URL:
-        $pU = @parse_url($link_param);
-
-        // If it's a mail address:
-        if (strpos($link_param, '@') !== false && !$pU['scheme']) {
-            $link_param = preg_replace('/^mailto:/i', '', $link_param);
-            $finalTagParts['LINK_TYPE'] = 'mailto';
-            $finalTagParts['url'] = trim($link_param);
+        $linkService = GeneralUtility::makeInstance(LinkService::class);
+        try {
+            $linkData = $linkService->resolve($link_param);
+            switch ($linkData['type']) {
+                case LinkService::TYPE_RECORD:
+                    $finalTagParts['table'] = $linkData['identifier'];
+                    $finalTagParts['uid'] = $linkData['uid'];
+                    break;
+                case LinkService::TYPE_PAGE:
+                    $linkData['pageuid'] = (int)$linkData['pageuid'];
+                    if (isset($linkData['pagetype'])) {
+                        $linkData['pagetype'] = (int)$linkData['pagetype'];
+                    }
+                    if (isset($linkData['fragment'])) {
+                        $finalTagParts['anchor'] = $linkData['fragment'];
+                    }
+                    break;
+                case LinkService::TYPE_FILE:
+                case LinkService::TYPE_UNKNOWN:
+                    if (isset($linkData['file'])) {
+                        $finalTagParts['type'] = LinkService::TYPE_FILE;
+                        $linkData['file'] = $linkData['file'] instanceof FileInterface ? $linkData['file']->getUid() : $linkData['file'];
+                    } else {
+                        $pU = parse_url($link_param);
+                        parse_str($pU['query'] ?? '', $query);
+                        if (isset($query['uid'])) {
+                            $finalTagParts['type'] = LinkService::TYPE_FILE;
+                            $finalTagParts['file'] = (int)$query['uid'];
+                        }
+                    }
+                    break;
+            }
+            return array_merge($finalTagParts, $linkData);
+        } catch (UnknownLinkHandlerException $e) {
+            // Cannot handle anything
             return $finalTagParts;
         }
-
-        if ($pU['scheme'] === 't3' && $pU['host'] === LinkService::TYPE_RECORD) {
-            $finalTagParts['LINK_TYPE'] = LinkService::TYPE_RECORD;
-            $finalTagParts['url'] = $link_param;
-        }
-
-        list($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($link_param), 2);
-
-        // Dispatch available signal slots.
-        $linkHandlerFound = false;
-        list($linkHandlerFound, $finalTagParts) = $this->emitGetTypoLinkParts($linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue);
-        if ($linkHandlerFound) {
-            return $finalTagParts;
-        }
-
-        // Check for FAL link-handler keyword
-        if ($linkHandlerKeyword === 'file') {
-            $finalTagParts['LINK_TYPE'] = 'file';
-            $finalTagParts['identifier'] = trim($link_param);
-            return $finalTagParts;
-        }
-
-        $isLocalFile = 0;
-        $fileChar = (int)strpos($link_param, '/');
-        $urlChar = (int)strpos($link_param, '.');
-
-        // Detects if a file is found in site-root and if so it will be treated like a normal file.
-        list($rootFileDat) = explode('?', rawurldecode($link_param));
-        $containsSlash = strstr($rootFileDat, '/');
-        $rFD_fI = pathinfo($rootFileDat);
-        $fileExtension = strtolower($rFD_fI['extension']);
-        if (!$containsSlash && trim($rootFileDat) && (@is_file(Environment::getPublicPath() . '/' . $rootFileDat) || $fileExtension === 'php' || $fileExtension === 'html' || $fileExtension === 'htm')) {
-            $isLocalFile = 1;
-        } elseif ($containsSlash) {
-            // Adding this so realurl directories are linked right (non-existing).
-            $isLocalFile = 2;
-        }
-        if ($pU['scheme'] || ($isLocalFile != 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar))) { // url (external): If doubleSlash or if a '.' comes before a '/'.
-            $finalTagParts['LINK_TYPE'] = 'url';
-            $finalTagParts['url'] = $link_param;
-        } elseif ($containsSlash || $isLocalFile) { // file (internal)
-            $splitLinkParam = explode('?', $link_param);
-            if (file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile) {
-                $finalTagParts['LINK_TYPE'] = 'file';
-                $finalTagParts['filepath'] = rawurldecode($splitLinkParam[0]);
-                $finalTagParts['query'] = $splitLinkParam[1];
-            }
-        } else {
-            // integer or alias (alias is without slashes or periods or commas, that is
-            // 'nospace,alphanum_x,lower,unique' according to definition in $GLOBALS['TCA']!)
-            $finalTagParts['LINK_TYPE'] = 'page';
-
-            $link_params_parts = explode('#', $link_param);
-            // Link-data del
-            $link_param = trim($link_params_parts[0]);
-
-            if ((string)$link_params_parts[1] !== '') {
-                $finalTagParts['anchor'] = trim($link_params_parts[1]);
-            }
-
-            // Splitting the parameter by ',' and if the array counts more than 1 element it's an id/type/? pair
-            $pairParts = GeneralUtility::trimExplode(',', $link_param);
-            if (count($pairParts) > 1) {
-                $link_param = $pairParts[0];
-                $finalTagParts['type'] = $pairParts[1]; // Overruling 'type'
-            }
-            $finalTagParts['page_id'] = (int)$link_param;
-        }
-
-        return $finalTagParts;
     }
 
     /**
@@ -482,11 +466,19 @@ class SoftReferenceIndex implements SingletonInterface
         $elements[$tokenID . ':' . $idx] = [];
         $elements[$tokenID . ':' . $idx]['matchString'] = $content;
         // Based on link type, maybe do more:
-        switch ((string)$tLP['LINK_TYPE']) {
-            case 'mailto':
-
-            case 'url':
-                // Mail addresses and URLs can be substituted manually:
+        switch ((string)$tLP['type']) {
+            case LinkService::TYPE_EMAIL:
+                // Mail addresses can be substituted manually:
+                $elements[$tokenID . ':' . $idx]['subst'] = [
+                    'type' => 'string',
+                    'tokenID' => $tokenID,
+                    'tokenValue' => $tLP['email']
+                ];
+                // Output content will be the token instead:
+                $content = '{softref:' . $tokenID . '}';
+                break;
+            case LinkService::TYPE_URL:
+                // URLs can be substituted manually
                 $elements[$tokenID . ':' . $idx]['subst'] = [
                     'type' => 'string',
                     'tokenID' => $tokenID,
@@ -495,11 +487,25 @@ class SoftReferenceIndex implements SingletonInterface
                 // Output content will be the token instead:
                 $content = '{softref:' . $tokenID . '}';
                 break;
-            case 'file':
+            case LinkService::TYPE_FOLDER:
+                // This is a link to a folder...
+                return $content;
+            case LinkService::TYPE_FILE:
                 // Process files referenced by their FAL uid
-                if ($tLP['identifier']) {
+                if (isset($tLP['file'])) {
+                    $fileId = $tLP['file'] instanceof FileInterface ? $tLP['file']->getUid() : $tLP['file'];
+                    // Token and substitute value
+                    $elements[$tokenID . ':' . $idx]['subst'] = [
+                        'type' => 'db',
+                        'recordRef' => 'sys_file:' . $fileId,
+                        'tokenID' => $tokenID,
+                        'tokenValue' => 'file:' . $fileId,
+                    ];
+                    // Output content will be the token instead:
+                    $content = '{softref:' . $tokenID . '}';
+                } elseif ($tLP['identifier']) {
                     list($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($tLP['identifier']), 2);
-                    if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($linkHandlerValue)) {
+                    if (MathUtility::canBeInterpretedAsInteger($linkHandlerValue)) {
                         // Token and substitute value
                         $elements[$tokenID . ':' . $idx]['subst'] = [
                             'type' => 'db',
@@ -517,27 +523,27 @@ class SoftReferenceIndex implements SingletonInterface
                     return $content;
                 }
                 break;
-            case 'page':
+            case LinkService::TYPE_PAGE:
                 // Rebuild page reference typolink part:
                 $content = '';
                 // Set page id:
-                if ($tLP['page_id']) {
+                if ($tLP['pageuid']) {
                     $content .= '{softref:' . $tokenID . '}';
                     $elements[$tokenID . ':' . $idx]['subst'] = [
                         'type' => 'db',
-                        'recordRef' => 'pages:' . $tLP['page_id'],
+                        'recordRef' => 'pages:' . $tLP['pageuid'],
                         'tokenID' => $tokenID,
-                        'tokenValue' => $tLP['page_id']
+                        'tokenValue' => $tLP['pageuid']
                     ];
                 }
                 // Add type if applicable
-                if ((string)$tLP['type'] !== '') {
-                    $content .= ',' . $tLP['type'];
+                if ((string)$tLP['pagetype'] !== '') {
+                    $content .= ',' . $tLP['pagetype'];
                 }
                 // Add anchor if applicable
                 if ((string)$tLP['anchor'] !== '') {
                     // Anchor is assumed to point to a content elements:
-                    if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($tLP['anchor'])) {
+                    if (MathUtility::canBeInterpretedAsInteger($tLP['anchor'])) {
                         // Initialize a new entry because we have a new relation:
                         $newTokenID = $this->makeTokenID('setTypoLinkPartsElement:anchor:' . $idx);
                         $elements[$newTokenID . ':' . $idx] = [];
@@ -551,7 +557,7 @@ class SoftReferenceIndex implements SingletonInterface
                         ];
                     } else {
                         // Anchor is a hardcoded string
-                        $content .= '#' . $tLP['type'];
+                        $content .= '#' . $tLP['anchor'];
                     }
                 }
                 break;
@@ -569,7 +575,7 @@ class SoftReferenceIndex implements SingletonInterface
                 $linkHandlerFound = false;
                 list($linkHandlerFound, $tLP, $content, $newElements) = $this->emitSetTypoLinkPartsElement($linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID);
                 // We need to merge the array, otherwise we would loose the reference.
-                \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($elements, $newElements);
+                ArrayUtility::mergeRecursiveWithOverrule($elements, $newElements);
 
                 if (!$linkHandlerFound) {
                     $elements[$tokenID . ':' . $idx]['error'] = 'Couldn\'t decide typolink mode.';
@@ -601,18 +607,6 @@ class SoftReferenceIndex implements SingletonInterface
     protected function getSignalSlotDispatcher()
     {
         return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-    }
-
-    /**
-     * @param bool $linkHandlerFound
-     * @param array $finalTagParts
-     * @param string $linkHandlerKeyword
-     * @param string $linkHandlerValue
-     * @return array
-     */
-    protected function emitGetTypoLinkParts($linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue)
-    {
-        return $this->getSignalSlotDispatcher()->dispatch(static::class, 'getTypoLinkParts', [$linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue]);
     }
 
     /**
