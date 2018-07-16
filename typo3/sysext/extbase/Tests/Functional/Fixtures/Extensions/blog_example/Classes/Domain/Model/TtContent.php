@@ -51,11 +51,17 @@ class TtContent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $image;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>
+     */
+    protected $categories;
+
+    /**
      * Constructs this post
      */
     public function __construct()
     {
         $this->image = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->categories = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
     }
 
     /**
@@ -112,6 +118,46 @@ class TtContent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setImage(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $image)
     {
         $this->image = $image;
+    }
+
+    /**
+     * Add category to a CE
+     *
+     * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
+     */
+    public function addCategory(\TYPO3\CMS\Extbase\Domain\Model\Category $category)
+    {
+        $this->categories->attach($category);
+    }
+
+    /**
+     * Set categories
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Remove category from a CE
+     *
+     * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
+     */
+    public function removeCategory(\TYPO3\CMS\Extbase\Domain\Model\Category $category)
+    {
+        $this->categories->detach($category);
     }
 
     /**
