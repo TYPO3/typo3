@@ -73,7 +73,8 @@ class InternalLinktype extends AbstractLinktype
         unset($this->errorParams);
         // Only check pages records. Content elements will also be checked
         // as we extract the anchor in the next step.
-        if (strpos($softRefEntry['substr']['recordRef'], 'pages:') !== 0) {
+        [$table, $uid] = explode(':', $softRefEntry['substr']['recordRef']);
+        if (!in_array($table, ['pages', 'tt_content'], true)) {
             return true;
         }
         // Defines the linked page and anchor (if any).
@@ -81,6 +82,18 @@ class InternalLinktype extends AbstractLinktype
             $parts = explode('#c', $url);
             $page = $parts[0];
             $anchor = $parts[1];
+        } elseif (
+            $table === 'tt_content'
+            && strpos($softRefEntry['row'][$softRefEntry['field']], 't3://') === 0
+        ) {
+            $parsedTypoLinkUrl = @parse_url($softRefEntry['row'][$softRefEntry['field']]);
+            if ($parsedTypoLinkUrl['host'] === 'page') {
+                parse_str($parsedTypoLinkUrl['query'], $query);
+                if (isset($query['uid'])) {
+                    $page = (int)$query['uid'];
+                    $anchor = (int)$url;
+                }
+            }
         } else {
             $page = $url;
         }
