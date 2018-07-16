@@ -522,8 +522,8 @@ abstract public class AbstractCoreSpec {
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
                     this.getTaskComposerInstall(requirementIdentifier),
-                    this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
                     this.getTaskDockerDependenciesFunctionalPostgres10(),
+                    this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
                     new ScriptTask()
                         .description("Run phpunit with functional chunk " + formattedI)
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -999,7 +999,6 @@ abstract public class AbstractCoreSpec {
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
                 this.getTaskComposerInstall(requirementIdentifier),
-                this.getTaskDockerDependenciesUnit(),
                 new ScriptTask()
                     .description("Run phpunit")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -1021,7 +1020,6 @@ abstract public class AbstractCoreSpec {
                     )
             )
             .finalTasks(
-                this.getTaskStopDockerDependencies(),
                 new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                     .resultDirectories("test-reports/phpunit.xml")
             )
@@ -1044,7 +1042,6 @@ abstract public class AbstractCoreSpec {
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
                 this.getTaskComposerInstall(requirementIdentifier),
-                this.getTaskDockerDependenciesUnit(),
                 new ScriptTask()
                     .description("Run phpunit")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -1066,7 +1063,6 @@ abstract public class AbstractCoreSpec {
                     )
             )
             .finalTasks(
-                this.getTaskStopDockerDependencies(),
                 new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                     .resultDirectories("test-reports/phpunit.xml")
             )
@@ -1093,7 +1089,6 @@ abstract public class AbstractCoreSpec {
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
                     this.getTaskComposerInstall(requirementIdentifier),
-                    this.getTaskDockerDependenciesUnit(),
                     new ScriptTask()
                         .description("Run phpunit-randomizer")
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -1115,7 +1110,6 @@ abstract public class AbstractCoreSpec {
                         )
                 )
                 .finalTasks(
-                    this.getTaskStopDockerDependencies(),
                     new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                         .resultDirectories("test-reports/phpunit.xml")
                 )
@@ -1274,21 +1268,6 @@ abstract public class AbstractCoreSpec {
                 "cd Build/testing-docker/bamboo\n" +
                 "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
                 "docker-compose run start_dependencies_functional_sqlite"
-            );
-    }
-
-    /**
-     * Start docker sibling containers to execute unit tests
-     */
-    protected Task getTaskDockerDependenciesUnit() {
-        return new ScriptTask()
-            .description("Start docker siblings for unit tests")
-            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
-            .inlineBody(
-                this.getScriptTaskBashInlineBody() +
-                "cd Build/testing-docker/bamboo\n" +
-                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
-                "docker-compose run start_dependencies_unit"
             );
     }
 

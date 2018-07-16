@@ -134,15 +134,6 @@ services:
         sleep 1;
       "
 
-  start_dependencies_unit:
-    image: alpine:3.8
-    links:
-      - redis4
-    command: >
-      /bin/sh -c "
-        sleep 1;
-      "
-
 networks:
   test:
     external:

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
+namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,41 +13,22 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Cache\Backend\RedisBackend;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
- * Testcase for the cache to redis backend
- *
- * This class has functional tests as well as implementation tests:
- * - The functional tests make API calls to the backend and check expected behaviour
- * - The implementation tests make additional calls with an own redis instance to
- * check stored data structures in the redis server, which can not be checked
- * by functional tests alone. Those tests will fail if any changes
- * to the internal data structure are done.
+ * Test case for the cache to redis backend
  *
  * Warning:
- * The unit tests use and flush redis database numbers 0 and 1 on the
+ * These functional tests use and flush redis database numbers 0 and 1 on the
  * redis host specified by environment variable typo3RedisHost
  */
-class RedisBackendTest extends UnitTestCase
+class RedisBackendTest extends FunctionalTestCase
 {
     /**
-     * If set, the tearDown() method will flush the cache used by this unit test.
-     *
-     * @var \TYPO3\CMS\Core\Cache\Backend\RedisBackend
-     */
-    protected $backend;
-
-    /**
-     * Own redis instance used in implementation tests
-     *
-     * @var \Redis
-     */
-    protected $redis;
-
-    /**
-     * Set up this testcase
+     * Set up
      */
     protected function setUp()
     {
@@ -63,26 +44,30 @@ class RedisBackendTest extends UnitTestCase
     }
 
     /**
-     * Sets up the redis backend used for testing
+     * Sets up the redis cache backend used for testing
      */
-    protected function setUpBackend(array $backendOptions = [])
+    protected function setUpSubject(array $backendOptions = []): RedisBackend
     {
-        $mockCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
-        $mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('TestCache'));
         // We know this env is set, otherwise setUp() would skip the tests
         $backendOptions['hostname'] = getenv('typo3TestingRedisHost');
         // If typo3TestingRedisPort env is set, use it, otherwise fall back to standard port
         $env = getenv('typo3TestingRedisPort');
         $backendOptions['port'] = is_string($env) ? (int)$env : 6379;
-        $this->backend = new \TYPO3\CMS\Core\Cache\Backend\RedisBackend('Testing', $backendOptions);
-        $this->backend->setCache($mockCache);
-        $this->backend->initializeObject();
+
+        $frontendProphecy = $this->prophesize(FrontendInterface::class);
+        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+
+        $subject = new RedisBackend('Testing', $backendOptions);
+        $subject->setCache($frontendProphecy->reveal());
+        $subject->initializeObject();
+        $subject->flush();
+        return $subject;
     }
 
     /**
-     * Sets up an own redis instance for implementation tests
+     * Sets up a test-internal redis connection to check implementation details
      */
-    protected function setUpRedis()
+    protected function setUpRedis(): \Redis
     {
         // We know this env is set, otherwise setUp() would skip the tests
         $redisHost = getenv('typo3TestingRedisHost');
@@ -90,169 +75,147 @@ class RedisBackendTest extends UnitTestCase
         $env = getenv('typo3TestingRedisPort');
         $redisPort = is_string($env) ? (int)$env : 6379;
 
-        $this->redis = new \Redis();
-        $this->redis->connect($redisHost, $redisPort);
+        $redis = new \Redis();
+        $redis->connect($redisHost, $redisPort);
+        return $redis;
     }
 
     /**
-     * Tear down this testcase
-     */
-    protected function tearDown()
-    {
-        if ($this->backend instanceof \TYPO3\CMS\Core\Cache\Backend\RedisBackend) {
-            $this->backend->flush();
-        }
-        parent::tearDown();
-    }
-
-    /**
-     * @test Functional
-     */
-    public function initializeObjectThrowsNoExceptionIfGivenDatabaseWasSuccessfullySelected()
-    {
-        try {
-            $this->setUpBackend(['database' => 1]);
-        } catch (Exception $e) {
-            $this->assertTrue();
-        }
-    }
-
-    /**
-     * @test Functional
+     * @test
      */
     public function setDatabaseThrowsExceptionIfGivenDatabaseNumberIsNotAnInteger()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1279763057);
 
-        $this->setUpBackend(['database' => 'foo']);
+        $this->setUpSubject(['database' => 'foo']);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function setDatabaseThrowsExceptionIfGivenDatabaseNumberIsNegative()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1279763534);
 
-        $this->setUpBackend(['database' => -1]);
+        $this->setUpSubject(['database' => -1]);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function setCompressionThrowsExceptionIfCompressionParameterIsNotOfTypeBoolean()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1289679153);
 
-        $this->setUpBackend(['compression' => 'foo']);
+        $this->setUpSubject(['compression' => 'foo']);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotInteger()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1289679154);
 
-        $this->setUpBackend(['compressionLevel' => 'foo']);
+        $this->setUpSubject(['compressionLevel' => 'foo']);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotBetweenMinusOneAndNine()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1289679155);
 
-        $this->setUpBackend(['compressionLevel' => 11]);
+        $this->setUpSubject(['compressionLevel' => 11]);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function setConnectionTimeoutThrowsExceptionIfConnectionTimeoutIsNotInteger()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1487849315);
 
-        $this->setUpBackend(['connectionTimeout' => 'foo']);
+        $this->setUpSubject(['connectionTimeout' => 'foo']);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function setConnectionTimeoutThrowsExceptionIfConnectionTimeoutIsNegative()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1487849326);
 
-        $this->setUpBackend(['connectionTimeout' => -1]);
+        $this->setUpSubject(['connectionTimeout' => -1]);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function setThrowsExceptionIfIdentifierIsNotAString()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1377006651);
 
-        $this->setUpBackend();
-        $this->backend->set([], 'data');
+        $subject = $this->setUpSubject();
+        $subject->set([], 'data');
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function setThrowsExceptionIfDataIsNotAString()
     {
         $this->expectException(InvalidDataException::class);
         $this->expectExceptionCode(1279469941);
 
-        $this->setUpBackend();
-        $this->backend->set($this->getUniqueId('identifier'), []);
+        $subject = $this->setUpSubject();
+        $subject->set($this->getUniqueId('identifier'), []);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function setThrowsExceptionIfLifetimeIsNegative()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1279487573);
 
-        $this->setUpBackend();
-        $this->backend->set($this->getUniqueId('identifier'), 'data', [], -42);
+        $subject = $this->setUpSubject();
+        $subject->set($this->getUniqueId('identifier'), 'data', [], -42);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function setThrowsExceptionIfLifetimeIsNotNullOrAnInteger()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1279488008);
 
-        $this->setUpBackend();
-        $this->backend->set($this->getUniqueId('identifier'), 'data', [], []);
+        $subject = $this->setUpSubject();
+        $subject->set($this->getUniqueId('identifier'), 'data', [], []);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setStoresEntriesInSelectedDatabase()
     {
-        $this->setUpRedis();
-        $this->redis->select(1);
-        $this->setUpBackend(['database' => 1]);
+        $redis = $this->setUpRedis();
+        $redis->select(1);
+        $subject = $this->setUpSubject(['database' => 1]);
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, 'data');
-        $result = $this->redis->exists('identData:' . $identifier);
+        $subject->set($identifier, 'data');
+        $result = $redis->exists('identData:' . $identifier);
         if (is_int($result)) {
             // Since 3.1.4 of phpredis/phpredis the return types has been changed
             $result = (bool)$result;
@@ -261,222 +224,222 @@ class RedisBackendTest extends UnitTestCase
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setSavesStringDataTypeForIdentifierToDataEntry()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, 'data');
-        $this->assertSame(\Redis::REDIS_STRING, $this->redis->type('identData:' . $identifier));
+        $subject->set($identifier, 'data');
+        $this->assertSame(\Redis::REDIS_STRING, $redis->type('identData:' . $identifier));
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setSavesEntryWithDefaultLifeTime()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $defaultLifetime = 42;
-        $this->backend->setDefaultLifetime($defaultLifetime);
-        $this->backend->set($identifier, 'data');
-        $lifetimeRegisteredInBackend = $this->redis->ttl('identData:' . $identifier);
+        $subject->setDefaultLifetime($defaultLifetime);
+        $subject->set($identifier, 'data');
+        $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
         $this->assertSame($defaultLifetime, $lifetimeRegisteredInBackend);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setSavesEntryWithSpecifiedLifeTime()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $lifetime = 43;
-        $this->backend->set($identifier, 'data', [], $lifetime);
-        $lifetimeRegisteredInBackend = $this->redis->ttl('identData:' . $identifier);
+        $subject->set($identifier, 'data', [], $lifetime);
+        $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
         $this->assertSame($lifetime, $lifetimeRegisteredInBackend);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setSavesEntryWithUnlimitedLifeTime()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, 'data', [], 0);
-        $lifetimeRegisteredInBackend = $this->redis->ttl('identData:' . $identifier);
+        $subject->set($identifier, 'data', [], 0);
+        $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
         $this->assertSame(31536000, $lifetimeRegisteredInBackend);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function setOverwritesExistingEntryWithNewData()
     {
-        $this->setUpBackend();
+        $subject = $this->setUpSubject();
         $data = 'data 1';
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, $data);
+        $subject->set($identifier, $data);
         $otherData = 'data 2';
-        $this->backend->set($identifier, $otherData);
-        $fetchedData = $this->backend->get($identifier);
+        $subject->set($identifier, $otherData);
+        $fetchedData = $subject->get($identifier);
         $this->assertSame($otherData, $fetchedData);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setOverwritesExistingEntryWithSpecifiedLifetime()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $data = 'data';
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, $data);
+        $subject->set($identifier, $data);
         $lifetime = 42;
-        $this->backend->set($identifier, $data, [], $lifetime);
-        $lifetimeRegisteredInBackend = $this->redis->ttl('identData:' . $identifier);
+        $subject->set($identifier, $data, [], $lifetime);
+        $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
         $this->assertSame($lifetime, $lifetimeRegisteredInBackend);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setOverwritesExistingEntryWithNewDefaultLifetime()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $data = 'data';
         $identifier = $this->getUniqueId('identifier');
         $lifetime = 42;
-        $this->backend->set($identifier, $data, [], $lifetime);
+        $subject->set($identifier, $data, [], $lifetime);
         $newDefaultLifetime = 43;
-        $this->backend->setDefaultLifetime($newDefaultLifetime);
-        $this->backend->set($identifier, $data, [], $newDefaultLifetime);
-        $lifetimeRegisteredInBackend = $this->redis->ttl('identData:' . $identifier);
+        $subject->setDefaultLifetime($newDefaultLifetime);
+        $subject->set($identifier, $data, [], $newDefaultLifetime);
+        $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
         $this->assertSame($newDefaultLifetime, $lifetimeRegisteredInBackend);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setOverwritesExistingEntryWithNewUnlimitedLifetime()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $data = 'data';
         $identifier = $this->getUniqueId('identifier');
         $lifetime = 42;
-        $this->backend->set($identifier, $data, [], $lifetime);
-        $this->backend->set($identifier, $data, [], 0);
-        $lifetimeRegisteredInBackend = $this->redis->ttl('identData:' . $identifier);
+        $subject->set($identifier, $data, [], $lifetime);
+        $subject->set($identifier, $data, [], 0);
+        $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
         $this->assertSame(31536000, $lifetimeRegisteredInBackend);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setSavesSetDataTypeForIdentifierToTagsSet()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, 'data', ['tag']);
-        $this->assertSame(\Redis::REDIS_SET, $this->redis->type('identTags:' . $identifier));
+        $subject->set($identifier, 'data', ['tag']);
+        $this->assertSame(\Redis::REDIS_SET, $redis->type('identTags:' . $identifier));
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setSavesSpecifiedTagsInIdentifierToTagsSet()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $tags = ['thatTag', 'thisTag'];
-        $this->backend->set($identifier, 'data', $tags);
-        $savedTags = $this->redis->sMembers('identTags:' . $identifier);
+        $subject->set($identifier, 'data', $tags);
+        $savedTags = $redis->sMembers('identTags:' . $identifier);
         sort($savedTags);
         $this->assertSame($tags, $savedTags);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setRemovesAllPreviouslySetTagsFromIdentifierToTagsSet()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $tags = ['fooTag', 'barTag'];
-        $this->backend->set($identifier, 'data', $tags);
-        $this->backend->set($identifier, 'data', []);
-        $this->assertSame([], $this->redis->sMembers('identTags:' . $identifier));
+        $subject->set($identifier, 'data', $tags);
+        $subject->set($identifier, 'data', []);
+        $this->assertSame([], $redis->sMembers('identTags:' . $identifier));
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setRemovesMultiplePreviouslySetTagsFromIdentifierToTagsSet()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $firstTagSet = ['tag1', 'tag2', 'tag3', 'tag4'];
-        $this->backend->set($identifier, 'data', $firstTagSet);
+        $subject->set($identifier, 'data', $firstTagSet);
         $secondTagSet = ['tag1', 'tag3'];
-        $this->backend->set($identifier, 'data', $secondTagSet);
-        $actualTagSet = $this->redis->sMembers('identTags:' . $identifier);
+        $subject->set($identifier, 'data', $secondTagSet);
+        $actualTagSet = $redis->sMembers('identTags:' . $identifier);
         sort($actualTagSet);
         $this->assertSame($secondTagSet, $actualTagSet);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setSavesSetDataTypeForTagToIdentifiersSet()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $tag = 'tag';
-        $this->backend->set($identifier, 'data', [$tag]);
-        $this->assertSame(\Redis::REDIS_SET, $this->redis->type('tagIdents:' . $tag));
+        $subject->set($identifier, 'data', [$tag]);
+        $this->assertSame(\Redis::REDIS_SET, $redis->type('tagIdents:' . $tag));
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setSavesIdentifierInTagToIdentifiersSetOfSpecifiedTag()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $tag = 'thisTag';
-        $this->backend->set($identifier, 'data', [$tag]);
-        $savedTagToIdentifiersMemberArray = $this->redis->sMembers('tagIdents:' . $tag);
+        $subject->set($identifier, 'data', [$tag]);
+        $savedTagToIdentifiersMemberArray = $redis->sMembers('tagIdents:' . $tag);
         $this->assertSame([$identifier], $savedTagToIdentifiersMemberArray);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setAppendsSecondIdentifierInTagToIdentifiersEntry()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $firstIdentifier = $this->getUniqueId('identifier1-');
         $tag = 'thisTag';
-        $this->backend->set($firstIdentifier, 'data', [$tag]);
+        $subject->set($firstIdentifier, 'data', [$tag]);
         $secondIdentifier = $this->getUniqueId('identifier2-');
-        $this->backend->set($secondIdentifier, 'data', [$tag]);
-        $savedTagToIdentifiersMemberArray = $this->redis->sMembers('tagIdents:' . $tag);
+        $subject->set($secondIdentifier, 'data', [$tag]);
+        $savedTagToIdentifiersMemberArray = $redis->sMembers('tagIdents:' . $tag);
         sort($savedTagToIdentifiersMemberArray);
         $identifierArray = [$firstIdentifier, $secondIdentifier];
         sort($identifierArray);
@@ -484,200 +447,200 @@ class RedisBackendTest extends UnitTestCase
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setRemovesIdentifierFromTagToIdentifiersEntryIfTagIsOmittedOnConsecutiveSet()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $tag = 'thisTag';
-        $this->backend->set($identifier, 'data', [$tag]);
-        $this->backend->set($identifier, 'data', []);
-        $savedTagToIdentifiersMemberArray = $this->redis->sMembers('tagIdents:' . $tag);
+        $subject->set($identifier, 'data', [$tag]);
+        $subject->set($identifier, 'data', []);
+        $savedTagToIdentifiersMemberArray = $redis->sMembers('tagIdents:' . $tag);
         $this->assertSame([], $savedTagToIdentifiersMemberArray);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setAddsIdentifierInTagToIdentifiersEntryIfTagIsAddedOnConsecutiveSet()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, 'data');
+        $subject->set($identifier, 'data');
         $tag = 'thisTag';
-        $this->backend->set($identifier, 'data', [$tag]);
-        $savedTagToIdentifiersMemberArray = $this->redis->sMembers('tagIdents:' . $tag);
+        $subject->set($identifier, 'data', [$tag]);
+        $savedTagToIdentifiersMemberArray = $redis->sMembers('tagIdents:' . $tag);
         $this->assertSame([$identifier], $savedTagToIdentifiersMemberArray);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setSavesCompressedDataWithEnabledCompression()
     {
-        $this->setUpBackend([
+        $subject = $this->setUpSubject([
             'compression' => true
         ]);
-        $this->setUpRedis();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $data = 'some data ' . microtime();
-        $this->backend->set($identifier, $data);
+        $subject->set($identifier, $data);
         $uncompresedStoredData = '';
         try {
-            $uncompresedStoredData = @gzuncompress($this->redis->get('identData:' . $identifier));
+            $uncompresedStoredData = @gzuncompress($redis->get('identData:' . $identifier));
         } catch (\Exception $e) {
         }
         $this->assertEquals($data, $uncompresedStoredData, 'Original and compressed data don\'t match');
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function setSavesPlaintextDataWithEnabledCompressionAndCompressionLevel0()
     {
-        $this->setUpBackend([
+        $subject = $this->setUpSubject([
             'compression' => true,
             'compressionLevel' => 0
         ]);
-        $this->setUpRedis();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $data = 'some data ' . microtime();
-        $this->backend->set($identifier, $data);
-        $this->assertGreaterThan(0, substr_count($this->redis->get('identData:' . $identifier), $data), 'Plaintext data not found');
+        $subject->set($identifier, $data);
+        $this->assertGreaterThan(0, substr_count($redis->get('identData:' . $identifier), $data), 'Plaintext data not found');
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function hasThrowsExceptionIfIdentifierIsNotAString()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1377006653);
 
-        $this->setUpBackend();
-        $this->backend->has([]);
+        $subject = $this->setUpSubject();
+        $subject->has([]);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function hasReturnsFalseForNotExistingEntry()
     {
-        $this->setUpBackend();
+        $subject = $this->setUpSubject();
         $identifier = $this->getUniqueId('identifier');
-        $this->assertFalse($this->backend->has($identifier));
+        $this->assertFalse($subject->has($identifier));
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function hasReturnsTrueForPreviouslySetEntry()
     {
-        $this->setUpBackend();
+        $subject = $this->setUpSubject();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, 'data');
-        $this->assertTrue($this->backend->has($identifier));
+        $subject->set($identifier, 'data');
+        $this->assertTrue($subject->has($identifier));
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function getThrowsExceptionIfIdentifierIsNotAString()
     {
         $this->expectException(\InvalidArgumentException::class);
         //@todo Add exception code with redis extension
 
-        $this->setUpBackend();
-        $this->backend->get([]);
+        $subject = $this->setUpSubject();
+        $subject->get([]);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function getReturnsPreviouslyCompressedSetEntry()
     {
-        $this->setUpBackend([
+        $subject = $this->setUpSubject([
             'compression' => true
         ]);
         $data = 'data';
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, $data);
-        $fetchedData = $this->backend->get($identifier);
+        $subject->set($identifier, $data);
+        $fetchedData = $subject->get($identifier);
         $this->assertSame($data, $fetchedData);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function getReturnsPreviouslySetEntry()
     {
-        $this->setUpBackend();
+        $subject = $this->setUpSubject();
         $data = 'data';
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, $data);
-        $fetchedData = $this->backend->get($identifier);
+        $subject->set($identifier, $data);
+        $fetchedData = $subject->get($identifier);
         $this->assertSame($data, $fetchedData);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function removeThrowsExceptionIfIdentifierIsNotAString()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1377006654);
 
-        $this->setUpBackend();
-        $this->backend->remove([]);
+        $subject = $this->setUpSubject();
+        $subject->remove([]);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function removeReturnsFalseIfNoEntryWasDeleted()
     {
-        $this->setUpBackend();
-        $this->assertFalse($this->backend->remove($this->getUniqueId('identifier')));
+        $subject = $this->setUpSubject();
+        $this->assertFalse($subject->remove($this->getUniqueId('identifier')));
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function removeReturnsTrueIfAnEntryWasDeleted()
     {
-        $this->setUpBackend();
+        $subject = $this->setUpSubject();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, 'data');
-        $this->assertTrue($this->backend->remove($identifier));
+        $subject->set($identifier, 'data');
+        $this->assertTrue($subject->remove($identifier));
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function removeDeletesEntryFromCache()
     {
-        $this->setUpBackend();
+        $subject = $this->setUpSubject();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, 'data');
-        $this->backend->remove($identifier);
-        $this->assertFalse($this->backend->has($identifier));
+        $subject->set($identifier, 'data');
+        $subject->remove($identifier);
+        $this->assertFalse($subject->has($identifier));
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function removeDeletesIdentifierToTagEntry()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $tag = 'thisTag';
-        $this->backend->set($identifier, 'data', [$tag]);
-        $this->backend->remove($identifier);
-        $result = $this->redis->exists('identTags:' . $identifier);
+        $subject->set($identifier, 'data', [$tag]);
+        $subject->remove($identifier);
+        $result = $redis->exists('identTags:' . $identifier);
         if (is_int($result)) {
             // Since 3.1.4 of phpredis/phpredis the return types has been changed
             $result = (bool)$result;
@@ -686,172 +649,172 @@ class RedisBackendTest extends UnitTestCase
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function removeDeletesIdentifierFromTagToIdentifiersSet()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $tag = 'thisTag';
-        $this->backend->set($identifier, 'data', [$tag]);
-        $this->backend->remove($identifier);
-        $tagToIdentifiersMemberArray = $this->redis->sMembers('tagIdents:' . $tag);
+        $subject->set($identifier, 'data', [$tag]);
+        $subject->remove($identifier);
+        $tagToIdentifiersMemberArray = $redis->sMembers('tagIdents:' . $tag);
         $this->assertSame([], $tagToIdentifiersMemberArray);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function removeDeletesIdentifierFromTagToIdentifiersSetWithMultipleEntries()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $firstIdentifier = $this->getUniqueId('identifier');
         $secondIdentifier = $this->getUniqueId('identifier');
         $tag = 'thisTag';
-        $this->backend->set($firstIdentifier, 'data', [$tag]);
-        $this->backend->set($secondIdentifier, 'data', [$tag]);
-        $this->backend->remove($firstIdentifier);
-        $tagToIdentifiersMemberArray = $this->redis->sMembers('tagIdents:' . $tag);
+        $subject->set($firstIdentifier, 'data', [$tag]);
+        $subject->set($secondIdentifier, 'data', [$tag]);
+        $subject->remove($firstIdentifier);
+        $tagToIdentifiersMemberArray = $redis->sMembers('tagIdents:' . $tag);
         $this->assertSame([$secondIdentifier], $tagToIdentifiersMemberArray);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function findIdentifiersByTagThrowsExceptionIfTagIsNotAString()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1377006655);
 
-        $this->setUpBackend();
-        $this->backend->findIdentifiersByTag([]);
+        $subject = $this->setUpSubject();
+        $subject->findIdentifiersByTag([]);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function findIdentifiersByTagReturnsEmptyArrayForNotExistingTag()
     {
-        $this->setUpBackend();
-        $this->assertSame([], $this->backend->findIdentifiersByTag('thisTag'));
+        $subject = $this->setUpSubject();
+        $this->assertSame([], $subject->findIdentifiersByTag('thisTag'));
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function findIdentifiersByTagReturnsAllIdentifiersTagedWithSpecifiedTag()
     {
-        $this->setUpBackend();
+        $subject = $this->setUpSubject();
         $firstIdentifier = $this->getUniqueId('identifier1-');
         $secondIdentifier = $this->getUniqueId('identifier2-');
         $thirdIdentifier = $this->getUniqueId('identifier3-');
         $tagsForFirstIdentifier = ['thisTag'];
         $tagsForSecondIdentifier = ['thatTag'];
         $tagsForThirdIdentifier = ['thisTag', 'thatTag'];
-        $this->backend->set($firstIdentifier, 'data', $tagsForFirstIdentifier);
-        $this->backend->set($secondIdentifier, 'data', $tagsForSecondIdentifier);
-        $this->backend->set($thirdIdentifier, 'data', $tagsForThirdIdentifier);
+        $subject->set($firstIdentifier, 'data', $tagsForFirstIdentifier);
+        $subject->set($secondIdentifier, 'data', $tagsForSecondIdentifier);
+        $subject->set($thirdIdentifier, 'data', $tagsForThirdIdentifier);
         $expectedResult = [$firstIdentifier, $thirdIdentifier];
-        $actualResult = $this->backend->findIdentifiersByTag('thisTag');
+        $actualResult = $subject->findIdentifiersByTag('thisTag');
         sort($actualResult);
         $this->assertSame($expectedResult, $actualResult);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function flushRemovesAllEntriesFromCache()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier, 'data');
-        $this->backend->flush();
-        $this->assertSame([], $this->redis->getKeys('*'));
+        $subject->set($identifier, 'data');
+        $subject->flush();
+        $this->assertSame([], $redis->getKeys('*'));
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function flushByTagThrowsExceptionIfTagIsNotAString()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1377006656);
 
-        $this->setUpBackend();
-        $this->backend->flushByTag([]);
+        $subject = $this->setUpSubject();
+        $subject->flushByTag([]);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function flushByTagRemovesEntriesTaggedWithSpecifiedTag()
     {
-        $this->setUpBackend();
+        $subject = $this->setUpSubject();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier . 'A', 'data', ['tag1']);
-        $this->backend->set($identifier . 'B', 'data', ['tag2']);
-        $this->backend->set($identifier . 'C', 'data', ['tag1', 'tag2']);
-        $this->backend->flushByTag('tag1');
+        $subject->set($identifier . 'A', 'data', ['tag1']);
+        $subject->set($identifier . 'B', 'data', ['tag2']);
+        $subject->set($identifier . 'C', 'data', ['tag1', 'tag2']);
+        $subject->flushByTag('tag1');
         $expectedResult = [false, true, false];
         $actualResult = [
-            $this->backend->has($identifier . 'A'),
-            $this->backend->has($identifier . 'B'),
-            $this->backend->has($identifier . 'C')
+            $subject->has($identifier . 'A'),
+            $subject->has($identifier . 'B'),
+            $subject->has($identifier . 'C')
         ];
         $this->assertSame($expectedResult, $actualResult);
     }
 
     /**
-     * @test Functional
+     * @test
      */
     public function flushByTagsRemovesEntriesTaggedWithSpecifiedTags()
     {
-        $this->setUpBackend();
+        $subject = $this->setUpSubject();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier . 'A', 'data', ['tag1']);
-        $this->backend->set($identifier . 'B', 'data', ['tag2']);
-        $this->backend->set($identifier . 'C', 'data', ['tag1', 'tag2']);
-        $this->backend->set($identifier . 'D', 'data', ['tag3']);
-        $this->backend->flushByTags(['tag1', 'tag2']);
+        $subject->set($identifier . 'A', 'data', ['tag1']);
+        $subject->set($identifier . 'B', 'data', ['tag2']);
+        $subject->set($identifier . 'C', 'data', ['tag1', 'tag2']);
+        $subject->set($identifier . 'D', 'data', ['tag3']);
+        $subject->flushByTags(['tag1', 'tag2']);
         $expectedResult = [false, false, false, true];
         $actualResult = [
-            $this->backend->has($identifier . 'A'),
-            $this->backend->has($identifier . 'B'),
-            $this->backend->has($identifier . 'C'),
-            $this->backend->has($identifier . 'D')
+            $subject->has($identifier . 'A'),
+            $subject->has($identifier . 'B'),
+            $subject->has($identifier . 'C'),
+            $subject->has($identifier . 'D')
         ];
         $this->assertSame($expectedResult, $actualResult);
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function flushByTagRemovesTemporarySet()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier . 'A', 'data', ['tag1']);
-        $this->backend->set($identifier . 'C', 'data', ['tag1', 'tag2']);
-        $this->backend->flushByTag('tag1');
-        $this->assertSame([], $this->redis->getKeys('temp*'));
+        $subject->set($identifier . 'A', 'data', ['tag1']);
+        $subject->set($identifier . 'C', 'data', ['tag1', 'tag2']);
+        $subject->flushByTag('tag1');
+        $this->assertSame([], $redis->getKeys('temp*'));
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function flushByTagRemovesIdentifierToTagsSetOfEntryTaggedWithGivenTag()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $tag = 'tag1';
-        $this->backend->set($identifier, 'data', [$tag]);
-        $this->backend->flushByTag($tag);
-        $result = $this->redis->exists('identTags:' . $identifier);
+        $subject->set($identifier, 'data', [$tag]);
+        $subject->flushByTag($tag);
+        $result = $redis->exists('identTags:' . $identifier);
         if (is_int($result)) {
             // Since 3.1.4 of phpredis/phpredis the return types has been changed
             $result = (bool)$result;
@@ -860,34 +823,34 @@ class RedisBackendTest extends UnitTestCase
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function flushByTagDoesNotRemoveIdentifierToTagsSetOfUnrelatedEntry()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifierToBeRemoved = $this->getUniqueId('identifier');
         $tagToRemove = 'tag1';
-        $this->backend->set($identifierToBeRemoved, 'data', [$tagToRemove]);
+        $subject->set($identifierToBeRemoved, 'data', [$tagToRemove]);
         $identifierNotToBeRemoved = $this->getUniqueId('identifier');
         $tagNotToRemove = 'tag2';
-        $this->backend->set($identifierNotToBeRemoved, 'data', [$tagNotToRemove]);
-        $this->backend->flushByTag($tagToRemove);
-        $this->assertSame([$tagNotToRemove], $this->redis->sMembers('identTags:' . $identifierNotToBeRemoved));
+        $subject->set($identifierNotToBeRemoved, 'data', [$tagNotToRemove]);
+        $subject->flushByTag($tagToRemove);
+        $this->assertSame([$tagNotToRemove], $redis->sMembers('identTags:' . $identifierNotToBeRemoved));
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function flushByTagRemovesTagToIdentifiersSetOfGivenTag()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $tag = 'tag1';
-        $this->backend->set($identifier, 'data', [$tag]);
-        $this->backend->flushByTag($tag);
-        $result = $this->redis->exists('tagIdents:' . $tag);
+        $subject->set($identifier, 'data', [$tag]);
+        $subject->flushByTag($tag);
+        $result = $redis->exists('tagIdents:' . $tag);
         if (is_int($result)) {
             // Since 3.1.4 of phpredis/phpredis the return types has been changed
             $result = (bool)$result;
@@ -896,33 +859,33 @@ class RedisBackendTest extends UnitTestCase
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function flushByTagRemovesIdentifiersTaggedWithGivenTagFromTagToIdentifiersSets()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier . 'A', 'data', ['tag1', 'tag2']);
-        $this->backend->set($identifier . 'B', 'data', ['tag1', 'tag2']);
-        $this->backend->set($identifier . 'C', 'data', ['tag2']);
-        $this->backend->flushByTag('tag1');
-        $this->assertSame([$identifier . 'C'], $this->redis->sMembers('tagIdents:tag2'));
+        $subject->set($identifier . 'A', 'data', ['tag1', 'tag2']);
+        $subject->set($identifier . 'B', 'data', ['tag1', 'tag2']);
+        $subject->set($identifier . 'C', 'data', ['tag2']);
+        $subject->flushByTag('tag1');
+        $this->assertSame([$identifier . 'C'], $redis->sMembers('tagIdents:tag2'));
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function collectGarbageDoesNotRemoveNotExpiredIdentifierToDataEntry()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier . 'A', 'data', ['tag']);
-        $this->backend->set($identifier . 'B', 'data', ['tag']);
-        $this->redis->delete('identData:' . $identifier . 'A');
-        $this->backend->collectGarbage();
-        $result = $this->redis->exists('identData:' . $identifier . 'B');
+        $subject->set($identifier . 'A', 'data', ['tag']);
+        $subject->set($identifier . 'B', 'data', ['tag']);
+        $redis->delete('identData:' . $identifier . 'A');
+        $subject->collectGarbage();
+        $result = $redis->exists('identData:' . $identifier . 'B');
         if (is_int($result)) {
             // Since 3.1.4 of phpredis/phpredis the return types has been changed
             $result = (bool)$result;
@@ -931,20 +894,20 @@ class RedisBackendTest extends UnitTestCase
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function collectGarbageRemovesLeftOverIdentifierToTagsSet()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier . 'A', 'data', ['tag']);
-        $this->backend->set($identifier . 'B', 'data', ['tag']);
-        $this->redis->delete('identData:' . $identifier . 'A');
-        $this->backend->collectGarbage();
+        $subject->set($identifier . 'A', 'data', ['tag']);
+        $subject->set($identifier . 'B', 'data', ['tag']);
+        $redis->delete('identData:' . $identifier . 'A');
+        $subject->collectGarbage();
         $expectedResult = [false, true];
-        $resultA = $this->redis->exists('identTags:' . $identifier . 'A');
-        $resultB = $this->redis->exists('identTags:' . $identifier . 'B');
+        $resultA = $redis->exists('identTags:' . $identifier . 'A');
+        $resultB = $redis->exists('identTags:' . $identifier . 'B');
         if (is_int($resultA)) {
             // Since 3.1.4 of phpredis/phpredis the return types has been changed
             $resultA = (bool)$resultA;
@@ -961,24 +924,24 @@ class RedisBackendTest extends UnitTestCase
     }
 
     /**
-     * @test Implementation
+     * @test
      */
     public function collectGarbageRemovesExpiredIdentifierFromTagsToIdentifierSet()
     {
-        $this->setUpBackend();
-        $this->setUpRedis();
+        $subject = $this->setUpSubject();
+        $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
-        $this->backend->set($identifier . 'A', 'data', ['tag1', 'tag2']);
-        $this->backend->set($identifier . 'B', 'data', ['tag2']);
-        $this->redis->delete('identData:' . $identifier . 'A');
-        $this->backend->collectGarbage();
+        $subject->set($identifier . 'A', 'data', ['tag1', 'tag2']);
+        $subject->set($identifier . 'B', 'data', ['tag2']);
+        $redis->delete('identData:' . $identifier . 'A');
+        $subject->collectGarbage();
         $expectedResult = [
             [],
             [$identifier . 'B']
         ];
         $actualResult = [
-            $this->redis->sMembers('tagIdents:tag1'),
-            $this->redis->sMembers('tagIdents:tag2')
+            $redis->sMembers('tagIdents:tag1'),
+            $redis->sMembers('tagIdents:tag2')
         ];
         $this->assertSame($expectedResult, $actualResult);
     }
