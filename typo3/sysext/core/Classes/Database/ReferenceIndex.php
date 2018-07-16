@@ -553,7 +553,7 @@ class ReferenceIndex implements LoggerAwareInterface
     protected function createEntryDataForDatabaseRelationsUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, int $deleted, array $items)
     {
         foreach ($items as $sort => $i) {
-            $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $i['table'], $i['id'], '', $sort);
+            $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $i['table'], (int)$i['id'], '', $sort);
         }
     }
 
@@ -659,7 +659,7 @@ class ReferenceIndex implements LoggerAwareInterface
                         switch ((string)$el['subst']['type']) {
                             case 'db':
                                 list($referencedTable, $referencedUid) = explode(':', $el['subst']['recordRef']);
-                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $referencedTable, $referencedUid, '', -1, $spKey, $subKey);
+                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $referencedTable, (int)$referencedUid, '', -1, $spKey, $subKey);
                                 break;
                             case 'file_reference':
                                 // not used (see getRelations()), but fallback to file
