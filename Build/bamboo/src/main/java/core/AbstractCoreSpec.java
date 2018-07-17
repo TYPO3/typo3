@@ -192,7 +192,7 @@ abstract public class AbstractCoreSpec {
                         "function codecept() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        -e typo3InstallMysqlDatabaseHost=${typo3InstallMysqlDatabaseHost} \\\n" +
                         "        -e typo3InstallMysqlDatabaseName=${typo3InstallMysqlDatabaseName} \\\n" +
@@ -247,7 +247,7 @@ abstract public class AbstractCoreSpec {
                     "function codecept() {\n" +
                     "    docker run \\\n" +
                     "        -u ${HOST_UID} \\\n" +
-                    "        -v /etc/passwd:/etc/passwd \\\n" +
+                    "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                     "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                     "        -e typo3InstallPostgresqlDatabaseHost=${typo3InstallPostgresqlDatabaseHost} \\\n" +
                     "        -e typo3InstallPostgresqlDatabaseName=${typo3InstallPostgresqlDatabaseName} \\\n" +
@@ -302,7 +302,7 @@ abstract public class AbstractCoreSpec {
                     "function codecept() {\n" +
                     "    docker run \\\n" +
                     "        -u ${HOST_UID} \\\n" +
-                    "        -v /etc/passwd:/etc/passwd \\\n" +
+                    "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                     "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                     "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                     "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
@@ -419,7 +419,7 @@ abstract public class AbstractCoreSpec {
                             "function phpunit() {\n" +
                             "    docker run \\\n" +
                             "        -u ${HOST_UID} \\\n" +
-                            "        -v /etc/passwd:/etc/passwd \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                             "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                             "        -e typo3DatabaseName=func_test \\\n" +
                             "        -e typo3DatabaseUsername=root \\\n" +
@@ -532,7 +532,7 @@ abstract public class AbstractCoreSpec {
                             "function phpunit() {\n" +
                             "    docker run \\\n" +
                             "        -u ${HOST_UID} \\\n" +
-                            "        -v /etc/passwd:/etc/passwd \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                             "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                             "        -e typo3DatabaseDriver=pdo_pgsql \\\n" +
                             "        -e typo3DatabaseName=bamboo \\\n" +
@@ -597,7 +597,7 @@ abstract public class AbstractCoreSpec {
                             "function phpunit() {\n" +
                             "    docker run \\\n" +
                             "        -u ${HOST_UID} \\\n" +
-                            "        -v /etc/passwd:/etc/passwd \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                             "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                             "        -e typo3DatabaseDriver=pdo_sqlite \\\n" +
                             "        -e typo3TestingRedisHost=redis4 \\\n" +
@@ -648,7 +648,7 @@ abstract public class AbstractCoreSpec {
                         "function annotationChecker() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                         "        --rm \\\n" +
@@ -718,7 +718,7 @@ abstract public class AbstractCoreSpec {
                         "function validateRstFiles() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                         "        --rm \\\n" +
@@ -743,7 +743,7 @@ abstract public class AbstractCoreSpec {
                         "function extensionScannerRstFileReferences() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                         "        --rm \\\n" +
@@ -761,7 +761,7 @@ abstract public class AbstractCoreSpec {
                         "function checkIntegrityCsvFixtures() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                         "        --rm \\\n" +
@@ -779,7 +779,7 @@ abstract public class AbstractCoreSpec {
                         "function checkIntegrityComposer() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                         "        --rm \\\n" +
@@ -817,7 +817,7 @@ abstract public class AbstractCoreSpec {
                         "function yarn() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        -e HOME=${HOME} \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
@@ -836,7 +836,7 @@ abstract public class AbstractCoreSpec {
                         "function karma() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        -e HOME=${HOME} \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
@@ -885,7 +885,7 @@ abstract public class AbstractCoreSpec {
                         "function runLint() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        -e HOME=${HOME} \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
@@ -923,7 +923,7 @@ abstract public class AbstractCoreSpec {
                         "function yarn() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        -e HOME=${HOME} \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
@@ -942,7 +942,7 @@ abstract public class AbstractCoreSpec {
                         "function npm() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        -e HOME=${HOME} \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
@@ -961,7 +961,7 @@ abstract public class AbstractCoreSpec {
                         "function npm() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        -e HOME=${HOME} \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
@@ -1007,7 +1007,7 @@ abstract public class AbstractCoreSpec {
                         "function phpunit() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                         "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
@@ -1050,7 +1050,7 @@ abstract public class AbstractCoreSpec {
                         "function phpunit() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
-                        "        -v /etc/passwd:/etc/passwd \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                         "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                         "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
@@ -1097,7 +1097,7 @@ abstract public class AbstractCoreSpec {
                             "function phpunitRandomizer() {\n" +
                             "    docker run \\\n" +
                             "        -u ${HOST_UID} \\\n" +
-                            "        -v /etc/passwd:/etc/passwd \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                             "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                             "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                             "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
@@ -1300,7 +1300,7 @@ abstract public class AbstractCoreSpec {
                 "function splitFunctionalTests() {\n" +
                 "    docker run \\\n" +
                 "        -u ${HOST_UID} \\\n" +
-                "        -v /etc/passwd:/etc/passwd \\\n" +
+                "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                 "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                 "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                 "        --rm \\\n" +
@@ -1347,7 +1347,7 @@ abstract public class AbstractCoreSpec {
             "function composer() {\n" +
             "    docker run \\\n" +
             "        -u ${HOST_UID} \\\n" +
-            "        -v /etc/passwd:/etc/passwd \\\n" +
+            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
             "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
             "        -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} \\\n" +
             "        -e HOME=${HOME} \\\n" +
