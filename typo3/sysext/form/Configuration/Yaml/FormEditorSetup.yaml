@@ -833,6 +833,7 @@ TYPO3:
                 group: custom
                 groupSorting: 700
                 predefinedDefaults:
+                  label: 'formEditor.elements.ContentElement.label'
                   properties:
                     contentElementUid: ''
                 iconIdentifier: 'form-content-element'
