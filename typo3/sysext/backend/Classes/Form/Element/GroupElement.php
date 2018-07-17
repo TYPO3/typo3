@@ -400,9 +400,11 @@ class GroupElement extends AbstractFormElement
         $html[] =               $fieldControlHtml;
         $html[] =           '</div>';
         $html[] =       '</div>';
-        $html[] =       '<div class="form-wizards-items-bottom">';
-        $html[] =           $fieldWizardHtml;
-        $html[] =       '</div>';
+        if (!empty($fieldWizardHtml)) {
+            $html[] = '<div class="form-wizards-items-bottom">';
+            $html[] = $fieldWizardHtml;
+            $html[] = '</div>';
+        }
         $html[] =   '</div>';
         $html[] =   '<input type="hidden" name="' . htmlspecialchars($elementName) . '" value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '" />';
         $html[] = '</div>';

@@ -186,9 +186,11 @@ class InputColorPickerElement extends AbstractFormElement
         $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
         $mainFieldHtml[] =          '</div>';
         $mainFieldHtml[] =      '</div>';
-        $mainFieldHtml[] =      '<div class="form-wizards-items-bottom">';
-        $mainFieldHtml[] =          $fieldWizardHtml;
-        $mainFieldHtml[] =      '</div>';
+        if (!empty($fieldWizardHtml)) {
+            $mainFieldHtml[] = '<div class="form-wizards-items-bottom">';
+            $mainFieldHtml[] = $fieldWizardHtml;
+            $mainFieldHtml[] = '</div>';
+        }
         $mainFieldHtml[] =  '</div>';
         $mainFieldHtml[] = '</div>';
         $mainFieldHtml = implode(LF, $mainFieldHtml);

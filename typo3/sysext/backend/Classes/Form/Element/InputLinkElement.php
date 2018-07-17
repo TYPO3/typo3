@@ -230,12 +230,14 @@ class InputLinkElement extends AbstractFormElement
         $expansionHtml[] =              '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
         $expansionHtml[] =          '</div>';
         $expansionHtml[] =      '</div>';
-        $expansionHtml[] =      '<div class="form-wizards-items-aside">';
-        $expansionHtml[] =          '<div class="btn-group">';
-        $expansionHtml[] =              implode(LF, $valuePickerHtml);
-        $expansionHtml[] =              $fieldControlHtml;
-        $expansionHtml[] =          '</div>';
-        $expansionHtml[] =      '</div>';
+        if (!empty($valuePickerHtml) || !empty($fieldControlHtml)) {
+            $expansionHtml[] =      '<div class="form-wizards-items-aside">';
+            $expansionHtml[] =          '<div class="btn-group">';
+            $expansionHtml[] =              implode(LF, $valuePickerHtml);
+            $expansionHtml[] =              $fieldControlHtml;
+            $expansionHtml[] =          '</div>';
+            $expansionHtml[] =      '</div>';
+        }
         $expansionHtml[] =      '<div class="form-wizards-items-bottom">';
         $expansionHtml[] =          $linkExplanation['additionalAttributes'];
         $expansionHtml[] =          $fieldWizardHtml;

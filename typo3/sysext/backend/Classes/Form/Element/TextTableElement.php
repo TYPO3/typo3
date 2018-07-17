@@ -200,14 +200,18 @@ class TextTableElement extends AbstractFormElement
         $html[] =           '<div class="form-wizards-element">';
         $html[] =               '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($itemValue) . '</textarea>';
         $html[] =           '</div>';
-        $html[] =           '<div class="form-wizards-items-aside">';
-        $html[] =               '<div class="btn-group">';
-        $html[] =                   $fieldControlHtml;
-        $html[] =               '</div>';
-        $html[] =           '</div>';
-        $html[] =           '<div class="form-wizards-items-bottom">';
-        $html[] =               $fieldWizardHtml;
-        $html[] =           '</div>';
+        if (!empty($fieldControlHtml)) {
+            $html[] =           '<div class="form-wizards-items-aside">';
+            $html[] =               '<div class="btn-group">';
+            $html[] =                   $fieldControlHtml;
+            $html[] =               '</div>';
+            $html[] =           '</div>';
+        }
+        if (!empty($fieldWizardHtml)) {
+            $html[] = '<div class="form-wizards-items-bottom">';
+            $html[] = $fieldWizardHtml;
+            $html[] = '</div>';
+        }
         $html[] =       '</div>';
         $html[] =   '</div>';
         $html[] = '</div>';

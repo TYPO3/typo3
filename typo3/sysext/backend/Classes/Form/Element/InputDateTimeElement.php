@@ -198,14 +198,18 @@ class InputDateTimeElement extends AbstractFormElement
         $expansionHtml[] =              '</span>';
         $expansionHtml[] =          '</div>';
         $expansionHtml[] =      '</div>';
-        $expansionHtml[] =      '<div class="form-wizards-items-aside">';
-        $expansionHtml[] =          '<div class="btn-group">';
-        $expansionHtml[] =              $fieldControlHtml;
-        $expansionHtml[] =          '</div>';
-        $expansionHtml[] =      '</div>';
-        $expansionHtml[] =      '<div class="form-wizards-items-bottom">';
-        $expansionHtml[] =          $fieldWizardHtml;
-        $expansionHtml[] =      '</div>';
+        if (!empty($fieldControlHtml)) {
+            $expansionHtml[] =      '<div class="form-wizards-items-aside">';
+            $expansionHtml[] =          '<div class="btn-group">';
+            $expansionHtml[] =              $fieldControlHtml;
+            $expansionHtml[] =          '</div>';
+            $expansionHtml[] =      '</div>';
+        }
+        if (!empty($fieldWizardHtml)) {
+            $expansionHtml[] = '<div class="form-wizards-items-bottom">';
+            $expansionHtml[] = $fieldWizardHtml;
+            $expansionHtml[] = '</div>';
+        }
         $expansionHtml[] =  '</div>';
         $expansionHtml[] = '</div>';
         $expansionHtml = implode(LF, $expansionHtml);

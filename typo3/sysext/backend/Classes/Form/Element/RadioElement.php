@@ -101,7 +101,7 @@ class RadioElement extends AbstractFormElement
             $html[] =     '</label>';
             $html[] = '</div>';
         }
-        if (!$disabled) {
+        if (!$disabled && !empty($fieldWizardHtml)) {
             $html[] =   '<div class="form-wizards-items-bottom">';
             $html[] =       $fieldWizardHtml;
             $html[] =   '</div>';

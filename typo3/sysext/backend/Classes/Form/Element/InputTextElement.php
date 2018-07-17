@@ -244,16 +244,20 @@ class InputTextElement extends AbstractFormElement
         $mainFieldHtml[] =          '<input type="' . $inputType . '"' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $mainFieldHtml[] =          '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
         $mainFieldHtml[] =      '</div>';
-        $mainFieldHtml[] =      '<div class="form-wizards-items-aside">';
-        $mainFieldHtml[] =          '<div class="btn-group">';
-        $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
-        $mainFieldHtml[] =              implode(LF, $valueSliderHtml);
-        $mainFieldHtml[] =              $fieldControlHtml;
-        $mainFieldHtml[] =          '</div>';
-        $mainFieldHtml[] =      '</div>';
-        $mainFieldHtml[] =      '<div class="form-wizards-items-bottom">';
-        $mainFieldHtml[] =          $fieldWizardHtml;
-        $mainFieldHtml[] =      '</div>';
+        if (!empty($valuePickerHtml) || !empty($valueSliderHtml) || !empty($fieldControlHtml)) {
+            $mainFieldHtml[] =      '<div class="form-wizards-items-aside">';
+            $mainFieldHtml[] =          '<div class="btn-group">';
+            $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
+            $mainFieldHtml[] =              implode(LF, $valueSliderHtml);
+            $mainFieldHtml[] =              $fieldControlHtml;
+            $mainFieldHtml[] =          '</div>';
+            $mainFieldHtml[] =      '</div>';
+        }
+        if (!empty($fieldWizardHtml)) {
+            $mainFieldHtml[] = '<div class="form-wizards-items-bottom">';
+            $mainFieldHtml[] = $fieldWizardHtml;
+            $mainFieldHtml[] = '</div>';
+        }
         $mainFieldHtml[] =  '</div>';
         $mainFieldHtml[] = '</div>';
         $mainFieldHtml = implode(LF, $mainFieldHtml);

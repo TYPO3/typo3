@@ -167,7 +167,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =               '<div id="' . $treeWrapperId . '" class="svg-tree-wrapper" style="height: ' . $heightInPx . 'px;"></div>';
         $html[] =               '<script type="text/javascript">var ' . $treeWrapperId . ' = ' . $this->getTreeOnChangeJs() . '</script>';
         $html[] =           '</div>';
-        if ($readOnly === 'false') {
+        if ($readOnly === 'false' && !empty($fieldWizardHtml)) {
             $html[] =       '<div class="form-wizards-items-bottom">';
             $html[] =           $fieldWizardHtml;
             $html[] =       '</div>';

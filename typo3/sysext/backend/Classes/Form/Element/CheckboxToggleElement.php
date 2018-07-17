@@ -145,7 +145,7 @@ class CheckboxToggleElement extends AbstractFormElement
         $html[] =       '<div class="form-wizards-element">';
         $html[] =           $elementHtml;
         $html[] =       '</div>';
-        if (!$disabled) {
+        if (!$disabled && !empty($fieldWizardHtml)) {
             $html[] =   '<div class="form-wizards-items-bottom">';
             $html[] =       $fieldWizardHtml;
             $html[] =   '</div>';

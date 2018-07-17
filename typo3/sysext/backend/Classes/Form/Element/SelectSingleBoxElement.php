@@ -134,17 +134,20 @@ class SelectSingleBoxElement extends AbstractFormElement
         $html[] =               $selectElement;
         $html[] =           '</div>';
         if (!$disabled) {
-            $html[] =       '<div class="form-wizards-items-aside">';
-            $html[] =           $fieldControlHtml;
-            $html[] =       '</div>';
-            $html[] =   '</div>';
-
+            if (!empty($fieldControlHtml)) {
+                $html[] =       '<div class="form-wizards-items-aside">';
+                $html[] =           $fieldControlHtml;
+                $html[] =       '</div>';
+                $html[] =   '</div>';
+            }
             $html[] =   '<p>';
             $html[] =       '<em>' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.holdDownCTRL')) . '</em>';
             $html[] =   '</p>';
-            $html[] =   '<div class="form-wizards-items-bottom">';
-            $html[] =       $fieldWizardHtml;
-            $html[] =   '</div>';
+            if (!empty($fieldWizardHtml)) {
+                $html[] = '<div class="form-wizards-items-bottom">';
+                $html[] = $fieldWizardHtml;
+                $html[] = '</div>';
+            }
         }
         $html[] =   '</div>';
         $html[] = '</div>';

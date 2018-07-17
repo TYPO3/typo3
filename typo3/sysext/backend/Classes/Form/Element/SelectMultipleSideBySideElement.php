@@ -307,19 +307,23 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                               implode(LF, $selectableItemsHtml);
         $html[] =                           '</select>';
         $html[] =                       '</div>';
-        $html[] =                       '<div class="form-wizards-items-aside">';
-        $html[] =                           '<div class="btn-group-vertical">';
-        $html[] =                               $fieldControlHtml;
-        $html[] =                           '</div>';
-        $html[] =                       '</div>';
+        if (!empty($fieldControlHtml)) {
+            $html[] =                       '<div class="form-wizards-items-aside">';
+            $html[] =                           '<div class="btn-group-vertical">';
+            $html[] =                               $fieldControlHtml;
+            $html[] =                           '</div>';
+            $html[] =                       '</div>';
+        }
         $html[] =                   '</div>';
         $html[] =               '</div>';
         $html[] =           '</div>';
         $html[] =           '<input type="hidden" name="' . htmlspecialchars($elementName) . '" value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '" />';
         $html[] =       '</div>';
-        $html[] =       '<div class="form-wizards-items-bottom">';
-        $html[] =           $fieldWizardHtml;
-        $html[] =       '</div>';
+        if (!empty($fieldWizardHtml)) {
+            $html[] = '<div class="form-wizards-items-bottom">';
+            $html[] = $fieldWizardHtml;
+            $html[] = '</div>';
+        }
         $html[] =   '</div>';
         $html[] = '</div>';
 

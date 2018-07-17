@@ -219,15 +219,19 @@ class TextElement extends AbstractFormElement
         $mainFieldHtml[] =      '<div class="form-wizards-element">';
         $mainFieldHtml[] =          '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($itemValue) . '</textarea>';
         $mainFieldHtml[] =      '</div>';
-        $mainFieldHtml[] =      '<div class="form-wizards-items-aside">';
-        $mainFieldHtml[] =          '<div class="btn-group">';
-        $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
-        $mainFieldHtml[] =              $fieldControlHtml;
-        $mainFieldHtml[] =          '</div>';
-        $mainFieldHtml[] =      '</div>';
-        $mainFieldHtml[] =      '<div class="form-wizards-items-bottom">';
-        $mainFieldHtml[] =          $fieldWizardHtml;
-        $mainFieldHtml[] =      '</div>';
+        if (!empty($valuePickerHtml) || !empty($fieldControlHtml)) {
+            $mainFieldHtml[] =      '<div class="form-wizards-items-aside">';
+            $mainFieldHtml[] =          '<div class="btn-group">';
+            $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
+            $mainFieldHtml[] =              $fieldControlHtml;
+            $mainFieldHtml[] =          '</div>';
+            $mainFieldHtml[] =      '</div>';
+        }
+        if (!empty($fieldWizardHtml)) {
+            $mainFieldHtml[] = '<div class="form-wizards-items-bottom">';
+            $mainFieldHtml[] = $fieldWizardHtml;
+            $mainFieldHtml[] = '</div>';
+        }
         $mainFieldHtml[] =  '</div>';
         $mainFieldHtml[] = '</div>';
         $mainFieldHtml = implode(LF, $mainFieldHtml);

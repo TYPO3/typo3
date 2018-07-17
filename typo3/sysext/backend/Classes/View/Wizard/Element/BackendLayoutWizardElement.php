@@ -129,9 +129,11 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $html[] =                   '</tr>';
         $html[] =               '</table>';
         $html[] =           '</div>';
-        $html[] =           '<div class="form-wizards-items-bottom">';
-        $html[] =               $fieldWizardHtml;
-        $html[] =           '</div>';
+        if (!empty($fieldWizardHtml)) {
+            $html[] = '<div class="form-wizards-items-bottom">';
+            $html[] = $fieldWizardHtml;
+            $html[] = '</div>';
+        }
         $html[] =       '</div>';
         $html[] =   '</div>';
         $html[] = '</div>';
