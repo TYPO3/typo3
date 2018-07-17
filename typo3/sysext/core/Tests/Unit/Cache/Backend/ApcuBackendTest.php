@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 use TYPO3\CMS\Core\Cache\Backend\ApcuBackend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
@@ -135,36 +134,6 @@ class ApcuBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $backend->set($identifier, $data, ['UnitTestTag%tag3']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
         $this->assertEquals([], $retrieved);
-    }
-
-    /**
-     * @test
-     */
-    public function setCacheIsSettingIdentifierPrefixWithCacheIdentifier()
-    {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|FrontendInterface $cacheMock */
-        $cacheMock = $this->createMock(FrontendInterface::class);
-        $cacheMock->expects($this->any())->method('getIdentifier')->will($this->returnValue(
-            'testidentifier'
-        ));
-
-        /** @var $backendMock \PHPUnit_Framework_MockObject_MockObject|ApcuBackend */
-        $backendMock = $this->getMockBuilder(ApcuBackend::class)
-            ->setMethods(['setIdentifierPrefix', 'getCurrentUserData', 'getPathSite'])
-            ->setConstructorArgs(['testcontext'])
-            ->getMock();
-
-        $backendMock->expects($this->once())->method('getCurrentUserData')->will(
-            $this->returnValue(['name' => 'testname'])
-        );
-
-        $backendMock->expects($this->once())->method('getPathSite')->will(
-            $this->returnValue('testpath')
-        );
-
-        $expectedIdentifier = 'TYPO3_' . GeneralUtility::shortMD5('testpath' . 'testname' . 'testcontext' . 'testidentifier', 12);
-        $backendMock->expects($this->once())->method('setIdentifierPrefix')->with($expectedIdentifier);
-        $backendMock->setCache($cacheMock);
     }
 
     /**

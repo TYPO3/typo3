@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  */
 
 use TYPO3\CMS\Core\Cache\Backend\ApcBackend;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
 /**
  * Testcase for the APC cache backend.
@@ -138,36 +139,6 @@ class ApcBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function setCacheIsSettingIdentifierPrefixWithCacheIdentifier()
-    {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheMock */
-        $cacheMock = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
-        $cacheMock->expects($this->any())->method('getIdentifier')->will($this->returnValue(
-            'testidentifier'
-        ));
-
-        /** @var $backendMock \PHPUnit_Framework_MockObject_MockObject|ApcBackend */
-        $backendMock = $this->getMockBuilder(ApcBackend::class)
-            ->setMethods(['setIdentifierPrefix', 'getCurrentUserData', 'getPathSite'])
-            ->setConstructorArgs(['testcontext'])
-            ->getMock();
-
-        $backendMock->expects($this->once())->method('getCurrentUserData')->will(
-            $this->returnValue(['name' => 'testname'])
-        );
-
-        $backendMock->expects($this->once())->method('getPathSite')->will(
-            $this->returnValue('testpath')
-        );
-
-        $expectedIdentifier = 'TYPO3_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('testpath' . 'testname' . 'testcontext' . 'testidentifier', 12);
-        $backendMock->expects($this->once())->method('setIdentifierPrefix')->with($expectedIdentifier);
-        $backendMock->setCache($cacheMock);
-    }
-
-    /**
-     * @test
-     */
     public function hasReturnsFalseIfTheEntryDoesNotExist()
     {
         $backend = $this->setUpBackend();
@@ -240,14 +211,14 @@ class ApcBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function flushRemovesOnlyOwnEntries()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thisCache */
-        $thisCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
+        /** @var \PHPUnit_Framework_MockObject_MockObject|FrontendInterface $thisCache */
+        $thisCache = $this->createMock(FrontendInterface::class);
         $thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
         $thisBackend = new ApcBackend('Testing');
         $thisBackend->setCache($thisCache);
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thatCache */
-        $thatCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
+        /** @var \PHPUnit_Framework_MockObject_MockObject|FrontendInterface $thatCache */
+        $thatCache = $this->createMock(FrontendInterface::class);
         $thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
         $thatBackend = new ApcBackend('Testing');
         $thatBackend->setCache($thatCache);
@@ -303,8 +274,8 @@ class ApcBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function setUpBackend($accessible = false)
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
-        $cache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
+        /** @var \PHPUnit_Framework_MockObject_MockObject|FrontendInterface $cache */
+        $cache = $this->createMock(FrontendInterface::class);
         if ($accessible) {
             $accessibleClassName = $this->buildAccessibleProxy(ApcBackend::class);
             $backend = new $accessibleClassName('Testing');
