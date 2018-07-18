@@ -106,7 +106,7 @@ then go ahead and configure a specific ``prototype`` accordingly.
 Beside the frontend templates, there are also templates for the abstract
 view, i.e. you can customize the rendering of the abstract view for each
 form element. If you have created your own form elements, in most cases you
-will fall back to the already existing Fluid templates. But rembember, you
+will fall back to the already existing Fluid templates. But remember, you
 are always able to create you own Fluid templated and adapt the abstract view
 till it suits your needs.
 
