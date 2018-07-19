@@ -2,7 +2,7 @@ class_name: BackendTester
 modules:
   enabled:
     - WebDriver:
-        url: http://master:8000/typo3temp/var/tests/acceptance
+        url: http://web:8000/typo3temp/var/tests/acceptance
         browser: chrome
         wait: 1
         host: chrome
@@ -17,6 +17,9 @@ modules:
 extensions:
     enabled:
         - TYPO3\TestingFramework\Core\Acceptance\Extension\BackendCoreEnvironment
+
+groups:
+  AcceptanceTests-Job-*: AcceptanceTests-Job-*
 
 env:
   headless:

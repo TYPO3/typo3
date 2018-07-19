@@ -87,6 +87,24 @@ services:
         sleep 1;
       "
 
+  start_dependencies_acceptance_backend_mariadb10:
+    image: alpine:3.8
+    links:
+      - mariadb10
+      - chrome
+      - web
+    networks:
+      - test
+    command: >
+      /bin/sh -c "
+        echo Waiting for db start...;
+        while ! nc -z mariadb10 3306;
+        do
+          sleep 1;
+        done;
+        echo Connected!;
+      "
+
   start_dependencies_functional_mariadb10:
     image: alpine:3.8
     links:

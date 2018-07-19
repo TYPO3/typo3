@@ -50,15 +50,6 @@ abstract public class AbstractCoreSpec {
     protected String testingFrameworkBuildPath = "vendor/typo3/testing-framework/Resources/Core/Build/";
 
     /**
-     * @todo This can be removed if acceptance mysql tests are rewritten and active again
-     */
-    protected String credentialsMysql =
-        "typo3DatabaseName=\"func_test\"" +
-        " typo3DatabaseUsername=\"root\"" +
-        " typo3DatabasePassword=\"funcp\"" +
-        " typo3DatabaseHost=\"mariadb10\"";
-
-    /**
      * @todo This can be removed if acceptance mssql functional tests work again
      */
     protected String credentialsMssql =
@@ -333,12 +324,10 @@ abstract public class AbstractCoreSpec {
     /**
      * Jobs for mysql based acceptance tests
      *
-     * @todo Currently disabled and broken
-     *
      * @param int numberOfChunks
      * @param String requirementIdentifier
      */
-    protected ArrayList<Job> getJobsAcceptanceTestsMysql(int numberOfChunks, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsAcceptanceTestsBackendMysql(int numberOfChunks, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -354,6 +343,7 @@ abstract public class AbstractCoreSpec {
                     this.getTaskGitCherryPick(),
                     this.getTaskComposerInstall(requirementIdentifier),
                     this.getTaskPrepareAcceptanceTest(),
+                    this.getTaskDockerDependenciesAcceptanceBackendMariadb10(),
                     new ScriptTask()
                         .description("Split acceptance tests")
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -361,11 +351,29 @@ abstract public class AbstractCoreSpec {
                             this.getScriptTaskBashInlineBody() +
                             "./" + this.testingFrameworkBuildPath + "Scripts/splitAcceptanceTests.sh " + numberOfChunks + "\n"
                         ),
-                    new CommandTask()
+                    new ScriptTask()
                         .description("Execute codeception acceptance suite group " + formattedI)
-                        .executable("codecept")
-                        .argument("run Acceptance -d -g AcceptanceTests-Job-" + i + " -c " + this.testingFrameworkBuildPath + "AcceptanceTests.yml --xml reports.xml --html reports.html")
-                        .environmentVariables(this.credentialsMysql)
+                        .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                        .inlineBody(
+                            this.getScriptTaskBashInlineBody() +
+                            "function codecept() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        -e typo3DatabaseName=func_test \\\n" +
+                            "        -e typo3DatabaseUsername=root \\\n" +
+                            "        -e typo3DatabasePassword=funcp  \\\n" +
+                            "        -e typo3DatabaseHost=mariadb10  \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; ./bin/codecept $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "codecept run Backend -d -g AcceptanceTests-Job-" + i + " -c typo3/sysext/core/Tests/codeception.yml --xml reports.xml --html reports.html\n"
+                        )
                 )
                 .finalTasks(
                     this.getTaskStopDockerDependencies(),
@@ -381,7 +389,6 @@ abstract public class AbstractCoreSpec {
                     this.getRequirementDocker10()
                 )
                 .cleanWorkingDirectory(true)
-                .enabled(false)
             );
         }
 
@@ -1182,7 +1189,7 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
-     * Start docker sibling containers to execute acceptance tests on mariadb
+     * Start docker sibling containers to execute acceptance install tests on mariadb
      */
     protected Task getTaskDockerDependenciesAcceptanceInstallMariadb10() {
         return new ScriptTask()
@@ -1197,7 +1204,7 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
-     * Start docker sibling containers to execute acceptance tests on postgres
+     * Start docker sibling containers to execute acceptance install tests on postgres
      */
     protected Task getTaskDockerDependenciesAcceptanceInstallPostgres10() {
         return new ScriptTask()
@@ -1212,7 +1219,7 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
-     * Start docker sibling containers to execute acceptance tests on sqlite
+     * Start docker sibling containers to execute acceptance install tests on sqlite
      */
     protected Task getTaskDockerDependenciesAcceptanceInstallSqlite() {
         return new ScriptTask()
@@ -1223,6 +1230,21 @@ abstract public class AbstractCoreSpec {
                 "cd Build/testing-docker/bamboo\n" +
                 "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
                 "docker-compose run start_dependencies_acceptance_install_sqlite"
+            );
+    }
+
+    /**
+     * Start docker sibling containers to execute acceptance backend tests on mariadb
+     */
+    protected Task getTaskDockerDependenciesAcceptanceBackendMariadb10() {
+        return new ScriptTask()
+            .description("Start docker siblings for acceptance test backend mariadb")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_acceptance_backend_mariadb10"
             );
     }
 

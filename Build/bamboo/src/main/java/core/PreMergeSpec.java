@@ -94,7 +94,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
         jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72"));
         jobsMainStage.add(this.getJobAcceptanceTestInstallSqlite("PHP72"));
 
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(this.numberOfAcceptanceTestJobs, "PHP72"));
 
         jobsMainStage.add(this.getJobIntegrationAnnotations("PHP72"));
 
