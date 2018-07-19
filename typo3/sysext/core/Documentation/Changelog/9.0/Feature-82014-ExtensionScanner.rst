@@ -26,6 +26,6 @@ Be aware the scanner is only a helper, not everything is found and it will also
 show false positives.
 
 More details about this feature can be found
-at `<https://docs.typo3.org/typo3cms/CoreApiReference/ExtensionScanner/Index.html>`__.
+at `<https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/ExtensionScanner/Index.html>`__.
 
 .. index:: Backend, PHP-API
