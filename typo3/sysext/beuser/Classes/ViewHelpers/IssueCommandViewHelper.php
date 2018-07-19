@@ -35,18 +35,18 @@ class IssueCommandViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('parameters', 'string', 'Is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World', true);
+        $this->registerArgument('parameters', 'string', 'Is a set of GET params to send to route tce_db (SimpleDataHandlerController). Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World', true);
         $this->registerArgument('redirectUrl', 'string', 'Redirect URL if any other that \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv(\'REQUEST_URI\') is preferred', false, '');
     }
 
     /**
-     * Returns a URL with a command to TYPO3 Core Engine (tce_db.php)
+     * Returns a URL with a command to TYPO3 Core Engine - DataHandler (route tce_db)
      *
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
-     * @return string URL to tce_db.php + parameters
+     * @return string URL to tce_db + parameters
      * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction()
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)

@@ -949,13 +949,8 @@ class Clipboard
         return is_array($this->clipData[$this->current]['el']) && !empty($this->clipData[$this->current]['el']);
     }
 
-    /*****************************************
-     *
-     * FOR USE IN tce_db.php:
-     *
-     ****************************************/
     /**
-     * Applies the proper paste configuration in the $cmd array send to tce_db.php.
+     * Applies the proper paste configuration in the $cmd array send to SimpleDataHandlerController (tce_db route)
      * $ref is the target, see description below.
      * The current pad is pasted
      *
