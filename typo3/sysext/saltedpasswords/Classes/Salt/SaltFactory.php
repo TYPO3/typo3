@@ -122,7 +122,7 @@ class SaltFactory
         $methodFound = false;
         foreach ($registeredMethods as $method) {
             $objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($method);
-            if ($objectInstance instanceof SaltInterface) {
+            if ($objectInstance instanceof SaltInterface && $objectInstance->isAvailable()) {
                 $methodFound = $objectInstance->isValidSaltedPW($saltedHash);
                 if ($methodFound) {
                     self::$instance = $objectInstance;
