@@ -618,7 +618,7 @@ class ResourceCompressorTest extends BaseTestCase
             Environment::getVarPath(),
             Environment::getConfigPath(),
             PATH_site . 'index.php',
-            TYPO3_OS === 'WIN' ? 'WINDOWS' : 'UNIX'
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $_SERVER['ORIG_SCRIPT_NAME'] = '/index.php';
         $this->subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);

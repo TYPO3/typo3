@@ -23,6 +23,9 @@ The following constants have been deprecated and should not be used any longer:
 * :php:`PATH_typo3conf`
   Use :php:`Environment::getPublicPath() . '/typo3conf'` instead
 
+* :php:`TYPO3_OS`
+  Use :php:`Environment::isWindows()` and :php:`Environment::isUnix()` instead
+
 
 Impact
 ======
