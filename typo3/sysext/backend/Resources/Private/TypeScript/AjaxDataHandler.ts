@@ -28,7 +28,8 @@ enum Identifiers {
 
 /**
  * Module: TYPO3/CMS/Backend/AjaxDataHandler
- * AjaxDataHandler - Javascript functions to work with AJAX and interacting with tce_db.php
+ * Javascript functions to work with AJAX and interacting with Datahandler
+ * through \TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->processAjaxRequest (record_process route)
  */
 class AjaxDataHandler {
   /**
@@ -234,7 +235,7 @@ class AjaxDataHandler {
   }
 
   /**
-   * AJAX call to tce_db.php
+   * AJAX call to record_process route (SimpleDataHandlerController->processAjaxRequest)
    * returns a jQuery Promise to work with
    *
    * @param {Object} params

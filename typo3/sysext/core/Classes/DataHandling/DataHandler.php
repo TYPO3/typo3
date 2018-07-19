@@ -66,13 +66,13 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * This class was formerly known as TCEmain.
  *
  * This is the TYPO3 Core Engine class for manipulation of the database
- * This class is used by eg. the tce_db.php script which provides an the interface for POST forms to this class.
+ * This class is used by eg. the tce_db BE route (SimpleDataHandlerController) which provides an the interface for POST forms to this class.
  *
  * Dependencies:
  * - $GLOBALS['TCA'] must exist
  * - $GLOBALS['LANG'] must exist
  *
- * tce_db.php for further comments and SYNTAX! Also see document 'TYPO3 Core API' for details.
+ * Also see document 'TYPO3 Core API' for details.
  */
 class DataHandler implements LoggerAwareInterface
 {
@@ -8699,7 +8699,7 @@ class DataHandler implements LoggerAwareInterface
         if (!$this->enableLogging) {
             return 0;
         }
-        // Type value for tce_db.php
+        // Type value for DataHandler
         $type = 1;
         if (!$this->storeLogMessages) {
             $details = '';
