@@ -594,7 +594,7 @@ class AdministrationRepository
                     ->execute();
 
                 $row['wordCount'] = $queryBuilder
-                    ->count('uid')
+                    ->count('index_rel.wid')
                     ->execute()
                     ->fetchColumn(0);
                 $wordCountResult->closeCursor();
