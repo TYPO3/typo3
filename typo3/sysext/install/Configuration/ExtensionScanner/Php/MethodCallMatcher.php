@@ -2452,4 +2452,25 @@ return [
             'Deprecation-84387-DeprecatedMethodAndPropertyInSchedulerModuleController.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\PageRenderer->enableConcatenateFiles' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-65578-ConfigconcatenateJsAndCssAndConcatenateFiles.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->getConcatenateFiles' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-65578-ConfigconcatenateJsAndCssAndConcatenateFiles.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->disableConcatenateFiles' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-65578-ConfigconcatenateJsAndCssAndConcatenateFiles.rst',
+        ],
+    ],
 ];

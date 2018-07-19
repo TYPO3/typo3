@@ -779,8 +779,11 @@ class PageGenerator
             $pageRenderer->enableConcatenateJavascript();
         }
         // Backward compatibility for old configuration
+        // @deprecated - remove this option in TYPO3 v10.0.
         if ($tsfe->config['config']['concatenateJsAndCss']) {
-            $pageRenderer->enableConcatenateFiles();
+            trigger_error('Setting config.concatenateJsAndCss is deprecated in favor of config.concatenateJs and config.concatenateCss, and will have no effect anymore in TYPO3 v10.0.', E_USER_DEPRECATED);
+            $pageRenderer->enableConcatenateCss();
+            $pageRenderer->enableConcatenateJavascript();
         }
         // Add header data block
         if ($tsfe->additionalHeaderData) {

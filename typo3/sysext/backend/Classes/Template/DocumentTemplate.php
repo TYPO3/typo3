@@ -297,7 +297,8 @@ function jumpToUrl(URL) {
         }
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
-        $this->pageRenderer->enableConcatenateFiles();
+        $this->pageRenderer->enableConcatenateCss();
+        $this->pageRenderer->enableConcatenateJavascript();
         $this->pageRenderer->enableCompressCss();
         $this->pageRenderer->enableCompressJavascript();
         // Add all JavaScript files defined in $this->jsFiles to the PageRenderer

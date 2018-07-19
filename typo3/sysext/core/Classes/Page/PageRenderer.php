@@ -59,6 +59,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @var bool
+     * @deprecated will be removed in TYPO3 v10, in favor of concatenateJavaScript and concatenateCss
      */
     protected $concatenateFiles = false;
 
@@ -635,17 +636,21 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Enables concatenation of js and css files
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      */
     public function enableConcatenateFiles()
     {
+        trigger_error('This method will be removed in TYPO3 v10.0. Use concatenateCss() and concatenateJavascript() instead.', E_USER_DEPRECATED);
         $this->concatenateFiles = true;
     }
 
     /**
      * Disables concatenation of js and css files
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      */
     public function disableConcatenateFiles()
     {
+        trigger_error('This method will be removed in TYPO3 v10.0. Use concatenateCss() and concatenateJavascript() instead.', E_USER_DEPRECATED);
         $this->concatenateFiles = false;
     }
 
@@ -705,7 +710,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     {
         $this->compressJavascript = false;
         $this->compressCss = false;
-        $this->concatenateFiles = false;
+        $this->concatenateCss = false;
+        $this->concatenateJavascript = false;
         $this->removeLineBreaksFromTemplate = false;
         $this->enableJqueryDebug = true;
     }
@@ -860,9 +866,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Gets concatenate of js and css files
      *
      * @return bool
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      */
     public function getConcatenateFiles()
     {
+        trigger_error('This method will be removed in TYPO3 v10.0. Use concatenateCss() and concatenateJavascript() instead.', E_USER_DEPRECATED);
         return $this->concatenateFiles;
     }
 
