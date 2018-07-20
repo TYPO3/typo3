@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
@@ -1137,23 +1138,12 @@ class BackendUtility
                 ) {
                     $cropVariantCollection = CropVariantCollection::create((string)$fileReferenceObject->getProperty('crop'));
                     $cropArea = $cropVariantCollection->getCropArea();
-                    $parameters = json_encode([
-                        'fileId' => $fileObject->getUid(),
-                        'configuration' => [
-                            'width' => $sizeParts[0],
-                            'height' => $sizeParts[1] . 'c',
-                            'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($fileReferenceObject),
-                        ]
+                    $imageUrl = self::getThumbnailUrl($fileObject->getUid(), [
+                        'width' => $sizeParts[0],
+                        'height' => $sizeParts[1] . 'c',
+                        'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($fileReferenceObject),
+                        '_context' => $cropArea->isEmpty() ? ProcessedFile::CONTEXT_IMAGEPREVIEW : ProcessedFile::CONTEXT_IMAGECROPSCALEMASK
                     ]);
-                    $uriParameters = [
-                        'parameters' => $parameters,
-                        'hmac' => GeneralUtility::hmac(
-                            $parameters,
-                            \TYPO3\CMS\Backend\Controller\File\ThumbnailController::class
-                        ),
-                    ];
-                    $imageUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)
-                        ->buildUriFromRoute('thumbnails', $uriParameters);
                     $attributes = [
                         'src' => $imageUrl,
                         'width' => (int)$sizeParts[0],
@@ -1176,6 +1166,29 @@ class BackendUtility
             }
         }
         return $thumbData;
+    }
+
+    /**
+     * @param int $fileId
+     * @param array $configuration
+     * @return string
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     */
+    public static function getThumbnailUrl(int $fileId, array $configuration): string
+    {
+        $parameters = json_encode([
+            'fileId' => $fileId,
+            'configuration' => $configuration
+        ]);
+        $uriParameters = [
+            'parameters' => $parameters,
+            'hmac' => GeneralUtility::hmac(
+                $parameters,
+                \TYPO3\CMS\Backend\Controller\File\ThumbnailController::class
+            ),
+        ];
+        return (string)GeneralUtility::makeInstance(UriBuilder::class)
+            ->buildUriFromRoute('thumbnails', $uriParameters);
     }
 
     /**

@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -86,9 +88,12 @@ class ThumbnailController
     protected function generateThumbnail($fileId, array $configuration): ResponseInterface
     {
         $file = ResourceFactory::getInstance()->getFileObject($fileId);
-        if (empty($file) || $file->isMissing()) {
+        if ($file === null || $file->isMissing()) {
             return $this->generateNotFoundResponse();
         }
+
+        $context = $configuration['_context'] ?? ProcessedFile::CONTEXT_IMAGEPREVIEW;
+        unset($configuration['_context']);
 
         $processingConfiguration = $this->defaultConfiguration;
         ArrayUtility::mergeRecursiveWithOverrule(
@@ -97,13 +102,27 @@ class ThumbnailController
         );
 
         $processedImage = $file->process(
-            ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
+            $context,
             $processingConfiguration
         );
-        $filePath = $processedImage->getForLocalProcessing(false);
-        return new Response($filePath, 200, [
-            'Content-Type' => $processedImage->getMimeType()
-        ]);
+        if (strpos($processedImage->getMimeType(), 'image') === 0) {
+            $filePath = $processedImage->getForLocalProcessing(false);
+            return new Response($filePath, 200, [
+                'Content-Type' => $processedImage->getMimeType()
+            ]);
+        }
+
+        $mimeIdentifier = GeneralUtility::trimExplode('/', $file->getMimeType())[0] . '/*';
+        $fileTypeIdentifier = GeneralUtility::makeInstance(IconRegistry::class)
+            ->getIconIdentifierForMimeType($mimeIdentifier);
+        $file = GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Icons/T3Icons/mimetypes/' . $fileTypeIdentifier . '.svg');
+        if (file_exists($file)) {
+            return new Response($file, 200, [
+                'Content-Type' => 'image/svg+xml'
+            ]);
+        }
+
+        return $this->generateNotFoundResponse();
     }
 
     /**
