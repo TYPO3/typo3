@@ -109,7 +109,7 @@ public class NightlySpec extends AbstractCoreSpec {
             .stages(
                 stageMainStage
             )
-            .linkedRepositories("git.typo3.org Core")
+            .linkedRepositories("github TYPO3 TYPO3.CMS")
             .triggers(
                 new ScheduledTrigger()
                     .name("Scheduled")
