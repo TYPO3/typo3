@@ -115,7 +115,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
                 stageEarly,
                 stageMainStage
             )
-            .linkedRepositories("git.typo3.org Core 7.6")
+            .linkedRepositories("github TYPO3 TYPO3.CMS 7.6")
             .triggers(
                 new RepositoryPollingTrigger()
                     .name("Repository polling for post-merge builds"),
