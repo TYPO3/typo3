@@ -90,11 +90,11 @@ public class PreMergeSpec extends AbstractCoreSpec {
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
         // @todo: decide on specific php version this should run on
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP72"));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72"));
+//        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP72"));
+//        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72"));
 
         // @todo: decide on specific php version this should run on
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, "PHP72"));
+//        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, "PHP72"));
 
         jobsMainStage.add(this.getJobIntegrationVarious("PHP72"));
 
@@ -130,7 +130,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
                 stageEarly,
                 stageMainStage
             )
-            .linkedRepositories("git.typo3.org Core 8.7")
+            .linkedRepositories("github TYPO3 TYPO3.CMS 8.7")
             .triggers(
                 new RepositoryPollingTrigger()
                     .name("Repository polling for post-merge builds"),
