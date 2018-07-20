@@ -37,28 +37,53 @@ class MultiValuePropertiesExtractor extends AbstractExtractor
             $value !== 'Inspector-PropertyGridEditor'
             && $value !== 'Inspector-MultiSelectEditor'
             && $value !== 'Inspector-ValidationErrorMessageEditor'
+            && $value !== 'Inspector-RequiredValidatorEditor'
         ) {
             return;
         }
 
-        $propertyPath = implode(
-            '.',
-            [
-                'formElementsDefinition',
-                $formElementType,
-                'formEditor',
-                'editors',
-                $formEditorIndex,
-                'propertyPath',
-            ]
-        );
+        if ($value === 'Inspector-RequiredValidatorEditor') {
+            $propertyPath = implode(
+                '.',
+                [
+                    'formElementsDefinition',
+                    $formElementType,
+                    'formEditor',
+                    'editors',
+                    $formEditorIndex,
+                    'configurationOptions',
+                    'validationErrorMessage',
+                    'propertyPath',
+                ]
+            );
+        } else {
+            $propertyPath = implode(
+                '.',
+                [
+                    'formElementsDefinition',
+                    $formElementType,
+                    'formEditor',
+                    'editors',
+                    $formEditorIndex,
+                    'propertyPath',
+                ]
+            );
+        }
 
         $result = $this->extractorDto->getResult();
-        $result['formElements'][$formElementType]['multiValueProperties'][] = ArrayUtility::getValueByPath(
-            $this->extractorDto->getPrototypeConfiguration(),
-            $propertyPath,
-            '.'
-        );
+
+        if (ArrayUtility::isValidPath($this->extractorDto->getPrototypeConfiguration(), $propertyPath, '.')) {
+            $result['formElements'][$formElementType]['multiValueProperties'][] = ArrayUtility::getValueByPath(
+                $this->extractorDto->getPrototypeConfiguration(),
+                $propertyPath,
+                '.'
+            );
+        }
+
+        if ($value === 'Inspector-PropertyGridEditor') {
+            $result['formElements'][$formElementType]['multiValueProperties'][] = 'defaultValue';
+        }
+
         $this->extractorDto->setResult($result);
     }
 }
