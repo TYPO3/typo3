@@ -185,8 +185,8 @@ class DragDrop {
       let targetPid = 0;
 
       if (typeof targetFound === 'undefined') {
-        // the actual page is needed
-        targetPid = $('[data-page]').first().data('page');
+        // the actual page is needed. Read it from the container into which the element was dropped.
+        targetPid = parseInt((<HTMLElement>evt.target).offsetParent.getAttribute('data-page'), 10);
       } else {
         // the negative value of the content element after where it should be moved
         targetPid = 0 - parseInt(targetFound, 10);
