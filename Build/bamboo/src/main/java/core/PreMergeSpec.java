@@ -26,7 +26,6 @@ import com.atlassian.bamboo.specs.api.builders.plan.Plan;
 import com.atlassian.bamboo.specs.api.builders.plan.Stage;
 import com.atlassian.bamboo.specs.api.builders.plan.branches.BranchCleanup;
 import com.atlassian.bamboo.specs.api.builders.plan.branches.PlanBranchManagement;
-import com.atlassian.bamboo.specs.api.builders.plan.configuration.AllOtherPluginsConfiguration;
 import com.atlassian.bamboo.specs.api.builders.project.Project;
 import com.atlassian.bamboo.specs.api.builders.requirement.Requirement;
 import com.atlassian.bamboo.specs.builders.notification.PlanCompletedNotification;
@@ -35,7 +34,6 @@ import com.atlassian.bamboo.specs.builders.trigger.RemoteTrigger;
 import com.atlassian.bamboo.specs.builders.trigger.RepositoryPollingTrigger;
 import com.atlassian.bamboo.specs.model.task.ScriptTaskProperties;
 import com.atlassian.bamboo.specs.util.BambooServer;
-import com.atlassian.bamboo.specs.util.MapBuilder;
 
 /**
  * Core master pre-merge test plan.
@@ -101,7 +99,8 @@ public class PreMergeSpec extends AbstractCoreSpec {
         jobsMainStage.add(this.getJobIntegrationVarious("PHP72"));
 
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP72"));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP72"));
+        // mssql functionals are not executed as pre-merge
+        // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP72"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP72"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(this.numberOfFunctionalSqliteJobs, "PHP72"));
 
@@ -150,45 +149,6 @@ public class PreMergeSpec extends AbstractCoreSpec {
                     .recipientString("https://intercept.typo3.com/index.php")
                 )
         );
-    }
-
-    /**
-     * Job creating labels needed for intercept communication
-     */
-    protected Job getJobBuildLabels() {
-        return new Job("Create build labels", new BambooKey("CLFB"))
-            .description("Create changeId and patch set labels from variable access and parsing result of a dummy task")
-            .pluginConfigurations(new AllOtherPluginsConfiguration()
-                .configuration(new MapBuilder()
-                    .put("repositoryDefiningWorkingDirectory", -1)
-                    .put("custom", new MapBuilder()
-                        .put("auto", new MapBuilder()
-                            .put("regex", "https:\\/\\/review\\.typo3\\.org\\/(#\\/c\\/)?(\\d+)")
-                            .put("label", "change-\\2\\, patchset-${bamboo.patchset}")
-                            .build()
-                        )
-                        .put("buildHangingConfig.enabled", "false")
-                        .put("ncover.path", "")
-                        .put("clover", new MapBuilder()
-                            .put("path", "")
-                            .put("license", "")
-                            .put("useLocalLicenseKey", "true")
-                            .build()
-                        )
-                        .build()
-                    )
-                    .build()
-                )
-            )
-            .tasks(
-                new ScriptTask()
-                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
-                    .inlineBody("echo \"I'm just here for the labels!\"")
-            )
-            .requirements(
-                this.getRequirementDocker10()
-            )
-            .cleanWorkingDirectory(true);
     }
 
     /**

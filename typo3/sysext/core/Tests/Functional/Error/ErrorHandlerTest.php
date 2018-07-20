@@ -36,11 +36,12 @@ class ErrorHandlerTest extends FunctionalTestCase
     ];
 
     /**
-     * Disabled on sqlite: It does not support init command "SET NAMES 'UTF8'". That's ok
-     * since this test is not about db platform support but error handling in core.
+     * Disabled on sqlite and mssql: They don't support init command "SET NAMES 'UTF8'". That's
+     * ok since this test is not about db platform support but error handling in core.
      *
      * @test
      * @group not-sqlite
+     * @group not-mssql
      */
     public function handleErrorFetchesDeprecations()
     {

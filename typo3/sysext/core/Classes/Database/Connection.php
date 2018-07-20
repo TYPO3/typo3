@@ -20,6 +20,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\SQLServer2012Platform;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -448,8 +449,15 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     public function lastInsertId($tableName = null, string $fieldName = 'uid'): string
     {
-        if ($this->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+        $databasePlatform = $this->getDatabasePlatform();
+        if ($databasePlatform instanceof PostgreSqlPlatform) {
             return parent::lastInsertId(trim(implode('_', [$tableName, $fieldName, 'seq']), '_'));
+        }
+        if ($databasePlatform instanceof SQLServer2012Platform) {
+            // lastInsertId() in mssql >2012 takes a sequence name and not the table name as
+            // argument. If no argument is given, last insert id of latest table is returned.
+            // https://docs.microsoft.com/de-de/sql/connect/php/pdo-lastinsertid?view=sql-server-2017
+            return (string)parent::lastInsertId();
         }
 
         return (string)parent::lastInsertId($tableName);

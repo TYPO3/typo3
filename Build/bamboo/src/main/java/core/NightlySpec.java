@@ -40,9 +40,9 @@ public class NightlySpec extends AbstractCoreSpec {
 
     protected int numberOfAcceptanceTestJobs = 8;
     protected int numberOfFunctionalMysqlJobs = 6;
-    protected int numberOfFunctionalMssqlJobs = 6;
+    protected int numberOfFunctionalMssqlJobs = 16;
     protected int numberOfFunctionalPgsqlJobs = 6;
-    protected int numberOfFunctionalSqliteJobs = 10;
+    protected int numberOfFunctionalSqliteJobs = 6;
     protected int numberOfUnitRandomOrderJobs = 4;
 
     /**
@@ -66,6 +66,12 @@ public class NightlySpec extends AbstractCoreSpec {
      * Returns full Plan definition
      */
     Plan createPlan() {
+        // PREPARATION stage
+        ArrayList<Job> jobsPreparationStage = new ArrayList<Job>();
+        jobsPreparationStage.add(this.getJobBuildLabels());
+        Stage stagePreparation = new Stage("Preparation")
+            .jobs(jobsPreparationStage.toArray(new Job[jobsPreparationStage.size()]));
+
         // MAIN stage
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
@@ -107,6 +113,7 @@ public class NightlySpec extends AbstractCoreSpec {
             .description("Execute TYPO3 core master nightly tests. Auto generated! See Build/bamboo of core git repository.")
             .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(
+                stagePreparation,
                 stageMainStage
             )
             .linkedRepositories("github TYPO3 TYPO3.CMS")

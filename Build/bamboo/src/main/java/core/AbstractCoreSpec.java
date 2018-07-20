@@ -50,18 +50,6 @@ abstract public class AbstractCoreSpec {
     protected String testingFrameworkBuildPath = "vendor/typo3/testing-framework/Resources/Core/Build/";
 
     /**
-     * @todo This can be removed if acceptance mssql functional tests work again
-     */
-    protected String credentialsMssql =
-        "typo3DatabaseDriver=\"sqlsrv\"" +
-        " typo3DatabaseName=\"func\"" +
-        " typo3DatabasePassword='Test1234!'" +
-        " typo3DatabaseUsername=\"SA\"" +
-        " typo3DatabaseHost=\"localhost\"" +
-        " typo3DatabasePort=\"1433\"" +
-        " typo3DatabaseCharset=\"utf-8\"";
-
-    /**
      * Default permissions on core plans
      *
      * @param projectName
@@ -130,6 +118,45 @@ abstract public class AbstractCoreSpec {
                 )
                 .build()
             );
+    }
+
+    /**
+     * Job creating labels needed for intercept communication
+     */
+    protected Job getJobBuildLabels() {
+        return new Job("Create build labels", new BambooKey("CLFB"))
+            .description("Create changeId and patch set labels from variable access and parsing result of a dummy task")
+            .pluginConfigurations(new AllOtherPluginsConfiguration()
+                .configuration(new MapBuilder()
+                    .put("repositoryDefiningWorkingDirectory", -1)
+                    .put("custom", new MapBuilder()
+                        .put("auto", new MapBuilder()
+                            .put("regex", "https:\\/\\/review\\.typo3\\.org\\/(#\\/c\\/)?(\\d+)")
+                            .put("label", "change-\\2\\, patchset-${bamboo.patchset}")
+                            .build()
+                        )
+                        .put("buildHangingConfig.enabled", "false")
+                        .put("ncover.path", "")
+                        .put("clover", new MapBuilder()
+                            .put("path", "")
+                            .put("license", "")
+                            .put("useLocalLicenseKey", "true")
+                            .build()
+                        )
+                        .build()
+                    )
+                    .build()
+                )
+            )
+            .tasks(
+                new ScriptTask()
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody("echo \"I'm just here for the labels!\"")
+            )
+            .requirements(
+                this.getRequirementDocker10()
+            )
+            .cleanWorkingDirectory(true);
     }
 
     /**
@@ -462,8 +489,6 @@ abstract public class AbstractCoreSpec {
     /**
      * Jobs for mssql based functional tests
      *
-     * @todo Currently disabled and broken
-     *
      * @param int numberOfChunks
      * @param String requirementIdentifier
      */
@@ -482,15 +507,37 @@ abstract public class AbstractCoreSpec {
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
                     this.getTaskComposerInstall(requirementIdentifier),
+                    this.getTaskDockerDependenciesFunctionalMssql(),
                     this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
                     new ScriptTask()
                         .description("Run phpunit with functional chunk " + formattedI)
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
-                            "./bin/phpunit --exclude-group not-mssql --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
+                            "function phpunit() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        -e typo3DatabaseDriver=sqlsrv \\\n" +
+                            "        -e typo3DatabaseName=func \\\n" +
+                            "        -e typo3DatabasePassword=Test1234! \\\n" +
+                            "        -e typo3DatabaseUsername=SA \\\n" +
+                            "        -e typo3DatabaseHost=localhost \\\n" +
+                            "        -e typo3DatabasePort=1433 \\\n" +
+                            "        -e typo3DatabaseCharset=utf-8 \\\n" +
+                            "        -e typo3DatabaseHost=mssql2017cu9 \\\n" +
+                            "        -e typo3TestingRedisHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_redis4_1 \\\n" +
+                            "        -e typo3TestingMemcachedHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_memcached1-5_1 \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; ./bin/phpunit $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "phpunit --exclude-group not-mssql --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
                         )
-                        .environmentVariables(this.credentialsMssql)
                 )
                 .finalTasks(
                     this.getTaskStopDockerDependencies(),
@@ -501,7 +548,6 @@ abstract public class AbstractCoreSpec {
                     this.getRequirementDocker10()
                 )
                 .cleanWorkingDirectory(true)
-                .enabled(false)
             );
         }
 
@@ -1260,6 +1306,21 @@ abstract public class AbstractCoreSpec {
                 "cd Build/testing-docker/bamboo\n" +
                 "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
                 "docker-compose run start_dependencies_functional_mariadb10"
+            );
+    }
+
+    /**
+     * Start docker sibling containers to execute functional tests on mariadb
+     */
+    protected Task getTaskDockerDependenciesFunctionalMssql() {
+        return new ScriptTask()
+            .description("Start docker siblings for functional tests on mssql")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_functional_mssql"
             );
     }
 

@@ -23,6 +23,16 @@ services:
       - /var/lib/postgresql/data:rw,noexec,nosuid
     networks:
       - test
+  mssql2017cu9:
+    image: microsoft/mssql-server-linux:2017-CU9
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: Test1234!
+      MSSQL_PID: Developer
+    volumes:
+      - /etc/passwd:/etc/passwd,ro
+    networks:
+      - test
   redis4:
     image: redis:4-alpine
     networks:
@@ -117,6 +127,24 @@ services:
       /bin/sh -c "
         echo Waiting for db start...;
         while ! nc -z mariadb10 3306;
+        do
+          sleep 1;
+        done;
+        echo Connected!;
+      "
+
+  start_dependencies_functional_mssql:
+    image: alpine:3.8
+    links:
+      - mssql2017cu9
+      - redis4
+      - memcached1-5
+    networks:
+      - test
+    command: >
+      /bin/sh -c "
+        echo Waiting for db start...;
+        while ! nc -z mssql2017cu9 1433;
         do
           sleep 1;
         done;
