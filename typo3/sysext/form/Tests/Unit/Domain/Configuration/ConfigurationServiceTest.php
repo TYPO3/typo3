@@ -1089,6 +1089,7 @@ class ConfigurationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                         'Text' => [
                             'multiValueProperties' => [
                                 'properties.foo.1',
+                                'defaultValue',
                                 'properties.foo.2',
                                 'properties.foo.3',
                             ],
@@ -1418,6 +1419,7 @@ class ConfigurationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                                     'fooValidator' => [
                                         'multiValueProperties' => [
                                             'options.xxx',
+                                            'defaultValue',
                                             'options.yyy',
                                         ],
                                         'propertyPaths' => [

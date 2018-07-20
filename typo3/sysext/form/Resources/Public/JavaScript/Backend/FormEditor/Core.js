@@ -788,7 +788,7 @@ define(['jquery'], function($) {
          * @publish mixed
          */
         function set(key, value, disablePublishersOnSet) {
-          var obj, oldValue, path;
+          var obj, oldValue, path, firstPartOfPath, nextPartOfPath, index;
           utility().assert(utility().isNonEmptyString(key), 'Invalid parameter "key"', 1475361756);
           disablePublishersOnSet = !!disablePublishersOnSet;
 
@@ -797,20 +797,35 @@ define(['jquery'], function($) {
           path = key;
 
           while (path.indexOf('.') > 0) {
-            var firstPartOfPath, nextPartOfPath;
-
             firstPartOfPath = path.slice(0, path.indexOf('.'));
             path = path.slice(firstPartOfPath.length + 1);
+
             if ($.isNumeric(firstPartOfPath)) {
               firstPartOfPath = parseInt(firstPartOfPath);
             }
+
+            index = path.indexOf('.');
+            nextPartOfPath = index === -1 ? path : path.slice(0, index);
+
+            // initialize objects case they are undefined by looking up the type
+            // of the next path segment, the target type is guessed(!), thus e.g.
+            // "key" results in having an object, "123" results in having an array
             if ('undefined' === $.type(obj[firstPartOfPath])) {
-              nextPartOfPath = path.slice(0, path.indexOf('.'));
               if ($.isNumeric(nextPartOfPath)) {
                 obj[firstPartOfPath] = [];
               } else {
                 obj[firstPartOfPath] = {};
               }
+            // in case the previous guess was wrong, the initialized array
+            // is converted to an object when a non-numeric path segment is found
+            } else if (false === $.isNumeric(nextPartOfPath) && 'array' === $.type(obj[firstPartOfPath])) {
+              obj[firstPartOfPath] = obj[firstPartOfPath].reduce(
+                function(converted, item, itemIndex) {
+                  converted[itemIndex] = item;
+                  return converted;
+                },
+                {}
+              );
             }
             obj = obj[firstPartOfPath];
           }

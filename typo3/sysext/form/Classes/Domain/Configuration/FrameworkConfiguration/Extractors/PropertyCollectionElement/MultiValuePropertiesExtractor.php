@@ -78,6 +78,9 @@ class MultiValuePropertiesExtractor extends AbstractExtractor
             $identifier = ArrayUtility::getValueByPath($this->extractorDto->getPrototypeConfiguration(), $identifierPath, '.');
 
             $result['formElements'][$formElementType]['collections'][$propertyCollectionName][$identifier]['multiValueProperties'][] = $propertyValue;
+            if ($value === 'Inspector-PropertyGridEditor') {
+                $result['formElements'][$formElementType]['collections'][$propertyCollectionName][$identifier]['multiValueProperties'][] = 'defaultValue';
+            }
         } else {
             $result['formElements'][$formElementType]['multiValueProperties'][] = $propertyValue;
         }
