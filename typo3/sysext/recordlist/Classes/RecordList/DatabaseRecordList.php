@@ -1508,6 +1508,17 @@ class DatabaseRecordList
         }
         // Add row to CSV list:
         if ($this->csvOutput) {
+            $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][__CLASS__]['customizeCsvRow'] ?? [];
+            if (!empty($hooks)) {
+                $hookParameters = [
+                    'databaseRow' => &$row,
+                    'tableName' => $table,
+                    'pageId' => $this->id
+                ];
+                foreach ($hooks as $hookFunction) {
+                    GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
+                }
+            }
             $this->addToCSV($row);
         }
         // Add classes to table cells
@@ -2698,8 +2709,18 @@ class DatabaseRecordList
      */
     protected function addHeaderRowToCSV()
     {
+        $fieldArray = array_combine($this->fieldArray, $this->fieldArray);
+        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][__CLASS__]['customizeCsvHeader'] ?? [];
+        if (!empty($hooks)) {
+            $hookParameters = [
+                'fields' => &$fieldArray
+            ];
+            foreach ($hooks as $hookFunction) {
+                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
+            }
+        }
         // Add header row, control fields will be reduced inside addToCSV()
-        $this->addToCSV(array_combine($this->fieldArray, $this->fieldArray));
+        $this->addToCSV($fieldArray);
     }
 
     /**
