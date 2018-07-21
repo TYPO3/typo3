@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
-use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 
 /**
  * Test case
@@ -51,18 +50,6 @@ class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->expectExceptionCode(1210858767);
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setArgument('', 'theValue');
-    }
-
-    /**
-     * @test
-     */
-    public function setArgumentThrowsExceptionIfTheGivenArgumentValueIsAnObject()
-    {
-        $this->expectException(InvalidArgumentTypeException::class);
-        $this->expectExceptionCode(1210858767);
-        $this->markTestSkipped('Differing behavior from TYPO3.Flow because of backwards compatibility reasons.');
-        $request = new \TYPO3\CMS\Extbase\Mvc\Request();
-        $request->setArgument('theKey', new \stdClass());
     }
 
     /**
