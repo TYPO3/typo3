@@ -170,10 +170,16 @@ class PaginateController extends AbstractWidgetController
     protected function prepareObjectsSlice($itemsPerPage, $offset)
     {
         if ($this->objects instanceof QueryResultInterface) {
+            $currentRange = $offset + $itemsPerPage;
+            $endOfRange = min($currentRange, count($this->objects));
             $query = $this->objects->getQuery();
             $query->setLimit($itemsPerPage);
             if ($offset > 0) {
                 $query->setOffset($offset);
+                if ($currentRange > $endOfRange) {
+                    $newLimit = $endOfRange - $offset;
+                    $query->setLimit($newLimit);
+                }
             }
             $modifiedObjects = $query->execute();
             return $modifiedObjects;
