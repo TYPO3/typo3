@@ -158,6 +158,9 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
      */
     protected function removeAllFlashMessagesFromSession($severity = null)
     {
+        if (!$this->getUserByContext() instanceof AbstractUserAuthentication) {
+            return;
+        }
         if ($severity === null) {
             $this->storeFlashMessagesInSession(null);
         } else {
