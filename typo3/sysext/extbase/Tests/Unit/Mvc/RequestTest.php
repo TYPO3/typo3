@@ -262,17 +262,6 @@ class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function theRepresentationFormatIsAutomaticallyLowercased()
-    {
-        $this->markTestSkipped('Different behavior from TYPO3.Flow because of backwards compatibility.');
-        $request = new \TYPO3\CMS\Extbase\Mvc\Request();
-        $request->setFormat('hTmL');
-        $this->assertEquals('html', $request->getFormat());
-    }
-
-    /**
-     * @test
-     */
     public function aFlagCanBeSetIfTheRequestNeedsToBeDispatchedAgain()
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
