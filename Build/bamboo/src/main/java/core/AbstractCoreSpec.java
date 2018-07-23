@@ -187,19 +187,101 @@ abstract public class AbstractCoreSpec {
         .cleanWorkingDirectory(true);
     }
 
+
     /**
-     * Job acceptance test installs system on mariadb
+     * Job checking CGL of last git commit
      *
      * @param String requirementIdentifier
      */
-    protected Job getJobAcceptanceTestInstallMysql(String requirementIdentifier) {
-        return new Job("Accept inst my " + requirementIdentifier, new BambooKey("ACINSTMY" + requirementIdentifier))
-            .description("Install TYPO3 on mariadb and load introduction package " + requirementIdentifier)
+    protected Job getJobCglCheckGitCommit(String requirementIdentifier) {
+        return new Job("Integration CGL", new BambooKey("CGLCHECK"))
+            .description("Check coding guidelines by executing Build/Scripts/cglFixMyCommit.sh script")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
                 this.getTaskComposerInstall(requirementIdentifier),
+                new ScriptTask()
+                    .description("Execute cgl check script")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "function cglFixMyCommit() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./Build/Scripts/cglFixMyCommit.sh $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "cglFixMyCommit dryrun\n"
+                    )
+            )
+            .requirements(
+                this.getRequirementDocker10()
+            )
+            .cleanWorkingDirectory(true);
+    }
+
+    /**
+     * Job checking CGL of all core php files
+     *
+     * @param int stageNumber
+     * @param String requirementIdentifier
+     * @param Task composerTask
+     */
+    protected Job getJobCglCheckFullCore(int stageNumber, String requirementIdentifier, Task composerTask) {
+        return new Job("Integration CGL " + stageNumber, new BambooKey("CGLCHECK" + stageNumber))
+            .description("Check coding guidelines of full core")
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
+            .tasks(
+                this.getTaskGitCloneRepository(),
+                this.getTaskGitCherryPick(),
+                composerTask,
+                new ScriptTask()
+                    .description("Execute cgl check")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "function phpCsFixer() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/php-cs-fixer $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "phpCsFixer fix -v --dry-run --path-mode intersection --config=Build/.php_cs typo3/\n" +
+                        "exit $?"
+                    )
+            )
+            .requirements(
+                this.getRequirementDocker10()
+            )
+            .cleanWorkingDirectory(true);
+    }
+
+    /**
+     * Job acceptance test installs system on mariadb
+     *
+     * @param int stageNumber
+     * @param String requirementIdentifier
+     * @param Task composerTask
+     */
+    protected Job getJobAcceptanceTestInstallMysql(int stageNumber, String requirementIdentifier, Task composerTask) {
+        return new Job("Accept inst my " + stageNumber + " " + requirementIdentifier, new BambooKey("ACINSTMY" +stageNumber + requirementIdentifier))
+            .description("Install TYPO3 on mariadb and load introduction package " + requirementIdentifier)
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
+            .tasks(
+                this.getTaskGitCloneRepository(),
+                this.getTaskGitCherryPick(),
+                composerTask,
                 this.getTaskPrepareAcceptanceTest(),
                 this.getTaskDockerDependenciesAcceptanceInstallMariadb10(),
                 new ScriptTask()
@@ -245,16 +327,18 @@ abstract public class AbstractCoreSpec {
     /**
      * Job acceptance test installs system and introduction package on pgsql
      *
+     * @param int stageNumber
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected Job getJobAcceptanceTestInstallPgsql(String requirementIdentifier) {
-        return new Job("Accept inst pg " + requirementIdentifier, new BambooKey("ACINSTPG" + requirementIdentifier))
+    protected Job getJobAcceptanceTestInstallPgsql(int stageNumber, String requirementIdentifier, Task composerTask) {
+        return new Job("Accept inst pg " + stageNumber + " " + requirementIdentifier, new BambooKey("ACINSTPG" + stageNumber + requirementIdentifier))
         .description("Install TYPO3 on pgsql and load introduction package " + requirementIdentifier)
         .pluginConfigurations(this.getDefaultJobPluginConfiguration())
         .tasks(
             this.getTaskGitCloneRepository(),
             this.getTaskGitCherryPick(),
-            this.getTaskComposerInstall(requirementIdentifier),
+            composerTask,
             this.getTaskPrepareAcceptanceTest(),
             this.getTaskDockerDependenciesAcceptanceInstallPostgres10(),
             new ScriptTask()
@@ -300,16 +384,18 @@ abstract public class AbstractCoreSpec {
     /**
      * Job acceptance test installs system and introduction package on sqlite
      *
+     * @param int stageNumber
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected Job getJobAcceptanceTestInstallSqlite(String requirementIdentifier) {
-        return new Job("Accept inst sq " + requirementIdentifier, new BambooKey("ACINSTSQ" + requirementIdentifier))
+    protected Job getJobAcceptanceTestInstallSqlite(int stageNumber, String requirementIdentifier, Task composerTask) {
+        return new Job("Accept inst sq " + stageNumber + " " + requirementIdentifier, new BambooKey("ACINSTSQ" + stageNumber + requirementIdentifier))
         .description("Install TYPO3 on sqlite and load introduction package " + requirementIdentifier)
         .pluginConfigurations(this.getDefaultJobPluginConfiguration())
         .tasks(
             this.getTaskGitCloneRepository(),
             this.getTaskGitCherryPick(),
-            this.getTaskComposerInstall(requirementIdentifier),
+            composerTask,
             this.getTaskPrepareAcceptanceTest(),
             this.getTaskDockerDependenciesAcceptanceInstallSqlite(),
             new ScriptTask()
@@ -351,10 +437,12 @@ abstract public class AbstractCoreSpec {
     /**
      * Jobs for mysql based acceptance tests
      *
+     * @param int stageNumber
      * @param int numberOfChunks
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected ArrayList<Job> getJobsAcceptanceTestsBackendMysql(int numberOfChunks, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsAcceptanceTestsBackendMysql(int stageNumber, int numberOfChunks, String requirementIdentifier, Task composerTask) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -362,13 +450,13 @@ abstract public class AbstractCoreSpec {
             if (i < 10) {
                 formattedI = "0" + i;
             }
-            jobs.add(new Job("Accept my " + requirementIdentifier + " " + formattedI, new BambooKey("ACMY" + requirementIdentifier + formattedI))
+            jobs.add(new Job("Accept my " + stageNumber + " " + requirementIdentifier + " " + formattedI, new BambooKey("ACMY" + stageNumber + requirementIdentifier + formattedI))
                 .description("Run acceptance tests" + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(requirementIdentifier),
+                    composerTask,
                     this.getTaskPrepareAcceptanceTest(),
                     this.getTaskDockerDependenciesAcceptanceBackendMariadb10(),
                     new ScriptTask()
@@ -436,10 +524,12 @@ abstract public class AbstractCoreSpec {
     /**
      * Jobs for mysql based functional tests
      *
+     * @param int stageNumber
      * @param int numberOfChunks
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected ArrayList<Job> getJobsFunctionalTestsMysql(int numberOfChunks, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsFunctionalTestsMysql(int stageNumber, int numberOfChunks, String requirementIdentifier, Task composerTask) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -447,13 +537,13 @@ abstract public class AbstractCoreSpec {
             if (i < 10) {
                 formattedI = "0" + i;
             }
-            jobs.add(new Job("Func mysql " + requirementIdentifier + " " + formattedI, new BambooKey("FMY" + requirementIdentifier + formattedI))
+            jobs.add(new Job("Func mysql " + stageNumber + " " + requirementIdentifier + " " + formattedI, new BambooKey("FMY" + stageNumber + requirementIdentifier + formattedI))
                 .description("Run functional tests on mysql DB " + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(requirementIdentifier),
+                    composerTask,
                     this.getTaskDockerDependenciesFunctionalMariadb10(),
                     this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
                     new ScriptTask()
@@ -500,10 +590,12 @@ abstract public class AbstractCoreSpec {
     /**
      * Jobs for mssql based functional tests
      *
+     * @param int stageNumber
      * @param int numberOfChunks
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected ArrayList<Job> getJobsFunctionalTestsMssql(int numberOfChunks, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsFunctionalTestsMssql(int stageNumber, int numberOfChunks, String requirementIdentifier, Task composerTask) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -511,13 +603,13 @@ abstract public class AbstractCoreSpec {
             if (i < 10) {
                 formattedI = "0" + i;
             }
-            jobs.add(new Job("Func mssql " + requirementIdentifier + " " + formattedI, new BambooKey("FMS" + requirementIdentifier + formattedI))
+            jobs.add(new Job("Func mssql " + stageNumber + " " + requirementIdentifier + " " + formattedI, new BambooKey("FMS" + stageNumber + requirementIdentifier + formattedI))
                 .description("Run functional tests on mysql DB " + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(requirementIdentifier),
+                    composerTask,
                     this.getTaskDockerDependenciesFunctionalMssql(),
                     this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
                     new ScriptTask()
@@ -568,10 +660,12 @@ abstract public class AbstractCoreSpec {
     /**
      * Jobs for pgsql based functional tests
      *
+     * @param int stageNumber
      * @param int numberOfChunks
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected ArrayList<Job> getJobsFunctionalTestsPgsql(int numberOfChunks, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsFunctionalTestsPgsql(int stageNumber, int numberOfChunks, String requirementIdentifier, Task composerTask) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -579,13 +673,13 @@ abstract public class AbstractCoreSpec {
             if (i < 10) {
                 formattedI = "0" + i;
             }
-            jobs.add(new Job("Func pgsql " + requirementIdentifier + " " + formattedI, new BambooKey("FPG" + requirementIdentifier + formattedI))
+            jobs.add(new Job("Func pgsql " + stageNumber + " " + requirementIdentifier + " " + formattedI, new BambooKey("FPG" + stageNumber + requirementIdentifier + formattedI))
                 .description("Run functional tests on pgsql DB " + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(requirementIdentifier),
+                    composerTask,
                     this.getTaskDockerDependenciesFunctionalPostgres10(),
                     this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
                     new ScriptTask()
@@ -633,10 +727,12 @@ abstract public class AbstractCoreSpec {
     /**
      * Jobs for sqlite based functional tests
      *
+     * @param int stageNumber
      * @param int numberOfChunks
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected ArrayList<Job> getJobsFunctionalTestsSqlite(int numberOfChunks, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsFunctionalTestsSqlite(int stageNumber, int numberOfChunks, String requirementIdentifier, Task composerTask) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -644,13 +740,13 @@ abstract public class AbstractCoreSpec {
             if (i < 10) {
                 formattedI = "0" + i;
             }
-            jobs.add(new Job("Func sqlite " + requirementIdentifier + " " + formattedI, new BambooKey("FSL" + requirementIdentifier + formattedI))
+            jobs.add(new Job("Func sqlite " + stageNumber + " " + requirementIdentifier + " " + formattedI, new BambooKey("FSL" + stageNumber + requirementIdentifier + formattedI))
                 .description("Run functional tests on sqlite DB " + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(requirementIdentifier),
+                    composerTask,
                     this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
                     this.getTaskDockerDependenciesFunctionalSqlite(),
                     new ScriptTask()
@@ -694,16 +790,18 @@ abstract public class AbstractCoreSpec {
     /**
      * Job with integration test checking for valid @xy annotations
      *
+     * @param int stageNumber
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected Job getJobIntegrationAnnotations(String requirementIdentifier) {
-        return new Job("Integration annotations", new BambooKey("IANNO"))
+    protected Job getJobIntegrationAnnotations(int stageNumber, String requirementIdentifier, Task composerTask) {
+        return new Job("Integration annotations " + stageNumber, new BambooKey("IANNO" + stageNumber))
             .description("Check docblock-annotations by executing Build/Scripts/annotationChecker.php script")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(requirementIdentifier),
+                composerTask,
                 new ScriptTask()
                     .description("Execute annotations check script")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -732,17 +830,19 @@ abstract public class AbstractCoreSpec {
     /**
      * Job with various smaller script tests
      *
+     * @param int stageNumber
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected Job getJobIntegrationVarious(String requirementIdentifier) {
+    protected Job getJobIntegrationVarious(int stageNumber, String requirementIdentifier, Task composerTask) {
         // Exception code checker, xlf, permissions, rst file check
-        return new Job("Integration various", new BambooKey("CDECC"))
+        return new Job("Integration various " + stageNumber, new BambooKey("CDECC" + stageNumber))
             .description("Checks duplicate exceptions, git submodules, xlf files, permissions, rst")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(requirementIdentifier),
+                composerTask,
                 new ScriptTask()
                     .description("Run duplicate exception code check script")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -863,16 +963,18 @@ abstract public class AbstractCoreSpec {
     /**
      * Job for javascript unit tests
      *
+     * @param int stageNumber
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected Job getJobUnitJavaScript(String requirementIdentifier) {
-        return new Job("Unit JavaScript", new BambooKey("JSUT"))
+    protected Job getJobUnitJavaScript(int stageNumber, String requirementIdentifier, Task composerTask) {
+        return new Job("Unit JavaScript " + stageNumber, new BambooKey("JSUT" + stageNumber))
             .description("Run JavaScript unit tests")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(requirementIdentifier),
+                composerTask,
                 new ScriptTask()
                     .description("yarn install in Build/ dir")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -1053,16 +1155,18 @@ abstract public class AbstractCoreSpec {
     /**
      * Job for unit testing PHP
      *
+     * @param int stageNumber
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected Job getJobUnitPhp(String requirementIdentifier) {
-        return new Job("Unit " + requirementIdentifier, new BambooKey("UT" + requirementIdentifier))
+    protected Job getJobUnitPhp(int stageNumber, String requirementIdentifier, Task composerTask) {
+        return new Job("Unit " + stageNumber + " " + requirementIdentifier, new BambooKey("UT" + stageNumber + requirementIdentifier))
             .description("Run unit tests " + requirementIdentifier)
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(requirementIdentifier),
+                composerTask,
                 new ScriptTask()
                     .description("Run phpunit")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -1096,16 +1200,18 @@ abstract public class AbstractCoreSpec {
     /**
      * Job for unit testing deprecated PHP
      *
+     * @param int stageNumber
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected Job getJobUnitDeprecatedPhp(String requirementIdentifier) {
-        return new Job("Unit deprecated " + requirementIdentifier, new BambooKey("UTD" + requirementIdentifier))
+    protected Job getJobUnitDeprecatedPhp(int stageNumber, String requirementIdentifier, Task composerTask) {
+        return new Job("Unit deprecated " + stageNumber + " " + requirementIdentifier, new BambooKey("UTD" + stageNumber + requirementIdentifier))
             .description("Run deprecated unit tests " + requirementIdentifier)
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(requirementIdentifier),
+                composerTask,
                 new ScriptTask()
                     .description("Run phpunit")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -1139,20 +1245,22 @@ abstract public class AbstractCoreSpec {
     /**
      * Jobs for unit testing PHP in random test order
      *
+     * @param int stageNumber
      * @param int numberOfRuns
      * @param String requirementIdentifier
+     * @param Task composerTask
      */
-    protected ArrayList<Job> getJobUnitPhpRandom(int numberOfRuns, String requirementIdentifier) {
+    protected ArrayList<Job> getJobUnitPhpRandom(int stageNumber, int numberOfRuns, String requirementIdentifier, Task composerTask) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfRuns; i++) {
-            jobs.add(new Job("Unit " + requirementIdentifier + " random " + i, new BambooKey("UTR" + requirementIdentifier + i))
+            jobs.add(new Job("Unit " + stageNumber + " " + requirementIdentifier + " random " + i, new BambooKey("UTR" + stageNumber + requirementIdentifier + i))
                 .description("Run unit tests on " + requirementIdentifier + " in random order 0" + i)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
-                    this.getTaskComposerInstall(requirementIdentifier),
+                    composerTask,
                     new ScriptTask()
                         .description("Run phpunit-randomizer")
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -1228,6 +1336,30 @@ abstract public class AbstractCoreSpec {
                 this.getScriptTaskBashInlineBody() +
                 this.getScriptTaskComposer(requirementIdentifier) +
                 "composer install -n"
+            )
+            .environmentVariables(this.composerRootVersionEnvironment);
+    }
+
+    /**
+     * Task definition to execute 'composer update --with-dependencies'.
+     * This will update all dependencies to current possible maximum version.
+     * Used in nightly to see if we are compatible with updates from dependencies.
+     *
+     * We update in 2 steps: First composer install as usual, then update. This
+     * way it is easy to see which packages are updated in comparison to what is
+     * currently defined in composer.lock.
+     *
+     * @param String requirementIdentifier
+     */
+    protected Task getTaskComposerUpdateMax(String requirementIdentifier) {
+        return new ScriptTask()
+            .description("composer update --with-dependencies")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                this.getScriptTaskComposer(requirementIdentifier) +
+                "composer install -n\n" +
+                "composer update --with-dependencies -n"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
     }

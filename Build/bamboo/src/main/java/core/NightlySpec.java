@@ -72,40 +72,71 @@ public class NightlySpec extends AbstractCoreSpec {
         Stage stagePreparation = new Stage("Preparation")
             .jobs(jobsPreparationStage.toArray(new Job[jobsPreparationStage.size()]));
 
+
         // MAIN stage
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
         jobsMainStage.add(this.getJobComposerValidate("PHP72"));
 
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP72"));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72"));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallSqlite("PHP72"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(0, "PHP72", this.getTaskComposerInstall("PHP72")));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(0, "PHP72", this.getTaskComposerInstall("PHP72")));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallSqlite(0, "PHP72", this.getTaskComposerInstall("PHP72")));
 
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(this.numberOfAcceptanceTestJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(0, this.numberOfAcceptanceTestJobs, "PHP72", this.getTaskComposerInstall("PHP72")));
 
-        jobsMainStage.add(this.getJobCglCheckFullCore("PHP72"));
+        jobsMainStage.add(this.getJobCglCheckFullCore(0, "PHP72", this.getTaskComposerInstall("PHP72")));
 
-        jobsMainStage.add(this.getJobIntegrationAnnotations("PHP72"));
+        jobsMainStage.add(this.getJobIntegrationAnnotations(0, "PHP72", this.getTaskComposerInstall("PHP72")));
 
-        jobsMainStage.add(this.getJobIntegrationVarious("PHP72"));
+        jobsMainStage.add(this.getJobIntegrationVarious(0, "PHP72", this.getTaskComposerInstall("PHP72")));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP72"));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP72"));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP72"));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(this.numberOfFunctionalSqliteJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(0, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerInstall("PHP72")));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(0, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerInstall("PHP72")));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(0, this.numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerInstall("PHP72")));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(0, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerInstall("PHP72")));
 
-        jobsMainStage.add(this.getJobUnitJavaScript("PHP72"));
+        jobsMainStage.add(this.getJobUnitJavaScript(0, "PHP72", this.getTaskComposerInstall("PHP72")));
 
         jobsMainStage.add(this.getJobLintPhp("PHP72"));
 
         jobsMainStage.add(this.getJobLintScssTs("PHP72"));
 
-        jobsMainStage.add(this.getJobUnitPhp("PHP72"));
-        jobsMainStage.add(this.getJobUnitDeprecatedPhp("PHP72"));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP72"));
+        jobsMainStage.add(this.getJobUnitPhp(0, "PHP72", this.getTaskComposerInstall("PHP72")));
+        jobsMainStage.add(this.getJobUnitDeprecatedPhp(0, "PHP72", this.getTaskComposerInstall("PHP72")));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(0, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
+
+
+        // COMPOSER UPDATE MAX stage
+        ArrayList<Job> jobsComposerUpdateStage = new ArrayList<Job>();
+
+        jobsComposerUpdateStage.add(this.getJobAcceptanceTestInstallMysql(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerUpdateStage.add(this.getJobAcceptanceTestInstallPgsql(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerUpdateStage.add(this.getJobAcceptanceTestInstallSqlite(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+
+        jobsComposerUpdateStage.addAll(this.getJobsAcceptanceTestsBackendMysql(1, this.numberOfAcceptanceTestJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+
+        jobsComposerUpdateStage.add(this.getJobCglCheckFullCore(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+
+        jobsComposerUpdateStage.add(this.getJobIntegrationAnnotations(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+
+        jobsComposerUpdateStage.add(this.getJobIntegrationVarious(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+
+        jobsComposerUpdateStage.addAll(this.getJobsFunctionalTestsMysql(1, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerUpdateStage.addAll(this.getJobsFunctionalTestsMssql(1, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerUpdateStage.addAll(this.getJobsFunctionalTestsPgsql(1, this.numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerUpdateStage.addAll(this.getJobsFunctionalTestsSqlite(1, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+
+        jobsComposerUpdateStage.add(this.getJobUnitJavaScript(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+
+        jobsComposerUpdateStage.add(this.getJobUnitPhp(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerUpdateStage.add(this.getJobUnitDeprecatedPhp(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerUpdateStage.addAll(this.getJobUnitPhpRandom(1, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+
+        Stage stageComposerUpdateStage = new Stage("Composer update max")
+            .jobs(jobsComposerUpdateStage.toArray(new Job[jobsComposerUpdateStage.size()]));
 
 
         // Compile plan
@@ -114,7 +145,8 @@ public class NightlySpec extends AbstractCoreSpec {
             .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(
                 stagePreparation,
-                stageMainStage
+                stageMainStage,
+                stageComposerUpdateStage
             )
             .linkedRepositories("github TYPO3 TYPO3.CMS")
             .triggers(
@@ -133,44 +165,5 @@ public class NightlySpec extends AbstractCoreSpec {
                     .delete(new BranchCleanup())
                     .notificationForCommitters()
             );
-    }
-
-    /**
-     * Job checking CGL of all core php files
-     *
-     * @param String requirementIdentifier
-     */
-    protected Job getJobCglCheckFullCore(String requirementIdentifier) {
-        return new Job("Integration CGL", new BambooKey("CGLCHECK"))
-            .description("Check coding guidelines of full core")
-            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
-            .tasks(
-                this.getTaskGitCloneRepository(),
-                this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(requirementIdentifier),
-                new ScriptTask()
-                    .description("Execute cgl check")
-                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
-                    .inlineBody(
-                        this.getScriptTaskBashInlineBody() +
-                        "function phpCsFixer() {\n" +
-                        "    docker run \\\n" +
-                        "        -u ${HOST_UID} \\\n" +
-                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
-                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
-                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
-                        "        --rm \\\n" +
-                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
-                        "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/php-cs-fixer $*\"\n" +
-                        "}\n" +
-                        "\n" +
-                        "phpCsFixer fix -v --dry-run --path-mode intersection --config=Build/.php_cs typo3/\n" +
-                        "exit $?"
-                    )
-            )
-            .requirements(
-                this.getRequirementDocker10()
-            )
-            .cleanWorkingDirectory(true);
     }
 }
