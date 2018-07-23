@@ -44,7 +44,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
     protected static String planName = "Core master pre-merge";
     protected static String planKey = "GTC";
 
-    protected int numberOfAcceptanceTestJobs = 8;
+    protected int numberOfAcceptanceTestJobs = 10;
     protected int numberOfFunctionalMysqlJobs = 10;
     protected int numberOfFunctionalMssqlJobs = 10;
     protected int numberOfFunctionalPgsqlJobs = 10;
