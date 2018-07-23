@@ -26,27 +26,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  */
 class DisjunctionValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * @test
-     */
-    public function allValidatorsInTheDisjunctionAreCalledEvenIfOneReturnsNoError()
-    {
-        $this->markTestSkipped('Needs a bugfix of Flow first.');
-        $validatorDisjunction = new \TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator([]);
-        $validatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
-            ->getMock();
-        $validatorObject->expects($this->once())->method('validate')->will($this->returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
-        $errors = new \TYPO3\CMS\Extbase\Error\Result();
-        $errors->addError(new \TYPO3\CMS\Extbase\Error\Error('Error', 123));
-        $secondValidatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
-            ->getMock();
-        $secondValidatorObject->expects($this->exactly(1))->method('validate')->will($this->returnValue($errors));
-        $validatorDisjunction->addValidator($validatorObject);
-        $validatorDisjunction->addValidator($secondValidatorObject);
-        $validatorDisjunction->validate('some subject');
-    }
 
     /**
      * @test
