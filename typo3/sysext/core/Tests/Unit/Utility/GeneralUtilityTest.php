@@ -3067,7 +3067,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->testFilesToDelete[] = $baseDirectory . $existingDirectory;
         chmod($baseDirectory . $existingDirectory, 482);
         GeneralUtility::mkdir_deep($baseDirectory . $existingDirectory . $newSubDirectory);
-        $this->assertEquals('0742', substr(decoct(fileperms($baseDirectory . $existingDirectory)), 2));
+        $this->assertEquals(742, (int)substr(decoct(fileperms($baseDirectory . $existingDirectory)), 2));
     }
 
     /**

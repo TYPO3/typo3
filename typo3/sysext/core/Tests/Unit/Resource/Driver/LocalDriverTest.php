@@ -643,7 +643,7 @@ class LocalDriverTest extends BaseTestCase
         list($basedir, $subject) = $this->prepareRealTestEnvironment();
         mkdir($basedir . '/someDir');
         $subject->createFile('testfile.txt', '/someDir');
-        $this->assertEquals($testpattern, decoct(fileperms($basedir . '/someDir/testfile.txt') & 0777));
+        $this->assertEquals((int)$testpattern, (int)(decoct(fileperms($basedir . '/someDir/testfile.txt') & 0777)));
     }
 
     /**********************************
