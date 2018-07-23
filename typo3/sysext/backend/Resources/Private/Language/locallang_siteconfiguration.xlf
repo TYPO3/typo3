@@ -12,6 +12,12 @@
 			<trans-unit id="overview.configuration">
 				<source>Configuration Folder</source>
 			</trans-unit>
+			<trans-unit id="overview.noPages.title">
+				<source>No pages found!</source>
+			</trans-unit>
+			<trans-unit id="overview.noPages.message">
+				<source>Please add at least one page through the Page module.</source>
+			</trans-unit>
 			<trans-unit id="overview.noSiteConfiguration">
 				<source>This site does not have a configuration, yet.</source>
 			</trans-unit>
