@@ -185,6 +185,16 @@ class FilePersistenceSlot implements SingletonInterface
      */
     public function onPreFileMove(FileInterface $file, FolderInterface $targetFolder, string $targetFileName): void
     {
+        // Skip check, in case file extension would not change during this
+        // command. In case e.g. "file.txt" shall be renamed to "file.form.yaml"
+        // the invocation still has to be granted.
+        // Any file moved to a recycle folder is accepted as well.
+        if ($this->isFormDefinition($file->getIdentifier())
+            && $this->isFormDefinition($targetFileName)
+            || $this->isRecycleFolder($targetFolder)) {
+            return;
+        }
+
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
             $targetFolder,
             $targetFileName
@@ -225,7 +235,7 @@ class FilePersistenceSlot implements SingletonInterface
         string $combinedFileIdentifier,
         string $content = null
     ): void {
-        if (!StringUtility::endsWith($combinedFileIdentifier, FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION)) {
+        if (!$this->isFormDefinition($combinedFileIdentifier)) {
             return;
         }
 
@@ -303,5 +313,27 @@ class FilePersistenceSlot implements SingletonInterface
             $folder->getIdentifier(),
             $fileName
         );
+    }
+
+    /**
+     * @param string $identifier
+     * @return bool
+     */
+    protected function isFormDefinition(string $identifier): bool
+    {
+        return StringUtility::endsWith(
+            $identifier,
+            FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION
+        );
+    }
+
+    /**
+     * @param FolderInterface $folder
+     * @return bool
+     */
+    protected function isRecycleFolder(FolderInterface $folder): bool
+    {
+        $role = $folder->getStorage()->getRole($folder);
+        return $role === FolderInterface::ROLE_RECYCLER;
     }
 }
