@@ -110,34 +110,62 @@ public class NightlySpec extends AbstractCoreSpec {
 
 
         // COMPOSER UPDATE MAX stage
-        ArrayList<Job> jobsComposerUpdateStage = new ArrayList<Job>();
+        ArrayList<Job> jobsComposerMaxStage = new ArrayList<Job>();
 
-        jobsComposerUpdateStage.add(this.getJobAcceptanceTestInstallMysql(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
-        jobsComposerUpdateStage.add(this.getJobAcceptanceTestInstallPgsql(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
-        jobsComposerUpdateStage.add(this.getJobAcceptanceTestInstallSqlite(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.add(this.getJobAcceptanceTestInstallMysql(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.add(this.getJobAcceptanceTestInstallPgsql(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.add(this.getJobAcceptanceTestInstallSqlite(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
 
-        jobsComposerUpdateStage.addAll(this.getJobsAcceptanceTestsBackendMysql(1, this.numberOfAcceptanceTestJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.addAll(this.getJobsAcceptanceTestsBackendMysql(1, this.numberOfAcceptanceTestJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
 
-        jobsComposerUpdateStage.add(this.getJobCglCheckFullCore(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.add(this.getJobCglCheckFullCore(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
 
-        jobsComposerUpdateStage.add(this.getJobIntegrationAnnotations(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.add(this.getJobIntegrationAnnotations(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
 
-        jobsComposerUpdateStage.add(this.getJobIntegrationVarious(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.add(this.getJobIntegrationVarious(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
 
-        jobsComposerUpdateStage.addAll(this.getJobsFunctionalTestsMysql(1, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
-        jobsComposerUpdateStage.addAll(this.getJobsFunctionalTestsMssql(1, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
-        jobsComposerUpdateStage.addAll(this.getJobsFunctionalTestsPgsql(1, this.numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
-        jobsComposerUpdateStage.addAll(this.getJobsFunctionalTestsSqlite(1, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMysql(1, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMssql(1, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsPgsql(1, this.numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsSqlite(1, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
 
-        jobsComposerUpdateStage.add(this.getJobUnitJavaScript(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.add(this.getJobUnitJavaScript(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
 
-        jobsComposerUpdateStage.add(this.getJobUnitPhp(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
-        jobsComposerUpdateStage.add(this.getJobUnitDeprecatedPhp(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
-        jobsComposerUpdateStage.addAll(this.getJobUnitPhpRandom(1, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.add(this.getJobUnitPhp(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.add(this.getJobUnitDeprecatedPhp(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.addAll(this.getJobUnitPhpRandom(1, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
 
-        Stage stageComposerUpdateStage = new Stage("Composer update max")
-            .jobs(jobsComposerUpdateStage.toArray(new Job[jobsComposerUpdateStage.size()]));
+        Stage stageComposerMaxStage = new Stage("Composer update max")
+            .jobs(jobsComposerMaxStage.toArray(new Job[jobsComposerMaxStage.size()]));
 
+        // COMPOSER UPDATE MIN stage
+        ArrayList<Job> jobsComposerMinStage = new ArrayList<Job>();
+
+        jobsComposerMinStage.add(this.getJobAcceptanceTestInstallMysql(2, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+        jobsComposerMinStage.add(this.getJobAcceptanceTestInstallPgsql(2, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+        jobsComposerMinStage.add(this.getJobAcceptanceTestInstallSqlite(2, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+
+        jobsComposerMinStage.addAll(this.getJobsAcceptanceTestsBackendMysql(2, this.numberOfAcceptanceTestJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+
+        jobsComposerMinStage.add(this.getJobCglCheckFullCore(2, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+
+        jobsComposerMinStage.add(this.getJobIntegrationAnnotations(2, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+
+        jobsComposerMinStage.add(this.getJobIntegrationVarious(2, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMysql(2, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMssql(2, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsPgsql(2, this.numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsSqlite(2, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+
+        jobsComposerMinStage.add(this.getJobUnitJavaScript(2, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+
+        jobsComposerMinStage.add(this.getJobUnitPhp(2, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+        jobsComposerMinStage.add(this.getJobUnitDeprecatedPhp(2, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+        jobsComposerMinStage.addAll(this.getJobUnitPhpRandom(2, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72")));
+
+        Stage stageComposerMinStage = new Stage("Composer update min")
+            .jobs(jobsComposerMinStage.toArray(new Job[jobsComposerMinStage.size()]));
 
         // Compile plan
         return new Plan(project(), planName, planKey)
@@ -146,7 +174,8 @@ public class NightlySpec extends AbstractCoreSpec {
             .stages(
                 stagePreparation,
                 stageMainStage,
-                stageComposerUpdateStage
+                stageComposerMaxStage,
+                stageComposerMinStage
             )
             .linkedRepositories("github TYPO3 TYPO3.CMS")
             .triggers(

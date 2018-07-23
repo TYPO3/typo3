@@ -1365,6 +1365,30 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
+     * Task definition to execute 'composer update --prefer-lowest'.
+     * This will update all dependencies to current possible minimum version.
+     * Used in nightly to see if we are compatible with lowest possible dependency versions.
+     *
+     * We update in 2 steps: First composer install as usual, then update. This
+     * way it is easy to see which packages are updated in comparison to what is
+     * currently defined in composer.lock.
+     *
+     * @param String requirementIdentifier
+     */
+    protected Task getTaskComposerUpdateMin(String requirementIdentifier) {
+        return new ScriptTask()
+            .description("composer update --prefer-lowest")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                this.getScriptTaskComposer(requirementIdentifier) +
+                "composer install -n\n" +
+                "composer update --prefer-lowest -n"
+            )
+            .environmentVariables(this.composerRootVersionEnvironment);
+    }
+
+    /**
      * Task to prepare an acceptance test
      */
     protected Task getTaskPrepareAcceptanceTest() {
