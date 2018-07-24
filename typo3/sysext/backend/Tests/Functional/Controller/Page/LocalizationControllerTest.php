@@ -145,6 +145,15 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
     }
 
     /**
+     * This test:
+     * - copies default language records 1,2,3, into language 1 ("free mode translation")
+     * - creates new CE in default language after record 2, called 'Test content 2.5'
+     * - copies into language record 9 ('Test content 2.5')
+     * - checks if translated/copied record "[Translate to Dansk:] Test content 2.5" has sorting value after
+     *   "[Translate to Dansk:] Test content 1", which is the previous record in the colpos.
+     *
+     * For detail about the sorting algorithm when translating records, see DataHandler->getPreviousLocalizedRecordUid
+     *
      * @test
      */
     public function copyingNewContentFromLanguageIntoExistingLocalizationHasSameOrdering(): void

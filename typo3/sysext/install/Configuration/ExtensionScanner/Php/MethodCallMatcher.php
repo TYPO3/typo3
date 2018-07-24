@@ -1268,6 +1268,13 @@ return [
             'Breaking-82701-AlwaysConsiderPublishingReferencesInWorkspaces.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->resorting' => [
+        'numberOfMandatoryArguments' => 4,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-85300-DataHandlerResortingMethod.rst',
+        ],
+    ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->readLLfile' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,

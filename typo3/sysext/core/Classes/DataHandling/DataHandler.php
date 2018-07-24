@@ -483,7 +483,9 @@ class DataHandler implements LoggerAwareInterface
     ];
 
     /**
-     * Integer: The interval between sorting numbers used with tables with a 'sorting' field defined. Min 1
+     * The interval between sorting numbers used with tables with a 'sorting' field defined.
+     *
+     * Min 1, should be power of 2
      *
      * @var int
      */
@@ -7367,6 +7369,27 @@ class DataHandler implements LoggerAwareInterface
      * Returning sorting number for tables with a "sortby" column
      * Using when new records are created and existing records are moved around.
      *
+     * The strategy is:
+     *  - if no record exists: set interval as sorting number
+     *  - if inserted before an element: put in the middle of the existing elements
+     *  - if inserted behind the last element: add interval to last sorting number
+     *  - if collision: move all subsequent records by 2 * interval, insert new record with collision + interval
+     *
+     * How to calculate the maximum possible inserts for the worst case of adding all records to the top,
+     * such that the sorting number stays within INT_MAX
+     *
+     * i = interval (currently 256)
+     * c = number of inserts until collision
+     * s = max sorting number to reach (INT_MAX - 32bit)
+     * n = number of records (~83 million)
+     *
+     * c = 2 * g
+     * g = log2(i) / 2 + 1
+     * n = g * s / i - g + 1
+     *
+     * The algorithm can be tuned by adjusting the interval value.
+     * Higher value means less collisions, but also less inserts are possible to stay within INT_MAX.
+     *
      * @param string $table Table name
      * @param int $uid Uid of record to find sorting number for. May be zero in case of new.
      * @param int $pid Positioning PID, either >=0 (pointing to page in which case we find sorting number for first record in page) or <0 (pointing to record in which case to find next sorting number after this record)
@@ -7375,115 +7398,120 @@ class DataHandler implements LoggerAwareInterface
     public function getSortNumber($table, $uid, $pid)
     {
         $sortColumn = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
-        if ($sortColumn) {
-            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-            $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
-            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        if (!$sortColumn) {
+            return null;
+        }
 
-            $queryBuilder
-                ->select($sortColumn, 'pid', 'uid')
-                ->from($table);
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
 
-            // Sorting number is in the top
-            if ($pid >= 0) {
-                // Fetches the first record under this pid
-                $row = $queryBuilder
-                    ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
-                    ->orderBy($sortColumn, 'ASC')
-                    ->setMaxResults(1)
-                    ->execute()
-                    ->fetch();
-                // There was an element
-                if (!empty($row)) {
-                    // The top record was the record it self, so we return its current sortnumber
-                    if ($row['uid'] == $uid) {
-                        return $row[$sortColumn];
-                    }
-                    // If the pages sortingnumber < 1 we must resort the records under this pid
-                    if ($row[$sortColumn] < 1) {
-                        $this->resorting($table, $pid, $sortColumn, 0);
-                        // First sorting number after resorting
-                        return $this->sortIntervals;
-                    }
-                    // Sorting number between current top element and zero
-                    return floor($row[$sortColumn] / 2);
-                }
-                // No pages, so we choose the default value as sorting-number
-                // First sorting number if no elements.
-                return $this->sortIntervals;
-            }
-            // Sorting number is inside the list
-            // Fetches the record which is supposed to be the prev record
+        $queryBuilder
+            ->select($sortColumn, 'pid', 'uid')
+            ->from($table);
+
+        // find and return the sorting value for the first record on that pid
+        if ($pid >= 0) {
+            // Fetches the first record (lowest sorting) under this pid
             $row = $queryBuilder
-                    ->where($queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter(abs($pid), \PDO::PARAM_INT)
-                    ))
-                    ->execute()
-                    ->fetch();
+                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
+                ->orderBy($sortColumn, 'ASC')
+                ->addOrderBy('uid', 'ASC')
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
 
-            // There was a record
             if (!empty($row)) {
-                // Look, if the record UID happens to be an offline record. If so, find its live version. Offline uids will be used when a page is versionized as "branch" so this is when we must correct - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
-                if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {
-                    $row = $lookForLiveVersion;
+                // The top record was the record itself, so we return its current sorting value
+                if ($row['uid'] == $uid) {
+                    return $row[$sortColumn];
                 }
-                // Fetch move placeholder, since it might point to a new page in the current workspace
-                if ($movePlaceholder = BackendUtility::getMovePlaceholder($table, $row['uid'], 'uid,pid,' . $sortColumn)) {
-                    $row = $movePlaceholder;
+                // If the record sorting value < 1 we must resort all the records under this pid
+                if ($row[$sortColumn] < 1) {
+                    $this->increaseSortingOfFollowingRecords($table, (int)$pid, 0);
+                    // Lowest sorting value after full resorting is $sortIntervals
+                    return $this->sortIntervals;
                 }
-                // If the record should be inserted after itself, keep the current sorting information:
-                if ((int)$row['uid'] === (int)$uid) {
-                    $sortNumber = $row[$sortColumn];
-                } else {
-                    $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
-                    $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+                // Sorting number between current top element and zero
+                return floor($row[$sortColumn] / 2);
+            }
+            // No records, so we choose the default value as sorting-number
+            return $this->sortIntervals;
+        }
 
-                    $subResults = $queryBuilder
-                            ->select($sortColumn, 'pid', 'uid')
-                            ->from($table)
-                            ->where(
-                                $queryBuilder->expr()->eq(
-                                    'pid',
-                                    $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
-                                ),
-                                $queryBuilder->expr()->gte(
-                                    $sortColumn,
-                                    $queryBuilder->createNamedParameter($row[$sortColumn], \PDO::PARAM_INT)
-                                )
+        // Find and return first possible sorting value AFTER record with given uid ($pid)
+        // Fetches the record which is supposed to be the prev record
+        $row = $queryBuilder
+                ->where($queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter(abs($pid), \PDO::PARAM_INT)
+                ))
+                ->execute()
+                ->fetch();
+
+        // There is a previous record
+        if (!empty($row)) {
+            // Look, if the record UID happens to be an offline record. If so, find its live version.
+            // Offline uids will be used when a page is versionized as "branch" so this is when we must correct
+            // - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
+            if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {
+                $row = $lookForLiveVersion;
+            }
+            // Fetch move placeholder, since it might point to a new page in the current workspace
+            if ($movePlaceholder = BackendUtility::getMovePlaceholder($table, $row['uid'], 'uid,pid,' . $sortColumn)) {
+                $row = $movePlaceholder;
+            }
+            // If the record should be inserted after itself, keep the current sorting information:
+            if ((int)$row['uid'] === (int)$uid) {
+                $sortNumber = $row[$sortColumn];
+            } else {
+                $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+
+                $subResults = $queryBuilder
+                        ->select($sortColumn, 'pid', 'uid')
+                        ->from($table)
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'pid',
+                                $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->gte(
+                                $sortColumn,
+                                $queryBuilder->createNamedParameter($row[$sortColumn], \PDO::PARAM_INT)
                             )
-                            ->orderBy($sortColumn, 'ASC')
-                            ->setMaxResults(2)
-                            ->execute()
-                            ->fetchAll();
-                    // Fetches the next record in order to calculate the in-between sortNumber
-                    // There was a record afterwards
-                    if (count($subResults) === 2) {
-                        // There was a record afterwards, fetch that
-                        $subrow = array_pop($subResults);
-                        // The sortNumber is found in between these values
-                        $sortNumber = $row[$sortColumn] + floor(($subrow[$sortColumn] - $row[$sortColumn]) / 2);
-                        // The sortNumber happened NOT to be between the two surrounding numbers, so we'll have to resort the list
-                        if ($sortNumber <= $row[$sortColumn] || $sortNumber >= $subrow[$sortColumn]) {
-                            // By this special param, resorting reserves and returns the sortnumber after the uid
-                            $sortNumber = $this->resorting($table, $row['pid'], $sortColumn, $row['uid']);
-                        }
-                    } else {
-                        // If after the last record in the list, we just add the sortInterval to the last sortvalue
+                        )
+                        ->orderBy($sortColumn, 'ASC')
+                        ->addOrderBy('uid', 'DESC')
+                        ->setMaxResults(2)
+                        ->execute()
+                        ->fetchAll();
+                // Fetches the next record in order to calculate the in-between sortNumber
+                // There was a record afterwards
+                if (count($subResults) === 2) {
+                    // There was a record afterwards, fetch that
+                    $subrow = array_pop($subResults);
+                    // The sortNumber is found in between these values
+                    $sortNumber = $row[$sortColumn] + floor(($subrow[$sortColumn] - $row[$sortColumn]) / 2);
+                    // The sortNumber happened NOT to be between the two surrounding numbers, so we'll have to resort the list
+                    if ($sortNumber <= $row[$sortColumn] || $sortNumber >= $subrow[$sortColumn]) {
+                        $this->increaseSortingOfFollowingRecords($table, (int)$row['pid'], (int)$row[$sortColumn]);
                         $sortNumber = $row[$sortColumn] + $this->sortIntervals;
                     }
+                } else {
+                    // If after the last record in the list, we just add the sortInterval to the last sortvalue
+                    $sortNumber = $row[$sortColumn] + $this->sortIntervals;
                 }
-                return ['pid' => $row['pid'], 'sortNumber' => $sortNumber];
             }
-            if ($this->enableLogging) {
-                $propArr = $this->getRecordProperties($table, $uid);
-                // OK, don't insert $propArr['event_pid'] here...
-                $this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) to after a non-existing record (uid=%s)', 1, [$propArr['header'], $table . ':' . $uid, abs($pid)], $propArr['pid']);
-            }
-            // There MUST be a page or else this cannot work
-            return false;
+            return ['pid' => $row['pid'], 'sortNumber' => $sortNumber];
         }
-        return null;
+        if ($this->enableLogging) {
+            $propArr = $this->getRecordProperties($table, $uid);
+            // OK, don't insert $propArr['event_pid'] here...
+            $this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) to after a non-existing record (uid=%s)', 1, [$propArr['header'], $table . ':' . $uid, abs($pid)], $propArr['pid']);
+        }
+        // There MUST be a previous record or else this cannot work
+        return false;
     }
 
     /**
@@ -7497,9 +7525,12 @@ class DataHandler implements LoggerAwareInterface
      * @return int|null If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
      * @access private
      * @see getSortNumber()
+     * @deprecated since core v9, will be removed with core v10
      */
     public function resorting($table, $pid, $sortColumn, $return_SortNumber_After_This_Uid)
     {
+        trigger_error('DataHandler->resorting() will be removed in TYPO3 v10.0, use the increaseSortingOfFollowingRecords() function instead.', E_USER_DEPRECATED);
+
         $sortBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
         if ($sortBy && $sortBy === $sortColumn) {
             $returnVal = 0;
@@ -7562,8 +7593,46 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
+     * Increases sorting field value of all records with sorting higher than $sortingNumber
+     *
+     * Used internally by getSortNumber() to "make space" in sorting values when inserting new record
+     *
+     * @param string $table Table name
+     * @param int $pid Page Uid in which to resort records
+     * @param int $sortingValue All sorting numbers larger than this number will be shifted
+     * @see getSortNumber()
+     */
+    protected function increaseSortingOfFollowingRecords(string $table, int $pid, int $sortingValue): void
+    {
+        $sortBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
+        if ($sortBy) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+
+            $queryBuilder
+                ->update($table)
+                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
+                ->andWhere($queryBuilder->expr()->gt($sortBy, $sortingValue))
+                ->set($sortBy, $queryBuilder->quoteIdentifier($sortBy) . ' + ' . $this->sortIntervals . ' + ' . $this->sortIntervals, false);
+
+            $deleteColumn = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? '';
+            if ($deleteColumn) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq($deleteColumn, 0));
+            }
+
+            $queryBuilder->execute();
+        }
+    }
+
+    /**
      * Returning uid of previous localized record, if any, for tables with a "sortby" column
      * Used when new localized records are created so that localized records are sorted in the same order as the default language records
+     *
+     * For a given record (A) uid (record we're translating) it finds first default language record (from the same colpos)
+     * with sorting smaller than given record (B).
+     * Then it fetches a translated version of record B and returns it's uid.
+     *
+     * If there is no record B, or it has no translation in given language, the record A uid is returned.
+     * The localized record will be placed the after record which uid is returned.
      *
      * @param string $table Table name
      * @param int $uid Uid of default language record
@@ -7605,6 +7674,7 @@ class DataHandler implements LoggerAwareInterface
                         )
                     )
                     ->orderBy($sortColumn, 'DESC')
+                    ->addOrderBy('uid', 'DESC')
                     ->setMaxResults(1);
                 if ($table === 'tt_content') {
                     $queryBuilder

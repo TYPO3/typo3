@@ -1,10 +1,10 @@
 "tt_content",,,,,,,,
 ,"uid","pid","deleted","sys_language_uid","l18n_parent","header","colPos","sorting"
-,1,1,0,0,0,"Test content 1",0,512
-,2,1,0,0,0,"Test content 2",1,1024
-,3,1,0,0,0,"Test content 3",1,1280
-,4,1,0,1,0,"[Translate to Dansk:] Test content 1",0,768
-,5,1,0,1,0,"[Translate to Dansk:] Test content 2",1,1152
-,6,1,0,1,0,"[Translate to Dansk:] Test content 3",1,1216
-,7,1,0,0,0,"Test content 2.5",0,1088
-,8,1,0,1,0,"[Translate to Dansk:] Test content 2.5",0,896
+,1,1,0,0,0,"Test content 1",0,1
+,2,1,0,0,0,"Test content 2",1,514
+,3,1,0,0,0,"Test content 3",1,1027
+,4,1,0,1,0,"[Translate to Dansk:] Test content 1",0,257
+,5,1,0,1,0,"[Translate to Dansk:] Test content 2",1,770
+,6,1,0,1,0,"[Translate to Dansk:] Test content 3",1,898
+,7,1,0,0,0,"Test content 2.5",0,642
+,8,1,0,1,0,"[Translate to Dansk:] Test content 2.5",0,385
