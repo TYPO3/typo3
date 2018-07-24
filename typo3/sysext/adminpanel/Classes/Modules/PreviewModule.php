@@ -199,7 +199,7 @@ class PreviewModule extends AbstractModule
                     $tsfe->fe_user->usergroup_column => $tsfe->simUserGroup,
                 ];
             }
-            $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $tsfe->fe_user));
+            $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $tsfe->fe_user ?: null));
         }
         if (!$tsfe->simUserGroup && !$simTime && !$showHiddenPage && !$showHiddenRecords) {
             $tsfe->fePreview = 0;

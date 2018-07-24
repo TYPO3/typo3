@@ -995,7 +995,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         $this->gr_list = implode(',', $userGroups);
-        $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, $userGroups));
+        $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, $userGroups));
 
         // For every 60 seconds the is_online timestamp for a logged-in user is updated
         if ($isUserAndGroupSet) {
@@ -1164,7 +1164,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $userGroups = [0, -2];
                 }
                 $this->gr_list = implode(',', $userGroups);
-                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, $userGroups));
+                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, $userGroups));
                 // Fetching the id again, now with the preview settings reset.
                 $this->fetch_the_id();
             }
@@ -5096,7 +5096,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 /** @var UserAspect $aspect */
                 $aspect = $this->context->getAspect('frontend.user');
                 if ($propertyValue) {
-                    $aspect = GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, $aspect->getGroupIds());
+                    $aspect = GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, $aspect->getGroupIds());
                 } else {
                     $aspect = GeneralUtility::makeInstance(UserAspect::class, null, $aspect->getGroupIds());
                 }
@@ -5104,7 +5104,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 break;
             case 'gr_list':
                 trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
-                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, GeneralUtility::intExplode(',', $propertyValue)));
+                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, GeneralUtility::intExplode(',', $propertyValue)));
                 break;
             case 'beUserLogin':
                 trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.');
@@ -5168,7 +5168,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 break;
             case 'gr_list':
                 trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
-                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, []));
+                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, []));
                 break;
             case 'beUserLogin':
                 trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.');
