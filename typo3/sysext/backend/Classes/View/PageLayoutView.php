@@ -1335,14 +1335,6 @@ class PageLayoutView implements LoggerAwareInterface
                         : ''
                     );
 
-                    $lPLabel =
-                        '<p>' . $recordIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($pageLocalizationRecord['title'], 20)) . '</p>'
-                        . '<div class="btn-group">'
-                            . $viewLink
-                            . $editLink
-                        . '</div>'
-                        ;
-
                     $defaultLanguageElements = [];
                     array_walk($defaultLanguageElementsByColumn, function (array $columnContent) use (&$defaultLanguageElements) {
                         $defaultLanguageElements = array_merge($defaultLanguageElements, $columnContent);
@@ -1354,9 +1346,14 @@ class PageLayoutView implements LoggerAwareInterface
                         $lP
                     );
 
-                    if (!empty($localizationButtons)) {
-                        $lPLabel .= LF . '<div class="btn-group">' . implode(LF, $localizationButtons) . '</div>';
-                    }
+                    $lPLabel =
+                        '<div class="btn-group">'
+                            . $viewLink
+                            . $editLink
+                            . (!empty($localizationButtons) ? implode(LF, $localizationButtons) : '')
+                        . '</div>'
+                        . ' ' . $recordIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($pageLocalizationRecord['title'], 20))
+                        ;
                 } else {
                     $editLink = '';
                     $recordIcon = '';
