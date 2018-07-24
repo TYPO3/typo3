@@ -30,7 +30,8 @@ used signal, relevant mostly only for distributions.
 Migration
 =========
 
-In many cases it should be possible to use signal :php:`hasInstalledExtensions` instead
-which is fired after an extension has been installed.
+In many cases it should be possible to use signal :php:`afterExtensionInstall` of class
+:php:`\TYPO3\CMS\Extensionmanager\Utility\InstallUtility` instead which is fired after an extension
+has been installed.
 
 .. index:: Backend, LocalConfiguration, PHP-API, NotScanned, ext:extensionmanager
