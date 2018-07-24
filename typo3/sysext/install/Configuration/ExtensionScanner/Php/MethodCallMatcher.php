@@ -2977,4 +2977,18 @@ return [
             'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
         ],
     ],
+    'TYPO3\CMS\Info\Controller\TranslationStatusController->getSystemLanguages' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85164-LanguageRelatedMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\View\PageLayoutView->languageFlag' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85164-LanguageRelatedMethods.rst'
+        ],
+    ],
 ];

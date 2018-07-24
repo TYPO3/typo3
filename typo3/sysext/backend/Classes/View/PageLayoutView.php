@@ -31,8 +31,8 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -41,6 +41,10 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\FlexFormService;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\PseudoSiteFinder;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -484,8 +488,16 @@ class PageLayoutView implements LoggerAwareInterface
      * Contains sys language icons and titles
      *
      * @var array
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use site languages instead.
      */
     public $languageIconTitles = [];
+
+    /**
+     * Contains site languages for this page ID
+     *
+     * @var SiteLanguage[]
+     */
+    protected $siteLanguages = [];
 
     /**
      * Script URL
@@ -511,6 +523,7 @@ class PageLayoutView implements LoggerAwareInterface
 
     /**
      * @var TranslationConfigurationProvider
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public $translateTools;
 
@@ -630,7 +643,8 @@ class PageLayoutView implements LoggerAwareInterface
             $this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
         }
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->getTranslateTools();
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove this instance along with the property.
+        $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $this->determineScriptUrl();
         $this->localizationController = GeneralUtility::makeInstance(LocalizationController::class);
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -836,7 +850,6 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public function getTable_tt_content($id)
     {
-        $backendUser = $this->getBackendUser();
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('tt_content')
             ->getExpressionBuilder();
@@ -2062,7 +2075,9 @@ class PageLayoutView implements LoggerAwareInterface
         $allowDragAndDrop = $this->isDragAndDropAllowed($row);
         $additionalIcons = [];
         $additionalIcons[] = $this->getIcon('tt_content', $row) . ' ';
-        $additionalIcons[] = $langMode ? $this->languageFlag($row['sys_language_uid'], false) : '';
+        if ($langMode && isset($this->siteLanguages[(int)$row['sys_language_uid']])) {
+            $additionalIcons[] = $this->renderLanguageFlag($this->siteLanguages[(int)$row['sys_language_uid']]);
+        }
         // Get record locking status:
         if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
             $additionalIcons[] = '<a href="#" data-toggle="tooltip" data-title="' . htmlspecialchars($lockInfo['msg']) . '">'
@@ -2454,7 +2469,7 @@ class PageLayoutView implements LoggerAwareInterface
      *
      * @param int $id Page id where to create the element.
      * @param int $colPos Preset: Column position value
-     * @param int $sys_language Preset: Sys langauge value
+     * @param int $sys_language Preset: Sys language value
      * @return string String for onclick attribute.
      * @see getTable_tt_content()
      */
@@ -2518,134 +2533,63 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public function languageSelector($id)
     {
-        if ($this->getBackendUser()->check('tables_modify', 'pages')) {
-            // First, select all
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
-            $queryBuilder->getRestrictions()->removeAll();
-            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-            $statement = $queryBuilder->select('uid', 'title')
-                ->from('sys_language')
-                ->orderBy('sorting')
-                ->execute();
-            $availableTranslations = [];
-            while ($row = $statement->fetch()) {
-                if ($this->getBackendUser()->checkLanguageAccess($row['uid'])) {
-                    $availableTranslations[(int)$row['uid']] = $row['title'];
-                }
+        if (!$this->getBackendUser()->check('tables_modify', 'pages')) {
+            return '';
+        }
+        $id = (int)$id;
+
+        // First, select all languages that are available for the current user
+        $availableTranslations = [];
+        foreach ($this->siteLanguages as $language) {
+            if ($language->getLanguageId() === 0) {
+                continue;
             }
-            // Then, subtract the languages which are already on the page:
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
-            $queryBuilder->getRestrictions()->removeAll();
-            $queryBuilder->select('sys_language.uid AS uid', 'sys_language.title AS title')
-                ->from('sys_language')
-                ->join(
-                    'sys_language',
-                    'pages',
-                    'pages',
-                    $queryBuilder->expr()->eq('sys_language.uid', $queryBuilder->quoteIdentifier('pages.' . $GLOBALS['TCA']['pages']['ctrl']['languageField']))
+            $availableTranslations[$language->getLanguageId()] = $language->getTitle();
+        }
+
+        // Then, subtract the languages which are already on the page:
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+        $queryBuilder->select('uid', $GLOBALS['TCA']['pages']['ctrl']['languageField'])
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
                 )
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'pages.deleted',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'pages.' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->gte(
-                            'pages.t3ver_state',
-                            $queryBuilder->createNamedParameter(
-                                (string)new VersionState(VersionState::DEFAULT_STATE),
-                                \PDO::PARAM_INT
-                            )
-                        ),
-                        $queryBuilder->expr()->eq(
-                            'pages.t3ver_wsid',
-                            $queryBuilder->createNamedParameter($this->getBackendUser()->workspace, \PDO::PARAM_INT)
-                        )
-                    )
-                )
-                ->groupBy(
-                    'pages.' . $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                    'sys_language.uid',
-                    'sys_language.pid',
-                    'sys_language.tstamp',
-                    'sys_language.hidden',
-                    'sys_language.title',
-                    'sys_language.language_isocode',
-                    'sys_language.static_lang_isocode',
-                    'sys_language.flag',
-                    'sys_language.sorting'
-                )
-                ->orderBy('sys_language.sorting');
-            if (!$this->getBackendUser()->isAdmin()) {
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq(
-                        'sys_language.hidden',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    )
-                );
-            }
-            $statement = $queryBuilder->execute();
-            while ($row = $statement->fetch()) {
-                unset($availableTranslations[(int)$row['uid']]);
-            }
-            // Remove disallowed languages
-            if (!empty($availableTranslations)
-                && !$this->getBackendUser()->isAdmin()
-                && $this->getBackendUser()->groupData['allowed_languages'] !== ''
-            ) {
-                $allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));
-                if (!empty($allowed_languages)) {
-                    foreach ($availableTranslations as $key => $value) {
-                        if (!isset($allowed_languages[$key]) && $key != 0) {
-                            unset($availableTranslations[$key]);
-                        }
-                    }
-                }
-            }
-            // Remove disabled languages
-            $disableLanguages = GeneralUtility::trimExplode(
-                ',',
-                BackendUtility::getPagesTSconfig($id)['mod.']['SHARED.']['disableLanguages'] ?? '',
-                true
             );
-            if (!empty($availableTranslations) && !empty($disableLanguages)) {
-                foreach ($disableLanguages as $language) {
-                    if ($language != 0 && isset($availableTranslations[$language])) {
-                        unset($availableTranslations[$language]);
-                    }
-                }
-            }
-            // If any languages are left, make selector:
-            if (!empty($availableTranslations)) {
-                $output = '<option value="">' . htmlspecialchars($this->getLanguageService()->getLL('new_language')) . '</option>';
-                foreach ($availableTranslations as $languageUid => $languageTitle) {
-                    // Build localize command URL to DataHandler (tce_db)
-                    // which redirects to FormEngine (record_edit)
-                    // which, when finished editing should return back to the current page (returnUrl)
-                    $parameters = [
-                        'justLocalized' => 'pages:' . $id . ':' . $languageUid,
-                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-                    ];
-                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                    $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
-                    $targetUrl = BackendUtility::getLinkToDataHandlerAction(
-                        '&cmd[pages][' . $id . '][localize]=' . $languageUid,
-                        $redirectUrl
-                    );
+        $statement = $queryBuilder->execute();
+        while ($row = $statement->fetch()) {
+            unset($availableTranslations[(int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]]);
+        }
+        // If any languages are left, make selector:
+        if (!empty($availableTranslations)) {
+            $output = '<option value="">' . htmlspecialchars($this->getLanguageService()->getLL('new_language')) . '</option>';
+            foreach ($availableTranslations as $languageUid => $languageTitle) {
+                // Build localize command URL to DataHandler (tce_db)
+                // which redirects to FormEngine (record_edit)
+                // which, when finished editing should return back to the current page (returnUrl)
+                $parameters = [
+                    'justLocalized' => 'pages:' . $id . ':' . $languageUid,
+                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                ];
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
+                $targetUrl = BackendUtility::getLinkToDataHandlerAction(
+                    '&cmd[pages][' . $id . '][localize]=' . $languageUid,
+                    $redirectUrl
+                );
 
-                    $output .= '<option value="' . htmlspecialchars($targetUrl) . '">' . htmlspecialchars($languageTitle) . '</option>';
-                }
-
-                return '<div class="form-inline form-inline-spaced">'
-                    . '<div class="form-group">'
-                    . '<select class="form-control input-sm" name="createNewLanguage" onchange="window.location.href=this.options[this.selectedIndex].value">'
-                    . $output
-                    . '</select></div></div>';
+                $output .= '<option value="' . htmlspecialchars($targetUrl) . '">' . htmlspecialchars($languageTitle) . '</option>';
             }
+
+            return '<div class="form-inline form-inline-spaced">'
+                . '<div class="form-group">'
+                . '<select class="form-control input-sm" name="createNewLanguage" onchange="window.location.href=this.options[this.selectedIndex].value">'
+                . $output
+                . '</select></div></div>';
         }
         return '';
     }
@@ -2951,7 +2895,7 @@ class PageLayoutView implements LoggerAwareInterface
      * @param int $language
      * @return bool
      */
-    protected function checkIfTranslationsExistInLanguage(array $contentElements, $language)
+    protected function checkIfTranslationsExistInLanguage(array $contentElements, int $language)
     {
         // If in default language, you may always create new entries
         // Also, you may override this strict behavior via user TS Config
@@ -2985,10 +2929,11 @@ class PageLayoutView implements LoggerAwareInterface
                 && $this->languageHasTranslationsCache[$language]['hasTranslations']
             ) {
                 $this->languageHasTranslationsCache[$language]['mode'] = 'mixed';
+                $siteLanguage = $this->siteLanguages[$language];
                 $message = GeneralUtility::makeInstance(
                     FlashMessage::class,
-                    sprintf($this->getLanguageService()->getLL('staleTranslationWarning'), $this->languageIconTitles[$language]['title']),
-                    sprintf($this->getLanguageService()->getLL('staleTranslationWarningTitle'), $this->languageIconTitles[$language]['title']),
+                    sprintf($this->getLanguageService()->getLL('staleTranslationWarning'), $siteLanguage->getTitle()),
+                    sprintf($this->getLanguageService()->getLL('staleTranslationWarningTitle'), $siteLanguage->getTitle()),
                     FlashMessage::WARNING
                 );
                 $service = GeneralUtility::makeInstance(FlashMessageService::class);
@@ -3036,7 +2981,8 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public function start($id, $table, $pointer, $search = '', $levels = 0, $showLimit = 0)
     {
-        $backendUser = $this->getBackendUserAuthentication();
+        $this->resolveSiteLanguages((int)$id);
+        $backendUser = $this->getBackendUser();
         // Setting internal variables:
         // sets the parent id
         $this->id = (int)$id;
@@ -3124,7 +3070,7 @@ class PageLayoutView implements LoggerAwareInterface
         $this->pageRecord = BackendUtility::getRecordWSOL('pages', $this->id);
         $hideTablesArray = GeneralUtility::trimExplode(',', $this->hideTables);
 
-        $backendUser = $this->getBackendUserAuthentication();
+        $backendUser = $this->getBackendUser();
 
         // pre-process tables and add sorting instructions
         $tableNames = array_flip(array_keys($GLOBALS['TCA']));
@@ -3226,8 +3172,6 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public function getSearchBox($formFields = true)
     {
-        /** @var $iconFactory IconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $lang = $this->getLanguageService();
         // Setting form-elements, if applicable:
         $formElements = ['', ''];
@@ -3302,7 +3246,7 @@ class PageLayoutView implements LoggerAwareInterface
                                         <button type="submit" class="btn btn-default" name="search" title="' . htmlspecialchars(
                 $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')
             ) . '">
-                                            ' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render(
+                                            ' . $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render(
             ) . ' ' . htmlspecialchars(
                 $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.search')
             ) . '
@@ -3323,7 +3267,7 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public function setDispFields()
     {
-        $backendUser = $this->getBackendUserAuthentication();
+        $backendUser = $this->getBackendUser();
         // Getting from session:
         $dispFields = $backendUser->getModuleData('list/displayFields');
         // If fields has been inputted, then set those as the value and push it to session variable:
@@ -3734,7 +3678,7 @@ class PageLayoutView implements LoggerAwareInterface
             case 'edit':
                 // If the listed table is 'pages' we have to request the permission settings for each page:
                 if ($table === 'pages') {
-                    $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(
+                    $localCalcPerms = $this->getBackendUser()->calcPerms(
                         BackendUtility::getRecord('pages', $row['uid'])
                     );
                     $permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
@@ -3883,7 +3827,7 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public function makeFieldList($table, $dontCheckUser = false, $addDateFields = false)
     {
-        $backendUser = $this->getBackendUserAuthentication();
+        $backendUser = $this->getBackendUser();
         // Init fieldlist array:
         $fieldListArr = [];
         // Check table:
@@ -4060,7 +4004,7 @@ class PageLayoutView implements LoggerAwareInterface
      */
     protected function getSearchableWebmounts($id, $depth, $perms_clause)
     {
-        $backendUser = $this->getBackendUserAuthentication();
+        $backendUser = $this->getBackendUser();
         /** @var PageTreeView $tree */
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
         $tree->init('AND ' . $perms_clause);
@@ -4143,14 +4087,6 @@ class PageLayoutView implements LoggerAwareInterface
             '[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook has been deprecated in v9 and will be remove in v10, use $queryBuilder instead',
             E_USER_DEPRECATED
         );
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     /**
@@ -4375,7 +4311,7 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * Initializes page languages and icons
+     * Initializes page languages
      */
     public function initializeLanguages()
     {
@@ -4407,8 +4343,13 @@ class PageLayoutView implements LoggerAwareInterface
         while ($row = $result->fetch()) {
             $this->pageOverlays[$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]] = $row;
         }
-
-        $this->languageIconTitles = $this->getTranslateTools()->getSystemLanguages($this->id);
+        // @deprecated $this->languageIconTitles can be removed in TYPO3 v10.0.
+        foreach ($this->siteLanguages as $language) {
+            $this->languageIconTitles[$language->getLanguageId()] = [
+                'title' => $language->getTitle(),
+                'flagIcon' => $language->getFlagIdentifier()
+            ];
+        }
     }
 
     /**
@@ -4417,9 +4358,11 @@ class PageLayoutView implements LoggerAwareInterface
      * @param int $sys_language_uid Sys language uid
      * @param bool $addAsAdditionalText If set to true, only the flag is returned
      * @return string Language icon
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use Site Languages instead.
      */
     public function languageFlag($sys_language_uid, $addAsAdditionalText = true)
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         $out = '';
         $title = htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
         if ($this->languageIconTitles[$sys_language_uid]['flagIcon']) {
@@ -4437,16 +4380,39 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * Gets an instance of TranslationConfigurationProvider
+     * Renders the language flag and language title, but only if a icon is given, otherwise just the language
      *
-     * @return TranslationConfigurationProvider
+     * @param SiteLanguage $language
+     * @return string
      */
-    protected function getTranslateTools()
+    protected function renderLanguageFlag(SiteLanguage $language)
     {
-        if (!isset($this->translateTools)) {
-            $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
+        $title = htmlspecialchars($language->getTitle());
+        if ($language->getFlagIdentifier()) {
+            $icon = $this->iconFactory->getIcon(
+                $language->getFlagIdentifier(),
+                Icon::SIZE_SMALL
+            )->render();
+            return '<span title="' . $title . '">' . $icon . '</span>&nbsp;' . $title;
         }
-        return $this->translateTools;
+        return $title;
+    }
+
+    /**
+     * Fetch the site language objects for the given $pageId and store it in $this->siteLanguages
+     *
+     * @param int $pageId
+     * @throws SiteNotFoundException
+     */
+    protected function resolveSiteLanguages(int $pageId)
+    {
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
+        } catch (SiteNotFoundException $e) {
+            // Check for a pseudo site
+            $site = GeneralUtility::makeInstance(PseudoSiteFinder::class)->getSiteByPageId($pageId);
+        }
+        $this->siteLanguages = $site->getAvailableLanguages($this->getBackendUser(), false, $pageId);
     }
 
     /**

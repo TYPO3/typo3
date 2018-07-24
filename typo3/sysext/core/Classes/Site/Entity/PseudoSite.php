@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entity representing a site with legacy configuration (sys_domain) and all available languages in the system (sys_language)
@@ -148,15 +149,20 @@ class PseudoSite implements SiteInterface
     }
 
     /**
-     * Fetch the available languages for a specific backend user, used in various places in Backend and Frontend
-     * when a Backend User is authenticated.
-     *
-     * @param BackendUserAuthentication $user
-     * @param int $pageId
-     * @param bool $includeAllLanguagesFlag whether to include "-1" into the list, useful for some backend outputs
-     * @return array
+     * @inheritdoc
      */
-    public function getAvailableLanguages(BackendUserAuthentication $user, int $pageId, bool $includeAllLanguagesFlag = false)
+    public function getDefaultLanguage(): SiteLanguage
+    {
+        return reset($this->languages);
+    }
+
+    /**
+     * This takes pageTSconfig into account (unlike Site interface) to find
+     * mod.SHARED.disableLanguages and mod.SHARED.defaultLanguageLabel
+     *
+     * @inheritdoc
+     */
+    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array
     {
         $availableLanguages = [];
 
@@ -167,23 +173,26 @@ class PseudoSite implements SiteInterface
                 'flag' => 'flag-multiple'
             ]);
         }
+        $pageTs = BackendUtility::getPagesTSconfig($pageId);
+        $pageTs = $pageTs['mod.']['SHARED.'] ?? [];
 
+        $disabledLanguages = GeneralUtility::intExplode(',', $pageTs['disableLanguages'] ?? '', true);
         // Do not add the ones that are not allowed by the user
         foreach ($this->languages as $language) {
-            if ($user->checkLanguageAccess($language->getLanguageId())) {
+            if ($user->checkLanguageAccess($language->getLanguageId()) && !in_array($language->getLanguageId(), $disabledLanguages, true)) {
                 if ($language->getLanguageId() === 0) {
-                    $pageTs = BackendUtility::getPagesTSconfig($pageId);
                     // 0: "Default" language
                     $defaultLanguageLabel = 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage';
-                    if (isset($pageTs['mod.']['SHARED.']['defaultLanguageLabel'])) {
-                        $defaultLanguageLabel = $pageTs['mod.']['SHARED.']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL($defaultLanguageLabel) . ')';
+                    $defaultLanguageLabel = $this->getLanguageService()->sL($defaultLanguageLabel);
+                    if (isset($pageTs['defaultLanguageLabel'])) {
+                        $defaultLanguageLabel = $pageTs['defaultLanguageLabel'] . ' (' . $defaultLanguageLabel . ')';
                     }
-                    $defaultLanguageFlag = 'empty-empty';
-                    if (isset($pageTs['mod.']['SHARED.']['defaultLanguageFlag'])) {
-                        $defaultLanguageFlag = 'flags-' . $pageTs['mod.']['SHARED.']['defaultLanguageFlag'];
+                    $defaultLanguageFlag = '';
+                    if (isset($pageTs['defaultLanguageFlag'])) {
+                        $defaultLanguageFlag = 'flags-' . $pageTs['defaultLanguageFlag'];
                     }
                     $language = new SiteLanguage(0, '', $language->getBase(), [
-                        'title' => $this->getLanguageService()->sL($defaultLanguageLabel),
+                        'title' => $defaultLanguageLabel,
                         'flag' => $defaultLanguageFlag,
                     ]);
                 }

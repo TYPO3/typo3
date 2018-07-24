@@ -58,7 +58,7 @@ class SiteLanguage
      * The flag key (like "gb" or "fr") used to be used in TYPO3's Backend.
      * @var string
      */
-    protected $flagIdentifier = 'us';
+    protected $flagIdentifier = '';
 
     /**
      * The iso code for this language (two letter) ISO-639-1

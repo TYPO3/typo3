@@ -471,4 +471,14 @@ return [
             'Deprecation-85445-TemplateService-getFileName.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\View\PageLayoutView->languageIconTitles' => [
+        'restFiles' => [
+            'Deprecation-85164-LanguageRelatedMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\View\PageLayoutView->translateTools' => [
+        'restFiles' => [
+            'Deprecation-85164-LanguageRelatedMethods.rst'
+        ],
+    ],
 ];

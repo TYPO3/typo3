@@ -31,13 +31,13 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -374,6 +374,10 @@ class PageLayoutController
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
+        /** @var SiteInterface $currentSite */
+        $currentSite = $request->getAttribute('site');
+        $availableLanguages = $currentSite->getAvailableLanguages($this->getBackendUser(), false, $this->id);
+
         $lang = $this->getLanguageService();
         // MENU-ITEMS:
         $this->MOD_MENU = [
@@ -391,83 +395,35 @@ class PageLayoutController
         $this->modSharedTSconfig['properties'] = $pageTsConfig['mod.']['SHARED.'] ?? [];
         $this->modTSconfig['properties'] = $pageTsConfig['mod.']['web_layout.'] ?? [];
 
-        // First, select all localized page records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
-        $queryBuilder->getRestrictions()->removeAll();
+        // First, select all localized page records on the current page.
+        // Each represents a possibility for a language on the page. Add these to language selector.
         if ($this->id) {
-            $queryBuilder->select('sys_language.uid AS uid', 'sys_language.title AS title')
-                ->from('sys_language')
-                ->join(
-                    'sys_language',
-                    'pages',
-                    'pages',
-                    $queryBuilder->expr()->eq(
-                        'sys_language.uid',
-                        $queryBuilder->quoteIdentifier('pages.' . $GLOBALS['TCA']['pages']['ctrl']['languageField'])
-                    )
-                )
+            // Compile language data for pid != 0 only. The language drop-down is not shown on pid 0
+            // since pid 0 can't be localized.
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+            $statement = $queryBuilder->select('uid', $GLOBALS['TCA']['pages']['ctrl']['languageField'])
+                ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq(
-                        'pages.deleted',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'pages.' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
                         $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->gte(
-                            'pages.t3ver_state',
-                            $queryBuilder->createNamedParameter(
-                                (string)new VersionState(VersionState::DEFAULT_STATE),
-                                \PDO::PARAM_INT
-                            )
-                        ),
-                        $queryBuilder->expr()->eq(
-                            'pages.t3ver_wsid',
-                            $queryBuilder->createNamedParameter($this->getBackendUser()->workspace, \PDO::PARAM_INT)
-                        )
                     )
-                )
-                ->groupBy(
-                    'pages.' . $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                    'sys_language.uid',
-                    'sys_language.pid',
-                    'sys_language.tstamp',
-                    'sys_language.hidden',
-                    'sys_language.title',
-                    'sys_language.language_isocode',
-                    'sys_language.static_lang_isocode',
-                    'sys_language.flag',
-                    'sys_language.sorting'
-                )
-                ->orderBy('sys_language.sorting');
-            if (!$this->getBackendUser()->isAdmin()) {
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq(
-                        'sys_language.hidden',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    )
-                );
+                )->execute();
+            while ($pageTranslation = $statement->fetch()) {
+                $languageId = $pageTranslation[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+                if (isset($availableLanguages[$languageId])) {
+                    $this->MOD_MENU['language'][$languageId] = $availableLanguages[$languageId]->getTitle();
+                }
             }
-            $statement = $queryBuilder->execute();
-        } else {
-            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-            $statement = $queryBuilder->select('uid', 'title')
-                ->from('sys_language')
-                ->orderBy('sorting')
-                ->execute();
-        }
-        while ($lRow = $statement->fetch()) {
-            if ($this->getBackendUser()->checkLanguageAccess($lRow['uid'])) {
-                $this->MOD_MENU['language'][$lRow['uid']] = $lRow['title'];
+            // Override the label
+            if (isset($availableLanguages[0])) {
+                $this->MOD_MENU['language'][0] = $availableLanguages[0]->getTitle();
             }
         }
-        // Setting alternative default label:
-        if ((!empty($this->modSharedTSconfig['properties']['defaultLanguageLabel']) || !empty($this->modTSconfig['properties']['defaultLanguageLabel'])) && isset($this->MOD_MENU['language'][0])) {
-            $this->MOD_MENU['language'][0] = $this->modTSconfig['properties']['defaultLanguageLabel'] ? $this->modTSconfig['properties']['defaultLanguageLabel'] : $this->modSharedTSconfig['properties']['defaultLanguageLabel'];
-        }
-        // Initialize the avaiable actions
+        // Initialize the available actions
         $actions = $this->initActions();
         // Clean up settings
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $parsedBody['SET'] ?? $queryParams['SET'] ?? [], $this->moduleName);

@@ -121,9 +121,9 @@ class PseudoSiteFinder implements SingletonInterface
     {
         $languageRecords = [
             0 => [
-                'uid' => 0,
+                'languageId' => 0,
                 'title' => 'Default',
-                'flag' => 'empty-empty',
+                'flag' => '',
             ],
         ];
 
@@ -137,7 +137,7 @@ class PseudoSiteFinder implements SingletonInterface
         while ($row = $statement->fetch()) {
             $uid = $row['uid'];
             $languageRecords[$uid] = [
-                'uid' => $uid,
+                'languageId' => $uid,
                 'title' => $row['title'],
                 'iso' => $row['language_isocode'] ?? '',
                 'flag' => 'flags-' . $row['flag'],

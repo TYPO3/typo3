@@ -108,6 +108,13 @@ class Site implements SiteInterface
                 // So the main site base is used (usually done for default languages)
                 $base = $this->sanitizeBaseUrl(rtrim($this->base, '/') . '/');
             }
+            if (!empty($languageConfiguration['flag'])) {
+                if ($languageConfiguration['flag'] === 'global') {
+                    $languageConfiguration['flag'] = 'flag-multiple';
+                } elseif ($languageConfiguration['flag'] !== 'empty-empty') {
+                    $languageConfiguration['flag'] = 'flags-' . $languageConfiguration['flag'];
+                }
+            }
             $this->languages[$languageUid] = new SiteLanguage(
                 $languageUid,
                 $languageConfiguration['locale'],
@@ -198,15 +205,17 @@ class Site implements SiteInterface
     }
 
     /**
-     * Fetch the available languages for a specific backend user, used in various places in Backend and Frontend
-     * when a Backend User is authenticated.
-     *
-     * @param BackendUserAuthentication $user
-     * @param int $pageId
-     * @param bool $includeAllLanguagesFlag
-     * @return array
+     * @inheritdoc
      */
-    public function getAvailableLanguages(BackendUserAuthentication $user, int $pageId, bool $includeAllLanguagesFlag = false)
+    public function getDefaultLanguage(): SiteLanguage
+    {
+        return reset($this->languages);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array
     {
         $availableLanguages = [];
 

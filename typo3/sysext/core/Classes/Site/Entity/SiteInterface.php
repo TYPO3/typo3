@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Site\Entity;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
 
@@ -43,6 +44,24 @@ interface SiteInterface
      * @throws \InvalidArgumentException
      */
     public function getLanguageById(int $languageId): SiteLanguage;
+
+    /**
+     * Returns the first language that was configured. This is usually language=0
+     *
+     * @return SiteLanguage
+     */
+    public function getDefaultLanguage(): SiteLanguage;
+
+    /**
+     * Fetch the available languages for a specific backend user, used in various places in Backend and Frontend
+     * when a Backend User is authenticated.
+     *
+     * @param BackendUserAuthentication $user the authenticated backend user to check access rights
+     * @param bool $includeAllLanguagesFlag whether "-1" should be included in the values or not.
+     * @param int $pageId usually used for resolving additional information from PageTS, only used for pseudo-sites. uid of the default language row!
+     * @return SiteLanguage[]
+     */
+    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array;
 
     /**
      * Returns a ready-to-use error handler, to be used within the ErrorController

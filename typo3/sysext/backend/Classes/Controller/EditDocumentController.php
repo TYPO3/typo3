@@ -34,15 +34,18 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\PseudoSiteFinder;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -2219,15 +2222,15 @@ class EditDocumentController
             if ($table === 'pages') {
                 $row = BackendUtility::getRecord($table, $uid, $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']);
                 // Ensure the check is always done against the default language page
-                $langRows = $this->getLanguages(
+                $availableLanguages = $this->getLanguages(
                     (int)$row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] ?: $uid,
                     $table
                 );
             } else {
-                $langRows = $this->getLanguages((int)$pid, $table);
+                $availableLanguages = $this->getLanguages((int)$pid, $table);
             }
             // Page available in other languages than default language?
-            if (is_array($langRows) && count($langRows) > 1) {
+            if (count($availableLanguages) > 1) {
                 $rowsByLang = [];
                 $fetchFields = 'uid,' . $languageField . ',' . $transOrigPointerField;
                 // Get record in current language
@@ -2290,41 +2293,42 @@ class EditDocumentController
                     }
                     $languageMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
                     $languageMenu->setIdentifier('_langSelector');
-                    foreach ($langRows as $lang) {
-                        if ($this->getBackendUser()->checkLanguageAccess($lang['uid'])) {
-                            $newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
-                            // Create url for creating a localized record
-                            $addOption = true;
-                            $href = '';
-                            if ($newTranslation) {
-                                $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
-                                    'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $lang['uid'],
-                                    'returnUrl' => $this->retUrl
-                                ]);
+                    foreach ($availableLanguages as $language) {
+                        $languageId = $language->getLanguageId();
+                        $selectorOptionLabel = $language->getTitle();
+                        // Create url for creating a localized record
+                        $addOption = true;
+                        $href = '';
+                        if (!isset($rowsByLang[$languageId])) {
+                            // Translation in this language does not exist
+                            $selectorOptionLabel .= ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
+                            $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+                                'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId,
+                                'returnUrl' => $this->retUrl
+                            ]);
 
-                                if (array_key_exists(0, $rowsByLang)) {
-                                    $href = BackendUtility::getLinkToDataHandlerAction(
-                                        '&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $lang['uid'],
-                                        $redirectUrl
-                                    );
-                                } else {
-                                    $addOption = false;
-                                }
+                            if (array_key_exists(0, $rowsByLang)) {
+                                $href = BackendUtility::getLinkToDataHandlerAction(
+                                    '&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $languageId,
+                                    $redirectUrl
+                                );
                             } else {
-                                $href = (string)$uriBuilder->buildUriFromRoute('record_edit', [
-                                    'edit[' . $table . '][' . $rowsByLang[$lang['uid']]['uid'] . ']' => 'edit',
-                                    'returnUrl' => $this->retUrl
-                                ]);
+                                $addOption = false;
                             }
-                            if ($addOption) {
-                                $menuItem = $languageMenu->makeMenuItem()
-                                    ->setTitle($lang['title'] . $newTranslation)
-                                    ->setHref($href);
-                                if ((int)$lang['uid'] === $currentLanguage) {
-                                    $menuItem->setActive(true);
-                                }
-                                $languageMenu->addMenuItem($menuItem);
+                        } else {
+                            $href = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+                                'edit[' . $table . '][' . $rowsByLang[$languageId]['uid'] . ']' => 'edit',
+                                'returnUrl' => $this->retUrl
+                            ]);
+                        }
+                        if ($addOption) {
+                            $menuItem = $languageMenu->makeMenuItem()
+                                ->setTitle($selectorOptionLabel)
+                                ->setHref($href);
+                            if ($languageId === $currentLanguage) {
+                                $menuItem->setActive(true);
                             }
+                            $languageMenu->addMenuItem($menuItem);
                         }
                     }
                     $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
@@ -2414,88 +2418,51 @@ class EditDocumentController
     }
 
     /**
-     * Returns sys_language records available for record translations on given page.
+     * Returns languages  available for record translations on given page.
      *
      * @param int $id Page id: If zero, the query will select all sys_language records from root level which are NOT
      *                hidden. If set to another value, the query will select all sys_language records that has a
      *                translation record on that page (and is not hidden, unless you are admin user)
      * @param string $table For pages we want all languages, for other records the languages of the page translations
-     * @return array Language records including faked record for default language
+     * @return SiteLanguage[] Language
      */
-    protected function getLanguages(int $id, string $table = ''): array
+    protected function getLanguages(int $id, string $table): array
     {
-        $languageService = $this->getLanguageService();
-        $modPageTsConfig = BackendUtility::getPagesTSconfig($id)['mod.']['SHARED.'] ?? [];
-        // Fallback non sprite-configuration
-        if (preg_match('/\\.gif$/', $modPageTsConfig['defaultLanguageFlag'] ?? '')) {
-            $modPageTsConfig['defaultLanguageFlag'] = str_replace(
-                '.gif',
-                '',
-                $modPageTsConfig['defaultLanguageFlag']
-            );
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($id);
+        } catch (SiteNotFoundException $e) {
+            // Check for a pseudo site
+            $site = GeneralUtility::makeInstance(PseudoSiteFinder::class)->getSiteByPageId($id);
         }
-        $languages = [
-            0 => [
-                'uid' => 0,
-                'pid' => 0,
-                'hidden' => 0,
-                'title' => $modPageTsConfig['defaultLanguageLabel'] !== ''
-                        ? $modPageTsConfig['defaultLanguageLabel'] . ' (' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
-                        : $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage'),
-                'flag' => $modPageTsConfig['defaultLanguageFlag']
-            ]
-        ];
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_language');
-
-        $queryBuilder->select('s.uid', 's.pid', 's.hidden', 's.title', 's.flag')
-            ->from('sys_language', 's')
-            ->groupBy('s.uid', 's.pid', 's.hidden', 's.title', 's.flag', 's.sorting')
-            ->orderBy('s.sorting');
-
-        if ($id) {
-            $queryBuilder->getRestrictions()
-                ->removeAll()
+        // Fetch the current translations of this page, to only show the ones where there is a page translation
+        $allLanguages = $site->getAvailableLanguages($this->getBackendUser(), false, $id);
+        if ($table !== 'pages' && $id > 0) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
-            if (!$this->getBackendUser()->isAdmin()) {
-                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+            $statement = $queryBuilder->select('uid', $GLOBALS['TCA']['pages']['ctrl']['languageField'])
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                    )
+                )
+                ->execute();
+            $availableLanguages = [
+                0 => $allLanguages[0]
+            ];
+            while ($row = $statement->fetch()) {
+                $languageId = (int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+                if (isset($allLanguages[$languageId])) {
+                    $availableLanguages[$languageId] = $allLanguages[$languageId];
+                }
             }
-
-            $this->joinPagesTranslationsForActiveLanguage($queryBuilder, $table, $id);
+            return $availableLanguages;
         }
-
-        $result = $queryBuilder->execute();
-        while ($row = $result->fetch()) {
-            $languages[$row['uid']] = $row;
-        }
-
-        return $languages;
-    }
-
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param string $table
-     * @param int $id
-     */
-    public function joinPagesTranslationsForActiveLanguage(QueryBuilder $queryBuilder, string $table, int $id)
-    {
-        // Add join with pages translations to only show active languages
-        if ($table !== 'pages') {
-            $queryBuilder->from('pages', 'o')
-                         ->where(
-                             $queryBuilder->expr()->eq(
-                                 'o.' . $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                                 $queryBuilder->quoteIdentifier('s.uid')
-                             ),
-                             $queryBuilder->expr()->eq(
-                                 'o.' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                                 $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
-                             )
-                         );
-        }
+        return $allLanguages;
     }
 
     /**
