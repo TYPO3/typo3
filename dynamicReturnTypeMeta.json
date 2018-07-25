@@ -12,34 +12,28 @@
 			"position": 0
 		},
 		{
-			"class": "\\PHPUnit_Framework_TestCase",
+			"class": "\\PHPUnit\\Framework\\TestCase",
 			"method": "prophesize",
 			"position": 0,
 			"mask": "%s|\\Prophecy\\Prophecy\\ObjectProphecy"
 		},
 		{
-			"class": "\\PHPUnit_Framework_TestCase",
-			"method": "getMock",
-			"position": 0,
-			"mask": "%s|\\PHPUnit_Framework_MockObject_MockObject"
-		},
-		{
-			"class": "\\PHPUnit_Framework_TestCase",
+			"class": "\\PHPUnit\\Framework\\TestCase",
 			"method": "createMock",
 			"position": 0,
 			"mask": "%s|\\PHPUnit_Framework_MockObject_MockObject"
 		},
 		{
-			"class": "\\TYPO3\\CMS\\Components\\TestingFramework\\Core\\BaseTestCase",
+			"class": "\\TYPO3\\TestingFramework\\Core\\BaseTestCase",
 			"method": "getAccessibleMock",
 			"position": 0,
-			"mask": "%s|\\PHPUnit_Framework_MockObject_MockObject|\\TYPO3\\CMS\\Components\\TestingFramework\\Core\\AccessibleObjectInterface"
+			"mask": "%s|\\PHPUnit_Framework_MockObject_MockObject|\\TYPO3\\TestingFramework\\Core\\AccessibleObjectInterface"
 		},
 		{
-			"class": "\\TYPO3\\CMS\\Components\\TestingFramework\\Core\\BaseTestCase",
+			"class": "\\TYPO3\\TestingFramework\\Core\\BaseTestCase",
 			"method": "getAccessibleMockForAbstractClass",
 			"position": 0,
-			"mask": "%s|\\PHPUnit_Framework_MockObject_MockObject|\\TYPO3\\CMS\\Components\\TestingFramework\\Core\\AccessibleObjectInterface"
+			"mask": "%s|\\PHPUnit_Framework_MockObject_MockObject|\\TYPO3\\TestingFramework\\Core\\AccessibleObjectInterface"
 		}
 	],
 	"functionCalls": [
