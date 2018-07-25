@@ -65,7 +65,11 @@ class EidHandler implements MiddlewareInterface
             $request = $request->withAttribute('target', $configuration);
             return $dispatcher->dispatch($request, $response) ?? new NullResponse();
         }
-
+        trigger_error(
+            'eID "' . $eID . '" is registered with a script to a file. This behaviour will be removed in TYPO3 v10.'
+            . ' Register eID with a class::method syntax like "\MyVendor\MyExtension\Controller\MyEidController::myMethod" instead.',
+            E_USER_DEPRECATED
+        );
         $scriptPath = GeneralUtility::getFileAbsFileName($configuration);
         if ($scriptPath === '') {
             throw new Exception('Registered eID has invalid script path.', 1518042216);
