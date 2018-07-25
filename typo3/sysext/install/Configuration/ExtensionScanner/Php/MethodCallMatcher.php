@@ -2506,6 +2506,13 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84584-AdminPanelViewIsAdminModuleEnabledAndExt_makeToolbarDeprecated.rst',
+        ]
+    ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->getRecordsByField' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 7,
+        'restFiles' => [
+            'Deprecation-85699-DeprecateMethodsInPageRepository.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\ModuleTemplate->loadJavascriptLib' => [
@@ -2529,4 +2536,25 @@ return [
             'Deprecation-85735-DeprecateMethodAndPropertyInDocumentTemplate.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->getFileReferences' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85699-DeprecateMethodsInPageRepository.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->movePlhOL' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85699-DeprecateMethodsInPageRepository.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->getMovePlaceholder' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85699-DeprecateMethodsInPageRepository.rst',
+        ],
+    ]
 ];

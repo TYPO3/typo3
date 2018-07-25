@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Page;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -47,6 +48,7 @@ class PageRepository implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
     use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
 
     /**
      * List of all deprecated public properties
@@ -59,6 +61,15 @@ class PageRepository implements LoggerAwareInterface
         'error_getRootLine_failPid' => 'Using $error_getRootLine_failPid of class PageRepository from the outside is deprecated as this property only exists for legacy reasons.',
         'sys_language_uid' => 'Using $sys_language_uid of class PageRepository from the outside is deprecated as this information is now stored within the Context Language Aspect given by the constructor.',
         'versioningWorkspaceId' => 'Using $versioningWorkspaceId of class PageRepository from the outside is deprecated as this information is now stored within the Context Workspace Aspect given by the constructor.',
+    ];
+
+    /**
+     * List of all deprecated public methods
+     * @var array
+     */
+    protected $deprecatedPublicMethods = [
+        'movePlhOL' => 'Using movePlhOL is deprecated and will not be possible anymore in TYPO3 v10.',
+        'getMovePlaceholder' => 'Using getMovePlaceholder is deprecated and will not be possible anymore in TYPO3 v10.'
     ];
 
     /**
@@ -1387,9 +1398,11 @@ class PageRepository implements LoggerAwareInterface
      * @param string $orderBy Optional ORDER BY field(s). If none, supply blank string.
      * @param string $limit Optional LIMIT value ([begin,]max). If none, supply blank string.
      * @return mixed Returns array (the record) if found, otherwise nothing (void)
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
      */
     public function getRecordsByField($theTable, $theField, $theValue, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '')
     {
+        trigger_error('The method `TYPO3\CMS\Frontend\Page::getRecordsByField()` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
         if (is_array($GLOBALS['TCA'][$theTable])) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($theTable);
             $queryBuilder->getRestrictions()
@@ -1778,7 +1791,7 @@ class PageRepository implements LoggerAwareInterface
      * @return bool TRUE if overlay is made.
      * @see BackendUtility::movePlhOl()
      */
-    public function movePlhOL($table, &$row)
+    protected function movePlhOL($table, &$row)
     {
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
             && (int)VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)
@@ -1838,7 +1851,7 @@ class PageRepository implements LoggerAwareInterface
      * @return array If found, the record, otherwise nothing.
      * @see BackendUtility::getMovePlaceholder()
      */
-    public function getMovePlaceholder($table, $uid, $fields = '*')
+    protected function getMovePlaceholder($table, $uid, $fields = '*')
     {
         $workspace = (int)$this->versioningWorkspaceId;
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $workspace !== 0) {
@@ -1990,9 +2003,11 @@ class PageRepository implements LoggerAwareInterface
      * @param string $fieldName Name of the field
      * @param array $element The parent element referencing to files
      * @return array
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
      */
     public function getFileReferences($tableName, $fieldName, array $element)
     {
+        trigger_error('The method `TYPO3\CMS\Frontend\Page::getFileReferences()` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
         /** @var $fileRepository FileRepository */
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
         $currentId = !empty($element['uid']) ? $element['uid'] : 0;

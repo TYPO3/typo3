@@ -18,6 +18,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileCollectionRepository;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;
@@ -97,7 +98,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
     public function addFilesFromRelation($relationTable, $relationField, array $referenceRecord)
     {
         if (is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->sys_page)) {
-            $fileReferences = $GLOBALS['TSFE']->sys_page->getFileReferences($relationTable, $relationField, $referenceRecord);
+            $fileReferences = $this->getFileReferences($relationTable, $relationField, $referenceRecord);
         } else {
             $fileReferences = $this->getFileRepository()->findByRelation($relationTable, $relationField, $referenceRecord['uid']);
         }
@@ -275,6 +276,58 @@ class FileCollector implements \Countable, LoggerAwareInterface
     public function count()
     {
         return count($this->files);
+    }
+
+    /**
+     * Gets file references for a given record field.
+     *
+     * @param string $tableName Name of the table
+     * @param string $fieldName Name of the field
+     * @param array $element The parent element referencing to files
+     * @return array
+     */
+    protected function getFileReferences($tableName, $fieldName, array $element): array
+    {
+        /** @var $fileRepository FileRepository */
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $currentId = !empty($element['uid']) ? $element['uid'] : 0;
+
+        // Fetch the references of the default element
+        try {
+            $references = $fileRepository->findByRelation($tableName, $fieldName, $currentId);
+        } catch (FileDoesNotExistException $e) {
+            /**
+             * We just catch the exception here
+             * Reasoning: There is nothing an editor or even admin could do
+             */
+            return [];
+        } catch (\InvalidArgumentException $e) {
+            /**
+             * The storage does not exist anymore
+             * Log the exception message for admins as they maybe can restore the storage
+             */
+            $logMessage = $e->getMessage() . ' (table: "' . $tableName . '", fieldName: "' . $fieldName . '", currentId: ' . $currentId . ')';
+            $this->logger->error($logMessage, ['exception' => $e]);
+            return [];
+        }
+
+        $localizedId = null;
+        if (isset($element['_LOCALIZED_UID'])) {
+            $localizedId = $element['_LOCALIZED_UID'];
+        } elseif (isset($element['_PAGES_OVERLAY_UID'])) {
+            $localizedId = $element['_PAGES_OVERLAY_UID'];
+        }
+
+        $isTableLocalizable = (
+            !empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
+            && !empty($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+        );
+        if ($isTableLocalizable && $localizedId !== null) {
+            $localizedReferences = $fileRepository->findByRelation($tableName, $fieldName, $localizedId);
+            $references = $localizedReferences;
+        }
+
+        return $references;
     }
 
     /**
