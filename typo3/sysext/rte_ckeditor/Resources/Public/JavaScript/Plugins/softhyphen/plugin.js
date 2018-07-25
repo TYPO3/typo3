@@ -32,5 +32,21 @@ CKEDITOR.plugins.add("softhyphen", {
       toolbar: 'insertcharacters',
       icon: 'softhyphen'
     });
+  },
+  afterInit: function (editor) {
+    let dataProcessor = editor.dataProcessor,
+      htmlFilter = dataProcessor && dataProcessor.htmlFilter;
+
+    if (htmlFilter) {
+      htmlFilter.addRules({
+        text: function (text) {
+          // replace invisible Unicode character with HTML entity within source
+          return text.replace(new RegExp('&shy;', 'g'), '\u00AD').replace(new RegExp('\u00AD', 'g'), '&shy;');
+        }
+      }, {
+        applyToAll: true,
+        excludeNestedEditable: false
+      });
+    }
   }
 });
