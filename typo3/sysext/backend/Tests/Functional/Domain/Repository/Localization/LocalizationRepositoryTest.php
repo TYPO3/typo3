@@ -50,7 +50,7 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
     public function fetchOriginLanguageDataProvider(): array
     {
         return [
-            'default language returns false' => [
+            'default language returns empty array' => [
                 1,
                 0,
                 []
@@ -58,7 +58,9 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
             'connected mode translated from default language' => [
                 1,
                 1,
-                []
+                [
+                    'sys_language_uid' => 0
+                ]
             ],
             'connected mode translated from non default language' => [
                 1,
@@ -70,7 +72,9 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
             'free mode translated from default language' => [
                 2,
                 1,
-                []
+                [
+                    'sys_language_uid' => 0
+                ]
             ],
             'free mode translated from non default language' => [
                 2,
@@ -82,7 +86,9 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
             'free mode copied from another page translated from default language' => [
                 3,
                 1,
-                []
+                [
+                    'sys_language_uid' => 0
+                ]
             ],
             'free mode copied from another page translated from non default language' => [
                 3,

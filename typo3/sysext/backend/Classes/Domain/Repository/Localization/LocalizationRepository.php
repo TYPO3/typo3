@@ -66,7 +66,7 @@ class LocalizationRepository
                     $queryBuilder->quoteIdentifier('tt_content_orig.uid')
                 )
             )
-            ->join(
+            ->leftJoin(
                 'tt_content_orig',
                 'sys_language',
                 'sys_language',

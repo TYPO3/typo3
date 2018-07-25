@@ -72,8 +72,7 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
 
         $this->subject = $this->getMockBuilder(LocalizationController::class)
             ->setMethods(['getPageColumns'])
-            ->getMock()
-        ;
+            ->getMock();
     }
 
     /**
@@ -186,6 +185,38 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
         ];
         $this->callInaccessibleMethod($this->subject, 'process', $params);
         $this->assertAssertionDataSet('CreatedElementOrdering');
+    }
+
+    /**
+     * @test
+     */
+    public function defaultLanguageIsFoundAsOriginLanguage(): void
+    {
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-danish-language.xml');
+
+        // Create another content element in default language
+        $data = [
+            'tt_content' => [
+                'NEW123456' => [
+                    'sys_language_uid' => 0,
+                    'header' => 'New content element',
+                    'pid' => 1,
+                    'colPos' => 0,
+                ],
+            ],
+        ];
+        $dataHandler = new DataHandler();
+        $dataHandler->start($data, []);
+        $dataHandler->process_datamap();
+        $dataHandler->process_cmdmap();
+
+        $request = (new ServerRequest())->withQueryParams([
+            'pageId'         => 1, // page uid, the records are stored on
+            'languageId'     => 1  // current language id
+        ]);
+
+        $usedLanguages = (string)$this->subject->getUsedLanguagesInPage($request)->getBody();
+        $this->assertThat($usedLanguages, $this->stringContains('"uid":0'));
     }
 
     /**

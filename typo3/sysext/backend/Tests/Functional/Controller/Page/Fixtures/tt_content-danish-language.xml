@@ -5,6 +5,7 @@
 		<pid>1</pid>
 		<sys_language_uid>1</sys_language_uid>
 		<l18n_parent>1</l18n_parent>
+		<l10n_source>1</l10n_source>
 		<deleted>0</deleted>
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
@@ -17,6 +18,7 @@
 		<pid>1</pid>
 		<sys_language_uid>1</sys_language_uid>
 		<l18n_parent>2</l18n_parent>
+		<l10n_source>2</l10n_source>
 		<deleted>0</deleted>
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
@@ -29,6 +31,7 @@
 		<pid>1</pid>
 		<sys_language_uid>1</sys_language_uid>
 		<l18n_parent>3</l18n_parent>
+		<l10n_source>3</l10n_source>
 		<deleted>0</deleted>
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
