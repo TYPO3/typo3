@@ -56,10 +56,6 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, PsrRequestHandlerInterface $handler): ResponseInterface
     {
-        // Starts the template
-        $this->timeTracker->push('Start Template');
-        $this->controller->initTemplate();
-        $this->timeTracker->pull();
         // Get from cache
         $this->timeTracker->push('Get Page from cache');
         // Locks may be acquired here

@@ -2237,9 +2237,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Initialize the TypoScript template parser
+     * @deprecated since TYPO3 v9.4 will be removed in TYPO3 v10.0. Either instantiate $TSFE->tmpl yourself, if really necessary.
      */
     public function initTemplate()
     {
+        trigger_error('TSFE->initTemplate() will be removed in TYPO3 v10.0. Instantiating TemplateService is done implicitly on usage within TSFE directly.', E_USER_DEPRECATED);
         $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context);
     }
 
@@ -2260,6 +2262,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         if ($this->no_cache) {
             return;
+        }
+
+        if (!($this->tmpl instanceof TemplateService)) {
+            $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context);
         }
 
         $pageSectionCacheContent = $this->tmpl->getCurrentPageData();
@@ -2477,6 +2483,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function getConfigArray()
     {
+        if (!($this->tmpl instanceof TemplateService)) {
+            $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context);
+        }
+
         // If config is not set by the cache (which would be a major mistake somewhere) OR if INTincScripts-include-scripts have been registered, then we must parse the template in order to get it
         if (empty($this->config) || is_array($this->config['INTincScript']) || $this->forceTemplateParsing) {
             $timeTracker = $this->getTimeTracker();

@@ -2487,4 +2487,11 @@ return [
             'Deprecation-85554-PageRepository-checkWorkspaceAccess.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initTemplate' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85666-TypoScriptFrontendController-initTemplate.rst',
+        ],
+    ],
 ];

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Typolink;
  */
 
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -200,7 +201,7 @@ abstract class AbstractTypolinkBuilder
                     (int)GeneralUtility::_GP('type')
             );
             $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-            $GLOBALS['TSFE']->initTemplate();
+            $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         }
         return $GLOBALS['TSFE'];
     }
