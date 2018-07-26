@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Install\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
@@ -26,6 +27,8 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Install\Authentication\AuthenticationService;
 use TYPO3\CMS\Install\Controller\AbstractController;
 use TYPO3\CMS\Install\Controller\EnvironmentController;
@@ -177,6 +180,7 @@ class RequestHandler implements RequestHandlerInterface
                     1505215756
                 );
             }
+            $this->recreatePackageStatesFileIfMissing();
             /** @var AbstractController $controller */
             $controller = new $this->controllers[$controllerName];
             if (!method_exists($controller, $action)) {
@@ -307,7 +311,27 @@ class RequestHandler implements RequestHandlerInterface
      */
     protected function checkIfEssentialConfigurationExists(): bool
     {
-        return file_exists($this->configurationManager->getLocalConfigurationFileLocation())
-            && file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php');
+        return file_exists($this->configurationManager->getLocalConfigurationFileLocation());
+    }
+
+    /**
+     * Create PackageStates.php if missing and LocalConfiguration exists.
+     *
+     * It is fired if PackageStates.php is deleted on a running instance,
+     * all packages marked as "part of minimal system" are activated in this case.
+     */
+    protected function recreatePackageStatesFileIfMissing(): void
+    {
+        if (!file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php')) {
+            /** @var \TYPO3\CMS\Core\Package\FailsafePackageManager $packageManager */
+            $packageManager = Bootstrap::getInstance()->getEarlyInstance(PackageManager::class);
+            $packages = $packageManager->getAvailablePackages();
+            foreach ($packages as $package) {
+                if ($package instanceof PackageInterface && $package->isPartOfMinimalUsableSystem()) {
+                    $packageManager->activatePackage($package->getPackageKey());
+                }
+            }
+            $packageManager->forceSortAndSavePackageStates();
+        }
     }
 }
