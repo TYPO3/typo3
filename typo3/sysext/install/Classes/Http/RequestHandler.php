@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Install\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
@@ -29,6 +28,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Authentication\AuthenticationService;
 use TYPO3\CMS\Install\Controller\AbstractController;
 use TYPO3\CMS\Install\Controller\EnvironmentController;
@@ -323,8 +323,11 @@ class RequestHandler implements RequestHandlerInterface
     protected function recreatePackageStatesFileIfMissing(): void
     {
         if (!file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php')) {
+            // We need a FailsafePackageManager at this moment, however this is given
+            // As Bootstrap is registering the FailsafePackageManager object as a singleton instance
+            // of the main PackageManager class. See \TYPO3\CMS\Core\Core\Bootstrap::init()
             /** @var \TYPO3\CMS\Core\Package\FailsafePackageManager $packageManager */
-            $packageManager = Bootstrap::getInstance()->getEarlyInstance(PackageManager::class);
+            $packageManager = GeneralUtility::makeInstance(PackageManager::class);
             $packages = $packageManager->getAvailablePackages();
             foreach ($packages as $package) {
                 if ($package instanceof PackageInterface && $package->isPartOfMinimalUsableSystem()) {
