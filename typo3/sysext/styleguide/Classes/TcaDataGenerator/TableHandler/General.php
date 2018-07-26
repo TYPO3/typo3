@@ -41,7 +41,6 @@ class General extends AbstractTableHandler implements TableHandlerInterface
      * Adds rows
      *
      * @param string $tableName
-     * @return string
      */
     public function handle(string $tableName)
     {
@@ -53,15 +52,11 @@ class General extends AbstractTableHandler implements TableHandlerInterface
         $fieldValues = [
             'pid' => $recordFinder->findPidOfMainTableRecord($tableName),
         ];
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
-        $connection->insert($tableName, $fieldValues);
-        $fieldValues['uid'] = $connection->lastInsertId($tableName);
+        $uid = $this->insertRecord($tableName, $fieldValues);
+        $fieldValues['uid'] = $uid;
+
         $fieldValues = $recordData->generate($tableName, $fieldValues);
-        $connection->update(
-            $tableName,
-            $fieldValues,
-            [ 'uid' => $fieldValues['uid'] ]
-        );
+        $this->updateRecord($tableName, $uid, $fieldValues);
 
         $this->generateTranslatedRecords($tableName, $fieldValues);
     }
