@@ -147,7 +147,10 @@ class SuggestWizardController
                 $receiverClassName = SuggestWizardDefaultReceiver::class;
             }
             $receiverObj = GeneralUtility::makeInstance($receiverClassName, $queryTable, $config);
-            $params = ['value' => $search];
+            $params = [
+                'value' => $search,
+                'uid' => $uid,
+            ];
             $rows = $receiverObj->queryTable($params);
             if (empty($rows)) {
                 continue;
