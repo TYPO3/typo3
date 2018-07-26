@@ -25,8 +25,7 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * General RequestHandler for the TYPO3 Backend. This is used for all Backend requests except for CLI
- * or AJAX calls.
+ * General RequestHandler for the TYPO3 Backend. This is used for all Backend requests, including AJAX routes.
  *
  * If a get/post parameter "route" is set, the Backend Routing is called and searches for a
  * matching route inside the Router. The corresponding controller / action is called then which returns the response.
@@ -79,14 +78,14 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
     }
 
     /**
-     * This request handler can handle any backend request (but not CLI).
+     * This request handler can handle any backend request.
      *
      * @param ServerRequestInterface $request
-     * @return bool If the request is not a CLI script, TRUE otherwise FALSE
+     * @return bool If the request is BE request TRUE otherwise FALSE
      */
     public function canHandleRequest(ServerRequestInterface $request): bool
     {
-        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
+        return (bool)(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE);
     }
 
     /**
