@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
 {
@@ -175,12 +174,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
         ]);
         GeneralUtility::setSingletonInstance(Context::class, $context);
 
-        $pageRepository = $this->createMock(PageRepository::class);
-        $pageRepository->__set('context', $context);
-        $pageRepository->versioningWorkspaceId = $workspaceId;
-
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->sys_page = $pageRepository;
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
 
         $subject = new FrontendRestrictionContainer($context);

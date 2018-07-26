@@ -35,7 +35,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -1080,21 +1079,8 @@ class Typo3DbQueryParser
     protected function getPageRepository()
     {
         if (!$this->pageRepository instanceof PageRepository) {
-            if ($this->environmentService->isEnvironmentInFrontendMode() && is_object($this->getTSFE())) {
-                $this->pageRepository = $this->getTSFE()->sys_page;
-            } else {
-                $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-            }
+            $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         }
-
         return $this->pageRepository;
-    }
-
-    /**
-     * @return TypoScriptFrontendController|null
-     */
-    protected function getTSFE()
-    {
-        return $GLOBALS['TSFE'] ?? null;
     }
 }

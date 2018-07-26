@@ -77,7 +77,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($this->table);
 
-            if ($this->getEnvironmentMode() === 'FE' && !empty($GLOBALS['TSFE']->sys_page)) {
+            if ($this->getEnvironmentMode() === 'FE') {
                 $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
             }
 

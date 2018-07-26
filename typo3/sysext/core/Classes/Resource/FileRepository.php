@@ -77,7 +77,7 @@ class FileRepository extends AbstractRepository
             );
         }
         $referenceUids = [];
-        if ($this->getEnvironmentMode() === 'FE' && !empty($GLOBALS['TSFE']->sys_page)) {
+        if ($this->getEnvironmentMode() === 'FE') {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_file_reference');
 
