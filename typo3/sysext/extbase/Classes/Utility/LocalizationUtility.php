@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Extbase\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -193,17 +195,23 @@ class LocalizationUtility
         ];
         if (TYPO3_MODE === 'FE') {
             $tsfe = static::getTypoScriptFrontendController();
-            if (isset($tsfe->config['config']['language'])) {
+            $siteLanguage = self::getCurrentSiteLanguage();
+
+            // Get values from site language, which takes precedence over TypoScript settings
+            if ($siteLanguage instanceof SiteLanguage) {
+                $languageKeys['languageKey'] = $siteLanguage->getTypo3Language();
+            } elseif (isset($tsfe->config['config']['language'])) {
                 $languageKeys['languageKey'] = $tsfe->config['config']['language'];
                 if (isset($tsfe->config['config']['language_alt'])) {
                     $languageKeys['alternativeLanguageKeys'] = $tsfe->config['config']['language_alt'];
-                } else {
-                    /** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-                    $locales = GeneralUtility::makeInstance(Locales::class);
-                    if (in_array($languageKeys['languageKey'], $locales->getLocales())) {
-                        foreach ($locales->getLocaleDependencies($languageKeys['languageKey']) as $language) {
-                            $languageKeys['alternativeLanguageKeys'] = $language;
-                        }
+                }
+            }
+
+            if (empty($languageKeys['alternativeLanguageKeys'])) {
+                $locales = GeneralUtility::makeInstance(Locales::class);
+                if (in_array($languageKeys['languageKey'], $locales->getLocales())) {
+                    foreach ($locales->getLocaleDependencies($languageKeys['languageKey']) as $language) {
+                        $languageKeys['alternativeLanguageKeys'] = $language;
                     }
                 }
             }
@@ -300,6 +308,20 @@ class LocalizationUtility
         $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
         static::$configurationManager = $configurationManager;
         return $configurationManager;
+    }
+
+    /**
+     * Returns the currently configured "site language" if a site is configured (= resolved)
+     * in the current request.
+     *
+     * @return SiteLanguage|null
+     */
+    protected static function getCurrentSiteLanguage(): ?SiteLanguage
+    {
+        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
+        }
+        return null;
     }
 
     /**
