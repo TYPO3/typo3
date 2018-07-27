@@ -9,7 +9,11 @@ return [
             'target' => \TYPO3\CMS\Redirects\Http\Middleware\RedirectHandler::class,
             'before' => [
                 'typo3/cms-frontend/prepare-tsfe-rendering',
-            ]
+            ],
+            'after' => [
+                'typo3/cms-frontend/tsfe',
+                'typo3/cms-frontend/authentication',
+            ],
         ],
     ],
 ];
