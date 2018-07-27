@@ -79,3 +79,12 @@ SaveToDatabase finisher
 
 The 'SaveToDatabase finisher' saves the data of a submitted form into a
 database table.
+
+.. _concepts-finishers-writecustomfinisher:
+
+Write a custom finisher
+-----------------------
+
+:ref:`Learn how to create a custom finisher here.<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+
+If you want to make the finisher configurable in the backend UI read :ref:`here<concepts-formeditor-extending-custom-finisher>`.

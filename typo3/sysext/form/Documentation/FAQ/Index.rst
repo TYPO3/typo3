@@ -183,3 +183,22 @@ the :yaml:`defaultValue` is prioritized.
 
 Learn more :ref:`here<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.defaultValue>`
 and see the forge issue `#82422 <https://forge.typo3.org/issues/82422#note-6>`_.
+
+
+.. _faq-form-element-custom-finisher:
+
+How do I create a custom finisher for my form?
+==============================================
+
+:ref:`Learn how to create a custom finisher here.<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+
+If you want to make the finisher configurable in the backend UI read :ref:`here<concepts-formeditor-extending-custom-finisher>`.
+
+
+.. _faq-form-element-custom-validator:
+
+How do I create a custom validator for my form?
+==============================================
+
+:ref:`Learn how to create a custom validator here.<concepts-frontendrendering-codecomponents-customvalidatorimplementations>`
+

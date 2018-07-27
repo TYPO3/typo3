@@ -529,6 +529,12 @@ in any other finisher.
        options:
          someOtherCustomOption: '{Custom.unique.value.identifier}'
 
+Add finisher to backend UI
+''''''''''''''''''''''''''
+
+If you want to make the finisher configurable in the backend UI
+read :ref:`here<concepts-formeditor-extending-custom-finisher>`.
+
 
 .. _concepts-frontendrendering-codecomponents-customvalidatorimplementations:
 
