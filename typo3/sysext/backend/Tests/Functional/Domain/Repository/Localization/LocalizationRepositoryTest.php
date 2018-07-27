@@ -49,50 +49,56 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
                 1,
                 0,
                 0,
-                false
+                false,
             ],
             'connected mode translated from default language' => [
                 1,
                 0,
                 1,
-                false
+                [
+                    'sys_language_uid' => 0,
+                ],
             ],
             'connected mode translated from non default language' => [
                 1,
                 0,
                 2,
                 [
-                    'sys_language_uid' => 1
-                ]
+                    'sys_language_uid' => 1,
+                ],
             ],
             'free mode translated from default language' => [
                 2,
                 0,
                 1,
-                false
+                [
+                    'sys_language_uid' => 0,
+                ],
             ],
             'free mode translated from non default language' => [
                 2,
                 0,
                 2,
                 [
-                    'sys_language_uid' => 1
-                ]
+                    'sys_language_uid' => 1,
+                ],
             ],
             'free mode copied from another page translated from default language' => [
                 3,
                 0,
                 1,
-                false
+                [
+                    'sys_language_uid' => 0,
+                ],
             ],
             'free mode copied from another page translated from non default language' => [
                 3,
                 0,
                 2,
                 [
-                    'sys_language_uid' => 1
-                ]
-            ]
+                    'sys_language_uid' => 1,
+                ],
+            ],
         ];
     }
 
@@ -118,44 +124,44 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
                 1,
                 0,
                 0,
-                0
+                0,
             ],
             'connected mode translated from default language' => [
                 1,
                 0,
                 1,
-                2
+                2,
             ],
             'connected mode translated from non default language' => [
                 1,
                 0,
                 2,
-                1
+                1,
             ],
             'free mode translated from default language' => [
                 2,
                 0,
                 1,
-                1
+                1,
             ],
             'free mode translated from non default language' => [
                 2,
                 0,
                 2,
-                1
+                1,
             ],
             'free mode copied from another page translated from default language' => [
                 3,
                 0,
                 1,
-                1
+                1,
             ],
             'free mode copied from another page translated from non default language' => [
                 3,
                 0,
                 2,
-                1
-            ]
+                1,
+            ],
         ];
     }
 
@@ -178,8 +184,8 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
                 1,
                 0,
                 [
-                    ['uid' => 298]
-                ]
+                    ['uid' => 298],
+                ],
             ],
             'from language 1 to 2 connected mode' => [
                 1,
@@ -187,36 +193,36 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
                 2,
                 1,
                 [
-                    ['uid' => 300]
-                ]
+                    ['uid' => 300],
+                ],
             ],
             'from language 0 to 1 free mode' => [
                 2,
                 0,
                 1,
                 0,
-                []
+                [],
             ],
             'from language 1 to 2 free mode' => [
                 2,
                 0,
                 2,
                 1,
-                []
+                [],
             ],
             'from language 0 to 1 free mode copied' => [
                 3,
                 0,
                 1,
                 0,
-                []
+                [],
             ],
             'from language 1 to 2 free mode  mode copied' => [
                 3,
                 0,
                 2,
                 1,
-                []
+                [],
             ],
         ];
     }
