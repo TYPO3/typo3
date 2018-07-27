@@ -15,6 +15,9 @@
 	"require": {
 		"typo3/cms-core": "9.4.*@dev"
 	},
+	"suggest": {
+		"typo3/cms-scheduler": "Remove deleted records after given time"
+	},
 	"conflict": {
 		"typo3/cms": "*"
 	},
