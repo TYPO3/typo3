@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 
@@ -227,8 +226,11 @@ class RedirectService implements LoggerAwareInterface
     }
 
     /**
-     * Instantiates a TSFE object, with the first valid page ID found, after that the following properties
-     * are available
+     * Finishing booting up TSFE, after that the following properties are available.
+     *
+     * Instantiating is done by the middleware stack (see Configuration/RequestMiddlewares.php)
+     *
+     * - TSFE->fe_user
      * - TSFE->sys_page
      * - TSFE->tmpl
      * - TSFE->config
@@ -240,12 +242,6 @@ class RedirectService implements LoggerAwareInterface
     {
         // disable page errors
         $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'] = false;
-        $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            null,
-            GeneralUtility::_GP('id'),
-            GeneralUtility::_GP('type')
-        );
         $GLOBALS['TSFE']->fetch_the_id();
         $GLOBALS['TSFE']->getConfigArray();
         $GLOBALS['TSFE']->settingLanguage();
