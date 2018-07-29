@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Adminpanel\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Adminpanel\Exceptions\InvalidConfigurationException;
 use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
 use TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -44,7 +45,7 @@ class ModuleLoader
         }
         foreach ($modules as $identifier => $configuration) {
             if (empty($configuration) || !is_array($configuration)) {
-                throw new \RuntimeException(
+                throw new InvalidConfigurationException(
                     'Missing configuration for module "' . $identifier . '".',
                     1519490105
                 );
@@ -54,10 +55,11 @@ class ModuleLoader
                 !class_exists($configuration['module']) ||
                 !is_subclass_of(
                     $configuration['module'],
-                    ($type === 'main' ? AdminPanelModuleInterface::class : AdminPanelSubModuleInterface::class)
+                    ($type === 'main' ? AdminPanelModuleInterface::class : AdminPanelSubModuleInterface::class),
+                    true
                 )
             ) {
-                throw new \RuntimeException(
+                throw new InvalidConfigurationException(
                     'The module "' .
                     $identifier .
                     '" defines an invalid module class. Ensure the class exists and implements the "' .

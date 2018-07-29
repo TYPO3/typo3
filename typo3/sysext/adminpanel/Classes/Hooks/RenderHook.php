@@ -23,6 +23,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Hook to render the admin panel
+ *
+ * @internal
  */
 class RenderHook
 {

@@ -27,6 +27,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * PSR-15 Middleware to initialize the admin panel
+ *
+ * @internal
  */
 class AdminPanelInitiator implements MiddlewareInterface
 {

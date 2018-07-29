@@ -20,10 +20,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * Admin Panel Service Class for Configuration Handling
+ *
+ * Scope: User TSConfig + Backend User UC
+ */
 class ConfigurationService implements SingletonInterface
 {
     /**
@@ -56,12 +59,14 @@ class ConfigurationService implements SingletonInterface
      */
     public function getConfigurationOption(string $identifier, string $option): string
     {
-        $beUser = $this->getBackendUser();
+        if ($identifier === '' || $option === '') {
+            throw new \InvalidArgumentException('Identifier and option may not be empty', 1532861423);
+        }
 
-        if ($option && isset($this->mainConfiguration['override.'][$identifier . '.'][$option])) {
+        if (isset($this->mainConfiguration['override.'][$identifier . '.'][$option])) {
             $returnValue = $this->mainConfiguration['override.'][$identifier . '.'][$option];
         } else {
-            $returnValue = $beUser->uc['TSFE_adminConfig'][$identifier . '_' . $option] ?? '';
+            $returnValue = $this->getBackendUser()->uc['TSFE_adminConfig'][$identifier . '_' . $option] ?? '';
         }
 
         return (string)$returnValue;
@@ -98,10 +103,6 @@ class ConfigurationService implements SingletonInterface
         unset($beUser->uc['TSFE_adminConfig']['action']);
         // Saving
         $beUser->writeUC();
-        // Flush fluid template cache
-        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-        $cacheManager->getCache('fluid_template')->flush();
     }
 
     /**

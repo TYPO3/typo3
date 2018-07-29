@@ -128,8 +128,9 @@ class PreviewModule extends AbstractModule
         $activeConfiguration = (int)$this->getConfigOptionForModule('showFluidDebug');
         if (isset($input['preview_showFluidDebug']) && (int)$input['preview_showFluidDebug'] !== $activeConfiguration) {
             $pageId = (int)$request->getParsedBody()['TSFE_ADMIN_PANEL']['preview_clearCacheId'];
-            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pages');
-            $cache->flushByTag('pageId_' . $pageId);
+            $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+            $cacheManager->getCache('cache_pages')->flushByTag('pageId_' . $pageId);
+            $cacheManager->getCache('fluid_template')->flush();
         }
     }
 

@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Admin Panel Frontend Groups Repository
+ *
+ * @internal
  */
 class FrontendGroupsRepository
 {

@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Admin Panel Ajax Controller - Route endpoint for ajax actions
+ *
+ * @internal
  */
 class AjaxController
 {
