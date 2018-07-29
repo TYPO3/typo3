@@ -1079,6 +1079,15 @@ class ConfigurationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                                         'templateName' => 'Inspector-ValidationErrorMessageEditor',
                                         'propertyPath' => 'properties.foo.3',
                                     ],
+                                    [
+                                        'templateName' => 'Inspector-RequiredValidatorEditor',
+                                        'propertyPath' => 'properties.fluidAdditionalAttributes.required',
+                                        'configurationOptions' => [
+                                            'validationErrorMessage' => [
+                                                'propertyPath' => 'properties.validationErrorMessages',
+                                            ],
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
@@ -1092,11 +1101,14 @@ class ConfigurationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                                 'defaultValue',
                                 'properties.foo.2',
                                 'properties.foo.3',
+                                'properties.validationErrorMessages',
                             ],
                             'propertyPaths' => [
                                 'properties.foo.1',
                                 'properties.foo.2',
                                 'properties.foo.3',
+                                'properties.fluidAdditionalAttributes.required',
+                                'properties.validationErrorMessages',
                             ],
                         ],
                     ],
