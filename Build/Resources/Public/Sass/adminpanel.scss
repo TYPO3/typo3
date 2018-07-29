@@ -22,6 +22,12 @@ $adminPanel-color: $gray-lighter;
 $adminPanel-success: #629755;
 $adminPanel-danger: $brand-danger;
 
+// Message
+$adminPanel-message-bg: #fff;
+$adminPanel-message-padding: 20px;
+$adminPanel-message-default-border: #cacaca;
+$adminPanel-message-info-border: #538bb3;
+
 // Bar
 $adminPanel-bar-height: 36px;
 $adminPanel-bar-bg: #424242;
@@ -131,6 +137,23 @@ $adminPanel-input-horizontal-padding: 0.75em;
         right: 0;
         bottom: 0;
         background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+//
+// Message
+//
+#{$adminPanel-prefix} {
+    .typo3-adminPanel-message {
+        padding: $adminPanel-message-padding;
+        background-color: $adminPanel-message-bg;
+        border-left: 3px solid $adminPanel-message-default-border;
+        margin-bottom: 1em;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+    }
+
+    .typo3-adminPanel-message-info {
+        border-left-color: $adminPanel-message-info-border;
     }
 }
 

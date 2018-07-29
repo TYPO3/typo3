@@ -1,0 +1,130 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:adm="http://typo3.org/ns/TYPO3/CMS/Adminpanel/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{log}">
+    <f:then>
+        <f:if condition="{groupByComponent} && {groupByLevel}">
+            <f:then>
+                <f:for each="{log}" as="entriesByLogLevel" key="component">
+                    <h2 class="typo3-adminPanel-headline">{component}</h2>
+                    <f:for each="{entriesByLogLevel}" as="entries" key="logLevel">
+                        <h3 class="typo3-adminPanel-headline">{logLevel}</h3>
+                        <div class="typo3-adminPanel-table-overflow">
+                            <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="typo3-adminPanel-table-cell-key">
+                                            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.log.message"/>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <f:for each="{entries}" as="entry">
+                                        <tr>
+                                            <td>
+                                                {entry.message}
+                                            </td>
+                                        </tr>
+                                    </f:for>
+                                </tbody>
+                            </table>
+                        </div>
+                    </f:for>
+                </f:for>
+            </f:then>
+            <f:else>
+                <f:if condition="{groupByComponent} || {groupByLevel}">
+                    <f:then>
+                        <f:for each="{log}" as="entries" key="headline">
+                            <h2 class="typo3-adminPanel-headline">{headline}</h2>
+                            <div class="typo3-adminPanel-table-overflow">
+                                <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+                                    <thead>
+                                    <tr>
+                                        <f:if condition="{groupByComponent}">
+                                            <f:then>
+                                                <th scope="col" class="typo3-adminPanel-table-cell-key">
+                                                    <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.log.level"/>
+                                                </th>
+                                            </f:then>
+                                            <f:else>
+                                                <th scope="col" class="typo3-adminPanel-table-cell-key">
+                                                    <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.log.component"/>
+                                                </th>
+                                            </f:else>
+                                        </f:if>
+                                        <th scope="col" class="typo3-adminPanel-table-cell-key">
+                                            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.log.message"/>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <f:for each="{entries}" as="entry">
+                                        <tr>
+                                            <f:if condition="{groupByComponent}">
+                                                <f:then>
+                                                    <td>
+                                                        <adm:speakingLogLevel level="{entry.level}" />
+                                                    </td>
+                                                </f:then>
+                                                <f:else>
+                                                    <td>
+                                                        {entry.component}
+                                                    </td>
+                                                </f:else>
+                                            </f:if>
+                                            <td>
+                                                {entry.message}
+                                            </td>
+                                        </tr>
+                                    </f:for>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </f:for>
+                    </f:then>
+                    <f:else>
+                        <div class="typo3-adminPanel-table-overflow">
+                            <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+                                <thead>
+                                <tr>
+                                    <th scope="col" class="typo3-adminPanel-table-cell-key">
+                                        <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.log.level"/>
+                                    </th>
+                                    <th scope="col" class="typo3-adminPanel-table-cell-key">
+                                        <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.log.component"/>
+                                    </th>
+                                    <th scope="col" class="typo3-adminPanel-table-cell-key">
+                                        <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.log.message"/>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <f:for each="{log}" as="entry">
+                                    <tr>
+                                        <td>
+                                            <adm:speakingLogLevel level="{entry.level}" />
+                                        </td>
+                                        <td>
+                                            {entry.component}
+                                        </td>
+                                        <td>
+                                            {entry.message}
+                                        </td>
+                                    </tr>
+                                </f:for>
+                                </tbody>
+                            </table>
+                        </div>
+                    </f:else>
+                </f:if>
+            </f:else>
+        </f:if>
+    </f:then>
+    <f:else>
+        <div class="typo3-adminPanel-message typo3-adminPanel-message-info">
+            <div class="typo3-adminPanel-message-text">
+                <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.log.noEntries"/>
+            </div>
+        </div>
+    </f:else>
+</f:if>
+</html>
