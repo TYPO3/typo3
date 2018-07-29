@@ -30,10 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractModule implements AdminPanelModuleInterface
 {
-    /**
-     * @var string
-     */
-    protected $extResources = 'EXT:adminpanel/Resources/Private';
 
     /**
      * @var \TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface[]

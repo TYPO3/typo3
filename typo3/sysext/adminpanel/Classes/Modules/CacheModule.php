@@ -38,9 +38,9 @@ class CacheModule extends AbstractModule
     public function getSettings(): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = $this->extResources . '/Templates/Modules/Settings/Cache.html';
+        $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/Settings/Cache.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-        $view->setPartialRootPaths([$this->extResources . '/Partials']);
+        $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $feCacheClear = $this->getBackendUser()->isAdmin() || $this->getBackendUser()->getTSConfig()['options.']['clearCache.']['pages'];
@@ -76,7 +76,7 @@ class CacheModule extends AbstractModule
      */
     public function getLabel(): string
     {
-        $locallangFileAndPath = 'LLL:' . $this->extResources . '/Language/locallang_cache.xlf:module.label';
+        $locallangFileAndPath = 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_cache.xlf:module.label';
         return $this->getLanguageService()->sL($locallangFileAndPath);
     }
 

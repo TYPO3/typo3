@@ -52,7 +52,7 @@ class TypoScriptWaterfall extends AbstractSubModule
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(
-            'LLL:' . 'EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf:sub.waterfall.label'
+            'LLL:EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf:sub.waterfall.label'
         );
     }
 

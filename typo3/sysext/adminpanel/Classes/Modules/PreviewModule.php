@@ -62,7 +62,7 @@ class PreviewModule extends AbstractModule
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(
-            'LLL:' . $this->extResources . '/Language/locallang_preview.xlf:module.label'
+            'LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:module.label'
         );
     }
 
@@ -92,9 +92,9 @@ class PreviewModule extends AbstractModule
     public function getSettings(): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = $this->extResources . '/Templates/Modules/Settings/Preview.html';
+        $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/Settings/Preview.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-        $view->setPartialRootPaths([$this->extResources . '/Partials']);
+        $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
 
         $frontendGroupsRepository = GeneralUtility::makeInstance(FrontendGroupsRepository::class);
 

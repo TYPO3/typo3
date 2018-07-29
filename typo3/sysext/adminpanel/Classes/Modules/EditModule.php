@@ -39,9 +39,9 @@ class EditModule extends AbstractModule
         $editToolbarService = GeneralUtility::makeInstance(EditToolbarService::class);
         $toolbar = $editToolbarService->createToolbar();
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = $this->extResources . '/Templates/Modules/Settings/Edit.html';
+        $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/Settings/Edit.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-        $view->setPartialRootPaths([$this->extResources . '/Partials']);
+        $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
         $view->assignMultiple(
             [
                 'feEdit' => ExtensionManagementUtility::isLoaded('feedit'),
@@ -99,7 +99,7 @@ class EditModule extends AbstractModule
      */
     public function getLabel(): string
     {
-        $locallangFileAndPath = 'LLL:' . $this->extResources . '/Language/locallang_edit.xlf:module.label';
+        $locallangFileAndPath = 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_edit.xlf:module.label';
         return $this->getLanguageService()->sL($locallangFileAndPath);
     }
 
