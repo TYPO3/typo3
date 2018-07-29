@@ -38,10 +38,10 @@ define([
       this.currentModal = currentModal;
       self.getContent();
 
-      // Load content on click image executable path button
+      // Load content with post data on click 'custom image executable path'
       currentModal.on('click', this.selectorImageExecutableTrigger, function(e) {
         e.preventDefault();
-        self.getContent();
+        self.getCustomImagePathContent();
       });
 
       // Write out selected preset
@@ -61,6 +61,38 @@ define([
       var modalContent = this.currentModal.find(self.selectorModalBody);
       $.ajax({
         url: Router.getUrl('presetsGetContent'),
+        cache: false,
+        success: function(data) {
+          if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
+            modalContent.empty().append(data.html);
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        error: function(xhr) {
+          Router.handleAjaxError(xhr);
+        }
+      });
+    },
+
+    getCustomImagePathContent: function() {
+      var self = this;
+      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var presetsContentToken = self.currentModal.find(this.selectorModuleContent).data('presets-content-token');
+      $.ajax({
+        url: Router.getUrl(),
+        method: 'POST',
+        data: {
+          'install': {
+            'token': presetsContentToken,
+            'action': 'presetsGetContent',
+            'values': {
+              'Image': {
+                'additionalSearchPath': self.currentModal.find(this.selectorImageExecutable).val()
+              }
+            }
+          }
+        },
         cache: false,
         success: function(data) {
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {

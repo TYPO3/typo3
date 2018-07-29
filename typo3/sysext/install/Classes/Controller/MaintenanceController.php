@@ -52,18 +52,6 @@ class MaintenanceController extends AbstractController
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeStandaloneView($request, 'Maintenance/Cards.html');
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
-        $view->assignMultiple([
-            'clearAllCacheOpcodeCaches' => (new OpcodeCacheService())->getAllActive(),
-            'clearTablesClearToken' => $formProtection->generateToken('installTool', 'clearTablesClear'),
-            'clearTypo3tempFilesToken' => $formProtection->generateToken('installTool', 'clearTypo3tempFiles'),
-            'createAdminToken' => $formProtection->generateToken('installTool', 'createAdmin'),
-            'databaseAnalyzerExecuteToken' => $formProtection->generateToken('installTool', 'databaseAnalyzerExecute'),
-            'languagePacksActivateLanguageToken' => $formProtection->generateToken('installTool', 'languagePacksActivateLanguage'),
-            'languagePacksDeactivateLanguageToken' => $formProtection->generateToken('installTool', 'languagePacksDeactivateLanguage'),
-            'languagePacksUpdatePackToken' => $formProtection->generateToken('installTool', 'languagePacksUpdatePack'),
-            'languagePacksUpdateIsoTimesToken' => $formProtection->generateToken('installTool', 'languagePacksUpdateIsoTimes'),
-        ]);
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),

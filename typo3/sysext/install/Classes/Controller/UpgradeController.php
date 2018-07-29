@@ -170,23 +170,6 @@ class UpgradeController extends AbstractController
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeStandaloneView($request, 'Upgrade/Cards.html');
-        $coreUpdateService = GeneralUtility::makeInstance(CoreUpdateService::class);
-        $coreVersionService = GeneralUtility::makeInstance(CoreVersionService::class);
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
-        $view->assignMultiple([
-            'extensionCompatTesterLoadExtLocalconfToken' => $formProtection->generateToken('installTool', 'extensionCompatTesterLoadExtLocalconf'),
-            'extensionCompatTesterLoadExtTablesToken' => $formProtection->generateToken('installTool', 'extensionCompatTesterLoadExtTables'),
-            'extensionCompatTesterUninstallToken' => $formProtection->generateToken('installTool', 'extensionCompatTesterUninstallExtension'),
-
-            'coreUpdateEnabled' => $coreUpdateService->isCoreUpdateEnabled(),
-            'coreUpdateComposerMode' => Environment::isComposerMode(),
-            'coreUpdateIsReleasedVersion' => $coreVersionService->isInstalledVersionAReleasedVersion(),
-            'coreUpdateIsSymLinkedCore' => is_link(Environment::getPublicPath() . '/typo3_src'),
-
-            'upgradeWizardsMarkUndoneToken' => $formProtection->generateToken('installTool', 'upgradeWizardsMarkUndone'),
-            'upgradeWizardsInputToken' => $formProtection->generateToken('installTool', 'upgradeWizardsInput'),
-            'upgradeWizardsExecuteToken' => $formProtection->generateToken('installTool', 'upgradeWizardsExecute'),
-        ]);
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
@@ -247,6 +230,14 @@ class UpgradeController extends AbstractController
     public function coreUpdateGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeStandaloneView($request, 'Upgrade/CoreUpdate.html');
+        $coreUpdateService = GeneralUtility::makeInstance(CoreUpdateService::class);
+        $coreVersionService = GeneralUtility::makeInstance(CoreVersionService::class);
+        $view->assignMultiple([
+            'coreUpdateEnabled' => $coreUpdateService->isCoreUpdateEnabled(),
+            'coreUpdateComposerMode' => Environment::isComposerMode(),
+            'coreUpdateIsReleasedVersion' => $coreVersionService->isInstalledVersionAReleasedVersion(),
+            'coreUpdateIsSymLinkedCore' => is_link(Environment::getPublicPath() . '/typo3_src'),
+        ]);
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),

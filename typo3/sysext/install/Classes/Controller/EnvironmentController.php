@@ -50,24 +50,6 @@ class EnvironmentController extends AbstractController
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeStandaloneView($request, 'Environment/Cards.html');
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
-        $view->assignMultiple([
-            'imageProcessingProcessor' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'GraphicsMagick' ? 'GraphicsMagick' : 'ImageMagick',
-            'imageProcessingEnabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'],
-            'imageProcessingPath' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'],
-            'imageProcessingVersion' => $this->determineImageMagickVersion(),
-            'imageProcessingEffects' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_effects'],
-            'imageProcessingGdlibEnabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'],
-            'imageProcessingGdlibPng' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'],
-            'imageProcessingFileFormats' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-
-            'mailTestToken' => $formProtection->generateToken('installTool', 'mailTest'),
-            'mailTestSenderAddress' => $this->getSenderEmailAddress(),
-
-            'systemInformationCgiDetected', GeneralUtility::isRunningOnCgiServerApi(),
-            'systemInformationDatabaseConnections' => $this->getDatabaseConnectionInformation(),
-            'systemInformationOperatingSystem' => Environment::isWindows() ? 'Windows' : 'Unix',
-        ]);
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),

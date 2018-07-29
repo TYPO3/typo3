@@ -50,13 +50,6 @@ class SettingsController extends AbstractController
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeStandaloneView($request, 'Settings/Cards.html');
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
-        $view->assignMultiple([
-            'changeInstallToolPasswordToken' => $formProtection->generateToken('installTool', 'changeInstallToolPassword'),
-            'presetGetContentToken' => $formProtection->generateToken('installTool', 'presetsGetContent'),
-            'systemMaintainerWriteToken' => $formProtection->generateToken('installTool', 'systemMaintainerWrite'),
-            'systemMaintainerIsDevelopmentContext' => GeneralUtility::getApplicationContext()->isDevelopment(),
-        ]);
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
@@ -133,6 +126,7 @@ class SettingsController extends AbstractController
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'systemMaintainerWriteToken' => $formProtection->generateToken('installTool', 'systemMaintainerWrite'),
+            'systemMaintainerIsDevelopmentContext' => GeneralUtility::getApplicationContext()->isDevelopment(),
         ]);
 
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -298,6 +292,8 @@ class SettingsController extends AbstractController
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'presetsActivateToken' => $formProtection->generateToken('installTool', 'presetsActivate'),
+            // This action is called again from within the card itself if a custom image path is supplied
+            'presetsGetContentToken' => $formProtection->generateToken('installTool', 'presetsGetContent'),
             'presetFeatures' => $presetFeatures,
         ]);
         return new JsonResponse([
