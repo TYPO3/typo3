@@ -148,9 +148,9 @@ class SessionService implements SingletonInterface
 </IfModule>
 			';
             GeneralUtility::writeFile($sessionSavePath . '/.htaccess', $htaccessContent);
-            $indexContent = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
-            $indexContent .= '<HTML><HEAD<TITLE></TITLE><META http-equiv=Refresh Content="0; Url=../../">';
-            $indexContent .= '</HEAD></HTML>';
+            $indexContent = '<!DOCTYPE html>';
+            $indexContent .= '<html><head><title></title><meta http-equiv=Refresh Content="0; Url=../../"/>';
+            $indexContent .= '</head></html>';
             GeneralUtility::writeFile($sessionSavePath . '/index.html', $indexContent);
         }
     }
