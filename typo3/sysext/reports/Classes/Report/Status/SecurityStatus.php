@@ -19,13 +19,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
-use TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility;
-use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 
 /**
  * Performs several checks about the system's health
@@ -50,7 +47,6 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
             'adminUserAccount' => $this->getAdminAccountStatus(),
             'fileDenyPattern' => $this->getFileDenyPatternStatus(),
             'htaccessUpload' => $this->getHtaccessUploadStatus(),
-            'saltedpasswords' => $this->getSaltedPasswordsStatus(),
         ];
 
         if ($request !== null) {
@@ -244,58 +240,6 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         }
 
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_htaccessUploadProtection'), $value, $message, $severity);
-    }
-
-    /**
-     * Checks whether salted Passwords are configured or not.
-     *
-     * @return ReportStatus An object representing the security of the saltedpassswords extension
-     */
-    protected function getSaltedPasswordsStatus(): ReportStatus
-    {
-        $value = $this->getLanguageService()->getLL('status_ok');
-        $severity = ReportStatus::OK;
-        /** @var ExtensionManagerConfigurationUtility $configCheck */
-        $configCheck = GeneralUtility::makeInstance(ExtensionManagerConfigurationUtility::class);
-        $message = '<p>' . $this->getLanguageService()->getLL('status_saltedPasswords_infoText') . '</p>';
-        $messageDetail = '';
-        $resultCheck = $configCheck->checkConfigurationBackend([]);
-
-        switch ($resultCheck['errorType']) {
-            case FlashMessage::INFO:
-                $messageDetail .= $resultCheck['html'];
-                break;
-            case FlashMessage::WARNING:
-                $severity = ReportStatus::WARNING;
-                $messageDetail .= $resultCheck['html'];
-                break;
-            case FlashMessage::ERROR:
-                $value = $this->getLanguageService()->getLL('status_insecure');
-                $severity = ReportStatus::ERROR;
-                $messageDetail .= $resultCheck['html'];
-                break;
-            default:
-        }
-
-        $unsecureUserCount = SaltedPasswordsUtility::getNumberOfBackendUsersWithInsecurePassword();
-
-        if ($unsecureUserCount > 0) {
-            $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = ReportStatus::ERROR;
-            $messageDetail .= '<div class="panel panel-warning">' .
-                '<div class="panel-body">' .
-                    $this->getLanguageService()->getLL('status_saltedPasswords_notAllPasswordsHashed') .
-                '</div>' .
-            '</div>';
-        }
-
-        $message .= $messageDetail;
-
-        if (empty($messageDetail)) {
-            $message = '';
-        }
-
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_saltedPasswords'), $value, $message, $severity);
     }
 
     /**

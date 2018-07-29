@@ -122,18 +122,18 @@ class ExtensionConfigurationTest extends UnitTestCase
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
         $nestedInput = [
-            'FE' => [
-                'forceSalted' => true,
+            'TopLevelKey' => [
+                'subLevelKey' => true,
             ]
         ];
         $expectedLegacyExtConf = [
-            'FE.' => [
-                'forceSalted' => true,
+            'TopLevelKey.' => [
+                'subLevelKey' => true,
             ]
         ];
         $configurationManagerProphecy->setLocalConfigurationValueByPath(Argument::cetera())->shouldBeCalled();
-        $configurationManagerProphecy->setLocalConfigurationValueByPath('EXT/extConf', ['saltedPasswords' => serialize($expectedLegacyExtConf)])->shouldBeCalled();
-        (new ExtensionConfiguration())->set('saltedPasswords', '', $nestedInput);
+        $configurationManagerProphecy->setLocalConfigurationValueByPath('EXT/extConf', ['someExtension' => serialize($expectedLegacyExtConf)])->shouldBeCalled();
+        (new ExtensionConfiguration())->set('someExtension', '', $nestedInput);
     }
 
     /**

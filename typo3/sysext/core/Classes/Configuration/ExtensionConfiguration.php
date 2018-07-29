@@ -100,8 +100,8 @@ class ExtensionConfiguration
      * ->get('myExtension');
      *
      * // Get a nested config value if the path is a "TypoScript" a-like sub-path
-     * // in ext_conf_template.txt "FE.forceSalted = defaultValue"
-     * ->get('myExtension', 'FE/forceSalted')
+     * // in ext_conf_template.txt "topLevelKey.subLevelKey = defaultValue"
+     * ->get('myExtension', 'topLevelKey/subLevelKey')
      *
      * Notes:
      * - If a configuration or configuration path of an extension is not found, the
@@ -310,8 +310,7 @@ class ExtensionConfiguration
     /**
      * The old EXT/extConf layer had '.' (dots) at the end of all nested array keys. This is created here
      * to keep EXT/extConf format compatible with old not yet adapted extensions.
-     * Most prominent usage is ext:saltedpasswords which uses sub keys like FE.forceSalted and BE.forceSalted,
-     * but extensions may rely on ending dots if using legacy unserialize() on their extensions, too.
+     * But extensions may rely on ending dots if using legacy unserialize() on their extensions, too.
      *
      * A EXTENSIONS array like:
      * TYPO3_CONF_VARS['EXTENSIONS']['someExtension'] => [

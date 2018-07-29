@@ -91,9 +91,6 @@ class SaltedPasswordsUtility
     public static function returnExtConfDefaults()
     {
         return [
-            'onlyAuthService' => '0',
-            'forceSalted' => '0',
-            'updatePasswd' => '1',
             'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
         ];
     }

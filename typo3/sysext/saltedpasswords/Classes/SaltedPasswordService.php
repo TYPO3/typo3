@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Authentication\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Class implements salted-password hashes authentication service.
@@ -89,7 +90,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
         $validPasswd = false;
         $password = $loginData['uident_text'];
         // Determine method used for given salted hashed password
-        $this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($user['password']);
+        $this->objInstanceSaltedPW = SaltFactory::getSaltingInstance($user['password']);
         // Existing record is in format of Salted Hash password
         if (is_object($this->objInstanceSaltedPW)) {
             $validPasswd = $this->objInstanceSaltedPW->checkPassword($password, $user['password']);
@@ -103,41 +104,32 @@ class SaltedPasswordService extends AbstractAuthenticationService
             // Test for wrong salted hashing method (only if current method is not related to default method)
             if ($validPasswd && get_class($this->objInstanceSaltedPW) !== $defaultHashingClassName && !is_subclass_of($this->objInstanceSaltedPW, $defaultHashingClassName)) {
                 // Instantiate default method class
-                $this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null);
+                $this->objInstanceSaltedPW = SaltFactory::getSaltingInstance(null);
                 $this->updatePassword((int)$user['uid'], ['password' => $this->objInstanceSaltedPW->getHashedPassword($password)]);
             }
             if ($validPasswd && !$skip && $this->objInstanceSaltedPW->isHashUpdateNeeded($user['password'])) {
                 $this->updatePassword((int)$user['uid'], ['password' => $this->objInstanceSaltedPW->getHashedPassword($password)]);
             }
-        } elseif (!(int)$this->extConf['forceSalted']) {
+        } else {
             // Stored password is in deprecated salted hashing method
             $hashingMethod = substr($user['password'], 0, 2);
-            if ($hashingMethod === 'C$' || $hashingMethod === 'M$') {
+            if ($hashingMethod === 'M$') {
                 // Instantiate default method class
-                $this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(substr($user['password'], 1));
-                // md5
-                if ($hashingMethod === 'M$') {
-                    $validPasswd = $this->objInstanceSaltedPW->checkPassword(md5($password), substr($user['password'], 1));
-                } else {
-                    $validPasswd = $this->objInstanceSaltedPW->checkPassword($password, substr($user['password'], 1));
-                }
+                $this->objInstanceSaltedPW = SaltFactory::getSaltingInstance(substr($user['password'], 1));
+                // md5 passwords that have been upgraded to salted passwords using old scheduler task
+                // @todo: The entire 'else' should be dropped in v10, admins had to upgrade users to salted passwords with v8 latest since the
+                // @todo: scheduler task has been dropped with v9, users should have had logged in in v9 era, this fallback is obsolete with v10.
+                $validPasswd = $this->objInstanceSaltedPW->checkPassword(md5($password), substr($user['password'], 1));
+
                 // Skip further authentication methods
                 if (!$validPasswd) {
                     $this->authenticationFailed = true;
                 }
-            } elseif (preg_match('/[0-9abcdef]{32,32}/', $user['password'])) {
-                $validPasswd = hash_equals(md5($password), (string)$user['password']);
-                // Skip further authentication methods
-                if (!$validPasswd) {
-                    $this->authenticationFailed = true;
-                }
-            } else {
-                $validPasswd = (string)$password !== '' && hash_equals((string)$user['password'], (string)$password);
             }
-            // Should we store the new format value in DB?
-            if ($validPasswd && (int)$this->extConf['updatePasswd']) {
+            // Upgrade to a sane salt mechanism if password was correct
+            if ($validPasswd) {
                 // Instantiate default method class
-                $this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null);
+                $this->objInstanceSaltedPW = SaltFactory::getSaltingInstance(null);
                 $this->updatePassword((int)$user['uid'], ['password' => $this->objInstanceSaltedPW->getHashedPassword($password)]);
             }
         }
@@ -166,7 +158,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
                 // Failed login attempt (wrong password)
                 $errorMessage = 'Login-attempt from ###IP### (%s), username \'%s\', password not accepted!';
                 // No delegation to further services
-                if ((int)$this->extConf['onlyAuthService'] || $this->authenticationFailed) {
+                if ($this->authenticationFailed) {
                     $this->writeLogMessage(TYPO3_MODE . ' Authentication failed - wrong password for username \'%s\'', $this->login['uname']);
                     $OK = 0;
                 } else {

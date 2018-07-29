@@ -1,35 +1,5 @@
-# cat=Basic/enable; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationFE
-checkConfigurationFE=0
-
-# cat=Basic/enable; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationBackend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationBE
-checkConfigurationBE=0
-
 # cat=Basic/enable; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorFE]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.saltedPWHashingMethod
 FE.saltedPWHashingMethod = TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt
 
 # cat=Basic/enable; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorBE]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.saltedPWHashingMethod
 BE.saltedPWHashingMethod = TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt
-
-# cat=Frontend; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationFE2
-checkConfigurationFE2=0
-
-# cat=Frontend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.forceSalted
-FE.forceSalted = 0
-
-# cat=Frontend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.onlyAuthService
-FE.onlyAuthService = 0
-
-# cat=Frontend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.updatePasswd
-FE.updatePasswd = 1
-
-# cat=Backend; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationBackend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationBE2
-checkConfigurationBE2=0
-
-# cat=Backend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.forceSalted
-BE.forceSalted = 0
-
-# cat=Backend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.onlyAuthService
-BE.onlyAuthService = 0
-
-# cat=Backend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.updatePasswd
-BE.updatePasswd = 1
