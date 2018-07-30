@@ -21,9 +21,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Log writer that writes log entries into TYPO3 runtime cache
+ * @deprecated Deprecated since TYPO3 9, will be removed in v10
  */
 class RuntimeCacheWriter implements WriterInterface
 {
+    public function __construct()
+    {
+        trigger_error(
+            'RuntimeCacheWriter is deprecated, write your own custom InMemoryLogger instead.',
+            E_USER_DEPRECATED
+        );
+    }
 
     /**
      * Writes the log record to TYPO3s runtime cache

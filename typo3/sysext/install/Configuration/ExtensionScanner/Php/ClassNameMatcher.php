@@ -694,4 +694,9 @@ return [
             'Deprecation-85124-RedirectingUrlHandlerHookConcept.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Log\Writer\RuntimeCacheWriter' => [
+        'restFiles' => [
+            'Deprecation-85687-DeprecateRuntimeCacheWriter.rst',
+        ],
+    ],
 ];
