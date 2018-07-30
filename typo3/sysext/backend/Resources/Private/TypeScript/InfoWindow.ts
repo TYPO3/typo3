@@ -29,7 +29,7 @@ class InfoWindow {
     Modal.advanced({
       type: Modal.types.iframe,
       size: Modal.sizes.large,
-      content: TYPO3.settings.ShowItem.moduleUrl
+      content: top.TYPO3.settings.ShowItem.moduleUrl
         + '&table=' + encodeURIComponent(table)
         + '&uid=' + (typeof uid === 'number' ? uid : encodeURIComponent(uid)),
       severity: SeverityEnum.notice
