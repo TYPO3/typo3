@@ -472,6 +472,7 @@ define(['jquery',
 
     $.ajax({
       url: TYPO3.settings.ajaxUrls['recycler'],
+      type: 'POST',
       dataType: 'json',
       data: data,
       beforeSend: function() {
