@@ -33,8 +33,8 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
     event.preventDefault();
 
     var value = $(this).find('[name="lurl"]').val();
-    if (value === "http://") {
-      return;
+    if (value === "") {
+       return;
     }
 
     LinkBrowser.finalizeFunction(value);

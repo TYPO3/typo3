@@ -87,6 +87,9 @@
 			<trans-unit id="setLink">
 				<source>Set Link</source>
 			</trans-unit>
+			<trans-unit id="urlPlaceholder">
+				<source>https://...</source>
+			</trans-unit>
 			<trans-unit id="clickToRedrawFullSize">
 				<source>Image is larger than shown here! Click to redraw page with full sized images.</source>
 			</trans-unit>
