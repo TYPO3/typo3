@@ -2508,4 +2508,18 @@ return [
             'Deprecation-84584-AdminPanelViewIsAdminModuleEnabledAndExt_makeToolbarDeprecated.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->loadJavascriptLib' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85701-DeprecateMethodsInModuleTemplate.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->icons' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85701-DeprecateMethodsInModuleTemplate.rst',
+        ],
+    ],
 ];
