@@ -642,6 +642,7 @@ class ElementInformationController
                 $line['parentRecordTitle'] = $parentRecordTitle;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']);
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($row['tablename'], $row['field']);
+                $line['path'] = BackendUtility::getRecordPath($record['pid'], '', 0, 0);
                 $line['actions'] = $this->getRecordActions($row['tablename'], $row['recuid'], $request);
             } else {
                 $line['row'] = $row;
@@ -708,6 +709,7 @@ class ElementInformationController
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record, false, true);
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title']);
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($table, $row['field']);
+                $line['path'] = BackendUtility::getRecordPath($record['pid'], '', 0, 0);
                 $line['actions'] = $this->getRecordActions($row['ref_table'], $row['ref_uid'], $request);
             } else {
                 $line['row'] = $row;

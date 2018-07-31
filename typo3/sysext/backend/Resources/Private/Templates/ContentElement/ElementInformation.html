@@ -56,6 +56,7 @@
 						<th class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.title" /></th>
 						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.table" /></th>
 						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path" /></th>
 						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.field" /></th>
 						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer" /></th>
 						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey" /></th>
@@ -81,6 +82,7 @@
 						<th class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.title" /></th>
 						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.table" /></th>
 						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid" /></th>
+						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path" /></th>
 						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.field" /></th>
 						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer" /></th>
 						<th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey" /></th>
@@ -152,6 +154,7 @@
                 <td></td>
             </f:else>
         </f:if>
+        <td title="{line.path}" class="col-responsive">{line.path}</td>
         <td>{line.labelForTableColumn}</td>
         <td>{line.row.flexpointer}</td>
         <td>{line.row.softref_key}</td>
@@ -178,6 +181,7 @@
                 <td></td>
             </f:else>
         </f:if>
+        <td title="{line.path}" class="col-responsive">{line.path}</td>
         <td>{line.labelForTableColumn}</td>
         <td>{line.row.flexpointer}</td>
         <td>{line.row.softref_key}</td>
