@@ -60,6 +60,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * The main data handler class which takes care of correctly updating and inserting records.
@@ -1420,7 +1421,7 @@ class DataHandler implements LoggerAwareInterface
             return $labelPlaceholder;
         }
         $evalCodesArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$labelField]['config']['eval'], true);
-        $transformedLabel = $this->checkValue_input_Eval($labelPlaceholder, $evalCodesArray, '');
+        $transformedLabel = $this->checkValue_input_Eval($labelPlaceholder, $evalCodesArray, '', $table);
         return $transformedLabel['value'] ?? $labelPlaceholder;
     }
 
@@ -1872,7 +1873,7 @@ class DataHandler implements LoggerAwareInterface
                 $this->runtimeCache->set($cacheId, $evalCodesArray);
             }
 
-            $res = $this->checkValue_input_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
+            $res = $this->checkValue_input_Eval($value, $evalCodesArray, $tcaFieldConf['is_in'], $table);
             if (isset($tcaFieldConf['dbType']) && isset($res['value']) && !$res['value']) {
                 // set the value to null if we have an empty value for a native field
                 $res['value'] = null;
@@ -2825,9 +2826,10 @@ class DataHandler implements LoggerAwareInterface
      * @param string $value Value to evaluate
      * @param array $evalArray Array of evaluations to traverse.
      * @param string $is_in Is-in string for 'is_in' evaluation
+     * @param string $table Table name the eval is evaluated on
      * @return array Modified $value in key 'value' or empty array
      */
-    public function checkValue_input_Eval($value, $evalArray, $is_in)
+    public function checkValue_input_Eval($value, $evalArray, $is_in, string $table = ''): array
     {
         $res = [];
         $set = true;
@@ -2938,6 +2940,30 @@ class DataHandler implements LoggerAwareInterface
                 case 'email':
                     if ((string)$value !== '') {
                         $this->checkValue_input_ValidateEmail($value, $set);
+                    }
+                    break;
+                case 'saltedPassword':
+                    // An incoming value is either the salted password if the user did not change existing password
+                    // when submitting the form, or a plaintext new password that needs to be turned into a salted password now.
+                    // The strategy is to see if a salt instance can be created from the incoming value. If so,
+                    // no new password was submitted and we keep the value. If no salting instance can be created,
+                    // incoming value must be a new plain text value that needs to be hashed.
+                    $hashMethod = substr($value, 0, 2);
+                    // The old scheduler task turned existing non-salted passwords into salted hashes by taking the simple md5
+                    // and using that as 'password' and make a salted md5 from given hash. Those where then prefixed with 'M'.
+                    // SaltFactory::getSaltingInstance($value) only recognizes these salts if we cut off the M again.
+                    $isDeprecatedSaltedHash = $hashMethod === 'M$';
+                    $tempValue = $isDeprecatedSaltedHash ? substr($value, 1) : $value;
+                    $oldSaltInstance = SaltFactory::getSaltingInstance($tempValue);
+                    if (!is_object($oldSaltInstance)) {
+                        // We got no salted password instance, incoming value must be a new plaintext password
+                        // Get an instance of the current configured salted password strategy and hash the value
+                        if ($table === 'fe_users') {
+                            $newSaltInstance = SaltFactory::getSaltingInstance(null, 'FE');
+                        } else {
+                            $newSaltInstance = SaltFactory::getSaltingInstance();
+                        }
+                        $value = $newSaltInstance->getHashedPassword($value);
                     }
                     break;
                 default:

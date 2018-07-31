@@ -55,8 +55,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
-                'max' => 40,
-                'eval' => 'trim,required,md5,password',
+                'max' => 100,
+                'eval' => 'trim,required,password,saltedPassword',
                 'autocomplete' => false,
             ]
         ],

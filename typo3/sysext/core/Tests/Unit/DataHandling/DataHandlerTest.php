@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
 /*
@@ -149,7 +150,7 @@ class DataHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function evalCheckValueDouble2()
+    public function checkValueInputEvalWithEvalDouble2(): void
     {
         $testData = [
             '-0,5' => '-0.50',
@@ -165,7 +166,10 @@ class DataHandlerTest extends UnitTestCase
         }
     }
 
-    public function dataProviderDatetime()
+    /**
+     * @return array
+     */
+    public function checkValueInputEvalWithEvalDatetimeDataProvider(): array
     {
         // Three elements: input, timezone of input, expected output (UTC)
         return [
@@ -180,9 +184,9 @@ class DataHandlerTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider dataProviderDatetime
+     * @dataProvider checkValueInputEvalWithEvalDatetimeDataProvider
      */
-    public function evalCheckValueDatetime($input, $serverTimezone, $expectedOutput)
+    public function checkValueInputEvalWithEvalDatetime($input, $serverTimezone, $expectedOutput): void
     {
         $oldTimezone = date_default_timezone_get();
         date_default_timezone_set($serverTimezone);
@@ -193,6 +197,42 @@ class DataHandlerTest extends UnitTestCase
         date_default_timezone_set($oldTimezone);
 
         $this->assertEquals($expectedOutput, $output['value']);
+    }
+
+    /**
+     * @test
+     */
+    public function checkValueInputEvalWithSaltedPasswordKeepsExistingHash(): void
+    {
+        // Note the involved salted passwords are NOT mocked since the factory is static
+        $subject = new DataHandler();
+        $inputValue = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY/';
+        $result = $subject->checkValue_input_Eval($inputValue, ['saltedPassword'], '', 'be_users');
+        $this->assertSame($inputValue, $result['value']);
+    }
+
+    /**
+     * @test
+     */
+    public function checkValueInputEvalWithSaltedPasswordKeepsExistingHashForMd5HashedHash(): void
+    {
+        // Note the involved salted passwords are NOT mocked since the factory is static
+        $subject = new DataHandler();
+        $inputValue = 'M$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY/';
+        $result = $subject->checkValue_input_Eval($inputValue, ['saltedPassword'], '', 'be_users');
+        $this->assertSame($inputValue, $result['value']);
+    }
+
+    /**
+     * @test
+     */
+    public function checkValueInputEvalWithSaltedPasswordReturnsHashForSaltedPassword(): void
+    {
+        // Note the involved salted passwords are NOT mocked since the factory is static
+        $inputValue = 'myPassword';
+        $subject = new DataHandler();
+        $result = $subject->checkValue_input_Eval($inputValue, ['saltedPassword'], '', 'be_users');
+        $this->assertNotSame($inputValue, $result['value']);
     }
 
     /**
