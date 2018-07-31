@@ -137,7 +137,7 @@ class PageActions {
       '<form>' +
       '<div class="form-group">' +
       '<div class="input-group input-group-lg">' +
-      '<input class="form-control">' +
+      '<input class="form-control t3js-title-edit-input">' +
       '<span class="input-group-btn">' +
       '<button class="btn btn-default" type="button" data-action="submit"><span class="t3-icon fa fa-floppy-o"></span></button> ' +
       '</span>' +
@@ -150,17 +150,17 @@ class PageActions {
       ),
       $inputField = $inputFieldWrap.find('input');
 
-    $inputFieldWrap.find('[data-action=cancel]').on('click', (): void => {
+    $inputFieldWrap.find('[data-action="cancel"]').on('click', (): void => {
       $inputFieldWrap.replaceWith(this.$pageTitle);
       this.initializePageTitleRenaming();
     });
 
-    $inputFieldWrap.find('[data-action=submit]').on('click', (): void => {
+    $inputFieldWrap.find('[data-action="submit"]').on('click', (): void => {
       const newPageTitle = $.trim($inputField.val());
       if (newPageTitle !== '' && this.$pageTitle.text() !== newPageTitle) {
         this.saveChanges($inputField);
       } else {
-        $inputFieldWrap.find('[data-action=cancel]').trigger('click');
+        $inputFieldWrap.find('[data-action="cancel"]').trigger('click');
       }
     });
 

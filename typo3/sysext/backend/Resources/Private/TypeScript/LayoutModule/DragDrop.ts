@@ -18,7 +18,7 @@
  */
 import * as $ from 'jquery';
 import 'jquery-ui/droppable';
-import DataHandler from 'TYPO3/CMS/Backend/AjaxDataHandler';
+import DataHandler = require('../AjaxDataHandler');
 import ResponseInterface from 'TYPO3/CMS/Backend/AjaxDataHandler/ResponseInterface';
 
 
