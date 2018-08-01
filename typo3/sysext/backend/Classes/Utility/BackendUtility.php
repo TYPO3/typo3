@@ -42,6 +42,8 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\PageUriBuilder;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Site\Entity\PseudoSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -2817,7 +2819,6 @@ class BackendUtility
         }
         // Checks alternate domains
         if (!empty($rootLine)) {
-            $urlParts = parse_url($domain);
             $protocol = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
             $previewDomainConfig = self::getPagesTSconfig($pageId)['TCEMAIN.']['previewDomain'] ?? '';
             if (!empty($previewDomainConfig)) {
@@ -2829,7 +2830,7 @@ class BackendUtility
             } else {
                 $domainResolver = GeneralUtility::makeInstance(LegacyDomainResolver::class);
                 foreach ($rootLine as $row) {
-                    $domainRecord = $domainResolver->matchRootPageId($row['uid']);
+                    $domainRecord = $domainResolver->matchRootPageId((int)$row['uid']);
                     if (is_array($domainRecord)) {
                         $domainName = rtrim($domainRecord['domainName'], '/');
                         break;
@@ -2839,11 +2840,16 @@ class BackendUtility
             if ($domainName) {
                 $domain = $domainName;
             } else {
-                $domainResolver = GeneralUtility::makeInstance(LegacyDomainResolver::class);
-                $rootPageId = $domainResolver->matchRequest(new ServerRequest($domain));
-                if ($rootPageId > 0) {
-                    $domainRecord = $domainResolver->matchRootPageId($rootPageId);
-                    $domain = $domainRecord['domainName'];
+                // Fetch the "sys_domain" record: First, check for the given domain,
+                // and find the "root page" = PseudoSite to that domain, then fetch the first
+                // available sys_domain record.
+                $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
+                $result = $siteMatcher->matchRequest(new ServerRequest($domain));
+                if (isset($result['site']) && $result['site'] instanceof PseudoSite) {
+                    /** @var PseudoSite $site */
+                    $site = $result['site'];
+                    $domain = $site->getBase();
+                    $domain = ltrim($domain, '/');
                 }
             }
             if ($domain) {

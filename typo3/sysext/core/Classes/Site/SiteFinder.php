@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Site;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
@@ -65,47 +63,6 @@ class SiteFinder
     public function getAllSites(): array
     {
         return $this->sites;
-    }
-
-    /**
-     * Returns a Symfony RouteCollection containing all routes to all sites.
-     *
-     * {next} is not evaluated yet, but set as suffix and will change in the future.
-     *
-     * @return RouteCollection
-     * @internal this method will likely change due to further extraction into custom logic for Routing
-     */
-    public function getRouteCollectionForAllSites(): RouteCollection
-    {
-        $collection = new RouteCollection();
-        $groupedRoutes = [];
-        foreach ($this->sites as $site) {
-            foreach ($site->getAllLanguages() as $siteLanguage) {
-                $urlParts = parse_url($siteLanguage->getBase());
-                $route = new Route(
-                    ($urlParts['path'] ?? '/') . '{next}',
-                    ['next' => '', 'site' => $site, 'language' => $siteLanguage],
-                    array_filter(['next' => '.*', 'port' => (string)($urlParts['port'] ?? '')]),
-                    ['utf8' => true],
-                    $urlParts['host'] ?? '',
-                    !empty($urlParts['scheme']) ? [$urlParts['scheme']] : null
-                );
-                $identifier = 'site_' . $site->getIdentifier() . '_' . $siteLanguage->getLanguageId();
-                $groupedRoutes[($urlParts['scheme'] ?? '-') . ($urlParts['host'] ?? '-')][$urlParts['path'] ?? '/'][$identifier] = $route;
-            }
-        }
-        // As the {next} parameter is greedy, it needs to be ensured that the one with the
-        // most specific part matches first
-        foreach ($groupedRoutes as $groupedRoutesPerHost) {
-            krsort($groupedRoutesPerHost);
-            foreach ($groupedRoutesPerHost as $groupedRoutesPerPath) {
-                krsort($groupedRoutesPerPath);
-                foreach ($groupedRoutesPerPath as $identifier => $route) {
-                    $collection->add($identifier, $route);
-                }
-            }
-        }
-        return $collection;
     }
 
     /**

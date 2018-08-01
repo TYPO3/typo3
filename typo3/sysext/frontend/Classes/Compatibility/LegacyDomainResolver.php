@@ -17,12 +17,6 @@ namespace TYPO3\CMS\Frontend\Compatibility;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\Routing\Exception\NoConfigurationException;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
-use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -55,24 +49,6 @@ class LegacyDomainResolver implements SingletonInterface
     protected $cache;
 
     /**
-     * Whether a sys_domain like example.com should also match for my.blog.example.com
-     *
-     * @var bool
-     */
-    protected $recursiveDomainSearch;
-
-    /**
-     * @var RouteCollection
-     */
-    protected $routeCollection;
-
-    /**
-     * all entries in sys_domain
-     * @var array
-     */
-    protected $allDomainRecords;
-
-    /**
      * all entries in sys_domain grouped by page (pid)
      * @var array
      */
@@ -81,8 +57,6 @@ class LegacyDomainResolver implements SingletonInterface
     public function __construct()
     {
         $this->cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
-        $this->recursiveDomainSearch = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['recursiveDomainSearch'];
-        $this->routeCollection = new RouteCollection();
         $this->populate();
     }
 
@@ -94,10 +68,7 @@ class LegacyDomainResolver implements SingletonInterface
         if ($data = $this->cache->get('legacy-domains')) {
             // Due to the nature of PhpFrontend, the `<?php` and `#` wraps have to be removed
             $data = preg_replace('/^<\?php\s*|\s*#$/', '', $data);
-            $data = unserialize($data, ['allowed_classes' => [Route::class, RouteCollection::class]]);
-            $this->routeCollection = $data['routeCollection'];
-            $this->allDomainRecords = $data['allDomainRecords'];
-            $this->groupedDomainsPerPage = $data['groupedDomainsPerPage'];
+            $this->groupedDomainsPerPage = json_decode($data, true);
         } else {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
             $queryBuilder->getRestrictions()->removeAll();
@@ -109,74 +80,19 @@ class LegacyDomainResolver implements SingletonInterface
 
             while ($row = $statement->fetch()) {
                 $row['domainName'] = rtrim($row['domainName'], '/');
-                $this->allDomainRecords[(int)$row['uid']] = $row;
                 $this->groupedDomainsPerPage[(int)$row['pid']][] = $row;
-                if (!$row['hidden']) {
-                    if (strpos($row['domainName'], '/') === false) {
-                        $path = '';
-                        list($host, $port) = explode(':', $row['domainName']);
-                    } else {
-                        $urlParts = parse_url($row['domainName']);
-                        $path = trim($urlParts['path'], '/');
-                        $host = $urlParts['host'];
-                        $port = (string)$urlParts['port'];
-                    }
-                    $route = new Route(
-                        $path . '/{next}',
-                        ['pageId' => $row['pid']],
-                        array_filter(['next' => '.*', 'port' => $port]),
-                        ['utf8' => true],
-                        $host ?? ''
-                    );
-                    $this->routeCollection->add('domain_' . $row['uid'], $route);
-                }
             }
 
-            $data = [
-                'routeCollection' => $this->routeCollection,
-                'allDomainRecords' => $this->allDomainRecords,
-                'groupedDomainsPerPage' => $this->groupedDomainsPerPage
-            ];
-            $this->cache->set('legacy-domains', serialize($data), ['sys_domain'], 0);
+            $this->cache->set('legacy-domains', json_encode($this->groupedDomainsPerPage));
         }
     }
 
     /**
-     * Return the page ID (pid) of a sys_domain record, based on a request object, does the infamous
-     * "recursive domain search", to also detect if the domain is like "abc.def.example.com" even if the
-     * sys_domain entry is "example.com".
-     *
-     * @param ServerRequestInterface $request
-     * @return int page ID
+     * @return array
      */
-    public function matchRequest(ServerRequestInterface $request): int
+    public function getGroupedDomainsPerPage(): array
     {
-        if (empty($this->allDomainRecords) || count($this->routeCollection) === 0) {
-            return 0;
-        }
-        $context = new RequestContext('/', $request->getMethod(), $request->getUri()->getHost());
-        $matcher = new UrlMatcher($this->routeCollection, $context);
-        if ($this->recursiveDomainSearch) {
-            $pageUid = 0;
-            $host = explode('.', $request->getUri()->getHost());
-            while (count($host)) {
-                $context->setHost(implode('.', $host));
-                try {
-                    $result = $matcher->match($request->getUri()->getPath());
-                    return (int)$result['pageId'];
-                } catch (NoConfigurationException | ResourceNotFoundException $e) {
-                    array_shift($host);
-                }
-            }
-            return $pageUid;
-        }
-        try {
-            $result = $matcher->match($request->getUri()->getPath());
-            return (int)$result['pageId'];
-        } catch (NoConfigurationException | ResourceNotFoundException $e) {
-            // No domain record found
-        }
-        return 0;
+        return $this->groupedDomainsPerPage ?? [];
     }
 
     /**

@@ -22,6 +22,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -102,7 +103,7 @@ class SiteResolverTest extends UnitTestCase
         ]);
 
         $request = new ServerRequest($incomingUrl, 'GET');
-        $subject = new SiteResolver($this->siteFinder);
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
         $response = $subject->process($request, $this->siteFoundRequestHandler);
         if ($response instanceof NullResponse) {
             $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
@@ -153,7 +154,7 @@ class SiteResolverTest extends UnitTestCase
         ]);
 
         $request = new ServerRequest($incomingUrl, 'GET');
-        $subject = new SiteResolver($this->siteFinder);
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
         $response = $subject->process($request, $this->siteFoundRequestHandler);
         if ($response instanceof NullResponse) {
             $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
@@ -242,7 +243,7 @@ class SiteResolverTest extends UnitTestCase
         ]);
 
         $request = new ServerRequest($incomingUrl, 'GET');
-        $subject = new SiteResolver($this->siteFinder);
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
         $response = $subject->process($request, $this->siteFoundRequestHandler);
         if ($response instanceof NullResponse) {
             $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
@@ -360,7 +361,7 @@ class SiteResolverTest extends UnitTestCase
         ]);
 
         $request = new ServerRequest($incomingUrl, 'GET');
-        $subject = new SiteResolver($this->siteFinder);
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
         $response = $subject->process($request, $this->siteFoundRequestHandler);
         if ($response instanceof NullResponse) {
             $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
@@ -408,12 +409,12 @@ class SiteResolverTest extends UnitTestCase
 
         // Reqest to default page
         $request = new ServerRequest('https://twenty.one/en/pilots/', 'GET');
-        $subject = new SiteResolver($this->siteFinder);
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
         $response = $subject->process($request, $this->siteFoundRequestHandler);
         $this->assertEquals(404, $response->getStatusCode());
 
         $request = new ServerRequest('https://twenty.one/fr/pilots/', 'GET');
-        $subject = new SiteResolver($this->siteFinder);
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
         $response = $subject->process($request, $this->siteFoundRequestHandler);
         $this->assertEquals(200, $response->getStatusCode());
     }

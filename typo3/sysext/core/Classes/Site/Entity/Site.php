@@ -16,11 +16,13 @@ namespace TYPO3\CMS\Core\Site\Entity;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Error\PageErrorHandler\FluidPageErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -196,6 +198,37 @@ class Site implements SiteInterface
     }
 
     /**
+     * Fetch the available languages for a specific backend user, used in various places in Backend and Frontend
+     * when a Backend User is authenticated.
+     *
+     * @param BackendUserAuthentication $user
+     * @param int $pageId
+     * @param bool $includeAllLanguagesFlag
+     * @return array
+     */
+    public function getAvailableLanguages(BackendUserAuthentication $user, int $pageId, bool $includeAllLanguagesFlag = false)
+    {
+        $availableLanguages = [];
+
+        // Check if we need to add language "-1"
+        if ($includeAllLanguagesFlag && $user->checkLanguageAccess(-1)) {
+            $availableLanguages[-1] = new SiteLanguage(-1, '', $this->getBase(), [
+                'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'),
+                'flag' => 'flag-multiple'
+            ]);
+        }
+
+        // Do not add the ones that are not allowed by the user
+        foreach ($this->languages as $language) {
+            if ($user->checkLanguageAccess($language->getLanguageId())) {
+                $availableLanguages[$language->getLanguageId()] = $language;
+            }
+        }
+
+        return $availableLanguages;
+    }
+
+    /**
      * Returns a ready-to-use error handler, to be used within the ErrorController
      *
      * @param int $statusCode
@@ -273,5 +306,14 @@ class Site implements SiteInterface
             }
         }
         return $base;
+    }
+
+    /**
+     * Shorthand functionality for fetching the language service
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

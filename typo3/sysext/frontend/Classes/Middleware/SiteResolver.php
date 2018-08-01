@@ -19,16 +19,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Site\Entity\PseudoSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
@@ -44,17 +42,16 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 class SiteResolver implements MiddlewareInterface
 {
     /**
-     * @var SiteFinder
+     * @var SiteMatcher
      */
-    protected $finder;
+    protected $matcher;
 
-    /**
-     * Injects necessary objects
-     * @param SiteFinder|null $finder
-     */
-    public function __construct(SiteFinder $finder = null)
+    public function __construct(SiteMatcher $matcher = null)
     {
-        $this->finder = $finder ?? GeneralUtility::makeInstance(SiteFinder::class);
+        $this->matcher = $matcher ?? GeneralUtility::makeInstance(
+            SiteMatcher::class,
+            GeneralUtility::makeInstance(SiteFinder::class)
+        );
     }
 
     /**
@@ -66,64 +63,18 @@ class SiteResolver implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $site = null;
-        $language = null;
+        $routeResult = $this->matcher->matchRequest($request);
+        $site = $routeResult['site'] ?? null;
+        $language = $routeResult['language'] ?? null;
 
-        $pageId = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0;
-        $languageId = $request->getQueryParams()['L'] ?? $request->getParsedBody()['L'] ?? null;
-
-        // 1. Check if we have a _GET/_POST parameter for "id", then a site information can be resolved based.
-        if ($pageId > 0 && $languageId !== null) {
-            // Loop over the whole rootline without permissions to get the actual site information
-            try {
-                $site = $this->finder->getSiteByPageId((int)$pageId);
-                $language = $site->getLanguageById((int)$languageId);
-                // language is hidden but also not visible to the BE user, this needs to fail
-                if ($language && !$this->isLanguageEnabled($language, $GLOBALS['BE_USER'] ?? null)) {
-                    $request = $request->withAttribute('site', $site);
-                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        'Page is not available in the requested language.',
-                        ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
-                    );
-                }
-            } catch (SiteNotFoundException $e) {
-                // No site found by ID
-            }
-        }
-
-        // 2. Check if there is a site language, if not, do "Site Routing"
-        if (!($language instanceof SiteLanguage)) {
-            $collection = $this->finder->getRouteCollectionForAllSites();
-            // This part will likely be extracted into a separate class that builds a context out of a PSR-7 request
-            // something like $result = SiteRouter->matchRequest($psr7Request);
-            $context = new RequestContext(
-                '',
-                $request->getMethod(),
-                $request->getUri()->getHost(),
-                $request->getUri()->getScheme(),
-                // Ports are only necessary for URL generation in Symfony which is not used by TYPO3
-                80,
-                443,
-                $request->getUri()->getPath()
+        // language is found, and hidden but also not visible to the BE user, this needs to fail
+        if ($language instanceof SiteLanguage && !$this->isLanguageEnabled($language, $GLOBALS['BE_USER'] ?? null)) {
+            $request = $request->withAttribute('site', $site);
+            return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'Page is not available in the requested language.',
+                ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
             );
-            $matcher = new UrlMatcher($collection, $context);
-            try {
-                $result = $matcher->match($request->getUri()->getPath());
-                $site = $result['site'];
-                $language = $result['language'];
-                // language is found, and hidden but also not visible to the BE user, this needs to fail
-                if ($language && !$this->isLanguageEnabled($language, $GLOBALS['BE_USER'] ?? null)) {
-                    $request = $request->withAttribute('site', $site);
-                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        'Page is not available in the requested language.',
-                        ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
-                    );
-                }
-            } catch (ResourceNotFoundException $e) {
-                // No site found
-            }
         }
 
         // Add language+site information to the PSR-7 request object.
@@ -138,14 +89,16 @@ class SiteResolver implements MiddlewareInterface
             // At this point, we later get further route modifiers
             // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
             $GLOBALS['TYPO3_REQUEST'] = $request;
+        } elseif ($site instanceof PseudoSite) {
+            $request = $request->withAttribute('site', $site);
+            // At this point, we later get further route modifiers
+            // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
+            $GLOBALS['TYPO3_REQUEST'] = $request;
         }
 
         // Now resolve the root page of the site, the page_id of the current domain
-        if ($site instanceof Site) {
+        if ($site instanceof SiteInterface) {
             $GLOBALS['TSFE']->domainStartPage = $site->getRootPageId();
-        } else {
-            $GLOBALS['TSFE']->domainStartPage = GeneralUtility::makeInstance(LegacyDomainResolver::class)
-                ->matchRequest($request);
         }
 
         return $handler->handle($request);
