@@ -704,4 +704,9 @@ return [
             'Deprecation-85707-LoginFramesetController.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck' => [
+        'restFiles' => [
+            'Deprecation-85727-DatabaseIntegrityCheckMovedToEXTlowlevel.rst',
+        ],
+    ],
 ];

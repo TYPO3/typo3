@@ -24,13 +24,13 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck;
 
 /**
  * Script class for the DB int module
@@ -375,7 +375,7 @@ class DatabaseIntegrityController
         $pageStatistic = [
             'total_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render(),
-                'count' => count($admin->page_idArray)
+                'count' => count($admin->getPageIdArray())
             ],
             'translated_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render(),
@@ -383,11 +383,11 @@ class DatabaseIntegrityController
             ],
             'hidden_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', ['hidden' => 1], Icon::SIZE_SMALL)->render(),
-                'count' => $admin->recStats['hidden']
+                'count' => $admin->getRecStats()['hidden'] ?? 0
             ],
             'deleted_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', ['deleted' => 1], Icon::SIZE_SMALL)->render(),
-                'count' => isset($admin->recStats['deleted']['pages']) ? count($admin->recStats['deleted']['pages']) : 0
+                'count' => isset($admin->getRecStats()['deleted']['pages']) ? count($admin->getRecStats()['deleted']['pages']) : 0
             ]
         ];
 
@@ -402,20 +402,20 @@ class DatabaseIntegrityController
                     $doktypes[] = [
                         'icon' => $this->iconFactory->getIconForRecord('pages', ['doktype' => $setup[1]], Icon::SIZE_SMALL)->render(),
                         'title' => $lang->sL($setup[0]) . ' (' . $setup[1] . ')',
-                        'count' => (int)$admin->recStats['doktype'][$setup[1]]
+                        'count' => (int)($admin->getRecStats()['doktype'][$setup[1]] ?? 0)
                     ];
                 }
             }
         }
 
         // Tables and lost records
-        $id_list = '-1,0,' . implode(',', array_keys($admin->page_idArray));
+        $id_list = '-1,0,' . implode(',', array_keys($admin->getPageIdArray()));
         $id_list = rtrim($id_list, ',');
         $admin->lostRecords($id_list);
         if ($admin->fixLostRecord(GeneralUtility::_GET('fixLostRecords_table'), GeneralUtility::_GET('fixLostRecords_uid'))) {
             $admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
             $admin->genTree(0);
-            $id_list = '-1,0,' . implode(',', array_keys($admin->page_idArray));
+            $id_list = '-1,0,' . implode(',', array_keys($admin->getPageIdArray()));
             $id_list = rtrim($id_list, ',');
             $admin->lostRecords($id_list);
         }
@@ -426,10 +426,10 @@ class DatabaseIntegrityController
                 if ($GLOBALS['TCA'][$t]['ctrl']['hideTable']) {
                     continue;
                 }
-                if ($t === 'pages' && $admin->lostPagesList !== '') {
-                    $lostRecordCount = count(explode(',', $admin->lostPagesList));
+                if ($t === 'pages' && $admin->getLostPagesList() !== '') {
+                    $lostRecordCount = count(explode(',', $admin->getLostPagesList()));
                 } else {
-                    $lostRecordCount = isset($admin->lRecords[$t]) ? count($admin->lRecords[$t]) : 0;
+                    $lostRecordCount = isset($admin->getLRecords()[$t]) ? count($admin->getLRecords()[$t]) : 0;
                 }
                 if ($countArr['all'][$t]) {
                     $theNumberOfRe = (int)$countArr['non_deleted'][$t] . '/' . $lostRecordCount;
@@ -439,9 +439,9 @@ class DatabaseIntegrityController
                 $lr = '';
                 /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
                 $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-                if (is_array($admin->lRecords[$t])) {
-                    foreach ($admin->lRecords[$t] as $data) {
-                        if (!GeneralUtility::inList($admin->lostPagesList, $data['pid'])) {
+                if (is_array($admin->getLRecords()[$t])) {
+                    foreach ($admin->getLRecords()[$t] as $data) {
+                        if (!GeneralUtility::inList($admin->getLostPagesList(), $data['pid'])) {
                             $lr .= '<div class="record"><a href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid']) . '" title="' . htmlspecialchars($lang->getLL('fixLostRecord')) . '">' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
                         } else {
                             $lr .= '<div class="record-noicon">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
@@ -479,8 +479,8 @@ class DatabaseIntegrityController
         }
         $this->view->assignMultiple([
             'files' =>  $fileTest,
-            'select_db' => $admin->testDBRefs($admin->checkSelectDBRefs),
-            'group_db' => $admin->testDBRefs($admin->checkGroupDBRefs)
+            'select_db' => $admin->testDBRefs($admin->getCheckSelectDBRefs()),
+            'group_db' => $admin->testDBRefs($admin->getCheckGroupDBRefs())
         ]);
     }
 

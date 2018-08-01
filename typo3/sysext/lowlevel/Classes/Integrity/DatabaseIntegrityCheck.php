@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Integrity;
+namespace TYPO3\CMS\Lowlevel\Integrity;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -26,11 +26,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * This class holds functions used by the TYPO3 backend to check the integrity of the database (The DBint module, 'lowlevel' extension)
+ * This class holds functions used by the TYPO3 backend to check the integrity
+ * of the database (The DBint module, 'lowlevel' extension)
  *
  * Depends on \TYPO3\CMS\Core\Database\RelationHandler
  *
- * @todo Need to really extend this class when the DataHandler library has been updated and the whole API is better defined. There are some known bugs in this library. Further it would be nice with a facility to not only analyze but also clean up!
+ * @TODO: Need to really extend this class when the DataHandler library has been
+ * @TODO: updated and the whole API is better defined. There are some known bugs
+ * @TODO: in this library. Further it would be nice with a facility to not only
+ * @TODO: analyze but also clean up!
  * @see \TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController::func_relations(), \TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController::func_records()
  */
 class DatabaseIntegrityCheck
@@ -38,52 +42,52 @@ class DatabaseIntegrityCheck
     /**
      * @var bool If set, genTree() includes deleted pages. This is default.
      */
-    public $genTree_includeDeleted = true;
+    protected $genTreeIncludeDeleted = true;
 
     /**
      * @var bool If set, genTree() includes versionized pages/records. This is default.
      */
-    public $genTree_includeVersions = true;
+    protected $genTreeIncludeVersions = true;
 
     /**
      * @var bool If set, genTree() includes records from pages.
      */
-    public $genTree_includeRecords = false;
+    protected $genTreeIncludeRecords = false;
 
     /**
      * @var array Will hold id/rec pairs from genTree()
      */
-    public $page_idArray = [];
+    protected $pageIdArray = [];
 
     /**
      * @var array Will hold id/rec pairs from genTree() that are not default language
      */
-    protected $page_translatedPageIDArray = [];
+    protected $pageTranslatedPageIDArray = [];
 
     /**
      * @var array
      */
-    public $rec_idArray = [];
+    protected $recIdArray = [];
 
     /**
      * @var array
      */
-    public $checkFileRefs = [];
+    protected $checkFileRefs = [];
 
     /**
      * @var array From the select-fields
      */
-    public $checkSelectDBRefs = [];
+    protected $checkSelectDBRefs = [];
 
     /**
      * @var array From the group-fields
      */
-    public $checkGroupDBRefs = [];
+    protected $checkGroupDBRefs = [];
 
     /**
      * @var array Statistics
      */
-    public $recStats = [
+    protected $recStats = [
         'allValid' => [],
         'published_versions' => [],
         'deleted' => []
@@ -92,27 +96,19 @@ class DatabaseIntegrityCheck
     /**
      * @var array
      */
-    public $lRecords = [];
+    protected $lRecords = [];
 
     /**
      * @var string
      */
-    public $lostPagesList = '';
-
-    /**
-     * DatabaseIntegrityCheck constructor.
-     */
-    public function __construct()
-    {
-        trigger_error('TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck will be removed in TYPO3 v10.0, use TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck instead.', E_USER_DEPRECATED);
-    }
+    protected $lostPagesList = '';
 
     /**
      * @return array
      */
     public function getPageTranslatedPageIDArray(): array
     {
-        return $this->page_translatedPageIDArray;
+        return $this->pageTranslatedPageIDArray;
     }
 
     /**
@@ -127,7 +123,7 @@ class DatabaseIntegrityCheck
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
-        if (!$this->genTree_includeDeleted) {
+        if (!$this->genTreeIncludeDeleted) {
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
         $queryBuilder->select('uid', 'title', 'doktype', 'deleted', 'hidden', 'sys_language_uid')
@@ -150,9 +146,9 @@ class DatabaseIntegrityCheck
             $newID = $row['uid'];
             // Register various data for this item:
             if ($row['sys_language_uid'] === 0) {
-                $this->page_idArray[$newID] = $row;
+                $this->pageIdArray[$newID] = $row;
             } else {
-                $this->page_translatedPageIDArray[$newID] = $row;
+                $this->pageTranslatedPageIDArray[$newID] = $row;
             }
             $this->recStats['all_valid']['pages'][$newID] = $newID;
             if ($row['deleted']) {
@@ -169,7 +165,7 @@ class DatabaseIntegrityCheck
             }
             $this->recStats['doktype'][$row['doktype']]++;
             // If all records should be shown, do so:
-            if ($this->genTree_includeRecords) {
+            if ($this->genTreeIncludeRecords) {
                 foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
                     if ($tableName !== 'pages') {
                         $this->genTree_records($newID, '', $tableName);
@@ -179,7 +175,7 @@ class DatabaseIntegrityCheck
             // Add sub pages:
             $this->genTree($newID);
             // If versions are included in the tree, add those now:
-            if ($this->genTree_includeVersions) {
+            if ($this->genTreeIncludeVersions) {
                 $this->genTree($newID, '', true);
             }
         }
@@ -191,11 +187,11 @@ class DatabaseIntegrityCheck
      * @param string $table Table to get the records from
      * @param bool $versions Internal variable, don't set from outside!
      */
-    public function genTree_records($theID, $_ = '', $table = '', $versions = false)
+    public function genTree_records($theID, $_ = '', $table = '', $versions = false): void
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
-        if (!$this->genTree_includeDeleted) {
+        if (!$this->genTreeIncludeDeleted) {
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
         $queryBuilder
@@ -218,7 +214,7 @@ class DatabaseIntegrityCheck
         while ($row = $queryResult->fetch()) {
             $newID = $row['uid'];
             // Register various data for this item:
-            $this->rec_idArray[$table][$newID] = $row;
+            $this->recIdArray[$table][$newID] = $row;
             $this->recStats['all_valid'][$table][$newID] = $newID;
             if ($row['deleted']) {
                 $this->recStats['deleted'][$table][$newID] = $newID;
@@ -227,7 +223,7 @@ class DatabaseIntegrityCheck
                 $this->recStats['published_versions'][$table][$newID] = $newID;
             }
             // Select all versions of this record:
-            if ($this->genTree_includeVersions && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+            if ($this->genTreeIncludeVersions && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
                 $this->genTree_records($newID, '', $table, true);
             }
         }
@@ -238,7 +234,7 @@ class DatabaseIntegrityCheck
      *
      * @param string $pid_list list of pid's (page-record uid's). This list is probably made by genTree()
      */
-    public function lostRecords($pid_list)
+    public function lostRecords($pid_list): void
     {
         $this->lostPagesList = '';
         $pageIds = GeneralUtility::intExplode(',', $pid_list);
@@ -289,7 +285,7 @@ class DatabaseIntegrityCheck
      * @param int $uid The uid of the record which will have the PID value set to 0 (zero)
      * @return bool TRUE if done.
      */
-    public function fixLostRecord($table, $uid)
+    public function fixLostRecord($table, $uid): bool
     {
         if ($table && $GLOBALS['TCA'][$table] && $uid && is_array($this->lRecords[$table][$uid]) && $GLOBALS['BE_USER']->isAdmin()) {
             $updateFields = [
@@ -313,7 +309,7 @@ class DatabaseIntegrityCheck
      * @param string $pid_list list of pid's (page-record uid's). This list is probably made by genTree()
      * @return array an array with the number of records from all $GLOBALS['TCA']-tables that are attached to a PID in the pid-list.
      */
-    public function countRecords($pid_list)
+    public function countRecords($pid_list): array
     {
         $list = [];
         $list_n = [];
@@ -371,7 +367,7 @@ class DatabaseIntegrityCheck
      * @param string $mode $mode = file, $mode = db, $mode = '' (all...)
      * @return array An array with all fields listed that somehow are references to other records (foreign-keys) or files
      */
-    public function getGroupFields($mode)
+    public function getGroupFields($mode): array
     {
         $result = [];
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
@@ -399,7 +395,7 @@ class DatabaseIntegrityCheck
      * @param string $uploadfolder Path to uploadfolder
      * @return array An array with all fields listed that have references to files in the $uploadfolder
      */
-    public function getFileFields($uploadfolder)
+    public function getFileFields($uploadfolder): array
     {
         $result = [];
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
@@ -419,7 +415,7 @@ class DatabaseIntegrityCheck
      * @param string $theSearchTable Table name
      * @return array
      */
-    public function getDBFields($theSearchTable)
+    public function getDBFields($theSearchTable): array
     {
         $result = [];
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
@@ -443,7 +439,7 @@ class DatabaseIntegrityCheck
      * @param array $fkey_arrays Array with tables/fields generated by getGroupFields()
      * @see getGroupFields()
      */
-    public function selectNonEmptyRecordsWithFkeys($fkey_arrays)
+    public function selectNonEmptyRecordsWithFkeys($fkey_arrays): void
     {
         if (is_array($fkey_arrays)) {
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -572,7 +568,7 @@ class DatabaseIntegrityCheck
      *
      * @return array Report over files; keys are "moreReferences", "noReferences", "noFile", "error
      */
-    public function testFileRefs()
+    public function testFileRefs(): array
     {
         $output = [];
         // Handle direct references with upload folder setting (workaround)
@@ -650,7 +646,7 @@ class DatabaseIntegrityCheck
      * @param array $theArray Table with key/value pairs being table names and arrays with uid numbers
      * @return string HTML Error message
      */
-    public function testDBRefs($theArray)
+    public function testDBRefs($theArray): string
     {
         $result = '';
         foreach ($theArray as $table => $dbArr) {
@@ -697,7 +693,7 @@ class DatabaseIntegrityCheck
      * @param int $id Uid of database record
      * @return array Array with other arrays containing information about where references was found
      */
-    public function whereIsRecordReferenced($searchTable, $id)
+    public function whereIsRecordReferenced($searchTable, $id): array
     {
         // Gets tables / Fields that reference to files
         $fileFields = $this->getDBFields($searchTable);
@@ -746,7 +742,7 @@ class DatabaseIntegrityCheck
      * @param string $filename Filename to search for
      * @return array Array with other arrays containing information about where references was found
      */
-    public function whereIsFileReferenced($uploadFolder, $filename)
+    public function whereIsFileReferenced($uploadFolder, $filename): array
     {
         // Gets tables / Fields that reference to files
         $fileFields = $this->getFileFields($uploadFolder);
@@ -783,5 +779,53 @@ class DatabaseIntegrityCheck
             }
         }
         return $theRecordList;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPageIdArray(): array
+    {
+        return $this->pageIdArray;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCheckGroupDBRefs(): array
+    {
+        return $this->checkGroupDBRefs;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCheckSelectDBRefs(): array
+    {
+        return $this->checkSelectDBRefs;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRecStats(): array
+    {
+        return $this->recStats;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLRecords(): array
+    {
+        return $this->lRecords;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLostPagesList(): string
+    {
+        return $this->lostPagesList;
     }
 }
