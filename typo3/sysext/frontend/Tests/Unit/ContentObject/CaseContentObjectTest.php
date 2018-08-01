@@ -16,12 +16,10 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -49,18 +47,8 @@ class CaseContentObjectTest extends UnitTestCase
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
-        $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)
-            ->setMethods(['dummy'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $tsfe->config = [];
-        $tsfe->page = [];
-        $tsfe->sys_page = $this->getMockBuilder(PageRepository::class)
-            ->setMethods(['getRawRecord'])
-            ->getMock();
-        $GLOBALS['TSFE'] = $tsfe;
 
-        $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer = new ContentObjectRenderer($tsfe);
         $contentObjectRenderer->setContentObjectClassMap([
             'CASE' => CaseContentObject::class,
             'TEXT' => TextContentObject::class,

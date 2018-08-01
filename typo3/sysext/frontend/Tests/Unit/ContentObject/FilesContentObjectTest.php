@@ -25,7 +25,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Resource\FileCollector;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -50,11 +49,6 @@ class FilesContentObjectTest extends UnitTestCase
     protected $subject;
 
     /**
-     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected $tsfe;
-
-    /**
      * Set up
      */
     protected function setUp()
@@ -62,20 +56,13 @@ class FilesContentObjectTest extends UnitTestCase
         $templateService = $this->getMockBuilder(TemplateService::class)
             ->setMethods(['getFileName', 'linkData'])
             ->getMock();
-        $this->tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
+        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->tsfe->tmpl = $templateService;
-        $this->tsfe->config = [];
-        $this->tsfe->page = [];
-        $sysPageMock = $this->getMockBuilder(PageRepository::class)
-            ->setMethods(['getRawRecord'])
-            ->getMock();
-        $this->tsfe->sys_page = $sysPageMock;
-        $GLOBALS['TSFE'] = $this->tsfe;
+        $tsfe->tmpl = $templateService;
 
-        $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer = new ContentObjectRenderer($tsfe);
         $contentObjectRenderer->setContentObjectClassMap([
             'FILES' => FilesContentObject::class,
             'TEXT' => TextContentObject::class,

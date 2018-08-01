@@ -16,11 +16,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -45,11 +43,6 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     protected $frontendControllerMock;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TemplateService
-     */
-    protected $templateServiceMock;
-
-    /**
      * Set up
      */
     protected function setUp()
@@ -58,37 +51,19 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
 
         $this->createMockedLoggerAndLogManager();
 
-        $this->templateServiceMock =
-            $this->getMockBuilder(TemplateService::class)
-            ->setMethods(['getFileName', 'linkData'])->getMock();
-        $pageRepositoryMock =
-            $this->getAccessibleMock(PageRepository::class, ['getRawRecord', 'getMountPointInfo']);
-        $this->frontendControllerMock =
-            $this->getAccessibleMock(
-                TypoScriptFrontendController::class,
+        $this->frontendControllerMock = $this->getAccessibleMock(
+            TypoScriptFrontendController::class,
             ['dummy'],
-                [],
-                '',
-                false
-            );
-        $this->frontendControllerMock->tmpl = $this->templateServiceMock;
-        $this->frontendControllerMock->config = [];
-        $this->frontendControllerMock->page =  [];
-        $this->frontendControllerMock->sys_page = $pageRepositoryMock;
+            [],
+            '',
+            false
+        );
         $GLOBALS['TSFE'] = $this->frontendControllerMock;
     }
 
     //////////////////////
     // Utility functions
     //////////////////////
-
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getFrontendController()
-    {
-        return $GLOBALS['TSFE'];
-    }
 
     /**
      * Avoid logging to the file system (file writer is currently the only configured writer)
