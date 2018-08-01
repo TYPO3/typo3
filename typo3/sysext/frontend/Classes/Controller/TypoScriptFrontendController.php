@@ -3606,7 +3606,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         // config.noPageTitle = 2 - means do not render the page title
-        if ($this->config['config']['noPageTitle'] === 2) {
+        if ((int)$this->config['config']['noPageTitle'] === 2) {
             $titleTagContent = '';
         }
         if ($titleTagContent !== '') {
