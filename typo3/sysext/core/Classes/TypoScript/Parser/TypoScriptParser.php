@@ -512,7 +512,7 @@ class TypoScriptParser
                 if ($this->syntaxHighLight) {
                     $this->regHighLight('comment', $lineP);
                 }
-                if (strpos($line, '*/') === 0) {
+                if (strpos($line, '*/') !== false) {
                     $this->commentSet = 0;
                 }
             }

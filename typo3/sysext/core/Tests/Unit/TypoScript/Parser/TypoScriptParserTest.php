@@ -894,6 +894,16 @@ test.TYPO3Forever.TypoScript = 1
                     'second' => '2',
                 ],
             ],
+            'multi-line slash comment in one line' => [
+                'first = 1' . LF .
+                '/* ignore = me   */' . LF .
+                '/**** ignore = me   **/' . LF .
+                'second = 2',
+                [
+                    'first' => '1',
+                    'second' => '2',
+                ],
+            ],
             'nested assignment repeated segment names' => [
                 'test.test.test = 1',
                 [
