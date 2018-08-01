@@ -23,6 +23,8 @@ use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 /**
  * Class implements salted-password hashes authentication service.
  * Contains authentication service class for salted hashed passwords.
+ *
+ * @deprecated since v9, will be removed in v10
  */
 class SaltedPasswordService extends AbstractAuthenticationService
 {
@@ -64,6 +66,14 @@ class SaltedPasswordService extends AbstractAuthenticationService
      * @var bool
      */
     protected $authenticationFailed = false;
+
+    /**
+     * Constructor deprecates this class.
+     */
+    public function __construct()
+    {
+        trigger_error('Class SaltedPasswordService has been deprecated since v9 and will be removed in v10', E_USER_DEPRECATED);
+    }
 
     /**
      * Set salted passwords extension configuration to $this->extConf

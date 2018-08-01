@@ -15,8 +15,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -74,10 +75,161 @@ class AuthenticationServiceTest extends UnitTestCase
      */
     public function processLoginReturnsCorrectData($passwordSubmissionStrategy, $loginData, $expectedProcessedData): void
     {
-        /** @var $authenticationService AuthenticationService */
-        $authenticationService = GeneralUtility::makeInstance(AuthenticationService::class);
+        $subject = new AuthenticationService();
         // Login data is modified by reference
-        $authenticationService->processLoginData($loginData, $passwordSubmissionStrategy);
+        $subject->processLoginData($loginData, $passwordSubmissionStrategy);
         $this->assertEquals($expectedProcessedData, $loginData);
+    }
+
+    /**
+     * @test
+     */
+    public function authUserReturns100IfSubmittedPasswordIsEmpty(): void
+    {
+        $subject = new AuthenticationService();
+        $subject->initAuth('mode', ['uident_text' => '', 'uname' => 'user'], [], null);
+        $this->assertSame(100, $subject->authUser([]));
+    }
+
+    /**
+     * @test
+     */
+    public function authUserReturns100IfUserSubmittedUsernameIsEmpty(): void
+    {
+        $subject = new AuthenticationService();
+        $subject->initAuth('mode', ['uident_text' => 'foo', 'uname' => ''], [], null);
+        $this->assertSame(100, $subject->authUser([]));
+    }
+
+    /**
+     * @test
+     */
+    public function authUserThrowsExceptionIfUserTableIsNotSet(): void
+    {
+        $subject = new AuthenticationService();
+        $subject->initAuth('mode', ['uident_text' => 'password', 'uname' => 'user'], [], null);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1533159150);
+        $subject->authUser([]);
+    }
+
+    /**
+     * @test
+     */
+    public function authUserReturns100IfPasswordInDbIsNotASaltedPassword(): void
+    {
+        $subject = new AuthenticationService();
+        $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
+        $loggerProphecy = $this->prophesize(Logger::class);
+        $subject->setLogger($loggerProphecy->reveal());
+        $subject->initAuth(
+            'authUserBE',
+            [
+                'uident_text' => 'password',
+                'uname' => 'lolli'
+            ],
+            [
+                'db_user' => ['table' => 'be_users'],
+                'REMOTE_HOST' => ''
+            ],
+            $pObjProphecy->reveal()
+        );
+        $dbUser = [
+            'password' => 'aPlainTextPassword',
+            'lockToDomain' => ''
+        ];
+        $this->assertSame(100, $subject->authUser($dbUser));
+    }
+
+    /**
+     * @test
+     */
+    public function authUserReturns0IfPasswordDoesNotMatch(): void
+    {
+        $subject = new AuthenticationService();
+        $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
+        $loggerProphecy = $this->prophesize(Logger::class);
+        $subject->setLogger($loggerProphecy->reveal());
+        $subject->initAuth(
+            'authUserBE',
+            [
+                'uident_text' => 'notMyPassword',
+                'uname' => 'lolli'
+            ],
+            [
+                'db_user' => ['table' => 'be_users'],
+                'REMOTE_HOST' => '',
+            ],
+            $pObjProphecy->reveal()
+        );
+        $dbUser = [
+            // a phpass hash of 'myPassword'
+            'password' => '$P$C/2Vr3ywuuPo5C7cs75YBnVhgBWpMP1',
+            'lockToDomain' => ''
+        ];
+        $this->assertSame(0, $subject->authUser($dbUser));
+    }
+
+    /**
+     * @test
+     */
+    public function authUserReturns200IfPasswordMatch(): void
+    {
+        $subject = new AuthenticationService();
+        $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
+        $loggerProphecy = $this->prophesize(Logger::class);
+        $subject->setLogger($loggerProphecy->reveal());
+        $subject->initAuth(
+            'authUserBE',
+            [
+                'uident_text' => 'myPassword',
+                'uname' => 'lolli'
+            ],
+            [
+                'db_user' => ['table' => 'be_users'],
+                'REMOTE_HOST' => ''
+            ],
+            $pObjProphecy->reveal()
+        );
+        $dbUser = [
+            // an phpass hash of 'myPassword'
+            'password' => '$P$C/2Vr3ywuuPo5C7cs75YBnVhgBWpMP1',
+            'lockToDomain' => ''
+        ];
+        $this->assertSame(200, $subject->authUser($dbUser));
+    }
+
+    /**
+     * @test
+     */
+    public function authUserReturns0IfPasswordMatchButDomainLockDoesNotMatch(): void
+    {
+        $subject = new AuthenticationService();
+        $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
+        $loggerProphecy = $this->prophesize(Logger::class);
+        $subject->setLogger($loggerProphecy->reveal());
+        $subject->initAuth(
+            'authUserBE',
+            [
+                'uident_text' => 'myPassword',
+                'uname' => 'lolli'
+            ],
+            [
+                'db_user' => [
+                    'table' => 'be_users',
+                    'username_column' => 'username',
+                ],
+                'REMOTE_HOST' => '',
+                'HTTP_HOST' => 'example.com',
+            ],
+            $pObjProphecy->reveal()
+        );
+        $dbUser = [
+            // an phpass hash of 'myPassword'
+            'password' => '$P$C/2Vr3ywuuPo5C7cs75YBnVhgBWpMP1',
+            'username' => 'lolli',
+            'lockToDomain' => 'not.example.com'
+        ];
+        $this->assertSame(0, $subject->authUser($dbUser));
     }
 }

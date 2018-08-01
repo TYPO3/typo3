@@ -155,9 +155,11 @@ abstract class AbstractService implements LoggerAwareInterface
     public function getServiceOption($optionName, $defaultValue = '', $includeDefaultConfig = true)
     {
         $config = null;
-        $svOptions = $GLOBALS['TYPO3_CONF_VARS']['SVCONF'][$this->info['serviceType']];
-        if (isset($svOptions[$this->info['serviceKey']][$optionName])) {
-            $config = $svOptions[$this->info['serviceKey']][$optionName];
+        $serviceType = $this->info['serviceType'] ?? '';
+        $serviceKey = $this->info['serviceKey'] ?? '';
+        $svOptions = $GLOBALS['TYPO3_CONF_VARS']['SVCONF'][$serviceType] ?? [];
+        if (isset($svOptions[$serviceKey][$optionName])) {
+            $config = $svOptions[$serviceKey][$optionName];
         } elseif ($includeDefaultConfig && isset($svOptions['default'][$optionName])) {
             $config = $svOptions['default'][$optionName];
         }

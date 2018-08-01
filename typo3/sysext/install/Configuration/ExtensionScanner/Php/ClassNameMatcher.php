@@ -709,4 +709,9 @@ return [
             'Deprecation-85727-DatabaseIntegrityCheckMovedToEXTlowlevel.rst',
         ],
     ],
+    'TYPO3\CMS\Saltedpasswords\SaltedPasswordService' => [
+        'restFiles' => [
+            'Deprecation-85761-DeprecatedSaltedPasswordService.rst',
+        ],
+    ],
 ];

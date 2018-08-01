@@ -110,7 +110,7 @@ unset($extractorRegistry);
     [
         'title' => 'User authentication',
         'description' => 'Authentication with username/password.',
-        'subtype' => 'getUserBE,getUserFE,authUserFE,getGroupsFE,processLoginDataBE,processLoginDataFE',
+        'subtype' => 'getUserBE,getUserFE,authUserBE,authUserFE,getGroupsFE,processLoginDataBE,processLoginDataFE',
         'available' => true,
         'priority' => 50,
         'quality' => 50,

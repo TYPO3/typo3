@@ -17,7 +17,10 @@ namespace TYPO3\CMS\Core\Authentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltInterface;
 
 /**
  * Authentication services class
@@ -79,53 +82,136 @@ class AuthenticationService extends AbstractAuthenticationService
     }
 
     /**
-     * Authenticate a user (Check various conditions for the user that might invalidate its authentication, eg. password match, domain, IP, etc.)
+     * Authenticate a user: Check submitted user credentials against stored hashed password,
+     * check domain lock if configured.
      *
-     * @param array $user Data of user.
-     * @return int >= 200: User authenticated successfully.
-     *                     No more checking is needed by other auth services.
-     *             >= 100: User not authenticated; this service is not responsible.
-     *                     Other auth services will be asked.
-     *             > 0:    User authenticated successfully.
-     *                     Other auth services will still be asked.
-     *             <= 0:   Authentication failed, no more checking needed
-     *                     by other auth services.
+     * Returns one of the following status codes:
+     *  >= 200: User authenticated successfully. No more checking is needed by other auth services.
+     *  >= 100: User not authenticated; this service is not responsible. Other auth services will be asked.
+     *  > 0:    User authenticated successfully. Other auth services will still be asked.
+     *  <= 0:   Authentication failed, no more checking needed by other auth services.
+     *
+     * @param array $user User data
+     * @return int Authentication status code, one of 0, 100, 200
      */
-    public function authUser(array $user)
+    public function authUser(array $user): int
     {
-        $OK = 100;
-        // This authentication service can only work correctly, if a non empty username along with a non empty password is provided.
-        // Otherwise a different service is allowed to check for other login credentials
-        if ((string)$this->login['uident_text'] !== '' && (string)$this->login['uname'] !== '') {
-            // Checking password match for user:
-            $OK = $this->compareUident($user, $this->login);
-            if (!$OK) {
-                // Failed login attempt (wrong password) - write that to the log!
-                if ($this->writeAttemptLog) {
-                    $this->writelog(255, 3, 3, 1, 'Login-attempt from ###IP### (%s), username \'%s\', password not accepted!', [$this->authInfo['REMOTE_HOST'], $this->login['uname']]);
-                    $this->logger->info('Login-attempt username \'' . $this->login['uname'] . '\', password not accepted!', [
-                        'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR'],
-                        'REMOTE_HOST' => $this->authInfo['REMOTE_HOST'],
-                    ]);
+        // Early 100 "not responsible, check other services" if username or password is empty
+        if (!isset($this->login['uident_text']) || (string)$this->login['uident_text'] === ''
+            || !isset($this->login['uname']) || (string)$this->login['uname'] === '') {
+            return 100;
+        }
+
+        if (empty($this->db_user['table'])) {
+            throw new \RuntimeException('User database table not set', 1533159150);
+        }
+
+        $submittedUsername = (string)$this->login['uname'];
+        $submittedPassword = (string)$this->login['uident_text'];
+        $passwordHashInDatabase = $user['password'];
+        $queriedDomain = $this->authInfo['REMOTE_HOST'];
+        $configuredDomainLock = $user['lockToDomain'];
+        $userDatabaseTable = $this->db_user['table'];
+
+        $isSaltedPassword = false;
+        $isValidPassword = false;
+        $isReHashNeeded = false;
+        $isDomainLockMet = false;
+
+        // Get a hashed password instance for the hash stored in db of this user
+        $saltedPasswordInstance = SaltFactory::getSaltingInstance($passwordHashInDatabase);
+        // An instance of the currently configured salted password mechanism
+        $currentConfiguredSaltedPasswordInstance = SaltFactory::getSaltingInstance(null);
+
+        if ($saltedPasswordInstance instanceof SaltInterface) {
+            // We found a hash class that can handle this type of hash
+            $isSaltedPassword = true;
+            $isValidPassword = $saltedPasswordInstance->checkPassword($submittedPassword, $passwordHashInDatabase);
+            if ($isValidPassword) {
+                if ($saltedPasswordInstance->isHashUpdateNeeded($passwordHashInDatabase)
+                    || $currentConfiguredSaltedPasswordInstance != $saltedPasswordInstance
+                ) {
+                    // Lax object comparison intended: Rehash if old and new salt objects are not
+                    // instances of the same class.
+                    $isReHashNeeded = true;
                 }
-                $this->logger->debug('Password not accepted: ' . $this->login['uident']);
+                if (empty($configuredDomainLock)) {
+                    // No domain restriction set for user in db. This is ok.
+                    $isDomainLockMet = true;
+                } elseif (!strcasecmp($configuredDomainLock, $queriedDomain)) {
+                    // Domain restriction set and it matches given host. Ok.
+                    $isDomainLockMet = true;
+                }
             }
-            // Checking the domain (lockToDomain)
-            if ($OK && $user['lockToDomain'] && $user['lockToDomain'] !== $this->authInfo['HTTP_HOST']) {
-                // Lock domain didn't match, so error:
-                if ($this->writeAttemptLog) {
-                    $this->writelog(255, 3, 3, 1, 'Login-attempt from ###IP### (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', [$this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']]);
-                    $this->logger->info('Login-attempt from username \'' . $user[$this->db_user['username_column']] . '\', locked domain did not match!', [
-                        'HTTP_HOST' => $this->authInfo['HTTP_HOST'],
-                        'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR'],
-                        'REMOTE_HOST' => $this->authInfo['REMOTE_HOST'],
-                        'lockToDomain' => $user['lockToDomain'],
-                    ]);
+        } else {
+            // @todo @deprecated: The entire else should be removed in v10.0 as dedicated breaking patch
+            if (substr($user['password'], 0, 2) === 'M$') {
+                // If the stored db password starts with M$, it may be a md5 password that has been
+                // upgraded to a salted md5 using the old salted passwords scheduler task.
+                // See if a salt instance is returned if we cut off the M, so Md5Salt kicks in
+                $saltedPasswordInstance = SaltFactory::getSaltingInstance(substr($passwordHashInDatabase, 1));
+                if ($saltedPasswordInstance instanceof SaltInterface) {
+                    $isSaltedPassword = true;
+                    $isValidPassword = $saltedPasswordInstance->checkPassword(md5($submittedPassword), substr($passwordHashInDatabase, 1));
+                    if ($isValidPassword) {
+                        // Upgrade this password to a sane mechanism now
+                        $isReHashNeeded = true;
+                        if (empty($configuredDomainLock)) {
+                            // No domain restriction set for user in db. This is ok.
+                            $isDomainLockMet = true;
+                        } elseif (!strcasecmp($configuredDomainLock, $queriedDomain)) {
+                            // Domain restriction set and it matches given host. Ok.
+                            $isDomainLockMet = true;
+                        }
+                    }
                 }
-                $OK = 0;
             }
         }
-        return $OK;
+
+        if (!$isSaltedPassword) {
+            // Could not find a responsible hash algorithm for given password. This is unusual since other
+            // authentication services would usually be called before this one with higher priority. We thus log
+            // the failed login but still return '100' to proceed with other services that may follow.
+            $message = 'Login-attempt from ###IP### (%s), username \'%s\', no suitable hash method found!';
+            $this->writeLogMessage($message, $this->authInfo['REMOTE_HOST'], $submittedUsername);
+            $this->writelog(255, 3, 3, 1, $message, [$this->authInfo['REMOTE_HOST'], $submittedUsername]);
+            $this->logger->info(sprintf($message, $this->authInfo['REMOTE_HOST'], $submittedUsername));
+            // Not responsible, check other services
+            return 100;
+        }
+
+        if (!$isValidPassword) {
+            // Failed login attempt - wrong password
+            $this->writeLogMessage(TYPO3_MODE . ' Authentication failed - wrong password for username \'%s\'', $submittedUsername);
+            $message = 'Login-attempt from ###IP### (%s), username \'%s\', password not accepted!';
+            $this->writelog(255, 3, 3, 1, $message, [$this->authInfo['REMOTE_HOST'], $submittedUsername]);
+            $this->logger->info(sprintf($message, $this->authInfo['REMOTE_HOST'], $submittedUsername));
+            // Responsible, authentication failed, do NOT check other services
+            return 0;
+        }
+
+        if (!$isDomainLockMet) {
+            // Password ok, but configured domain lock not met
+            $errorMessage = 'Login-attempt from ###IP### (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!';
+            $this->writeLogMessage($errorMessage, $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']);
+            $this->writelog(255, 3, 3, 1, $errorMessage, [$this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']]);
+            $this->logger->info(sprintf($errorMessage, $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']));
+            // Responsible, authentication ok, but domain lock not ok, do NOT check other services
+            return 0;
+        }
+
+        if ($isReHashNeeded) {
+            // Given password validated but a re-hash is needed. Do so.
+            $this->updatePasswordHashInDatabase(
+                $userDatabaseTable,
+                (int)$user['uid'],
+                $currentConfiguredSaltedPasswordInstance->getHashedPassword($submittedPassword)
+            );
+        }
+
+        // Responsible, authentication ok, domain lock ok. Log successful login and return 'auth ok, do NOT check other services'
+        $this->writeLogMessage(TYPO3_MODE . ' Authentication successful for username \'%s\'', $submittedUsername);
+        return 200;
     }
 
     /**
@@ -137,11 +223,9 @@ class AuthenticationService extends AbstractAuthenticationService
      */
     public function getGroups($user, $knownGroups)
     {
-        /*
-         * Attention: $knownGroups is not used within this method, but other services can use it.
-         * This parameter should not be removed!
-         * The FrontendUserAuthentication call getGroups and handover the previous detected groups.
-         */
+        // Attention: $knownGroups is not used within this method, but other services can use it.
+        // This parameter should not be removed!
+        // The FrontendUserAuthentication call getGroups and handover the previous detected groups.
         $groupDataArr = [];
         if ($this->mode === 'getGroupsFE') {
             $groups = [];
@@ -266,5 +350,44 @@ class AuthenticationService extends AbstractAuthenticationService
                 }
             }
         }
+    }
+
+    /**
+     * Method updates a FE/BE user record - in this case a new password string will be set.
+     *
+     * @param string $table Database table of this user, usually 'be_users' or 'fe_users'
+     * @param int $uid uid of user record that will be updated
+     * @param string $newPassword Field values as key=>value pairs to be updated in database
+     */
+    protected function updatePasswordHashInDatabase(string $table, int $uid, string $newPassword): void
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $connection->update(
+            $table,
+            ['password' => $newPassword],
+            ['uid' => $uid]
+        );
+        $this->logger->notice('Automatic password update for user record in ' . $table . ' with uid ' . $uid);
+    }
+
+    /**
+     * Writes log message. Destination log depends on the current system mode.
+     *
+     * This function accepts variable number of arguments and can format
+     * parameters. The syntax is the same as for sprintf()
+     *
+     * @param string $message Message to output
+     * @param array<int, mixed> $params
+     */
+    protected function writeLogMessage(string $message, ...$params): void
+    {
+        if (!empty($params)) {
+            $message = vsprintf($message, $params);
+        }
+        if (TYPO3_MODE === 'FE') {
+            $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
+            $timeTracker->setTSlogMessage($message);
+        }
+        $this->logger->notice($message);
     }
 }

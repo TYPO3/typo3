@@ -85,9 +85,9 @@ class AbstractAuthenticationService extends AbstractService
         $this->mode = $mode;
         $this->login = $loginData;
         $this->authInfo = $authInfo;
-        $this->db_user = $this->getServiceOption('db_user', $authInfo['db_user'], false);
-        $this->db_groups = $this->getServiceOption('db_groups', $authInfo['db_groups'], false);
-        $this->writeAttemptLog = $this->pObj->writeAttemptLog;
+        $this->db_user = $this->getServiceOption('db_user', $authInfo['db_user'] ?? [], false);
+        $this->db_groups = $this->getServiceOption('db_groups', $authInfo['db_groups'] ?? [], false);
+        $this->writeAttemptLog = $this->pObj->writeAttemptLog ?? true;
     }
 
     /**
