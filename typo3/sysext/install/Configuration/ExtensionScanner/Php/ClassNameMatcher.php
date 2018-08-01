@@ -699,4 +699,9 @@ return [
             'Deprecation-85687-DeprecateRuntimeCacheWriter.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\LoginFramesetController' => [
+        'restFiles' => [
+            'Deprecation-85707-LoginFramesetController.rst',
+        ],
+    ],
 ];

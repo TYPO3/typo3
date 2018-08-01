@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class, putting the frameset together.
+ * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. All logic is moved into LoginController.
  */
 class LoginFramesetController
 {
@@ -38,6 +39,7 @@ class LoginFramesetController
      */
     public function __construct()
     {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v10.0. Request "index.php?loginRefresh=1" directly to work without the frameset.', E_USER_DEPRECATED);
         $GLOBALS['SOBE'] = $this;
     }
 
@@ -53,15 +55,13 @@ class LoginFramesetController
         $this->createFrameset();
         return new HtmlResponse($this->content);
     }
+
     /**
      * Main function.
      * Creates the header code and the frameset for the two frames.
-     *
-     * @deprecated since v9, will be removed in v10
      */
     public function main()
     {
-        trigger_error('Method main() will be replaced by protected method createFrameset() in v10. Do not call from other extension', E_USER_DEPRECATED);
         $this->createFrameset();
     }
     /**
