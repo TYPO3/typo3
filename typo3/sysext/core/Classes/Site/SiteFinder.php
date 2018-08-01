@@ -17,13 +17,14 @@ namespace TYPO3\CMS\Core\Site;
  */
 
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Is used in backend and frontend for all places where to read / identify sites and site languages.
@@ -70,7 +71,7 @@ class SiteFinder
      *
      * @return array
      */
-    protected function getBaseUris(): array
+    public function getBaseUris(): array
     {
         $baseUrls = [];
         foreach ($this->sites as $site) {
@@ -140,37 +141,29 @@ class SiteFinder
      * Traverses the rootline of a page up until a Site was found.
      *
      * @param int $pageId
-     * @param array $alternativeRootLine
+     * @param array $rootLine
      * @return SiteInterface
      * @throws SiteNotFoundException
      */
-    public function getSiteByPageId(int $pageId, array $alternativeRootLine = null): SiteInterface
+    public function getSiteByPageId(int $pageId, array $rootLine = null): SiteInterface
     {
-        if (is_array($alternativeRootLine)) {
-            foreach ($alternativeRootLine as $pageInRootLine) {
-                if ($pageInRootLine['uid'] > 0) {
-                    try {
-                        return $this->getSiteByRootPageId((int)$pageInRootLine['uid']);
-                    } catch (SiteNotFoundException $e) {
-                        // continue looping
-                    }
-                }
+        if (!is_array($rootLine)) {
+            try {
+                $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+            } catch (PageNotFoundException $e) {
+                // Usually when a page was hidden or disconnected
+                // This could be improved by handing in a Context object and decide whether hidden pages
+                // Should be linkeable too
+                $rootLine = [];
             }
         }
-        // Do your own root line traversing
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $queryBuilder->select('pid')->from('pages');
-        $rootLinePageId = $pageId;
-        while ($rootLinePageId > 0) {
-            try {
-                return $this->getSiteByRootPageId($rootLinePageId);
-            } catch (SiteNotFoundException $e) {
-                // get parent page ID
-                $queryBuilder->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($rootLinePageId))
-                );
-                $rootLinePageId = (int)$queryBuilder->execute()->fetchColumn(0);
+        foreach ($rootLine as $pageInRootLine) {
+            if ($pageInRootLine['uid'] > 0) {
+                try {
+                    return $this->getSiteByRootPageId((int)$pageInRootLine['uid']);
+                } catch (SiteNotFoundException $e) {
+                    // continue looping
+                }
             }
         }
         throw new SiteNotFoundException('No site found in root line of page  ' . $pageId, 1521716622);
