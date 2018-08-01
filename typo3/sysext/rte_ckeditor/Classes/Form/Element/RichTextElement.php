@@ -123,7 +123,6 @@ class RichTextElement extends AbstractFormElement
         $resultArray['html'] = implode(LF, $html);
 
         $this->rteConfiguration = $config['richtextConfiguration']['editor'];
-        $resultArray['requireJsModules'] = [];
         $resultArray['requireJsModules'][] = [
             'ckeditor' => $this->getCkEditorRequireJsModuleCode($fieldId)
         ];
