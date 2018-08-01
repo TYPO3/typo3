@@ -134,7 +134,7 @@ class CoreUpdateService
     {
         trigger_error(
             'The method updateVersionMatrix() is deprecated since v9 and will be removed in v10, use the REST api directly (see https://get.typo3.org/v1/api/doc).',
-            \E_USER_DEPRECATED
+            E_USER_DEPRECATED
         );
         $success = true;
         try {

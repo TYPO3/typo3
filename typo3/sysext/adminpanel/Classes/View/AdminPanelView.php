@@ -236,7 +236,7 @@ class AdminPanelView
     {
         trigger_error(
             'Deprecated since TYPO3 v9, use fluid and backend uri builder to create a toolbar',
-            \E_USER_DEPRECATED
+            E_USER_DEPRECATED
         );
         $editToolbarService = GeneralUtility::makeInstance(EditToolbarService::class);
         return $editToolbarService->createToolbar();

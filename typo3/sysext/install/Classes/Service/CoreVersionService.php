@@ -197,7 +197,7 @@ class CoreVersionService
      */
     public function updateVersionMatrix(): void
     {
-        trigger_error('Method updateVersionMatrix is deprecated, use new REST API directly (see https://get.typo3.org/v1/api/doc).', \E_USER_DEPRECATED);
+        trigger_error('Method updateVersionMatrix is deprecated, use new REST API directly (see https://get.typo3.org/v1/api/doc).', E_USER_DEPRECATED);
         $url = 'https://get.typo3.org/json';
         $versionJson = GeneralUtility::getUrl($url);
         if (!$versionJson) {
@@ -226,7 +226,7 @@ class CoreVersionService
     {
         trigger_error(
             'Method getYoungestPatchDevelopmentRelease() is deprecated since v9 and will be removed in v10, use getYoungestPatchRelease() instead.',
-            \E_USER_DEPRECATED
+            E_USER_DEPRECATED
         );
         return $this->getYoungestPatchRelease();
     }
@@ -242,7 +242,7 @@ class CoreVersionService
     {
         trigger_error(
             'Method isYoungerPatchDevelopmentReleaseAvailable() is deprecated since v9 and will be removed in v10, use isYoungerPatchReleaseAvailable() instead.',
-            \E_USER_DEPRECATED
+            E_USER_DEPRECATED
         );
         return $this->isYoungerPatchReleaseAvailable();
     }
@@ -255,7 +255,7 @@ class CoreVersionService
     {
         trigger_error(
             'Method getDownloadBaseUrl() is deprecated since v9 and will be removed in v10, use https://get.typo3.org directly.',
-            \E_USER_DEPRECATED
+            E_USER_DEPRECATED
         );
         return $this->apiBaseUrl;
     }

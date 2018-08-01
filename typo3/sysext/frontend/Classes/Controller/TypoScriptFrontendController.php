@@ -3092,7 +3092,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function checkPageForMountpointRedirect()
     {
-        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', \E_USER_DEPRECATED);
+        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', E_USER_DEPRECATED);
         if (!empty($this->originalMountPointPage) && $this->originalMountPointPage['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT) {
             $this->redirectToCurrentPage();
         }
@@ -3123,7 +3123,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function checkPageForShortcutRedirect()
     {
-        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', \E_USER_DEPRECATED);
+        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', E_USER_DEPRECATED);
         if (!empty($this->originalShortcutPage) && (int)$this->originalShortcutPage['doktype'] === PageRepository::DOKTYPE_SHORTCUT) {
             $this->redirectToCurrentPage();
         }
@@ -3136,7 +3136,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function redirectToCurrentPage()
     {
-        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', \E_USER_DEPRECATED);
+        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', E_USER_DEPRECATED);
         $redirectUrl = $this->getUriToCurrentPageForRedirect();
         // Prevent redirection loop
         if (!empty($redirectUrl) && GeneralUtility::getIndpEnv('REQUEST_URI') !== '/' . $redirectUrl) {
@@ -4953,31 +4953,31 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         switch ($propertyName) {
             case 'sys_language_uid':
-                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
             case 'sys_language_content':
-                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
             case 'sys_language_contentOL':
-                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
             case 'sys_language_mode':
-                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
             case 'loginUser':
-                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.');
+                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
             case 'gr_list':
-                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
+                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
             case 'beUserLogin':
-                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.');
+                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
             case 'showHiddenPage':
-                trigger_error('Property $TSFE->showHiddenPage is not in use anymore as this information is now stored within the visibility aspect.');
+                trigger_error('Property $TSFE->showHiddenPage is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
             case 'showHiddenRecords':
-                trigger_error('Property $TSFE->showHiddenRecords is not in use anymore as this information is now stored within the visibility aspect.');
+                trigger_error('Property $TSFE->showHiddenRecords is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
         }
         return false;
@@ -4996,32 +4996,32 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         switch ($propertyName) {
             case 'sys_language_uid':
-                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 return $this->context->getPropertyFromAspect('language', 'id', 0);
             case 'sys_language_content':
-                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 return $this->context->getPropertyFromAspect('language', 'contentId', 0);
             case 'sys_language_contentOL':
-                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 return $this->context->getPropertyFromAspect('language', 'legacyOverlayType', '0');
                 break;
             case 'sys_language_mode':
-                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 return $this->context->getPropertyFromAspect('language', 'legacyLanguageMode', '');
             case 'loginUser':
-                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.');
+                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
                 return $this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false);
             case 'gr_list':
-                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
+                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
                 return implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
             case 'beUserLogin':
-                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.');
+                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
                 return $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
             case 'showHiddenPage':
-                trigger_error('Property $TSFE->showHiddenPage is not in use anymore as this information is now stored within the visibility aspect.');
+                trigger_error('Property $TSFE->showHiddenPage is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
                 return $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false);
             case 'showHiddenRecords':
-                trigger_error('Property $TSFE->showHiddenRecords is not in use anymore as this information is now stored within the visibility aspect.');
+                trigger_error('Property $TSFE->showHiddenRecords is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
                 return $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false);
         }
         return $this->$propertyName;
@@ -5042,19 +5042,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         switch ($propertyName) {
             case 'sys_language_uid':
-                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 /** @var LanguageAspect $aspect */
                 $aspect = $this->context->getAspect('language');
                 $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, (int)$propertyValue, $aspect->getContentId(), $aspect->getOverlayType(), $aspect->getFallbackChain()));
                 break;
             case 'sys_language_content':
-                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 /** @var LanguageAspect $aspect */
                 $aspect = $this->context->getAspect('language');
                 $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), (int)$propertyValue, $aspect->getOverlayType(), $aspect->getFallbackChain()));
                 break;
             case 'sys_language_contentOL':
-                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 /** @var LanguageAspect $aspect */
                 $aspect = $this->context->getAspect('language');
                 switch ((string)$propertyValue) {
@@ -5070,7 +5070,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), $overlayType, $aspect->getFallbackChain()));
                 break;
             case 'sys_language_mode':
-                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 /** @var LanguageAspect $aspect */
                 $aspect = $this->context->getAspect('language');
                 switch ((string)$propertyValue) {
@@ -5102,7 +5102,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), $aspect->getOverlayType(), $fallBackOrder));
                 break;
             case 'loginUser':
-                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.');
+                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
                 /** @var UserAspect $aspect */
                 $aspect = $this->context->getAspect('frontend.user');
                 if ($propertyValue) {
@@ -5113,11 +5113,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->context->setAspect('frontend.user', $aspect);
                 break;
             case 'gr_list':
-                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
+                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
                 $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, GeneralUtility::intExplode(',', $propertyValue)));
                 break;
             case 'beUserLogin':
-                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.');
+                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
                 if ($propertyValue) {
                     $aspect = GeneralUtility::makeInstance(UserAspect::class, $GLOBALS['BE_USER']);
                 } else {
@@ -5127,7 +5127,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 break;
             case 'showHiddenPage':
             case 'showHiddenRecords':
-                trigger_error('Property $TSFE->' . $propertyName . ' is not in use anymore as this information is now stored within the visibility aspect.');
+                trigger_error('Property $TSFE->' . $propertyName . ' is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
                 /** @var VisibilityAspect $aspect */
                 $aspect = $this->context->getAspect('visibility');
                 if ($propertyName === 'showHiddenPage') {
@@ -5150,23 +5150,23 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         switch ($propertyName) {
             case 'sys_language_uid':
-                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class));
                 break;
             case 'sys_language_content':
-                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 /** @var LanguageAspect $aspect */
                 $aspect = $this->context->getAspect('language');
                 $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), 0, $aspect->getOverlayType()));
                 break;
             case 'sys_language_contentOL':
-                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 /** @var LanguageAspect $aspect */
                 $aspect = $this->context->getAspect('language');
                 $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), LanguageAspect::OVERLAYS_OFF));
                 break;
             case 'sys_language_mode':
-                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.');
+                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 /** @var LanguageAspect $aspect */
                 $aspect = $this->context->getAspect('language');
                 $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), $aspect->getOverlayType(), ['off']));
@@ -5177,16 +5177,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, null, $aspect->getGroupIds()));
                 break;
             case 'gr_list':
-                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.');
+                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
                 $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, []));
                 break;
             case 'beUserLogin':
-                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.');
+                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
                 $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class));
                 break;
             case 'showHiddenPage':
             case 'showHiddenRecords':
-                trigger_error('Property $TSFE->' . $propertyName . ' is not in use anymore as this information is now stored within the visibility aspect.');
+                trigger_error('Property $TSFE->' . $propertyName . ' is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
                 /** @var VisibilityAspect $aspect */
                 $aspect = $this->context->getAspect('visibility');
                 if ($propertyName === 'showHiddenPage') {
