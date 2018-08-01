@@ -405,24 +405,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // Make certain that NO user is set initially
         $this->user = null;
         // Set all possible headers that could ensure that the script is not cached on the client-side
-        if ($this->sendNoCacheHeaders && !Environment::isCli()) {
-            header('Expires: 0');
-            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-            $cacheControlHeader = 'no-cache, must-revalidate';
-            $pragmaHeader = 'no-cache';
-            // Prevent error message in IE when using a https connection
-            // see http://forge.typo3.org/issues/24125
-            $clientInfo = GeneralUtility::clientInfo();
-            if ($clientInfo['BROWSER'] === 'msie' && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-                // Some IEs can not handle no-cache
-                // see http://support.microsoft.com/kb/323308/en-us
-                $cacheControlHeader = 'must-revalidate';
-                // IE needs "Pragma: private" if SSL connection
-                $pragmaHeader = 'private';
-            }
-            header('Cache-Control: ' . $cacheControlHeader);
-            header('Pragma: ' . $pragmaHeader);
-        }
+        $this->sendHttpHeaders();
         // Load user session, check to see if anyone has submitted login-information and if so authenticate
         // the user with the session. $this->user[uid] may be used to write log...
         $this->checkAuthentication();
@@ -446,6 +429,53 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if (rand() % 100 <= $this->gc_probability) {
             $this->gc();
         }
+    }
+
+    /**
+     * Set all possible headers that could ensure that the script
+     * is not cached on the client-side.
+     *
+     * Only do this if $this->sendNoCacheHeaders is set.
+     */
+    protected function sendHttpHeaders()
+    {
+        // skip sending the "no-cache" headers if it's a CLI request or the no-cache headers should not be sent.
+        if (!$this->sendNoCacheHeaders || Environment::isCli()) {
+            return;
+        }
+        $httpHeaders = $this->getHttpHeaders();
+        foreach ($httpHeaders as $httpHeaderName => $value) {
+            header($httpHeaderName . ': ' . $value);
+        }
+    }
+
+    /**
+     * Get the http headers to be sent if an authenticated user is available, in order to disallow
+     * browsers to store the response on the client side.
+     *
+     * @return array
+     */
+    protected function getHttpHeaders(): array
+    {
+        $headers = [
+            'Expires' => 0,
+            'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT'
+        ];
+        $cacheControlHeader = 'no-cache, must-revalidate';
+        $pragmaHeader = 'no-cache';
+        // Prevent error message in IE when using a https connection
+        // see http://forge.typo3.org/issues/24125
+        $clientInfo = GeneralUtility::clientInfo();
+        if ($clientInfo['BROWSER'] === 'msie' && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+            // Some IEs can not handle no-cache
+            // see http://support.microsoft.com/kb/323308/en-us
+            $cacheControlHeader = 'must-revalidate';
+            // IE needs "Pragma: private" if SSL connection
+            $pragmaHeader = 'private';
+        }
+        $headers['Cache-Control'] = $cacheControlHeader;
+        $headers['Pragma'] = $pragmaHeader;
+        return $headers;
     }
 
     /**

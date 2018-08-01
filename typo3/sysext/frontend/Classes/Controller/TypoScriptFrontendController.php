@@ -3861,54 +3861,66 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Send cache headers good for client/reverse proxy caching
-     * This function should not be called if the page content is
-     * temporary (like for "Page is being generated..." message,
-     * but in that case it is ok because the config-variables
-     * are not yet available and so will not allow to send
-     * cache headers)
+     * Send cache headers good for client/reverse proxy caching.
+     * @see getCacheHeaders() for more details
      */
     public function sendCacheHeaders()
+    {
+        $headers = $this->getCacheHeaders();
+        foreach ($headers as $header => $value) {
+            header($header . ': ' . $value);
+        }
+    }
+
+    /**
+     * Get cache headers good for client/reverse proxy caching.
+     * This function should not be called if the page content is temporary (like for "Page is being generated..."
+     * message, but in that case it is ok because the config-variables are not yet available and so will not allow to
+     * send cache headers).
+     *
+     * @return array
+     */
+    protected function getCacheHeaders(): array
     {
         // Getting status whether we can send cache control headers for proxy caching:
         $doCache = $this->isStaticCacheble();
         // This variable will be TRUE unless cache headers are configured to be sent ONLY if a branch does not allow logins and logins turns out to be allowed anyway...
         $loginsDeniedCfg = empty($this->config['config']['sendCacheHeaders_onlyWhenLoginDeniedInBranch']) || empty($this->loginAllowedInBranch);
         // Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
-        if ($doCache && !$this->isBackendUserLoggedIn() && !$this->doWorkspacePreview() && $loginsDeniedCfg) {
-            // Build headers:
+        $this->isClientCachable = $doCache && !$this->isBackendUserLoggedIn() && !$this->doWorkspacePreview() && $loginsDeniedCfg;
+        if ($this->isClientCachable) {
             $headers = [
-                'Expires: ' . gmdate('D, d M Y H:i:s T', $this->cacheExpires),
-                'ETag: "' . md5($this->content) . '"',
-                'Cache-Control: max-age=' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']),
+                'Expires' => gmdate('D, d M Y H:i:s T', $this->cacheExpires),
+                'ETag' => '"' . md5($this->content) . '"',
+                'Cache-Control' => 'max-age=' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']),
                 // no-cache
-                'Pragma: public'
+                'Pragma' => 'public'
             ];
-            $this->isClientCachable = true;
         } else {
-            // Build headers
             // "no-store" is used to ensure that the client HAS to ask the server every time, and is not allowed to store anything at all
             $headers = [
-                'Cache-Control: private, no-store'
+                'Cache-Control' => 'private, no-store'
             ];
-            $this->isClientCachable = false;
             // Now, if a backend user is logged in, tell him in the Admin Panel log what the caching status would have been:
             if ($this->isBackendUserLoggedIn()) {
                 if ($doCache) {
                     $this->getTimeTracker()->setTSlogMessage('Cache-headers with max-age "' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']) . '" would have been sent');
                 } else {
-                    $reasonMsg = '';
-                    $reasonMsg .= !$this->no_cache ? '' : 'Caching disabled (no_cache). ';
-                    $reasonMsg .= !$this->isINTincScript() ? '' : '*_INT object(s) on page. ';
-                    $reasonMsg .= !is_array($this->fe_user->user) ? '' : 'Frontend user logged in. ';
-                    $this->getTimeTracker()->setTSlogMessage('Cache-headers would disable proxy caching! Reason(s): "' . $reasonMsg . '"', 1);
+                    $reasonMsg = [];
+                    if ($this->no_cache) {
+                        $reasonMsg[] = 'Caching disabled (no_cache).';
+                    }
+                    if ($this->isINTincScript()) {
+                        $reasonMsg[] = '*_INT object(s) on page.';
+                    }
+                    if (is_array($this->fe_user->user)) {
+                        $reasonMsg[] = 'Frontend user logged in.';
+                    }
+                    $this->getTimeTracker()->setTSlogMessage('Cache-headers would disable proxy caching! Reason(s): "' . implode(' ', $reasonMsg) . '"', 1);
                 }
             }
         }
-        // Send headers:
-        foreach ($headers as $hL) {
-            header($hL);
-        }
+        return $headers;
     }
 
     /**
@@ -4005,12 +4017,26 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function addTempContentHttpHeaders()
     {
         header('HTTP/1.0 503 Service unavailable');
-        header('Retry-after: 3600');
-        header('Pragma: no-cache');
-        header('Cache-control: no-cache');
-        header('Expire: 0');
+        $headers = $this->getHttpHeadersForTemporaryContent();
+        foreach ($headers as $header => $value) {
+            header($header . ': ' . $value);
+        }
     }
 
+    /**
+     * Returns HTTP headers for temporary content.
+     * These headers prevent search engines from caching temporary content and asks them to revisit this page again.
+     * Please ensure to also send a 503 HTTP Status code with these headers.
+     */
+    protected function getHttpHeadersForTemporaryContent(): array
+    {
+        return [
+            'Retry-after' => '3600',
+            'Pragma' => 'no-cache',
+            'Cache-control' => 'no-cache',
+            'Expire' => 0,
+        ];
+    }
     /********************************************
      *
      * Various internal API functions
