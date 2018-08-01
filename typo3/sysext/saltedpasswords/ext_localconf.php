@@ -1,9 +1,6 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-// Hook for processing "forgotPassword" in felogin
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed'][] = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::class . '->feloginForgotPasswordHook';
-
 // Extension may register additional salted hashing methods in this array
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] = [];
 

@@ -71,19 +71,6 @@ class SaltedPasswordsUtility
     }
 
     /**
-     * Hook function for felogin "forgotPassword" functionality
-     * encrypts the new password before storing in database
-     *
-     * @param array $params Parameter the hook delivers
-     * @param \TYPO3\CMS\Felogin\Controller\FrontendLoginController $pObj Parent Object from which the hook is called
-     */
-    public function feloginForgotPasswordHook(array &$params, \TYPO3\CMS\Felogin\Controller\FrontendLoginController $pObj)
-    {
-        $objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
-        $params['newPassword'] = $objInstanceSaltedPW->getHashedPassword($params['newPassword']);
-    }
-
-    /**
      * Returns default configuration of this extension.
      *
      * @return array Default extension configuration data for localconf.php

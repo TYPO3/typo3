@@ -351,12 +351,16 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                             $minLength
                         );
                     } else {
-                        $newPass = $postData['password1'];
+                        // Hash password using configured salted passwords hash mechanism for FE
+                        $objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
+                        $newPass = $objInstanceSaltedPW->getHashedPassword($postData['password1']);
+
+                        // Call a hook for further password processing
                         if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']) {
                             $_params = [
                                 'user' => $user,
                                 'newPassword' => $newPass,
-                                'newPasswordUnencrypted' => $newPass
+                                'newPasswordUnencrypted' => $postData['password1']
                             ];
                             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed'] as $_funcRef) {
                                 if ($_funcRef) {
