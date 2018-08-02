@@ -61,9 +61,9 @@ class LanguagePackCommand extends Command
         }
 
         $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
-
         try {
-            $isos = $input->getArgument('locales');
+            $localesToUpdate = $input->getArgument('locales');
+            $isos = GeneralUtility::trimExplode(',', $localesToUpdate[0], true);
         } catch (\Exception $e) {
             $isos = [];
         }
