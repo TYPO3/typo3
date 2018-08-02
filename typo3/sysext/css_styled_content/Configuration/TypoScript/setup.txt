@@ -108,7 +108,7 @@ tt_content.stdWrap {
             }
         }
     }
-    innerWrap2 = | <p class="csc-linkToTop"><a href="#">{LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:label.toTop}</a></p>
+    innerWrap2 = | <p class="csc-linkToTop"><a href="{getIndpEnv:TYPO3_REQUEST_URL}#">{LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:label.toTop}</a></p>
     innerWrap2.insertData = 1
     innerWrap2.fieldRequired = linkToTop
     prepend = TEXT
