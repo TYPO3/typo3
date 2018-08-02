@@ -15,15 +15,15 @@
         <table class="table table-striped table-hover tx_sv_reportlist">
             <thead>
                 <tr>
-                    <td><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:path" /></td>
-                    <td><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:valid" /></td>
+                    <th><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:path" /></th>
+                    <th><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:valid" /></th>
                 </tr>
             </thead>
             <tbody>
                 <f:for each="{searchPaths}" as="searchPath">
                     <tr class="{searchPath.class}">
                         <td class="first-cell">{searchPath.path}</td>
-                        <td class="last-cell"><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:{searchPath.accessible}" /></td>
+                        <td class="last-cell"><f:translate key="{searchPath.accessible}" /></td>
                     </tr>
                 </f:for>
             </tbody>
@@ -40,13 +40,14 @@
     <table class="table table-striped table-hover tx_sv_reportlist">
         <thead>
             <tr>
-                <td style="width: 35%"><f:translate key="service" /></td>
-                <td><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:priority" /></td>
-                <td><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:quality" /></td>
-                <td style="width: 35%"><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:subtypes" /></td>
-                <td><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:os" /></td>
-                <td><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:externals" /></td>
-                <td><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:available" /></td>
+                <th><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:service" /></th>
+                <th><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:description" /></th>
+                <th><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:priority" /></th>
+                <th><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:quality" /></th>
+                <th style="width: 35%"><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:subtypes" /></th>
+                <th><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:os" /></th>
+                <th><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:externals" /></th>
+                <th><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:available" /></th>
             </tr>
         </thead>
         <tbody>
@@ -59,13 +60,12 @@
 
 <f:section name="ServiceRow">
     <tr class="service {service.AvailabilityClass}">
+        <td>{service.Information.title} ({service.Information.extKey})</td>
         <td class="first-cell">{service.Description}
-            <p class="service-header">
-                <span class="service-title">{service.Information.title}</span> ({service.Information.extKey}: {service.Key})
-            </p>
             <f:if condition="{service.Information.description}">
                 <p class="service-description">{service.Information.description}</p>
             </f:if>
+            <code>{service.Key}</code>
         </td>
         <td class="cell">{service.Information.priority}</td>
         <td class="cell">{service.Information.quality}</td>

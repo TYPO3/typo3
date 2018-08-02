@@ -21,6 +21,9 @@
 			<trans-unit id="service">
 				<source>Service</source>
 			</trans-unit>
+			<trans-unit id="description">
+				<source>Description</source>
+			</trans-unit>
 			<trans-unit id="priority">
 				<source>Priority</source>
 			</trans-unit>
