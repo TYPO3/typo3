@@ -589,7 +589,8 @@ class NewContentElementController
             // Exploding parameter string, if any (old style)
             if ($wizardItems[$key]['params']) {
                 // Explode GET vars recursively
-                $tempGetVars = GeneralUtility::explodeUrl2Array($wizardItems[$key]['params'], true);
+                $tempGetVars = [];
+                parse_str($wizardItems[$key]['params'], $tempGetVars);
                 // If tt_content values are set, merge them into the tt_content_defValues array,
                 // unset them from $tempGetVars and re-implode $tempGetVars into the param string
                 // (in case remaining parameters are around).

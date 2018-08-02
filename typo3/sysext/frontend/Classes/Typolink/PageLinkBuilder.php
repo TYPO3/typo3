@@ -230,7 +230,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             && !trim($addQueryParams)
             && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
         ) {
-            $currentQueryArray = GeneralUtility::explodeUrl2Array(GeneralUtility::getIndpEnv('QUERY_STRING'), true);
+            $currentQueryArray = [];
+            parse_str(GeneralUtility::getIndpEnv('QUERY_STRING'), $currentQueryArray);
             $currentQueryParams = GeneralUtility::implodeArrayForUrl('', $currentQueryArray, '', false, true);
 
             if (!trim($currentQueryParams)) {

@@ -246,4 +246,28 @@ class GeneralUtilityTest extends UnitTestCase
         $this->assertEquals($expectedQuoted, $actualQuoted, 'The exploded command does not match the expected');
         $this->assertEquals($expectedUnquoted, $actualUnquoted, 'The exploded and unquoted command does not match the expected');
     }
+
+    /**
+     * Data provider for explodeUrl2ArrayTransformsParameterStringToNestedArray
+     *
+     * @return array
+     */
+    public function explodeUrl2ArrayDataProvider()
+    {
+        return [
+            'Empty input' => [[], ''],
+            'String parameters' => [['foo' => ['one' => '√', 'two' => 2]], '&foo[one]=%E2%88%9A&foo[two]=2'],
+            'Nested array parameters' => [['foo' => [['one' => '√', 'two' => 2]]], '&foo[0][one]=%E2%88%9A&foo[0][two]=2'],
+            'Keep blank parameters' => [['foo' => ['one' => '√', '']], '&foo[one]=%E2%88%9A&foo[0]=']
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider explodeUrl2ArrayDataProvider
+     */
+    public function explodeUrl2ArrayTransformsParameterStringToNestedArray($expected, $input)
+    {
+        $this->assertEquals($expected, GeneralUtility::explodeUrl2Array($input, true));
+    }
 }

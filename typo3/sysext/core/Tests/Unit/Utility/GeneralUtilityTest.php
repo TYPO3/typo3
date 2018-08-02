@@ -1027,8 +1027,7 @@ class GeneralUtilityTest extends UnitTestCase
     // Tests concerning implodeArrayForUrl / explodeUrl2Array
     //////////////////////////////////
     /**
-     * Data provider for implodeArrayForUrlBuildsValidParameterString and
-     * explodeUrl2ArrayTransformsParameterStringToArray
+     * Data provider for implodeArrayForUrlBuildsValidParameterString
      *
      * @return array
      */
@@ -1074,21 +1073,11 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider implodeArrayForUrlDataProvider
-     */
-    public function explodeUrl2ArrayTransformsParameterStringToNestedArray($name, $array, $input)
-    {
-        $expected = $array ? [$name => $array] : [];
-        $this->assertEquals($expected, GeneralUtility::explodeUrl2Array($input, true));
-    }
-
-    /**
-     * @test
      * @dataProvider explodeUrl2ArrayDataProvider
      */
     public function explodeUrl2ArrayTransformsParameterStringToFlatArray($input, $expected)
     {
-        $this->assertEquals($expected, GeneralUtility::explodeUrl2Array($input, false));
+        $this->assertEquals($expected, GeneralUtility::explodeUrl2Array($input));
     }
 
     /**

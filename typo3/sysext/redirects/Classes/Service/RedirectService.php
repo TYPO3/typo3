@@ -180,7 +180,8 @@ class RedirectService implements LoggerAwareInterface
         // New query parameters overrule the ones that should be kept
         $newQueryParamString = $url->getQuery();
         if (!empty($newQueryParamString)) {
-            $newQueryParams = GeneralUtility::explodeUrl2Array($newQueryParamString, true);
+            $newQueryParams = [];
+            parse_str($newQueryParamString, $newQueryParams);
             $queryParams = array_replace_recursive($queryParams, $newQueryParams);
         }
         $query = http_build_query($queryParams, '', '&', PHP_QUERY_RFC3986);

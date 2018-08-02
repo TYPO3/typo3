@@ -2644,9 +2644,10 @@ class BackendUtility
             try {
                 $site = $siteFinder->getSiteByPageId((int)$pageUid, $rootLine);
                 // Create a multi-dimensional array out of the additional get vars
-                $additionalGetVars = GeneralUtility::explodeUrl2Array($additionalGetVars, true);
+                $additionalQueryParams = [];
+                parse_str($additionalGetVars, $additionalQueryParams);
                 $uriBuilder = GeneralUtility::makeInstance(PageUriBuilder::class);
-                $previewUrl = (string)$uriBuilder->buildUri($pageUid, $additionalGetVars, $anchorSection, ['rootLine' => $rootLine], $uriBuilder::ABSOLUTE_URL);
+                $previewUrl = (string)$uriBuilder->buildUri($pageUid, $additionalQueryParams, $anchorSection, ['rootLine' => $rootLine], $uriBuilder::ABSOLUTE_URL);
             } catch (SiteNotFoundException $e) {
                 $previewUrl = self::createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript);
             }

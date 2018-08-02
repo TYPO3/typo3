@@ -939,8 +939,9 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
         if ($this->conf['preserveGETvars'] === 'all') {
             $preserveQueryParts = $getVars;
         } else {
-            $preserveQueryParts = GeneralUtility::trimExplode(',', $this->conf['preserveGETvars']);
-            $preserveQueryParts = GeneralUtility::explodeUrl2Array(implode('=1&', $preserveQueryParts) . '=1', true);
+            $preserveQueryStringProperties = GeneralUtility::trimExplode(',', $this->conf['preserveGETvars']);
+            $preserveQueryParts = [];
+            parse_str(implode('=1&', $preserveQueryStringProperties) . '=1', $preserveQueryParts);
             $preserveQueryParts = \TYPO3\CMS\Core\Utility\ArrayUtility::intersectRecursive($getVars, $preserveQueryParts);
         }
         $parameters = GeneralUtility::implodeArrayForUrl('', $preserveQueryParts);

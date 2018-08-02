@@ -194,7 +194,8 @@ class ShortcutRepository
         }
 
         $queryParts = parse_url($url);
-        $queryParameters = GeneralUtility::explodeUrl2Array($queryParts['query'], true);
+        $queryParameters = [];
+        parse_str($queryParts['query'], $queryParameters);
 
         if (!empty($queryParameters['scheme'])) {
             throw new \RuntimeException('Shortcut URLs must be relative', 1518785877);
@@ -484,7 +485,9 @@ class ShortcutRepository
             list($row['module_name'], $row['M_module_name']) = explode('|', $row['module_name']);
 
             $queryParts = parse_url($row['url']);
-            $queryParameters = GeneralUtility::explodeUrl2Array($queryParts['query'], 1);
+            // Explode GET vars recursively
+            $queryParameters = [];
+            parse_str($queryParts['query'], $queryParameters);
 
             if ($row['module_name'] === 'xMOD_alt_doc.php' && is_array($queryParameters['edit'])) {
                 $shortcut['table'] = key($queryParameters['edit']);
@@ -725,12 +728,14 @@ class ShortcutRepository
     protected function getTokenUrl(string $url): string
     {
         $parsedUrl = parse_url($url);
+        $parameters = [];
         parse_str($parsedUrl['query'], $parameters);
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // parse the returnUrl and replace the module token of it
         if (isset($parameters['returnUrl'])) {
             $parsedReturnUrl = parse_url($parameters['returnUrl']);
+            $returnUrlParameters = [];
             parse_str($parsedReturnUrl['query'], $returnUrlParameters);
 
             if (strpos($parsedReturnUrl['path'], 'index.php') !== false && !empty($returnUrlParameters['route'])) {

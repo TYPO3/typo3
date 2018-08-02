@@ -655,14 +655,16 @@ class UriBuilder
                         $arguments = array_replace_recursive(GeneralUtility::_POST(), GeneralUtility::_GET());
                         break;
                     default:
-                        $arguments = GeneralUtility::explodeUrl2Array(GeneralUtility::getIndpEnv('QUERY_STRING'), true);
+                        // Explode GET vars recursively
+                        parse_str(GeneralUtility::getIndpEnv('QUERY_STRING'), $arguments);
                 }
             } else {
                 $arguments = GeneralUtility::_GET();
             }
             foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
-                $argumentToBeExcluded = GeneralUtility::explodeUrl2Array($argumentToBeExcluded, true);
-                $arguments = ArrayUtility::arrayDiffAssocRecursive($arguments, $argumentToBeExcluded);
+                $argumentArrayToBeExcluded = [];
+                parse_str($argumentToBeExcluded, $argumentArrayToBeExcluded);
+                $arguments = ArrayUtility::arrayDiffAssocRecursive($arguments, $argumentArrayToBeExcluded);
             }
         } else {
             $id = GeneralUtility::_GP('id');

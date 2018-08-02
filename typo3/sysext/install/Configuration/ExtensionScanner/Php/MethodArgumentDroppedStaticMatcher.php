@@ -39,4 +39,10 @@ return [
             'Deprecation-82899-ExtensionManagementUtilityMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85801-GeneralUtilityexplodeUrl2Array-2ndMethodArgument.rst',
+        ],
+    ],
 ];

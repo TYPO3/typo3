@@ -1169,19 +1169,31 @@ class GeneralUtility
     }
 
     /**
-     * Explodes a string with GETvars (eg. "&id=1&type=2&ext[mykey]=3") into an array
+     * Explodes a string with GETvars (eg. "&id=1&type=2&ext[mykey]=3") into an array.
+     *
+     * Note! If you want to use a multi-dimensional string, consider this plain simple PHP code instead:
+     *
+     * $result = [];
+     * parse_str($queryParametersAsString, $result);
+     *
+     * However, if you do magic with a flat structure (e.g. keeping "ext[mykey]" as flat key in a one-dimensional array)
+     * then this method is for you.
      *
      * @param string $string GETvars string
      * @param bool $multidim If set, the string will be parsed into a multidimensional array if square brackets are used in variable names (using PHP function parse_str())
      * @return array Array of values. All values AND keys are rawurldecoded() as they properly should be. But this means that any implosion of the array again must rawurlencode it!
      * @see implodeArrayForUrl()
      */
-    public static function explodeUrl2Array($string, $multidim = false)
+    public static function explodeUrl2Array($string, $multidim = null)
     {
         $output = [];
         if ($multidim) {
+            trigger_error('GeneralUtility::explodeUrl2Array() with a multi-dimensional explode functionality will be removed in TYPO3 v10.0. is built-in PHP with "parse_str($input, $output);". Use the native PHP methods instead.', E_USER_DEPRECATED);
             parse_str($string, $output);
         } else {
+            if ($multidim !== null) {
+                trigger_error('GeneralUtility::explodeUrl2Array() does not need a second method argument anymore, and will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
+            }
             $p = explode('&', $string);
             foreach ($p as $v) {
                 if ($v !== '') {
