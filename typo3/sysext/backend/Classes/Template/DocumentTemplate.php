@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -45,6 +46,14 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class DocumentTemplate implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'hasDocheader' => 'Using $hasDocheader of class DocumentTemplate is discouraged. The property is not evaluated in the TYPO3 core anymore and will be removed in TYPO3 v10.'
+    ];
 
     // Vars you typically might want to/should set from outside after making instance of this class:
     /**
@@ -211,8 +220,9 @@ function jumpToUrl(URL) {
 
     /**
      * @var bool
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
      */
-    public $hasDocheader = true;
+    protected $hasDocheader = true;
 
     /**
      * @var PageRenderer
@@ -390,8 +400,7 @@ function jumpToUrl(URL) {
     {
         $GET = GeneralUtility::_GET();
         $storeArray = array_merge(GeneralUtility::compileSelectedGetVarsFromArray($gvList, $GET), ['SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS)]);
-        $storeUrl = GeneralUtility::implodeArrayForUrl('', $storeArray);
-        return $storeUrl;
+        return GeneralUtility::implodeArrayForUrl('', $storeArray);
     }
 
     /**
@@ -594,8 +603,6 @@ function jumpToUrl(URL) {
 
     /**
      * Outputting document style
-     *
-     * @return string HTML style section/link tags
      */
     public function docStyle()
     {
@@ -628,9 +635,12 @@ function jumpToUrl(URL) {
      * @param string $href uri to the style sheet file
      * @param string $title value for the title attribute of the link element
      * @param string $relation value for the rel attribute of the link element
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
+     * @see PageRenderer::addCssFile()
      */
     public function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet')
     {
+        trigger_error('The method `DocumentTemplate::addStyleSheet has been deprecated, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
         $this->pageRenderer->addCssFile($href, $relation, 'screen', $title);
     }
 

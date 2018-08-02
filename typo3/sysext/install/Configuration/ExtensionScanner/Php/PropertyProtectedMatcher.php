@@ -642,4 +642,9 @@ return [
             'Deprecation-84387-DeprecatedMethodAndPropertyInSchedulerModuleController.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\Template\DocumentTemplate->hasDocheader' => [
+        'restFiles' => [
+            'Deprecation-85735-DeprecateMethodAndPropertyInDocumentTemplate.rst'
+        ],
+    ],
 ];

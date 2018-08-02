@@ -2522,4 +2522,11 @@ return [
             'Deprecation-85701-DeprecateMethodsInModuleTemplate.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\DocumentTemplate->addStyleSheet' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-85735-DeprecateMethodAndPropertyInDocumentTemplate.rst',
+        ],
+    ],
 ];
