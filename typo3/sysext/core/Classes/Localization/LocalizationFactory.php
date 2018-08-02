@@ -81,7 +81,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
                 'lang/Resources/Private/Language/locallang_tcemain.xlf' => 'workspaces/Resources/Private/Language/locallang_tcemain.xlf',
             ];
             $filePath = substr($fileReference, 4);
-            GeneralUtility::deprecationLog('There is a reference to "' . $fileReference . '", which has been moved to "EXT:' . $mapping[$filePath] . '". This fallback will be removed with TYPO3 v10.');
+            trigger_error('There is a reference to "' . $fileReference . '", which has been moved to "EXT:' . $mapping[$filePath] . '". This fallback will be removed with TYPO3 v10.', E_USER_DEPRECATED);
             $fileReference = 'EXT:' . $mapping[$filePath];
         }
 
