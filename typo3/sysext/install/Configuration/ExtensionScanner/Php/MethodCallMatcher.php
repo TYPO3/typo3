@@ -2942,4 +2942,39 @@ return [
             'Deprecation-85892-VariousMethodsRegardingSysDomainResolving.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\PageLayoutController->getLocalizedPageTitle' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\PageLayoutController->getNumberOfHiddenElements' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\PageLayoutController->local_linkThisScript' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\PageLayoutController->pageIsNotLockedForEditors' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\PageLayoutController->contentIsNotLockedForEditors' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+        ],
+    ],
 ];

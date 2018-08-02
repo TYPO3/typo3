@@ -849,8 +849,7 @@ class PageLayoutView implements LoggerAwareInterface
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
-        $userCanEditPage = $this->ext_CALC_PERMS & Permission::PAGE_EDIT && !empty($this->id) && ($backendUser->isAdmin() || (int)$this->pageinfo['editlock'] === 0);
-        if ($userCanEditPage) {
+        if ($this->isPageEditable()) {
             $languageOverlayId = 0;
             $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->tt_contentConfig['sys_language_uid']);
             if (is_array($pageLocalizationRecord)) {
@@ -929,7 +928,7 @@ class PageLayoutView implements LoggerAwareInterface
                 $content[$columnId] .= '">';
                 // Add new content at the top most position
                 $link = '';
-                if ($this->getPageLayoutController()->contentIsNotLockedForEditors()
+                if ($this->isContentEditable()
                     && (!$this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP))
                 ) {
                     if ($this->option_newWizard) {
@@ -1041,7 +1040,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 '-' . StringUtility::getUniqueId() . '">';
                             // Add icon "new content element below"
                             if (!$disableMoveAndNewButtons
-                                && $this->getPageLayoutController()->contentIsNotLockedForEditors()
+                                && $this->isContentEditable()
                                 && $this->getBackendUser()->checkLanguageAccess($lP)
                                 && (!$this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP))
                                 && $columnId !== 'unused'
@@ -1229,7 +1228,7 @@ class PageLayoutView implements LoggerAwareInterface
             }
         }
         $elFromTable = $this->clipboard->elFromTable('tt_content');
-        if (!empty($elFromTable) && $this->getPageLayoutController()->pageIsNotLockedForEditors()) {
+        if (!empty($elFromTable) && $this->isPageEditable()) {
             $pasteItem = substr(key($elFromTable), 11);
             $pasteRecord = BackendUtility::getRecord('tt_content', (int)$pasteItem);
             $pasteTitle = $pasteRecord['header'] ? $pasteRecord['header'] : $pasteItem;
@@ -2433,7 +2432,7 @@ class PageLayoutView implements LoggerAwareInterface
                     . ' href="#"'
                     . ' class="btn btn-default btn-sm t3js-localize disabled"'
                     . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('newPageContent_translate')) . '"'
-                    . ' data-page="' . htmlspecialchars($this->getPageLayoutController()->getLocalizedPageTitle()) . '"'
+                    . ' data-page="' . htmlspecialchars($this->getLocalizedPageTitle()) . '"'
                     . ' data-has-elements="' . (int)!empty($this->contentElementCache[$lP]) . '"'
                     . ' data-allow-copy="' . (int)$allowCopy . '"'
                     . ' data-allow-translate="' . (int)$allowTranslate . '"'
@@ -4478,6 +4477,60 @@ class PageLayoutView implements LoggerAwareInterface
             $htmlCode .= '</a>';
         }
         return $htmlCode;
+    }
+
+    /**
+     * @return string $title
+     */
+    protected function getLocalizedPageTitle(): string
+    {
+        if ($this->tt_contentConfig['sys_language_uid'] ?? 0 > 0) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+            $localizedPage = $queryBuilder
+                ->select('*')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                        $queryBuilder->createNamedParameter($this->tt_contentConfig['sys_language_uid'], \PDO::PARAM_INT)
+                    )
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
+            BackendUtility::workspaceOL('pages', $localizedPage);
+            return $localizedPage['title'];
+        }
+        return $this->pageinfo['title'];
+    }
+
+    /**
+     * Check if page can be edited by current user
+     *
+     * @return bool
+     */
+    protected function isPageEditable()
+    {
+        return !$this->pageinfo['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::PAGE_EDIT);
+    }
+
+    /**
+     * Check if content can be edited by current user
+     *
+     * @return bool
+     */
+    protected function isContentEditable()
+    {
+        return !$this->pageinfo['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT);
     }
 
     /**
