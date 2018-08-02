@@ -53,7 +53,7 @@ class RecordsOverview extends AbstractNode
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $recordsOverviewHtml = [];
         foreach ($selectedItems as $selectedItem) {
-            $title = $selectedItem['title'];
+            $title = (string)$selectedItem['title'];
             if (empty($title)) {
                 $title = '[' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']';
             }
