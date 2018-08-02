@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
@@ -72,6 +73,50 @@ class AbstractTableHandler
                     break;
             }
         }
+    }
+
+    /**
+     * Creates new record using DataHandler
+     *
+     * @param string $tableName
+     * @param array $fieldValues
+     * @return int
+     */
+    protected function insertRecord(string $tableName, array $fieldValues)
+    {
+        $UidPlaceholder = StringUtility::getUniqueId('NEW');
+
+        $dataMap = [
+            $tableName => [
+                $UidPlaceholder => $fieldValues
+            ]
+        ];
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start($dataMap, []);
+        $dataHandler->process_datamap();
+        return (int)$dataHandler->substNEWwithIDs[$UidPlaceholder];
+    }
+
+
+    /**
+     * Updates a record using datahandler
+     *
+     * @param string $tableName
+     * @param int $uid
+     * @param array $fieldValues
+     * @return int
+     */
+    protected function updateRecord(string $tableName, $uid, array $fieldValues)
+    {
+        $dataMap = [
+            $tableName => [
+                $uid => $fieldValues
+            ]
+        ];
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start($dataMap, []);
+        $dataHandler->process_datamap();
+        return (int)$uid;
     }
 
     /**
