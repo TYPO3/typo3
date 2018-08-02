@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Install\Updates;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\History\RecordHistoryStore;
+use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Core\History;
+namespace TYPO3\CMS\Core\DataHandling\History;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -26,23 +26,39 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RecordHistoryStore
 {
-    const ACTION_ADD = 1;
-    const ACTION_MODIFY = 2;
-    const ACTION_MOVE = 3;
-    const ACTION_DELETE = 4;
-    const ACTION_UNDELETE = 5;
+    public const ACTION_ADD = 1;
+    public const ACTION_MODIFY = 2;
+    public const ACTION_MOVE = 3;
+    public const ACTION_DELETE = 4;
+    public const ACTION_UNDELETE = 5;
 
-    const USER_BACKEND = 'BE';
-    const USER_FRONTEND = 'FE';
-    const USER_ANONYMOUS = '';
+    public const USER_BACKEND = 'BE';
+    public const USER_FRONTEND = 'FE';
+    public const USER_ANONYMOUS = '';
 
     /**
      * @var int|null
      */
     protected $userId;
+
+    /**
+     * @var string
+     */
     protected $userType;
+
+    /**
+     * @var int|null
+     */
     protected $originalUserId;
+
+    /**
+     * @var int|null
+     */
     protected $tstamp;
+
+    /**
+     * @var int
+     */
     protected $workspaceId;
 
     /**
