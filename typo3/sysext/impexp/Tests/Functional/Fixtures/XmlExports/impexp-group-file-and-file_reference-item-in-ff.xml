@@ -130,11 +130,11 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
 				<field index="pid">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
 				<field index="perms_everybody">15</field>
 				<field index="title">Dummy 1-2</field>
 				<field index="doktype">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -142,6 +142,8 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
 				<field index="pid">2</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
 				<field index="title">Test item 2</field>
 				<field index="images"></field>
 				<field index="image_references"></field>
@@ -163,8 +165,6 @@
 		&lt;/sheet&gt;
 	&lt;/data&gt;
 &lt;/T3FlexForms&gt;</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="flexform" type="array">
@@ -272,6 +272,7 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">0</field>
+				<field index="description" type="NULL"/>
 				<field index="name">fileadmin/ (auto-created)</field>
 				<field index="driver">Local</field>
 				<field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
@@ -297,7 +298,6 @@
 				<field index="is_public">1</field>
 				<field index="is_writable">1</field>
 				<field index="is_online">1</field>
-				<field index="description" type="NULL"></field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="configuration" type="array">

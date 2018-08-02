@@ -97,11 +97,11 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">0</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
 				<field index="perms_everybody">15</field>
 				<field index="title">Root</field>
 				<field index="doktype">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -109,11 +109,11 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
 				<field index="title">Test item</field>
 				<field index="images">typo3_image4.jpg</field>
 				<field index="image_references">fileadmin/user_upload/typo3_image5.jpg</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="images" type="array">
@@ -170,6 +170,7 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">0</field>
+				<field index="description" type="NULL"/>
 				<field index="name">fileadmin/ (auto-created)</field>
 				<field index="driver">Local</field>
 				<field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
@@ -195,7 +196,6 @@
 				<field index="is_public">1</field>
 				<field index="is_writable">1</field>
 				<field index="is_online">1</field>
-				<field index="description" type="NULL"></field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="configuration" type="array">

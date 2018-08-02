@@ -527,7 +527,7 @@ class DefaultTcaSchema
      */
     public function getPrioritizedFieldNames(string $tableName): array
     {
-        if (!isset($GLOBALS['TCA'][$tableName])) {
+        if (!isset($GLOBALS['TCA'][$tableName]['ctrl'])) {
             return [];
         }
 
@@ -536,7 +536,7 @@ class DefaultTcaSchema
             'pid'
         ];
 
-        $tableDefinition = $GLOBALS['TCA']['ctrl'];
+        $tableDefinition = $GLOBALS['TCA'][$tableName]['ctrl'];
 
         if (!empty($tableDefinition['crdate'])) {
             $prioritizedFieldNames[] = $tableDefinition['crdate'];

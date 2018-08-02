@@ -120,10 +120,6 @@
 					<title>typo3_image2.jpg</title>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array">
-						<element index="sys_file:1" type="array">
-							<id>1</id>
-							<table>sys_file</table>
-						</element>
 						<element index="sys_language:1" type="array">
 							<id>1</id>
 							<table>sys_language</table>
@@ -131,6 +127,10 @@
 						<element index="sys_file_metadata:1" type="array">
 							<id>1</id>
 							<table>sys_file_metadata</table>
+						</element>
+						<element index="sys_file:1" type="array">
+							<id>1</id>
+							<table>sys_file</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
@@ -190,11 +190,11 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">0</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
 				<field index="perms_everybody">15</field>
 				<field index="title">Root</field>
 				<field index="doktype">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -202,11 +202,11 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
 				<field index="pid">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
 				<field index="perms_everybody">15</field>
 				<field index="title">Dummy 1-2</field>
 				<field index="doktype">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -214,13 +214,13 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">1</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="t3ver_oid">0</field>
 				<field index="CType">textpic</field>
 				<field index="header">Test content</field>
 				<field index="image">1</field>
 				<field index="header_link">file:1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
-				<field index="t3ver_oid">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="image" type="array">
@@ -256,9 +256,9 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">0</field>
+				<field index="hidden">0</field>
 				<field index="title">Deutsch</field>
 				<field index="flag">de</field>
-				<field index="hidden">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -335,6 +335,7 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">0</field>
+				<field index="description" type="NULL"/>
 				<field index="name">fileadmin/ (auto-created)</field>
 				<field index="driver">Local</field>
 				<field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
@@ -360,7 +361,6 @@
 				<field index="is_public">1</field>
 				<field index="is_writable">1</field>
 				<field index="is_online">1</field>
-				<field index="description" type="NULL"></field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="configuration" type="array">
@@ -377,14 +377,14 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="l10n_parent">0</field>
 				<field index="file">1</field>
 				<field index="title">Dummy image</field>
 				<field index="width">400</field>
 				<field index="height">300</field>
 				<field index="description">This is a dummy image.</field>
 				<field index="alternative">Photo of program code</field>
-				<field index="sys_language_uid">0</field>
-				<field index="l10n_parent">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="file" type="array">
@@ -402,25 +402,16 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
 				<field index="pid">0</field>
+				<field index="sys_language_uid">1</field>
+				<field index="l10n_parent">1</field>
 				<field index="file">1</field>
 				<field index="title">Beispiel Bild</field>
 				<field index="width">400</field>
 				<field index="height">300</field>
 				<field index="description">Nur ein Beispielbild.</field>
 				<field index="alternative">Foto von Programmcode</field>
-				<field index="sys_language_uid">1</field>
-				<field index="l10n_parent">1</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="file" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>sys_file</table>
-						</element>
-					</relations>
-				</field>
 				<field index="sys_language_uid" type="array">
 					<type>db</type>
 					<relations index="itemArray" type="array">
@@ -436,6 +427,15 @@
 						<element index="0" type="array">
 							<id>1</id>
 							<table>sys_file_metadata</table>
+						</element>
+					</relations>
+				</field>
+				<field index="file" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>sys_file</table>
 						</element>
 					</relations>
 				</field>
