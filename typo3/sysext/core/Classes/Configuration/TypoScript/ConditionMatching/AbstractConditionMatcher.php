@@ -14,7 +14,13 @@ namespace TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\ExpressionLanguage\SyntaxError;
+use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
+use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
@@ -23,8 +29,10 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  * Used with the TypoScript parser.
  * Matches IPnumbers etc. for use with templates
  */
-abstract class AbstractConditionMatcher
+abstract class AbstractConditionMatcher implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Id of the current page.
      *
@@ -54,6 +62,16 @@ abstract class AbstractConditionMatcher
      * @var array
      */
     protected $simulateMatchConditions = [];
+
+    /**
+     * @var Resolver
+     */
+    protected $expressionLanguageResolver;
+
+    public function __construct(TypoScriptConditionProvider $typoScriptConditionProvider)
+    {
+        $this->expressionLanguageResolver = GeneralUtility::makeInstance(Resolver::class, $typoScriptConditionProvider);
+    }
 
     /**
      * Sets the id of the page to evaluate conditions for.
@@ -174,7 +192,10 @@ abstract class AbstractConditionMatcher
             foreach ($orParts as $orPart) {
                 $andParts = explode(']&&[', $orPart);
                 foreach ($andParts as $andPart) {
-                    $result = $this->evaluateCondition($andPart);
+                    $result = $this->evaluateExpression($andPart);
+                    if (!is_bool($result)) {
+                        $result = $this->evaluateCondition($andPart);
+                    }
                     // If condition in AND context fails, the whole block is FALSE:
                     if ($result === false) {
                         break;
@@ -187,6 +208,31 @@ abstract class AbstractConditionMatcher
             }
         }
         return $result;
+    }
+
+    /**
+     * @param string $expression
+     * @return bool|null
+     */
+    protected function evaluateExpression(string $expression): ?bool
+    {
+        try {
+            $result = $this->expressionLanguageResolver->evaluate($expression);
+            if ($result !== null) {
+                return $result;
+            }
+        } catch (SyntaxError $exception) {
+            // Error means no support, let's try the fallback
+            $message = 'Expression could not be parsed, fallback kicks in.';
+            if (strpos($exception->getMessage(), 'Unexpected character "="') !== false) {
+                $message .= ' It looks like an old condition with only one equal sign.';
+            }
+            $this->logger->warning($message, [
+                'expression' => $expression,
+                'exception' => $exception
+            ]);
+        }
+        return null;
     }
 
     /**
@@ -527,22 +573,7 @@ abstract class AbstractConditionMatcher
      */
     protected function searchStringWildcard($haystack, $needle)
     {
-        $result = false;
-        if ($haystack === $needle) {
-            $result = true;
-        } elseif ($needle) {
-            if (preg_match('/^\\/.+\\/$/', $needle)) {
-                // Regular expression, only "//" is allowed as delimiter
-                $regex = $needle;
-            } else {
-                $needle = str_replace(['*', '?'], ['###MANY###', '###ONE###'], $needle);
-                $regex = '/^' . preg_quote($needle, '/') . '$/';
-                // Replace the marker with .* to match anything (wildcard)
-                $regex = str_replace(['###MANY###', '###ONE###'], ['.*', '.'], $regex);
-            }
-            $result = (bool)preg_match($regex, $haystack);
-        }
-        return $result;
+        return StringUtility::searchStringWildcard($haystack, $needle);
     }
 
     /**

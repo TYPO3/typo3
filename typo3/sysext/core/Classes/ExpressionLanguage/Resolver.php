@@ -26,7 +26,7 @@ class Resolver
     /**
      * @var ProviderInterface
      */
-    protected $context;
+    protected $provider;
 
     /**
      * @var \Symfony\Component\ExpressionLanguage\ExpressionLanguage
@@ -39,13 +39,13 @@ class Resolver
     public $expressionLanguageVariables = [];
 
     /**
-     * @param ProviderInterface $context
+     * @param ProviderInterface $provider
      */
-    public function __construct(ProviderInterface $context)
+    public function __construct(ProviderInterface $provider)
     {
-        $this->context = $context;
-        $this->expressionLanguage = new ExpressionLanguage(null, $context->getExpressionLanguageProviders());
-        $this->expressionLanguageVariables = $context->getExpressionLanguageVariables();
+        $this->provider = $provider;
+        $this->expressionLanguage = new ExpressionLanguage(null, $provider->getExpressionLanguageProviders());
+        $this->expressionLanguageVariables = $provider->getExpressionLanguageVariables();
     }
 
     /**

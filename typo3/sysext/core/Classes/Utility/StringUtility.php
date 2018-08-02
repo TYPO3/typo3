@@ -122,4 +122,31 @@ class StringUtility
 
         return $input;
     }
+
+    /**
+     * Matching two strings against each other, supporting a "*" wildcard (match many) or a "?" wildcard (match one= or (if wrapped in "/") PCRE regular expressions
+     *
+     * @param string $haystack The string in which to find $needle.
+     * @param string $needle The string to find in $haystack
+     * @return bool Returns TRUE if $needle matches or is found in (according to wildcards) $haystack. E.g. if $haystack is "Netscape 6.5" and $needle is "Net*" or "Net*ape" then it returns TRUE.
+     */
+    public static function searchStringWildcard($haystack, $needle): bool
+    {
+        $result = false;
+        if ($haystack === $needle) {
+            $result = true;
+        } elseif ($needle) {
+            if (preg_match('/^\\/.+\\/$/', $needle)) {
+                // Regular expression, only "//" is allowed as delimiter
+                $regex = $needle;
+            } else {
+                $needle = str_replace(['*', '?'], ['###MANY###', '###ONE###'], $needle);
+                $regex = '/^' . preg_quote($needle, '/') . '$/';
+                // Replace the marker with .* to match anything (wildcard)
+                $regex = str_replace(['###MANY###', '###ONE###'], ['.*', '.'], $regex);
+            }
+            $result = (bool)preg_match($regex, $haystack);
+        }
+        return $result;
+    }
 }

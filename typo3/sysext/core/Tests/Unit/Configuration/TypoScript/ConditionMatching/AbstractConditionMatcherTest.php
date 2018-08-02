@@ -16,7 +16,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\TypoScript\ConditionMatching;
  */
 
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -41,18 +46,31 @@ class AbstractConditionMatcherTest extends UnitTestCase
     protected $evaluateConditionCommonMethod;
 
     /**
+     * @var \ReflectionMethod
+     */
+    protected $evaluateExpressionMethod;
+
+    /**
      * Set up
      */
     protected function setUp(): void
     {
         require_once 'Fixtures/ConditionMatcherUserFuncs.php';
 
+        $this->resetSingletonInstances = true;
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
         GeneralUtility::flushInternalRuntimeCaches();
 
+        $typoScriptConditionProvider = GeneralUtility::makeInstance(TypoScriptConditionProvider::class);
+
         $this->backupApplicationContext = GeneralUtility::getApplicationContext();
-        $this->conditionMatcher = $this->getMockForAbstractClass(AbstractConditionMatcher::class);
+        $this->conditionMatcher = $this->getMockForAbstractClass(AbstractConditionMatcher::class, [$typoScriptConditionProvider]);
         $this->evaluateConditionCommonMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateConditionCommon');
         $this->evaluateConditionCommonMethod->setAccessible(true);
+        $this->evaluateExpressionMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateExpression');
+        $this->evaluateExpressionMethod->setAccessible(true);
+        $loggerProphecy = $this->prophesize(Logger::class);
+        $this->conditionMatcher->setLogger($loggerProphecy->reveal());
     }
 
     /**
@@ -94,6 +112,40 @@ class AbstractConditionMatcherTest extends UnitTestCase
             $this->conditionMatcher,
             [$expressionMethod, $expressionValue]
         ));
+    }
+
+    /**
+     * @return array
+     */
+    public function datesFunctionDataProvider(): array
+    {
+        return [
+            '[dayofmonth = 17]' => ['j', 17, true],
+            '[dayofweek = 3]' => ['w', 3, true],
+            '[dayofyear = 16]' => ['z', 16, true],
+            '[hour = 11]' => ['G', 11, true],
+            '[minute = 4]' => ['i', 4, true],
+            '[month = 1]' => ['n', 1, true],
+            '[year = 1945]' => ['Y', 1945, true],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider datesFunctionDataProvider
+     * @param string $format
+     * @param int $expressionValue
+     * @param bool $expected
+     */
+    public function checkConditionMatcherForDateFunction(string $format, int $expressionValue, bool $expected): void
+    {
+        $GLOBALS['SIM_EXEC_TIME'] = mktime(11, 4, 0, 1, 17, 1945);
+        GeneralUtility::makeInstance(Context::class)
+            ->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
+        $this->assertSame(
+            $expected,
+            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['date("' . $format . '") == ' . $expressionValue])
+        );
     }
 
     /**
@@ -153,6 +205,10 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, ['applicationContext', $matchingContextCondition])
         );
+        // Test expression language
+        $this->assertTrue(
+            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['like("' . $applicationContext . '", "' . preg_quote($matchingContextCondition, '/') . '")'])
+        );
     }
 
     /**
@@ -184,6 +240,10 @@ class AbstractConditionMatcherTest extends UnitTestCase
 
         $this->assertFalse(
             $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, ['applicationContext', $notMatchingApplicationContextCondition])
+        );
+        // Test expression language
+        $this->assertFalse(
+            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['like("' . $applicationContext . '", "' . preg_quote($notMatchingApplicationContextCondition, '/') . '")'])
         );
     }
 
@@ -253,8 +313,9 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $_SERVER['REMOTE_ADDR'] = $actualIp;
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $devIpMask;
 
-        $actualResult = $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, ['IP', 'devIP']);
-        $this->assertSame($expectedResult, $actualResult);
+        $this->assertSame($expectedResult, $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, ['IP', 'devIP']));
+        // Test expression language
+        $this->assertSame($expectedResult, $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['ip("devIP")']));
     }
 
     /**

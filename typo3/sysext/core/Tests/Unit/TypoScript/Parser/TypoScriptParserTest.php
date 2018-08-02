@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Parser;
  */
 
 use Prophecy\Argument;
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -456,6 +457,8 @@ class TypoScriptParserTest extends UnitTestCase
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
         $cacheProphecy->set(Argument::cetera())->willReturn(false);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+
+        GeneralUtility::addInstance(ConditionMatcher::class, $this->prophesize(ConditionMatcher::class)->reveal());
 
         $resolvedIncludeLines = TypoScriptParser::checkIncludeLines($typoScript);
         $this->assertContains('foo = bar', $resolvedIncludeLines);

@@ -19,6 +19,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider;
+use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptFrontendConditionFunctionsProvider;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -42,6 +44,27 @@ class ConditionMatcher extends AbstractConditionMatcher
     public function __construct(Context $context = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
+        $this->rootline = $this->determineRootline();
+        $tree = new \stdClass();
+        $tree->level = $this->rootline ? count($this->rootline) - 1 : 0;
+        $tree->rootLine = $this->rootline;
+        $tree->rootLineIds = array_column($this->rootline, 'uid');
+
+        $frontendUserAspect = $this->context->getAspect('frontend.user');
+        $frontend = new \stdClass();
+        $frontend->user = new \stdClass();
+        $frontend->user->isLoggedIn = $frontendUserAspect->get('isLoggedIn') ?? false;
+        $frontend->user->userId = $frontendUserAspect->get('id') ?? 0;
+        $frontend->user->userGroupList = implode(',', $frontendUserAspect->get('groupIds'));
+
+        $typoScriptConditionProvider = GeneralUtility::makeInstance(TypoScriptConditionProvider::class, [
+            'tree' => $tree,
+            'frontend' => $frontend,
+            'page' => $this->getPage(),
+        ], [
+            GeneralUtility::makeInstance(TypoScriptFrontendConditionFunctionsProvider::class)
+        ]);
+        parent::__construct($typoScriptConditionProvider);
     }
 
     /**
@@ -57,10 +80,10 @@ class ConditionMatcher extends AbstractConditionMatcher
     {
         list($key, $value) = GeneralUtility::trimExplode('=', $string, false, 2);
         $result = $this->evaluateConditionCommon($key, $value);
-
         if (is_bool($result)) {
             return $result;
         }
+
         switch ($key) {
             case 'usergroup':
                 $groupList = $this->getGroupList();

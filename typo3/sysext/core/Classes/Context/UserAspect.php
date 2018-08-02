@@ -72,6 +72,8 @@ class UserAspect implements AspectInterface
                 return (string)($this->user->user[$this->user->username_column ?? 'username'] ?? '');
             case 'isLoggedIn':
                 return $this->isLoggedIn();
+            case 'isAdmin':
+                return $this->isAdmin();
             case 'groupIds':
                 return $this->getGroupIds();
             case 'groupNames':
@@ -92,6 +94,16 @@ class UserAspect implements AspectInterface
             return ($this->user->user[$this->user->userid_column ?? 'uid'] ?? 0) > 0 && !empty($this->user->groupData['uid'] ?? null);
         }
         return ($this->user->user[$this->user->userid_column ?? 'uid'] ?? 0) > 0;
+    }
+
+    /**
+     * Check if admin is set
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->user->user['admin'] === 1 ?? false;
     }
 
     /**

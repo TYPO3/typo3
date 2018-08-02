@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -28,10 +30,37 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ConditionMatcher extends AbstractConditionMatcher
 {
     /**
-     * Constructor for this class
+     * @var Context
      */
-    public function __construct()
+    protected $context;
+
+    public function __construct(Context $context = null)
     {
+        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
+        $this->rootline = $this->determineRootline() ?? [];
+        $treeLevel = $this->rootline ? count($this->rootline) - 1 : 0;
+        if ($this->isNewPageWithPageId($this->pageId)) {
+            $treeLevel++;
+        }
+        $tree = new \stdClass();
+        $tree->level = $treeLevel;
+        $tree->rootLine = $this->rootline;
+        $tree->rootLineIds = array_column($this->rootline, 'uid');
+
+        $backendUserAspect = $this->context->getAspect('backend.user');
+        $backend = new \stdClass();
+        $backend->user = new \stdClass();
+        $backend->user->isAdmin = $backendUserAspect->get('isAdmin') ?? false;
+        $backend->user->isLoggedIn = $backendUserAspect->get('isLoggedIn') ?? false;
+        $backend->user->userId = $backendUserAspect->get('id') ?? 0;
+        $backend->user->userGroupList = implode(',', $backendUserAspect->get('groupIds'));
+
+        $typoScriptConditionProvider = GeneralUtility::makeInstance(TypoScriptConditionProvider::class, [
+            'tree' => $tree,
+            'backend' => $backend,
+            'page' => $this->getPage(),
+        ]);
+        parent::__construct($typoScriptConditionProvider);
     }
 
     /**
@@ -48,6 +77,7 @@ class ConditionMatcher extends AbstractConditionMatcher
         if (is_bool($result)) {
             return $result;
         }
+
         switch ($key) {
                 case 'usergroup':
                     $groupList = $this->getGroupList();
@@ -283,6 +313,6 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     protected function getBackendUserAuthentication()
     {
-        return $GLOBALS['BE_USER'];
+        return $GLOBALS['BE_USER'] ?? null;
     }
 }

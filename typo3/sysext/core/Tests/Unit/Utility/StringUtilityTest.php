@@ -272,4 +272,60 @@ class StringUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ],
         ];
     }
+
+    /**
+     * @param $haystack
+     * @param $needle
+     * @param $result
+     * @test
+     * @dataProvider searchStringWildcardDataProvider
+     */
+    public function searchStringWildcard($haystack, $needle, $result)
+    {
+        $this->assertSame($result, StringUtility::searchStringWildcard($haystack, $needle));
+    }
+
+    /**
+     * @return array
+     */
+    public function searchStringWildcardDataProvider(): array
+    {
+        return [
+            'Simple wildard single character with *' => [
+                'TYPO3',
+                'TY*O3',
+                true
+            ],
+            'Simple wildard multiple character with *' => [
+                'TYPO3',
+                'T*P*3',
+                true
+            ],
+            'Simple wildard multiple character for one placeholder with *' => [
+                'TYPO3',
+                'T*3',
+                true
+            ],
+            'Simple wildard single character with ?' => [
+                'TYPO3',
+                'TY?O3',
+                true
+            ],
+            'Simple wildard multiple character with ?' => [
+                'TYPO3',
+                'T?P?3',
+                true
+            ],
+            'Simple wildard multiple character for one placeholder with ?' => [
+                'TYPO3',
+                'T?3',
+                false
+            ],
+            'RegExp' => [
+                'TYPO3',
+                '/^TYPO(\d)$/',
+                true
+            ],
+        ];
+    }
 }
