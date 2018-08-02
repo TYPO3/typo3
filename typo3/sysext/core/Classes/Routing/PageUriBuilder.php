@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Backend\Routing;
+namespace TYPO3\CMS\Core\Routing;
 
 /*
  * This file is part of the TYPO3 CMS project.
