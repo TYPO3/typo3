@@ -38,6 +38,7 @@ nbproject
 /Build/JavaScript
 /Build/typings/*
 !/Build/typings/no-def*
+/Build/testing-docker/local/.env
 /typo3/sysext/*/Resources/Private/TypeScript/*.js
 /typo3/sysext/*/Resources/Public/JavaScript/*.js.map
 #

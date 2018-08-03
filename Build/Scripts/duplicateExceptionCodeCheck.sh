@@ -13,7 +13,8 @@ cd typo3/
 
 ignoreFiles=()
 # auto generated file, shouldn't be checked
-ignoreFiles+="sysext/core/Build/Configuration/Acceptance/Support/_generated/AcceptanceTesterActions.php"
+ignoreFiles+="sysext/core/Tests/Acceptance/Support/_generated/BackendTesterActions.php"
+ignoreFiles+="sysext/core/Tests/Acceptance/Support/_generated/InstallTesterActions.php"
 # a exception in here throws up an code from a previous exception
 ignoreFiles+="sysext/extbase/Classes/Core/Bootstrap.php"
 

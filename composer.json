@@ -104,13 +104,6 @@
 		}
 	},
 	"scripts": {
-		"test:php:unit": [
-			"@php -v",
-			"@php vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml"
-		],
-		"test": [
-			"@test:php:unit"
-		],
 		"gerrit:setup": [
 			"@gerrit:setup:commitMessageHook:enable",
 			"@gerrit:setup:preCommitHook:enable"
@@ -126,8 +119,6 @@
 		]
 	},
 	"scripts-descriptions": {
-		"test:php:unit": "Run all PHP unit tests",
-		"test": "Run all tests",
 		"gerrit:setup": "Enable all the git hooks needed to make contribution easy",
 		"gerrit:setup:commitMessageHook:enable": "Enable the commit message hook needed for gerrit",
 		"gerrit:setup:preCommitHook:enable": "Enable pre commit hook to run some checks locally",
