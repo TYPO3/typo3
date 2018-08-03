@@ -1513,12 +1513,10 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
+     * @requires OSFAMILY Windows
      */
     public function getIndpEnvTypo3SitePathReturnsStringStartingWithDrive()
     {
-        if (!Environment::isWindows()) {
-            $this->markTestSkipped('Test available only on Windows OS.');
-        }
         $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
         $this->assertRegExp('/^[a-z]:\//i', $result);
     }
@@ -2514,14 +2512,12 @@ class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////
     /**
      * @test
+     * @requires function posix_getegid
      */
     public function fixPermissionsSetsGroup()
     {
         if (Environment::isWindows()) {
             $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
-        }
-        if (!function_exists('posix_getegid')) {
-            $this->markTestSkipped('Function posix_getegid() not available, fixPermissionsSetsGroup() tests skipped');
         }
         if (posix_getegid() === -1) {
             $this->markTestSkipped('The fixPermissionsSetsGroup() is not available on Mac OS because posix_getegid() always returns -1 on Mac OS.');
@@ -2844,6 +2840,8 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @param string $methodName calling method name
      * @return mixed FALSE if test cannot be run, int group id of the second group of webserver user
+     * @requires function posix_getegid
+     * @requires function posix_getgroups
      */
     private function checkGroups($methodName)
     {
@@ -2851,16 +2849,8 @@ class GeneralUtilityTest extends UnitTestCase
             $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
             return false;
         }
-        if (!function_exists('posix_getegid')) {
-            $this->markTestSkipped('Function posix_getegid() not available, ' . $methodName . '() tests skipped');
-            return false;
-        }
         if (posix_getegid() === -1) {
             $this->markTestSkipped('Function posix_getegid() returns -1, ' . $methodName . '() tests skipped');
-            return false;
-        }
-        if (!function_exists('posix_getgroups')) {
-            $this->markTestSkipped('Function posix_getgroups() not available, ' . $methodName . '() tests skipped');
             return false;
         }
         $groups = posix_getgroups();
