@@ -37,6 +37,12 @@ class PageTree {
       this.instance.unsetTemporaryMountPoint();
     }
   }
+
+  public selectNode(node: object): void {
+    if (this.instance !== null) {
+      this.instance.selectNode(node);
+    }
+  }
 }
 
 export = PageTree;

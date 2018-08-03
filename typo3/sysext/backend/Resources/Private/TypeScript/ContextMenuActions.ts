@@ -208,6 +208,11 @@ class ContextMenuActions {
           + '&cmd[' + table + '][' + uid + '][delete]=1'
         ).done((): void => {
           if (table === 'pages' && Viewport.NavigationContainer.PageTree) {
+            if (uid === top.fsMod.recentIds.web) {
+              let node = Viewport.NavigationContainer.PageTree.instance.nodes[0];
+              Viewport.NavigationContainer.PageTree.selectNode(node);
+            }
+
             Viewport.NavigationContainer.PageTree.refreshTree();
           }
         });

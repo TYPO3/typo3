@@ -97,12 +97,16 @@ class PermissionController extends ActionController
             $this->id = (int)$this->request->getArgument('id');
         }
 
+        if (!BackendUtility::getRecord('pages', $this->id)) {
+            $this->id = 0;
+        }
+
         $this->returnUrl = GeneralUtility::_GP('returnUrl');
         if ($this->request->hasArgument('returnUrl')) {
             $this->returnUrl = $this->request->getArgument('returnUrl');
         }
 
-        $this->pageInfo = BackendUtility::readPageAccess($this->id, ' 1=1');
+        $this->setPageInfo();
     }
 
     /**
@@ -113,6 +117,7 @@ class PermissionController extends ActionController
     protected function initializeView(ViewInterface $view)
     {
         parent::initializeView($view);
+        $this->setPageInfo();
         $view->assign(
             'previewUrl',
             BackendUtility::viewOnClick(
@@ -387,6 +392,14 @@ class PermissionController extends ActionController
             }
         }
         return $options;
+    }
+
+    /**
+     * Check if page record exists and set pageInfo
+     */
+    protected function setPageInfo(): void
+    {
+        $this->pageInfo = BackendUtility::readPageAccess(BackendUtility::getRecord('pages', $this->id) ? $this->id : 0, ' 1=1');
     }
 
     /**

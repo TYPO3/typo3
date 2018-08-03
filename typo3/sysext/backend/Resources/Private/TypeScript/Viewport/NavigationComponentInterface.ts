@@ -21,4 +21,5 @@ export interface NavigationComponentInterface {
   refreshTree: Function;
   setTemporaryMountPoint: SetTemporaryMountPoint;
   unsetTemporaryMountPoint: Function;
+  selectNode: Function;
 }

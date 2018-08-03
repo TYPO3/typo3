@@ -138,6 +138,9 @@ define(['jquery',
         params = '&data[pages][' + data.uid + '][' + data.nameSourceField + ']=' + encodeURIComponent(data.title);
       } else {
         if (data.command === 'delete') {
+          if (data.uid === fsMod.recentIds.web) {
+            _this.selectNode(_this.nodes[0]);
+          }
           params = '&cmd[pages][' + data.uid + '][delete]=1';
         } else {
           params = 'cmd[pages][' + data.uid + '][' + data.command + ']=' + targetUid;
